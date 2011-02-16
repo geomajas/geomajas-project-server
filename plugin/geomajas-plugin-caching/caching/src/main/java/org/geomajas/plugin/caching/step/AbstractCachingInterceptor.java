@@ -92,19 +92,6 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 			if (cacheKey != null) {
 				cc = cacheManager.get(layer, category, cacheKey, containerClass);
 			}
-<<<<<<< HEAD
-			cacheKey = cacheKeyService.getCacheKey(cacheContext);
-			cc = cacheManager.get(layer, category, cacheKey, containerClass);
-			while (null != cc) {
-				if (!cacheContext.equals(cc.getContext())) {
-					cacheKey = cacheKeyService.makeUnique(cacheKey);
-					cc = cacheManager.get(layer, category, cacheKey, containerClass);
-				} else {
-					if (keyKey != null) {
-						pipelineContext.put(keyKey, cacheKey);
-					}
-					return cc;
-=======
 			if (null == cc) {
 				// context should have all keys !
 				for (String key : keys) {
@@ -127,7 +114,6 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 						}
 						return cc;
 					}
->>>>>>> RAST-12, CACHE-11 split AbstractCachingInterceptor in normal and SecurityContext variant, apply security context caching where needed, don't auto-restore security context
 				}
 			}
 		} catch (Throwable t) {
