@@ -127,6 +127,10 @@ public class ScaleBarComponentImpl extends PrintComponentImpl<ScaleBarComponentI
 
 	@Override
 	public void calculateSize(PdfContext context) {
+		// clear labels and sizes to make this method idempotent
+		tickLabels.clear();
+		tickSizes.clear();
+		
 		// the width must be set !!
 		float width = getConstraint().getWidth();
 
