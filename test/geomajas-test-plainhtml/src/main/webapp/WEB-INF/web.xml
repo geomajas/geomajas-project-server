@@ -53,7 +53,7 @@
 
 	<filter-mapping>
 	    <filter-name>CacheFilter</filter-name>
-	    <servlet-name>GeomajasServiceServlet</servlet-name>
+	    <url-pattern>*</url-pattern>
 	</filter-mapping>
 
 	<listener>
