@@ -23,20 +23,30 @@ import org.geomajas.service.pipeline.PipelineContext;
  */
 public class ForTestInterceptor extends AbstractPipelineInterceptor<StringAttribute> {
 	private ExecutionMode executionMode = ExecutionMode.EXECUTE_ALL;
+	private String fromMsg = "_before_";
+	private String toMsg = "_after_";
 
 	public void setExecutionMode(ExecutionMode executionMode) {
 		this.executionMode = executionMode;
 	}
 
+	public void setFromMsg(String fromMsg) {
+		this.fromMsg = fromMsg;
+	}
+
+	public void setToMsg(String toMsg) {
+		this.toMsg = toMsg;
+	}
+
 	@Override
 	public ExecutionMode beforeSteps(PipelineContext context, StringAttribute response)
 			throws GeomajasException {
-		response.setValue(response.getValue() + "_before_");
+		response.setValue(response.getValue() + fromMsg);
 		return executionMode;
 	}
 
 	@Override
 	public void afterSteps(PipelineContext context, StringAttribute response) throws GeomajasException {
-		response.setValue(response.getValue() + "_after_");
+		response.setValue(response.getValue() + toMsg);
 	}
 }

@@ -260,10 +260,14 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 				PipelineStep<RESPONSE> pipelineStep = steps.get(i);
 				if (pipelineStep instanceof PipelineInterceptorStep) {
 					PipelineInterceptorStep<RESPONSE> pis = (PipelineInterceptorStep<RESPONSE>) pipelineStep;
-					if (pis.getFromStep().equals(interceptorStep.getFromStep())) {
+					PipelineStep<RESPONSE> fromStep = pis.getFromStep();
+					if (null == fromStep) { fromStep = steps.get(0); }
+					if (fromStep.equals(interceptorStep.getFromStep())) {
 						fromIndex = i;
 					}
-					if (pis.getToStep().equals(interceptorStep.getToStep())) {
+					PipelineStep<RESPONSE> toStep = pis.getToStep();
+					if (null == toStep) { toStep = steps.get(steps.size() -1); }
+					if (toStep.equals(interceptorStep.getToStep())) {
 						toIndex = i;
 					}
 				} else {
@@ -419,6 +423,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			this.layerId = info.getLayerId();
 		}
 
+		@SuppressWarnings("unchecked")
 		public boolean equals(Object otherObject) {
 			if (this == otherObject) {
 				return true;

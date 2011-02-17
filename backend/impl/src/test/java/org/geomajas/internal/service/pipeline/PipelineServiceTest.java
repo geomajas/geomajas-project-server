@@ -174,4 +174,12 @@ public class PipelineServiceTest {
 		pipelineService.execute("interceptorExecutionMode4", "base", context, response);
 		Assert.assertEquals("bla_before_s2", response.getValue());
 	}
+
+	@Test
+	public void testComplexInterceptorCombination() throws Exception {
+		StringAttribute response = new StringAttribute("*");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("complexPipeline", "base", context, response);
+		Assert.assertEquals("*([s1s2]{<s3>s4})", response.getValue());
+	}
 }

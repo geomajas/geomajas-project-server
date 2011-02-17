@@ -305,4 +305,69 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<bean id="fourSteps" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="fourSteps"/>
+		<property name="layerId" value="base"/>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.StepIntercept">
+					<property name="id" value="s1"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.StepIntercept">
+					<property name="id" value="s2"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.StepIntercept">
+					<property name="id" value="s3"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.StepIntercept">
+					<property name="id" value="s4"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="complexPipelinePart" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="complexPipelinePart"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="fourSteps" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
+					<property name="executionMode" value="EXECUTE_ALL" />
+					<property name="fromMsg" value="(" />
+					<property name="toMsg" value=")" />
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
+					<property name="executionMode" value="EXECUTE_ALL" />
+					<property name="fromMsg" value="[" />
+					<property name="toMsg" value="]" />
+					<property name="toStepId" value="s2"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="complexPipeline"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="complexPipelinePart" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
+					<property name="executionMode" value="EXECUTE_ALL" />
+					<property name="fromMsg" value="&lt;" />
+					<property name="toMsg" value=">" />
+					<property name="fromStepId" value="s3"/>
+					<property name="toStepId" value="s3"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
+					<property name="executionMode" value="EXECUTE_ALL" />
+					<property name="fromMsg" value="{" />
+					<property name="toMsg" value="}" />
+					<property name="fromStepId" value="s3"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 </beans>
