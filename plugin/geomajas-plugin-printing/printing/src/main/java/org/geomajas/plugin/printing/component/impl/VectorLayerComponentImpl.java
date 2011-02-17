@@ -171,34 +171,36 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 	private void drawLabel(PdfContext context, InternalFeature f) {
 		LabelStyleInfo labelType = styleInfo.getLabelStyle();
 		String label = f.getLabel();
-
-		Font font = new Font("Helvetica", Font.ITALIC, 10);
-		Color fontColor = Color.black;
-		if (labelType.getFontStyle() != null) {
-			fontColor = context.getColor(labelType.getFontStyle().getColor(), labelType.getFontStyle().getOpacity());
-		}
-		Rectangle rect = calculateLabelRect(context, f, label, font);
-		Color bgColor = Color.white;
-		if (labelType.getBackgroundStyle() != null) {
-			bgColor = context.getColor(labelType.getBackgroundStyle().getFillColor(), labelType.getBackgroundStyle()
-					.getFillOpacity());
-		}
-		context.fillRoundRectangle(rect, bgColor, 3);
-		Color borderColor = Color.black;
-		if (labelType.getBackgroundStyle() != null) {
-			borderColor = context.getColor(labelType.getBackgroundStyle().getStrokeColor(), labelType
-					.getBackgroundStyle().getStrokeOpacity());
-		}
-		float linewidth = 0.5f;
-		if (labelType.getBackgroundStyle() != null) {
-			linewidth = labelType.getBackgroundStyle().getStrokeWidth();
-		}
-		context.strokeRoundRectangle(rect, borderColor, linewidth, 3);
-		context.drawText(label, font, rect, fontColor);
-		if (f.getGeometry() instanceof Point) {
-			context.drawLine(0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom(),
-					0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom() - SYMBOL_CONNECT_LENGTH, borderColor,
-					linewidth);
+		if (label != null) {
+			Font font = new Font("Helvetica", Font.ITALIC, 10);
+			Color fontColor = Color.black;
+			if (labelType.getFontStyle() != null) {
+				fontColor = context
+						.getColor(labelType.getFontStyle().getColor(), labelType.getFontStyle().getOpacity());
+			}
+			Rectangle rect = calculateLabelRect(context, f, label, font);
+			Color bgColor = Color.white;
+			if (labelType.getBackgroundStyle() != null) {
+				bgColor = context.getColor(labelType.getBackgroundStyle().getFillColor(), labelType
+						.getBackgroundStyle().getFillOpacity());
+			}
+			context.fillRoundRectangle(rect, bgColor, 3);
+			Color borderColor = Color.black;
+			if (labelType.getBackgroundStyle() != null) {
+				borderColor = context.getColor(labelType.getBackgroundStyle().getStrokeColor(), labelType
+						.getBackgroundStyle().getStrokeOpacity());
+			}
+			float linewidth = 0.5f;
+			if (labelType.getBackgroundStyle() != null) {
+				linewidth = labelType.getBackgroundStyle().getStrokeWidth();
+			}
+			context.strokeRoundRectangle(rect, borderColor, linewidth, 3);
+			context.drawText(label, font, rect, fontColor);
+			if (f.getGeometry() instanceof Point) {
+				context.drawLine(0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom(),
+						0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom() - SYMBOL_CONNECT_LENGTH,
+						borderColor, linewidth);
+			}
 		}
 	}
 
