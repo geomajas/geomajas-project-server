@@ -38,7 +38,10 @@
           </listitem>
 
           <listitem>
-            <para>...</para>
+            <para>When defining a pipeline, if you have both an pipeline
+            definition and a delegate reference, an exception will be thrown
+            (previously the pipeline definition had preference - though the
+            javadoc said differently).</para>
           </listitem>
         </itemizedlist></para>
     </section>

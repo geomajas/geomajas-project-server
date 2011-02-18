@@ -112,9 +112,13 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	@PostConstruct
 	public void postConstruct() throws GeomajasException {
 		// sort pipelines so a pipeline is always before it's delegate (to make sure delegates are not handled before
-		// delegating)
+		// delegating), and some sanity checks
 		List<PipelineInfo<RESPONSE>> delegateLast = new ArrayList<PipelineInfo<RESPONSE>>();
 		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
+			if (null != pipeline.getPipeline() && null != pipeline.getDelegatePipeline()) {
+				throw new GeomajasException(ExceptionCode.PIPELINE_DEFINED_AND_DELEGATE, pipeline.getPipelineName());
+			}
+
 			List<PipelineInfo<RESPONSE>> missing = new ArrayList<PipelineInfo<RESPONSE>>();
 			PipelineInfo<RESPONSE> delegate = pipeline;
 			while (delegate != null && !delegateLast.contains(delegate)) {

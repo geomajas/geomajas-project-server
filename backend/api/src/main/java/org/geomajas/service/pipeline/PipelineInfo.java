@@ -84,7 +84,7 @@ public class PipelineInfo<RESPONSE> {
 	/**
 	 * Get the delegate pipeline.
 	 * <p/>
-	 * When this is set, the pipeline for the delegate should be used instead of the pipeline defined in this bean.
+	 * Either the pipeline itself should be defined or a delegate. It is not allowed to define both.
 	 *
 	 * @return delegate pipeline definition
 	 */
@@ -95,7 +95,7 @@ public class PipelineInfo<RESPONSE> {
 	/**
 	 * Define a delegate pipeline.
 	 * <p/>
-	 * When this is set, the pipeline for the delegate should be used instead of the pipeline defined in this bean.
+	 * Either the pipeline itself should be defined or a delegate. It is not allowed to define both.
 	 *
 	 * @param delegatePipeline delegate pipeline definition
 	 */
@@ -105,6 +105,8 @@ public class PipelineInfo<RESPONSE> {
 
 	/**
 	 * Get the list of steps which form the pipeline.
+	 * <p/>
+	 * Either the pipeline itself should be defined or a delegate. It is not allowed to define both.
 	 *
 	 * @return list of pipeline steps
 	 */
@@ -114,6 +116,8 @@ public class PipelineInfo<RESPONSE> {
 
 	/**
 	 * Set the list of steps which form the pipeline.
+	 * <p/>
+	 * Either the pipeline itself should be defined or a delegate. It is not allowed to define both.
 	 *
 	 * @param pipeline list of pipeline steps
 	 */

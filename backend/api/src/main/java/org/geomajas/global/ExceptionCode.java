@@ -119,5 +119,9 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int PIPELINE_HIDDEN_INTERCEPTOR_STEP = 70;
+	/**
+	 * @since 1.9.0
+	 */
+	int PIPELINE_DEFINED_AND_DELEGATE = 71;
 
 }
