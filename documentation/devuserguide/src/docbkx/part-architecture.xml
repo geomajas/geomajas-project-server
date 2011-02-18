@@ -293,12 +293,15 @@
       Nesting pipelines gives back the expressive power of general BPM
       processes. A step could loop over another pipeline, conditionally
       execute a pipeline, start several pipelines for parallel processing etc.
-      An important differences is the configurability of pipelines. Pipelines
+      An important difference is the configurability of pipelines. Pipelines
       are selected on a combination of pipeline name and the layer on which
       the pipeline operates. When defining pipelines, you can either define
       them from scratch, copy an existing pipeline or copy and extend a
       pipeline. A pipeline can be defined with extension hooks and these hooks
-      can be used to add additional pipeline steps.</para>
+      can be used to add additional pipeline steps. You can also add
+      interceptors on a pipeline which introduces some code to execute before
+      and after the steps which are intercepted and allows you to skip the
+      execution of the intercepted steps.</para>
 
       <figure>
         <title>Geomajas pipeline architecture</title>
@@ -373,20 +376,20 @@
             </listitem>
           </itemizedlist></para>
 
-        <para>Pipelines can be extended. When a pipeline is defined, it is
-        possible to include hooks for extensions. These are special no-op
-        steps. When a pipeline is defined, your can either define all the
-        pipeline steps, or refer to a delegate pipeline combined with a map of
-        extension steps. The pipeline will then be based on the delegate
-        pipeline with the extensions steps added after the hooks with matching
-        names.</para>
+        <para>Pipelines can be extended in two ways. When a pipeline is
+        defined, it is possible to include hooks for extensions. These are
+        special no-op steps. When a pipeline is defined, your can either
+        define all the pipeline steps, or refer to a delegate pipeline
+        combined with a map of extension steps. The pipeline will then be
+        based on the delegate pipeline with the extensions steps added after
+        the hooks with matching names.</para>
 
-        <para>Pipelines can be enhanced with interceptors. An interceptor will
-        intercept a block of consecutive steps, allowing to perform an action
-        before and after the block is executed. Depending on the return value
-        of the before action, the steps (and optionally the after action) can
-        be skipped. This is very useful to implement functionality like
-        caching and auditing.</para>
+        <para>Pipelines can be also enhanced with interceptors. An interceptor
+        will intercept a block of consecutive steps, allowing to perform an
+        action before and after the block is executed. Depending on the return
+        value of the before action, the steps (and optionally the after
+        action) can be skipped. This can for example be used to implement
+        functionality like caching and auditing.</para>
       </section>
 
       <section id="arch-pl-app">

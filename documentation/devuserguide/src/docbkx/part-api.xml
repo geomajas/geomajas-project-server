@@ -1683,8 +1683,9 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>The hooks can then be used to add extra steps to the pipeline at
-      the pre-defined places. Note that multiple steps can be added for each
-      hook, but the order of the steps at the hook is not defined.</para>
+      the predefined places. Note that you can only add one step per hook in a
+      pipeline definition. If you need to define more, you will have to extend
+      the pipeline more than once.</para>
 
       <xi:include href="listing/PipelineExtension.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -1698,6 +1699,16 @@
 
       <xi:include href="listing/PipelineInterceptor.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>If the interceptor should be around just one step, you can use the
+      "stepId" property to set the fromStepId and toStepId at once. If you do
+      not define the fromStepId, the pipeline will be intercepted from the
+      start. If you do not define the toStepId the pipeline will be
+      intercepted till the end. Note that you cannot have interceptors which
+      cross each other. For this reason we recommend using interceptor either
+      for individual steps or have them start from the beginning of the
+      pipeline (interceptors which span till the end can often be replaced by
+      a hook which stops pipeline execution).</para>
     </section>
 
     <section id="defPipelines">
@@ -1715,7 +1726,8 @@
         <section id="pl-getTiles">
           <title>getTiles()</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "rasterLayer.getTiles", constant
+          PipelineCode.PIPELINE_GET_RASTER_TILES:<itemizedlist>
               <listitem>
                 <para>"Get" : get the raster tile.</para>
               </listitem>
@@ -1729,7 +1741,8 @@
         <section id="pl-saveOrUpdate">
           <title>saveOrUpdate()</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "vectorLayer.saveOrUpdate", constant
+          PipelineCode.PIPELINE_SAVE_OR_UPDATE:<itemizedlist>
               <listitem>
                 <para>"EqualSize" : verify that the list of old and new
                 features match.</para>
@@ -1745,7 +1758,8 @@
         <section id="pl-saveOrUpdateEach">
           <title>saveOrUpdate each feature</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "vectorLayer.saveOrUpdateOne", constant
+          PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE:<itemizedlist>
               <listitem>
                 <para>"Delete" : delete the feature if it has been
                 removed.</para>
@@ -1783,7 +1797,8 @@
         <section id="pl-getFeatures">
           <title>getFeatures()</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "vectorLayer.getFeatures", constant
+          PipelineCode.PIPELINE_GET_FEATURES:<itemizedlist>
               <listitem>
                 <para>"LayerFilter" : calculate the correct filter based on
                 security and layer extent.</para>
@@ -1803,7 +1818,8 @@
         <section id="pl-getBounds">
           <title>getBounds()</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "vectorLayer.getBounds", constant
+          PipelineCode.PIPELINE_GET_BOUNDS:<itemizedlist>
               <listitem>
                 <para>"LayerFilter" : calculate the correct filter based on
                 security and layer extent.</para>
@@ -1819,7 +1835,8 @@
         <section id="pl-getAttributes">
           <title>getAttributes()</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "vectorLayer.getAttributes", constant
+          PipelineCode.PIPELINE_GET_ATTRIBUTES:<itemizedlist>
               <listitem>
                 <para>"LayerFilter" : calculate the correct filter based on
                 security and layer extent.</para>
@@ -1835,7 +1852,8 @@
         <section id="pl-getTile">
           <title>getTile()</title>
 
-          <para><itemizedlist>
+          <para>pipeline name "vectorLayer.getTile", constant
+          PipelineCode.PIPELINE_GET_VECTOR_TILE:<itemizedlist>
               <listitem>
                 <para>"TileFilter" : calculate the correct filter based on
                 security and tile extent.</para>
@@ -1852,7 +1870,7 @@
 
               <listitem>
                 <para>"TileFillStep" : assure features are only rendered in on
-                tile (as needed for SVG and VML rendering). </para>
+                tile (as needed for SVG and VML rendering).</para>
               </listitem>
 
               <listitem>
