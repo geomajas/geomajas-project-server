@@ -19,15 +19,15 @@
 
   <para><itemizedlist>
       <listitem>
-        <para>Configure the vector tile pipeline to use rasterization</para>
+        <para>configure the vector tile pipeline to use rasterization.</para>
       </listitem>
 
       <listitem>
-        <para>Configure the rasterizing service</para>
+        <para>configure the rasterizing service.</para>
       </listitem>
 
       <listitem>
-        <para>Configure the Style2DFactoryService</para>
+        <para>configure the Style2DFactoryService.</para>
       </listitem>
     </itemizedlist></para>
 
@@ -48,8 +48,8 @@
     </example>
 
     <para>Rasterization is also dependent on caching, but the dependency is
-    automatically handled. For configuration of the caching plugin, see the
-    plugin documentation.</para>
+    automatically handled. For configuration of the caching plug-in, see the
+    plug-in documentation.</para>
   </section>
 
   <section>
@@ -70,28 +70,28 @@
 
     <para><itemizedlist>
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED: pipeline to get a tile
-          for a vector layer. This will just generate the url, the
-          rasterization will take place when the url is requested.</para>
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED: pipeline to get a
+          tile for a vector layer. This will just generate the URL, the
+          rasterization will take place when the URL is requested.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE: pipeline to get a tile
-          for a vector layer. This includes rasterization, the image will be
-          cached.</para>
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE: pipeline to get
+          a tile for a vector layer. This includes rasterization, the image
+          will be cached.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED: pipeline to get a
-          tile for a vector layer and cache it. This will just generate the
-          url, the rasterization will take place when the url is
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED: pipeline to
+          get a tile for a vector layer and cache it. This will just generate
+          the URL, the rasterization will take place when the URL is
           requested.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED: pipeline to get a
-          tile for a vector layer and cache it. This includes rasterization,
-          so the image will also be cached.</para>
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED: pipeline
+          to get a tile for a vector layer and cache it. This includes
+          rasterization, so the image will also be cached.</para>
         </listitem>
       </itemizedlist></para>
 
@@ -129,24 +129,24 @@
         <listitem>
           <para>renderingHints: this parameter defines an optional map of
           rendering hints (of class RenderingHints) that are used by the Java
-          Graphics2D class. Each hint consists of a key-value pair</para>
+          Graphics2D class. Each hint consists of a key-value pair.</para>
         </listitem>
 
         <listitem>
           <para>labelBorderDistanceX: distance between label border and text
-          (x-direction)</para>
+          (x-direction).</para>
         </listitem>
 
         <listitem>
           <para>labelBorderDistanceY: distance between label border and text
-          (y-direction)</para>
+          (y-direction).</para>
         </listitem>
 
         <listitem>
           <para>style2DFactoryService: service that behaves as a factory for
-          turning configuration styles into geotools styles. This service can
+          turning configuration styles into GeoTools styles. This service can
           be replaced by a custom service, e.g. to convert extensions of
-          current style configuration objects</para>
+          current style configuration objects.</para>
         </listitem>
       </itemizedlist></para>
 
@@ -173,7 +173,7 @@
  &lt;util:constant id="valueAntiAliasOff"
   static-field="java.awt.RenderingHints.VALUE_ANTIALIAS_OFF" /&gt;</programlisting>Note
     that we have to go through some hoops to configure the rendering hints in
-    xml. Of course, you can always provide your own service implementation by
+    XML. Of course, you can always provide your own service implementation by
     implementing the RasterizingService interface and replacing the bean class
     in the above configuration.</para>
   </section>
