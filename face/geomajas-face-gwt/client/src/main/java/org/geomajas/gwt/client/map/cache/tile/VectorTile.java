@@ -153,7 +153,8 @@ public class VectorTile extends AbstractVectorTile {
 					} catch (Throwable t) {
 						GWT.log("VectorTile: error calling the callback after a fetch.", t);
 					}
-					rendered = true;
+					// raster should be re-rendered at all times
+					rendered = (contentType != VectorTileContentType.URL_CONTENT);
 				}
 				deferred = null;
 			}
