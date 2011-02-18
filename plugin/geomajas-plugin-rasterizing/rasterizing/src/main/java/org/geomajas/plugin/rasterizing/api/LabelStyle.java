@@ -31,124 +31,174 @@ import org.geotools.renderer.style.Style2D;
 @Api(allMethods = true)
 public class LabelStyle extends Style2D {
 
-	/**
-	 * Font opacity.
-	 */
 	private Composite fontComposite;
-
-	/**
-	 * Background rectangle's opacity.
-	 */
 	private Composite backgroundComposite;
-
-	/**
-	 * Background stroke opacity.
-	 */
 	private Composite strokeComposite;
-
-	/**
-	 * Text font.
-	 */
 	private Font font;
-
-	/**
-	 * Font color.
-	 */
 	private Color fontColor;
-
-	/**
-	 * Background color.
-	 */
 	private Color backgroundColor;
-
-	/**
-	 * Background stroke color.
-	 */
 	private Color strokeColor;
-
-	/**
-	 * Background stroke width.
-	 */
 	private float strokeWidth;
-
-	/**
-	 * Stroke
-	 */
 	private Stroke stroke;
 
-	// -------------------------------------------------------------------------
-	// Getters and setters:
-	// -------------------------------------------------------------------------
-
+	/**
+	 * Get font opacity.
+	 *
+	 * @return font opacity
+	 */
 	public Composite getFontComposite() {
 		return fontComposite;
 	}
 
+	/**
+	 * Set font opacity.
+	 *
+	 * @param fontComposite font opacity
+	 */
 	public void setFontComposite(Composite fontComposite) {
 		this.fontComposite = fontComposite;
 	}
 
+	/**
+	 * Get background rectangle's opacity.
+	 *
+	 * @return background rectangle's opacity.
+	 */
 	public Composite getBackgroundComposite() {
 		return backgroundComposite;
 	}
 
+	/**
+	 * Set background rectangle's opacity.
+	 *
+	 * @param backgroundComposite background rectangle's opacity.
+	 */
 	public void setBackgroundComposite(Composite backgroundComposite) {
 		this.backgroundComposite = backgroundComposite;
 	}
 
+	/**
+	 * Get background stroke opacity.
+	 *
+	 * @return background stroke opacity.
+	 */
 	public Composite getStrokeComposite() {
 		return strokeComposite;
 	}
 
+	/**
+	 * Set background stroke opacity.
+	 *
+	 * @param strokeComposite background stroke opacity.
+	 */
 	public void setStrokeComposite(Composite strokeComposite) {
 		this.strokeComposite = strokeComposite;
 	}
 
+	/**
+	 * Get font.
+	 *
+	 * @return font
+	 */
 	public Font getFont() {
 		return font;
 	}
 
+	/**
+	 * Set font.
+	 *
+	 * @param font font
+	 */
 	public void setFont(Font font) {
 		this.font = font;
 	}
-	
+
+	/**
+	 * Get font colour.
+	 *
+	 * @return font colour
+	 */
 	public Color getFontColor() {
 		return fontColor;
 	}
 
-	
+	/**
+	 * Set font colour.
+	 *
+	 * @param fontColor font colour
+	 */
 	public void setFontColor(Color fontColor) {
 		this.fontColor = fontColor;
 	}
 
+	/**
+	 * Get background colour.
+	 *
+	 * @return background colour
+	 */
 	public Color getBackgroundColor() {
 		return backgroundColor;
 	}
 
+	/**
+	 * Set background colour.
+	 *
+	 * @param backgroundColor background colour
+	 */
 	public void setBackgroundColor(Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 
+	/**
+	 * Get stroke colour.
+	 *
+	 * @return stroke colour
+	 */
 	public Color getStrokeColor() {
 		return strokeColor;
 	}
 
+	/**
+	 * Set stroke colour.
+	 *
+	 * @param strokeColor stroke colour
+	 */
 	public void setStrokeColor(Color strokeColor) {
 		this.strokeColor = strokeColor;
 	}
 
+	/**
+	 * Get stroke width.
+	 *
+	 * @return stroke width
+	 */
 	public float getStrokeWidth() {
 		return strokeWidth;
 	}
 
+	/**
+	 * Set stroke width.
+	 *
+	 * @param strokeWidth stroke width
+	 */
 	public void setStrokeWidth(float strokeWidth) {
 		this.strokeWidth = strokeWidth;
 	}
 
+	/**
+	 * Get stroke style.
+	 *
+	 * @return stroke style
+	 */
 	public Stroke getStroke() {
 		return stroke;
 	}
 
+	/**
+	 * Set stroke style.
+	 *
+	 * @param stroke stroke style
+	 */
 	public void setStroke(Stroke stroke) {
 		this.stroke = stroke;
 	}
