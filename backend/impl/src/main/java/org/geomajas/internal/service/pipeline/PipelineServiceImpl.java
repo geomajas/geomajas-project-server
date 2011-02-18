@@ -266,7 +266,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 						fromIndex = i;
 					}
 					PipelineStep<RESPONSE> toStep = pis.getToStep();
-					if (null == toStep) { toStep = steps.get(steps.size() -1); }
+					if (null == toStep) { toStep = steps.get(steps.size() - 1); }
 					if (toStep.equals(interceptorStep.getToStep())) {
 						toIndex = i;
 					}
