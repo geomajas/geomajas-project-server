@@ -54,6 +54,8 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	@Autowired
 	private List<PipelineInfo<RESPONSE>> pipelineInfos;
 
+	private Map<PipelineStamp, PipelineInfo<RESPONSE>> pipelineMap;
+
 	/** @inheritDoc */
 	public void execute(String key, String layerId, PipelineContext context, RESPONSE response)
 			throws GeomajasException {
@@ -82,25 +84,16 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	/** @inheritDoc */
 	@SuppressWarnings("unchecked")
 	public PipelineInfo<RESPONSE> getPipeline(String pipelineName, String layerId) throws GeomajasException {
-		PipelineInfo<RESPONSE> layerPipeline = null;
-		PipelineInfo<RESPONSE> defaultPipeline = null;
-		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
-			if (pipeline.getPipelineName().equals(pipelineName)) {
-				String lid = pipeline.getLayerId();
-				if (null == lid) {
-					defaultPipeline = pipeline;
-				} else if (lid.equals(layerId)) {
-					layerPipeline = pipeline;
-				}
-			}
+		PipelineStamp stamp = new PipelineStamp(pipelineName, layerId);
+		PipelineInfo<RESPONSE> pipeline = pipelineMap.get(stamp);
+		if (null == pipeline) {
+			stamp = new PipelineStamp(pipelineName, null);
+			pipeline = pipelineMap.get(stamp);
 		}
-		if (null == layerPipeline) {
-			layerPipeline = defaultPipeline;
-		}
-		if (null == layerPipeline) {
+		if (null == pipeline) {
 			throw new GeomajasException(ExceptionCode.PIPELINE_UNKNOWN, pipelineName, layerId);
 		}
-		return layerPipeline;
+		return pipeline;
 	}
 
 	/** @inheritDoc */
@@ -149,16 +142,14 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			interceptPipeline(pipeline);
 		}
 		// remove double names
-		Map<PipelineStamp<RESPONSE>, PipelineInfo<RESPONSE>> map = 
-			new HashMap<PipelineStamp<RESPONSE>, PipelineInfo<RESPONSE>>();
+		pipelineMap = new HashMap<PipelineStamp, PipelineInfo<RESPONSE>>();
 		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
 			// equal stamps will be overwritten here, last one wins !
-			map.put(new PipelineStamp<RESPONSE>(pipeline), pipeline);
+			pipelineMap.put(new PipelineStamp(pipeline), pipeline);
 		}
-		pipelineInfos = new ArrayList<PipelineInfo<RESPONSE>>(map.values());
 		if (log.isDebugEnabled()) {
 			log.debug("listing pipeline structures");
-			for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
+			for (PipelineInfo<RESPONSE> pipeline : pipelineMap.values()) {
 				log.debug("");
 				print(pipeline);
 			}
@@ -257,8 +248,8 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		// construct the nested hierarchy of normal steps and interceptor steps
 		for (PipelineInterceptorStep<RESPONSE> interceptorStep : interceptorSteps) {
 			log.debug("adding interceptor {} to pipeline {}", interceptorStep.getId(), pipeline.getPipelineName());
-			int fromIndex = 0;
-			int toIndex = steps.size() - 1;
+			int fromIndex = -1;
+			int toIndex = -1;
 			// find the from and to step indices (takes nesting into account)
 			for (int i = 0 ; i < steps.size() ; i++) {
 				PipelineStep<RESPONSE> pipelineStep = steps.get(i);
@@ -284,7 +275,8 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 				}
 			}
 			if (fromIndex > toIndex) {
-				throw new GeomajasException(ExceptionCode.PIPELINE_HIDDEN_INTERCEPTOR_STEP, interceptorStep.getId());
+				throw new GeomajasException(ExceptionCode.PIPELINE_INTERCEPTOR_INVALID_NESTING,
+						interceptorStep.getId());
 			}
 			// nest the steps
 			interceptorStep.setSteps(new ArrayList<PipelineStep<RESPONSE>>(steps.subList(fromIndex, toIndex + 1)));
@@ -318,8 +310,8 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		public PipelineInterceptorStep(PipelineInterceptor<T> interceptor, List<PipelineStep<T>> steps)
 				throws GeomajasException {
 			this.interceptor = interceptor;
-			int fromIndex = 0;
-			int toIndex = steps.size() - 1;
+			int fromIndex = -1;
+			int toIndex = -1;
 			for (int i = 0 ; i < steps.size() ; i++) {
 				PipelineStep<T> pipelineStep = steps.get(i);
 				if (pipelineStep.getId().equals(interceptor.getFromStepId())) {
@@ -331,8 +323,27 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 					toStep = pipelineStep;
 				}
 			}
-			if (fromIndex < 0 || toIndex < 0 || fromIndex > toIndex) {
-				throw new GeomajasException(ExceptionCode.PIPELINE_UNSATISFIED_INTERCEPTOR, interceptor.getId());
+			if (fromIndex == -1) {
+				if (null != interceptor.getFromStepId()) {
+					throw new GeomajasException(ExceptionCode.PIPELINE_INTERCEPTOR_INVALID_STEP, interceptor.getId(),
+							interceptor.getFromStepId());
+				} else {
+					fromIndex = 0;
+					fromStep = steps.get(0);
+				}
+			}
+			if (toIndex == -1) {
+				if (null != interceptor.getToStepId()) {
+					throw new GeomajasException(ExceptionCode.PIPELINE_INTERCEPTOR_INVALID_STEP, interceptor.getId(),
+							interceptor.getToStepId());
+				} else {
+					int pos = steps.size() - 1;
+					toIndex = pos;
+					toStep = steps.get(pos);
+				}
+			}
+			if (fromIndex > toIndex) {
+				throw new GeomajasException(ExceptionCode.PIPELINE_INTERCEPTOR_STEPS_ORDER, interceptor.getId());
 			}
 			width = toIndex - fromIndex + 1;
 		}
@@ -399,7 +410,6 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	 * Comparator for sorting interceptors by width.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	protected class WidthComparator implements Comparator<PipelineInterceptorStep<RESPONSE>> {
 
@@ -413,21 +423,23 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	 * Stamp for detection of duplicate pipelines.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
-	 * @param <T>
 	 */
-	protected final class PipelineStamp<T> {
+	private static final class PipelineStamp {
 
 		private final String name;
 
 		private final String layerId;
 
-		public PipelineStamp(PipelineInfo<T> info) {
+		public PipelineStamp(PipelineInfo info) {
 			this.name = info.getPipelineName();
 			this.layerId = info.getLayerId();
 		}
 
-		@SuppressWarnings("unchecked")
+		public PipelineStamp(String name, String layerId) {
+			this.name = name;
+			this.layerId = layerId;
+		}
+
 		public boolean equals(Object otherObject) {
 			if (this == otherObject) {
 				return true;
@@ -435,7 +447,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			if (otherObject == null || !(otherObject instanceof PipelineStamp)) {
 				return false;
 			}
-			PipelineStamp<T> otherStamp = (PipelineStamp<T>) otherObject;
+			PipelineStamp otherStamp = (PipelineStamp) otherObject;
 			return Utilities.equals(name, otherStamp.name) && Utilities.equals(layerId, otherStamp.layerId);
 		}
 

@@ -18,7 +18,7 @@
 	</appender>
 
 	<!--
-	<logger name="org.geomajas.layer.hibernate.command.interceptor.HibernateTransactionInterceptor" level="DEBUG"/>
+	<logger name="org.geomajas.internal.service.pipeline" level="DEBUG"/>
 	-->
 
 	<root>

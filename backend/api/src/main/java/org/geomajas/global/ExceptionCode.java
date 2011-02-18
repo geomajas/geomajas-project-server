@@ -114,14 +114,18 @@ public interface ExceptionCode {
 	/**
 	 * @since 1.9.0
 	 */
-	int PIPELINE_UNSATISFIED_INTERCEPTOR = 69;
+	int PIPELINE_INTERCEPTOR_INVALID_STEP = 69;
 	/**
 	 * @since 1.9.0
 	 */
-	int PIPELINE_HIDDEN_INTERCEPTOR_STEP = 70;
+	int PIPELINE_INTERCEPTOR_STEPS_ORDER = 70;
 	/**
 	 * @since 1.9.0
 	 */
 	int PIPELINE_DEFINED_AND_DELEGATE = 71;
+	/**
+	 * @since 1.9.0
+	 */
+	int PIPELINE_INTERCEPTOR_INVALID_NESTING = 72;
 
 }

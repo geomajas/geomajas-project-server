@@ -25,17 +25,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class PipelineServiceInvalidTest {
 
-	/*
 	@Test
 	public void testInvalidInterceptorDefinition() throws Exception {
 		try {
 			loadApplicationContext("/org/geomajas/internal/rendering/pipeline/pipelineOverlappingInterceptors.xml");
 			Assert.fail("invalid pipeline declaration was allowed");
 		} catch(GeomajasException ge) {
-			Assert.assertEquals(ExceptionCode.PIPELINE_UNKNOWN, ge.getExceptionCode());
+			Assert.assertEquals(ExceptionCode.PIPELINE_INTERCEPTOR_INVALID_NESTING, ge.getExceptionCode());
 		}
 	}
-	*/
 
 	@Test
 	public void testInvalidPipelineAndDelegate() throws Exception {
@@ -44,6 +42,36 @@ public class PipelineServiceInvalidTest {
 			Assert.fail("invalid pipeline declaration was allowed");
 		} catch(GeomajasException ge) {
 			Assert.assertEquals(ExceptionCode.PIPELINE_DEFINED_AND_DELEGATE, ge.getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testInvalidPipelineWrongOrder() throws Exception {
+		try {
+			loadApplicationContext("/org/geomajas/internal/rendering/pipeline/pipelineWrongOrder.xml");
+			Assert.fail("invalid pipeline declaration was allowed");
+		} catch(GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.PIPELINE_INTERCEPTOR_STEPS_ORDER, ge.getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testInvalidPipelineWrongId() throws Exception {
+		try {
+			loadApplicationContext("/org/geomajas/internal/rendering/pipeline/pipelineWrongId.xml");
+			Assert.fail("invalid pipeline declaration was allowed");
+		} catch(GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.PIPELINE_INTERCEPTOR_INVALID_STEP, ge.getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testInvalidExtension() throws Exception {
+		try {
+			loadApplicationContext("/org/geomajas/internal/rendering/pipeline/pipelineInvalidExtension.xml");
+			Assert.fail("invalid pipeline declaration was allowed");
+		} catch(GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.PIPELINE_UNSATISFIED_EXTENSION, ge.getExceptionCode());
 		}
 	}
 
