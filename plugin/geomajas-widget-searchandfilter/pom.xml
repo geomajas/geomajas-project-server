@@ -73,14 +73,30 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-searchandfilter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-searchandfilter</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-searchandfilter-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
 	<modules>
 		<module>geomajas-widget-searchandfilter</module>
 		<module>geomajas-widget-searchandfilter-gwt</module>
-	    <module>documentation</module>
-    <module>geomajas-widget-searchandfilter-gwt-example</module>
+		<module>documentation</module>
+		<module>geomajas-widget-searchandfilter-gwt-example</module>
   </modules>
 
 	<profiles>

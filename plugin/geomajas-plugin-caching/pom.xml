@@ -74,7 +74,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-caching</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
@@ -84,6 +84,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>jboss</groupId>
+				<artifactId>jboss-serialization</artifactId>
+				<version>1.0.3.GA</version>
+			</dependency>
+
+ 			<dependency>
 				<groupId>org.infinispan</groupId>
 				<artifactId>infinispan-core</artifactId>
 				<version>4.2.0.ALPHA3</version>
