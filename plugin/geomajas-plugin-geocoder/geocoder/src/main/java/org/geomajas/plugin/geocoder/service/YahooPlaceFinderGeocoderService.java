@@ -155,7 +155,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 * @param locale locale for strings
 	 * @return list of found results
 	 * @throws Exception oops
-	 * @see <a href="http://www.geonames.org/export/geonames-search.html">search web service documentation</a>
+	 * @see <a href="http://developer.yahoo.com/geo/placefinder/guide/">Yahoo! PlaceFinder Guide</a>
 	 */
 	public List<GetLocationResult> search(String q, int maxRows, Locale locale) throws Exception {
 		List<GetLocationResult> searchResult = new ArrayList<GetLocationResult>();
@@ -177,10 +177,11 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 
 			Element root = doc.getRootElement();
 
-			// check for exception
-			String message = root.getChildText("ErrorMessage");
-			if (message != null && message.trim().length() > 0 && !"No error".equals(message)) {
-				throw new Exception(message);
+			// check code for exception
+			String message = root.getChildText("Error");
+			Integer errorCode = Integer.parseInt(message);
+			if (errorCode != 0) {
+				throw new Exception(root.getChildText("ErrorMessage"));
 			}
 
 			for (Object obj : root.getChildren("Result")) {

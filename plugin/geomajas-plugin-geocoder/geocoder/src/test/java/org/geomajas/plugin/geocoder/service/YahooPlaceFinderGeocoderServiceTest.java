@@ -111,4 +111,36 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		result = geocoder.getLocation(list, 50, null);
 		Assert.assertTrue(null == result || 0 == result.length);
 	}
+	
+	@Test
+	public void testTranslatedLocale() {
+		List<String> list = new ArrayList<String>();
+		GetLocationResult[] result;
+		list.clear();
+		list.add("booischot");
+		// french locale reports "Aucune erreur" vs "No error" for nl_be
+		result = geocoder.getLocation(list, 50, new Locale("fr"));
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1,result.length);
+		Assert.assertNotNull(result[0].getCoordinate());
+		Assert.assertEquals(4.77397, result[0].getCoordinate().x, .00001);
+		Assert.assertEquals(51.05125, result[0].getCoordinate().y, .00001);
+		Assert.assertEquals(2, result[0].getCanonicalStrings().size());
+		Assert.assertEquals("Belgique", result[0].getCanonicalStrings().get(0));
+		Assert.assertEquals("2221 Booischot", result[0].getCanonicalStrings().get(1));
+		Assert.assertEquals(4.75513, result[0].getEnvelope().getMinX(), .00001);
+		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
+		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
+		Assert.assertEquals(51.060329, result[0].getEnvelope().getMaxY(), .00001);
+	}
+	
+	@Test
+	public void testException() {
+		List<String> list = new ArrayList<String>();
+		GetLocationResult[] result;
+		// empty list
+		result = geocoder.getLocation(list, 50, null);
+		Assert.assertNull(result);
+	}
+
 }
