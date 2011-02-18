@@ -256,12 +256,10 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 				if (pipelineStep instanceof PipelineInterceptorStep) {
 					PipelineInterceptorStep<RESPONSE> pis = (PipelineInterceptorStep<RESPONSE>) pipelineStep;
 					PipelineStep<RESPONSE> fromStep = pis.getFromStep();
-					if (null == fromStep) { fromStep = steps.get(0); }
 					if (fromStep.equals(interceptorStep.getFromStep())) {
 						fromIndex = i;
 					}
 					PipelineStep<RESPONSE> toStep = pis.getToStep();
-					if (null == toStep) { toStep = steps.get(steps.size() - 1); }
 					if (toStep.equals(interceptorStep.getToStep())) {
 						toIndex = i;
 					}
