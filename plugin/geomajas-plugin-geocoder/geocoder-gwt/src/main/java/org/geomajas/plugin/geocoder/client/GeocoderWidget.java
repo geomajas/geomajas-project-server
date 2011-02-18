@@ -80,7 +80,14 @@ public class GeocoderWidget extends DynamicForm {
 		this.setFields(textItem);
 	}
 
-	void setValue(String value) {
+	/**
+	 * Sets the text item value.
+	 * 
+	 * @param value text
+	 * @since 1.1.0
+	 */
+	@Api
+	public void setValue(String value) {
 		textItem.setValue(value);
 	}
 
