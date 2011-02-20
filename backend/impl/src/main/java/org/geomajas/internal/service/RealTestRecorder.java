@@ -60,16 +60,16 @@ public class RealTestRecorder implements TestRecorder {
 		}
 		for (int i = 0; i < compare.length; i++) {
 			if (i >= list.size()) {
-				return "too little recorded messages, only " + i + " available";
+				return "too little recorded messages, only " + i + " available, " + list;
 			}
 			String str1 = compare[i];
 			String str2 = list.get(i);
 			if (!str2.equals(str1)) {
-				return "match failed at position " + i + ", requested [" + str1 + "] got [" + str2 + "]";
+				return "match failed at position " + i + ", requested [" + str1 + "] got [" + str2 + "], " + list;
 			}
 		}
 		if (list.size() > compare.length) {
-			return "more recorded messages then tested";
+			return "more recorded messages then tested" + list;
 		}
 		return "";
 	}
