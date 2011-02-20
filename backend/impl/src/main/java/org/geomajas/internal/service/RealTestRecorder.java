@@ -69,7 +69,7 @@ public class RealTestRecorder implements TestRecorder {
 			}
 		}
 		if (list.size() > compare.length) {
-			return "more recorded messages then tested" + list;
+			return "more recorded messages then tested, " + list;
 		}
 		return "";
 	}

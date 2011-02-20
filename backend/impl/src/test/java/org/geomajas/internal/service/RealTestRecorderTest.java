@@ -49,12 +49,12 @@ public class RealTestRecorderTest {
 		Assert.assertNotSame("", recorder.matches("bla", "something", "more"));
 		Assert.assertEquals("no messages for group", recorder.matches("bla", "something", "more"));
 		recorder.record("bla", "something");
-		Assert.assertEquals("too little recorded messages, only 1 available",
+		Assert.assertEquals("too little recorded messages, only 1 available, [something]",
 				recorder.matches("bla", "something", "more"));
-		Assert.assertEquals("match failed at position 0, requested [bla] got [something]",
+		Assert.assertEquals("match failed at position 0, requested [bla] got [something], [something]",
 				recorder.matches("bla", "bla"));
 		recorder.record("bla", "more");
 		recorder.record("bla", "and more");
-		Assert.assertEquals("more recorded messages then tested", recorder.matches("bla", "something", "more"));
+		Assert.assertEquals("more recorded messages then tested, [something, more, and more]", recorder.matches("bla", "something", "more"));
 	}
 }
