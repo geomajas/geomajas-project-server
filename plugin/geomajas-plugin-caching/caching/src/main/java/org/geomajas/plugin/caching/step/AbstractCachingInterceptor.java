@@ -55,7 +55,7 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	}
 
 	/**
-	 * ???
+	 * Get the requested object from the cache. The {@link CacheContainer} is built to determine the cache key.
 	 *
 	 * @param keys keys which need to be include in the cache context
 	 * @param category cache category
@@ -70,7 +70,8 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	}
 
 	/**
-	 * ???
+	 * Get the requested object from the cache. The key is either obtained from the pipeline context (keyKey) if
+	 * possible. Alternatively, the {@link CacheContainer} is built to determine the cache key.
 	 *
 	 * @param keyKey key to put the cache key in the pipeline context
 	 * @param keys keys which need to be include in the cache context
@@ -124,14 +125,14 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	}
 
 	/**
-	 * ???
+	 * Put {@link CacheContainer} in the cache. The cache key is stored in the pipeline context.
 	 *
-	 * @param pipelineContext
-	 * @param category
-	 * @param keys
-	 * @param keyKey
-	 * @param cacheContainer
-	 * @param envelope
+	 * @param pipelineContext pipeline context
+	 * @param category cache category
+	 * @param keys keys which need to be include in the cache context
+	 * @param keyKey key to put the cache key in the pipeline context
+	 * @param cacheContainer cache container
+	 * @param envelope envelope
 	 */
 	protected void putContainer(PipelineContext pipelineContext, CacheCategory category, String[] keys, String keyKey,
 			CacheContainer cacheContainer, Envelope envelope) {
@@ -143,10 +144,16 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 			cacheContainer.setContext(cacheContext);
 
 			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
-			Object cc = cacheManager.get(layer, category, cacheKey);
+			CacheContainer cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
 			while (null != cc) {
-				cacheKey = cacheKeyService.makeUnique(cacheKey);
-				cc = cacheManager.get(layer, category, cacheKey);
+				if (!cacheContext.equals(cc.getContext())) {
+					cacheKey = cacheKeyService.makeUnique(cacheKey);
+					cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
+				} else {
+					if (keyKey != null) {
+						pipelineContext.put(keyKey, cacheKey);
+					}
+				}
 			}
 			cacheManager.put(layer, category, cacheKey, cacheContainer, envelope);
 			pipelineContext.put(keyKey, cacheKey);
