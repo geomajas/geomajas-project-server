@@ -101,8 +101,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_CACHED" />
+	<bean name="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
 		<property name="interceptors">
 			<list>
@@ -111,6 +111,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="id" value="GetTileStringContentCache" />
 					<property name="stepId" value="GetTileStringContentStep" />
 				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_CACHED" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
+		<property name="interceptors">
+			<list>
 				<bean
 					class="org.geomajas.plugin.caching.step.GetTileCachingInterceptor">
 					<property name="id" value="GetTileCache" />

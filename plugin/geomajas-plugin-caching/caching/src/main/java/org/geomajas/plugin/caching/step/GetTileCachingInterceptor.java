@@ -30,7 +30,7 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 	@Autowired
 	private TestRecorder recorder;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
+	protected static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
 			PipelineCode.FEATURE_INCLUDES_KEY };
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
@@ -40,6 +40,7 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 			recorder.record(CacheCategory.TILE, "Got item from cache");
 			response.getTile().setFeatures(cc.getTile().getFeatures());
 			response.getTile().setFeatureContent(cc.getTile().getFeatureContent());
+			response.getTile().setContentType(cc.getTile().getContentType());
 			return ExecutionMode.EXECUTE_NONE;
 		}
 		return ExecutionMode.EXECUTE_ALL;

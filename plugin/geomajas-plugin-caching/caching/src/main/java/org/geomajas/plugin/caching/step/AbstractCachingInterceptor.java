@@ -136,7 +136,6 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	protected void putContainer(PipelineContext pipelineContext, CacheCategory category, String[] keys, String keyKey,
 			CacheContainer cacheContainer, Envelope envelope) {
 		try {
-			// recorder.record(category, "Put item in cache");
 			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
 			addMoreContext(cacheContext); // add more data...

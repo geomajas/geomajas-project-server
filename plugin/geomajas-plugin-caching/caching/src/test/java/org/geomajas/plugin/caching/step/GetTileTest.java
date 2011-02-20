@@ -98,16 +98,16 @@ public class GetTileTest {
 		DummyCacheService cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.TILE);
 		Assert.assertEquals(1, cache.size());
 		TileCacheContainer tcc = (TileCacheContainer) cache.getObject();
-		tcc.getTile().getFeatures().clear();
+		tcc.getTile().setFeatureContent("<dummy />");
 
 		// get tile again, the result should be different because we changed the cached value
 		recorder.clear();
 		tile = vectorLayerService.getTile(tmd);
 		Assert.assertNotNull(tile);
-		Assert.assertEquals(0, tile.getFeatures().size());
+		Assert.assertEquals("<dummy />", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Got item from cache"));
-		// Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
-		//Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE));
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG));
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();

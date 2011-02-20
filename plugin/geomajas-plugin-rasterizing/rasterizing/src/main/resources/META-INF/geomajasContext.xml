@@ -84,7 +84,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
 		<property name="extensions">
 			<map>
 				<entry key="preTileFilter">
@@ -157,10 +157,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.plugin.rasterizing.GetTileAllCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.GetRasterizedTileAllCachingInterceptor">
 					<property name="id" value="GetTileAllCache" />
-					<property name="fromStepId" value="GetTileFilterStep" />
-					<property name="toStepId" value="RemoveTileFeatures" />
 				</bean>
 			</list>
 		</property>
@@ -172,10 +170,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.plugin.rasterizing.GetTileAllCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.GetRasterizedTileAllCachingInterceptor">
 					<property name="id" value="GetTileAllCache" />
-					<property name="fromStepId" value="GetTileFilterStep" />
-					<property name="toStepId" value="RemoveTileFeatures" />
 				</bean>
 			</list>
 		</property>
