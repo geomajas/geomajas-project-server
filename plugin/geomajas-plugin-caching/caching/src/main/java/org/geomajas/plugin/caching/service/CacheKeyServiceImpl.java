@@ -109,6 +109,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	}
 
 	public String makeUnique(String duplicateKey) {
+		log.debug("Need to make key {} unique.", duplicateKey);
 		return duplicateKey + CHARACTERS[random.nextInt(36)];
 	}
 }

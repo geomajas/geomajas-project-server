@@ -145,15 +145,12 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 
 			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			CacheContainer cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
-			while (null != cc) {
-				if (!cacheContext.equals(cc.getContext())) {
-					cacheKey = cacheKeyService.makeUnique(cacheKey);
-					cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
-				} else {
-					if (keyKey != null) {
-						pipelineContext.put(keyKey, cacheKey);
-					}
-				}
+			while (null != cc && !cacheContext.equals(cc.getContext())) {
+				cacheKey = cacheKeyService.makeUnique(cacheKey);
+				cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
+			}
+			if (keyKey != null) {
+				pipelineContext.put(keyKey, cacheKey);
 			}
 			cacheManager.put(layer, category, cacheKey, cacheContainer, envelope);
 			pipelineContext.put(keyKey, cacheKey);
