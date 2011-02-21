@@ -34,7 +34,7 @@ public class DependencyCheckPostProcessor {
 	@Autowired(required = false)
 	protected Map<String, PluginInfo> contextDeclaredPlugins;
 
-	//@PostConstruct
+	@PostConstruct
 	public void checkPluginDependencies() {
 		if ("true".equals(System.getProperty("skipPluginDependencyCheck"))) {
 			return;
