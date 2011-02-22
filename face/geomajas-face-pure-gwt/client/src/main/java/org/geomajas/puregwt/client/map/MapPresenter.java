@@ -36,7 +36,7 @@ public interface MapPresenter {
 	 *            The identifier of the container. If no such container exists, a new one will be created.
 	 * @return Returns the vector container.
 	 */
-	VectorContainer getWorldContainer(String id);
+	WorldContainer getWorldContainer(String id);
 
 	/**
 	 * Returns a container in screen space wherein one can render new vector objects. Note that all objects drawn into
@@ -47,7 +47,7 @@ public interface MapPresenter {
 	 *            The identifier of the container. If no such container exists, a new one will be created.
 	 * @return Returns the vector container.
 	 */
-	VectorContainer getScreenContainer(String id);
+	ScreenContainer getScreenContainer(String id);
 
 	/**
 	 * Returns the map model for this presenter. This model is the central layer handler for the map.

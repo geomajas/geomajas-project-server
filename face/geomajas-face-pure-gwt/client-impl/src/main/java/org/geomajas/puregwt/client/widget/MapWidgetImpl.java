@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.widget;
 
-import org.geomajas.puregwt.client.map.VectorContainer;
+import org.geomajas.puregwt.client.map.WorldContainer;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
@@ -31,11 +31,4 @@ public class MapWidgetImpl extends Widget implements MapWidget {
 		setElement(container);
 	}
 
-	public VectorContainer getWorldContainer(String id) {
-		return null;
-	}
-
-	public VectorContainer getScreenContainer(String id) {
-		return null;
-	}
 }

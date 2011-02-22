@@ -34,7 +34,7 @@ public interface MapGadget {
 	 * @param container
 	 *            A vector container in screen space into which this gadget can draw itself.
 	 */
-	void onDraw(ViewPort viewPort, VectorContainer container);
+	void onDraw(ViewPort viewPort, ScreenContainer container);
 
 	/** This method is automatically called when panning has occurred on the map. */
 	void onPan();
