@@ -10,13 +10,6 @@
   -->
 
 <module>
-	<!-- Internationalization requirements -->
-	<inherits name="com.google.gwt.user.User"/>
-	<inherits name="com.google.gwt.i18n.I18N"/>
-
-	<!-- Inherited modules: SmartGWT -->
-	<inherits name='com.smartgwt.SmartGwt'/>
-
 	<!-- Geomajas DTO source code, base path must be org/geomajas to access all packages !!! -->
 
 	<source path="command">

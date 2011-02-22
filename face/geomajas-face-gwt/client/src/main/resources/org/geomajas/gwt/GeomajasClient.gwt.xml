@@ -15,6 +15,10 @@
 	<inherits name="com.google.gwt.i18n.I18N"/>
 	<inherits name="org.geomajas.GeomajasDto"/>
 
+	<!-- Inherited modules: SmartGWT -->
+	<!--inherits name='com.smartgwt.SmartGwt'/-->
+	<inherits name='com.smartgwt.SmartGwtNoTheme'/>
+
 	<!-- make sure the default is there -->
 	<source path="client"/>
 
@@ -53,6 +57,5 @@
 	<source path="client/widget/attribute">
 		<exclude name="*Test*.java"/>
 	</source>
-	
 
 </module>
