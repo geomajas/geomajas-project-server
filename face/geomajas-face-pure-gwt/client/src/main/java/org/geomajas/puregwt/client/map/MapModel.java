@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client.map;
 
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -22,7 +20,8 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * this difference).<br/>
  * Also, everywhere <code>mapId</code> is used instead of a real Map object to identify a map.<br/>
  * <p>
- * TODO check the javadoc for the moving of layers
+ * TODO check the javadoc for the moving of layers<br/>
+ * TODO do we need srid, crs, geometryfactory here again?
  * </p>
  * 
  * @author Pieter De Graef
@@ -39,13 +38,6 @@ public interface MapModel {
 	 *            The configuration object from which this model should build itself.
 	 */
 	void initialize(ClientMapInfo mapInfo);
-
-	/**
-	 * Returns the ordered list of layers within this map. The first layer lies at the bottom, the last one on top.
-	 * 
-	 * @return The full list of layers.
-	 */
-	List<Layer<?>> getLayers();
 
 	/**
 	 * Get a single layer by its identifier.
@@ -103,7 +95,8 @@ public interface MapModel {
 	 * 
 	 * @param layer
 	 *            The layer to return the position for.
-	 * @return Returns the position of the layer in the map. This position determines layer order.
+	 * @return Returns the position of the layer in the map. This position determines layer order. If the layer was not
+	 *         found, than -1 is returned.
 	 */
 	int getLayerPosition(Layer<?> layer);
 

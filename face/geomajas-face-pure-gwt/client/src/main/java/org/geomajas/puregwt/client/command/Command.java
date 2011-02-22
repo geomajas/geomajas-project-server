@@ -24,7 +24,7 @@ import org.geomajas.global.Api;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class GwtCommand implements Serializable {
+public class Command implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 
@@ -41,7 +41,7 @@ public class GwtCommand implements Serializable {
 	// ------------------------------------------------------------------------
 
 	/** Default constructor. Does nothing. */
-	public GwtCommand() {
+	public Command() {
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class GwtCommand implements Serializable {
 	 * @param commandName
 	 *            The Java class name of the actual command to be executed. Or rather the spring bean name.
 	 */
-	public GwtCommand(String commandName) {
+	public Command(String commandName) {
 		this.commandName = commandName;
 	}
 

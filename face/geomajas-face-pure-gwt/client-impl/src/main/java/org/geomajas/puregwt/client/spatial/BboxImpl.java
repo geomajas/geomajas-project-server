@@ -78,7 +78,7 @@ public class BboxImpl implements Bbox {
 	 * @param bounds
 	 *            Another bounding box instance.
 	 */
-	public BboxImpl(BboxImpl bounds) {
+	public BboxImpl(Bbox bounds) {
 		x = bounds.getX();
 		y = bounds.getY();
 		width = bounds.getWidth();

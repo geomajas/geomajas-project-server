@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.command.GwtCommand;
+import org.geomajas.puregwt.client.command.Command;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
@@ -35,5 +35,5 @@ public interface GeomajasService extends RemoteService {
 	 *            The gwtCommand to be executed.
 	 * @return The result.
 	 */
-	CommandResponse execute(GwtCommand gwtCommand);
+	CommandResponse execute(Command gwtCommand);
 }

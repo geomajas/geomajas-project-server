@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client.map;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
@@ -40,7 +39,7 @@ public class ViewPortImpl implements ViewPort {
 	private int height;
 
 	/** A maximum scale level, that this MapView is not allowed to cross. */
-	private double maximumScale = 10;
+	private double maximumScale;
 
 	/** The maximum bounding box available to this MapView. Never go outside it! */
 	private Bbox maxBounds;
@@ -49,7 +48,7 @@ public class ViewPortImpl implements ViewPort {
 	 * A series of scale levels to which zooming in and out should snap. This is optional! If you which to use these
 	 * fixed zooming steps, all you have to do, is define them.
 	 */
-	private List<Double> resolutions = new ArrayList<Double>();
+	private List<Double> resolutions;
 
 	/** The current index in the resolutions array. That is, if the resolutions are actually used. */
 	private int resolutionIndex = -1;
@@ -65,8 +64,20 @@ public class ViewPortImpl implements ViewPort {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	/** Default constructor that initializes all it's fields. */
-	public ViewPortImpl() {
+	/**
+	 * Constructor that immediately applies all needed meta-data for it's own configuration.
+	 * 
+	 * @param resolutions
+	 *            The resolutions to use when applying scales. Can be an empty list, but not null.
+	 * @param maximumScale
+	 *            The maximum scale this view port should ever reach. It must never go beyond.
+	 * @param maxBounds
+	 *            The maximum bounds for this view port. Never must we go beyond these boundaries.
+	 */
+	public ViewPortImpl(List<Double> resolutions, double maximumScale, Bbox maxBounds) {
+		this.resolutions = resolutions;
+		this.maximumScale = maximumScale;
+		this.maxBounds = maxBounds;
 	}
 
 	// -------------------------------------------------------------------------

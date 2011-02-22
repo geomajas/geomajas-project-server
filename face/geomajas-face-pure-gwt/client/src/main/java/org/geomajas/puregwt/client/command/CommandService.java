@@ -8,23 +8,64 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.puregwt.client.command;
 
-import org.geomajas.global.Api;
+import org.geomajas.command.CommandResponse;
+import org.geomajas.global.FutureApi;
+import org.geomajas.puregwt.client.GeomajasService;
+import org.geomajas.puregwt.client.GeomajasServiceAsync;
+import org.geomajas.puregwt.client.command.event.DispatchStartedEvent;
 import org.geomajas.puregwt.client.command.event.DispatchStartedHandler;
+import org.geomajas.puregwt.client.command.event.DispatchStoppedEvent;
 import org.geomajas.puregwt.client.command.event.DispatchStoppedHandler;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
- * Central service for executing commands. These commands are sent to the server for execution.
+ * Central service for executing commands. These commands are sent to the server for execution. This command pattern
+ * uses the GWT RPC system as protocol.
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
-public interface CommandService {
+@FutureApi(allMethods = true)
+public class CommandService {
+
+	private GeomajasServiceAsync service;
+
+	private HandlerManager manager = new HandlerManager(this);
+
+	private int nrOfDispatchedCommands;
+
+	private String locale;
+
+	private String userToken;
+
+	// -------------------------------------------------------------------------
+	// Constructor:
+	// -------------------------------------------------------------------------
+
+	public CommandService() {
+		locale = LocaleInfo.getCurrentLocale().getLocaleName();
+		if ("default".equals(locale)) {
+			locale = null;
+		}
+		service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
+		ServiceDefTarget endpoint = (ServiceDefTarget) service;
+		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
+		endpoint.setServiceEntryPoint(moduleRelativeURL);
+	}
+
+	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Add a handler for catching events that signal the start of a command.
@@ -33,7 +74,9 @@ public interface CommandService {
 	 *            The handler object.
 	 * @return Returns the registration for the handler.
 	 */
-	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
+	public HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler) {
+		return manager.addHandler(DispatchStartedEvent.getType(), handler);
+	}
 
 	/**
 	 * Add a handler for catching events that signal the return of the response for a command.
@@ -42,25 +85,78 @@ public interface CommandService {
 	 *            The handler object.
 	 * @return Returns the registration for the handler.
 	 */
-	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
+	public HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler) {
+		return manager.addHandler(DispatchStoppedEvent.getType(), handler);
+	}
 
 	/**
 	 * The execution function. Executes a server side command.
 	 * 
 	 * @param command
 	 *            The command to be executed. This command is a wrapper around the actual request object.
-	 * @param onSuccess
+	 * @param callbacks
 	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
-	 * @return deferred object which can be used to add extra callbacks
+	 * @return deferred object which can be used to add extra call-backs
 	 */
-	Deferred execute(GwtCommand command, final CommandCallback... onSuccess);
+	public Deferred execute(Command command, final CommandCallback... callbacks) {
+		incrementDispatched();
+
+		final Deferred deferred = new Deferred();
+		for (CommandCallback callback : callbacks) {
+			deferred.addCallback(callback);
+		}
+
+		command.setLocale(locale);
+		command.setUserToken(userToken);
+		service.execute(command, new AsyncCallback<CommandResponse>() {
+
+			public void onFailure(Throwable error) {
+				try {
+					for (CommandCallback callback : deferred.getCallbacks()) {
+						callback.onFailure(error);
+					}
+					GWT.log(error.getMessage());
+				} catch (Throwable t) {
+					GWT.log("Command failed on error callback", t);
+				} finally {
+					decrementDispatched();
+				}
+			}
+
+			public void onSuccess(CommandResponse response) {
+				try {
+					if (response.isError()) {
+						String message = "";
+						for (String error : response.getErrorMessages()) {
+							message += error + "\n";
+						}
+						GWT.log(message, null);
+						// TODO do something with the error message besides simply logging...
+					} else {
+						if (!deferred.isCancelled()) {
+							for (CommandCallback callback : deferred.getCallbacks()) {
+								callback.onSuccess(response);
+							}
+						}
+					}
+				} catch (Throwable t) {
+					GWT.log("Command failed on success callback", t);
+				} finally {
+					decrementDispatched();
+				}
+			}
+		});
+		return deferred;
+	}
 
 	/**
 	 * Is the dispatcher busy ?
 	 * 
 	 * @return true if there are outstanding commands
 	 */
-	boolean isBusy();
+	public boolean isBusy() {
+		return nrOfDispatchedCommands != 0;
+	}
 
 	/**
 	 * Set the user token, so it can be sent in very command.
@@ -68,65 +164,26 @@ public interface CommandService {
 	 * @param userToken
 	 *            user token
 	 */
-	void setUserToken(String userToken);
+	public void setUserToken(String userToken) {
+		this.userToken = userToken;
+	}
 
-	/**
-	 * Is lazy feature loading enabled ?
-	 * 
-	 * @return true when lazy feature loading is enabled
-	 */
-	boolean isUseLazyLoading();
+	// -------------------------------------------------------------------------
+	// Protected methods:
+	// -------------------------------------------------------------------------
 
-	/**
-	 * Set lazy feature loading status.
-	 * 
-	 * @param useLazyLoading
-	 *            lazy feature loading status
-	 */
-	void setUseLazyLoading(boolean useLazyLoading);
+	protected void incrementDispatched() {
+		boolean started = nrOfDispatchedCommands == 0;
+		nrOfDispatchedCommands++;
+		if (started) {
+			manager.fireEvent(new DispatchStartedEvent());
+		}
+	}
 
-	/**
-	 * Get default value for "featureIncludes" when getting features.
-	 * 
-	 * @return default "featureIncludes" value
-	 */
-	int getLazyFeatureIncludesDefault();
-
-	/**
-	 * Set default value for "featureIncludes" when getting features.
-	 * 
-	 * @param lazyFeatureIncludesDefault
-	 *            default for "featureIncludes"
-	 */
-	void setLazyFeatureIncludesDefault(int lazyFeatureIncludesDefault);
-
-	/**
-	 * Get "featureIncludes" to use when selecting features.
-	 * 
-	 * @return default "featureIncludes" for select commands
-	 */
-	int getLazyFeatureIncludesSelect();
-
-	/**
-	 * Set default "featureIncludes" for select commands.
-	 * 
-	 * @param lazyFeatureIncludesSelect
-	 *            default "featureIncludes" for select commands
-	 */
-	void setLazyFeatureIncludesSelect(int lazyFeatureIncludesSelect);
-
-	/**
-	 * Value to use for "featureIncludes" when all should be included.
-	 * 
-	 * @return value for "featureIncludes" when all should be included
-	 */
-	int getLazyFeatureIncludesAll();
-
-	/**
-	 * Set "featureIncludes" value when all should be included.
-	 * 
-	 * @param lazyFeatureIncludesAll
-	 *            "featureIncludes" value when all should be included
-	 */
-	void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll);
+	protected void decrementDispatched() {
+		nrOfDispatchedCommands--;
+		if (nrOfDispatchedCommands == 0) {
+			manager.fireEvent(new DispatchStoppedEvent());
+		}
+	}
 }

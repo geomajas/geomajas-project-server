@@ -11,7 +11,8 @@
 
 package org.geomajas.puregwt.client.command;
 
-import org.geomajas.global.Api;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to
@@ -22,11 +23,30 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
-public interface Deferred {
+public class Deferred {
+
+	private List<CommandCallback> callbacks = new ArrayList<CommandCallback>();
+
+	private boolean cancelled;
+
+	// ------------------------------------------------------------------------
+	// Public methods:
+	// ------------------------------------------------------------------------
 
 	/** Cancel the execution of the call-back for the associated command. */
-	void cancel();
+	public void cancel() {
+		callbacks.clear();
+		cancelled = true;
+	}
+
+	/**
+	 * Returns whether or not the associated command has been canceled.
+	 * 
+	 * @return Returns true or false.
+	 */
+	public boolean isCancelled() {
+		return cancelled;
+	}
 
 	/**
 	 * Add a call-back to the deferred, to be executed when the response returns from the server. More than 1 call-back
@@ -38,12 +58,16 @@ public interface Deferred {
 	 * @param callback
 	 *            The call-back to add.
 	 */
-	void addCallback(CommandCallback callback);
+	public void addCallback(CommandCallback callback) {
+		callbacks.add(callback);
+	}
 
 	/**
-	 * Returns wether or not the associated command has been cancelled.
+	 * Return the full list of call-backs stored in this deferred object.
 	 * 
-	 * @return Returns true or false.
+	 * @return The full list of call-backs stored in this deferred object.
 	 */
-	boolean isCancelled();
+	public List<CommandCallback> getCallbacks() {
+		return callbacks;
+	}
 }

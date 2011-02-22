@@ -11,33 +11,30 @@
 package org.geomajas.puregwt.client.command;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.
- *
+ * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface CommandCallback {
 
 	/**
 	 * The actual execution function. If the command returns successfully, this will be executed.
-	 *
+	 * 
 	 * @param response
+	 *            The response from the server automatically indicating that the command was executed successfully.
 	 */
 	void onSuccess(CommandResponse response);
+
 	/**
 	 * The actual execution function. If the command returns successfully, this will be executed.
-	 *
+	 * 
 	 * @param response
+	 *            The response from the server automatically indicating that the command was executed successfully.
 	 */
-	void onFailure(CommandResponse response);
-	/**
-	 * The actual execution function. If the command returns successfully, this will be executed.
-	 *
-	 * @param response
-	 */
-	void onError(Throwable error);
+	void onFailure(Throwable error);
 }

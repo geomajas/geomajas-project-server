@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.command.GwtCommand;
+import org.geomajas.puregwt.client.command.Command;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -35,5 +35,5 @@ public interface GeomajasServiceAsync {
 	 *            The gwtCommand to be executed.
 	 * @param callback callback which will be invoked with command response
 	 */
-	void execute(GwtCommand gwtCommand, AsyncCallback<CommandResponse> callback);
+	void execute(Command gwtCommand, AsyncCallback<CommandResponse> callback);
 }

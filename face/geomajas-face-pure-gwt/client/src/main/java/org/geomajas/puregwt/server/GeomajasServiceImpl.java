@@ -22,7 +22,7 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.GeomajasService;
-import org.geomajas.puregwt.client.command.GwtCommand;
+import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.servlet.ApplicationContextUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -68,7 +68,7 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 	 * Execute a GWT RPC command request, and return the response. These request come from the client, and the response
 	 * is sent back to the client. We use a {@link CommandDispatcher} to actually execute the command.
 	 */
-	public CommandResponse execute(GwtCommand request) {
+	public CommandResponse execute(Command request) {
 		if (request != null) {
 			CommandResponse result = null;
 			result = commandDispatcher.execute(request.getCommandName(), request.getCommandRequest(),
