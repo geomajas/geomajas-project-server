@@ -15,7 +15,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 
 /**
- * to do....
+ * to do....currently not supported.
  * 
  * @author Pieter De Graef
  */

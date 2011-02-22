@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.util;
+package org.geomajas.puregwt.client.service;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
