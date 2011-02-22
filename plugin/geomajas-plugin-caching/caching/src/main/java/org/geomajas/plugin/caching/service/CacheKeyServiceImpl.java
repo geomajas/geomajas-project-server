@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Random;
 
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -87,7 +88,9 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	}
 
 	private String getCacheId(Object value) {
-		if (value instanceof CoordinateReferenceSystem) {
+		if (value instanceof Crs) {
+			return ((Crs) value).getId();
+		} else if (value instanceof CoordinateReferenceSystem) {
 			return ((CoordinateReferenceSystem) value).getIdentifiers().toString();
 		} else if (value instanceof CacheableObject) {
 			return ((CacheableObject) value).getCacheId();
