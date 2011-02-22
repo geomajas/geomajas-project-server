@@ -82,7 +82,7 @@ public class ViewPortState {
 
 	/**
 	 * Can this view state be reached by panning from another view state ?
-	 * @param viewState the view state to compare with
+	 * @param other the view state to compare with
 	 * @return true if reachable by panning
 	 */
 	public boolean isPannableFrom(ViewPortState other) {

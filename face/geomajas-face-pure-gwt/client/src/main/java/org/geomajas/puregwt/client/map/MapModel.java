@@ -70,7 +70,7 @@ public interface MapModel {
 	 * 
 	 * @param layer
 	 *            The layer to place at a new position.
-	 * @param position
+	 * @param index
 	 *            The new layer order position in the layer array:
 	 * @return Returns if the re-ordering was successful or not.
 	 */
