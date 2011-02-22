@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 import com.google.inject.Inject;
 
@@ -34,7 +34,7 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	private double delta;
 
 	@Inject
-	private SpatialService service;
+	private MathService service;
 
 	// -------------------------------------------------------------------------
 	// Constructors:

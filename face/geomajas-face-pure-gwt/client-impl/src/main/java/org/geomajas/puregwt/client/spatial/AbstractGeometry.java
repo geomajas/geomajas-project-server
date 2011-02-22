@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * Abstract GWT client-side geometry.
@@ -25,7 +25,7 @@ public abstract class AbstractGeometry implements Geometry {
 
 	protected GeometryFactory factory;
 	
-	protected SpatialService service;
+	protected MathService service;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -42,7 +42,7 @@ public abstract class AbstractGeometry implements Geometry {
 	 * @param srid
 	 * @param precision
 	 */
-	AbstractGeometry(GeometryFactory factory, SpatialService service) {
+	AbstractGeometry(GeometryFactory factory, MathService service) {
 		this.factory = factory;
 		this.service = service;
 	}

@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * Ploygon client-side GWT object.
@@ -31,11 +31,11 @@ public class PolygonImpl extends AbstractGeometry implements Polygon {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	PolygonImpl(GeometryFactory factory, SpatialService service) {
+	PolygonImpl(GeometryFactory factory, MathService service) {
 		super(factory, service);
 	}
 
-	PolygonImpl(GeometryFactory factory, SpatialService service, LinearRing exteriorRing, LinearRing[] interiorRings) {
+	PolygonImpl(GeometryFactory factory, MathService service, LinearRing exteriorRing, LinearRing[] interiorRings) {
 		super(factory, service);
 		this.exteriorRing = exteriorRing;
 		this.interiorRings = interiorRings;

@@ -11,8 +11,8 @@
 
 package org.geomajas.puregwt.client.spatial;
 
-import org.geomajas.puregwt.client.util.SpatialService;
-import org.geomajas.puregwt.client.util.SpatialServiceImpl;
+import org.geomajas.puregwt.client.service.MathService;
+import org.geomajas.puregwt.client.service.MathServiceImpl;
 
 import com.google.inject.AbstractModule;
 
@@ -26,7 +26,7 @@ public class ConfigurationTestModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(GeometryFactory.class).to(GeometryFactoryImpl.class);
-		bind(SpatialService.class).to(SpatialServiceImpl.class);
+		bind(MathService.class).to(MathServiceImpl.class);
 	}
 
 }

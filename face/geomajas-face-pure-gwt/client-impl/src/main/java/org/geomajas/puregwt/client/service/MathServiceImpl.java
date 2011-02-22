@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.util;
+package org.geomajas.puregwt.client.service;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.spatial.Geometry;
@@ -23,11 +23,11 @@ import org.geomajas.puregwt.client.spatial.Polygon;
 import org.geomajas.puregwt.client.spatial.Vector2D;
 
 /**
- * Implementation of the general {@link SpatialService}.
+ * Implementation of the general {@link MathService}.
  * 
  * @author Pieter De Graef
  */
-public class SpatialServiceImpl implements SpatialService {
+public class MathServiceImpl implements MathService {
 
 	/**
 	 * Calculates whether or not 2 line-segments intersect.

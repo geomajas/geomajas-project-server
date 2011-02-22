@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * LineString client-side GWT object.
@@ -33,7 +33,7 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 		this(factory, null, null);
 	}
 
-	LineStringImpl(GeometryFactory factory, SpatialService service, Coordinate[] coordinates) {
+	LineStringImpl(GeometryFactory factory, MathService service, Coordinate[] coordinates) {
 		super(factory, service);
 		this.coordinates = coordinates;
 	}

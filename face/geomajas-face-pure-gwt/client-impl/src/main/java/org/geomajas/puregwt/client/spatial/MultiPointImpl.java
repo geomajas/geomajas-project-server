@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * MultiPoint client-side GWT object.
@@ -29,11 +29,11 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPointImpl(GeometryFactory factory, SpatialService service) {
+	MultiPointImpl(GeometryFactory factory, MathService service) {
 		this(factory, service, null);
 	}
 
-	MultiPointImpl(GeometryFactory factory, SpatialService service, Point[] points) {
+	MultiPointImpl(GeometryFactory factory, MathService service, Point[] points) {
 		super(factory, service);
 		this.points = points;
 	}

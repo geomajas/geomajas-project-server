@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * MultiLineString client-side GWT object.
@@ -33,7 +33,7 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 		this(factory, null, null);
 	}
 
-	MultiLineStringImpl(GeometryFactory factory, SpatialService service, LineString[] lineStrings) {
+	MultiLineStringImpl(GeometryFactory factory, MathService service, LineString[] lineStrings) {
 		super(factory, service);
 		this.lineStrings = lineStrings;
 	}

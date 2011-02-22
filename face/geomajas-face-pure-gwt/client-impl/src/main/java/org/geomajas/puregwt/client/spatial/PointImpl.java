@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.util.SpatialService;
+import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * <p>
@@ -31,15 +31,15 @@ public class PointImpl extends AbstractGeometry implements Point {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	PointImpl(GeometryFactory factory, SpatialService service) {
+	PointImpl(GeometryFactory factory, MathService service) {
 		this(factory, service, null);
 	}
 
-	PointImpl(GeometryFactory factory, SpatialService service, double x, double y) {
+	PointImpl(GeometryFactory factory, MathService service, double x, double y) {
 		this(factory, service, new Coordinate(x, y));
 	}
 
-	PointImpl(GeometryFactory factory, SpatialService service, Coordinate c) {
+	PointImpl(GeometryFactory factory, MathService service, Coordinate c) {
 		super(factory, service);
 		coordinate = c;
 	}

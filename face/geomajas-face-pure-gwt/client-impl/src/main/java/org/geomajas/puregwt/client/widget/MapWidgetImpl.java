@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client.widget;
 
-import org.geomajas.puregwt.client.map.WorldContainer;
-
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,5 +28,4 @@ public class MapWidgetImpl extends Widget implements MapWidget {
 		DivElement container = Document.get().createDivElement();
 		setElement(container);
 	}
-
 }

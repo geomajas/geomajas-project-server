@@ -22,7 +22,7 @@ import org.geomajas.puregwt.client.spatial.Geometry;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface SpatialService {
+public interface MathService {
 
 	/**
 	 * Calculates whether or not 2 line-segments intersect.
