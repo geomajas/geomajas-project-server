@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <part id="part-howto">
@@ -56,7 +55,8 @@
     intermediate package (between "command" and the class name) and the class
     name itself. Some examples:</para>
 
-    <para><table>
+    <para>
+      <table>
         <title>Samples of command name resolution</title>
 
         <tgroup cols="2">
@@ -118,7 +118,8 @@
             </row>
           </tbody>
         </tgroup>
-      </table></para>
+      </table>
+    </para>
 
     <para>You have to include a line in your Spring configuration to scan
     class files for annotation to make the components available. For the case
@@ -164,7 +165,7 @@
     <xi:include href="listing/StaticSecurityDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para></para>
+    <para />
   </chapter>
 
   <chapter id="ch-howto-plugin">
@@ -218,6 +219,315 @@
       <title>Writing your own security service</title>
 
       <para>TODO.....</para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Integrating a Geomajas application in the ZK framework</title>
+
+    <section>
+      <title>Introduction</title>
+
+      <para><ulink url="http://www.zkoss.org/">ZK</ulink> is a general purpose
+      web framework that uses a server-side approach to create RIAs. The
+      framework is Java-based and has a built-in mechanism to synchronize
+      presentation state between client and server based on Ajax requests.
+      Geomajas on the other hand is a GIS application framework based on GWT.
+      GWT compiles java code to javascript and makes use of Ajax requests and
+      a custom serialization mechanism to communicate with the server. There
+      is no presentation state on the server and the client is functionally a
+      thick client (as opposed to ZK).</para>
+
+      <para>When mixing two frameworks it is generally advisable to wrap UI
+      components of the foreign framework in such a way that they become
+      indistinguishable from native UI components. This technique is actually
+      mandatory for frameworks that take complete control over the HTML
+      layout, like ZK. While there is not mcuh information available with
+      respect to GWT, we have successfully followed the same technique that
+      was used in ZK for Google Maps and JQuery.</para>
+    </section>
+
+    <section>
+      <title>Integrating GWT widgets in ZK</title>
+
+      <para>ZK allows the creation of custom components. In the 5.0.3 version,
+      we need to prepare four types of files in order to create a
+      component:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The lang-addon.xml file: Registers the new ZK component</para>
+        </listitem>
+
+        <listitem>
+          <para>The component file (*.java): Server-side Java component
+          object</para>
+        </listitem>
+
+        <listitem>
+          <para>The widget file (*.js): Client-side JavaScript widget object
+          (there is a one-to-one correspondance with the server
+          component)</para>
+        </listitem>
+
+        <listitem>
+          <para>The template files (*.dsp): (optional) molds to generate the
+          HTML representation of the client part. Alternatively, a redraw
+          method can be defined in the .js file.</para>
+        </listitem>
+
+        <listitem>
+          <para>The zk.wpd file : Widget Package Descriptor (WPD) file
+          describing the information of a package, such as its widget classes
+          and external JavaScript files</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>To represent a GWT widget as a ZK component, a wrapper has to be
+      created around the GWT widget. Although both frameworks are Java-based,
+      there is no communication possible between both as GWT is client-side
+      while ZK is server-side. This means that any wrapping has to be done by
+      providing mutual hooks or callback functions in the javascript files.
+      </para>
+
+      <para>We will now give a more detailed overview of each file and its
+      functionalities.</para>
+
+      <para>The lang-addon.xml file is located in the classpath at
+      /metainfo/zk/lang-addon.xml. In the lang-addon.xml file, the tag name of
+      the new component is determined and the class name of the component and
+      its corresponding widget:</para>
+
+      <para><programlisting>&lt;language-addon&gt;
+ &lt;addon-name&gt;geomajasmap&lt;/addon-name&gt;
+ &lt;language-name&gt;xul/html&lt;/language-name&gt;
+ &lt;component&gt;
+  &lt;component-name&gt;geomajasmap&lt;/component-name&gt;  &lt;!-- this is the tag name --&gt;
+  &lt;component-class&gt;com.xxx.GeomajasComponent&lt;/component-class&gt; &lt;!-- this is the full java class name --&gt;
+  &lt;widget-class&gt;com.xxx.GeomajasWidget&lt;/widget-class&gt; &lt;!-- this the 'javascript class' name --&gt;
+ &lt;/component&gt;
+&lt;/language-addon&gt;</programlisting>The dsp file is optional and contains
+      some javascript code to write out the HTML representation of the widget.
+      We refer to the general <ulink
+      url="http://books.zkoss.org/wiki/ZK_Component_Development_Essentials">ZK
+      component development documentation</ulink> for more information on this
+      file.</para>
+
+      <para>The widget file defines a javascript class (or prototype) by
+      extending the ZK widget class and is located in the classpath at
+      web/js/com/xxx/GeomajasWidget.js. This file has the following
+      content:</para>
+
+      <para><programlisting>com.xxx.GeomajasWidget = zk.$extends(zk.Widget, {
+
+ bind_ : function(evt) {
+  this.$supers('bind_', arguments);
+  // save a reference to this instance for later access by GWT
+  this.$class._refs[this.uuid] = this;
+ },
+
+ unbind_ : function(evt) {
+  this.$supers('unbind_', arguments);
+ },
+
+ redraw : function(out) {
+  out.push('&lt;div', this.domAttrs_(), '&gt;&lt;/div&gt;');
+ }
+},  {
+  // a static map of (id, instance) pairs, accessible by GWT
+  _refs : {}
+});</programlisting>The bind_() and unbind_() functions are called to after
+      the widget is attached/detached to the dom tree. It seems a good choice
+      to use the bind_() function as the initialization point of the wrapped
+      GWT component. We would normally just create the GWT component at this
+      point, but, because of a race condition between the ZK and GWT
+      javascript loads, the GWT part may not be loaded yet. For that reason,
+      we register a reference to the component in a static map and let this
+      reference be picked up and initialized later on by the GWT code. The
+      redraw() function simply creates an empty div with the correct
+      id.</para>
+
+      <para>The component file is a server side java class that extends the ZK
+      XulElement class. Its main purpose is to act as a relay to the client
+      part:</para>
+
+      <para><programlisting>
+public class GeomajasComponent extends XulElement {
+
+ static {
+  addClientEvent(GeomajasComponent.class, FeatureSelectedEvent.NAME, CE_IMPORTANT);
+  ...
+ }
+
+ private String featureId;
+ 
+ // server-to-client communication
+ public void panToFeature(String featureId) {
+  if (featureId != null &amp;&amp; !featureId.equals(this.featureId)) {
+   this.featureId = featureId;
+   smartUpdate("panToFeature", featureId); // send the update to the client
+  }
+ }
+
+ @Override
+ protected void renderProperties(ContentRenderer renderer) throws java.io.IOException {
+  super.renderProperties(renderer);
+  render(renderer, "panToFeature", featureId); // mandatory by ZK for batch updates
+ }
+
+ // client-to-server communication
+ @Override
+ public void service(AuRequest request, boolean everError) {
+  final String cmd = request.getCommand();
+
+  if (cmd.equals(FeatureDeselectedEvent.NAME)) {
+   FeatureDeselectedEvent evt = FeatureDeselectedEvent.getEvent(request);
+   Events.postEvent(evt); // post as an application-wide event
+  } ...
+  else {
+   super.service(request, everError);
+  }
+ }
+
+}
+</programlisting>The panToFeature() method can be called from other ZK server
+      components to let the map pan to a certain feature. The command is
+      forwarded to the client by using the smartUpdate() method. The way ZK
+      communicates with its client objects or widgets is by invoking setters
+      on the client object. This makes sense for a light weight client object
+      but is rather awkward from a GWT viewpoint. In this case, the
+      setPanToFeature() function will be called on the GeomajasWidget
+      javascript object. We will now make sure that this function directly
+      calls an equivalent function on the GWT component:</para>
+
+      <para><programlisting>
+public class GeomajasMapWrapper {
+
+ private JavaScriptObject object;
+ 
+ private MapWidget map;
+
+ public GeomajasMapWrapper(JavaScriptObject object, String id) {
+  this.object = object;
+  ...  // create and attach the map to DOM element with the specified id (using BasicWidget.setHtmlElement() for SmartGWT)
+  initProperties(object);
+ }
+
+ public void panToFeature(String args) {
+      // pan to feature implementation
+ }
+
+ public native void initProperties(JavaScriptObject object) /*-{
+  var _this = this;
+  object.setPanToFeature = function (featureId) {
+   _this.@com.xxx.client.zk.GeomajasMapWrapper::panToFeature(Ljava/lang/String;)(featureId);
+  };
+ }-*/;
+
+ public native void forwardFeatureSelected(JavaScriptObject object, String featureId) /*-{
+  object.fire("onFeatureSelected",{"featureId" : featureId});
+ }-*/;
+
+ ...
+
+ public static native void init() /*-{
+  var maps = $wnd.com.xxx.GeomajasWidget._refs;
+  for(var uuid in maps) {
+   var cmp = maps[uuid];
+   @com.xxx.client.zk.GeomajasMapWrapper::new(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(cmp, cmp.uuid);
+  }
+
+  // override the bind function in case GWT was loaded first !
+  $wnd.com.keyobs.urbagis.GeomajasWidget.prototype.bind_ = function(evt) {
+   this.$supers('bind_', arguments);
+   @com.xxx.client.zk.GeomajasMapWrapper::new(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(this, this.uuid);
+  };
+ }-*/;
+</programlisting>There are multiple JSNI methods in this wrapper class to
+      communicate between the GWT and ZK worlds:</para>
+
+      <para>The init() method should be called once. It initializes registered
+      references in the GeomajasWidget class by calling the constructor of the
+      GeomajasWrapper class itself. It then overrides the bind_() function to
+      make sure that any calls to bind_() will have the same effect. This is
+      important in case the GWT part was loaded before bind_() was called by
+      the ZK framework.</para>
+
+      <para>The initProperties() method will add a relay-function to the ZK
+      widget with signature setPanToFeature(). It will forward the
+      smartUpdate() from the ZK framework to the GWT method panToFeature() of
+      our GWT class.</para>
+
+      <para>The forwardFeatureSelected() method will fire an event from the ZK
+      client to the ZK server. This method can be called when a feature is
+      selected on the map.</para>
+    </section>
+
+    <section>
+      <title>Bidirectional communication between the two frameworks </title>
+
+      <para>Communicating from GWT to ZK takes the following steps : GWT event
+      -&gt; JSNI call to ZK javascript -&gt; server command -&gt; ZK component
+      -&gt; ZK event.</para>
+
+      <para>The following code parts are required: </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>add event listener to GWT widget </para>
+        </listitem>
+
+        <listitem>
+          <para>add JSNI call to GWT widget to forward the event </para>
+        </listitem>
+
+        <listitem>
+          <para>add javascript function to ZK javascript to send the ZK
+          command</para>
+        </listitem>
+
+        <listitem>
+          <para>process the ZK command in the ZK component </para>
+        </listitem>
+
+        <listitem>
+          <para>fire application event in ZK component</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Communicating from ZK to GWT takes the following steps : ZK java
+      call -&gt; ZK component -&gt; smartupdate -&gt; ZK JSNI callback -&gt;
+      GWT call.</para>
+
+      <para>The following code parts are required: </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>add event listener to ZK component </para>
+        </listitem>
+
+        <listitem>
+          <para>add update method to ZK component</para>
+        </listitem>
+
+        <listitem>
+          <para>add ZK callback function to GWT component </para>
+        </listitem>
+
+        <listitem>
+          <para>process the ZK callback in the GWT component</para>
+        </listitem>
+      </itemizedlist>
+
+      <figure>
+        <title>Bidirectional communication between ZK and GWT</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/zk-gwt.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
   </chapter>
 </part>
