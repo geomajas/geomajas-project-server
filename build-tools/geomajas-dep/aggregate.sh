@@ -166,6 +166,30 @@ include "org.geomajas.plugin" "rasterizing-documentation" "1.0.0-SNAPSHOT" \
     "incubating" "master.pdf" \
     "" "" ""
 
+include "org.geomajas.widget" "geomajas-widget-advancedviews-documentation" "1.0.0-SNAPSHOT" \
+    "Advanced views widget plug-in" \
+    "Advanced views widget plug-in." \
+    "incubating" "master.pdf" \
+    "" "" ""
+
+include "org.geomajas.widget" "geomajas-widget-featureinfo-documentation" "1.0.0-SNAPSHOT" \
+    "Feature info widget plug-in" \
+    "Feature info widget plug-in." \
+    "incubating" "master.pdf" \
+    "" "" ""
+
+include "org.geomajas.widget" "geomajas-widget-reports-documentation" "1.0.0-SNAPSHOT" \
+    "Reports widget plug-in" \
+    "Reports info widget plug-in." \
+    "incubating" "master.pdf" \
+    "" "" ""
+
+include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1.0.0-SNAPSHOT" \
+    "Search and filter widget plug-in" \
+    "Search and filter widget plug-in." \
+    "incubating" "master.pdf" \
+    "" "" ""
+
 
 # contributors guide
 
