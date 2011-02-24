@@ -105,7 +105,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	@Override
 	/* Override getCellCSSText to implement padding-left of ordinary feature rows */
 	protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {
-		// Note: using listGrid.setCellPadding() would also padd group rows
+		// Note: using listGrid.setCellPadding() also pads group rows
 		String newStyle;
 		String style = record.getCustomStyle(); /* returns groupNode if group row, else e.g. null */
 

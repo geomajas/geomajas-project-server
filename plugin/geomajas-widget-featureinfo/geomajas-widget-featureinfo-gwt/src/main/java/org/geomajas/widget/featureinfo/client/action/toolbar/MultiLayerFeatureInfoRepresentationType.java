@@ -13,8 +13,8 @@ package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 /**
  * The representation of a multilayer featureinfo window.
- * @author Oliver May
  *
+ * @author Oliver May
  */
 public enum MultiLayerFeatureInfoRepresentationType {
 	

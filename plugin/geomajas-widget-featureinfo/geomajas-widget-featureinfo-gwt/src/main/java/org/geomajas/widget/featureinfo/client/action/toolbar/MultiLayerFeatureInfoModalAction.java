@@ -21,7 +21,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Tool which shows a list of nearby features. By clicking on a feature in the list details of that feature will be
- * shown
+ * shown.
  * 
  * @author An Buyle
  * @author Oliver May

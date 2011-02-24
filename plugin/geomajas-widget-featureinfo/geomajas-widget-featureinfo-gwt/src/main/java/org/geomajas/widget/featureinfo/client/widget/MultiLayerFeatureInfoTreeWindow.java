@@ -22,7 +22,6 @@ import com.smartgwt.client.widgets.Window;
 /**
  * 
  * @author Oliver May
- *
  */
 public class MultiLayerFeatureInfoTreeWindow extends Window {
 

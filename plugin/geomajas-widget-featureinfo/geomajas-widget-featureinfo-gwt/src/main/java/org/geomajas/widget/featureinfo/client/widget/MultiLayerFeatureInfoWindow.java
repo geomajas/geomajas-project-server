@@ -33,7 +33,6 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
  * </p>
  * 
  * @author Oliver May
- * 
  */
 public class MultiLayerFeatureInfoWindow extends Window {
 
