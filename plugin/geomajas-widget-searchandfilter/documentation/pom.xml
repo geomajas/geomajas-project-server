@@ -19,6 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-searchandfilter-documentation</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>geomajas-widget-searchandfilter documentation</name>
 	<description>geomajas-widget-searchandfilter documentation</description>

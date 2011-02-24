@@ -8,16 +8,16 @@
   ~ General Public License. All contributions in this program are covered
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
-  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <artifactId>geomajas-widget-featureinfo-all</artifactId>
-    <groupId>org.geomajas.widget</groupId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+    	<artifactId>geomajas-widget-featureinfo-all</artifactId>
+    	<groupId>org.geomajas.widget</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+  	</parent>
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-featureinfo-gwt-example</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas widget featureinfo GWT example application</name>
 	<description>Geomajas GWT application</description>
@@ -71,13 +71,13 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 		
