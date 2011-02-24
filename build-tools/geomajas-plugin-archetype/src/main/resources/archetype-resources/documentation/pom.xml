@@ -20,6 +20,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
 	<artifactId>${rootArtifactId}-documentation</artifactId>
+	<version>${version}</version>
 	<packaging>jar</packaging>
 	<name>${rootArtifactId} documentation</name>
 	<description>${rootArtifactId} documentation</description>
