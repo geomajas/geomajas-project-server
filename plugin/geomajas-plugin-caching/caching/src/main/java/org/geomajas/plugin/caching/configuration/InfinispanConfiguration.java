@@ -11,18 +11,20 @@
 
 package org.geomajas.plugin.caching.configuration;
 
+import org.infinispan.config.Configuration;
+
 /**
- * ...
+ * Interface for marking configurations which can be used by
+ * {@link org.geomajas.plugin.caching.cache.InfinispanCacheFactory}.
  *
  * @author Joachim Van der Auwera
  */
-public class CacheInfo {
+public interface InfinispanConfiguration {
 
-	// expiration
-	// evictionStrategy
-	// directory location for cache store
-	// cache size in memory (# or size?)
-	// active
-	//private String
-
+	/**
+	 * Get the Infinispan configuration object.
+	 *
+	 * @return configuration object
+	 */
+	Configuration getInfinispanConfiguration();
 }

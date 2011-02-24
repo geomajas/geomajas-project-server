@@ -45,6 +45,22 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Infinispan"/>
+					<property name="licenseName" value="GNU Lesser General Public License"/>
+					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html"/>
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="JDBM"/>
+					<property name="copyright" value="Copyright 2000 (C) Cees de Groot. All Rights Reserved."/>
+					<property name="licenseName" value="BSD"/>
+					<property name="licenseUrl" value="http://jdbm.sourceforge.net/"/>
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="jboss-serialization"/>
+					<property name="licenseName" value="GNU Lesser General Public License"/>
+					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html"/>
+				</bean>
 			</list>
 		</property>
 	</bean>
@@ -133,9 +149,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory">
-				<property name="configuration">
-					<bean class="org.infinispan.config.Configuration">
-						<property name="evictionMaxEntries" value="5000" />
+				<property name="allCategoriesConfiguration">
+					<bean class="org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo">
+						<property name="evictionMaxEntries" value="4096" />
 						<property name="evictionStrategy" value="LRU" />
 					</bean>
 				</property>
