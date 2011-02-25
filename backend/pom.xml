@@ -285,7 +285,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<geotools-version>2.7-RC2</geotools-version>
+		<geotools-version>2.6.3</geotools-version>
 		<geotools-epsg-version>2.6.3</geotools-epsg-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<slf4j-version>1.6.0</slf4j-version>
