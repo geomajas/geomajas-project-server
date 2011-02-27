@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-
 /**
  * Extension for the layer interface which signifies that this particular layer can change in opacity.
  * 
