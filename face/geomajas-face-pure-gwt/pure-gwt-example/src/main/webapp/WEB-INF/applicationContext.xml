@@ -18,6 +18,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<context:component-scan base-package="com.my.program" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false" />
+		<property name="securityServices">
+			<list>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />
+			</list>
+		</property>
+	</bean>
+
 	<bean name="pure-gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>

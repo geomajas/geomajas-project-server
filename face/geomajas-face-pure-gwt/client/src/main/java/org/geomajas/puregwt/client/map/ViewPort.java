@@ -30,6 +30,20 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 public interface ViewPort {
 
 	/**
+	 * TODO Don't want to see this as a public method...
+	 * 
+	 * @return
+	 */
+	Coordinate getWorldToPanTranslation();
+
+	/**
+	 * TODO Don't want to see this as a public method...
+	 * 
+	 * @return
+	 */
+	Coordinate getPanToViewTranslation();
+
+	/**
 	 * Returns a transformation service that can transform vector objects between world and screen space.
 	 * 
 	 * @return Returns the transformation service object.

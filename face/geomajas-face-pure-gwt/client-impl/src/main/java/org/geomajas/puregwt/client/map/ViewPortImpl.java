@@ -11,17 +11,21 @@
 
 package org.geomajas.puregwt.client.map;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ScaleConfigurationInfo;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.BboxImpl;
-
-import com.google.gwt.event.shared.EventBus;
 
 /**
  * Implementation of the ViewPort interface.
@@ -64,20 +68,29 @@ public class ViewPortImpl implements ViewPort {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Constructor that immediately applies all needed meta-data for it's own configuration.
-	 * 
-	 * @param resolutions
-	 *            The resolutions to use when applying scales. Can be an empty list, but not null.
-	 * @param maximumScale
-	 *            The maximum scale this view port should ever reach. It must never go beyond.
-	 * @param maxBounds
-	 *            The maximum bounds for this view port. Never must we go beyond these boundaries.
-	 */
-	public ViewPortImpl(List<Double> resolutions, double maximumScale, Bbox maxBounds) {
-		this.resolutions = resolutions;
-		this.maximumScale = maximumScale;
-		this.maxBounds = maxBounds;
+	public ViewPortImpl(EventBus eventBus, ClientMapInfo mapInfo) {
+		// Acquire maximum scale:
+		ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
+		maximumScale = scaleConfigurationInfo.getMaximumScale().getPixelPerUnit();
+
+		// Get the full set of resolutions:
+		resolutions = new ArrayList<Double>();
+		for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
+			resolutions.add(1. / scale.getPixelPerUnit());
+		}
+		maxBounds = new BboxImpl(mapInfo.getMaxBounds());
+		Bbox initialBounds = new BboxImpl(mapInfo.getInitialBounds());
+		// if the max bounds was not configured, take the union of initial and layer bounds
+		Bbox all = new BboxImpl(org.geomajas.geometry.Bbox.ALL);
+		if (maxBounds.equals(all)) {
+			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+				maxBounds = new BboxImpl(initialBounds);
+				maxBounds = maxBounds.union(new BboxImpl(layerInfo.getMaxExtent()));
+			}
+		}
+
+		this.eventBus = eventBus;
+		transformationService = new TransformationServiceImpl(this);
 	}
 
 	// -------------------------------------------------------------------------
@@ -175,24 +188,55 @@ public class ViewPortImpl implements ViewPort {
 		eventBus.fireEvent(new ViewPortDraggedEvent(this));
 	}
 
+	/**
+	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.<br/>
+	 * TODO don't want to see this as a public method...
+	 */
+	public Coordinate getWorldToPanTranslation() {
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getPanX() * viewState.getScale());
+			double dY = viewState.getPanY() * viewState.getScale();
+			return new Coordinate(dX, dY);
+		}
+		return new Coordinate(0, 0);
+	}
+
+	/**
+	 * Return the translation of coordinates relative to the pan origin to view coordinates.<br/>
+	 * TODO don't want to see this as a public method...
+	 */
+	public Coordinate getPanToViewTranslation() {
+		if (viewState.getScale() > 0) {
+			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale()) + width / 2;
+			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale() + height / 2;
+			return new Coordinate(dX, dY);
+		}
+		return new Coordinate(0, 0);
+	}
+
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	protected ViewPortState getViewPortState() {
+	public ViewPortState getViewPortState() {
 		return viewState;
 	}
 
-	protected double getMapWidth() {
+	public double getMapWidth() {
 		return width;
 	}
 
-	protected double getMapHeight() {
+	public double getMapHeight() {
 		return height;
 	}
 
-	protected Coordinate getPanOrigin() {
+	public Coordinate getPanOrigin() {
 		return new Coordinate(viewState.getPanX(), viewState.getPanY());
+	}
+	
+	protected void setSize(int width, int height) {
+		this.width = width;
+		this.height = height;
 	}
 
 	// -------------------------------------------------------------------------

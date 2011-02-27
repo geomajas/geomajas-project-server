@@ -10,7 +10,7 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<module>
+<module rename-to="GeomajasSamples">
 	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
     <inherits name="org.geomajas.puregwt.GeomajasClientImpl"/>
   	<inherits name="com.google.gwt.inject.Inject"/>

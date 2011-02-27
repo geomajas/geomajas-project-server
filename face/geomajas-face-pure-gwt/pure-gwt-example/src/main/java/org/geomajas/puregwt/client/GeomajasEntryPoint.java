@@ -11,6 +11,10 @@
 
 package org.geomajas.puregwt.client;
 
+import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.MapPresenterImpl;
+import org.geomajas.puregwt.client.map.controller.MapListener;
+import org.geomajas.puregwt.client.map.controller.MapListenerEvent;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -20,6 +24,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -32,13 +37,37 @@ public class GeomajasEntryPoint implements EntryPoint {
 	private final PureGwtExampleGinjector injector = GWT.create(PureGwtExampleGinjector.class);
 
 	public void onModuleLoad() {
-		MapWidgetImpl map = injector.getMap();
-		map.setSize("800px", "600px");
-
+		MapWidgetImpl mapWidget = injector.getMap();
+		final MapPresenter mapPresenter = new MapPresenterImpl("pure-gwt-app", "mapOsm", mapWidget);
+		mapPresenter.setSize(640, 480);
+		
+		final Label label = new Label("Hello world");
 		Button b2 = new Button("Init", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				//map.init();
+				mapPresenter.initialize();
+				mapPresenter.addMapListener(new MapListener() {
+
+					public void onMouseDown(MapListenerEvent event) {
+					}
+
+					public void onMouseUp(MapListenerEvent event) {
+						label.setText("MouseMove: " + event);
+					}
+
+					public void onMouseMove(MapListenerEvent event) {
+						label.setText("World position: " + event.getWorldPosition());
+					}
+
+					public void onMouseOut(MapListenerEvent event) {
+					}
+
+					public void onMouseOver(MapListenerEvent event) {
+					}
+
+					public void onMouseWheel(MapListenerEvent event) {
+					}
+				});
 			}
 		});
 
@@ -46,9 +75,10 @@ public class GeomajasEntryPoint implements EntryPoint {
 		hPanel.add(b2);
 
 		RootPanel.get().add(hPanel);
-		
+
 		DecoratorPanel decPanel = new DecoratorPanel();
-		decPanel.setWidget(map);
+		decPanel.setWidget(mapWidget);
 		RootPanel.get().add(decPanel);
+		RootPanel.get().add(label);
 	}
 }

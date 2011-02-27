@@ -18,7 +18,7 @@ import com.google.gwt.inject.client.Ginjector;
 
 /**
  * Gin injector.
- *
+ * 
  * @author Jan De Moerloose
  */
 @GinModules({ GeomajasPureModule.class, PureGwtExampleModule.class })

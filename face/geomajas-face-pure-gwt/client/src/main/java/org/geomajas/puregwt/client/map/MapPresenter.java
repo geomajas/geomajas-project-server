@@ -27,6 +27,26 @@ import org.geomajas.puregwt.client.map.controller.MapListener;
 @Api
 public interface MapPresenter {
 
+	void initialize();
+
+	/**
+	 * Set a new renderer on the map. This renderer is responsible for making sure the map is always renderer correctly.
+	 * 
+	 * @param mapRenderer
+	 *            The new map renderer responsible for rendering the map.
+	 */
+	void setMapRenderer(MapRenderer mapRenderer);
+
+	/**
+	 * Apply a new width and height on the map. Both parameters are expressed in pixels.
+	 * 
+	 * @param width
+	 *            The new pixel width for the map.
+	 * @param height
+	 *            The new pixel height for the map.
+	 */
+	void setSize(int width, int height);
+
 	/**
 	 * Returns a container in world space wherein one can render new vector objects. Note that all objects drawn into
 	 * such a container should be expressed in world coordinates (the CRS of the map). These objects will also be
@@ -93,25 +113,25 @@ public interface MapPresenter {
 	 *            The new {@link MapController} object. If null is passed, then the active controller is again disabled.
 	 *            At that time the fall-back controller is again activated.
 	 */
-	void setController(MapController controller);
+	void setMapController(MapController controller);
 
 	/**
 	 * Return the currently active controller on the map.
 	 * 
 	 * @return The currently active controller.
 	 */
-	MapController getController();
+	MapController getMapController();
 
 	/**
 	 * Add a new listener to the map. These listeners passively listen to mouse events on the map, without actually
 	 * interfering with these events. The difference with a {@link MapController} is that controllers can do whatever
 	 * they want, while a listener is not allowed to interfere with the mouse events in any way.
 	 * 
-	 * @param listener
+	 * @param mapListener
 	 *            The listener to try and remove again.
 	 * @return Returns true of removal was successful, false otherwise (i.e. if the listener could not be found).
 	 */
-	boolean addListener(MapListener listener);
+	boolean addMapListener(MapListener mapListener);
 
 	/**
 	 * Remove one of the currently active listeners on the map. These listeners passively listen to mouse events on the
@@ -119,11 +139,11 @@ public interface MapPresenter {
 	 * controllers can do whatever they want, while a listener is not allowed to interfere with the mouse events in any
 	 * way.
 	 * 
-	 * @param listener
+	 * @param mapListener
 	 *            The listener to try and remove again.
 	 * @return Returns true of removal was successful, false otherwise (i.e. if the listener could not be found).
 	 */
-	boolean removeListener(MapListener listener);
+	boolean removeMapListener(MapListener mapListener);
 
 	/**
 	 * Get the currently active set of listeners on the map. These listeners passively listen to mouse events on the
@@ -133,5 +153,13 @@ public interface MapPresenter {
 	 * 
 	 * @return Returns the full collection of currently active listeners.
 	 */
-	Collection<MapListener> getListeners();
+	Collection<MapListener> getMapListeners();
+
+	/**
+	 * Apply a new mouse cursor when hovering above the map.
+	 * 
+	 * @param cursor
+	 *            The new cursor to apply.
+	 */
+	void setCursor(String cursor);
 }

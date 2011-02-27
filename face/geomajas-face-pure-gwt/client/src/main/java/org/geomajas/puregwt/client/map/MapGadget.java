@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Definition for an autonomous gadget which can be displayed on the map. These gadgets receive some events from the map
@@ -22,7 +23,8 @@ import org.geomajas.global.Api;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@UserImplemented
+@Api(allMethods = true)
 public interface MapGadget {
 
 	/**

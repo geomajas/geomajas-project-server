@@ -16,9 +16,11 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ScaleConfigurationInfo;
-import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.BboxImpl;
 
@@ -29,11 +31,11 @@ import org.geomajas.puregwt.client.spatial.BboxImpl;
  */
 public class MapModelImpl implements MapModel {
 
-	private String id;
-
 	private ClientMapInfo mapInfo;
 
 	private ViewPort viewPort;
+
+	private EventBus eventBus;
 
 	/**
 	 * An ordered list of layers. The drawing order on the map is as follows: the first layer will be placed at the
@@ -45,8 +47,8 @@ public class MapModelImpl implements MapModel {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public MapModelImpl(String id) {
-		this.id = id;
+	public MapModelImpl() {
+		eventBus = new EventBusImpl();
 	}
 
 	// ------------------------------------------------------------------------
@@ -58,33 +60,26 @@ public class MapModelImpl implements MapModel {
 	 * 
 	 * @param mapInfo
 	 *            The configuration object from which this model should build itself.
+	 * @param mapWidth
+	 *            The width of the map to apply.
+	 * @param mapHeight
+	 *            The height of the map to apply.
 	 */
-	public void initialize(ClientMapInfo mapInfo) {
+	public void initialize(ClientMapInfo mapInfo, int mapWidth, int mapHeight) {
 		this.mapInfo = mapInfo;
-		// srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
-		ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
-		List<Double> realResolutions = new ArrayList<Double>();
-		for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
-			realResolutions.add(1. / scale.getPixelPerUnit());
-		}
-		Bbox maxBounds = new BboxImpl(mapInfo.getMaxBounds());
-		Bbox initialBounds = new BboxImpl(mapInfo.getInitialBounds());
-		// if the max bounds was not configured, take the union of initial and layer bounds
-		Bbox all = new BboxImpl(org.geomajas.geometry.Bbox.ALL);
-		if (maxBounds.equals(all)) {
-			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-				maxBounds = new BboxImpl(initialBounds);
-				maxBounds = maxBounds.union(new BboxImpl(layerInfo.getMaxExtent()));
-			}
-		}
-		viewPort = new ViewPortImpl(realResolutions, scaleConfigurationInfo.getMaximumScale().getPixelPerUnit(),
-				maxBounds);
+
+		// Configure the ViewPort. This will immediately zoom to the initial bounds:
+		viewPort = new ViewPortImpl(eventBus, mapInfo);
+		((ViewPortImpl) viewPort).setSize(mapWidth, mapHeight);
+
+		// Create all the layers:
 		layers = new ArrayList<Layer<?>>();
 		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 			addLayer(layerInfo);
 		}
 
-		// Zoom to the initial bounds as configured in the MapInfo:
+		// Immediately zoom to the initial bounds as configured:
+		Bbox initialBounds = new BboxImpl(mapInfo.getInitialBounds());
 		viewPort.applyBounds(initialBounds, ZoomOption.LEVEL_CLOSEST);
 	}
 
@@ -187,6 +182,24 @@ public class MapModelImpl implements MapModel {
 		return viewPort;
 	}
 
+	/**
+	 * Returns a map-specific event bus that fires all map/layer/feature related events.
+	 * 
+	 * @return The map specific event bus.
+	 */
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
+	/**
+	 * Return the EPSG code of the reference coordinate system used in this map.
+	 * 
+	 * @return The EPSG code. Example: 'EPSG:4326'.
+	 */
+	public String getEpsg() {
+		return mapInfo.getCrs();
+	}
+
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
@@ -194,8 +207,8 @@ public class MapModelImpl implements MapModel {
 	private void addLayer(ClientLayerInfo layerInfo) {
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				// RasterLayer rasterLayer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
-				// layers.add(rasterLayer);
+				RasterLayer layer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
+				layers.add(layer);
 				break;
 			default:
 				// VectorLayer vectorLayer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);

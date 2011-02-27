@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.Api;
+import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
@@ -37,7 +38,7 @@ public interface MapModel {
 	 * @param mapInfo
 	 *            The configuration object from which this model should build itself.
 	 */
-	void initialize(ClientMapInfo mapInfo);
+	void initialize(ClientMapInfo mapInfo, int mapWidth, int mapHeight);
 
 	/**
 	 * Get a single layer by its identifier.
@@ -122,4 +123,18 @@ public interface MapModel {
 	 * @return Returns the view port.
 	 */
 	ViewPort getViewPort();
+
+	/**
+	 * Returns a map-specific event bus that fires all map/layer/feature related events.
+	 * 
+	 * @return The map specific event bus.
+	 */
+	EventBus getEventBus();
+
+	/**
+	 * Return the EPSG code of the reference coordinate system used in this map.
+	 * 
+	 * @return The EPSG code. Example: 'EPSG:4326'.
+	 */
+	String getEpsg();
 }
