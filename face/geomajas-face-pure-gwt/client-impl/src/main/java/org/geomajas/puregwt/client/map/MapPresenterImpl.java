@@ -27,6 +27,7 @@ import org.geomajas.puregwt.client.map.controller.ListenerController;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.controller.NavigationController;
+import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
@@ -102,6 +103,7 @@ public class MapPresenterImpl implements MapPresenter {
 					mapModel.initialize(r.getMapInfo(), display.asWidget().getOffsetWidth(), display.asWidget()
 							.getOffsetHeight());
 					setFallbackController(new NavigationController());
+					mapModel.getEventBus().fireEvent(new MapInitializationEvent());
 				}
 			}
 

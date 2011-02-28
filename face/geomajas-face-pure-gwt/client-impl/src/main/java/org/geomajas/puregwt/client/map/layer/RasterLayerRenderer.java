@@ -27,12 +27,18 @@ import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
+import org.geomajas.puregwt.client.map.event.LayerHideEvent;
+import org.geomajas.puregwt.client.map.event.LayerShowEvent;
+import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
+import org.geomajas.puregwt.client.map.event.LayerVisibleHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.HtmlImage;
+import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.spatial.Bbox;
 
 /**
@@ -43,8 +49,9 @@ import org.geomajas.puregwt.client.spatial.Bbox;
  * 
  * @author Pieter De Graef
  */
-public class RasterLayerRenderer implements MapRenderer {
+public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandler, LayerVisibleHandler {
 
+	/** The container that should render all images. */
 	private HtmlContainer htmlContainer;
 
 	private RasterLayer rasterLayer;
@@ -55,6 +62,9 @@ public class RasterLayerRenderer implements MapRenderer {
 
 	private Deferred deferred;
 
+	private Bbox currentTileBounds;
+
+	// TODO inject this with GIN
 	private CommandService commandService = new CommandService();
 
 	// ------------------------------------------------------------------------
@@ -63,6 +73,37 @@ public class RasterLayerRenderer implements MapRenderer {
 
 	protected RasterLayerRenderer(RasterLayer rasterLayer) {
 		this.rasterLayer = rasterLayer;
+		rasterLayer.getMapModel().getEventBus().addHandler(LayerStyleChangedHandler.TYPE, this);
+		rasterLayer.getMapModel().getEventBus().addHandler(LayerVisibleHandler.TYPE, this);
+	}
+
+	// ------------------------------------------------------------------------
+	// LayerStyleChangedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerStyleChanged(LayerStyleChangedEvent event) {
+		if (event.getLayer().getId().equals(rasterLayer.getId())) {
+			for (int i = 0; i < htmlContainer.getChildCount(); i++) {
+				HtmlObject htmlObject = htmlContainer.getChild(i);
+				htmlObject.setOpacity(rasterLayer.getOpacity());
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// LayerVisibleHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onShow(LayerShowEvent event) {
+		if (event.getLayer().getId().equals(rasterLayer.getId())) {
+			htmlContainer.show();
+		}
+	}
+
+	public void onHide(LayerHideEvent event) {
+		if (event.getLayer().getId().equals(rasterLayer.getId())) {
+			htmlContainer.hide();
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -80,14 +121,19 @@ public class RasterLayerRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		fetchTiles(event.getViewPort().getBounds());
+		if (currentTileBounds == null || !currentTileBounds.contains(event.getViewPort().getBounds())) {
+			fetchTiles(event.getViewPort().getBounds());
+		}
 	}
 
 	public void onViewPortDragged(ViewPortDraggedEvent event) {
-		// Do some smart fetching...
+		if (currentTileBounds == null || !currentTileBounds.contains(event.getViewPort().getBounds())) {
+			fetchTiles(event.getViewPort().getBounds());
+		}
 	}
 
 	public void clear() {
+		currentTileBounds = null;
 		htmlContainer.clear();
 		if (tiles.size() > 0) {
 			tiles.clear();
@@ -119,14 +165,15 @@ public class RasterLayerRenderer implements MapRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	/** Fetch tiles and make sure they are rendered when the response returns. */
 	private void fetchTiles(final Bbox bounds) {
 		// Scale the bounds to fetch tiles for:
-		Bbox tileBounds = bounds.scale(mapExentScaleAtFetch);
+		currentTileBounds = bounds.scale(mapExentScaleAtFetch);
 
 		// Create the command:
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
-		request.setBbox(new org.geomajas.geometry.Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(),
-				tileBounds.getHeight()));
+		request.setBbox(new org.geomajas.geometry.Bbox(currentTileBounds.getX(), currentTileBounds.getY(),
+				currentTileBounds.getWidth(), currentTileBounds.getHeight()));
 		request.setCrs(rasterLayer.getMapModel().getEpsg());
 		request.setLayerId(rasterLayer.getServerLayerId());
 		request.setScale(rasterLayer.getMapModel().getViewPort().getScale());
@@ -137,12 +184,8 @@ public class RasterLayerRenderer implements MapRenderer {
 		deferred = commandService.execute(command, new CommandCallback() {
 
 			public void onSuccess(CommandResponse response) {
-				GetRasterTilesResponse r = (GetRasterTilesResponse) response;
-				addTiles(r.getRasterData());
-				for (RasterTile tile : tiles.values()) {
-					htmlContainer.add(new HtmlImage(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
-							(int) Math.round(tile.getBounds().getHeight()), (int) Math.round(tile.getBounds().getY()),
-							(int) Math.round(tile.getBounds().getX())));
+				if (response instanceof GetRasterTilesResponse) {
+					addTiles(((GetRasterTilesResponse) response).getRasterData());
 				}
 			}
 
@@ -151,17 +194,28 @@ public class RasterLayerRenderer implements MapRenderer {
 		});
 	}
 
-	private void addTiles(List<org.geomajas.layer.tile.RasterTile> images) {
+	/** Add tiles to the list and render them on the map. */
+	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles) {
 		ViewPortImpl viewPort = (ViewPortImpl) rasterLayer.getMapModel().getViewPort();
 		Coordinate delta = viewPort.getWorldToPanTranslation();
 
-		// Go over all tiles we got back from the server. Add only new tiles.
-		for (RasterTile image : images) {
-			TileCode code = image.getCode().clone();
+		// Go over all tiles we got back from the server:
+		for (RasterTile tile : rasterTiles) {
+			TileCode code = tile.getCode().clone();
+
+			// Add only new tiles to the list:
 			if (!tiles.containsKey(code)) {
-				image.getBounds().setX(image.getBounds().getX() + delta.getX());
-				image.getBounds().setY(image.getBounds().getY() + delta.getY());
-				tiles.put(code, image);
+				// Give the tile the correct location, keeping panning in mind:
+				tile.getBounds().setX(tile.getBounds().getX() + delta.getX());
+				tile.getBounds().setY(tile.getBounds().getY() + delta.getY());
+
+				// Add the tile to the list and render it:
+				tiles.put(code, tile);
+				HtmlImage image = new HtmlImage(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
+						(int) Math.round(tile.getBounds().getHeight()), (int) Math.round(tile.getBounds().getY()),
+						(int) Math.round(tile.getBounds().getX()));
+				image.setOpacity(rasterLayer.getOpacity());
+				htmlContainer.add(image);
 			}
 		}
 		deferred = null;

@@ -160,6 +160,19 @@ public abstract class HtmlObject extends Widget {
 
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
+		DOM.setStyleAttribute(getElement(), "filter", "alpha(opacity=" + (opacity * 100) + ")");
+		DOM.setStyleAttribute(getElement(), "opacity", opacity + "");
+
+		// DOM.setStyleAttribute(getElement(), "-moz-opacity", opacity + ""); // Very old Mozilla browsers.
+		// DOM.setStyleAttribute(getElement(), "-khtml-opacity", opacity + ""); // 1.x Safari.
+	}
+
+	public void hide() {
+		DOM.setStyleAttribute(getElement(), "visibility", "hidden");
+	}
+
+	public void show() {
+		DOM.setStyleAttribute(getElement(), "visibility", "visible");
 	}
 
 	// ------------------------------------------------------------------------
