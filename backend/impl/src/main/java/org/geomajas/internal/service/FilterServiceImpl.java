@@ -14,6 +14,7 @@ package org.geomajas.internal.service;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.FeatureModelRegistry;
@@ -23,6 +24,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -275,6 +277,21 @@ public final class FilterServiceImpl implements FilterService {
 	 */
 	public Filter createBboxFilter(String epsg, Envelope bbox, String geomName) {
 		return FF.bbox(geomName, bbox.getMinX(), bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY(), epsg);
+	}
+
+	/**
+	 * Create a filter the evaluates all geometries within a certain bounding box.
+	 * 
+	 * @param epsg
+	 *            The bounding box' coordinate system reference.
+	 * @param bbox
+	 *            The bounding box itself.
+	 * @param geomName
+	 *            The name of the geometry field ("the_geom")
+	 * @return filter
+	 */
+	public Filter createBboxFilter(Crs crs, Envelope bbox, String geomName) {
+		return FF.bbox(FF.property(geomName), new ReferencedEnvelope(bbox, crs));
 	}
 
 	/**

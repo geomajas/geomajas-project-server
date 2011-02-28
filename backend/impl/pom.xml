@@ -85,7 +85,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-epsg-wkt</artifactId>
+			<artifactId>gt-epsg-hsql</artifactId>
+			<version>2.7-RC2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>

@@ -33,6 +33,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
@@ -120,7 +121,7 @@ public final class GeoServiceImpl implements GeoService {
 		try {
 			Crs res = crsCache.get(crs);
 			if (null == res) {
-				res = CrsFactory.getCrs(crs, CRS.decode(crs));
+				res = CrsFactory.getCrs(crs, CRS.decode(crs, true));
 				crsCache.put(crs, res);
 			}
 			return res;
@@ -246,7 +247,8 @@ public final class GeoServiceImpl implements GeoService {
 							ogEnvelope.getLowerCorner().getCoordinate()[1],
 							ogEnvelope.getUpperCorner().getCoordinate()[1]);
 					log.info("CRS " + targetCrs.getId() + " envelope " + envelope);
-					transformableArea = JTS.transform(envelope, getBaseMathTransform(targetCrs, sourceCrs));
+					ReferencedEnvelope refEnvelope = new ReferencedEnvelope(envelope, targetCrs);
+					transformableArea = refEnvelope.transform(sourceCrs, true);
 					log.info("transformable area for " + key + " is " + transformableArea);
 				}
 			} catch (MismatchedDimensionException mde) {
@@ -257,6 +259,10 @@ public final class GeoServiceImpl implements GeoService {
 				log.warn(
 						"Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and " +
 								targetCrs.getId() + ", " + te.getMessage());
+			} catch (FactoryException fe) {
+				log.warn(
+						"Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and " +
+								targetCrs.getId() + ", " + fe.getMessage());
 			}
 
 			transform = new CrsTransformImpl(key, sourceCrs, targetCrs, mathTransform, transformableArea);

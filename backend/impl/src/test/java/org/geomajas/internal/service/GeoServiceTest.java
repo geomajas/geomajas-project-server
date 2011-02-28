@@ -283,20 +283,20 @@ public class GeoServiceTest {
 	private void assertTransformedLineString(Geometry geometry) {
 		Coordinate[] coordinates = geometry.getCoordinates();
 		Assert.assertEquals(4, coordinates.length);
-		Assert.assertEquals(243226.22754535213, coordinates[0].x, DELTA);
-		Assert.assertEquals(-5562215.514234281, coordinates[0].y, DELTA);
-		Assert.assertEquals(3571200.025158979, coordinates[1].x, DELTA);
-		Assert.assertEquals(-4114095.376986935, coordinates[1].y, DELTA);
-		Assert.assertEquals(-5635607.7135451175, coordinates[2].x, DELTA);
-		Assert.assertEquals(488062.62359615415, coordinates[2].y, DELTA);
-		Assert.assertEquals(3219426.4637164664, coordinates[3].x, DELTA);
-		Assert.assertEquals(1050557.6016714368, coordinates[3].y, DELTA);
+		Assert.assertEquals(123563.57031602281, coordinates[0].x, DELTA);
+		Assert.assertEquals(76585.04048137646, coordinates[0].y, DELTA);
+		Assert.assertEquals(193837.0401763837 , coordinates[1].x, DELTA);
+		Assert.assertEquals(243568.02558119502, coordinates[1].y, DELTA);
+		Assert.assertEquals(229406.01730448572, coordinates[2].x, DELTA);
+		Assert.assertEquals(188358.75258052722, coordinates[2].y, DELTA);
+		Assert.assertEquals(159509.37737547373, coordinates[3].x, DELTA);
+		Assert.assertEquals(20914.387943933718, coordinates[3].y, DELTA);
 	}
 
 	private Geometry getLineString() {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
-		return factory.createLineString(new Coordinate[] {
-				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
+		return factory.createLineString(new Coordinate[] { new Coordinate(4, 50), new Coordinate(5, 51.5),
+				new Coordinate(5.5, 51), new Coordinate(4.5, 49.5) });
 
 	}
 }

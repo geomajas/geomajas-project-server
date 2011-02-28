@@ -13,6 +13,7 @@ package org.geomajas.service;
 
 import java.util.Date;
 
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;
@@ -172,6 +173,20 @@ public interface FilterService {
 	 * @return filter
 	 */
 	Filter createBboxFilter(String epsg, Envelope bbox, String geomName);
+	
+	/**
+	 * Create a filter the evaluates all geometries within a certain bounding box.
+	 *
+	 * @param crs
+	 *            The bounding box' coordinate reference system.
+	 * @param bbox
+	 *            The bounding box itself.
+	 * @param geomName
+	 *            The name of the geometry field ("the_geom")
+	 * @return filter
+	 */
+	Filter createBboxFilter(Crs crs, Envelope bbox, String geomName);
+	
 
 	/**
 	 * Creates a filter with all the geometries that overlap the parameterized geometry.
