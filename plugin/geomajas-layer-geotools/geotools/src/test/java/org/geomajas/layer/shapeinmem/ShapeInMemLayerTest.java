@@ -34,7 +34,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * Test for shape-in-mem layer.
- *
+ * 
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,22 +67,16 @@ public class ShapeInMemLayerTest {
 	}
 
 	@Test
-	public void create() {
+	public void create() throws ParseException, LayerException {
 		Object created = null;
-		try {
-			WKTReader wktReader = new WKTReader();
-			Point geometry = null;
-			try {
-				geometry = (Point) wktReader.read("POINT (0 0)");
-			} catch (ParseException e) {
-			}
+		WKTReader wktReader = new WKTReader();
+		Point geometry = null;
+		geometry = (Point) wktReader.read("POINT (0 0)");
 
-			SimpleFeature feature = CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
-					new Object[] { geometry, "Tsjakamaka", 342 }, layer.getSchema(), "100000");
+		SimpleFeature feature = CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
+				new Object[] { geometry, "Tsjakamaka", 342 }, layer.getSchema(), "100000");
 
-			created = layer.create(feature);
-		} catch (Exception e) {
-		}
+		created = layer.create(feature);
 		Assert.assertNotNull(created);
 	}
 
@@ -117,23 +111,20 @@ public class ShapeInMemLayerTest {
 	}
 
 	@Test
-	public void getElements() {
-		try {
-			// Checked in QGis!
-			Iterator<?> it = layer.getElements(filter, 0, 0);
-			int counter = 0;
-			while (it.hasNext()) {
-				it.next();
-				counter++;
-			}
-			Assert.assertEquals(16, counter);
-		} catch (Exception e) {
+	public void getElements() throws LayerException {
+		// Checked in QGis!
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int counter = 0;
+		while (it.hasNext()) {
+			it.next();
+			counter++;
 		}
+		Assert.assertEquals(198, counter);
 	}
-	
+
 	@After
 	public void refreshContext() throws LayerException {
 		layer.initFeatures();
 	}
-	
+
 }

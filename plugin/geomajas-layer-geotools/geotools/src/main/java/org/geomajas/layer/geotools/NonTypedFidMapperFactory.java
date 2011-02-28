@@ -10,12 +10,12 @@
  */
 package org.geomajas.layer.geotools;
 
-import org.geotools.data.jdbc.fidmapper.DefaultFIDMapperFactory;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.logging.Level;
+
+import org.geotools.data.jdbc.fidmapper.DefaultFIDMapperFactory;
+import org.geotools.data.jdbc.fidmapper.FIDMapper;
 
 /**
  * Improved fid mapper for gt-postgis.

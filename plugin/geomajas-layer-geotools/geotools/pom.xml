@@ -25,6 +25,16 @@
 
 	<dependencyManagement>
 		<dependencies>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-main</artifactId>
+			<version>${geotools-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-api</artifactId>
+			<version>${geotools-version}</version>
+		</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
@@ -78,18 +88,21 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-main</artifactId>
+			<version>${geotools-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-api</artifactId>
+			<version>${geotools-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-jdbc</artifactId>
+			<version>${geotools-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-cql</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-epsg-wkt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
@@ -162,7 +175,7 @@
 	</build>
 
 	<properties>
-		<geotools-layer-backend-version>1.8.0</geotools-layer-backend-version>
-		<geotools-version>2.6.3</geotools-version>
+		<geotools-layer-backend-version>1.9.0-SNAPSHOT</geotools-layer-backend-version>
+		<geotools-version>2.7-RC2</geotools-version>
 	</properties>
 </project>

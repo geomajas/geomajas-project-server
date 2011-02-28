@@ -37,12 +37,14 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
@@ -138,9 +140,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	/**
 	 * Set the layer configuration.
-	 *
-	 * @param layerInfo layer information
-	 * @throws LayerException oops
+	 * 
+	 * @param layerInfo
+	 *            layer information
+	 * @throws LayerException
+	 *             oops
 	 * @since 1.7.1
 	 */
 	@Api
@@ -208,8 +212,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public Object create(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = DataUtilities
 					.collection(new SimpleFeature[] { (SimpleFeature) feature });
 			if (transactionManager != null) {
@@ -232,26 +235,24 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public void update(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
-				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			Identifier identifier = new FeatureIdImpl(getFeatureModel().getId(feature));
 			Id filter = filterFactory.id(Collections.singleton(identifier));
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
-			List<AttributeDescriptor> descriptors = new ArrayList<AttributeDescriptor>();
+			List<Name> names = new ArrayList<Name>();
 			Map<String, Attribute> attrMap = getFeatureModel().getAttributes(feature);
 			List<Object> values = new ArrayList<Object>();
 			for (String name : attrMap.keySet()) {
-				descriptors.add(store.getSchema().getDescriptor(name));
+				names.add(store.getSchema().getDescriptor(name).getName());
 				values.add(attrMap.get(name).getValue());
 			}
 
 			try {
-				store.modifyFeatures(descriptors.toArray(new AttributeDescriptor[descriptors.size()]),
-						values.toArray(), filter);
-				store.modifyFeatures(store.getSchema().getGeometryDescriptor(), getFeatureModel().getGeometry(feature),
-						filter);
+				store.modifyFeatures(names.toArray(new Name[names.size()]), values.toArray(), filter);
+				store.modifyFeatures(store.getSchema().getGeometryDescriptor().getName(), getFeatureModel()
+						.getGeometry(feature), filter);
 				log.debug("Updated feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
 			} catch (IOException ioe) {
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
@@ -267,8 +268,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public void delete(String featureId) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
-				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			Identifier identifier = new FeatureIdImpl(featureId);
 			Id filter = filterFactory.id(Collections.singleton(identifier));
 			if (transactionManager != null) {
@@ -313,17 +313,16 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public Envelope getBounds() throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
-				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures();
-			Iterator<SimpleFeature> it = fc.iterator();
+			FeatureIterator<SimpleFeature> it = fc.features();
 			if (transactionManager != null) {
-				transactionManager.addIterator(fc, it);
+				transactionManager.addIterator(it);
 			}
 			return fc.getBounds();
 		} catch (Throwable t) {
@@ -339,17 +338,16 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public Envelope getBounds(Filter filter) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
-				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
-			Iterator<SimpleFeature> it = fc.iterator();
+			FeatureIterator it = fc.features();
 			if (transactionManager != null) {
-				transactionManager.addIterator(fc, it);
+				transactionManager.addIterator(it);
 			}
 			return fc.getBounds();
 		} catch (Throwable t) {
@@ -363,19 +361,18 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
-				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			SimpleFeatureStore store = (SimpleFeatureStore) source;
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
-			Iterator<SimpleFeature> it = fc.iterator();
+			FeatureIterator<SimpleFeature> it = fc.features();
 			if (transactionManager != null) {
-				transactionManager.addIterator(fc, it);
+				transactionManager.addIterator(it);
 			}
-			return it;
+			return new JavaIterator(it);
 		} catch (Throwable t) {
 			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
@@ -390,6 +387,34 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		Id filter = filterFactory.id(Collections.singleton(identifier));
 		Iterator<?> iterator = getElements(filter, 0, 0);
 		return iterator.hasNext();
+	}
+
+	/**
+	 * Adapter to java iterator.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class JavaIterator implements Iterator {
+
+		private final FeatureIterator<SimpleFeature> delegate;
+
+		public JavaIterator(FeatureIterator<SimpleFeature> delegate) {
+			this.delegate = delegate;
+		}
+
+		public boolean hasNext() {
+			return delegate.hasNext();
+		}
+
+		public Object next() {
+			return delegate.next();
+		}
+
+		public void remove() {
+			throw new UnsupportedOperationException("Feature removal not supported, use delete(id) instead");
+		}
+
 	}
 
 }

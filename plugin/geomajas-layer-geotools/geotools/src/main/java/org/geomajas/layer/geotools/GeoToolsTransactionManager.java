@@ -11,12 +11,10 @@
 package org.geomajas.layer.geotools;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.geotools.data.Transaction;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionDefinition;
@@ -63,11 +61,10 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	 * @param featureCollection feature collection
 	 * @param iterator SimpleFeature iterator
 	 */
-	public void addIterator(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection,
-			Iterator<SimpleFeature> iterator) {
+	public void addIterator(FeatureIterator<SimpleFeature> iterator) {
 		GeoToolsTransactionHolder txHolder = (GeoToolsTransactionHolder) TransactionSynchronizationManager
 				.getResource(this);
-		txHolder.addIterator(featureCollection, iterator);
+		txHolder.addIterator(iterator);
 	}
 
 	@Override

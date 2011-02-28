@@ -97,23 +97,14 @@ public class ShapeInMemFeatureModelTest {
 	@Test
 	public void newInstance() throws Exception {
 		Object newInstance = null;
-		try {
 			newInstance = featureModel.newInstance();
-		} catch (Exception e) {
-		}
 		Assert.assertNotNull(newInstance);
 
-		try {
 			newInstance = featureModel.newInstance("1000000");
-		} catch (Exception e) {
-		}
 		Assert.assertNotNull(newInstance);
 
 		String id = null;
-		try {
 			id = featureModel.getId(newInstance);
-		} catch (Exception e) {
-		}
 		Assert.assertNotNull(id);
 	}
 

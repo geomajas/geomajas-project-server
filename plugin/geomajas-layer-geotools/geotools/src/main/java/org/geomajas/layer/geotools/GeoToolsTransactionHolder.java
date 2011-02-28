@@ -11,14 +11,12 @@
 package org.geomajas.layer.geotools;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.springframework.transaction.support.ResourceHolderSupport;
 
 /**
@@ -44,9 +42,8 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 		return !transaction.isClosed();
 	}
 
-	public void addIterator(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection,
-			Iterator<SimpleFeature> iterator) {
-		this.iterators.add(new IteratorInfo(featureCollection, iterator));
+	public void addIterator(FeatureIterator<SimpleFeature> iterator) {
+		this.iterators.add(new IteratorInfo(iterator));
 	}
 
 	public void clear() {
@@ -90,18 +87,14 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 	 */
 	private static class IteratorInfo {
 
-		private FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection;
+		private FeatureIterator<SimpleFeature> iterator;
 
-		private Iterator<SimpleFeature> iterator;
-
-		public IteratorInfo(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection,
-				Iterator<SimpleFeature> iterator) {
-			this.featureCollection = featureCollection;
+		public IteratorInfo(FeatureIterator<SimpleFeature> iterator) {
 			this.iterator = iterator;
 		}
 
 		public void close() {
-			featureCollection.close(iterator);
+			iterator.close();
 		}
 	}
 

@@ -18,7 +18,6 @@ import org.geomajas.layer.geotools.postgis.NonTypedPostgisFidMapperFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.jdbc.JDBC1DataStore;
 import org.geotools.data.jdbc.JDBCDataStore;
 import org.geotools.data.postgis.PostgisDataStore;
 import org.slf4j.Logger;
@@ -60,9 +59,7 @@ public final class DataStoreFactory {
 			JDBCDataStore jdbcStore = (JDBCDataStore) store;
 			jdbcStore.setFIDMapperFactory(new NonTypedFidMapperFactory());
 		}
-		if (store instanceof JDBC1DataStore) {
-			store = new ExtendedDataStore((JDBC1DataStore) store);
-		} else if (store == null) {
+		if (store == null) {
 			StringBuilder availableStr = new StringBuilder();
 			StringBuilder missingStr = new StringBuilder();
 			Iterator<DataStoreFactorySpi> all = DataStoreFinder.getAllDataStores();

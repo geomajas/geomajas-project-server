@@ -16,7 +16,7 @@ import java.io.IOException;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geotools.data.DataStore;
-import org.geotools.data.FeatureSource;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -41,7 +41,7 @@ public class FeatureSourceRetriever {
 	/**
 	 * The FeatureSource object with which we have access to the geotools persistence layer.
 	 */
-	private FeatureSource<SimpleFeatureType, SimpleFeature> featureSource;
+	private SimpleFeatureSource featureSource;
 
 	protected long nextId;
 
@@ -75,7 +75,7 @@ public class FeatureSourceRetriever {
 	 * @throws LayerException
 	 *             oops
 	 */
-	public FeatureSource<SimpleFeatureType, SimpleFeature> getFeatureSource() throws LayerException {
+	public SimpleFeatureSource getFeatureSource() throws LayerException {
 		if (featureSource == null) {
 			try {
 				featureSource = dataStore.getFeatureSource(featureSourceName);
