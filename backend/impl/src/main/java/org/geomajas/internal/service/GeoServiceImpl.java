@@ -355,13 +355,19 @@ public final class GeoServiceImpl implements GeoService {
 			if (envelope.isNull()) {
 				return new Bbox();
 			} else {
-				envelope = JTS.transform(envelope, crsTransform);
+				ReferencedEnvelope refEnvelope = new ReferencedEnvelope(envelope, crsTransform.getSource());
+				envelope = refEnvelope.transform(crsTransform.getTarget(), true);
 				return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 			}
 		} catch (TransformException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
 					"transformation. Object replaced by empty Bbox.", te);
+			return new Bbox();
+		} catch (FactoryException fe) {
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
+					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
+					"transformation. Object replaced by empty Bbox.", fe);
 			return new Bbox();
 		}
 	}
@@ -403,11 +409,21 @@ public final class GeoServiceImpl implements GeoService {
 			if (null != transformableArea) {
 				source = source.intersection(transformableArea);
 			}
-			return source.isNull() ? source : JTS.transform(source, crsTransform);
+			if (source.isNull()) {
+				return source;
+			} else {
+				ReferencedEnvelope refEnvelope = new ReferencedEnvelope(source, crsTransform.getSource());
+				return refEnvelope.transform(crsTransform.getTarget(), true);
+			}
 		} catch (TransformException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
 					"transformation. Object replaced by empty Envelope.", te);
+			return new Envelope();
+		} catch (FactoryException fe) {
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
+					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
+					"transformation. Object replaced by empty Envelope.", fe);
 			return new Envelope();
 		}
 	}

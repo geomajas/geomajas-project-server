@@ -11,31 +11,25 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Test for {@link org.geomajas.service.GeoService} implementation.
@@ -89,23 +83,22 @@ public class GeoServiceTransformableAreaTest {
 
 	private void assertTransformedLineString(Geometry geometry) {
 		Coordinate[] coordinates = geometry.getCoordinates();
-		Assert.assertEquals(5, coordinates.length);
-		Assert.assertEquals(243228.2415398722, coordinates[0].x, DELTA);
-		Assert.assertEquals(-5562212.2922869185, coordinates[0].y, DELTA);
-		Assert.assertEquals(3571198.1691051605, coordinates[1].x, DELTA);
-		Assert.assertEquals(-4114094.247419103, coordinates[1].y, DELTA);
-		Assert.assertEquals(-1559252.030797058, coordinates[2].x, DELTA);
-		Assert.assertEquals(4925010.054948342, coordinates[2].y, DELTA);
-		Assert.assertEquals(-1576255.123949388, coordinates[3].x, DELTA);
-		Assert.assertEquals(4991115.69215949, coordinates[3].y, DELTA);
-		Assert.assertEquals(3219427.718819718, coordinates[4].x, DELTA);
-		Assert.assertEquals(1050557.615059331, coordinates[4].y, DELTA);
+		Assert.assertEquals(4, coordinates.length);
+		Assert.assertEquals(123563.57031602281, coordinates[0].x, DELTA);
+		Assert.assertEquals(76585.04048137646, coordinates[0].y, DELTA);
+		Assert.assertEquals(193837.0401763837 , coordinates[1].x, DELTA);
+		Assert.assertEquals(243568.02558119502, coordinates[1].y, DELTA);
+		Assert.assertEquals(229406.01730448572, coordinates[2].x, DELTA);
+		Assert.assertEquals(188358.75258052722, coordinates[2].y, DELTA);
+		Assert.assertEquals(159509.37737547373, coordinates[3].x, DELTA);
+		Assert.assertEquals(20914.387943933718, coordinates[3].y, DELTA);
 	}
 
 	private Geometry getLineString() {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
-		return factory.createLineString(new Coordinate[] {
-				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
+		return factory.createLineString(new Coordinate[] { new Coordinate(4, 50), new Coordinate(5, 51.5),
+				new Coordinate(5.5, 51), new Coordinate(4.5, 49.5) });
+
 	}
 
 	@Test
@@ -119,12 +112,12 @@ public class GeoServiceTransformableAreaTest {
 
 	@Test
 	public void transformBboxTest() throws Exception {
-		Bbox bbox = new Bbox(50, 50, 100, 10);
+		Bbox bbox = new Bbox(0, 40, 10, 20);
 		Bbox transformed = geoService.transform(bbox, LONLAT, LAMBERT72);
-		Assert.assertEquals(2574606.0591756646, transformed.getX(), DELTA);
-		Assert.assertEquals(1050557.615059331, transformed.getY(), DELTA);
-		Assert.assertEquals(2687255.809476059, transformed.getWidth(), DELTA);
-		Assert.assertEquals(3175793.6757641807, transformed.getHeight(), DELTA);
+		Assert.assertEquals(-228735.21449864685, transformed.getX(), DELTA);
+		Assert.assertEquals(-1040736.2671662597, transformed.getY(), DELTA);
+		Assert.assertEquals(866755.5520200664, transformed.getWidth(), DELTA);
+		Assert.assertEquals(2247657.6332967337, transformed.getHeight(), DELTA);
 	}
 
 	@Test
@@ -139,12 +132,12 @@ public class GeoServiceTransformableAreaTest {
 
 	@Test
 	public void transformEnvelopeTest() throws Exception {
-		Envelope envelope = new Envelope(50, 150, 50, 60);
+		Envelope envelope = new Envelope(0, 10, 40, 60);
 		Envelope transformed = geoService.transform(envelope, LONLAT, LAMBERT72);
-		Assert.assertEquals(2574606.0591756646, transformed.getMinX(), DELTA);
-		Assert.assertEquals(1050557.615059331, transformed.getMinY(), DELTA);
-		Assert.assertEquals(5261861.8686517235, transformed.getMaxX(), DELTA);
-		Assert.assertEquals(4226351.290823512, transformed.getMaxY(), DELTA);
+		Assert.assertEquals(-228735.21449864685, transformed.getMinX(), DELTA);
+		Assert.assertEquals(-1040736.2671662597, transformed.getMinY(), DELTA);
+		Assert.assertEquals(866755.5520200664, transformed.getWidth(), DELTA);
+		Assert.assertEquals(2247657.6332967337, transformed.getHeight(), DELTA);
 	}
 
 	@Test
