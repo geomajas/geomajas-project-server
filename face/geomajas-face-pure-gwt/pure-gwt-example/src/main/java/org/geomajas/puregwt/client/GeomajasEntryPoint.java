@@ -13,8 +13,7 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
-import org.geomajas.puregwt.client.map.controller.MapListener;
-import org.geomajas.puregwt.client.map.controller.MapListenerEvent;
+import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -24,7 +23,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -40,45 +38,53 @@ public class GeomajasEntryPoint implements EntryPoint {
 		MapWidgetImpl mapWidget = injector.getMap();
 		final MapPresenter mapPresenter = new MapPresenterImpl("pure-gwt-app", "mapOsm", mapWidget);
 		mapPresenter.setSize(640, 480);
-		
-		final Label label = new Label("Hello world");
-		Button b2 = new Button("Init", new ClickHandler() {
+
+		Button initButton = new Button("Init", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				mapPresenter.initialize();
-				mapPresenter.addMapListener(new MapListener() {
+			}
+		});
+		Button opacity05Button = new Button("Opacity=0.5", new ClickHandler() {
 
-					public void onMouseDown(MapListenerEvent event) {
-					}
+			public void onClick(ClickEvent event) {
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				layer.setOpacity(0.5);
+			}
+		});
+		Button opacity1Button = new Button("Opacity=1", new ClickHandler() {
 
-					public void onMouseUp(MapListenerEvent event) {
-						label.setText("MouseMove: " + event);
-					}
+			public void onClick(ClickEvent event) {
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				layer.setOpacity(1);
+			}
+		});
+		Button hideButton = new Button("Hide", new ClickHandler() {
 
-					public void onMouseMove(MapListenerEvent event) {
-						label.setText("World position: " + event.getWorldPosition());
-					}
+			public void onClick(ClickEvent event) {
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				layer.setMarkedAsVisible(false);
+			}
+		});
+		Button showButton = new Button("Show", new ClickHandler() {
 
-					public void onMouseOut(MapListenerEvent event) {
-					}
-
-					public void onMouseOver(MapListenerEvent event) {
-					}
-
-					public void onMouseWheel(MapListenerEvent event) {
-					}
-				});
+			public void onClick(ClickEvent event) {
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				layer.setMarkedAsVisible(true);
 			}
 		});
 
 		HorizontalPanel hPanel = new HorizontalPanel();
-		hPanel.add(b2);
+		hPanel.add(initButton);
+		hPanel.add(opacity05Button);
+		hPanel.add(opacity1Button);
+		hPanel.add(hideButton);
+		hPanel.add(showButton);
 
 		RootPanel.get().add(hPanel);
 
 		DecoratorPanel decPanel = new DecoratorPanel();
 		decPanel.setWidget(mapWidget);
 		RootPanel.get().add(decPanel);
-		RootPanel.get().add(label);
 	}
 }
