@@ -184,6 +184,7 @@ public interface FilterService {
 	 * @param geomName
 	 *            The name of the geometry field ("the_geom")
 	 * @return filter
+	 * @since 1.9.0
 	 */
 	Filter createBboxFilter(Crs crs, Envelope bbox, String geomName);
 	
