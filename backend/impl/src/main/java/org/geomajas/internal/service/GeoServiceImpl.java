@@ -121,7 +121,7 @@ public final class GeoServiceImpl implements GeoService {
 		try {
 			Crs res = crsCache.get(crs);
 			if (null == res) {
-				res = CrsFactory.getCrs(crs, CRS.decode(crs, true));
+				res = CrsFactory.getCrs(crs, CRS.decode(crs));
 				crsCache.put(crs, res);
 			}
 			return res;

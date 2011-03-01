@@ -23,9 +23,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="transformableArea">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="0" />
-				<property name="y" value="40" />
-				<property name="width" value="10" />
-				<property name="height" value="20" />
+				<property name="y" value="0" />
+				<property name="width" value="100" />
+				<property name="height" value="100" />
 			</bean>
 		</property>
 	</bean>
