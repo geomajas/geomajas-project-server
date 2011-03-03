@@ -17,11 +17,13 @@
         </encoder>
     </appender>
 
-	<!--
-    <logger name="org.geomajas.gwt">
-        <level value="DEBUG"/>
+    <logger name="org.geomajas.internal.service.pipeline">
+        <level value="INFO"/>
     </logger>
-    -->
+
+    <logger name="org.geomajas.plugin.caching.step">
+        <level value="INFO"/>
+    </logger>
 
     <root>
         <level value="INFO"/>

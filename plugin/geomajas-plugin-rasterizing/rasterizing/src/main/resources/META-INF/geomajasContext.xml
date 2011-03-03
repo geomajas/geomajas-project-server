@@ -56,7 +56,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preRasterize" />
 				</bean>
-				<bean class="org.geomajas.plugin.rasterizing.RasterizeStep">
+				<bean class="org.geomajas.plugin.rasterizing.step.RasterizeStep">
 					<property name="id" value="RasterizeStep" />
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -72,9 +72,44 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.plugin.rasterizing.RasterizeCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.step.RasterizeCachingInterceptor">
 					<property name="id" value="RasterizeCache" />
 					<property name="stepId" value="RasterizeStep" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="PIPELINE_RASTERIZING_GET_IMAGE" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_IMAGE"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preAddLayers" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.step.AddLayersStep">
+					<property name="id" value="AddLayersStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postAddLayers" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preRenderMap" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.step.RenderMapStep">
+					<property name="id" value="RenderMapStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postRenderMap" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preWriteImage" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.step.WriteImageStep">
+					<property name="id" value="WriteImageStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postWriteImage" />
 				</bean>
 			</list>
 		</property>
@@ -88,17 +123,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="extensions">
 			<map>
 				<entry key="preTileFilter">
-					<bean class="org.geomajas.plugin.rasterizing.ClearPanOriginStep" >
+					<bean class="org.geomajas.plugin.rasterizing.step.ClearPanOriginStep" >
 						<property name="id" value="ClearPanOrigin" />
 					</bean>
 				</entry>
 				<entry key="preGetStringContent">
-					<bean class="org.geomajas.plugin.rasterizing.RasterUrlStep" >
+					<bean class="org.geomajas.plugin.rasterizing.step.RasterUrlStep" >
 						<property name="id" value="RasterUrl" />
 					</bean>
 				</entry>
 				<entry key="postGetStringContent">
-					<bean class="org.geomajas.plugin.rasterizing.RemoveTileFeaturesStep" >
+					<bean class="org.geomajas.plugin.rasterizing.step.RemoveTileFeaturesStep" >
 						<property name="id" value="RemoveTileFeatures" />
 					</bean>
 				</entry>
@@ -117,7 +152,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="stepId" value="GetTileFillStep" />
 				</bean>
 				<bean
-					class="org.geomajas.plugin.rasterizing.RebuildCacheCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.step.RebuildCacheCachingInterceptor">
 					<property name="id" value="RebuildCache" />
 					<property name="fromStepId" value="GetTileFilterStep" />
 					<property name="toStepId" value="GetTileFillStep" />
@@ -132,7 +167,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="extensions">
 			<map>
 				<entry key="preTileFill">
-					<bean class="org.geomajas.plugin.rasterizing.RasterTileStep" >
+					<bean class="org.geomajas.plugin.rasterizing.step.RasterTileStep" >
 						<property name="id" value="RasterTileStep" />
 					</bean>
 				</entry>
@@ -141,7 +176,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.plugin.rasterizing.RasterTileCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.step.RasterTileCachingInterceptor">
 					<property name="id" value="RasterTileCache" />
 					<property name="stepId" value="RasterTileStep" />
 				</bean>
@@ -157,7 +192,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.plugin.rasterizing.GetRasterizedTileAllCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.step.GetRasterizedTileAllCachingInterceptor">
 					<property name="id" value="GetTileAllCache" />
 				</bean>
 			</list>
@@ -170,12 +205,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.plugin.rasterizing.GetRasterizedTileAllCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.step.GetRasterizedTileAllCachingInterceptor">
 					<property name="id" value="GetTileAllCache" />
 				</bean>
 			</list>
 		</property>
 	</bean>
+
 		
 	
 </beans>

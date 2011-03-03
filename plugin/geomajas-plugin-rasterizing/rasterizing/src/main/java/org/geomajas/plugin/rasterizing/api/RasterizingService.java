@@ -11,15 +11,14 @@
 
 package org.geomajas.plugin.rasterizing.api;
 
+import java.io.OutputStream;
+
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Service interface for doing the actual rasterizing.
@@ -39,9 +38,8 @@ public interface RasterizingService {
 	 * @param metadata tile metadata
 	 * @param tile tile itself (containing the features to draw)
 	 * @throws GeomajasException problem during rendering
-	 * @throws IOException problem while writing to the stream
 	 */
 	void rasterize(OutputStream stream, VectorLayer layer, NamedStyleInfo style, TileMetadata metadata,
-			InternalTile tile) throws GeomajasException, IOException;
+			InternalTile tile) throws GeomajasException;	
 
 }

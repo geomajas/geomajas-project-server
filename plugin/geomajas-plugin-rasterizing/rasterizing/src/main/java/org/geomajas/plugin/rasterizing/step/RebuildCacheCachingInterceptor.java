@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.step;
 
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
@@ -21,6 +21,7 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
+import org.geomajas.plugin.rasterizing.RebuildCacheContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;

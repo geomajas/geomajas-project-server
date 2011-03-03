@@ -21,6 +21,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.plugin.rasterizing.api.RasterizingService;
 import org.geomajas.security.SecurityManager;
 import org.geotools.factory.Hints;
 import org.junit.Assert;
@@ -83,7 +84,7 @@ public class GeotoolsRasterizingServiceTest {
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
-	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/version2/";
 
 	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/";
 

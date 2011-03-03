@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.step;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.GeomajasException;

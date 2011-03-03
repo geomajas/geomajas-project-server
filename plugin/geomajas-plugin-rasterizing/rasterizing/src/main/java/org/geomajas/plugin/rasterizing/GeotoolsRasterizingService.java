@@ -35,8 +35,10 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.rasterizing.api.LabelStyle;
+import org.geomajas.plugin.rasterizing.api.RasterException;
 import org.geomajas.plugin.rasterizing.api.RasterizingService;
 import org.geomajas.plugin.rasterizing.api.Style2dFactoryService;
+import org.geomajas.plugin.rasterizing.dto.MapMetadata;
 import org.geomajas.service.GeoService;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Decimator;
@@ -121,7 +123,7 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	 * 
 	 * @return rendering hints
 	 */
-	RenderingHints getRenderingHints() {
+	public RenderingHints getRenderingHints() {
 		return renderingHints;
 	}
 
@@ -166,11 +168,15 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	 */
 	@Api
 	public void rasterize(OutputStream stream, VectorLayer layer, NamedStyleInfo style, TileMetadata metadata,
-			InternalTile tile) throws GeomajasException, IOException {
+			InternalTile tile) throws GeomajasException {
 		BufferedImage image = createImage(tile.getScreenWidth(), tile.getScreenHeight());
 		Graphics2D graphics = getGraphics(image);
 		paintLayer(graphics, style, metadata, tile);
-		ImageIO.write(image, "PNG", stream);
+		try {
+			ImageIO.write(image, "PNG", stream);
+		} catch (IOException e) {
+			throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
+		}
 	}
 
 	private void paintLayer(final Graphics2D graphics2D, NamedStyleInfo style, TileMetadata metadata, InternalTile tile)
@@ -332,6 +338,11 @@ public class GeotoolsRasterizingService implements RasterizingService {
 		} catch (FactoryException e) {
 			log.error(e.getMessage(), e);
 		}
+	}
+
+	public void rasterize(OutputStream stream, MapMetadata mapMetadata) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -15,7 +15,7 @@ import org.geomajas.global.Api;
 
 /**
  * Codes for the rasterizing pipeline.
- *
+ * 
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
@@ -26,6 +26,11 @@ public interface RasterizingPipelineCode {
 	 * Pipeline for building the raster image, invoked by the controller.
 	 */
 	String PIPELINE_RASTERIZING = "rasterizing.rasterize";
+
+	/**
+	 * Pipeline for building the raster image, invoked by the controller.
+	 */
+	String PIPELINE_RASTERIZING_GET_IMAGE = "rasterizing.getImage";
 
 	/**
 	 * Pipeline which actually builds the raster image while getting the vector tile.
@@ -41,4 +46,30 @@ public interface RasterizingPipelineCode {
 	 * Pipeline context key for storing the image container.
 	 */
 	String CONTAINER_KEY = "rasterizing.container"; // rasterizingContainer
+
+	/**
+	 * Pipeline context key for storing the buffered image.
+	 */
+	String BUFFERED_IMAGE = "rasterizing.bufferedImage"; // BufferedImage
+
+	/**
+	 * Pipeline context key for storing the graphics context.
+	 */
+	String GRAPHICS2D = "rasterizing.graphics2D"; // Graphics2D
+
+	/**
+	 * Pipeline context key for storing the graphics context.
+	 */
+	String RENDERING_HINTS = "rasterizing.renderingHints"; // RenderingHints
+
+	/**
+	 * Pipeline context key for storing the map context metadata.
+	 */
+	String MAP_CONTEXT_METADATA_KEY = "rasterizing.mapContextMetadata"; // MapContextMetaData
+
+	/**
+	 * Pipeline context key for storing the map context.
+	 */
+	String MAP_CONTEXT_KEY = "rasterizing.mapContext"; // MapContext
+
 }

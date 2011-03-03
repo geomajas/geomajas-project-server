@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.step;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;

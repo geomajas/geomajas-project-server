@@ -1,0 +1,177 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+package org.geomajas.plugin.rasterizing;
+
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.GeometryAttributeInfo;
+import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.geometry.Crs;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.plugin.rasterizing.api.LayerFactory;
+import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
+import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
+import org.geomajas.service.ConfigurationService;
+import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContext;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+
+/**
+ * This factory creates a Geotools layer that is capable of writing vector layers.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
+@Component("VectorLayerFactory")
+public class VectorLayerFactory implements LayerFactory {
+
+	@Autowired
+	private VectorLayerService vectorLayerService;
+
+	@Autowired
+	private GeoService geoService;
+
+	@Autowired
+	private FilterService filterService;
+
+	@Autowired
+	private StyleFactoryService styleFactoryService;
+
+	@Autowired
+	private ConfigurationService configurationService;
+
+	public boolean canCreateLayer(MapContext mapContext, LayerMetadata metadata) {
+		return metadata instanceof VectorLayerMetadata;
+	}
+
+	public Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException {
+		VectorLayerMetadata layerMetadata = (VectorLayerMetadata) metadata;
+		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
+		VectorLayer layer = configurationService.getVectorLayer(metadata.getLayerId());
+		Envelope layerBounds = geoService.transform(areaOfInterest,
+				(Crs) areaOfInterest.getCoordinateReferenceSystem(), (Crs) layer.getCrs());
+		Filter filter = filterService.createBboxFilter((Crs) layer.getCrs(), layerBounds, layer.getLayerInfo()
+				.getFeatureInfo().getGeometryType().getName());
+		if (layerMetadata.getFilter() != null) {
+			filter = filterService.createAndFilter(filter, filterService.parseFilter(layerMetadata.getFilter()));
+		}
+		List<InternalFeature> features = vectorLayerService.getFeatures(layerMetadata.getLayerId(),
+				mapContext.getCoordinateReferenceSystem(), filter, layerMetadata.getStyle(),
+				VectorLayerService.FEATURE_INCLUDE_ALL);
+		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer),
+				styleFactoryService.createStyle(layer, layerMetadata));
+		return featureLayer;
+	}
+
+	private FeatureCollection<SimpleFeatureType, SimpleFeature> createCollection(List<InternalFeature> features,
+			VectorLayer layer) {
+		SimpleFeatureType type = createFeatureType(layer);
+		DefaultFeatureCollection result = new DefaultFeatureCollection(layer.getId(), type);
+		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+		for (InternalFeature internalFeature : features) {
+			Object[] values = new Object[internalFeature.getAttributes().size() + 1];
+			int i = 0;
+			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+				values[i++] = internalFeature.getAttributes().get(attrInfo.getName()).getValue();
+			}
+			values[internalFeature.getAttributes().size()] = internalFeature.getGeometry();
+			result.add(builder.buildFeature(internalFeature.getId(), values));
+		}
+		return result;
+	}
+
+	private SimpleFeatureType createFeatureType(VectorLayer layer) {
+		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+		VectorLayerInfo info = layer.getLayerInfo();
+		builder.setName(info.getFeatureInfo().getDataSourceName());
+		builder.setSRS(info.getCrs());
+		for (AttributeInfo attrInfo : info.getFeatureInfo().getAttributes()) {
+			if (attrInfo instanceof PrimitiveAttributeInfo) {
+				PrimitiveAttributeInfo prim = (PrimitiveAttributeInfo) attrInfo;
+				switch (prim.getType()) {
+					case BOOLEAN:
+						builder.add(prim.getName(), Boolean.class);
+						break;
+					case CURRENCY:
+						builder.add(prim.getName(), BigDecimal.class);
+						break;
+					case DATE:
+						builder.add(prim.getName(), Date.class);
+						break;
+					case DOUBLE:
+						builder.add(prim.getName(), Double.class);
+						break;
+					case FLOAT:
+						builder.add(prim.getName(), Float.class);
+						break;
+					case IMGURL:
+						builder.add(prim.getName(), String.class);
+						break;
+					case INTEGER:
+						builder.add(prim.getName(), Integer.class);
+						break;
+					case LONG:
+						builder.add(prim.getName(), Long.class);
+						break;
+					case SHORT:
+						builder.add(prim.getName(), Short.class);
+						break;
+					case STRING:
+						builder.add(prim.getName(), String.class);
+						break;
+					case URL:
+						builder.add(prim.getName(), String.class);
+						break;
+
+				}
+			} else if (attrInfo instanceof AssociationAttributeInfo) {
+				AssociationAttributeInfo ass = (AssociationAttributeInfo) attrInfo;
+				switch (ass.getType()) {
+					case MANY_TO_ONE:
+						builder.add(ass.getName(), Object.class);
+						break;
+					case ONE_TO_MANY:
+						builder.add(ass.getName(), Collection.class);
+						break;
+				}
+			}
+		}
+		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
+		builder.add(geom.getName(), Geometry.class, info.getCrs());
+		return builder.buildFeatureType();
+	}
+
+}
