@@ -8,8 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.rasterizing.api;
 
+import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
 import org.geotools.map.Layer;
@@ -20,8 +22,8 @@ import org.geotools.map.MapContext;
  * factory. Use the {@link LayerFactoryService} component as an entry point for iterating over all configured factories.
  * 
  * @author Jan De Moerloose
- * 
  */
+@ExpectAlternatives
 public interface LayerFactory {
 
 	/**

@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.rasterizing;
 
 import java.math.BigDecimal;
@@ -53,9 +54,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * This factory creates a Geotools layer that is capable of writing vector layers.
  * 
  * @author Jan De Moerloose
- * 
  */
-@Component("VectorLayerFactory")
+@Component
 public class VectorLayerFactory implements LayerFactory {
 
 	@Autowired

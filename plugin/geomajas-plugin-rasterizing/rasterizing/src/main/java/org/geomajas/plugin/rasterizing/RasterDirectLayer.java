@@ -8,9 +8,9 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.rasterizing;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -62,7 +62,6 @@ import com.sun.media.jai.codec.ByteArraySeekableStream;
  * Layer responsible for rendering raster layers. Most of the code is copied from the printing plugin.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RasterDirectLayer extends DirectLayer {
 
@@ -73,8 +72,6 @@ public class RasterDirectLayer extends DirectLayer {
 	protected static final long DOWNLOAD_TIMEOUT = 120000; // millis
 
 	protected static final long DOWNLOAD_TIMEOUT_ONE_TILE = 100; // millis
-
-	protected static final Font ERROR_FONT = new Font("SansSerif", Font.PLAIN, 6); //$NON-NLS-1$
 
 	private static final String BUNDLE_NAME = "org/geomajas/plugin/rasterizing/rasterizing"; //$NON-NLS-1$
 
@@ -90,13 +87,10 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private int tileHeight;
 
-	private String style;
-
-	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
+	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight) {
 		this.tiles = tiles;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
-		this.style = style;
 		MultiThreadedHttpConnectionManager manager = new MultiThreadedHttpConnectionManager();
 		manager.setMaxConnectionsPerHost(10);
 		httpClient = new HttpClient(manager);
@@ -134,7 +128,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 							// translate to the correct position in the tile grid
 							double xOffset = result.getRasterImage().getCode().getX() * tileWidth - pixelBounds.getX();
-							double yOffset = 0;
+							double yOffset;
 							// TODO: in some cases, the y-index is up (e.g. WMS), should be down for
 							// all layers !!!!
 							if (isYIndexUp(tiles)) {
@@ -300,7 +294,7 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * ???
+	 * Image result class.
 	 */
 	private class ImageResult {
 
@@ -326,7 +320,7 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * ???
+	 * Image Exception
 	 */
 	private class ImageException extends Exception {
 
@@ -344,7 +338,7 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * ???
+	 * Download image.
 	 */
 	private class RasterImageDownloadCallable implements Callable<ImageResult> {
 

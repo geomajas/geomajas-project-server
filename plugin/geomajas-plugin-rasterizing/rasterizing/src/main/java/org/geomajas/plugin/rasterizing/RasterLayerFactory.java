@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.rasterizing;
 
 import java.util.List;
@@ -20,8 +21,6 @@ import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
 import org.geomajas.plugin.rasterizing.dto.RasterLayerMetadata;
 import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
@@ -33,19 +32,12 @@ import org.springframework.stereotype.Component;
  * This factory creates a Geotools layer that is capable of rendering raster layers.
  * 
  * @author Jan De Moerloose
- * 
  */
-@Component("RasterLayerFactory")
+@Component
 public class RasterLayerFactory implements LayerFactory {
 
 	@Autowired
 	private RasterLayerService rasterLayerService;
-
-	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private FilterService filterService;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -55,7 +47,6 @@ public class RasterLayerFactory implements LayerFactory {
 	}
 
 	public Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException {
-		RasterLayerMetadata layerMetadata = (RasterLayerMetadata) metadata;
 		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
 		RasterLayer layer = configurationService.getRasterLayer(metadata.getLayerId());
 		MapViewport port = mapContext.getViewport();
@@ -63,7 +54,7 @@ public class RasterLayerFactory implements LayerFactory {
 		List<RasterTile> tiles = rasterLayerService.getTiles(metadata.getLayerId(),
 				areaOfInterest.getCoordinateReferenceSystem(), areaOfInterest, rasterScale);
 		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, layer.getLayerInfo().getTileWidth(), layer
-				.getLayerInfo().getTileHeight(), layerMetadata.getRasterStyle());
+				.getLayerInfo().getTileHeight());
 		return rasterLayer;
 	}
 
