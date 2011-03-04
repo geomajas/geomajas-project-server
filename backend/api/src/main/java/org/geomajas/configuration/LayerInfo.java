@@ -117,34 +117,4 @@ public class LayerInfo implements Serializable {
 		this.extraInfo = extraInfo;
 	}
 
-	/**
-	 * Get a specific entry from the extraInfo for the given type. This assumes the fully qualified class name of the
-	 * object is used as key.
-	 *
-	 * @param type type to get
-	 * @param <TYPE> type to get
-	 * @return value for key if exists
-	 * @since 1.9.0
-	 */
-	public <TYPE> TYPE getExtraInfo(Class<TYPE> type) {
-		return getExtraInfo(type.getName(), type);
-	}
-
-	/**
-	 * Get a specific entry from the extraInfo for key and with type checking.
-	 *
-	 * @param key key from extraInfo
-	 * @param type type to get
-	 * @param <TYPE> type to get
-	 * @return value for key if exists
-	 * @since 1.9.0
-	 */
-	public <TYPE> TYPE getExtraInfo(String key, Class<TYPE> type) {
-		Object obj = extraInfo.get(key);
-		if (null != obj && type.isAssignableFrom(obj.getClass())) {
-			return (TYPE) obj;
-		}
-		return null;
-	}
-
 }
