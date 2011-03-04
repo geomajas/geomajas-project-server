@@ -11,8 +11,6 @@
 
 package org.geomajas.plugin.rasterizing;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -88,11 +86,6 @@ public class RasterizingPipelineTest {
 
 	private static final String IMAGE_PATH = "org/geomajas/plugin/rasterizing/images/";
 
-	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
-
-	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/version2/";
-
 	@Before
 	public void login() {
 		// assure security context is set
@@ -127,13 +120,6 @@ public class RasterizingPipelineTest {
 		controller.getImage(layerBeans.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Rasterization success", "Put item in cache",
 				"Put item in cache", "Got item from cache"));
-		File file = new File(IMAGE_FILE_PATH + "beans-4-8-8.png");
-		if (writeImages) {
-			FileOutputStream fos;
-			fos = new FileOutputStream(file);
-			fos.write(response.getContentAsByteArray());
-			fos.close();
-		}
 		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
 		cacheManager.drop(layerBeans);
 	}
@@ -169,13 +155,6 @@ public class RasterizingPipelineTest {
 		controller.getImage(layerBeansPoint.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache", "Got item from cache",
 				"Put item in cache"));
-		File file = new File(IMAGE_FILE_PATH + "beansPoint-4-8-8.png");
-		if (writeImages) {
-			FileOutputStream fos;
-			fos = new FileOutputStream(file);
-			fos.write(response.getContentAsByteArray());
-			fos.close();
-		}
 		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beansPoint-4-8-8.png"), response.getContentAsByteArray());
 		cacheManager.drop(layerBeansPoint);
 	}
