@@ -25,13 +25,13 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class LayerOrderChangedEvent extends GwtEvent<LayerOrderChangedHandler> {
 
-	private int minIndex;
+	private int fromIndex;
 
-	private int maxIndex;
+	private int toIndex;
 
-	public LayerOrderChangedEvent(int minIndex, int maxIndex) {
-		this.minIndex = minIndex;
-		this.maxIndex = maxIndex;
+	public LayerOrderChangedEvent(int fromIndex, int toIndex) {
+		this.fromIndex = fromIndex;
+		this.toIndex = toIndex;
 	}
 
 	@Override
@@ -44,11 +44,11 @@ public class LayerOrderChangedEvent extends GwtEvent<LayerOrderChangedHandler> {
 		layerOrderChangedHandler.onLayerOrderChanged(this);
 	}
 
-	public int getMinIndex() {
-		return minIndex;
+	public int getFromIndex() {
+		return fromIndex;
 	}
 
-	public int getMaxIndex() {
-		return maxIndex;
+	public int getToIndex() {
+		return toIndex;
 	}
 }

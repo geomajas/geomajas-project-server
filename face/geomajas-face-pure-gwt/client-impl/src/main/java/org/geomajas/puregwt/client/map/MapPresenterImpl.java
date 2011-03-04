@@ -27,15 +27,23 @@ import org.geomajas.puregwt.client.map.controller.ListenerController;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.controller.NavigationController;
+import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
+import com.google.gwt.event.dom.client.HasMouseOutHandlers;
+import com.google.gwt.event.dom.client.HasMouseOverHandlers;
+import com.google.gwt.event.dom.client.HasMouseUpHandlers;
+import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -52,9 +60,18 @@ public class MapPresenterImpl implements MapPresenter {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	public interface MapWidget extends HasAllMouseHandlers, HasDoubleClickHandlers, IsWidget {
+	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
+			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget {
 
 		HtmlContainer getHtmlContainer();
+
+		ScreenContainer getScreenContainer(String id);
+
+		void removeScreenContainer(ScreenContainer container);
+
+		WorldContainer getWorldContainer(String id);
+
+		void removeWorldContainer(WorldContainer container);
 	}
 
 	private String applicationId;
@@ -75,12 +92,15 @@ public class MapPresenterImpl implements MapPresenter {
 
 	private MapRenderer mapRenderer;
 
+	private Map<String, MapGadget> gadgets;
+
 	public MapPresenterImpl(String applicationId, String id, MapWidget display) {
 		this.applicationId = applicationId;
 		this.id = id;
 		this.display = display;
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
+		gadgets = new HashMap<String, MapGadget>();
 	}
 
 	public void initialize() {
@@ -91,6 +111,7 @@ public class MapPresenterImpl implements MapPresenter {
 		mapModel.getEventBus().addHandler(ViewPortDraggedEvent.getType(), mapRenderer);
 		mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), mapRenderer);
 		mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), mapRenderer);
+		mapModel.getEventBus().addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
 
 		Command commandRequest = new Command("command.configuration.GetMap");
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
@@ -99,10 +120,22 @@ public class MapPresenterImpl implements MapPresenter {
 
 			public void onSuccess(CommandResponse response) {
 				if (response instanceof GetMapConfigurationResponse) {
+					// Initialize the MapModel and ViewPort:
 					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
 					mapModel.initialize(r.getMapInfo(), display.asWidget().getOffsetWidth(), display.asWidget()
 							.getOffsetHeight());
 					setFallbackController(new NavigationController());
+
+					// If there are already some MapGadgets registered, draw them now:
+					for (String containerId : gadgets.keySet()) {
+						MapGadget mapGadget = gadgets.get(containerId);
+						mapGadget.onDraw(mapModel.getViewPort(), getScreenContainer(containerId));
+					}
+					mapModel.getEventBus().addHandler(ViewPortChangedEvent.getType(), new MapGadgetRenderer());
+					mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), new MapGadgetRenderer());
+					mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), new MapGadgetRenderer());
+
+					// Fire initialization event:
 					mapModel.getEventBus().fireEvent(new MapInitializationEvent());
 				}
 			}
@@ -110,6 +143,8 @@ public class MapPresenterImpl implements MapPresenter {
 			public void onFailure(Throwable error) {
 			}
 		});
+
+		addMapGadget(new NavigationGadget(this));
 	}
 
 	public void setMapRenderer(MapRenderer mapRenderer) {
@@ -124,13 +159,11 @@ public class MapPresenterImpl implements MapPresenter {
 	}
 
 	public WorldContainer getWorldContainer(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return display.getWorldContainer(id);
 	}
 
 	public ScreenContainer getScreenContainer(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return display.getScreenContainer(id);
 	}
 
 	public MapModel getMapModel() {
@@ -198,7 +231,7 @@ public class MapPresenterImpl implements MapPresenter {
 				registration.removeHandler();
 			}
 			listeners.remove(mapListener);
-			// deactivate not necessary, because the ListenerController does nothing to deactive the listener.
+			// deactivate not necessary, because the ListenerController does nothing when deactiving the listener.
 			return true;
 		}
 		return false;
@@ -209,14 +242,60 @@ public class MapPresenterImpl implements MapPresenter {
 	}
 
 	public void addMapGadget(MapGadget mapGadget) {
-		// TODO Auto-generated method stub
+		String id = DOM.createUniqueId();
+		gadgets.put(id, mapGadget);
+		if (mapModel != null && mapModel.getViewPort() != null) {
+			mapGadget.onDraw(mapModel.getViewPort(), getScreenContainer(id));
+		}
 	}
 
 	public void removeMapGadget(MapGadget mapGadget) {
-		// TODO Auto-generated method stub
+		if (gadgets.containsValue(mapGadget)) {
+			mapGadget.onDestroy();
+			for (String containerId : gadgets.keySet()) {
+				display.removeScreenContainer(getScreenContainer(containerId));
+			}
+			gadgets.remove(mapGadget);
+		}
 	}
 
 	public void setCursor(String cursor) {
 		DOM.setStyleAttribute(display.asWidget().getElement(), "cursor", cursor);
+	}
+
+	// ------------------------------------------------------------------------
+	// Private classes:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * ViewPortChangedHandler implementation that renders all the MapGadgets on the view port events.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class MapGadgetRenderer implements ViewPortChangedHandler {
+
+		// TODO catch resize events as well
+
+		public void onViewPortChanged(ViewPortChangedEvent event) {
+			for (MapGadget mapGadget : gadgets.values()) {
+				mapGadget.onScale();
+				mapGadget.onTranslate();
+			}
+		}
+
+		public void onViewPortScaled(ViewPortScaledEvent event) {
+			for (MapGadget mapGadget : gadgets.values()) {
+				mapGadget.onScale();
+			}
+		}
+
+		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			for (MapGadget mapGadget : gadgets.values()) {
+				mapGadget.onTranslate();
+			}
+		}
+
+		public void onViewPortDragged(ViewPortDraggedEvent event) {
+		}
 	}
 }

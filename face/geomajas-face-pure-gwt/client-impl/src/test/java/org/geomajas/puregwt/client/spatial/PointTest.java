@@ -33,8 +33,6 @@ public class PointTest {
 
 	private final static int SRID = 4326;
 
-	private final static int PRECISION = -1;
-
 	private final static double DELTA = 1E-10;
 
 	private GeometryFactory gwtFactory;
@@ -53,7 +51,7 @@ public class PointTest {
 	public void setUp() {
 		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
-		gwtFactory.init(SRID, PRECISION);
+		gwtFactory.setSrid(SRID);
 		gwt = gwtFactory.createPoint(new Coordinate(10.0, 10.0));
 
 		jtsFactory = new com.vividsolutions.jts.geom.GeometryFactory(new PrecisionModel(), SRID);

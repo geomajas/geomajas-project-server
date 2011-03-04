@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 
@@ -21,7 +22,7 @@ import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
  * 
  * @author Pieter De Graef
  */
-public interface MapRenderer extends ViewPortChangedHandler {
+public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler {
 
 	/**
 	 * Determine whether or not to use a bigger bounds when rendering the map. By using a bigger scale, more tiles will
@@ -35,6 +36,6 @@ public interface MapRenderer extends ViewPortChangedHandler {
 	void clear();
 
 	void redraw();
-	
+
 	void setHtmlContainer(HtmlContainer htmlContainer);
 }

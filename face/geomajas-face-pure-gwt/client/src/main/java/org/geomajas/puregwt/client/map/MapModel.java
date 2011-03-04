@@ -137,4 +137,11 @@ public interface MapModel {
 	 * @return The EPSG code. Example: 'EPSG:4326'.
 	 */
 	String getEpsg();
+
+	/**
+	 * Return the spatial reference ID of the coordinate system used in this map.
+	 * 
+	 * @return The spatial reference ID of the coordinate system used in this map.
+	 */
+	int getSrid();
 }

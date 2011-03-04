@@ -102,9 +102,13 @@ public class HtmlContainer extends HtmlObject {
 	 *            The position in the list where this child should end up.
 	 */
 	public void insert(HtmlObject child, int beforeIndex) {
-		child.setParent(this);
+		if (beforeIndex >= getChildCount()) {
+			add(child);
+			return;
+		}
 		Node beforeNode = getElement().getChild(beforeIndex);
 		getElement().insertBefore(child.getElement(), beforeNode);
+		child.setParent(this);
 
 		List<HtmlObject> newChildList = new ArrayList<HtmlObject>();
 		for (int i = 0; i < children.size(); i++) {
@@ -128,6 +132,7 @@ public class HtmlContainer extends HtmlObject {
 		if (index >= 0) {
 			getElement().removeChild(getElement().getChild(index));
 			children.remove(index);
+			child.setParent(null);
 			return true;
 		}
 		return false;

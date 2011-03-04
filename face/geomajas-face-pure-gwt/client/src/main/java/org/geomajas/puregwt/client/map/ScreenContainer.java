@@ -25,4 +25,10 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 @Api
 public interface ScreenContainer extends VectorObjectContainer {
 
+	/**
+	 * Return the containers' identifier. There can be no 2 screen containers with the same ID.
+	 * 
+	 * @return The screen container identifier.
+	 */
+	String getId();
 }

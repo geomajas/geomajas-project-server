@@ -28,6 +28,7 @@ import org.geomajas.puregwt.client.command.Deferred;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
+import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
@@ -64,7 +65,6 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 
 	private Bbox currentTileBounds;
 
-	// TODO inject this with GIN
 	private CommandService commandService = new CommandService();
 
 	// ------------------------------------------------------------------------
@@ -109,6 +109,10 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 	// ------------------------------------------------------------------------
 	// MapRenderer implementation:
 	// ------------------------------------------------------------------------
+
+	public void onLayerOrderChanged(LayerOrderChangedEvent event) {
+		// Does nothing...
+	}
 
 	public void onViewPortChanged(ViewPortChangedEvent event) {
 		clear();

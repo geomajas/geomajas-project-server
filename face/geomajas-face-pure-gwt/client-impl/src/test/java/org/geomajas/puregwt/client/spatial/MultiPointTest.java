@@ -33,8 +33,6 @@ public class MultiPointTest {
 
 	private final static int SRID = 4326;
 
-	private final static int PRECISION = -1;
-
 	private final static double DELTA = 1E-10;
 
 	private GeometryFactory gwtFactory;
@@ -53,7 +51,7 @@ public class MultiPointTest {
 	public void setUp() {
 		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
-		gwtFactory.init(SRID, PRECISION);
+		gwtFactory.setSrid(SRID);
 		Point point1 = gwtFactory.createPoint(new Coordinate(10.0, 10.0));
 		Point point2 = gwtFactory.createPoint(new Coordinate(10.0, 20.0));
 		Point point3 = gwtFactory.createPoint(new Coordinate(20.0, 20.0));

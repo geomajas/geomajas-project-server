@@ -67,7 +67,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/org.geomajas.puregwt.GeomajasEntryPoint/geomajasService</url-pattern>
+		<url-pattern>/GeomajasSamples/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

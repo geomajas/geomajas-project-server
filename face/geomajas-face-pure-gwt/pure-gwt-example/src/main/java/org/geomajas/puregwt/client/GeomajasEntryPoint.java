@@ -13,8 +13,10 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
+import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
+import org.vaadin.gwtgraphics.client.shape.Circle;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -48,29 +50,53 @@ public class GeomajasEntryPoint implements EntryPoint {
 		Button opacity05Button = new Button("Opacity=0.5", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
 				layer.setOpacity(0.5);
 			}
 		});
 		Button opacity1Button = new Button("Opacity=1", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
 				layer.setOpacity(1);
 			}
 		});
 		Button hideButton = new Button("Hide", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(false);
 			}
 		});
 		Button showButton = new Button("Show", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(true);
+			}
+		});
+		Button layerOrderButton = new Button("Toggle order", new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
+				mapPresenter.getMapModel().moveLayerUp(layer);
+			}
+		});
+		Button drawButton = new Button("Draw", new ClickHandler() {
+
+			private boolean shown;
+
+			public void onClick(ClickEvent event) {
+				if (shown) {
+					ScreenContainer container = mapPresenter.getScreenContainer("test-container");
+					container.clear();
+				} else {
+					ScreenContainer container = mapPresenter.getScreenContainer("test-container");
+					Circle circle2 = new Circle(100, 100, 50);
+					circle2.setFillColor("green");
+					container.add(circle2);
+				}
+				shown = !shown;
 			}
 		});
 
@@ -80,6 +106,8 @@ public class GeomajasEntryPoint implements EntryPoint {
 		hPanel.add(opacity1Button);
 		hPanel.add(hideButton);
 		hPanel.add(showButton);
+		hPanel.add(layerOrderButton);
+		hPanel.add(drawButton);
 
 		RootPanel.get().add(hPanel);
 

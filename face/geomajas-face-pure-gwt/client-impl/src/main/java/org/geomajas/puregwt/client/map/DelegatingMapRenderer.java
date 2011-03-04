@@ -15,11 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 
@@ -39,10 +41,31 @@ public class DelegatingMapRenderer implements MapRenderer {
 
 	private MapModel mapModel;
 
+	// ------------------------------------------------------------------------
+	// Constructor:
+	// ------------------------------------------------------------------------
+
 	public DelegatingMapRenderer(MapModel mapModel) {
 		this.mapModel = mapModel;
 		layerContainers = new HashMap<Layer<?>, HtmlContainer>();
 	}
+
+	// ------------------------------------------------------------------------
+	// LayerOrderChangedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerOrderChanged(LayerOrderChangedEvent event) {
+		HtmlObject layerContainer = htmlContainer.getChild(event.getFromIndex());
+		if (layerContainer != null) {
+			// Not entirely correct:
+			htmlContainer.remove(layerContainer);
+			htmlContainer.insert(layerContainer, event.getToIndex());
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// ViewPortChangedHandler implementation:
+	// ------------------------------------------------------------------------
 
 	public void onViewPortChanged(ViewPortChangedEvent event) {
 		Coordinate translation = mapModel.getViewPort().getPanToViewTranslation();
@@ -96,6 +119,10 @@ public class DelegatingMapRenderer implements MapRenderer {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// MapRenderer public methods:
+	// ------------------------------------------------------------------------
+
 	public void clear() {
 		for (int i = 0; i < mapModel.getLayerCount(); i++) {
 			Layer<?> layer = mapModel.getLayer(i);
@@ -129,6 +156,10 @@ public class DelegatingMapRenderer implements MapRenderer {
 	public void setHtmlContainer(HtmlContainer htmlContainer) {
 		this.htmlContainer = htmlContainer;
 	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
 	private HtmlContainer getHtmlContainer(Layer<?> layer) {
 		if (layerContainers.containsKey(layer)) {

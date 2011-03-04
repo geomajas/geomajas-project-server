@@ -38,8 +38,8 @@ public interface MapGadget {
 	 */
 	void onDraw(ViewPort viewPort, ScreenContainer container);
 
-	/** This method is automatically called when panning has occurred on the map. */
-	void onPan();
+	/** This method is automatically called when the map was translated (not panned). */
+	void onTranslate();
 
 	/** This method is automatically called when scaling has occurred on the map. */
 	void onScale();

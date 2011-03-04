@@ -29,8 +29,6 @@ public class GeometryFactoryImpl implements GeometryFactory {
 
 	private int srid;
 
-	private int precision;
-
 	private double delta;
 
 	@Inject
@@ -41,12 +39,12 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	// -------------------------------------------------------------------------
 
 	public GeometryFactoryImpl() {
-		init(PARAM_DEFAULT_SRID, PARAM_DEFAULT_PRECISION);
+		this.srid = PARAM_DEFAULT_SRID;
+		delta = Math.pow(10.0, -PARAM_DEFAULT_PRECISION);
 	}
 
-	public void init(int srid, int precision) {
+	public GeometryFactoryImpl(int srid) {
 		this.srid = srid;
-		this.precision = precision;
 		delta = Math.pow(10.0, -PARAM_DEFAULT_PRECISION);
 	}
 
@@ -58,22 +56,8 @@ public class GeometryFactoryImpl implements GeometryFactory {
 		return srid;
 	}
 
-	/**
-	 * Set a new Spatial Reference id for this factory.
-	 */
 	public void setSrid(int srid) {
 		this.srid = srid;
-	}
-
-	public int getPrecision() {
-		return precision;
-	}
-
-	/**
-	 * Set a new precision for this factory.
-	 */
-	public void setPrecision(int precision) {
-		this.precision = precision;
 	}
 
 	public double getDelta() {
@@ -300,12 +284,15 @@ public class GeometryFactoryImpl implements GeometryFactory {
 		return null;
 	}
 
-	public Bbox createBbox(Bbox original) {
-		return new BboxImpl(original.getX(), original.getY(), original.getWidth(), original.getHeight());
-	}
-
 	public Bbox createBbox(double x, double y, double width, double height) {
 		return new BboxImpl(x, y, width, height);
 	}
 
+	public Bbox createBbox(Bbox original) {
+		return new BboxImpl(original.getX(), original.getY(), original.getWidth(), original.getHeight());
+	}
+
+	public Bbox createBbox(org.geomajas.geometry.Bbox original) {
+		return new BboxImpl(original.getX(), original.getY(), original.getWidth(), original.getHeight());
+	}
 }

@@ -25,7 +25,8 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.BboxImpl;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 
 /**
  * Implementation of the ViewPort interface.
@@ -35,6 +36,8 @@ import org.geomajas.puregwt.client.spatial.BboxImpl;
 public class ViewPortImpl implements ViewPort {
 
 	private static final double MAX_RESOLUTION = Float.MAX_VALUE;
+
+	private GeometryFactory factory;
 
 	/** The map's width in pixels. */
 	private int width;
@@ -68,7 +71,9 @@ public class ViewPortImpl implements ViewPort {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public ViewPortImpl(EventBus eventBus, ClientMapInfo mapInfo) {
+	public ViewPortImpl(EventBus eventBus, ClientMapInfo mapInfo, int srid) {
+		factory = new GeometryFactoryImpl(srid);
+
 		// Acquire maximum scale:
 		ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
 		maximumScale = scaleConfigurationInfo.getMaximumScale().getPixelPerUnit();
@@ -78,19 +83,19 @@ public class ViewPortImpl implements ViewPort {
 		for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
 			resolutions.add(1. / scale.getPixelPerUnit());
 		}
-		maxBounds = new BboxImpl(mapInfo.getMaxBounds());
-		Bbox initialBounds = new BboxImpl(mapInfo.getInitialBounds());
+		maxBounds = factory.createBbox(mapInfo.getMaxBounds());
+		Bbox initialBounds = factory.createBbox(mapInfo.getInitialBounds());
 		// if the max bounds was not configured, take the union of initial and layer bounds
-		Bbox all = new BboxImpl(org.geomajas.geometry.Bbox.ALL);
+		Bbox all = factory.createBbox(org.geomajas.geometry.Bbox.ALL);
 		if (maxBounds.equals(all)) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-				maxBounds = new BboxImpl(initialBounds);
-				maxBounds = maxBounds.union(new BboxImpl(layerInfo.getMaxExtent()));
+				maxBounds = factory.createBbox(initialBounds);
+				maxBounds = maxBounds.union(factory.createBbox(layerInfo.getMaxExtent()));
 			}
 		}
 
 		this.eventBus = eventBus;
-		transformationService = new TransformationServiceImpl(this);
+		transformationService = new TransformationServiceImpl(this, srid);
 	}
 
 	// -------------------------------------------------------------------------
@@ -116,7 +121,7 @@ public class ViewPortImpl implements ViewPort {
 		double h = getViewSpaceHeight();
 		double x = viewState.getX() - w / 2;
 		double y = viewState.getY() - h / 2;
-		return new BboxImpl(x, y, w, h);
+		return factory.createBbox(x, y, w, h);
 	}
 
 	public void applyPosition(Coordinate coordinate) {
@@ -130,7 +135,7 @@ public class ViewPortImpl implements ViewPort {
 
 	public void applyScale(double scale, ZoomOption option, Coordinate rescalePoint) {
 		// calculate theoretical new bounds
-		Bbox newBbox = new BboxImpl(0, 0, getMapWidth() / scale, getMapHeight() / scale);
+		Bbox newBbox = factory.createBbox(0, 0, getMapWidth() / scale, getMapHeight() / scale);
 		double factor = scale / getScale();
 
 		// Calculate translate vector to assure rescalePoint is on the same position as before.
@@ -159,6 +164,11 @@ public class ViewPortImpl implements ViewPort {
 		} else {
 			eventBus.fireEvent(new ViewPortTranslatedEvent(this));
 		}
+	}
+
+	/** Zoom out as far as possible. The maximum bounds are determined by the map configuration. */
+	public void applyMaximumBounds() {
+		applyBounds(maxBounds, ZoomOption.LEVEL_FIT);
 	}
 
 	public void translate(double x, double y) {
@@ -233,7 +243,7 @@ public class ViewPortImpl implements ViewPort {
 	public Coordinate getPanOrigin() {
 		return new Coordinate(viewState.getPanX(), viewState.getPanY());
 	}
-	
+
 	protected void setSize(int width, int height) {
 		this.width = width;
 		this.height = height;

@@ -22,24 +22,16 @@ import org.geomajas.geometry.Coordinate;
  */
 public class BboxImpl implements Bbox {
 
-	/**
-	 * The ordinate along the X-axis.
-	 */
+	/** The ordinate along the X-axis. */
 	private double x;
 
-	/**
-	 * The ordinate along the Y-axis.
-	 */
+	/** The ordinate along the Y-axis. */
 	private double y;
 
-	/**
-	 * The bounding box' width.
-	 */
+	/** The bounding box' width. */
 	private double width;
 
-	/**
-	 * The bounding box' height.
-	 */
+	/** The bounding box' height. */
 	private double height;
 
 	// -------------------------------------------------------------------------
@@ -47,14 +39,7 @@ public class BboxImpl implements Bbox {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Default constructor setting the position to (0, 0), and a width and height of 1.
-	 */
-	public BboxImpl() {
-		this(0, 0, 1, 1);
-	}
-
-	/**
-	 * constructor that immediately applies values to all the fields.
+	 * Protected constructor that immediately applies values to all the fields.
 	 * 
 	 * @param x
 	 *            The ordinate along the X-axis.
@@ -65,7 +50,7 @@ public class BboxImpl implements Bbox {
 	 * @param height
 	 *            The bounding box' height.
 	 */
-	public BboxImpl(double x, double y, double width, double height) {
+	protected BboxImpl(double x, double y, double width, double height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -73,25 +58,12 @@ public class BboxImpl implements Bbox {
 	}
 
 	/**
-	 * Construct a bounding box by copying another one.
+	 * Private constructor. Construct a bounding box by copying another one.
 	 * 
 	 * @param bounds
 	 *            Another bounding box instance.
 	 */
-	public BboxImpl(Bbox bounds) {
-		x = bounds.getX();
-		y = bounds.getY();
-		width = bounds.getWidth();
-		height = bounds.getHeight();
-	}
-
-	/**
-	 * Constructor that transforms the DTO bounding box to the GWT bounding box.
-	 * 
-	 * @param bounds
-	 *            A DTO bounding box instance.
-	 */
-	public BboxImpl(org.geomajas.geometry.Bbox bounds) {
+	private BboxImpl(Bbox bounds) {
 		x = bounds.getX();
 		y = bounds.getY();
 		width = bounds.getWidth();

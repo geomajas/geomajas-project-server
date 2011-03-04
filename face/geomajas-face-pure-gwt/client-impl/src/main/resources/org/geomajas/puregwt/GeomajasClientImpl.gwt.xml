@@ -11,6 +11,7 @@
 
 <module>
 	<inherits name="org.geomajas.puregwt.GeomajasClient"/>
+	<inherits name="com.google.gwt.inject.Inject"/>
 
 	<source path="client"/>
 	<source path="client/spatial">

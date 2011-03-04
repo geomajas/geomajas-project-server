@@ -15,7 +15,8 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ZoomOption;
 import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.BboxImpl;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -58,6 +59,8 @@ public class NavigationController extends AbstractMapController {
 		ZOOM_POSITION
 	}
 
+	private GeometryFactory factory;
+
 	private Coordinate dragOrigin;
 
 	private Coordinate lastClickPosition;
@@ -74,6 +77,7 @@ public class NavigationController extends AbstractMapController {
 
 	public NavigationController() {
 		super();
+		factory = new GeometryFactoryImpl();
 	}
 
 	// ------------------------------------------------------------------------
@@ -122,7 +126,7 @@ public class NavigationController extends AbstractMapController {
 		Bbox bounds = mapPresenter.getMapModel().getViewPort().getBounds();
 		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
 		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
-		Bbox newBounds = new BboxImpl(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
+		Bbox newBounds = factory.createBbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
 		mapPresenter.getMapModel().getViewPort().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
 	}
 

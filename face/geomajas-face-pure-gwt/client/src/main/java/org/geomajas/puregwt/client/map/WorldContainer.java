@@ -25,4 +25,10 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 @Api
 public interface WorldContainer extends VectorObjectContainer {
 
+	/**
+	 * Return the containers' identifier. There can be no 2 world containers with the same ID.
+	 * 
+	 * @return The world container identifier.
+	 */
+	String getId();
 }

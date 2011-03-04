@@ -19,10 +19,12 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.EventBusImpl;
+import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.BboxImpl;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 
 /**
  * ...
@@ -69,7 +71,7 @@ public class MapModelImpl implements MapModel {
 		this.mapInfo = mapInfo;
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
-		viewPort = new ViewPortImpl(eventBus, mapInfo);
+		viewPort = new ViewPortImpl(eventBus, mapInfo, getSrid());
 		((ViewPortImpl) viewPort).setSize(mapWidth, mapHeight);
 
 		// Create all the layers:
@@ -79,7 +81,8 @@ public class MapModelImpl implements MapModel {
 		}
 
 		// Immediately zoom to the initial bounds as configured:
-		Bbox initialBounds = new BboxImpl(mapInfo.getInitialBounds());
+		GeometryFactory factory = new GeometryFactoryImpl(getSrid());
+		Bbox initialBounds = factory.createBbox(mapInfo.getInitialBounds());
 		viewPort.applyBounds(initialBounds, ZoomOption.LEVEL_CLOSEST);
 	}
 
@@ -112,18 +115,54 @@ public class MapModelImpl implements MapModel {
 	}
 
 	public boolean moveLayer(Layer<?> layer, int index) {
-		// TODO Auto-generated method stub
-		return false;
+		int currentIndex = getLayerPosition(layer);
+		if (currentIndex < 0 || currentIndex == index) {
+			return false;
+		}
+		ClientLayerInfo layerInfo = mapInfo.getLayers().get(currentIndex);
+
+		// First remove the layer from the list:
+		if (!layers.remove(layer)) {
+			return false;
+		}
+		if (!mapInfo.getLayers().remove(layerInfo)) {
+			return false;
+		}
+
+		// Check the new index:
+		if (index < 0) {
+			index = 0;
+		} else if (index > layers.size()) {
+			index = layers.size();
+		}
+
+		// Change the order:
+		try {
+			layers.add(index, layer);
+			mapInfo.getLayers().add(index, layerInfo);
+		} catch (Exception e) {
+			return false;
+		}
+
+		// Send out the correct event:
+		eventBus.fireEvent(new LayerOrderChangedEvent(currentIndex, index));
+		return true;
 	}
 
 	public boolean moveLayerUp(Layer<?> layer) {
-		// TODO Auto-generated method stub
-		return false;
+		int position = getLayerPosition(layer);
+		if (position < 0) {
+			return false;
+		}
+		return moveLayer(layer, position + 1);
 	}
 
 	public boolean moveLayerDown(Layer<?> layer) {
-		// TODO Auto-generated method stub
-		return false;
+		int position = getLayerPosition(layer);
+		if (position < 0) {
+			return false;
+		}
+		return moveLayer(layer, position - 1);
 	}
 
 	/**
@@ -198,6 +237,15 @@ public class MapModelImpl implements MapModel {
 	 */
 	public String getEpsg() {
 		return mapInfo.getCrs();
+	}
+
+	/**
+	 * Return the spatial reference ID of the coordinate system used in this map.
+	 * 
+	 * @return The spatial reference ID of the coordinate system used in this map.
+	 */
+	public int getSrid() {
+		return Integer.parseInt(getEpsg().substring(getEpsg().indexOf(":") + 1));
 	}
 
 	// -------------------------------------------------------------------------

@@ -40,13 +40,6 @@ public interface Geometry extends Serializable {
 	int getSrid();
 
 	/**
-	 * Return the precision used in this geometry as an integer.
-	 * 
-	 * @return
-	 */
-	int getPrecision();
-
-	/**
 	 * Return the {@link GeometryFactory} object that corresponds to this geometry.
 	 */
 	GeometryFactory getGeometryFactory();

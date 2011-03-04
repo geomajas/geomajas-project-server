@@ -13,8 +13,9 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.BboxImpl;
 import org.geomajas.puregwt.client.spatial.Geometry;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -31,6 +32,8 @@ import org.geomajas.puregwt.client.spatial.Vector2D;
  * @author Pieter De Graef
  */
 public class TransformationServiceImpl implements TransformationService {
+
+	private GeometryFactory factory;
 
 	/**
 	 * The central viewing object on a map. It contains all the necessary parameters to calculate correct
@@ -50,8 +53,9 @@ public class TransformationServiceImpl implements TransformationService {
 	 *            The central viewing object on a map. It contains all the necessary parameters to calculate correct
 	 *            transformations.
 	 */
-	protected TransformationServiceImpl(ViewPortImpl viewPort) {
+	protected TransformationServiceImpl(ViewPortImpl viewPort, int srid) {
 		this.viewPort = viewPort;
+		factory = new GeometryFactoryImpl(srid);
 	}
 
 	// -------------------------------------------------------------------------
@@ -146,7 +150,7 @@ public class TransformationServiceImpl implements TransformationService {
 			Coordinate c2 = worldToView(bbox.getEndPoint());
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new BboxImpl(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}
@@ -243,7 +247,7 @@ public class TransformationServiceImpl implements TransformationService {
 			Coordinate c2 = viewToWorld(bbox.getEndPoint());
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new BboxImpl(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}
@@ -267,7 +271,7 @@ public class TransformationServiceImpl implements TransformationService {
 			Coordinate c2 = transform(bbox.getEndPoint(), matrix);
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new BboxImpl(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}
@@ -356,7 +360,7 @@ public class TransformationServiceImpl implements TransformationService {
 			Coordinate c2 = worldToPan(bbox.getEndPoint());
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new BboxImpl(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}
@@ -438,7 +442,7 @@ public class TransformationServiceImpl implements TransformationService {
 			Coordinate c2 = viewToPan(bbox.getEndPoint());
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new BboxImpl(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}

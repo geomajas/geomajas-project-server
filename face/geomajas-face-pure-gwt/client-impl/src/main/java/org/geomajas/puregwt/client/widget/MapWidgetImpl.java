@@ -12,15 +12,30 @@
 package org.geomajas.puregwt.client.widget;
 
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
+import org.geomajas.puregwt.client.map.ScreenContainer;
+import org.geomajas.puregwt.client.map.ScreenGroup;
+import org.geomajas.puregwt.client.map.WorldContainer;
+import org.geomajas.puregwt.client.map.WorldGroup;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.FocusWidget;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.MouseWheelEvent;
+import com.google.gwt.event.dom.client.MouseWheelHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -28,11 +43,11 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class MapWidgetImpl extends FocusWidget implements MapWidget {
+public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	private HtmlContainer htmlContainer;
 
-	private Element clipElement;
+	private DrawingArea drawingArea;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -40,20 +55,15 @@ public class MapWidgetImpl extends FocusWidget implements MapWidget {
 
 	// @Inject
 	public MapWidgetImpl() {
-		Element rootNode = DOM.createElement("div");
-		setElement(rootNode);
-
-		// Create an extra element for clipping (overflow=hidden). Can't be done on the top level, because the top level
-		// can not have an absolute position (that's up to GWT).
-		clipElement = DOM.createElement("div");
-		DOM.setStyleAttribute(clipElement, "overflow", "hidden");
-		DOM.setStyleAttribute(clipElement, "position", "absolute");
-		DOM.appendChild(getElement(), clipElement);
+		super();
 
 		// Attach an HtmlContainer inside the clipping area (used for rendering layers):
 		htmlContainer = new HtmlContainer();
-		htmlContainer.setParent(this);
-		DOM.appendChild(clipElement, htmlContainer.getElement());
+		add(htmlContainer, 0, 0);
+
+		// Attach a DrawingArea inside the clipping area (used for vector rendering):
+		drawingArea = new DrawingArea(0, 0);
+		add(drawingArea, 0, 0);
 
 		// Firefox and Chrome allow for DnD of images. This default behavior is not wanted.
 		addMouseDownHandler(new MouseDownHandler() {
@@ -78,33 +88,105 @@ public class MapWidgetImpl extends FocusWidget implements MapWidget {
 		return htmlContainer;
 	}
 
+	public ScreenContainer getScreenContainer(String id) {
+		// First we try to find the container:
+		for (int i = 0; i < drawingArea.getVectorObjectCount(); i++) {
+			VectorObject container = drawingArea.getVectorObject(i);
+			if (container instanceof ScreenContainer) {
+				if (id.equals(((ScreenContainer) container).getId())) {
+					return (ScreenContainer) container;
+				}
+			}
+		}
+
+		// Else we create a new container:
+		ScreenGroup container = new ScreenGroup(id);
+		drawingArea.add(container);
+		return container;
+	}
+
+	public void removeScreenContainer(ScreenContainer container) {
+		drawingArea.remove((VectorObject) container);
+	}
+
+	public WorldContainer getWorldContainer(String id) {
+		// First we try to find the container:
+		for (int i = 0; i < drawingArea.getVectorObjectCount(); i++) {
+			VectorObject container = drawingArea.getVectorObject(i);
+			if (container instanceof WorldContainer) {
+				if (id.equals(((WorldContainer) container).getId())) {
+					return (WorldContainer) container;
+				}
+			}
+		}
+
+		// Else we create a new container:
+		WorldGroup container = new WorldGroup(id);
+		drawingArea.add(container);
+		return container;
+	}
+
+	public void removeWorldContainer(WorldContainer container) {
+		drawingArea.remove((VectorObject) container);
+	}
+
 	// ------------------------------------------------------------------------
 	// Overriding resize methods:
 	// ------------------------------------------------------------------------
 
 	public void setPixelSize(int width, int height) {
-		DOM.setStyleAttribute(clipElement, "width", width + "px");
-		DOM.setStyleAttribute(clipElement, "height", height + "px");
 		htmlContainer.setPixelSize(width, height);
+		drawingArea.setPixelSize(width, height);
 		super.setPixelSize(width, height);
 	}
 
 	public void setSize(String width, String height) {
-		DOM.setStyleAttribute(clipElement, "width", width);
-		DOM.setStyleAttribute(clipElement, "height", height);
 		htmlContainer.setSize(width, height);
+		drawingArea.setSize(width, height);
 		super.setSize(width, height);
 	}
 
 	public void setWidth(String width) {
-		DOM.setStyleAttribute(clipElement, "width", width);
 		htmlContainer.setWidth(width);
+		drawingArea.setWidth(width);
 		super.setWidth(width);
 	}
 
 	public void setHeight(String height) {
-		DOM.setStyleAttribute(clipElement, "height", height);
 		htmlContainer.setHeight(height);
+		drawingArea.setHeight(height);
 		super.setHeight(height);
+	}
+
+	// ------------------------------------------------------------------------
+	// Add mouse event catch methods:
+	// ------------------------------------------------------------------------
+
+	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
+		return addDomHandler(handler, MouseDownEvent.getType());
+	}
+
+	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+		return addDomHandler(handler, MouseUpEvent.getType());
+	}
+
+	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+		return addDomHandler(handler, MouseOutEvent.getType());
+	}
+
+	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+		return addDomHandler(handler, MouseOverEvent.getType());
+	}
+
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+		return addDomHandler(handler, MouseMoveEvent.getType());
+	}
+
+	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
+		return addDomHandler(handler, MouseWheelEvent.getType());
+	}
+
+	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
 }

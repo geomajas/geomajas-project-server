@@ -64,10 +64,6 @@ public abstract class AbstractGeometry implements Geometry {
 		return factory.getSrid();
 	}
 
-	public int getPrecision() {
-		return factory.getPrecision();
-	}
-
 	/**
 	 * Return the {@link GeometryFactory} object that corresponds to this geometry.
 	 */

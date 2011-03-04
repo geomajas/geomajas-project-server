@@ -32,7 +32,15 @@ public interface GeometryFactory {
 	 *            The precision to use when creating geometries.
 	 */
 	// TODO: replace with assisted inject of upcoming gin release
-	void init(int srid, int precision);
+	// void init(int srid, int precision);
+
+	/**
+	 * Set the spatial reference ID that this factory uses when creating new geometries.
+	 * 
+	 * @param srid
+	 *            The spatial reference ID.
+	 */
+	void setSrid(int srid);
 
 	/**
 	 * Return the spatial reference ID that this factory uses when creating new geometries.
@@ -42,11 +50,11 @@ public interface GeometryFactory {
 	int getSrid();
 
 	/**
-	 * Return the precision that this factory uses when creating new geometries. Number of digits after the comma.
+	 * Return a delta value for precision comparing.
 	 * 
-	 * @return The precision.
+	 * @return The delta value for precision comparing.
 	 */
-	int getPrecision();
+	double getDelta();
 
 	/**
 	 * Create a new bounding box, using the given parameters.
@@ -64,11 +72,6 @@ public interface GeometryFactory {
 	Bbox createBbox(double x, double y, double width, double height);
 
 	/**
-	 * Return a delta value for precision comparing.
-	 */
-	double getDelta();
-
-	/**
 	 * Create a clone of the given bounding box.
 	 * 
 	 * @param original
@@ -76,6 +79,15 @@ public interface GeometryFactory {
 	 * @return Returns a clone of the original bounding box.
 	 */
 	Bbox createBbox(Bbox original);
+
+	/**
+	 * Create a GWT copy of the given DTO bounding box.
+	 * 
+	 * @param original
+	 *            The original DTO bounding box to copy.
+	 * @return Returns a GWT copy of the original DTO bounding box.
+	 */
+	Bbox createBbox(org.geomajas.geometry.Bbox original);
 
 	/**
 	 * Create a new {@link Point}, given a coordinate.

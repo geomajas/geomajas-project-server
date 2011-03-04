@@ -21,7 +21,7 @@ import com.google.gwt.inject.client.Ginjector;
  * 
  * @author Jan De Moerloose
  */
-@GinModules({ GeomajasPureModule.class, PureGwtExampleModule.class })
+@GinModules({ PureGwtExampleModule.class })
 public interface PureGwtExampleGinjector extends Ginjector {
 
 	MapWidgetImpl getMap();

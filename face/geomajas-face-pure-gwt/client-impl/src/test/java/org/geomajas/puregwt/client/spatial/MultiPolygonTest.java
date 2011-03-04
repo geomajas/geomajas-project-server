@@ -33,8 +33,6 @@ public class MultiPolygonTest {
 
 	private final static int SRID = 4326;
 
-	private final static int PRECISION = -1;
-
 	private final static double DELTA = 1E-10;
 
 	private GeometryFactory gwtFactory;
@@ -53,7 +51,7 @@ public class MultiPolygonTest {
 	public void setUp() {
 		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
-		gwtFactory.init(SRID, PRECISION);
+		gwtFactory.setSrid(SRID);
 		LinearRing gwtRing1 = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
 				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });
 		Polygon gwtPolygon1 = gwtFactory.createPolygon(gwtRing1, null);
