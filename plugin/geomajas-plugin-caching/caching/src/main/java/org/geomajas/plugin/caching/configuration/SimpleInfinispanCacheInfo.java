@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.configuration;
 
+import org.geomajas.global.Api;
 import org.infinispan.config.CacheLoaderManagerConfig;
 import org.infinispan.config.Configuration;
 import org.infinispan.loaders.jdbm.JdbmCacheStoreConfig;
@@ -25,9 +26,12 @@ import java.io.File;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 
 	private final Logger log = LoggerFactory.getLogger(SimpleInfinispanCacheInfo.class);
+
+	private static final long MILLISECONDS_PER_MINUTE = 60000L;
 
 	private Configuration configuration = new Configuration();
 
@@ -74,12 +78,12 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 * "${cache.dir}/rebuild" is ok but "/tmp/${hostname}" is not. Note that the temporary directory is not
 	 * automatically removed!
 	 *
-	 * @param location directory location for second level cache of items
+	 * @param locationExpr directory location for second level cache of items
 	 */
-	public void setLevel2CacheLocation(String location) {
-		if (null != location) {
+	public void setLevel2CacheLocation(String locationExpr) {
+		if (null != locationExpr) {
 			// property name handling in location
-			location = propertyReplace(location);
+			String location = propertyReplace(locationExpr);
 
 			// create caching directory
 			File dir = new File(location);
@@ -126,7 +130,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 * @param minutes maximum number of minutes that cached item may be idle before being expired. -1 to disable.
 	 */
 	public void setExpiration(int minutes) {
-		configuration.setExpirationMaxIdle(minutes < 0 ? -1 : minutes * 60000);
+		configuration.setExpirationMaxIdle(minutes < 0 ? -1L : minutes * MILLISECONDS_PER_MINUTE);
 	}
 
 	/**

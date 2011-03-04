@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.configuration;
 
+import org.geomajas.global.Api;
 import org.infinispan.config.Configuration;
 
 /**
@@ -18,6 +19,7 @@ import org.infinispan.config.Configuration;
  *
  * @author Joachim Van der Auwera
  */
+@Api
 public class NativeInfinispanCacheInfo extends Configuration implements InfinispanConfiguration {
 
 	private static final long serialVersionUID = 190L;
@@ -56,5 +58,38 @@ public class NativeInfinispanCacheInfo extends Configuration implements Infinisp
 	/** {@inheritDoc} */
 	public Configuration getInfinispanConfiguration() {
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof NativeInfinispanCacheInfo)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+
+		NativeInfinispanCacheInfo that = (NativeInfinispanCacheInfo) o;
+
+		if (cacheEnabled != that.cacheEnabled) {
+			return false;
+		}
+		if (baseConfigurationName != null ? !baseConfigurationName.equals(that.baseConfigurationName) :
+				that.baseConfigurationName != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (cacheEnabled ? 1 : 0);
+		result = 31 * result + (baseConfigurationName != null ? baseConfigurationName.hashCode() : 0);
+		return result;
 	}
 }

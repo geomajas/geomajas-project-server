@@ -34,6 +34,8 @@ import com.twmacinta.util.MD5;
 @Component
 public class CacheKeyServiceImpl implements CacheKeyService {
 
+	private static final int BASE_KEY_LENGTH = 512;
+
 	private static final char[] CHARACTERS = {
 			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
@@ -49,7 +51,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	public String getCacheKey(CacheContext context) {
 		try {
 			MD5 md5 = new MD5();
-			StringBuilder toHash = new StringBuilder(512);
+			StringBuilder toHash = new StringBuilder(BASE_KEY_LENGTH);
 			if (context instanceof CacheContextImpl) {
 				CacheContextImpl cci = (CacheContextImpl) context;
 				for (Map.Entry<String, Object> entry : cci.entries()) {
@@ -114,6 +116,6 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	public String makeUnique(String duplicateKey) {
 		log.debug("Need to make key {} unique.", duplicateKey);
-		return duplicateKey + CHARACTERS[random.nextInt(36)];
+		return duplicateKey + CHARACTERS[random.nextInt(CHARACTERS.length)];
 	}
 }

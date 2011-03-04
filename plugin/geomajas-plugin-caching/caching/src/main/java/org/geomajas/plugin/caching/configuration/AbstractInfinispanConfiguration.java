@@ -12,7 +12,7 @@
 package org.geomajas.plugin.caching.configuration;
 
 /**
- * ...
+ * Abstract base class for {@link InfinispanConfiguration}.
  *
  * @author Joachim Van der Auwera
  */

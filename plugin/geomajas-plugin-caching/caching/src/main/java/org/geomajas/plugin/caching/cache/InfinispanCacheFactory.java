@@ -50,7 +50,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 	private Map<CacheSelector, CacheService> caches = new HashMap<CacheSelector, CacheService>();
 
 	@Autowired(required = false)
-	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
+	private Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
 	/**
 	 * Set the location of the Infinispan configuration file.
@@ -169,7 +169,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 	}
 
 	/** Cache selector, key for map. */
-	private class CacheSelector {
+	private static class CacheSelector {
 
 		private String category = "";
 		private String layer = "";
@@ -194,14 +194,9 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 			CacheSelector that = (CacheSelector) o;
 
-			if (category != null ? !category.equals(that.category) : that.category != null) {
-				return false;
-			}
-			if (layer != null ? !layer.equals(that.layer) : that.layer != null) {
-				return false;
-			}
+			return !(category != null ? !category.equals(that.category) : that.category != null) &&
+					!(layer != null ? !layer.equals(that.layer) : that.layer != null);
 
-			return true;
 		}
 
 		@Override
