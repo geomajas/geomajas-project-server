@@ -18,6 +18,7 @@ import org.geomajas.plugin.caching.configuration.InfinispanConfiguration;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheFactory;
 import org.geomajas.plugin.caching.service.CacheService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.TestRecorder;
 import org.infinispan.config.Configuration;
 import org.infinispan.manager.DefaultCacheManager;
@@ -55,6 +56,9 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 	@Autowired
 	TestRecorder recorder;
+
+	@Autowired
+	private ConfigurationService configurationService;
 
 	/**
 	 * Set the location of the Infinispan configuration file.
@@ -103,7 +107,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 		// build layer specific configurations
 		for (Layer layer : layerMap.values()) {
-			CacheInfo ci = layer.getLayerInfo().getExtraInfo(CacheInfo.class);
+			CacheInfo ci = configurationService.getLayerExtraInfo(layer.getLayerInfo(), CacheInfo.class);
 			if (null != ci) {
 				setCaches(cacheCache, layer, ci);
 			}
