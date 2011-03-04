@@ -13,6 +13,7 @@ package org.geomajas.plugin.caching.cache;
 
 import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
+import org.geomajas.plugin.caching.configuration.CacheInfo;
 import org.geomajas.plugin.caching.configuration.InfinispanConfiguration;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheFactory;
@@ -22,9 +23,12 @@ import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -40,8 +44,13 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 	private EmbeddedCacheManager manager;
 	private String configurationFile;
-	private InfinispanConfiguration allCategoriesConfiguration;
-	private Map<CacheCategory, InfinispanConfiguration> configuration;
+	private CacheInfo defaultConfiguration;
+	private NoCacheCacheFactory noCacheFactory = new NoCacheCacheFactory();
+
+	private Map<CacheSelector, CacheService> caches = new HashMap<CacheSelector, CacheService>();
+
+	@Autowired(required = false)
+	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
 	/**
 	 * Set the location of the Infinispan configuration file.
@@ -51,40 +60,26 @@ public class InfinispanCacheFactory implements CacheFactory {
 	 * This location is first searched on the classpath and if that fails, as a absolute path.
 	 *
 	 * @param configurationFile configuration file
+	 * @since 1.0.0
 	 */
+	@Api
 	public void setConfigurationFile(String configurationFile) {
 		this.configurationFile = configurationFile;
 	}
 
 	/**
-	 * Set the base configuration which should apply to all cache categories.
+	 * Set the default cache configuration. Specifies the default settings for the cache categories.
 	 * <p/>
-	 * This is read after the configuration file, and will extend the default configuration from there. It does not
-	 * affect specific cache category configuration which is specified in the configuration file.
+	 * Cache configurations can be different per layer (with layers sharing caches).
 	 *
-	 * @param allCategoriesConfiguration extension to default configuration
+	 * @param defaultConfiguration default cache configuration
 	 */
-	public void setAllCategoriesConfiguration(InfinispanConfiguration allCategoriesConfiguration) {
-		this.allCategoriesConfiguration = allCategoriesConfiguration;
-	}
-
-	/**
-	 * Set the cache category specific configuration to use.
-	 * <p/>
-	 * This extends the default configuration. If a cache category specific configuration was specified in the
-	 * configuration file and that same cache category is also defined in the map, then the configuration from the map
-	 * will be used (extending the default configuration!).
-	 *
-	 * @param configuration cache manager configuration
-	 * @since 1.0.0
-	 */
-	@Api
-	public void setConfiguration(Map<CacheCategory, InfinispanConfiguration> configuration) {
-		this.configuration = configuration;
+	public void setDefaultConfiguration(CacheInfo defaultConfiguration) {
+		this.defaultConfiguration = defaultConfiguration;
 	}
 
 	@PostConstruct
-	public void init() throws IOException {
+	protected void init() throws IOException {
 		// base configuration from XML file
 		if (null != configurationFile) {
 			log.debug("Get base configuration from {}", configurationFile);
@@ -93,24 +88,127 @@ public class InfinispanCacheFactory implements CacheFactory {
 			manager = new DefaultCacheManager();
 		}
 
-		// extend default configuration
-		if (null != allCategoriesConfiguration) {
-			Configuration conf = manager.getDefaultConfiguration();
-			conf.applyOverrides(allCategoriesConfiguration.getInfinispanConfiguration());
+		// cache for caching the cache configurations (hmmm, sounds a bit strange)
+		Map<String, Map<CacheCategory, CacheService>> cacheCache =
+				new HashMap<String, Map<CacheCategory, CacheService>>();
+
+		// build default configuration
+		if (null != defaultConfiguration) {
+			setCaches(cacheCache, null, defaultConfiguration);
 		}
 
-		// extended specific configuration
-		if (null != configuration) {
-			for (Map.Entry<CacheCategory, InfinispanConfiguration> entry : configuration.entrySet()) {
-				log.debug("Override configuration for category {}", entry.getKey().getName());
-				Configuration conf = manager.getDefaultConfiguration().clone();
-				conf.applyOverrides(entry.getValue().getInfinispanConfiguration());
-				manager.defineConfiguration(entry.getKey().getName(), conf);
+		// build layer specific configurations
+		for (Layer layer : layerMap.values()) {
+			CacheInfo ci = layer.getLayerInfo().getExtraInfo(CacheInfo.class);
+			if (null != ci) {
+				setCaches(cacheCache, layer, ci);
 			}
 		}
 	}
 
+	/**
+	 * Add layer specific cache configuration in the caches variable. This assures each cache is only built once and
+	 * possibly reused (thanks to cacheCache).
+	 *
+	 * @param cacheCache cache for built caches
+	 * @param layer layer (or null)
+	 * @param cacheInfo cache configuration info
+	 */
+	private void setCaches(Map<String, Map<CacheCategory, CacheService>> cacheCache, Layer layer,
+			CacheInfo cacheInfo) {
+		Map<CacheCategory, CacheService> ciCaches;
+		ciCaches = cacheCache.get(cacheInfo.getId());
+		if (null == ciCaches) {
+			ciCaches = createCaches(cacheInfo);
+			cacheCache.put(cacheInfo.getId(), ciCaches);
+		}
+		for (Map.Entry<CacheCategory, CacheService> ciEntry : ciCaches.entrySet()) {
+			CacheSelector cs = new CacheSelector(ciEntry.getKey(), layer);
+			caches.put(cs, ciEntry.getValue());
+		}
+	}
+
+	private Map<CacheCategory, CacheService> createCaches(CacheInfo cacheInfo) {
+		Map<CacheCategory, CacheService> ciCaches = new HashMap<CacheCategory, CacheService>();
+		for (Map.Entry<CacheCategory, InfinispanConfiguration> entry : cacheInfo.getConfiguration().entrySet()) {
+			CacheService cacheService;
+			CacheCategory category = entry.getKey();
+			InfinispanConfiguration config = entry.getValue();
+			if (config.isCacheEnabled()) {
+				if (null != config.getConfigurationName()) {
+					cacheService = new InfinispanCacheService(
+							manager.<String, Object>getCache(config.getConfigurationName()));
+				} else {
+					Configuration infinispan;
+					infinispan = manager.getDefaultConfiguration().clone();
+					infinispan.applyOverrides(config.getInfinispanConfiguration());
+					String configurationName = "$" + category.getName() + "$" + cacheInfo.getId();
+					manager.defineConfiguration(configurationName, infinispan);
+					cacheService = new InfinispanCacheService(manager.<String, Object>getCache(configurationName));
+				}
+			} else {
+				cacheService = noCacheFactory.create(null, category);
+			}
+			ciCaches.put(category, cacheService);
+		}
+		return ciCaches;
+	}
+
 	public CacheService create(Layer layer, CacheCategory category) {
-		return new InfinispanCacheService(manager.<String, Object>getCache(category.getName()));
+		CacheSelector cacheSelector = new CacheSelector(category, layer);
+		CacheService cacheService;
+		cacheService = caches.get(cacheSelector);
+		if (null == cacheService) {
+			cacheSelector = new CacheSelector(category, null);
+			cacheService = caches.get(cacheSelector);
+		}
+		if (null == cacheService) {
+			cacheService = noCacheFactory.create(layer, category);
+		}
+		return cacheService;
+	}
+
+	/** Cache selector, key for map. */
+	private class CacheSelector {
+
+		private String category = "";
+		private String layer = "";
+
+		public CacheSelector(CacheCategory category, Layer layer) {
+			if (null != category) {
+				this.category = category.toString();
+			}
+			if (null != layer) {
+				this.layer = layer.getId();
+			}
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) {
+				return true;
+			}
+			if (!(o instanceof CacheSelector)) {
+				return false;
+			}
+
+			CacheSelector that = (CacheSelector) o;
+
+			if (category != null ? !category.equals(that.category) : that.category != null) {
+				return false;
+			}
+			if (layer != null ? !layer.equals(that.layer) : that.layer != null) {
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = category != null ? category.hashCode() : 0;
+			result = 31 * result + (layer != null ? layer.hashCode() : 0);
+			return result;
+		}
 	}
 }

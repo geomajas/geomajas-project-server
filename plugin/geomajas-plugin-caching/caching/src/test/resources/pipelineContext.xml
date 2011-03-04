@@ -29,7 +29,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
+	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory" />
 		</property>

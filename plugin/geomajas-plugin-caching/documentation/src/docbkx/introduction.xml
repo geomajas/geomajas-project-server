@@ -63,14 +63,16 @@
   <section id="overview">
     <title>Overview</title>
 
-    <para>The caching is enabled by adding steps to the default pipelines at
-    some of the hooks. Two of the example pipelines are the GetVectorTile and
-    SaveOrUpdate pipelines.</para>
+    <para>The caching is enabled by adding steps and interceptors to the
+    default pipelines at some of the hooks. Two of the example pipelines are
+    the GetVectorTile and SaveOrUpdate pipelines.</para>
 
     <para>The GetVectorTile pipeline can be enhanced to support caching as in
-    figure <xref linkend="fig-getvectortile-pipeline" />. At various hooks,
-    interceptors are included to try to get data from the cache or to put it
-    in the cache.</para>
+    figure <xref linkend="fig-getvectortile-pipeline" />. Interceptors are
+    added to get items from the cache and or store them in the cache. This is
+    specifically the cache for caching the entire tile and for producing the
+    string content for the tile. The features are also cached (strictly
+    speaking this is done in the get features pipeline).</para>
 
     <figure id="fig-getvectortile-pipeline">
       <title>Cache interceptors in the GetVectorTile pipeline</title>
@@ -82,11 +84,11 @@
       </mediaobject>
     </figure>
 
-    <para>This is a read-only pipeline and only shows how to get data from the
-    cache. In figure <xref linkend="fig-saveorupdate-pipeline" /> below a part
-    of the SaveOrUpdate pipeline is shown. As all changes to data occur
-    through this layer, this is useful to handle invalidation of cache
-    data.</para>
+    <para>This is a pipeline only reads data and thus only shows how to get
+    data from the cache. In figure <xref
+    linkend="fig-saveorupdate-pipeline" /> below a part of the SaveOrUpdate
+    pipeline is shown. As all changes to data occur through this layer, this
+    is useful to handle invalidation of cache data.</para>
 
     <figure id="fig-saveorupdate-pipeline">
       <title>Cache hooks in (a part of) the SaveOrUpdate pipeline</title>
@@ -100,9 +102,8 @@
 
     <para>For each category of objects, a different cache configuration can be
     used. Each combination of layer and category can use a different cache
-    implementation with different strategies for evicting and removing
-    objects, different size limitation etc. The type of spatial index can also
-    be chosen per layer and category combination. This is all managed by the
+    implementation. The type of spatial index can also be chosen per layer and
+    category combination. This is all managed by the
     CacheManagerService.</para>
 
     <figure id="fig-cache-layer-category">
@@ -114,6 +115,9 @@
         </imageobject>
       </mediaobject>
     </figure>
+
+    <para>Each cache or index implementation has it's own configuration which
+    may again depend on the layer and category.</para>
 
     <para>The different caches for a layer work together as shown in figure
     <xref linkend="figure-cache-usage-raster" />. This displays the handling
@@ -173,12 +177,12 @@
   <section id="security">
     <title>Security</title>
 
-    <para>The cache also has consider security. All entries in the cache are
-    stored based on keys. These keys are determined based on the context which
-    is relevant when building the cached object, including the security
+    <para>The cache also has to consider security. All entries in the cache
+    are stored based on keys. These keys are determined based on the context
+    which is relevant when building the cached object, including the security
     context. When a key is determined, As the key is determined using a
     hashing algorithm, the chances of having two different contexts which may
-    to the same key is very very small. Still, when getting an object from the
+    to the same key is very small. Still, when getting an object from the
     cache, it is checked that the (security) context matches (and not just the
     key).</para>
 
@@ -187,7 +191,7 @@
     requesting (cached) images to be served, they key is used as (part of) the
     URL. The default behaviour in this case is that the security token is not
     included in the URL and this the matching of the security context can not
-    be done. This is explicitly to be able to serve the images faster.
+    be done. This is explicitly done to be able to serve the images faster.
     However, the URL can be considered secret as they cannot be predicted. As
     such you will normally see the tile as it was previously calculated.
     However, it is possible that the rights for a user changes which would

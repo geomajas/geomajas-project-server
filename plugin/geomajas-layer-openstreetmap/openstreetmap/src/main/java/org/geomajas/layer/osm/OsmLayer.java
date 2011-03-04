@@ -139,7 +139,7 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	@PostConstruct
-	private void postConstruct() throws Exception {
+	protected void postConstruct() throws Exception {
 		tileServiceState.postConstruct(geoService, converterService);
 	}
 

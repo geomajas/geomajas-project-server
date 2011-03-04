@@ -28,6 +28,7 @@ public class BoundsCacheContainer extends CacheContainer {
 	 * @param bounds bounds
 	 */
 	public BoundsCacheContainer(Envelope bounds) {
+		super();
 		this.bounds = bounds;
 	}
 

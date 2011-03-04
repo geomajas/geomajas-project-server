@@ -28,6 +28,7 @@ public class TileContentCacheContainer extends CacheContainer {
 	 * @param labelContent tile label content
 	 */
 	public TileContentCacheContainer(String featureContent, String labelContent) {
+		super();
 		this.featureContent = featureContent;
 		this.labelContent = labelContent;
 	}

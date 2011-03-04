@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-configuration">
@@ -36,9 +35,9 @@
   <section id="conf">
     <title>Pipeline configuration</title>
 
-    <para>To make sure the caching is actually used, you have to define assure
-    that the cached pipelines are used in the cases where you want the cache
-    to be enabled.</para>
+    <para>To make sure the caching is actually used, you have to assure that
+    the cached pipelines are used in the cases where you want the cache to be
+    enabled.</para>
 
     <para>The easiest configuration is to enable the caches to be used by
     default. This can be done by including the file<informalexample>
@@ -72,6 +71,12 @@
           <para>PIPELINE_GET_VECTOR_TILE_CACHED: pipeline to get a tile for a
           vector layer.</para>
         </listitem>
+
+        <listitem>
+          <para>PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED: pipeline to get a tile
+          for a vector layer only including intermediate caches, not the tile
+          cache.</para>
+        </listitem>
       </itemizedlist>You can set a specific pipeline using a configuration
     like this:</para>
 
@@ -96,8 +101,8 @@
 
     <para>Cache configuration can be configured individually for each layer
     and cache category (which more or less matches type of object). This is
-    done using the <code>CacheInfo</code> object. As you can see in listing
-    <xref linkend="CacheInfoSample" /> you can define three
+    done using the <code>CacheServiceInfo</code> object. As you can see in
+    listing <xref linkend="CacheServiceInfoSample" /> you can define three
     properties<itemizedlist>
         <listitem>
           <para><emphasis>layerId</emphasis>: the layer for which this
@@ -117,7 +122,7 @@
         </listitem>
       </itemizedlist></para>
 
-    <xi:include href="listing/CacheInfoSample.xml"
+    <xi:include href="listing/CacheServiceInfoSample.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The layerId and category properties are not required to be set. This
@@ -145,16 +150,89 @@
     application context contains more than one bean matching bean (for each of
     the lines above) the last definition is used.</para>
 
+    <para>As an example you could use this mechanism to disable the VML and
+    SVG caching using the following configuration:</para>
+
+    <example>
+      <title>Disable caching for SVG and VML.</title>
+
+      <programlisting>&lt;bean class="org.geomajas.plugin.caching.service.CacheServiceInfo"&gt;
+    &lt;property name="category"&gt;
+        &lt;util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/&gt;
+    &lt;/property&gt;
+    &lt;property name="cacheFactory"&gt;
+        &lt;bean class="org.geomajas.plugin.caching.cache.NoCacheCacheFactory" /&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean class="org.geomajas.plugin.caching.service.CacheServiceInfo"&gt;
+    &lt;property name="category"&gt;
+        &lt;util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML"/&gt;
+    &lt;/property&gt;
+    &lt;property name="cacheFactory"&gt;
+        &lt;bean class="org.geomajas.plugin.caching.cache.NoCacheCacheFactory" /&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>
+    </example>
+
+    <para>The configuration which applies still depends on the CacheFactory
+    which is in use.</para>
+
     <section id="cache-default">
       <title>Default caches</title>
 
-      <para>??? @TODO</para>
+      <para>The default cache configuration is show in listing <xref
+      linkend="DefaultInfinispanConfiguration" />. It uses Infinispan for the
+      caching and builds individual caches for each of the categories. It has
+      the following behaviour:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>SVG/VML cache: store 512 object in each.</para>
+          </listitem>
+
+          <listitem>
+            <para>bounds cache: store up to 512 bounds.</para>
+          </listitem>
+
+          <listitem>
+            <para>feature cache: store up to 512 query results.</para>
+          </listitem>
+
+          <listitem>
+            <para>raster cache: store 64 items in memory based on a LRU (least
+            recently used) algorithm. Additional items are passivated to disk.
+            Items stay cached for a week after last use.</para>
+          </listitem>
+
+          <listitem>
+            <para>rebuild cache: store up to 2048 items in memory based on a
+            LRU (least recently used) algorithm. Additional items are
+            passivated to disk. Items stay cached for 48 hours after last
+            use.</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <xi:include href="listing/DefaultInfinispanConfiguration.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can configure the directory where the passivated cache objects
+      are stored using the geomajasCacheLocation property. This could for
+      example be done by passing something like
+      -DgeomajasCacheLocation=/var/geomajas/cache as startup parameter to your
+      web container or application server.</para>
+
+      <para>When the variable is not set, the ${geomajasCacheLocation}will be
+      interpreted as ${java.io.tmpdir}/geomajas/cache. So the files will be
+      placed in your systems temporary directory. Note that this can cause
+      conflicts when starting more than one Geomajas instance on a
+      system.</para>
     </section>
 
     <section>
       <title>Infinispan caches</title>
 
-      <para>One of the caching service which is provided out of the box uses
+      <para>One of the caching services which is provided out of the box uses
       Infinispan as the caching library.</para>
 
       <para>This provides two ways to provide the actual configuration. Either

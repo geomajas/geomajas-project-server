@@ -94,6 +94,11 @@
 				<artifactId>infinispan-core</artifactId>
 				<version>4.2.0.FINAL</version>
 			</dependency>
+ 			<dependency>
+				<groupId>org.infinispan</groupId>
+				 <artifactId>infinispan-cachestore-jdbm</artifactId>
+				<version>4.2.0.FINAL</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

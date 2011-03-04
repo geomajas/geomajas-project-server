@@ -46,7 +46,7 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 	protected Map<String, PluginInfo> declaredPlugins;
 
 	@PostConstruct
-	private void buildCopyrightMap() {
+	protected void buildCopyrightMap() {
 		if (null == declaredPlugins) {
 			return;
 		}

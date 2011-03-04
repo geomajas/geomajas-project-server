@@ -103,7 +103,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 
 	@SuppressWarnings("unchecked")
 	@PostConstruct
-	public void postConstruct() throws GeomajasException {
+	protected void postConstruct() throws GeomajasException {
 		// sort pipelines so a pipeline is always before it's delegate (to make sure delegates are not handled before
 		// delegating), and some sanity checks
 		List<PipelineInfo<RESPONSE>> delegateLast = new ArrayList<PipelineInfo<RESPONSE>>();

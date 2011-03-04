@@ -11,6 +11,8 @@
 package org.geomajas.configuration;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +35,7 @@ public class LayerInfo implements Serializable {
 	@NotNull
 	private String crs;
 	private Bbox maxExtent = Bbox.ALL;
+	private Map<String, Object> extraInfo = new HashMap<String, Object>();
 
 	/**
 	 * Get layer type, indicating whether it is a raster layer or which type of geometries which are contained in the
@@ -92,6 +95,56 @@ public class LayerInfo implements Serializable {
 	 */
 	public void setMaxExtent(Bbox maxExtent) {
 		this.maxExtent = maxExtent;
+	}
+
+	/**
+	 * Get extra configuration for the plug-ins. It is expected that the class name is used as key.
+	 *
+	 * @return extra configuration
+	 * @since 1.9.0
+	 */
+	public Map<String, Object> getExtraInfo() {
+		return extraInfo;
+	}
+
+	/**
+	 * Set the extra configuration for the plug-ins. It is expected that the class name is used as key.
+	 *
+	 * @param extraInfo extra configuration
+	 * @since 1.9.0
+	 */
+	public void setExtraInfo(Map<String, Object> extraInfo) {
+		this.extraInfo = extraInfo;
+	}
+
+	/**
+	 * Get a specific entry from the extraInfo for the given type. This assumes the fully qualified class name of the
+	 * object is used as key.
+	 *
+	 * @param type type to get
+	 * @param <TYPE> type to get
+	 * @return value for key if exists
+	 * @since 1.9.0
+	 */
+	public <TYPE> TYPE getExtraInfo(Class<TYPE> type) {
+		return getExtraInfo(type.getName(), type);
+	}
+
+	/**
+	 * Get a specific entry from the extraInfo for key and with type checking.
+	 *
+	 * @param key key from extraInfo
+	 * @param type type to get
+	 * @param <TYPE> type to get
+	 * @return value for key if exists
+	 * @since 1.9.0
+	 */
+	public <TYPE> TYPE getExtraInfo(String key, Class<TYPE> type) {
+		Object obj = extraInfo.get(key);
+		if (null != obj && type.isAssignableFrom(obj.getClass())) {
+			return (TYPE) obj;
+		}
+		return null;
 	}
 
 }

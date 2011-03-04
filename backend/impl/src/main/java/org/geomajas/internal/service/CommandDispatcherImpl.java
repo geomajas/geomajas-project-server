@@ -113,7 +113,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					response.setId(id);
 					try {
 						command.execute(request, response);
-					} catch (Throwable throwable) {
+					} catch (Throwable throwable) { //NOPMD
 						log.error("Error executing command", throwable);
 						response.getErrors().add(throwable);
 					}

@@ -135,7 +135,7 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	@PostConstruct
-	private void postConstruct() throws GeomajasException {
+	protected void postConstruct() throws GeomajasException {
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 
 		// calculate resolutions

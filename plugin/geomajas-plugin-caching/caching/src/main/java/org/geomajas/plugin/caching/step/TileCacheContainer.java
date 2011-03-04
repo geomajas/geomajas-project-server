@@ -28,6 +28,7 @@ public class TileCacheContainer extends CacheContainer {
 	 * @param tile tile
 	 */
 	public TileCacheContainer(InternalTile tile) {
+		super();
 		this.tile = tile;
 	}
 

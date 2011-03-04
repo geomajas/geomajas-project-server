@@ -30,6 +30,8 @@ public class CacheCategory {
 	public static final CacheCategory FEATURE = new CacheCategory("feature");
 	public static final CacheCategory BOUNDS = new CacheCategory("bounds");
 
+	public static final CacheCategory[] ALL = {VML, SVG, RASTER, TILE, REBUILD, FEATURE, BOUNDS};
+
 	private String name;
 
 	public CacheCategory(String name) {

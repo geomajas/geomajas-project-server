@@ -178,8 +178,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				Object value;
 				try {
 					value = m.invoke(bean);
-				} catch (Throwable t) {
-					throw new GeomajasException(t);
+				} catch (Exception e) {
+					throw new GeomajasException(e);
 				}
 				return value;
 			}

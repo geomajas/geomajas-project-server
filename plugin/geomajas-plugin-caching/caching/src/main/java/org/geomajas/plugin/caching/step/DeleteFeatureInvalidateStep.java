@@ -90,7 +90,7 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 					}
 				}
 			}
-		} catch (Throwable t) {
+		} catch (Throwable t) { //NOPMD
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}

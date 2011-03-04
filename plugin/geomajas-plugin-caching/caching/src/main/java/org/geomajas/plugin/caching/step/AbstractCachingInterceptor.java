@@ -117,7 +117,7 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 					}
 				}
 			}
-		} catch (Throwable t) {
+		} catch (Throwable t) { //NOPMD
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
@@ -154,7 +154,7 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 			}
 			cacheManager.put(layer, category, cacheKey, cacheContainer, envelope);
 			pipelineContext.put(keyKey, cacheKey);
-		} catch (Throwable t) {
+		} catch (Throwable t) { //NOPMD
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}

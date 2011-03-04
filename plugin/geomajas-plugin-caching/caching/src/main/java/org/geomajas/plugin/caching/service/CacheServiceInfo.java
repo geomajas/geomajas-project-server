@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class CacheInfo extends LayerCategoryInfo {
+public class CacheServiceInfo extends LayerCategoryInfo {
 
 	@NotNull
 	private CacheFactory cacheFactory;

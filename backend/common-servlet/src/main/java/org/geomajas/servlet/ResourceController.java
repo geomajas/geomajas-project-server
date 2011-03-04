@@ -144,7 +144,7 @@ public class ResourceController implements LastModified, ServletContextAware {
 					in.close();
 					try {
 						resourceConn.getOutputStream().close();
-					} catch (Throwable t) {
+					} catch (Throwable t) { //NOPMD
 						/*ignore, just trying to free resources*/
 					}
 				}
@@ -202,12 +202,12 @@ public class ResourceController implements LastModified, ServletContextAware {
 			contentLength += resourceConn.getContentLength();
 			try {
 				resourceConn.getInputStream().close();
-			} catch (Throwable t) {
+			} catch (Exception e) {
 				/*ignore, just trying to free resources*/
 			}
 			try {
 				resourceConn.getOutputStream().close();
-			} catch (Throwable t) {
+			} catch (Exception e) {
 				/*ignore, just trying to free resources*/
 			}
 		}
@@ -245,12 +245,12 @@ public class ResourceController implements LastModified, ServletContextAware {
 			}
 			try {
 				resourceConn.getInputStream().close();
-			} catch (Throwable t) {
+			} catch (Exception e) {
 				/*ignore, just trying to free resources*/
 			}
 			try {
 				resourceConn.getOutputStream().close();
-			} catch (Throwable t) {
+			} catch (Exception e) {
 				/*ignore, just trying to free resources*/
 			}
 		}

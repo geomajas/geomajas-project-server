@@ -70,7 +70,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	private boolean skipAppIdCheck;
 
 	@PostConstruct
-	private void initCrs() throws Exception {
+	protected void initCrs() throws Exception {
 		crs = geoService.getCrs2("EPSG:4326"); // WGS-84 latlong
 
 		if (null != appIdProperty) {

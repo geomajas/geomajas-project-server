@@ -173,7 +173,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	@PostConstruct
-	public void initFeatures() throws LayerException {
+	protected void initFeatures() throws LayerException {
 		if (null == layerInfo) {
 			return;
 		}

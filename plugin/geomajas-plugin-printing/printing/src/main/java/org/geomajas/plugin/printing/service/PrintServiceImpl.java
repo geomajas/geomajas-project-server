@@ -230,7 +230,7 @@ public class PrintServiceImpl implements PrintService {
 	}
 
 	@PostConstruct
-	public void initJAI() {
+	protected void initJai() {
 		TileCache cache = JAI.getDefaultInstance().getTileCache();
 		cache.setMemoryCapacity(getJaiTileCacheInMB() * 1024 * 1024L);
 		log.info("JAI cache size set to " + cache.getMemoryCapacity() / (1024L * 1024L) + " MB");

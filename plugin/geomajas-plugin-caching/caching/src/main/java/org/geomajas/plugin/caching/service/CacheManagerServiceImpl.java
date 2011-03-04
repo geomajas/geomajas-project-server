@@ -130,9 +130,9 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	IndexedCache createCache(Layer layer, CacheCategory cacheCategory) {
 		String layerId = layer.getId();
-		CacheInfo cacheInfo = getInfo(layerId, cacheCategory, CacheInfo.class);
+		CacheServiceInfo cacheServiceInfo = getInfo(layerId, cacheCategory, CacheServiceInfo.class);
 		CacheIndexInfo cacheIndexInfo = getInfo(layerId, cacheCategory, CacheIndexInfo.class);
-		return new IndexedCache(cacheInfo.getCacheFactory().create(layer, cacheCategory),
+		return new IndexedCache(cacheServiceInfo.getCacheFactory().create(layer, cacheCategory),
 				cacheIndexInfo.getCacheIndexFactory().create(layer, cacheCategory));
 	}
 

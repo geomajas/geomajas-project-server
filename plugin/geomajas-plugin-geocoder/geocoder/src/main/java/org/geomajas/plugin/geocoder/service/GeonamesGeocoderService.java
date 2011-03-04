@@ -72,7 +72,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 	private String userNameProperty;
 
 	@PostConstruct
-	private void initCrs() throws GeomajasException {
+	protected void initCrs() throws GeomajasException {
 		crs = geoService.getCrs2("EPSG:4326"); // WGS-84 latlong
 
 		if (null != userNameProperty) {

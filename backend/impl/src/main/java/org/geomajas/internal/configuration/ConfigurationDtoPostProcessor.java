@@ -91,7 +91,7 @@ public class ConfigurationDtoPostProcessor {
 	}
 
 	@PostConstruct
-	public void processConfiguration() throws BeansException {
+	protected void processConfiguration() throws BeansException {
 		try {
 			for (RasterLayer layer : rasterLayerMap.values()) {
 				postProcess(layer);

@@ -76,7 +76,7 @@ public class StaticRegexGeocoderService implements GeocoderService {
 	}
 
 	@PostConstruct
-	private void initCrs() throws GeomajasException {
+	protected void initCrs() throws GeomajasException {
 		crs = geoService.getCrs2(geocoderInfo.getCrs());
 	}
 

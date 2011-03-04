@@ -73,7 +73,7 @@ public final class GeoServiceImpl implements GeoService {
 	private Map<String, CrsTransform> transformCache = new ConcurrentHashMap<String, CrsTransform>();
 
 	@PostConstruct
-	private void postConstruct() throws GeomajasException {
+	protected void postConstruct() throws GeomajasException {
 		if (null != crsDefinitions) {
 			for (CrsInfo crsInfo : crsDefinitions.values()) {
 				try {
@@ -467,8 +467,9 @@ public final class GeoServiceImpl implements GeoService {
 				try {
 					InteriorPointArea ipa = new InteriorPointArea(geometry);
 					labelPoint = ipa.getInteriorPoint();
-				} catch (Throwable t) {
+				} catch (Throwable t) { //NOPMD
 					// BUG in JTS for some valid geometries ? fall back to centroid
+					log.warn("getInteriorPoint() failed", t);
 				}
 			} else if (geometry instanceof LineString || geometry instanceof MultiLineString) {
 				InteriorPointLine ipa = new InteriorPointLine(geometry);

@@ -33,6 +33,7 @@ public class FeaturesCacheContainer extends CacheContainer {
 	 * @param bounds bounds for features
 	 */
 	public FeaturesCacheContainer(List<InternalFeature> features, Envelope bounds) {
+		super();
 		this.features = features;
 		this.bounds = bounds;
 	}

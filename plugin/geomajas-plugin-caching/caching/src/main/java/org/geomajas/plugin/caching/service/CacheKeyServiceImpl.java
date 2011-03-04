@@ -49,37 +49,38 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	public String getCacheKey(CacheContext context) {
 		try {
 			MD5 md5 = new MD5();
-			String toHash = "";
+			StringBuilder toHash = new StringBuilder(512);
 			if (context instanceof CacheContextImpl) {
 				CacheContextImpl cci = (CacheContextImpl) context;
 				for (Map.Entry<String, Object> entry : cci.entries()) {
 					md5.Update(entry.getKey(), ENCODING);
 					md5.Update(":");
 					if (log.isDebugEnabled()) {
-						toHash += entry.getKey() + ":";
+						toHash.append(entry.getKey());
+						toHash.append(":");
 					}
 					Object value = entry.getValue();
 					if (null != value) {
 						String cid = getCacheId(value);
 						md5.Update(cid, ENCODING);
 						if (log.isDebugEnabled()) {
-							toHash += cid;
+							toHash.append(cid);
 						}
 					}
 					md5.Update("-");
 					if (log.isDebugEnabled()) {
-						toHash += "-";
+						toHash.append("-");
 					}
 				}
 			} else {
 				String cid = getCacheId(context);
 				md5.Update(cid, ENCODING);
 				if (log.isDebugEnabled()) {
-					toHash += cid;
+					toHash.append(cid);
 				}
 			}
 			String key = md5.asHex();
-			log.debug("key for context {} which is a hash for {}", key, toHash);
+			log.debug("key for context {} which is a hash for {}", key, toHash.toString());
 			return key;
 		} catch (UnsupportedEncodingException uee) {
 			log.error("Impossible error, UTF-8 should be supported:" + uee.getMessage(), uee);

@@ -11,20 +11,23 @@
 
 package org.geomajas.plugin.caching.configuration;
 
+import org.infinispan.config.CacheLoaderManagerConfig;
 import org.infinispan.config.Configuration;
+import org.infinispan.loaders.jdbm.JdbmCacheStoreConfig;
+import org.infinispan.util.concurrent.IsolationLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 /**
  * Easy Infinispan cache configuration based on some sensible default.
  *
  * @author Joachim Van der Auwera
  */
-public class SimpleInfinispanCacheInfo implements InfinispanConfiguration {
+public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 
-	// expiration
-	// directory location for cache store
-	// cache size in memory (# or size?)
-	// active
-	//private String
+	private final Logger log = LoggerFactory.getLogger(SimpleInfinispanCacheInfo.class);
 
 	private Configuration configuration = new Configuration();
 
@@ -45,7 +48,7 @@ public class SimpleInfinispanCacheInfo implements InfinispanConfiguration {
 	/**
 	 * Set the eviction strategy to use. Can be UNORDERED, FIFO, LRU and NONE.
 	 * <p/>
-	 *This indicates the which items need to be removed from cache to make space for more new entries. The cached item
+	 * This indicates the which items need to be removed from cache to make space for more new entries. The cached item
 	 * may still be available after eviction if there is a secondary cache (disk).
 	 *
 	 * @param evictionStrategy eviction strategy
@@ -54,5 +57,89 @@ public class SimpleInfinispanCacheInfo implements InfinispanConfiguration {
 		configuration.setEvictionStrategy(evictionStrategy);
 	}
 
+	/**
+	 * Set the transaction isolation level.
+	 *
+	 * @param isolationLevel tx isolation level
+	 */
+	public void setIsolationLevel(IsolationLevel isolationLevel) {
+		configuration.setIsolationLevel(isolationLevel);
+	}
+
+	/**
+	 * Set the location for the second level cache. This needs to be a directory which is created if needed.
+	 * <p/>
+	 * The location can point to a system property by using the "${propertyName}" notation. If the property does not
+	 * exist it is replaced by a temporary directory. The property needs to be at the start of the string (so
+	 * "${cache.dir}/rebuild" is ok but "/tmp/${hostname}" is not. Note that the temporary directory is not
+	 * automatically removed!
+	 *
+	 * @param location directory location for second level cache of items
+	 */
+	public void setLevel2CacheLocation(String location) {
+		if (null != location) {
+			// property name handling in location
+			location = propertyReplace(location);
+
+			// create caching directory
+			File dir = new File(location);
+			if (!dir.mkdirs()) {
+				log.warn("Directory {} for 2nd level cache could not be created.", location);
+			}
+
+			// create/set cache loader configuration
+			CacheLoaderManagerConfig loaderManagerConfig = new CacheLoaderManagerConfig();
+			loaderManagerConfig.setPassivation(true);
+			JdbmCacheStoreConfig loaderConfig = new JdbmCacheStoreConfig();
+			loaderConfig.setLocation(location);
+			loaderManagerConfig.addCacheLoaderConfig(loaderConfig);
+			configuration.setCacheLoaderManagerConfig(loaderManagerConfig);
+		}
+	}
+
+	private String propertyReplace(String location) {
+		if (location.startsWith("${")) {
+			int pos = location.indexOf('}');
+			if (pos > 0) {
+				String property = location.substring(2, pos);
+				String res = location.substring(pos + 1);
+				String value = System.getProperty(property);
+				if (null == value) {
+					value = System.getProperty("java.io.tmpdir") + File.separator + "geomajas" + File.separator +
+							"cache";
+					log.warn("Trying to create cache location using property {} which is undefined, using {} instead.",
+							property, value);
+				}
+				location = value + res;
+			} else {
+				log.warn("Cache location {} looks like a property reference but closing } is missing.", location);
+			}
+		}
+		return location;
+	}
+
+	/**
+	 * Set the expiration time in minutes. Items are expired when idle for this amount of time.
+	 * <p/>
+	 * Expiration can be disabled by setting the time to -1.
+	 *
+	 * @param minutes maximum number of minutes that cached item may be idle before being expired. -1 to disable.
+	 */
+	public void setExpiration(int minutes) {
+		configuration.setExpirationMaxIdle(minutes < 0 ? -1 : minutes * 60000);
+	}
+
+	/**
+	 * Set the number of items which should be kept in memory by the cache. This will be rounded up to the next bigger
+	 * power of two.
+	 * <p/>
+	 * When there are more items to be stored, they can be moved to the second level cache if
+	 * {@link #setLevel2CacheLocation(String)} is set.
+	 *
+	 * @param maxEntries maximum entries for the in-memory cache
+	 */
+	public void setMaxEntries(int maxEntries) {
+		configuration.setEvictionMaxEntries(maxEntries);
+	}
 
 }

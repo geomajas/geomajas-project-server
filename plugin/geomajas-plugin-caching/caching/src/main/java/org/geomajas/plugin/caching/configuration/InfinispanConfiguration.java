@@ -22,7 +22,25 @@ import org.infinispan.config.Configuration;
 public interface InfinispanConfiguration {
 
 	/**
+	 * Indicates whether caching should be enabled.
+	 *
+	 * @return true to enable the cache, false to disable it
+	 */
+	boolean isCacheEnabled();
+
+	/**
+	 * Get the name of the infinispan configuration which should be used. This is the name from the XML configuration
+	 * file. When this is null, then {@link #getInfinispanConfiguration()} should be not null.
+	 *
+	 * @return base configuration name or null
+	 */
+	String getConfigurationName();
+
+	/**
 	 * Get the Infinispan configuration object.
+	 * <p/>
+	 * When {#link getConfigurationName} is null, this is used. It extends the default configuration which is created
+	 * using the XML configuration file if any.
 	 *
 	 * @return configuration object
 	 */

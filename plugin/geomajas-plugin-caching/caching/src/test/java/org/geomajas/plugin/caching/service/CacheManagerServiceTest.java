@@ -12,9 +12,6 @@
 package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.io.WKTReader;
 import org.geomajas.layer.VectorLayer;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,27 +55,27 @@ public class CacheManagerServiceTest {
 
 	@Test
 	public void testGetInfo() throws Exception {
-		CacheInfo info;
+		CacheServiceInfo serviceInfo;
 
 		// full match, use last
-		info = cacheManager.getInfo("test", CacheCategory.SVG, CacheInfo.class);
-		Assert.assertEquals("full2", ((DummyCacheFactory) info.getCacheFactory()).getTest());
+		serviceInfo = cacheManager.getInfo("test", CacheCategory.SVG, CacheServiceInfo.class);
+		Assert.assertEquals("full2", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// match on layer only
-		info = cacheManager.getInfo("test", CacheCategory.RASTER, CacheInfo.class);
-		Assert.assertEquals("semiTest", ((DummyCacheFactory) info.getCacheFactory()).getTest());
+		serviceInfo = cacheManager.getInfo("test", CacheCategory.RASTER, CacheServiceInfo.class);
+		Assert.assertEquals("semiTest", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// match on category only
-		info = cacheManager.getInfo("bla", CacheCategory.SVG, CacheInfo.class);
-		Assert.assertEquals("semiSVG", ((DummyCacheFactory) info.getCacheFactory()).getTest());
+		serviceInfo = cacheManager.getInfo("bla", CacheCategory.SVG, CacheServiceInfo.class);
+		Assert.assertEquals("semiSVG", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// no match, use default
-		info = cacheManager.getInfo("bla", CacheCategory.RASTER, CacheInfo.class);
-		Assert.assertEquals("default", ((DummyCacheFactory) info.getCacheFactory()).getTest());
+		serviceInfo = cacheManager.getInfo("bla", CacheCategory.RASTER, CacheServiceInfo.class);
+		Assert.assertEquals("default", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// match on layer only and on category only, check use layer
-		info = cacheManager.getInfo("blabla", CacheCategory.VML, CacheInfo.class);
-		Assert.assertEquals("semiBlabla", ((DummyCacheFactory) info.getCacheFactory()).getTest());
+		serviceInfo = cacheManager.getInfo("blabla", CacheCategory.VML, CacheServiceInfo.class);
+		Assert.assertEquals("semiBlabla", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 	}
 
 	@Test

@@ -11,16 +11,12 @@
 
 package org.geomajas.plugin.caching.configuration;
 
-import org.infinispan.config.Configuration;
-
 /**
- * Use the Infinispan built-in configuration for configuring a cache.
+ * ...
  *
  * @author Joachim Van der Auwera
  */
-public class NativeInfinispanCacheInfo extends Configuration implements InfinispanConfiguration {
-
-	private static final long serialVersionUID = 190L;
+public abstract class AbstractInfinispanConfiguration implements InfinispanConfiguration {
 
 	private boolean cacheEnabled = true;
 	private String baseConfigurationName;
@@ -53,8 +49,4 @@ public class NativeInfinispanCacheInfo extends Configuration implements Infinisp
 		this.baseConfigurationName = baseConfigurationName;
 	}
 
-	/** {@inheritDoc} */
-	public Configuration getInfinispanConfiguration() {
-		return this;
-	}
 }

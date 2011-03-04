@@ -82,7 +82,7 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 				log.debug("invalidate new feature area {}", envelope);
 				cacheManager.invalidate(layer, envelope);
 			}
-		} catch (Throwable t) {
+		} catch (Throwable t) { //NOPMD
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
