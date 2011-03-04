@@ -119,6 +119,6 @@
 	</profiles>
 
 	<properties>
-		<geocoder-backend-version>1.8.0</geocoder-backend-version>
+		<geocoder-backend-version>1.9.0-SNAPSHOT</geocoder-backend-version> <!-- @todo GeoTools upgrade check, was 1.8.0 -->
 	</properties>
 </project>

@@ -136,6 +136,6 @@
 	</build>
 
 	<properties>
-		<wms-layer-backend-version>1.8.0</wms-layer-backend-version>
+		<wms-layer-backend-version>1.9.0-SNAPSHOT</wms-layer-backend-version> <!-- @todo GeoTools upgrade check, was 1.8.0 -->
 	</properties>
 </project>

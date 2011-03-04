@@ -102,6 +102,6 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-rest-backend-version>1.8.0</geomajas-face-rest-backend-version>
+		<geomajas-face-rest-backend-version>1.9.0-SNAPSHOT</geomajas-face-rest-backend-version> <!-- @todo GeoTools upgrade check, was 1.8.0 -->
 	</properties>	
 </project>
