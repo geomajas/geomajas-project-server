@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.caching.cache;
 
-import com.sun.deploy.association.Association;
 import org.geomajas.layer.Layer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
