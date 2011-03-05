@@ -55,7 +55,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 	private Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
 	@Autowired
-	TestRecorder recorder;
+	private TestRecorder recorder;
 
 	@Autowired
 	private ConfigurationService configurationService;

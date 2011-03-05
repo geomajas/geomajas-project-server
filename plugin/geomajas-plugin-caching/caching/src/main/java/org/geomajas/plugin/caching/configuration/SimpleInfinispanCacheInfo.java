@@ -25,6 +25,7 @@ import java.io.File;
  * Easy Infinispan cache configuration based on some sensible default.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {

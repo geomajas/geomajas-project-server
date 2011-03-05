@@ -88,7 +88,7 @@ public class CacheManagerServiceTest {
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key, String.class));
 		Assert.assertNull(data, cacheManager.get(layer, CacheCategory.REBUILD, otherKey));
 		Assert.assertNull(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
-		Assert.assertNull(data, cacheManager.get(otherLayer, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(otherLayer, CacheCategory.REBUILD, key)); // both layers share the same cache
 		cacheManager.remove(layer, CacheCategory.REBUILD, key);
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
 	}

@@ -21,6 +21,7 @@ import org.geomajas.plugin.caching.service.CacheService;
  * {@link CacheFactory} implementation which caches nothing.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
 @Api
 public class NoCacheCacheFactory implements CacheFactory {

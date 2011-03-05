@@ -93,6 +93,9 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	public CacheService getCacheForTesting(String layerId, CacheCategory cacheCategory) {
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
+		if (null == layerCaches) {
+			layerCaches = caches.get("");
+		}
 		if (null != layerCaches) {
 			IndexedCache cache = layerCaches.get(cacheCategory);
 			if (null != cache) {
@@ -123,8 +126,12 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	}
 
 	List<IndexedCache> getCaches(Layer layer) {
+		String layerId = "";
+		if (null != layer) {
+			layer.getId();
+		}
 		List<IndexedCache> list = new ArrayList<IndexedCache>();
-		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layer.getId());
+		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
 		if (null != layerCaches) {
 			list.addAll(layerCaches.values());
 		}

@@ -18,6 +18,7 @@ import org.infinispan.config.Configuration;
  * Use the Infinispan built-in configuration for configuring a cache.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
 @Api
 public class NativeInfinispanCacheInfo extends Configuration implements InfinispanConfiguration {
