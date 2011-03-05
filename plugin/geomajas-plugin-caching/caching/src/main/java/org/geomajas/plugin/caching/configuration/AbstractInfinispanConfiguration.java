@@ -19,7 +19,7 @@ package org.geomajas.plugin.caching.configuration;
 public abstract class AbstractInfinispanConfiguration implements InfinispanConfiguration {
 
 	private boolean cacheEnabled = true;
-	private String baseConfigurationName;
+	private String configurationName;
 
 	/** {@inheritDoc} */
 	public boolean isCacheEnabled() {
@@ -37,16 +37,16 @@ public abstract class AbstractInfinispanConfiguration implements InfinispanConfi
 
 	/** {@inheritDoc} */
 	public String getConfigurationName() {
-		return baseConfigurationName;
+		return configurationName;
 	}
 
 	/**
-	 * Set the name of the base configuration from the Infinispan XML configuration file.
+	 * Set the name of the configuration from the Infinispan XML configuration file.
 	 *
-	 * @param baseConfigurationName name of base configuration
+	 * @param configurationName name of configuration
 	 */
-	public void setBaseConfigurationName(String baseConfigurationName) {
-		this.baseConfigurationName = baseConfigurationName;
+	public void setConfigurationName(String configurationName) {
+		this.configurationName = configurationName;
 	}
 
 }

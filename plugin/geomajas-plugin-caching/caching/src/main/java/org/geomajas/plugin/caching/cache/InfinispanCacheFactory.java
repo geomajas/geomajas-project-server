@@ -143,18 +143,16 @@ public class InfinispanCacheFactory implements CacheFactory {
 			CacheCategory category = entry.getKey();
 			InfinispanConfiguration config = entry.getValue();
 			if (config.isCacheEnabled()) {
-				if (null != config.getConfigurationName()) {
-					cacheService = new InfinispanCacheService(
-							manager.<String, Object>getCache(config.getConfigurationName()));
-				} else {
+				String configurationName = config.getConfigurationName();
+				if (null == configurationName) {
 					Configuration infinispan;
 					infinispan = manager.getDefaultConfiguration().clone();
 					infinispan.applyOverrides(config.getInfinispanConfiguration());
-					String configurationName = "$" + category.getName() + "$" + cacheInfo.getId();
+					configurationName = "$" + category.getName() + "$" + cacheInfo.getId();
 					manager.defineConfiguration(configurationName, infinispan);
-					recorder.record("infinispan", "configuration name " + configurationName);
-					cacheService = new InfinispanCacheService(manager.<String, Object>getCache(configurationName));
 				}
+				recorder.record("infinispan", "configuration name " + configurationName);
+				cacheService = new InfinispanCacheService(manager.<String, Object>getCache(configurationName));
 			} else {
 				cacheService = noCacheFactory.create(null, category);
 			}

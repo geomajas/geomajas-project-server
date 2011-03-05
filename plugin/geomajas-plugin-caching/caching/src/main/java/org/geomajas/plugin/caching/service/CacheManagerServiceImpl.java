@@ -103,7 +103,10 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	}
 
 	IndexedCache getCache(Layer layer, CacheCategory cacheCategory, boolean createIfNotExists) {
-		String layerId = layer.getId();
+		String layerId = "";
+		if (null != layer) {
+			layer.getId();
+		}
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
 		IndexedCache cache;
 		if (null == layerCaches) {
@@ -129,7 +132,10 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	}
 
 	IndexedCache createCache(Layer layer, CacheCategory cacheCategory) {
-		String layerId = layer.getId();
+		String layerId = "";
+		if (null != layer) {
+			layer.getId();
+		}
 		CacheServiceInfo cacheServiceInfo = getInfo(layerId, cacheCategory, CacheServiceInfo.class);
 		CacheIndexInfo cacheIndexInfo = getInfo(layerId, cacheCategory, CacheIndexInfo.class);
 		return new IndexedCache(cacheServiceInfo.getCacheFactory().create(layer, cacheCategory),
