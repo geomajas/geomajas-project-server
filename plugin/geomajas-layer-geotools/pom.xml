@@ -65,6 +65,23 @@
 		</pluginRepository>
 	</pluginRepositories>
 	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${geotools-layer-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<modules>
 		<module>geotools</module>
 	</modules>
@@ -96,5 +113,10 @@
 			</activation>
 		</profile>
 	</profiles>
+	
+	<properties>
+		<geotools-layer-backend-version>1.9.0-SNAPSHOT</geotools-layer-backend-version>
+		<geotools-version>2.7-RC2</geotools-version>
+	</properties>
 	
 </project>
