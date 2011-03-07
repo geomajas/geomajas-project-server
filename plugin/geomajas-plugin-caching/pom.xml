@@ -84,12 +84,17 @@
 			</dependency>
 
 			<dependency>
-				<groupId>jboss</groupId>
+				<groupId>org.jboss</groupId>
 				<artifactId>jboss-serialization</artifactId>
-				<version>1.0.3.GA</version>
+				<version>1.0.4.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>trove</groupId>
+				<artifactId>trove</artifactId>
+				<version>1.0.2</version>
 			</dependency>
 
- 			<dependency>
+			<dependency>
 				<groupId>org.infinispan</groupId>
 				<artifactId>infinispan-core</artifactId>
 				<version>4.2.0.FINAL</version>

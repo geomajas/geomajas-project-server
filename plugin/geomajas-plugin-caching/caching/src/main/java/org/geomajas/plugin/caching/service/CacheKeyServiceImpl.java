@@ -11,14 +11,17 @@
 
 package org.geomajas.plugin.caching.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Random;
 
-import org.geomajas.geometry.Crs;
+import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
+import org.jboss.serial.io.JBossObjectOutputStream;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,14 +94,25 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	}
 
 	private String getCacheId(Object value) {
-		if (value instanceof Crs) {
-			return ((Crs) value).getId();
-		} else if (value instanceof CoordinateReferenceSystem) {
-			return ((CoordinateReferenceSystem) value).getIdentifiers().toString();
-		} else if (value instanceof CacheableObject) {
+		if (value instanceof CacheableObject) {
 			return ((CacheableObject) value).getCacheId();
+		} else if (value instanceof CoordinateReferenceSystem) {
+			return ((CoordinateReferenceSystem) value).toWKT();
+		} else if (value instanceof Geometry) {
+			return ((Geometry) value).toText();
 		} else {
-			return value.toString();
+			try {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream(256);
+				JBossObjectOutputStream serialize = new JBossObjectOutputStream(baos);
+				serialize.smartClone(value);
+				serialize.flush();
+				serialize.close();
+				return baos.toString("UTF-8");
+			} catch (IOException ioe) {
+				String fallback = value.toString();
+				log.error("Could not serialize {}, falling back to toString() which may cause problems.", value);
+				return fallback;
+			}
 		}
 	}
 

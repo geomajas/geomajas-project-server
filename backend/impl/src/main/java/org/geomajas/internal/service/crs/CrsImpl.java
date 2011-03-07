@@ -12,6 +12,7 @@
 package org.geomajas.internal.service.crs;
 
 import org.geomajas.geometry.Crs;
+import org.geomajas.global.CacheableObject;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -27,7 +28,7 @@ import java.util.Set;
  *
  * @author Joachim Van der Auwera
  */
-class CrsImpl implements Crs {
+class CrsImpl implements Crs, CacheableObject {
 
 	private String id;
 	private CoordinateReferenceSystem base;
@@ -71,5 +72,14 @@ class CrsImpl implements Crs {
 
 	public String toWKT() throws UnsupportedOperationException {
 		return base.toWKT();
+	}
+
+	/**
+	 * {@link org.geomajas.service.GeoService} actually does cache based on this.
+	 *
+	 * @return CRS id
+	 */
+	public String getCacheId() {
+		return getId();
 	}
 }
