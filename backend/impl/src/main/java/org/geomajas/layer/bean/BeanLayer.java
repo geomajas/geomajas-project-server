@@ -109,12 +109,16 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		List<Object> filteredList = new ArrayList<Object>();
-		synchronized (featuresById) {
-			for (Object feature : featuresById.values()) {
-				if (filter.evaluate(feature)) {
-					filteredList.add(feature);
+		try {
+			synchronized (featuresById) {
+				for (Object feature : featuresById.values()) {
+					if (filter.evaluate(feature)) {
+						filteredList.add(feature);
+					}
 				}
 			}
+		} catch (Exception e) {
+			throw new LayerException(e, ExceptionCode.FILTER_EVALUATION_PROBLEM, filter, getId());
 		}
 		// Sorting of elements.
 		if (comparator != null) {

@@ -17,10 +17,12 @@ import java.util.HashSet;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.filter.NonLenientFilterFactoryImpl;
 import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -48,7 +50,14 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public final class FilterServiceImpl implements FilterService {
 
-	private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+	private static final FilterFactory2 FF;
+	static {
+		// use hint to get at the correct filter factory
+		// TODO: find better way to make this configurable ?
+		Hints hints = new Hints();
+		hints.put(Hints.FILTER_FACTORY, NonLenientFilterFactoryImpl.class);
+		FF = CommonFactoryFinder.getFilterFactory2(hints);
+	}
 
 	/**
 	 * Create a filter which passes all features from the FeatureInfo within featureTypeInfo with attribute values from

@@ -14,6 +14,8 @@ package org.geomajas.layer.bean;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.FilterService;
@@ -94,6 +96,17 @@ public class BeanLayerTest {
 			t++;
 		}
 		Assert.assertEquals(1, t);
+	}
+
+	@Test
+	public void nonExistingAttributeFilter() throws Exception {
+		Filter filter = filterService.createCompareFilter("noSuchAttr", "=", "blabla");
+		try {
+			layer.getElements(filter, 0, 0);
+			Assert.fail("Expected filter evaluation exception for non-exisitng attribute");
+		} catch (LayerException e) {
+			Assert.assertEquals(ExceptionCode.FILTER_EVALUATION_PROBLEM, e.getExceptionCode());
+		}
 	}
 
 	@Test

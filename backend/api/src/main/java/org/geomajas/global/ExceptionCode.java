@@ -127,5 +127,9 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int PIPELINE_INTERCEPTOR_INVALID_NESTING = 72;
+	/**
+	 * @since 1.9.0
+	 */
+	int FILTER_EVALUATION_PROBLEM = 73;
 
 }
