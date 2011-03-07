@@ -11,7 +11,7 @@
 
 package org.geomajas.internal.service;
 
-import org.geomajas.configuration.ImageInfo;
+import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.service.ConfigurationService;
 import org.junit.Assert;
@@ -40,16 +40,41 @@ public class ConfigurationServiceTest {
 	@Test
 	public void testGetLayerExtraInfo() {
 		LayerInfo layerInfo = new LayerInfo();
-		Map<String, Object> extra = new HashMap<String, Object>();
-		extra.put("one", Integer.valueOf(1));
-		extra.put(ImageInfo.class.getName(), new ImageInfo());
+		Map<String, LayerExtraInfo> extra = new HashMap<String, LayerExtraInfo>();
+		extra.put("one", new ExtraString1("one"));
+		extra.put(ExtraString2.class.getName(), new ExtraString2("two"));
 		layerInfo.setExtraInfo(extra);
 
-		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, ImageInfo.class.getName(),
-				ImageInfo.class));
-		Assert.assertEquals(Integer.valueOf(1), configurationService.getLayerExtraInfo(layerInfo, "one", Integer.class));
-		Assert.assertNull(configurationService.getLayerExtraInfo(layerInfo, "one", ImageInfo.class));
-		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, ImageInfo.class));
+		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, ExtraString2.class.getName(),
+				ExtraString2.class));
+		Assert.assertEquals("one",
+				configurationService.getLayerExtraInfo(layerInfo, "one", ExtraString1.class).getString());
+		Assert.assertNull(configurationService.getLayerExtraInfo(layerInfo, "one", ExtraString2.class));
+		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, ExtraString2.class));
+		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, "one", ExtraString.class));
 	}
 
+	private class ExtraString implements LayerExtraInfo {
+		private String str;
+
+		public ExtraString(String str) {
+			this.str = str;
+		}
+
+		public String getString() {
+			return str;
+		}
+	}
+
+	private class ExtraString1 extends ExtraString {
+		public ExtraString1(String str) {
+			super(str);
+		}
+	}
+
+	private class ExtraString2 extends ExtraString {
+		public ExtraString2(String str) {
+			super(str);
+		}
+	}
 }

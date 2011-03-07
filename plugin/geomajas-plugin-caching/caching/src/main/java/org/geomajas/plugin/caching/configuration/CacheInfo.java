@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.configuration;
 
+import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.global.Api;
 import org.geomajas.plugin.caching.service.CacheCategory;
 
@@ -25,7 +26,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class CacheInfo {
+public class CacheInfo implements LayerExtraInfo {
 
 	/**
 	 * Key which can be used to store this information in

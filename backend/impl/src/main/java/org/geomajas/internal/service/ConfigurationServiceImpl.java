@@ -11,6 +11,7 @@
 
 package org.geomajas.internal.service;
 
+import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -117,31 +118,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 	}
 
-	/**
-	 * Get a specific entry from the extraInfo for the given type on {@link LayerInfo}. This assumes the fully
-	 * qualified class name of the object is used as key.
-	 *
-	 * @param layerInfo layerInfo object to query
-	 * @param type type to get
-	 * @param <TYPE> type to get
-	 * @return value for key if exists
-	 * @since 1.9.0
-	 */
-	public <TYPE> TYPE getLayerExtraInfo(LayerInfo layerInfo, Class<TYPE> type) {
+	public <TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, Class<TYPE> type) {
 		return getLayerExtraInfo(layerInfo, type.getName(), type);
 	}
 
-	/**
-	 * Get a specific entry from the extraInfo for key and with type checking.
-	 *
-	 * @param layerInfo layerInfo object to query
-	 * @param key key from extraInfo
-	 * @param type type to get
-	 * @param <TYPE> type to get
-	 * @return value for key if exists
-	 * @since 1.9.0
-	 */
-	public <TYPE> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type) {
+	public <TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type) {
 		Object obj = layerInfo.getExtraInfo().get(key);
 		if (null != obj && type.isAssignableFrom(obj.getClass())) {
 			return (TYPE) obj;

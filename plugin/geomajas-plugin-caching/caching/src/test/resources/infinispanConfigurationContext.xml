@@ -20,6 +20,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory">
+				<property name="configurationFile" value="infinispanConfiguration.xml" />
 				<property name="defaultConfiguration" ref="defaultInfinispanCacheConfig" />
 			</bean>
 		</property>

@@ -35,7 +35,7 @@ public class LayerInfo implements Serializable {
 	@NotNull
 	private String crs;
 	private Bbox maxExtent = Bbox.ALL;
-	private Map<String, Object> extraInfo = new HashMap<String, Object>();
+	private Map<String, LayerExtraInfo> extraInfo = new HashMap<String, LayerExtraInfo>();
 
 	/**
 	 * Get layer type, indicating whether it is a raster layer or which type of geometries which are contained in the
@@ -103,7 +103,7 @@ public class LayerInfo implements Serializable {
 	 * @return extra configuration
 	 * @since 1.9.0
 	 */
-	public Map<String, Object> getExtraInfo() {
+	public Map<String, LayerExtraInfo> getExtraInfo() {
 		return extraInfo;
 	}
 
@@ -113,7 +113,7 @@ public class LayerInfo implements Serializable {
 	 * @param extraInfo extra configuration
 	 * @since 1.9.0
 	 */
-	public void setExtraInfo(Map<String, Object> extraInfo) {
+	public void setExtraInfo(Map<String, LayerExtraInfo> extraInfo) {
 		this.extraInfo = extraInfo;
 	}
 

@@ -10,6 +10,7 @@
  */
 package org.geomajas.service;
 
+import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.Api;
@@ -102,7 +103,7 @@ public interface ConfigurationService {
 	 * @return value for key if exists
 	 * @since 1.9.0
 	 */
-	<TYPE> TYPE getLayerExtraInfo(LayerInfo layerInfo, Class<TYPE> type);
+	<TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, Class<TYPE> type);
 
 	/**
 	 * Get a specific entry from the extraInfo for key and with type checking.
@@ -114,6 +115,6 @@ public interface ConfigurationService {
 	 * @return value for key if exists
 	 * @since 1.9.0
 	 */
-	<TYPE> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type);
+	<TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type);
 
 }
