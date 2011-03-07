@@ -92,7 +92,7 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 				// quick simplification, all commands should have class name as name (except those with "Default"
 				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 				if (null == classLoader) {
-					classLoader = this.getClass().getClassLoader();
+					classLoader = this.getClass().getClassLoader(); // NOPMD
 				}
 				final Class clazz = ClassUtils.forName(name, classLoader);
 				Class[] interfaces = ClassUtils.getAllInterfacesForClass(clazz);

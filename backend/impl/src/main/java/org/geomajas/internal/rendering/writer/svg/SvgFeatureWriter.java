@@ -55,7 +55,6 @@ public class SvgFeatureWriter implements GraphicsWriter {
 				document.writeAttribute("label", feature.getLabel());
 
 				// write the points
-				int nr = geom.getNumGeometries();
 				for (int i = 0; i < geom.getNumGeometries(); i++) {
 					document.writeObject(geom.getGeometryN(i), true);
 					document.writeAttribute("id", feature.getId());

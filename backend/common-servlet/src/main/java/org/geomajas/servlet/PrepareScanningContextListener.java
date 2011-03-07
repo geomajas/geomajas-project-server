@@ -42,7 +42,7 @@ public class PrepareScanningContextListener implements ServletContextListener {
 			String[] preloadClasses = param.split("[\\s,;]+");
 			for (String className : preloadClasses) {
 				try {
-					Class<?> c = Class.forName(className);
+					Class.forName(className);
 				} catch (ClassNotFoundException e) {
 					LoggerFactory.getLogger(PrepareScanningContextListener.class).warn("could not preload class", e);
 					// ignore

@@ -103,11 +103,12 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	}
 
 	private String propertyReplace(String location) {
+		String result = location;
 		if (location.startsWith("${")) {
 			int pos = location.indexOf('}');
 			if (pos > 0) {
 				String property = location.substring(2, pos);
-				String res = location.substring(pos + 1);
+				String rest = location.substring(pos + 1);
 				String value = System.getProperty(property);
 				if (null == value) {
 					value = System.getProperty("java.io.tmpdir") + File.separator + "geomajas" + File.separator +
@@ -115,12 +116,12 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 					log.warn("Trying to create cache location using property {} which is undefined, using {} instead.",
 							property, value);
 				}
-				location = value + res;
+				result = value + rest;
 			} else {
 				log.warn("Cache location {} looks like a property reference but closing } is missing.", location);
 			}
 		}
-		return location;
+		return result;
 	}
 
 	/**
