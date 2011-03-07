@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.global.CacheableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,7 @@ public class CacheContextImpl implements CacheContext {
 		return null;
 	}
 
-	public Set<Map.Entry<String, Object>> entries() {
+	Set<Map.Entry<String, Object>> entries() {
 		return map.entrySet();
 	}
 
@@ -60,17 +61,13 @@ public class CacheContextImpl implements CacheContext {
 
 		CacheContextImpl that = (CacheContextImpl) o;
 
-		if (null == map) {
-			return null == that.map;
+		if (map.size() != that.map.size()) {
+			return false;
 		} else {
-			if (map.size() != that.map.size()) {
-				return false;
-			} else {
-				for (Map.Entry<String, Object> one : map.entrySet()) {
-					if (!objectEquals(one.getValue(), that.map.get(one.getKey()))) {
-						log.debug("Map key {} does not match.", one.getKey());
-						return false;
-					}
+			for (Map.Entry<String, Object> one : map.entrySet()) {
+				if (!objectEquals(one.getValue(), that.map.get(one.getKey()))) {
+					log.debug("Map key {} does not match.", one.getKey());
+					return false;
 				}
 			}
 		}
@@ -87,6 +84,6 @@ public class CacheContextImpl implements CacheContext {
 
 	@Override
 	public int hashCode() {
-		return map != null ? map.hashCode() : 0;
+		return map.hashCode();
 	}
 }

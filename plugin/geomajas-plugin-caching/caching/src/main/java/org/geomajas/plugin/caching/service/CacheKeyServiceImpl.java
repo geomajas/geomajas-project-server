@@ -11,12 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.Random;
-
+import com.twmacinta.util.MD5;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
@@ -27,7 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.twmacinta.util.MD5;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Implementation of {@link CacheKeyService}.
@@ -100,17 +99,21 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 			return ((CoordinateReferenceSystem) value).toWKT();
 		} else if (value instanceof Geometry) {
 			return ((Geometry) value).toText();
+		} else if (value instanceof String) {
+			return value.toString();
 		} else {
 			try {
+				log.debug("Serializing " + value.getClass().getName() + " for unique id");
 				ByteArrayOutputStream baos = new ByteArrayOutputStream(256);
 				JBossObjectOutputStream serialize = new JBossObjectOutputStream(baos);
-				serialize.smartClone(value);
+				serialize.writeObject(value);
 				serialize.flush();
 				serialize.close();
 				return baos.toString("UTF-8");
 			} catch (IOException ioe) {
 				String fallback = value.toString();
-				log.error("Could not serialize {}, falling back to toString() which may cause problems.", value);
+				log.error("Could not serialize " + value + ", falling back to toString() which may cause problems.",
+						ioe);
 				return fallback;
 			}
 		}
