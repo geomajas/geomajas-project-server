@@ -66,6 +66,13 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geocoder-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder</artifactId>
 				<version>${project.version}</version>
@@ -80,6 +87,17 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geonames</groupId>
+				<artifactId>geonames-ws</artifactId>
+				<version>1.0.4</version>
+			</dependency>
+			<dependency>
+				<groupId>jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -120,5 +138,6 @@
 
 	<properties>
 		<geocoder-backend-version>1.9.0-SNAPSHOT</geocoder-backend-version> <!-- @todo GeoTools upgrade check, was 1.8.0 -->
+		<geocoder-gwt-version>1.8.0</geocoder-gwt-version>
 	</properties>
 </project>

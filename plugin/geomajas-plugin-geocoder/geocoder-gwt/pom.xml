@@ -23,27 +23,14 @@
 	<name>geocoder (GWT face)</name>
 	<description>geocoder (GWT face)</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geocoder-gwt-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-geocoder</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-geocoder</artifactId>
-			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		
@@ -159,8 +146,4 @@
 			</activation>
 		</profile>	
 	</profiles>
-
-	<properties>
-		<geocoder-gwt-version>1.8.0</geocoder-gwt-version>
-	</properties>	
 </project>
