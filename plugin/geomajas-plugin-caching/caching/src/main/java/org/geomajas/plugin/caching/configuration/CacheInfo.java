@@ -28,6 +28,8 @@ import java.util.Map;
 @Api(allMethods = true)
 public class CacheInfo implements LayerExtraInfo {
 
+	private static final long serialVersionUID = 100L;
+
 	/**
 	 * Key which can be used to store this information in
 	 * {@link org.geomajas.configuration.LayerInfo#setExtraInfo(java.util.Map)}.
