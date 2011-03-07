@@ -10,11 +10,15 @@
  */
 package org.geomajas.layer.shapeinmem;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.attribute.IntegerAttribute;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.service.FilterService;
-import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -73,9 +77,13 @@ public class ShapeInMemLayerTest {
 		Point geometry = null;
 		geometry = (Point) wktReader.read("POINT (0 0)");
 
-		SimpleFeature feature = CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
-				new Object[] { geometry, "Tsjakamaka", 342 }, layer.getSchema(), "100000");
-
+		Object feature = (SimpleFeature)layer.getFeatureModel().newInstance("500");
+		Map<String, Attribute> map = new HashMap<String, Attribute>();
+		map.put("NAME", new StringAttribute("Tsjakamaka"));
+		map.put("POP_OTHER", new IntegerAttribute(342));
+		layer.getFeatureModel().setAttributes(feature, map);
+		layer.getFeatureModel().setGeometry(feature, geometry);
+		
 		created = layer.create(feature);
 		Assert.assertNotNull(created);
 	}
