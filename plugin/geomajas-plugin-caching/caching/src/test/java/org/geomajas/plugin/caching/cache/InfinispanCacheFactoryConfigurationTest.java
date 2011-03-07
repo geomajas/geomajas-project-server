@@ -53,9 +53,11 @@ public class InfinispanCacheFactoryConfigurationTest {
 		Assert.assertEquals("", recorder.matches("infinispan",
 				"configuration name $bounds$defaultInfinispanCacheConfig",
 				"configuration name test",
+				"configuration name $raster$infiniLayerCacheConfig",
 				// for some reason the @PostConstruct method is invoked twice... so need it twice here
 				"configuration name $bounds$defaultInfinispanCacheConfig",
-				"configuration name test"));
+				"configuration name test",
+				"configuration name $raster$infiniLayerCacheConfig"));
 	}
 
 	/**
@@ -68,5 +70,22 @@ public class InfinispanCacheFactoryConfigurationTest {
 
 		cacheManagerService.put(layer, CacheCategory.BOUNDS, "albalb", "2", null);
 		Assert.assertEquals("2", cacheManagerService.get(layer, CacheCategory.BOUNDS, "albalb"));
+	}
+
+	/**
+	 * Verify there is no caching when explicitly switched off or not configured.
+	 */
+	@Test
+	public void testCacheOff() {
+		cacheManagerService.put(layer, CacheCategory.VML, "albalb", "2", null);
+		Assert.assertNull(cacheManagerService.get(layer, CacheCategory.VML, "albalb"));
+		cacheManagerService.put(layer, CacheCategory.SVG, "albalb", "2", null);
+		Assert.assertNull(cacheManagerService.get(layer, CacheCategory.SVG, "albalb"));
+	}
+
+	@Test
+	public void testNativeCache() {
+		cacheManagerService.put(layer, CacheCategory.RASTER, "blabla", "1", null);
+		Assert.assertEquals("1", cacheManagerService.get(layer, CacheCategory.RASTER, "blabla"));
 	}
 }

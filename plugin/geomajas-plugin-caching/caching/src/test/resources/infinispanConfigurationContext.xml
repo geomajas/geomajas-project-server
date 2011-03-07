@@ -33,6 +33,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
 							<property name="maxEntries" value="512" />
+							<property name="evictionStrategy"><util:constant static-field="org.infinispan.eviction.EvictionStrategy.LRU"/></property>
+							<property name="evictionWakeUpInterval" value="5000" />
+							<property name="expiration" value="600" />
+							<property name="isolationLevel"><util:constant static-field="org.infinispan.util.concurrent.IsolationLevel.NONE"/></property>
+							<property name="level2CacheLocation" value="${geomajasCacheLocation}/raster" />
 						</bean>
 				</entry>
 			</map>
@@ -46,6 +51,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
 							<property name="configurationName" value="test" />
+						</bean>
+				</entry>
+				<entry>
+					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML" /></key>
+						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
+							<property name="cacheEnabled" value="false" />
+						</bean>
+				</entry>
+				<entry>
+					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.RASTER" /></key>
+						<bean class="org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo">
+							<property name="cacheEnabled" value="true" />
+							<property name="evictionMaxEntries" value="1000" />
 						</bean>
 				</entry>
 			</map>
