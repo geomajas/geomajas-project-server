@@ -55,25 +55,11 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	}
 
 	/**
-	 * Get the requested object from the cache. The {@link CacheContainer} is built to determine the cache key.
-	 *
-	 * @param keys keys which need to be include in the cache context
-	 * @param category cache category
-	 * @param pipelineContext pipeline context
-	 * @param containerClass container class
-	 * @param <CONTAINER> container class
-	 * @return cache container
-	 */
-	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String[] keys, CacheCategory category,
-			PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
-		return getContainer(null, keys, category, pipelineContext, containerClass);
-	}
-
-	/**
 	 * Get the requested object from the cache. The key is either obtained from the pipeline context (keyKey) if
 	 * possible. Alternatively, the {@link CacheContainer} is built to determine the cache key.
 	 *
 	 * @param keyKey key to put the cache key in the pipeline context
+	 * @param contextKey key to put the cache context in the pipeline context
 	 * @param keys keys which need to be include in the cache context
 	 * @param category cache category
 	 * @param pipelineContext pipeline context
@@ -81,8 +67,8 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	 * @param <CONTAINER> container class
 	 * @return cache container
 	 */
-	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String keyKey, String[] keys,
-			CacheCategory category, PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
+	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String keyKey, String contextKey,
+			String[] keys, CacheCategory category, PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
 		CONTAINER cc = null;
 		try {
 			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
@@ -104,9 +90,8 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 						cacheKey = cacheKeyService.makeUnique(cacheKey);
 						cc = cacheManager.get(layer, category, cacheKey, containerClass);
 					} else {
-						if (keyKey != null) {
-							pipelineContext.put(keyKey, cacheKey);
-						}
+						pipelineContext.put(keyKey, cacheKey);
+						pipelineContext.put(contextKey, cacheContext);
 						return cc;
 					}
 				}
@@ -124,20 +109,27 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	 * @param pipelineContext pipeline context
 	 * @param category cache category
 	 * @param keys keys which need to be include in the cache context
+	 * @param contextKey key to put the cache context in the pipeline context
 	 * @param keyKey key to put the cache key in the pipeline context
 	 * @param cacheContainer cache container
 	 * @param envelope envelope
 	 */
 	protected void putContainer(PipelineContext pipelineContext, CacheCategory category, String[] keys, String keyKey,
-			CacheContainer cacheContainer, Envelope envelope) {
+			String contextKey, CacheContainer cacheContainer, Envelope envelope) {
 		try {
 			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
-			addMoreContext(cacheContext); // add more data...
+			CacheContext cacheContext = pipelineContext.getOptional(contextKey, CacheContext.class);
+			if (null == cacheContext) {
+				cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
+				addMoreContext(cacheContext); // add more data...
+			}
 
 			cacheContainer.setContext(cacheContext);
 
-			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
+			String cacheKey = pipelineContext.getOptional(keyKey, String.class);
+			if (null == cacheKey) {
+				cacheKey = cacheKeyService.getCacheKey(cacheContext);
+			}
 			CacheContainer cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
 			while (null != cc && !cacheContext.equals(cc.getContext())) {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);

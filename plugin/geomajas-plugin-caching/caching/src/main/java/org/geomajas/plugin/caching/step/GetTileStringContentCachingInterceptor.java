@@ -22,9 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Interceptor for caching the tile string content.
- * 
+ *
  * @author Jan De Moerloose
- * 
  */
 public class GetTileStringContentCachingInterceptor
 		extends AbstractSecurityContextCachingInterceptor<GetTileContainer> {
@@ -32,19 +31,19 @@ public class GetTileStringContentCachingInterceptor
 	@Autowired
 	private TestRecorder recorder;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
+	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY};
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		CacheCategory category = CacheCategory.VML;
-		TileContentCacheContainer tcc = getContainer(CacheStepConstant.CACHE_TILE_CONTENT_KEY,
-				KEYS, category, context, TileContentCacheContainer.class);
-		if (tcc == null) {
-			category = CacheCategory.SVG;
-			tcc = getContainer(CacheStepConstant.CACHE_TILE_CONTENT_KEY, KEYS, category, context,
-					TileContentCacheContainer.class);
+		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
+		CacheCategory cacheCategory = CacheCategory.SVG;
+		if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(metadata.getRenderer())) {
+			cacheCategory = CacheCategory.VML;
 		}
+		TileContentCacheContainer tcc =
+				getContainer(CacheStepConstant.CACHE_TILE_CONTENT_KEY, CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT,
+						KEYS, cacheCategory, context, TileContentCacheContainer.class);
 		if (tcc != null) {
-			recorder.record(category, "Got item from cache");
+			recorder.record(cacheCategory, "Got item from cache");
 			response.getTile().setFeatureContent(tcc.getFeatureContent());
 			response.getTile().setLabelContent(tcc.getLabelContent());
 			return ExecutionMode.EXECUTE_NONE;
@@ -61,6 +60,7 @@ public class GetTileStringContentCachingInterceptor
 		}
 		recorder.record(cacheCategory, "Put item in cache");
 		putContainer(context, cacheCategory, KEYS, CacheStepConstant.CACHE_TILE_CONTENT_KEY,
+				CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT,
 				new TileContentCacheContainer(tile.getFeatureContent(), tile.getLabelContent()), tile.getBounds());
 	}
 

@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Interceptor for caching the tile.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInterceptor<GetTileContainer> {
@@ -30,12 +30,13 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 	@Autowired
 	private TestRecorder recorder;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
-			PipelineCode.FEATURE_INCLUDES_KEY };
+	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
+			PipelineCode.FEATURE_INCLUDES_KEY};
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS,
-				CacheCategory.TILE, context, TileCacheContainer.class);
+		TileCacheContainer cc =
+				getContainer(CacheStepConstant.CACHE_TILE_KEY, CacheStepConstant.CACHE_TILE_CONTEXT, KEYS,
+						CacheCategory.TILE, context, TileCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.TILE, "Got item from cache");
 			response.getTile().setFeatures(cc.getTile().getFeatures());
@@ -50,7 +51,7 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 		recorder.record(CacheCategory.TILE, "Put item in cache");
 		InternalTile tile = response.getTile();
 		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_KEY,
-				new TileCacheContainer(tile), tile.getBounds());
+				CacheStepConstant.CACHE_TILE_CONTEXT, new TileCacheContainer(tile), tile.getBounds());
 	}
 
 }

@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.CacheableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

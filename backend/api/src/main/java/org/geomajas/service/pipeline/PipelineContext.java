@@ -71,6 +71,8 @@ public interface PipelineContext {
 
 	/**
 	 * Put context value which may be accessed by later pipeline steps.
+	 * <p/>
+	 * The put needs to be ignored if the key is null.
 	 *
 	 * @param key key for value
 	 * @param value value for key

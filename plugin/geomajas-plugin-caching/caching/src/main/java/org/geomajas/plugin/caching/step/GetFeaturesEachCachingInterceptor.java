@@ -20,21 +20,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Interceptor for caching the features.
- * 
+ *
  * @author Jan De Moerloose
- * 
  */
 public class GetFeaturesEachCachingInterceptor extends AbstractSecurityContextCachingInterceptor<GetFeaturesContainer> {
 
 	@Autowired
 	private TestRecorder recorder;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY,
-			PipelineCode.OFFSET_KEY, PipelineCode.MAX_RESULT_SIZE_KEY, PipelineCode.FEATURE_INCLUDES_KEY };
+	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY,
+			PipelineCode.OFFSET_KEY, PipelineCode.MAX_RESULT_SIZE_KEY, PipelineCode.FEATURE_INCLUDES_KEY};
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
-		FeaturesCacheContainer cc = getContainer(CacheStepConstant.CACHE_FEATURES_KEY, KEYS,
-				CacheCategory.FEATURE, context, FeaturesCacheContainer.class);
+		FeaturesCacheContainer cc =
+				getContainer(CacheStepConstant.CACHE_FEATURES_KEY, CacheStepConstant.CACHE_FEATURES_CONTEXT, KEYS,
+						CacheCategory.FEATURE, context, FeaturesCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.FEATURE, "Got item from cache");
 			response.setBounds(cc.getBounds());
@@ -46,8 +46,8 @@ public class GetFeaturesEachCachingInterceptor extends AbstractSecurityContextCa
 
 	public void afterSteps(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		recorder.record(CacheCategory.FEATURE, "Put item in cache");
-		putContainer(context, CacheCategory.FEATURE, KEYS,
-				CacheStepConstant.CACHE_FEATURES_KEY,
+		putContainer(context, CacheCategory.FEATURE, KEYS, CacheStepConstant.CACHE_FEATURES_KEY,
+				CacheStepConstant.CACHE_FEATURES_CONTEXT,
 				new FeaturesCacheContainer(response.getFeatures(), response.getBounds()), response.getBounds());
 
 	}

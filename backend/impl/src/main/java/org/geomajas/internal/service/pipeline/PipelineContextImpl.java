@@ -58,7 +58,10 @@ public class PipelineContextImpl implements PipelineContext {
 	}
 
 	public Object put(String key, Object value) {
-		return map.put(key, value);
+		if (null != key) {
+			return map.put(key, value);
+		}
+		return null;
 	}
 
 	public boolean isFinished() {
