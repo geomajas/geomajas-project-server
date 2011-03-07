@@ -17,6 +17,7 @@ import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.jboss.serial.io.JBossObjectOutputStream;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,6 +100,8 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 			return ((CoordinateReferenceSystem) value).toWKT();
 		} else if (value instanceof Geometry) {
 			return ((Geometry) value).toText();
+		} else if (value instanceof Filter) {
+			return value.toString();
 		} else if (value instanceof String) {
 			return value.toString();
 		} else {
