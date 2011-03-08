@@ -31,7 +31,8 @@ public class MapMetadata {
 
 	private double scale;
 
-	private boolean transparent;
+	// default to true (users should provide a background if necessary)
+	private boolean transparent = true;
 
 	public boolean isTransparent() {
 		return transparent;

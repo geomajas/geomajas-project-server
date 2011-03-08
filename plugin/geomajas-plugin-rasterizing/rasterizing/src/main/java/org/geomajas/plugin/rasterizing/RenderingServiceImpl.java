@@ -121,6 +121,7 @@ public class RenderingServiceImpl implements RenderingService {
 			rendererParams.put("optimizedDataLoadingEnabled", true);
 			renderer.setRendererHints(rendererParams);
 			renderer.paint(graphics, mapContext.getViewport().getScreenArea(), mapContext.getViewport().getBounds());
+			mapContext.dispose();
 		}
 
 		public MapContext getMapContext() {

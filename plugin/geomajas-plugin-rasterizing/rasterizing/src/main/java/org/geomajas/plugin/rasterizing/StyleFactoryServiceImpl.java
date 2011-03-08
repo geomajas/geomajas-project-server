@@ -47,7 +47,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
- * Default implementation of {@link StyleFactoryService}.
+ * Default implementation of {@link StyleFactoryService}. Thread scope until further investigation on StyleBuilder
  * 
  * @author Jan De Moerloose
  * 

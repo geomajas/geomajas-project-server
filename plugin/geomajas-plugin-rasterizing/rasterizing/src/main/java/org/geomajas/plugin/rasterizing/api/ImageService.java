@@ -13,6 +13,7 @@ package org.geomajas.plugin.rasterizing.api;
 import java.io.OutputStream;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.rasterizing.dto.LegendMetadata;
 import org.geomajas.plugin.rasterizing.dto.MapMetadata;
 
 /**
@@ -31,5 +32,14 @@ public interface ImageService {
 	 * @throws GeomajasException thrown when the stream could not be written
 	 */
 	void writeMap(OutputStream stream, MapMetadata mapMetadata) throws GeomajasException;
+
+	/**
+	 * Writes a legend to the specified output stream.
+
+	 * @param stream output stream
+	 * @param legendMetadata metadata of the legend
+	 * @throws GeomajasException thrown when the stream could not be written
+	 */
+	void writeLegend(OutputStream stream, LegendMetadata legendMetadata) throws GeomajasException;
 
 }

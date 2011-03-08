@@ -17,7 +17,6 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
 import org.geomajas.plugin.caching.step.CacheStepConstant;
-import org.geomajas.plugin.caching.step.GetTileCachingInterceptor;
 import org.geomajas.plugin.caching.step.TileCacheContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
@@ -27,13 +26,13 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Rasterizing version of {@link GetTileCachingInterceptor} which also stores the raster in the cache.
- *
+ * Rasterizing version of {@link org.geomajas.plugin.caching.step.GetTileCachingInterceptor} which also stores the raster in the cache.
+ * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
-public class GetRasterizedTileAllCachingInterceptor extends
-		AbstractSecurityContextCachingInterceptor<GetTileContainer> {
+public class GetRasterizedTileAllCachingInterceptor extends 
+	AbstractSecurityContextCachingInterceptor<GetTileContainer> {
 
 	@Autowired
 	private TestRecorder recorder;
@@ -42,8 +41,8 @@ public class GetRasterizedTileAllCachingInterceptor extends
 			PipelineCode.FEATURE_INCLUDES_KEY };
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS,
-				CacheCategory.TILE, context, TileCacheContainer.class);
+		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, CacheStepConstant.CACHE_TILE_CONTEXT,
+				KEYS, CacheCategory.TILE, context, TileCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.TILE, "Got item from cache");
 			response.getTile().setFeatures(cc.getTile().getFeatures());
@@ -57,16 +56,16 @@ public class GetRasterizedTileAllCachingInterceptor extends
 	public void afterSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		recorder.record(CacheCategory.TILE, "Put item in cache");
 		InternalTile tile = response.getTile();
-		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_KEY,
-				new TileCacheContainer(tile), tile.getBounds());
+		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_CONTEXT,
+				CacheStepConstant.CACHE_TILE_KEY, new TileCacheContainer(tile), tile.getBounds());
 
 		// optionally put the image in the cache for later retrieval
 		RasterizingContainer rc = context
 				.getOptional(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);
 		if (rc != null) {
 			recorder.record(CacheCategory.RASTER, "Put item in cache");
-			putContainer(context, CacheCategory.RASTER, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY, rc, response
-					.getTile().getBounds());
+			putContainer(context, CacheCategory.RASTER, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY,
+					RasterizingPipelineCode.IMAGE_ID_CONTEXT, rc, response.getTile().getBounds());
 		}
 	}
 }

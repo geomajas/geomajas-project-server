@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.configuration.RectInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -14,6 +16,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.dto.GeometryLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.LegendMetadata;
 import org.geomajas.plugin.rasterizing.dto.MapMetadata;
 import org.geomajas.plugin.rasterizing.dto.RasterLayerMetadata;
 import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
@@ -92,7 +95,7 @@ public class ImageServiceTest {
 		beansMetadata.setLayerId(layerBeansPoint.getId());
 		beansMetadata.setStyle(layerBeansPointStyleInfo);
 		metadata.getLayers().add(beansMetadata);
-		writeIt("onevector.png", metadata);
+		writeMap("onevector.png", metadata);
 	}
 
 	@Test
@@ -110,7 +113,7 @@ public class ImageServiceTest {
 		beansMultilineMetadata.setLayerId(layerBeansMultiLine.getId());
 		beansMultilineMetadata.setStyle(layerBeansMultiLineStyleInfo);
 		metadata.getLayers().add(beansMultilineMetadata);
-		writeIt("twovector.png", metadata);
+		writeMap("twovector.png", metadata);
 	}
 
 	@Test
@@ -128,7 +131,7 @@ public class ImageServiceTest {
 		layerMetadata.setLayerId("geometry");
 		layerMetadata.setLayerType(LayerType.POINT);
 		metadata.getLayers().add(layerMetadata);
-		writeIt("geometry.png", metadata);
+		writeMap("geometry.png", metadata);
 	}
 
 	@Test
@@ -136,16 +139,52 @@ public class ImageServiceTest {
 		MapMetadata metadata = new MapMetadata();
 		metadata.setBounds(new Bbox(-180, -90, 360, 180));
 		metadata.setCrs("EPSG:4326");
-		metadata.setScale(1.42222222);
+		metadata.setScale(2);
 		metadata.setTransparent(true);
 		RasterLayerMetadata layerMetadata = new RasterLayerMetadata();
 		layerMetadata.setLayerId(layerBluemarble.getId());
 		layerMetadata.setRasterStyle("0.5");
 		metadata.getLayers().add(layerMetadata);
-		writeIt("oneraster.png", metadata);
-	}
+		writeMap("oneraster.png", metadata);
+	}	
+	
+	@Test
+	public void testLegend() throws Exception {
+		MapMetadata mapMetadata = new MapMetadata();
+		mapMetadata.setBounds(new Bbox(-180, -90, 360, 180));
+		mapMetadata.setCrs("EPSG:4326");
+		mapMetadata.setScale(2);
+		mapMetadata.setTransparent(true);
 
-	private void writeIt(String fileName, MapMetadata metadata) throws Exception {
+		RasterLayerMetadata layerMetadata = new RasterLayerMetadata();
+		layerMetadata.setLayerId(layerBluemarble.getId());
+		layerMetadata.setRasterStyle("0.5");
+		mapMetadata.getLayers().add(layerMetadata);
+
+		VectorLayerMetadata beansMetadata = new VectorLayerMetadata();
+		beansMetadata.setLayerId(layerBeansPoint.getId());
+		beansMetadata.setStyle(layerBeansPointStyleInfo);
+		beansMetadata.setLayertype(LayerType.POINT);
+		mapMetadata.getLayers().add(beansMetadata);
+
+		VectorLayerMetadata beansMetadata2 = new VectorLayerMetadata();
+		beansMetadata2.setLayerId(layerBeansPoint.getId());
+		layerBeansPointStyleInfo.getFeatureStyles().get(0).getSymbol().setRect(new RectInfo());
+		beansMetadata2.setStyle(layerBeansPointStyleInfo);
+		beansMetadata2.setLayertype(LayerType.POINT);
+		mapMetadata.getLayers().add(beansMetadata2);
+
+		LegendMetadata legendMetadata = new LegendMetadata();
+		legendMetadata.setMapMetadata(mapMetadata);
+		legendMetadata.setFont(new FontStyleInfo());
+		legendMetadata.getFont().applyDefaults();
+		legendMetadata.getFont().setSize(12);
+		legendMetadata.getFont().setFamily("courier");
+		legendMetadata.setTitle("legend");
+		writeLegend("legend.png", legendMetadata);
+	}	
+
+	private void writeMap(String fileName, MapMetadata metadata) throws Exception {
 		File file = new File(IMAGE_FILE_PATH + fileName);
 		if (writeImages) {
 			FileOutputStream fos;
@@ -156,6 +195,33 @@ public class ImageServiceTest {
 		} else {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			imageService.writeMap(baos, metadata);
+			baos.flush();
+			baos.close();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			InputStream is = getClass().getResourceAsStream(IMAGE_CLASS_PATH + fileName);
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = is.read(buf, 0, 1024)) != -1) {
+				bos.write(buf, 0, len);
+			}
+			is.close();
+			byte[] expecteds = bos.toByteArray();
+			Assert.assertArrayEquals(expecteds, baos.toByteArray());
+		}
+	}
+
+
+	private void writeLegend(String fileName,LegendMetadata legendMetadata) throws Exception {
+		File file = new File(IMAGE_FILE_PATH + fileName);
+		if (writeImages) {
+			FileOutputStream fos;
+			fos = new FileOutputStream(file);
+			imageService.writeLegend(fos, legendMetadata);
+			fos.flush();
+			fos.close();
+		} else {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			imageService.writeLegend(baos, legendMetadata);
 			baos.flush();
 			baos.close();
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();

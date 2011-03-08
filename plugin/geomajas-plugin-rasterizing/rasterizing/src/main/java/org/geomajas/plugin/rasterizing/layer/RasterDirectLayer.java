@@ -8,10 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.plugin.rasterizing.layer;
 
-package org.geomajas.plugin.rasterizing;
-
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
@@ -20,8 +22,9 @@ import java.awt.image.WritableRaster;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,9 +47,11 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.TranslateDescriptor;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -62,6 +67,7 @@ import com.sun.media.jai.codec.ByteArraySeekableStream;
  * Layer responsible for rendering raster layers. Most of the code is copied from the printing plugin.
  * 
  * @author Jan De Moerloose
+ * 
  */
 public class RasterDirectLayer extends DirectLayer {
 
@@ -72,6 +78,8 @@ public class RasterDirectLayer extends DirectLayer {
 	protected static final long DOWNLOAD_TIMEOUT = 120000; // millis
 
 	protected static final long DOWNLOAD_TIMEOUT_ONE_TILE = 100; // millis
+
+	protected static final Font ERROR_FONT = new Font("SansSerif", Font.PLAIN, 6); //$NON-NLS-1$
 
 	private static final String BUNDLE_NAME = "org/geomajas/plugin/rasterizing/rasterizing"; //$NON-NLS-1$
 
@@ -87,13 +95,16 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private int tileHeight;
 
-	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight) {
+	private String style;
+
+	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
 		this.tiles = tiles;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
-		MultiThreadedHttpConnectionManager manager = new MultiThreadedHttpConnectionManager();
-		manager.setMaxConnectionsPerHost(10);
-		httpClient = new HttpClient(manager);
+		this.style = style;
+		ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager();
+		manager.setDefaultMaxPerRoute(10);
+		httpClient = new DefaultHttpClient(manager);
 	}
 
 	@Override
@@ -128,7 +139,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 							// translate to the correct position in the tile grid
 							double xOffset = result.getRasterImage().getCode().getX() * tileWidth - pixelBounds.getX();
-							double yOffset;
+							double yOffset = 0;
 							// TODO: in some cases, the y-index is up (e.g. WMS), should be down for
 							// all layers !!!!
 							if (isYIndexUp(tiles)) {
@@ -190,23 +201,26 @@ public class RasterDirectLayer extends DirectLayer {
 
 	protected void addImage(Graphics2D graphics, ImageResult imageResult, MapViewport viewport) throws IOException {
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
-		ReferencedEnvelope viewBounds = viewport.getBounds();
-		double rasterScale = viewport.getScreenArea().getWidth() / viewport.getBounds().getWidth();
-		double width = imageBounds.getWidth();
-		double height = imageBounds.getHeight();
-		// subtract screen position of lower-left corner
-		double x = imageBounds.getX() - rasterScale * viewBounds.getMinX();
-		// shift y to lowerleft corner, flip y to user space and subtract
-		// screen position of lower-left
-		// corner
-		double y = -imageBounds.getY() - imageBounds.getHeight() - rasterScale * viewBounds.getMinY();
+		Rectangle screenArea = viewport.getScreenArea();
+		ReferencedEnvelope mapBounds = viewport.getBounds();
+		double rasterScale = screenArea.getWidth() / mapBounds.getWidth();
+		// convert map origin to pan space and subtract
+		double x = (imageBounds.getX() - rasterScale * mapBounds.getMinX());
+		double y = (imageBounds.getY() - rasterScale * mapBounds.getMinY());
 		if (log.isDebugEnabled()) {
-			log.debug("adding image, width=" + width + ",height=" + height + ",x=" + x + ",y=" + y);
+			log.debug("adding image, width=" + imageBounds.getWidth() + ",height=" + imageBounds.getHeight() + ",x="
+					+ x + ",y=" + y);
 		}
 		// opacity
 		log.debug("before drawImage");
 		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
-		graphics.drawImage(image, (int) x, (int) y, (int) width, (int) height, null);
+		FileOutputStream fos = new FileOutputStream(new File("test.png"));
+		fos.write(imageResult.getImage());
+		fos.close();
+		graphics.setColor(Color.red);
+		graphics.drawRect(0, 0, (int) screenArea.getWidth() - 5, (int) screenArea.getHeight() - 5);
+		// no need to add an image observer when we have the image in memory !
+		graphics.drawImage(image, (int) x, (int) y, (int) imageBounds.getWidth(), (int) imageBounds.getHeight(), null);
 		log.debug("after drawImage");
 	}
 
@@ -294,7 +308,7 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * Image result class.
+	 * ???
 	 */
 	private class ImageResult {
 
@@ -320,7 +334,7 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * Image Exception
+	 * ???
 	 */
 	private class ImageException extends Exception {
 
@@ -338,7 +352,7 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * Download image.
+	 * ???
 	 */
 	private class RasterImageDownloadCallable implements Callable<ImageResult> {
 
@@ -356,18 +370,10 @@ public class RasterDirectLayer extends DirectLayer {
 			int triesLeft = retries;
 			while (true) {
 				try {
-					GetMethod get = new GetMethod(result.getRasterImage().getUrl());
-					httpClient.executeMethod(get);
-					InputStream inputStream = get.getResponseBodyAsStream();
+					HttpGet get = new HttpGet(result.getRasterImage().getUrl());
+					HttpResponse response = httpClient.execute(get);
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
-					byte[] bytes = new byte[1024];
-					int readBytes;
-					while ((readBytes = inputStream.read(bytes)) > 0) {
-						outputStream.write(bytes, 0, readBytes);
-					}
-					inputStream.close();
-					outputStream.flush();
-					outputStream.close();
+					response.getEntity().writeTo(outputStream);
 					result.setImage(outputStream.toByteArray());
 					return result;
 				} catch (Exception e) {

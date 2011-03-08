@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
+import org.geomajas.layer.LayerType;
 
 /**
  * Metadata DTO class that carries sufficient information to render a vector layer.
@@ -24,6 +25,8 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
 public class VectorLayerMetadata implements LayerMetadata {
 
 	private String layerId;
+
+	private LayerType layertype;
 
 	private NamedStyleInfo style;
 
@@ -41,6 +44,14 @@ public class VectorLayerMetadata implements LayerMetadata {
 
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
+	}
+
+	public LayerType getLayertype() {
+		return layertype;
+	}
+
+	public void setLayertype(LayerType layertype) {
+		this.layertype = layertype;
 	}
 
 	public NamedStyleInfo getStyle() {

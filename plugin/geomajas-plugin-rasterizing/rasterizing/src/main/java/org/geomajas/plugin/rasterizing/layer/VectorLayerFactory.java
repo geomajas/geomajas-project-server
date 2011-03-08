@@ -8,8 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.layer;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -44,6 +43,7 @@ import org.geotools.map.MapContext;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +54,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * This factory creates a Geotools layer that is capable of writing vector layers.
  * 
  * @author Jan De Moerloose
+ * 
  */
 @Component
 public class VectorLayerFactory implements LayerFactory {
@@ -91,14 +92,14 @@ public class VectorLayerFactory implements LayerFactory {
 		List<InternalFeature> features = vectorLayerService.getFeatures(layerMetadata.getLayerId(),
 				mapContext.getCoordinateReferenceSystem(), filter, layerMetadata.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
-		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer),
-				styleFactoryService.createStyle(layer, layerMetadata));
+		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
+				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, layerMetadata));
 		return featureLayer;
 	}
 
 	private FeatureCollection<SimpleFeatureType, SimpleFeature> createCollection(List<InternalFeature> features,
-			VectorLayer layer) {
-		SimpleFeatureType type = createFeatureType(layer);
+			VectorLayer layer, CoordinateReferenceSystem mapCrs) {
+		SimpleFeatureType type = createFeatureType(layer, mapCrs);
 		DefaultFeatureCollection result = new DefaultFeatureCollection(layer.getId(), type);
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
 		for (InternalFeature internalFeature : features) {
@@ -113,11 +114,11 @@ public class VectorLayerFactory implements LayerFactory {
 		return result;
 	}
 
-	private SimpleFeatureType createFeatureType(VectorLayer layer) {
+	private SimpleFeatureType createFeatureType(VectorLayer layer, CoordinateReferenceSystem mapCrs) {
 		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
 		VectorLayerInfo info = layer.getLayerInfo();
 		builder.setName(info.getFeatureInfo().getDataSourceName());
-		builder.setSRS(info.getCrs());
+		builder.setCRS(mapCrs);
 		for (AttributeInfo attrInfo : info.getFeatureInfo().getAttributes()) {
 			if (attrInfo instanceof PrimitiveAttributeInfo) {
 				PrimitiveAttributeInfo prim = (PrimitiveAttributeInfo) attrInfo;
@@ -170,7 +171,7 @@ public class VectorLayerFactory implements LayerFactory {
 			}
 		}
 		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
-		builder.add(geom.getName(), Geometry.class, info.getCrs());
+		builder.add(geom.getName(), Geometry.class, mapCrs);
 		return builder.buildFeatureType();
 	}
 

@@ -43,6 +43,11 @@ public interface RasterizingPipelineCode {
 	String IMAGE_ID_KEY = "rasterizing.imageId"; // String
 
 	/**
+	 * Pipeline context key for image id context(=rebuild and raster image cache id).
+	 */
+	String IMAGE_ID_CONTEXT = "rasterizing.imageId"; // String
+
+	/**
 	 * Pipeline context key for storing the image container.
 	 */
 	String CONTAINER_KEY = "rasterizing.container"; // rasterizingContainer

@@ -21,9 +21,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.plugin.rasterizing.api.RasterizingService;
 import org.geomajas.security.SecurityManager;
-import org.geotools.factory.Hints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,20 +31,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Tests the rasterizing service by binary comparison of images. To generate the images, set the writeImages flag to true and urn the tests.
+ * Tests the rasterizing service by binary comparison of images. To generate the images, set the writeImages flag to
+ * true and urn the tests.
  * 
  * @author Jan De Moerloose
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/rasterizing/rasterizing-immediate.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml", "/org/geomajas/testdata/beanContext.xml",
 		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
 		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml" })
-public class GeotoolsRasterizingServiceTest {
+public class ImageServiceVectorTileTest {
 
 	@Autowired
 	@Qualifier("layerBeansMultiLine")
@@ -78,31 +79,19 @@ public class GeotoolsRasterizingServiceTest {
 	@Autowired
 	private SecurityManager securityManager;
 
-	@Autowired
-	GeotoolsRasterizingService geotoolsRasterizingService;
-
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
-	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/version2/";
+	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/vectortile/";
 
-	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_FILE_PATH = "src/test/resources" + IMAGE_CLASS_PATH;
 
-	private final Logger log = LoggerFactory.getLogger(GeotoolsRasterizingServiceTest.class);
+	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
 
 	@Before
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
-	}
-
-	@Test
-	public void testRenderingHints() throws GeomajasException, IOException {
-		checkMultiLine("multiline_black_1.png", false, true);
-		Hints hints = (Hints) geotoolsRasterizingService.getRenderingHints().clone();
-		geotoolsRasterizingService.getRenderingHints().clear();
-		checkMultiLine("multiline_black_1_no_antialias.png", false, true);
-		geotoolsRasterizingService.getRenderingHints().add(hints);
 	}
 
 	@Test
@@ -131,10 +120,10 @@ public class GeotoolsRasterizingServiceTest {
 		getMultiLineLabelStyle().getFontStyle().setColor("#DA70D6");
 		checkMultiLine("multiline_black_1_labeled_font_orchid.png", true, true);
 		getMultiLineLabelStyle().getFontStyle().setColor("#000000");
-//		// family
-//		getMultiLineLabelStyle().getFontStyle().setFamily("courier");
-//		checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
-//		getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
+		// // family
+		// getMultiLineLabelStyle().getFontStyle().setFamily("courier");
+		// checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
+		// getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiLineLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiLine("multiline_black_1_labeled_font_semitransparent.png", true, true);
@@ -180,10 +169,10 @@ public class GeotoolsRasterizingServiceTest {
 		getPointLabelStyle().getFontStyle().setColor("#DA70D6");
 		checkPoint("point_black_1_labeled_font_orchid.png", true, true);
 		getPointLabelStyle().getFontStyle().setColor("#000000");
-//		// family
-//		getPointLabelStyle().getFontStyle().setFamily("courier");
-//		checkPoint("point_black_1_labeled_font_courier.png", true, true);
-//		getPointLabelStyle().getFontStyle().setFamily("Verdana");
+		// // family
+		// getPointLabelStyle().getFontStyle().setFamily("courier");
+		// checkPoint("point_black_1_labeled_font_courier.png", true, true);
+		// getPointLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getPointLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkPoint("point_black_1_labeled_font_semitransparent.png", true, true);
@@ -231,9 +220,9 @@ public class GeotoolsRasterizingServiceTest {
 		checkMultiPolygon("multipolygon_black_1_labeled_font_orchid.png", true, true);
 		getMultiPolygonLabelStyle().getFontStyle().setColor("#000000");
 		// family
-//		getMultiPolygonLabelStyle().getFontStyle().setFamily("courier");
-//		checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
-//		getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
+		// getMultiPolygonLabelStyle().getFontStyle().setFamily("courier");
+		// checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
+		// getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiPolygonLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiPolygon("multipolygon_black_1_labeled_font_semitransparent.png", true, true);
@@ -253,7 +242,7 @@ public class GeotoolsRasterizingServiceTest {
 	}
 
 	public static void main(String[] args) throws GeomajasException, IOException {
-		GeotoolsRasterizingServiceTest test = new GeotoolsRasterizingServiceTest();
+		ImageServiceVectorTileTest test = new ImageServiceVectorTileTest();
 		test.writeImages = true;
 		test.testMultiLineLabelStyle();
 		test.testMultiLineStyle();
@@ -319,12 +308,12 @@ public class GeotoolsRasterizingServiceTest {
 		if (writeImages) {
 			FileOutputStream fos;
 			fos = new FileOutputStream(file);
-			geotoolsRasterizingService.rasterize(fos, layer, styleInfo, metadata, tile);
+			// geotoolsRasterizingService.rasterize(fos, layer, styleInfo, metadata, tile);
 			fos.flush();
 			fos.close();
 		} else {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			geotoolsRasterizingService.rasterize(baos, layer, styleInfo, metadata, tile);
+			// geotoolsRasterizingService.rasterize(baos, layer, styleInfo, metadata, tile);
 			baos.flush();
 			baos.close();
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();

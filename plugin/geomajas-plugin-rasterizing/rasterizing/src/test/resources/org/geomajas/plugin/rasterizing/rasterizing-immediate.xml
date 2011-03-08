@@ -19,10 +19,16 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/util 
 http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-		
-	<bean name="service.DispatcherUrlService"
-		class="org.geomajas.service.impl.StaticDispatcherUrlService">
-		<property name="dispatcherUrl" value="http://test" />
-	</bean>	
-		
+
+	<!--  default for rasterizing -->
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
+	</bean>
+
 </beans>

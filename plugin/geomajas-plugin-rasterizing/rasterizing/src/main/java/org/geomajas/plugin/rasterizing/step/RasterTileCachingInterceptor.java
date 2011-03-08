@@ -34,8 +34,9 @@ public class RasterTileCachingInterceptor extends AbstractSecurityContextCaching
 	private TestRecorder recorder;
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		RasterizingContainer rc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.RASTER,
-				context, RasterizingContainer.class);
+		RasterizingContainer rc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY,
+				RasterizingPipelineCode.IMAGE_ID_CONTEXT, KEYS, CacheCategory.RASTER, context,
+				RasterizingContainer.class);
 		if (null != rc) {
 			recorder.record(CacheCategory.RASTER, "Got item from cache");
 			context.put(RasterizingPipelineCode.CONTAINER_KEY, rc);
@@ -52,8 +53,8 @@ public class RasterTileCachingInterceptor extends AbstractSecurityContextCaching
 				.getOptional(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);
 		if (rc != null) {
 			recorder.record(CacheCategory.RASTER, "Put item in cache");
-			putContainer(context, CacheCategory.RASTER, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY, rc, response
-					.getTile().getBounds());
+			putContainer(context, CacheCategory.RASTER, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY,
+					RasterizingPipelineCode.IMAGE_ID_CONTEXT, rc, response.getTile().getBounds());
 		}
 	}
 

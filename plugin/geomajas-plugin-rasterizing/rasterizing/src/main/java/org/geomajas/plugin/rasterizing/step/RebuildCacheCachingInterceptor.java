@@ -21,7 +21,6 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
-import org.geomajas.plugin.rasterizing.RebuildCacheContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
@@ -55,8 +54,9 @@ public class RebuildCacheCachingInterceptor extends AbstractSecurityContextCachi
 	private TestRecorder recorder;
 	
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.REBUILD,
-				context, RebuildCacheContainer.class);
+		RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY,
+				RasterizingPipelineCode.IMAGE_ID_CONTEXT, KEYS, CacheCategory.REBUILD, context,
+				RebuildCacheContainer.class);
 		if (rcc != null) {
 			recorder.record(CacheCategory.REBUILD, "Got item from cache");
 			rcc.getContext();
@@ -88,8 +88,8 @@ public class RebuildCacheCachingInterceptor extends AbstractSecurityContextCachi
 		RebuildCacheContainer rcc = new RebuildCacheContainer();
 		TileMetadata tileMetadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		rcc.setMetadata(tileMetadata);
-		putContainer(context, CacheCategory.REBUILD, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY, rcc, response
-				.getTile().getBounds());
+		putContainer(context, CacheCategory.REBUILD, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY,
+				RasterizingPipelineCode.IMAGE_ID_CONTEXT, rcc, response.getTile().getBounds());
 	}
 
 }

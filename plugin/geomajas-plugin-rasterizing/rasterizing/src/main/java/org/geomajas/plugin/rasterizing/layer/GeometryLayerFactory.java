@@ -8,8 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.layer;
 
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Component;
  * This factory creates a Geotools layer that is capable of writing geometries.
  * 
  * @author Jan De Moerloose
+ * 
  */
 @Component
 public class GeometryLayerFactory implements LayerFactory {
