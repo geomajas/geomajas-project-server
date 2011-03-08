@@ -35,11 +35,11 @@ public class GeometryDirectLayerTest {
 	@Autowired
 	private DtoConverterService converterService;
 
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
-	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/geometrylayer/";
+	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/geometrylayer/";
 
-	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_FILE_PATH = "src/test/resources" + IMAGE_CLASS_PATH;
 
 	@Test
 	public void testPolygon() throws GeomajasException, ParseException, IOException {
