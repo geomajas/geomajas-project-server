@@ -24,13 +24,19 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Filter factory that creates non-lenient {@link AttributeExpression} instances. These will throw an exception when the
- * property cannot be accessed. To use this factory, pass the 
+ * property cannot be accessed. To use this factory, pass the factory class as a hint to the factory finder:
+ * 
+ * <pre>
+ * Hints hints = new Hints();
+ * hints.put(Hints.FILTER_FACTORY, NonLenientFilterFactoryImpl.class);
+ * FF = CommonFactoryFinder.getFilterFactory2(hints);
+ * </pre>
  * 
  * @author Jan De Moerloose
  * 
  */
 public class NonLenientFilterFactoryImpl extends FilterFactoryImpl {
-	
+
 	public NonLenientFilterFactoryImpl() {
 		super();
 	}
