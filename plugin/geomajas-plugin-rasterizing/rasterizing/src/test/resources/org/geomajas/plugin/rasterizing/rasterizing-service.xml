@@ -24,5 +24,14 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 		class="org.geomajas.service.impl.StaticDispatcherUrlService">
 		<property name="dispatcherUrl" value="http://test" />
 	</bean>	
+
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false"/>
+		<property name="securityServices">
+			<list>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
+			</list>
+		</property>
+	</bean>
 		
 </beans>
