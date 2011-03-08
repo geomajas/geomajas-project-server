@@ -74,9 +74,9 @@ public class ImageServiceTest {
 
 	private boolean writeImages = true;
 
-	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/imageservice/";
+	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/imageservice/";
 
-	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_FILE_PATH = "src/test/resources" + IMAGE_CLASS_PATH;
 
 	@Before
 	public void login() {

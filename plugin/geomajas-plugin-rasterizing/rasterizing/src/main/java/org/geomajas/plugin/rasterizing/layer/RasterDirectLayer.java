@@ -214,11 +214,6 @@ public class RasterDirectLayer extends DirectLayer {
 		// opacity
 		log.debug("before drawImage");
 		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
-		FileOutputStream fos = new FileOutputStream(new File("test.png"));
-		fos.write(imageResult.getImage());
-		fos.close();
-		graphics.setColor(Color.red);
-		graphics.drawRect(0, 0, (int) screenArea.getWidth() - 5, (int) screenArea.getHeight() - 5);
 		// no need to add an image observer when we have the image in memory !
 		graphics.drawImage(image, (int) x, (int) y, (int) imageBounds.getWidth(), (int) imageBounds.getHeight(), null);
 		log.debug("after drawImage");

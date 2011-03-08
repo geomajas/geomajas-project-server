@@ -40,7 +40,7 @@ public class RasterDirectLayerTest {
 	@Qualifier("bluemarble")
 	private RasterLayer layerBluemarble;
 
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/rasterlayer/";
 
