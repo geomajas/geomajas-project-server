@@ -26,7 +26,8 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Rasterizing version of {@link org.geomajas.plugin.caching.step.GetTileCachingInterceptor} which also stores the raster in the cache.
+ * Rasterizing version of {@link org.geomajas.plugin.caching.step.GetTileCachingInterceptor} which also stores the
+ * raster in the cache.
  * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
