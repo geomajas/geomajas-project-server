@@ -17,6 +17,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
 
+	<!-- @extract-start CacheFactorySample, Configure Infinispan cache factory -->
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory">
@@ -25,10 +26,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="defaultInfinispanCacheConfig" class="org.geomajas.plugin.caching.configuration.CacheInfo">
 		<property name="configuration">
 			<map>
+				<!-- @extract-start CacheSimpleSample, Simplified Infinispan configuration -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
@@ -40,6 +43,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 							<property name="level2CacheLocation" value="${geomajasCacheLocation}/raster" />
 						</bean>
 				</entry>
+				<!-- @extract-end -->
 			</map>
 		</property>
 	</bean>
@@ -47,18 +51,23 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="infiniLayerCacheConfig" class="org.geomajas.plugin.caching.configuration.CacheInfo">
 		<property name="configuration">
 			<map>
+				<!-- @extract-start CacheNamedSample, Choose Infinispan configuration by name -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
 							<property name="configurationName" value="test" />
 						</bean>
 				</entry>
+				<!-- @extract-end -->
+				<!-- @extract-start CacheOffSample, Switch off caching -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
 							<property name="cacheEnabled" value="false" />
 						</bean>
 				</entry>
+				<!-- @extract-end -->
+				<!-- @extract-start CacheNativeSample, Native Infinispan cache configuration -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.RASTER" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo">
@@ -66,11 +75,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 							<property name="evictionMaxEntries" value="1000" />
 						</bean>
 				</entry>
+				<!-- @extract-end -->
 			</map>
 		</property>
 	</bean>
 
+	<!-- @extract-start CacheLayerSample, Add cache configuration for a layer -->
 	<bean name="infiniLayerInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<!-- @extract-skip-start -->
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -87,6 +99,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="beansStyleInfo" />
 			</list>
 		</property>
+		<!-- @extract-skip-end -->
 		<property name="extraInfo">
 			<map>
 				<entry>
@@ -96,6 +109,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</map>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="infiniLayer" class="org.geomajas.layer.bean.BeanLayer">
 		<property name="layerInfo" ref="infiniLayerInfo" />

@@ -235,43 +235,108 @@
       <para>One of the caching services which is provided out of the box uses
       Infinispan as the caching library.</para>
 
-      <para>This provides two ways to provide the actual configuration. Either
-      by passing a configuration file which is searched on the classpath (and
-      if no found there, on the filesystem).</para>
+      <para>When using the Infinispan cache factory, the factory itself
+      contains exactly one Infinispan CacheManager. Each manager can itself
+      contain multiple caches. You can configure a default set of caches (one
+      for each category) using a CacheInfo bean. Additional sets of caches can
+      also be defined using further CacheInfo beans which are then referred to
+      in the layer configuration.</para>
 
-      <example>
-        <title>Infinispan configuration using configuration file</title>
+      <para>To use Infinispan for the caches, you have to set the Infinispan
+      cache factory. As mentioned earlier, this can be done specifically per
+      layer and/or cache category. The example below shows a configuration
+      using an Infinispan configuration file (infinispanConfiguration.xml) and
+      a configuration which is used when no layer specific configuration
+      exists (in this case, the actual default configuration).</para>
 
-        <programlisting>&lt;bean class="org.geomajas.plugin.caching.service.CacheInfo"&gt;
-    &lt;property name="cacheFactory"&gt;
-        &lt;bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory"&gt;
-            &lt;property name="configurationFile" value="my/app/cacheConfiguration.xml" /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-</programlisting>
-      </example>
+      <xi:include href="listing/CacheFactorySample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>Alternatively, you can pass a configuration object which contains
-      the relevant settings.</para>
+      <para>The Infinispan configuration file is searched on the class path
+      (and if not found there, on the file system). This file can contain both
+      a default configuration and named configurations. To use a named
+      configuration, use a configuration as mentioned below. In all other
+      cases, the default configuration is extended with the additional
+      settings provided by you.</para>
 
-      <example>
-        <title>Infinispan cache configuration using configuration
-        object</title>
+      <xi:include href="listing/CacheNamedSample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <programlisting>&lt;bean class="org.geomajas.plugin.caching.service.CacheInfo"&gt;
-    &lt;property name="cacheFactory"&gt;
-        &lt;bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory"&gt;
-            &lt;property name="configuration"&gt;
-                &lt;bean class="org.infinispan.config.Configuration"&gt;
-                    &lt;property name="evictionMaxEntries" value="5000" /&gt;
-                    &lt;property name="evictionStrategy" value="LRU" /&gt;
-                &lt;/bean&gt;
-            &lt;/property&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;</programlisting>
-      </example>
+      <para>In the CacheInfo beans contains a cache configuration per
+      category. For straightforward configurations, you can use the
+      SimpleInfinispanCacheInfo bean. This allows you to set the following
+      cache parameters:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>maxEntries: maximum number of entries which are allowed in the
+          cache. This should be a power of two (it is rounded up to the next
+          power of two if it isn't).</para>
+        </listitem>
+
+        <listitem>
+          <para>evictionStrategy: the eviction strategy being the algorithm
+          used to remove items from the cache memory.</para>
+        </listitem>
+
+        <listitem>
+          <para>evictionWakeUpInterval: interval in milliseconds to invoke the
+          eviction thread. Use -1 if you don't want the eviction thread to be
+          used.</para>
+        </listitem>
+
+        <listitem>
+          <para>expiration: period (in minutes) that a cache entry is
+          considered valid since last use. When a cache entry has not been
+          used longer, it will be removed from the cache. This applies to both
+          in-memory items and passivated items and is the way to limit the
+          amount of disk space used for the second level cache. Using -1 means
+          that items never expire.</para>
+        </listitem>
+
+        <listitem>
+          <para>isolationLevel: transaction isolation level for this
+          cache.</para>
+        </listitem>
+
+        <listitem>
+          <para>level2CacheLocation: location on disk for the second level
+          cache. Should point to a directory. The directory is created if it
+          did not exist. The location can start with a property reference. If
+          a property reference is used but the property does not exist, the
+          temporary directory followed by "/geomajas/cache" is used as
+          property value.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>More details about the behaviour of these settings can be found in
+      the Infinispan documentation.</para>
+
+      <xi:include href="listing/CacheSimpleSample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can explicitly turn off caching for a category as in the
+      example below. Alternatively, simply not mentioning a category in the
+      configuration will also switch off caching for that category.</para>
+
+      <xi:include href="listing/CacheOffSample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>Yet another option is to build the native Infinispan configuration
+      object from the spring configuration. Alternatively, you can pass a
+      configuration object which contains the relevant settings.</para>
+
+      <xi:include href="listing/CacheNativeSample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can also determine at layer level to use a specific set of
+      caches for each category.</para>
+
+      <para>This can be configured inside the LayerInfo object as shown in the
+      example below.</para>
+
+      <xi:include href="listing/CacheLayerSample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
   </section>
 
