@@ -56,8 +56,8 @@ public class GetRasterizedTileAllCachingInterceptor extends
 	public void afterSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		recorder.record(CacheCategory.TILE, "Put item in cache");
 		InternalTile tile = response.getTile();
-		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_CONTEXT,
-				CacheStepConstant.CACHE_TILE_KEY, new TileCacheContainer(tile), tile.getBounds());
+		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_KEY,
+				CacheStepConstant.CACHE_TILE_CONTEXT, new TileCacheContainer(tile), tile.getBounds());
 
 		// optionally put the image in the cache for later retrieval
 		RasterizingContainer rc = context
