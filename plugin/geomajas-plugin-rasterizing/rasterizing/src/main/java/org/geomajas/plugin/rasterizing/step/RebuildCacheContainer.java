@@ -21,6 +21,8 @@ import org.geomajas.plugin.caching.step.CacheContainer;
  */
 public class RebuildCacheContainer extends CacheContainer {
 
+	private static final long serialVersionUID = 100L;
+
 	private TileMetadata metadata;
 
 	public TileMetadata getMetadata() {

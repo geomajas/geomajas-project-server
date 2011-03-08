@@ -20,6 +20,8 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class BoundsCacheContainer extends CacheContainer {
 
+	private static final long serialVersionUID = 100L;
+
 	private Envelope bounds;
 
 	/**

@@ -22,7 +22,9 @@ import org.geomajas.plugin.caching.step.CacheContainer;
  */
 @Api(allMethods = true)
 public class RasterizingContainer extends CacheContainer {
-	
+
+	private static final long serialVersionUID = 100L;
+
 	private byte[] image;
 
 	/**

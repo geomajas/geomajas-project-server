@@ -18,6 +18,8 @@ package org.geomajas.plugin.caching.step;
  */
 public class TileContentCacheContainer extends CacheContainer {
 
+	private static final long serialVersionUID = 100L;
+
 	private String featureContent;
 	private String labelContent;
 

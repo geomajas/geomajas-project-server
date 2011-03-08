@@ -11,14 +11,21 @@
 
 package org.geomajas.plugin.caching.step;
 
+import org.geomajas.global.Api;
 import org.geomajas.plugin.caching.service.CacheContext;
+
+import java.io.Serializable;
 
 /**
  * Base container for the objects which need to be stored in the cache, assure the context is included.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
-public class CacheContainer {
+@Api(allMethods = true)
+public class CacheContainer implements Serializable {
+
+	private static final long serialVersionUID = 100L;
 
 	private CacheContext context;
 

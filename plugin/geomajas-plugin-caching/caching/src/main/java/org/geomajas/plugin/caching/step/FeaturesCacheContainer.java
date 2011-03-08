@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class FeaturesCacheContainer extends CacheContainer {
 
+	private static final long serialVersionUID = 100L;
+
 	private List<InternalFeature> features;
 	private Envelope bounds;
 

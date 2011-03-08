@@ -20,6 +20,8 @@ import org.geomajas.layer.tile.InternalTile;
  */
 public class TileCacheContainer extends CacheContainer {
 
+	private static final long serialVersionUID = 100L;
+
 	private InternalTile tile;
 
 	/**
