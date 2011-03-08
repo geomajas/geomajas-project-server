@@ -17,8 +17,6 @@
         </encoder>
     </appender>
 
-    <logger name="org.geomajas.plugin.caching.service" level="DEBUG" />
-
     <root>
         <level value="OFF"/>
         <appender-ref ref="CONSOLE"/>
