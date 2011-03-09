@@ -129,6 +129,6 @@
 	</profiles>
 
 	<properties>
-		<staticsecurity-backend-version>1.9.0-SNAPSHOT</staticsecurity-backend-version> <!-- @todo GeoTools upgrade check, was 1.7.1 -->
+		<staticsecurity-backend-version>1.7.1</staticsecurity-backend-version>
 	</properties>
 </project>

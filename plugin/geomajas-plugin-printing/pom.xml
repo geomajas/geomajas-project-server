@@ -135,7 +135,7 @@
 	</profiles>
 
 	<properties>
-		<printing-backend-version>1.9.0-SNAPSHOT</printing-backend-version> <!-- @todo GeoTools upgrade check, was 1.8.0 -->
+		<printing-backend-version>1.8.0</printing-backend-version>
 		<printing-gwt-version>1.8.0</printing-gwt-version>
 	</properties>
 </project>

@@ -124,7 +124,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-featureinfo-backend-version>1.9.0-SNAPSHOT</geomajas-widget-featureinfo-backend-version> <!-- @todo GeoTools upgrade check, was 1.8.0 -->
+		<geomajas-widget-featureinfo-backend-version>1.8.0</geomajas-widget-featureinfo-backend-version>
 		<geomajas-widget-featureinfo-gwt-version>1.8.0</geomajas-widget-featureinfo-gwt-version>
 	</properties>
 </project>
