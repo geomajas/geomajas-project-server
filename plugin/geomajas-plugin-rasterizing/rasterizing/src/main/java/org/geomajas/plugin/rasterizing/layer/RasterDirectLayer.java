@@ -11,7 +11,6 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -211,8 +210,8 @@ public class RasterDirectLayer extends DirectLayer {
 		double tx = (imageBounds.getX() - applicationBounds.getMinX());
 		double ty = (imageBounds.getY() - applicationBounds.getMinY());
 		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
-		double scaleX =  imageBounds.getWidth()/image.getWidth();
-		double scaleY =  imageBounds.getHeight()/image.getHeight();
+		double scaleX = imageBounds.getWidth() / image.getWidth();
+		double scaleY = imageBounds.getHeight() / image.getHeight();
 		AffineTransform transform = new AffineTransform();
 		transform.translate(tx, ty);
 		transform.scale(scaleX, scaleY);
@@ -223,7 +222,7 @@ public class RasterDirectLayer extends DirectLayer {
 		// opacity
 		log.debug("before drawImage");
 		// create a copy to apply transform
-		Graphics2D g = (Graphics2D)graphics.create();
+		Graphics2D g = (Graphics2D) graphics.create();
 		// no need to add an image observer when we have the image in memory !
 		g.drawImage(image, transform, null);
 		log.debug("after drawImage");
