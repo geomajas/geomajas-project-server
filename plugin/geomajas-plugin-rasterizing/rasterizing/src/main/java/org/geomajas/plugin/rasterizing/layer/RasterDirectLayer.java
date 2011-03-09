@@ -11,9 +11,11 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.RenderedImage;
@@ -59,6 +61,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Layer responsible for rendering raster layers. Most of the code is copied from the printing plugin.
@@ -93,7 +96,7 @@ public class RasterDirectLayer extends DirectLayer {
 	private int tileHeight;
 
 	private String style;
-
+	
 	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
 		this.tiles = tiles;
 		this.tileWidth = tileWidth;
@@ -197,22 +200,32 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	protected void addImage(Graphics2D graphics, ImageResult imageResult, MapViewport viewport) throws IOException {
-		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		Rectangle screenArea = viewport.getScreenArea();
-		ReferencedEnvelope mapBounds = viewport.getBounds();
-		double rasterScale = screenArea.getWidth() / mapBounds.getWidth();
-		// convert map origin to pan space and subtract
-		double x = (imageBounds.getX() - rasterScale * mapBounds.getMinX());
-		double y = (imageBounds.getY() - rasterScale * mapBounds.getMinY());
+		ReferencedEnvelope worldBounds = viewport.getBounds();
+		// convert map bounds to application bounds
+		double rasterScale = screenArea.getWidth() / worldBounds.getWidth();
+		Envelope applicationBounds = new Envelope(worldBounds.getMinX() * rasterScale, worldBounds.getMaxX()
+				* rasterScale, -worldBounds.getMinY() * rasterScale, -worldBounds.getMaxY() * rasterScale);
+		Bbox imageBounds = imageResult.getRasterImage().getBounds();
+		// find transform between image bounds and application bounds
+		double tx = (imageBounds.getX() - applicationBounds.getMinX());
+		double ty = (imageBounds.getY() - applicationBounds.getMinY());
+		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
+		double scaleX =  imageBounds.getWidth()/image.getWidth();
+		double scaleY =  imageBounds.getHeight()/image.getHeight();
+		AffineTransform transform = new AffineTransform();
+		transform.translate(tx, ty);
+		transform.scale(scaleX, scaleY);
 		if (log.isDebugEnabled()) {
-			log.debug("adding image, width=" + imageBounds.getWidth() + ",height=" + imageBounds.getHeight() + ",x="
-					+ x + ",y=" + y);
+			log.debug("adding image, width=" + image.getWidth() + ",height=" + image.getHeight() + ",x="
+					+ tx + ",y=" + ty);
 		}
 		// opacity
 		log.debug("before drawImage");
-		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResult.getImage()));
+		// create a copy to apply transform
+		Graphics2D g = (Graphics2D)graphics.create();
 		// no need to add an image observer when we have the image in memory !
-		graphics.drawImage(image, (int) x, (int) y, (int) imageBounds.getWidth(), (int) imageBounds.getHeight(), null);
+		g.drawImage(image, transform, null);
 		log.debug("after drawImage");
 	}
 

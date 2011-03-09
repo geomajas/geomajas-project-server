@@ -73,6 +73,18 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			textSymbolizer = createTextSymbolizer(layerMetadata.getStyle().getLabelStyle());
 		}
 		if (layerMetadata.isPaintGeometries()) {
+			// add the selection style first
+			if(layerMetadata.getSelectedFeatureIds() != null) {
+				// create the style
+				Symbolizer symbolizer = createGeometrySymbolizer(layer.getLayerInfo().getLayerType(), layerMetadata.getSelectionStyle());
+				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
+				fts.setName(layerMetadata.getSelectionStyle().getName());
+				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
+				// create the filter
+				Filter fidFilter = filterService.createFidFilter(layerMetadata.getSelectedFeatureIds());
+				fts.rules().get(0).setFilter(fidFilter);
+				style.featureTypeStyles().add(fts);
+			}
 			for (FeatureStyleInfo featureStyle : layerMetadata.getStyle().getFeatureStyles()) {
 				Symbolizer symbolizer = createGeometrySymbolizer(layer.getLayerInfo().getLayerType(), featureStyle);
 				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);

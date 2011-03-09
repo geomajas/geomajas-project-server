@@ -12,6 +12,7 @@ package org.geomajas.plugin.rasterizing.dto;
 
 import java.util.Map;
 
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.layer.LayerType;
@@ -29,6 +30,10 @@ public class VectorLayerMetadata implements LayerMetadata {
 	private LayerType layertype;
 
 	private NamedStyleInfo style;
+
+	private FeatureStyleInfo selectionStyle;
+
+	private String[] selectedFeatureIds;
 
 	private Map<String, ClientUserDataInfo> userData;
 
@@ -92,6 +97,22 @@ public class VectorLayerMetadata implements LayerMetadata {
 
 	public void setPaintGeometries(boolean paintGeometries) {
 		this.paintGeometries = paintGeometries;
+	}
+
+	public FeatureStyleInfo getSelectionStyle() {
+		return selectionStyle;
+	}
+
+	public void setSelectionStyle(FeatureStyleInfo selectionStyle) {
+		this.selectionStyle = selectionStyle;
+	}
+
+	public String[] getSelectedFeatureIds() {
+		return selectedFeatureIds;
+	}
+
+	public void setSelectedFeatureIds(String[] selectedFeatureIds) {
+		this.selectedFeatureIds = selectedFeatureIds;
 	}
 
 }
