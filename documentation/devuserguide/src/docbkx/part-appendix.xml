@@ -56,19 +56,9 @@
           </listitem>
 
           <listitem>
-            <para>The Geotools epsg-wkt library has been replaced by the -
-            more accurate - epsg-hsql library as part of migrating to Geotools
-            2.7-RC2. This means that coordinate system defintions are now
-            coming from an embedded HSQL database instead of XML files. This
-            may have influence on the accuracy of coordinate transformations
-            and the definition of the transformable areas. The axis order for
-            coordinate systems is by default the reverse of the epsg-wkt axis
-            order. To retain backwards compatibility, Geomajas internally
-            compensates for this by enforcing the original axis order on all
-            coordinate systems that are being returned via the api. If
-            necessary, the following system property can be set to obtain the
-            same effect for all datastores:
-            <code>-Dorg.geotools.referencing.forceXY=true</code></para>
+            <para>GeoTools has been upgraded to 2.7-RC2. This causes some
+            incompatibilities. The GeoTools plug-in also needs to be updates
+            to 1.8.0-SNAPSHOT to avoid problems.</para>
           </listitem>
         </itemizedlist></para>
     </section>
