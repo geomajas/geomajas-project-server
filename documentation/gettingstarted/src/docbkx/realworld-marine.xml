@@ -14,6 +14,11 @@
 <chapter id="ch-rw-marine">
   <title>Real world example: marine application</title>
 
+  <warning>
+    <para>This chapter is out of date and uses an older, no longer supported
+    version of Geomajas</para>
+  </warning>
+
   <section id="rw-marine">
     <title>Introduction</title>
 
@@ -425,8 +430,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
         <para>If you get really stuck you can download an example
         layerEcdis.xml <ulink
-        url="files/realworldexample/layerEcdis.xml">right
-        here</ulink>.</para>
+        url="files/realworldexample/layerEcdis.xml">right here</ulink>.</para>
       </listitem>
     </orderedlist>
   </section>
@@ -508,10 +512,10 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
         </orderedlist>
 
         <para>You can download an example layerWmsAgiv.xml file <ulink
-        url="realworldexample/layerWmsAgiv.xml">right here</ulink>. Note
-        that as said before the login details are excluded from this example
-        due to privacy reasons. This renders this example file useless. Please
-        use your own, or a public WMS server to test out this part of the
+        url="realworldexample/layerWmsAgiv.xml">right here</ulink>. Note that
+        as said before the login details are excluded from this example due to
+        privacy reasons. This renders this example file useless. Please use
+        your own, or a public WMS server to test out this part of the
         guide.</para>
       </listitem>
     </orderedlist>
@@ -614,8 +618,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/realworldexample/facility.png"
-                     width="-" />
+          <imagedata fileref="images/realworldexample/facility.png" width="-" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -628,8 +631,8 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       <listitem>
         <para>Create src\main\resources\be\fks\shapeinmem\security.xml
         (download an example <ulink
-        url="files/realworldexample/security.xml">right here</ulink>). This
-        is the file inside which you configure the users and what they are
+        url="files/realworldexample/security.xml">right here</ulink>). This is
+        the file inside which you configure the users and what they are
         allowed to access.</para>
       </listitem>
 
