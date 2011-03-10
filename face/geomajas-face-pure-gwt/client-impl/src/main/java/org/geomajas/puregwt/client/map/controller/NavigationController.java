@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ZoomOption;
 import org.geomajas.puregwt.client.spatial.Bbox;
@@ -59,6 +60,8 @@ public class NavigationController extends AbstractMapController {
 		ZOOM_POSITION
 	}
 
+	private ZoomToRectangleController zoomToRectangleController;
+
 	private GeometryFactory factory;
 
 	private Coordinate dragOrigin;
@@ -78,16 +81,22 @@ public class NavigationController extends AbstractMapController {
 	public NavigationController() {
 		super();
 		factory = new GeometryFactoryImpl();
+		zoomToRectangleController = new ZoomToRectangleController();
 	}
 
 	// ------------------------------------------------------------------------
 	// MapController implementation:
 	// ------------------------------------------------------------------------
 
+	public void onActivate(MapPresenter mapPresenter) {
+		super.onActivate(mapPresenter);
+		zoomToRectangleController.onActivate(mapPresenter);
+	}
+
 	public void onMouseDown(MouseDownEvent event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
 			zooming = true;
-			// zoomToRectangleController.onMouseDown(event);
+			zoomToRectangleController.onMouseDown(event);
 		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			dragging = true;
 			dragOrigin = getScreenPosition(event);
@@ -98,7 +107,7 @@ public class NavigationController extends AbstractMapController {
 
 	public void onMouseUp(MouseUpEvent event) {
 		if (zooming) {
-			// zoomToRectangleController.onMouseUp(event);
+			zoomToRectangleController.onMouseUp(event);
 			zooming = false;
 		} else if (dragging) {
 			stopPanning(event);
@@ -107,7 +116,7 @@ public class NavigationController extends AbstractMapController {
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (zooming) {
-			// zoomToRectangleController.onMouseMove(event);
+			zoomToRectangleController.onMouseMove(event);
 		} else if (dragging) {
 			updateView(event);
 		}
@@ -115,7 +124,7 @@ public class NavigationController extends AbstractMapController {
 
 	public void onMouseOut(MouseOutEvent event) {
 		if (zooming) {
-			// zoomToRectangleController.onMouseOut(event);
+			zoomToRectangleController.onMouseOut(event);
 		} else {
 			stopPanning(null);
 		}
