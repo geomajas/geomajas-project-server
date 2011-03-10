@@ -11,26 +11,29 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.puregwt.client.service.BooleanCallback;
+
+import com.google.gwt.event.dom.client.ErrorEvent;
+import com.google.gwt.event.dom.client.ErrorHandler;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
 
 /**
  * <p>
  * Extension of an HtmlObject that represents a single HTML image (IMG tag). Next to the default values provided by the
- * HtmlObject, an extra 'href' field is provided. This string value should point to the actual image.
+ * HtmlObject, an extra 'src' field is provided. This string value should point to the actual image.
  * </p>
  * <p>
- * If for any reason the loading of the actual images results in errors, this class will automatically retry a number of
- * times. It is possible to add an {@link EventListener} to the constructors, that is called when the image is loaded.
- * If there where too many errors and no more attempts are made, this event listener is called as well.
+ * Instances of this class can be initiated with a {@link BooleanCallback} that is notified when the image is done
+ * loading. The image is done loading when it has either loaded successfully or when 5 attempts have failed. In any
+ * case, the callback's execute method will be invoked, thereby indicating success or failure.
  * </p>
  * 
  * @author Pieter De Graef
  */
 public class HtmlImage extends HtmlObject {
-
-	private static final int NR_RETRIES = 5;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -39,7 +42,7 @@ public class HtmlImage extends HtmlObject {
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
 	 * 
-	 * @param href
+	 * @param src
 	 *            Pointer to the actual image.
 	 * @param width
 	 *            The width for this image, expressed in pixels.
@@ -50,14 +53,14 @@ public class HtmlImage extends HtmlObject {
 	 * @param left
 	 *            How many pixels should this image be placed from the left (relative to the parent origin).
 	 */
-	public HtmlImage(String href, int width, int height, int top, int left) {
-		this(href, width, height, top, left, null);
+	public HtmlImage(String src, int width, int height, int top, int left) {
+		this(src, width, height, top, left, null);
 	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
 	 * 
-	 * @param href
+	 * @param src
 	 *            Pointer to the actual image.
 	 * @param width
 	 *            The width for this image, expressed in pixels.
@@ -67,16 +70,23 @@ public class HtmlImage extends HtmlObject {
 	 *            How many pixels should this image be placed from the top (relative to the parent origin).
 	 * @param left
 	 *            How many pixels should this image be placed from the left (relative to the parent origin).
-	 * @param onLoadListener
-	 *            Extra listener that is notified when the actual image is loaded. This happens through the
-	 *            "Event.ONLOAD" event.
+	 * @param onDoneLoading
+	 *            Call-back that is executed when the images has been loaded, or when loading failed. The boolean value
+	 *            will indicate success or failure.
 	 */
-	public HtmlImage(String href, int width, int height, int top, int left, EventListener onLoadListener) {
+	public HtmlImage(String src, int width, int height, int top, int left, BooleanCallback onDoneLoading) {
 		super("img", width, height, top, left);
 
-		DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
-		DOM.setEventListener(getElement(), new RetryLoadListener(href, onLoadListener));
-		DOM.setElementProperty(getElement(), "src", href);
+		setVisible(false);
+		DOM.setStyleAttribute(getElement(), "border", "none");
+		DOM.setElementProperty(getElement(), "src", src);
+
+		if (onDoneLoading != null) {
+			DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
+			ImageReloader reloader = new ImageReloader(src, onDoneLoading);
+			addHandler(reloader, LoadEvent.getType());
+			addHandler(reloader, ErrorEvent.getType());
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -88,57 +98,55 @@ public class HtmlImage extends HtmlObject {
 	 * 
 	 * @return The pointer to the actual image.
 	 */
-	public String getHref() {
+	public String getSrc() {
 		return DOM.getElementProperty(getElement(), "src");
 	}
 
 	/**
 	 * Set the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.
 	 * 
-	 * @param href
+	 * @param src
 	 *            The new image pointer.
 	 */
-	public void setHref(String href) {
-		DOM.setElementProperty(getElement(), "src", href);
+	public void setSrc(String src) {
+		DOM.setImgSrc(getElement(), src);
 	}
 
-	// ------------------------------------------------------------------------
-	// Private classes:
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Listener attached to images that try to fetch an image multiple times in case some network error occurred and the
-	 * image did not arrive correctly.
+	 * DOM event handler that attempts up to 5 times to reload the requested image. When the image is loaded (or the 5
+	 * attempts have failed), it notifies the given <code>BooleanCallback</code>, calling the execute method with true
+	 * or false indicating whether or not the image was really loaded.
+	 * 
+	 * @author Pieter De Graef
 	 */
-	private class RetryLoadListener implements EventListener {
+	public class ImageReloader implements LoadHandler, ErrorHandler {
 
-		private int retries = NR_RETRIES;
+		private int nrAttempts = 5;
 
-		private String href;
+		private String src;
 
-		private EventListener onLoadListener;
+		private BooleanCallback onDoneLoading;
 
-		public RetryLoadListener(String href, EventListener onLoadListener) {
-			this.href = href;
-			this.onLoadListener = onLoadListener;
+		public ImageReloader(String src, BooleanCallback onDoneLoading) {
+			this.src = src;
+			this.onDoneLoading = onDoneLoading;
 		}
 
-		public void onBrowserEvent(Event event) {
-			switch (DOM.eventGetType(event)) {
-				case Event.ONLOAD:
-					if (onLoadListener != null) {
-						onLoadListener.onBrowserEvent(event);
-					}
-					break;
-				case Event.ONERROR:
-					retries--;
-					if (retries > 0) {
-						DOM.setElementProperty(getElement(), "src", href);
-					} else if (onLoadListener != null) {
-						onLoadListener.onBrowserEvent(event);
-					}
-					break;
+		public void onLoad(LoadEvent event) {
+			setVisible(true);
+			if (onDoneLoading != null) {
+				onDoneLoading.execute(true);
 			}
+		}
+
+		public void onError(ErrorEvent event) {
+			nrAttempts--;
+			if (nrAttempts > 0) {
+				DOM.setImgSrc(getElement(), src);
+			} else if (onDoneLoading != null) {
+				onDoneLoading.execute(false);
+			}
+
 		}
 	}
 }
