@@ -12,20 +12,32 @@
 package org.geomajas.puregwt.client.map.gadget;
 
 import org.geomajas.puregwt.client.map.MapGadget;
-import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ZoomOption;
 import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
+import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
+import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
+import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
+import org.vaadin.gwtgraphics.client.shape.path.LineTo;
+import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
+import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
@@ -36,10 +48,10 @@ import com.google.gwt.user.client.DOM;
  * @author Pieter De Graef
  */
 public class NavigationGadget implements MapGadget {
-	
-	private MapPresenter mapPresenter;
 
 	private ScreenContainer container;
+
+	private ZoomToRectGroup zoomToRectangleGroup;
 
 	// Panning:
 	private String panBackgroundImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/panbg.png";
@@ -64,15 +76,11 @@ public class NavigationGadget implements MapGadget {
 	// Zoom to rectangle:
 	private String zoomToRectangleImage = GWT.getModuleBaseURL() + "geomajas/images/mapgadget/zoom_rectangle.png";
 
-	public NavigationGadget(MapPresenter mapPresenter) {
-		this.mapPresenter = mapPresenter;
-	}
-
 	// ------------------------------------------------------------------------
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
-	public void onDraw(final ViewPort viewPort, ScreenContainer container) {
+	public void onDraw(final ViewPort viewPort, final ScreenContainer container) {
 		this.container = container;
 
 		Image panBg = new Image(5, 5, 50, 50, panBackgroundImage);
@@ -91,8 +99,9 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double dX = -bounds.getWidth() / 3;
-				viewPort.translate(dX, 0);
+				double deltaX = -bounds.getWidth() / 3;
+				PanAnimation animation = new PanAnimation(viewPort);
+				animation.panTo(deltaX, 0, 300);
 				event.stopPropagation();
 			}
 		});
@@ -104,8 +113,9 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double dX = bounds.getWidth() / 3;
-				viewPort.translate(dX, 0);
+				double deltaX = bounds.getWidth() / 3;
+				PanAnimation animation = new PanAnimation(viewPort);
+				animation.panTo(deltaX, 0, 300);
 				event.stopPropagation();
 			}
 		});
@@ -117,8 +127,9 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double dY = bounds.getHeight() / 3;
-				viewPort.translate(0, dY);
+				double deltaY = bounds.getHeight() / 3;
+				PanAnimation animation = new PanAnimation(viewPort);
+				animation.panTo(0, deltaY, 300);
 				event.stopPropagation();
 			}
 		});
@@ -130,8 +141,9 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double dY = -bounds.getHeight() / 3;
-				viewPort.translate(0, dY);
+				double deltaY = -bounds.getHeight() / 3;
+				PanAnimation animation = new PanAnimation(viewPort);
+				animation.panTo(0, deltaY, 300);
 				event.stopPropagation();
 			}
 		});
@@ -193,14 +205,17 @@ public class NavigationGadget implements MapGadget {
 		container.add(zoomIn);
 		container.add(zoomExtent);
 		container.add(zoomOut);
-		
+
 		// Zoom to rectangle buttons:
-		
+
 		Image zoomToRectangle = new Image(20, 130, 20, 20, zoomToRectangleImage);
+		zoomToRectangle.setTitle("Zoom to rectangle by dragging the mouse on the map.");
 		DOM.setStyleAttribute(zoomToRectangle.getElement(), "cursor", "pointer");
 		zoomToRectangle.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
+				zoomToRectangleGroup = new ZoomToRectGroup(viewPort);
+				container.add(zoomToRectangleGroup);
 				event.stopPropagation();
 			}
 		});
@@ -216,7 +231,10 @@ public class NavigationGadget implements MapGadget {
 	}
 
 	public void onScale() {
-		// Do nothing.
+		if (zoomToRectangleGroup != null) {
+			container.remove(zoomToRectangleGroup);
+			zoomToRectangleGroup = null;
+		}
 	}
 
 	public void onResize() {
@@ -250,6 +268,169 @@ public class NavigationGadget implements MapGadget {
 
 		public void onMouseDown(MouseDownEvent event) {
 			event.stopPropagation();
+		}
+	}
+
+	/**
+	 * Vector group that lets the user zoom to a rectangle.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class ZoomToRectGroup extends Group {
+
+		private int offset;
+
+		private GeometryFactory factory = new GeometryFactoryImpl();
+
+		private Rectangle eventCatcher;
+
+		private Path zoomInRect;
+
+		private boolean dragging;
+
+		private int x;
+
+		private int y;
+
+		private Bbox screenBounds;
+
+		public ZoomToRectGroup(final ViewPort viewPort) {
+			eventCatcher = new Rectangle(0, 0, viewPort.getMapWidth(), viewPort.getMapHeight());
+			eventCatcher.setFillOpacity(0);
+			eventCatcher.setStrokeOpacity(0);
+
+			zoomInRect = new Path(0, 0);
+			zoomInRect.setFillColor("#000000");
+			zoomInRect.setFillOpacity(0.2);
+			zoomInRect.setStrokeColor("#000000");
+			zoomInRect.setStrokeWidth(1);
+			zoomInRect.setStrokeOpacity(1);
+			DOM.setElementAttribute(zoomInRect.getElement(), "fill-rule", "evenodd");
+			zoomInRect.lineTo(viewPort.getMapWidth(), 0);
+			zoomInRect.lineTo(viewPort.getMapWidth(), viewPort.getMapHeight());
+			zoomInRect.lineTo(0, viewPort.getMapHeight());
+			zoomInRect.close();
+			zoomInRect.moveTo(0, 0);
+			zoomInRect.lineTo(0, 0);
+			zoomInRect.lineTo(0, 0);
+			zoomInRect.lineTo(0, 0);
+			zoomInRect.close();
+
+			add(zoomInRect);
+			add(eventCatcher);
+
+			eventCatcher.addMouseDownHandler(new MouseDownHandler() {
+
+				public void onMouseDown(MouseDownEvent event) {
+					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
+						dragging = true;
+						x = event.getX() - offset;
+						y = event.getY() - offset;
+						updateRectangle(event);
+					}
+					event.stopPropagation();
+					event.preventDefault();
+				}
+			});
+			eventCatcher.addMouseUpHandler(new MouseUpHandler() {
+
+				public void onMouseUp(MouseUpEvent event) {
+					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT && dragging) {
+						dragging = false;
+						if (screenBounds != null) {
+							Bbox worldBounds = viewPort.getTransformationService().viewToWorld(screenBounds);
+							viewPort.applyBounds(worldBounds, ZoomOption.LEVEL_CHANGE);
+						}
+					}
+					event.stopPropagation();
+				}
+			});
+			eventCatcher.addMouseMoveHandler(new MouseMoveHandler() {
+
+				public void onMouseMove(MouseMoveEvent event) {
+					if (dragging) {
+						updateRectangle(event);
+					}
+					event.stopPropagation();
+				}
+			});
+			eventCatcher.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					event.stopPropagation();
+				}
+			});
+			eventCatcher.addDoubleClickHandler(new DoubleClickHandler() {
+
+				public void onDoubleClick(DoubleClickEvent event) {
+					event.stopPropagation();
+				}
+			});
+		}
+
+		private void updateRectangle(MouseEvent<?> event) {
+			int beginX = x;
+			int beginY = y;
+			int endX = event.getX() - offset;
+			int endY = event.getY() - offset;
+
+			// Check if begin and end need to be reversed:
+			if (beginX > endX) {
+				int temp = endX;
+				endX = beginX;
+				beginX = temp;
+			}
+			if (beginY > endY) {
+				int temp = endY;
+				endY = beginY;
+				beginY = temp;
+			}
+
+			int width = endX - beginX;
+			int height = endY - beginY;
+			if (height != 0 && width != 0) {
+				zoomInRect.setStep(5, new MoveTo(false, beginX, beginY));
+				zoomInRect.setStep(6, new LineTo(false, endX, beginY));
+				zoomInRect.setStep(7, new LineTo(false, endX, endY));
+				zoomInRect.setStep(8, new LineTo(false, beginX, endY));
+				zoomInRect.setStep(9, new ClosePath());
+				screenBounds = factory.createBbox(beginX, beginY, width, height);
+			}
+		}
+	}
+
+	/**
+	 * Animation for the panning buttons.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class PanAnimation extends Animation {
+
+		private ViewPort viewPort;
+
+		private double translateX;
+
+		private double translateY;
+
+		private double previousProgress;
+
+		public PanAnimation(ViewPort viewPort) {
+			this.viewPort = viewPort;
+		}
+
+		public void panTo(double translateX, double translateY, int milliseconds) {
+			this.translateX = translateX;
+			this.translateY = translateY;
+			previousProgress = 0;
+			run(milliseconds);
+		}
+
+		protected void onUpdate(double progress) {
+			double deltaX = (progress * translateX) - (previousProgress * translateX);
+			double deltaY = (progress * translateY) - (previousProgress * translateY);
+
+			viewPort.drag(deltaX, deltaY);
+			previousProgress = progress;
 		}
 	}
 }
