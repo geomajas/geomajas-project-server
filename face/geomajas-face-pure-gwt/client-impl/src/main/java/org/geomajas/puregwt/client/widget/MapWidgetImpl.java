@@ -11,10 +11,12 @@
 
 package org.geomajas.puregwt.client.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.ScreenGroup;
-import org.geomajas.puregwt.client.map.WorldContainer;
 import org.geomajas.puregwt.client.map.WorldGroup;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.vaadin.gwtgraphics.client.DrawingArea;
@@ -48,6 +50,8 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	private HtmlContainer htmlContainer;
 
 	private DrawingArea drawingArea;
+
+	private List<WorldGroup> worldContainers = new ArrayList<WorldGroup>();
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -109,13 +113,13 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.remove((VectorObject) container);
 	}
 
-	public WorldContainer getWorldContainer(String id) {
+	public WorldGroup getWorldContainer(String id) {
 		// First we try to find the container:
 		for (int i = 0; i < drawingArea.getVectorObjectCount(); i++) {
 			VectorObject container = drawingArea.getVectorObject(i);
-			if (container instanceof WorldContainer) {
-				if (id.equals(((WorldContainer) container).getId())) {
-					return (WorldContainer) container;
+			if (container instanceof WorldGroup) {
+				if (id.equals(((WorldGroup) container).getId())) {
+					return (WorldGroup) container;
 				}
 			}
 		}
@@ -123,11 +127,17 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// Else we create a new container:
 		WorldGroup container = new WorldGroup(id);
 		drawingArea.add(container);
+		worldContainers.add(container);
 		return container;
 	}
 
-	public void removeWorldContainer(WorldContainer container) {
+	public void removeWorldContainer(WorldGroup container) {
 		drawingArea.remove((VectorObject) container);
+		worldContainers.remove(container);
+	}
+
+	public List<WorldGroup> getWorldContainers() {
+		return worldContainers;
 	}
 
 	// ------------------------------------------------------------------------
