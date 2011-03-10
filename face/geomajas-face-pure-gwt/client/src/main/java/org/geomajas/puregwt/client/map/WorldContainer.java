@@ -31,4 +31,11 @@ public interface WorldContainer extends VectorObjectContainer {
 	 * @return The world container identifier.
 	 */
 	String getId();
+
+	/**
+	 * Should children of this world container be resized when zooming in or out? Default is true.
+	 * 
+	 * @param resizeChildren Determine if children should be resized when zooming in or out.
+	 */
+	void setResizeChildren(boolean resizeChildren);
 }

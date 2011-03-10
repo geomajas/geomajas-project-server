@@ -30,20 +30,6 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 public interface ViewPort {
 
 	/**
-	 * TODO Don't want to see this as a public method...
-	 * 
-	 * @return
-	 */
-	Coordinate getWorldToPanTranslation();
-
-	/**
-	 * TODO Don't want to see this as a public method...
-	 * 
-	 * @return
-	 */
-	Coordinate getPanToViewTranslation();
-
-	/**
 	 * Returns a transformation service that can transform vector objects between world and screen space.
 	 * 
 	 * @return Returns the transformation service object.
@@ -168,4 +154,18 @@ public interface ViewPort {
 	 *            Translation factor along the Y-axis in world space.
 	 */
 	void drag(double x, double y);
+
+	/**
+	 * Get the current map width in pixels.
+	 * 
+	 * @return The current map width in pixels.
+	 */
+	int getMapWidth();
+
+	/**
+	 * Get the current map height in pixels.
+	 * 
+	 * @return The current map height in pixels.
+	 */
+	int getMapHeight();
 }
