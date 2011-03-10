@@ -35,6 +35,8 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
+import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
+import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -69,9 +71,11 @@ public class MapPresenterImpl implements MapPresenter {
 
 		void removeScreenContainer(ScreenContainer container);
 
-		WorldContainer getWorldContainer(String id);
+		WorldGroup getWorldContainer(String id);
 
-		void removeWorldContainer(WorldContainer container);
+		void removeWorldContainer(WorldGroup container);
+
+		List<WorldGroup> getWorldContainers();
 	}
 
 	private String applicationId;
@@ -91,6 +95,8 @@ public class MapPresenterImpl implements MapPresenter {
 	private MapModel mapModel;
 
 	private MapRenderer mapRenderer;
+
+	private WorldContainerRenderer worldContainerRenderer;
 
 	private Map<String, MapGadget> gadgets;
 
@@ -112,6 +118,12 @@ public class MapPresenterImpl implements MapPresenter {
 		mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), mapRenderer);
 		mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), mapRenderer);
 		mapModel.getEventBus().addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
+
+		worldContainerRenderer = new WorldContainerRenderer();
+		mapModel.getEventBus().addHandler(ViewPortChangedEvent.getType(), worldContainerRenderer);
+		mapModel.getEventBus().addHandler(ViewPortDraggedEvent.getType(), worldContainerRenderer);
+		mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), worldContainerRenderer);
+		mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), worldContainerRenderer);
 
 		Command commandRequest = new Command("command.configuration.GetMap");
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
@@ -135,6 +147,10 @@ public class MapPresenterImpl implements MapPresenter {
 					mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), new MapGadgetRenderer());
 					mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), new MapGadgetRenderer());
 
+					addMapGadget(new ScalebarGadget(r.getMapInfo()));
+					addMapGadget(new WatermarkGadget());
+					addMapGadget(new NavigationGadget());
+
 					// Fire initialization event:
 					mapModel.getEventBus().fireEvent(new MapInitializationEvent());
 				}
@@ -143,8 +159,6 @@ public class MapPresenterImpl implements MapPresenter {
 			public void onFailure(Throwable error) {
 			}
 		});
-
-		addMapGadget(new NavigationGadget(this));
 	}
 
 	public void setMapRenderer(MapRenderer mapRenderer) {
@@ -159,7 +173,9 @@ public class MapPresenterImpl implements MapPresenter {
 	}
 
 	public WorldContainer getWorldContainer(String id) {
-		return display.getWorldContainer(id);
+		WorldGroup container = display.getWorldContainer(id);
+		container.transform((ViewPortImpl) mapModel.getViewPort());
+		return container;
 	}
 
 	public ScreenContainer getScreenContainer(String id) {
@@ -296,6 +312,38 @@ public class MapPresenterImpl implements MapPresenter {
 		}
 
 		public void onViewPortDragged(ViewPortDraggedEvent event) {
+		}
+	}
+
+	/**
+	 * Class that updates all the world containers when the view on the map changes.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class WorldContainerRenderer implements ViewPortChangedHandler {
+
+		public void onViewPortChanged(ViewPortChangedEvent event) {
+			for (WorldGroup worldContainer : display.getWorldContainers()) {
+				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			}
+		}
+
+		public void onViewPortScaled(ViewPortScaledEvent event) {
+			for (WorldGroup worldContainer : display.getWorldContainers()) {
+				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			}
+		}
+
+		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			for (WorldGroup worldContainer : display.getWorldContainers()) {
+				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			}
+		}
+
+		public void onViewPortDragged(ViewPortDraggedEvent event) {
+			for (WorldGroup worldContainer : display.getWorldContainers()) {
+				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			}
 		}
 	}
 }

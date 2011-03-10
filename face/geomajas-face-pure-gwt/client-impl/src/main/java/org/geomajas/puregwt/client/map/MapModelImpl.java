@@ -35,7 +35,7 @@ public class MapModelImpl implements MapModel {
 
 	private ClientMapInfo mapInfo;
 
-	private ViewPort viewPort;
+	private ViewPortImpl viewPort;
 
 	private EventBus eventBus;
 
@@ -72,7 +72,7 @@ public class MapModelImpl implements MapModel {
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
 		viewPort = new ViewPortImpl(eventBus, mapInfo, getSrid());
-		((ViewPortImpl) viewPort).setSize(mapWidth, mapHeight);
+		viewPort.setSize(mapWidth, mapHeight);
 
 		// Create all the layers:
 		layers = new ArrayList<Layer<?>>();
