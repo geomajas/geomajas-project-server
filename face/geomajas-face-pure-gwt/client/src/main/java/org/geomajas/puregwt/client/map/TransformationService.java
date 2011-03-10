@@ -15,6 +15,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
+import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
  * This interface presents a way to transform coordinates, geometries and bounding boxes from world space to view space,
@@ -80,4 +81,9 @@ public interface TransformationService {
 	 * @returns The world space equivalent of the given bounding box.
 	 */
 	Bbox viewToWorld(Bbox bbox);
+
+	Matrix getWorldToViewTransformation();
+
+	Matrix getWorldToViewTranslation();
+
 }
