@@ -198,32 +198,6 @@ public class ViewPortImpl implements ViewPort {
 		eventBus.fireEvent(new ViewPortDraggedEvent(this));
 	}
 
-	/**
-	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.<br/>
-	 * TODO don't want to see this as a public method...
-	 */
-	public Coordinate getWorldToPanTranslation() {
-		if (viewState.getScale() > 0) {
-			double dX = -(viewState.getPanX() * viewState.getScale());
-			double dY = viewState.getPanY() * viewState.getScale();
-			return new Coordinate(dX, dY);
-		}
-		return new Coordinate(0, 0);
-	}
-
-	/**
-	 * Return the translation of coordinates relative to the pan origin to view coordinates.<br/>
-	 * TODO don't want to see this as a public method...
-	 */
-	public Coordinate getPanToViewTranslation() {
-		if (viewState.getScale() > 0) {
-			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale()) + width / 2;
-			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale() + height / 2;
-			return new Coordinate(dX, dY);
-		}
-		return new Coordinate(0, 0);
-	}
-
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
@@ -232,11 +206,11 @@ public class ViewPortImpl implements ViewPort {
 		return viewState;
 	}
 
-	public double getMapWidth() {
+	public int getMapWidth() {
 		return width;
 	}
 
-	public double getMapHeight() {
+	public int getMapHeight() {
 		return height;
 	}
 

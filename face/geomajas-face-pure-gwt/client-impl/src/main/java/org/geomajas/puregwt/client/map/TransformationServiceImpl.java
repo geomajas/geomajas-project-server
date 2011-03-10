@@ -59,7 +59,69 @@ public class TransformationServiceImpl implements TransformationService {
 	}
 
 	// -------------------------------------------------------------------------
-	// Transformation functions:
+	// Transformation matrices:
+	// -------------------------------------------------------------------------
+
+	/** Return the world-to-pan space translation matrix. */
+	protected Matrix getWorldToPanTransformation() {
+		ViewPortState viewState = viewPort.getViewPortState();
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getPanX() * viewState.getScale());
+			double dY = viewState.getPanY() * viewState.getScale();
+			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
+		}
+		return new Matrix(1, 0, 0, 1, 0, 0);
+	}
+
+	/**
+	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.<br/>
+	 * TODO don't want to see this as a public method...
+	 */
+	protected Matrix getWorldToPanTranslation() {
+		if (viewPort.getViewPortState().getScale() > 0) {
+			double dX = -(viewPort.getViewPortState().getPanX() * viewPort.getViewPortState().getScale());
+			double dY = viewPort.getViewPortState().getPanY() * viewPort.getViewPortState().getScale();
+			return new Matrix(0, 0, 0, 0, dX, dY);
+		}
+		return new Matrix(0, 0, 0, 0, 0, 0);
+	}
+
+	/**
+	 * Return the translation of coordinates relative to the pan origin to view coordinates.<br/>
+	 * TODO don't want to see this as a public method...
+	 */
+	protected Matrix getPanToViewTranslation() {
+		ViewPortState viewState = viewPort.getViewPortState();
+		if (viewPort.getViewPortState().getScale() > 0) {
+			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale()) + viewPort.getMapWidth() / 2;
+			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale() + viewPort.getMapHeight() / 2;
+			return new Matrix(0, 0, 0, 0, dX, dY);
+		}
+		return new Matrix(0, 0, 0, 0, 0, 0);
+	}
+
+	public Matrix getWorldToViewTransformation() {
+		ViewPortState viewState = viewPort.getViewPortState();
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getX() * viewState.getScale()) + viewPort.getMapWidth() / 2;
+			double dY = viewState.getY() * viewState.getScale() + viewPort.getMapHeight() / 2;
+			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
+		}
+		return new Matrix(1, 0, 0, 1, 0, 0);
+	}
+
+	public Matrix getWorldToViewTranslation() {
+		ViewPortState viewState = viewPort.getViewPortState();
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getX() * viewState.getScale()) + viewPort.getMapWidth() / 2;
+			double dY = viewState.getY() * viewState.getScale() + viewPort.getMapHeight() / 2;
+			return new Matrix(0, 0, 0, 0, dX, dY);
+		}
+		return new Matrix(0, 0, 0, 0, 0, 0);
+	}
+
+	// -------------------------------------------------------------------------
+	// Transformation methods:
 	// -------------------------------------------------------------------------
 
 	/**
