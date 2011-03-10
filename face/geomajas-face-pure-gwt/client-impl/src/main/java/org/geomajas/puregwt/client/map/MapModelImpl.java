@@ -19,7 +19,11 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.EventBusImpl;
+import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
+import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerSelectedEvent;
+import org.geomajas.puregwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.spatial.Bbox;
@@ -51,6 +55,21 @@ public class MapModelImpl implements MapModel {
 
 	public MapModelImpl() {
 		eventBus = new EventBusImpl();
+		
+		// Add a layer selection handler that allows only one selected layer at a time:
+		eventBus.addHandler(LayerSelectionHandler.TYPE, new LayerSelectionHandler() {
+
+			public void onSelectLayer(LayerSelectedEvent event) {
+				for (Layer<?> layer : layers) {
+					if (layer.isSelected() && !layer.equals(event.getLayer())) {
+						layer.setSelected(false);
+					}
+				}
+			}
+
+			public void onDeselectLayer(LayerDeselectedEvent event) {
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
@@ -257,6 +276,7 @@ public class MapModelImpl implements MapModel {
 			case RASTER:
 				RasterLayer layer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
 				layers.add(layer);
+				eventBus.fireEvent(new LayerAddedEvent(layer));
 				break;
 			default:
 				// VectorLayer vectorLayer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);

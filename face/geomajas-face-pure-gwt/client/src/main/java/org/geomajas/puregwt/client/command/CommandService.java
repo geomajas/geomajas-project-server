@@ -49,18 +49,22 @@ public class CommandService {
 	private String userToken;
 
 	// -------------------------------------------------------------------------
-	// Constructor:
+	// Initialization:
 	// -------------------------------------------------------------------------
 
-	public CommandService() {
-		locale = LocaleInfo.getCurrentLocale().getLocaleName();
-		if ("default".equals(locale)) {
-			locale = null;
+	private void initialize() {
+		// The reason why this initialization is not in the constructor is because unit tests fail if GWT.create is used
+		// in a constructor...so here we are.
+		if (service == null) {
+			locale = LocaleInfo.getCurrentLocale().getLocaleName();
+			if ("default".equals(locale)) {
+				locale = null;
+			}
+			service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
+			ServiceDefTarget endpoint = (ServiceDefTarget) service;
+			String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
+			endpoint.setServiceEntryPoint(moduleRelativeURL);
 		}
-		service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
-		ServiceDefTarget endpoint = (ServiceDefTarget) service;
-		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
-		endpoint.setServiceEntryPoint(moduleRelativeURL);
 	}
 
 	// -------------------------------------------------------------------------
@@ -99,6 +103,9 @@ public class CommandService {
 	 * @return deferred object which can be used to add extra call-backs
 	 */
 	public Deferred execute(Command command, final CommandCallback... callbacks) {
+		if (service == null) {
+			initialize();
+		}
 		incrementDispatched();
 
 		final Deferred deferred = new Deferred();
