@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.api;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 
@@ -25,12 +25,14 @@ public interface LayerFactoryService {
 
 	/**
 	 * Creates a layer for the specified metadata.
+	 * 
 	 * @param mapContext
 	 *            the map context
-	 * @param metadata
+	 * @param clientLayerInfo
 	 *            the layer metadata
 	 * @return layer ready for rendering
-	 * @throws GeomajasException oops, something went wrong
+	 * @throws GeomajasException
+	 *             oops, something went wrong
 	 */
-	Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException;
+	Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
 }

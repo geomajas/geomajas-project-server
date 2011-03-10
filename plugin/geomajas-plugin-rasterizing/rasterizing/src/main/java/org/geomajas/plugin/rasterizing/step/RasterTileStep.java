@@ -14,6 +14,8 @@ package org.geomajas.plugin.rasterizing.step;
 import java.io.ByteArrayOutputStream;
 
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
@@ -22,8 +24,8 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.plugin.rasterizing.dto.MapMetadata;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
@@ -75,22 +77,28 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 			// only name specified, find it
 			style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
 		}
-		MapMetadata mapMetadata = new MapMetadata();
-		mapMetadata.setBounds(converterService.toDto(tileContainer.getTile().getBounds()));
-		mapMetadata.setCrs(tileMetadata.getCrs());
-		mapMetadata.setScale(tileMetadata.getScale());
-		VectorLayerMetadata vectorLayerMetadata = new VectorLayerMetadata();
-		vectorLayerMetadata.setFilter(tileMetadata.getFilter());
-		vectorLayerMetadata.setLayerId(tileMetadata.getLayerId());
-		vectorLayerMetadata.setPaintGeometries(tileMetadata.isPaintGeometries());
-		vectorLayerMetadata.setPaintLabels(tileMetadata.isPaintLabels());
-		vectorLayerMetadata.setStyle(style);
-		mapMetadata.getLayers().add(vectorLayerMetadata);
-		
+		ClientMapInfo mapInfo = new ClientMapInfo();
+		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
+		mapRasterizingInfo.setBounds(converterService.toDto(tileContainer.getTile().getBounds()));
+		mapInfo.setCrs(tileMetadata.getCrs());
+		mapRasterizingInfo.setScale(tileMetadata.getScale());
+		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		ClientVectorLayerInfo clientVectorLayerInfo = new ClientVectorLayerInfo();
+		clientVectorLayerInfo.setServerLayerId(tileMetadata.getLayerId());
+		clientVectorLayerInfo.setNamedStyleInfo(style);
+		VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();
+		vectorLayerRasterizingInfo.setFilter(tileMetadata.getFilter());
+		vectorLayerRasterizingInfo.setPaintGeometries(tileMetadata.isPaintGeometries());
+		vectorLayerRasterizingInfo.setPaintLabels(tileMetadata.isPaintLabels());
+		vectorLayerRasterizingInfo.setFilter(tileMetadata.getFilter());
+		vectorLayerRasterizingInfo.setStyle(style);
+		clientVectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
+		mapInfo.getLayers().add(clientVectorLayerInfo);
+
 		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
 		try {
-			imageService.writeMap(imageStream, mapMetadata);
-			//rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tileContainer.getTile());
+			imageService.writeMap(imageStream, mapInfo);
+			// rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tileContainer.getTile());
 			recorder.record(CacheCategory.RASTER, "Rasterization success");
 		} catch (Exception ex) {
 			recorder.record(CacheCategory.RASTER, "Rasterization failed");

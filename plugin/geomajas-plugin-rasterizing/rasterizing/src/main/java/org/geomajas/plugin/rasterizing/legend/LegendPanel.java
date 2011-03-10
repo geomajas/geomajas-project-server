@@ -11,6 +11,7 @@
 package org.geomajas.plugin.rasterizing.legend;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -28,10 +29,10 @@ import javax.swing.JPanel;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.layer.LayerType;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
 
 /**
  * Swing panel for a simple legend.
@@ -41,6 +42,8 @@ import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
  */
 public class LegendPanel extends JPanel {
 
+	private static final long serialVersionUID = 100;
+
 	private static int MAX_SIZE = 10000;
 
 	public LegendPanel(String title) {
@@ -48,37 +51,54 @@ public class LegendPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder(title));
 	}
 
-	public void addLayer(LayerMetadata layer) {
+	public void addLayer(ClientLayerInfo layer) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		FeatureStyleInfo defaultStyle = new FeatureStyleInfo();
 		defaultStyle.applyDefaults();
-		panel.add(new VectorStyleIcon(LayerType.POLYGON, defaultStyle));
+		VectorStyleIcon icon = new VectorStyleIcon(LayerType.POLYGON, defaultStyle, 15, 15);
+		icon.setBounds(5, 5, 15, 15);
+		JPanel iconPanel = new JPanel();
+		iconPanel.setLayout(null);
+		iconPanel.setMinimumSize(new Dimension(25, 25));
+		iconPanel.setPreferredSize(new Dimension(25, 25));
+		iconPanel.setMaximumSize(new Dimension(25, 25));
+		iconPanel.add(icon, BorderLayout.CENTER);
+		panel.add(iconPanel);
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		JLabel itemText = new JLabel(layer.getLayerId());
+		JLabel itemText = new JLabel(layer.getLabel());
 		panel.add(itemText);
 		panel.setAlignmentX(LEFT_ALIGNMENT);
 		add(panel);
 	}
 
-	public void addLayer(RasterLayerMetadata layer) {
+	public void addLayer(ClientRasterLayerInfo layer) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		ImageIcon icon = createImageIcon("/org/geomajas/plugin/rasterizing/layer-raster.png");
 		panel.add(new JLabel(icon));
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		JLabel itemText = new JLabel(layer.getLayerId());
+		JLabel itemText = new JLabel(layer.getLabel());
 		panel.add(itemText);
 		panel.setAlignmentX(LEFT_ALIGNMENT);
 		add(panel);
 	}
 
-	public void addLayer(VectorLayerMetadata vectorLayer, FeatureStyleInfo style) {
+	public void addLayer(ClientVectorLayerInfo vectorLayer, FeatureStyleInfo style) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.add(new VectorStyleIcon(vectorLayer.getLayertype(), style));
+		VectorStyleIcon icon = new VectorStyleIcon(vectorLayer.getLayerType(), style, 15, 15);
+		icon.setBounds(5, 5, 15, 15);
+		JPanel iconPanel = new JPanel();
+		iconPanel.setLayout(null);
+		iconPanel.setMinimumSize(new Dimension(25, 25));
+		iconPanel.setPreferredSize(new Dimension(25, 25));
+		iconPanel.setMaximumSize(new Dimension(25, 25));
+		iconPanel.add(icon, BorderLayout.CENTER);
+		panel.add(iconPanel);
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));
 		JLabel itemText = new JLabel(style.getName());
+		itemText.setAlignmentX(LEFT_ALIGNMENT);
 		panel.add(itemText);
 		panel.setAlignmentX(LEFT_ALIGNMENT);
 		add(panel);
@@ -117,27 +137,29 @@ public class LegendPanel extends JPanel {
 
 		private LayerType layerType;
 
-		private int width = 15;
+		private int width;
 
-		private int height = 15;
+		private int height;
 
 		private FeatureStyleInfo styleInfo;
 
-		public VectorStyleIcon(LayerType layerType, FeatureStyleInfo styleInfo) {
+		public VectorStyleIcon(LayerType layerType, FeatureStyleInfo styleInfo, int width, int height) {
 			this.layerType = layerType;
 			this.styleInfo = styleInfo;
+			this.width = width;
+			this.height = height;
 			setSize(width, height);
 		}
 
 		protected void paintComponent(Graphics g) {
 			Color fillColor = Color.white;
 			Color strokeColor = Color.black;
-			float[] dashArray = null;
+			BasicStroke dashStroke = null;
 			Graphics2D graphics = (Graphics2D) g.create();
 			if (styleInfo != null) {
 				fillColor = getColor(styleInfo.getFillColor(), styleInfo.getFillOpacity(), Color.white);
 				strokeColor = getColor(styleInfo.getStrokeColor(), styleInfo.getStrokeOpacity(), Color.black);
-				dashArray = getDashArray(styleInfo.getDashArray());
+				dashStroke = getDashStroke(styleInfo.getDashArray());
 			}
 			// draw symbol
 			switch (layerType) {
@@ -158,10 +180,10 @@ public class LegendPanel extends JPanel {
 					break;
 				case LINESTRING:
 				case MULTILINESTRING:
-					BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
-							dashArray, 0.0f);
 					graphics.setColor(strokeColor);
-					graphics.setStroke(dashed);
+					if (dashStroke != null) {
+						graphics.setStroke(dashStroke);
+					}
 					drawRelativePath(graphics, new float[] { 0f, 0.75f, 0.25f, 1f },
 							new float[] { 0f, 0.25f, 0.75f, 1f });
 					break;
@@ -209,9 +231,9 @@ public class LegendPanel extends JPanel {
 			graphics.draw(path);
 		}
 
-		private float[] getDashArray(String dashArrayString) {
+		private BasicStroke getDashStroke(String dashArrayString) {
 			if (dashArrayString == null || "".equals(dashArrayString.trim()) || "none".equals(dashArrayString)) {
-				return new float[0];
+				return null;
 			}
 
 			try {
@@ -220,9 +242,11 @@ public class LegendPanel extends JPanel {
 				for (int i = 0; i < res.length; i++) {
 					dasharr[i] = Float.parseFloat(res[i]);
 				}
-				return dasharr;
+				BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
+						dasharr, 0.0f);
+				return dashed;
 			} catch (Exception e) {
-				return new float[0];
+				return null;
 			}
 		}
 

@@ -2,24 +2,21 @@ package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
-import org.geomajas.geometry.Bbox;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.LayerType;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.plugin.rasterizing.dto.MapMetadata;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.RasterLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
-import org.geomajas.service.DtoConverterService;
+import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
-import org.junit.Assert;
+import org.geotools.map.DirectLayer;
+import org.geotools.map.MapContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,11 +37,10 @@ public class RasterDirectLayerTest {
 	@Qualifier("bluemarble")
 	private RasterLayer layerBluemarble;
 
-	private boolean writeImages = true;
+	// changing this to true and running the test from the base directory will generate the images !
+	private boolean writeImages = false;
 
-	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/rasterlayer/";
-
-	private static final String IMAGE_FILE_PATH = "src/test/resources" + IMAGE_CLASS_PATH;
+	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterlayer";
 
 	@Autowired
 	private SecurityManager securityManager;
@@ -57,40 +53,42 @@ public class RasterDirectLayerTest {
 
 	@Test
 	public void testWMS() throws GeomajasException, IOException {
-		RasterLayerMetadata metadata = new RasterLayerMetadata();
-		metadata.setLayerId(layerBluemarble.getId());
-		metadata.setRasterStyle("0.5");
+
+		ClientRasterLayerInfo cl1 = new ClientRasterLayerInfo();
+		cl1.setServerLayerId(layerBluemarble.getId());
+		RasterLayerRasterizingInfo rr1 = new RasterLayerRasterizingInfo();
+		rr1.setCssStyle("opacity:0.75");
+		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
+
 		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.getViewport().setCoordinateReferenceSystem(layerBluemarble.getCrs());
+		mapContext.setCoordinateReferenceSystem(layerBluemarble.getCrs());
+		mapContext.getViewport().setCoordinateReferenceSystem(mapContext.getCoordinateReferenceSystem());
 		mapContext.getViewport().setScreenArea(new Rectangle(1024, 512));
 		mapContext.getViewport().setBounds(new ReferencedEnvelope(-180, 180, -90, 90, layerBluemarble.getCrs()));
-		RasterDirectLayer layer = (RasterDirectLayer) layerFactory.createLayer(mapContext, metadata);
-		BufferedImage image = new BufferedImage(1024, 512, BufferedImage.TYPE_4BYTE_ABGR);
-		layer.draw(image.createGraphics(), mapContext, mapContext.getViewport());
-		checkOrRender(image, "wms.png");
+		RasterDirectLayer layer = (RasterDirectLayer) layerFactory.createLayer(mapContext, cl1);
+		new DirectLayerAssert(layer, mapContext).assertEqual("wms.png", writeImages);
 	}
 
-	private void checkOrRender(BufferedImage image, String fileName) throws IOException {
-		if (writeImages) {
-			FileOutputStream fos;
-			fos = new FileOutputStream(IMAGE_FILE_PATH + fileName);
-			ImageIO.write(image, "PNG", fos);
-			fos.flush();
-			fos.close();
-		} else {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			InputStream is = getClass().getResourceAsStream(IMAGE_CLASS_PATH + fileName);
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = is.read(buf, 0, 1024)) != -1) {
-				bos.write(buf, 0, len);
-			}
-			is.close();
-			byte[] expecteds = bos.toByteArray();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(image, "PNG", baos);
-			Assert.assertArrayEquals(expecteds, baos.toByteArray());
+	class DirectLayerAssert extends TestPathBinaryStreamAssert {
+
+		private DirectLayer layer;
+
+		private MapContext mapContext;
+
+		public DirectLayerAssert(DirectLayer layer, MapContext mapContext) {
+			super(IMAGE_CLASS_PATH);
+			this.layer = layer;
+			this.mapContext = mapContext;
 		}
+
+		public void generateActual(OutputStream out) throws Exception {
+			Rectangle rect = mapContext.getViewport().getScreenArea();
+			BufferedImage image = new BufferedImage((int) rect.getWidth(), (int) rect.getHeight(),
+					BufferedImage.TYPE_4BYTE_ABGR);
+			layer.draw(image.createGraphics(), mapContext, mapContext.getViewport());
+			ImageIO.write(image, "PNG", out);
+		}
+
 	}
 
 }

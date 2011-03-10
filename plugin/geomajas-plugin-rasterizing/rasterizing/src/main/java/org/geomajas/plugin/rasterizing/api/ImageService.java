@@ -12,9 +12,9 @@ package org.geomajas.plugin.rasterizing.api;
 
 import java.io.OutputStream;
 
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.plugin.rasterizing.dto.LegendMetadata;
-import org.geomajas.plugin.rasterizing.dto.MapMetadata;
+import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
 
 /**
  * Service to render maps and legends as images.
@@ -26,20 +26,26 @@ public interface ImageService {
 
 	/**
 	 * Writes a map to the specified output stream.
-
-	 * @param stream output stream
-	 * @param mapMetadata metadata of the map
-	 * @throws GeomajasException thrown when the stream could not be written
+	 * 
+	 * @param stream
+	 *            output stream
+	 * @param clientMapInfo
+	 *            metadata of the map
+	 * @throws GeomajasException
+	 *             thrown when the stream could not be written
 	 */
-	void writeMap(OutputStream stream, MapMetadata mapMetadata) throws GeomajasException;
+	void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
 
 	/**
 	 * Writes a legend to the specified output stream.
-
-	 * @param stream output stream
-	 * @param legendMetadata metadata of the legend
-	 * @throws GeomajasException thrown when the stream could not be written
+	 * 
+	 * @param stream
+	 *            output stream
+	 * @param legendRasterizingInfo
+	 *            metadata of the legend
+	 * @throws GeomajasException
+	 *             thrown when the stream could not be written
 	 */
-	void writeLegend(OutputStream stream, LegendMetadata legendMetadata) throws GeomajasException;
+	void writeLegend(OutputStream stream, LegendRasterizingInfo legendRasterizingInfo) throws GeomajasException;
 
 }

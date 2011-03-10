@@ -12,11 +12,11 @@ package org.geomajas.plugin.rasterizing;
 
 import java.util.List;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.LayerFactoryService;
 import org.geomajas.plugin.rasterizing.api.RasterException;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +34,13 @@ public class LayerFactoryServiceImpl implements LayerFactoryService {
 	@Autowired
 	private List<LayerFactory> factories;
 
-	public Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException {
+	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		for (LayerFactory factory : factories) {
-			if (factory.canCreateLayer(mapContext, metadata)) {
-				return factory.createLayer(mapContext, metadata);
+			if (factory.canCreateLayer(mapContext, clientLayerInfo)) {
+				return factory.createLayer(mapContext, clientLayerInfo);
 			}
 		}
-		throw new RasterException(RasterException.MISSING_LAYER_FACTORY, metadata.getLayerId());
+		throw new RasterException(RasterException.MISSING_LAYER_FACTORY, clientLayerInfo.getLabel());
 	}
 
 }

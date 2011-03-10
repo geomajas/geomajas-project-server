@@ -13,10 +13,11 @@ package org.geomajas.plugin.rasterizing.legend;
 import javax.swing.JComponent;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.LegendMetadata;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
 
 /**
  * Builder class for legend.
@@ -26,17 +27,18 @@ import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
  */
 public class LegendBuilder {
 
-
-	public JComponent buildComponentTree(LegendMetadata legendMetadata) {
-		LegendPanel legendPanel = new LegendPanel(legendMetadata.getTitle());
-		for (LayerMetadata layer : legendMetadata.getMapMetadata().getLayers()) {
-			if (layer instanceof VectorLayerMetadata) {
-				VectorLayerMetadata vectorLayer = (VectorLayerMetadata) layer;
-				for (FeatureStyleInfo style : vectorLayer.getStyle().getFeatureStyles()) {
+	public JComponent buildComponentTree(LegendRasterizingInfo legendRasterizingInfo) {
+		LegendPanel legendPanel = new LegendPanel(legendRasterizingInfo.getTitle());
+		for (ClientLayerInfo layer : legendRasterizingInfo.getMapInfo().getLayers()) {
+			if (layer instanceof ClientVectorLayerInfo) {
+				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) layer;
+				VectorLayerRasterizingInfo vectorRasterizingInfo = (VectorLayerRasterizingInfo) vectorLayer
+						.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
+				for (FeatureStyleInfo style : vectorRasterizingInfo.getStyle().getFeatureStyles()) {
 					legendPanel.addLayer(vectorLayer, style);
 				}
-			} else if (layer instanceof RasterLayerMetadata) {
-				legendPanel.addLayer((RasterLayerMetadata) layer);
+			} else if (layer instanceof ClientRasterLayerInfo) {
+				legendPanel.addLayer((ClientRasterLayerInfo) layer);
 			} else {
 				legendPanel.addLayer(layer);
 			}

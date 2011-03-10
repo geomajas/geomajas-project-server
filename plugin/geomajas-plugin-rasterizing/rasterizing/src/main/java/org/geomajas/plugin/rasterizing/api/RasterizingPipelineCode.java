@@ -70,7 +70,7 @@ public interface RasterizingPipelineCode {
 	/**
 	 * Pipeline context key for storing the map context metadata.
 	 */
-	String MAP_CONTEXT_METADATA_KEY = "rasterizing.mapContextMetadata"; // MapContextMetaData
+	String CLIENT_MAP_INFO_KEY = "rasterizing.clientMapInfo"; // ClientMapInfo
 
 	/**
 	 * Pipeline context key for storing the map context.

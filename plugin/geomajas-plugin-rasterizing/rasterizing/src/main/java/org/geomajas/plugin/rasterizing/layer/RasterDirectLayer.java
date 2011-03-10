@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import java.awt.AlphaComposite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -95,7 +96,7 @@ public class RasterDirectLayer extends DirectLayer {
 	private int tileHeight;
 
 	private String style;
-	
+
 	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
 		this.tiles = tiles;
 		this.tileWidth = tileWidth;
@@ -216,16 +217,33 @@ public class RasterDirectLayer extends DirectLayer {
 		transform.translate(tx, ty);
 		transform.scale(scaleX, scaleY);
 		if (log.isDebugEnabled()) {
-			log.debug("adding image, width=" + image.getWidth() + ",height=" + image.getHeight() + ",x="
-					+ tx + ",y=" + ty);
+			log.debug("adding image, width=" + image.getWidth() + ",height=" + image.getHeight() + ",x=" + tx + ",y="
+					+ ty);
 		}
 		// opacity
 		log.debug("before drawImage");
 		// create a copy to apply transform
 		Graphics2D g = (Graphics2D) graphics.create();
-		// no need to add an image observer when we have the image in memory !
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC, getOpacity()));
 		g.drawImage(image, transform, null);
 		log.debug("after drawImage");
+	}
+
+	private float getOpacity() {
+		String match = style;
+		// could be 'opacity:0.5;' or simply '0.5'
+		if (style.contains("opacity:")) {
+			match = style.substring(style.indexOf("opacity:") + 8);
+		}
+		if (match.contains(";")) {
+			match = match.substring(0, match.indexOf(";"));
+		}
+		try {
+			return Float.valueOf(match);
+		} catch (NumberFormatException nfe) {
+			log.warn("Could not parse opacity " + style + "of raster layer " + getTitle());
+			return 1f;
+		}
 	}
 
 	protected void addLoadError(Graphics2D graphics, ImageException imageResult, MapViewport viewport) {

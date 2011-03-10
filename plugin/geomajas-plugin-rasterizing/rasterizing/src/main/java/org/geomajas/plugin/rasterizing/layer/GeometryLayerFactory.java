@@ -10,12 +10,12 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
-import org.geomajas.plugin.rasterizing.dto.GeometryLayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.GeometryLayerInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
@@ -37,15 +37,15 @@ public class GeometryLayerFactory implements LayerFactory {
 	@Autowired
 	private DtoConverterService converterService;
 
-	public boolean canCreateLayer(MapContext mapContext, LayerMetadata metadata) {
-		return metadata instanceof GeometryLayerMetadata;
+	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+		return clientLayerInfo.getLayerInfo() instanceof GeometryLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException {
-		GeometryLayerMetadata layerMetadata = (GeometryLayerMetadata) metadata;
-		GeometryDirectLayer layer = new GeometryDirectLayer(styleFactoryService.createStyle(
-				layerMetadata.getLayerType(), layerMetadata.getStyle()));
-		for (Geometry geom : layerMetadata.getGeometries()) {
+	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+		GeometryLayerInfo layerInfo = (GeometryLayerInfo) clientLayerInfo.getLayerInfo();
+		GeometryDirectLayer layer = new GeometryDirectLayer(styleFactoryService.createStyle(layerInfo.getLayerType(),
+				layerInfo.getStyle()));
+		for (Geometry geom : layerInfo.getGeometries()) {
 			layer.getGeometries().add(converterService.toInternal(geom));
 		}
 		return layer;

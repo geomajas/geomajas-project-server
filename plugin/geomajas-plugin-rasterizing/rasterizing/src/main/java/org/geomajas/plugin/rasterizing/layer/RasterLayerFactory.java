@@ -12,16 +12,15 @@ package org.geomajas.plugin.rasterizing.layer;
 
 import java.util.List;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.RasterLayerRasterizingInfo;
 import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
@@ -42,28 +41,24 @@ public class RasterLayerFactory implements LayerFactory {
 	private RasterLayerService rasterLayerService;
 
 	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private FilterService filterService;
-
-	@Autowired
 	private ConfigurationService configurationService;
 
-	public boolean canCreateLayer(MapContext mapContext, LayerMetadata metadata) {
-		return metadata instanceof RasterLayerMetadata;
+	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+		return clientLayerInfo instanceof ClientRasterLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException {
-		RasterLayerMetadata layerMetadata = (RasterLayerMetadata) metadata;
+	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+		ClientRasterLayerInfo rasterInfo = (ClientRasterLayerInfo) clientLayerInfo;
+		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
+				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
-		RasterLayer layer = configurationService.getRasterLayer(metadata.getLayerId());
+		RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
 		MapViewport port = mapContext.getViewport();
 		double rasterScale = port.getScreenArea().getWidth() / port.getBounds().getWidth();
-		List<RasterTile> tiles = rasterLayerService.getTiles(metadata.getLayerId(),
+		List<RasterTile> tiles = rasterLayerService.getTiles(clientLayerInfo.getServerLayerId(),
 				areaOfInterest.getCoordinateReferenceSystem(), areaOfInterest, rasterScale);
 		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, layer.getLayerInfo().getTileWidth(), layer
-				.getLayerInfo().getTileHeight(), layerMetadata.getRasterStyle());
+				.getLayerInfo().getTileHeight(), extraInfo.getCssStyle());
 		return rasterLayer;
 	}
 

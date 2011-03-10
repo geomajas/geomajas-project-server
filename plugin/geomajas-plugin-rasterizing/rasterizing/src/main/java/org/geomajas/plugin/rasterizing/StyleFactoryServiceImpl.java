@@ -21,7 +21,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.FilterService;
 import org.geotools.feature.NameImpl;
 import org.geotools.styling.ExternalGraphic;
@@ -66,27 +66,28 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 
 	private StyleBuilder styleBuilder = new StyleBuilder();
 
-	public Style createStyle(VectorLayer layer, VectorLayerMetadata layerMetadata) throws GeomajasException {
+	public Style createStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
+			throws GeomajasException {
 		Style style = styleBuilder.createStyle();
 		TextSymbolizer textSymbolizer = null;
-		if (layerMetadata.isPaintLabels()) {
-			textSymbolizer = createTextSymbolizer(layerMetadata.getStyle().getLabelStyle());
+		if (vectorLayerRasterizingInfo.isPaintLabels()) {
+			textSymbolizer = createTextSymbolizer(vectorLayerRasterizingInfo.getStyle().getLabelStyle());
 		}
-		if (layerMetadata.isPaintGeometries()) {
+		if (vectorLayerRasterizingInfo.isPaintGeometries()) {
 			// add the selection style first
-			if (layerMetadata.getSelectedFeatureIds() != null) {
+			if (vectorLayerRasterizingInfo.getSelectedFeatureIds() != null) {
 				// create the style
 				Symbolizer symbolizer = createGeometrySymbolizer(layer.getLayerInfo().getLayerType(),
-						layerMetadata.getSelectionStyle());
+						vectorLayerRasterizingInfo.getSelectionStyle());
 				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
-				fts.setName(layerMetadata.getSelectionStyle().getName());
+				fts.setName(vectorLayerRasterizingInfo.getSelectionStyle().getName());
 				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
 				// create the filter
-				Filter fidFilter = filterService.createFidFilter(layerMetadata.getSelectedFeatureIds());
+				Filter fidFilter = filterService.createFidFilter(vectorLayerRasterizingInfo.getSelectedFeatureIds());
 				fts.rules().get(0).setFilter(fidFilter);
 				style.featureTypeStyles().add(fts);
 			}
-			for (FeatureStyleInfo featureStyle : layerMetadata.getStyle().getFeatureStyles()) {
+			for (FeatureStyleInfo featureStyle : vectorLayerRasterizingInfo.getStyle().getFeatureStyles()) {
 				Symbolizer symbolizer = createGeometrySymbolizer(layer.getLayerInfo().getLayerType(), featureStyle);
 				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
 				fts.setName(featureStyle.getName());
@@ -105,12 +106,20 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			// just labeling if present
 			if (textSymbolizer != null) {
 				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(textSymbolizer);
-				fts.setName(layerMetadata.getStyle().getName());
+				fts.setName(vectorLayerRasterizingInfo.getStyle().getName());
 				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
 				fts.rules().get(0).setFilter(Filter.INCLUDE);
 				style.featureTypeStyles().add(fts);
 			}
 		}
+		return style;
+	}
+
+	public Style createStyle(LayerType type, FeatureStyleInfo featureStyleInfo) throws GeomajasException {
+		Style style = styleBuilder.createStyle();
+		Symbolizer symbolizer = createGeometrySymbolizer(type, featureStyleInfo);
+		FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
+		style.featureTypeStyles().add(fts);
 		return style;
 	}
 
@@ -221,14 +230,6 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 
 	private String getFormat(String href) {
 		return "image/" + StringUtils.getFilenameExtension(href);
-	}
-
-	public Style createStyle(LayerType type, FeatureStyleInfo featureStyleInfo) throws GeomajasException {
-		Style style = styleBuilder.createStyle();
-		Symbolizer symbolizer = createGeometrySymbolizer(type, featureStyleInfo);
-		FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
-		style.featureTypeStyles().add(fts);
-		return style;
 	}
 
 }

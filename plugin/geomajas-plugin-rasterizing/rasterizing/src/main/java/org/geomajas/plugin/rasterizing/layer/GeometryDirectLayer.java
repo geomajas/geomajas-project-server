@@ -14,16 +14,20 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
+import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StyledShapePainter;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.styling.Style;
 import org.geotools.util.NumberRange;
+import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,10 +57,12 @@ public class GeometryDirectLayer extends DirectLayer {
 
 	@Override
 	public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
+		MathTransform worldtoScreen = createAffineTransform(viewport);
 		for (Geometry geometry : geometries) {
 			LiteShape2 shape;
 			try {
-				shape = new LiteShape2(geometry, null, null, false, false);
+				Geometry screenGeom = JTS.transform(geometry, worldtoScreen);
+				shape = new LiteShape2(screenGeom, null, null, false);
 				NumberRange<Double> range = NumberRange.create(0d, 100d);
 
 				Style2D style2D = styleFactory.createStyle(null, style.featureTypeStyles().get(0).rules().get(0)
@@ -66,6 +72,11 @@ public class GeometryDirectLayer extends DirectLayer {
 				log.error("could not draw " + getTitle(), e);
 			}
 		}
+	}
+
+	private MathTransform createAffineTransform(MapViewport viewport) {
+		return ProjectiveTransform.create(RendererUtilities.worldToScreenTransform(viewport.getBounds(),
+				viewport.getScreenArea()));
 	}
 
 	@Override

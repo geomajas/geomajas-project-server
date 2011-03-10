@@ -20,6 +20,8 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -27,8 +29,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -74,26 +75,28 @@ public class VectorLayerFactory implements LayerFactory {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	public boolean canCreateLayer(MapContext mapContext, LayerMetadata metadata) {
-		return metadata instanceof VectorLayerMetadata;
+	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
+		return clientLayerInfo instanceof ClientVectorLayerInfo;
 	}
 
-	public Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException {
-		VectorLayerMetadata layerMetadata = (VectorLayerMetadata) metadata;
+	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+		ClientVectorLayerInfo vectorInfo = (ClientVectorLayerInfo) clientLayerInfo;
+		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) vectorInfo
+				.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
 		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
-		VectorLayer layer = configurationService.getVectorLayer(metadata.getLayerId());
+		VectorLayer layer = configurationService.getVectorLayer(vectorInfo.getServerLayerId());
 		Envelope layerBounds = geoService.transform(areaOfInterest,
 				(Crs) areaOfInterest.getCoordinateReferenceSystem(), (Crs) layer.getCrs());
 		Filter filter = filterService.createBboxFilter((Crs) layer.getCrs(), layerBounds, layer.getLayerInfo()
 				.getFeatureInfo().getGeometryType().getName());
-		if (layerMetadata.getFilter() != null) {
-			filter = filterService.createAndFilter(filter, filterService.parseFilter(layerMetadata.getFilter()));
+		if (extraInfo.getFilter() != null) {
+			filter = filterService.createAndFilter(filter, filterService.parseFilter(extraInfo.getFilter()));
 		}
-		List<InternalFeature> features = vectorLayerService.getFeatures(layerMetadata.getLayerId(),
-				mapContext.getCoordinateReferenceSystem(), filter, layerMetadata.getStyle(),
+		List<InternalFeature> features = vectorLayerService.getFeatures(vectorInfo.getServerLayerId(),
+				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
-				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, layerMetadata));
+				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, extraInfo));
 		return featureLayer;
 	}
 

@@ -14,7 +14,7 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerMetadata;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
 import org.geotools.styling.Style;
 
 /**
@@ -30,23 +30,24 @@ public interface StyleFactoryService {
 	 * 
 	 * @param layer
 	 *            the layer
-	 * @param layerMetadata
+	 * @param vectorLayerRasterizingInfo
 	 *            the layer metadata
 	 * @return a suitable Geotools style
 	 * @throws GeomajasException
 	 */
-	Style createStyle(VectorLayer layer, VectorLayerMetadata layerMetadata) throws GeomajasException;
+	Style createStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
+			throws GeomajasException;
 
 	/**
 	 * Creates a style for the specified feature style.
 	 * 
 	 * @param type
 	 *            the type of the layer/feature/geometry
-	 * @param style
+	 * @param featureStyleInfo
 	 *            the style dto
 	 * @return a suitable Geotools style
 	 * @throws GeomajasException
 	 */
-	Style createStyle(LayerType type, FeatureStyleInfo style) throws GeomajasException;
+	Style createStyle(LayerType type, FeatureStyleInfo featureStyleInfo) throws GeomajasException;
 
 }

@@ -17,13 +17,14 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.LayerFactoryService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
-import org.geomajas.plugin.rasterizing.dto.MapMetadata;
+import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -50,25 +51,27 @@ public class AddLayersStep extends AbstractRasterizingStep {
 	private GeoService geoService;
 
 	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		MapMetadata mapMetadata = context.get(RasterizingPipelineCode.MAP_CONTEXT_METADATA_KEY, MapMetadata.class);
+		ClientMapInfo clientMapInfo = context.get(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, ClientMapInfo.class);
 		MapContext mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContext.class);
 		// prepare the context
 		RenderingHints renderingHints = context.get(RasterizingPipelineCode.RENDERING_HINTS, RenderingHints.class);
-		Crs mapCrs = geoService.getCrs2(mapMetadata.getCrs());
-		ReferencedEnvelope mapArea = new ReferencedEnvelope(converterService.toInternal(mapMetadata.getBounds()),
-				mapCrs);
-		Rectangle paintArea = new Rectangle((int) (mapMetadata.getScale() * mapArea.getWidth()),
-				(int) (mapMetadata.getScale() * mapArea.getHeight()));
+		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) clientMapInfo
+				.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+		Crs mapCrs = geoService.getCrs2(clientMapInfo.getCrs());
+		ReferencedEnvelope mapArea = new ReferencedEnvelope(
+				converterService.toInternal(mapRasterizingInfo.getBounds()), mapCrs);
+		Rectangle paintArea = new Rectangle((int) (mapRasterizingInfo.getScale() * mapArea.getWidth()),
+				(int) (mapRasterizingInfo.getScale() * mapArea.getHeight()));
 		mapContext.getViewport().setBounds(mapArea);
 		mapContext.getViewport().setCoordinateReferenceSystem(mapCrs);
 		mapContext.getViewport().setScreenArea(paintArea);
 		// add the layers
-		for (LayerMetadata layerMetadata : mapMetadata.getLayers()) {
-			Layer layer = layerFactoryService.createLayer(mapContext, layerMetadata);
+		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {
+			Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
 			mapContext.addLayer(layer);
 		}
-		BufferedImage image = createImage(paintArea.width, paintArea.height, mapMetadata.isTransparent());
-		Graphics2D graphics = getGraphics(image, mapMetadata.isTransparent(), renderingHints);
+		BufferedImage image = createImage(paintArea.width, paintArea.height, mapRasterizingInfo.isTransparent());
+		Graphics2D graphics = getGraphics(image, mapRasterizingInfo.isTransparent(), renderingHints);
 		context.put(RasterizingPipelineCode.GRAPHICS2D, graphics);
 		context.put(RasterizingPipelineCode.BUFFERED_IMAGE, image);
 	}

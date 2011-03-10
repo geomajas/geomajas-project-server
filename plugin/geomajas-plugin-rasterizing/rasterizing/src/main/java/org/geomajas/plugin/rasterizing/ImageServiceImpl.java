@@ -19,13 +19,14 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.api.RasterException;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.plugin.rasterizing.dto.LegendMetadata;
-import org.geomajas.plugin.rasterizing.dto.MapMetadata;
+import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
+import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -55,16 +56,17 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	private PipelineService<RasterizingContainer> pipelineService;
 
-	public void writeMap(OutputStream stream, MapMetadata mapMetadata) throws GeomajasException {
+	public void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(mapMetadata.getCrs()));
-		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapMetadata.getBounds()),
+		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
+		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
 				mapContext.getCoordinateReferenceSystem()));
 		RenderingHints renderingHints = new Hints();
 		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		RasterizingContainer response = new RasterizingContainer();
-		context.put(RasterizingPipelineCode.MAP_CONTEXT_METADATA_KEY, mapMetadata);
+		context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
 		context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
 		context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
 		pipelineService.execute(RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_IMAGE, null, context, response);
@@ -76,9 +78,9 @@ public class ImageServiceImpl implements ImageService {
 		}
 	}
 
-	public void writeLegend(OutputStream stream, LegendMetadata legendMetadata) throws GeomajasException {
+	public void writeLegend(OutputStream stream, LegendRasterizingInfo legendRasterizingInfo) throws GeomajasException {
 		LegendBuilder renderer = new LegendBuilder();
-		JComponent c = renderer.buildComponentTree(legendMetadata);
+		JComponent c = renderer.buildComponentTree(legendRasterizingInfo);
 		BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics2D graphics = image.createGraphics();
 		RenderingHints renderingHints = new Hints();

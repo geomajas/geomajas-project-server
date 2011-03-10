@@ -11,9 +11,9 @@
 
 package org.geomajas.plugin.rasterizing.api;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.plugin.rasterizing.dto.LayerMetadata;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 
@@ -31,20 +31,22 @@ public interface LayerFactory {
 	 * 
 	 * @param mapContext
 	 *            the map context
-	 * @param metadata
-	 *            the layer metadata
+	 * @param clientLayerInfo
+	 *            the client layer metadata
 	 * @return true if we can create layer instances
 	 */
-	boolean canCreateLayer(MapContext mapContext, LayerMetadata metadata);
+	boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo);
 
 	/**
 	 * Creates a layer for the specified metadata.
+	 * 
 	 * @param mapContext
 	 *            the map context
-	 * @param metadata
-	 *            the layer metadata
+	 * @param clientLayerInfo
+	 *            the client layer metadata
 	 * @return layer ready for rendering
-	 * @throws GeomajasException something went wrong
+	 * @throws GeomajasException
+	 *             something went wrong
 	 */
-	Layer createLayer(MapContext mapContext, LayerMetadata metadata) throws GeomajasException;
+	Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
 }

@@ -1,28 +1,25 @@
 package org.geomajas.plugin.rasterizing;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.ImageInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.RectInfo;
-import org.geomajas.geometry.Coordinate;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.VectorLayerService;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.plugin.rasterizing.api.ImageService;
+import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
-import org.junit.Assert;
+import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -74,19 +70,17 @@ public class ImageServiceVectorTileTest {
 	private NamedStyleInfo layerBeansPointStyleInfo;
 
 	@Autowired
-	private VectorLayerService vectorLayerService;
+	private ImageService imageService;
 
 	@Autowired
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
-
-	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/vectortile/";
-
-	private static final String IMAGE_FILE_PATH = "src/test/resources" + IMAGE_CLASS_PATH;
+	private boolean writeImages = false;
 
 	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
+
+	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/vectortile";
 
 	@Before
 	public void login() {
@@ -121,9 +115,9 @@ public class ImageServiceVectorTileTest {
 		checkMultiLine("multiline_black_1_labeled_font_orchid.png", true, true);
 		getMultiLineLabelStyle().getFontStyle().setColor("#000000");
 		// // family
-		// getMultiLineLabelStyle().getFontStyle().setFamily("courier");
-		// checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
-		// getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
+		 getMultiLineLabelStyle().getFontStyle().setFamily("Courier New");
+		 checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
+		 getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiLineLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiLine("multiline_black_1_labeled_font_semitransparent.png", true, true);
@@ -170,9 +164,9 @@ public class ImageServiceVectorTileTest {
 		checkPoint("point_black_1_labeled_font_orchid.png", true, true);
 		getPointLabelStyle().getFontStyle().setColor("#000000");
 		// // family
-		// getPointLabelStyle().getFontStyle().setFamily("courier");
-		// checkPoint("point_black_1_labeled_font_courier.png", true, true);
-		// getPointLabelStyle().getFontStyle().setFamily("Verdana");
+		 getPointLabelStyle().getFontStyle().setFamily("Courier New");
+		 checkPoint("point_black_1_labeled_font_courier.png", true, true);
+		 getPointLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getPointLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkPoint("point_black_1_labeled_font_semitransparent.png", true, true);
@@ -220,9 +214,9 @@ public class ImageServiceVectorTileTest {
 		checkMultiPolygon("multipolygon_black_1_labeled_font_orchid.png", true, true);
 		getMultiPolygonLabelStyle().getFontStyle().setColor("#000000");
 		// family
-		// getMultiPolygonLabelStyle().getFontStyle().setFamily("courier");
-		// checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
-		// getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
+		 getMultiPolygonLabelStyle().getFontStyle().setFamily("Courier New");
+		 checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
+		 getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiPolygonLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiPolygon("multipolygon_black_1_labeled_font_semitransparent.png", true, true);
@@ -239,17 +233,6 @@ public class ImageServiceVectorTileTest {
 		getMultiPolygonLabelStyle().getFontStyle().setWeight("bold");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_bold.png", true, true);
 		getMultiPolygonLabelStyle().getFontStyle().setWeight("normal");
-	}
-
-	public static void main(String[] args) throws GeomajasException, IOException {
-		ImageServiceVectorTileTest test = new ImageServiceVectorTileTest();
-		test.writeImages = true;
-		test.testMultiLineLabelStyle();
-		test.testMultiLineStyle();
-		test.testMultiPolygonLabelStyle();
-		test.testMultiPolygonStyle();
-		test.testPointLabelStyle();
-		test.testPointStyle();
 	}
 
 	private FeatureStyleInfo getMultiLineStyle() {
@@ -293,41 +276,23 @@ public class ImageServiceVectorTileTest {
 
 	private void checkOrRender(String fileName, boolean paintLabels, boolean paintGeometries, VectorLayer layer,
 			NamedStyleInfo styleInfo) throws FileNotFoundException, GeomajasException, IOException {
-		GetVectorTileRequest metadata = new GetVectorTileRequest();
-		metadata.setCode(new TileCode(0, 0, 0));
-		metadata.setCrs("EPSG:4326");
-		metadata.setLayerId(layer.getId());
-		metadata.setPanOrigin(new Coordinate(0, 0));
-		metadata.setScale(1);
-		metadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
-		metadata.setStyleInfo(styleInfo);
-		metadata.setPaintLabels(paintLabels);
-		metadata.setPaintGeometries(paintGeometries);
-		InternalTile tile = vectorLayerService.getTile(metadata);
-		File file = new File(IMAGE_FILE_PATH + fileName);
-		if (writeImages) {
-			FileOutputStream fos;
-			fos = new FileOutputStream(file);
-			// geotoolsRasterizingService.rasterize(fos, layer, styleInfo, metadata, tile);
-			fos.flush();
-			fos.close();
-		} else {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			// geotoolsRasterizingService.rasterize(baos, layer, styleInfo, metadata, tile);
-			baos.flush();
-			baos.close();
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			InputStream is = getClass().getResourceAsStream(IMAGE_CLASS_PATH + fileName);
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = is.read(buf, 0, 1024)) != -1) {
-				bos.write(buf, 0, len);
-			}
-			is.close();
-			byte[] expecteds = bos.toByteArray();
-			log.info(expecteds.length + ":" + baos.toByteArray().length);
-			Assert.assertArrayEquals(expecteds, baos.toByteArray());
-		}
+
+		ClientMapInfo mapInfo = new ClientMapInfo();
+		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
+		mapRasterizingInfo.setBounds(new Bbox(-50, -50, 100, 100));
+		mapInfo.setCrs("EPSG:4326");
+		mapRasterizingInfo.setScale(1);
+		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+		ClientVectorLayerInfo clientVectorLayerInfo = new ClientVectorLayerInfo();
+		clientVectorLayerInfo.setServerLayerId(layer.getId());
+		clientVectorLayerInfo.setNamedStyleInfo(styleInfo);
+		VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();
+		vectorLayerRasterizingInfo.setPaintGeometries(true);
+		vectorLayerRasterizingInfo.setPaintLabels(true);
+		vectorLayerRasterizingInfo.setStyle(styleInfo);
+		clientVectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
+		mapInfo.getLayers().add(clientVectorLayerInfo);
+		new MapAssert(mapInfo).assertEqual(fileName, writeImages);
 	}
 
 	private ImageInfo createImage() {
@@ -343,6 +308,21 @@ public class ImageServiceVectorTileTest {
 		info.setH(10);
 		info.setW(20);
 		return info;
+	}
+
+	class MapAssert extends TestPathBinaryStreamAssert {
+
+		private ClientMapInfo map;
+
+		public MapAssert(ClientMapInfo map){
+			super(IMAGE_CLASS_PATH);
+			this.map = map;
+		}
+
+		public void generateActual(OutputStream out) throws Exception {
+			imageService.writeMap(out, map);
+		}
+
 	}
 
 }
