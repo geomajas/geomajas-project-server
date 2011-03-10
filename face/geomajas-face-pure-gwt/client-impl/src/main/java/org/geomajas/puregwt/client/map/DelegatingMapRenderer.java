@@ -14,7 +14,6 @@ package org.geomajas.puregwt.client.map;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
@@ -24,6 +23,7 @@ import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
  * <p>
@@ -33,20 +33,18 @@ import org.geomajas.puregwt.client.map.layer.RasterLayer;
  * 
  * @author Pieter De Graef
  */
-public class DelegatingMapRenderer implements MapRenderer {
+public class DelegatingMapRenderer extends AbstractMapRenderer {
 
 	private HtmlContainer htmlContainer;
 
 	private Map<Layer<?>, HtmlContainer> layerContainers;
-
-	private MapModel mapModel;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
 
 	public DelegatingMapRenderer(MapModel mapModel) {
-		this.mapModel = mapModel;
+		super(mapModel);
 		layerContainers = new HashMap<Layer<?>, HtmlContainer>();
 	}
 
@@ -68,9 +66,9 @@ public class DelegatingMapRenderer implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onViewPortChanged(ViewPortChangedEvent event) {
-		Coordinate translation = mapModel.getViewPort().getPanToViewTranslation();
-		htmlContainer.setTop((int) Math.round(translation.getY()));
-		htmlContainer.setLeft((int) Math.round(translation.getX()));
+		Matrix translation = getPanToViewTranslation();
+		htmlContainer.setTop((int) Math.round(translation.getDy()));
+		htmlContainer.setLeft((int) Math.round(translation.getDx()));
 		for (int i = 0; i < mapModel.getLayerCount(); i++) {
 			Layer<?> layer = mapModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
@@ -81,9 +79,9 @@ public class DelegatingMapRenderer implements MapRenderer {
 	}
 
 	public void onViewPortScaled(ViewPortScaledEvent event) {
-		Coordinate translation = mapModel.getViewPort().getPanToViewTranslation();
-		htmlContainer.setTop((int) Math.round(translation.getY()));
-		htmlContainer.setLeft((int) Math.round(translation.getX()));
+		Matrix translation = getPanToViewTranslation();
+		htmlContainer.setTop((int) Math.round(translation.getDy()));
+		htmlContainer.setLeft((int) Math.round(translation.getDx()));
 		for (int i = 0; i < mapModel.getLayerCount(); i++) {
 			Layer<?> layer = mapModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
@@ -94,9 +92,9 @@ public class DelegatingMapRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		Coordinate translation = mapModel.getViewPort().getPanToViewTranslation();
-		htmlContainer.setTop((int) Math.round(translation.getY()));
-		htmlContainer.setLeft((int) Math.round(translation.getX()));
+		Matrix translation = getPanToViewTranslation();
+		htmlContainer.setTop((int) Math.round(translation.getDy()));
+		htmlContainer.setLeft((int) Math.round(translation.getDx()));
 		for (int i = 0; i < mapModel.getLayerCount(); i++) {
 			Layer<?> layer = mapModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
@@ -107,9 +105,9 @@ public class DelegatingMapRenderer implements MapRenderer {
 	}
 
 	public void onViewPortDragged(ViewPortDraggedEvent event) {
-		Coordinate translation = mapModel.getViewPort().getPanToViewTranslation();
-		htmlContainer.setTop((int) Math.round(translation.getY()));
-		htmlContainer.setLeft((int) Math.round(translation.getX()));
+		Matrix translation = getPanToViewTranslation();
+		htmlContainer.setTop((int) Math.round(translation.getDy()));
+		htmlContainer.setLeft((int) Math.round(translation.getDx()));
 		for (int i = 0; i < mapModel.getLayerCount(); i++) {
 			Layer<?> layer = mapModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
