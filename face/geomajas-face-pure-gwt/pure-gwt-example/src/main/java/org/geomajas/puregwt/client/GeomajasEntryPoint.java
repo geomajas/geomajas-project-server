@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.ScreenContainer;
+import org.geomajas.puregwt.client.map.WorldContainer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 import org.vaadin.gwtgraphics.client.shape.Circle;
@@ -37,7 +38,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 	private final PureGwtExampleGinjector injector = GWT.create(PureGwtExampleGinjector.class);
 
 	public void onModuleLoad() {
-		MapWidgetImpl mapWidget = injector.getMap();
+		final MapWidgetImpl mapWidget = injector.getMap();
 		final MapPresenter mapPresenter = new MapPresenterImpl("pure-gwt-app", "mapOsm", mapWidget);
 		mapPresenter.setSize(640, 480);
 
@@ -90,11 +91,26 @@ public class GeomajasEntryPoint implements EntryPoint {
 				if (shown) {
 					ScreenContainer container = mapPresenter.getScreenContainer("test-container");
 					container.clear();
+					WorldContainer wc1 = mapPresenter.getWorldContainer("world-container-1");
+					wc1.clear();
+					WorldContainer wc2 = mapPresenter.getWorldContainer("world-container-2");
+					wc2.clear();
 				} else {
-					ScreenContainer container = mapPresenter.getScreenContainer("test-container");
-					Circle circle2 = new Circle(100, 100, 50);
-					circle2.setFillColor("green");
-					container.add(circle2);
+					WorldContainer wc1 = mapPresenter.getWorldContainer("world-container-1");
+					Circle c1 = new Circle(0, 0, 500000);
+					c1.setFillColor("red");
+					wc1.add(c1);
+
+					WorldContainer wc2 = mapPresenter.getWorldContainer("world-container-2");
+					wc2.setResizeChildren(false);
+					Circle c2 = new Circle(900000, 900000, 50);
+					c2.setFillColor("green");
+					wc2.add(c2);
+
+					ScreenContainer sc = mapPresenter.getScreenContainer("screen-container");
+					Circle c3 = new Circle(100, 100, 30);
+					c3.setFillColor("blue");
+					sc.add(c3);
 				}
 				shown = !shown;
 			}

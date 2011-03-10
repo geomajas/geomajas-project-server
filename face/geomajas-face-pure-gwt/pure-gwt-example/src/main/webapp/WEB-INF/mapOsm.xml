@@ -74,7 +74,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layers">
 			<list>
 				<ref bean="osmLayer" />
-				<ref bean="googleLayer" />
+				<!--ref bean="googleLayer" /-->
 			</list>
 		</property>
 	</bean>
