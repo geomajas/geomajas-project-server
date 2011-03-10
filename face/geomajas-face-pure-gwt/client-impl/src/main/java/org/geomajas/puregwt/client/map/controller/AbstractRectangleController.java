@@ -14,10 +14,12 @@ package org.geomajas.puregwt.client.map.controller;
 import java.util.Date;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.TransformationService;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.dom.client.NativeEvent;
@@ -29,7 +31,15 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.inject.Inject;
 
 /**
- * ...
+ * <p>
+ * Abstract map controller implementation that lets the user drag a rectangle on the map. When the user lets go of the
+ * mouse button, the "execute" methods will be triggered, providing it the rectangle bounds in world space.
+ * </p>
+ * <p>
+ * This class serves as a base for other map controllers that have a need for a rectangle to be drawn (dragged) on the
+ * map, so that behaviour is always the samen. An example implementation can be found in the
+ * {@link ZoomToRectangleController}.
+ * </p>
  * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
@@ -39,6 +49,16 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	public static final String CONTAINER_ID = "abstract-rectangle-contoller";
 
 	protected Rectangle rectangle;
+
+	protected String fillColor = "#FF9900";
+
+	protected float fillOpacity = 0.2f;
+
+	protected String strokeColor = "#FF9900";
+
+	protected float strokeOpacity = 1f;
+
+	protected int strokeWidth = 2;
 
 	protected boolean dragging;
 
@@ -53,8 +73,21 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	@Inject
 	private GeometryFactory factory;
 
+	// ------------------------------------------------------------------------
+	// Constructor - only here because GIN doesn't work yet...
+	// ------------------------------------------------------------------------
+
 	public AbstractRectangleController() {
-		container = mapPresenter.getScreenContainer(CONTAINER_ID);
+		factory = new GeometryFactoryImpl();
+	}
+
+	// ------------------------------------------------------------------------
+	// MapController implementation:
+	// ------------------------------------------------------------------------
+
+	public void onActivate(MapPresenter mapPresenter) {
+		super.onActivate(mapPresenter);
+		getContainer();
 	}
 
 	public void onMouseDown(MouseDownEvent event) {
@@ -64,7 +97,12 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 			begin = getScreenPosition(event);
 			shift = event.isShiftKeyDown();
 			rectangle = new Rectangle((int) begin.getX(), (int) begin.getY(), 0, 0);
-			container.add(rectangle);
+			rectangle.setFillColor(fillColor);
+			rectangle.setFillOpacity(fillOpacity);
+			rectangle.setStrokeColor(strokeColor);
+			rectangle.setStrokeOpacity(strokeOpacity);
+			rectangle.setStrokeWidth(strokeWidth);
+			getContainer().add(rectangle);
 		}
 	}
 
@@ -86,7 +124,6 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging) {
 			updateRectangle(event);
-			// mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 	}
 
@@ -102,10 +139,58 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	 */
 	protected abstract void execute(Bbox worldBounds);
 
-	protected void stopDragging() {
+	// ------------------------------------------------------------------------
+	// Getters and setters for the style of the rectangle:
+	// ------------------------------------------------------------------------
+
+	public String getRectangleFillColor() {
+		return fillColor;
+	}
+
+	public void setRectangleFillColor(String fillColor) {
+		this.fillColor = fillColor;
+	}
+
+	public float getRectangleFillOpacity() {
+		return fillOpacity;
+	}
+
+	public void setRectangleFillOpacity(float fillOpacity) {
+		this.fillOpacity = fillOpacity;
+	}
+
+	public String getRectangleStrokeColor() {
+		return strokeColor;
+	}
+
+	public void setRectangleStrokeColor(String strokeColor) {
+		this.strokeColor = strokeColor;
+	}
+
+	public float getRectangleStrokeOpacity() {
+		return strokeOpacity;
+	}
+
+	public void setRectangleStrokeOpacity(float strokeOpacity) {
+		this.strokeOpacity = strokeOpacity;
+	}
+
+	public int getRectangleStrokeWidth() {
+		return strokeWidth;
+	}
+
+	public void setRectangleStrokeWidth(int strokeWidth) {
+		this.strokeWidth = strokeWidth;
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private void stopDragging() {
 		if (dragging) {
 			dragging = false;
-			container.remove(rectangle);
+			getContainer().remove(rectangle);
 		}
 	}
 
@@ -129,4 +214,10 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		rectangle.setHeight((int) height);
 	}
 
+	private ScreenContainer getContainer() {
+		if (container == null) {
+			container = mapPresenter.getScreenContainer(CONTAINER_ID);
+		}
+		return container;
+	}
 }
