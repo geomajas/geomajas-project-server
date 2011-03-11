@@ -13,6 +13,7 @@ package org.geomajas.plugin.caching.service;
 
 import com.twmacinta.util.MD5;
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -96,6 +97,8 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	private String getCacheId(Object value) {
 		if (value instanceof CacheableObject) {
 			return ((CacheableObject) value).getCacheId();
+		} else if (value instanceof Crs) {
+			return ((Crs) value).getId();
 		} else if (value instanceof CoordinateReferenceSystem) {
 			return ((CoordinateReferenceSystem) value).toWKT();
 		} else if (value instanceof Geometry) {
