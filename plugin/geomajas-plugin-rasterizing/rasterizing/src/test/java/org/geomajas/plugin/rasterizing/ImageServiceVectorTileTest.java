@@ -76,7 +76,7 @@ public class ImageServiceVectorTileTest {
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
 
@@ -89,7 +89,7 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
-	public void testMultiLineStyle() throws GeomajasException, IOException {
+	public void testMultiLineStyle() throws Exception {
 		// width
 		getMultiLineStyle().setStrokeWidth(3);
 		checkMultiLine("multiline_black_3.png", false, true);
@@ -105,7 +105,7 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
-	public void testMultiLineLabelStyle() throws GeomajasException, IOException {
+	public void testMultiLineLabelStyle() throws Exception {
 		// label on/off
 		log.info("start");
 		checkMultiLine("multiline_black_1_labeled.png", true, true);
@@ -137,7 +137,7 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
-	public void testPointStyle() throws GeomajasException, IOException {
+	public void testPointStyle() throws Exception {
 		// default
 		checkPoint("point_default.png", false, true);
 		// save circle state
@@ -156,7 +156,7 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
-	public void testPointLabelStyle() throws GeomajasException, IOException {
+	public void testPointLabelStyle() throws Exception {
 		// label on/off
 		checkPoint("point_black_1_labeled.png", true, true);
 		// color
@@ -186,7 +186,7 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
-	public void testMultiPolygonStyle() throws GeomajasException, IOException {
+	public void testMultiPolygonStyle() throws Exception {
 		// default
 		checkMultiPolygon("multipolygon_default.png", false, true);
 		// fill color
@@ -206,7 +206,7 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
-	public void testMultiPolygonLabelStyle() throws GeomajasException, IOException {
+	public void testMultiPolygonLabelStyle() throws Exception {
 		// label on/off
 		checkMultiPolygon("multipolygon_black_1_labeled.png", true, true);
 		// color
@@ -260,22 +260,22 @@ public class ImageServiceVectorTileTest {
 	}
 
 	private void checkPoint(String fileName, boolean paintLabels, boolean paintGeometries)
-			throws FileNotFoundException, GeomajasException, IOException {
+			throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansPoint, layerBeansPointStyleInfo);
 	}
 
 	private void checkMultiLine(String fileName, boolean paintLabels, boolean paintGeometries)
-			throws FileNotFoundException, GeomajasException, IOException {
+			throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiLine, layerBeansMultiLineStyleInfo);
 	}
 
 	private void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries)
-			throws FileNotFoundException, GeomajasException, IOException {
+			throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiPolygon, layerBeansMultiPolygonStyleInfo);
 	}
 
 	private void checkOrRender(String fileName, boolean paintLabels, boolean paintGeometries, VectorLayer layer,
-			NamedStyleInfo styleInfo) throws FileNotFoundException, GeomajasException, IOException {
+			NamedStyleInfo styleInfo) throws Exception {
 
 		ClientMapInfo mapInfo = new ClientMapInfo();
 		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();

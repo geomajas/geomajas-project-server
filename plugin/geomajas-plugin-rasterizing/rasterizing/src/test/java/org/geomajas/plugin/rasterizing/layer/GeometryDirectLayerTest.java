@@ -51,7 +51,7 @@ public class GeometryDirectLayerTest {
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/geometrylayer";
 
 	@Test
-	public void testPolygon() throws GeomajasException, ParseException, IOException {
+	public void testPolygon() throws Exception {
 		GeometryLayerInfo geo = new GeometryLayerInfo();
 		geo.getGeometries().add(createPolygon());
 		geo.setStyle(createPolygonStyle());

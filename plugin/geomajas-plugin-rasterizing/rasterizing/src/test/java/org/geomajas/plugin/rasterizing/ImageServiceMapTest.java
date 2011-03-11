@@ -165,7 +165,7 @@ public class ImageServiceMapTest {
 		rr1.setCssStyle("opacity:0.5");
 		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
 		mapInfo.getLayers().add(cl1);
-		new MapAssert(mapInfo).assertEqual("oneraster.png", writeImages);
+		new MapAssert(mapInfo).assertEqual("oneraster.png", true);
 	}
 
 	class MapAssert extends TestPathBinaryStreamAssert {

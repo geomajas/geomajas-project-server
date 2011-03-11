@@ -38,7 +38,7 @@ public class RasterDirectLayerTest {
 	private RasterLayer layerBluemarble;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterlayer";
 
@@ -52,7 +52,7 @@ public class RasterDirectLayerTest {
 	}
 
 	@Test
-	public void testWMS() throws GeomajasException, IOException {
+	public void testWMS() throws Exception {
 
 		ClientRasterLayerInfo cl1 = new ClientRasterLayerInfo();
 		cl1.setServerLayerId(layerBluemarble.getId());

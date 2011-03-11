@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -26,9 +27,11 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
+import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,12 +89,10 @@ public class RasterizingPipelineTest {
 
 	private static byte[] DUMMY_BYTES = new byte[] { 0, 1, 2 };
 
-	private static final String IMAGE_PATH = "org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterizingpipeline";
 
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
-
-	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/version2/";
 
 	@Before
 	public void login() {
@@ -127,14 +128,7 @@ public class RasterizingPipelineTest {
 		controller.getImage(layerBeans.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Rasterization success", "Put item in cache",
 				"Put item in cache", "Got item from cache"));
-		File file = new File(IMAGE_FILE_PATH + "beans-4-8-8.png");
-		if (writeImages) {
-			FileOutputStream fos;
-			fos = new FileOutputStream(file);
-			fos.write(response.getContentAsByteArray());
-			fos.close();
-		}
-		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
+		new ServletResponseAssert(response).assertEqual("beans-4-8-8.png", writeImages);
 		cacheManager.drop(layerBeans);
 	}
 
@@ -169,79 +163,23 @@ public class RasterizingPipelineTest {
 		controller.getImage(layerBeansPoint.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache", "Got item from cache",
 				"Put item in cache"));
-		File file = new File(IMAGE_FILE_PATH + "beansPoint-4-8-8.png");
-		if (writeImages) {
-			FileOutputStream fos;
-			fos = new FileOutputStream(file);
-			fos.write(response.getContentAsByteArray());
-			fos.close();
-		}
-		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beansPoint-4-8-8.png"), response.getContentAsByteArray());
+		new ServletResponseAssert(response).assertEqual("beansPoint-4-8-8.png", writeImages);
 		cacheManager.drop(layerBeansPoint);
 	}
 
-	public byte[] getBytes(String name) throws IOException {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		if (null == classLoader) {
-			classLoader = getClass().getClassLoader();
-		}
-		InputStream stream = classLoader.getResourceAsStream(name);
-		ByteBuffer buffer = new ByteBuffer(20000);
-		try {
-			byte[] b = new byte[4096];
-			for (int n; (n = stream.read(b)) != -1;) {
-				buffer.append(b, 0, n);
-			}
-		} finally {
-			try {
-				stream.close();
-			} catch (IOException ioe) { /* ignore exception on close */
-			}
-		}
-		return buffer.toByteArray();
-	}
+	class ServletResponseAssert extends TestPathBinaryStreamAssert {
 
-	public final class ByteBuffer {
+		private MockHttpServletResponse response;
 
-		private int length;
-
-		private byte[] buffer;
-
-		public ByteBuffer(int size) {
-			buffer = new byte[size];
-			length = 0;
+		public ServletResponseAssert(MockHttpServletResponse response){
+			super(IMAGE_CLASS_PATH);
+			this.response = response;
 		}
 
-		public void ensureCapacity(int size) {
-			if (size > buffer.length) {
-				int newsize = (buffer.length + 1) * 2;
-				if (size > newsize) {
-					newsize = size;
-				}
-				byte[] old = buffer;
-				buffer = new byte[newsize];
-				System.arraycopy(old, 0, buffer, 0, old.length);
-			}
+		public void generateActual(OutputStream out) throws Exception {
+			out.write(response.getContentAsByteArray());
 		}
 
-		public void append(byte[] value, int offset, int width) {
-			if (width < 0) {
-				throw new IndexOutOfBoundsException();
-			}
-			ensureCapacity(length + width);
-			System.arraycopy(value, offset, buffer, length, width);
-			length += width;
-		}
-
-		public byte[] toByteArray() {
-			byte[] value = new byte[length];
-			System.arraycopy(buffer, 0, value, 0, length);
-			return value;
-		}
-
-		public String toString() {
-			return new String(buffer, 0, length);
-		}
 	}
 	
 }

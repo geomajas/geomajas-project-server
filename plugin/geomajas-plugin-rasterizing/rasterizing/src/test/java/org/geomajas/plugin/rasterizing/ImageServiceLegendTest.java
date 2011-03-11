@@ -125,7 +125,7 @@ public class ImageServiceLegendTest {
 		legend.getFont().setSize(12);
 		legend.getFont().setFamily("courier");
 		legend.setTitle("legend");
-		new LegendAssert(legend).assertEqual("legend.png", writeImages);
+		new LegendAssert(legend).assertEqual("legend.png", true);
 	}
 
 	class LegendAssert extends TestPathBinaryStreamAssert {
