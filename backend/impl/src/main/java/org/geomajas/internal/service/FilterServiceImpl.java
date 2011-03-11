@@ -291,7 +291,7 @@ public final class FilterServiceImpl implements FilterService {
 	/**
 	 * Create a filter the evaluates all geometries within a certain bounding box.
 	 * 
-	 * @param epsg
+	 * @param crs
 	 *            The bounding box' coordinate system reference.
 	 * @param bbox
 	 *            The bounding box itself.
