@@ -37,8 +37,9 @@ public abstract class BinaryStreamAssert {
 	 *            accessor to actual and expected binary data
 	 * @param rewrite
 	 *            if true, the expected will be rewritten
+	 * @throws Exception 
 	 */
-	public void assertEqual(String resourceName, boolean rewrite) {
+	public void assertEqual(String resourceName, boolean rewrite) throws Exception {
 		assertEqual("resource " + resourceName + " not equal or writable", resourceName, rewrite);
 	}
 
@@ -53,23 +54,19 @@ public abstract class BinaryStreamAssert {
 	 *            accessor to actual and expected binary data
 	 * @param rewrite
 	 *            if true, the expected will be rewritten
+	 * @throws Exception 
 	 */
-	public void assertEqual(String message, String resourceName, boolean rewrite) {
+	public void assertEqual(String message, String resourceName, boolean rewrite) throws Exception {
 		if (rewrite) {
 			File file;
-			try {
 				file = getExpected(resourceName, rewrite).getFile();
 				FileOutputStream fos;
 				fos = new FileOutputStream(file);
 				generateActual(fos);
 				fos.flush();
 				fos.close();
-			} catch (Exception e) {
-				e.printStackTrace();
 				Assert.fail("could not write expected");
-			}
 		} else {
-			try {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				generateActual(baos);
 				baos.flush();
@@ -84,10 +81,6 @@ public abstract class BinaryStreamAssert {
 				is.close();
 				byte[] expecteds = bos.toByteArray();
 				Assert.assertArrayEquals(message, expecteds, baos.toByteArray());
-			} catch (Exception e) {
-				e.printStackTrace();
-				Assert.fail("could not compare stream to resource");
-			}
 		}
 	}
 
