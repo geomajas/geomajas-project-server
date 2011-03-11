@@ -20,8 +20,6 @@ import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.FilterService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Test;
 import org.junit.runner.RunWith;

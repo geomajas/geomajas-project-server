@@ -44,7 +44,6 @@ import java.util.List;
 public class GetFeaturesSecurityTest {
 
 	private static final String LAYER_ID = "beans";
-	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
 	private TestRecorder recorder;

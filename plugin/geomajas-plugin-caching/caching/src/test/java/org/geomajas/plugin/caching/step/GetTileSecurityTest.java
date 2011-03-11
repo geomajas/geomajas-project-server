@@ -18,7 +18,6 @@ import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
-import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
@@ -34,8 +33,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
-
 /**
  * Test that the security works in combination the the GetTile caching.
  *
@@ -48,7 +45,6 @@ import java.util.List;
 		"/VectorLayerSecurityArea.xml"})
 public class GetTileSecurityTest {
 	private static final String LAYER_ID = "beans";
-	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
 	private TestRecorder recorder;
@@ -79,9 +75,7 @@ public class GetTileSecurityTest {
 
 	@Test
 	public void testGetTile() throws Exception {
-		CoordinateReferenceSystem crs = beanLayer.getCrs();
 		InternalTile tile;
-
 		TileMetadata tileMetadata = new GetVectorTileRequest();
 		tileMetadata.setCode(new TileCode(2, 1, 1));
 		tileMetadata.setCrs(beanLayer.getLayerInfo().getCrs());
