@@ -105,6 +105,19 @@
 				<version>4.2.0.FINAL</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<version>1.7.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-testdata</artifactId>
+				<version>1.8.0</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
