@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -39,7 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
 		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
-		"/org/geomajas/spring/testRecorder.xml"})
+		"/dummySecurity.xml", "/org/geomajas/spring/testRecorder.xml"})
 public class GetTile2Test {
 
 	private static final String LAYER_BEANS = "beans";
@@ -67,6 +68,7 @@ public class GetTile2Test {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testGetTile() throws Exception {
 		InternalTile tile;
 		TileMetadata tmd = new GetVectorTileRequest();

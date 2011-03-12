@@ -35,7 +35,7 @@ import java.util.Map;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/managerContext.xml",
-		"/org/geomajas/testdata/layerBeans.xml"})
+		"/dummySecurity.xml", "/org/geomajas/testdata/layerBeans.xml"})
 public class CacheKeyServiceTest {
 
 	@Autowired

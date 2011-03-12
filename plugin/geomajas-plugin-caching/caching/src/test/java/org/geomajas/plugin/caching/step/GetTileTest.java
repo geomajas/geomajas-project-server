@@ -45,7 +45,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
 		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
-		"/org/geomajas/spring/testRecorder.xml"})
+		"/dummySecurity.xml", "/org/geomajas/spring/testRecorder.xml"})
 public class GetTileTest {
 
 	private static final String LAYER_BEANS = "beans";

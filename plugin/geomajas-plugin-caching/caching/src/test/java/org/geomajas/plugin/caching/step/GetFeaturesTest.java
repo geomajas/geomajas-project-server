@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -42,7 +43,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
 		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
-		"/org/geomajas/spring/testRecorder.xml"})
+		"/dummySecurity.xml", "/org/geomajas/spring/testRecorder.xml"})
 public class GetFeaturesTest {
 
 	private static final String LAYER_BEANS = "beans";
@@ -78,6 +79,7 @@ public class GetFeaturesTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testFeatures() throws Exception {
 		List<InternalFeature> features;
 
@@ -117,6 +119,7 @@ public class GetFeaturesTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testFeaturesFiltered() throws Exception {
 		List<InternalFeature> features;
 		InternalFeature feature;
@@ -148,6 +151,7 @@ public class GetFeaturesTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testFeaturesFilteredTransformed() throws Exception {
 		List<InternalFeature> features;
 		InternalFeature feature;

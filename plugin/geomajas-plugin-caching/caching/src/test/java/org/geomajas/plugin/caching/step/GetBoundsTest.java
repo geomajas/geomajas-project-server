@@ -23,6 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -35,7 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
 		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
-		"/org/geomajas/spring/testRecorder.xml"})
+		"/dummySecurity.xml", "/org/geomajas/spring/testRecorder.xml"})
 public class GetBoundsTest {
 
 	private static final String LAYER_BEANS = "beans";
@@ -58,6 +59,7 @@ public class GetBoundsTest {
 	private org.geomajas.security.SecurityManager securityManager;
 
 	@Test
+	@DirtiesContext
 	public void testGetBounds() throws Exception {
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
 		Envelope bounds;

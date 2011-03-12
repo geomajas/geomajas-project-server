@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/managerContext.xml", "/org/geomajas/testdata/layerCountries.xml",
+		"/managerContext.xml", "/dummySecurity.xml", "/org/geomajas/testdata/layerCountries.xml",
 		"/org/geomajas/testdata/layerBeans.xml"})
 public class CacheManagerServiceTest {
 
