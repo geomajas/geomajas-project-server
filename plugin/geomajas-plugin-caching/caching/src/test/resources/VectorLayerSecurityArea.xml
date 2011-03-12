@@ -109,4 +109,22 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="securityTestPipeline" />
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.plugin.caching.step.DoNothingStep">
+					<property name="id" value="step" />
+				</bean>
+			</list>
+		</property>
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.plugin.caching.step.SecurityTestInterceptor" id="stepInterceptor">
+					<property name="stepId" value="step" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 </beans>

@@ -71,7 +71,7 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 			String[] keys, CacheCategory category, PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
 		CONTAINER cc = null;
 		try {
-			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			VectorLayer layer = pipelineContext.getOptional(PipelineCode.LAYER_KEY, VectorLayer.class);
 			String cacheKey = null;
 			if (keyKey != null) {
 				cacheKey = pipelineContext.getOptional(keyKey, String.class);
@@ -117,7 +117,7 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	protected void putContainer(PipelineContext pipelineContext, CacheCategory category, String[] keys, String keyKey,
 			String contextKey, CacheContainer cacheContainer, Envelope envelope) {
 		try {
-			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			VectorLayer layer = pipelineContext.getOptional(PipelineCode.LAYER_KEY, VectorLayer.class);
 			CacheContext cacheContext = pipelineContext.getOptional(contextKey, CacheContext.class);
 			if (null == cacheContext) {
 				cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
