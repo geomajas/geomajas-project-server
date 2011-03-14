@@ -59,10 +59,9 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 	/**
 	 * Authorization implementation class.
 	 */
-	private final class LocalAuthorization extends LayerAuthorization implements AreaAuthorization {
+	private static final class LocalAuthorization extends LayerAuthorization implements AreaAuthorization {
 
 		private AreaAuthorizationInfo info;
-		private WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 
 		public LocalAuthorization(AreaAuthorizationInfo info) {
 			super(info);
@@ -76,6 +75,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 			String area = layer.getVisibleArea();
 			try {
+				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
 				throw new IllegalStateException("Could no parse geometry " + area, pe);
@@ -94,6 +94,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 			String area = layer.getUpdateAuthorizedArea();
 			try {
+				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
 				throw new IllegalStateException("Could no parse geometry " + area, pe);
@@ -112,6 +113,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 			String area = layer.getCreateAuthorizedArea();
 			try {
+				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
 				throw new IllegalStateException("Could no parse geometry " + area, pe);
@@ -130,6 +132,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 			String area = layer.getDeleteAuthorizedArea();
 			try {
+				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
 				throw new IllegalStateException("Could no parse geometry " + area, pe);
