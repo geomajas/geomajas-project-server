@@ -25,7 +25,7 @@ import org.geomajas.security.BaseAuthorization;
  */
 public class AllowAllAuthorization implements BaseAuthorization, AreaAuthorization {
 
-	private Geometry biggestGeometry;
+	private transient Geometry biggestGeometry;
 
 	public String getId() {
 		return "AllowAll";

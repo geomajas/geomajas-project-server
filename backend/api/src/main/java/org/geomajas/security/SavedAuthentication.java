@@ -14,6 +14,7 @@ package org.geomajas.security;
 import org.geomajas.global.Api;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * This SavedAuthentication class is a placeholder for the {@link Authorization}s and the providing
@@ -74,4 +75,27 @@ public class SavedAuthentication implements Serializable {
 		this.authorizations = authorizations;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof SavedAuthentication)) {
+			return false;
+		}
+
+		SavedAuthentication that = (SavedAuthentication) o;
+
+		return Arrays.equals(authorizations, that.authorizations) &&
+				!(securityServiceId != null ? !securityServiceId.equals(that.securityServiceId) :
+						that.securityServiceId != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = securityServiceId != null ? securityServiceId.hashCode() : 0;
+		result = 31 * result + (authorizations != null ? Arrays.hashCode(authorizations) : 0);
+		return result;
+	}
 }
