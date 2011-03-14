@@ -25,6 +25,7 @@ import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -51,6 +52,7 @@ public class SecurityContextAreaAuthorizationTest {
 	private SecurityContext securityContext;
 
 	@Test
+	@DirtiesContext
 	public void testDefaultVisibleArea() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		securityContext.setAuthentications(null, null);
@@ -81,6 +83,7 @@ public class SecurityContextAreaAuthorizationTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testDefaultVisibleAreaOne() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
@@ -110,6 +113,7 @@ public class SecurityContextAreaAuthorizationTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testDefaultVisibleAreaTwo() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
