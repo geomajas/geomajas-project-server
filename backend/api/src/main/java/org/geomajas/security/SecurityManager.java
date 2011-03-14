@@ -35,4 +35,13 @@ public interface SecurityManager {
 	 * Clear the security context for this thread.
 	 */
 	void clearSecurityContext();
+
+	/**
+	 * Restores the security context from saved authorizations.
+	 *
+	 * @param authorizations saved authorizations
+	 * @since 1.9.0
+	 */
+	void restoreSecurityContext(SavedAuthorization authorizations);
+
 }

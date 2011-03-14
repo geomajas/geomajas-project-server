@@ -12,9 +12,10 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.Api;
-import org.geomajas.global.CacheableObject;
 import org.geomajas.plugin.caching.service.CacheContext;
+import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.security.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +37,21 @@ public class AbstractSecurityContextCachingInterceptor<T> extends AbstractCachin
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private SecurityManager securityManager;
+
 	/**
 	 * Puts the cached security context in the thread local.
 	 *
 	 * @param context the cache context
 	 */
 	public void restoreSecurityContext(CacheContext context) {
-		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
+		SavedAuthorization cached = context.get(CacheContext.SECURITY_CONTEXT_KEY, SavedAuthorization.class);
 		if (cached != null) {
-			log.debug("Restoring security context ", cached);
-			securityContext.restore((CacheableObject) cached);
+			log.debug("Restoring security context {}", cached);
+			securityManager.restoreSecurityContext(cached);
+		} else {
+			securityManager.clearSecurityContext();
 		}
 	}
 
@@ -57,9 +63,9 @@ public class AbstractSecurityContextCachingInterceptor<T> extends AbstractCachin
 	protected void addMoreContext(CacheContext context) {
 		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
 		if (cached == null) {
-			Object sc = securityContext.getCacheableObject();
-			log.debug("Storing security context ", sc);
-			context.put(CacheContext.SECURITY_CONTEXT_KEY, sc);
+			SavedAuthorization sa = securityContext.getSavedAuthorization();
+			log.debug("Storing SavedAuthorization {}", sa);
+			context.put(CacheContext.SECURITY_CONTEXT_KEY, sa);
 		}
 	}
 

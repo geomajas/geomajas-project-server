@@ -19,7 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.geomajas.configuration.LayerInfo;
-import org.geomajas.global.CacheableObject;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -28,6 +27,8 @@ import org.geomajas.security.AttributeAuthorization;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
+import org.geomajas.security.SavedAuthentication;
+import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.service.ConfigurationService;
@@ -57,7 +58,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 @Component
 @Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SecurityContextImpl implements SecurityContext, CacheableObject {
+public class SecurityContextImpl implements SecurityContext {
 
 	private final Logger log = LoggerFactory.getLogger(SecurityContextImpl.class);
 
@@ -145,9 +146,6 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 		return userDivision;
 	}
 
-	public String getCacheId() {
-		return getId();
-	}
 	/**
 	 * Calculate UserInfo strings.
 	 */
@@ -534,11 +532,7 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 
 	/** @inheritDoc */
 	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature feature) {
-		if (!isLayerUpdateCapable(layerId)) {
-			return false;
-		}
-		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
-
+		return isLayerUpdateCapable(layerId) && policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, feature);
@@ -552,11 +546,7 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 	/** @inheritDoc */
 	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature orgFeature,
 			final InternalFeature newFeature) {
-		if (!isLayerUpdateCapable(layerId)) {
-			return false;
-		}
-		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
-
+		return isLayerUpdateCapable(layerId) && policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, orgFeature, newFeature);
@@ -569,11 +559,7 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 
 	/** @inheritDoc */
 	public boolean isFeatureDeleteAuthorized(final String layerId, final InternalFeature feature) {
-		if (!isLayerDeleteCapable(layerId)) {
-			return false;
-		}
-		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
-
+		return isLayerDeleteCapable(layerId) && policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureDeleteAuthorized(layerId, feature);
@@ -586,11 +572,7 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 
 	/** @inheritDoc */
 	public boolean isFeatureCreateAuthorized(final String layerId, final InternalFeature feature) {
-		if (!isLayerCreateCapable(layerId)) {
-			return false;
-		}
-		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
-
+		return isLayerCreateCapable(layerId) && policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureCreateAuthorized(layerId, feature);
@@ -625,11 +607,7 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 	 */
 	public boolean isAttributeWritable(final String layerId, final InternalFeature feature,
 			final String attributeName) {
-		if (!isLayerUpdateCapable(layerId)) {
-			return false;
-		}
-		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
-
+		return isLayerUpdateCapable(layerId) && policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof AttributeAuthorization) {
 					return ((AttributeAuthorization) auth).isAttributeWritable(layerId, feature, attributeName);
@@ -666,6 +644,23 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 		return null != layer && layer.isDeleteCapable();
 	}
 
+	public SavedAuthorization getSavedAuthorization() {
+		return new SavedAuthorizationImpl(this);
+	}
+
+	public void restoreSecurityContext(SavedAuthorization savedAuthorization) {
+		token = null;
+		authentications.clear();
+		if (null != savedAuthorization) {
+			for (SavedAuthentication sa : savedAuthorization.getAuthentications()) {
+				Authentication auth = new Authentication();
+				auth.setSecurityServiceId(sa.getSecurityServiceId());
+				auth.setAuthorizations(sa.getAuthorizations());
+				authentications.add(auth);
+			}
+		}
+		userInfoInit();
+	}
 
 	/**
 	 * Interface to unify/generalise the different areas.
@@ -674,7 +669,7 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 
 		/**
 		 * Get the area which needs to be combined.
-		 * 
+		 *
 		 * @param auth
 		 *            authorization object to get data from
 		 * @return area to combine
@@ -689,79 +684,12 @@ public class SecurityContextImpl implements SecurityContext, CacheableObject {
 
 		/**
 		 * Get the "partly sufficient" status.
-		 * 
+		 *
 		 * @param auth
 		 *            authorization object to get data from
 		 * @return true when part in area is sufficient
 		 */
 		boolean get(AUTH auth);
-	}
-
-	public void restore(CacheableObject object) {
-		SecurityContextInfo info = (SecurityContextInfo) object;
-		authentications = new ArrayList<Authentication>(info.getAuthentications());
-		id = info.getCacheId();
-	}
-
-	public CacheableObject getCacheableObject() {
-		return new SecurityContextInfo(this);
-	}
-	
-	
-	/**
-	 * Class to cache security context information. Should allow to safely cache and restore the security context. This
-	 * will only work if all authentications are effectively serializable. Equality condition is currently weak and
-	 * depends on cache id. No deep copy of authentications, so we assume immutability of the data.
-	 * 
-	 * @author Jan De Moerloose
-	 * 
-	 */
-	class SecurityContextInfo implements CacheableObject {
-
-		private final List<Authentication> authentications;
-
-		private final String cacheId;
-
-		public SecurityContextInfo(SecurityContext context) {
-			authentications = new ArrayList<Authentication>(context.getSecurityServiceResults());
-			cacheId = context.getId();
-		}
-
-		public String getCacheId() {
-			return cacheId;
-		}
-
-		public List<Authentication> getAuthentications() {
-			return authentications;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) {
-				return true;
-			}
-			if (!(o instanceof SecurityContextInfo)) {
-				return false;
-			}
-
-			SecurityContextInfo that = (SecurityContextInfo) o;
-
-			if (cacheId != null ? !cacheId.equals(that.cacheId) : that.cacheId != null) {
-				return false;
-			}
-
-			return true;
-		}
-
-		@Override
-		public int hashCode() {
-			int result = cacheId != null ? cacheId.hashCode() : 0;
-			return result;
-		}
-		
-		public String toString() {
-			return cacheId;
-		}
 	}
 
 }

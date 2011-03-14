@@ -140,7 +140,7 @@ public class RestoreSecurityContextTest {
 		checkLuc();
 		org.junit.Assert.assertEquals("", recorder.matches(CacheCategory.BOUNDS,
 				"Got item from cache"));
-		//Assert.assertEquals("", securityContext.getUserId()); @todo temp removed as it fails
+		Assert.assertEquals(null, securityContext.getUserId());
 	}
 
 	private void checkLuc() throws Exception {

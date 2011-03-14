@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.security.Authentication;
+import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityInfo;
 import org.geomajas.security.SecurityManager;
@@ -66,5 +67,13 @@ public class SecurityManagerImpl implements SecurityManager {
 	/** @inheritDoc */
 	public void clearSecurityContext() {
 		((SecurityContextImpl) securityContext).setAuthentications(null, null);
+	}
+
+	public void restoreSecurityContext(SavedAuthorization authorizations) {
+		if (null == authorizations) {
+			clearSecurityContext();
+		} else {
+			((SecurityContextImpl) securityContext).restoreSecurityContext(authorizations);
+		}
 	}
 }
