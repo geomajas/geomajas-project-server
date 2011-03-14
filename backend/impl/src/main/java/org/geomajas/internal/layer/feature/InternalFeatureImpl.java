@@ -130,7 +130,10 @@ public class InternalFeatureImpl implements InternalFeature {
 	 * This function compares style ID's between features. Features are usually sorted by style.
 	 */
 	public int compareTo(InternalFeature o) {
-		if (null != styleDefinition || null != o.getStyleInfo()) {
+		if (null == o) {
+			return -1; // avoid NPE, put null objects at the end
+		}
+		if (null != styleDefinition && null != o.getStyleInfo()) {
 			if (styleDefinition.getIndex() > o.getStyleInfo().getIndex()) {
 				return 1;
 			}
