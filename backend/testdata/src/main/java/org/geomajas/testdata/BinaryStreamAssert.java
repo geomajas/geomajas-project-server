@@ -59,13 +59,12 @@ public abstract class BinaryStreamAssert {
 	public void assertEqual(String message, String resourceName, boolean rewrite) throws Exception {
 		if (rewrite) {
 			File file;
-				file = getExpected(resourceName, rewrite).getFile();
-				FileOutputStream fos;
-				fos = new FileOutputStream(file);
-				generateActual(fos);
-				fos.flush();
-				fos.close();
-				Assert.fail("could not write expected");
+			file = getExpected(resourceName, rewrite).getFile();
+			FileOutputStream fos;
+			fos = new FileOutputStream(file);
+			generateActual(fos);
+			fos.flush();
+			fos.close();
 		} else {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				generateActual(baos);
