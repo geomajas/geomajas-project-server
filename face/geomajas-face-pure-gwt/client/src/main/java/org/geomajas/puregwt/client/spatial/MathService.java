@@ -9,11 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.service;
+package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.spatial.Geometry;
 
 /**
  * General service for calculating mathematical properties of geometries.

@@ -11,9 +11,9 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
@@ -22,7 +22,6 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * Also, everywhere <code>mapId</code> is used instead of a real Map object to identify a map.<br/>
  * <p>
  * TODO check the javadoc for the moving of layers<br/>
- * TODO do we need srid, crs, geometryfactory here again?
  * </p>
  * 
  * @author Pieter De Graef
@@ -30,7 +29,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * @since 1.0.0
  */
 @Api
-public interface MapModel {
+public interface LayersModel {
 
 	/**
 	 * Initialization method for the map model.
@@ -38,7 +37,25 @@ public interface MapModel {
 	 * @param mapInfo
 	 *            The configuration object from which this model should build itself.
 	 */
-	void initialize(ClientMapInfo mapInfo, int mapWidth, int mapHeight);
+	void initialize(ClientMapInfo mapInfo, ViewPort viewPort);
+
+	/**
+	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the
+	 * list is rendered on top).
+	 * 
+	 * @param layerInfo
+	 *            The layer meta-data from which to build the layer.
+	 */
+	void addLayer(ClientLayerInfo layerInfo);
+
+	/**
+	 * Remove a layer from this layers model. This will also remove the layer from the map.
+	 * 
+	 * @param id
+	 *            The layers unique identifier within this map.
+	 * @return True or false, indicating success or not.
+	 */
+	boolean removeLayer(String id);
 
 	/**
 	 * Get a single layer by its identifier.
@@ -116,32 +133,4 @@ public interface MapModel {
 	 * @return Returns the selected layer, or null if no layer is selected.
 	 */
 	Layer<?> getSelectedLayer();
-
-	/**
-	 * Returns the {@link ViewPort} associated with this map.
-	 * 
-	 * @return Returns the view port.
-	 */
-	ViewPort getViewPort();
-
-	/**
-	 * Returns a map-specific event bus that fires all map/layer/feature related events.
-	 * 
-	 * @return The map specific event bus.
-	 */
-	EventBus getEventBus();
-
-	/**
-	 * Return the EPSG code of the reference coordinate system used in this map.
-	 * 
-	 * @return The EPSG code. Example: 'EPSG:4326'.
-	 */
-	String getEpsg();
-
-	/**
-	 * Return the spatial reference ID of the coordinate system used in this map.
-	 * 
-	 * @return The spatial reference ID of the coordinate system used in this map.
-	 */
-	int getSrid();
 }

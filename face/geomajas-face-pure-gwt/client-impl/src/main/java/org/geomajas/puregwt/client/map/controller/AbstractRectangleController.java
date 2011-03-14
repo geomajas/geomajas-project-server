@@ -15,8 +15,8 @@ import java.util.Date;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ScreenContainer;
-import org.geomajas.puregwt.client.map.TransformationService;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
@@ -112,10 +112,9 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 			shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
 			updateRectangle(event);
 
-			TransformationService transformer = mapPresenter.getMapModel().getViewPort().getTransformationService();
 			Bbox bounds = factory.createBbox(rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
 					rectangle.getHeight());
-			execute(transformer.viewToWorld(bounds));
+			execute(mapPresenter.getViewPort().transform(bounds, RenderSpace.SCREEN, RenderSpace.WORLD));
 
 			stopDragging();
 		}

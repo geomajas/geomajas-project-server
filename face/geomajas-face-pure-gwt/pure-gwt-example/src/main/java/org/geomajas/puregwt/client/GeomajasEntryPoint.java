@@ -51,36 +51,36 @@ public class GeomajasEntryPoint implements EntryPoint {
 		Button opacity05Button = new Button("Opacity=0.5", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
+				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setOpacity(0.5);
 			}
 		});
 		Button opacity1Button = new Button("Opacity=1", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
+				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setOpacity(1);
 			}
 		});
 		Button hideButton = new Button("Hide", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
+				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(false);
 			}
 		});
 		Button showButton = new Button("Show", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer("osmLayer");
+				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(true);
 			}
 		});
 		Button layerOrderButton = new Button("Toggle order", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				RasterLayer layer = (RasterLayer) mapPresenter.getMapModel().getLayer(0);
-				mapPresenter.getMapModel().moveLayerUp(layer);
+				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer(0);
+				mapPresenter.getLayersModel().moveLayerUp(layer);
 			}
 		});
 		Button drawButton = new Button("Draw", new ClickHandler() {

@@ -26,25 +26,6 @@ import org.geomajas.global.Api;
 public interface Geometry extends Serializable {
 
 	/**
-	 * Create a new identical geometry.
-	 * 
-	 * @return
-	 */
-	Object clone();
-
-	/**
-	 * Return the spatial reference ID.
-	 * 
-	 * @return Returns the srid as an integer.
-	 */
-	int getSrid();
-
-	/**
-	 * Return the {@link GeometryFactory} object that corresponds to this geometry.
-	 */
-	GeometryFactory getGeometryFactory();
-
-	/**
 	 * Get an array of coordinates. Never returns null! Where there are no coordinates, an empty array is returned.
 	 */
 	Coordinate[] getCoordinates();

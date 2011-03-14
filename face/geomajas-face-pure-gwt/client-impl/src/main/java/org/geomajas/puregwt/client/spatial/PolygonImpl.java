@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * Ploygon client-side GWT object.
@@ -31,12 +30,7 @@ public class PolygonImpl extends AbstractGeometry implements Polygon {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	PolygonImpl(GeometryFactory factory, MathService service) {
-		super(factory, service);
-	}
-
-	PolygonImpl(GeometryFactory factory, MathService service, LinearRing exteriorRing, LinearRing[] interiorRings) {
-		super(factory, service);
+	PolygonImpl(LinearRing exteriorRing, LinearRing[] interiorRings) {
 		this.exteriorRing = exteriorRing;
 		this.interiorRings = interiorRings;
 	}
@@ -95,13 +89,6 @@ public class PolygonImpl extends AbstractGeometry implements Polygon {
 	// -------------------------------------------------------------------------
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
-	public Object clone() {
-		return getGeometryFactory().createPolygon(exteriorRing, interiorRings);
-	}
 
 	/**
 	 * Return the minimal distance between this coordinate and any vertex of the geometry.

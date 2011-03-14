@@ -10,8 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.gfx;
 
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -28,162 +27,35 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public abstract class HtmlObject extends Widget {
+public interface HtmlObject {
+	
+	Element getElement();
 
-	private Widget parent;
+	Widget getParent();
 
-	protected double opacity = 1;
+	void setParent(Widget parent);
 
-	// ------------------------------------------------------------------------
-	// Constructors:
-	// ------------------------------------------------------------------------
+	int getWidth();
 
-	/**
-	 * Create an HtmlObject widget that represents a certain HTML element.
-	 * 
-	 * @param tagName
-	 *            The tag-name of the HTML that should be created (DIV, IMG, ...).
-	 */
-	public HtmlObject(String tagName) {
-		Element element = DOM.createElement(tagName);
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "width", "100%");
-		DOM.setStyleAttribute(element, "height", "100%");
-		setElement(element);
-	}
+	void setWidth(int width);
 
-	/**
-	 * Create an HtmlObject widget that represents a certain HTML element.
-	 * 
-	 * @param tagName
-	 *            The tag-name of the HTML that should be created (DIV, IMG, ...).
-	 * @param width
-	 *            The width for this element, expressed in pixels.
-	 * @param height
-	 *            The height for this element, expressed in pixels.
-	 */
-	public HtmlObject(String tagName, int width, int height) {
-		Element element = DOM.createElement(tagName);
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "width", width + "px");
-		DOM.setStyleAttribute(element, "height", height + "px");
-		setElement(element);
-	}
+	int getHeight();
 
-	/**
-	 * Create an HtmlObject widget that represents a certain HTML element.
-	 * 
-	 * @param tagName
-	 *            The tag-name of the HTML that should be created (DIV, IMG, ...).
-	 * @param width
-	 *            The width for this element, expressed in pixels.
-	 * @param height
-	 *            The height for this element, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this object be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this object be placed from the left (relative to the parent origin).
-	 */
-	public HtmlObject(String tagName, int width, int height, int top, int left) {
-		Element element = DOM.createElement(tagName);
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "width", width + "px");
-		DOM.setStyleAttribute(element, "height", height + "px");
-		DOM.setStyleAttribute(element, "top", top + "px");
-		DOM.setStyleAttribute(element, "left", left + "px");
-		setElement(element);
-	}
+	void setHeight(int height);
 
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
+	int getLeft();
 
-	public Widget getParent() {
-		return parent;
-	}
+	void setLeft(int left);
 
-	public void setParent(Widget parent) {
-		Widget oldParent = this.parent;
-		if (parent == null) {
-			if (oldParent != null && oldParent.isAttached()) {
-				onDetach();
-				assert !isAttached() : "Failure of " + this.getClass().getName() + " to call super.onDetach()";
-			}
-			this.parent = null;
-		} else {
-			if (oldParent != null) {
-				throw new IllegalStateException("Cannot set a new parent without first clearing the old parent");
-			}
-			this.parent = parent;
-			if (parent.isAttached()) {
-				onAttach();
-				assert isAttached() : "Failure of " + this.getClass().getName() + " to call super.onAttach()";
-			}
-		}
-	}
+	int getTop();
 
-	public int getWidth() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "width"));
-	}
+	void setTop(int top);
 
-	public void setWidth(int width) {
-		DOM.setStyleAttribute(getElement(), "width", width + "px");
-	}
+	double getOpacity();
 
-	public int getHeight() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "height"));
-	}
+	void setOpacity(double opacity);
 
-	public void setHeight(int height) {
-		DOM.setStyleAttribute(getElement(), "height", height + "px");
-	}
+	void setVisible(boolean visible);
 
-	public int getLeft() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "left"));
-	}
-
-	public void setLeft(int left) {
-		DOM.setStyleAttribute(getElement(), "left", left + "px");
-	}
-
-	public int getTop() {
-		return sizeToInt(DOM.getStyleAttribute(getElement(), "top"));
-	}
-
-	public void setTop(int top) {
-		DOM.setStyleAttribute(getElement(), "top", top + "px");
-	}
-
-	public double getOpacity() {
-		return opacity;
-	}
-
-	public void setOpacity(double opacity) {
-		this.opacity = opacity;
-		DOM.setStyleAttribute(getElement(), "filter", "alpha(opacity=" + (opacity * 100) + ")");
-		DOM.setStyleAttribute(getElement(), "opacity", opacity + "");
-
-		// DOM.setStyleAttribute(getElement(), "-moz-opacity", opacity + ""); // Very old Mozilla browsers.
-		// DOM.setStyleAttribute(getElement(), "-khtml-opacity", opacity + ""); // 1.x Safari.
-	}
-
-	public void hide() {
-		DOM.setStyleAttribute(getElement(), "visibility", "hidden");
-	}
-
-	public void show() {
-		DOM.setStyleAttribute(getElement(), "visibility", "visible");
-	}
-
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private int sizeToInt(String size) {
-		int position = size.indexOf('p');
-		if (position < 0) {
-			return Integer.parseInt(size);
-		}
-		return Integer.parseInt(size.substring(0, position));
-	}
+	boolean isVisible();
 }

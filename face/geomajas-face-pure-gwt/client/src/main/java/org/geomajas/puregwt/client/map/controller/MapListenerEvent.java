@@ -13,7 +13,8 @@ package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.map.TransformationService;
+import org.geomajas.puregwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.map.ViewPort;
 
 import com.google.gwt.dom.client.Element;
 
@@ -43,7 +44,7 @@ public class MapListenerEvent {
 
 	private int button;
 
-	private TransformationService transformer;
+	private ViewPort viewPort;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -58,8 +59,8 @@ public class MapListenerEvent {
 	 *            The position of the mouse, expressed in screen coordinates (pixels).
 	 * @param target
 	 *            The target element (HTML/VML/SVG) over which the mouse was hovering.
-	 * @param transformer
-	 *            Transformer that can transform the screen position to a world position.
+	 * @param viewPort
+	 *            View port from the map where this event took place.
 	 * @param altKeyDown
 	 *            Is <code>alt</code> key down.
 	 * @param controlKeyDown
@@ -71,12 +72,12 @@ public class MapListenerEvent {
 	 *            {@link com.google.gwt.dom.client.NativeEvent#BUTTON_RIGHT},
 	 *            {@link com.google.gwt.dom.client.NativeEvent#BUTTON_MIDDLE}
 	 */
-	protected MapListenerEvent(int event, Coordinate screenPosition, Element target, TransformationService transformer,
+	protected MapListenerEvent(int event, Coordinate screenPosition, Element target, ViewPort viewPort,
 			boolean altKeyDown, boolean controlKeyDown, boolean shiftKeyDown, int button) {
 		this.event = event;
 		this.screenPosition = screenPosition;
 		this.target = target;
-		this.transformer = transformer;
+		this.viewPort = viewPort;
 		this.altKeyDown = altKeyDown;
 		this.controlKeyDown = controlKeyDown;
 		this.shiftKeyDown = shiftKeyDown;
@@ -120,7 +121,7 @@ public class MapListenerEvent {
 	 * @return The coordinate representing the location.
 	 */
 	public Coordinate getWorldPosition() {
-		return transformer.viewToWorld(screenPosition);
+		return viewPort.transform(screenPosition, RenderSpace.SCREEN, RenderSpace.WORLD);
 	}
 
 	/**

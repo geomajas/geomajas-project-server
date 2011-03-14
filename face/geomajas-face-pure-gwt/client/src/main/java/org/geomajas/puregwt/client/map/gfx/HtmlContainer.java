@@ -11,10 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.dom.client.Node;
+import org.geomajas.geometry.Coordinate;
 
 /**
  * <p>
@@ -27,56 +24,29 @@ import com.google.gwt.dom.client.Node;
  * children can be managed. Note though that this class is itself also an {@link HtmlObject}, which means that this
  * class too has a fixed size and position. Child positions are always relative to this class' position.
  * </p>
+ * <p>
+ * Another important factor concerning this definition is that HtmlContainers can be transformed using a matrix
+ * notation. This way it is possible to translate or zoom this container object. Rotation is not necessarily supported.
+ * Implementations will specify which kinds of transformations are supported.
+ * </p>
  * 
  * @author Pieter De Graef
  */
-public class HtmlContainer extends HtmlObject {
-
-	private List<HtmlObject> children = new ArrayList<HtmlObject>();
-
-	// ------------------------------------------------------------------------
-	// Constructors:
-	// ------------------------------------------------------------------------
+public interface HtmlContainer extends HtmlObject {
 
 	/**
-	 * Create an HTML container widget that represents a DIV element. When using this constructor, width and height are
-	 * set to 100%. We always set the width and height, because XHTML does not like DIV's without sizing attributes.
-	 */
-	public HtmlContainer() {
-		super("div");
-	}
-
-	/**
-	 * Create an HTML container widget that represents a DIV element.
+	 * Zoom this container in or out to a given transformation origin. This transformation is taken literally, it does
+	 * not stack onto a current transformation should there be one.
+	 * <p>
+	 * TODO Is this method ok?
+	 * </p>
 	 * 
-	 * @param width
-	 *            The width for this container, expressed in pixels.
-	 * @param height
-	 *            The height for this container, expressed in pixels.
+	 * @param scale
+	 *            The zooming factor.
+	 * @param transformOrigin
+	 *            The origin to where we want this container to zoom.
 	 */
-	public HtmlContainer(int width, int height) {
-		super("div", width, height);
-	}
-
-	/**
-	 * Create an HTML container widget that represents a DIV element.
-	 * 
-	 * @param width
-	 *            The width for this container, expressed in pixels.
-	 * @param height
-	 *            The height for this container, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this container be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this container be placed from the left (relative to the parent origin).
-	 */
-	public HtmlContainer(int width, int height, int top, int left) {
-		super("div", width, height, top, left);
-	}
-
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
+	void transform(double scale, Coordinate transformOrigin);
 
 	/**
 	 * Add a new child HtmlObject to the list. Note that using this method children are added to the back of the list,
@@ -86,11 +56,7 @@ public class HtmlContainer extends HtmlObject {
 	 * @param child
 	 *            The actual child to add.
 	 */
-	public void add(HtmlObject child) {
-		child.setParent(this);
-		getElement().appendChild(child.getElement());
-		children.add(child);
-	}
+	void add(HtmlObject child);
 
 	/**
 	 * Insert a new child HtmlObject in the list at a certain index. The position will determine it's place in the
@@ -101,24 +67,7 @@ public class HtmlContainer extends HtmlObject {
 	 * @param beforeIndex
 	 *            The position in the list where this child should end up.
 	 */
-	public void insert(HtmlObject child, int beforeIndex) {
-		if (beforeIndex >= getChildCount()) {
-			add(child);
-			return;
-		}
-		Node beforeNode = getElement().getChild(beforeIndex);
-		getElement().insertBefore(child.getElement(), beforeNode);
-		child.setParent(this);
-
-		List<HtmlObject> newChildList = new ArrayList<HtmlObject>();
-		for (int i = 0; i < children.size(); i++) {
-			if (i == beforeIndex) {
-				newChildList.add(child);
-			}
-			newChildList.add(children.get(i));
-		}
-		children = newChildList;
-	}
+	void insert(HtmlObject child, int beforeIndex);
 
 	/**
 	 * Remove a child element from the list.
@@ -127,16 +76,7 @@ public class HtmlContainer extends HtmlObject {
 	 *            The actual child to remove.
 	 * @return Returns true or false indicating whether or not removal was successful.
 	 */
-	public boolean remove(HtmlObject child) {
-		int index = getIndex(child);
-		if (index >= 0) {
-			getElement().removeChild(getElement().getChild(index));
-			children.remove(index);
-			child.setParent(null);
-			return true;
-		}
-		return false;
-	}
+	boolean remove(HtmlObject child);
 
 	/**
 	 * Bring a certain child to the front. In reality this child is simply moved to the back of the list.
@@ -144,28 +84,17 @@ public class HtmlContainer extends HtmlObject {
 	 * @param child
 	 *            The child to bring to the front.
 	 */
-	public void bringToFront(HtmlObject child) {
-		if (remove(child)) {
-			add(child);
-		}
-	}
+	void bringToFront(HtmlObject child);
 
 	/** Remove all children from this container. */
-	public void clear() {
-		while (getElement().hasChildNodes()) {
-			getElement().removeChild(getElement().getFirstChild());
-		}
-		children.clear();
-	}
+	void clear();
 
 	/**
 	 * Get the total number of children in this container.
 	 * 
 	 * @return The total number of children in this container.
 	 */
-	public int getChildCount() {
-		return children.size();
-	}
+	int getChildCount();
 
 	/**
 	 * Get the child at a certain index.
@@ -174,21 +103,5 @@ public class HtmlContainer extends HtmlObject {
 	 *            The index to look for a child.
 	 * @return The actual child if it was found.
 	 */
-	public HtmlObject getChild(int index) {
-		return children.get(index);
-	}
-
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private int getIndex(HtmlObject child) {
-		for (int i = 0; i < children.size(); i++) {
-			HtmlObject img = children.get(i);
-			if (img.equals(child)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+	HtmlObject getChild(int index);
 }

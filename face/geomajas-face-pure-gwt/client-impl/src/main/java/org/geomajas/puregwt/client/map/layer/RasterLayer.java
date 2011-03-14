@@ -11,8 +11,9 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.puregwt.client.map.MapModel;
+import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.MapRenderer;
+import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
 
 /**
@@ -30,12 +31,10 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements
 	/**
 	 * The only constructor! Set the MapModel and the layer info.
 	 * 
-	 * @param mapModel
-	 *            The model of layers and features behind a map. This layer will be a part of this model.
 	 */
-	public RasterLayer(MapModel mapModel, ClientRasterLayerInfo layerInfo) {
-		super(mapModel, layerInfo);
-		renderer = new SmartRasterLayerRenderer(mapModel, this);
+	public RasterLayer(ClientRasterLayerInfo layerInfo, ViewPort viewPort, EventBus eventBus) {
+		super(layerInfo, viewPort, eventBus);
+		renderer = new SmartRasterLayerRenderer(viewPort, this, eventBus);
 	}
 
 	/**
@@ -47,7 +46,7 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements
 	 */
 	public void setOpacity(double opacity) {
 		getLayerInfo().setStyle(opacity + "");
-		mapModel.getEventBus().fireEvent(new LayerStyleChangedEvent(this));
+		eventBus.fireEvent(new LayerStyleChangedEvent(this));
 	}
 
 	public double getOpacity() {

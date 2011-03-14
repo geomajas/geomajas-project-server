@@ -9,18 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.service;
+package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.spatial.Geometry;
-import org.geomajas.puregwt.client.spatial.LineSegment;
-import org.geomajas.puregwt.client.spatial.LineString;
-import org.geomajas.puregwt.client.spatial.LinearRing;
-import org.geomajas.puregwt.client.spatial.MultiLineString;
-import org.geomajas.puregwt.client.spatial.MultiPolygon;
-import org.geomajas.puregwt.client.spatial.Point;
-import org.geomajas.puregwt.client.spatial.Polygon;
-import org.geomajas.puregwt.client.spatial.Vector2D;
 
 /**
  * Implementation of the general {@link MathService}.
@@ -166,7 +157,7 @@ public class MathServiceImpl implements MathService {
 			Coordinate c = geometry.getCoordinates()[0];
 			Vector2D v1 = new Vector2D(c.getX(), c.getY());
 			Vector2D v2 = new Vector2D(coordinate.getX(), coordinate.getY());
-			return (v1.distance(v2) < geometry.getGeometryFactory().getDelta());
+			return (v1.distance(v2) < GeometryFactory.PARAM_DEFAULT_DELTA);
 		}
 		return false;
 	}
@@ -222,7 +213,7 @@ public class MathServiceImpl implements MathService {
 		// Now loop over the edges:
 		for (int i = 1; i < lineString.getNumPoints(); i++) {
 			LineSegment edge = new LineSegment(lineString.getCoordinateN(i - 1), lineString.getCoordinateN(i));
-			if (edge.distance(coordinate) < lineString.getGeometryFactory().getDelta()) {
+			if (edge.distance(coordinate) < GeometryFactory.PARAM_DEFAULT_DELTA) {
 				return true;
 			}
 		}

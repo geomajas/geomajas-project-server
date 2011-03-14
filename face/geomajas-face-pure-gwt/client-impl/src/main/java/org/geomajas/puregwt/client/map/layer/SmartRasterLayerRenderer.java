@@ -25,8 +25,10 @@ import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
-import org.geomajas.puregwt.client.map.AbstractMapRenderer;
-import org.geomajas.puregwt.client.map.MapModel;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.map.MapRenderer;
+import org.geomajas.puregwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
@@ -38,13 +40,12 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.HtmlImage;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
+import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Matrix;
-
-import com.google.gwt.user.client.DOM;
 
 /**
  * <p>
@@ -54,13 +55,14 @@ import com.google.gwt.user.client.DOM;
  * 
  * @author Pieter De Graef
  */
-public class SmartRasterLayerRenderer extends AbstractMapRenderer implements LayerStyleChangedHandler,
-		LayerVisibleHandler {
+public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedHandler, LayerVisibleHandler {
+
+	private ViewPort viewPort;
+
+	private RasterLayer rasterLayer;
 
 	/** The container that should render all images. */
 	private HtmlContainer htmlContainer;
-
-	private RasterLayer rasterLayer;
 
 	private double mapExentScaleAtFetch = 2;
 
@@ -90,11 +92,11 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	protected SmartRasterLayerRenderer(MapModel mapModel, RasterLayer rasterLayer) {
-		super(mapModel);
+	protected SmartRasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer, EventBus eventBus) {
+		this.viewPort = viewPort;
 		this.rasterLayer = rasterLayer;
-		rasterLayer.getMapModel().getEventBus().addHandler(LayerStyleChangedHandler.TYPE, this);
-		rasterLayer.getMapModel().getEventBus().addHandler(LayerVisibleHandler.TYPE, this);
+		eventBus.addHandler(LayerStyleChangedHandler.TYPE, this);
+		eventBus.addHandler(LayerVisibleHandler.TYPE, this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -116,13 +118,13 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 
 	public void onShow(LayerShowEvent event) {
 		if (event.getLayer().getId().equals(rasterLayer.getId())) {
-			htmlContainer.show();
+			htmlContainer.setVisible(true);
 		}
 	}
 
 	public void onHide(LayerHideEvent event) {
 		if (event.getLayer().getId().equals(rasterLayer.getId())) {
-			htmlContainer.hide();
+			htmlContainer.setVisible(false);
 		}
 	}
 
@@ -167,7 +169,7 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 
 	public void redraw() {
 		clear();
-		onViewPortChanged(new ViewPortChangedEvent(rasterLayer.getMapModel().getViewPort()));
+		onViewPortChanged(new ViewPortChangedEvent(viewPort));
 	}
 
 	public void setMapExentScaleAtFetch(double mapExentScaleAtFetch) {
@@ -209,7 +211,7 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 
 		// While we're waiting for the response to return and all images to load, fake zoom the current tiles:
 		if (zooming) {
-			fakeZoom(rasterLayer.getMapModel().getViewPort().getScale(), bounds);
+			fakeZoom(viewPort.getScale(), bounds);
 		}
 
 		// Scale the bounds to fetch tiles for:
@@ -219,9 +221,9 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
 		request.setBbox(new org.geomajas.geometry.Bbox(currentTileBounds.getX(), currentTileBounds.getY(),
 				currentTileBounds.getWidth(), currentTileBounds.getHeight()));
-		request.setCrs(rasterLayer.getMapModel().getEpsg());
+		request.setCrs(viewPort.getCrs());
 		request.setLayerId(rasterLayer.getServerLayerId());
-		request.setScale(rasterLayer.getMapModel().getViewPort().getScale());
+		request.setScale(viewPort.getScale());
 		Command command = new Command("command.render.GetRasterTiles");
 		command.setCommandRequest(request);
 
@@ -241,7 +243,7 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 
 	/** Add tiles to the list and render them on the map. */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles, boolean zooming) {
-		Matrix delta = getWorldToPanTranslation();
+		Matrix delta = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.PAN);
 
 		// Go over all tiles we got back from the server:
 		nrLoadingTiles = 0;
@@ -258,7 +260,7 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 
 				// Add the tile to the list and render it:
 				tiles.put(code, tile);
-				HtmlImage image = new HtmlImage(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
+				HtmlImageImpl image = new HtmlImageImpl(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
 						(int) Math.round(tile.getBounds().getHeight()), (int) Math.round(tile.getBounds().getY()),
 						(int) Math.round(tile.getBounds().getX()), new ImageCounter(zooming));
 				image.setOpacity(rasterLayer.getOpacity());
@@ -285,8 +287,8 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 	private void resetRendering() {
 		busyRendering = false;
 		getTopContainer().setVisible(true);
-		beginScale = rasterLayer.getMapModel().getViewPort().getScale();
-		beginOrigin = rasterLayer.getMapModel().getViewPort().getBounds().getCenterPoint();
+		beginScale = viewPort.getScale();
+		beginOrigin = viewPort.getBounds().getCenterPoint();
 		htmlContainer.remove(getBottomContainer());
 	}
 
@@ -297,26 +299,20 @@ public class SmartRasterLayerRenderer extends AbstractMapRenderer implements Lay
 		}
 
 		// Get the old center in pan space, we need this to know how far the center has moved:
-		Coordinate beginPanOrigin = worldToPan(beginOrigin);
+		Coordinate beginPanOrigin = viewPort.transform(beginOrigin, RenderSpace.WORLD, RenderSpace.PAN);
 
 		// Compensate with zooming factor from the fake zoom (CSS3) - where the default value is 1.
 		double zoomDiff = (scale / beginScale) - 1;
 
-		// Coordinate transformed = calcTransformOrigin(scale, beginScale, beginOrigin);
 		int deltaX = (int) (-beginPanOrigin.getX() / zoomDiff);
 		int deltaY = (int) (-beginPanOrigin.getY() / zoomDiff);
 
-		DOM.setStyleAttribute(container.getElement(), "MozTransform", "scale(" + (scale / beginScale) + ")");
-		DOM.setStyleAttribute(container.getElement(), "MozTransformOrigin", deltaX + "px " + deltaY + "px");
-		DOM.setStyleAttribute(container.getElement(), "WebkitTransform", "scale(" + (scale / beginScale) + ")");
-		DOM.setStyleAttribute(container.getElement(), "WebkitTransformOrigin", deltaX + "px " + deltaY + "px");
-		
-		// TODO what about Internet Explorer?
+		container.transform(scale / beginScale, new Coordinate(deltaX, deltaY));
 	}
 
 	private HtmlContainer getTopContainer() {
 		if (htmlContainer.getChildCount() < 2) {
-			HtmlContainer tempContainer = new HtmlContainer();
+			HtmlContainer tempContainer = new HtmlContainerImpl();
 			if (renderDelayed) {
 				tempContainer.setVisible(false);
 			}

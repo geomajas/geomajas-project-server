@@ -12,7 +12,8 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.puregwt.client.map.MapModel;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerSelectedEvent;
@@ -27,9 +28,11 @@ import org.geomajas.puregwt.client.map.event.LayerShowEvent;
  */
 public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<T> {
 
-	protected MapModel mapModel;
+	protected ViewPort viewPort;
 
 	protected T layerInfo;
+
+	protected EventBus eventBus;
 
 	private boolean selected;
 
@@ -42,14 +45,17 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 * 
-	 * @param mapModel
-	 *            The model this layer belongs to.
 	 * @param layerInfo
 	 *            The layer configuration from which to create the layer.
+	 * @param viewPort
+	 *            The view port of the map.
+	 * @param eventBus
+	 *            The map centric event bus.
 	 */
-	public AbstractLayer(MapModel mapModel, T layerInfo) {
-		this.mapModel = mapModel;
+	public AbstractLayer(T layerInfo, ViewPort viewPort, EventBus eventBus) {
 		this.layerInfo = layerInfo;
+		this.viewPort = viewPort;
+		this.eventBus = eventBus;
 	}
 
 	// ------------------------------------------------------------------------
@@ -75,9 +81,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 		if (selected) {
-			mapModel.getEventBus().fireEvent(new LayerSelectedEvent(this));
+			eventBus.fireEvent(new LayerSelectedEvent(this));
 		} else {
-			mapModel.getEventBus().fireEvent(new LayerDeselectedEvent(this));
+			eventBus.fireEvent(new LayerDeselectedEvent(this));
 		}
 	}
 
@@ -88,9 +94,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	public void setMarkedAsVisible(boolean markedAsVisible) {
 		this.markedAsVisible = markedAsVisible;
 		if (isShowing()) {
-			mapModel.getEventBus().fireEvent(new LayerShowEvent(this));
+			eventBus.fireEvent(new LayerShowEvent(this));
 		} else {
-			mapModel.getEventBus().fireEvent(new LayerHideEvent(this));
+			eventBus.fireEvent(new LayerHideEvent(this));
 		}
 	}
 
@@ -100,16 +106,11 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			double scale = mapModel.getViewPort().getScale();
-			if (scale >= layerInfo.getMinimumScale().getPixelPerUnit()
-					&& scale <= layerInfo.getMaximumScale().getPixelPerUnit()) {
+			if (viewPort.getScale() >= layerInfo.getMinimumScale().getPixelPerUnit()
+					&& viewPort.getScale() <= layerInfo.getMaximumScale().getPixelPerUnit()) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	public MapModel getMapModel() {
-		return mapModel;
 	}
 }

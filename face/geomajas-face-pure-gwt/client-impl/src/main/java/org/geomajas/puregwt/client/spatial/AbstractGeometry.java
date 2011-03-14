@@ -12,64 +12,29 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * Abstract GWT client-side geometry.
- *
+ * 
  * @author Pieter De Graef
  */
 public abstract class AbstractGeometry implements Geometry {
 
 	private static final long serialVersionUID = 100L;
 
-	protected GeometryFactory factory;
-	
-	protected MathService service;
+	protected MathService service = new MathServiceImpl();
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * This constructor exists only to make it GWT serializable.
-	 */
-	public AbstractGeometry() {
-	}
-
-	/**
-	 * Package visible constructor, used by the GeometryFactory.
-	 * @param srid
-	 * @param precision
-	 */
-	AbstractGeometry(GeometryFactory factory, MathService service) {
-		this.factory = factory;
-		this.service = service;
+	/** Only protected constructors. */
+	protected AbstractGeometry() {
 	}
 
 	// -------------------------------------------------------------------------
 	// Partial Geometry implementation:
 	// -------------------------------------------------------------------------
-
-	public Object clone() {
-		return null;
-	}
-
-	/**
-	 * Return the spatial reference ID.
-	 *
-	 * @return Returns the srid as an integer.
-	 */
-	public int getSrid() {
-		return factory.getSrid();
-	}
-
-	/**
-	 * Return the {@link GeometryFactory} object that corresponds to this geometry.
-	 */
-	public GeometryFactory getGeometryFactory() {
-		return factory;
-	}
 
 	/**
 	 * Return 0.
@@ -88,7 +53,7 @@ public abstract class AbstractGeometry implements Geometry {
 	/**
 	 * Return this. Complex geometry implementations (MultiPoint, MultiLineString and MultiPolygon) should override
 	 * this.
-	 *
+	 * 
 	 * @param n
 	 *            Index in the geometry. This can be an integer value or an array of values.
 	 * @return A geometry object.
@@ -121,7 +86,7 @@ public abstract class AbstractGeometry implements Geometry {
 
 	/**
 	 * Basically this function checks if the geometry is self-intersecting or not.
-	 *
+	 * 
 	 * @return True or false. True if there are no self-intersections in the geometry.
 	 */
 	public boolean isSimple() {
@@ -164,7 +129,7 @@ public abstract class AbstractGeometry implements Geometry {
 
 	/**
 	 * Calculate whether or not this geometry intersects with another.
-	 *
+	 * 
 	 * @param geometry
 	 *            The other geometry to check for intersection.
 	 * @return Returns true or false.

@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ZoomOption;
 import org.geomajas.puregwt.client.spatial.Bbox;
@@ -132,28 +133,28 @@ public class NavigationController extends AbstractMapController {
 
 	public void onDoubleClick(DoubleClickEvent event) {
 		// Zoom in on the event location:
-		Bbox bounds = mapPresenter.getMapModel().getViewPort().getBounds();
+		Bbox bounds = mapPresenter.getViewPort().getBounds();
 		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
 		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
 		Bbox newBounds = factory.createBbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
-		mapPresenter.getMapModel().getViewPort().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
+		mapPresenter.getViewPort().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
 	}
 
 	public void onMouseWheel(MouseWheelEvent event) {
-		ViewPort vp = mapPresenter.getMapModel().getViewPort();
+		ViewPort viewPort = mapPresenter.getViewPort();
 		if (event.isNorth()) {
 			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				vp.scale(2.0f, ZoomOption.LEVEL_CHANGE,
-						vp.getTransformationService().viewToWorld(new Coordinate(event.getX(), event.getY())));
+				viewPort.scale(2.0f, ZoomOption.LEVEL_CHANGE, viewPort.transform(
+						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
 			} else {
-				mapPresenter.getMapModel().getViewPort().scale(2.0f, ZoomOption.LEVEL_CHANGE);
+				mapPresenter.getViewPort().scale(2.0f, ZoomOption.LEVEL_CHANGE);
 			}
 		} else {
 			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				vp.scale(0.5f, ZoomOption.LEVEL_CHANGE,
-						vp.getTransformationService().viewToWorld(new Coordinate(event.getX(), event.getY())));
+				viewPort.scale(0.5f, ZoomOption.LEVEL_CHANGE, viewPort.transform(
+						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
 			} else {
-				vp.scale(0.5f, ZoomOption.LEVEL_CHANGE);
+				viewPort.scale(0.5f, ZoomOption.LEVEL_CHANGE);
 			}
 		}
 	}
@@ -184,10 +185,9 @@ public class NavigationController extends AbstractMapController {
 
 	private void updateView(MouseEvent<?> event) {
 		Coordinate end = getScreenPosition(event);
-		Coordinate beginWorld = getTransformationService().viewToWorld(dragOrigin);
-		Coordinate endWorld = getTransformationService().viewToWorld(end);
-		mapPresenter.getMapModel().getViewPort()
-				.drag(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
+		Coordinate beginWorld = mapPresenter.getViewPort().transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
+		mapPresenter.getViewPort().drag(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
 		dragOrigin = end;
 	}
 }

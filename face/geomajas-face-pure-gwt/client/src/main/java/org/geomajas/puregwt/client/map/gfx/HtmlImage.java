@@ -13,13 +13,6 @@ package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.puregwt.client.service.BooleanCallback;
 
-import com.google.gwt.event.dom.client.ErrorEvent;
-import com.google.gwt.event.dom.client.ErrorHandler;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-
 /**
  * <p>
  * Extension of an HtmlObject that represents a single HTML image (IMG tag). Next to the default values provided by the
@@ -33,74 +26,25 @@ import com.google.gwt.user.client.Event;
  * 
  * @author Pieter De Graef
  */
-public class HtmlImage extends HtmlObject {
-
-	// ------------------------------------------------------------------------
-	// Constructors:
-	// ------------------------------------------------------------------------
+public interface HtmlImage extends HtmlObject {
 
 	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
+	 * Apply a call-back that is executed when the image is done loading. This image is done loading when it has either
+	 * loaded successfully or when 5 attempts have failed. In any case, the callback's execute method will be invoked,
+	 * thereby indicating success or failure.
 	 * 
-	 * @param src
-	 *            Pointer to the actual image.
-	 * @param width
-	 *            The width for this image, expressed in pixels.
-	 * @param height
-	 *            The height for this image, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param onLoadingDone
+	 *            The call-back to be executed when loading has finished. The boolean value indicates whether or not it
+	 *            was successful while loading.
 	 */
-	public HtmlImage(String src, int width, int height, int top, int left) {
-		this(src, width, height, top, left, null);
-	}
-
-	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 * 
-	 * @param src
-	 *            Pointer to the actual image.
-	 * @param width
-	 *            The width for this image, expressed in pixels.
-	 * @param height
-	 *            The height for this image, expressed in pixels.
-	 * @param top
-	 *            How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left
-	 *            How many pixels should this image be placed from the left (relative to the parent origin).
-	 * @param onDoneLoading
-	 *            Call-back that is executed when the images has been loaded, or when loading failed. The boolean value
-	 *            will indicate success or failure.
-	 */
-	public HtmlImage(String src, int width, int height, int top, int left, BooleanCallback onDoneLoading) {
-		super("img", width, height, top, left);
-
-		setVisible(false);
-		DOM.setStyleAttribute(getElement(), "border", "none");
-		DOM.setElementProperty(getElement(), "src", src);
-
-		if (onDoneLoading != null) {
-			DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
-			ImageReloader reloader = new ImageReloader(src, onDoneLoading);
-			addHandler(reloader, LoadEvent.getType());
-			addHandler(reloader, ErrorEvent.getType());
-		}
-	}
-
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
+	void onLoadingDone(BooleanCallback onLoadingDone);
 
 	/**
 	 * Get the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.
 	 * 
 	 * @return The pointer to the actual image.
 	 */
-	public String getSrc() {
-		return DOM.getElementProperty(getElement(), "src");
-	}
+	String getSrc();
 
 	/**
 	 * Set the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.
@@ -108,45 +52,5 @@ public class HtmlImage extends HtmlObject {
 	 * @param src
 	 *            The new image pointer.
 	 */
-	public void setSrc(String src) {
-		DOM.setImgSrc(getElement(), src);
-	}
-
-	/**
-	 * DOM event handler that attempts up to 5 times to reload the requested image. When the image is loaded (or the 5
-	 * attempts have failed), it notifies the given <code>BooleanCallback</code>, calling the execute method with true
-	 * or false indicating whether or not the image was really loaded.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	public class ImageReloader implements LoadHandler, ErrorHandler {
-
-		private int nrAttempts = 5;
-
-		private String src;
-
-		private BooleanCallback onDoneLoading;
-
-		public ImageReloader(String src, BooleanCallback onDoneLoading) {
-			this.src = src;
-			this.onDoneLoading = onDoneLoading;
-		}
-
-		public void onLoad(LoadEvent event) {
-			setVisible(true);
-			if (onDoneLoading != null) {
-				onDoneLoading.execute(true);
-			}
-		}
-
-		public void onError(ErrorEvent event) {
-			nrAttempts--;
-			if (nrAttempts > 0) {
-				DOM.setImgSrc(getElement(), src);
-			} else if (onDoneLoading != null) {
-				onDoneLoading.execute(false);
-			}
-
-		}
-	}
+	void setSrc(String src);
 }

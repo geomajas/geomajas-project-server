@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * MultiPoint client-side GWT object.
@@ -29,12 +28,7 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPointImpl(GeometryFactory factory, MathService service) {
-		this(factory, service, null);
-	}
-
-	MultiPointImpl(GeometryFactory factory, MathService service, Point[] points) {
-		super(factory, service);
+	MultiPointImpl(Point[] points) {
 		this.points = points;
 	}
 
@@ -93,13 +87,6 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 			return 0;
 		}
 		return points.length;
-	}
-
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
-	public Object clone() {
-		return getGeometryFactory().createMultiPoint(points);
 	}
 
 	/**

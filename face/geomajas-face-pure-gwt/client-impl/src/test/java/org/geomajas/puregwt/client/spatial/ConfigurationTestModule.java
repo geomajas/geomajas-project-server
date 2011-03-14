@@ -11,9 +11,6 @@
 
 package org.geomajas.puregwt.client.spatial;
 
-import org.geomajas.puregwt.client.service.MathService;
-import org.geomajas.puregwt.client.service.MathServiceImpl;
-
 import com.google.inject.AbstractModule;
 
 /**
@@ -28,5 +25,4 @@ public class ConfigurationTestModule extends AbstractModule {
 		bind(GeometryFactory.class).to(GeometryFactoryImpl.class);
 		bind(MathService.class).to(MathServiceImpl.class);
 	}
-
 }

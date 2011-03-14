@@ -13,7 +13,6 @@ package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.map.MapModel;
 
 /**
  * The basic definition of a layer within the GWT client.
@@ -98,11 +97,4 @@ public interface Layer<T extends ClientLayerInfo> {
 	 * @return true or false.
 	 */
 	boolean isShowing();
-
-	/**
-	 * Return the maps model. This model stores a list of layers among which this one.
-	 * 
-	 * @return Returns the map model.
-	 */
-	MapModel getMapModel();
 }

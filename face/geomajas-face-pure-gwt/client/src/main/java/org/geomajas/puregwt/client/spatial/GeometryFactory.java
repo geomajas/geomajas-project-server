@@ -23,31 +23,9 @@ import org.geomajas.global.Api;
 @Api(allMethods = true)
 public interface GeometryFactory {
 
-	/**
-	 * Initialization method for this factory.
-	 * 
-	 * @param srid
-	 *            The spatial reference ID to use when creating geometries.
-	 * @param precision
-	 *            The precision to use when creating geometries.
-	 */
-	// TODO: replace with assisted inject of upcoming gin release
-	// void init(int srid, int precision);
+	int PARAM_DEFAULT_PRECISION = 5;
 
-	/**
-	 * Set the spatial reference ID that this factory uses when creating new geometries.
-	 * 
-	 * @param srid
-	 *            The spatial reference ID.
-	 */
-	void setSrid(int srid);
-
-	/**
-	 * Return the spatial reference ID that this factory uses when creating new geometries.
-	 * 
-	 * @return The spatial reference ID.
-	 */
-	int getSrid();
+	double PARAM_DEFAULT_DELTA = Math.pow(10.0, -PARAM_DEFAULT_PRECISION);
 
 	/**
 	 * Return a delta value for precision comparing.

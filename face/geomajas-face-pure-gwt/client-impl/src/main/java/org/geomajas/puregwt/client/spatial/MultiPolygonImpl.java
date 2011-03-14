@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * MultiPolygon client-side GWT object.
@@ -29,25 +28,13 @@ public class MultiPolygonImpl extends AbstractGeometry implements MultiPolygon {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPolygonImpl(GeometryFactory factory, MathService service) {
-		super(factory, service);
-	}
-
-	MultiPolygonImpl(GeometryFactory factory, MathService service, Polygon[] polygons) {
-		super(factory, service);
+	MultiPolygonImpl(Polygon[] polygons) {
 		this.polygons = polygons;
 	}
 
 	// -------------------------------------------------------------------------
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
-	public Object clone() {
-		return getGeometryFactory().createMultiPolygon(polygons);
-	}
 
 	public Geometry getGeometryN(int n) {
 		if (isEmpty()) {

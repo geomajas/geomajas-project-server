@@ -51,7 +51,6 @@ public class PointTest {
 	public void setUp() {
 		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
-		gwtFactory.setSrid(SRID);
 		gwt = gwtFactory.createPoint(new Coordinate(10.0, 10.0));
 
 		jtsFactory = new com.vividsolutions.jts.geom.GeometryFactory(new PrecisionModel(), SRID);

@@ -15,10 +15,9 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.LinearRing;
-import org.geomajas.puregwt.client.spatial.Matrix;
+import org.geomajas.puregwt.client.spatial.MatrixImpl;
 import org.geomajas.puregwt.client.spatial.MultiLineString;
 import org.geomajas.puregwt.client.spatial.MultiPoint;
 import org.geomajas.puregwt.client.spatial.MultiPolygon;
@@ -26,13 +25,16 @@ import org.geomajas.puregwt.client.spatial.Point;
 import org.geomajas.puregwt.client.spatial.Polygon;
 import org.geomajas.puregwt.client.spatial.Vector2D;
 
+import com.google.inject.Inject;
+
 /**
- * Implementation of the {@link TransformationService}.
+ * Implementation of the transformation methods of the view port.
  * 
  * @author Pieter De Graef
  */
-public class TransformationServiceImpl implements TransformationService {
+public class ViewPortTransformationService {
 
+	@Inject
 	private GeometryFactory factory;
 
 	/**
@@ -53,9 +55,177 @@ public class TransformationServiceImpl implements TransformationService {
 	 *            The central viewing object on a map. It contains all the necessary parameters to calculate correct
 	 *            transformations.
 	 */
-	protected TransformationServiceImpl(ViewPortImpl viewPort, int srid) {
+	protected ViewPortTransformationService(ViewPortImpl viewPort) {
 		this.viewPort = viewPort;
-		factory = new GeometryFactoryImpl(srid);
+	}
+
+	// -------------------------------------------------------------------------
+	// ViewPort transformation methods:
+	// -------------------------------------------------------------------------
+
+	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case PAN:
+				switch (to) {
+					case PAN:
+						return coordinate;
+					case SCREEN:
+						throw new RuntimeException("Not implemented.");
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case SCREEN:
+				switch (to) {
+					case PAN:
+						return viewToPan(coordinate);
+					case SCREEN:
+						return coordinate;
+					case WORLD:
+						return viewToWorld(coordinate);
+				}
+			case WORLD:
+				switch (to) {
+					case PAN:
+						return worldToPan(coordinate);
+					case SCREEN:
+						return worldToView(coordinate);
+					case WORLD:
+						return coordinate;
+				}
+		}
+		return coordinate;
+	}
+
+	public Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case PAN:
+				switch (to) {
+					case PAN:
+						return geometry;
+					case SCREEN:
+						throw new RuntimeException("Not implemented.");
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case SCREEN:
+				switch (to) {
+					case PAN:
+						return viewToPan(geometry);
+					case SCREEN:
+						return geometry;
+					case WORLD:
+						return viewToWorld(geometry);
+				}
+			case WORLD:
+				switch (to) {
+					case PAN:
+						return worldToPan(geometry);
+					case SCREEN:
+						return worldToView(geometry);
+					case WORLD:
+						return geometry;
+				}
+		}
+		return geometry;
+	}
+
+	public Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case PAN:
+				switch (to) {
+					case PAN:
+						return bbox;
+					case SCREEN:
+						throw new RuntimeException("Not implemented.");
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case SCREEN:
+				switch (to) {
+					case PAN:
+						return viewToPan(bbox);
+					case SCREEN:
+						return bbox;
+					case WORLD:
+						return viewToWorld(bbox);
+				}
+			case WORLD:
+				switch (to) {
+					case PAN:
+						return worldToPan(bbox);
+					case SCREEN:
+						return worldToView(bbox);
+					case WORLD:
+						return bbox;
+				}
+		}
+		return bbox;
+	}
+
+	public MatrixImpl getTransformationMatrix(RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case PAN:
+				switch (to) {
+					case PAN:
+						return MatrixImpl.IDENTITY;
+					case SCREEN:
+						throw new RuntimeException("Not implemented.");
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case SCREEN:
+				switch (to) {
+					case PAN:
+						throw new RuntimeException("Not implemented.");
+					case SCREEN:
+						return MatrixImpl.IDENTITY;
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case WORLD:
+				switch (to) {
+					case PAN:
+						return getWorldToViewTransformation();
+					case SCREEN:
+						return getWorldToPanTransformation();
+					case WORLD:
+						return MatrixImpl.IDENTITY;
+				}
+		}
+		return null;
+	}
+
+	public MatrixImpl getTranslationMatrix(RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case PAN:
+				switch (to) {
+					case PAN:
+						return MatrixImpl.IDENTITY;
+					case SCREEN:
+						return getPanToViewTranslation();
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case SCREEN:
+				switch (to) {
+					case PAN:
+						throw new RuntimeException("Not implemented.");
+					case SCREEN:
+						return MatrixImpl.IDENTITY;
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case WORLD:
+				switch (to) {
+					case PAN:
+						return getWorldToPanTranslation();
+					case SCREEN:
+						return getWorldToViewTranslation();
+					case WORLD:
+						return MatrixImpl.IDENTITY;
+				}
+		}
+		return null;
 	}
 
 	// -------------------------------------------------------------------------
@@ -63,61 +233,61 @@ public class TransformationServiceImpl implements TransformationService {
 	// -------------------------------------------------------------------------
 
 	/** Return the world-to-pan space translation matrix. */
-	protected Matrix getWorldToPanTransformation() {
+	public MatrixImpl getWorldToPanTransformation() {
 		ViewPortState viewState = viewPort.getViewPortState();
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getPanX() * viewState.getScale());
 			double dY = viewState.getPanY() * viewState.getScale();
-			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
+			return new MatrixImpl(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
 		}
-		return new Matrix(1, 0, 0, 1, 0, 0);
+		return new MatrixImpl(1, 0, 0, 1, 0, 0);
 	}
 
 	/**
 	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.<br/>
 	 * TODO don't want to see this as a public method...
 	 */
-	protected Matrix getWorldToPanTranslation() {
+	public MatrixImpl getWorldToPanTranslation() {
 		if (viewPort.getViewPortState().getScale() > 0) {
 			double dX = -(viewPort.getViewPortState().getPanX() * viewPort.getViewPortState().getScale());
 			double dY = viewPort.getViewPortState().getPanY() * viewPort.getViewPortState().getScale();
-			return new Matrix(0, 0, 0, 0, dX, dY);
+			return new MatrixImpl(0, 0, 0, 0, dX, dY);
 		}
-		return new Matrix(0, 0, 0, 0, 0, 0);
+		return new MatrixImpl(0, 0, 0, 0, 0, 0);
 	}
 
 	/**
 	 * Return the translation of coordinates relative to the pan origin to view coordinates.<br/>
 	 * TODO don't want to see this as a public method...
 	 */
-	protected Matrix getPanToViewTranslation() {
+	public MatrixImpl getPanToViewTranslation() {
 		ViewPortState viewState = viewPort.getViewPortState();
 		if (viewPort.getViewPortState().getScale() > 0) {
 			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale()) + viewPort.getMapWidth() / 2;
 			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale() + viewPort.getMapHeight() / 2;
-			return new Matrix(0, 0, 0, 0, dX, dY);
+			return new MatrixImpl(0, 0, 0, 0, dX, dY);
 		}
-		return new Matrix(0, 0, 0, 0, 0, 0);
+		return new MatrixImpl(0, 0, 0, 0, 0, 0);
 	}
 
-	public Matrix getWorldToViewTransformation() {
+	public MatrixImpl getWorldToViewTransformation() {
 		ViewPortState viewState = viewPort.getViewPortState();
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getX() * viewState.getScale()) + viewPort.getMapWidth() / 2;
 			double dY = viewState.getY() * viewState.getScale() + viewPort.getMapHeight() / 2;
-			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
+			return new MatrixImpl(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
 		}
-		return new Matrix(1, 0, 0, 1, 0, 0);
+		return new MatrixImpl(1, 0, 0, 1, 0, 0);
 	}
 
-	public Matrix getWorldToViewTranslation() {
+	public MatrixImpl getWorldToViewTranslation() {
 		ViewPortState viewState = viewPort.getViewPortState();
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getX() * viewState.getScale()) + viewPort.getMapWidth() / 2;
 			double dY = viewState.getY() * viewState.getScale() + viewPort.getMapHeight() / 2;
-			return new Matrix(0, 0, 0, 0, dX, dY);
+			return new MatrixImpl(0, 0, 0, 0, dX, dY);
 		}
-		return new Matrix(0, 0, 0, 0, 0, 0);
+		return new MatrixImpl(0, 0, 0, 0, 0, 0);
 	}
 
 	// -------------------------------------------------------------------------
@@ -155,19 +325,19 @@ public class TransformationServiceImpl implements TransformationService {
 		if (geometry != null) {
 			if (geometry instanceof Point) {
 				Coordinate transformed = worldToView(geometry.getCoordinate());
-				return geometry.getGeometryFactory().createPoint(transformed);
+				return factory.createPoint(transformed);
 			} else if (geometry instanceof LinearRing) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = worldToView(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLinearRing(coordinates);
+				return factory.createLinearRing(coordinates);
 			} else if (geometry instanceof LineString) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = worldToView(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLineString(coordinates);
+				return factory.createLineString(coordinates);
 			} else if (geometry instanceof Polygon) {
 				Polygon polygon = (Polygon) geometry;
 				LinearRing shell = (LinearRing) worldToView(polygon.getExteriorRing());
@@ -175,25 +345,25 @@ public class TransformationServiceImpl implements TransformationService {
 				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
 					holes[n] = (LinearRing) worldToView(polygon.getInteriorRingN(n));
 				}
-				return polygon.getGeometryFactory().createPolygon(shell, holes);
+				return factory.createPolygon(shell, holes);
 			} else if (geometry instanceof MultiPoint) {
 				Point[] points = new Point[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					points[n] = (Point) worldToView(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPoint(points);
+				return factory.createMultiPoint(points);
 			} else if (geometry instanceof MultiLineString) {
 				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					lineStrings[n] = (LineString) worldToView(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiLineString(lineStrings);
+				return factory.createMultiLineString(lineStrings);
 			} else if (geometry instanceof MultiPolygon) {
 				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					polygons[n] = (Polygon) worldToView(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPolygon(polygons);
+				return factory.createMultiPolygon(polygons);
 			}
 		}
 		return null;
@@ -252,19 +422,19 @@ public class TransformationServiceImpl implements TransformationService {
 		if (geometry != null) {
 			if (geometry instanceof Point) {
 				Coordinate transformed = viewToWorld(geometry.getCoordinate());
-				return geometry.getGeometryFactory().createPoint(transformed);
+				return factory.createPoint(transformed);
 			} else if (geometry instanceof LinearRing) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = viewToWorld(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLinearRing(coordinates);
+				return factory.createLinearRing(coordinates);
 			} else if (geometry instanceof LineString) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = viewToWorld(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLineString(coordinates);
+				return factory.createLineString(coordinates);
 			} else if (geometry instanceof Polygon) {
 				Polygon polygon = (Polygon) geometry;
 				LinearRing shell = (LinearRing) viewToWorld(polygon.getExteriorRing());
@@ -272,25 +442,25 @@ public class TransformationServiceImpl implements TransformationService {
 				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
 					holes[n] = (LinearRing) viewToWorld(polygon.getInteriorRingN(n));
 				}
-				return polygon.getGeometryFactory().createPolygon(shell, holes);
+				return factory.createPolygon(shell, holes);
 			} else if (geometry instanceof MultiPoint) {
 				Point[] points = new Point[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					points[n] = (Point) viewToWorld(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPoint(points);
+				return factory.createMultiPoint(points);
 			} else if (geometry instanceof MultiLineString) {
 				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					lineStrings[n] = (LineString) viewToWorld(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiLineString(lineStrings);
+				return factory.createMultiLineString(lineStrings);
 			} else if (geometry instanceof MultiPolygon) {
 				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					polygons[n] = (Polygon) viewToWorld(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPolygon(polygons);
+				return factory.createMultiPolygon(polygons);
 			}
 		}
 		return null;
@@ -327,7 +497,7 @@ public class TransformationServiceImpl implements TransformationService {
 	 *            The transformation matrix.
 	 * @return Returns a transformed bounding box, or null if one of the given parameters was null.
 	 */
-	protected Bbox transform(Bbox bbox, Matrix matrix) {
+	protected Bbox transform(Bbox bbox, MatrixImpl matrix) {
 		if (bbox != null) {
 			Coordinate c1 = transform(bbox.getOrigin(), matrix);
 			Coordinate c2 = transform(bbox.getEndPoint(), matrix);
@@ -347,7 +517,7 @@ public class TransformationServiceImpl implements TransformationService {
 	 *            The transformation matrix.
 	 * @return Returns a transformed coordinate, or null if one of the given parameters was null.
 	 */
-	protected Coordinate transform(Coordinate coordinate, Matrix matrix) {
+	protected Coordinate transform(Coordinate coordinate, MatrixImpl matrix) {
 		if (coordinate != null && matrix != null) {
 			double x = matrix.getXx() * coordinate.getX() + matrix.getXy() * coordinate.getY() + matrix.getDx();
 			double y = matrix.getYx() * coordinate.getX() + matrix.getYy() * coordinate.getY() + matrix.getDy();
@@ -356,23 +526,23 @@ public class TransformationServiceImpl implements TransformationService {
 		return null;
 	}
 
-	protected Geometry transform(Geometry geometry, Matrix matrix) {
+	protected Geometry transform(Geometry geometry, MatrixImpl matrix) {
 		if (geometry != null) {
 			if (geometry instanceof Point) {
 				Coordinate transformed = transform(geometry.getCoordinate(), matrix);
-				return geometry.getGeometryFactory().createPoint(transformed);
+				return factory.createPoint(transformed);
 			} else if (geometry instanceof LinearRing) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = transform(geometry.getCoordinates()[i], matrix);
 				}
-				return geometry.getGeometryFactory().createLinearRing(coordinates);
+				return factory.createLinearRing(coordinates);
 			} else if (geometry instanceof LineString) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = transform(geometry.getCoordinates()[i], matrix);
 				}
-				return geometry.getGeometryFactory().createLineString(coordinates);
+				return factory.createLineString(coordinates);
 			} else if (geometry instanceof Polygon) {
 				Polygon polygon = (Polygon) geometry;
 				LinearRing shell = (LinearRing) transform(polygon.getExteriorRing(), matrix);
@@ -380,31 +550,31 @@ public class TransformationServiceImpl implements TransformationService {
 				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
 					holes[n] = (LinearRing) transform(polygon.getInteriorRingN(n), matrix);
 				}
-				return polygon.getGeometryFactory().createPolygon(shell, holes);
+				return factory.createPolygon(shell, holes);
 			} else if (geometry instanceof MultiPoint) {
 				Point[] points = new Point[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					points[n] = (Point) transform(geometry.getGeometryN(n), matrix);
 				}
-				return geometry.getGeometryFactory().createMultiPoint(points);
+				return factory.createMultiPoint(points);
 			} else if (geometry instanceof MultiLineString) {
 				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					lineStrings[n] = (LineString) transform(geometry.getGeometryN(n), matrix);
 				}
-				return geometry.getGeometryFactory().createMultiLineString(lineStrings);
+				return factory.createMultiLineString(lineStrings);
 			} else if (geometry instanceof MultiPolygon) {
 				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					polygons[n] = (Polygon) transform(geometry.getGeometryN(n), matrix);
 				}
-				return geometry.getGeometryFactory().createMultiPolygon(polygons);
+				return factory.createMultiPolygon(polygons);
 			}
 		}
 		return null;
 	}
 
-	protected Coordinate worldToPan(Coordinate coordinate) {
+	public Coordinate worldToPan(Coordinate coordinate) {
 		if (coordinate != null) {
 			Vector2D position = new Vector2D(coordinate);
 			double scale = viewPort.getScale();
@@ -416,7 +586,7 @@ public class TransformationServiceImpl implements TransformationService {
 		return null;
 	}
 
-	protected Bbox worldToPan(Bbox bbox) {
+	public Bbox worldToPan(Bbox bbox) {
 		if (bbox != null) {
 			Coordinate c1 = worldToPan(bbox.getOrigin());
 			Coordinate c2 = worldToPan(bbox.getEndPoint());
@@ -427,23 +597,23 @@ public class TransformationServiceImpl implements TransformationService {
 		return null;
 	}
 
-	protected Geometry worldToPan(Geometry geometry) {
+	public Geometry worldToPan(Geometry geometry) {
 		if (geometry != null) {
 			if (geometry instanceof Point) {
 				Coordinate transformed = worldToPan(geometry.getCoordinate());
-				return geometry.getGeometryFactory().createPoint(transformed);
+				return factory.createPoint(transformed);
 			} else if (geometry instanceof LinearRing) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = worldToPan(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLinearRing(coordinates);
+				return factory.createLinearRing(coordinates);
 			} else if (geometry instanceof LineString) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = worldToPan(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLineString(coordinates);
+				return factory.createLineString(coordinates);
 			} else if (geometry instanceof Polygon) {
 				Polygon polygon = (Polygon) geometry;
 				LinearRing shell = (LinearRing) worldToPan(polygon.getExteriorRing());
@@ -451,25 +621,25 @@ public class TransformationServiceImpl implements TransformationService {
 				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
 					holes[n] = (LinearRing) worldToPan(polygon.getInteriorRingN(n));
 				}
-				return polygon.getGeometryFactory().createPolygon(shell, holes);
+				return factory.createPolygon(shell, holes);
 			} else if (geometry instanceof MultiPoint) {
 				Point[] points = new Point[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					points[n] = (Point) worldToPan(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPoint(points);
+				return factory.createMultiPoint(points);
 			} else if (geometry instanceof MultiLineString) {
 				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					lineStrings[n] = (LineString) worldToPan(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiLineString(lineStrings);
+				return factory.createMultiLineString(lineStrings);
 			} else if (geometry instanceof MultiPolygon) {
 				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					polygons[n] = (Polygon) worldToPan(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPolygon(polygons);
+				return factory.createMultiPolygon(polygons);
 			}
 		}
 		return null;
@@ -482,7 +652,7 @@ public class TransformationServiceImpl implements TransformationService {
 	 *            The views pace coordinate.
 	 * @return Returns the pan space equivalent of the given coordinate.
 	 */
-	protected Coordinate viewToPan(Coordinate coordinate) {
+	public Coordinate viewToPan(Coordinate coordinate) {
 		if (coordinate != null) {
 			Vector2D position = new Vector2D(coordinate);
 			double scale = viewPort.getScale();
@@ -498,7 +668,7 @@ public class TransformationServiceImpl implements TransformationService {
 		return null;
 	}
 
-	protected Bbox viewToPan(Bbox bbox) {
+	public Bbox viewToPan(Bbox bbox) {
 		if (bbox != null) {
 			Coordinate c1 = viewToPan(bbox.getOrigin());
 			Coordinate c2 = viewToPan(bbox.getEndPoint());
@@ -509,23 +679,23 @@ public class TransformationServiceImpl implements TransformationService {
 		return null;
 	}
 
-	protected Geometry viewToPan(Geometry geometry) {
+	public Geometry viewToPan(Geometry geometry) {
 		if (geometry != null) {
 			if (geometry instanceof Point) {
 				Coordinate transformed = viewToPan(geometry.getCoordinate());
-				return geometry.getGeometryFactory().createPoint(transformed);
+				return factory.createPoint(transformed);
 			} else if (geometry instanceof LinearRing) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = viewToPan(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLinearRing(coordinates);
+				return factory.createLinearRing(coordinates);
 			} else if (geometry instanceof LineString) {
 				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
 				for (int i = 0; i < coordinates.length; i++) {
 					coordinates[i] = viewToPan(geometry.getCoordinates()[i]);
 				}
-				return geometry.getGeometryFactory().createLineString(coordinates);
+				return factory.createLineString(coordinates);
 			} else if (geometry instanceof Polygon) {
 				Polygon polygon = (Polygon) geometry;
 				LinearRing shell = (LinearRing) worldToPan(polygon.getExteriorRing());
@@ -533,25 +703,25 @@ public class TransformationServiceImpl implements TransformationService {
 				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
 					holes[n] = (LinearRing) viewToPan(polygon.getInteriorRingN(n));
 				}
-				return polygon.getGeometryFactory().createPolygon(shell, holes);
+				return factory.createPolygon(shell, holes);
 			} else if (geometry instanceof MultiPoint) {
 				Point[] points = new Point[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					points[n] = (Point) viewToPan(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPoint(points);
+				return factory.createMultiPoint(points);
 			} else if (geometry instanceof MultiLineString) {
 				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					lineStrings[n] = (LineString) viewToPan(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiLineString(lineStrings);
+				return factory.createMultiLineString(lineStrings);
 			} else if (geometry instanceof MultiPolygon) {
 				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
 				for (int n = 0; n < geometry.getNumGeometries(); n++) {
 					polygons[n] = (Polygon) viewToPan(geometry.getGeometryN(n));
 				}
-				return geometry.getGeometryFactory().createMultiPolygon(polygons);
+				return factory.createMultiPolygon(polygons);
 			}
 		}
 		return null;

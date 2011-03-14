@@ -35,7 +35,16 @@ public interface WorldContainer extends VectorObjectContainer {
 	/**
 	 * Should children of this world container be resized when zooming in or out? Default is true.
 	 * 
-	 * @param resizeChildren Determine if children should be resized when zooming in or out.
+	 * @param resizeChildren
+	 *            Determine if children should be resized when zooming in or out.
 	 */
 	void setResizeChildren(boolean resizeChildren);
+
+	/**
+	 * Transform all objects within this container to match the given view port.
+	 * 
+	 * @param viewPort
+	 *            The view port for whom to transform this container.
+	 */
+	void transform(ViewPort viewPort);
 }

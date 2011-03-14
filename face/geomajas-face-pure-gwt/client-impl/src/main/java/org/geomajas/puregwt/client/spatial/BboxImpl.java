@@ -291,7 +291,7 @@ public class BboxImpl implements Bbox {
 	 *            the transformation matrix
 	 * @return the transformed bounds
 	 */
-	public BboxImpl transform(Matrix t) {
+	public BboxImpl transform(MatrixImpl t) {
 		Coordinate c1 = transform(t, new Coordinate(x, y));
 		Coordinate c2 = transform(t, new Coordinate(x + width, y + height));
 		Coordinate origin = new Coordinate(Math.min(c1.getX(), c2.getX()), Math.min(c1.getY(), c2.getY()));
@@ -395,7 +395,7 @@ public class BboxImpl implements Bbox {
 		return Math.abs(d1 - d2) <= delta;
 	}
 
-	private Coordinate transform(Matrix t, Coordinate coordinate) {
+	private Coordinate transform(MatrixImpl t, Coordinate coordinate) {
 		double x = t.getXx() * coordinate.getX() + t.getXy() * coordinate.getY() + t.getDx();
 		double y = t.getYx() * coordinate.getY() + t.getYy() * coordinate.getY() + t.getDy();
 		return new Coordinate(x, y);

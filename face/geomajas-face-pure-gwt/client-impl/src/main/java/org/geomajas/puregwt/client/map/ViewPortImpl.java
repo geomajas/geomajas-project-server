@@ -25,8 +25,10 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
+import org.geomajas.puregwt.client.spatial.MatrixImpl;
 
 /**
  * Implementation of the ViewPort interface.
@@ -63,16 +65,28 @@ public class ViewPortImpl implements ViewPort {
 	/** The current view state. */
 	private ViewPortState viewState = new ViewPortState();
 
-	private TransformationService transformationService;
+	private ViewPortTransformationService transformationService;
 
 	private EventBus eventBus;
+	
+	private String crs;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public ViewPortImpl(EventBus eventBus, ClientMapInfo mapInfo, int srid) {
-		factory = new GeometryFactoryImpl(srid);
+	public ViewPortImpl(EventBus eventBus) {
+		this.eventBus = eventBus;
+		factory = new GeometryFactoryImpl();
+		transformationService = new ViewPortTransformationService(this);
+	}
+
+	// -------------------------------------------------------------------------
+	// ViewPort implementation:
+	// -------------------------------------------------------------------------
+
+	public void initialize(ClientMapInfo mapInfo) {
+		crs = mapInfo.getCrs();
 
 		// Acquire maximum scale:
 		ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
@@ -93,18 +107,11 @@ public class ViewPortImpl implements ViewPort {
 				maxBounds = maxBounds.union(factory.createBbox(layerInfo.getMaxExtent()));
 			}
 		}
-
-		this.eventBus = eventBus;
-		transformationService = new TransformationServiceImpl(this, srid);
 	}
 
-	// -------------------------------------------------------------------------
-	// ViewPort implementation:
-	// -------------------------------------------------------------------------
-
-	public TransformationService getTransformationService() {
-		return transformationService;
-	}
+	// public TransformationService getTransformationService() {
+	// return transformationService;
+	// }
 
 	public double getScale() {
 		return viewState.getScale();
@@ -202,8 +209,32 @@ public class ViewPortImpl implements ViewPort {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
-	public ViewPortState getViewPortState() {
-		return viewState;
+	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
+		return transformationService.transform(coordinate, from, to);
+	}
+
+	public Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to) {
+		return transformationService.transform(geometry, from, to);
+	}
+
+	public Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
+		return transformationService.transform(bbox, from, to);
+	}
+
+	public MatrixImpl getTransformationMatrix(RenderSpace from, RenderSpace to) {
+		return transformationService.getTransformationMatrix(from, to);
+	}
+
+	public MatrixImpl getTranslationMatrix(RenderSpace from, RenderSpace to) {
+		return transformationService.getTranslationMatrix(from, to);
+	}
+
+	// ------------------------------------------------------------------------
+	// Getters and setters:
+	// ------------------------------------------------------------------------
+
+	public String getCrs() {
+		return crs;
 	}
 
 	public int getMapWidth() {
@@ -218,9 +249,13 @@ public class ViewPortImpl implements ViewPort {
 		return new Coordinate(viewState.getPanX(), viewState.getPanY());
 	}
 
-	protected void setSize(int width, int height) {
+	public void setMapSize(int width, int height) {
 		this.width = width;
 		this.height = height;
+	}
+
+	protected ViewPortState getViewPortState() {
+		return viewState;
 	}
 
 	// -------------------------------------------------------------------------

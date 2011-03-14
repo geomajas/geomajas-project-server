@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * MultiLineString client-side GWT object.
@@ -29,25 +28,13 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 	// Constructor (package visibility)
 	// -------------------------------------------------------------------------
 
-	MultiLineStringImpl(GeometryFactory factory) {
-		this(factory, null, null);
-	}
-
-	MultiLineStringImpl(GeometryFactory factory, MathService service, LineString[] lineStrings) {
-		super(factory, service);
+	MultiLineStringImpl(LineString[] lineStrings) {
 		this.lineStrings = lineStrings;
 	}
 
 	// -------------------------------------------------------------------------
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
-	public Object clone() {
-		return getGeometryFactory().createMultiLineString(lineStrings);
-	}
 
 	public Geometry getGeometryN(int n) {
 		if (!isEmpty()) {

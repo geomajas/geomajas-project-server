@@ -23,6 +23,8 @@ import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.controller.ListenerController;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
@@ -37,7 +39,10 @@ import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
+import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
@@ -65,17 +70,17 @@ public class MapPresenterImpl implements MapPresenter {
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
 			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget {
 
-		HtmlContainer getHtmlContainer();
+		HtmlContainerImpl getHtmlContainer();
 
 		ScreenContainer getScreenContainer(String id);
 
 		void removeScreenContainer(ScreenContainer container);
 
-		WorldGroup getWorldContainer(String id);
+		WorldContainer getWorldContainer(String id);
 
-		void removeWorldContainer(WorldGroup container);
+		void removeWorldContainer(WorldContainer container);
 
-		List<WorldGroup> getWorldContainers();
+		List<WorldContainer> getWorldContainers();
 	}
 
 	private String applicationId;
@@ -92,13 +97,17 @@ public class MapPresenterImpl implements MapPresenter {
 
 	private Map<MapListener, List<HandlerRegistration>> listeners;
 
-	private MapModel mapModel;
+	private LayersModel layersModel;
+
+	private ViewPortImpl viewPort;
 
 	private MapRenderer mapRenderer;
 
 	private WorldContainerRenderer worldContainerRenderer;
 
 	private Map<String, MapGadget> gadgets;
+	
+	private EventBus eventBus;
 
 	public MapPresenterImpl(String applicationId, String id, MapWidget display) {
 		this.applicationId = applicationId;
@@ -107,23 +116,33 @@ public class MapPresenterImpl implements MapPresenter {
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
 		gadgets = new HashMap<String, MapGadget>();
+
+		eventBus = new EventBusImpl();
+		layersModel = new LayersModelImpl(eventBus);
+		viewPort = new ViewPortImpl(eventBus);
 	}
 
 	public void initialize() {
-		mapModel = new MapModelImpl();
-		mapRenderer = new DelegatingMapRenderer(mapModel);
+		// Initialize the default map renderer:
+		mapRenderer = new DelegatingMapRenderer(layersModel, viewPort);
 		mapRenderer.setHtmlContainer(display.getHtmlContainer());
-		mapModel.getEventBus().addHandler(ViewPortChangedEvent.getType(), mapRenderer);
-		mapModel.getEventBus().addHandler(ViewPortDraggedEvent.getType(), mapRenderer);
-		mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), mapRenderer);
-		mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), mapRenderer);
-		mapModel.getEventBus().addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
+		eventBus.addHandler(ViewPortChangedEvent.getType(), mapRenderer);
+		eventBus.addHandler(ViewPortDraggedEvent.getType(), mapRenderer);
+		eventBus.addHandler(ViewPortScaledEvent.getType(), mapRenderer);
+		eventBus.addHandler(ViewPortTranslatedEvent.getType(), mapRenderer);
+		eventBus.addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
 
 		worldContainerRenderer = new WorldContainerRenderer();
-		mapModel.getEventBus().addHandler(ViewPortChangedEvent.getType(), worldContainerRenderer);
-		mapModel.getEventBus().addHandler(ViewPortDraggedEvent.getType(), worldContainerRenderer);
-		mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), worldContainerRenderer);
-		mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), worldContainerRenderer);
+		eventBus.addHandler(ViewPortChangedEvent.getType(), worldContainerRenderer);
+		eventBus.addHandler(ViewPortDraggedEvent.getType(), worldContainerRenderer);
+		eventBus.addHandler(ViewPortScaledEvent.getType(), worldContainerRenderer);
+		eventBus.addHandler(ViewPortTranslatedEvent.getType(), worldContainerRenderer);
+
+		eventBus.addHandler(ViewPortChangedEvent.getType(), new MapGadgetRenderer());
+		eventBus.addHandler(ViewPortTranslatedEvent.getType(), new MapGadgetRenderer());
+		eventBus.addHandler(ViewPortScaledEvent.getType(), new MapGadgetRenderer());
+
+		setFallbackController(new NavigationController());
 
 		Command commandRequest = new Command("command.configuration.GetMap");
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
@@ -134,25 +153,29 @@ public class MapPresenterImpl implements MapPresenter {
 				if (response instanceof GetMapConfigurationResponse) {
 					// Initialize the MapModel and ViewPort:
 					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
-					mapModel.initialize(r.getMapInfo(), display.asWidget().getOffsetWidth(), display.asWidget()
-							.getOffsetHeight());
-					setFallbackController(new NavigationController());
+
+					// Configure the ViewPort. This will immediately zoom to the initial bounds:
+					viewPort.setMapSize(display.asWidget().getOffsetWidth(), display.asWidget().getOffsetHeight());
+					layersModel.initialize(r.getMapInfo(), viewPort);
+					viewPort.initialize(r.getMapInfo());
+
+					// Immediately zoom to the initial bounds as configured:
+					GeometryFactory factory = new GeometryFactoryImpl();
+					Bbox initialBounds = factory.createBbox(r.getMapInfo().getInitialBounds());
+					viewPort.applyBounds(initialBounds, ZoomOption.LEVEL_CLOSEST);
 
 					// If there are already some MapGadgets registered, draw them now:
 					for (String containerId : gadgets.keySet()) {
 						MapGadget mapGadget = gadgets.get(containerId);
-						mapGadget.onDraw(mapModel.getViewPort(), getScreenContainer(containerId));
+						mapGadget.onDraw(viewPort, getScreenContainer(containerId));
 					}
-					mapModel.getEventBus().addHandler(ViewPortChangedEvent.getType(), new MapGadgetRenderer());
-					mapModel.getEventBus().addHandler(ViewPortTranslatedEvent.getType(), new MapGadgetRenderer());
-					mapModel.getEventBus().addHandler(ViewPortScaledEvent.getType(), new MapGadgetRenderer());
 
 					addMapGadget(new ScalebarGadget(r.getMapInfo()));
 					addMapGadget(new WatermarkGadget());
 					addMapGadget(new NavigationGadget());
 
 					// Fire initialization event:
-					mapModel.getEventBus().fireEvent(new MapInitializationEvent());
+					eventBus.fireEvent(new MapInitializationEvent());
 				}
 			}
 
@@ -167,14 +190,14 @@ public class MapPresenterImpl implements MapPresenter {
 
 	public void setSize(int width, int height) {
 		display.asWidget().setSize(width + "px", height + "px");
-		if (mapModel != null) {
-			((ViewPortImpl) mapModel.getViewPort()).setSize(width, height);
+		if (viewPort != null) {
+			viewPort.setMapSize(width, height);
 		}
 	}
 
 	public WorldContainer getWorldContainer(String id) {
-		WorldGroup container = display.getWorldContainer(id);
-		container.transform((ViewPortImpl) mapModel.getViewPort());
+		WorldContainer container = display.getWorldContainer(id);
+		container.transform(viewPort);
 		return container;
 	}
 
@@ -182,8 +205,12 @@ public class MapPresenterImpl implements MapPresenter {
 		return display.getScreenContainer(id);
 	}
 
-	public MapModel getMapModel() {
-		return mapModel;
+	public LayersModel getLayersModel() {
+		return layersModel;
+	}
+
+	public ViewPort getViewPort() {
+		return viewPort;
 	}
 
 	public void setMapController(MapController mapController) {
@@ -260,8 +287,8 @@ public class MapPresenterImpl implements MapPresenter {
 	public void addMapGadget(MapGadget mapGadget) {
 		String id = DOM.createUniqueId();
 		gadgets.put(id, mapGadget);
-		if (mapModel != null && mapModel.getViewPort() != null) {
-			mapGadget.onDraw(mapModel.getViewPort(), getScreenContainer(id));
+		if (layersModel != null && viewPort != null) {
+			mapGadget.onDraw(viewPort, getScreenContainer(id));
 		}
 	}
 
@@ -323,26 +350,26 @@ public class MapPresenterImpl implements MapPresenter {
 	private class WorldContainerRenderer implements ViewPortChangedHandler {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
-			for (WorldGroup worldContainer : display.getWorldContainers()) {
-				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			for (WorldContainer worldContainer : display.getWorldContainers()) {
+				worldContainer.transform(viewPort);
 			}
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
-			for (WorldGroup worldContainer : display.getWorldContainers()) {
-				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			for (WorldContainer worldContainer : display.getWorldContainers()) {
+				worldContainer.transform(viewPort);
 			}
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			for (WorldGroup worldContainer : display.getWorldContainers()) {
-				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			for (WorldContainer worldContainer : display.getWorldContainers()) {
+				worldContainer.transform(viewPort);
 			}
 		}
 
 		public void onViewPortDragged(ViewPortDraggedEvent event) {
-			for (WorldGroup worldContainer : display.getWorldContainers()) {
-				worldContainer.transform((ViewPortImpl) mapModel.getViewPort());
+			for (WorldContainer worldContainer : display.getWorldContainers()) {
+				worldContainer.transform(viewPort);
 			}
 		}
 	}

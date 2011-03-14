@@ -90,7 +90,7 @@ public class ListenerController extends AbstractMapController {
 	// -------------------------------------------------------------------------
 
 	private MapListenerEvent getEvent(int eventBit, MouseEvent<?> event) {
-		return new MapListenerEvent(eventBit, getScreenPosition(event), getTarget(event), getTransformationService(),
+		return new MapListenerEvent(eventBit, getScreenPosition(event), getTarget(event), mapPresenter.getViewPort(),
 				event.isAltKeyDown(), event.isControlKeyDown(), event.isShiftKeyDown(), event.getNativeButton());
 	}
 }

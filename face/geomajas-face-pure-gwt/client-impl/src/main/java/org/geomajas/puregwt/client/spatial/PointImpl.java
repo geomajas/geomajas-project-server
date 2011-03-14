@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * <p>
@@ -31,16 +30,7 @@ public class PointImpl extends AbstractGeometry implements Point {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	PointImpl(GeometryFactory factory, MathService service) {
-		this(factory, service, null);
-	}
-
-	PointImpl(GeometryFactory factory, MathService service, double x, double y) {
-		this(factory, service, new Coordinate(x, y));
-	}
-
-	PointImpl(GeometryFactory factory, MathService service, Coordinate c) {
-		super(factory, service);
+	PointImpl(Coordinate c) {
 		coordinate = c;
 	}
 
@@ -50,13 +40,6 @@ public class PointImpl extends AbstractGeometry implements Point {
 
 	void setCoordinate(Coordinate coordinate) {
 		this.coordinate = coordinate;
-	}
-
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
-	public Object clone() {
-		return getGeometryFactory().createPoint(coordinate);
 	}
 
 	public Coordinate[] getCoordinates() {
@@ -172,7 +155,8 @@ public class PointImpl extends AbstractGeometry implements Point {
 				return coordinate.equals(coordinates[0]);
 			} else {
 				for (int i = 0; i < coordinates.length - 1; i++) {
-					if (service.distance(coordinates[i], coordinates[i + 1], coordinate) < factory.getDelta()) {
+					double distance = service.distance(coordinates[i], coordinates[i + 1], coordinate);
+					if (distance < GeometryFactory.PARAM_DEFAULT_DELTA) {
 						return true;
 					}
 				}

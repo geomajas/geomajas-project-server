@@ -17,8 +17,9 @@ import java.util.List;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.ScreenGroup;
+import org.geomajas.puregwt.client.map.WorldContainer;
 import org.geomajas.puregwt.client.map.WorldGroup;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -47,11 +48,11 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
-	private HtmlContainer htmlContainer;
+	private HtmlContainerImpl htmlContainer;
 
 	private DrawingArea drawingArea;
 
-	private List<WorldGroup> worldContainers = new ArrayList<WorldGroup>();
+	private List<WorldContainer> worldContainers = new ArrayList<WorldContainer>();
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -62,7 +63,7 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		super();
 
 		// Attach an HtmlContainer inside the clipping area (used for rendering layers):
-		htmlContainer = new HtmlContainer();
+		htmlContainer = new HtmlContainerImpl();
 		add(htmlContainer, 0, 0);
 
 		// Attach a DrawingArea inside the clipping area (used for vector rendering):
@@ -88,7 +89,7 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return this;
 	}
 
-	public HtmlContainer getHtmlContainer() {
+	public HtmlContainerImpl getHtmlContainer() {
 		return htmlContainer;
 	}
 
@@ -131,12 +132,12 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
-	public void removeWorldContainer(WorldGroup container) {
+	public void removeWorldContainer(WorldContainer container) {
 		drawingArea.remove((VectorObject) container);
 		worldContainers.remove(container);
 	}
 
-	public List<WorldGroup> getWorldContainers() {
+	public List<WorldContainer> getWorldContainers() {
 		return worldContainers;
 	}
 

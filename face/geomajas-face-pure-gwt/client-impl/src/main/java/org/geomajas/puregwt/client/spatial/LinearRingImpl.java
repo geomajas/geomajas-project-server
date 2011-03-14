@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.service.MathService;
 
 /**
  * LinearRing client-side GWT object.
@@ -21,30 +20,19 @@ import org.geomajas.puregwt.client.service.MathService;
  */
 public class LinearRingImpl extends LineStringImpl implements LinearRing {
 
-	private static final long serialVersionUID = 4314580899552986922L;
+	private static final long serialVersionUID = 100L;
 
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	LinearRingImpl(GeometryFactory factory) {
-		super(factory, null, null);
-	}
-
-	LinearRingImpl(GeometryFactory factory, MathService service, Coordinate[] coordinates) {
-		super(factory, service, coordinates);
+	LinearRingImpl(Coordinate[] coordinates) {
+		super(coordinates);
 	}
 
 	// -------------------------------------------------------------------------
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
-
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
-	public Object clone() {
-		return getGeometryFactory().createLinearRing(getCoordinates());
-	}
 
 	/**
 	 * Return true.

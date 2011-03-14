@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.TransformationService;
+import org.geomajas.puregwt.client.map.RenderSpace;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
@@ -144,17 +144,13 @@ public abstract class AbstractMapController implements MapController {
 	// Helper functions on mouse events:
 	// -------------------------------------------------------------------------
 
-	protected TransformationService getTransformationService() {
-		return mapPresenter.getMapModel().getViewPort().getTransformationService();
-	}
-
 	protected Coordinate getScreenPosition(MouseEvent<?> event) {
 		return new Coordinate(event.getX(), event.getY());
 	}
 
 	protected Coordinate getWorldPosition(MouseEvent<?> event) {
 		Coordinate coordinate = new Coordinate(event.getX(), event.getY());
-		return getTransformationService().viewToWorld(coordinate);
+		return mapPresenter.getViewPort().transform(coordinate, RenderSpace.SCREEN, RenderSpace.WORLD);
 	}
 
 	protected Element getTarget(MouseEvent<?> event) {

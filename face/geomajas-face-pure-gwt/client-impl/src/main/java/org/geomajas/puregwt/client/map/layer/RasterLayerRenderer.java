@@ -24,8 +24,10 @@ import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
-import org.geomajas.puregwt.client.map.AbstractMapRenderer;
-import org.geomajas.puregwt.client.map.MapModel;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.map.MapRenderer;
+import org.geomajas.puregwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
@@ -37,7 +39,7 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.HtmlImage;
+import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -50,12 +52,14 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * 
  * @author Pieter De Graef
  */
-public class RasterLayerRenderer extends AbstractMapRenderer implements LayerStyleChangedHandler, LayerVisibleHandler {
+public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandler, LayerVisibleHandler {
+
+	private ViewPort viewPort;
+
+	private RasterLayer rasterLayer;
 
 	/** The container that should render all images. */
 	private HtmlContainer htmlContainer;
-
-	private RasterLayer rasterLayer;
 
 	private double mapExentScaleAtFetch = 2;
 
@@ -71,11 +75,11 @@ public class RasterLayerRenderer extends AbstractMapRenderer implements LayerSty
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	protected RasterLayerRenderer(MapModel mapModel, RasterLayer rasterLayer) {
-		super(mapModel);
+	protected RasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer, EventBus eventBus) {
+		this.viewPort = viewPort;
 		this.rasterLayer = rasterLayer;
-		rasterLayer.getMapModel().getEventBus().addHandler(LayerStyleChangedHandler.TYPE, this);
-		rasterLayer.getMapModel().getEventBus().addHandler(LayerVisibleHandler.TYPE, this);
+		eventBus.addHandler(LayerStyleChangedHandler.TYPE, this);
+		eventBus.addHandler(LayerVisibleHandler.TYPE, this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -97,13 +101,13 @@ public class RasterLayerRenderer extends AbstractMapRenderer implements LayerSty
 
 	public void onShow(LayerShowEvent event) {
 		if (event.getLayer().getId().equals(rasterLayer.getId())) {
-			htmlContainer.show();
+			htmlContainer.setVisible(true);
 		}
 	}
 
 	public void onHide(LayerHideEvent event) {
 		if (event.getLayer().getId().equals(rasterLayer.getId())) {
-			htmlContainer.hide();
+			htmlContainer.setVisible(false);
 		}
 	}
 
@@ -150,7 +154,7 @@ public class RasterLayerRenderer extends AbstractMapRenderer implements LayerSty
 
 	public void redraw() {
 		clear();
-		onViewPortChanged(new ViewPortChangedEvent(rasterLayer.getMapModel().getViewPort()));
+		onViewPortChanged(new ViewPortChangedEvent(viewPort));
 	}
 
 	public void setMapExentScaleAtFetch(double mapExentScaleAtFetch) {
@@ -179,9 +183,9 @@ public class RasterLayerRenderer extends AbstractMapRenderer implements LayerSty
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
 		request.setBbox(new org.geomajas.geometry.Bbox(currentTileBounds.getX(), currentTileBounds.getY(),
 				currentTileBounds.getWidth(), currentTileBounds.getHeight()));
-		request.setCrs(rasterLayer.getMapModel().getEpsg());
+		request.setCrs(viewPort.getCrs());
 		request.setLayerId(rasterLayer.getServerLayerId());
-		request.setScale(rasterLayer.getMapModel().getViewPort().getScale());
+		request.setScale(viewPort.getScale());
 		Command command = new Command("command.render.GetRasterTiles");
 		command.setCommandRequest(request);
 
@@ -201,7 +205,7 @@ public class RasterLayerRenderer extends AbstractMapRenderer implements LayerSty
 
 	/** Add tiles to the list and render them on the map. */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles) {
-		Matrix delta = getWorldToPanTranslation();
+		Matrix delta = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.PAN);
 
 		// Go over all tiles we got back from the server:
 		for (RasterTile tile : rasterTiles) {
@@ -215,7 +219,7 @@ public class RasterLayerRenderer extends AbstractMapRenderer implements LayerSty
 
 				// Add the tile to the list and render it:
 				tiles.put(code, tile);
-				HtmlImage image = new HtmlImage(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
+				HtmlImageImpl image = new HtmlImageImpl(tile.getUrl(), (int) Math.round(tile.getBounds().getWidth()),
 						(int) Math.round(tile.getBounds().getHeight()), (int) Math.round(tile.getBounds().getY()),
 						(int) Math.round(tile.getBounds().getX()));
 				image.setOpacity(rasterLayer.getOpacity());

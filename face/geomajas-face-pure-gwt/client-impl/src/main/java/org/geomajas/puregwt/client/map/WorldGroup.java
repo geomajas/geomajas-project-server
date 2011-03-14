@@ -13,7 +13,6 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 import com.google.gwt.user.client.DOM;
 
@@ -44,15 +43,15 @@ public class WorldGroup extends Group implements WorldContainer {
 		this.resizeChildren = resizeChildren;
 	}
 
-	protected void transform(ViewPortImpl viewPortImpl) {
+	public void transform(ViewPort viewPort) {
 		// TODO SVG only atm...
 
 		if (resizeChildren) {
-			Matrix matrix = viewPortImpl.getTransformationService().getWorldToViewTransformation();
-			DOM.setElementAttribute(getElement(), "transform", parse(matrix));			
+			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+			DOM.setElementAttribute(getElement(), "transform", parse(matrix));
 		} else {
 			for (int i = 0; i < getVectorObjectCount(); i++) {
-				VectorObject vo = getVectorObject(i);
+				// VectorObject vo = getVectorObject(i);
 				// TODO implement this...
 			}
 		}

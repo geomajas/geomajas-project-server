@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.junit.Assert;
 
 /**
  * <p>
@@ -54,7 +54,6 @@ public class PolygonTest {
 	public void setUp() {
 		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
-		gwtFactory.setSrid(SRID);
 		LinearRing gwtShell = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
 				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });
 		LinearRing gwtHole = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(12.0, 12.0),
@@ -89,12 +88,12 @@ public class PolygonTest {
 
 	@Test
 	public void getCoordinate() {
-		Assert.assertEquals(jts.getCoordinate().x, gwt.getCoordinate().getX(),DELTA);
+		Assert.assertEquals(jts.getCoordinate().x, gwt.getCoordinate().getX(), DELTA);
 	}
 
 	@Test
 	public void getCoordinates() {
-		Assert.assertEquals(jts.getCoordinates()[6].x, gwt.getCoordinates()[6].getX(),DELTA);
+		Assert.assertEquals(jts.getCoordinates()[6].x, gwt.getCoordinates()[6].getX(), DELTA);
 		Assert.assertEquals(jts.getCoordinates().length, gwt.getCoordinates().length);
 	}
 
@@ -102,10 +101,10 @@ public class PolygonTest {
 	public void getBounds() {
 		Envelope env = jts.getEnvelopeInternal();
 		Bbox bbox = gwt.getBounds();
-		Assert.assertEquals(env.getMinX(), bbox.getX(),DELTA);
-		Assert.assertEquals(env.getMinY(), bbox.getY(),DELTA);
-		Assert.assertEquals(env.getMaxX(), bbox.getMaxX(),DELTA);
-		Assert.assertEquals(env.getMaxY(), bbox.getMaxY(),DELTA);
+		Assert.assertEquals(env.getMinX(), bbox.getX(), DELTA);
+		Assert.assertEquals(env.getMinY(), bbox.getY(), DELTA);
+		Assert.assertEquals(env.getMaxX(), bbox.getMaxX(), DELTA);
+		Assert.assertEquals(env.getMaxY(), bbox.getMaxY(), DELTA);
 	}
 
 	@Test
@@ -115,9 +114,9 @@ public class PolygonTest {
 
 	@Test
 	public void getGeometryN() {
-		Assert.assertEquals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX(),DELTA);
-		Assert.assertEquals(jts.getGeometryN(-1).getCoordinate().x, gwt.getGeometryN(-1).getCoordinate().getX(),DELTA);
-		Assert.assertEquals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX(),DELTA);
+		Assert.assertEquals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX(), DELTA);
+		Assert.assertEquals(jts.getGeometryN(-1).getCoordinate().x, gwt.getGeometryN(-1).getCoordinate().getX(), DELTA);
+		Assert.assertEquals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX(), DELTA);
 	}
 
 	@Test

@@ -11,9 +11,12 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.Geometry;
+import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
  * Central view port definition that determines and influences that position of the map. It allows for zooming in and
@@ -29,12 +32,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 @Api(allMethods = true)
 public interface ViewPort {
 
-	/**
-	 * Returns a transformation service that can transform vector objects between world and screen space.
-	 * 
-	 * @return Returns the transformation service object.
-	 */
-	TransformationService getTransformationService();
+	void initialize(ClientMapInfo mapInfo);
 
 	// -------------------------------------------------------------------------
 	// Methods that retrieve what is visible on the map:
@@ -155,6 +153,8 @@ public interface ViewPort {
 	 */
 	void drag(double x, double y);
 
+	void setMapSize(int mapWidth, int mapHeight);
+
 	/**
 	 * Get the current map width in pixels.
 	 * 
@@ -168,4 +168,81 @@ public interface ViewPort {
 	 * @return The current map height in pixels.
 	 */
 	int getMapHeight();
+
+	/**
+	 * Return the description of the coordinate reference system used in the map. Usually this value returns an EPSG
+	 * code.
+	 * 
+	 * @return The CRS code. Example: 'EPSG:4326'.
+	 */
+	String getCrs();
+
+	// ------------------------------------------------------------------------
+	// ViewPort transformation methods:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Transform the given coordinate from a certain rendering space to another.
+	 * 
+	 * @param coordinate
+	 *            The coordinate to transform. The X and Y ordinates are expected to be expressed in the 'from'
+	 *            rendering space.
+	 * @param from
+	 *            The rendering space that expresses the X and Y ordinates of the given coordinate.
+	 * @param to
+	 *            The rendering space where to the coordinate should be transformed.
+	 * @return The transformed coordinate.
+	 */
+	Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to);
+
+	/**
+	 * Transform the given geometry from a certain rendering space to another.
+	 * 
+	 * @param geometry
+	 *            The geometry to transform. The coordinates are expected to be expressed in the 'from' rendering space.
+	 * @param from
+	 *            The rendering space that expresses the coordinates of the given geometry.
+	 * @param to
+	 *            The rendering space where to the geometry should be transformed.
+	 * @return The transformed geometry.
+	 */
+	Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to);
+
+	/**
+	 * Transform the given bounding box from a certain rendering space to another.
+	 * 
+	 * @param bbox
+	 *            The bounding box to transform. The coordinates are expected to be expressed in the 'from' rendering
+	 *            space.
+	 * @param from
+	 *            The rendering space that expresses the values (x, y, width, height) of the given bounding box.
+	 * @param to
+	 *            The rendering space where to the bounding box should be transformed.
+	 * @return The transformed bounding box.
+	 */
+	Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to);
+
+	/**
+	 * Get the transformation matrix to transform spatial objects from one render space to another. This matrix should
+	 * contain both scale and translation factors.
+	 * 
+	 * @param from
+	 *            The rendering space that describes the origin of the objects to transform.
+	 * @param to
+	 *            The rendering space that describes where to objects should be transformed.
+	 * @return The matrix that describes the requested transformation.
+	 */
+	Matrix getTransformationMatrix(RenderSpace from, RenderSpace to);
+
+	/**
+	 * Get the translation matrix to transform spatial objects from one render space to another. This matrix should
+	 * contain only translation factors, no scaling factors.
+	 * 
+	 * @param from
+	 *            The rendering space that describes the origin of the objects to transform.
+	 * @param to
+	 *            The rendering space that describes where to objects should be transformed.
+	 * @return The matrix that describes the requested transformation.
+	 */
+	Matrix getTranslationMatrix(RenderSpace from, RenderSpace to);
 }

@@ -70,11 +70,21 @@ public interface MapPresenter {
 	ScreenContainer getScreenContainer(String id);
 
 	/**
-	 * Returns the map model for this presenter. This model is the central layer handler for the map.
+	 * Returns the layers model for this presenter. This model is the central layer handler for the map, with methods
+	 * for getting layers, moving them up and down, adding or removing layers, ..
 	 * 
-	 * @return The map model.
+	 * @return The layers model.
 	 */
-	MapModel getMapModel();
+	LayersModel getLayersModel();
+
+	/**
+	 * Returns the {@link ViewPort} associated with this map. The view port regulates zooming and panning around the
+	 * map, but also presents transformation methods for transforming vector objects between the different render
+	 * spaces.
+	 * 
+	 * @return Returns the view port.
+	 */
+	ViewPort getViewPort();
 
 	/**
 	 * Add a new gadget to the map. These gadgets are autonomous entities that can draw themselves in screen space, and

@@ -20,6 +20,7 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
@@ -33,7 +34,11 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * 
  * @author Pieter De Graef
  */
-public class DelegatingMapRenderer extends AbstractMapRenderer {
+public class DelegatingMapRenderer implements MapRenderer {
+
+	private LayersModel layersModel;
+
+	private ViewPort viewPort;
 
 	private HtmlContainer htmlContainer;
 
@@ -43,8 +48,9 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public DelegatingMapRenderer(MapModel mapModel) {
-		super(mapModel);
+	public DelegatingMapRenderer(LayersModel layersModel, ViewPort viewPort) {
+		this.layersModel = layersModel;
+		this.viewPort = viewPort;
 		layerContainers = new HashMap<Layer<?>, HtmlContainer>();
 	}
 
@@ -66,11 +72,11 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onViewPortChanged(ViewPortChangedEvent event) {
-		Matrix translation = getPanToViewTranslation();
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
 		htmlContainer.setTop((int) Math.round(translation.getDy()));
 		htmlContainer.setLeft((int) Math.round(translation.getDx()));
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().onViewPortChanged(event);
@@ -79,11 +85,11 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	}
 
 	public void onViewPortScaled(ViewPortScaledEvent event) {
-		Matrix translation = getPanToViewTranslation();
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
 		htmlContainer.setTop((int) Math.round(translation.getDy()));
 		htmlContainer.setLeft((int) Math.round(translation.getDx()));
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().onViewPortScaled(event);
@@ -92,11 +98,11 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		Matrix translation = getPanToViewTranslation();
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
 		htmlContainer.setTop((int) Math.round(translation.getDy()));
 		htmlContainer.setLeft((int) Math.round(translation.getDx()));
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().onViewPortTranslated(event);
@@ -105,11 +111,11 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	}
 
 	public void onViewPortDragged(ViewPortDraggedEvent event) {
-		Matrix translation = getPanToViewTranslation();
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
 		htmlContainer.setTop((int) Math.round(translation.getDy()));
 		htmlContainer.setLeft((int) Math.round(translation.getDx()));
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().onViewPortDragged(event);
@@ -122,8 +128,8 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void clear() {
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().clear();
@@ -132,8 +138,8 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	}
 
 	public void redraw() {
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().redraw();
@@ -142,8 +148,8 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 	}
 
 	public void setMapExentScaleAtFetch(double scale) {
-		for (int i = 0; i < mapModel.getLayerCount(); i++) {
-			Layer<?> layer = mapModel.getLayer(i);
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((RasterLayer) layer).getRenderer().setMapExentScaleAtFetch(scale);
@@ -163,7 +169,7 @@ public class DelegatingMapRenderer extends AbstractMapRenderer {
 		if (layerContainers.containsKey(layer)) {
 			return layerContainers.get(layer);
 		}
-		HtmlContainer layerContainer = new HtmlContainer(htmlContainer.getWidth(), htmlContainer.getHeight());
+		HtmlContainerImpl layerContainer = new HtmlContainerImpl(htmlContainer.getWidth(), htmlContainer.getHeight());
 		htmlContainer.add(layerContainer);
 		layerContainers.put(layer, layerContainer);
 		return layerContainer;

@@ -12,10 +12,10 @@
 package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.command.CommandService;
-import org.geomajas.puregwt.client.service.MathService;
-import org.geomajas.puregwt.client.service.MathServiceImpl;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
+import org.geomajas.puregwt.client.spatial.MathService;
+import org.geomajas.puregwt.client.spatial.MathServiceImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
@@ -35,6 +35,6 @@ public class GeomajasGinModule extends AbstractGinModule {
 
 		// Spatial services:
 		bind(MathService.class).to(MathServiceImpl.class).in(Singleton.class);
-		bind(GeometryFactory.class).to(GeometryFactoryImpl.class);
+		bind(GeometryFactory.class).to(GeometryFactoryImpl.class).in(Singleton.class);
 	}
 }

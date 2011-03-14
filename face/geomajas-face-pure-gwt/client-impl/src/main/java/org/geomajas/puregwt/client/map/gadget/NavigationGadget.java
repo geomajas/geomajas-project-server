@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map.gadget;
 
 import org.geomajas.puregwt.client.map.MapGadget;
+import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ZoomOption;
@@ -338,7 +339,7 @@ public class NavigationGadget implements MapGadget {
 					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT && dragging) {
 						dragging = false;
 						if (screenBounds != null) {
-							Bbox worldBounds = viewPort.getTransformationService().viewToWorld(screenBounds);
+							Bbox worldBounds = viewPort.transform(screenBounds, RenderSpace.SCREEN, RenderSpace.WORLD);
 							viewPort.applyBounds(worldBounds, ZoomOption.LEVEL_CHANGE);
 						}
 					}

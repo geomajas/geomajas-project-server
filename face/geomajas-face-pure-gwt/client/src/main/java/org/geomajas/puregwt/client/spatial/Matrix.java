@@ -13,87 +13,22 @@ package org.geomajas.puregwt.client.spatial;
 
 /**
  * <p>
- * A very simple matrix class, that is actually nothing more then a POJO object.
+ * A very simple matrix definition.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public class Matrix {
+public interface Matrix {
 
-	private double xx;
+	double getXx();
 
-	private double xy;
+	double getXy();
 
-	private double yx;
+	double getYx();
 
-	private double yy;
+	double getYy();
 
-	private double dx;
+	double getDx();
 
-	private double dy;
-
-	// Constructors:
-
-	/**
-	 * The default constructor initializes everything to 0.
-	 */
-	public Matrix() {
-		this.xx = 0;
-		this.xy = 0;
-		this.yx = 0;
-		this.yy = 0;
-		this.dx = 0;
-		this.dy = 0;
-	}
-
-	/**
-	 * Initialize this matrix with all it's fields.
-	 * 
-	 * @param xx
-	 * @param xy
-	 * @param yx
-	 * @param yy
-	 * @param dx
-	 * @param dy
-	 */
-	public Matrix(double xx, double xy, double yx, double yy, double dx, double dy) {
-		this.xx = xx;
-		this.xy = xy;
-		this.yx = yx;
-		this.yy = yy;
-		this.dx = dx;
-		this.dy = dy;
-	}
-
-	// Public methods:
-
-	public String toString() {
-		return "[" + xx + ", " + xy + ", " + yx + ", " + yy + ", " + dx + ", " + dy + "]";
-	}
-
-	// Getters:
-
-	public double getXx() {
-		return xx;
-	}
-
-	public double getXy() {
-		return xy;
-	}
-
-	public double getYx() {
-		return yx;
-	}
-
-	public double getYy() {
-		return yy;
-	}
-
-	public double getDx() {
-		return dx;
-	}
-
-	public double getDy() {
-		return dy;
-	}
+	double getDy();
 }
