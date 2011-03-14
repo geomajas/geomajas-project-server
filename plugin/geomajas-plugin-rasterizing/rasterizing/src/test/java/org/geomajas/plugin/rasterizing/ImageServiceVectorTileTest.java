@@ -299,7 +299,7 @@ public class ImageServiceVectorTileTest {
 		ImageInfo info = new ImageInfo();
 		info.setHeight(32);
 		info.setWidth(46);
-		info.setHref("org/geomajas/plugin/rasterizing/images/point.png");
+		info.setHref("org/geomajas/plugin/rasterizing/images/imageservice/vectortile/point.png");
 		return info;
 	}
 
