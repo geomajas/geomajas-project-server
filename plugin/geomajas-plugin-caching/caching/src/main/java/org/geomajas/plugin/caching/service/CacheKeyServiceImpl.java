@@ -105,6 +105,8 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 			return ((Geometry) value).toText();
 		} else if (value instanceof Filter) {
 			return value.toString();
+		} else if (value instanceof Integer) {
+			return Integer.toString((Integer) value);
 		} else if (value instanceof String) {
 			return value.toString();
 		} else {
