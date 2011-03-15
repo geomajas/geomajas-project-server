@@ -13,6 +13,7 @@
 <module>
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>
+	<inherits name="org.geomajas.plugin.rasterizing.Rasterizing"/>
 	<inherits name="com.smartclient.theme.graphite.Graphite"/>
 
 	<!-- add required languages
