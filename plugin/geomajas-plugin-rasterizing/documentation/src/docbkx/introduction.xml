@@ -76,8 +76,8 @@
     only drawn in one of the tiles<footnote>
         <para>This is needed for SVG and VML rendering to avoid such features
         being drawn twice. Features are included in the tile which contains
-        the first point of the geometry or (if the first point is not inside a
-        tile) to the super-tile.</para>
+        the first point of the geometry or (if the first point is not inside
+        the layer maximum bounds) to the super-tile.</para>
       </footnote>. For rasterization this is not necessary, as drawing cannot
     span the tile boundary.</para>
 
@@ -93,7 +93,7 @@
           <para>if the rasterizing needs to be done now:<itemizedlist>
               <listitem>
                 <para>build the rasterized tile image by calling the
-                RasterizingService.</para>
+                ImageService (see next chapter).</para>
               </listitem>
 
               <listitem>
@@ -156,19 +156,67 @@
   </section>
 
   <section>
-    <title>Rasterizing service</title>
+    <title>The image and rendering services</title>
 
-    <para>The actual work of rasterizing the vector data to an image is done
-    by the RasterizingService. This service has a single method, taking a
-    number of contextual parameters and an output stream to write the image
-    to:</para>
+    <para>The rasterization process has an application-level service, called
+    <code>ImageService</code> ,which has methods for creating a legend and map
+    image. This service internally calls a pipeline with three steps. The most
+    important step, and the step which is responsible for the actual
+    rendering, is the <code>RenderMapStep</code>, This step uses itself a
+    <code>RenderingService</code>, which is primarily a wrapper of the
+    Geotools <code>StreamRenderer</code> class.</para>
 
-    <para><programlisting>public interface RasterizingService {
+    <para>Our rasterization is based on the Geotools rasterization approach.
+    In this approach, a map context is constructed that contains all the
+    necessary information to rasterize a map. A map context contains the
+    following components:</para>
 
-   void rasterize(OutputStream stream, VectorLayer layer, NamedStyleInfo style, TileMetadata metadata,InternalTile tile) 
-        throws GeomajasException, IOException;
+    <itemizedlist>
+      <listitem>
+        <para>A list of layers: layers can be ordinary vector layers, raster
+        layers or so-called direct layers, which are responsible for their own
+        rendering.</para>
+      </listitem>
 
-}</programlisting>There is currently one implementation available of this
-    service, based on the GeoTools library.</para>
+      <listitem>
+        <para>A view port: a view port contains an area of interest and a
+        screen area. It provides the transformation between map an screen
+        coordinates.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The actual rasterization happens by passing the map context to the
+    <code>RenderingService</code> along with a <code>Graphics2D</code> object
+    for drawing (usually to an internal buffer).</para>
+
+    <para>The following picture shows the services and the interaction with
+    pipeline steps and factories:</para>
+
+    <figure>
+      <title>Image service</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/imageservice.png" width="50%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The image service can be used to rasterize single tiles or complete
+    maps, depending on the composition of the map context. The
+    <code>ImageService</code> does not directly take a map context as an
+    argument, but expects a <code>ClientMapInfo</code> DTO object
+    instead:</para>
+
+    <programlisting>public interface ImageService {
+
+    void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
+
+    void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
+
+}</programlisting>
+
+    <para>The <code>ClientMapInfo</code> DTO object has been extended a bit to
+    include all the rasterization information needed.</para>
   </section>
 </chapter>

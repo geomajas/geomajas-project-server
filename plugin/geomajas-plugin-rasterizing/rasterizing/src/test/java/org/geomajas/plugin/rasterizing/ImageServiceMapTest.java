@@ -2,9 +2,7 @@ package org.geomajas.plugin.rasterizing;
 
 import java.io.OutputStream;
 
-import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -15,10 +13,10 @@ import org.geomajas.layer.LayerType;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.ImageService;
-import org.geomajas.plugin.rasterizing.dto.GeometryLayerInfo;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.Before;
@@ -136,16 +134,13 @@ public class ImageServiceMapTest {
 		mapRasterizingInfo.setTransparent(true);
 		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
 
-		GeometryLayerInfo geo = new GeometryLayerInfo();
+		ClientGeometryLayerInfo geo = new ClientGeometryLayerInfo();
 		Geometry point = new Geometry(Geometry.POINT, 4326, 5);
 		point.setCoordinates(new Coordinate[] { new Coordinate(20, 50) });
 		geo.getGeometries().add(point);
 		geo.setStyle(layerBeansPointStyleInfo.getFeatureStyles().get(0));
 		geo.setLayerType(LayerType.POINT);
-		ClientVectorLayerInfo cl1 = new ClientVectorLayerInfo();
-		cl1.setLayerInfo(geo);
-		cl1.setLabel("geometry");
-		mapInfo.getLayers().add(cl1);
+		mapInfo.getLayers().add(geo);
 		new MapAssert(mapInfo).assertEqual("geometry.png", writeImages);
 	}
 
@@ -165,7 +160,7 @@ public class ImageServiceMapTest {
 		rr1.setCssStyle("opacity:0.5");
 		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
 		mapInfo.getLayers().add(cl1);
-		new MapAssert(mapInfo).assertEqual("oneraster.png", true);
+		new MapAssert(mapInfo).assertEqual("oneraster.png", writeImages);
 	}
 
 	class MapAssert extends TestPathBinaryStreamAssert {

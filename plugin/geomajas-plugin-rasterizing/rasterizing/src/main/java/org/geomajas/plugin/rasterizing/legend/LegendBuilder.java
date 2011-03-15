@@ -14,10 +14,13 @@ import javax.swing.JComponent;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 
 /**
  * Builder class for legend.
@@ -27,9 +30,12 @@ import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
  */
 public class LegendBuilder {
 
-	public JComponent buildComponentTree(LegendRasterizingInfo legendRasterizingInfo) {
+	public JComponent buildComponentTree(ClientMapInfo clientMapInfo) {
+		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) clientMapInfo
+				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
+		LegendRasterizingInfo legendRasterizingInfo = mapRasterizingInfo.getLegendRasterizingInfo();
 		LegendPanel legendPanel = new LegendPanel(legendRasterizingInfo.getTitle());
-		for (ClientLayerInfo layer : legendRasterizingInfo.getMapInfo().getLayers()) {
+		for (ClientLayerInfo layer : clientMapInfo.getLayers()) {
 			if (layer instanceof ClientVectorLayerInfo) {
 				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) layer;
 				VectorLayerRasterizingInfo vectorRasterizingInfo = (VectorLayerRasterizingInfo) vectorLayer

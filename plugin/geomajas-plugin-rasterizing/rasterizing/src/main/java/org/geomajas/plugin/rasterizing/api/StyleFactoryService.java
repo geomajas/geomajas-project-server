@@ -11,18 +11,21 @@
 package org.geomajas.plugin.rasterizing.api;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geotools.styling.Style;
 
 /**
  * Factory for creating Geotools styles based on Geomajas metadata.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface StyleFactoryService {
 
 	/**

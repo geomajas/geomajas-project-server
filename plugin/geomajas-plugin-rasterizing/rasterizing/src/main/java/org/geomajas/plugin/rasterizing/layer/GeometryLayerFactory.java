@@ -15,7 +15,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
-import org.geomajas.plugin.rasterizing.dto.GeometryLayerInfo;
+import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
@@ -38,16 +38,17 @@ public class GeometryLayerFactory implements LayerFactory {
 	private DtoConverterService converterService;
 
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
-		return clientLayerInfo.getLayerInfo() instanceof GeometryLayerInfo;
+		return clientLayerInfo instanceof ClientGeometryLayerInfo;
 	}
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
-		GeometryLayerInfo layerInfo = (GeometryLayerInfo) clientLayerInfo.getLayerInfo();
+		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;
 		GeometryDirectLayer layer = new GeometryDirectLayer(styleFactoryService.createStyle(layerInfo.getLayerType(),
 				layerInfo.getStyle()));
 		for (Geometry geom : layerInfo.getGeometries()) {
 			layer.getGeometries().add(converterService.toInternal(geom));
 		}
+		layer.getUserData().put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
 		return layer;
 	}
 

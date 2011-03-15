@@ -12,6 +12,7 @@ package org.geomajas.plugin.rasterizing.api;
 
 import java.awt.Graphics2D;
 
+import org.geomajas.global.Api;
 import org.geotools.map.MapContext;
 
 /**
@@ -19,8 +20,10 @@ import org.geotools.map.MapContext;
  * the Geotools renderer.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface RenderingService {
 
 	/**

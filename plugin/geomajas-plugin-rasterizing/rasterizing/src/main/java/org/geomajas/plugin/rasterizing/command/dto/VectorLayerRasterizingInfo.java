@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.rasterizing.dto;
+package org.geomajas.plugin.rasterizing.command.dto;
 
 import java.util.Map;
 
@@ -16,13 +16,16 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.global.Api;
 
 /**
- * Metadata DTO class that carries sufficient information to render a vector layer.
+ * Metadata DTO class that carries extra metadata information to render a vector layer.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public class VectorLayerRasterizingInfo implements ClientWidgetInfo, RasterizingConstants {
 
 	private NamedStyleInfo style;
@@ -40,6 +43,9 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 
 	// default paint geometries
 	private boolean paintGeometries = true;
+
+	// default showing
+	private boolean showing = true;
 
 	/**
 	 * Returns the style to be applied to this layer.
@@ -173,6 +179,25 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	 */
 	public void setSelectedFeatureIds(String[] selectedFeatureIds) {
 		this.selectedFeatureIds = selectedFeatureIds;
+	}
+
+	/**
+	 * Get the showing status of this layer. If true, the layer will be rendered, if false not.
+	 * 
+	 * @return The showing status of this layer
+	 */
+	public boolean isShowing() {
+		return showing;
+	}
+
+	/**
+	 * Sets the showing status of this layer. If true, the layer will be rendered, if false not.
+	 * 
+	 * @param showing
+	 *            showing status of this layer
+	 */
+	public void setShowing(boolean showing) {
+		this.showing = showing;
 	}
 
 }

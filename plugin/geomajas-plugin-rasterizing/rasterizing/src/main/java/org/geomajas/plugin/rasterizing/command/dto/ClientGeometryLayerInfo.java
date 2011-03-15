@@ -8,26 +8,36 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.rasterizing.dto;
+package org.geomajas.plugin.rasterizing.command.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.LayerInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
+import org.geomajas.layer.LayerType;
 
 /**
- * Metadata DTO class that carries sufficient information to render geometries in world space.
+ * Metadata DTO class that represents a client layer with arbitrary geometries in world space. This layer has no
+ * server-side equivalent.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
-public class GeometryLayerInfo extends LayerInfo {
+@Api(allMethods = true)
+public class ClientGeometryLayerInfo extends ClientLayerInfo {
 
 	private List<Geometry> geometries = new ArrayList<Geometry>();
 
 	private FeatureStyleInfo style;
+
+	// default showing
+	private boolean showing = true;
+	
+	private LayerType layerType;
 
 	/**
 	 * Returns the style of the geometries.
@@ -60,10 +70,49 @@ public class GeometryLayerInfo extends LayerInfo {
 	/**
 	 * Sets the list of geometries to be rendered.
 	 * 
-	 * @param geometries the list of geometries
+	 * @param geometries
+	 *            the list of geometries
 	 */
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
 	}
+
+	/**
+	 * Get the showing status of this layer. If true, the layer will be rendered, if false not.
+	 * 
+	 * @return The showing status of this layer
+	 */
+	public boolean isShowing() {
+		return showing;
+	}
+
+	/**
+	 * Sets the showing status of this layer. If true, the layer will be rendered, if false not.
+	 * 
+	 * @param showing
+	 *            showing status of this layer
+	 */
+	public void setShowing(boolean showing) {
+		this.showing = showing;
+	}
+	
+	/**
+	 * Set the layer type of this layer's geometries.
+	 * 
+	 * @param layerType layer type
+	 */
+	public void setLayerType(LayerType layerType) {
+		this.layerType = layerType;
+	}
+
+	/**
+	 * Get the type of this layer's geometries.
+	 * 
+	 * @return layer type
+	 */
+	public LayerType getLayerType() {
+		return layerType;
+	}
+	
 
 }

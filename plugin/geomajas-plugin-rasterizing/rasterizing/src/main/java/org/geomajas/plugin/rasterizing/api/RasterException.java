@@ -10,14 +10,17 @@
  */
 package org.geomajas.plugin.rasterizing.api;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 
 /**
  * Exception class for the rasterizing plugin.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public class RasterException extends GeomajasException {
 
 	public static final int IMAGE_WRITING_FAILED = 1;

@@ -54,6 +54,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${rasterizing-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -70,6 +78,19 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.1</version>
@@ -79,6 +100,7 @@
 
 	<modules>
 		<module>rasterizing</module>
+		<module>rasterizing-gwt</module>
 		<module>rasterizing-gwt-example</module>
 	</modules>
 
@@ -112,6 +134,7 @@
 
 	<properties>
 		<rasterizing-backend-version>1.9.0-SNAPSHOT</rasterizing-backend-version>
+		<rasterizing-gwt-version>1.9.0-SNAPSHOT</rasterizing-gwt-version>
 		<rasterizing-caching-version>1.0.0-SNAPSHOT</rasterizing-caching-version>
 	</properties>
 </project>

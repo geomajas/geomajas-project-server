@@ -21,7 +21,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.FilterService;
 import org.geotools.feature.NameImpl;
 import org.geotools.styling.ExternalGraphic;
@@ -92,7 +92,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
 				fts.setName(featureStyle.getName());
 				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
-				if (featureStyle.getFormula() != null) {
+				if (featureStyle.getFormula() != null && featureStyle.getFormula().length() > 0) {
 					fts.rules().get(0).setFilter(filterService.parseFilter(featureStyle.getFormula()));
 				} else {
 					fts.rules().get(0).setFilter(Filter.INCLUDE);

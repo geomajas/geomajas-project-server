@@ -13,6 +13,8 @@ package org.geomajas.plugin.rasterizing.mvc;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.ConfigurationService;
@@ -30,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Controller which serves the actual rasterized images.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @Controller("/rasterizing/**")
@@ -44,9 +46,12 @@ public class RasterizingController {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@RequestMapping(value = "/rasterizing/{layerId}/{key}.png", method = RequestMethod.GET)
-	public void getImage(@PathVariable String layerId, @PathVariable String key,
-			HttpServletResponse response) throws Exception {
+	@Autowired
+	private CacheManagerService cacheManagerService;
+
+	@RequestMapping(value = "/rasterizing/layer/{layerId}/{key}.png", method = RequestMethod.GET)
+	public void getImage(@PathVariable String layerId, @PathVariable String key, HttpServletResponse response)
+			throws Exception {
 
 		try {
 			PipelineContext context = pipelineService.createContext();
@@ -65,5 +70,20 @@ public class RasterizingController {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 	}
-	
+
+	@RequestMapping(value = "/rasterizing/image/{key}.png", method = RequestMethod.GET)
+	public void getMap(@PathVariable String key, HttpServletResponse response) throws Exception {
+		try {
+			RasterizingContainer rasterizeContainer = (RasterizingContainer) cacheManagerService.get(null,
+					CacheCategory.RASTER, key);
+			// Prepare the response:
+			CacheFilter.configureNoCaching(response);
+			response.setContentType("image/png");
+			response.getOutputStream().write(rasterizeContainer.getImage());
+		} catch (Exception e) {
+			log.error("Could not rasterize image " + key, e);
+			response.sendError(HttpServletResponse.SC_NO_CONTENT);
+		}
+	}
+
 }

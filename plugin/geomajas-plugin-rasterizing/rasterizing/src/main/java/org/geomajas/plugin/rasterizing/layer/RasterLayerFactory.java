@@ -19,7 +19,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.service.ConfigurationService;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
@@ -59,6 +59,7 @@ public class RasterLayerFactory implements LayerFactory {
 				areaOfInterest.getCoordinateReferenceSystem(), areaOfInterest, rasterScale);
 		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, layer.getLayerInfo().getTileWidth(), layer
 				.getLayerInfo().getTileHeight(), extraInfo.getCssStyle());
+		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return rasterLayer;
 	}
 

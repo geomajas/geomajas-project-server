@@ -58,7 +58,7 @@ public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 		String cacheKey = context.get(RasterizingPipelineCode.IMAGE_ID_KEY, String.class);
 		StringBuilder url = new StringBuilder(200);
 		url.append(dispatcherUrlService.getDispatcherUrl());
-		url.append("/rasterizing/");
+		url.append("/rasterizing/layer/");
 		url.append(layerId);
 		url.append("/");
 		url.append(cacheKey);

@@ -8,19 +8,22 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.rasterizing.dto;
+package org.geomajas.plugin.rasterizing.client.image;
 
 /**
- * 
- * Global constants used in this plugin.
+ * Callback invoked after image generation on the server.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface RasterizingConstants {
+public interface ImageUrlCallback {
 
 	/**
-	 * The key string for the extra widget info.
+	 * Called when the images are generated.
+	 * 
+	 * @param mapUrl url to access the map image
+	 * @param legendUrl url to access the legend image
 	 */
-	String WIDGET_KEY = "org.geomajas.plugin.rasterizing";
+	void onImageUrl(String mapUrl, String legendUrl);
+
 }

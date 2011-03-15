@@ -11,10 +11,6 @@
 
 package org.geomajas.plugin.rasterizing;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.geomajas.command.dto.GetVectorTileRequest;
@@ -27,7 +23,6 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
-import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
@@ -119,9 +114,9 @@ public class RasterizingPipelineTest {
 		tile = vectorLayerService.getTile(metadata);
 		// find the key
 		String url = tile.getFeatureContent();
-		Assert.assertTrue(url.startsWith("http://test/rasterizing/beans/"));
+		Assert.assertTrue(url.startsWith("http://test/rasterizing/layer/beans/"));
 		Assert.assertTrue(url.contains("?"));
-		String key = url.substring("http://test/rasterizing/beans/".length(), url.indexOf(".png"));
+		String key = url.substring("http://test/rasterizing/layer/beans/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeans, CacheCategory.RASTER, key);
 		Assert.assertNotNull("Missing raster in cache", o);
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -151,9 +146,9 @@ public class RasterizingPipelineTest {
 		tile = vectorLayerService.getTile(metadata);
 		// find the key
 		String url = tile.getFeatureContent();
-		Assert.assertTrue(url.startsWith("http://test/rasterizing/layerBeansPoint/"));
+		Assert.assertTrue(url.startsWith("http://test/rasterizing/layer/layerBeansPoint/"));
 		Assert.assertTrue(url.contains("?"));
-		String key = url.substring("http://test/rasterizing/layerBeansPoint/".length(), url.indexOf(".png"));
+		String key = url.substring("http://test/rasterizing/layer/layerBeansPoint/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeansPoint, CacheCategory.RASTER, key);
 		Assert.assertNull("Unexpected raster in cache", o);
 

@@ -21,10 +21,12 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.LayerFactoryService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -65,10 +67,22 @@ public class AddLayersStep extends AbstractRasterizingStep {
 		mapContext.getViewport().setBounds(mapArea);
 		mapContext.getViewport().setCoordinateReferenceSystem(mapCrs);
 		mapContext.getViewport().setScreenArea(paintArea);
-		// add the layers
+		// add the configured layers
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {
+			clientLayerInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
 			Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
-			mapContext.addLayer(layer);
+			boolean showing = (Boolean) layer.getUserData().get(LayerFactory.USERDATA_KEY_SHOWING);
+			if (showing) {
+				mapContext.addLayer(layer);
+			}
+		}
+		// add the extra layers
+		for (ClientLayerInfo clientLayerInfo : mapRasterizingInfo.getExtraLayers()) {
+			Layer layer = layerFactoryService.createLayer(mapContext, clientLayerInfo);
+			boolean showing = (Boolean) layer.getUserData().get(LayerFactory.USERDATA_KEY_SHOWING);
+			if (showing) {
+				mapContext.addLayer(layer);
+			}
 		}
 		BufferedImage image = createImage(paintArea.width, paintArea.height, mapRasterizingInfo.isTransparent());
 		Graphics2D graphics = getGraphics(image, mapRasterizingInfo.isTransparent(), renderingHints);

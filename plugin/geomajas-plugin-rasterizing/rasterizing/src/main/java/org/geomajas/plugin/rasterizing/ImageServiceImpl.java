@@ -25,8 +25,7 @@ import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.api.RasterException;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -78,9 +77,9 @@ public class ImageServiceImpl implements ImageService {
 		}
 	}
 
-	public void writeLegend(OutputStream stream, LegendRasterizingInfo legendRasterizingInfo) throws GeomajasException {
+	public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
 		LegendBuilder renderer = new LegendBuilder();
-		JComponent c = renderer.buildComponentTree(legendRasterizingInfo);
+		JComponent c = renderer.buildComponentTree(clientMapInfo);
 		BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics2D graphics = image.createGraphics();
 		RenderingHints renderingHints = new Hints();

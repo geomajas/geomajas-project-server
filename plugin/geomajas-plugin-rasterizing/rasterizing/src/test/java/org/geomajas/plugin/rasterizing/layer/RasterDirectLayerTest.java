@@ -2,15 +2,13 @@ package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -38,7 +36,7 @@ public class RasterDirectLayerTest {
 	private RasterLayer layerBluemarble;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterlayer";
 

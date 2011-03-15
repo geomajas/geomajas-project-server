@@ -8,26 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.rasterizing.dto;
+package org.geomajas.plugin.rasterizing.command.dto;
 
 import java.io.Serializable;
 
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.Api;
 
 /**
  * Metadata DTO class that carries sufficient information to render a complete legend.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public class LegendRasterizingInfo implements Serializable {
 
 	private FontStyleInfo font;
 
 	private String title;
-
-	private ClientMapInfo mapInfo;
 
 	/**
 	 * Returns the font style of this legend.
@@ -64,25 +64,6 @@ public class LegendRasterizingInfo implements Serializable {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	/**
-	 * Return the map for which this legend applies.
-	 * 
-	 * @return the map
-	 */
-	public ClientMapInfo getMapInfo() {
-		return mapInfo;
-	}
-
-	/**
-	 * Sets the map for which this legend applies.
-	 * 
-	 * @param mapInfo
-	 *            the map
-	 */
-	public void setMapInfo(ClientMapInfo mapInfo) {
-		this.mapInfo = mapInfo;
 	}
 
 }

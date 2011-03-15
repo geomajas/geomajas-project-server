@@ -12,8 +12,10 @@
 package org.geomajas.plugin.rasterizing.api;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.global.UserImplemented;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 
@@ -22,9 +24,14 @@ import org.geotools.map.MapContext;
  * factory. Use the {@link LayerFactoryService} component as an entry point for iterating over all configured factories.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
+@UserImplemented
 @ExpectAlternatives
 public interface LayerFactory {
+
+	String USERDATA_KEY_SHOWING = "geomajas.rasterizing.showing";
 
 	/**
 	 * Returns true if this factory is capable of creating layer instances for the specified metadata.

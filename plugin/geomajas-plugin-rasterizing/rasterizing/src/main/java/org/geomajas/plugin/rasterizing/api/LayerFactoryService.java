@@ -16,9 +16,10 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 
 /**
- * Service that acts as an netry point for creating renderable layers.
+ * Service that acts as an entry point for creating renderable layers.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 public interface LayerFactoryService {

@@ -4,22 +4,17 @@ import java.io.OutputStream;
 
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.layer.LayerType;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.ImageService;
-import org.geomajas.plugin.rasterizing.dto.GeometryLayerInfo;
-import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.RasterLayerRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.Before;
@@ -118,27 +113,27 @@ public class ImageServiceLegendTest {
 		mapInfo.getLayers().add(cl3);
 
 
-		LegendRasterizingInfo legend = new LegendRasterizingInfo();
-		legend.setMapInfo(mapInfo);
-		legend.setFont(new FontStyleInfo());
-		legend.getFont().applyDefaults();
-		legend.getFont().setSize(12);
-		legend.getFont().setFamily("courier");
-		legend.setTitle("legend");
-		new LegendAssert(legend).assertEqual("legend.png", true);
+		LegendRasterizingInfo legendRasterizingInfo = new LegendRasterizingInfo();
+		legendRasterizingInfo.setFont(new FontStyleInfo());
+		legendRasterizingInfo.getFont().applyDefaults();
+		legendRasterizingInfo.getFont().setSize(12);
+		legendRasterizingInfo.getFont().setFamily("courier");
+		legendRasterizingInfo.setTitle("legend");
+		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
+		new LegendAssert(mapInfo).assertEqual("legend.png", writeImages);
 	}
 
 	class LegendAssert extends TestPathBinaryStreamAssert {
 
-		private LegendRasterizingInfo legend;
+		private ClientMapInfo map;
 
-		public LegendAssert(LegendRasterizingInfo legend){
+		public LegendAssert(ClientMapInfo map){
 			super(IMAGE_CLASS_PATH);
-			this.legend = legend;
+			this.map = map;
 		}
 
 		public void generateActual(OutputStream out) throws Exception {
-			imageService.writeLegend(out, legend);
+			imageService.writeLegend(out, map);
 		}
 
 	}

@@ -29,7 +29,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -97,6 +97,7 @@ public class VectorLayerFactory implements LayerFactory {
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, extraInfo));
+		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return featureLayer;
 	}
 

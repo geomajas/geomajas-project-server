@@ -63,6 +63,13 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geotools-all</artifactId>
+				<version>1.8.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
 				<version>1.11.4</version>
@@ -96,7 +103,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
+			<artifactId>geomajas-plugin-rasterizing-gwt</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
@@ -225,7 +232,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>src/main/webapp/Application</directory>
+							<directory>src/main/webapp/org.geomajas.Application</directory>
 						</fileset>
 					</filesets>
 				</configuration>

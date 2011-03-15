@@ -13,15 +13,17 @@ package org.geomajas.plugin.rasterizing.api;
 import java.io.OutputStream;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.plugin.rasterizing.dto.LegendRasterizingInfo;
 
 /**
  * Service to render maps and legends as images.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface ImageService {
 
 	/**
@@ -41,11 +43,11 @@ public interface ImageService {
 	 * 
 	 * @param stream
 	 *            output stream
-	 * @param legendRasterizingInfo
-	 *            metadata of the legend
+	 * @param clientMapInfo
+	 *            metadata of the map
 	 * @throws GeomajasException
 	 *             thrown when the stream could not be written
 	 */
-	void writeLegend(OutputStream stream, LegendRasterizingInfo legendRasterizingInfo) throws GeomajasException;
+	void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
 
 }

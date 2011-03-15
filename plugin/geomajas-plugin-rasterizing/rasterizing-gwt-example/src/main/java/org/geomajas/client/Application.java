@@ -20,6 +20,7 @@ import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.plugin.rasterizing.client.action.toolbar.GetMapImageAction;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.smartgwt.client.types.VisibilityMode;
@@ -86,6 +87,9 @@ public class Application implements EntryPoint {
 				title.setWidth(260);
 				toolbar.addFill();
 				toolbar.addMember(title);
+				GetMapImageAction getMapImage = new GetMapImageAction(map);
+				toolbar.addSeparator();
+				toolbar.addActionButton(getMapImage);
 			}
 		});
 
@@ -104,7 +108,7 @@ public class Application implements EntryPoint {
 		// Add a search panel to the top-right of the map:
 		SearchPanel searchPanel = new SearchPanel(map.getMapModel(), mapLayout);
 		mapLayout.addChild(searchPanel);
-		
+
 		// ---------------------------------------------------------------------
 		// Create the right-side (overview map, layer-tree, legend):
 		// ---------------------------------------------------------------------

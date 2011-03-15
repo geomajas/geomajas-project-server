@@ -24,8 +24,8 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
@@ -95,7 +95,7 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		clientVectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
 		mapInfo.getLayers().add(clientVectorLayerInfo);
 
-		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
+		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(1024 * 10);
 		try {
 			imageService.writeMap(imageStream, mapInfo);
 			// rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tileContainer.getTile());

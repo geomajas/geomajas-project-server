@@ -2,20 +2,18 @@ package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
-import org.geomajas.plugin.rasterizing.dto.GeometryLayerInfo;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
@@ -52,13 +50,10 @@ public class GeometryDirectLayerTest {
 
 	@Test
 	public void testPolygon() throws Exception {
-		GeometryLayerInfo geo = new GeometryLayerInfo();
+		ClientGeometryLayerInfo geo = new ClientGeometryLayerInfo();
 		geo.getGeometries().add(createPolygon());
 		geo.setStyle(createPolygonStyle());
 		geo.setLayerType(LayerType.POLYGON);
-		ClientVectorLayerInfo cl1 = new ClientVectorLayerInfo();
-		cl1.setLayerInfo(geo);
-		cl1.setLabel("polygon");
 
 		ClientMapInfo mapInfo = new ClientMapInfo();
 		mapInfo.setCrs("EPSG:4326");
@@ -74,7 +69,7 @@ public class GeometryDirectLayerTest {
 				new ReferencedEnvelope(0, 100, 0, 100, mapContext.getCoordinateReferenceSystem()));
 		mapContext.getViewport().setCoordinateReferenceSystem(mapContext.getCoordinateReferenceSystem());
 		mapContext.getViewport().setScreenArea(new Rectangle(0, 0, 100, 100));
-		GeometryDirectLayer layer = (GeometryDirectLayer) layerFactory.createLayer(mapContext, cl1);
+		GeometryDirectLayer layer = (GeometryDirectLayer) layerFactory.createLayer(mapContext, geo);
 		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
 		layer.draw(image.createGraphics(), mapContext, mapContext.getViewport());
 		new DirectLayerAssert(layer, mapContext).assertEqual("polygon.png", writeImages);

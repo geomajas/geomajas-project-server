@@ -1,7 +1,5 @@
 package org.geomajas.plugin.rasterizing;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import org.geomajas.configuration.CircleInfo;
@@ -13,11 +11,10 @@ import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.ImageService;
-import org.geomajas.plugin.rasterizing.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.Before;
@@ -76,7 +73,7 @@ public class ImageServiceVectorTileTest {
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
 
@@ -284,6 +281,7 @@ public class ImageServiceVectorTileTest {
 		mapRasterizingInfo.setScale(1);
 		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
 		ClientVectorLayerInfo clientVectorLayerInfo = new ClientVectorLayerInfo();
+		clientVectorLayerInfo.setVisible(true);
 		clientVectorLayerInfo.setServerLayerId(layer.getId());
 		clientVectorLayerInfo.setNamedStyleInfo(styleInfo);
 		VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();

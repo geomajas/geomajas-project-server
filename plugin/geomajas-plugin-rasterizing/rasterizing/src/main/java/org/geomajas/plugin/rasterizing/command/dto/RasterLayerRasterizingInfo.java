@@ -8,19 +8,25 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.rasterizing.dto;
+package org.geomajas.plugin.rasterizing.command.dto;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.global.Api;
 
 /**
- * Metadata DTO class that carries sufficient information to render a raster layer.
+ * Metadata DTO class that carries extra metadata information to render a raster layer.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public class RasterLayerRasterizingInfo implements ClientWidgetInfo, RasterizingConstants {
 
 	private String cssStyle;
+
+	// default showing
+	private boolean showing = true;
 
 	/**
 	 * Returns the css style to be applied to this layer.
@@ -39,6 +45,25 @@ public class RasterLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	 */
 	public void setCssStyle(String cssStyle) {
 		this.cssStyle = cssStyle;
+	}
+
+	/**
+	 * Get the showing status of this layer. If true, the layer will be rendered, if false not.
+	 * 
+	 * @return The showing status of this layer
+	 */
+	public boolean isShowing() {
+		return showing;
+	}
+
+	/**
+	 * Sets the showing status of this layer. If true, the layer will be rendered, if false not.
+	 * 
+	 * @param showing
+	 *            showing status of this layer
+	 */
+	public void setShowing(boolean showing) {
+		this.showing = showing;
 	}
 
 }
