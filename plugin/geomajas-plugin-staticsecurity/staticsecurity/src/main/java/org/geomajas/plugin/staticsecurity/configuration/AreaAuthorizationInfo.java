@@ -63,6 +63,10 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private AreaAuthorizationInfo info;
 
+		protected LocalAuthorization() {
+			super(); // for deserialization
+		}
+
 		public LocalAuthorization(AreaAuthorizationInfo info) {
 			super(info);
 			this.info = info;

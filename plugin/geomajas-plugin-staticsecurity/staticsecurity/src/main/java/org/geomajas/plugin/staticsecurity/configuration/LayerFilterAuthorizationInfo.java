@@ -54,6 +54,10 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private LayerFilterAuthorizationInfo info;
 
+		private FilterAuthorization() {
+			super(); // for deserialization
+		}
+
 		private FilterAuthorization(LayerFilterAuthorizationInfo info) {
 			super(info);
 			this.info = info;

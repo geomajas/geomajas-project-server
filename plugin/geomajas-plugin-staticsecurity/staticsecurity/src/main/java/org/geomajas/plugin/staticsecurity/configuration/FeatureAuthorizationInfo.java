@@ -60,6 +60,10 @@ public class FeatureAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private FeatureAuthorizationInfo info;
 
+		protected LocalAuthorization() {
+			super(); // for deserialization
+		}
+
 		public LocalAuthorization(FeatureAuthorizationInfo info) {
 			super(info);
 			this.info = info;
