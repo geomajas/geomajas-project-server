@@ -85,8 +85,7 @@ public class RestoreSecurityContextTest {
 
 	@Test
 	@DirtiesContext
-	public void testGetBoundsVisibleArea() throws Exception {
-		CoordinateReferenceSystem crs = beanLayer.getCrs();
+	public void testRestoreSecurityContext() throws Exception {
 		String key;
 		StringContainer container;
 		PipelineContext context;
