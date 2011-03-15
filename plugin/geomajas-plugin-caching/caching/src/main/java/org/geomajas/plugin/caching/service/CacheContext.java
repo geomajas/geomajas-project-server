@@ -11,12 +11,14 @@
 
 package org.geomajas.plugin.caching.service;
 
+import java.io.Serializable;
+
 /**
  * Context for a cached object, used to assure identical keys denote identical objects.
  *
  * @author Joachim Van der Auwera
  */
-public interface CacheContext {
+public interface CacheContext extends Serializable {
 
 	/**
 	 * Key for storing the security context in the cache.

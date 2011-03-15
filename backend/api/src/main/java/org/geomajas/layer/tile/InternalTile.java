@@ -10,6 +10,7 @@
  */
 package org.geomajas.layer.tile;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.geomajas.global.Api;
@@ -31,7 +32,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public interface InternalTile {
+public interface InternalTile extends Serializable {
 
 	/**
 	 * Return the rendering method used.

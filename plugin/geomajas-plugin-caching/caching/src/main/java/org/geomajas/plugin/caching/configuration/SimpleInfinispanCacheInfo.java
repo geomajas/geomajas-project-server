@@ -92,7 +92,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 				if (dir.exists()) {
 					log.error("Location {} for 2nd level cache should be a directory.", location);
 					throw new RuntimeException("Invalid location for setLevel2CacheLocation, " + location +
-							" has to be a directory.");
+							" has to be a directory."); //NOPMD
 				} else {
 					if (!dir.mkdirs()) {
 						log.warn("Directory {} for 2nd level cache could not be created.", location);

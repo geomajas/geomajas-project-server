@@ -25,7 +25,7 @@ import java.util.Set;
  */
 public class CacheContextImpl implements CacheContext {
 
-	private final Logger log = LoggerFactory.getLogger(CacheContextImpl.class);
+	private transient final Logger log = LoggerFactory.getLogger(CacheContextImpl.class);
 
 	private Map<String, Object> map = new HashMap<String, Object>();
 
