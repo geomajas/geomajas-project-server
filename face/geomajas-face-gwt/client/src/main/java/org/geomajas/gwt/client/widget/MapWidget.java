@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.widget;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -154,9 +154,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private PaintableGroup screenGroup = new Composite("screen");
 
-	private Map<String, WorldPaintable> worldPaintables = new HashMap<String, WorldPaintable>();
+	private Map<String, WorldPaintable> worldPaintables = new LinkedHashMap<String, WorldPaintable>();
 
-	private Map<String, MapAddon> addons = new HashMap<String, MapAddon>();
+	private Map<String, MapAddon> addons = new LinkedHashMap<String, MapAddon>();
 
 	/**
 	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
@@ -534,6 +534,17 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			render(worldPaintable, RenderGroup.WORLD, RenderStatus.DELETE);
 			worldPaintables.remove(worldPaintable.getId());
 		}
+	}
+	
+	/**
+	 * Returns the registered world paintable with the specified name.
+	 * @param name the name of the world paintable
+	 * @return the world paintable
+	 * @since 1.9.0
+	 */
+	@Api
+	public WorldPaintable getWorldPaintable(String name) {
+		return worldPaintables.get(name);
 	}
 
 	// -------------------------------------------------------------------------
