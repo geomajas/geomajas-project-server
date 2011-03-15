@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.util;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
@@ -27,7 +28,9 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * are used client-side in the GWT face, while the DTO geometries are the ones sent to the server (hence the name...).
  *
  * @author Pieter De Graef
+ * @since 1.9.0
  */
+@Api(allMethods = true)
 public final class GeometryConverter {
 
 	private GeometryConverter() {
