@@ -108,7 +108,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	IndexedCache getCache(Layer layer, CacheCategory cacheCategory, boolean createIfNotExists) {
 		String layerId = "";
 		if (null != layer) {
-			layer.getId();
+			layerId = layer.getId();
 		}
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
 		IndexedCache cache;
@@ -128,7 +128,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	List<IndexedCache> getCaches(Layer layer) {
 		String layerId = "";
 		if (null != layer) {
-			layer.getId();
+			layerId = layer.getId();
 		}
 		List<IndexedCache> list = new ArrayList<IndexedCache>();
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
@@ -141,7 +141,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	IndexedCache createCache(Layer layer, CacheCategory cacheCategory) {
 		String layerId = "";
 		if (null != layer) {
-			layer.getId();
+			layerId = layer.getId();
 		}
 		CacheServiceInfo cacheServiceInfo = getInfo(layerId, cacheCategory, CacheServiceInfo.class);
 		CacheIndexInfo cacheIndexInfo = getInfo(layerId, cacheCategory, CacheIndexInfo.class);
