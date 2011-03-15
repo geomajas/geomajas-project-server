@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.util;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
@@ -122,6 +123,28 @@ public final class GeometryConverter {
 		}
 
 		return gwt;
+	}
+
+	/**
+	 * Takes in a GWT bbox, and creates a new DTO bbox from it.
+	 *
+	 * @param bbox
+	 *            The bbox to convert into a DTO bbox.
+	 * @return Returns a DTO type bbox, that is serializable.
+	 */
+	public static Bbox toDto(org.geomajas.gwt.client.spatial.Bbox bbox) {
+		return new Bbox(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
+	}
+	
+	/**
+	 * Takes in a DTO bbox, and creates a new GWT bbox from it.
+	 *
+	 * @param bbox
+	 *            The bbox to convert into a GWT bbox.
+	 * @return Returns a GWT type bbox, that has functionality.
+	 */
+	public static org.geomajas.gwt.client.spatial.Bbox toGwt(Bbox bbox) {
+		return new org.geomajas.gwt.client.spatial.Bbox(bbox);
 	}
 
 	// -------------------------------------------------------------------------
