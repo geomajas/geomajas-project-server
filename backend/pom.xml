@@ -250,6 +250,17 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.jboss</groupId>
+				<artifactId>jboss-serialization</artifactId>
+				<version>1.0.4.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>trove</groupId>
+				<artifactId>trove</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j-version}</version>

@@ -97,6 +97,15 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jboss-serialization</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>trove</groupId>
+			<artifactId>trove</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>

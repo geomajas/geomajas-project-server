@@ -25,8 +25,9 @@ import java.util.List;
  * depends on cache id. No deep copy of authentications, so we assume immutability of the data.
  *
  * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  */
-class SavedAuthorizationImpl implements SavedAuthorization {
+public class SavedAuthorizationImpl implements SavedAuthorization {
 
 	private static final long serialVersionUID = 190L;
 
@@ -35,7 +36,7 @@ class SavedAuthorizationImpl implements SavedAuthorization {
 	public SavedAuthorizationImpl(SecurityContext context) {
 		if (null != context) {
 			for (Authentication org : context.getSecurityServiceResults()) {
-				SavedAuthentication sa = new SavedAuthentication();
+				SavedAuthentication sa = new SavedAuthenticationImpl();
 				sa.setSecurityServiceId(org.getSecurityServiceId());
 				sa.setAuthorizations(org.getAuthorizations());
 				authentications.add(sa);
@@ -60,7 +61,6 @@ class SavedAuthorizationImpl implements SavedAuthorization {
 
 		return !(authentications != null ? !authentications.equals(that.authentications) :
 				that.authentications != null);
-
 	}
 
 	@Override
