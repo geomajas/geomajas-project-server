@@ -111,7 +111,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 			return value.toString();
 		} else {
 			try {
-				log.debug("Serializing " + value.getClass().getName() + " for unique id");
+				log.debug("Serializing {} for unique id", value.getClass().getName());
 				ByteArrayOutputStream baos = new ByteArrayOutputStream(256);
 				JBossObjectOutputStream serialize = new JBossObjectOutputStream(baos);
 				serialize.writeObject(value);
