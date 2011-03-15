@@ -9,10 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.service;
+package org.geomajas.plugin.caching.cache;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
+import org.geomajas.plugin.caching.service.CacheServiceInfo;
+import org.geomajas.plugin.caching.service.DummyCacheFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +33,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/managerContext.xml", "/dummySecurity.xml", "/org/geomajas/testdata/layerCountries.xml",
+		"/dummySecurity.xml", "/org/geomajas/testdata/layerCountries.xml",
 		"/org/geomajas/testdata/layerBeans.xml"})
-public class CacheManagerServiceTest {
+public class DefaultConfigurationTest {
 
 	@Autowired
 	private CacheManagerServiceImpl cacheManager;
@@ -54,31 +58,6 @@ public class CacheManagerServiceTest {
 	}
 
 	@Test
-	public void testGetInfo() throws Exception {
-		CacheServiceInfo serviceInfo;
-
-		// full match, use last
-		serviceInfo = cacheManager.getInfo("test", CacheCategory.SVG, CacheServiceInfo.class);
-		Assert.assertEquals("full2", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
-
-		// match on layer only
-		serviceInfo = cacheManager.getInfo("test", CacheCategory.RASTER, CacheServiceInfo.class);
-		Assert.assertEquals("semiTest", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
-
-		// match on category only
-		serviceInfo = cacheManager.getInfo("bla", CacheCategory.SVG, CacheServiceInfo.class);
-		Assert.assertEquals("semiSVG", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
-
-		// no match, use default
-		serviceInfo = cacheManager.getInfo("bla", CacheCategory.RASTER, CacheServiceInfo.class);
-		Assert.assertEquals("default", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
-
-		// match on layer only and on category only, check use layer
-		serviceInfo = cacheManager.getInfo("blabla", CacheCategory.VML, CacheServiceInfo.class);
-		Assert.assertEquals("semiBlabla", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
-	}
-
-	@Test
 	public void testSimplePutGet() throws Exception {
 		String data = "data";
 		String key = "123";
@@ -88,7 +67,7 @@ public class CacheManagerServiceTest {
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key, String.class));
 		Assert.assertNull(data, cacheManager.get(layer, CacheCategory.REBUILD, otherKey));
 		Assert.assertNull(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
-		Assert.assertNull(cacheManager.get(otherLayer, CacheCategory.REBUILD, key)); // DummyCacheFactory has different cache per layer
+		Assert.assertEquals(data, cacheManager.get(otherLayer, CacheCategory.REBUILD, key)); // both layers share the same cache
 		cacheManager.remove(layer, CacheCategory.REBUILD, key);
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
 	}

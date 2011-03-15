@@ -27,7 +27,7 @@ public class CacheContextImpl implements CacheContext {
 
 	private static final long serialVersionUID = 100L;
 
-	private transient final Logger log = LoggerFactory.getLogger(CacheContextImpl.class);
+	private final transient Logger log = LoggerFactory.getLogger(CacheContextImpl.class);
 
 	private Map<String, Object> map = new HashMap<String, Object>();
 
