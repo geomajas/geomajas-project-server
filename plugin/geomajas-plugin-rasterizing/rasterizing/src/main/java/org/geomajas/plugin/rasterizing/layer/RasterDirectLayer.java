@@ -11,7 +11,6 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.awt.AlphaComposite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -67,7 +66,6 @@ import com.vividsolutions.jts.geom.Envelope;
  * Layer responsible for rendering raster layers. Most of the code is copied from the printing plugin.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RasterDirectLayer extends DirectLayer {
 
@@ -78,8 +76,6 @@ public class RasterDirectLayer extends DirectLayer {
 	protected static final long DOWNLOAD_TIMEOUT = 120000; // millis
 
 	protected static final long DOWNLOAD_TIMEOUT_ONE_TILE = 100; // millis
-
-	protected static final Font ERROR_FONT = new Font("SansSerif", Font.PLAIN, 6); //$NON-NLS-1$
 
 	private static final String BUNDLE_NAME = "org/geomajas/plugin/rasterizing/rasterizing"; //$NON-NLS-1$
 
@@ -139,7 +135,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 							// translate to the correct position in the tile grid
 							double xOffset = result.getRasterImage().getCode().getX() * tileWidth - pixelBounds.getX();
-							double yOffset = 0;
+							double yOffset;
 							// TODO: in some cases, the y-index is up (e.g. WMS), should be down for
 							// all layers !!!!
 							if (isYIndexUp(tiles)) {
@@ -235,8 +231,9 @@ public class RasterDirectLayer extends DirectLayer {
 		if (style.contains("opacity:")) {
 			match = style.substring(style.indexOf("opacity:") + 8);
 		}
-		if (match.contains(";")) {
-			match = match.substring(0, match.indexOf(";"));
+		int semiColonPosition = match.indexOf(';');
+		if (semiColonPosition >= 0) {
+			match = match.substring(0, semiColonPosition);
 		}
 		try {
 			return Float.valueOf(match);
@@ -330,9 +327,11 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * ???
+	 * Image result.
+	 *
+	 * @author Jan De Moerloose
 	 */
-	private class ImageResult {
+	private static class ImageResult {
 
 		private byte[] image;
 
@@ -356,9 +355,11 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * ???
+	 * Image Exception
+	 *
+	 * @author Jan De Moerloose
 	 */
-	private class ImageException extends Exception {
+	private static class ImageException extends Exception {
 
 		private static final long serialVersionUID = 151L;
 

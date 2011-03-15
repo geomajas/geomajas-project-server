@@ -44,7 +44,7 @@ public class LegendPanel extends JPanel {
 
 	private static final long serialVersionUID = 100;
 
-	private static int MAX_SIZE = 10000;
+	private static final int MAX_SIZE = 10000;
 
 	public LegendPanel(String title) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -131,9 +131,8 @@ public class LegendPanel extends JPanel {
 	 * Creates a suitable icon for vector layers.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
-	public class VectorStyleIcon extends JComponent {
+	public static class VectorStyleIcon extends JComponent {
 
 		private LayerType layerType;
 
@@ -218,8 +217,7 @@ public class LegendPanel extends JPanel {
 			} else {
 				color = Color.decode(css);
 			}
-			Color opaque = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (opacity * 255));
-			return opaque;
+			return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (opacity * 255));
 		}
 
 		private void drawRelativePath(Graphics2D graphics, float[] x, float[] y) {
@@ -242,9 +240,7 @@ public class LegendPanel extends JPanel {
 				for (int i = 0; i < res.length; i++) {
 					dasharr[i] = Float.parseFloat(res[i]);
 				}
-				BasicStroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,
-						dasharr, 0.0f);
-				return dashed;
+				return new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dasharr, 0.0f);
 			} catch (Exception e) {
 				return null;
 			}

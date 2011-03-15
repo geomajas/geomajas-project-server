@@ -70,9 +70,8 @@ public class RenderingServiceImpl implements RenderingService {
 	 * Request for {@link DirectLayer} rendering.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
-	public class DirectRenderRequest implements RenderRequest {
+	public static class DirectRenderRequest implements RenderRequest {
 
 		private Graphics2D graphics;
 
@@ -97,9 +96,8 @@ public class RenderingServiceImpl implements RenderingService {
 	 * Request for rendering a map of vector layers.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
-	public class VectorRenderRequest implements RenderRequest {
+	public static class VectorRenderRequest implements RenderRequest {
 
 		private Graphics2D graphics;
 

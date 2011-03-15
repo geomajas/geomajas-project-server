@@ -34,6 +34,8 @@ import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 
 import com.google.gwt.core.client.GWT;
 
+import java.util.Set;
+
 /**
  * Default implementation of {@link ImageUrlService}.
  * 
@@ -84,11 +86,12 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				vectorRasterizingInfo.setPaintGeometries(true);
 				vectorRasterizingInfo.setPaintLabels(layer.isLabeled());
 				vectorRasterizingInfo.setShowing(layer.isShowing());
-				ClientVectorLayerInfo layerInfo = (ClientVectorLayerInfo) vectorLayer.getLayerInfo();
+				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
 				vectorRasterizingInfo.setStyle(layerInfo.getNamedStyleInfo());
 				if (vectorLayer.getSelectedFeatures().size() > 0) {
-					vectorRasterizingInfo.setSelectedFeatureIds(vectorLayer.getSelectedFeatures()
-							.toArray(new String[0]));
+					Set<String> selectedFeatures = vectorLayer.getSelectedFeatures();
+					vectorRasterizingInfo.setSelectedFeatureIds(
+							selectedFeatures.toArray(new String[selectedFeatures.size()]));
 					FeatureStyleInfo selectStyle = null;
 					switch (layerInfo.getLayerType()) {
 						case GEOMETRY_COLLECTION:
