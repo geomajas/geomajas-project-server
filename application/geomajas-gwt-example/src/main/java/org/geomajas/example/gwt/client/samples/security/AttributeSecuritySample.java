@@ -125,7 +125,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		SearchFeatureRequest request = new SearchFeatureRequest();
 		request.setBooleanOperator("AND");
 		request.setCrs("EPSG:900913"); // Can normally be acquired from the MapModel.
-		request.setLayerId("beans");
+		request.setLayerId("layerBeans");
 		request.setMax(1);
 		request.setCriteria(new SearchCriterion[] { new SearchCriterion("id", "=", "1") });
 		final GwtCommand command = new GwtCommand("command.feature.Search");
