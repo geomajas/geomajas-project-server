@@ -35,7 +35,7 @@ public class SaveOrUpdateCreateStep extends AbstractSaveOrUpdateStep {
 			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			FeatureModel featureModel = layer.getFeatureModel();
-			if (securityContext.isFeatureCreateAuthorized(layerId, oldFeature)) {
+			if (securityContext.isFeatureCreateAuthorized(layerId, newFeature)) {
 				if (newFeature.getId() == null) {
 					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, featureModel.newInstance());
 				} else {
