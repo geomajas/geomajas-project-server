@@ -52,7 +52,12 @@
             loading both themes at once.</para>
 
             <para>It is now up to the application definition to specify which
-            SmartGwt theme to use.</para>
+            SmartGwt theme to use. This must be done by inheriting the
+            specific theme module like this:</para>
+
+            <programlisting>&lt;module&gt;
+   &lt;inherits name="com.smartclient.theme.enterprise.Enterprise"/&gt;
+&lt;/module&gt;</programlisting>
           </listitem>
 
           <listitem>
