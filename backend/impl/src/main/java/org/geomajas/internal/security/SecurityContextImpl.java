@@ -25,6 +25,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.AttributeAuthorization;
 import org.geomajas.security.Authentication;
+import org.geomajas.security.AuthorizationNeedsWiring;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
 import org.geomajas.security.SavedAuthentication;
@@ -39,6 +40,7 @@ import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -91,11 +93,21 @@ public class SecurityContextImpl implements SecurityContext {
 	@Autowired
 	private GeoService geoService;
 
+	@Autowired
+	private ApplicationContext applicationContext;
+
 	public void setAuthentications(String token, List<Authentication> authentications) {
 		this.token = token;
 		this.authentications.clear();
 		if (null != authentications) {
-			this.authentications.addAll(authentications);
+			for (Authentication auth : authentications) {
+				for (BaseAuthorization ba : auth.getAuthorizations()) {
+					if (ba instanceof AuthorizationNeedsWiring) {
+						((AuthorizationNeedsWiring) ba).wire(applicationContext);
+					}
+				}
+				this.authentications.add(auth);
+			}
 		}
 		userInfoInit();
 	}
@@ -369,6 +381,11 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
+		if (null == authentications || authentications.size() == 0) {
+			// no authorizations, so nothing should be allowed
+			return null;
+		}
+
 		Layer<?> layer = configurationService.getLayer(layerId);
 		if (null == layer) {
 			log.error("areaCombine on unknown layer " + layerId);
@@ -649,16 +666,16 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	public void restoreSecurityContext(SavedAuthorization savedAuthorization) {
-		token = null;
-		authentications.clear();
+		List<Authentication> auths = new ArrayList<Authentication>();
 		if (null != savedAuthorization) {
 			for (SavedAuthentication sa : savedAuthorization.getAuthentications()) {
 				Authentication auth = new Authentication();
 				auth.setSecurityServiceId(sa.getSecurityServiceId());
 				auth.setAuthorizations(sa.getAuthorizations());
-				authentications.add(auth);
+				auths.add(auth);
 			}
 		}
+		setAuthentications(null, auths);
 		userInfoInit();
 	}
 

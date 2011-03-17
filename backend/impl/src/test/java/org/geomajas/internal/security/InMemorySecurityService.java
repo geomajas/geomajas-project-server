@@ -28,7 +28,7 @@ public class InMemorySecurityService implements SecurityService {
 		return authentications.put(key, value);
 	}
 
-	public Authentication remove(Object key) {
+	public Authentication remove(String key) {
 		return authentications.remove(key);
 	}
 

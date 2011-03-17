@@ -109,7 +109,7 @@ public class CommandDispatcherSecurityTest {
 		securityService.clear();
 	}
 
-	Authentication createTestAuthentication() {
+	private Authentication createTestAuthentication() {
 		Authentication authentication = new Authentication();
 		authentication.setAuthorizations(new BaseAuthorization[]{new AllowTestAuthorization()});
 		return authentication;
