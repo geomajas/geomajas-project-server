@@ -49,13 +49,13 @@ public class ManyToOneAttributeBean {
 		List<ManyToOneAttributeBean> values = new ArrayList<ManyToOneAttributeBean>();
 
 		ManyToOneAttributeBean bean1 = new ManyToOneAttributeBean();
-		bean1.setId(new Long(1));
+		bean1.setId(1L);
 		bean1.setStringAttr("ManyToOne - 1");
 		bean1.setBooleanAttr(true);
 		values.add(bean1);
 
 		ManyToOneAttributeBean bean2 = new ManyToOneAttributeBean();
-		bean2.setId(new Long(2));
+		bean2.setId(2L);
 		bean2.setStringAttr("ManyToOne - 2");
 		bean2.setBooleanAttr(true);
 		values.add(bean2);

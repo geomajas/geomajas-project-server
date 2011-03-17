@@ -51,7 +51,7 @@ public class LongAttribute extends PrimitiveAttribute<Long> {
 	public Object clone() {
 		LongAttribute clone = new LongAttribute();
 		if (getValue() != null) {
-			clone.setValue(new Long(getValue()));
+			clone.setValue(Long.valueOf(getValue()));
 		}
 		clone.setEditable(isEditable());
 		return clone;

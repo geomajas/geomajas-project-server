@@ -51,7 +51,7 @@ public class IntegerAttribute extends PrimitiveAttribute<Integer> {
 	public Object clone() {
 		IntegerAttribute clone = new IntegerAttribute();
 		if (getValue() != null) {
-			clone.setValue(new Integer(getValue()));
+			clone.setValue(Integer.valueOf(getValue()));
 		}
 		clone.setEditable(isEditable());
 		return clone;

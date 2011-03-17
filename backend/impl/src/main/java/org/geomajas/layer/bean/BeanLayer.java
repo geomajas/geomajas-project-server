@@ -249,11 +249,13 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 		}
 
 		List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
-		for (Object object : values) {
-			try {
-				attributes.add(converterService.toDto(object, attributeInfo));
-			} catch (GeomajasException e) {
-				throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, attributeName);
+		if (null != values) {
+			for (Object object : values) {
+				try {
+					attributes.add(converterService.toDto(object, attributeInfo));
+				} catch (GeomajasException e) {
+					throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, attributeName);
+				}
 			}
 		}
 		return attributes;

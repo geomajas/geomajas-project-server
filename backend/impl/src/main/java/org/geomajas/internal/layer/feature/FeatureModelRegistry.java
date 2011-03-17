@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class FeatureModelRegistry {
 
-	private static FeatureModelRegistry INSTANCE;
+	private static volatile FeatureModelRegistry INSTANCE; // volatile needed for multi-threaded correctness
 
 	private List<FeatureModel> featureModels = new ArrayList<FeatureModel>();
 

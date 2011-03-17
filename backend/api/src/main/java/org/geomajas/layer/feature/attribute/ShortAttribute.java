@@ -51,7 +51,7 @@ public class ShortAttribute extends PrimitiveAttribute<Short> {
 	public Object clone() {
 		ShortAttribute clone = new ShortAttribute();
 		if (getValue() != null) {
-			clone.setValue(new Short(getValue()));
+			clone.setValue(Short.valueOf(getValue()));
 		}
 		clone.setEditable(isEditable());
 		return clone;
