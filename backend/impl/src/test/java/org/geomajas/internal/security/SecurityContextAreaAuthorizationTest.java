@@ -53,9 +53,23 @@ public class SecurityContextAreaAuthorizationTest {
 
 	@Test
 	@DirtiesContext
-	public void testDefaultVisibleArea() throws Exception {
+	public void testNotAuthenticatedVisibleArea() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		securityContext.setAuthentications(null, null);
+		Assert.assertFalse(securityContext.isLayerVisible(LAYER_ID));
+		Geometry geometry = securityContext.getVisibleArea(LAYER_ID);
+		Assert.assertNull(geometry);
+		securityContext.setAuthentications(null, null);
+	}
+
+	@Test
+	public void testDefaultVisibleArea() throws Exception {
+		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		List<Authentication> authentications = new ArrayList<Authentication>();
+		Authentication auth1 = getBaseAuthentication();
+		authentications.add(auth1);
+		securityContext.setAuthentications("token", authentications);
+		Assert.assertTrue(securityContext.isLayerVisible(LAYER_ID));
 		Geometry geometry = securityContext.getVisibleArea(LAYER_ID);
 		Assert.assertNotNull(geometry);
 		PrecisionModel precisionModel  = new PrecisionModel(PrecisionModel.FLOATING);
@@ -83,7 +97,6 @@ public class SecurityContextAreaAuthorizationTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testDefaultVisibleAreaOne() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
@@ -113,7 +126,6 @@ public class SecurityContextAreaAuthorizationTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testDefaultVisibleAreaTwo() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
@@ -145,6 +157,14 @@ public class SecurityContextAreaAuthorizationTest {
 	private Authentication getAuthentication() {
 		Authentication auth = new Authentication();
 		auth.setAuthorizations(new BaseAuthorization[]{new AllowAllAuthorization()});
+		auth.setSecurityServiceId(SECURITY_SERVICE_ID);
+		auth.setUserId(USER_ID);
+		return auth;
+	}
+
+	private Authentication getBaseAuthentication() {
+		Authentication auth = new Authentication();
+		auth.setAuthorizations(new BaseAuthorization[]{new AllowBaseAuthorization()});
 		auth.setSecurityServiceId(SECURITY_SERVICE_ID);
 		auth.setUserId(USER_ID);
 		return auth;

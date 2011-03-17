@@ -12,16 +12,15 @@
 package org.geomajas.internal.security;
 
 import junit.framework.Assert;
-import org.geomajas.security.Authentication;
-import org.geomajas.security.BaseAuthorization;
-import org.geomajas.security.SecurityContext;
-import org.geomajas.security.VectorLayerSelectFilterAuthorization;
+import org.geomajas.security.*;
 import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.geomajas.service.FilterService;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -48,7 +47,16 @@ public class SecurityContextFeatureFilterTest {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private org.geomajas.security.SecurityManager securityManager;
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
+	@DirtiesContext
 	public void testNoFilters() {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();

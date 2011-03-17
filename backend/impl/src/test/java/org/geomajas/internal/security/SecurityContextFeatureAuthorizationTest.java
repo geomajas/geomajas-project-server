@@ -24,7 +24,6 @@ import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -53,7 +52,6 @@ public class SecurityContextFeatureAuthorizationTest {
 	private SecurityContext securityContext;
 
 	@Test
-	@DirtiesContext
 	public void testBaseAuthorization() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		securityContext.setAuthentications(null, null);
@@ -76,7 +74,6 @@ public class SecurityContextFeatureAuthorizationTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testAllAndFeatureAuthorization() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
@@ -98,7 +95,6 @@ public class SecurityContextFeatureAuthorizationTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testFeatureAuthorization() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
