@@ -37,6 +37,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				-->
 			</list>
 		</property>
+		<property name="optionalDependencies">
+			<list>
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<!-- when static security is used, need a minimum of 1.8.0-SNAPSHOT or all matches will fail -->
+					<property name="name" value="Static security" />
+					<property name="version" value="1.8.0-SNAPSHOT" />
+				</bean>
+			</list>
+		</property>
 		<property name="copyrightInfo">
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">
