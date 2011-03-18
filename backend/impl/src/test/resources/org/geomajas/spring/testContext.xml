@@ -20,6 +20,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
 	<context:component-scan base-package="org.geomajas.spring"/>
+	<bean class="org.geomajas.internal.service.RealTestRecorder" />
 
 </beans>
 
