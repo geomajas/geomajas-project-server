@@ -55,8 +55,7 @@
     intermediate package (between "command" and the class name) and the class
     name itself. Some examples:</para>
 
-    <para>
-      <table>
+    <para><table>
         <title>Samples of command name resolution</title>
 
         <tgroup cols="2">
@@ -118,8 +117,7 @@
             </row>
           </tbody>
         </tgroup>
-      </table>
-    </para>
+      </table></para>
 
     <para>You have to include a line in your Spring configuration to scan
     class files for annotation to make the components available. For the case
@@ -165,7 +163,7 @@
     <xi:include href="listing/StaticSecurityDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para />
+    <para></para>
   </chapter>
 
   <chapter id="ch-howto-plugin">
@@ -219,6 +217,43 @@
       <title>Writing your own security service</title>
 
       <para>TODO.....</para>
+
+      <para>For the implementation of your Authorization class, it is
+      important to assure that the instances are serializeable and can also be
+      deserialized. This is important to allow the caching to be clustered.
+      While we don't require that the class implements Serializeable (thanks
+      to the use of JBoss Serialization), you should think of the following
+      points;</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>A no-arguments constructor is needed. This is allowed to be
+          private (though that is not recommended, better make it protected if
+          you don't want it to be generally used).</para>
+        </listitem>
+
+        <listitem>
+          <para>If the authorization class is an inner class, do make it
+          static if possible (otherwise the object has an implicit reference
+          to the containing object, assuring it is included in the serialized
+          state).</para>
+        </listitem>
+
+        <listitem>
+          <para>If you need a logger, declare it as<programlisting>private final transient Logger log = LoggerFactory.getLogger(ClassName.class);</programlisting>to
+          ensure that the logger is not serialized.</para>
+        </listitem>
+
+        <listitem>
+          <para>You should not use auto-wiring. Instead, make sure your class
+          implements <code>AuthorizationNeedsWiring</code>. This defined the
+          <code>wire()</code> method which allows you to query the application
+          context. Make sure you declare wired properties as transient. The
+          <code>wire()</code> method is called when the authorization is
+          attached to the SecurityContext (both for freshly created and
+          deserialized instances).</para>
+        </listitem>
+      </itemizedlist>
     </section>
   </chapter>
 
@@ -287,8 +322,8 @@
       created around the GWT widget. Although both frameworks are Java-based,
       there is no communication possible between both as GWT is client-side
       while ZK is server-side. This means that any wrapping has to be done by
-      providing mutual hooks or callback functions in the javascript files.
-      </para>
+      providing mutual hooks or callback functions in the javascript
+      files.</para>
 
       <para>We will now give a more detailed overview of each file and its
       functionalities.</para>
@@ -464,21 +499,21 @@ public class GeomajasMapWrapper {
     </section>
 
     <section>
-      <title>Bidirectional communication between the two frameworks </title>
+      <title>Bidirectional communication between the two frameworks</title>
 
       <para>Communicating from GWT to ZK takes the following steps : GWT event
       -&gt; JSNI call to ZK javascript -&gt; server command -&gt; ZK component
       -&gt; ZK event.</para>
 
-      <para>The following code parts are required: </para>
+      <para>The following code parts are required:</para>
 
       <itemizedlist>
         <listitem>
-          <para>add event listener to GWT widget </para>
+          <para>add event listener to GWT widget</para>
         </listitem>
 
         <listitem>
-          <para>add JSNI call to GWT widget to forward the event </para>
+          <para>add JSNI call to GWT widget to forward the event</para>
         </listitem>
 
         <listitem>
@@ -487,7 +522,7 @@ public class GeomajasMapWrapper {
         </listitem>
 
         <listitem>
-          <para>process the ZK command in the ZK component </para>
+          <para>process the ZK command in the ZK component</para>
         </listitem>
 
         <listitem>
@@ -499,11 +534,11 @@ public class GeomajasMapWrapper {
       call -&gt; ZK component -&gt; smartupdate -&gt; ZK JSNI callback -&gt;
       GWT call.</para>
 
-      <para>The following code parts are required: </para>
+      <para>The following code parts are required:</para>
 
       <itemizedlist>
         <listitem>
-          <para>add event listener to ZK component </para>
+          <para>add event listener to ZK component</para>
         </listitem>
 
         <listitem>
@@ -511,7 +546,7 @@ public class GeomajasMapWrapper {
         </listitem>
 
         <listitem>
-          <para>add ZK callback function to GWT component </para>
+          <para>add ZK callback function to GWT component</para>
         </listitem>
 
         <listitem>
