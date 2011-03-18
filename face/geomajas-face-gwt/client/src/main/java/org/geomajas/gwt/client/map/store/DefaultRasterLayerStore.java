@@ -106,7 +106,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		request.setCrs(getLayer().getMapModel().getCrs());
 		request.setLayerId(getLayer().getServerLayerId());
 		request.setScale(getLayer().getMapModel().getMapView().getCurrentScale());
-		GwtCommand command = new GwtCommand("command.render.GetRasterTiles");
+		GwtCommand command = new GwtCommand(GetRasterTilesRequest.COMMAND);
 		command.setCommandRequest(request);
 		RasterCallBack callBack = new RasterCallBack(worldToPan(bounds), onUpdate);
 		deferred = GwtCommandDispatcher.getInstance().execute(command, callBack);

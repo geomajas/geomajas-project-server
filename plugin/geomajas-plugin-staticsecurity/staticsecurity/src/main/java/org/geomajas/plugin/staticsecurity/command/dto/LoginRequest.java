@@ -25,6 +25,13 @@ public class LoginRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 160L;
 
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.8.0
+	 */
+	public static final String COMMAND = "command.staticsecurity.Login";
+
 	private String login;
 	private String password;
 

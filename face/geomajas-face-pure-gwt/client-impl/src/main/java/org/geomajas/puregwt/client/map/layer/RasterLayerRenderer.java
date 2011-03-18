@@ -186,7 +186,7 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 		request.setCrs(viewPort.getCrs());
 		request.setLayerId(rasterLayer.getServerLayerId());
 		request.setScale(viewPort.getScale());
-		Command command = new Command("command.render.GetRasterTiles");
+		Command command = new Command(GetRasterTilesRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		// Execute the fetch, and render on success:

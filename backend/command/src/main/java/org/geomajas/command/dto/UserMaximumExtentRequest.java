@@ -21,6 +21,13 @@ public class UserMaximumExtentRequest extends LayerIdsCommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.9.0
+	 * */
+	public static final String COMMAND = "command.configuration.UserMaximumExtent";
+
 	private boolean excludeRasterLayers;
 
 	private String crs;

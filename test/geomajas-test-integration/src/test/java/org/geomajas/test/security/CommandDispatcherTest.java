@@ -56,12 +56,12 @@ public class CommandDispatcherTest {
 
 		LogRequest logRequest = new LogRequest();
 		logRequest.setStatement("test log command access");
-		response = commandDispatcher.execute("command.general.Log", logRequest, token, "en");
+		response = commandDispatcher.execute(LogRequest.COMMAND, logRequest, token, "en");
 		Assert.assertFalse(response.isError());
 		Assert.assertNull(securityContext.getToken());
 
 		// this test to verify the command itself (should fail here as "luc" should be logged in).
-		response = commandDispatcher.execute("command.MarinoLoggedIn", null, token, "en");
+		response = commandDispatcher.execute(LogRequest.COMMAND, null, token, "en");
 		Assert.assertTrue(response.isError());
 		Assert.assertTrue(response.getErrors().get(0) instanceof GeomajasException);
 		Assert.assertEquals(ExceptionCode.TEST, ((GeomajasException)response.getErrors().get(0)).getExceptionCode());
@@ -73,7 +73,7 @@ public class CommandDispatcherTest {
 		LoginRequest request = new LoginRequest();
 		request.setLogin("marino");
 		request.setPassword("marino");
-		CommandResponse response = commandDispatcher.execute("command.staticsecurity.Login", request, null, null);
+		CommandResponse response = commandDispatcher.execute(LoginRequest.COMMAND, request, null, null);
 		Assert.assertTrue(response instanceof LoginResponse);
 		Assert.assertFalse(response.isError());
 		String token = ((LoginResponse)response).getToken();

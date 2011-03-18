@@ -66,7 +66,7 @@ public class SearchByLocationCommandTest {
 
 		// execute
 		SearchByLocationResponse response = (SearchByLocationResponse) dispatcher.execute(
-				"command.feature.SearchByLocation", request, null, "en");
+				SearchByLocationRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -100,7 +100,7 @@ public class SearchByLocationCommandTest {
 
 		// execute
 		SearchByLocationResponse response = (SearchByLocationResponse) dispatcher.execute(
-				"command.feature.SearchByLocation", request, null, "en");
+				SearchByLocationRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -134,7 +134,7 @@ public class SearchByLocationCommandTest {
 
 		// execute
 		SearchByLocationResponse response = (SearchByLocationResponse) dispatcher.execute(
-				"command.feature.SearchByLocation", request, null, "en");
+				SearchByLocationRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -168,7 +168,7 @@ public class SearchByLocationCommandTest {
 
 		// execute
 		SearchByLocationResponse response = (SearchByLocationResponse) dispatcher.execute(
-				"command.feature.SearchByLocation", request, null, "en");
+				SearchByLocationRequest.COMMAND, request, null, "en");
 		// test
 		List<Feature> features = response.getFeatureMap().get(LAYER_ID);
 		Assert.assertNull(features);

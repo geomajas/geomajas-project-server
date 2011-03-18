@@ -129,7 +129,7 @@ public class ToggleSelectionAction extends MenuAction {
 		}
 		MapModel mapModel = mapWidget.getMapModel();
 		Coordinate worldPosition = mapModel.getMapView().getWorldViewTransformer().viewToWorld(coordinate);
-		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		Layer<?> layer = mapModel.getSelectedLayer();
 		if (priorityToSelectedLayer && layer != null && layer instanceof VectorLayer) {

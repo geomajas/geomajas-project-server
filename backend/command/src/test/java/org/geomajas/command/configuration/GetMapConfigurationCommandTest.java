@@ -58,7 +58,7 @@ public class GetMapConfigurationCommandTest {
 		request.setApplicationId("simplevectors");
 		request.setMapId("coordTestMap");
 		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				"command.configuration.GetMap", request, null, "en");
+				GetMapConfigurationRequest.COMMAND, request, null, "en");
 		if (response.isError()) {
 			response.getErrors().get(0).printStackTrace();
 		}

@@ -24,6 +24,11 @@ import org.geomajas.geometry.Geometry;
  */
 public class TransformGeometryRequest implements CommandRequest {
 
+	/**
+	 * Command name for this request.
+	 * */
+	public static final String COMMAND = "command.geometry.Transform";
+
 	private Geometry geometry;
 
 	private List<Geometry> geometryCollection = new ArrayList<Geometry>();

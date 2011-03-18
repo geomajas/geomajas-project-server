@@ -28,6 +28,13 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.9.0
+	 * */
+	public static final String COMMAND = "command.feature.SearchFeature";
+
 	public static final int MAX_UNLIMITED = 0;
 
 	public static final String ID_ATTRIBUTE = "$id";

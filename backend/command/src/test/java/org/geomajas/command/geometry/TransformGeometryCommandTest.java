@@ -44,7 +44,7 @@ public class TransformGeometryCommandTest {
 		request.setTargetCrs(LONLAT);
 		// execute
 		TransformGeometryResponse response = (TransformGeometryResponse) dispatcher.execute(
-				"command.geometry.Transform", request, null, "en");
+				TransformGeometryRequest.COMMAND, request, null, "en");
 		Bbox transformed = response.getBounds();
 		Assert.assertEquals(8.983152841195215E-5, transformed.getX(), DELTA);
 		Assert.assertEquals(2.6949458522981454E-4, transformed.getY(), DELTA);
@@ -62,7 +62,7 @@ public class TransformGeometryCommandTest {
 		request.setTargetCrs(LONLAT);
 		// execute
 		TransformGeometryResponse response = (TransformGeometryResponse) dispatcher.execute(
-				"command.geometry.Transform", request, null, "en");
+				TransformGeometryRequest.COMMAND, request, null, "en");
 		Geometry transformed = response.getGeometry();
 		Envelope bounds = converterService.toInternal(transformed).getEnvelopeInternal();
 		Assert.assertEquals(8.983152841195215E-5, bounds.getMinX(), DELTA);
@@ -81,7 +81,7 @@ public class TransformGeometryCommandTest {
 		request.setTargetCrs(LONLAT);
 		// execute
 		TransformGeometryResponse response = (TransformGeometryResponse) dispatcher.execute(
-				"command.geometry.Transform", request, null, "en");
+				TransformGeometryRequest.COMMAND, request, null, "en");
 		List<Geometry> transformed = response.getGeometryCollection();
 		Assert.assertEquals(1, transformed.size());
 		Envelope bounds = converterService.toInternal(transformed.get(0)).getEnvelopeInternal();

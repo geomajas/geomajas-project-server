@@ -45,7 +45,7 @@ public class CommitActivity implements Activity {
 			request.setFeatureTransaction(ft.toDto());
 			request.setCrs(mapModel.getCrs());
 
-			GwtCommand command = new GwtCommand("command.feature.PersistTransaction");
+			GwtCommand command = new GwtCommand(PersistTransactionRequest.COMMAND);
 			command.setCommandRequest(request);
 
 			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {

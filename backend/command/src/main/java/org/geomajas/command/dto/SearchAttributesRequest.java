@@ -21,6 +21,13 @@ public class SearchAttributesRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 154L;
 
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.9.0
+	 * */
+	public static final String COMMAND = "command.feature.SearchAttributes";
+
 	private String attributeName;
 
 	private String filter;

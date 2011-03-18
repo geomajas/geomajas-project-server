@@ -330,7 +330,7 @@ public class VectorTile extends AbstractVectorTile {
 		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
 		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesDefault());
-		GwtCommand command = new GwtCommand("command.render.GetVectorTile");
+		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
 		return command;
 	}

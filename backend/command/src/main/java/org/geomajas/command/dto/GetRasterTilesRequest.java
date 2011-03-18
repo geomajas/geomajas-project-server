@@ -26,6 +26,13 @@ public class GetRasterTilesRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.9.0
+	 * */
+	public static final String COMMAND = "command.render.GetRasterTiles";
+
 	private String crs;
 
 	private Bbox bbox;

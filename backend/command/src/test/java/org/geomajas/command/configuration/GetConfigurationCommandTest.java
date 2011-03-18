@@ -51,7 +51,7 @@ public class GetConfigurationCommandTest {
 		GetConfigurationRequest request = new GetConfigurationRequest();
 		request.setApplicationId(APP_ID);
 		GetConfigurationResponse response = (GetConfigurationResponse) dispatcher.execute(
-				"command.configuration.Get", request, null, "en");
+				GetConfigurationRequest.COMMAND, request, null, "en");
 		if (response.isError()) {
 			response.getErrors().get(0).printStackTrace();
 		}

@@ -111,7 +111,7 @@ public class MultiLayerFeatureInfoController extends AbstractGraphicsController 
 			request.setFilter(((VectorLayer) layer).getFilter());
 		}
 
-		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 

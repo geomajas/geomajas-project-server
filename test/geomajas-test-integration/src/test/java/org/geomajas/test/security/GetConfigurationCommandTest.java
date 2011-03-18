@@ -50,7 +50,6 @@ public class GetConfigurationCommandTest {
 	private static final String MAP_ID = "beanMap";
 	private static final String CLIENT_LAYER_ID = "beansLayer";
 	private static final String LAYER_ID = "beans";
-	private static final String GET_MAP = "command.configuration.GetMap";
 
 	@Autowired
 	@Qualifier("beans")
@@ -82,7 +81,8 @@ public class GetConfigurationCommandTest {
 		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
 		request.setApplicationId(APP_ID);
 		request.setMapId(MAP_ID);
-		CommandResponse response = commandDispatcher.execute(GET_MAP, request, securityContext.getToken(), "en");
+		CommandResponse response = commandDispatcher.execute(GetMapConfigurationRequest.COMMAND, request,
+				securityContext.getToken(), "en");
 		Assert.assertFalse(response.isError());
 		Assert.assertTrue(response instanceof GetMapConfigurationResponse);
 		ClientMapInfo mapInfo = ((GetMapConfigurationResponse)response).getMapInfo();

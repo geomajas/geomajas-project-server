@@ -224,7 +224,7 @@ public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedH
 		request.setCrs(viewPort.getCrs());
 		request.setLayerId(rasterLayer.getServerLayerId());
 		request.setScale(viewPort.getScale());
-		Command command = new Command("command.render.GetRasterTiles");
+		Command command = new Command(GetRasterTilesRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		// Execute the fetch, and render on success:

@@ -20,6 +20,14 @@ import org.geomajas.command.CommandRequest;
 public class LogRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
+
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.9.0
+	 * */
+	public static final String COMMAND = "command.general.Log";
+
 	public static final int LEVEL_DEBUG = 0;
 	public static final int LEVEL_INFO = 1;
 	public static final int LEVEL_WARN = 2;

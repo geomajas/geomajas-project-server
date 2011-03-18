@@ -320,7 +320,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void init() {
-		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
+		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 

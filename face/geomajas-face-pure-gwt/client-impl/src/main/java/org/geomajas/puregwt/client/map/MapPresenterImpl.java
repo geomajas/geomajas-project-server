@@ -144,7 +144,7 @@ public class MapPresenterImpl implements MapPresenter {
 
 		setFallbackController(new NavigationController());
 
-		Command commandRequest = new Command("command.configuration.GetMap");
+		Command commandRequest = new Command(GetMapConfigurationRequest.COMMAND);
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
 		CommandService cmdService = new CommandService();
 		cmdService.execute(commandRequest, new CommandCallback() {

@@ -209,7 +209,7 @@ public class SelectionController extends AbstractRectangleController {
 			MapModel mapModel = mapWidget.getMapModel();
 			mapModel.clearSelectedFeatures();
 		}
-		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		request.setLayerIds(getSelectionLayerIds());
 		Polygon polygon = mapWidget.getMapModel().getGeometryFactory().createPolygon(selectedArea);

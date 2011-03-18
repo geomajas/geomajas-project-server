@@ -26,6 +26,13 @@ public class PersistTransactionRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Command name for this request.
+	 *
+	 * @since 1.9.0
+	 * */
+	public static final String COMMAND = "command.feature.PersistTransaction";
+
 	private FeatureTransaction featureTransaction;
 
 	private String crs;

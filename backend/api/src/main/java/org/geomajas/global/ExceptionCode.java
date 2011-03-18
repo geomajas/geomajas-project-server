@@ -132,8 +132,12 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int FILTER_EVALUATION_PROBLEM = 73;
-	/** @since 1.9.0 */
+	/**
+	 * @since 1.9.0
+	 */
 	int DEPENDENCY_CHECK_FAILED = 74;
-	/** @since 1.9.0 */
+	/**
+	 * @since 1.9.0
+	 */
 	int DEPENDENCY_CHECK_INVALID_DUPLICATE = 75;
 }
