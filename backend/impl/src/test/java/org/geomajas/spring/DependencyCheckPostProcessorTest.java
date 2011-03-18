@@ -12,7 +12,12 @@
 package org.geomajas.spring;
 
 import junit.framework.Assert;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.service.TestRecorder;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Test for DependencyCheckPostProcessor.
@@ -92,4 +97,124 @@ public class DependencyCheckPostProcessorTest {
 		Assert.assertFalse(new DependencyCheckPostProcessor.Version("1.2.3-SNAPSHOT").after(
 				new DependencyCheckPostProcessor.Version("1.2.3")));
 	}
+
+	@Test
+	public void testNormalGood() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestNormalGood.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testNormalBadBackend() throws Exception {
+		try {
+		loadApplicationContext("/org/geomajas/spring/dependencyTestNormalBadBackend.xml");
+			Assert.fail("Dependency check did not function.");
+		} catch (GeomajasException ge) {
+	        Assert.assertEquals(ExceptionCode.DEPENDENCY_CHECK_FAILED, ge.getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testNormalBadPlugin() throws Exception {
+		try {
+		loadApplicationContext("/org/geomajas/spring/dependencyTestNormalBadPlugin.xml");
+			Assert.fail("Dependency check did not function.");
+		} catch (GeomajasException ge) {
+	        Assert.assertEquals(ExceptionCode.DEPENDENCY_CHECK_FAILED, ge.getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testChecksInIdeBD() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestInIdeBackendDef.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksInIdeBR() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestInIdeBackendRef.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksInIdePD() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestInIdePluginDef.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksInIdePR() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestInIdePluginRef.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksDuplicatePluginGood() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestDuplicatePluginGood.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksDuplicatePluginBad() throws Exception {
+		try {
+		loadApplicationContext("/org/geomajas/spring/dependencyTestDuplicatePluginBad.xml");
+			Assert.fail("Dependency check did not function.");
+		} catch (GeomajasException ge) {
+	        Assert.assertEquals(ExceptionCode.DEPENDENCY_CHECK_INVALID_DUPLICATE, ge.getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testChecksOptionalGood() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestOptionalGood.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksOptionalMissing() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestOptionalMissing.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksOptionalBad() throws Exception {
+		try {
+		loadApplicationContext("/org/geomajas/spring/dependencyTestOptionalBad.xml");
+			Assert.fail("Dependency check did not function.");
+		} catch (GeomajasException ge) {
+	        Assert.assertEquals(ExceptionCode.DEPENDENCY_CHECK_FAILED, ge.getExceptionCode());
+		}
+	}
+
+	private ApplicationContext loadApplicationContext(String... locations) throws Exception {
+		try {
+			return new ClassPathXmlApplicationContext(locations);
+		} catch (Exception ex) {
+			Throwable ge = ex;
+			while (null != ge) {
+				if (ge instanceof GeomajasException) {
+					throw (GeomajasException)ge;
+				}
+				ge = ge.getCause();
+			}
+			throw ex;
+		}
+	}
+
 }

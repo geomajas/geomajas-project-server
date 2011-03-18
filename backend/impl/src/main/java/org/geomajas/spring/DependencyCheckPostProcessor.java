@@ -11,8 +11,11 @@
 
 package org.geomajas.spring;
 
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.global.PluginInfo;
 import org.geomajas.global.PluginVersionInfo;
+import org.geomajas.service.TestRecorder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,11 +34,17 @@ import java.util.Map;
 @Component
 public class DependencyCheckPostProcessor {
 
+	protected static final String GROUP = "depcheck";
+	protected static final String VALUE = "done";
+
 	@Autowired(required = false)
 	protected Map<String, PluginInfo> contextDeclaredPlugins;
 
+	@Autowired
+	private TestRecorder recorder;
+
 	@PostConstruct
-	protected void checkPluginDependencies() {
+	protected void checkPluginDependencies() throws GeomajasException {
 		if ("true".equals(System.getProperty("skipPluginDependencyCheck"))) {
 			return;
 		}
@@ -48,9 +57,7 @@ public class DependencyCheckPostProcessor {
 		// remove unfiltered plugin metadata (needed for eclipse !)
 		for (Map.Entry<String, PluginInfo> entry : contextDeclaredPlugins.entrySet()) {
 			String version = entry.getValue().getVersion().getVersion();
-			if (null == version || !version.startsWith("$")) {
-				declaredPlugins.add(entry.getValue());
-			}
+			declaredPlugins.add(entry.getValue());
 		}
 
 		// start by going through all plug-ins to build a map of versions for plug-in keys
@@ -62,10 +69,8 @@ public class DependencyCheckPostProcessor {
 			// check for multiple plugin with same name but different versions (duplicates allowed for jar+source dep)
 			if (null != version) {
 				if (versions.containsKey(name) && !versions.get(name).equals(version)) {
-					throw new RuntimeException("Invalid configuration, the plug-in with name " + name +
-							" has been declared twice. It is know both as version " + version + " and " +
-							versions.get(name) + ". The plug-in name is either used by more than one plug-in or " +
-							"the plug-in is on the classpath more than once.");
+					throw new GeomajasException(ExceptionCode.DEPENDENCY_CHECK_INVALID_DUPLICATE,
+							name, version, versions.get(name));
 				}
 				versions.put(name, version);
 			}
@@ -83,14 +88,19 @@ public class DependencyCheckPostProcessor {
 			}
 		}
 		if (message.length() > 0) {
-			throw new RuntimeException("Plug-in dependencies not met\n" + message.toString());
+			throw new GeomajasException(ExceptionCode.DEPENDENCY_CHECK_FAILED, message.toString());
 		}
+
+		recorder.record(GROUP, VALUE);
 	}
 
 	String checkVersion(String pluginName, String dependency, String requestedVersion, String availableVersion) {
 		if (null == availableVersion) {
 			return "Dependency " + dependency + " not found for " + pluginName + ", version " + requestedVersion +
 					" or higher needed.\n";
+		}
+		if (requestedVersion.startsWith("$") || availableVersion.startsWith("$")) {
+			return "";
 		}
 		Version requested = new Version(requestedVersion);
 		Version available = new Version(availableVersion);
