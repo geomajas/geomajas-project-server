@@ -72,6 +72,20 @@
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${wms-layer-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>2.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -106,5 +120,8 @@
 			</activation>
 		</profile>
 	</profiles>
-	
+
+	<properties>
+		<wms-layer-backend-version>1.8.0</wms-layer-backend-version>
+	</properties>
 </project>

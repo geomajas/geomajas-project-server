@@ -60,10 +60,28 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-rest</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
 				<version>${geomajas-face-rest-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-geojson</artifactId>
+				<version>2.7-RC2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -103,5 +121,6 @@
 
 	<properties>
 		<geomajas-face-rest-backend-version>1.8.0</geomajas-face-rest-backend-version>
-	</properties>	
+		<spring-version>3.0.5.RELEASE</spring-version>
+	</properties>
 </project>

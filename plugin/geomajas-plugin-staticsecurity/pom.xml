@@ -79,6 +79,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${staticsecurity-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -130,5 +137,6 @@
 
 	<properties>
 		<staticsecurity-backend-version>1.7.1</staticsecurity-backend-version>
+		<staticsecurity-gwt-version>1.7.1</staticsecurity-gwt-version>
 	</properties>
 </project>

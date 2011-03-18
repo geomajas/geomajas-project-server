@@ -22,31 +22,6 @@
 	<name>Geomajas staticsecurity plug-in GWT</name>
 	<description>Geomajas security plugin which allows all users and policies to be defined as part of spring configuration</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- Google dependencies -->
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-user</artifactId>
-				<scope>provided</scope>
-				<version>2.1.1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-servlet</artifactId>
-	            <scope>runtime</scope>
-				<version>2.1.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${staticsecurity-gwt-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -177,7 +152,4 @@
 		</profile>	
 	</profiles>
 
-<properties>
-		<staticsecurity-gwt-version>1.7.1</staticsecurity-gwt-version>
-	</properties>	
 </project>

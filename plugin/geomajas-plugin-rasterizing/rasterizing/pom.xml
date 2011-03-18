@@ -84,7 +84,6 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
-			<version>1.7.1</version>
 			<scope>test</scope>
 		</dependency>
 		

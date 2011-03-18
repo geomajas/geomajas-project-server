@@ -86,8 +86,22 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-google</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google-gwt</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${google-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -127,6 +141,7 @@
 
 	<properties>
 		<google-layer-backend-version>1.7.1</google-layer-backend-version>
+		<google-gwt-version>1.8.0</google-gwt-version>
 		<google-layer-osm-version>1.8.0</google-layer-osm-version>
 	</properties>
 	

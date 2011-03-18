@@ -22,22 +22,15 @@
 	<name>Geomajas layer model using Google Maps, GWT</name>
 	<description>Geomajas layer model using Google Maps, GWT specifics</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${google-gwt-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>	
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google</artifactId>
-			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google</artifactId>
+			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
@@ -108,8 +101,4 @@
 			</activation>
 		</profile>	
 	</profiles>
-
-	<properties>
-		<google-gwt-version>1.8.0</google-gwt-version>
-	</properties>
 </project>

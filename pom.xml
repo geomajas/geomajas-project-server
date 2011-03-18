@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-all</artifactId>
-	<version>dummy</version>
+	<version>dummy-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.geomajas.org/</url>
 	<name>Grouping of all Geomajas modules</name>
@@ -31,17 +31,6 @@
 		<module>application</module>
 		<module>test</module>
 	</modules>
-
-	<build>
-		<finalName>geomajas</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.1</version>
-			</plugin>
-		</plugins>
-	</build>
 
 	<profiles>
 		<profile>

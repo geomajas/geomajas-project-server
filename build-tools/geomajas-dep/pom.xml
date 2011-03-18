@@ -172,25 +172,16 @@
 			</dependency>
 
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
 				<version>1.7.1</version>
 			</dependency>
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google</artifactId>
 				<version>1.7.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-google-gwt</artifactId>
-				<version>1.7.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-google-gwt</artifactId>
-				<version>1.7.1</version>
-				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -205,22 +196,26 @@
 				<version>1.7.2</version>
 			</dependency>
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
 				<version>1.8.0</version>
 			</dependency>
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>1.7.1</version>
 			</dependency>
 
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-printing</artifactId>
 				<version>2.0.0</version>
 			</dependency>
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-printing</artifactId>
 				<classifier>sources</classifier>
@@ -244,6 +239,7 @@
 				<version>1.6.0</version>
 			</dependency>
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-staticsecurity</artifactId>
 				<version>1.7.1</version>
@@ -266,6 +262,7 @@
 				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
+				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder</artifactId>
 				<version>1.0.0</version>
