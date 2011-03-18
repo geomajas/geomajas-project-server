@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,7 @@ public class DependencyCheckPostProcessor {
 	protected static final String VALUE = "done";
 
 	@Autowired(required = false)
-	protected Map<String, PluginInfo> contextDeclaredPlugins;
+	protected Map<String, PluginInfo> declaredPlugins;
 
 	@Autowired
 	private TestRecorder recorder;
@@ -49,21 +48,14 @@ public class DependencyCheckPostProcessor {
 			return;
 		}
 
-		if (null == contextDeclaredPlugins) {
+		if (null == declaredPlugins) {
 			return;
-		}
-
-		List<PluginInfo> declaredPlugins = new ArrayList<PluginInfo>();
-		// remove unfiltered plugin metadata (needed for eclipse !)
-		for (Map.Entry<String, PluginInfo> entry : contextDeclaredPlugins.entrySet()) {
-			String version = entry.getValue().getVersion().getVersion();
-			declaredPlugins.add(entry.getValue());
 		}
 
 		// start by going through all plug-ins to build a map of versions for plug-in keys
 		// includes verification that each key is only used once
 		Map<String, String> versions = new HashMap<String, String>();
-		for (PluginInfo plugin : declaredPlugins) {
+		for (PluginInfo plugin : declaredPlugins.values()) {
 			String name = plugin.getVersion().getName();
 			String version = plugin.getVersion().getVersion();
 			// check for multiple plugin with same name but different versions (duplicates allowed for jar+source dep)
@@ -79,12 +71,25 @@ public class DependencyCheckPostProcessor {
 		// Check dependencies
 		StringBuilder message = new StringBuilder();
 		String backendVersion = versions.get("Geomajas");
-		for (PluginInfo plugin : declaredPlugins) {
+		for (PluginInfo plugin : declaredPlugins.values()) {
 			String name = plugin.getVersion().getName();
 			message.append(checkVersion(name, "Geomajas back-end", plugin.getBackendVersion(), backendVersion));
-			for (PluginVersionInfo dependency : plugin.getDependencies()) {
-				String depName = dependency.getName();
-				message.append(checkVersion(name, depName, dependency.getVersion(), versions.get(depName)));
+			List<PluginVersionInfo> dependencies = plugin.getDependencies();
+			if (null != dependencies) {
+				for (PluginVersionInfo dependency : plugin.getDependencies()) {
+					String depName = dependency.getName();
+					message.append(checkVersion(name, depName, dependency.getVersion(), versions.get(depName)));
+				}
+			}
+			dependencies = plugin.getOptionalDependencies();
+			if (null != dependencies) {
+				for (PluginVersionInfo dependency : dependencies) {
+					String depName = dependency.getName();
+					String availableVersion = versions.get(depName);
+					if (null != availableVersion) {
+						message.append(checkVersion(name, depName, dependency.getVersion(), versions.get(depName)));
+					}
+				}
 			}
 		}
 		if (message.length() > 0) {

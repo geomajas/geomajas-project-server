@@ -33,6 +33,8 @@ public class PluginInfo {
 
 	private List<PluginVersionInfo> dependencies;
 
+	private List<PluginVersionInfo> optionalDependencies;
+
 	private List<CopyrightInfo> copyrightInfo;
 
 	/**
@@ -90,6 +92,26 @@ public class PluginInfo {
 	 */
 	public void setDependencies(List<PluginVersionInfo> dependencies) {
 		this.dependencies = dependencies;
+	}
+
+	/**
+	 * Get the minimum version for optional dependencies.
+	 *
+	 * @return optional dependencies
+	 * @since 1.9.0
+	 */
+	public List<PluginVersionInfo> getOptionalDependencies() {
+		return optionalDependencies;
+	}
+
+	/**
+	 * Set the minimum version for optional dependencies.
+	 *
+	 * @param optionalDependencies optional dependencies
+	 * @since 1.9.0
+	 */
+	public void setOptionalDependencies(List<PluginVersionInfo> optionalDependencies) {
+		this.optionalDependencies = optionalDependencies;
 	}
 
 	/**
