@@ -36,6 +36,8 @@ public class DependencyCheckPostProcessor {
 	protected static final String GROUP = "depcheck";
 	protected static final String VALUE = "done";
 
+	private static final String EXPR_START = "$";
+
 	@Autowired(required = false)
 	protected Map<String, PluginInfo> declaredPlugins;
 
@@ -60,11 +62,18 @@ public class DependencyCheckPostProcessor {
 			String version = plugin.getVersion().getVersion();
 			// check for multiple plugin with same name but different versions (duplicates allowed for jar+source dep)
 			if (null != version) {
-				if (versions.containsKey(name) && !versions.get(name).equals(version)) {
-					throw new GeomajasException(ExceptionCode.DEPENDENCY_CHECK_INVALID_DUPLICATE,
-							name, version, versions.get(name));
+				String otherVersion = versions.get(name);
+				if (null != otherVersion) {
+					if (!version.startsWith(EXPR_START)) {
+						if (!otherVersion.startsWith(EXPR_START) && !otherVersion.equals(version)) {
+							throw new GeomajasException(ExceptionCode.DEPENDENCY_CHECK_INVALID_DUPLICATE,
+									name, version, versions.get(name));
+						}
+						versions.put(name, version);
+					}
+				} else {
+					versions.put(name, version);
 				}
-				versions.put(name, version);
 			}
 		}
 
@@ -104,7 +113,7 @@ public class DependencyCheckPostProcessor {
 			return "Dependency " + dependency + " not found for " + pluginName + ", version " + requestedVersion +
 					" or higher needed.\n";
 		}
-		if (requestedVersion.startsWith("$") || availableVersion.startsWith("$")) {
+		if (requestedVersion.startsWith(EXPR_START) || availableVersion.startsWith(EXPR_START)) {
 			return "";
 		}
 		Version requested = new Version(requestedVersion);
