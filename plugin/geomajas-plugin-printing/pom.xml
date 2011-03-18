@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.4</version>
+		<version>1.0.5-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -103,6 +103,78 @@
 				<artifactId>geomajas-plugin-printing-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
+			<dependency>
+				<!-- from next version on, this should depend on "all" -->
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-hibernate</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+			<dependency>
+				<!-- from next version on, this should depend on "all" -->
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>1.7.1</version>
+			</dependency>
+			<dependency>
+				<!-- from next version on, this should depend on "all" -->
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>1.7.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>2.1.7</version>
+			</dependency>
+
+			<dependency>
+				<groupId>jpedal</groupId>
+				<artifactId>jpedal</artifactId>
+				<version>4.45-b-105</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.media</groupId>
+				<artifactId>jai-core</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.media</groupId>
+				<artifactId>jai_codec</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>2.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>1.8.0.7</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -137,5 +209,6 @@
 	<properties>
 		<printing-backend-version>1.8.0</printing-backend-version>
 		<printing-gwt-version>1.8.0</printing-gwt-version>
+		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>
 </project>
