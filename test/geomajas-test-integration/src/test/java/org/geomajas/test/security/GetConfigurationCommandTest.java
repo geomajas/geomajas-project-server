@@ -106,7 +106,8 @@ public class GetConfigurationCommandTest {
 		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
 		request.setApplicationId(APP_ID);
 		request.setMapId(MAP_ID);
-		CommandResponse response = commandDispatcher.execute(GET_MAP, request, securityContext.getToken(), "en");
+		CommandResponse response = commandDispatcher.execute(GetMapConfigurationRequest.COMMAND, request,
+				securityContext.getToken(), "en");
 		Assert.assertFalse(response.isError());
 		Assert.assertTrue(response instanceof GetMapConfigurationResponse);
 		ClientMapInfo mapInfo = ((GetMapConfigurationResponse)response).getMapInfo();

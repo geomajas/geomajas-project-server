@@ -61,7 +61,7 @@ public class CommandDispatcherTest {
 		Assert.assertNull(securityContext.getToken());
 
 		// this test to verify the command itself (should fail here as "luc" should be logged in).
-		response = commandDispatcher.execute(LogRequest.COMMAND, null, token, "en");
+		response = commandDispatcher.execute("command.MarinoLoggedIn", null, token, "en");
 		Assert.assertTrue(response.isError());
 		Assert.assertTrue(response.getErrors().get(0) instanceof GeomajasException);
 		Assert.assertEquals(ExceptionCode.TEST, ((GeomajasException)response.getErrors().get(0)).getExceptionCode());
