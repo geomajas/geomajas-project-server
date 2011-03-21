@@ -419,15 +419,6 @@ PROJCS["Google Mercator",
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
-					<property name="id" value="preLayerFilter" />
-				</bean>
-				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
-					<property name="id" value="LayerFilterStep" />
-				</bean>
-				<bean class="org.geomajas.service.pipeline.PipelineHook">
-					<property name="id" value="postLayerFilter" />
-				</bean>
-				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preGetAttributes" />
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetAttributesStep">

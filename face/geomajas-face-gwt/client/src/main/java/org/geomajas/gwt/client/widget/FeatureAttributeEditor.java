@@ -14,14 +14,10 @@ package org.geomajas.gwt.client.widget;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.attribute.AttributeForm;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFactory;
 import org.geomajas.gwt.client.widget.attribute.DefaultAttributeFormFactory;
-import org.geomajas.gwt.client.widget.attribute.EditableAttributeForm;
-import org.geomajas.gwt.client.widget.attribute.SimpleAttributeForm;
 
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.form.events.HasItemChangedHandlers;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -34,7 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
-public class FeatureAttributeEditor extends Canvas implements HasItemChangedHandlers {
+public class FeatureAttributeEditor extends VLayout {
 
 	private Feature feature;
 
@@ -42,17 +38,30 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 
 	private VectorLayer layer;
 
-	private EditableAttributeForm editableForm;
-
-	private SimpleAttributeForm simpleForm;
-
-	private AttributeFormFactory formFactory;
-
-	private VLayout layout;
+	private AttributeForm attributeForm;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
+
+	/**
+	 * <p>
+	 * Constructs an attribute form, that may possibly be edited. Actually, depending on the value of the "disabled"
+	 * flag, will this widget use a different type of attribute form to display the feature's attribute values in.
+	 * </p>
+	 * <p>
+	 * This constructor will use the {@link DefaultAttributeFormFactory} to create the actual attribute form. If you
+	 * want a specific factory to be used instead, see the other constructor.
+	 * </p>
+	 * 
+	 * @param layer
+	 *            The vector layer that holds all the attribute definitions for the type of feature to display.
+	 * @param disabled
+	 *            Should the form initially be disabled or not? When disabled, editing is not possible.
+	 */
+	public FeatureAttributeEditor(VectorLayer layer, boolean disabled) {
+		this(layer, disabled, new DefaultAttributeFormFactory());
+	}
 
 	/**
 	 * Constructs an attribute form, that may possibly be edited. Actually, depending on the value of the "disabled"
@@ -62,19 +71,15 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	 *            The vector layer that holds all the attribute definitions for the type of feature to display.
 	 * @param disabled
 	 *            Should the form initially be disabled or not? When disabled, editing is not possible.
+	 * @param formFactory
+	 *            The factory that should be used for creating the {@link AttributeForm} in this editor.
 	 */
-	public FeatureAttributeEditor(VectorLayer layer, boolean disabled) {
+	public FeatureAttributeEditor(VectorLayer layer, boolean disabled, AttributeFormFactory formFactory) {
 		this.layer = layer;
-		layout = new VLayout();
-		layout.setMembersMargin(0);
-		layout.setWidth100();
-		addChild(layout);
-		formFactory = new DefaultAttributeFormFactory();
-		editableForm = formFactory.createEditableForm(layer.getLayerInfo().getFeatureInfo().getAttributes());
-		simpleForm = formFactory.createSimpleForm(layer.getLayerInfo().getFeatureInfo().getAttributes());
+		setMembersMargin(0);
+		attributeForm = formFactory.createAttributeForm(layer);
+		addMember(attributeForm.getWidget());
 		setDisabled(disabled);
-		setWidth100();
-		setHeight100();
 	}
 
 	// -------------------------------------------------------------------------
@@ -85,8 +90,8 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	 * Add a handler to the change events of the attribute values in the form. Note that editing is only possible when
 	 * this widget is not disabled.
 	 */
-	public HandlerRegistration addItemChangedHandler(ItemChangedHandler handler) {
-		return editableForm.addItemChangedHandler(handler);
+	public void addItemChangedHandler(ItemChangedHandler handler) {
+		attributeForm.addItemChangedHandler(handler);
 	}
 
 	// -------------------------------------------------------------------------
@@ -99,13 +104,7 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	 * otherwise a {@link EditableAttributeForm}.
 	 */
 	public void setDisabled(boolean disabled) {
-		if (disabled) {
-			layout.removeMember(editableForm.getWidget());
-			layout.addMember(simpleForm.getWidget());
-		} else {
-			layout.removeMember(simpleForm.getWidget());
-			layout.addMember(editableForm.getWidget());
-		}
+		attributeForm.setDisabled(disabled);
 		super.setDisabled(disabled);
 		if (feature != null) {
 			setFeature(feature);
@@ -119,7 +118,7 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	 * @return
 	 */
 	public boolean validate() {
-		return editableForm.validate();
+		return attributeForm.validate();
 	}
 
 	/** Resets the original values of the feature. */
@@ -138,7 +137,7 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	 */
 	public Feature getFeature() {
 		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			editableForm.fromForm(info.getName(), feature.getAttributes().get(info.getName()));
+			attributeForm.fromForm(info.getName(), feature.getAttributes().get(info.getName()));
 		}
 		return feature;
 	}
@@ -146,7 +145,8 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	/**
 	 * Apply a new feature onto this widget. The feature will be immediately shown on the attribute form.
 	 * 
-	 * @param feature feature
+	 * @param feature
+	 *            feature
 	 */
 	public void setFeature(Feature feature) {
 		if (feature != null) {
@@ -157,8 +157,7 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 		} else {
 			original = null;
 			feature = null;
-			editableForm.clear();
-			simpleForm.clear();
+			attributeForm.clear();
 		}
 	}
 
@@ -168,8 +167,7 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 
 	private void copyToForm(Feature feature) {
 		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			editableForm.toForm(info.getName(), feature.getAttributes().get(info.getName()));
-			simpleForm.toForm(info.getName(), feature.getAttributes().get(info.getName()));
+			attributeForm.toForm(info.getName(), feature.getAttributes().get(info.getName()));
 		}
 	}
 }

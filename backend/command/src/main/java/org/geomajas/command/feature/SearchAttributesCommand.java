@@ -26,8 +26,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * <p>
  * Search for attribute values of a certain attribute within a certain vector layer. The response holds all possible
  * attribute values.
+ * </p>
+ * <p>
+ * TODO What if the user is not allowed to see the requested attribute?
+ * </p>
  * 
  * @author Pieter De Graef
  */

@@ -12,8 +12,8 @@
 		mapLayout1.addMember(googleMap);
 
 		// Create map with Google layer (satellite), and add a PanController to it:
-		VLayout mapLayout2 = new VLayout();
-		mapLayout2.setShowEdges(true);
+//		VLayout mapLayout2 = new VLayout();
+//		mapLayout2.setShowEdges(true);
 //		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
 //		googleSatMap.setController(new PanController(googleSatMap));
 //		mapLayout2.addMember(googleSatMap);

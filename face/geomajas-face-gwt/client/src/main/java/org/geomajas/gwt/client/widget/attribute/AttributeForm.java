@@ -12,12 +12,15 @@ package org.geomajas.gwt.client.widget.attribute;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.global.FutureApi;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.attribute.AssociationAttribute;
+import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.CurrencyAttribute;
 import org.geomajas.layer.feature.attribute.DateAttribute;
@@ -26,52 +29,161 @@ import org.geomajas.layer.feature.attribute.FloatAttribute;
 import org.geomajas.layer.feature.attribute.ImageUrlAttribute;
 import org.geomajas.layer.feature.attribute.IntegerAttribute;
 import org.geomajas.layer.feature.attribute.LongAttribute;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
 
-import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.types.DSDataFormat;
+import com.smartgwt.client.types.DSProtocol;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
-import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
+import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 /**
- * Abstract definition for a "form" that display the attributes of a feature. Different implementations may or may not
- * support editing of these attributes.
+ * <p>
+ * This class represents a form that is custom tailored for managing the attributes of a feature. The form is
+ * initialized by providing a vector layer. After creation, some {@link AttributeFormFactory} should be used to apply
+ * the individual items within the form - by making use of the <code>getWidget</code> method, which returns the actual
+ * SmartGWT form widget.<br/>
+ * This object mainly takes care of getting and setting attribute values from and to the form.
+ * </p>
+ * <p>
+ * This attribute form definition is used internally in the <code>FeatureEditor</code> widget, where by default the
+ * {@link DefaultAttributeFormFactory} is used to create the individual items within the form.
+ * </p>
  * 
- * @author Jan De Moerloose
  * @author Pieter De Graef
  */
-public class AbstractAttributeForm {
+@FutureApi
+public class AttributeForm {
 
-	protected DynamicForm form;
+	private VectorLayer layer;
 
-	protected Map<String, AttributeInfo> infos = new HashMap<String, AttributeInfo>();
+	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+
+	private DynamicForm attributeForm;
+
+	private boolean disabled;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Package visible constructor. Implementations are to use this one.
+	 * Initialize the attribute form with the given layer. Note that this constructor will NOT define all the form
+	 * items. This should still be done by some {@link AttributeFormFactory}. The reason for this is that different
+	 * implementations of these factories may want different orders or layouts. They may even want to introduce extra
+	 * form items.. who knows.
 	 * 
-	 * @param infoList
-	 *            The list of attribute definitions in correct order that this form must be able to display.
+	 * @param layer
+	 *            The vector layer that should be presented in this form.
 	 */
-	AbstractAttributeForm(List<AttributeInfo> infoList) {
-		for (AttributeInfo info : infoList) {
-			infos.put(info.getName(), info);
+	public AttributeForm(VectorLayer layer) {
+		this.layer = layer;
+		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+			attributeInfoMap.put(info.getName(), info);
 		}
-		form = new DynamicForm();
-		form.setWidth100();
-		form.setHeight100();
-		form.setStyleName("attributeForm");
+
+		attributeForm = new DynamicForm() {
+
+			public void setDataSource(com.smartgwt.client.data.DataSource dataSource) {
+				dataSource.setDataFormat(DSDataFormat.CUSTOM);
+				dataSource.setDataProtocol(DSProtocol.CLIENTCUSTOM);
+				dataSource.setClientOnly(false);
+				super.setDataSource(dataSource);
+			};
+		};
+		attributeForm.setStyleName("attributeForm");
 	}
 
 	// -------------------------------------------------------------------------
 	// Public methods:
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Return the actual SmartGWT form widget that is used behind the screens. This method is used in the
+	 * {@link AttributeFormFactory}s to retrieve the actual form, and apply the definitive form layout.
+	 * 
+	 * @return
+	 */
+	public DynamicForm getWidget() {
+		return attributeForm;
+	}
+
+	/**
+	 * Retrieve the vector layer that should be represented in the form.
+	 * 
+	 * @return The vector layer that should be represented in the form.
+	 */
+	public VectorLayer getLayer() {
+		return layer;
+	}
+
+	/**
+	 * Enable or disable the form for editing. This means that when the form is disabled, no editing is possible.
+	 * 
+	 * @param disabled
+	 *            Should editing be enabled or disabled?
+	 */
+	public void setDisabled(Boolean disabled) {
+		this.disabled = disabled;
+
+		// Don't set disabled on the form, but on the individual items. This way it's easier to overwrite when creating
+		// custom form items.
+		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+			FormItem formItem = attributeForm.getItem(info.getName());
+			if (formItem != null) {
+				if (info.isEditable()) {
+					formItem.setDisabled(disabled);
+				} else {
+					formItem.setDisabled(true);
+				}
+			}
+		}
+	}
+
+	/**
+	 * See if the form is currently disabled or not?
+	 * 
+	 * @return Is the form currently disabled or not?
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/**
+	 * Validate the contents of the entire attribute form.
+	 * 
+	 * @return Returns true if all values in the form are validated correctly, false otherwise.
+	 */
+	public boolean validate() {
+		return attributeForm.validate();
+	}
+
+	/**
+	 * Attach a handler that reacts to changes in the fields as the user makes them.
+	 * 
+	 * @param handler
+	 * @return
+	 */
+	public void addItemChangedHandler(final ItemChangedHandler handler) {
+		// Due to custom made FormItems, we can't set the handler on the form anymore...
+		for (final FormItem formItem : attributeForm.getFields()) {
+			ChangedHandler h = new ChangedHandler() {
+
+				public void onChanged(ChangedEvent event) {
+					handler.onItemChanged(new ItemChangedEvent(formItem.getJsObj()));
+				}
+			};
+			formItem.addChangedHandler(h);
+		}
+	}
 
 	/**
 	 * Apply an <code>attribute</code> value with the given <code>name</code> onto the form.
@@ -82,11 +194,11 @@ public class AbstractAttributeForm {
 	 *            The attribute value.
 	 */
 	public void toForm(String name, Attribute<?> attribute) {
-		AttributeInfo info = infos.get(name);
+		AttributeInfo info = attributeInfoMap.get(name);
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
-			if (attribute == null) {
-				form.getField(info.getName()).setDisabled(true);
+			if (attribute == null && attributeForm.getField(info.getName()) != null) {
+				attributeForm.getField(info.getName()).setDisabled(true);
 			} else {
 				if (!primitive.isEmpty()) {
 					switch (primitive.getType()) {
@@ -125,12 +237,14 @@ public class AbstractAttributeForm {
 							break;
 					}
 				}
-				form.getField(info.getName()).setDisabled(!attribute.isEditable());
+				if (attributeForm.getField(info.getName()) != null) {
+					attributeForm.getField(info.getName()).setDisabled(!attribute.isEditable());
+				}
 			}
 		} else {
-			// TODO
+			// TODO Implement setter for Associations as well...
 		}
-		form.fireEvent(new ItemChangedEvent(form.getJsObj()));
+		attributeForm.fireEvent(new ItemChangedEvent(attributeForm.getJsObj()));
 	}
 
 	/**
@@ -146,7 +260,7 @@ public class AbstractAttributeForm {
 		if (attribute == null) {
 			return;
 		}
-		AttributeInfo info = infos.get(name);
+		AttributeInfo info = attributeInfoMap.get(name);
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
 			switch (primitive.getType()) {
@@ -185,24 +299,32 @@ public class AbstractAttributeForm {
 					break;
 			}
 		} else {
-			// TODO Implement Associations...
+			AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
+			switch (association.getType()) {
+				case MANY_TO_ONE:
+					// Getting the value through the form doesn't work somehow, so we retrieve the record instead...
+					ManyToOneAttribute manyToOne = (ManyToOneAttribute) association;
+					if (attributeForm.getField(name) != null) {
+						ListGridRecord record = attributeForm.getField(name).getSelectedRecord();
+						if (record != null) {
+							Object v = record
+									.getAttributeAsObject(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_FIELD);
+							if (v != null && v instanceof AssociationValue) {
+								manyToOne.setValue((AssociationValue) v);
+							}
+						}
+					}
+					break;
+				case ONE_TO_MANY:
+					// TODO Implement the attribute form getter for the ONE_TO_MANY attribute.
+					break;
+			}
 		}
 	}
 
-	/**
-	 * Clear the entire form. This will remove the entire visual representation.
-	 */
+	/** Clear the entire form. This will remove the entire visual representation. */
 	public void clear() {
-		form.clear();
-	}
-
-	/**
-	 * Return the actual SmartGWT form widget that is used behind the screens.
-	 * 
-	 * @return
-	 */
-	public Canvas getWidget() {
-		return form;
+		attributeForm.clear();
 	}
 
 	// -------------------------------------------------------------------------
@@ -211,58 +333,88 @@ public class AbstractAttributeForm {
 
 	/** Apply a boolean attribute value on the form, with the given name. */
 	protected void setValue(String name, BooleanAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		// attributeForm.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a short attribute value on the form, with the given name. */
 	protected void setValue(String name, ShortAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		attributeForm.setValue(name, attribute.getValue());
 	}
 
 	/** Apply a integer attribute value on the form, with the given name. */
 	protected void setValue(String name, IntegerAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a long attribute value on the form, with the given name. */
 	protected void setValue(String name, LongAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a float attribute value on the form, with the given name. */
 	protected void setValue(String name, FloatAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a double attribute value on the form, with the given name. */
 	protected void setValue(String name, DoubleAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a currency attribute value on the form, with the given name. */
 	protected void setValue(String name, CurrencyAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a string attribute value on the form, with the given name. */
 	protected void setValue(String name, StringAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply an URL attribute value on the form, with the given name. */
 	protected void setValue(String name, UrlAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply an image attribute value on the form, with the given name. */
 	protected void setValue(String name, ImageUrlAttribute attribute) {
-		form.setValue(name, attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	/** Apply a date attribute value on the form, with the given name. */
 	protected void setValue(String name, DateAttribute attribute) {
-		// clumsy, but how else ?
-		((TextItem) form.getItem(name)).setValue(attribute.getValue());
+		FormItem item = attributeForm.getField(name);
+		if (item != null) {
+			item.setValue(attribute.getValue());
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -271,57 +423,57 @@ public class AbstractAttributeForm {
 
 	/** Get a boolean value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, BooleanAttribute attribute) {
-		attribute.setValue(toBoolean(form.getValue(name)));
+		attribute.setValue(toBoolean(attributeForm.getValue(name)));
 	}
 
 	/** Get a short value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, ShortAttribute attribute) {
-		attribute.setValue(toShort(form.getValue(name)));
+		attribute.setValue(toShort(attributeForm.getValue(name)));
 	}
 
 	/** Get a integer value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, IntegerAttribute attribute) {
-		attribute.setValue(toInteger(form.getValue(name)));
+		attribute.setValue(toInteger(attributeForm.getValue(name)));
 	}
 
 	/** Get a long value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, LongAttribute attribute) {
-		attribute.setValue(toLong(form.getValue(name)));
+		attribute.setValue(toLong(attributeForm.getValue(name)));
 	}
 
 	/** Get a float value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, FloatAttribute attribute) {
-		attribute.setValue(toFloat(form.getValue(name)));
+		attribute.setValue(toFloat(attributeForm.getValue(name)));
 	}
 
 	/** Get a double value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, DoubleAttribute attribute) {
-		attribute.setValue(toDouble(form.getValue(name)));
+		attribute.setValue(toDouble(attributeForm.getValue(name)));
 	}
 
 	/** Get a currency value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, CurrencyAttribute attribute) {
-		attribute.setValue((String) form.getValue(name));
+		attribute.setValue((String) attributeForm.getValue(name));
 	}
 
 	/** Get a string value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, StringAttribute attribute) {
-		attribute.setValue((String) form.getValue(name));
+		attribute.setValue((String) attributeForm.getValue(name));
 	}
 
 	/** Get an URL value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, UrlAttribute attribute) {
-		attribute.setValue((String) form.getValue(name));
+		attribute.setValue((String) attributeForm.getItem(name).getValue());
 	}
 
 	/** Get an image value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, ImageUrlAttribute attribute) {
-		attribute.setValue((String) form.getValue(name));
+		attribute.setValue((String) attributeForm.getValue(name));
 	}
 
 	/** Get a date value from the form, and place it in <code>attribute</code>. */
 	protected void getValue(String name, DateAttribute attribute) {
-		attribute.setValue((Date) form.getValue(name));
+		attribute.setValue((Date) attributeForm.getValue(name));
 	}
 
 	// -------------------------------------------------------------------------

@@ -23,20 +23,13 @@
 .attributeForm .formTitleDisabled, .attributeForm .formCellDisabled
 {
 	/* Style for the form TD's */
-	padding: 3px 10px;
-	border: 1px solid #EBEADB;
-	border-right-color: #D5CDB5;
-
-	background-color: #FFFFFF;
 }
 .attributeForm .formTitleError, .attributeForm .formCellError {
 	/* Style title texts on the left side */
-	font-weight: normal;
-	color: #C00000;
 }
 .attributeForm .formTitleDisabled, .attributeForm .formCellDisabled {
 	/* Style for the disabled forms */
-	color: #000000;
+	color: #002040;
 }
 
 .attributeForm .textItemDisabled, .attributeForm .selectItemTextDisabled,
@@ -49,14 +42,9 @@
 }
 
 .attributeForm .formCellError div {
-	/* Style for error signs, when typing faulty data */
-	border: 0;
-	padding: 0;
 }
 
 .attributeForm table {
-	/* General style for the form table */
-	padding: 2px;
 }
 
 

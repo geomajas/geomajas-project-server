@@ -452,4 +452,28 @@ public interface SampleMessages extends Messages {
 	String search2Description();
 
 	String search2InnerTitle();
+
+	// Edit Attribute sample:
+
+	String editAttributeTitle();
+
+	String editAttributeDescription();
+
+	// Attributes IncludeInForm
+
+	String attributeIncludeInFormTitle();
+
+	String attributeIncludeInFormDescription();
+
+	// Attributes CustomType
+
+	String attributeCustomTypeTitle();
+
+	String attributeCustomTypeDescription();
+
+	// Attributes Custom Form
+
+	String attributeCustomFormTitle();
+
+	String attributeCustomFormDescription();
 }

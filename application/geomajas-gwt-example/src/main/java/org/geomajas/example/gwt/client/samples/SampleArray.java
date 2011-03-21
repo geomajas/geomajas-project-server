@@ -11,7 +11,11 @@
 
 package org.geomajas.example.gwt.client.samples;
 
+import org.geomajas.example.gwt.client.samples.attribute.AttributeCustomFormSample;
+import org.geomajas.example.gwt.client.samples.attribute.AttributeCustomTypeSample;
+import org.geomajas.example.gwt.client.samples.attribute.AttributeIncludeInFormSample;
 import org.geomajas.example.gwt.client.samples.attribute.AttributeSearchSample;
+import org.geomajas.example.gwt.client.samples.attribute.EditAttributeSample;
 import org.geomajas.example.gwt.client.samples.attribute.FeatureListGridSample;
 import org.geomajas.example.gwt.client.samples.attribute.SearchSample;
 import org.geomajas.example.gwt.client.samples.base.SampleTreeNode;
@@ -168,6 +172,18 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().search2Title(),
 						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeSearchSample.TITLE, "FeatureListGridGroup",
 						AttributeSearchSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editAttributeTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/table.png", EditAttributeSample.TITLE, "FeatureListGridGroup",
+						EditAttributeSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().attributeIncludeInFormTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeIncludeInFormSample.TITLE,
+						"FeatureListGridGroup", AttributeIncludeInFormSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().attributeCustomTypeTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeCustomTypeSample.TITLE,
+						"FeatureListGridGroup", AttributeCustomTypeSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().attributeCustomFormTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeCustomFormSample.TITLE,
+						"FeatureListGridGroup", AttributeCustomFormSample.FACTORY),
 
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),
@@ -202,8 +218,7 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/osgeo/print.png", DefaultPrintingSample.TITLE, "Plugins",
 						DefaultPrintingSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geocoderTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins", 
-						GeocoderSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins", GeocoderSample.FACTORY),
 
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),

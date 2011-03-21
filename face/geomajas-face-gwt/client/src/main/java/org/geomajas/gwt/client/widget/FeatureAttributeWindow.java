@@ -25,6 +25,8 @@ import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.widget.attribute.AttributeFormFactory;
+import org.geomajas.gwt.client.widget.attribute.DefaultAttributeFormFactory;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.IButton;
@@ -78,6 +80,8 @@ public class FeatureAttributeWindow extends Window {
 	 */
 	private FeatureAttributeEditor attributeTable;
 
+	private AttributeFormFactory factory;
+
 	private boolean editingAllowed;
 
 	private boolean editingEnabled;
@@ -103,7 +107,9 @@ public class FeatureAttributeWindow extends Window {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create an instance and immediately apply a feature onto it. Also specify whether or not editing is allowed.
+	 * Create an instance and immediately apply a feature onto it. Also specify whether or not editing is allowed. By
+	 * default this constructor will use a {@link DefaultAttributeFormFactory} to create the attribute form. If you want
+	 * to have some influence on how the feature attribute form should look, than use the other constructor.
 	 * 
 	 * @param feature
 	 *            The feature instance to display and/or edit.
@@ -114,7 +120,29 @@ public class FeatureAttributeWindow extends Window {
 	 */
 	@Api
 	public FeatureAttributeWindow(Feature feature, boolean editingAllowed) {
+		this(feature, editingAllowed, new DefaultAttributeFormFactory());
+	}
+
+	/**
+	 * Create an instance and immediately apply a feature onto it. Also specify whether or not editing is allowed.
+	 * 
+	 * @param feature
+	 *            The feature instance to display and/or edit.
+	 * @param editingAllowed
+	 *            This must be set before the widget is actually drawn, so it makes sense to set it at construction
+	 *            time.
+	 * @param factory
+	 *            A specific factory for creating the attribute forms within this widget.
+	 * @since 1.9.0
+	 */
+	@Api
+	public FeatureAttributeWindow(Feature feature, boolean editingAllowed, AttributeFormFactory factory) {
 		super();
+		if (factory == null) {
+			this.factory = new DefaultAttributeFormFactory();
+		} else {
+			this.factory = factory;
+		}
 		setEditingAllowed(editingAllowed);
 		if (feature != null) {
 			buildWidget(feature.getLayer());
@@ -156,12 +184,14 @@ public class FeatureAttributeWindow extends Window {
 	/**
 	 * Apply a new feature onto this widget, assuring the attributes are loaded.
 	 * 
-	 * @param feature feature
+	 * @param feature
+	 *            feature
 	 */
 	public void setFeature(Feature feature) {
 		List<Feature> features = new ArrayList<Feature>();
 		features.add(feature);
 		LazyLoader.lazyLoad(features, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
+
 			public void execute(List<Feature> response) {
 				Feature feature = response.get(0);
 				if (attributeTable == null) {
@@ -178,8 +208,8 @@ public class FeatureAttributeWindow extends Window {
 	}
 
 	/**
-	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't
-	 * have any effect anymore.
+	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't have any
+	 * effect anymore.
 	 * 
 	 * @return true when editing is allowed
 	 */
@@ -188,10 +218,11 @@ public class FeatureAttributeWindow extends Window {
 	}
 
 	/**
-	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't
-	 * have any effect anymore.
+	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't have any
+	 * effect anymore.
 	 * 
-	 * @param editingAllowed editing allowed status
+	 * @param editingAllowed
+	 *            editing allowed status
 	 */
 	public void setEditingAllowed(boolean editingAllowed) {
 		this.editingAllowed = editingAllowed;
@@ -215,7 +246,8 @@ public class FeatureAttributeWindow extends Window {
 	 * buttons will disappear, and a simple attribute form is shown that displays the attribute values, but does not
 	 * allow for editing.
 	 * 
-	 * @param editingEnabled editing enabled status
+	 * @param editingEnabled
+	 *            editing enabled status
 	 */
 	public void setEditingEnabled(boolean editingEnabled) {
 		if (isEditingAllowed()) {
@@ -240,8 +272,9 @@ public class FeatureAttributeWindow extends Window {
 
 	/**
 	 * Build the entire widget.
-	 *
-	 * @param layer layer
+	 * 
+	 * @param layer
+	 *            layer
 	 */
 	private void buildWidget(VectorLayer layer) {
 		mapModel = layer.getMapModel();
@@ -251,7 +284,7 @@ public class FeatureAttributeWindow extends Window {
 		setCanDragReposition(true);
 		setCanDragResize(true);
 
-		attributeTable = new FeatureAttributeEditor(layer, true);
+		attributeTable = new FeatureAttributeEditor(layer, true, factory);
 
 		toolStrip = new ToolStrip();
 		toolStrip.setWidth100();

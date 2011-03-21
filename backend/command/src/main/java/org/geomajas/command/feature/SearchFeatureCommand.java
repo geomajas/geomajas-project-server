@@ -101,6 +101,9 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 	Filter createFilter(SearchFeatureRequest request, String layerId) throws GeomajasException {
 		Filter f = null;
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		if (layer == null) {
+			throw new  GeomajasException(ExceptionCode.LAYER_NOT_FOUND, layerId);
+		}
 		String idName = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
 		if (null != request.getCriteria()) {
 			for (SearchCriterion criterion : request.getCriteria()) {
