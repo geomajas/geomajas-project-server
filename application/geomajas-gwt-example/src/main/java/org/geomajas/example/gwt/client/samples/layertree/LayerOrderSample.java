@@ -71,7 +71,7 @@ public class LayerOrderSample extends SamplePanel {
 		upButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("countries110mLayer");
+				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("clientLayerCountries110m");
 				map.getMapModel().moveVectorLayerUp(layer);
 			}
 		});
@@ -81,7 +81,7 @@ public class LayerOrderSample extends SamplePanel {
 		downutton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("countries110mLayer");
+				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("clientLayerCountries110m");
 				map.getMapModel().moveVectorLayerDown(layer);
 			}
 		});

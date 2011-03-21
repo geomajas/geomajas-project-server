@@ -53,12 +53,12 @@ public class EditLineLayerSample extends SamplePanel {
 		mapLayout.setShowResizeBar(true);
 
 		// Map with ID editLineLayerMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("mapEditLineLayer", "gwt-samples");
+		final MapWidget map = new MapWidget("mapEditLine", "gwt-samples");
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableRoadtrl020Layer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerEditableRoadtrl020"));
 				map.registerMapAddon(new GoogleAddon("google", map, GoogleAddon.MapType.SATELLITE, false));
 			}
 		});

@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapEditMultiPointLayer" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapEditMultiPoint" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -51,8 +51,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="wmsLayer" />
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editableMultiCitiesLayer">
+				<ref bean="clientLayerWms" />
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerEditableMultiCities">
 					<property name="serverLayerId" value="layerMultiCities" />
 			        <property name="label" value="Multi-Cities (editable - multipoint)"/>
 			        <property name="visible" value="true"/>

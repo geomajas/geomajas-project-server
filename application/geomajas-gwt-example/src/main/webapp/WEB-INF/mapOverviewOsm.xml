@@ -50,7 +50,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="overviewOsmLayer">
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerOverviewOsm">
 					<property name="serverLayerId" value="layerOsm" />
 					<property name="label" value="OpenStreetMap (raster)" />
 					<property name="visible" value="true" />

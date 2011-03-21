@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapEditPolygonLayer" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapEditPolygon" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -51,7 +51,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsEditPolygonLayer">
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerWmsEditPolygon">
 					<property name="serverLayerId" value="layerWmsBluemarble" />
 					<property name="label" value="Blue marble WMS (raster)" />
 					<property name="visible" value="true" />
@@ -59,7 +59,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="minimumScale" value="1:500000000" />
 					<property name="style" value="0.8" />
 				</bean>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editablePolygonLayer">
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerEditablePolygon">
 					<property name="serverLayerId" value="layerLakes110m" />
 					<property name="label" value="Lakes (editable - polygon)" />
 					<property name="visible" value="true" />
@@ -71,7 +71,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 							<bean class="org.geomajas.configuration.SnappingRuleInfo">
 								<property name="distance" value="1" />
 								<property name="type" value="NEAREST_POINT" />
-								<property name="layerId" value="editablePolygonLayer" />
+								<property name="layerId" value="clientLayerEditablePolygon" />
 							</bean>
 						</list>
 					</property>

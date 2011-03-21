@@ -25,7 +25,7 @@
 		upButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("countries110mLayer");
+				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("clientLayerCountries110m");
 				map.getMapModel().moveVectorLayerUp(layer);
 			}
 		});
@@ -35,7 +35,7 @@
 		downutton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("countries110mLayer");
+				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("clientLayerCountries110m");
 				map.getMapModel().moveVectorLayerDown(layer);
 			}
 		});

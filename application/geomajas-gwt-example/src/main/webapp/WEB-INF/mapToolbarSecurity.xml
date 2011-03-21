@@ -46,7 +46,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="wmsLayer" />
+				<ref bean="clientLayerWms" />
 			</list>
 		</property>
 		<property name="toolbar">

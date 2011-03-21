@@ -52,12 +52,12 @@ public class EditPolygonLayerSample extends SamplePanel {
 		mapLayout.setShowResizeBar(true);
 
 		// Map with ID editPolygonLayerMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("mapEditPolygonLayer", "gwt-samples");
+		final MapWidget map = new MapWidget("mapEditPolygon", "gwt-samples");
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("editablePolygonLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerEditablePolygon"));
 			}
 		});
 

@@ -50,7 +50,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansLayer">
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerBeans">
 					<property name="serverLayerId" value="layerBeans" />
 					<property name="label" value="Test beans" />
 					<property name="visible" value="true" />

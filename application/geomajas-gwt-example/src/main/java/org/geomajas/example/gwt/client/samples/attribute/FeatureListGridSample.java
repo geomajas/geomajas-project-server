@@ -79,7 +79,7 @@ public class FeatureListGridSample extends SamplePanel {
 
 			public void onMapModelChange(MapModelEvent event) {
 				MapModel mapModel = map.getMapModel();
-				VectorLayer layer = (VectorLayer) mapModel.getLayer("countries110mGridLayer");
+				VectorLayer layer = (VectorLayer) mapModel.getLayer("clientLayerCountries110mGrid");
 				grid.setLayer(layer);
 				Bbox bounds = mapModel.getMapView().getBounds();
 				layer.getFeatureStore().queryAndSync(bounds, null, null, new TileFunction<VectorTile>() {

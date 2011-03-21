@@ -73,7 +73,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="googleLayer">
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerGoogle">
 					<property name="serverLayerId" value="layerGoogle" />
 					<property name="label" value="Google layer" />
 					<property name="visible" value="true" />

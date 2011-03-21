@@ -49,7 +49,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansLonLatLayer">
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerBeansLonLat">
 					<property name="serverLayerId" value="layerBeansLonLat" />
 					<property name="label" value="Beans Lon Lat" />
 					<property name="visible" value="true" />
@@ -57,7 +57,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="minimumScale" value="1:500000000" />
 					<property name="namedStyleInfo" ref="layerBeansLonLatStyleInfo" />
 				</bean>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansMercatorLayer">
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerBeansMercator">
 					<property name="serverLayerId" value="layerBeansMercator" />
 					<property name="label" value="Beans Mercator" />
 					<property name="visible" value="true" />

@@ -55,8 +55,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="wmsLayer" />
-				<ref bean="countries110mGTLayer" />
+				<ref bean="clientLayerWms" />
+				<ref bean="clientLayerCountries110mGT" />
 			</list>
 		</property>
 		<property name="toolbar">

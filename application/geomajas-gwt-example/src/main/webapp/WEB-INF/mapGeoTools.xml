@@ -49,12 +49,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="countries110mGTLayer" />
+				<ref bean="clientLayerCountries110mGT" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mGTLayer">
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerCountries110mGT">
 		<property name="serverLayerId" value="layerCountries110m" />
 		<property name="label" value="Countries" />
 		<property name="visible" value="true" />

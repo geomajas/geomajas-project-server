@@ -49,10 +49,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="wmsLayer" />
-				<ref bean="countries110mLayer" />
-				<ref bean="rivers50mLayer" />
-				<ref bean="populatedPlaces110mLayer" />
+				<ref bean="clientLayerWms" />
+				<ref bean="clientLayerCountries110m" />
+				<ref bean="clientLayerRivers50m" />
+				<ref bean="clientLayerPopulatedPlaces110m" />
 			</list>
 		</property>
 		<property name="layerTree">
@@ -71,10 +71,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						<property name="label" value="Layers" />
 						<property name="layers">
 							<list>
-								<ref bean="wmsLayer" />
-								<ref bean="countries110mLayer" />
-								<ref bean="rivers50mLayer" />
-								<ref bean="populatedPlaces110mLayer" />
+								<ref bean="clientLayerWms" />
+								<ref bean="clientLayerCountries110m" />
+								<ref bean="clientLayerRivers50m" />
+								<ref bean="clientLayerPopulatedPlaces110m" />
 							</list>
 						</property>
 						<property name="expanded" value="true" />
@@ -84,7 +84,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="rivers50mLayer">
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerRivers50m">
 		<property name="serverLayerId" value="layerRivers50m" />
 		<property name="label" value="Rivers (linestring)" />
 		<property name="visible" value="true" />
@@ -93,7 +93,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="namedStyleInfo" ref="layerRivers50mStyleInfo" />
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerCountries110m">
 		<property name="serverLayerId" value="layerCountries110m2" />
 		<property name="label" value="Countries (polygon)" />
 		<property name="visible" value="true" />
@@ -102,7 +102,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="namedStyleInfo" ref="layerCountries110m2StyleInfo" />
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="populatedPlaces110mLayer">
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerPopulatedPlaces110m">
 		<property name="serverLayerId" value="layerPopulatedPlaces110m" />
 		<property name="label" value="Populated places (point)" />
 		<property name="visible" value="true" />

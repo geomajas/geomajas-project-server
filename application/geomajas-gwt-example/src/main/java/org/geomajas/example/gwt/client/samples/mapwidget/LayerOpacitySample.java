@@ -72,7 +72,7 @@ public class LayerOpacitySample extends SamplePanel {
 					value = (double) intValue / (double) 100;
 				}
 
-				RasterLayer layer = (RasterLayer) map.getMapModel().getLayer("osmLayer");
+				RasterLayer layer = (RasterLayer) map.getMapModel().getLayer("clientLayerOsm");
 				if (layer != null) {
 					layer.setOpacity(value);
 				}

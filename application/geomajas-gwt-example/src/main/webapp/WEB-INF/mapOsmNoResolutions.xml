@@ -44,7 +44,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="osmLayer" />
+				<ref bean="clientLayerOsm" />
 			</list>
 		</property>
 		<property name="scaleConfiguration">

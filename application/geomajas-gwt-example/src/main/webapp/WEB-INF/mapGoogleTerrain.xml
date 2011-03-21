@@ -73,12 +73,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="googleTerrainLayer" />
+				<ref bean="clientLayerGoogleTerrain" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="googleTerrainLayer">
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerGoogleTerrain">
 		<property name="serverLayerId" value="layerGoogleTerrain" />
 		<property name="label" value="Google terrain layer" />
 		<property name="visible" value="true" />

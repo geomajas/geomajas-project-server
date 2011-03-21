@@ -31,6 +31,7 @@
 	<logger name="org.geomajas.internal.layer.vector" level="DEBUG" />
 	<logger name="org.geomajas.command" level="DEBUG" />
 	-->
+	<logger name="org.geomajas" level="DEBUG" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

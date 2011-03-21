@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapEditPointLayer" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapEditPoint" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -52,7 +52,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsEditPointLayer">
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerWmsEditPoint">
 					<property name="serverLayerId" value="layerWmsBluemarble" />
 					<property name="label" value="Blue marble WMS (raster)" />
 					<property name="visible" value="true" />
@@ -60,7 +60,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="minimumScale" value="1:500000000" />
 					<property name="style" value="0.8" />
 				</bean>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editableAirportssLayer">
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerEditableAirports">
 					<property name="serverLayerId" value="layerAirports" />
 			        <property name="label" value="Airports (editable - point)"/>
 			        <property name="visible" value="true"/>

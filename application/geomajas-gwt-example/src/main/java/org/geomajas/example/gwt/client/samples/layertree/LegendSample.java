@@ -69,7 +69,7 @@ public class LegendSample extends SamplePanel {
 		rasterButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("wmsLayer");
+				Layer<?> layer = map.getMapModel().getLayer("clientLayerWms");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -80,7 +80,7 @@ public class LegendSample extends SamplePanel {
 		lineButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("rivers50mLayer");
+				Layer<?> layer = map.getMapModel().getLayer("clientLayerRivers50m");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -91,7 +91,7 @@ public class LegendSample extends SamplePanel {
 		polygonButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("countries110mLayer");
+				Layer<?> layer = map.getMapModel().getLayer("clientLayerCountries110m");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -102,7 +102,7 @@ public class LegendSample extends SamplePanel {
 		pointButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("populatedPlaces110mLayer");
+				Layer<?> layer = map.getMapModel().getLayer("clientLayerPopulatedPlaces110m");
 				layer.setVisible(!layer.isShowing());
 			}
 		});

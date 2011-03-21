@@ -51,8 +51,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="wmsLayer" />
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mGridLayer">
+				<ref bean="clientLayerWms" />
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerCountries110mGrid">
 					<property name="serverLayerId" value="layerCountries110m" />
 				  	<property name="label" value="Countries"/>
 					<property name="visible" value="true"/>

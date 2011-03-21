@@ -55,13 +55,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								</property>
 								<property name="updateAuthorizedLayersInclude">
 									<list>
-										<value>beans</value>
+										<value>layerBeans</value>
 									</list>
 								</property>
 								<!-- @extract-end -->
 								<property name="layers">
 									<map>
-										<entry key="beans">
+										<entry key="layerBeans">
 											<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAttributeAuthorizationInfo">
 												<property name="readableIncludes">
 													<list>
@@ -151,7 +151,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								</property>
 								<property name="visibleLayersInclude">
 									<list>
-										<value>countries110m2</value>
+										<value>layerCountries110m2</value>
 									</list>
 								</property>
 							</bean>
