@@ -202,6 +202,22 @@ public class DependencyCheckPostProcessorTest {
 		}
 	}
 
+	@Test
+	public void testChecksSourceFirst() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestSourceFirst.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
+	@Test
+	public void testChecksSourceLast() throws Exception {
+		ApplicationContext ac = loadApplicationContext("/org/geomajas/spring/dependencyTestSourceLast.xml");
+		TestRecorder recorder = ac.getBean(TestRecorder.class);
+		Assert.assertEquals("", recorder.matches(DependencyCheckPostProcessor.GROUP,
+				DependencyCheckPostProcessor.VALUE));
+	}
+
 	private ApplicationContext loadApplicationContext(String... locations) throws Exception {
 		try {
 			return new ClassPathXmlApplicationContext(locations);
