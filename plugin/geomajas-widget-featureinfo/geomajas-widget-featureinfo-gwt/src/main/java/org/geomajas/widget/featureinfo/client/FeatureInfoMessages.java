@@ -26,6 +26,15 @@ public interface FeatureInfoMessages extends Messages {
 	String nearbyFeaturesListSectionTitle();
 	String nearbyFeaturesDetailsSectionTitle();
 	String nearbyFeaturesListTooltip();
+	
+	String showCoordinatesActionTooltip();
+	String showCoordinatesViewX();
+	String showCoordinatesViewY();
+	String showCoordinatesWorldX();
+	String showCoordinatesWorldY();
+
+	String tooltipOnMouseoverActionTooltip();
+	String tooltipOnMouseoverNoResult();
 }
 
 	

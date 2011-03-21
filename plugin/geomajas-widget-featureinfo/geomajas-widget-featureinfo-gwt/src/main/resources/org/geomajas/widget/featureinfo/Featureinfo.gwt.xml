@@ -10,10 +10,11 @@
   -->
 
 <module>
-
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
 
 	<source path="client" />
-  	<entry-point class='org.geomajas.widget.featureinfo.client.FeatureInfoEntryPoint'/>
 
+	<extend-property name="locale" values="nl" />
+
+  	<entry-point class='org.geomajas.widget.featureinfo.client.FeatureInfoEntryPoint'/>
 </module>

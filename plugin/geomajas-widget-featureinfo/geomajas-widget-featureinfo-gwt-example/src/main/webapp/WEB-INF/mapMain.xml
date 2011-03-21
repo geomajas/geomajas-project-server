@@ -98,13 +98,18 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<ref bean="MeasureDistanceMode" />
 						<ref bean="SelectionMode" />
 						<ref bean="FeatureInfoMode" />
+						<ref bean="ToolbarSeparator" />
 						<ref bean="NearbyFeaturesMode" />
 						<ref bean="NearbyFeaturesSepDetailsMode" />
+						<ref bean="ToolbarSeparator" />
 						<ref bean="MultilayerFeatureInfoMode" />
 						<ref bean="MultilayerFeatureInfoTreeMode" />
 						<ref bean="MultilayerFeatureInfoInlineMode" />
 						<ref bean="MultilayerFeatureInfoTreeInlineMode" />
 						<ref bean="MultilayerFeatureInfoFullTreeMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="TooltipOnMouseOverMode" />
+						<ref bean="ShowCoordinatesMode" />
 					</list>
 				</property>
 			</bean>
@@ -136,7 +141,22 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
+	<bean name="TooltipOnMouseOverMode" class="org.geomajas.configuration.client.ClientToolInfo" />
 
+	<bean name="ShowCoordinatesMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="showWorldCoordinates" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="showViewCoordinates" />
+					<property name="value" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo" />
 
@@ -150,6 +170,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	
 	<bean name="ZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>
@@ -203,7 +224,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</bean>
 			</list>
 		</property>
-
 	</bean>
 
 	<bean name="MultilayerFeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo" />
@@ -238,6 +258,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	
 	<bean name="MarkedEditMode" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="EditMode" class="org.geomajas.configuration.client.ClientToolInfo" />
@@ -263,6 +284,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="ShowTableAction" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo" />
-
 
 </beans>
