@@ -31,7 +31,7 @@ import java.util.Map;
 @Api(allMethods = true)
 public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
-	private final Logger log = LoggerFactory.getLogger(LayerFilterAuthorizationInfo.class);
+	private final transient Logger log = LoggerFactory.getLogger(LayerFilterAuthorizationInfo.class);
 
 	private Map<String, String> filters;
 
@@ -50,7 +50,8 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 	/**
 	 * Authorization including layer filter.
 	 */
-	private final class FilterAuthorization extends LayerAuthorization implements VectorLayerSelectFilterAuthorization {
+	public static final class FilterAuthorization extends LayerAuthorization
+			implements VectorLayerSelectFilterAuthorization {
 
 		private LayerFilterAuthorizationInfo info;
 
@@ -69,13 +70,13 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 		public Filter getFeatureFilter(String layerId) {
 			try {
-				String filter = filters.get(layerId);
+				String filter = info.getFilters().get(layerId);
 				if (filter == null) {
 					return Filter.INCLUDE;
 				}
 				return CQL.toFilter(filter);
 			} catch (CQLException cqlException) {
-				log.error(cqlException.getMessage(), cqlException);
+				info.log.error(cqlException.getMessage(), cqlException);
 				return Filter.EXCLUDE;
 			}
 		}

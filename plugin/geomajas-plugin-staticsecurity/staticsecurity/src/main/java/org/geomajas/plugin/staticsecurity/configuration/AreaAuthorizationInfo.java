@@ -59,7 +59,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 	/**
 	 * Authorization implementation class.
 	 */
-	private static final class LocalAuthorization extends LayerAuthorization implements AreaAuthorization {
+	public static final class LocalAuthorization extends LayerAuthorization implements AreaAuthorization {
 
 		private AreaAuthorizationInfo info;
 

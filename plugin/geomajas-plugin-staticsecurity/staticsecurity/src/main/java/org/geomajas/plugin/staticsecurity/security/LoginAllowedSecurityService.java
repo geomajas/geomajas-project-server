@@ -36,7 +36,7 @@ public class LoginAllowedSecurityService implements SecurityService {
 	/**
 	 * Authorization which only allows the login and logout commands.
 	 */
-	private class LoginAuthorization implements BaseAuthorization {
+	private static final class LoginAuthorization implements BaseAuthorization {
 
 		public String getId() {
 			return "staticsecurity.LoginAuthorization";

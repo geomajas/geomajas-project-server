@@ -56,7 +56,7 @@ public class FeatureAuthorizationInfo extends LayerAuthorizationInfo {
 	/**
 	 * Authorization implementation class.
 	 */
-	private static final class LocalAuthorization extends LayerAuthorization implements FeatureAuthorization {
+	public static final class LocalAuthorization extends LayerAuthorization implements FeatureAuthorization {
 
 		private FeatureAuthorizationInfo info;
 
