@@ -24,8 +24,8 @@ import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -171,6 +171,10 @@ public final class FilterServiceImpl implements FilterService {
 			throw new IllegalArgumentException("Could not interprete compare filter. Argument (" + value
 					+ ") not known.");
 		}
+	}
+	
+	public Filter createGeometryTypeFilter(String geomName, String geometryType) {
+		return FF.equals(FF.literal(geometryType), FF.function("geometryType", FF.property(geomName)));
 	}
 
 	/**
@@ -361,7 +365,7 @@ public final class FilterServiceImpl implements FilterService {
 	/** @inheritDoc */
 	public Filter parseFilter(String filter) throws GeomajasException {
 		try {
-			return CQL.toFilter(filter);
+			return ECQL.toFilter(filter);
 		} catch (CQLException e) {
 			throw new GeomajasException(e, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
 		}

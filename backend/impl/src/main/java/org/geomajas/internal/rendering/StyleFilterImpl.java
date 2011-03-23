@@ -13,8 +13,8 @@ package org.geomajas.internal.rendering;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.rendering.StyleFilter;
-import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 import org.opengis.filter.Filter;
 
 /**
@@ -69,7 +69,7 @@ public class StyleFilterImpl implements StyleFilter {
 		try {
 			String formula = definition.getFormula();
 			if (null != formula && formula.length() > 0) {
-				this.filter = CQL.toFilter(definition.getFormula());
+				this.filter = ECQL.toFilter(definition.getFormula());
 			} else {
 				this.filter = Filter.INCLUDE;
 			}
