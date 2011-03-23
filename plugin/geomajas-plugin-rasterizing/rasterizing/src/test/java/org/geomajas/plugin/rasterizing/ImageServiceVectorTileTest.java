@@ -39,7 +39,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/plugin/rasterizing/rasterizing-immediate.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml", "/org/geomajas/testdata/beanContext.xml",
 		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
-		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml" })
+		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml",
+		"/org/geomajas/testdata/layerBeansMixedGeometry.xml" })
 public class ImageServiceVectorTileTest {
 
 	@Autowired
@@ -67,6 +68,14 @@ public class ImageServiceVectorTileTest {
 	private NamedStyleInfo layerBeansPointStyleInfo;
 
 	@Autowired
+	@Qualifier("layerBeansMixedGeometry")
+	private VectorLayer layerBeansMixedGeometry;
+
+	@Autowired
+	@Qualifier("layerBeansMixedGeometryStyleInfo")
+	private NamedStyleInfo layerBeansMixedGeometryStyleInfo;
+
+	@Autowired
 	private ImageService imageService;
 
 	@Autowired
@@ -76,6 +85,8 @@ public class ImageServiceVectorTileTest {
 	private boolean writeImages = false;
 
 	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
+
+	private static final double DELTA = 1E-6;
 
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/vectortile";
 
@@ -102,6 +113,11 @@ public class ImageServiceVectorTileTest {
 	}
 
 	@Test
+	public void testMixedGeometryStyle() throws Exception {
+		checkMixedGeometry("mixed.png", false, true);
+	}
+
+	@Test
 	public void testMultiLineLabelStyle() throws Exception {
 		// label on/off
 		log.info("start");
@@ -112,9 +128,9 @@ public class ImageServiceVectorTileTest {
 		checkMultiLine("multiline_black_1_labeled_font_orchid.png", true, true);
 		getMultiLineLabelStyle().getFontStyle().setColor("#000000");
 		// // family
-		 getMultiLineLabelStyle().getFontStyle().setFamily("Courier New");
-		 checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
-		 getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
+		getMultiLineLabelStyle().getFontStyle().setFamily("Courier New");
+		checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
+		getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiLineLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiLine("multiline_black_1_labeled_font_semitransparent.png", true, true);
@@ -161,9 +177,9 @@ public class ImageServiceVectorTileTest {
 		checkPoint("point_black_1_labeled_font_orchid.png", true, true);
 		getPointLabelStyle().getFontStyle().setColor("#000000");
 		// // family
-		 getPointLabelStyle().getFontStyle().setFamily("Courier New");
-		 checkPoint("point_black_1_labeled_font_courier.png", true, true);
-		 getPointLabelStyle().getFontStyle().setFamily("Verdana");
+		getPointLabelStyle().getFontStyle().setFamily("Courier New");
+		checkPoint("point_black_1_labeled_font_courier.png", true, true);
+		getPointLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getPointLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkPoint("point_black_1_labeled_font_semitransparent.png", true, true);
@@ -211,9 +227,9 @@ public class ImageServiceVectorTileTest {
 		checkMultiPolygon("multipolygon_black_1_labeled_font_orchid.png", true, true);
 		getMultiPolygonLabelStyle().getFontStyle().setColor("#000000");
 		// family
-		 getMultiPolygonLabelStyle().getFontStyle().setFamily("Courier New");
-		 checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
-		 getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
+		getMultiPolygonLabelStyle().getFontStyle().setFamily("Courier New");
+		checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
+		getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiPolygonLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiPolygon("multipolygon_black_1_labeled_font_semitransparent.png", true, true);
@@ -256,19 +272,20 @@ public class ImageServiceVectorTileTest {
 		return layerBeansPointStyleInfo.getLabelStyle();
 	}
 
-	private void checkPoint(String fileName, boolean paintLabels, boolean paintGeometries)
-			throws Exception {
+	private void checkPoint(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansPoint, layerBeansPointStyleInfo);
 	}
 
-	private void checkMultiLine(String fileName, boolean paintLabels, boolean paintGeometries)
-			throws Exception {
+	private void checkMultiLine(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiLine, layerBeansMultiLineStyleInfo);
 	}
 
-	private void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries)
-			throws Exception {
+	private void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiPolygon, layerBeansMultiPolygonStyleInfo);
+	}
+
+	private void checkMixedGeometry(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
+		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMixedGeometry, layerBeansMixedGeometryStyleInfo);
 	}
 
 	private void checkOrRender(String fileName, boolean paintLabels, boolean paintGeometries, VectorLayer layer,
@@ -290,7 +307,7 @@ public class ImageServiceVectorTileTest {
 		vectorLayerRasterizingInfo.setStyle(styleInfo);
 		clientVectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
 		mapInfo.getLayers().add(clientVectorLayerInfo);
-		new MapAssert(mapInfo).assertEqual(fileName, writeImages);
+		new MapAssert(mapInfo).assertEqualImage(fileName, writeImages, DELTA);
 	}
 
 	private ImageInfo createImage() {
@@ -312,7 +329,7 @@ public class ImageServiceVectorTileTest {
 
 		private ClientMapInfo map;
 
-		public MapAssert(ClientMapInfo map){
+		public MapAssert(ClientMapInfo map) {
 			super(IMAGE_CLASS_PATH);
 			this.map = map;
 		}

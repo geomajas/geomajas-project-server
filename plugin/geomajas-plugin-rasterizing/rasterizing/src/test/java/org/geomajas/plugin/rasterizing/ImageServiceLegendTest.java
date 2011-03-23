@@ -70,6 +70,8 @@ public class ImageServiceLegendTest {
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
+	private static final double DELTA = 1E-6;
+
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/legend";
 
 	@Before
@@ -103,7 +105,7 @@ public class ImageServiceLegendTest {
 		lr2.setStyle(layerBeansPointStyleInfo);
 		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
 		mapInfo.getLayers().add(cl2);
-	
+
 		ClientVectorLayerInfo cl3 = new ClientVectorLayerInfo();
 		cl3.setServerLayerId(layerBeansMultiLine.getId());
 		cl3.setLayerInfo(layerBeansMultiLine.getLayerInfo());
@@ -112,7 +114,6 @@ public class ImageServiceLegendTest {
 		cl3.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr3);
 		mapInfo.getLayers().add(cl3);
 
-
 		LegendRasterizingInfo legendRasterizingInfo = new LegendRasterizingInfo();
 		legendRasterizingInfo.setFont(new FontStyleInfo());
 		legendRasterizingInfo.getFont().applyDefaults();
@@ -120,14 +121,14 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.getFont().setFamily("courier");
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
-		new LegendAssert(mapInfo).assertEqual("legend.png", writeImages);
+		new LegendAssert(mapInfo).assertEqualImage("legend.png", writeImages, DELTA);
 	}
 
 	class LegendAssert extends TestPathBinaryStreamAssert {
 
 		private ClientMapInfo map;
 
-		public LegendAssert(ClientMapInfo map){
+		public LegendAssert(ClientMapInfo map) {
 			super(IMAGE_CLASS_PATH);
 			this.map = map;
 		}

@@ -1,9 +1,16 @@
 package org.geomajas.plugin.rasterizing;
 
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.SLDParser;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.StyledLayer;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +64,9 @@ public class StyleFactoryServiceTest {
 	private StyleFactoryService service;
 
 	@Test
-	public void testCreateLayerStyle() {
+	public void testCreateLayerStyle() throws GeomajasException {
+		service.createStyle(layerBeansPoint.getLayerInfo().getLayerType(), layerBeansPointStyleInfo.getFeatureStyles().get(0));
 	}
+
+
 }

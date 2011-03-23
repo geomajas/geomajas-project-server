@@ -86,6 +86,8 @@ public class RasterizingPipelineTest {
 
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterizingpipeline";
 
+	private static final double DELTA = 1E-6;
+
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
@@ -123,7 +125,7 @@ public class RasterizingPipelineTest {
 		controller.getImage(layerBeans.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Rasterization success", "Put item in cache",
 				"Put item in cache", "Got item from cache"));
-		new ServletResponseAssert(response).assertEqual("beans-4-8-8.png", writeImages);
+		new ServletResponseAssert(response).assertEqualImage("beans-4-8-8.png", writeImages, DELTA);
 		cacheManager.drop(layerBeans);
 	}
 
@@ -158,7 +160,7 @@ public class RasterizingPipelineTest {
 		controller.getImage(layerBeansPoint.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache", "Got item from cache",
 				"Put item in cache"));
-		new ServletResponseAssert(response).assertEqual("beansPoint-4-8-8.png", writeImages);
+		new ServletResponseAssert(response).assertEqualImage("beansPoint-4-8-8.png", writeImages, DELTA);
 		cacheManager.drop(layerBeansPoint);
 	}
 
@@ -166,7 +168,7 @@ public class RasterizingPipelineTest {
 
 		private MockHttpServletResponse response;
 
-		public ServletResponseAssert(MockHttpServletResponse response){
+		public ServletResponseAssert(MockHttpServletResponse response) {
 			super(IMAGE_CLASS_PATH);
 			this.response = response;
 		}
@@ -176,5 +178,5 @@ public class RasterizingPipelineTest {
 		}
 
 	}
-	
+
 }

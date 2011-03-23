@@ -71,6 +71,8 @@ public class ImageServiceMapTest {
 
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/map";
 
+	private static final double DELTA = 1E-6;
+
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
@@ -95,7 +97,7 @@ public class ImageServiceMapTest {
 		layerRasterizingInfo.setStyle(layerBeansPointStyleInfo);
 		clientBeansPointLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, layerRasterizingInfo);
 		mapInfo.getLayers().add(clientBeansPointLayerInfo);
-		new MapAssert(mapInfo).assertEqual("onevector.png", writeImages);
+		new MapAssert(mapInfo).assertEqualImage("onevector.png", writeImages, DELTA);
 	}
 
 	@Test
@@ -121,7 +123,7 @@ public class ImageServiceMapTest {
 		lr2.setStyle(layerBeansMultiLineStyleInfo);
 		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
 		mapInfo.getLayers().add(cl2);
-		new MapAssert(mapInfo).assertEqual("twovector.png", writeImages);
+		new MapAssert(mapInfo).assertEqualImage("twovector.png", writeImages, DELTA);
 	}
 
 	@Test
@@ -141,7 +143,7 @@ public class ImageServiceMapTest {
 		geo.setStyle(layerBeansPointStyleInfo.getFeatureStyles().get(0));
 		geo.setLayerType(LayerType.POINT);
 		mapInfo.getLayers().add(geo);
-		new MapAssert(mapInfo).assertEqual("geometry.png", writeImages);
+		new MapAssert(mapInfo).assertEqualImage("geometry.png", writeImages, DELTA);
 	}
 
 	@Test
@@ -160,7 +162,7 @@ public class ImageServiceMapTest {
 		rr1.setCssStyle("opacity:0.5");
 		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
 		mapInfo.getLayers().add(cl1);
-		new MapAssert(mapInfo).assertEqual("oneraster.png", writeImages);
+		new MapAssert(mapInfo).assertEqualImage("oneraster.png", writeImages, DELTA);
 	}
 
 	class MapAssert extends TestPathBinaryStreamAssert {

@@ -46,6 +46,8 @@ public class GeometryDirectLayerTest {
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
+	private static final double DELTA = 1E-6;
+
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/geometrylayer";
 
 	@Test
@@ -72,7 +74,7 @@ public class GeometryDirectLayerTest {
 		GeometryDirectLayer layer = (GeometryDirectLayer) layerFactory.createLayer(mapContext, geo);
 		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
 		layer.draw(image.createGraphics(), mapContext, mapContext.getViewport());
-		new DirectLayerAssert(layer, mapContext).assertEqual("polygon.png", writeImages);
+		new DirectLayerAssert(layer, mapContext).assertEqualImage("polygon.png", writeImages, DELTA);
 	}
 
 	private FeatureStyleInfo createPolygonStyle() {

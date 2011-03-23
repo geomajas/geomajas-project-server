@@ -38,6 +38,8 @@ public class RasterDirectLayerTest {
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
+	private static final double DELTA = 1E-6;
+
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterlayer";
 
 	@Autowired
@@ -64,7 +66,7 @@ public class RasterDirectLayerTest {
 		mapContext.getViewport().setScreenArea(new Rectangle(1024, 512));
 		mapContext.getViewport().setBounds(new ReferencedEnvelope(-180, 180, -90, 90, layerBluemarble.getCrs()));
 		RasterDirectLayer layer = (RasterDirectLayer) layerFactory.createLayer(mapContext, cl1);
-		new DirectLayerAssert(layer, mapContext).assertEqual("wms.png", writeImages);
+		new DirectLayerAssert(layer, mapContext).assertEqualImage("wms.png", writeImages, DELTA);
 	}
 
 	class DirectLayerAssert extends TestPathBinaryStreamAssert {

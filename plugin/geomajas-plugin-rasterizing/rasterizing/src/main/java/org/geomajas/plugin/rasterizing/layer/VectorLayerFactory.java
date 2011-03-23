@@ -33,7 +33,7 @@ import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -104,7 +104,7 @@ public class VectorLayerFactory implements LayerFactory {
 	private FeatureCollection<SimpleFeatureType, SimpleFeature> createCollection(List<InternalFeature> features,
 			VectorLayer layer, CoordinateReferenceSystem mapCrs) {
 		SimpleFeatureType type = createFeatureType(layer, mapCrs);
-		DefaultFeatureCollection result = new DefaultFeatureCollection(layer.getId(), type);
+		ListFeatureCollection result = new ListFeatureCollection(type);
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
 		for (InternalFeature internalFeature : features) {
 			Object[] values = new Object[internalFeature.getAttributes().size() + 1];
@@ -176,6 +176,7 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
 		builder.add(geom.getName(), Geometry.class, mapCrs);
+		builder.setDefaultGeometry(geom.getName());
 		return builder.buildFeatureType();
 	}
 

@@ -12,7 +12,10 @@ package org.geomajas.plugin.rasterizing;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
@@ -23,12 +26,12 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.FilterService;
-import org.geotools.feature.NameImpl;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -69,58 +72,99 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 	public Style createStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
 			throws GeomajasException {
 		Style style = styleBuilder.createStyle();
-		TextSymbolizer textSymbolizer = null;
-		if (vectorLayerRasterizingInfo.isPaintLabels()) {
-			textSymbolizer = createTextSymbolizer(vectorLayerRasterizingInfo.getStyle().getLabelStyle());
-		}
+		String typeName = layer.getLayerInfo().getFeatureInfo().getDataSourceName();
+		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
+		LayerType layerType = layer.getLayerInfo().getLayerType();
+
 		if (vectorLayerRasterizingInfo.isPaintGeometries()) {
-			// add the selection style first
+			// apply the normal styles
+			List<Rule> rules = new ArrayList<Rule>();
+			for (FeatureStyleInfo featureStyle : vectorLayerRasterizingInfo.getStyle().getFeatureStyles()) {
+				// create the filter
+				Filter styleFilter = null;
+				if (featureStyle.getFormula() != null && featureStyle.getFormula().length() > 0) {
+					styleFilter = filterService.parseFilter(featureStyle.getFormula());
+				} else {
+					styleFilter = Filter.INCLUDE;
+				}
+				// create the rules
+				rules.addAll(createRules(layerType, styleFilter, featureInfo, featureStyle));
+			}
+			// create the style
+			FeatureTypeStyle normalStyle = styleBuilder.createFeatureTypeStyle(typeName, rules.toArray(new Rule[0]));
+			style.featureTypeStyles().add(normalStyle);
+			// apply the selection style
+			rules.clear();
 			if (vectorLayerRasterizingInfo.getSelectedFeatureIds() != null) {
-				// create the style
-				Symbolizer symbolizer = createGeometrySymbolizer(layer.getLayerInfo().getLayerType(),
-						vectorLayerRasterizingInfo.getSelectionStyle());
-				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
-				fts.setName(vectorLayerRasterizingInfo.getSelectionStyle().getName());
-				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
 				// create the filter
 				Filter fidFilter = filterService.createFidFilter(vectorLayerRasterizingInfo.getSelectedFeatureIds());
-				fts.rules().get(0).setFilter(fidFilter);
-				style.featureTypeStyles().add(fts);
+				// create the rules
+				rules.addAll(createRules(layerType, fidFilter, featureInfo,
+						vectorLayerRasterizingInfo.getSelectionStyle()));
 			}
-			for (FeatureStyleInfo featureStyle : vectorLayerRasterizingInfo.getStyle().getFeatureStyles()) {
-				Symbolizer symbolizer = createGeometrySymbolizer(layer.getLayerInfo().getLayerType(), featureStyle);
-				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
-				fts.setName(featureStyle.getName());
-				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
-				if (featureStyle.getFormula() != null && featureStyle.getFormula().length() > 0) {
-					fts.rules().get(0).setFilter(filterService.parseFilter(featureStyle.getFormula()));
-				} else {
-					fts.rules().get(0).setFilter(Filter.INCLUDE);
-				}
-				if (textSymbolizer != null) {
-					fts.rules().get(0).symbolizers().add(textSymbolizer);
-				}
-				style.featureTypeStyles().add(fts);
-			}
-		} else {
-			// just labeling if present
-			if (textSymbolizer != null) {
-				FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(textSymbolizer);
-				fts.setName(vectorLayerRasterizingInfo.getStyle().getName());
-				fts.featureTypeNames().add(new NameImpl(layer.getLayerInfo().getFeatureInfo().getDataSourceName()));
-				fts.rules().get(0).setFilter(Filter.INCLUDE);
-				style.featureTypeStyles().add(fts);
-			}
+			// create the style
+			FeatureTypeStyle selectionStyle = styleBuilder.createFeatureTypeStyle(typeName, rules.toArray(new Rule[0]));
+			style.featureTypeStyles().add(selectionStyle);
+		}
+		// apply the label style
+		if (vectorLayerRasterizingInfo.isPaintLabels()) {
+			// create the rule
+			TextSymbolizer textSymbolizer = createTextSymbolizer(vectorLayerRasterizingInfo.getStyle().getLabelStyle());
+			Rule labelRule = styleBuilder.createRule(textSymbolizer);
+			// create the style
+			FeatureTypeStyle labelStyle = styleBuilder.createFeatureTypeStyle(typeName, labelRule);
+			style.featureTypeStyles().add(labelStyle);
 		}
 		return style;
 	}
-
+	
 	public Style createStyle(LayerType type, FeatureStyleInfo featureStyleInfo) throws GeomajasException {
 		Style style = styleBuilder.createStyle();
 		Symbolizer symbolizer = createGeometrySymbolizer(type, featureStyleInfo);
 		FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(symbolizer);
 		style.featureTypeStyles().add(fts);
 		return style;
+	}
+	
+	private List<Rule> createRules(LayerType layerType, Filter filter, FeatureInfo featureInfo,
+			FeatureStyleInfo featureStyle) {
+		String geomName = featureInfo.getGeometryType().getName();
+		List<Rule> rules = new ArrayList<Rule>();
+		// for mixed geometries we add a filter to distinguish between geometry types
+		if (layerType == LayerType.GEOMETRY_COLLECTION) {
+			// add the configured filter to a filter that selects point features only
+			Rule pointRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POINT, featureStyle));
+			Filter pointFilter = filterService.createGeometryTypeFilter(geomName, "Point");
+			Filter multiPointFilter = filterService.createGeometryTypeFilter(geomName, "MultiPoint");
+			Filter pointsFilter = filterService.createLogicFilter(pointFilter, "or", multiPointFilter);
+			pointRule.setFilter(filterService.createLogicFilter(pointsFilter, "and", filter));
+
+			// add the configured filter to a filter that selects line features only
+			Rule lineRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.LINESTRING, featureStyle));
+			Filter lineFilter = filterService.createGeometryTypeFilter(geomName, "LineString");
+			Filter multiLineFilter = filterService.createGeometryTypeFilter(geomName, "MultiLineString");
+			Filter linesFilter = filterService.createLogicFilter(lineFilter, "or", multiLineFilter);
+			lineRule.setFilter(filterService.createLogicFilter(linesFilter, "and", filter));
+
+			// add the configured filter to a filter that selects polygon features only
+			Rule polygonRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POLYGON, featureStyle));
+			Filter polygonFilter = filterService.createGeometryTypeFilter(geomName, "Polygon");
+			Filter multiPolygonFilter = filterService.createGeometryTypeFilter(geomName, "MultiPolygon");
+			Filter polygonsFilter = filterService.createLogicFilter(polygonFilter, "or", multiPolygonFilter);
+			polygonRule.setFilter(filterService.createLogicFilter(polygonsFilter, "and", filter));
+			rules.add(pointRule);
+			rules.add(lineRule);
+			rules.add(polygonRule);
+		} else {
+			Rule rule = styleBuilder.createRule(createGeometrySymbolizer(layerType, featureStyle));
+			if (filter.equals(Filter.INCLUDE)) {
+				rule.setElseFilter(true);
+			} else {
+				rule.setFilter(filter);
+			}
+			rules.add(rule);
+		}
+		return rules;
 	}
 
 	private Symbolizer createGeometrySymbolizer(LayerType layerType, FeatureStyleInfo featureStyle) {
@@ -148,7 +192,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		}
 		return symbolizer;
 	}
-
+	
 	private TextSymbolizer createTextSymbolizer(LabelStyleInfo labelStyle) {
 		Fill fontFill = styleBuilder.createFill(styleBuilder.literalExpression(labelStyle.getFontStyle().getColor()),
 				styleBuilder.literalExpression(labelStyle.getFontStyle().getOpacity()));
