@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -29,6 +30,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
  * @author Pieter De Graef
  * @since 1.0.0
  */
+@UserImplemented
 @Api(allMethods = true)
 public interface MapController extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
 		MouseOverHandler, MouseWheelHandler, DoubleClickHandler {

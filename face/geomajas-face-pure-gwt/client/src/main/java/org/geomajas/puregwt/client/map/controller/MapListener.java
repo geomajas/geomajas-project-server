@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * <p>
@@ -28,6 +29,7 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
+@UserImplemented
 @Api(allMethods = true)
 public interface MapListener {
 

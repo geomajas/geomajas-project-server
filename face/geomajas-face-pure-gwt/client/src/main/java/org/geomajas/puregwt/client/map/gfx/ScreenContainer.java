@@ -9,10 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map;
+package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.global.Api;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
  * A container for drawing vector objects onto the map. This is the recommended way of quickly drawing vector objects.
@@ -23,7 +22,7 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  * @since 1.0.0
  */
 @Api
-public interface ScreenContainer extends VectorObjectContainer {
+public interface ScreenContainer extends VectorContainer {
 
 	/**
 	 * Return the containers' identifier. There can be no 2 screen containers with the same ID.

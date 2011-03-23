@@ -16,17 +16,24 @@ import java.util.Collection;
 import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
+import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 
 /**
- * Definition of a presenter for the map model.....
+ * Central map definition.
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface MapPresenter {
 
+	/**
+	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
+	 * on return. A special {@link org.geomajas.puregwt.client.map.event.MapInitializationEvent} will be fired once
+	 * initialization is done.
+	 */
 	void initialize();
 
 	/**

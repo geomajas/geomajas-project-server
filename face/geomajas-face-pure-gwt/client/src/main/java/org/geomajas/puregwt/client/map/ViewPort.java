@@ -106,8 +106,13 @@ public interface ViewPort {
 	 */
 	void applyBounds(Bbox bounds, ZoomOption option);
 
-	/** Zoom out as far as possible. The maximum bounds are determined by the map configuration. */
-	void applyMaximumBounds();
+	/**
+	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
+	 * configuration.
+	 * 
+	 * @return The maximum zooming extent that is allowed on this view port.
+	 */
+	Bbox getMaximumBounds();
 
 	/**
 	 * Move the view on the map. This happens by translating the camera in turn.
@@ -154,6 +159,8 @@ public interface ViewPort {
 	void drag(double x, double y);
 
 	void setMapSize(int mapWidth, int mapHeight);
+
+	Coordinate getPanOrigin();
 
 	/**
 	 * Get the current map width in pixels.

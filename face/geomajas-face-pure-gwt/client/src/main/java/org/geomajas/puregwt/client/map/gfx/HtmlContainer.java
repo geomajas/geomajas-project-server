@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.geometry.Coordinate;
 
 /**
  * <p>
@@ -37,16 +36,15 @@ public interface HtmlContainer extends HtmlObject {
 	/**
 	 * Zoom this container in or out to a given transformation origin. This transformation is taken literally, it does
 	 * not stack onto a current transformation should there be one.
-	 * <p>
-	 * TODO Is this method ok?
-	 * </p>
 	 * 
 	 * @param scale
 	 *            The zooming factor.
-	 * @param transformOrigin
-	 *            The origin to where we want this container to zoom.
+	 * @param x
+	 *            The X ordinate of the origin to where we want this container to zoom.
+	 * @param y
+	 *            The Y ordinate of the origin to where we want this container to zoom.
 	 */
-	void transform(double scale, Coordinate transformOrigin);
+	void zoomToLocation(double scale, int x, int y);
 
 	/**
 	 * Add a new child HtmlObject to the list. Note that using this method children are added to the back of the list,

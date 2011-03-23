@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.puregwt.client.event;
+package org.geomajas.puregwt.client.map.event;
 
 import org.geomajas.global.Api;
 

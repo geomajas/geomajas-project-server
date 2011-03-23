@@ -17,18 +17,17 @@ import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * The moving up and down of layers, knows no difference between vector and raster layers (the old MapModel did make
- * this difference).<br/>
- * Also, everywhere <code>mapId</code> is used instead of a real Map object to identify a map.<br/>
  * <p>
- * TODO check the javadoc for the moving of layers<br/>
+ * Definition of the model that describes the layers that make up a map. The methods within this model all revolve
+ * around layer manipulation. This means that there are methods here to add and remove layers, to move layers up and
+ * down, to retrieve layers by their identifiers or index in the list, etc...
  * </p>
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface LayersModel {
 
 	/**
@@ -75,8 +74,8 @@ public interface LayersModel {
 
 	/**
 	 * Set a new position for the given layer. This will automatically redraw the map to apply this new order. Note that
-	 * at any time, layer rendered as raster will always lie behind layers rendered by SVG/VML objects.<br/>
-	 * Note also that vector layers can be rendered as images, in which case they will count as rasterized layers here.
+	 * at any time, layers rendered through HTML will always lie behind layers rendered through SVG/VML objects.<br/>
+	 * Note also that vector layers can be rendered as images, in which case they will count as HTML layers here.
 	 * 
 	 * @param layer
 	 *            The layer to place at a new position.
@@ -88,8 +87,8 @@ public interface LayersModel {
 
 	/**
 	 * Move a layer up (=front) one place. This will automatically redraw the map to apply this new order. Note that at
-	 * any time, layer rendered as raster will always lie behind layers rendered by SVG/VML objects.<br/>
-	 * Note also that vector layers can be rendered as images, in which case they will count as rasterized layers here.
+	 * any time, layers rendered through HTML will always lie behind layers rendered through SVG/VML objects.<br/>
+	 * Note also that vector layers can be rendered as images, in which case they will count as HTML layers here.
 	 * 
 	 * @param layer
 	 *            The layer to move more to the front.
@@ -99,8 +98,8 @@ public interface LayersModel {
 
 	/**
 	 * Move a layer down (=back) one place. This will automatically redraw the map to apply this new order. Note that at
-	 * any time, layer rendered as raster will always lie behind layers rendered by SVG/VML objects.<br/>
-	 * Note also that vector layers can be rendered as images, in which case they will count as rasterized layers here.
+	 * any time, layers rendered through HTML will always lie behind layers rendered through SVG/VML objects.<br/>
+	 * Note also that vector layers can be rendered as images, in which case they will count as HTML layers here.
 	 * 
 	 * @param layer
 	 *            The layer to move more to the front.

@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 
 /**
  * General definition of an object that is responsible for making sure the map is always rendered correctly. How exactly
@@ -38,4 +39,10 @@ public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHa
 	void redraw();
 
 	void setHtmlContainer(HtmlContainer htmlContainer);
+	
+	/**
+	 * TODO set 2 types of containers is horrible. Can't they both share the same super interface?
+	 * @param vectorContainer
+	 */
+	void setVectorContainer(VectorContainer vectorContainer);
 }
