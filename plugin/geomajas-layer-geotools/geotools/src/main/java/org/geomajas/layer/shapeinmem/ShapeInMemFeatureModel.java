@@ -12,6 +12,7 @@ package org.geomajas.layer.shapeinmem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
@@ -46,7 +47,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	private DtoConverterService converterService;
 
-	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+	private Map<String, AttributeInfo> attributeInfoMap = new ConcurrentHashMap<String, AttributeInfo>();
 
 	// Constructor:
 

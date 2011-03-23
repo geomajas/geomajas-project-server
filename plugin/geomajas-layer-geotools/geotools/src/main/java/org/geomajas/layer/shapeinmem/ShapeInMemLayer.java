@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -53,7 +54,7 @@ import com.vividsolutions.jts.geom.Envelope;
 @Api
 public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLayer {
 
-	private Map<String, SimpleFeature> features = new HashMap<String, SimpleFeature>();
+	private Map<String, SimpleFeature> features = new ConcurrentHashMap<String, SimpleFeature>();
 
 	private FeatureModel featureModel;
 
