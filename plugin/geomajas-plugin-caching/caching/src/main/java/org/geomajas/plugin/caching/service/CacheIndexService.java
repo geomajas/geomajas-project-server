@@ -12,7 +12,7 @@
 package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface CacheIndexService {
 
 	/**

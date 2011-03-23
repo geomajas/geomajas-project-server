@@ -11,13 +11,16 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
 
 /**
  * Factory for creating {@link CacheService} instances.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface CacheFactory {
 
 	/**

@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 import javax.validation.constraints.NotNull;
 
@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public class CacheIndexInfo extends LayerCategoryInfo {
 
 	@NotNull

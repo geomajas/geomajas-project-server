@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.global.FutureApi;
 import org.geomajas.layer.Layer;
 
 /**
@@ -18,6 +19,7 @@ import org.geomajas.layer.Layer;
  *
  * @author Joachim Van der Auwera
  */
+@FutureApi(allMethods = true)
 public interface CacheIndexFactory {
 
 	/**
