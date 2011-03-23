@@ -13,8 +13,8 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.MapPresenterImpl;
-import org.geomajas.puregwt.client.map.ScreenContainer;
-import org.geomajas.puregwt.client.map.WorldContainer;
+import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 import org.vaadin.gwtgraphics.client.shape.Circle;
