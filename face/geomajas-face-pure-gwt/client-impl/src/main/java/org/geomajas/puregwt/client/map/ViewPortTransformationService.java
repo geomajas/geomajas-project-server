@@ -245,7 +245,6 @@ public class ViewPortTransformationService {
 
 	/**
 	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.<br/>
-	 * TODO don't want to see this as a public method...
 	 */
 	public MatrixImpl getWorldToPanTranslation() {
 		if (viewPort.getViewPortState().getScale() > 0) {
@@ -258,7 +257,6 @@ public class ViewPortTransformationService {
 
 	/**
 	 * Return the translation of coordinates relative to the pan origin to view coordinates.<br/>
-	 * TODO don't want to see this as a public method...
 	 */
 	public MatrixImpl getPanToViewTranslation() {
 		ViewPortState viewState = viewPort.getViewPortState();

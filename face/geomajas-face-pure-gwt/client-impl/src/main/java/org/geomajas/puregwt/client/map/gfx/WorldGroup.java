@@ -9,8 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map;
+package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.puregwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.Group;
 

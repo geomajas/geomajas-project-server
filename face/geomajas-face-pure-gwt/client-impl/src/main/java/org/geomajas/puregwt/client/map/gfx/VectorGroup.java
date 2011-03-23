@@ -9,24 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map;
+package org.geomajas.puregwt.client.map.gfx;
 
 import org.vaadin.gwtgraphics.client.Group;
 
 /**
- * Default implementation of the ScreenContainer interface. It represents a vector group element in screen space.
+ * Implementation of the {@link VectorContainer} interface.
  * 
  * @author Pieter De Graef
  */
-public class ScreenGroup extends Group implements ScreenContainer {
+public class VectorGroup extends Group implements VectorContainer {
 
-	private String id;
-
-	public ScreenGroup(String id) {
-		this.id = id;
-	}
-
-	public String getId() {
-		return id;
-	}
 }

@@ -16,7 +16,7 @@ import java.util.Date;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.map.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;

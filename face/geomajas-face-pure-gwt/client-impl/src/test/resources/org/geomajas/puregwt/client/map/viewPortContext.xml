@@ -22,7 +22,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="test-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="mapBeans" />
+				<ref bean="mapViewPortBeans" />
 			</list>
 		</property>
 	</bean>

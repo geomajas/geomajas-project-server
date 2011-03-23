@@ -25,10 +25,10 @@ import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
@@ -40,9 +40,10 @@ import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
+import org.geomajas.puregwt.client.map.gfx.HtmlGroup;
 import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -185,6 +186,10 @@ public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedH
 		this.htmlContainer = htmlContainer;
 	}
 
+	public void setVectorContainer(VectorContainer vectorContainer) {
+		// TODO ....
+	}
+
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
@@ -294,7 +299,7 @@ public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedH
 
 	private void fakeZoom(double scale, Bbox bounds) {
 		HtmlContainer container = getBottomContainer();
-		if (container == null) {
+		if (container == null || beginOrigin == null) {
 			return;
 		}
 
@@ -307,12 +312,12 @@ public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedH
 		int deltaX = (int) (-beginPanOrigin.getX() / zoomDiff);
 		int deltaY = (int) (-beginPanOrigin.getY() / zoomDiff);
 
-		container.transform(scale / beginScale, new Coordinate(deltaX, deltaY));
+		container.zoomToLocation(scale / beginScale, deltaX, deltaY);
 	}
 
 	private HtmlContainer getTopContainer() {
 		if (htmlContainer.getChildCount() < 2) {
-			HtmlContainer tempContainer = new HtmlContainerImpl();
+			HtmlContainer tempContainer = new HtmlGroup();
 			if (renderDelayed) {
 				tempContainer.setVisible(false);
 			}

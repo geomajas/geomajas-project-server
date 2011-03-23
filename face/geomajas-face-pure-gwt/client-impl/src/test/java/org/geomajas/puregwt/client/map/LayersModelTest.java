@@ -12,8 +12,8 @@
 package org.geomajas.puregwt.client.map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.puregwt.client.event.EventBus;
-import org.geomajas.puregwt.client.event.EventBusImpl;
+import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
@@ -32,12 +32,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "applicationContext.xml", "mapOsm.xml",
-		"layerOsm1.xml", "layerOsm2.xml", "layerOsm3.xml", "layerOsm4.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "applicationContext.xml",
+		"mapBeans.xml", "layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml", "layerBeans4.xml" })
 public class LayersModelTest {
 
+	private static final String LAYER1 = "beans1Layer";
+
+	private static final String LAYER2 = "beans2Layer";
+
+	private static final String LAYER3 = "beans3Layer";
+
 	@Autowired
-	@Qualifier(value = "mapTest")
+	@Qualifier(value = "mapBeans")
 	private ClientMapInfo mapInfo;
 
 	private EventBus eventBus = new EventBusImpl();
@@ -66,8 +72,8 @@ public class LayersModelTest {
 	public void testLayerSelection() {
 		LayersModel layersModel = new LayersModelImpl(eventBus);
 		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
-		Layer<?> layer1 = layersModel.getLayer("osm1Layer");
-		Layer<?> layer2 = layersModel.getLayer("osm2Layer");
+		Layer<?> layer1 = layersModel.getLayer(LAYER1);
+		Layer<?> layer2 = layersModel.getLayer(LAYER2);
 
 		layer1.setSelected(true);
 		Assert.assertEquals(layer1, layersModel.getSelectedLayer());
@@ -85,9 +91,9 @@ public class LayersModelTest {
 		LayersModel layersModel = new LayersModelImpl(eventBus);
 		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
 
-		Assert.assertEquals(layersModel.getLayer(0), layersModel.getLayer("osm1Layer"));
-		Assert.assertEquals(layersModel.getLayer(1), layersModel.getLayer("osm2Layer"));
-		Assert.assertEquals(layersModel.getLayer(2), layersModel.getLayer("osm3Layer"));
+		Assert.assertEquals(layersModel.getLayer(0), layersModel.getLayer(LAYER1));
+		Assert.assertEquals(layersModel.getLayer(1), layersModel.getLayer(LAYER2));
+		Assert.assertEquals(layersModel.getLayer(2), layersModel.getLayer(LAYER3));
 	}
 
 	@Test
@@ -99,9 +105,9 @@ public class LayersModelTest {
 		Assert.assertEquals(1, layersModel.getLayerPosition(layersModel.getLayer(1)));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layersModel.getLayer(2)));
 
-		Assert.assertEquals(0, layersModel.getLayerPosition(layersModel.getLayer("osm1Layer")));
-		Assert.assertEquals(1, layersModel.getLayerPosition(layersModel.getLayer("osm2Layer")));
-		Assert.assertEquals(2, layersModel.getLayerPosition(layersModel.getLayer("osm3Layer")));
+		Assert.assertEquals(0, layersModel.getLayerPosition(layersModel.getLayer(LAYER1)));
+		Assert.assertEquals(1, layersModel.getLayerPosition(layersModel.getLayer(LAYER2)));
+		Assert.assertEquals(2, layersModel.getLayerPosition(layersModel.getLayer(LAYER3)));
 	}
 
 	@Test
@@ -109,9 +115,9 @@ public class LayersModelTest {
 		LayersModel layersModel = new LayersModelImpl(eventBus);
 		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
 
-		Layer<?> layer1 = layersModel.getLayer("osm1Layer");
-		Layer<?> layer2 = layersModel.getLayer("osm2Layer");
-		Layer<?> layer3 = layersModel.getLayer("osm3Layer");
+		Layer<?> layer1 = layersModel.getLayer(LAYER1);
+		Layer<?> layer2 = layersModel.getLayer(LAYER2);
+		Layer<?> layer3 = layersModel.getLayer(LAYER3);
 
 		layersModel.moveLayerDown(layer1); // Expect no changes.
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
@@ -129,9 +135,9 @@ public class LayersModelTest {
 		LayersModel layersModel = new LayersModelImpl(eventBus);
 		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
 
-		Layer<?> layer1 = layersModel.getLayer("osm1Layer");
-		Layer<?> layer2 = layersModel.getLayer("osm2Layer");
-		Layer<?> layer3 = layersModel.getLayer("osm3Layer");
+		Layer<?> layer1 = layersModel.getLayer(LAYER1);
+		Layer<?> layer2 = layersModel.getLayer(LAYER2);
+		Layer<?> layer3 = layersModel.getLayer(LAYER3);
 
 		layersModel.moveLayerUp(layer3); // Expect no changes.
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
@@ -149,20 +155,20 @@ public class LayersModelTest {
 		LayersModel layersModel = new LayersModelImpl(eventBus);
 		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
 
-		Layer<?> layer1 = layersModel.getLayer("osm1Layer");
-		Layer<?> layer2 = layersModel.getLayer("osm2Layer");
-		Layer<?> layer3 = layersModel.getLayer("osm3Layer");
+		Layer<?> layer1 = layersModel.getLayer(LAYER1);
+		Layer<?> layer2 = layersModel.getLayer(LAYER2);
+		Layer<?> layer3 = layersModel.getLayer(LAYER3);
 
 		layersModel.moveLayer(layer1, -1); // Expect no changes.
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer2));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layer3));
-		
+
 		layersModel.moveLayer(layer2, -1);
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer2));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layer3));
-		
+
 		layersModel.moveLayer(layer2, 2);
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer3));

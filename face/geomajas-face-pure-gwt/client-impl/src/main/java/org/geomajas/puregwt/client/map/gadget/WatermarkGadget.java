@@ -12,8 +12,8 @@
 package org.geomajas.puregwt.client.map.gadget;
 
 import org.geomajas.puregwt.client.map.MapGadget;
-import org.geomajas.puregwt.client.map.ScreenContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 

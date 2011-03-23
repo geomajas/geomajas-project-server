@@ -24,10 +24,10 @@ import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
@@ -41,6 +41,7 @@ import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Matrix;
 
@@ -168,6 +169,10 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 
 	public void setHtmlContainer(HtmlContainer htmlContainer) {
 		this.htmlContainer = htmlContainer;
+	}
+
+	public void setVectorContainer(VectorContainer vectorContainer) {
+		// TODO ....
 	}
 
 	// ------------------------------------------------------------------------

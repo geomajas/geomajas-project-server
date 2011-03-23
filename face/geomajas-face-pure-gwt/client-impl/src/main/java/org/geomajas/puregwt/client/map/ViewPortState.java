@@ -29,7 +29,7 @@ public class ViewPortState {
 	private final Coordinate panOrigin;
 
 	private final boolean panDragging;
-	
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -47,7 +47,7 @@ public class ViewPortState {
 		this.panOrigin = (Coordinate) panOrigin.clone();
 		this.panDragging = panDragging;
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// General getters and setters:
 	// ------------------------------------------------------------------------
@@ -74,6 +74,7 @@ public class ViewPortState {
 
 	/**
 	 * Is the view state in the dragging part of the panning movement ?
+	 * 
 	 * @return true if dragging
 	 */
 	public boolean isPanDragging() {
@@ -82,7 +83,9 @@ public class ViewPortState {
 
 	/**
 	 * Can this view state be reached by panning from another view state ?
-	 * @param other the view state to compare with
+	 * 
+	 * @param other
+	 *            the view state to compare with
 	 * @return true if reachable by panning
 	 */
 	public boolean isPannableFrom(ViewPortState other) {
@@ -93,7 +96,9 @@ public class ViewPortState {
 
 	/**
 	 * Does this view state have the same scale as another view state ?
-	 * @param other the view state to compare with
+	 * 
+	 * @param other
+	 *            the view state to compare with
 	 * @return true if same scale
 	 */
 	public boolean isSameScale(ViewPortState other) {
@@ -103,7 +108,7 @@ public class ViewPortState {
 	public String toString() {
 		return "[origin=" + origin + ",panOrigin=" + panOrigin + ",panDragging=" + panDragging + "]";
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------

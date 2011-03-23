@@ -11,9 +11,9 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
 
 /**
@@ -22,7 +22,6 @@ import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
  * </p>
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
 public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements OpacitySupported {
 

@@ -33,7 +33,7 @@ import com.google.gwt.user.client.Event;
  * 
  * @author Pieter De Graef
  */
-public class HtmlImageImpl extends HtmlObjectImpl implements HtmlImage {
+public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 	// ------------------------------------------------------------------------
 	// Constructors:

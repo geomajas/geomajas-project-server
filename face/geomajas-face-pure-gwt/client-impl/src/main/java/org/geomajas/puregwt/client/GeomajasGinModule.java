@@ -21,8 +21,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
 /**
- * Gin binding module. All bindings defined in here are used by the GeomajasGinjector.<br/>
- * TODO check to see if we can create multiple GeometryFactories with different SRIDs.
+ * Gin binding module. All bindings defined in here are used by the GeomajasGinjector.
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef

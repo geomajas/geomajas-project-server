@@ -14,26 +14,24 @@ package org.geomajas.puregwt.client.map.gfx;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.geometry.Coordinate;
-
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.user.client.DOM;
 
 /**
  * <p>
- * Container for {@link HtmlObjectImpl}s. This class is an extension of an {@link HtmlObjectImpl} that in turn is used
- * to store a list of child {@link HtmlObjectImpl}s. In other words instances of this class represent the nodes in an
- * HTML tree structure.
+ * Container for {@link AbstractHtmlObject}s. This class is an extension of an {@link AbstractHtmlObject} that in turn
+ * is used to store a list of child {@link AbstractHtmlObject}s. In other words instances of this class represent the
+ * nodes in an HTML tree structure.
  * </p>
  * <p>
- * The main goal for this class is to provide a container for child {@link HtmlObjectImpl}s. Through it's methods these
- * children can be managed. Note though that this class is itself also an {@link HtmlObjectImpl}, which means that this
- * class too has a fixed size and position. Child positions are always relative to this class' position.
+ * The main goal for this class is to provide a container for child {@link AbstractHtmlObject}s. Through it's methods
+ * these children can be managed. Note though that this class is itself also an {@link AbstractHtmlObject}, which means
+ * that this class too has a fixed size and position. Child positions are always relative to this class' position.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class HtmlContainerImpl extends HtmlObjectImpl implements HtmlContainer {
+public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 
 	private List<HtmlObject> children = new ArrayList<HtmlObject>();
 
@@ -45,7 +43,7 @@ public class HtmlContainerImpl extends HtmlObjectImpl implements HtmlContainer {
 	 * Create an HTML container widget that represents a DIV element. When using this constructor, width and height are
 	 * set to 100%. We always set the width and height, because XHTML does not like DIV's without sizing attributes.
 	 */
-	public HtmlContainerImpl() {
+	public HtmlGroup() {
 		super("div");
 	}
 
@@ -57,7 +55,7 @@ public class HtmlContainerImpl extends HtmlObjectImpl implements HtmlContainer {
 	 * @param height
 	 *            The height for this container, expressed in pixels.
 	 */
-	public HtmlContainerImpl(int width, int height) {
+	public HtmlGroup(int width, int height) {
 		super("div", width, height);
 	}
 
@@ -73,7 +71,7 @@ public class HtmlContainerImpl extends HtmlObjectImpl implements HtmlContainer {
 	 * @param left
 	 *            How many pixels should this container be placed from the left (relative to the parent origin).
 	 */
-	public HtmlContainerImpl(int width, int height, int top, int left) {
+	public HtmlGroup(int width, int height, int top, int left) {
 		super("div", width, height, top, left);
 	}
 
@@ -190,13 +188,11 @@ public class HtmlContainerImpl extends HtmlObjectImpl implements HtmlContainer {
 	 * @param transformOrigin
 	 *            The origin to where we want this container to zoom.
 	 */
-	public void transform(double scale, Coordinate transformOrigin) {
+	public void zoomToLocation(double scale, int x, int y) {
 		DOM.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
-		DOM.setStyleAttribute(getElement(), "MozTransformOrigin",
-				transformOrigin.getX() + "px " + transformOrigin.getY() + "px");
+		DOM.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
 		DOM.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
-		DOM.setStyleAttribute(getElement(), "WebkitTransformOrigin",
-				transformOrigin.getX() + "px " + transformOrigin.getY() + "px");
+		DOM.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
 
 		// TODO what about Internet Explorer?
 	}

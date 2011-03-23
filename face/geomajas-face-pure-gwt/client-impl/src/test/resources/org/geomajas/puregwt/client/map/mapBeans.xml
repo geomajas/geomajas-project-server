@@ -16,7 +16,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapTest" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapBeans" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#E0E0E0" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -72,36 +72,44 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="osm1Layer" />
-				<ref bean="osm2Layer" />
-				<ref bean="osm3Layer" />
+				<ref bean="beans1Layer" />
+				<ref bean="beans2Layer" />
+				<ref bean="beans3Layer" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osm1Layer">
-		<property name="serverLayerId" value="osm1" />
-		<property name="label" value="OpenStreetMap (raster)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beans1Layer">
+		<property name="serverLayerId" value="beans1" />
+		<property name="label" value="Test beans 1" />
 		<property name="visible" value="true" />
-		<property name="style" value="1" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="100000" />
+		<property name="namedStyleInfo" ref="beans1StyleInfo" />
 	</bean>
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osm2Layer">
-		<property name="serverLayerId" value="osm2" />
-		<property name="label" value="OpenStreetMap (raster)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beans2Layer">
+		<property name="serverLayerId" value="beans2" />
+		<property name="label" value="Test beans 2" />
 		<property name="visible" value="true" />
-		<property name="style" value="1" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="100000" />
+		<property name="namedStyleInfo" ref="beans2StyleInfo" />
 	</bean>
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osm3Layer">
-		<property name="serverLayerId" value="osm3" />
-		<property name="label" value="OpenStreetMap (raster)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beans3Layer">
+		<property name="serverLayerId" value="beans3" />
+		<property name="label" value="Test beans 3" />
 		<property name="visible" value="true" />
-		<property name="style" value="1" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="100000" />
+		<property name="namedStyleInfo" ref="beans3StyleInfo" />
 	</bean>
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osm4Layer">
-		<property name="serverLayerId" value="osm4" />
-		<property name="label" value="OpenStreetMap (raster)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beans4Layer">
+		<property name="serverLayerId" value="beans4" />
+		<property name="label" value="Test beans 4" />
 		<property name="visible" value="true" />
-		<property name="style" value="1" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="100000" />
+		<property name="namedStyleInfo" ref="beans4StyleInfo" />
 	</bean>
 
 </beans>

@@ -28,11 +28,11 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public abstract class HtmlObjectImpl extends Widget implements HtmlObject {
+public abstract class AbstractHtmlObject extends Widget implements HtmlObject {
 
 	private Widget parent;
 
-	protected double opacity = 1;
+	private double opacity = 1;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -44,7 +44,7 @@ public abstract class HtmlObjectImpl extends Widget implements HtmlObject {
 	 * @param tagName
 	 *            The tag-name of the HTML that should be created (DIV, IMG, ...).
 	 */
-	public HtmlObjectImpl(String tagName) {
+	public AbstractHtmlObject(String tagName) {
 		Element element = DOM.createElement(tagName);
 		DOM.setStyleAttribute(element, "position", "absolute");
 		DOM.setStyleAttribute(element, "width", "100%");
@@ -62,7 +62,7 @@ public abstract class HtmlObjectImpl extends Widget implements HtmlObject {
 	 * @param height
 	 *            The height for this element, expressed in pixels.
 	 */
-	public HtmlObjectImpl(String tagName, int width, int height) {
+	public AbstractHtmlObject(String tagName, int width, int height) {
 		Element element = DOM.createElement(tagName);
 		DOM.setStyleAttribute(element, "position", "absolute");
 		DOM.setStyleAttribute(element, "width", width + "px");
@@ -84,7 +84,7 @@ public abstract class HtmlObjectImpl extends Widget implements HtmlObject {
 	 * @param left
 	 *            How many pixels should this object be placed from the left (relative to the parent origin).
 	 */
-	public HtmlObjectImpl(String tagName, int width, int height, int top, int left) {
+	public AbstractHtmlObject(String tagName, int width, int height, int top, int left) {
 		Element element = DOM.createElement(tagName);
 		DOM.setStyleAttribute(element, "position", "absolute");
 		DOM.setStyleAttribute(element, "width", width + "px");

@@ -23,12 +23,12 @@ import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
-import org.geomajas.puregwt.client.event.EventBus;
-import org.geomajas.puregwt.client.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.controller.ListenerController;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.controller.NavigationController;
+import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
@@ -39,7 +39,10 @@ import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
+import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
@@ -70,7 +73,9 @@ public class MapPresenterImpl implements MapPresenter {
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
 			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget {
 
-		HtmlContainerImpl getHtmlContainer();
+		HtmlContainer getMapHtmlContainer();
+
+		VectorContainer getMapVectorContainer();
 
 		ScreenContainer getScreenContainer(String id);
 
@@ -106,7 +111,7 @@ public class MapPresenterImpl implements MapPresenter {
 	private WorldContainerRenderer worldContainerRenderer;
 
 	private Map<String, MapGadget> gadgets;
-	
+
 	private EventBus eventBus;
 
 	public MapPresenterImpl(String applicationId, String id, MapWidget display) {
@@ -125,7 +130,10 @@ public class MapPresenterImpl implements MapPresenter {
 	public void initialize() {
 		// Initialize the default map renderer:
 		mapRenderer = new DelegatingMapRenderer(layersModel, viewPort);
-		mapRenderer.setHtmlContainer(display.getHtmlContainer());
+		mapRenderer.setHtmlContainer(display.getMapHtmlContainer());
+		// TODO temp code:
+		mapRenderer.setVectorContainer(display.getMapVectorContainer());
+
 		eventBus.addHandler(ViewPortChangedEvent.getType(), mapRenderer);
 		eventBus.addHandler(ViewPortDraggedEvent.getType(), mapRenderer);
 		eventBus.addHandler(ViewPortScaledEvent.getType(), mapRenderer);

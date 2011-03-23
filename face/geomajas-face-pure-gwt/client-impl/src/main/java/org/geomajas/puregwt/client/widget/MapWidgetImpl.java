@@ -15,11 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
-import org.geomajas.puregwt.client.map.ScreenContainer;
-import org.geomajas.puregwt.client.map.ScreenGroup;
-import org.geomajas.puregwt.client.map.WorldContainer;
-import org.geomajas.puregwt.client.map.WorldGroup;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainerImpl;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.gfx.HtmlGroup;
+import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.ScreenGroup;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorGroup;
+import org.geomajas.puregwt.client.map.gfx.WorldContainer;
+import org.geomajas.puregwt.client.map.gfx.WorldGroup;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -48,7 +51,9 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
-	private HtmlContainerImpl htmlContainer;
+	private HtmlGroup htmlContainer;
+
+	private VectorGroup vectorContainer;
 
 	private DrawingArea drawingArea;
 
@@ -63,12 +68,16 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		super();
 
 		// Attach an HtmlContainer inside the clipping area (used for rendering layers):
-		htmlContainer = new HtmlContainerImpl();
+		htmlContainer = new HtmlGroup();
 		add(htmlContainer, 0, 0);
 
 		// Attach a DrawingArea inside the clipping area (used for vector rendering):
 		drawingArea = new DrawingArea(0, 0);
 		add(drawingArea, 0, 0);
+
+		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
+		vectorContainer = new VectorGroup();
+		drawingArea.add(vectorContainer);
 
 		// Firefox and Chrome allow for DnD of images. This default behavior is not wanted.
 		addMouseDownHandler(new MouseDownHandler() {
@@ -89,8 +98,12 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return this;
 	}
 
-	public HtmlContainerImpl getHtmlContainer() {
+	public HtmlContainer getMapHtmlContainer() {
 		return htmlContainer;
+	}
+
+	public VectorContainer getMapVectorContainer() {
+		return vectorContainer;
 	}
 
 	public ScreenContainer getScreenContainer(String id) {

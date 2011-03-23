@@ -17,7 +17,8 @@ import java.util.List;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
@@ -25,6 +26,7 @@ import org.geomajas.puregwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.map.layer.VectorLayer;
 
 /**
  * ...
@@ -73,14 +75,12 @@ public class LayersModelImpl implements LayersModel {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Initialization method for the map model. TODO why not do this in the constructor??
+	 * Initialization method for the layers model.
 	 * 
 	 * @param mapInfo
 	 *            The configuration object from which this model should build itself.
-	 * @param mapWidth
-	 *            The width of the map to apply.
-	 * @param mapHeight
-	 *            The height of the map to apply.
+	 * @param viewPort
+	 *            The view port that is associated with the same map this layer model belongs to.
 	 */
 	public void initialize(ClientMapInfo mapInfo, ViewPort viewPort) {
 		this.mapInfo = mapInfo;
@@ -96,14 +96,14 @@ public class LayersModelImpl implements LayersModel {
 	public void addLayer(ClientLayerInfo layerInfo) {
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				RasterLayer layer = new RasterLayer((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
-				layers.add(layer);
-				eventBus.fireEvent(new LayerAddedEvent(layer));
+				RasterLayer rLayer = new RasterLayer((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
+				layers.add(rLayer);
+				eventBus.fireEvent(new LayerAddedEvent(rLayer));
 				break;
 			default:
-				// VectorLayer vectorLayer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);
-				// layers.add(vectorLayer);
-				// vectorLayer.addFeatureSelectionHandler(selectionPropagator);
+				VectorLayer vLayer = new VectorLayer((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
+				layers.add(vLayer);
+				eventBus.fireEvent(new LayerAddedEvent(vLayer));
 				break;
 		}
 	}

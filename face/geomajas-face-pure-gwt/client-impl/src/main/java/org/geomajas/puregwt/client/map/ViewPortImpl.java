@@ -19,7 +19,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
@@ -68,7 +68,7 @@ public class ViewPortImpl implements ViewPort {
 	private ViewPortTransformationService transformationService;
 
 	private EventBus eventBus;
-	
+
 	private String crs;
 
 	// -------------------------------------------------------------------------
@@ -108,10 +108,6 @@ public class ViewPortImpl implements ViewPort {
 			}
 		}
 	}
-
-	// public TransformationService getTransformationService() {
-	// return transformationService;
-	// }
 
 	public double getScale() {
 		return viewState.getScale();
@@ -173,9 +169,8 @@ public class ViewPortImpl implements ViewPort {
 		}
 	}
 
-	/** Zoom out as far as possible. The maximum bounds are determined by the map configuration. */
-	public void applyMaximumBounds() {
-		applyBounds(maxBounds, ZoomOption.LEVEL_FIT);
+	public Bbox getMaximumBounds() {
+		return maxBounds;
 	}
 
 	public void translate(double x, double y) {
