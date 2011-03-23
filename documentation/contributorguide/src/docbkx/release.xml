@@ -169,7 +169,7 @@
       <title>Prepare release</title>
 
       <para>The pre-release checks above only need to be done the first time
-      you whish to release a Geomajas artifact. Here we describe the checks
+      you wish to release a Geomajas artifact. Here we describe the checks
       that need to be done every time a single artifact is to be
       released.</para>
 
@@ -199,6 +199,12 @@
           release, so they do not commit any changes. Changes in other
           plug-ins than the one you are releasing should not affect the
           release.</para>
+        </listitem>
+
+        <listitem>
+          <para>Do a "mvn dependency:tree" and check that all dependencies
+          (excluding the back-end/plug-in dependencies) are included with the
+          license and/or copyright message.</para>
         </listitem>
       </itemizedlist>
 
@@ -490,31 +496,31 @@
   <section>
     <title>Additional notes for releasing the back-end</title>
 
-    <para>The Geomajas backend requires a stable version of the
+    <para>The Geomajas back-end requires a stable version of the
     geomajas-parent module. Make sure that the pom.xml in the backend folder
     points to a released version of the geomajas-parent. If not, release the
-    geomajas-parent first, than change the version in the backend pom.xml to
+    geomajas-parent first, than change the version in the back-end pom.xml to
     this newly released version.</para>
 
-    <para>When releasing the backend core, you will have problems building the
-    javadocs. In order to account for these you must create a local build of
-    the backend using the next release version, before actually preparing and
-    performing the release.</para>
+    <para>When releasing the back-end core, you will have problems building
+    the javadocs. In order to account for these you must create a local build
+    of the backend using the next release version, before actually preparing
+    and performing the release.</para>
 
-    <para>So go into all pom.xml files (backend, api, api-experimantel, impl,
+    <para>So go into all pom.xml files (backend, api, api-experimental, impl,
     …) and change the version to the one you're trying to release, than run a
-    mvn install.</para>
+    "mvn install".</para>
 
     <para>Than revert the changes and start the release procedure (prepare +
     perform). Afterward, it might be a good idea to remove the jars again that
     you created before the release procedure.</para>
 
-    <para>At this moment, the backend should be available in sonatype.
+    <para>At this moment, the back-end should be available in sonatype.
     Download one of the jars and check the contents to see if all is well. If
-    it is, close the staging repository to place the backend officially in
+    it is, close the staging repository to place the back-end officially in
     staging.</para>
 
-    <para>When releasing the backend, you must also be aware that this
+    <para>When releasing the back-end, you must also be aware that this
     releases only the modules within the backend folder. The following modules
     might need to be released separately:</para>
 
@@ -681,9 +687,9 @@
   <section>
     <title>Possible problems and solutions</title>
 
-    <para>When releasing the backend core, there may be a problem building the
-    javadocs. The solution can be to do a local build of the backend using the
-    next release version before doing the actual release.</para>
+    <para>When releasing the back-end core, there may be a problem building
+    the javadocs. The solution can be to do a local build of the back-end
+    using the next release version before doing the actual release.</para>
 
     <para>The documentation uses the example applications for extracting code
     which is included in the manual. Sometimes (it shouldn't) this is a
