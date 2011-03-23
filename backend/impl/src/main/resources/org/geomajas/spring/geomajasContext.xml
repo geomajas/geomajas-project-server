@@ -48,13 +48,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="GeoApi" />
-					<property name="copyright"
-							  value="Copyright © Open Geospatial Consortium, Inc. All Rights Reserved." />
-					<property name="licenseName" value="" />
-					<property name="licenseUrl" value="http://geoapi.sourceforge.net/license.html" />
-				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="javax.validation" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />

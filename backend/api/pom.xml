@@ -28,8 +28,8 @@
 			<artifactId>jts</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opengis</groupId>
-			<artifactId>geoapi-pending</artifactId>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>

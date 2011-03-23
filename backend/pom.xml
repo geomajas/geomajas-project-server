@@ -175,11 +175,6 @@
 				<version>1.11</version>
 			</dependency>
 			<dependency>
-				<groupId>org.opengis</groupId>
-				<artifactId>geoapi-pending</artifactId>
-				<version>2.3-M1</version>
-			</dependency>
-			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-main</artifactId>
 				<version>${geotools-version}</version>
