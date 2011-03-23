@@ -13,12 +13,7 @@ package org.geomajas.widget.advancedviews.client.widget;
 
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
-import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.global.Api;
-import org.geomajas.gwt.client.action.ToolbarBaseAction;
-import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
-import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
-import org.geomajas.gwt.client.action.layertree.LayerTreeRegistry;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
@@ -28,21 +23,16 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend.LayerTreeLegendNode;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLFlow;
-import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeNode;
@@ -55,7 +45,8 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  * The LayerTree shows a tree resembling the available layers for the map
  * Several actions can be executed on the layers (make them invisible, ...).
  * 
- * TODO This is a copy from LayerTree, should make original properties protected, of add get/setters
+ * TODO This is a copy from LayerTree, should make original properties
+ * protected, of add get/setters
  * 
  * @author Kristof Heirwegh
  * @author Frank Wynants
@@ -66,14 +57,12 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, FolderClickHandler,
 		LayerSelectionHandler {
 
-	protected static final int LAYERTREEBUTTON_SIZE = 24;
+	protected static final int LAYERTREEBUTTON_SIZE = 22;
 
 	protected static final int DEFAULT_ICONSIZE = 18;
 
 	protected final HTMLFlow htmlSelectedLayer = new HTMLFlow(I18nProvider.getLayerTree().activeLayer(
 			I18nProvider.getLayerTree().none()));
-
-	protected ToolStrip toolStrip;
 
 	protected LayerTreeTreeNode selectedLayerTreeNode;
 
@@ -104,27 +93,14 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		setHeight100();
 		mapModel = mapWidget.getMapModel();
 		htmlSelectedLayer.setWidth100();
-		treeGrid = new TreeGrid();
+		treeGrid = createTreeGrid();
 		treeGrid.setSelectionType(SelectionStyle.SINGLE);
 
 		// Wait for the MapModel to be loaded
 		mapModel.addMapModelHandler(new MapModelHandler() {
 			public void onMapModelChange(MapModelEvent event) {
 				if (!initialized) {
-					buildTree();
-					// toolStrip = buildToolstrip(mapWidget);
-					//
-					// // display the toolbar and the tree
-					// VLayout vLayout = new VLayout();
-					// vLayout.setSize("100%", "100%");
-					// vLayout.addMember(toolStrip);
-					htmlSelectedLayer.setBackgroundColor("#cccccc");
-					htmlSelectedLayer.setAlign(Alignment.CENTER);
-					// vLayout.addMember(htmlSelectedLayer);
-					// vLayout.addMember(treeGrid);
-					treeGrid.markForRedraw();
-					LayerTreeBase.this.addChild(treeGrid);
-					LayerTreeBase.this.markForRedraw();
+					initialize();
 				}
 				initialized = true;
 			}
@@ -151,9 +127,6 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		}
 		selectedLayerTreeNode = null;
 		htmlSelectedLayer.setContents(I18nProvider.getLayerTree().activeLayer(I18nProvider.getLayerTree().none()));
-
-		// Canvas[] toolStripMembers = toolStrip.getMembers();
-		// updateButtonIconsAndStates(toolStripMembers);
 	}
 
 	/**
@@ -221,50 +194,17 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Builds the toolbar
-	 * 
-	 * @param mapWidget
-	 *            The mapWidget containing the layerTree
-	 * @return {@link com.smartgwt.client.widgets.toolbar.ToolStrip} which was
-	 *         built
-	 */
-	protected ToolStrip buildToolstrip(MapWidget mapWidget) {
-		toolStrip = new ToolStrip();
-		toolStrip.setWidth100();
-		toolStrip.setPadding(3);
-
-		ClientLayerTreeInfo layerTreeInfo = mapModel.getMapInfo().getLayerTree();
-		if (layerTreeInfo != null) {
-			for (ClientToolInfo tool : layerTreeInfo.getTools()) {
-				String id = tool.getId();
-				IButton button = null;
-				ToolbarBaseAction action = LayerTreeRegistry.getToolbarAction(id, mapWidget);
-				if (action instanceof LayerTreeAction) {
-					button = new LayerTreeButton(this, (LayerTreeAction) action);
-				} else if (action instanceof LayerTreeModalAction) {
-					button = new LayerTreeModalButton(this, (LayerTreeModalAction) action);
-				}
-				if (button != null) {
-					toolStrip.addMember(button);
-					LayoutSpacer spacer = new LayoutSpacer();
-					spacer.setWidth(2);
-					toolStrip.addMember(spacer);
-				}
-			}
-		}
-		final Canvas[] toolStripMembers = toolStrip.getMembers();
-		// delaying this fixes an image 'undefined' error
-		Timer t = new Timer() {
-
-			@Override
-			public void run() {
-				updateButtonIconsAndStates(toolStripMembers);
-			}
-
-		};
-		t.schedule(10);
-		return toolStrip;
+	protected void initialize() {
+		buildTree();
+		VLayout vLayout = new VLayout();
+		vLayout.setSize("100%", "100%");
+		htmlSelectedLayer.setBackgroundColor("#cccccc");
+		htmlSelectedLayer.setAlign(Alignment.CENTER);
+		vLayout.addMember(htmlSelectedLayer);
+		vLayout.addMember(treeGrid);
+		treeGrid.markForRedraw();
+		LayerTreeBase.this.addChild(vLayout);
+		LayerTreeBase.this.markForRedraw();
 	}
 
 	/**
@@ -289,7 +229,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		treeGrid.addLeafClickHandler(this);
 		treeGrid.addFolderClickHandler(this);
 		tree.openFolder(nodeRoot);
-		syncNodeState(nodeRoot);
+		syncNodeState(false);
 	}
 
 	/**
@@ -310,142 +250,17 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	protected abstract void processNode(final ClientLayerTreeNodeInfo treeNode, final TreeNode nodeRoot,
 			final boolean refresh);
 
-	protected abstract void syncNodeState(final TreeNode treeNode);
-	
-	/**
-	 * Updates the icons and the state of the buttons in the toolbar based upon
-	 * the currently selected layer
-	 * 
-	 * @param toolStripMembers
-	 *            data for the toolbar
-	 */
-	private void updateButtonIconsAndStates(Canvas[] toolStripMembers) {
-		for (Canvas toolStripMember : toolStripMembers) {
-			if (toolStripMember instanceof LayerTreeModalButton) {
-				((LayerTreeModalButton) toolStripMember).update();
-			} else if (toolStripMember instanceof LayerTreeButton) {
-				((LayerTreeButton) toolStripMember).update();
-			}
-		}
-	}
+	protected abstract void syncNodeState(boolean layersOnly);
 
 	/**
-	 * General definition of an action button for the layer tree.
+	 * Creation of treegrid is decoupled to allow you to make a custom treegrid
+	 * (SmartGWT uses some designpatterns which only give you the ability to
+	 * customize certain aspects through subclassing)
 	 * 
-	 * @author Frank Wynants
-	 * @author Pieter De Graef
+	 * @return
 	 */
-	protected class LayerTreeButton extends IButton {
-
-		private LayerTreeBase tree;
-
-		private LayerTreeAction action;
-
-		public LayerTreeButton(final LayerTreeBase tree, final LayerTreeAction action) {
-			this.tree = tree;
-			this.action = action;
-			setWidth(LAYERTREEBUTTON_SIZE);
-			setHeight(LAYERTREEBUTTON_SIZE);
-			setIconSize(LAYERTREEBUTTON_SIZE - 8);
-			setIcon(action.getIcon());
-			setTooltip(action.getTooltip());
-			setActionType(SelectionType.BUTTON);
-			setShowDisabledIcon(false);
-			addClickHandler(new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					try {
-						action.onClick(tree.getSelectedLayerTreeNode().getLayer());
-						update();
-					} catch (Throwable t) {
-						GWT.log("LayerTreeButton onClick error", t);
-					}
-				}
-			});
-		}
-
-		public void update() {
-			LayerTreeTreeNode selected = tree.getSelectedLayerTreeNode();
-			if (selected != null && action.isEnabled(selected.getLayer())) {
-				setDisabled(false);
-				setIcon(action.getIcon());
-				setTooltip(action.getTooltip());
-			} else {
-				setDisabled(true);
-				GWT.log("LayerTreeButton" + action.getDisabledIcon());
-				setIcon(action.getDisabledIcon());
-				setTooltip("");
-			}
-		}
-	}
-
-	/**
-	 * General definition of a modal button for the layer tree.
-	 * 
-	 * @author Frank Wynants
-	 * @author Pieter De Graef
-	 */
-	protected class LayerTreeModalButton extends IButton {
-
-		private LayerTreeBase tree;
-
-		private LayerTreeModalAction modalAction;
-
-		/**
-		 * Constructor
-		 * 
-		 * @param tree
-		 *            The currently selected layer
-		 * @param modalAction
-		 *            The action coupled to this button
-		 */
-		public LayerTreeModalButton(final LayerTreeBase tree, final LayerTreeModalAction modalAction) {
-			this.tree = tree;
-			this.modalAction = modalAction;
-			setWidth(LayerTreeBase.LAYERTREEBUTTON_SIZE);
-			setHeight(LayerTreeBase.LAYERTREEBUTTON_SIZE);
-			setIconSize(LayerTreeBase.LAYERTREEBUTTON_SIZE - 8);
-			setIcon(modalAction.getDeselectedIcon());
-			setActionType(SelectionType.CHECKBOX);
-			setTooltip(modalAction.getDeselectedTooltip());
-			setShowDisabledIcon(false);
-
-			this.addClickHandler(new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					LayerTreeTreeNode selectedLayerNode = tree.getSelectedLayerTreeNode();
-					if (LayerTreeModalButton.this.isSelected()) {
-						modalAction.onSelect(selectedLayerNode.getLayer());
-					} else {
-						modalAction.onDeselect(selectedLayerNode.getLayer());
-					}
-					selectedLayerNode.updateIcon();
-					update();
-				}
-			});
-		}
-
-		public void update() {
-			LayerTreeTreeNode selected = tree.getSelectedLayerTreeNode();
-			if (selected != null && modalAction.isEnabled(selected.getLayer())) {
-				setDisabled(false);
-			} else {
-				setSelected(false);
-				setDisabled(true);
-				GWT.log("LayerTreeModalButton" + modalAction.getDisabledIcon());
-				setIcon(modalAction.getDisabledIcon());
-				setTooltip("");
-			}
-			if (selected != null && modalAction.isSelected(selected.getLayer())) {
-				setIcon(modalAction.getSelectedIcon());
-				setTooltip(modalAction.getSelectedTooltip());
-				select();
-			} else if (selected != null) {
-				setIcon(modalAction.getDeselectedIcon());
-				setTooltip(modalAction.getDeselectedTooltip());
-				deselect();
-			}
-		}
+	protected TreeGrid createTreeGrid() {
+		return new TreeGrid();
 	}
 
 	/**
@@ -461,11 +276,19 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		 * the time
 		 */
 		public void refreshIcons() {
+			GWT.log("Refresh node(icon)s");
+
+			// TODO this doesn't work, always returns all folders ???
 			TreeNode[] openNodes = this.getOpenList(this.getRoot());
 
 			this.closeAll();
+			syncNodeState(true);
+
+			// exclude layers, which are handled by syncNodeState()
 			for (TreeNode openNode : openNodes) {
-				this.openFolder(openNode);
+				if (!(openNode instanceof LayerTreeLegendNode) && !(openNode instanceof LayerTreeLegendNode)) {
+					this.openFolder(openNode);
+				}
 			}
 		}
 	}
@@ -494,14 +317,18 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 			super(layer.getLabel());
 			this.layer = layer;
 			this.tree = tree;
-			updateIcon();
+			updateIcon(false);
+		}
+
+		public void updateIcon() {
+			updateIcon(true);
 		}
 
 		/**
 		 * Causes the node to check its status (visible, showing labels, ...)
 		 * and to update its icon to match its status.
 		 */
-		public void updateIcon() {
+		public void updateIcon(boolean refresh) {
 			if (getLayer().isShowing()) {
 				if (getLayer().isLabeled()) {
 					// show icon labeled and showing
@@ -514,7 +341,9 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 				// show not showing
 				setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png");
 			}
-			tree.refreshIcons();
+			if (refresh) {
+				tree.refreshIcons();
+			}
 		}
 
 		public Layer<?> getLayer() {
