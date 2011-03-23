@@ -24,6 +24,7 @@ import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -33,6 +34,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -49,6 +52,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Component
 public final class FilterServiceImpl implements FilterService {
+
+	private final Logger log = LoggerFactory.getLogger(CommandDispatcherImpl.class);
 
 	private static final FilterFactory2 FF;
 	static {
@@ -365,9 +370,16 @@ public final class FilterServiceImpl implements FilterService {
 	/** @inheritDoc */
 	public Filter parseFilter(String filter) throws GeomajasException {
 		try {
-			return ECQL.toFilter(filter);
+			return ECQL.toFilter(filter, FF);
 		} catch (CQLException e) {
-			throw new GeomajasException(e, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
+			// ECQL should be a superset of CQL, but there are apparently extra key words like "id"
+			// fall back to CQL for backwards compatibility
+			log.warn("filter not parsable by ECQL, falling back to CQL", e);
+			try {
+				return CQL.toFilter(filter, FF);
+			} catch (CQLException e1) {
+				throw new GeomajasException(e, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
+			}
 		}
 	}
 

@@ -134,6 +134,18 @@ public class BeanLayerTest {
 	}
 
 	@Test
+	public void manyToOneEcqlIdFilter() throws Exception {
+		Filter filter = filterService.parseFilter("manyToOneAttr.\"id\"=1");
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue(it.next() instanceof FeatureBean);
+			t++;
+		}
+		Assert.assertEquals(1, t);
+	}
+
+	@Test
 	public void functionFilter() throws Exception {
 		Filter filter = filterService.parseFilter("geometryType(geometry)='Point'");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
