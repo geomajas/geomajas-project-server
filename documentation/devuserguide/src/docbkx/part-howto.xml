@@ -149,7 +149,7 @@
 
     <para>When the commands are included in a separate module, you should
     assure the sources are available as these are needed for GWT compilation.
-    This can easily be done using the Maven source plugin.</para>
+    This can easily be done using the Maven source plug-in.</para>
 
     <xi:include href="listing/MavenSourcePlugin.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -236,7 +236,8 @@
           <para>If the authorization class is an inner class, do make it
           static if possible (otherwise the object has an implicit reference
           to the containing object, assuring it is included in the serialized
-          state).</para>
+          state). The inner class should not be private as this cannot be
+          deserialized.</para>
         </listitem>
 
         <listitem>
