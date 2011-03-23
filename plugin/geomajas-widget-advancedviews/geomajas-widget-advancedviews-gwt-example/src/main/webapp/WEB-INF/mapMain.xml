@@ -84,7 +84,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="layers">
 			<list>
 				<ref bean="clientLayerOsm" />
+				<ref bean="clientLayerGoogle" />
+				<ref bean="clientLayerWms" />
 				<ref bean="clientLayerCountries" />
+				<ref bean="clientLayerLines" />
+				<ref bean="clientLayerPoints" />
 			</list>
 		</property>
 		<property name="toolbar">
@@ -118,10 +122,30 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="treeNode">
 					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
 						<property name="label" value="Layers" />
-						<property name="layers">
+						<property name="treeNodes">
 							<list>
-								<ref bean="clientLayerOsm" />
-								<ref bean="clientLayerCountries" />
+								<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+									<property name="label" value="Raster" />
+									<property name="layers">
+										<list>
+											<ref bean="clientLayerOsm" />
+											<ref bean="clientLayerGoogle" />
+											<ref bean="clientLayerWms" />
+										</list>
+									</property>
+									<property name="expanded" value="false" />
+								</bean>
+								<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+									<property name="label" value="Vector" />
+									<property name="layers">
+										<list>
+											<ref bean="clientLayerPoints" />
+											<ref bean="clientLayerLines" />
+											<ref bean="clientLayerCountries" />
+										</list>
+									</property>
+									<property name="expanded" value="true" />
+								</bean>
 							</list>
 						</property>
 						<property name="expanded" value="true" />
@@ -130,8 +154,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</bean>
 		</property>
 	</bean>
-
-
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo" />
 
@@ -155,6 +177,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+
 	<bean name="ZoomPrevious" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="ZoomNext" class="org.geomajas.configuration.client.ClientToolInfo" />
@@ -224,6 +247,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="ShowTableAction" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo" />
-
 
 </beans>

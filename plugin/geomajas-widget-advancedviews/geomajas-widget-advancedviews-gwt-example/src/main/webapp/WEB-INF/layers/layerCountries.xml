@@ -104,7 +104,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="#000033"/>
                     <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
+                    <property name="strokeWidth" value="5"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population > 50mil"/>
@@ -113,7 +113,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="#000033"/>
                     <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
+                    <property name="strokeWidth" value="3"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population > 10mil"/>
@@ -122,7 +122,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="#000033"/>
                     <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
+                    <property name="strokeWidth" value="2"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population &lt; 10mil"/>
@@ -130,7 +130,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="#000033"/>
                     <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
+                    <property name="strokeWidth" value="2"/>
+					<property name="dashArray" value="3,3"/>
                 </bean>
             </list>
 		</property>

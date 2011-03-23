@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.5</version>
+		<version>1.0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.widget</groupId>
@@ -97,7 +97,7 @@
 		<module>geomajas-widget-advancedviews</module>
 		<module>geomajas-widget-advancedviews-gwt</module>
 		<module>geomajas-widget-advancedviews-gwt-example</module>
-  </modules>
+	</modules>
 
 	<profiles>
 		<profile>
@@ -129,5 +129,6 @@
 
 	<properties>
 		<geomajas-widget-advancedviews-backend-version>1.8.0</geomajas-widget-advancedviews-backend-version>
+		<geomajas-widget-advancedviews-gwt-version>1.8.0</geomajas-widget-advancedviews-gwt-version>
 	</properties>	
 </project>

@@ -27,17 +27,14 @@
 			WEB-INF/applicationContext.xml
 			WEB-INF/mapMain.xml
 			WEB-INF/mapOverview.xml
-			WEB-INF/clientLayerOsm.xml
-			WEB-INF/clientLayerCountries.xml
-			WEB-INF/layerOsm.xml
-			WEB-INF/layerCountries.xml
-   
+			WEB-INF/layers/*.xml
+
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml
 			WEB-INF/example/hibernate/layerRoads.xml
 			WEB-INF/example/hibernate/layerOsm.xml
 		-->
-        
+
 		<!--
 			WEB-INF/example/geotools/applicationContext.xml
 			WEB-INF/example/geotools/layerRoads.xml

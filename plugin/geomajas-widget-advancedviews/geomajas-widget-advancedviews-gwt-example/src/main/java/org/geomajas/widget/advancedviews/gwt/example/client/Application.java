@@ -11,6 +11,23 @@
 
 package org.geomajas.widget.advancedviews.gwt.example.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.widget.LayerTree;
+import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.LoadingScreen;
+import org.geomajas.gwt.client.widget.LocaleSelect;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend;
+import org.geomajas.widget.advancedviews.gwt.example.client.i18n.ApplicationMessages;
+import org.geomajas.widget.advancedviews.gwt.example.client.pages.AbstractTab;
+import org.geomajas.widget.advancedviews.gwt.example.client.pages.FeatureListGridPage;
+import org.geomajas.widget.advancedviews.gwt.example.client.pages.SearchPage;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Side;
@@ -23,21 +40,6 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import org.geomajas.widget.advancedviews.gwt.example.client.i18n.ApplicationMessages;
-import org.geomajas.widget.advancedviews.gwt.example.client.pages.AbstractTab;
-import org.geomajas.widget.advancedviews.gwt.example.client.pages.FeatureListGridPage;
-import org.geomajas.widget.advancedviews.gwt.example.client.pages.SearchPage;
-import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
-import org.geomajas.gwt.client.widget.LoadingScreen;
-import org.geomajas.gwt.client.widget.LocaleSelect;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.OverviewMap;
-import org.geomajas.gwt.client.widget.Toolbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this
@@ -48,8 +50,8 @@ import java.util.List;
 public class Application implements EntryPoint {
 
 	private OverviewMap overviewMap;
-
-	private Legend legend;
+	
+	private LayerTreeWithLegend layerTree;
 
 	private TabSet tabSet = new TabSet();
 
@@ -126,31 +128,51 @@ public class Application implements EntryPoint {
 		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 		sectionStack.setCanReorderSections(true);
 		sectionStack.setCanResizeSections(false);
-		sectionStack.setSize("250px", "100%");
-
-		// Overview map layout:
-		SectionStackSection section1 = new SectionStackSection("Overview map");
-		section1.setExpanded(true);
-		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
-		section1.addItem(overviewMap);
-		sectionStack.addSection(section1);
+		sectionStack.setSize("300px", "100%");
 
 		// LayerTree layout:
-		SectionStackSection section2 = new SectionStackSection("Layer tree");
+		SectionStackSection section2 = new SectionStackSection("Layer tree with legend");
 		section2.setExpanded(true);
-		LayerTree layerTree = new LayerTree(map);
+		layerTree = new LayerTreeWithLegend(map);
 		section2.addItem(layerTree);
 		sectionStack.addSection(section2);
 
-		// Legend layout:
-		SectionStackSection section3 = new SectionStackSection("Legend");
-		section3.setExpanded(true);
-		legend = new Legend(map.getMapModel());
-		section3.addItem(legend);
-		sectionStack.addSection(section3);
-
 		// Putting the right side layouts together:
 		layout.addMember(sectionStack);
+
+		// ---------------------------------------------------------------------
+		// Create the right-side (overview map, layer-tree, legend):
+		// ---------------------------------------------------------------------
+		final SectionStack originalSectionStack = new SectionStack();
+		originalSectionStack.setShowEdges(true);
+		originalSectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+		originalSectionStack.setCanReorderSections(true);
+		originalSectionStack.setCanResizeSections(false);
+		originalSectionStack.setSize("250px", "100%");
+
+		// Overview map layout:
+		SectionStackSection osection1 = new SectionStackSection("Overview map");
+		osection1.setExpanded(true);
+		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
+		osection1.addItem(overviewMap);
+		originalSectionStack.addSection(osection1);
+
+		// LayerTree layout:
+		SectionStackSection osection2 = new SectionStackSection("Layer tree");
+		osection2.setExpanded(true);
+		LayerTree lt = new LayerTree(map);
+		osection2.addItem(lt);
+		originalSectionStack.addSection(osection2);
+
+		// Legend layout:
+		SectionStackSection osection3 = new SectionStackSection("Legend");
+		osection3.setExpanded(true);
+		Legend l = new Legend(map.getMapModel());
+		osection3.addItem(l);
+		originalSectionStack.addSection(osection3);
+
+		// Putting the right side layouts together:
+		layout.addMember(originalSectionStack);
 
 		// ---------------------------------------------------------------------
 		// Bottom left: Add tabs here:
@@ -181,9 +203,8 @@ public class Application implements EntryPoint {
 	}
 
 	private void initialize() {
-		legend.setHeight(200);
 		overviewMap.setHeight(200);
-
+		
 		for (AbstractTab tab : tabs) {
 			tab.initialize();
 		}

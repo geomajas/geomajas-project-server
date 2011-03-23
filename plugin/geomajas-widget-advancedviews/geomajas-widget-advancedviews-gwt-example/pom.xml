@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
-	~ ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
-	~ The program is available in open source according to the GNU Affero ~ General 
-	Public License. All contributions in this program are covered ~ by the Geomajas 
-	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
-	in the project root. -->
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -47,7 +52,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.36</version>
+				<version>1.11.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -70,6 +75,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
 		</dependency>
 		<dependency>
@@ -80,6 +89,32 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
+		
+		<!-- @extract-start AdvancedViewsDependency, advanced view plugin dependencies - including source -->
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-advancedviews</artifactId>
+			<version>${version}</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-advancedviews</artifactId>
+			<version>${version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-advancedviews-gwt</artifactId>
+			<version>${version}</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-advancedviews-gwt</artifactId>
+			<version>${version}</version>
+		</dependency>
+		<!-- @extract-end -->
+		
 
 		<!-- Hibernate layer can be removed if not needed, but the "Road" class 
 			needs the Hibernate stuff -->
