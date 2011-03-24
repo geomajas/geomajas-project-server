@@ -58,7 +58,7 @@ public class CacheKeyServiceTest {
 		pipelineContext.put(key4, new GeometryCollection(new Geometry[] {}, geometryFactory));
 
 		// a context
-		CacheContext cacheContext1 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key2, key4});
+		CacheContext cacheContext1 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key4});
 		Assert.assertEquals(key1, cacheContext1.get(key1));
 		Assert.assertNull(cacheContext1.get(key2));
 		Assert.assertNull(cacheContext1.get(key3));
@@ -67,7 +67,7 @@ public class CacheKeyServiceTest {
 		Assert.assertNotNull(cacheKey1);
 
 		// same context (in a different instance), should be same key
-		CacheContext cacheContext2 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key2, key4});
+		CacheContext cacheContext2 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key4});
 		Assert.assertEquals(key1, cacheContext2.get(key1));
 		Assert.assertNull(cacheContext2.get(key2));
 		Assert.assertNull(cacheContext2.get(key3));
@@ -77,7 +77,7 @@ public class CacheKeyServiceTest {
 		Assert.assertEquals(cacheKey1, cacheKey2);
 
 		// context with different keys and values, key should be different
-		CacheContext cacheContext3 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key2});
+		CacheContext cacheContext3 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1});
 		Assert.assertEquals(key1, cacheContext3.get(key1));
 		Assert.assertNull(cacheContext3.get(key2));
 		Assert.assertNull(cacheContext3.get(key3));
@@ -88,14 +88,20 @@ public class CacheKeyServiceTest {
 
 		// context with different keys but same values as context1, key should be different
 		// (same would be acceptable, but this is better)
-		CacheContext cacheContext4 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key4});
-		Assert.assertEquals(key1, cacheContext4.get(key1));
-		Assert.assertNull(cacheContext4.get(key2));
-		Assert.assertNull(cacheContext4.get(key3));
-		Assert.assertTrue(cacheContext1.get(key4) instanceof GeometryCollection);
-		String cacheKey4 = cacheKeyService.getCacheKey(cacheContext2);
-		Assert.assertNotNull(cacheKey4);
-		Assert.assertEquals(cacheKey1, cacheKey4);
+		//  TODO: is this test still relevant ?
+//		CacheContext cacheContext4 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key1, key4});
+//		Assert.assertEquals(key1, cacheContext4.get(key1));
+//		Assert.assertNull(cacheContext4.get(key2));
+//		Assert.assertNull(cacheContext4.get(key3));
+//		Assert.assertTrue(cacheContext1.get(key4) instanceof GeometryCollection);
+//		String cacheKey4 = cacheKeyService.getCacheKey(cacheContext2);
+//		Assert.assertNotNull(cacheKey4);
+//		Assert.assertEquals(cacheKey1, cacheKey4);
+		
+		// missing key, should return null
+		CacheContext cacheContext5 = cacheKeyService.getCacheContext(pipelineContext, new String[] {key2});
+		Assert.assertNull(cacheContext5);
+		
 	}
 
 	@Test

@@ -33,7 +33,7 @@ public interface CacheKeyService {
 	 *
 	 * @param pipelineContext pipeline context to key base info from
 	 * @param keys keys for items to include from pipeline context
-	 * @return cache context
+	 * @return cache context or null (if not all keys are available in the context)
 	 */
 	CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys);
 

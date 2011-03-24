@@ -11,11 +11,14 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.twmacinta.util.MD5;
-import com.vividsolutions.jts.geom.Geometry;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+import java.util.Random;
+
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.CacheableObject;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.jboss.serial.io.JBossObjectOutputStream;
 import org.opengis.filter.Filter;
@@ -24,11 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.Random;
+import com.twmacinta.util.MD5;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Implementation of {@link CacheKeyService}.
@@ -130,10 +130,11 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	public CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys) {
 		CacheContext res = new CacheContextImpl();
 		for (String key : keys) {
-			try {
-				res.put(key, pipelineContext.get(key));
-			} catch (GeomajasException ge) {
-				log.error(ge.getMessage(), ge);
+			if (!pipelineContext.containsKey(key)) {
+				res = null;
+				break;
+			} else {
+				res.put(key, pipelineContext.getOptional(key));
 			}
 		}
 		return res;

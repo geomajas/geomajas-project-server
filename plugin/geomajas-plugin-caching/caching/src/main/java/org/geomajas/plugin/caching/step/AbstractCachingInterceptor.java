@@ -81,6 +81,9 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 			}
 			if (null == cc) {
 				CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
+				if (cacheContext == null) {
+					return null;
+				}
 				addMoreContext(cacheContext); // add more data...
 
 				cacheKey = cacheKeyService.getCacheKey(cacheContext);
