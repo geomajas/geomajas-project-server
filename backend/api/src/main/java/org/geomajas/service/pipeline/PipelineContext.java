@@ -24,6 +24,15 @@ import org.geomajas.global.GeomajasException;
 public interface PipelineContext {
 
 	/**
+	 * Returns true if the context contains the specified key.
+	 *
+	 * @param key key which needs to be checked.
+	 * @return true if the context contains the key, false otherwise
+	 * @since 1.9.0
+	 */
+	boolean containsKey(String key);
+
+	/**
 	 * Get the value for a key.
 	 * <p/>
 	 * These values can be used to pass values between the pipeline steps.

@@ -53,4 +53,14 @@ public class PipelineContextTest {
 		Assert.assertEquals("SomeText", context.put("text", "someOtherText"));
 		Assert.assertEquals("someOtherText", context.get("text"));
 	}
+	
+	@Test
+	public void testcontainsKey() throws Exception {
+		PipelineContext context = new PipelineContextImpl();
+		context.put("text", "SomeText");
+		context.put("int", null);
+		Assert.assertTrue(context.containsKey("text"));
+		Assert.assertTrue(context.containsKey("int"));
+		Assert.assertFalse(context.containsKey("other"));
+	}
 }

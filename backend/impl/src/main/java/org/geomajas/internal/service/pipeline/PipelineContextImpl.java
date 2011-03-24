@@ -29,6 +29,10 @@ public class PipelineContextImpl implements PipelineContext {
 
 	private boolean finished;
 
+	public boolean containsKey(String key) {
+		return map.containsKey(key);
+	}
+	
 	public Object get(String key) throws GeomajasException {
 		Object res = getOptional(key);
 		if (null == res) {
@@ -71,4 +75,5 @@ public class PipelineContextImpl implements PipelineContext {
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}
+
 }
