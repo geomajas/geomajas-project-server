@@ -94,6 +94,17 @@ public interface FilterService {
 	 */
 	Filter createCompareFilter(String name, String comparator, Date value);
 
+	/**
+	 * Create a filter that checks that passes all features with the specified geometry type.
+	 * 
+	 * @param geomName
+	 *            name of geometry attribute
+	 * @param geometryType
+	 *            the geometry type ('Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon' or
+	 *            'MultiPolygon', see {@link org.geotools.filter.function.FilterFunction_geometryType})
+	 * @return filter
+	 * @since 1.9.0
+	 */
 	Filter createGeometryTypeFilter(String geomName, String geometryType);
 	
 	/**
