@@ -32,8 +32,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "applicationContext.xml",
-		"mapBeans.xml", "layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml", "layerBeans4.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml",
+		"mapBeans.xml", "layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
 public class LayersModelTest {
 
 	private static final String LAYER1 = "beans1Layer";

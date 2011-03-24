@@ -103,13 +103,5 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="viewScaleMax" value="100000" />
 		<property name="namedStyleInfo" ref="beans3StyleInfo" />
 	</bean>
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beans4Layer">
-		<property name="serverLayerId" value="beans4" />
-		<property name="label" value="Test beans 4" />
-		<property name="visible" value="true" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="100000" />
-		<property name="namedStyleInfo" ref="beans4StyleInfo" />
-	</bean>
 
 </beans>
