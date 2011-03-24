@@ -606,17 +606,18 @@
         <para>Each style object is itself composed of a number of feature
         styles (<code>FeatureStyleinfo</code>) and a label style
         (<code>LabelStyleInfo</code>). You can define formulas to determine
-        which feature style should be used. Formulas are defined as CQL
+        which feature style should be used. Formulas are defined as <ulink
+        url="http://docs.codehaus.org/display/GEOTOOLS/ECQL+Parser+Design">ECQL</ulink>
         strings that are parsed to <ulink
         url="http://geoapi.sourceforge.net/2.0/javadoc/org/opengis/filter/package-summary.html">OpenGIS
         Filter Objects</ulink> The first style whose formula passes will be
         applied for the feature. Note that when applying filters to a style an
         'other filter' should be defined to prevent null pointer exceptions
         for features that are not captured by the filter. The following table
-        describes a subset of the CQL filter types:</para>
+        describes a subset of the ECQL filter types:</para>
 
         <para><table>
-            <title>OGC CQL Filter Types</title>
+            <title>OGC ECQL Filter Types</title>
 
             <tgroup cols="3">
               <colspec align="left" colwidth="0.6*" />
