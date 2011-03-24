@@ -53,7 +53,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public final class FilterServiceImpl implements FilterService {
 
-	private final Logger log = LoggerFactory.getLogger(CommandDispatcherImpl.class);
+	private final Logger log = LoggerFactory.getLogger(FilterServiceImpl.class);
 
 	private static final FilterFactory2 FF;
 	static {
