@@ -94,6 +94,8 @@ public interface FilterService {
 	 */
 	Filter createCompareFilter(String name, String comparator, Date value);
 
+	Filter createGeometryTypeFilter(String geomName, String geometryType);
+	
 	/**
 	 * Creates a logic filter. This is a combination of filters.
 	 *
