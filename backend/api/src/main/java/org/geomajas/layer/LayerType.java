@@ -33,7 +33,7 @@ public enum LayerType implements Serializable {
 	MULTIPOINT(5),
 	MULTILINESTRING(6),
 	MULTIPOLYGON(7),
-	GEOMETRY_COLLECTION(8);
+	GEOMETRY(8);
 
 	private int code;
 

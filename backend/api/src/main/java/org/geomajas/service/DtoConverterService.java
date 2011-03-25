@@ -16,6 +16,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
@@ -175,4 +176,25 @@ public interface DtoConverterService {
 	 * @return Geomajas bbox
 	 */
 	Bbox toDto(Envelope envelope);
+	
+	/**
+	 * Convert a layer type to a geometry class.
+	 * 
+	 * @param layerType
+	 *            layer type
+	 * @return JTS class or null if raster type
+	 * @since 1.9.0
+	 */
+	Class<? extends com.vividsolutions.jts.geom.Geometry> toInternal(LayerType layerType);
+
+	/**
+	 * Convert a geometry class to a layer type.
+	 * 
+	 * @param geometryClass
+	 *            JTS geometry class
+	 * @return Geomajas layer type
+	 * @since 1.9.0
+	 */
+	LayerType toDto(Class<? extends com.vividsolutions.jts.geom.Geometry> geometryClass);
+
 }

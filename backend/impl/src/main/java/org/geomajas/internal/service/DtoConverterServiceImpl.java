@@ -31,6 +31,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
@@ -591,4 +592,57 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 	}
 
+	/**
+	 * Convert a layer type to a geometry class.
+	 * 
+	 * @param layerType
+	 *            layer type
+	 * @return JTS class
+	 */
+	public Class<? extends com.vividsolutions.jts.geom.Geometry> toInternal(LayerType layerType) {
+		switch (layerType) {
+			case GEOMETRY:
+				return com.vividsolutions.jts.geom.Geometry.class;
+			case LINESTRING:
+				return LineString.class;
+			case MULTILINESTRING:
+				return MultiLineString.class;
+			case POINT:
+				return Point.class;
+			case MULTIPOINT:
+				return MultiPoint.class;
+			case POLYGON:
+				return Polygon.class;
+			case MULTIPOLYGON:
+				return MultiPolygon.class;
+			case RASTER:
+				return null;
+		}
+		return null;
+	}
+
+	/**
+	 * Convert a geometry class to a layer type.
+	 * 
+	 * @param geometryClass
+	 *            JTS geometry class
+	 * @return Geomajas layer type
+	 */
+	public LayerType toDto(Class<? extends com.vividsolutions.jts.geom.Geometry> geometryClass) {
+		if (geometryClass == LineString.class) {
+			return LayerType.LINESTRING;
+		} else if (geometryClass == MultiLineString.class) {
+			return LayerType.MULTILINESTRING;
+		} else if (geometryClass == Point.class) {
+			return LayerType.POINT;
+		} else if (geometryClass == MultiPoint.class) {
+			return LayerType.MULTIPOINT;
+		} else if (geometryClass == Polygon.class) {
+			return LayerType.POLYGON;
+		} else if (geometryClass == MultiPolygon.class) {
+			return LayerType.MULTIPOLYGON;
+		} else {
+			return LayerType.GEOMETRY;
+		}
+	}
 }
