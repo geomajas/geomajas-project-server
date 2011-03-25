@@ -114,7 +114,7 @@ public class AnnotatedBeanSerializer extends AbstractSerializer {
 	}
 
 	/**
-	 * ???
+	 * Bean serializer state.
 	 */
 	public static class BeanSerializerState {
 
@@ -345,13 +345,13 @@ public class AnnotatedBeanSerializer extends AbstractSerializer {
 			e.printStackTrace();
 			throw new MarshallException("bean serializer internal error : " + e.getMessage());
 		}
-		Integer identity = new Integer(System.identityHashCode(o));
+		Integer identity = System.identityHashCode(o);
 		if (beanState.beanSet.contains(identity)) {
 			throw new MarshallException("circular reference");
 		}
 		beanState.beanSet.add(identity);
 
-		BeanData bd = null;
+		BeanData bd;
 		try {
 			bd = getBeanData(o.getClass());
 		} catch (IntrospectionException e) {

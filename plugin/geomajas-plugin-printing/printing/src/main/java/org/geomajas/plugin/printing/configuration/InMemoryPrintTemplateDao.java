@@ -34,7 +34,7 @@ public class InMemoryPrintTemplateDao implements PrintTemplateDao {
 	}
 
 	public void merge(PrintTemplate entity) throws IOException {
-		entity.setId(new Long(entity.getName().hashCode()));
+		entity.setId(Long.valueOf(entity.getName().hashCode()));
 		templates.put(entity.getName(), entity);
 	}
 

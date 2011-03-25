@@ -178,11 +178,10 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 			len += holes.length();
 		}
 		Geometry[] geometries = new Geometry[len];
-		for (int i = 0; i < len; i++) {
-			Geometry linearRing = new Geometry("LinearRing", geometry.getSrid(), geometry.getPrecision());
-			if (i == 0) {
-				geometries[0] = createLinearRing(linearRing, shell);
-			} else {
+		Geometry linearRing = new Geometry("LinearRing", geometry.getSrid(), geometry.getPrecision());
+		geometries[0] = createLinearRing(linearRing, shell);
+		if (holes != null) {
+			for (int i = 1; i < len; i++) {
 				geometries[i] = createLinearRing(linearRing, holes.getJSONObject(i - 1));
 			}
 		}
@@ -238,9 +237,7 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 			return coords;
 		}
 		Coordinate[] newCoords = new Coordinate[length + 1];
-		for (int i = 0; i < length; i++) {
-			newCoords[i] = coords[i];
-		}
+		System.arraycopy(coords, 0, newCoords, 0, length);
 		newCoords[length] = coords[0];
 		return newCoords;
 	}

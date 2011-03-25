@@ -82,14 +82,14 @@ public class BigNumberSerializer extends AbstractSerializer {
 				return new BigInteger((String) jso);
 			} else {
 				long l = ((Number) jso).longValue();
-				return new BigInteger(new Long(l).toString());
+				return new BigInteger(Long.toString(l));
 			}
 		} else if (clazz == BigDecimal.class) {
 			if (jso instanceof String) {
 				return new BigDecimal((String) jso);
 			} else {
 				double l = ((Number) jso).doubleValue();
-				return new BigDecimal(new Double(l).toString());
+				return new BigDecimal(Double.toString(l));
 			}
 		}
 		return null;

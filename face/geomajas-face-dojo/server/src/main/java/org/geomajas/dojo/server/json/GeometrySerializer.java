@@ -130,8 +130,6 @@ public class GeometrySerializer extends AbstractSerializer {
 	}
 
 	private Polygon createPolygon(GeometryFactory factory, JSONObject jso) throws UnmarshallException {
-		Polygon geometry = null;
-
 		JSONObject jsoShell = jso.getJSONObject("shell");
 		LinearRing shell = createLinearRing(factory, jsoShell);
 
@@ -141,8 +139,7 @@ public class GeometrySerializer extends AbstractSerializer {
 			JSONObject jsoHole = holeArray.getJSONObject(i);
 			holes[i] = createLinearRing(factory, jsoHole);
 		}
-		geometry = factory.createPolygon(shell, holes);
-		return geometry;
+		return factory.createPolygon(shell, holes);
 	}
 
 	private LinearRing createLinearRing(GeometryFactory factory, JSONObject jso) throws UnmarshallException {
@@ -156,8 +153,7 @@ public class GeometrySerializer extends AbstractSerializer {
 			coordinates[i] = new Coordinate(nextCoord.getDouble("x"), nextCoord.getDouble("y"));
 		}
 		coordinates = checkIfClosed(coordinates);
-		LinearRing ring = factory.createLinearRing(coordinates);
-		return ring;
+		return factory.createLinearRing(coordinates);
 	}
 
 	private LineString createLineString(GeometryFactory factory, JSONObject jso) throws UnmarshallException {
@@ -199,30 +195,26 @@ public class GeometrySerializer extends AbstractSerializer {
 
 	private MultiPolygon createMultiPolygon(GeometryFactory factory, JSONObject jso)
 			throws UnmarshallException {
-		MultiPolygon geometry = null;
 		JSONArray polyArray = jso.getJSONArray("polygons");
 		Polygon[] polygons = new Polygon[polyArray.length()];
 		for (int i = 0; i < polygons.length; i++) {
 			polygons[i] = createPolygon(factory, polyArray.getJSONObject(i));
 		}
-		geometry = factory.createMultiPolygon(polygons);
-		return geometry;
+		return factory.createMultiPolygon(polygons);
 	}
 
 	private Geometry createMultiLineString(GeometryFactory factory, JSONObject jso)
 			throws UnmarshallException {
-		MultiLineString geometry = null;
 		JSONArray lineArray = jso.getJSONArray("lineStrings");
 		LineString[] lineStrings = new LineString[lineArray.length()];
 		for (int i = 0; i < lineArray.length(); i++) {
 			lineStrings[i] = createLineString(factory, lineArray.getJSONObject(i));
 		}
-		geometry = factory.createMultiLineString(lineStrings);
-		return geometry;
+		return factory.createMultiLineString(lineStrings);
 	}
 
 	public Object marshall(SerializerState state, Object o) throws MarshallException {
-		JSONObject obj = new JSONObject();
+		JSONObject obj;
 		Geometry geometry = (Geometry) o;
 
 		if (geometry instanceof Point) {
@@ -352,9 +344,7 @@ public class GeometrySerializer extends AbstractSerializer {
 			return coords;
 		}
 		Coordinate[] newCoords = new Coordinate[length + 1];
-		for (int i = 0; i < length; i++) {
-			newCoords[i] = coords[i];
-		}
+		System.arraycopy(coords, 0, newCoords, 0, length);
 		newCoords[length] = coords[0];
 		return newCoords;
 	}

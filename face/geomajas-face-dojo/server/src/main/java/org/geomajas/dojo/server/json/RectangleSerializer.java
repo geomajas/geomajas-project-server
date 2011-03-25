@@ -17,8 +17,6 @@ import com.metaparadigm.jsonrpc.ObjectMatch;
 import com.metaparadigm.jsonrpc.SerializerState;
 import com.metaparadigm.jsonrpc.UnmarshallException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Rectangle lacks a default constructor, this class takes care of this and
@@ -27,8 +25,6 @@ import org.slf4j.LoggerFactory;
  * @author Jan De Moerloose
  */
 public class RectangleSerializer extends AbstractSerializer {
-
-	private final Logger log = LoggerFactory.getLogger(RectangleSerializer.class);
 
 	private static final long serialVersionUID = -1265127912351766084L;
 
@@ -46,22 +42,21 @@ public class RectangleSerializer extends AbstractSerializer {
 
 	public ObjectMatch tryUnmarshall(SerializerState state, Class clazz, Object o) throws UnmarshallException {
 		JSONObject jso = (JSONObject) o;
-		double x = jso.getDouble("x");
-		double y = jso.getDouble("y");
-		double width = jso.getDouble("width");
-		double height = jso.getDouble("height");
+		jso.getDouble("x");
+		jso.getDouble("y");
+		jso.getDouble("width");
+		jso.getDouble("height");
 		return ObjectMatch.OKAY;
 	}
 
 	public Object unmarshall(SerializerState state, Class clazz, Object o) throws UnmarshallException {
 		JSONObject jso = (JSONObject) o;
-		String javaClass = jso.getString("javaClass");
+		jso.getString("javaClass");
 		float x = (float) jso.getDouble("x");
 		float y = (float) jso.getDouble("y");
 		float width = (float) jso.getDouble("width");
 		float height = (float) jso.getDouble("height");
-		Rectangle rect = new Rectangle(x, y, x + width, y + height);
-		return rect;
+		return new Rectangle(x, y, x + width, y + height);
 	}
 
 	public Object marshall(SerializerState state, Object o) throws MarshallException {

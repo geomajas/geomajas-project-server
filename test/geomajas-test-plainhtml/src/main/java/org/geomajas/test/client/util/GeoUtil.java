@@ -48,8 +48,7 @@ public final class GeoUtil {
 	 */
 	public static Coordinate convertToGoogle(Coordinate coordinate) {
 		double x = (coordinate.getY() / 180.0) * MERCATOR_WIDTH;
-		double y = (coordinate.getX() / 180.0) * Math.PI;
-		y = MERCATOR_WIDTH / Math.PI * Math.log(Math.tan((90.0 + coordinate.getX()) * Math.PI / 360.0));
+		double y = MERCATOR_WIDTH / Math.PI * Math.log(Math.tan((90.0 + coordinate.getX()) * Math.PI / 360.0));
 		return new Coordinate(x, y);
 	}
 

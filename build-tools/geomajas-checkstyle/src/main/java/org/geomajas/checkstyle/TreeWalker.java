@@ -164,7 +164,6 @@ public final class TreeWalker extends AbstractFileSetCheck {
 	protected void processFiltered(File aFile, List<String> aLines) {
 		// check if already checked and passed the file
 		final String fileName = aFile.getPath();
-		final long timestamp = aFile.lastModified();
 
 		try {
 			final FileContents contents = new FileContents(fileName, aLines
