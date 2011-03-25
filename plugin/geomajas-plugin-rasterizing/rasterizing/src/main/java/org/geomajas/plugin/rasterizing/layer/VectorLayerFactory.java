@@ -13,10 +13,12 @@ package org.geomajas.plugin.rasterizing.layer;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -31,6 +33,7 @@ import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.service.ConfigurationService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -49,7 +52,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This factory creates a Geotools layer that is capable of writing vector layers.
@@ -75,6 +77,9 @@ public class VectorLayerFactory implements LayerFactory {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private DtoConverterService dtoConverterService;
+
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientVectorLayerInfo;
 	}
@@ -98,6 +103,12 @@ public class VectorLayerFactory implements LayerFactory {
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, extraInfo));
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
+		LinkedHashMap<String, FeatureStyleInfo> styles = new LinkedHashMap<String, FeatureStyleInfo>();
+		for (InternalFeature feature : features) {
+			FeatureStyleInfo info = feature.getStyleInfo();
+			styles.put(info.getName(), info);
+		}
+		featureLayer.getUserData().put(USERDATA_KEY_STYLES, styles);
 		return featureLayer;
 	}
 
@@ -175,7 +186,7 @@ public class VectorLayerFactory implements LayerFactory {
 			}
 		}
 		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
-		builder.add(geom.getName(), Geometry.class, mapCrs);
+		builder.add(geom.getName(), dtoConverterService.toInternal(info.getLayerType()), mapCrs);
 		builder.setDefaultGeometry(geom.getName());
 		return builder.buildFeatureType();
 	}

@@ -13,11 +13,14 @@ package org.geomajas.plugin.rasterizing.mvc;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.ConfigurationService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
@@ -41,7 +44,7 @@ public class RasterizingController {
 	private final Logger log = LoggerFactory.getLogger(RasterizingController.class);
 
 	@Autowired
-	private PipelineService<RasterizingContainer> pipelineService;
+	private PipelineService<GetTileContainer> pipelineService;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -49,18 +52,30 @@ public class RasterizingController {
 	@Autowired
 	private CacheManagerService cacheManagerService;
 
+	@Autowired
+	private TestRecorder recorder;
+
 	@RequestMapping(value = "/rasterizing/layer/{layerId}/{key}.png", method = RequestMethod.GET)
 	public void getImage(@PathVariable String layerId, @PathVariable String key, HttpServletResponse response)
 			throws Exception {
 
 		try {
-			PipelineContext context = pipelineService.createContext();
-			context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
-			context.put(PipelineCode.LAYER_ID_KEY, layerId);
-			context.put(PipelineCode.LAYER_KEY, configurationService.getVectorLayer(layerId));
-			RasterizingContainer rasterizeContainer = new RasterizingContainer();
-			pipelineService.execute(RasterizingPipelineCode.PIPELINE_RASTERIZING, layerId, context, rasterizeContainer);
-
+			VectorLayer layer = configurationService.getVectorLayer(layerId);
+			RasterizingContainer rasterizeContainer = cacheManagerService.get(layer, CacheCategory.RASTER, key,
+					RasterizingContainer.class);
+			// if not in cache, try the rebuild cache and invoke the pipeline directly
+			if (rasterizeContainer == null) {
+				GetTileContainer tileContainer = new GetTileContainer();
+				PipelineContext context = pipelineService.createContext();
+				context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
+				context.put(PipelineCode.LAYER_ID_KEY, layerId);
+				context.put(PipelineCode.LAYER_KEY, configurationService.getVectorLayer(layerId));
+				pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
+						tileContainer);
+				rasterizeContainer = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);
+			} else {
+				recorder.record(CacheCategory.RASTER, "Got item from cache");
+			}
 			// Prepare the response:
 			CacheFilter.configureNoCaching(response);
 			response.setContentType("image/png");

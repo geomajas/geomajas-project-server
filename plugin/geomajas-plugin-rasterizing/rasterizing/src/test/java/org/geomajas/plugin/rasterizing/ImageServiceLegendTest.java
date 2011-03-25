@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,6 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
 		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml",
 		"/org/geomajas/testdata/layerBluemarble.xml" })
+@DirtiesContext
 public class ImageServiceLegendTest {
 
 	@Autowired
@@ -44,14 +46,6 @@ public class ImageServiceLegendTest {
 	@Autowired
 	@Qualifier("layerBeansMultiLineStyleInfo")
 	private NamedStyleInfo layerBeansMultiLineStyleInfo;
-
-	@Autowired
-	@Qualifier("layerBeansMultiPolygon")
-	private VectorLayer layerBeansMultiPolygon;
-
-	@Autowired
-	@Qualifier("layerBeansMultiPolygonStyleInfo")
-	private NamedStyleInfo layerBeansMultiPolygonStyleInfo;
 
 	@Autowired
 	@Qualifier("layerBeansPoint")
@@ -122,6 +116,51 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		new LegendAssert(mapInfo).assertEqualImage("legend.png", writeImages, DELTA);
+	}
+
+	@Test
+	public void testLegendDynamic() throws Exception {
+		ClientMapInfo mapInfo = new ClientMapInfo();
+		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
+		// set the bounds so no features are visible
+		mapRasterizingInfo.setBounds(new Bbox(-180, -90, -170, -80));
+		mapInfo.setCrs("EPSG:4326");
+		mapRasterizingInfo.setScale(2);
+		mapRasterizingInfo.setTransparent(true);
+		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
+
+		ClientRasterLayerInfo cl1 = new ClientRasterLayerInfo();
+		cl1.setServerLayerId(layerBluemarble.getId());
+		cl1.setLabel("Blue Marble");
+		RasterLayerRasterizingInfo rr1 = new RasterLayerRasterizingInfo();
+		rr1.setCssStyle("opacity:0.5");
+		cl1.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rr1);
+		mapInfo.getLayers().add(cl1);
+
+		ClientVectorLayerInfo cl2 = new ClientVectorLayerInfo();
+		cl2.setServerLayerId(layerBeansPoint.getId());
+		cl2.setLayerInfo(layerBeansPoint.getLayerInfo());
+		VectorLayerRasterizingInfo lr2 = new VectorLayerRasterizingInfo();
+		lr2.setStyle(layerBeansPointStyleInfo);
+		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
+		mapInfo.getLayers().add(cl2);
+
+		ClientVectorLayerInfo cl3 = new ClientVectorLayerInfo();
+		cl3.setServerLayerId(layerBeansMultiLine.getId());
+		cl3.setLayerInfo(layerBeansMultiLine.getLayerInfo());
+		VectorLayerRasterizingInfo lr3 = new VectorLayerRasterizingInfo();
+		lr3.setStyle(layerBeansMultiLineStyleInfo);
+		cl3.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr3);
+		mapInfo.getLayers().add(cl3);
+
+		LegendRasterizingInfo legendRasterizingInfo = new LegendRasterizingInfo();
+		legendRasterizingInfo.setFont(new FontStyleInfo());
+		legendRasterizingInfo.getFont().applyDefaults();
+		legendRasterizingInfo.getFont().setSize(12);
+		legendRasterizingInfo.getFont().setFamily("courier");
+		legendRasterizingInfo.setTitle("legend");
+		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
+		new LegendAssert(mapInfo).assertEqualImage("legend_dynamic.png", writeImages, DELTA);
 	}
 
 	class LegendAssert extends TestPathBinaryStreamAssert {

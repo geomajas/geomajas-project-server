@@ -59,6 +59,7 @@ public class RasterLayerFactory implements LayerFactory {
 				areaOfInterest.getCoordinateReferenceSystem(), areaOfInterest, rasterScale);
 		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, layer.getLayerInfo().getTileWidth(), layer
 				.getLayerInfo().getTileHeight(), extraInfo.getCssStyle());
+		rasterLayer.setTitle(clientLayerInfo.getLabel());
 		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return rasterLayer;
 	}

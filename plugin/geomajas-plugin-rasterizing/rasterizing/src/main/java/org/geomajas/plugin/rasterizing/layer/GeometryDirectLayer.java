@@ -48,11 +48,14 @@ public class GeometryDirectLayer extends DirectLayer {
 	private StyledShapePainter painter = new StyledShapePainter();
 
 	private SLDStyleFactory styleFactory = new SLDStyleFactory();
+	
+	private Class<? extends Geometry> binding;
 
-	private final Logger log = LoggerFactory.getLogger(RasterDirectLayer.class);
+	private final Logger log = LoggerFactory.getLogger(GeometryDirectLayer.class);
 
-	public GeometryDirectLayer(Style style) {
+	public GeometryDirectLayer(Style style, Class<? extends Geometry> binding) {
 		this.style = style;
+		this.binding = binding;
 	}
 
 	@Override
@@ -90,6 +93,10 @@ public class GeometryDirectLayer extends DirectLayer {
 
 	public void setGeometries(List<Geometry> geometries) {
 		this.geometries = geometries;
+	}
+	
+	public Class<? extends Geometry> getBinding() {
+		return binding;
 	}
 
 	public Style getStyle() {

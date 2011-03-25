@@ -10,15 +10,21 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.geotools.styling.Style;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,12 +49,16 @@ public class GeometryLayerFactory implements LayerFactory {
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;
-		GeometryDirectLayer layer = new GeometryDirectLayer(styleFactoryService.createStyle(layerInfo.getLayerType(),
-				layerInfo.getStyle()));
+		LayerType layerType = layerInfo.getLayerType();
+		Style style = styleFactoryService.createStyle(layerType, layerInfo.getStyle());
+		GeometryDirectLayer layer = new GeometryDirectLayer(style, converterService.toInternal(layerType));
 		for (Geometry geom : layerInfo.getGeometries()) {
 			layer.getGeometries().add(converterService.toInternal(geom));
 		}
 		layer.getUserData().put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
+		Map<String, FeatureStyleInfo> styles = new HashMap<String, FeatureStyleInfo>();
+		styles.put(layerInfo.getStyle().getName(), layerInfo.getStyle());
+		layer.getUserData().put(USERDATA_KEY_STYLES, styles);
 		return layer;
 	}
 

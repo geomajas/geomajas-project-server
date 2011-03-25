@@ -47,41 +47,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<!-- define pipelines for actual rasterizing -->
-
-	<bean name="PIPELINE_RASTERIZING" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="PIPELINE_RASTERIZING"/>
-		<property name="pipeline">
-			<list>
-				<bean class="org.geomajas.service.pipeline.PipelineHook">
-					<property name="id" value="preRasterize" />
-				</bean>
-				<bean class="org.geomajas.plugin.rasterizing.step.RasterizeStep">
-					<property name="id" value="RasterizeStep" />
-				</bean>
-				<bean class="org.geomajas.service.pipeline.PipelineHook">
-					<property name="id" value="postRasterize" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean name="PIPELINE_RASTERIZING_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_RASTERIZING" />
-		<property name="interceptors">
-			<list>
-				<bean
-					class="org.geomajas.plugin.rasterizing.step.RasterizeCachingInterceptor">
-					<property name="id" value="RasterizeCache" />
-					<property name="stepId" value="RasterizeStep" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean name="PIPELINE_RASTERIZING_GET_IMAGE" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_IMAGE"/></property>
+	<bean name="PIPELINE_RASTERIZING_GET_MAP_IMAGE" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -101,6 +68,41 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="postRenderMap" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preWriteImage" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.step.WriteImageStep">
+					<property name="id" value="WriteImageStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postWriteImage" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="PIPELINE_RASTERIZING_GET_LEGEND_IMAGE" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_LEGEND_IMAGE"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preAddLayers" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.step.AddLayersStep">
+					<property name="id" value="AddLayersStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postAddLayers" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preRenderLegend" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.step.RenderLegendStep">
+					<property name="id" value="RenderLegendStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postRenderLegend" />
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preWriteImage" />
@@ -154,8 +156,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean
 					class="org.geomajas.plugin.rasterizing.step.RebuildCacheCachingInterceptor">
 					<property name="id" value="RebuildCache" />
-					<property name="fromStepId" value="GetTileFilterStep" />
-					<property name="toStepId" value="GetTileFillStep" />
+					<property name="stepId" value="GetTileFilterStep" />
 				</bean>
 			</list>
 		</property>

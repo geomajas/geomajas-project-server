@@ -31,7 +31,20 @@ import org.geotools.map.MapContext;
 @ExpectAlternatives
 public interface LayerFactory {
 
-	String USERDATA_KEY_SHOWING = "geomajas.rasterizing.showing";
+	/**
+	 * user data to record if layer is showing (up to caller to decide what to do with this info).
+	 */
+	String USERDATA_KEY_SHOWING = "geomajas.rasterizing.showing"; // boolean
+
+	/**
+	 * user data for the layer styles (DTOs, should eventually become unnecessary as all info is in SLD).
+	 */
+	String USERDATA_KEY_STYLES = "geomajas.rasterizing.styles"; // Map<String,FeatureStyleInfo>
+
+	/**
+	 * user data to record if layer is showing (up to caller to decide what to do with this info).
+	 */
+	String USERDATA_RASTERIZING_INFO = "geomajas.rasterizing.info"; // MapRasterizingInfo
 
 	/**
 	 * Returns true if this factory is capable of creating layer instances for the specified metadata.

@@ -10,17 +10,19 @@
  */
 package org.geomajas.plugin.rasterizing.legend;
 
+import java.util.LinkedHashMap;
+
 import javax.swing.JComponent;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.command.dto.RasterizingConstants;
-import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
+import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContext;
 
 /**
  * Builder class for legend.
@@ -30,23 +32,26 @@ import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
  */
 public class LegendBuilder {
 
-	public JComponent buildComponentTree(ClientMapInfo clientMapInfo) {
-		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) clientMapInfo
-				.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
+	@SuppressWarnings("unchecked")
+	public JComponent buildComponentTree(MapContext mapContext) {
+		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
+				LayerFactory.USERDATA_RASTERIZING_INFO);
 		LegendRasterizingInfo legendRasterizingInfo = mapRasterizingInfo.getLegendRasterizingInfo();
 		LegendPanel legendPanel = new LegendPanel(legendRasterizingInfo.getTitle());
-		for (ClientLayerInfo layer : clientMapInfo.getLayers()) {
-			if (layer instanceof ClientVectorLayerInfo) {
-				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) layer;
-				VectorLayerRasterizingInfo vectorRasterizingInfo = (VectorLayerRasterizingInfo) vectorLayer
-						.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
-				for (FeatureStyleInfo style : vectorRasterizingInfo.getStyle().getFeatureStyles()) {
-					legendPanel.addLayer(vectorLayer, style);
+		for (Layer layer : mapContext.layers()) {
+			if (layer instanceof RasterDirectLayer) {
+				RasterDirectLayer rasterLayer = (RasterDirectLayer) layer;
+				legendPanel.addLayer(rasterLayer);
+			} else if (layer instanceof FeatureLayer) {
+				FeatureLayer featureLayer = (FeatureLayer) layer;
+				LinkedHashMap<String, FeatureStyleInfo> styles = (LinkedHashMap<String, FeatureStyleInfo>) layer
+						.getUserData().get(LayerFactory.USERDATA_KEY_STYLES);
+				for (FeatureStyleInfo style : styles.values()) {
+					legendPanel.addLayer(featureLayer, style);
 				}
-			} else if (layer instanceof ClientRasterLayerInfo) {
-				legendPanel.addLayer((ClientRasterLayerInfo) layer);
-			} else {
-				legendPanel.addLayer(layer);
+			} else if (layer instanceof GeometryDirectLayer) {
+				GeometryDirectLayer geometryLayer = (GeometryDirectLayer) layer;
+				legendPanel.addLayer(geometryLayer);
 			}
 		}
 		legendPanel.pack();

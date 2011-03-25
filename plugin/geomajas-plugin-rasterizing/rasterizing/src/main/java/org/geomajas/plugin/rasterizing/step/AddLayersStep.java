@@ -10,12 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.step;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -55,10 +50,9 @@ public class AddLayersStep extends AbstractRasterizingStep {
 	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		ClientMapInfo clientMapInfo = context.get(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, ClientMapInfo.class);
 		MapContext mapContext = context.get(RasterizingPipelineCode.MAP_CONTEXT_KEY, MapContext.class);
-		// prepare the context
-		RenderingHints renderingHints = context.get(RasterizingPipelineCode.RENDERING_HINTS, RenderingHints.class);
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) clientMapInfo
 				.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+		mapContext.getUserData().put(LayerFactory.USERDATA_RASTERIZING_INFO, mapRasterizingInfo);
 		Crs mapCrs = geoService.getCrs2(clientMapInfo.getCrs());
 		ReferencedEnvelope mapArea = new ReferencedEnvelope(
 				converterService.toInternal(mapRasterizingInfo.getBounds()), mapCrs);
@@ -84,41 +78,7 @@ public class AddLayersStep extends AbstractRasterizingStep {
 				mapContext.addLayer(layer);
 			}
 		}
-		BufferedImage image = createImage(paintArea.width, paintArea.height, mapRasterizingInfo.isTransparent());
-		Graphics2D graphics = getGraphics(image, mapRasterizingInfo.isTransparent(), renderingHints);
-		context.put(RasterizingPipelineCode.GRAPHICS2D, graphics);
-		context.put(RasterizingPipelineCode.BUFFERED_IMAGE, image);
 	}
 
-	private BufferedImage createImage(int width, int height, boolean transparent) {
-		if (transparent) {
-			return new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-		} else {
-			// don't use alpha channel if the image is not transparent
-			return new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-		}
-	}
-
-	private Graphics2D getGraphics(BufferedImage image, boolean transparent, RenderingHints renderingHints) {
-		Graphics2D graphics = image.createGraphics();
-		Color bgColor = Color.WHITE;
-		if (transparent) {
-			int composite = AlphaComposite.DST;
-			graphics.setComposite(AlphaComposite.getInstance(composite));
-			Color c = new Color(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), 0);
-			graphics.setBackground(bgColor);
-			graphics.setColor(c);
-			graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-			composite = AlphaComposite.DST_OVER;
-			graphics.setComposite(AlphaComposite.getInstance(composite));
-		} else {
-			graphics.setColor(bgColor);
-			graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-		}
-		if (renderingHints != null) {
-			graphics.setRenderingHints(renderingHints);
-		}
-		return graphics;
-	}
 
 }

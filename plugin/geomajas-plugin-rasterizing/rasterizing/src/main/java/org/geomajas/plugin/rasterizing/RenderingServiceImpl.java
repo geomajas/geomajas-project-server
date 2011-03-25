@@ -11,12 +11,19 @@
 package org.geomajas.plugin.rasterizing;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JComponent;
+
 import org.geomajas.plugin.rasterizing.api.RenderingService;
+import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
+import org.geotools.factory.Hints;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
@@ -32,7 +39,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class RenderingServiceImpl implements RenderingService {
 
-	public void paint(MapContext context, Graphics2D graphics) {
+	public RenderedImage paintLegend(MapContext context) {
+		LegendBuilder renderer = new LegendBuilder();
+		JComponent c = renderer.buildComponentTree(context);
+		BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D graphics = image.createGraphics();
+		RenderingHints renderingHints = new Hints();
+		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHints(renderingHints);
+		c.print(graphics);
+		return image;
+	}
+
+	public void paintMap(MapContext context, Graphics2D graphics) {
 		List<RenderRequest> renderStack = new ArrayList<RenderRequest>();
 		VectorRenderRequest vectorRequest = null;
 		for (Layer layer : context.layers()) {
@@ -131,5 +150,6 @@ public class RenderingServiceImpl implements RenderingService {
 		}
 
 	}
+
 
 }

@@ -28,9 +28,14 @@ public interface RasterizingPipelineCode {
 	String PIPELINE_RASTERIZING = "rasterizing.rasterize";
 
 	/**
-	 * Pipeline for building the raster image, invoked by the controller.
+	 * Pipeline for building the map image, invoked by the controller.
 	 */
-	String PIPELINE_RASTERIZING_GET_IMAGE = "rasterizing.getImage";
+	String PIPELINE_RASTERIZING_GET_MAP_IMAGE = "rasterizing.getMapImage";
+
+	/**
+	 * Pipeline for building the legend image, invoked by the controller.
+	 */
+	String PIPELINE_RASTERIZING_GET_LEGEND_IMAGE = "rasterizing.getLegendImage";
 
 	/**
 	 * Pipeline which actually builds the raster image while getting the vector tile.
@@ -53,14 +58,9 @@ public interface RasterizingPipelineCode {
 	String CONTAINER_KEY = "rasterizing.container"; // rasterizingContainer
 
 	/**
-	 * Pipeline context key for storing the buffered image.
+	 * Pipeline context key for storing the rendered image.
 	 */
-	String BUFFERED_IMAGE = "rasterizing.bufferedImage"; // BufferedImage
-
-	/**
-	 * Pipeline context key for storing the graphics context.
-	 */
-	String GRAPHICS2D = "rasterizing.graphics2D"; // Graphics2D
+	String RENDERED_IMAGE = "rasterizing.renderedImage"; // RenderedImage
 
 	/**
 	 * Pipeline context key for storing the graphics context.

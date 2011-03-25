@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.step;
 
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ import org.geomajas.service.pipeline.PipelineContext;
 public class WriteImageStep extends AbstractRasterizingStep {
 
 	public void execute(PipelineContext context, RasterizingContainer response) throws GeomajasException {
-		BufferedImage image = context.get(RasterizingPipelineCode.BUFFERED_IMAGE, BufferedImage.class);
+		RenderedImage image = context.get(RasterizingPipelineCode.RENDERED_IMAGE, RenderedImage.class);
 		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(10 * 1024);
 		try {
 			ImageIO.write(image, "PNG", imageStream);

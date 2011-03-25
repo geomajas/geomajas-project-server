@@ -32,7 +32,7 @@
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
    
-			classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml
+			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml
 			WEB-INF/example/hibernate/layerRoads.xml

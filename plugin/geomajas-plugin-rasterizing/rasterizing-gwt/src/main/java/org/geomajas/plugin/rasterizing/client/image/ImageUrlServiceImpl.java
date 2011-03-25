@@ -94,7 +94,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 							selectedFeatures.toArray(new String[selectedFeatures.size()]));
 					FeatureStyleInfo selectStyle = null;
 					switch (layerInfo.getLayerType()) {
-						case GEOMETRY_COLLECTION:
+						case GEOMETRY:
 							break;
 						case LINESTRING:
 						case MULTILINESTRING:

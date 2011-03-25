@@ -29,10 +29,14 @@ import javax.swing.JPanel;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.layer.LayerType;
+import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
+import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
+import org.geotools.map.FeatureLayer;
+import org.opengis.feature.type.GeometryType;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Lineal;
+import com.vividsolutions.jts.geom.Puntal;
 
 /**
  * Swing panel for a simple legend.
@@ -51,12 +55,12 @@ public class LegendPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder(title));
 	}
 
-	public void addLayer(ClientLayerInfo layer) {
+	public void addLayer(GeometryDirectLayer layer) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		FeatureStyleInfo defaultStyle = new FeatureStyleInfo();
 		defaultStyle.applyDefaults();
-		VectorStyleIcon icon = new VectorStyleIcon(LayerType.POLYGON, defaultStyle, 15, 15);
+		VectorStyleIcon icon = new VectorStyleIcon(layer.getBinding(), defaultStyle, 15, 15);
 		icon.setBounds(5, 5, 15, 15);
 		JPanel iconPanel = new JPanel();
 		iconPanel.setLayout(null);
@@ -66,28 +70,31 @@ public class LegendPanel extends JPanel {
 		iconPanel.add(icon, BorderLayout.CENTER);
 		panel.add(iconPanel);
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		JLabel itemText = new JLabel(layer.getLabel());
+		JLabel itemText = new JLabel(layer.getTitle());
 		panel.add(itemText);
 		panel.setAlignmentX(LEFT_ALIGNMENT);
 		add(panel);
 	}
 
-	public void addLayer(ClientRasterLayerInfo layer) {
+	public void addLayer(RasterDirectLayer layer) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		ImageIcon icon = createImageIcon("/org/geomajas/plugin/rasterizing/layer-raster.png");
 		panel.add(new JLabel(icon));
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));
-		JLabel itemText = new JLabel(layer.getLabel());
+		JLabel itemText = new JLabel(layer.getTitle());
 		panel.add(itemText);
 		panel.setAlignmentX(LEFT_ALIGNMENT);
 		add(panel);
 	}
 
-	public void addLayer(ClientVectorLayerInfo vectorLayer, FeatureStyleInfo style) {
+	@SuppressWarnings("unchecked")
+	public void addLayer(FeatureLayer layer, FeatureStyleInfo style) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		VectorStyleIcon icon = new VectorStyleIcon(vectorLayer.getLayerType(), style, 15, 15);
+		GeometryType geometryType = layer.getFeatureSource().getSchema().getGeometryDescriptor().getType();
+		VectorStyleIcon icon = new VectorStyleIcon((Class<? extends Geometry>) geometryType.getBinding(), 
+				style, 15, 15);
 		icon.setBounds(5, 5, 15, 15);
 		JPanel iconPanel = new JPanel();
 		iconPanel.setLayout(null);
@@ -134,7 +141,7 @@ public class LegendPanel extends JPanel {
 	 */
 	public static class VectorStyleIcon extends JComponent {
 
-		private LayerType layerType;
+		private Class<? extends Geometry> geomClass;
 
 		private int width;
 
@@ -142,8 +149,8 @@ public class LegendPanel extends JPanel {
 
 		private FeatureStyleInfo styleInfo;
 
-		public VectorStyleIcon(LayerType layerType, FeatureStyleInfo styleInfo, int width, int height) {
-			this.layerType = layerType;
+		public VectorStyleIcon(Class<? extends Geometry> geomClass, FeatureStyleInfo styleInfo, int width, int height) {
+			this.geomClass = geomClass;
 			this.styleInfo = styleInfo;
 			this.width = width;
 			this.height = height;
@@ -161,37 +168,30 @@ public class LegendPanel extends JPanel {
 				dashStroke = getDashStroke(styleInfo.getDashArray());
 			}
 			// draw symbol
-			switch (layerType) {
-				case POINT:
-				case MULTIPOINT:
-					SymbolInfo symbol = styleInfo.getSymbol();
-					if (symbol.getRect() != null) {
-						graphics.setColor(fillColor);
-						graphics.fillRect(0, 0, width - 1, height - 1);
-						graphics.setColor(strokeColor);
-						graphics.drawRect(0, 0, width - 1, height - 1);
-					} else {
-						graphics.setColor(fillColor);
-						graphics.fillOval(0, 0, width - 1, height - 1);
-						graphics.setColor(strokeColor);
-						graphics.drawOval(0, 0, width - 1, height - 1);
-					}
-					break;
-				case LINESTRING:
-				case MULTILINESTRING:
-					graphics.setColor(strokeColor);
-					if (dashStroke != null) {
-						graphics.setStroke(dashStroke);
-					}
-					drawRelativePath(graphics, new float[] { 0f, 0.75f, 0.25f, 1f },
-							new float[] { 0f, 0.25f, 0.75f, 1f });
-					break;
-				case POLYGON:
-				case MULTIPOLYGON:
+			if (Puntal.class.isAssignableFrom(geomClass)) {
+				SymbolInfo symbol = styleInfo.getSymbol();
+				if (symbol.getRect() != null) {
 					graphics.setColor(fillColor);
 					graphics.fillRect(0, 0, width - 1, height - 1);
 					graphics.setColor(strokeColor);
 					graphics.drawRect(0, 0, width - 1, height - 1);
+				} else {
+					graphics.setColor(fillColor);
+					graphics.fillOval(0, 0, width - 1, height - 1);
+					graphics.setColor(strokeColor);
+					graphics.drawOval(0, 0, width - 1, height - 1);
+				}
+			} else if (Lineal.class.isAssignableFrom(geomClass)) {
+				graphics.setColor(strokeColor);
+				if (dashStroke != null) {
+					graphics.setStroke(dashStroke);
+				}
+				drawRelativePath(graphics, new float[] { 0f, 0.75f, 0.25f, 1f }, new float[] { 0f, 0.25f, 0.75f, 1f });
+			} else {
+				graphics.setColor(fillColor);
+				graphics.fillRect(0, 0, width - 1, height - 1);
+				graphics.setColor(strokeColor);
+				graphics.drawRect(0, 0, width - 1, height - 1);
 			}
 		}
 

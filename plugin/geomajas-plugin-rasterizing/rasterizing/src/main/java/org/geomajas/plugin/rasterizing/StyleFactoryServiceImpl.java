@@ -131,7 +131,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		String geomName = featureInfo.getGeometryType().getName();
 		List<Rule> rules = new ArrayList<Rule>();
 		// for mixed geometries we add a filter to distinguish between geometry types
-		if (layerType == LayerType.GEOMETRY_COLLECTION) {
+		if (layerType == LayerType.GEOMETRY) {
 			// add the configured filter to a filter that selects point features only
 			Rule pointRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POINT, featureStyle));
 			Filter pointFilter = filterService.createGeometryTypeFilter(geomName, "Point");
