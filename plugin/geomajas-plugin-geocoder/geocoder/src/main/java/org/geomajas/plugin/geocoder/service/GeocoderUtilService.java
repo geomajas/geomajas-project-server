@@ -49,7 +49,7 @@ public class GeocoderUtilService {
 	 */
 	public Envelope transform(Envelope source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException {
-		if (sourceCrs == targetCrs) {
+		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return source;
 		}

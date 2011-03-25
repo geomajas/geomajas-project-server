@@ -294,7 +294,7 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Geometry transform(Geometry geometry, Crs sourceCrs, Crs targetCrs)
 			throws GeomajasException {
-		if (sourceCrs == targetCrs) {
+		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return geometry;
 		}
@@ -322,7 +322,7 @@ public final class GeoServiceImpl implements GeoService {
 	public Geometry transform(Geometry geometry, CoordinateReferenceSystem sourceCrs,
 			CoordinateReferenceSystem targetCrs)
 			throws GeomajasException {
-		if (sourceCrs == targetCrs) {
+		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return geometry;
 		}
@@ -377,7 +377,7 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Bbox transform(Bbox bbox, Crs sourceCrs, Crs targetCrs)
 			throws GeomajasException {
-		if (sourceCrs == targetCrs) {
+		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return bbox;
 		}
@@ -433,7 +433,7 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Envelope transform(Envelope source, Crs sourceCrs, Crs targetCrs)
 			throws GeomajasException {
-		if (sourceCrs == targetCrs) {
+		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return source;
 		}
