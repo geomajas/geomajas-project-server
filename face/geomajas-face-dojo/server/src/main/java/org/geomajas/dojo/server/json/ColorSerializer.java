@@ -65,7 +65,7 @@ public class ColorSerializer extends AbstractSerializer {
 	}
 
 	public Object marshall(SerializerState state, Object o) throws MarshallException {
-		if (o instanceof Font) {
+		if (o instanceof Color) {
 			return marshal((Color) o);
 		}
 		return null;
