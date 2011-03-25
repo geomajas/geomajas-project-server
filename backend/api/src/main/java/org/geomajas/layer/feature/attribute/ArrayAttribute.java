@@ -107,9 +107,7 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 		ArrayAttribute clone = new ArrayAttribute();
 		if (value != null) {
 			Object[] clones = new Object[value.length];
-			for (int i = 0; i < value.length; i++) {
-				clones[i] = value[i];
-			}
+			System.arraycopy(value, 0, clones, 0, value.length);
 			clone.setValue(clones);
 		}
 		clone.setEditable(isEditable());

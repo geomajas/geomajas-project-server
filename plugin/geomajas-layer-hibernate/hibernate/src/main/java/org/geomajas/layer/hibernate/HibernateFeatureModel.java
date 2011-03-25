@@ -241,7 +241,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 			// If a number is given, get n'th element out of collection
 			if (list.length > 1) {
-				int n = new Integer(list[1]);
+				int n = Integer.valueOf(list[1]);
 
 				try {
 					Iterator it = ((Collection<Object>) tempFeature).iterator();
@@ -278,7 +278,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 		// Split up properties: the first and the rest.
 		String[] properties = name.split(SEPARATOR_REGEXP, 2);
-		Object tempFeature = feature;
+		Object tempFeature;
 
 		// If the first property is the identifier:
 		if (properties[0].equals(getFeatureInfo().getIdentifier().getName())) {

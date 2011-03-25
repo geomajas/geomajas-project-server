@@ -121,14 +121,14 @@ public class JsonObjectWriter
 			CharArrayWriter caw = new CharArrayWriter();
 			e.printStackTrace(new PrintWriter(caw));
 			JSONObject err = new JSONObject();
-			err.put("code", new Integer(result.getErrorCode()));
+			err.put("code", Integer.valueOf(result.getErrorCode()));
 			err.put("msg", e.getMessage());
 			err.put("trace", caw.toString());
 			o.put("id", result.getId());
 			o.put("error", err);
 		} else {
 			JSONObject err = new JSONObject();
-			err.put("code", new Integer(result.getErrorCode()));
+			err.put("code", Integer.valueOf(result.getErrorCode()));
 			err.put("msg", result.getResult());
 			o.put("id", result.getId());
 			o.put("error", err);

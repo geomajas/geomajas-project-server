@@ -24,10 +24,6 @@ import org.opengis.filter.expression.Expression;
 @Deprecated
 public class ExtendedFilterFactory extends FilterFactoryImpl {
 
-//	public PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase) {
-//		return new ExtendedIsEqualsToImpl(this, expr1, expr2, matchCase);
-//	}
-
 	public PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar,
 			String escape) {
 

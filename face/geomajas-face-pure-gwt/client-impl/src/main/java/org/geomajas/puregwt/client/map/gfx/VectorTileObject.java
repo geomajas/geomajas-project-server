@@ -154,7 +154,7 @@ public class VectorTileObject extends VectorObject implements TileView {
 	 * @return Returns a newly created DOM element in the given name-space.
 	 */
 	public static Element createElementNS(String ns, String tag) {
-		if (ns == NS_HTML) {
+		if (ns.equals(NS_HTML)) {
 			return DOM.createElement(tag);
 		} else {
 			if (Geomajas.isIE()) {
