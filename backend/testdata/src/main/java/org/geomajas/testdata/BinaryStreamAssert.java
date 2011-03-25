@@ -88,6 +88,8 @@ public abstract class BinaryStreamAssert {
 			InputStream is = getExpected(resourceName, false).getInputStream();
 			BufferedImage origImg = ImageIO.read(new ByteArrayInputStream(getActualBytes()));
 			BufferedImage expimg = ImageIO.read(is);
+			Assert.assertEquals("Image has wrong width", expimg.getWidth(), origImg.getWidth());
+			Assert.assertEquals("Image has wrong height", expimg.getHeight(), origImg.getHeight());
 			double sum = 0;
 			double diff = 0;
 			for (int x = 0; x < expimg.getWidth(); x++) {
