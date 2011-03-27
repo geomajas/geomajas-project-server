@@ -19,10 +19,16 @@ import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
+ * <p>
  * Central view port definition that determines and influences that position of the map. It allows for zooming in and
  * out, translation, etc.<br/>
+ * Note that all coordinates and bounding boxes must always be expressed in world space. See {@link RenderSpace} for
+ * more information.
+ * </p>
+ * <p>
  * Next to simply storing and changing the map location, implementation of this interface will also send out several
  * types of events that clearly define the changes in the view on the map.
+ * </p>
  * 
  * @author Pieter De Graef
  * @author Oliver May
@@ -32,79 +38,19 @@ import org.geomajas.puregwt.client.spatial.Matrix;
 @Api(allMethods = true)
 public interface ViewPort {
 
+	// -------------------------------------------------------------------------
+	// Configuration stuff:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Initialization method. Only when this method has been executed can the <code>ViewPort</code> be expected to
+	 * function properly. This initialization should therefore be a part of the whole {@link MapPresenter}
+	 * initialization procedure.
+	 * 
+	 * @param mapInfo
+	 *            The map information meta-data from which to initialize the <code>ViewPort</code>.
+	 */
 	void initialize(ClientMapInfo mapInfo);
-
-	// -------------------------------------------------------------------------
-	// Methods that retrieve what is visible on the map:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Return the current scale on the map.
-	 */
-	double getScale();
-
-	/**
-	 * Return the currently visible bounds on the map. These bounds are expressed in the CRS of the map.
-	 * 
-	 * @return Returns the maps bounding box.
-	 */
-	Bbox getBounds();
-
-	// -------------------------------------------------------------------------
-	// Methods that manipulate what is visible on the map:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Re-centers the map to a new position.
-	 * 
-	 * @param coordinate
-	 *            the new center position
-	 */
-	void applyPosition(Coordinate coordinate);
-
-	/**
-	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
-	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
-	 * this.
-	 * 
-	 * @param scale
-	 *            The preferred new scale.
-	 * @param option
-	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
-	 */
-	void applyScale(double scale, ZoomOption option);
-
-	/**
-	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
-	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
-	 * this.
-	 * 
-	 * @param scale
-	 *            The preferred new scale.
-	 * @param option
-	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
-	 * @param rescalePoint
-	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
-	 *            double clicking on the map without it moving away.
-	 */
-	void applyScale(double scale, ZoomOption option, Coordinate rescalePoint);
-
-	/**
-	 * <p>
-	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
-	 * bounding box may differ from that of the map, the fit is "as good as possible".
-	 * </p>
-	 * <p>
-	 * Also this function will almost certainly change the scale on the map, so if there have been resolutions defined,
-	 * it will snap to them.
-	 * </p>
-	 * 
-	 * @param bounds
-	 *            A bounding box in world coordinates that determines the view from now on.
-	 * @param option
-	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
-	 */
-	void applyBounds(Bbox bounds, ZoomOption option);
 
 	/**
 	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
@@ -115,52 +61,15 @@ public interface ViewPort {
 	Bbox getMaximumBounds();
 
 	/**
-	 * Move the view on the map. This happens by translating the camera in turn.
+	 * Set the map's width and height in pixels. <code>ViewPort</code> implementations should pass these values to the
+	 * {@link ZoomStrategy} they employ.
 	 * 
-	 * @param x
-	 *            Translation factor along the X-axis in world space.
-	 * @param y
-	 *            Translation factor along the Y-axis in world space.
+	 * @param mapWidth
+	 *            The current map width in pixels.
+	 * @param mapHeight
+	 *            The current map height in pixels.
 	 */
-	void translate(double x, double y);
-
-	/**
-	 * Adjust the current scale on the map by a new factor.
-	 * 
-	 * @param delta
-	 *            Adjust the scale by factor "delta".
-	 * @param option
-	 *            The zooming option to use when applying the scaling transformation.
-	 */
-	void scale(double delta, ZoomOption option);
-
-	/**
-	 * Adjust the current scale on the map by a new factor, keeping a coordinate in place.
-	 * 
-	 * @param delta
-	 *            Adjust the scale by factor "delta".
-	 * @param option
-	 *            The zooming option to use when applying the scaling transformation.
-	 * @param center
-	 *            Keep this coordinate on the same position as before.
-	 * 
-	 */
-	void scale(double delta, ZoomOption option, Coordinate center);
-
-	/**
-	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
-	 * Other than the events, it behaves the same as a translate.
-	 * 
-	 * @param x
-	 *            Translation factor along the X-axis in world space.
-	 * @param y
-	 *            Translation factor along the Y-axis in world space.
-	 */
-	void drag(double x, double y);
-
 	void setMapSize(int mapWidth, int mapHeight);
-
-	Coordinate getPanOrigin();
 
 	/**
 	 * Get the current map width in pixels.
@@ -183,6 +92,113 @@ public interface ViewPort {
 	 * @return The CRS code. Example: 'EPSG:4326'.
 	 */
 	String getCrs();
+
+	// -------------------------------------------------------------------------
+	// Methods that retrieve what is visible on the map:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Get the location at which one started dragging (panning/translating) the map. This is used in calculating tile
+	 * visibility.
+	 * 
+	 * @return The location at which one started dragging (panning/translating) the map.
+	 */
+	Coordinate getDragOrigin();
+
+	/**
+	 * Get the current center position expressed in world space.
+	 * 
+	 * @return The current center position expressed in world space.
+	 */
+	Coordinate getPosition();
+
+	/**
+	 * Return the current scale on the map.
+	 */
+	double getScale();
+
+	/**
+	 * Return the currently visible bounds on the map. These bounds are expressed in the CRS of the map.
+	 * 
+	 * @return Returns the maps bounding box.
+	 */
+	Bbox getBounds();
+
+	// -------------------------------------------------------------------------
+	// Methods that manipulate what is visible on the map:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Get the zoom strategy that is currently used to determine allowed scale levels.
+	 * 
+	 * @return The active zoom strategy.
+	 */
+	ZoomStrategy getZoomStrategy();
+
+	/**
+	 * Set a new zoom strategy to use for determining allowed scale levels.
+	 * 
+	 * @param zoomStrategy
+	 *            The new zoom strategy to use.
+	 */
+	void setZoomStrategy(ZoomStrategy zoomStrategy);
+
+	/**
+	 * Re-centers the map to a new position.
+	 * 
+	 * @param coordinate
+	 *            the new center position
+	 */
+	void applyPosition(Coordinate coordinate);
+
+	/**
+	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
+	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
+	 * this.
+	 * 
+	 * @param scale
+	 *            The preferred new scale.
+	 */
+	void applyScale(double scale);
+
+	/**
+	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
+	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
+	 * this.
+	 * 
+	 * @param scale
+	 *            The preferred new scale.
+	 * @param rescalePoint
+	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
+	 *            double clicking on the map without it moving away.
+	 */
+	void applyScale(double scale, Coordinate rescalePoint);
+
+	/**
+	 * <p>
+	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
+	 * bounding box may differ from that of the map, the fit is "as good as possible".
+	 * </p>
+	 * <p>
+	 * Also this function will almost certainly change the scale on the map, so if there have been resolutions defined,
+	 * it will snap to them.
+	 * </p>
+	 * 
+	 * @param bounds
+	 *            A bounding box in world coordinates that determines the view from now on.
+	 */
+	void applyBounds(Bbox bounds);
+
+	/**
+	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
+	 * Other than the events, it behaves the same as a translate.
+	 * 
+	 * @param x
+	 *            Translation factor along the X-axis in world space.
+	 * @param y
+	 *            Translation factor along the Y-axis in world space.
+	 */
+	void drag(double x, double y);
 
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:

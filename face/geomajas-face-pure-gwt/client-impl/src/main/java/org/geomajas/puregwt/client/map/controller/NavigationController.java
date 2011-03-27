@@ -15,7 +15,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.ZoomOption;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
@@ -137,24 +136,24 @@ public class NavigationController extends AbstractMapController {
 		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
 		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
 		Bbox newBounds = factory.createBbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
-		mapPresenter.getViewPort().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
+		mapPresenter.getViewPort().applyBounds(newBounds);
 	}
 
 	public void onMouseWheel(MouseWheelEvent event) {
 		ViewPort viewPort = mapPresenter.getViewPort();
 		if (event.isNorth()) {
 			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				viewPort.scale(2.0f, ZoomOption.LEVEL_CHANGE, viewPort.transform(
+				viewPort.applyScale(viewPort.getScale() * 2, viewPort.transform(
 						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
 			} else {
-				mapPresenter.getViewPort().scale(2.0f, ZoomOption.LEVEL_CHANGE);
+				viewPort.applyScale(viewPort.getScale() * 2);
 			}
 		} else {
 			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				viewPort.scale(0.5f, ZoomOption.LEVEL_CHANGE, viewPort.transform(
+				viewPort.applyScale(viewPort.getScale() / 2, viewPort.transform(
 						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
 			} else {
-				viewPort.scale(0.5f, ZoomOption.LEVEL_CHANGE);
+				viewPort.applyScale(viewPort.getScale() / 2);
 			}
 		}
 	}

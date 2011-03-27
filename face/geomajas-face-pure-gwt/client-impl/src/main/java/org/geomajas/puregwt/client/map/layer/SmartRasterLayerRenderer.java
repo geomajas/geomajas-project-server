@@ -52,7 +52,8 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * <p>
  * MapRenderer implementation that specifically works on a single raster layer.
  * </p>
- * Pretty experimental for now...
+ * Note that this renderer expects the first event to be a zooming type of event, otherwise a NullPointerException will
+ * occur.
  * 
  * @author Pieter De Graef
  */
@@ -300,6 +301,7 @@ public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedH
 	private void fakeZoom(double scale, Bbox bounds) {
 		HtmlContainer container = getBottomContainer();
 		if (container == null || beginOrigin == null) {
+			getTopContainer();
 			return;
 		}
 

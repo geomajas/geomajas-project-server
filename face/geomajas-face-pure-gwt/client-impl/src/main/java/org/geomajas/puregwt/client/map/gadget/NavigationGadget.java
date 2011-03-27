@@ -14,7 +14,6 @@ package org.geomajas.puregwt.client.map.gadget;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.ZoomOption;
 import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
@@ -172,7 +171,7 @@ public class NavigationGadget implements MapGadget {
 		zoomIn.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
-				viewPort.scale(2, ZoomOption.LEVEL_CHANGE);
+				viewPort.applyScale(viewPort.getScale() * 2);
 				event.stopPropagation();
 			}
 		});
@@ -183,7 +182,7 @@ public class NavigationGadget implements MapGadget {
 		zoomExtent.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
-				viewPort.applyBounds(viewPort.getMaximumBounds(), ZoomOption.LEVEL_FIT);
+				viewPort.applyBounds(viewPort.getMaximumBounds());
 				event.stopPropagation();
 			}
 		});
@@ -194,7 +193,7 @@ public class NavigationGadget implements MapGadget {
 		zoomOut.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
-				viewPort.scale(0.5, ZoomOption.LEVEL_CHANGE);
+				viewPort.applyScale(viewPort.getScale() / 2);
 				event.stopPropagation();
 			}
 		});
@@ -340,7 +339,7 @@ public class NavigationGadget implements MapGadget {
 						dragging = false;
 						if (screenBounds != null) {
 							Bbox worldBounds = viewPort.transform(screenBounds, RenderSpace.SCREEN, RenderSpace.WORLD);
-							viewPort.applyBounds(worldBounds, ZoomOption.LEVEL_CHANGE);
+							viewPort.applyBounds(worldBounds);
 						}
 					}
 					event.stopPropagation();

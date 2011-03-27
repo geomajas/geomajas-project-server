@@ -170,7 +170,7 @@ public class MapPresenterImpl implements MapPresenter {
 					// Immediately zoom to the initial bounds as configured:
 					GeometryFactory factory = new GeometryFactoryImpl();
 					Bbox initialBounds = factory.createBbox(r.getMapInfo().getInitialBounds());
-					viewPort.applyBounds(initialBounds, ZoomOption.LEVEL_CLOSEST);
+					viewPort.applyBounds(initialBounds);
 
 					// If there are already some MapGadgets registered, draw them now:
 					for (String containerId : gadgets.keySet()) {

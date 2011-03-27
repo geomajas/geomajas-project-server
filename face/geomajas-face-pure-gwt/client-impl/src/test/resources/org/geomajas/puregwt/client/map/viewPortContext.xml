@@ -23,6 +23,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="maps">
 			<list>
 				<ref bean="mapViewPortBeans" />
+				<ref bean="mapBeansNoResolutions" />
 			</list>
 		</property>
 	</bean>

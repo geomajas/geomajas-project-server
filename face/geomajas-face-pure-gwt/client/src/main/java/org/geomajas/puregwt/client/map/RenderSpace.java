@@ -12,7 +12,16 @@
 package org.geomajas.puregwt.client.map;
 
 /**
- * Listing of all 'spaces' wherein the map presenter can render objects.
+ * <p>
+ * Listing of all 'spaces' wherein the map presenter can render objects. This render space definition is mainly used in
+ * the {@link ViewPort} which has method for transforming geometries between the different spaces.
+ * </p>
+ * <p>
+ * Use cases where the render spaces are used often require the transformation from one space to another. For example,
+ * when the location of a mouse event is captured on the map, it will be expressed in screen space (pixels). In order
+ * know it's real world location, one would have to transform this coordinate to world space. This position could than
+ * be applied on the {@link ViewPort} to have the map zoom or translate to it.
+ * </p>
  * 
  * @author Pieter De Graef
  */

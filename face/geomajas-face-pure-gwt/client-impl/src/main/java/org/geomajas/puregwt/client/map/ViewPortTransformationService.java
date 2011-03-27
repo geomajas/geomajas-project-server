@@ -15,6 +15,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.spatial.MatrixImpl;
@@ -57,6 +58,7 @@ public class ViewPortTransformationService {
 	 */
 	protected ViewPortTransformationService(ViewPortImpl viewPort) {
 		this.viewPort = viewPort;
+		factory = new GeometryFactoryImpl();
 	}
 
 	// -------------------------------------------------------------------------
@@ -234,11 +236,10 @@ public class ViewPortTransformationService {
 
 	/** Return the world-to-pan space translation matrix. */
 	public MatrixImpl getWorldToPanTransformation() {
-		ViewPortState viewState = viewPort.getViewPortState();
-		if (viewState.getScale() > 0) {
-			double dX = -(viewState.getPanX() * viewState.getScale());
-			double dY = viewState.getPanY() * viewState.getScale();
-			return new MatrixImpl(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
+		if (viewPort.getScale() > 0) {
+			double dX = -(viewPort.getDragOrigin().getX() * viewPort.getScale());
+			double dY = viewPort.getDragOrigin().getY() * viewPort.getScale();
+			return new MatrixImpl(viewPort.getScale(), 0, 0, -viewPort.getScale(), dX, dY);
 		}
 		return new MatrixImpl(1, 0, 0, 1, 0, 0);
 	}
@@ -247,9 +248,9 @@ public class ViewPortTransformationService {
 	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.<br/>
 	 */
 	public MatrixImpl getWorldToPanTranslation() {
-		if (viewPort.getViewPortState().getScale() > 0) {
-			double dX = -(viewPort.getViewPortState().getPanX() * viewPort.getViewPortState().getScale());
-			double dY = viewPort.getViewPortState().getPanY() * viewPort.getViewPortState().getScale();
+		if (viewPort.getScale() > 0) {
+			double dX = -(viewPort.getDragOrigin().getX() * viewPort.getScale());
+			double dY = viewPort.getDragOrigin().getY() * viewPort.getScale();
 			return new MatrixImpl(0, 0, 0, 0, dX, dY);
 		}
 		return new MatrixImpl(0, 0, 0, 0, 0, 0);
@@ -259,30 +260,29 @@ public class ViewPortTransformationService {
 	 * Return the translation of coordinates relative to the pan origin to view coordinates.<br/>
 	 */
 	public MatrixImpl getPanToViewTranslation() {
-		ViewPortState viewState = viewPort.getViewPortState();
-		if (viewPort.getViewPortState().getScale() > 0) {
-			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale()) + viewPort.getMapWidth() / 2;
-			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale() + viewPort.getMapHeight() / 2;
+		if (viewPort.getScale() > 0) {
+			double dX = -((viewPort.getPosition().getX() - viewPort.getDragOrigin().getX()) * viewPort.getScale())
+					+ viewPort.getMapWidth() / 2;
+			double dY = (viewPort.getPosition().getY() - viewPort.getDragOrigin().getY()) * viewPort.getScale()
+					+ viewPort.getMapHeight() / 2;
 			return new MatrixImpl(0, 0, 0, 0, dX, dY);
 		}
 		return new MatrixImpl(0, 0, 0, 0, 0, 0);
 	}
 
 	public MatrixImpl getWorldToViewTransformation() {
-		ViewPortState viewState = viewPort.getViewPortState();
-		if (viewState.getScale() > 0) {
-			double dX = -(viewState.getX() * viewState.getScale()) + viewPort.getMapWidth() / 2;
-			double dY = viewState.getY() * viewState.getScale() + viewPort.getMapHeight() / 2;
-			return new MatrixImpl(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
+		if (viewPort.getScale() > 0) {
+			double dX = -(viewPort.getPosition().getX() * viewPort.getScale()) + viewPort.getMapWidth() / 2;
+			double dY = viewPort.getPosition().getY() * viewPort.getScale() + viewPort.getMapHeight() / 2;
+			return new MatrixImpl(viewPort.getScale(), 0, 0, -viewPort.getScale(), dX, dY);
 		}
 		return new MatrixImpl(1, 0, 0, 1, 0, 0);
 	}
 
 	public MatrixImpl getWorldToViewTranslation() {
-		ViewPortState viewState = viewPort.getViewPortState();
-		if (viewState.getScale() > 0) {
-			double dX = -(viewState.getX() * viewState.getScale()) + viewPort.getMapWidth() / 2;
-			double dY = viewState.getY() * viewState.getScale() + viewPort.getMapHeight() / 2;
+		if (viewPort.getScale() > 0) {
+			double dX = -(viewPort.getPosition().getX() * viewPort.getScale()) + viewPort.getMapWidth() / 2;
+			double dY = viewPort.getPosition().getY() * viewPort.getScale() + viewPort.getMapHeight() / 2;
 			return new MatrixImpl(0, 0, 0, 0, dX, dY);
 		}
 		return new MatrixImpl(0, 0, 0, 0, 0, 0);
@@ -304,8 +304,8 @@ public class ViewPortTransformationService {
 			Vector2D position = new Vector2D(coordinate);
 			double scale = viewPort.getScale();
 			position.scale(scale, -scale);
-			double translateX = -(viewPort.getViewPortState().getX() * scale) + (viewPort.getMapWidth() / 2);
-			double translateY = (viewPort.getViewPortState().getY() * scale) + (viewPort.getMapHeight() / 2);
+			double translateX = -(viewPort.getPosition().getX() * scale) + (viewPort.getMapWidth() / 2);
+			double translateY = (viewPort.getPosition().getY() * scale) + (viewPort.getMapHeight() / 2);
 			position.translate(translateX, translateY);
 			return new Coordinate(position.getX(), position.getY());
 		}
@@ -400,9 +400,8 @@ public class ViewPortTransformationService {
 
 			Bbox bounds = viewPort.getBounds();
 			// -cam: center X axis around cam. +bbox.w/2: to place the origin in the center of the screen
-			double translateX = -viewPort.getViewPortState().getX() + (bounds.getWidth() / 2);
-			double translateY = -viewPort.getViewPortState().getY() - (bounds.getHeight() / 2); // Inverted Y-axis
-																								// here...
+			double translateX = -viewPort.getPosition().getX() + (bounds.getWidth() / 2);
+			double translateY = -viewPort.getPosition().getY() - (bounds.getHeight() / 2); // Inverted Y-axis here...
 			position.translate(-translateX, -translateY);
 			return new Coordinate(position.getX(), position.getY());
 		}
@@ -577,7 +576,7 @@ public class ViewPortTransformationService {
 			Vector2D position = new Vector2D(coordinate);
 			double scale = viewPort.getScale();
 			position.scale(scale, -scale);
-			Coordinate panOrigin = viewPort.getPanOrigin();
+			Coordinate panOrigin = viewPort.getDragOrigin();
 			position.translate(-(panOrigin.getX() * scale), panOrigin.getY() * scale);
 			return new Coordinate(position.getX(), position.getY());
 		}
@@ -654,11 +653,11 @@ public class ViewPortTransformationService {
 		if (coordinate != null) {
 			Vector2D position = new Vector2D(coordinate);
 			double scale = viewPort.getScale();
-			Coordinate panOrigin = viewPort.getPanOrigin();
+			Coordinate panOrigin = viewPort.getDragOrigin();
 
-			double translateX = (viewPort.getViewPortState().getX() - panOrigin.getX()) * scale
+			double translateX = (viewPort.getPosition().getX() - panOrigin.getX()) * scale
 					- (viewPort.getMapWidth() / 2);
-			double translateY = -(viewPort.getViewPortState().getY() - panOrigin.getY()) * scale
+			double translateY = -(viewPort.getPosition().getY() - panOrigin.getY()) * scale
 					- (viewPort.getMapHeight() / 2);
 			position.translate(translateX, translateY);
 			return new Coordinate(position.getX(), position.getY());

@@ -44,6 +44,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="scaleConfiguration">
 			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1000" />
 				<property name="zoomLevels">
 					<list>
 						<value>6.388019798183263E-6</value>

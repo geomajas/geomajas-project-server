@@ -17,4 +17,7 @@
 	<source path="client/spatial">
 		<exclude name="*Test*.java"/>
 	</source>
+	<source path="client/map">
+		<exclude name="*Test*.java"/>
+	</source>
 </module>
