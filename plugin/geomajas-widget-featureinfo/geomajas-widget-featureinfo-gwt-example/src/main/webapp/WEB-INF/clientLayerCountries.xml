@@ -37,6 +37,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 		<property name="namedStyleInfo" ref="layerCountriesStyleInfo" />
+		<property name="widgetInfo">
+			<map>
+				<entry key="widgetBuilderName" >
+					<bean class="org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo">
+						<property name="builderName" value="SampleCustomCountriesFeatureDetail" />
+					</bean>
+				</entry>
+			</map>
+		</property>
 	</bean>
 
 </beans>

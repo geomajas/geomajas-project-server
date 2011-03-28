@@ -11,6 +11,25 @@
 
 package org.geomajas.widget.featureinfo.gwt.example.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.widget.LayerTree;
+import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.LoadingScreen;
+import org.geomajas.gwt.client.widget.LocaleSelect;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.widget.featureinfo.client.widget.factory.WidgetFactory;
+import org.geomajas.widget.featureinfo.gwt.example.client.customfeatureinfowidgets.
+			CustomCountriesFeatureInfoCanvasBuilder;
+import org.geomajas.widget.featureinfo.gwt.example.client.i18n.ApplicationMessages;
+import org.geomajas.widget.featureinfo.gwt.example.client.pages.AbstractTab;
+import org.geomajas.widget.featureinfo.gwt.example.client.pages.FeatureListGridPage;
+import org.geomajas.widget.featureinfo.gwt.example.client.pages.SearchPage;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Side;
@@ -23,29 +42,16 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import org.geomajas.widget.featureinfo.gwt.example.client.i18n.ApplicationMessages;
-import org.geomajas.widget.featureinfo.gwt.example.client.pages.AbstractTab;
-import org.geomajas.widget.featureinfo.gwt.example.client.pages.FeatureListGridPage;
-import org.geomajas.widget.featureinfo.gwt.example.client.pages.SearchPage;
-import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
-import org.geomajas.gwt.client.widget.LoadingScreen;
-import org.geomajas.gwt.client.widget.LocaleSelect;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.OverviewMap;
-import org.geomajas.gwt.client.widget.Toolbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Entry point and main class for GWT application. This class defines the layout and functionality of this
- * application.
- *
+ * Entry point and main class for GWT application. This class defines the layout
+ * and functionality of this application.
+ * 
  * @author geomajas-gwt-archetype
  */
 public class Application implements EntryPoint {
+
+	private static final String CUSTOMCOUNTRIES_FEATUREDETAILINFO_BUILDER_KEY = "SampleCustomCountriesFeatureDetail";
 
 	private OverviewMap overviewMap;
 
@@ -166,7 +172,8 @@ public class Application implements EntryPoint {
 		mainLayout.draw();
 
 		// Install a loading screen
-		// This only works if the application initially shows a map with at least 1 vector layer:
+		// This only works if the application initially shows a map with at
+		// least 1 vector layer:
 		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
 				+ Geomajas.getVersion());
 		loadScreen.draw();
@@ -181,11 +188,17 @@ public class Application implements EntryPoint {
 	}
 
 	private void initialize() {
+		registerWidgetBuilders();
+
 		legend.setHeight(200);
 		overviewMap.setHeight(200);
 
 		for (AbstractTab tab : tabs) {
 			tab.initialize();
 		}
+	}
+
+	private void registerWidgetBuilders() {
+		WidgetFactory.put(CUSTOMCOUNTRIES_FEATUREDETAILINFO_BUILDER_KEY, new CustomCountriesFeatureInfoCanvasBuilder());
 	}
 }

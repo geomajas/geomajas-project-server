@@ -28,6 +28,9 @@ public class MultiLayerFeatureInfoTreeWindow extends Window {
 	public MultiLayerFeatureInfoTreeWindow(MapWidget mapWidget, Map<String, List<Feature>> featureMap,
 			boolean showDetailWindowInline) {
 		// TODO Auto-generated constructor stub
+		
+		// make use of FeatureDetailWidgetFactory.createFeatureDetailCanvas/window(feature, false)
+		// to create panes, so custom panels are used
 	}
 
 }

@@ -14,14 +14,13 @@ import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.featureinfo.client.action.toolbar.FeatureInfoModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoRepresentationType;
 import org.geomajas.widget.featureinfo.client.action.toolbar.ShowCoordinatesModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.TooltipOnMouseoverModalAction;
 
 import com.google.gwt.core.client.EntryPoint;
-
-//import com.smartgwt.client.util.SC;
 
 /**
  * Initializes the featureInfo plugin.
@@ -32,6 +31,8 @@ import com.google.gwt.core.client.EntryPoint;
  */
 public class FeatureInfoEntryPoint implements EntryPoint {
 
+	private static final String SHOW_FEATUREINFOMODE_KEY = "FeatureInfoMode";
+	
 	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFO_KEY = "MultilayerFeatureInfoMode";
 
 	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_KEY = "MultilayerFeatureInfoTreeMode";
@@ -54,14 +55,13 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Register extra button
 		// ---------------------------------------------------------------------
+		
 		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFO_KEY, new ToolCreator() {
-
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new MultiLayerFeatureInfoModalAction(mapWidget);
 			}
 		});
 		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_KEY, new ToolCreator() {
-
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
 				action.setRepresentationType(MultiLayerFeatureInfoRepresentationType.TREE);
@@ -69,7 +69,6 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 			}
 		});
 		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFOFULLTREE_KEY, new ToolCreator() {
-
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
 				action.setRepresentationType(MultiLayerFeatureInfoRepresentationType.TREE_FULL);
@@ -77,7 +76,6 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 			}
 		});
 		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFO_INLINE_KEY, new ToolCreator() {
-
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
 				action.setShowDetailWindowInline(true);
@@ -85,7 +83,6 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 			}
 		});
 		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_INLINE_KEY, new ToolCreator() {
-
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
 				action.setRepresentationType(MultiLayerFeatureInfoRepresentationType.TREE);
@@ -93,6 +90,7 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 				return action;
 			}
 		});
+
 		ToolbarRegistry.put(SHOW_COORDINATES_MODE_KEY, new ToolCreator() {
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ShowCoordinatesModalAction(mapWidget);
@@ -103,6 +101,11 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 				return new TooltipOnMouseoverModalAction(mapWidget);
 			}
 		});
-	}
 
+		ToolbarRegistry.put(SHOW_FEATUREINFOMODE_KEY, new ToolCreator() {
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new FeatureInfoModalAction(mapWidget);
+			}
+		});
+	}
 }
