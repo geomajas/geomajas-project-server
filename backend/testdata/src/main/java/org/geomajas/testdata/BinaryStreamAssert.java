@@ -98,6 +98,8 @@ public abstract class BinaryStreamAssert {
 					fos.write(actualBytes);
 					fos.flush();
 					fos.close();
+				} else {
+					System.out.println("Could not write copy of actual image to " + copy.getAbsolutePath());
 				}
 			}
 			BufferedImage expimg = ImageIO.read(is);
