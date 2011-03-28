@@ -36,7 +36,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean name="layerBeansMixedGeometryInfo" class="org.geomajas.configuration.VectorLayerInfo">
-		<property name="layerType" value="GEOMETRY_COLLECTION" />
+		<property name="layerType" value="GEOMETRY" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
