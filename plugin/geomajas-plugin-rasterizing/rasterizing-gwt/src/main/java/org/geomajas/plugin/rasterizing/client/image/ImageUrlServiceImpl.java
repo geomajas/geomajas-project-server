@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.client.image;
 
+import java.util.Set;
+
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
@@ -19,12 +21,17 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.gfx.WorldPaintable;
+import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.layer.LayerType;
+import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
@@ -33,8 +40,6 @@ import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 
 import com.google.gwt.core.client.GWT;
-
-import java.util.Set;
 
 /**
  * Default implementation of {@link ImageUrlService}.
@@ -102,11 +107,11 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 							break;
 						case MULTIPOINT:
 						case POINT:
-							selectStyle = mapInfo.getPolygonSelectStyle();
+							selectStyle = mapInfo.getPointSelectStyle();
 							break;
 						case MULTIPOLYGON:
 						case POLYGON:
-							selectStyle = mapInfo.getPointSelectStyle();
+							selectStyle = mapInfo.getPolygonSelectStyle();
 							break;
 					}
 					selectStyle.applyDefaults();
@@ -119,6 +124,23 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				rasterInfo.setShowing(layer.isShowing());
 				rasterInfo.setCssStyle(layerInfo.getStyle());
 				layerInfo.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterInfo);
+			}
+		}
+		for (WorldPaintable worldPaintable : map.getWorldPaintables().values()) {
+			if(worldPaintable instanceof GfxGeometry){
+				ClientGeometryLayerInfo layer = new ClientGeometryLayerInfo();
+				GfxGeometry geometry = (GfxGeometry)worldPaintable;
+				layer.getGeometries().add(GeometryConverter.toDto((Geometry) geometry.getOriginalLocation()));
+				FeatureStyleInfo style = new FeatureStyleInfo();
+				style.setFillColor(geometry.getStyle().getFillColor());
+				style.setFillOpacity(geometry.getStyle().getFillOpacity());
+				style.setStrokeColor(geometry.getStyle().getStrokeColor());
+				style.setStrokeOpacity(geometry.getStyle().getStrokeOpacity());
+				style.setStrokeWidth((int) geometry.getStyle().getStrokeWidth());
+				style.applyDefaults();
+				layer.setStyle(style);
+				layer.setLayerType(geometry.getGeometry().getLayerType());
+				mapRasterizingInfo.getExtraLayers().add(layer);
 			}
 		}
 	}
