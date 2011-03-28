@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.global.FutureApi;
+
 /**
  * Strategy that determines all scale levels. The {@link ViewPort} uses such a <code>ZoomStrategy</code> to ask for
  * scale levels when zooming in or out. Therefore different implementations will result in different zoom steps being
@@ -19,6 +21,7 @@ package org.geomajas.puregwt.client.map;
  * @author Pieter De Graef
  * @since 1.0.0
  */
+@FutureApi(allMethods = true)
 public interface ZoomStrategy {
 
 	/**

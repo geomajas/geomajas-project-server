@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.global.FutureApi;
 
 /**
  * <p>
@@ -30,12 +31,15 @@ package org.geomajas.puregwt.client.map.gfx;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@FutureApi
 public interface HtmlContainer extends HtmlObject {
 
 	/**
 	 * Zoom this container in or out to a given transformation origin. This transformation is taken literally, it does
-	 * not stack onto a current transformation should there be one.
+	 * not stack onto a current transformation should there be one.<br/>
+	 * TODO why not try a transform(matrix) kind of method? How would IE handle it???
 	 * 
 	 * @param scale
 	 *            The zooming factor.

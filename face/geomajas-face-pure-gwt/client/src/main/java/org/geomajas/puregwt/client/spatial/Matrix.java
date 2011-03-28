@@ -11,24 +11,48 @@
 
 package org.geomajas.puregwt.client.spatial;
 
+import org.geomajas.global.Api;
+
 /**
  * <p>
- * A very simple matrix definition.
+ * A very simple matrix definition. Used for transformations on geometries, HTML objects or vector objects.
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface Matrix {
 
+	/**
+	 * Get the scale factor along the X-axis.
+	 * 
+	 * @return The scale factor along the X-axis.
+	 */
 	double getXx();
 
 	double getXy();
 
 	double getYx();
 
+	/**
+	 * Get the scale factor along the Y-axis.
+	 * 
+	 * @return The scale factor along the Y-axis.
+	 */
 	double getYy();
 
+	/**
+	 * Get the translation parameter along the X axis.
+	 * 
+	 * @return The translation parameter along the X axis.
+	 */
 	double getDx();
 
+	/**
+	 * Get the translation parameter along the Y axis.
+	 * 
+	 * @return The translation parameter along the Y axis.
+	 */
 	double getDy();
 }

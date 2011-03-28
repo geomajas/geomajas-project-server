@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * Extension for layers that indicates whether or not labeling is supported. Of course, these labels can only be visible
@@ -20,7 +20,7 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@FutureApi
 public interface LabelsSupported {
 
 	/**

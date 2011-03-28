@@ -49,5 +49,4 @@ public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 	public final Type<DispatchStoppedHandler> getAssociatedType() {
 		return TYPE;
 	}
-
 }

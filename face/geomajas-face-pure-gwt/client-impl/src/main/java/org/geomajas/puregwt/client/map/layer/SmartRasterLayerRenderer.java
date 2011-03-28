@@ -169,11 +169,6 @@ public class SmartRasterLayerRenderer implements MapRenderer, LayerStyleChangedH
 		}
 	}
 
-	public void redraw() {
-		clear();
-		onViewPortChanged(new ViewPortChangedEvent(viewPort));
-	}
-
 	public void setMapExentScaleAtFetch(double mapExentScaleAtFetch) {
 		if (mapExentScaleAtFetch >= 1 && mapExentScaleAtFetch < 10) {
 			this.mapExentScaleAtFetch = mapExentScaleAtFetch;

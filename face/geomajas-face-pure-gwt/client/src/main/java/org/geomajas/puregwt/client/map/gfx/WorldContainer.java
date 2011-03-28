@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 /**
@@ -22,7 +22,7 @@ import org.geomajas.puregwt.client.map.ViewPort;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@FutureApi
 public interface WorldContainer extends VectorContainer {
 
 	/**

@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -18,12 +18,12 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * Geomajas event bus.
+ * Geomajas map specific event bus. Every map presenter should have an event bus that fires events specific to that map.
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi
 public interface EventBus {
 
 	<H extends EventHandler> HandlerRegistration addHandler(Type<H> type, H handler);

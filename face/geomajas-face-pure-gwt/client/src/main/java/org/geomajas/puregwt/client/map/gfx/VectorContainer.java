@@ -11,24 +11,27 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.global.FutureApi;
+import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
-import com.google.gwt.user.client.Element;
 
 /**
  * Base container definition for vector object types. This interface is used for rendering vector layers, screen space
  * objects or world space objects.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@FutureApi
 public interface VectorContainer extends VectorObjectContainer {
 
 	/**
-	 * Return the element for this container. TODO should this really be here???? Preferably not.
+	 * Transform this container and all it's children using the given matrix.
 	 * 
-	 * @return
+	 * @param matrix
+	 *            The matrix that determines the container transformation.
 	 */
-	Element getElement();
+	void transform(Matrix matrix);
 
 	/**
 	 * Determine container visibility.

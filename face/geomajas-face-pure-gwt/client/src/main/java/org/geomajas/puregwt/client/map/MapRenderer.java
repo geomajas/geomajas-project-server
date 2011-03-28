@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
@@ -23,6 +24,7 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
  * 
  * @author Pieter De Graef
  */
+@FutureApi(allMethods = true)
 public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler {
 
 	/**
@@ -34,15 +36,24 @@ public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHa
 	 */
 	void setMapExentScaleAtFetch(double scale);
 
+	/** Clear all drawing content this renderer has created. */
 	void clear();
 
-	void redraw();
-
-	void setHtmlContainer(HtmlContainer htmlContainer);
-	
 	/**
-	 * TODO set 2 types of containers is horrible. Can't they both share the same super interface?
+	 * Set an HTML container wherein this map renderer may display the actual rendering. Implementing classes may choose
+	 * to prefer HTML based rendering above vector based rendering.
+	 * 
+	 * @param htmlContainer
+	 *            The HTML container wherein this map renderer may display the actual rendering.
+	 */
+	void setHtmlContainer(HtmlContainer htmlContainer);
+
+	/**
+	 * Set a vector container wherein this map renderer may display the actual rendering. Implementing classes may
+	 * choose to prefer vector based rendering above HTML based rendering.
+	 * 
 	 * @param vectorContainer
+	 *            The vector container wherein this map renderer may display the actual rendering.
 	 */
 	void setVectorContainer(VectorContainer vectorContainer);
 }

@@ -193,11 +193,6 @@ public class VectorLayerRenderer implements MapRenderer, LayerVisibleHandler, La
 		}
 	}
 
-	public void redraw() {
-		clear();
-		render(viewPort.getBounds());
-	}
-
 	public void setHtmlContainer(HtmlContainer htmlContainer) {
 		this.htmlContainer = htmlContainer;
 	}

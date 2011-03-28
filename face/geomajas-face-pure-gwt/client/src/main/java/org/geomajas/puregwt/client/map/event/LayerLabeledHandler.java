@@ -35,6 +35,7 @@ public interface LayerLabeledHandler extends EventHandler {
 	 *            event
 	 */
 	void onLabelShow(LayerLabelShowEvent event);
+
 	/**
 	 * Called when labels are disabled on the layer.
 	 * 

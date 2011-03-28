@@ -14,6 +14,8 @@ package org.geomajas.puregwt.client.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.global.FutureApi;
+
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to
  * report), the call-backs within this object will be executed. The idea is that you send out a request with a certain
@@ -23,6 +25,7 @@ import java.util.List;
  * @author Pieter De Graef
  * @since 1.0.0
  */
+@FutureApi(allMethods = true)
 public class Deferred {
 
 	private List<CommandCallback> callbacks = new ArrayList<CommandCallback>();

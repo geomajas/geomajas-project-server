@@ -29,8 +29,6 @@ import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.spatial.Matrix;
 
-import com.google.gwt.user.client.DOM;
-
 /**
  * <p>
  * Renderer for the map that simply delegates to all layers individually.
@@ -87,7 +85,8 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
+		vectorContainer.transform(translation);
+		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -107,7 +106,8 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
+		vectorContainer.transform(translation);
+		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -127,7 +127,8 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
+		vectorContainer.transform(translation);
+		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -147,7 +148,8 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
+		vectorContainer.transform(translation);
+		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -174,19 +176,6 @@ public class DelegatingMapRenderer implements MapRenderer {
 			} else if (layer instanceof VectorLayer) {
 				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
 				((VectorLayer) layer).getRenderer().clear();
-			}
-		}
-	}
-
-	public void redraw() {
-		for (int i = 0; i < layersModel.getLayerCount(); i++) {
-			Layer<?> layer = layersModel.getLayer(i);
-			if (layer instanceof RasterLayer) {
-				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((RasterLayer) layer).getRenderer().redraw();
-			} else if (layer instanceof VectorLayer) {
-				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
-				((VectorLayer) layer).getRenderer().redraw();
 			}
 		}
 	}

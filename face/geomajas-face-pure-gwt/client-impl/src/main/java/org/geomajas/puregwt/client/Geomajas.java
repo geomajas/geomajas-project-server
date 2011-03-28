@@ -21,6 +21,10 @@ public final class Geomajas {
 	private Geomajas() {
 		// Utility class: Hide constructor.
 	}
+	
+	public static boolean hasSvgSupport() {
+		return !getUserAgent().contains("microsoft");
+	}
 
 	/**
 	 * Is the user currently running Internet Explorer?

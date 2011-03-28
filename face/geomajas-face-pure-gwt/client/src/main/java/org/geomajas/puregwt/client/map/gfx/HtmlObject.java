@@ -10,6 +10,8 @@
  */
 package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.global.FutureApi;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -26,9 +28,11 @@ import com.google.gwt.user.client.ui.Widget;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@FutureApi
 public interface HtmlObject {
-	
+
 	Element getElement();
 
 	Widget getParent();

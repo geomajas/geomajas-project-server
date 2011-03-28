@@ -14,18 +14,19 @@ package org.geomajas.puregwt.client.map.feature;
 import java.util.Map;
 
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
- * General interface for a GWT client side feature.
+ * General interface for a GWT client side feature.<br/>
+ * TODO what about lazy loading here?
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi
 public interface Feature {
 
 	/**

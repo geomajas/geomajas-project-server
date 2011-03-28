@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map.layer;
 
 import java.util.Collection;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.layer.feature.Feature;
 
 /**
@@ -23,7 +23,7 @@ import org.geomajas.layer.feature.Feature;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@FutureApi
 public interface FeaturesSupported {
 
 	/**
@@ -78,6 +78,4 @@ public interface FeaturesSupported {
 	 * @return Returns the identifiers, not the actual features.
 	 */
 	Collection<String> getSelectedFeatureIds();
-
-	// VectorLayerStore getFeatureStore();
 }

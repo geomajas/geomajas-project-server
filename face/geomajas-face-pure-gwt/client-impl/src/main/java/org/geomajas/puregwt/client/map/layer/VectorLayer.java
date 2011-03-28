@@ -56,7 +56,8 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	public void setFilter(String filter) {
 		this.filter = filter;
-		renderer.redraw();
+		renderer.clear();
+		renderer.render(viewPort.getBounds());
 	}
 
 	public String getFilter() {

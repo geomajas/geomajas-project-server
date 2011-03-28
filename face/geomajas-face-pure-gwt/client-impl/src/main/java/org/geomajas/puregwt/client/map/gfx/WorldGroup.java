@@ -13,17 +13,13 @@ package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.spatial.Matrix;
-import org.vaadin.gwtgraphics.client.Group;
-
-import com.google.gwt.user.client.DOM;
 
 /**
  * Default implementation of the WorldContainer interface. It represents a vector group element in world space.
  * 
  * @author Pieter De Graef
  */
-public class WorldGroup extends Group implements WorldContainer {
+public class WorldGroup extends VectorGroup implements WorldContainer {
 
 	private String id;
 
@@ -49,37 +45,12 @@ public class WorldGroup extends Group implements WorldContainer {
 		// TODO SVG only atm...
 
 		if (resizeChildren) {
-			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			DOM.setElementAttribute(getElement(), "transform", parse(matrix));
+			transform(viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN));
 		} else {
 			for (int i = 0; i < getVectorObjectCount(); i++) {
 				// VectorObject vo = getVectorObject(i);
 				// TODO implement this...
 			}
 		}
-	}
-
-	/**
-	 * Parse a matrix object into a string, suitable for the SVG 'transform' attribute.
-	 * 
-	 * @param matrix
-	 *            The matrix to parse.
-	 * @return The transform string.
-	 */
-	private String parse(Matrix matrix) {
-		String transform = "";
-		if (matrix != null) {
-			double dx = matrix.getDx();
-			double dy = matrix.getDy();
-			if (matrix.getXx() != 0 && matrix.getYy() != 0 && matrix.getXx() != 1 && matrix.getYy() != 1) {
-				transform += "scale(" + matrix.getXx() + ", " + matrix.getYy() + ")"; // scale first
-				// no space between 'scale' and '(' !!!
-				dx /= matrix.getXx();
-				dy /= matrix.getYy();
-			}
-			transform += " translate(" + (float) dx + ", " + (float) dy + ")";
-			// no space between 'translate' and '(' !!!
-		}
-		return transform;
 	}
 }

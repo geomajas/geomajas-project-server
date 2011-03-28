@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 
 /**
@@ -25,7 +26,9 @@ import org.geomajas.puregwt.client.service.BooleanCallback;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@FutureApi
 public interface HtmlImage extends HtmlObject {
 
 	/**

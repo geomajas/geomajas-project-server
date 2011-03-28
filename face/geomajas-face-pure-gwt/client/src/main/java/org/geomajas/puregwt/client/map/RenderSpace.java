@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.global.Api;
+
 /**
  * <p>
  * Listing of all 'spaces' wherein the map presenter can render objects. This render space definition is mainly used in
@@ -25,6 +27,7 @@ package org.geomajas.puregwt.client.map;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public enum RenderSpace {
 
 	/**
