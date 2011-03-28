@@ -218,7 +218,8 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/osgeo/print.png", DefaultPrintingSample.TITLE, "Plugins",
 						DefaultPrintingSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geocoderTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins", GeocoderSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins",
+						GeocoderSample.FACTORY),
 
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),

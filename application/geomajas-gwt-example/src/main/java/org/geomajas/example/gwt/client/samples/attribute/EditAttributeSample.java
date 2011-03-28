@@ -11,22 +11,14 @@
 
 package org.geomajas.example.gwt.client.samples.attribute;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.SearchFeatureRequest;
-import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
-import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.layer.feature.SearchCriterion;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
