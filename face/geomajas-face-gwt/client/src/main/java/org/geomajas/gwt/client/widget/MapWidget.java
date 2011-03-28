@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -499,6 +500,17 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	/**
+	 * Returns all add-ons registered for this map.
+	 * 
+	 * @return an unmodifiable map of add-ons
+	 * @since 1.9.0
+	 */
+	@Api
+	public Map<String, MapAddon> getMapAddons() {
+		return Collections.unmodifiableMap(addons);
+	}
+
+	/**
 	 * <p>
 	 * Register a <code>WorldPaintable</code> object to be painted on the map. By doing so, the object will be painted
 	 * immediately on the correct position, and when the user navigates around, the map will automatically make sure the
@@ -545,6 +557,17 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	@Api
 	public WorldPaintable getWorldPaintable(String name) {
 		return worldPaintables.get(name);
+	}
+
+	/**
+	 * Returns all world paintables registered for this map.
+	 * 
+	 * @return an unmodifiable map of world paintables
+	 * @since 1.9.0
+	 */
+	@Api
+	public Map<String, WorldPaintable> getWorldPaintables() {
+		return Collections.unmodifiableMap(worldPaintables);
 	}
 
 	// -------------------------------------------------------------------------
