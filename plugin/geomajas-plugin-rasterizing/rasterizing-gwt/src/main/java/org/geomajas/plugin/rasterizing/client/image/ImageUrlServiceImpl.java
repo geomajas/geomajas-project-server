@@ -30,7 +30,6 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
@@ -127,9 +126,9 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 			}
 		}
 		for (WorldPaintable worldPaintable : map.getWorldPaintables().values()) {
-			if(worldPaintable instanceof GfxGeometry){
+			if (worldPaintable instanceof GfxGeometry) {
 				ClientGeometryLayerInfo layer = new ClientGeometryLayerInfo();
-				GfxGeometry geometry = (GfxGeometry)worldPaintable;
+				GfxGeometry geometry = (GfxGeometry) worldPaintable;
 				layer.getGeometries().add(GeometryConverter.toDto((Geometry) geometry.getOriginalLocation()));
 				FeatureStyleInfo style = new FeatureStyleInfo();
 				style.setFillColor(geometry.getStyle().getFillColor());
