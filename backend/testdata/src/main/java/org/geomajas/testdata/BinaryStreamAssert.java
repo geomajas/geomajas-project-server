@@ -89,10 +89,11 @@ public abstract class BinaryStreamAssert {
 			byte[] actualBytes = getActualBytes();
 			BufferedImage actualImg = ImageIO.read(new ByteArrayInputStream(actualBytes));
 			if (getExpected(resourceName, false).getFile() != null) {
-				// always put a copy of the actual image next to the expected (check if we can write to the classpath directory)
+				// always put a copy of the actual image next to the expected (check if we can write to the classpath
+				// directory)
 				File copy = new File(getExpected(resourceName, false).getFile().getParentFile(), resourceName.replace(
 						".", ".actual."));
-				if(copy.canWrite()){
+				if (copy.canWrite()) {
 					FileOutputStream fos = new FileOutputStream(copy);
 					fos.write(actualBytes);
 					fos.flush();
