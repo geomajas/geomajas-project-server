@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.spatial.geometry;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.layer.LayerType;
 
 /**
  * MultiLineString client-side GWT object.
@@ -225,6 +226,10 @@ public class MultiLineString extends AbstractGeometry {
 			}
 		}
 		return coordinates;
+	}
+
+	public LayerType getLayerType() {
+		return LayerType.MULTILINESTRING;
 	}
 
 	/**

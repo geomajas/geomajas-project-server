@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.layer.LayerType;
 
 /**
  * Gwt client-side Geometry representation.
@@ -97,6 +98,13 @@ public interface Geometry extends Serializable {
 	 * </ul>
 	 */
 	int getGeometryType();
+
+	/**
+	 * Return the layer type of the geometry.
+	 *
+	 * @return the layer type (vectorial).
+	 */
+	LayerType getLayerType();
 
 	/**
 	 * This geometry is empty if there are no geometries/coordinates stored inside.

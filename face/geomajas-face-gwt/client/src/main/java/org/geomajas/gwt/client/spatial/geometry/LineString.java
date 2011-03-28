@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.spatial.geometry;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Mathlib;
+import org.geomajas.layer.LayerType;
 
 /**
  * LineString client-side GWT object.
@@ -259,6 +260,10 @@ public class LineString extends AbstractGeometry {
 		return coordinates[0];
 	}
 
+	public LayerType getLayerType() {
+		return LayerType.LINESTRING;
+	}
+
 	public String toWkt() {
 		if (isEmpty()) {
 			return "LINESTRING(EMPTY)";
@@ -272,4 +277,5 @@ public class LineString extends AbstractGeometry {
 		}
 		return wkt + ")";
 	}
+
 }

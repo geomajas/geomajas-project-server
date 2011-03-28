@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.spatial.geometry;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Mathlib;
+import org.geomajas.layer.LayerType;
 
 /**
  * <p>
@@ -143,6 +144,10 @@ public class Point extends AbstractGeometry {
 			return null;
 		}
 		return new Bbox(coordinate.getX(), coordinate.getY(), 0, 0);
+	}
+
+	public LayerType getLayerType() {
+		return LayerType.POINT;
 	}
 
 	/**

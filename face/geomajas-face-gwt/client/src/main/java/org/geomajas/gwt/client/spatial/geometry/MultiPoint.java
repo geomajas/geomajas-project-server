@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.spatial.geometry;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.LineSegment;
+import org.geomajas.layer.LayerType;
 
 /**
  * MultiPoint client-side GWT object.
@@ -197,6 +198,10 @@ public class MultiPoint extends AbstractGeometry {
 		return coordinates;
 	}
 
+	public LayerType getLayerType() {
+		return LayerType.MULTIPOINT;
+	}
+	
 	/**
 	 * Return true if any of the points intersect the given geometry.
 	 */
