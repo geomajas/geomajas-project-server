@@ -86,16 +86,28 @@ public abstract class BinaryStreamAssert {
 			writeToFile(resourceName);
 		} else {
 			InputStream is = getExpected(resourceName, false).getInputStream();
-			BufferedImage origImg = ImageIO.read(new ByteArrayInputStream(getActualBytes()));
+			byte[] actualBytes = getActualBytes();
+			BufferedImage actualImg = ImageIO.read(new ByteArrayInputStream(actualBytes));
+			if (getExpected(resourceName, false).getFile() != null) {
+				// always put a copy of the actual image next to the expected (check if we can write to the classpath directory)
+				File copy = new File(getExpected(resourceName, false).getFile().getParentFile(), resourceName.replace(
+						".", ".actual."));
+				if(copy.canWrite()){
+					FileOutputStream fos = new FileOutputStream(copy);
+					fos.write(actualBytes);
+					fos.flush();
+					fos.close();
+				}
+			}
 			BufferedImage expimg = ImageIO.read(is);
-			Assert.assertEquals("Image has wrong width", expimg.getWidth(), origImg.getWidth());
-			Assert.assertEquals("Image has wrong height", expimg.getHeight(), origImg.getHeight());
+			Assert.assertEquals("Image has wrong width", expimg.getWidth(), actualImg.getWidth());
+			Assert.assertEquals("Image has wrong height", expimg.getHeight(), actualImg.getHeight());
 			double sum = 0;
 			double diff = 0;
 			for (int x = 0; x < expimg.getWidth(); x++) {
 				for (int y = 0; y < expimg.getHeight(); y++) {
 					Color c1 = new Color(expimg.getRGB(x, y), true);
-					Color c2 = new Color(origImg.getRGB(x, y), true);
+					Color c2 = new Color(actualImg.getRGB(x, y), true);
 					diff += square(diff(c1, c2));
 					sum += square(c1) + square(c2);
 				}
