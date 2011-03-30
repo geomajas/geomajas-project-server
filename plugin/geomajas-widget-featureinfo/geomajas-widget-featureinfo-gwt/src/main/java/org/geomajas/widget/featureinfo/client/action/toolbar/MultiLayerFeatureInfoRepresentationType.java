@@ -13,23 +13,23 @@ package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 /**
  * The representation of a multilayer featureinfo window.
- *
  * @author Oliver May
+ *
  */
 public enum MultiLayerFeatureInfoRepresentationType {
 	
-	TREE("tree"),
 	/**
 	 * Show the multi layer featureinfo as a tree.
 	 */
-	TREE_FULL("tree_full"),
+	TREE("tree"),
 	/**
 	 * Show the multi layer featureinfo as a tree with the attributes as part of the tree.
 	 */
-	FLAT("flat");
+	TREE_FULL("tree_full"),
 	/**
 	 * SHOW the multi layer featureinfo in a flat format.
 	 */
+	FLAT("flat");
 	
 	private String value;
 

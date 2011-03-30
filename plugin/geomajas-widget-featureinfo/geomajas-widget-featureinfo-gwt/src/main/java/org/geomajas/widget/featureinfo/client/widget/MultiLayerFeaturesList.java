@@ -47,6 +47,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
+	//Todo: Is this used?
 	private Map<String/* layerId */, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
 
 	private Map<String/* serverLayerId+"."+featID */, Feature> features = new HashMap<String, Feature>();
@@ -78,7 +79,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 * @param featureMap
 	 */
 	public void setFeatures(MapWidget mapWidget, Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
-
+		//FIXME: use mapWidget field
 		MapModel mapModel = mapWidget.getMapModel();
 		for (String serverLayerId : featureMap.keySet()) {
 			List<VectorLayer> layers = mapModel.getVectorLayersByServerId(serverLayerId); /*
@@ -105,7 +106,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	@Override
 	/* Override getCellCSSText to implement padding-left of ordinary feature rows */
 	protected String getCellCSSText(ListGridRecord record, int rowNum, int colNum) {
-		// Note: using listGrid.setCellPadding() also pads group rows
+		// Note: using listGrid.setCellPadding() would also padd group rows
 		String newStyle;
 		String style = record.getCustomStyle(); /* returns groupNode if group row, else e.g. null */
 

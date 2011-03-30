@@ -76,18 +76,21 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
 		controller.setPixelTolerance(pixelTolerance);
+		//FIXME: weg
 		setTooltip(getTooltip() + " pixeltolerance: " + pixelTolerance);
 	}
 
 	public void setRepresentationType(MultiLayerFeatureInfoRepresentationType representationType) {
 		this.representationType = representationType;
 		controller.setRepresentationType(representationType);
+		//FIXME: weg
 		setTooltip(getTooltip() + " representationType: " + representationType);
 	}
 
 	public void setShowDetailWindowInline(boolean showDetailWindowInline) {
 		this.showDetailWindowInline = showDetailWindowInline;
 		controller.setShowDetailWindowInline(showDetailWindowInline);
+		//FIXME: weg
 		setTooltip(getTooltip() + " detailwindowinline: " + showDetailWindowInline);
 	}
 
