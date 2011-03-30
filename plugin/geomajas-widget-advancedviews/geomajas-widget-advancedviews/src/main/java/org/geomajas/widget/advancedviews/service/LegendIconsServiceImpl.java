@@ -37,7 +37,7 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.ImageInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.RectInfo;
-import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
@@ -84,8 +84,8 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 	public void init() {
 		iconSizes = new HashMap<String, Integer>();
 
-		Map<String, ClientApplicationInfo> apps = appContext.getBeansOfType(ClientApplicationInfo.class);
-		for (Entry<String, ClientApplicationInfo> entry : apps.entrySet()) {
+		Map<String, ClientMapInfo> maps = appContext.getBeansOfType(ClientMapInfo.class);
+		for (Entry<String, ClientMapInfo> entry : maps.entrySet()) {
 			if (null != entry.getValue().getWidgetInfo() && entry.getValue().getWidgetInfo().size() > 0) {
 				for (Entry<String, ClientWidgetInfo> entryWidget : entry.getValue().getWidgetInfo().entrySet()) {
 					if (entryWidget.getValue() instanceof LayerTreeWithLegendInfo) {
@@ -112,7 +112,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 		}
 
 		// get iconsize
-		final int iconSize = getIconSize(widgetId);
+		final int iconSize = getIconSize(LayerTreeWithLegendInfo.IDENTIFIER);
 
 		// get style
 		if (l instanceof VectorLayer) {

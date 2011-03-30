@@ -34,13 +34,18 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.client.util.UrlBuilder;
+import org.geomajas.widget.advancedviews.client.util.WidgetInfoHelper;
+import org.geomajas.widget.advancedviews.configuration.client.LayerTreeWithLegendInfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.ImgButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -61,6 +66,10 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 	private static final String LEGEND_ICONS_PATH = "d/legendIcons";
 
+	private static final String SHOW_LAYERINFO_ICON = "[ISOMORPHIC]/geomajas/silk/cog.png";
+
+	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
+
 	private static final String EXPANDED_ATTR = "isExpanded";
 
 	private final MapWidget mapWidget;
@@ -72,7 +81,6 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	public LayerTreeWithLegend(final MapWidget mapWidget) {
 		super(mapWidget);
 		this.mapWidget = mapWidget;
-		treeGrid.setIconSize(DEFAULT_ICONSIZE);
 		treeGrid.setShowRollOverCanvas(true);
 	}
 
@@ -232,11 +240,64 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 				}
 			}
 		}
-		// treeGrid.markForRedraw();
 	}
 
 	@Override
 	protected TreeGrid createTreeGrid() {
+		return createTreeGridInfoWindowRollover();
+	}
+
+	protected TreeGrid createTreeGridInfoWindowRollover() {
+		return new TreeGrid() {
+			private HLayout rollOverTools;
+			private HLayout emptyRollOver;
+
+			@Override
+			protected Canvas getRollOverCanvas(Integer rowNum, Integer colNum) {
+				if (rollOverTools == null) {
+					rollOverTools = new HLayout();
+					rollOverTools.setSnapTo("TR");
+					rollOverTools.setWidth(25);
+					rollOverTools.setHeight(LAYERTREEBUTTON_SIZE);
+					emptyRollOver = new HLayout();
+					emptyRollOver.setWidth(1);
+					emptyRollOver.setHeight(LAYERTREEBUTTON_SIZE);
+
+					ImgButton showInfo = new ImgButton();
+					showInfo.setShowDown(false);
+					showInfo.setShowRollOver(false);
+					showInfo.setLayoutAlign(Alignment.CENTER);
+					showInfo.setSrc(SHOW_LAYERINFO_ICON);
+					showInfo.setPrompt(messages.layerTreeWithLegendLayerActionsToolTip());
+					showInfo.setHeight(16);
+					showInfo.setWidth(16);
+					showInfo.addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							LayerActions la = new LayerActions(rollOverLayerTreeNode.getLayer());
+							la.draw();
+						}
+					});
+					rollOverTools.addMember(showInfo);
+				}
+
+				ListGridRecord lgr = this.getRecord(rowNum);
+				if (lgr instanceof LayerTreeLegendItemNode) {
+					rollOverLayerTreeNode = ((LayerTreeLegendItemNode) lgr).parent;
+				} else if (lgr instanceof LayerTreeLegendNode) {
+					rollOverLayerTreeNode = (LayerTreeTreeNode) lgr;
+				} else {
+					rollOverLayerTreeNode = null;
+					rollOverTools.setVisible(false);
+					return emptyRollOver;
+				}
+
+				rollOverTools.setVisible(true);
+				return rollOverTools;
+			}
+		};
+	}
+
+	protected TreeGrid createTreeGridFullRollover() {
 		return new TreeGrid() {
 			private HLayout rollOverTools;
 			private HLayout emptyRollOver;
@@ -433,6 +494,10 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	@Override
 	protected void initialize() {
 		super.initialize();
+		LayerTreeWithLegendInfo ltwli = WidgetInfoHelper.getClientWidgetInfo(LayerTreeWithLegendInfo.IDENTIFIER,
+				LayerTreeWithLegendInfo.class, mapWidget);
+		setIconSize(ltwli == null ? DEFAULT_ICONSIZE : ltwli.getIconSize());
+
 		for (Layer<?> layer : mapModel.getLayers()) {
 			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
 				public void onLabelChange(LayerLabeledEvent event) {

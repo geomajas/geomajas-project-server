@@ -22,6 +22,11 @@ public class LayerTreeWithLegendInfo implements ClientWidgetInfo {
 	private static final long serialVersionUID = 180L;
 
 	/**
+	 * Use this identifier in your configuration files (beans).
+	 */
+	public static final String IDENTIFIER = "LayerTreeWithLegendInfo";
+	
+	/**
 	 * The size of the legend icons in pixels, this is always square (so only
 	 * one parameter).
 	 * <p>
