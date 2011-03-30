@@ -41,7 +41,6 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceBooleanField;
 import com.smartgwt.client.data.fields.DataSourceDateField;
-import com.smartgwt.client.data.fields.DataSourceEnumField;
 import com.smartgwt.client.data.fields.DataSourceFloatField;
 import com.smartgwt.client.data.fields.DataSourceImageFileField;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
@@ -286,14 +285,13 @@ public final class AttributeFormFieldRegistry {
 		registerCustomFormItem(AssociationType.MANY_TO_ONE.name(), new DataSourceFieldFactory() {
 
 			public DataSourceField create() {
-				return new DataSourceEnumField();
+				// Don't use a DataSourceEnumField, as it doesn't work together with the SelectItem's OptionDataSource.
+				return new DataSourceTextField();
 			}
 		}, new FormItemFactory() {
 
 			public FormItem create() {
-				SelectItem selectItem = new SelectItem();
-				selectItem.setDefaultToFirstOption(true);
-				return selectItem;
+				return new SelectItem();
 			}
 		}, null);
 
@@ -408,6 +406,10 @@ public final class AttributeFormFieldRegistry {
 			field.setRequired(isRequired(info.getValidator()));
 			if (info instanceof PrimitiveAttributeInfo) {
 				validators.addAll(convertConstraints((PrimitiveAttributeInfo) info));
+			} else if (info instanceof AssociationAttributeInfo) {
+				if (((AssociationAttributeInfo) info).getType() == AssociationType.MANY_TO_ONE) {
+
+				}
 			}
 			field.setValidators(validators.toArray(new Validator[] {}));
 			return field;

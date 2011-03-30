@@ -65,7 +65,7 @@ public class ManyToOneDataSource extends DataSource {
 		setClientOnly(false);
 
 		// Install MANY_TO_ONE attributes as fields:
-		DataSourceField field = new DataSourceIntegerField(attributeInfo.getFeature().getIdentifier().getName(),
+		DataSourceField field = new DataSourceIntegerField(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_FIELD,
 				attributeInfo.getFeature().getIdentifier().getLabel());
 		field.setPrimaryKey(true);
 		addField(field);
@@ -141,6 +141,7 @@ public class ManyToOneDataSource extends DataSource {
 						list[i] = record;
 					}
 					dsResponse.setData(list);
+					dsResponse.setStatus(RPCResponse.STATUS_SUCCESS);
 					processResponse(requestId, dsResponse);
 				}
 			}

@@ -106,9 +106,6 @@ public class FeatureAttributeEditor extends VLayout {
 	public void setDisabled(boolean disabled) {
 		super.setDisabled(disabled);
 		featureForm.setDisabled(disabled);
-		if (feature != null) {
-			setFeature(feature);
-		}
 	}
 
 	/**
