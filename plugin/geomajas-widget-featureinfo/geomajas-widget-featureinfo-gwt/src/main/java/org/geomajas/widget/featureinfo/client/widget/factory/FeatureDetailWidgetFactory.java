@@ -11,14 +11,12 @@
 package org.geomajas.widget.featureinfo.client.widget.factory;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo;
 
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Window;
 
 /**
@@ -26,6 +24,7 @@ import com.smartgwt.client.widgets.Window;
  * general manner. The effective type used depends on configuration.
  * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  * 
  */
 public final class FeatureDetailWidgetFactory {
@@ -37,69 +36,16 @@ public final class FeatureDetailWidgetFactory {
 		// utility class, hide constructor
 	}
 
-	public static FeatureDetailWidget createFeatureDetailCanvas(VectorLayer layer, boolean editingAllowed, 
-			int maxHeight) {
-		if (layer == null) {
-			throw new IllegalArgumentException("Need a feature or layer");
-		}
-		FeatureDetailWidgetBuilder customBuilder = getCustomBuilder(layer);
-		if (customBuilder != null) {
-			return customBuilder.createFeatureDetailCanvas(null, editingAllowed, maxHeight);
-		} else {
-			// TODO do you want it here? eg. should it not be just a list?
-			// return new FeatureAttributeCanvas(null, editingAllowed,
-			// maxHeight);
-			return null;
-		}
-	}
-
-	public static FeatureDetailWidget createFeatureDetailCanvas(Feature feature, boolean editingAllowed, 
-			int maxHeight) {
-		if (feature == null) {
-			throw new IllegalArgumentException("Need a feature or layer");
-		}
-		FeatureDetailWidgetBuilder customBuilder = getCustomBuilder(feature.getLayer());
-		if (customBuilder != null) {
-			return customBuilder.createFeatureDetailCanvas(feature, editingAllowed, maxHeight);
-		} else {
-			// TODO do you want it here? eg. should it not be just a list?
-			// return new FeatureAttributeCanvas(null, editingAllowed,
-			// maxHeight);
-			return null;
-		}
-	}
-
 	public static Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
 		FeatureDetailWidgetBuilder customBuilder = getCustomBuilder(feature.getLayer());
 		if (customBuilder != null) {
-			FeatureDetailWindow fdw = customBuilder.createFeatureDetailWindow(feature, editingAllowed);
-			if (fdw != null) {
-				return fdw;
-			} else {
-				return windowWrap(customBuilder.createFeatureDetailCanvas(feature, editingAllowed,
-						DEFAULT_WINDOW_HEIGHT));
-			}
-
+			return customBuilder.createFeatureDetailWindow(feature, editingAllowed);
 		} else {
 			return new FeatureAttributeWindow(feature, editingAllowed);
 		}
 	}
 
 	// ----------------------------------------------------------
-
-	/**
-	 * TODO might be better to return FeatureDetailWindow (so feature can be
-	 * updated.
-	 */
-	private static Window windowWrap(Canvas featureDetail) {
-		Window w = new Window();
-		w.setAutoSize(true);
-		w.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
-		w.setCanDragReposition(true);
-		w.setCanDragResize(true);
-		w.addItem(featureDetail);
-		return w;
-	}
 
 	private static FeatureDetailWidgetBuilder getCustomBuilder(VectorLayer layer) {
 		FeatureDetailWidgetBuilder b = null;

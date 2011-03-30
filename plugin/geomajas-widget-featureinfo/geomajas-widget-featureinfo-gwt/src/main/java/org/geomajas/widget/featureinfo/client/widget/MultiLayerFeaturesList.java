@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 /**
  * <p>
- * The <code>NearbyFeaturesList</code> is a class providing a floating window that shows a list of all the features
+ * The <code>MultiLayerFeaturesList</code> is a class providing a floating window that shows a list of all the features
  * (possibly from different layers) provided to it. Clicking on a feature in the list, results in a call of the provided
  * {@link org.geomajas.widget.featureinfo.client.widget.FeatureClickHandler}.
  * </p>
@@ -47,14 +47,16 @@ public class MultiLayerFeaturesList extends ListGrid {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
-	//Todo: Is this used?
-	private Map<String/* layerId */, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
+	private Map<String, VectorLayer> vectorLayers = new HashMap<String, VectorLayer>();
 
-	private Map<String/* serverLayerId+"."+featID */, Feature> features = new HashMap<String, Feature>();
+	private Map<String, Feature> features = new HashMap<String, Feature>();
 
-	private FeatureClickHandler featureClickHandler; /*
-													 * external handler, called when clicking on a feature in the list
-													 */
+	/**
+	 * external handler, called when clicking on a feature in the list
+	 */
+	private FeatureClickHandler featureClickHandler;
+
+	private MapWidget mapWidget;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -68,7 +70,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 */
 	public MultiLayerFeaturesList(final MapWidget mapWidget, FeatureClickHandler featureClickHandler) {
 		super();
-
+		this.mapWidget = mapWidget;
 		this.featureClickHandler = featureClickHandler;
 		buildWidget();
 	}
@@ -78,8 +80,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 * 
 	 * @param featureMap
 	 */
-	public void setFeatures(MapWidget mapWidget, Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
-		//FIXME: use mapWidget field
+	public void setFeatures(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		MapModel mapModel = mapWidget.getMapModel();
 		for (String serverLayerId : featureMap.keySet()) {
 			List<VectorLayer> layers = mapModel.getVectorLayersByServerId(serverLayerId); /*

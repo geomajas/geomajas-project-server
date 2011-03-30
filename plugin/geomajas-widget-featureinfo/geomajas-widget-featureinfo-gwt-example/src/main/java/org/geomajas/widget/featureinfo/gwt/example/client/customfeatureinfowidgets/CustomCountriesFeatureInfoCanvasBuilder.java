@@ -10,13 +10,12 @@
  */
 package org.geomajas.widget.featureinfo.gwt.example.client.customfeatureinfowidgets;
 
+import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidget;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetBuilder;
-import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWindow;
-
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.Window;
 
 /**
  * Sample implementation of a FeatureDetailWidgetBuilder.
@@ -27,17 +26,14 @@ public class CustomCountriesFeatureInfoCanvasBuilder implements FeatureDetailWid
 
 	private static final long serialVersionUID = 1L;
 
-	public FeatureDetailWidget createFeatureDetailCanvas(Feature feature, boolean editingAllowed, int maxHeight) {
-		return new CustomCountriesFeatureInfoCanvas(feature);
-	}
-
-	public FeatureDetailWindow createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
-		return null; // optional
-	}
-
-	public Canvas createWidget() {
-		// TODO not used, maybe better remove from interface altogether
-		return null;
+	public Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
+		Window w = new Window();
+		w.setAutoSize(true);
+		w.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
+		w.setCanDragReposition(true);
+		w.setCanDragResize(true);
+		w.addItem(new CustomCountriesFeatureInfoCanvas(feature));
+		return w;
 	}
 
 	// ----------------------------------------------------------
@@ -45,7 +41,7 @@ public class CustomCountriesFeatureInfoCanvasBuilder implements FeatureDetailWid
 	/**
 	 * The class our builder will return, notice we are using FeatureDetailWidget as parent class.
 	 */
-	private static class CustomCountriesFeatureInfoCanvas extends FeatureDetailWidget {
+	private static class CustomCountriesFeatureInfoCanvas extends Canvas {
 		private Label l;
 
 		public CustomCountriesFeatureInfoCanvas(Feature feature) {
@@ -56,9 +52,10 @@ public class CustomCountriesFeatureInfoCanvasBuilder implements FeatureDetailWid
 			addChild(l);
 		}
 
-		@Override
-		public void setFeature(Feature feature, int maxHeight) {
-			l.setTitle("<b>Custom DetailPanel for feature: </b>" + feature.getId());
-		}
+	}
+
+	public Canvas createWidget() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

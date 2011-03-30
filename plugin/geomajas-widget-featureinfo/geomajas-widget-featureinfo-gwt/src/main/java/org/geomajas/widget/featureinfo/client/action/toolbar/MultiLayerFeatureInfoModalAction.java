@@ -40,81 +40,55 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	/**
-	 * The way the feature list is displayed.
+	 * Constructor.
+	 * @param mapWidget the mapwidget where this action should work on
 	 */
-	private MultiLayerFeatureInfoRepresentationType representationType = MultiLayerFeatureInfoRepresentationType.FLAT;
-
-	/**
-	 * Whether to show the per feature details inline. The default is to show in a separate window.
-	 */
-	private boolean showDetailWindowInline;
-
-	// Constructor:
-
 	public MultiLayerFeatureInfoModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/info.png"/* TODO: icon */, null);
+		super("[ISOMORPHIC]/geomajas/osgeo/info.png", null);
 		setTooltip(messages.nearbyFeaturesModalActionTooltip());
 		this.mapWidget = mapWidget;
-		controller = new MultiLayerFeatureInfoController(mapWidget, pixelTolerance, showDetailWindowInline,
-				representationType);
+		controller = new MultiLayerFeatureInfoController(mapWidget, pixelTolerance);
 	}
 
-	// ToolbarModalAction implementation:
+	/* (non-Javadoc)
+	 * @see org.geomajas.gwt.client.action.ConfigurableAction#configure(java.lang.String, java.lang.String)
+	 */
+	public void configure(String key, String value) {
+		if ("pixelTolerance".equals(key)) {
+			setPixelTolerance(Integer.parseInt(value));
+		} 
+	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.gwt.client.action.ToolbarModalAction#onSelect(com.smartgwt.client.widgets.events.ClickEvent)
+	 */
 	@Override
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(controller);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.geomajas.gwt.client.action.ToolbarModalAction#onDeselect(com.smartgwt.client.widgets.events.ClickEvent)
+	 */
 	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
 
-	// Getters and setters:
-
+	/**
+	 * Set the tolerance in pixels, when clicking on the map, the features in this distance around the mouse click will 
+	 * be returned.
+	 * @param pixelTolerance distance in pixels
+	 */
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
 		controller.setPixelTolerance(pixelTolerance);
-		//FIXME: weg
-		setTooltip(getTooltip() + " pixeltolerance: " + pixelTolerance);
 	}
 
-	public void setRepresentationType(MultiLayerFeatureInfoRepresentationType representationType) {
-		this.representationType = representationType;
-		controller.setRepresentationType(representationType);
-		//FIXME: weg
-		setTooltip(getTooltip() + " representationType: " + representationType);
-	}
-
-	public void setShowDetailWindowInline(boolean showDetailWindowInline) {
-		this.showDetailWindowInline = showDetailWindowInline;
-		controller.setShowDetailWindowInline(showDetailWindowInline);
-		//FIXME: weg
-		setTooltip(getTooltip() + " detailwindowinline: " + showDetailWindowInline);
-	}
-
+	/**
+	 * @return the current pixel tolerance
+	 */
 	public int getPixelTolerance() {
 		return pixelTolerance;
 	}
-
-	public MultiLayerFeatureInfoRepresentationType getRepresentationType() {
-		return representationType;
-	}
-
-	public boolean isShowDetailWindowInline() {
-		return showDetailWindowInline;
-	}
-
-	// configure
-	public void configure(String key, String value) {
-		if ("pixelTolerance".equals(key)) {
-			setPixelTolerance(Integer.parseInt(value));
-		} else if ("representationType".equals(key)) {
-			setRepresentationType(MultiLayerFeatureInfoRepresentationType.valueOf(value));
-		} else if ("showDetailWindowInline".equals(key)) {
-			setShowDetailWindowInline(Boolean.parseBoolean(value));
-		}
-	}
-
 }

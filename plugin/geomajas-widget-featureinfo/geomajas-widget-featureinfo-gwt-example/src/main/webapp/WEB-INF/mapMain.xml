@@ -99,14 +99,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<ref bean="SelectionMode" />
 						<ref bean="FeatureInfoMode" />
 						<ref bean="ToolbarSeparator" />
-						<ref bean="NearbyFeaturesMode" />
-						<ref bean="NearbyFeaturesSepDetailsMode" />
-						<ref bean="ToolbarSeparator" />
 						<ref bean="MultilayerFeatureInfoMode" />
-						<ref bean="MultilayerFeatureInfoTreeMode" />
-						<ref bean="MultilayerFeatureInfoInlineMode" />
-						<ref bean="MultilayerFeatureInfoTreeInlineMode" />
-						<ref bean="MultilayerFeatureInfoFullTreeMode" />
 						<ref bean="ToolbarSeparator" />
 						<ref bean="TooltipOnMouseOverMode" />
 						<ref bean="ShowCoordinatesMode" />
@@ -227,14 +220,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="MultilayerFeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo" />
-
-	<bean name="MultilayerFeatureInfoTreeMode" class="org.geomajas.configuration.client.ClientToolInfo" />
-
-	<bean name="MultilayerFeatureInfoFullTreeMode" class="org.geomajas.configuration.client.ClientToolInfo" />
-
-	<bean name="MultilayerFeatureInfoInlineMode" class="org.geomajas.configuration.client.ClientToolInfo" />
-
-	<bean name="MultilayerFeatureInfoTreeInlineMode" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="SelectionMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">

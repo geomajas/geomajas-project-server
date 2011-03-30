@@ -12,6 +12,8 @@ package org.geomajas.widget.featureinfo.client.widget.factory;
 
 import org.geomajas.gwt.client.map.feature.Feature;
 
+import com.smartgwt.client.widgets.Window;
+
 /**
  * A convenience interface to create FeatureDetail builders.
  * @author Kristof Heirwegh
@@ -20,15 +22,6 @@ import org.geomajas.gwt.client.map.feature.Feature;
 public interface FeatureDetailWidgetBuilder extends WidgetBuilder {
 
 	/**
-	 * Create a DetailCanvas for the given feature.
-	 * @param feature
-	 * @param editingAllowed
-	 * @param maxHeight the canvas should be no higher than this, use a scrollbar if you need more room
-	 * @return
-	 */
-	FeatureDetailWidget createFeatureDetailCanvas(Feature feature, boolean editingAllowed, int maxHeight);
-	
-	/**
 	 * This method is optional, just return null if you don't have a special Window version of your detailpanel.
 	 * A detailcanvas will be requested & wrapped in a window
 	 * 
@@ -36,6 +29,6 @@ public interface FeatureDetailWidgetBuilder extends WidgetBuilder {
 	 * @param editingAllowed
 	 * @return
 	 */
-	FeatureDetailWindow createFeatureDetailWindow(Feature feature, boolean editingAllowed);
+	Window createFeatureDetailWindow(Feature feature, boolean editingAllowed);
 	
 }

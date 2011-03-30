@@ -31,8 +31,6 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoRepresentationType;
-import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoTreeWindow;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
 
 import com.google.gwt.event.dom.client.MouseUpEvent;
@@ -49,21 +47,14 @@ import com.smartgwt.client.widgets.Window;
  */
 public class MultiLayerFeatureInfoController extends AbstractGraphicsController {
 
-	private boolean showDetailWindowInline;
-
-	private MultiLayerFeatureInfoRepresentationType representationType;
-
 	/**
 	 * Number of pixels that describes the tolerance allowed when trying to select features.
 	 */
 	private int pixelTolerance;
 
-	public MultiLayerFeatureInfoController(MapWidget mapWidget, int pixelTolerance, boolean showDetailWindowInline,
-			MultiLayerFeatureInfoRepresentationType representationType) {
+	public MultiLayerFeatureInfoController(MapWidget mapWidget, int pixelTolerance) {
 		super(mapWidget);
 		this.pixelTolerance = pixelTolerance;
-		this.showDetailWindowInline = showDetailWindowInline;
-		this.representationType = representationType;
 	}
 
 	public int getPixelTolerance() {
@@ -72,22 +63,6 @@ public class MultiLayerFeatureInfoController extends AbstractGraphicsController 
 
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
-	}
-
-	public boolean isShowDetailWindowInline() {
-		return showDetailWindowInline;
-	}
-
-	public void setShowDetailWindowInline(boolean showDetailWindowInline) {
-		this.showDetailWindowInline = showDetailWindowInline;
-	}
-
-	public MultiLayerFeatureInfoRepresentationType getRepresentationType() {
-		return representationType;
-	}
-
-	public void setRepresentationType(MultiLayerFeatureInfoRepresentationType representationType) {
-		this.representationType = representationType;
 	}
 
 	/**
@@ -122,19 +97,7 @@ public class MultiLayerFeatureInfoController extends AbstractGraphicsController 
 					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
 					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
 
-					Window window;
-					switch (representationType) {
-						case TREE:
-							window = new MultiLayerFeatureInfoTreeWindow(mapWidget, featureMap, showDetailWindowInline);
-							break;
-						case TREE_FULL:
-							window = new MultiLayerFeatureInfoTreeWindow(mapWidget, featureMap, showDetailWindowInline);
-							break;
-						case FLAT: /* default tree */
-						default: 
-							window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap, showDetailWindowInline);
-							break;
-					}
+					Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
 					window.setPageTop(mapWidget.getAbsoluteTop() + 10);
 					window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
 					window.draw();
