@@ -10,19 +10,22 @@
  */
 package org.geomajas.plugin.rasterizing.legend;
 
-import java.util.LinkedHashMap;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.plugin.rasterizing.api.LayerFactory;
-import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
-import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
-import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
-import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.styling.Rule;
 
 /**
  * Builder class for legend.
@@ -32,30 +35,94 @@ import org.geotools.map.MapContext;
  */
 public class LegendBuilder {
 
-	@SuppressWarnings("unchecked")
-	public JComponent buildComponentTree(MapContext mapContext) {
-		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
-				LayerFactory.USERDATA_RASTERIZING_INFO);
-		LegendRasterizingInfo legendRasterizingInfo = mapRasterizingInfo.getLegendRasterizingInfo();
-		LegendPanel legendPanel = new LegendPanel(legendRasterizingInfo.getTitle());
-		for (Layer layer : mapContext.layers()) {
-			if (layer instanceof RasterDirectLayer) {
-				RasterDirectLayer rasterLayer = (RasterDirectLayer) layer;
-				legendPanel.addLayer(rasterLayer);
-			} else if (layer instanceof FeatureLayer) {
-				FeatureLayer featureLayer = (FeatureLayer) layer;
-				LinkedHashMap<String, FeatureStyleInfo> styles = (LinkedHashMap<String, FeatureStyleInfo>) layer
-						.getUserData().get(LayerFactory.USERDATA_KEY_STYLES);
-				for (FeatureStyleInfo style : styles.values()) {
-					legendPanel.addLayer(featureLayer, style);
-				}
-			} else if (layer instanceof GeometryDirectLayer) {
-				GeometryDirectLayer geometryLayer = (GeometryDirectLayer) layer;
-				legendPanel.addLayer(geometryLayer);
-			}
-		}
-		legendPanel.pack();
+	private static final long serialVersionUID = 100;
+
+	private static final int MAX_SIZE = 10000;
+
+	private JPanel legendPanel;
+
+	private TitledBorder border;
+	
+	private Dimension dimension;
+
+	public LegendBuilder() {
+		legendPanel = new JPanel();
+		legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
+		border = BorderFactory.createTitledBorder("Legend");
+		legendPanel.setBorder(border);
+	}
+
+	public JComponent buildComponent() {
+		pack();
 		return legendPanel;
+	}
+	
+	public void setSize(int width, int height) {
+		dimension = new Dimension(width, height);
+	}
+
+	public void setTitle(String title, Font font) {
+		border.setTitle(title);
+		border.setTitleFont(font);
+	}
+
+	public void addVectorLayer(String title, Rule rule, Font font) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		FeatureStyleInfo defaultStyle = new FeatureStyleInfo();
+		defaultStyle.applyDefaults();
+		SymbolizerIcon icon = new SymbolizerIcon(rule.getSymbolizers()[0], 15, 15);
+		icon.setBounds(5, 5, 15, 15);
+		JPanel iconPanel = new JPanel();
+		iconPanel.setLayout(null);
+		iconPanel.setMinimumSize(new Dimension(25, 25));
+		iconPanel.setPreferredSize(new Dimension(25, 25));
+		iconPanel.setMaximumSize(new Dimension(25, 25));
+		iconPanel.add(icon, BorderLayout.CENTER);
+		panel.add(iconPanel);
+		panel.add(Box.createRigidArea(new Dimension(10, 0)));
+		JLabel itemText = new JLabel(title);
+		itemText.setFont(font);
+		panel.add(itemText);
+		panel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+		legendPanel.add(panel);
+	}
+
+	public void addRasterLayer(String title, Font font) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		ImageIcon icon = createImageIcon("/org/geomajas/plugin/rasterizing/layer-raster.png");
+		panel.add(new JLabel(icon));
+		panel.add(Box.createRigidArea(new Dimension(10, 0)));
+		JLabel itemText = new JLabel(title);
+		itemText.setFont(font);
+		panel.add(itemText);
+		panel.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+		legendPanel.add(panel);
+	}
+
+	private void pack() {
+		JPanel panel = new JPanel();
+		if (dimension != null) {
+			panel.setSize(dimension);
+			panel.setLayout(new BorderLayout());
+			panel.add(legendPanel, BorderLayout.CENTER);
+		} else {
+			panel.setSize(MAX_SIZE, MAX_SIZE);
+			panel.setLayout(new FlowLayout());
+			panel.add(legendPanel);
+		}
+		panel.addNotify();
+		panel.validate();
+	}
+
+	protected ImageIcon createImageIcon(String path) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -95,6 +95,7 @@ public class ImageServiceLegendTest {
 		ClientVectorLayerInfo cl2 = new ClientVectorLayerInfo();
 		cl2.setServerLayerId(layerBeansPoint.getId());
 		cl2.setLayerInfo(layerBeansPoint.getLayerInfo());
+		cl2.setLabel(layerBeansPoint.getId());
 		VectorLayerRasterizingInfo lr2 = new VectorLayerRasterizingInfo();
 		lr2.setStyle(layerBeansPointStyleInfo);
 		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
@@ -103,6 +104,7 @@ public class ImageServiceLegendTest {
 		ClientVectorLayerInfo cl3 = new ClientVectorLayerInfo();
 		cl3.setServerLayerId(layerBeansMultiLine.getId());
 		cl3.setLayerInfo(layerBeansMultiLine.getLayerInfo());
+		cl3.setLabel(layerBeansMultiLine.getId());
 		VectorLayerRasterizingInfo lr3 = new VectorLayerRasterizingInfo();
 		lr3.setStyle(layerBeansMultiLineStyleInfo);
 		cl3.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr3);
@@ -140,6 +142,7 @@ public class ImageServiceLegendTest {
 		ClientVectorLayerInfo cl2 = new ClientVectorLayerInfo();
 		cl2.setServerLayerId(layerBeansPoint.getId());
 		cl2.setLayerInfo(layerBeansPoint.getLayerInfo());
+		cl2.setLabel(layerBeansPoint.getId());
 		VectorLayerRasterizingInfo lr2 = new VectorLayerRasterizingInfo();
 		lr2.setStyle(layerBeansPointStyleInfo);
 		cl2.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr2);
@@ -148,6 +151,7 @@ public class ImageServiceLegendTest {
 		ClientVectorLayerInfo cl3 = new ClientVectorLayerInfo();
 		cl3.setServerLayerId(layerBeansMultiLine.getId());
 		cl3.setLayerInfo(layerBeansMultiLine.getLayerInfo());
+		cl3.setLabel(layerBeansMultiLine.getId());
 		VectorLayerRasterizingInfo lr3 = new VectorLayerRasterizingInfo();
 		lr3.setStyle(layerBeansMultiLineStyleInfo);
 		cl3.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, lr3);

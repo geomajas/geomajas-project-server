@@ -29,6 +29,10 @@ public class LegendRasterizingInfo implements Serializable {
 
 	private String title;
 
+	private int width = -1;
+
+	private int height = -1;
+
 	/**
 	 * Returns the font style of this legend.
 	 * 
@@ -65,5 +69,47 @@ public class LegendRasterizingInfo implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	
+	/**
+	 * Returns the width of this legend.
+	 * 
+	 * @return the width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	
+	/**
+	 * Sets the width of this legend.
+	 * 
+	 * @param width
+	 */
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	
+	/**
+	 * Returns the height of this legend.
+	 * 
+	 * @return the height
+	 */
+	public int getHeight() {
+		return height;
+	}
+
+	
+	/**
+	 * Sets the height of this legend.
+	 * 
+	 * @param height
+	 */
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	
 
 }

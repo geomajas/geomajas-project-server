@@ -138,6 +138,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			Filter multiPointFilter = filterService.createGeometryTypeFilter(geomName, "MultiPoint");
 			Filter pointsFilter = filterService.createLogicFilter(pointFilter, "or", multiPointFilter);
 			pointRule.setFilter(filterService.createLogicFilter(pointsFilter, "and", filter));
+			pointRule.setTitle(featureStyle.getName() + "(Point)");
 
 			// add the configured filter to a filter that selects line features only
 			Rule lineRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.LINESTRING, featureStyle));
@@ -145,6 +146,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			Filter multiLineFilter = filterService.createGeometryTypeFilter(geomName, "MultiLineString");
 			Filter linesFilter = filterService.createLogicFilter(lineFilter, "or", multiLineFilter);
 			lineRule.setFilter(filterService.createLogicFilter(linesFilter, "and", filter));
+			lineRule.setTitle(featureStyle.getName() + "(Line)");
 
 			// add the configured filter to a filter that selects polygon features only
 			Rule polygonRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POLYGON, featureStyle));
@@ -152,6 +154,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			Filter multiPolygonFilter = filterService.createGeometryTypeFilter(geomName, "MultiPolygon");
 			Filter polygonsFilter = filterService.createLogicFilter(polygonFilter, "or", multiPolygonFilter);
 			polygonRule.setFilter(filterService.createLogicFilter(polygonsFilter, "and", filter));
+			polygonRule.setTitle(featureStyle.getName() + "(Polygon)");
 			rules.add(pointRule);
 			rules.add(lineRule);
 			rules.add(polygonRule);
@@ -162,6 +165,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			} else {
 				rule.setFilter(filter);
 			}
+			rule.setTitle(featureStyle.getName());
 			rules.add(rule);
 		}
 		return rules;

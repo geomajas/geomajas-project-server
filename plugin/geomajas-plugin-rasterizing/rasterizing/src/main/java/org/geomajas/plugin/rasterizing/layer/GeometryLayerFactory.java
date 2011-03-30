@@ -56,6 +56,7 @@ public class GeometryLayerFactory implements LayerFactory {
 			layer.getGeometries().add(converterService.toInternal(geom));
 		}
 		layer.getUserData().put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
+		layer.setTitle(layerInfo.getLabel());
 		Map<String, FeatureStyleInfo> styles = new HashMap<String, FeatureStyleInfo>();
 		styles.put(layerInfo.getStyle().getName(), layerInfo.getStyle());
 		layer.getUserData().put(USERDATA_KEY_STYLES, styles);

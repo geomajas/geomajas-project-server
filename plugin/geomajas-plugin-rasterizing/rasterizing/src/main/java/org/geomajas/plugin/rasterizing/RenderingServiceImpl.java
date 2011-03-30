@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -21,13 +22,24 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.RenderingService;
+import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
+import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
 import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
+import org.geomajas.service.TextService;
 import org.geotools.factory.Hints;
 import org.geotools.map.DirectLayer;
+import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Rule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,9 +51,45 @@ import org.springframework.stereotype.Component;
 @Component
 public class RenderingServiceImpl implements RenderingService {
 
-	public RenderedImage paintLegend(MapContext context) {
-		LegendBuilder renderer = new LegendBuilder();
-		JComponent c = renderer.buildComponentTree(context);
+	@Autowired
+	private TextService textService;
+
+	public RenderedImage paintLegend(MapContext mapContext) {
+		LegendBuilder builder = new LegendBuilder();
+		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
+				LayerFactory.USERDATA_RASTERIZING_INFO);
+		LegendRasterizingInfo legendRasterizingInfo = mapRasterizingInfo.getLegendRasterizingInfo();
+		Font font = textService.getFont(legendRasterizingInfo.getFont());
+		builder.setTitle(legendRasterizingInfo.getTitle(), font);
+		if (legendRasterizingInfo.getWidth() > 0) {
+			builder.setSize(legendRasterizingInfo.getWidth(), legendRasterizingInfo.getHeight());
+		}
+		for (Layer layer : mapContext.layers()) {
+			if (layer instanceof RasterDirectLayer) {
+				RasterDirectLayer rasterLayer = (RasterDirectLayer) layer;
+				builder.addRasterLayer(rasterLayer.getTitle(), font);
+			} else if (layer instanceof FeatureLayer) {
+				FeatureLayer featureLayer = (FeatureLayer) layer;
+				FeatureTypeStyle normalStyle = featureLayer.getStyle().featureTypeStyles().get(0);
+				Map<String, FeatureStyleInfo> map = (Map<String, FeatureStyleInfo>) featureLayer.getUserData().get(
+						LayerFactory.USERDATA_KEY_STYLES);
+				for (Rule rule : normalStyle.rules()) {
+					// hackish solution for dynamic legend support
+					if (map.containsKey(rule.getDescription().getTitle().toString())) {
+						if (normalStyle.rules().size() == 1) {
+							builder.addVectorLayer(featureLayer.getTitle(), rule, font);
+						} else {
+							builder.addVectorLayer(rule.getDescription().getTitle().toString(), rule, font);
+						}
+					}
+				}
+			} else if (layer instanceof GeometryDirectLayer) {
+				GeometryDirectLayer geometryLayer = (GeometryDirectLayer) layer;
+				builder.addVectorLayer(geometryLayer.getTitle(), geometryLayer.getStyle().featureTypeStyles().get(0)
+						.rules().get(0), font);
+			}
+		}
+		JComponent c = builder.buildComponent();
 		BufferedImage image = new BufferedImage(c.getWidth(), c.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics2D graphics = image.createGraphics();
 		RenderingHints renderingHints = new Hints();
@@ -150,6 +198,5 @@ public class RenderingServiceImpl implements RenderingService {
 		}
 
 	}
-
 
 }

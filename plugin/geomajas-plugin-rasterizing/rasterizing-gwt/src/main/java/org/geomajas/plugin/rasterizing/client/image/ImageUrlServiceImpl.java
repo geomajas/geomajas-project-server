@@ -77,7 +77,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 		mapRasterizingInfo.setScale(mapView.getCurrentScale());
 		mapRasterizingInfo.setTransparent(true);
 		LegendRasterizingInfo legendRasterizingInfo = new LegendRasterizingInfo();
-		legendRasterizingInfo.setTitle(map.getApplicationId());
+		legendRasterizingInfo.setTitle("Legend");
 		FontStyleInfo font = new FontStyleInfo();
 		font.applyDefaults();
 		legendRasterizingInfo.setFont(font);
@@ -125,6 +125,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				layerInfo.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterInfo);
 			}
 		}
+		mapRasterizingInfo.getExtraLayers().clear();
 		for (WorldPaintable worldPaintable : map.getWorldPaintables().values()) {
 			if (worldPaintable instanceof GfxGeometry) {
 				ClientGeometryLayerInfo layer = new ClientGeometryLayerInfo();
@@ -139,6 +140,8 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				style.applyDefaults();
 				layer.setStyle(style);
 				layer.setLayerType(geometry.getGeometry().getLayerType());
+				layer.setLabel(geometry.getId());
+				layer.setId(geometry.getId());
 				mapRasterizingInfo.getExtraLayers().add(layer);
 			}
 		}

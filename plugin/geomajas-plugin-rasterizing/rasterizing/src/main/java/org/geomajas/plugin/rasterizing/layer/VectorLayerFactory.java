@@ -102,6 +102,7 @@ public class VectorLayerFactory implements LayerFactory {
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, extraInfo));
+		featureLayer.setTitle(vectorInfo.getLabel());
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		LinkedHashMap<String, FeatureStyleInfo> styles = new LinkedHashMap<String, FeatureStyleInfo>();
 		for (InternalFeature feature : features) {
