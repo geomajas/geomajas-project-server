@@ -35,7 +35,7 @@ public class EnableToggleFormItem extends CanvasItem {
 	private DynamicForm enabledForm;
 
 	private DynamicForm disabledForm;
-	
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class EnableToggleFormItem extends CanvasItem {
 	public EnableToggleFormItem(FormItem enabledItem, FormItem disabledItem) {
 		initialize(enabledItem, disabledItem);
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Public methods:
 	// ------------------------------------------------------------------------
@@ -84,7 +84,7 @@ public class EnableToggleFormItem extends CanvasItem {
 			}
 		});
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Method overriding:
 	// ------------------------------------------------------------------------
@@ -110,11 +110,10 @@ public class EnableToggleFormItem extends CanvasItem {
 	}
 
 	public void setDisabled(Boolean disabled) {
-		super.setDisabled(disabled);
-
-		// Don't take the 'disabled' value directly. Stupid SmartGwt isn't correct here...
-		enabledForm.setVisible(!isDisabled());
-		disabledForm.setVisible(isDisabled());
+		boolean realValue = disabled.booleanValue();
+		super.setDisabled(realValue);
+		enabledForm.setVisible(!realValue);
+		disabledForm.setVisible(realValue);
 	}
 
 	public void disable() {

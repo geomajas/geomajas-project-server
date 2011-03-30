@@ -21,6 +21,10 @@ import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -33,6 +37,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class EditAttributeSample extends SamplePanel {
 
 	public static final String TITLE = "EditAttribute";
+
+	private FeatureAttributeEditor editor;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
@@ -53,37 +59,33 @@ public class EditAttributeSample extends SamplePanel {
 		layout.addMember(map);
 		map.init();
 
+		HLayout hLayout = new HLayout(10);
+		hLayout.setHeight(40);
+		IButton disabledBtn = new IButton("Disable form");
+		disabledBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				editor.setDisabled(true);
+			}
+		});
+		hLayout.addMember(disabledBtn);
+		IButton enabledBtn = new IButton("Enable form");
+		enabledBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				editor.setDisabled(false);
+			}
+		});
+		hLayout.addMember(enabledBtn);
+		layout.addMember(hLayout);
+
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
 				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansAssociationLayer");
-				FeatureAttributeEditor editor = new FeatureAttributeEditor(layer, false);
+				editor = new FeatureAttributeEditor(layer, false);
 				editor.setWidth(400);
 				layout.addMember(editor);
-
-				
-//				SearchFeatureRequest request = new SearchFeatureRequest();
-//				request.setBooleanOperator("AND");
-//				request.setCrs("EPSG:900913"); // Can normally be acquired from the MapModel.
-//				request.setLayerId("beansAssociationLayer");
-//				request.setMax(1);
-//				request.setCriteria(new SearchCriterion[] { new SearchCriterion("id", "=", "1") });
-//				final GwtCommand command = new GwtCommand("command.feature.Search");
-//				command.setCommandRequest(request);
-//				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-//
-//					public void execute(CommandResponse response) {
-//						if (response instanceof SearchFeatureResponse) {
-//							VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansAssociationLayer");
-//							SearchFeatureResponse resp = (SearchFeatureResponse) response;
-//							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
-//								Feature feature = new Feature(dtoFeature, layer);
-//								FeatureAttributeEditor editor = new FeatureAttributeEditor(layer, false);
-//								layout.addMember(editor);
-//							}
-//						}
-//					}
-//				});
 			}
 		});
 

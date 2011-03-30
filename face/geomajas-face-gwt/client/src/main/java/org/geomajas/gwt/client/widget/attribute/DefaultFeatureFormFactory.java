@@ -22,16 +22,16 @@ import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 
 /**
- * Default implementation of the {@link AttributeFormFactory}, which places all form fields underneath each other. It
- * uses the {@link AttributeFormFieldRegistry} to create all the {@link DataSourceField}s and {@link FormItem}s within
- * the form.
+ * Default implementation of the {@link FeatureFormFactory}, which places all form fields underneath each other. It uses
+ * the {@link AttributeFormFieldRegistry} to create all the {@link DataSourceField}s and {@link FormItem}s within the
+ * form.
  * 
  * @author Pieter De Graef
  */
-public class DefaultAttributeFormFactory implements AttributeFormFactory {
+public class DefaultFeatureFormFactory implements FeatureFormFactory {
 
-	public AttributeForm createAttributeForm(VectorLayer layer) {
-		AttributeForm form = new AttributeForm(layer);
+	public FeatureForm createFeatureForm(VectorLayer layer) {
+		FeatureForm form = new FeatureForm(layer);
 		DataSource source = new DataSource();
 		List<FormItem> formItems = new ArrayList<FormItem>();
 		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {

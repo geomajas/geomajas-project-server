@@ -14,9 +14,9 @@ package org.geomajas.gwt.client.widget;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.widget.attribute.AttributeForm;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFactory;
-import org.geomajas.gwt.client.widget.attribute.DefaultAttributeFormFactory;
+import org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory;
+import org.geomajas.gwt.client.widget.attribute.FeatureForm;
+import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -38,7 +38,7 @@ public class FeatureAttributeEditor extends VLayout {
 
 	private VectorLayer layer;
 
-	private AttributeForm attributeForm;
+	private FeatureForm featureForm;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -50,8 +50,8 @@ public class FeatureAttributeEditor extends VLayout {
 	 * flag, will this widget use a different type of attribute form to display the feature's attribute values in.
 	 * </p>
 	 * <p>
-	 * This constructor will use the {@link DefaultAttributeFormFactory} to create the actual attribute form. If you
-	 * want a specific factory to be used instead, see the other constructor.
+	 * This constructor will use the {@link DefaultFeatureFormFactory} to create the actual attribute form. If you want
+	 * a specific factory to be used instead, see the other constructor.
 	 * </p>
 	 * 
 	 * @param layer
@@ -60,7 +60,7 @@ public class FeatureAttributeEditor extends VLayout {
 	 *            Should the form initially be disabled or not? When disabled, editing is not possible.
 	 */
 	public FeatureAttributeEditor(VectorLayer layer, boolean disabled) {
-		this(layer, disabled, new DefaultAttributeFormFactory());
+		this(layer, disabled, new DefaultFeatureFormFactory());
 	}
 
 	/**
@@ -72,13 +72,13 @@ public class FeatureAttributeEditor extends VLayout {
 	 * @param disabled
 	 *            Should the form initially be disabled or not? When disabled, editing is not possible.
 	 * @param formFactory
-	 *            The factory that should be used for creating the {@link AttributeForm} in this editor.
+	 *            The factory that should be used for creating the {@link FeatureForm} in this editor.
 	 */
-	public FeatureAttributeEditor(VectorLayer layer, boolean disabled, AttributeFormFactory formFactory) {
+	public FeatureAttributeEditor(VectorLayer layer, boolean disabled, FeatureFormFactory formFactory) {
 		this.layer = layer;
 		setMembersMargin(0);
-		attributeForm = formFactory.createAttributeForm(layer);
-		addMember(attributeForm.getWidget());
+		featureForm = formFactory.createFeatureForm(layer);
+		addMember(featureForm.getWidget());
 		setDisabled(disabled);
 	}
 
@@ -91,7 +91,7 @@ public class FeatureAttributeEditor extends VLayout {
 	 * this widget is not disabled.
 	 */
 	public void addItemChangedHandler(ItemChangedHandler handler) {
-		attributeForm.addItemChangedHandler(handler);
+		featureForm.addItemChangedHandler(handler);
 	}
 
 	// -------------------------------------------------------------------------
@@ -104,8 +104,8 @@ public class FeatureAttributeEditor extends VLayout {
 	 * otherwise a {@link EditableAttributeForm}.
 	 */
 	public void setDisabled(boolean disabled) {
-		attributeForm.setDisabled(disabled);
 		super.setDisabled(disabled);
+		featureForm.setDisabled(disabled);
 		if (feature != null) {
 			setFeature(feature);
 		}
@@ -118,7 +118,7 @@ public class FeatureAttributeEditor extends VLayout {
 	 * @return
 	 */
 	public boolean validate() {
-		return attributeForm.validate();
+		return featureForm.validate();
 	}
 
 	/** Resets the original values of the feature. */
@@ -137,7 +137,7 @@ public class FeatureAttributeEditor extends VLayout {
 	 */
 	public Feature getFeature() {
 		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			attributeForm.fromForm(info.getName(), feature.getAttributes().get(info.getName()));
+			featureForm.fromForm(info.getName(), feature.getAttributes().get(info.getName()));
 		}
 		return feature;
 	}
@@ -157,7 +157,7 @@ public class FeatureAttributeEditor extends VLayout {
 		} else {
 			original = null;
 			feature = null;
-			attributeForm.clear();
+			featureForm.clear();
 		}
 	}
 
@@ -167,7 +167,7 @@ public class FeatureAttributeEditor extends VLayout {
 
 	private void copyToForm(Feature feature) {
 		for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			attributeForm.toForm(info.getName(), feature.getAttributes().get(info.getName()));
+			featureForm.toForm(info.getName(), feature.getAttributes().get(info.getName()));
 		}
 	}
 }

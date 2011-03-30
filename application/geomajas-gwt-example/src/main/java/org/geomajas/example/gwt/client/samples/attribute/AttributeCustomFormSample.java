@@ -23,8 +23,8 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.attribute.AttributeForm;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFactory;
+import org.geomajas.gwt.client.widget.attribute.FeatureForm;
+import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.DataSourceFieldFactory;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.FormItemFactory;
@@ -75,11 +75,11 @@ public class AttributeCustomFormSample extends SamplePanel {
 		}, null);
 
 		// Creating the custom form factory:
-		final AttributeFormFactory myFactory = new AttributeFormFactory() {
+		final FeatureFormFactory myFactory = new FeatureFormFactory() {
 
-			public AttributeForm createAttributeForm(VectorLayer layer) {
+			public FeatureForm createFeatureForm(VectorLayer layer) {
 				// Create the default form:
-				AttributeForm form = new AttributeForm(layer);
+				FeatureForm form = new FeatureForm(layer);
 				form.getWidget().setNumCols(4);
 				form.getWidget().setWidth(450);
 				form.getWidget().setColWidths(100, 180, 20, 150);

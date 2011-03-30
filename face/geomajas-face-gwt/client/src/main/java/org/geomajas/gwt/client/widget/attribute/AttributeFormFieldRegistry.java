@@ -72,9 +72,9 @@ import com.smartgwt.client.widgets.form.validator.Validator;
  * field, and use such a custom form item in a form.
  * </p>
  * <p>
- * When defining custom implementations of the {@link AttributeFormFactory}, you are strongly encouraged to use this
- * class to create the actual fields within the forms, and to use both a {@link DataSourceField} and a {@link FormItem}
- * for each attribute you want to display in the form.<br/>
+ * When defining custom implementations of the {@link FeatureFormFactory}, you are strongly encouraged to use this class
+ * to create the actual fields within the forms, and to use both a {@link DataSourceField} and a {@link FormItem} for
+ * each attribute you want to display in the form.<br/>
  * The form item will provide the view on the form field, while the data source field will provide the underlying data
  * control (with validators).
  * </p>
@@ -94,7 +94,7 @@ public final class AttributeFormFieldRegistry {
 
 	/**
 	 * Definition of a factory capable of creating a certain kind of {@link FormItem}. These factories are stored within
-	 * this registry and used for building {@link AttributeForm}s.
+	 * this registry and used for building {@link FeatureForm}s.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -105,7 +105,7 @@ public final class AttributeFormFieldRegistry {
 
 	/**
 	 * Definition of a factory capable of creating a certain kind of {@link DataSourceField}. These factories are stored
-	 * within this registry and used for building {@link AttributeForm}s.
+	 * within this registry and used for building {@link FeatureForm}s.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -230,7 +230,7 @@ public final class AttributeFormFieldRegistry {
 		}, null);
 
 		// TYPE: URL
-		registerCustomFormItem(PrimitiveType.FLOAT.name(), new DataSourceFieldFactory() {
+		registerCustomFormItem(PrimitiveType.URL.name(), new DataSourceFieldFactory() {
 
 			public DataSourceField create() {
 				return new DataSourceTextField();
@@ -291,7 +291,9 @@ public final class AttributeFormFieldRegistry {
 		}, new FormItemFactory() {
 
 			public FormItem create() {
-				return new SelectItem();
+				SelectItem selectItem = new SelectItem();
+				selectItem.setDefaultToFirstOption(true);
+				return selectItem;
 			}
 		}, null);
 

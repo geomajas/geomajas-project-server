@@ -36,7 +36,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 public class GwtTestDefaultAttributeFormFactory extends GWTTestCase {
 
-	AttributeFormFactory factory;
+	FeatureFormFactory factory;
 
 	List<AttributeInfoPair> pairs;
 
@@ -46,7 +46,7 @@ public class GwtTestDefaultAttributeFormFactory extends GWTTestCase {
 
 	@Override
 	protected void gwtSetUp() throws Exception {
-		factory = new DefaultAttributeFormFactory();
+		factory = new DefaultFeatureFormFactory();
 		pairs = new ArrayList<AttributeInfoPair>();
 		pairs.add(new AttributeInfoPair("name1", "label1", (short) 123));
 		pairs.add(new AttributeInfoPair("name2", "label2", (int) 123456));
@@ -62,7 +62,7 @@ public class GwtTestDefaultAttributeFormFactory extends GWTTestCase {
 	}
 
 	public void testCreateForm() {
-		factory.createAttributeForm(null);
+		factory.createFeatureForm(null);
 		
 //		EditableAttributeForm form = factory.createEditableForm(asInfos(pairs));
 //		Assert.assertNotNull(form);

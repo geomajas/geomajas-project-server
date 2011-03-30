@@ -17,23 +17,23 @@
 
 /*------------- ATTRIBUTE FORMS -------------*/
 
-.attributeForm .formTitle, .attributeForm .formCell,
-.attributeForm .formTitleFocused, .attributeForm .formCellFocused,
-.attributeForm .formTitleError, .attributeForm .formCellError,
-.attributeForm .formTitleDisabled, .attributeForm .formCellDisabled
+.featureForm .formTitle, .featureForm .formCell,
+.featureForm .formTitleFocused, .featureForm .formCellFocused,
+.featureForm .formTitleError, .featureForm .formCellError,
+.featureForm .formTitleDisabled, .featureForm .formCellDisabled
 {
 	/* Style for the form TD's */
 }
-.attributeForm .formTitleError, .attributeForm .formCellError {
+.featureForm .formTitleError, .featureForm .formCellError {
 	/* Style title texts on the left side */
 }
-.attributeForm .formTitleDisabled, .attributeForm .formCellDisabled {
+.featureForm .formTitleDisabled, .featureForm .formCellDisabled {
 	/* Style for the disabled forms */
 	color: #002040;
 }
 
-.attributeForm .textItemDisabled, .attributeForm .selectItemTextDisabled,
-.attributeForm .labelAnchorDisabled
+.featureForm .textItemDisabled, .featureForm .selectItemTextDisabled,
+.featureForm .labelAnchorDisabled
 {
 	/* Style for the disabled forms */
 	border: 0;
@@ -41,10 +41,10 @@
 	color: #000000;
 }
 
-.attributeForm .formCellError div {
+.featureForm .formCellError div {
 }
 
-.attributeForm table {
+.featureForm table {
 }
 
 

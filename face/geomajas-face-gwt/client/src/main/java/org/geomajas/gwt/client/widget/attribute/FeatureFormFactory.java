@@ -20,7 +20,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  * Definition of a factory that is able to create different types of attribute forms. An attribute form is meant to
  * display (and/or edit and/or validate) the attributes of one single feature. There is a default implementation which
  * places all attribute form fields underneath each other, but feel free to write your own implementations to change the
- * default look and feel of an {@link AttributeForm}.
+ * default look and feel of an {@link FeatureForm}.
  * </p>
  * <p>
  * When creating your own implementations, it is recommended to set both a <code>DataSourceField</code> and
@@ -30,9 +30,9 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  * </p>
  * <code>
  * <pre>
- * 	public AttributeForm createAttributeForm(VectorLayer layer) {
+ * 	public FeatureForm createFeatureForm(VectorLayer layer) {
  * 
- * 		// Only make specific AttributeForms for a specific layer:
+ * 		// Only make specific FeatureForms for a specific layer:
  * 		if (layer.getId().equals("my-specific-layer") {
  * 
  *          // Prepare the data source and form items:
@@ -52,7 +52,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  * 			}
  * 
  *          // Create the form, with some specifics:
- * 			AttributeForm form = new AttributeForm(layer);
+ * 			FeatureForm form = new FeatureForm(layer);
  * 			form.getWidget().setGroupTitle("My Custom Attribute Form");
  * 			form.getWidget().setIsGroup(true);
  * 			form.getWidget().setNumCols(4);
@@ -64,8 +64,8 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  * 		}
  * 
  * 		// For all other layers, use the default factory:
- * 		DefaultAttributeFormFactory defaultFactory = new DefaultAttributeFormFactory();
- * 		return factory.createAttributeForm(layer);
+ * 		DefaultFeatureFormFactory defaultFactory = new DefaultFeatureFormFactory();
+ * 		return factory.createFeatureForm(layer);
  * 	}
  * 	</pre>
  * </code>
@@ -74,7 +74,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  */
 @FutureApi(allMethods = true)
 @UserImplemented
-public interface AttributeFormFactory {
+public interface FeatureFormFactory {
 
 	/**
 	 * Creates a form using the specified attribute information.
@@ -83,5 +83,5 @@ public interface AttributeFormFactory {
 	 *            List of attribute definitions. Normally taken from a {@link VectorLayer}.
 	 * @return An attribute form that allows for editing of it's values.
 	 */
-	AttributeForm createAttributeForm(VectorLayer layer);
+	FeatureForm createFeatureForm(VectorLayer layer);
 }

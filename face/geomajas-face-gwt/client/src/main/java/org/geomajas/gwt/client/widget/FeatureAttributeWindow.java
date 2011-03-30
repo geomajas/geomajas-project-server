@@ -25,8 +25,8 @@ import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFactory;
-import org.geomajas.gwt.client.widget.attribute.DefaultAttributeFormFactory;
+import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
+import org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.IButton;
@@ -80,7 +80,7 @@ public class FeatureAttributeWindow extends Window {
 	 */
 	private FeatureAttributeEditor attributeTable;
 
-	private AttributeFormFactory factory;
+	private FeatureFormFactory factory;
 
 	private boolean editingAllowed;
 
@@ -108,7 +108,7 @@ public class FeatureAttributeWindow extends Window {
 
 	/**
 	 * Create an instance and immediately apply a feature onto it. Also specify whether or not editing is allowed. By
-	 * default this constructor will use a {@link DefaultAttributeFormFactory} to create the attribute form. If you want
+	 * default this constructor will use a {@link DefaultFeatureFormFactory} to create the attribute form. If you want
 	 * to have some influence on how the feature attribute form should look, than use the other constructor.
 	 * 
 	 * @param feature
@@ -120,7 +120,7 @@ public class FeatureAttributeWindow extends Window {
 	 */
 	@Api
 	public FeatureAttributeWindow(Feature feature, boolean editingAllowed) {
-		this(feature, editingAllowed, new DefaultAttributeFormFactory());
+		this(feature, editingAllowed, new DefaultFeatureFormFactory());
 	}
 
 	/**
@@ -136,10 +136,10 @@ public class FeatureAttributeWindow extends Window {
 	 * @since 1.9.0
 	 */
 	@Api
-	public FeatureAttributeWindow(Feature feature, boolean editingAllowed, AttributeFormFactory factory) {
+	public FeatureAttributeWindow(Feature feature, boolean editingAllowed, FeatureFormFactory factory) {
 		super();
 		if (factory == null) {
-			this.factory = new DefaultAttributeFormFactory();
+			this.factory = new DefaultFeatureFormFactory();
 		} else {
 			this.factory = factory;
 		}
