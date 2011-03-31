@@ -153,6 +153,7 @@ public class LayerActions extends Window {
 		transparencySlider.setMinValue(0);
 		transparencySlider.setMaxValue(100);
 		transparencySlider.setNumValues(101);
+		transparencySlider.setMaxValueLabel("100%");
 		transparencySlider.setVertical(false);
 		transparencySlider.setWidth(230);
 		transparencySlider.setLabelWidth(Integer.parseInt(messages.layerActionsOpacitySliderLabelWidth()));

@@ -59,6 +59,8 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, FolderClickHandler,
 		LayerSelectionHandler {
 
+	protected static final String IMG_TAGNAME = "IMG";
+
 	protected static final int LAYERTREEBUTTON_SIZE = 22;
 
 	protected static final int DEFAULT_ICONSIZE = 18;
@@ -163,7 +165,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	public void onFolderClick(FolderClickEvent event) {
 		try {
 			Element e = EventHandler.getNativeMouseTarget();
-			if (e.toString().contains("HTMLImageElement")) {
+			if (IMG_TAGNAME.equals(e.getTagName())) {
 				onIconClick(event.getFolder());
 			} else {
 				mapModel.selectLayer(null);
@@ -171,14 +173,6 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		} catch (Exception e) {
 			GWT.log(e.getMessage());
 			// some other unusable element
-		}
-	}
-	
-	protected void onIconClick(TreeNode node) {
-		if (node != null && node instanceof LayerTreeTreeNode) {
-			LayerTreeTreeNode n = (LayerTreeTreeNode) node;
-			n.layer.setVisible(!n.layer.isShowing());
-			n.updateIcon();
 		}
 	}
 
@@ -190,7 +184,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	public void onLeafClick(LeafClickEvent event) {
 		try {
 			Element e = EventHandler.getNativeMouseTarget();
-			if (e.toString().contains("HTMLImageElement")) {
+			if (IMG_TAGNAME.equals(e.getTagName())) {
 				onIconClick(event.getLeaf());
 			} else {
 				LayerTreeTreeNode layerTreeNode = (LayerTreeTreeNode) event.getLeaf();
@@ -206,7 +200,15 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 			// some other unusable element
 		}
 	}
-	
+
+	protected void onIconClick(TreeNode node) {
+		if (node != null && node instanceof LayerTreeTreeNode) {
+			LayerTreeTreeNode n = (LayerTreeTreeNode) node;
+			n.layer.setVisible(!n.layer.isShowing());
+			n.updateIcon();
+		}
+	}
+
 	// -------------------------------------------------------------------------
 	// Getters:
 	// -------------------------------------------------------------------------

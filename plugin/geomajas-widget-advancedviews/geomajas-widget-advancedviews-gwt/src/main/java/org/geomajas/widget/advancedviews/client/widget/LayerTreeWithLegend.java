@@ -256,7 +256,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	protected void onIconClick(TreeNode node) {
 		if (node instanceof LayerTreeLegendNode) {
 			super.onIconClick(node);
-		} else if (node instanceof LayerTreeTreeNode) {
+		} else if (node instanceof TreeNode) {
 			// TODO -- show/hide all layers in folder
 			GWT.log("TODO");
 		}

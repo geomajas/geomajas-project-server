@@ -22,7 +22,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -71,7 +70,10 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 
 	private static final Color TEXTBACKGROUND = new Color(0, 0, 0, 128);
 
-	private static final String DEFAULT_RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
+	private static final String DEFAULT_RASTER_IMAGE_PATH = "org/geomajas/widget/advancedviews/public/sc/geomajas/osg" +
+			"eo/layer-raster.png";
+	// private static final String DEFAULT_RASTER_IMAGE_PATH =
+	// "images/osgeo/layer-raster.png";
 
 	private Map<String, Integer> iconSizes;
 
@@ -192,16 +194,8 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 	}
 
 	private void drawRaster(Graphics2D gr, int iconSize, String imagePath) throws AdvancedviewsException {
-		String im = imagePath;
-		if (imagePath.startsWith("/")) {
-			im = imagePath.substring(1);
-		}
-		InputStream is = ClassLoader.getSystemResourceAsStream(im);
 		try {
-			if (is == null) {
-				is = new FileInputStream(im);
-			}
-			BufferedImage img = ImageIO.read(is);
+			BufferedImage img = getImage(imagePath);
 			AffineTransform trans;
 			if (img.getHeight() > iconSize || img.getWidth() > iconSize) {
 				double sx = 1d / img.getWidth() * iconSize;
@@ -224,13 +218,6 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 			log.warn("Failed creating Legend Icon for Rasterlayer. Could not find image.");
 			throw new AdvancedviewsException(AdvancedviewsException.FAILED_CREATING_IMAGEICON,
 					"Kon rasterlaag icoon niet vinden ?!");
-		} finally {
-			try {
-				if (is != null) {
-					is.close();
-				}
-			} catch (IOException e2) {
-			}
 		}
 	}
 
@@ -445,19 +432,33 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 		} else if (href.startsWith("http://")) {
 			return ImageIO.read(new URL(href));
 		} else {
-			Resource resource = appContext.getResource(href);
-			if (resource != null && resource.exists()) {
-				InputStream is = null;
-				try {
+			String path = href;
+			if (href.startsWith("/")) {
+				path = href.substring(1);
+			}
+			InputStream is = null;
+			try {
+				Resource resource = appContext.getResource(path);
+				if (resource != null && resource.exists()) {
 					is = resource.getInputStream();
-					return ImageIO.read(is);
-				} finally {
-					if (is != null) {
-						is.close();
+				} else {
+					// conveniencecheck so clients can use same url client- as
+					// serverside
+					resource = appContext.getResource("images/" + path);
+					if (resource != null && resource.exists()) {
+						is = resource.getInputStream();
+					} else {
+						is = LegendIconsServiceImpl.class.getResourceAsStream(path);
 					}
 				}
-			} else {
-				throw new AdvancedviewsException(AdvancedviewsException.IMAGE_NOT_FOUND, href);
+				if (is == null) {
+					throw new AdvancedviewsException(AdvancedviewsException.IMAGE_NOT_FOUND, path);
+				}
+				return ImageIO.read(is);
+			} finally {
+				if (is != null) {
+					is.close();
+				}
 			}
 		}
 	}
