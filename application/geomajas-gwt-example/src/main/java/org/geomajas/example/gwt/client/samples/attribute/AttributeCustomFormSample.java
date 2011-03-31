@@ -23,11 +23,12 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.attribute.FeatureForm;
-import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.DataSourceFieldFactory;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.FormItemFactory;
+import org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory;
+import org.geomajas.gwt.client.widget.attribute.FeatureForm;
+import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
@@ -74,48 +75,66 @@ public class AttributeCustomFormSample extends SamplePanel {
 			}
 		}, null);
 
+		// @extract-start CustomFeatureFormFactory, CustomFeatureFormFactory
 		// Creating the custom form factory:
 		final FeatureFormFactory myFactory = new FeatureFormFactory() {
 
 			public FeatureForm createFeatureForm(VectorLayer layer) {
-				// Create the default form:
-				FeatureForm form = new FeatureForm(layer);
-				form.getWidget().setNumCols(4);
-				form.getWidget().setWidth(450);
-				form.getWidget().setColWidths(100, 180, 20, 150);
 
-				form.getWidget().setGroupTitle("Custom Attribute Form");
-				form.getWidget().setIsGroup(true);
+				// Create a custom form only for this layer:
+				if ("beansLayerCustomForm".equals(layer.getId())) {
 
-				DataSource source = new DataSource();
-				List<FormItem> formItems = new ArrayList<FormItem>();
+					// Create a form, and apply some specific parameters:
+					FeatureForm form = new FeatureForm(layer);
+					form.getWidget().setNumCols(4);
+					form.getWidget().setWidth(450);
+					form.getWidget().setColWidths(100, 180, 20, 150);
 
-				// Go over all attribute definitions:
-				for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-					if (info.isIncludedInForm()) {
-						DataSourceField field = AttributeFormFieldRegistry.createDataSourceField(layer, info);
-						field.setCanEdit(info.isEditable());
-						source.addField(field);
+					form.getWidget().setGroupTitle("Custom Attribute Form");
+					form.getWidget().setIsGroup(true);
 
-						FormItem formItem = AttributeFormFieldRegistry.createFormItem(layer, info);
-						formItem.setWidth("*");
+					// Prepare the DataSource and FormItems:
+					DataSource source = new DataSource();
+					List<FormItem> formItems = new ArrayList<FormItem>();
 
-						if ("dateAttr".equals(info.getName())) {
-							formItem.setColSpan(4);
-						} else if ("stringAttr".equals(info.getName())) {
-							// Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
-							formItems.add(new RowSpacerItem());
+					// Go over all attribute definitions:
+					for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+
+						// Only include attributes that want to:
+						if (info.isIncludedInForm()) {
+
+							// For each attribute, create a DataSourceField and a FormItem:
+							DataSourceField field = AttributeFormFieldRegistry.createDataSourceField(layer, info);
+							field.setCanEdit(info.isEditable());
+							source.addField(field);
+
+							FormItem formItem = AttributeFormFieldRegistry.createFormItem(layer, info);
+							formItem.setWidth("*");
+
+							// Apply some specifics to the attributes:
+							if ("dateAttr".equals(info.getName())) {
+								// The data attribute will span all 4 columns:
+								formItem.setColSpan(4);
+							} else if ("stringAttr".equals(info.getName())) {
+								// Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
+								formItems.add(new RowSpacerItem());
+							}
+							formItems.add(formItem);
 						}
-						formItems.add(formItem);
 					}
-				}
 
-				// Finish the form:
-				form.getWidget().setDataSource(source);
-				form.getWidget().setFields(formItems.toArray(new FormItem[] {}));
-				return form;
+					// Finish: Add the DataSource and the FormItems:
+					form.getWidget().setDataSource(source);
+					form.getWidget().setFields(formItems.toArray(new FormItem[] {}));
+					return form;
+				} else {
+					// For all other layers, use the default:
+					DefaultFeatureFormFactory factory = new DefaultFeatureFormFactory();
+					return factory.createFeatureForm(layer);
+				}
 			}
 		};
+		// @extract-end
 
 		// Continue creating the layout:
 		final VLayout layout = new VLayout();

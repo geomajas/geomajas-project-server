@@ -327,17 +327,16 @@ public final class AttributeFormFieldRegistry {
 	 * </p>
 	 * 
 	 * @param key
-	 *            The key associated with the given {@link FormItem} and {@link DataSourceField}. This key is either the
-	 *            name of an attribute type (i.e. PrimitiveType.DATE.name()) to overwrite the default definitions, or a
-	 *            completely new type which can be configured in the attribute definitions with the
-	 *            <code>formInputType</code> field.
+	 *            The key associated with the given {@link FormItemFactory} and {@link DataSourceFieldFactory}. This key
+	 *            is either the name of an attribute type (i.e. <code>PrimitiveType.DATE.name()</code>) to overwrite the
+	 *            default definitions, or a completely new type which can be configured in the attribute definitions
+	 *            with the <code>formInputType</code> field.
 	 * @param fieldType
-	 *            The type of {@link DataSourceField} associated with the given key. Beware that only the class is to be
-	 *            provided, as the create methods will always create new instances of this class.
+	 *            The type of {@link DataSourceFieldFactory} associated with the given key. This factory will create the
+	 *            correct {@link DataSourceField} for the given key.
 	 * @param formItem
-	 *            The type of {@link FormItem} associated with the given key. Keep in mind that for every request, new
-	 *            instances are created. So if you want properties, such as 'height (or anything else) to be applied,
-	 *            make sure they are set within the no-args constructor.
+	 *            The type of {@link FormItemFactory} associated with the given key. This factory will create the
+	 *            correct {@link FormItem} for the given key.
 	 * @param validators
 	 *            A list of validators that can be applied to the {@link DataSourceField}. This is optional and can be
 	 *            null. These validators protect the data, and can for example make sure that a user does not use any

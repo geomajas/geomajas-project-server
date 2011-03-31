@@ -30,7 +30,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
  * </p>
  * <code>
  * <pre>
- * 	public FeatureForm createFeatureForm(VectorLayer layer) {
+ * 	public class FeatureForm createFeatureForm(VectorLayer layer) {
  * 
  * 		// Only make specific FeatureForms for a specific layer:
  * 		if (layer.getId().equals("my-specific-layer") {

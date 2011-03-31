@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="ch-arch">
@@ -1204,5 +1203,174 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     tests are run inside a development mode environment and can refer to most
     of the GWT API. To run a GWT test case, run the Maven command
     <command>gwt:test </command>or execute the integration test phase.</para>
+  </section>
+
+  <section>
+    <title>Creating (custom) feature forms</title>
+
+    <remark>This functionality has been added to the GWT client API in version
+    1.9.0.</remark>
+
+    <para>When working with vector layers, one often has a need for editing
+    not only the vector component of the features, but also the
+    alpha-numerical attributes. To this end, special factories have been
+    created that can be passed to the editing widgets (FeatureAttirbuteEditor
+    and FeatureAttributeWindow) to create such forms.</para>
+
+    <para>All interfaces and classes in this section can be found in the
+    following package:
+    <code>org.geomajas.gwt.client.widget.attribute</code></para>
+
+    <para>Central in all this, is the <code>FeatureForm</code> and the
+    <code>FeatureFormFactory</code>. The <code>FeatureFormFactory</code> is an
+    interface that defines a single method for the creation of a
+    <code>FeatureForm</code> instance.</para>
+
+    <example>
+      <title>FeatureFormFactory interface</title>
+
+      <para><programlisting>public interface FeatureFormFactory {
+
+   /**
+    * Creates a form using the specified attribute information.
+    *
+    * @param infos
+    *           List of attribute definitions. Normally taken from a {@link VectorLayer}.
+    * @return An attribute form that allows for editing of it's values.
+    */
+    FeatureForm createFeatureForm(VectorLayer layer);
+}</programlisting></para>
+    </example>
+
+    <para>A default implementation of this factory has been implemented
+    <code>org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory</code>.
+    When the default layout of a feature form is sufficient use this one,
+    otherwise feel free to implement your own factory.</para>
+
+    <para>The FeatureForm is a form definition that has been tuned towards the
+    Geomajas GWT feature definition, and is used in the central editing
+    widgets (<code>FeatureAttirbuteEditor</code> and
+    <code>FeatureAttributeWindow</code>). Note that those editing widgets have
+    constructors to accept a <code>FeatureFormFactory</code>, in case you
+    whish to use your own factory.</para>
+
+    <para>Of course implementing your own factory might be a bit overwhelming.
+    Therefore, an extra utility class has been added to create the individual
+    form items that represent the feature's attributes. This utility class is
+    the <code>AttributeFormFieldRegistry</code>. This registry keeps a
+    pre-defined set of form items definitions and data source fields (both are
+    necessary to successfully creates forms in SmartGWT) that map onto
+    attribute types. For example, it will map a DateItem and
+    DataSourceDateField onto all attributes of type DATE. This registry can
+    now be used to create the individual items within the form, or to register
+    custom form items types to use in the forms.</para>
+
+    <note>
+      <para>Internally, the
+      <code>org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory</code>
+      makes use of the AttributeFormFieldRegistry. This means that if you
+      register custom form items for certain attribute types, these custom
+      items will also appear in the default feature forms, without you having
+      to implement a custom FeatureFormFactory.</para>
+    </note>
+
+    <para>In the following sections, the details of registering custom form
+    items and creting custom forms will be explained.</para>
+
+    <section>
+      <title>Using custom form items within a FeatureForm</title>
+
+      <para>In order to use custom form items within a FeatureForm, there are
+      2 ways: override one the default for a certain attribute type, or define
+      a completely new type.</para>
+
+      <para>In any case, you will need to register a custom type with the
+      AttributeFormFieldRegistry. Let us start with a coding example:</para>
+
+      <xi:include href="listing/CustomAttributeFormFieldRegistry.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>This short piece of code will register a "SliderItem" for all
+      attributes of the type "myType". Let us first go over the code in more
+      detail. In order to register a new type, 4 arguments are
+      required:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The key associated with the given <code>FormItemFactory</code>
+          and <code>DataSourceFieldFactory</code>. This key is either the name
+          of an attribute type (i.e. <code>PrimitiveType.DATE.name()</code>)
+          to overwrite the default definitions, or a completely new type which
+          can be configured in the attribute definitions with the
+          <code>formInputType</code> field (see further in this section). This
+          key is a unique identifier.</para>
+        </listitem>
+
+        <listitem>
+          <para>A <code>DataSourceFieldFactory</code> definition. This factory
+          will create a SmartGWT <code>DataSourceField</code> that represents
+          the underlying data-source in the form.</para>
+        </listitem>
+
+        <listitem>
+          <para>A <code>FormItemFactory</code> definition. This factory will
+          create a SmartGWT FormItem that represents the actual widget by
+          which the attribute is presented in the form. In the case above, the
+          attribute will be represented by a <code>SliderItem</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>A list of validators the can be attached to the underlying
+          <code>DataSourceField</code>. Any time the user changes values
+          within a FeatureForm, associated validators will be run. In the
+          example above no extra validators are attached to the
+          <code>DataSourceIntegerField</code>.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>So the parameter explanation already told us how to overwrite the
+      default attribute types: by registering a new type for an attribute type
+      (i.e. <code>PrimitiveType.DATE.name()</code>). The other option, to
+      register completely new types, is done by using a new key. The only
+      thing left to do than is to associate attributes with this key. This can
+      be done within the vector layer XML configuration, where a field by the
+      name of "<code>formInputType</code>" can be added to an attribute
+      configuration. For more information on attribute configuration, visit
+      the <ulink
+      url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#conf-vectorInfo">Geomajas
+      developer guide</ulink>.</para>
+    </section>
+
+    <section>
+      <title>Creating a custom FeatureFormFactory</title>
+
+      <para>The next step is to create a custom
+      <code>FeatureFormFactory</code>. Let us again start with a short code
+      example:</para>
+
+      <xi:include href="listing/CustomFeatureFormFactory.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>The example above is a custom implementation of the only method
+      within the <code>FeatureFormFactory</code>. It checks for a specific
+      layer, and will otherwise simply use the
+      <code>DefaultFeatureFormFactory</code>. Basically it starts out all
+      normal, by creating a list of <code>FormItems</code> and a
+      <code>DataSource</code> and adding them to the <code>FeatureForm</code>
+      - this is all quite obligatory, unless you want to go crazy and skip
+      using the <code>AttributeFormFieldRegistry</code> altogether. Everything
+      up to the point of setting the fields (form items) is the same as what
+      the <code>DefaultFeatureFormFactory</code> does.</para>
+
+      <para>Note that it simply goes over all attribute definitions and let's
+      the AttributeFormFieldRegistry create the correct FormItems and
+      DataSourceFields for it. Note also that if an attribute does not want to
+      be included in the form, we don't put it in.</para>
+
+      <para>From that point on some custom settings are used, such as applying
+      4 columns and a group title. The form that results from this will not
+      differ all too much from the default implementation, but it should get
+      you on your way.</para>
+    </section>
   </section>
 </chapter>

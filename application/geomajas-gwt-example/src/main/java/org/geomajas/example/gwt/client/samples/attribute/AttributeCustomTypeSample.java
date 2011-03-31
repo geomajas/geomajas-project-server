@@ -49,7 +49,8 @@ public class AttributeCustomTypeSample extends SamplePanel {
 	};
 
 	public Canvas getViewPanel() {
-		// First of all, we define the custom type "myType" in the AttributeFormItemFactory:
+		// @extract-start CustomAttributeFormFieldRegistry, CustomAttributeFormFieldRegistry
+		// We define the custom type "myType" in the AttributeFormItemFactory:
 		AttributeFormFieldRegistry.registerCustomFormItem("myType", new DataSourceFieldFactory() {
 
 			public DataSourceField create() {
@@ -61,6 +62,7 @@ public class AttributeCustomTypeSample extends SamplePanel {
 				return new SliderItem();
 			}
 		}, null);
+		// @extract-end
 
 		// Now we continue as usual:
 		final VLayout layout = new VLayout();
