@@ -305,8 +305,10 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 		@SuppressWarnings("unchecked")
 		public int compare(Object f1, Object f2) {
 			try {
-				Comparable attr1 = (Comparable) getFeatureModel().getAttribute(f1, attributeName).getValue();
-				Comparable attr2 = (Comparable) getFeatureModel().getAttribute(f2, attributeName).getValue();
+				Comparable<Object> attr1 = (Comparable<Object>) getFeatureModel().getAttribute(f1, attributeName)
+						.getValue();
+				Comparable<Object> attr2 = (Comparable<Object>) getFeatureModel().getAttribute(f2, attributeName)
+						.getValue();
 				switch (type) {
 					case ASC:
 						return attr1.compareTo(attr2);

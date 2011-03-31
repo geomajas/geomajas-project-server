@@ -528,6 +528,34 @@
         <xi:include href="listing/ShapeInMemAirportFeatureInfo.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
+        <note>
+          <para>Since 1.9.0, it is possible to use the following 2 properties
+          in de attribute definitions:</para>
+
+          <itemizedlist>
+            <listitem>
+              <para><emphasis>hidden</emphasis>: true/false. By default this
+              value is false, but it can be set to 'true' to hide it from all
+              client side widgets and/or views. This way such an attribute can
+              still be used on the client for hidden calculationss or filters,
+              without users actually seeing it.</para>
+            </listitem>
+
+            <listitem>
+              <para><emphasis>formInputType</emphasis>: A text value to
+              indicate that this attribute should be represented in forms by
+              the type represented by the text value. This feature is used in
+              the GWT client from version 1.9.0 and higher when using
+              <code>FeatureForms</code>. This way it is possible to use custom
+              form items in the forms used for editing the attribute
+              values.</para>
+
+              <para>See the GWT face documentation for more information on
+              this.</para>
+            </listitem>
+          </itemizedlist>
+        </note>
+
         <para>The following table describes the properties of the
         <code>FeatureInfo</code> object:</para>
 
