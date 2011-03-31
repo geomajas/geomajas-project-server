@@ -40,10 +40,19 @@ public final class LayerIconHelper {
 	}
 
 	public static Img getSmallLayerIcon(Layer<?> layer) {
+		String url = getSmallLayerIconUrl(layer);
+		if (url != null) {
+			return new Img(url);
+		} else {
+			return null;
+		}
+	}
+
+	public static String getSmallLayerIconUrl(Layer<?> layer) {
 		ExtraLayerInfo eli = WidgetInfoHelper.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
 		if (eli != null) {
-			return new Img(eli.getSmallLayerIconUrl());
+			return eli.getSmallLayerIconUrl();
 		} else {
 			return null;
 		}

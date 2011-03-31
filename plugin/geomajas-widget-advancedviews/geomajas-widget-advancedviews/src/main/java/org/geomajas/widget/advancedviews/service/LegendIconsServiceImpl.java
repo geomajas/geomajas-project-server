@@ -22,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -70,7 +71,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 
 	private static final Color TEXTBACKGROUND = new Color(0, 0, 0, 128);
 
-	private static final String RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
+	private static final String DEFAULT_RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
 
 	private Map<String, Integer> iconSizes;
 
@@ -138,10 +139,14 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 				throw new AdvancedviewsException(AdvancedviewsException.NO_SUCH_FEATURESTYLE, featureStyleId);
 			}
 
-			return createIcon(vl.getLayerInfo().getLayerType(), fsi, iconSize);
+			return createIcon(vl.getLayerInfo().getLayerType(), fsi, iconSize, null);
 		} else {
+			String url = null;
+			if (null != styleName && !"".equals(styleName)) {
+				url = styleName;
+			}
 			RasterLayer rl = (RasterLayer) l;
-			return createIcon(rl.getLayerInfo().getLayerType(), null, iconSize);
+			return createIcon(rl.getLayerInfo().getLayerType(), null, iconSize, url);
 		}
 	}
 
@@ -160,14 +165,15 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 		}
 	}
 
-	private Image createIcon(LayerType type, FeatureStyleInfo fsi, int iconSize) throws AdvancedviewsException {
+	private Image createIcon(LayerType type, FeatureStyleInfo fsi, int iconSize, String iconUrl)
+			throws AdvancedviewsException {
 		BufferedImage bi = new BufferedImage(iconSize, iconSize, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D gr = bi.createGraphics();
 		gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		switch (type) {
 		case RASTER:
-			drawRaster(gr, iconSize);
+			drawRaster(gr, iconSize, (iconUrl == null ? DEFAULT_RASTER_IMAGE_PATH : iconUrl));
 			break;
 		case POINT:
 		case MULTIPOINT:
@@ -185,34 +191,35 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 		return bi;
 	}
 
-	private void drawRaster(Graphics2D gr, int iconSize) throws AdvancedviewsException {
-		InputStream is = ClassLoader.getSystemResourceAsStream(RASTER_IMAGE_PATH);
+	private void drawRaster(Graphics2D gr, int iconSize, String imagePath) throws AdvancedviewsException {
+		String im = imagePath;
+		if (imagePath.startsWith("/")) {
+			im = imagePath.substring(1);
+		}
+		InputStream is = ClassLoader.getSystemResourceAsStream(im);
 		try {
-			if (is != null) {
-				BufferedImage img = ImageIO.read(is);
-				AffineTransform trans;
-				if (img.getHeight() > iconSize || img.getWidth() > iconSize) {
-					double sx = 1d / img.getWidth() * iconSize;
-					double sy = 1d / img.getHeight() * iconSize;
-					double smallest = (sx < sy ? sx : sy);
-					trans = AffineTransform.getScaleInstance(smallest, smallest);
-					double width = smallest * img.getWidth();
-					double height = smallest * img.getHeight();
-					double tx = (width < iconSize ? (0d + iconSize - width) / 2 : 0d);
-					double ty = (height < iconSize ? (0d + iconSize - height) / 2 : 0d);
-					trans.concatenate(AffineTransform.getTranslateInstance(tx, ty));
-				} else {
-					double tx = (img.getWidth() < iconSize ? (0d + iconSize - img.getWidth()) / 2 : 0d);
-					double ty = (img.getHeight() < iconSize ? (0d + iconSize - img.getHeight()) / 2 : 0d);
-					trans = AffineTransform.getTranslateInstance(tx, ty);
-				}
-				gr.transform(trans);
-				gr.drawImage(img, null, 0, 0);
-			} else {
-				log.warn("Failed creating Legend Icon for Rasterlayer. Could not find image.");
-				throw new AdvancedviewsException(AdvancedviewsException.FAILED_CREATING_IMAGEICON,
-						"Kon rasterlaag icoon niet vinden ?!");
+			if (is == null) {
+				is = new FileInputStream(im);
 			}
+			BufferedImage img = ImageIO.read(is);
+			AffineTransform trans;
+			if (img.getHeight() > iconSize || img.getWidth() > iconSize) {
+				double sx = 1d / img.getWidth() * iconSize;
+				double sy = 1d / img.getHeight() * iconSize;
+				double smallest = (sx < sy ? sx : sy);
+				trans = AffineTransform.getScaleInstance(smallest, smallest);
+				double width = smallest * img.getWidth();
+				double height = smallest * img.getHeight();
+				double tx = (width < iconSize ? (0d + iconSize - width) / 2 : 0d);
+				double ty = (height < iconSize ? (0d + iconSize - height) / 2 : 0d);
+				trans.concatenate(AffineTransform.getTranslateInstance(tx, ty));
+			} else {
+				double tx = (img.getWidth() < iconSize ? (0d + iconSize - img.getWidth()) / 2 : 0d);
+				double ty = (img.getHeight() < iconSize ? (0d + iconSize - img.getHeight()) / 2 : 0d);
+				trans = AffineTransform.getTranslateInstance(tx, ty);
+			}
+			gr.transform(trans);
+			gr.drawImage(img, null, 0, 0);
 		} catch (IOException e) {
 			log.warn("Failed creating Legend Icon for Rasterlayer. Could not find image.");
 			throw new AdvancedviewsException(AdvancedviewsException.FAILED_CREATING_IMAGEICON,

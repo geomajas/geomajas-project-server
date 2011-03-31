@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
+import org.geomajas.widget.advancedviews.client.util.LayerIconHelper;
 import org.geomajas.widget.advancedviews.client.util.UrlBuilder;
 import org.geomajas.widget.advancedviews.client.util.WidgetInfoHelper;
 import org.geomajas.widget.advancedviews.configuration.client.LayerTreeWithLegendInfo;
@@ -170,7 +171,8 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 				}
 			} else {
 				RasterLayer rl = (RasterLayer) layer;
-				LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, rl.getServerLayerId());
+				LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, rl.getServerLayerId(),
+						LayerIconHelper.getSmallLayerIconUrl(rl));
 				tree.add(tn, this);
 			}
 		}
@@ -184,13 +186,16 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 		private UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
 
 		// rasterlayer
-		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, String layerId) {
+		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, String layerId, String rasterIconUrl) {
 			super(parent.tree, parent.layer);
 			this.parent = parent;
 			setTitle(layer.getLabel());
 			setName(parent.getAttribute("id") + "_legend");
 			url.addPath(LEGEND_ICONS_PATH);
 			url.addParameter("widgetId", LayerTreeWithLegend.this.getID());
+			if (rasterIconUrl != null) {
+				url.addParameter("styleName", rasterIconUrl);
+			}
 			url.addParameter("layerId", layerId);
 			setIcon(url.toString());
 		}
@@ -245,6 +250,16 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	@Override
 	protected TreeGrid createTreeGrid() {
 		return createTreeGridInfoWindowRollover();
+	}
+
+	@Override
+	protected void onIconClick(TreeNode node) {
+		if (node instanceof LayerTreeLegendNode) {
+			super.onIconClick(node);
+		} else if (node instanceof LayerTreeTreeNode) {
+			// TODO -- show/hide all layers in folder
+			GWT.log("TODO");
+		}
 	}
 
 	protected TreeGrid createTreeGridInfoWindowRollover() {

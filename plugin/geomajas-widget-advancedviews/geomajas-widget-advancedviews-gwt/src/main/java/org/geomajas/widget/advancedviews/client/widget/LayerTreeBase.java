@@ -26,9 +26,11 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend.LayerTreeLegendNode;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Element;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.util.EventHandler;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -152,14 +154,32 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	}
 
 	// -------------------------------------------------------------------------
-	// LeafClickHandler, FolderClickHandler
+	// LeafClickHandler, FolderClickHandler, CellClickHandler
 	// -------------------------------------------------------------------------
 
 	/**
 	 * When the user clicks on a folder nothing gets selected.
 	 */
 	public void onFolderClick(FolderClickEvent event) {
-		mapModel.selectLayer(null);
+		try {
+			Element e = EventHandler.getNativeMouseTarget();
+			if (e.toString().contains("HTMLImageElement")) {
+				onIconClick(event.getFolder());
+			} else {
+				mapModel.selectLayer(null);
+			}
+		} catch (Exception e) {
+			GWT.log(e.getMessage());
+			// some other unusable element
+		}
+	}
+	
+	protected void onIconClick(TreeNode node) {
+		if (node != null && node instanceof LayerTreeTreeNode) {
+			LayerTreeTreeNode n = (LayerTreeTreeNode) node;
+			n.layer.setVisible(!n.layer.isShowing());
+			n.updateIcon();
+		}
 	}
 
 	/**
@@ -168,15 +188,25 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * correct state of the buttons.
 	 */
 	public void onLeafClick(LeafClickEvent event) {
-		LayerTreeTreeNode layerTreeNode = (LayerTreeTreeNode) event.getLeaf();
-		if (null != selectedLayerTreeNode
-				&& layerTreeNode.getLayer().getId().equals(selectedLayerTreeNode.getLayer().getId())) {
-			mapModel.selectLayer(null);
-		} else {
-			mapModel.selectLayer(layerTreeNode.getLayer());
+		try {
+			Element e = EventHandler.getNativeMouseTarget();
+			if (e.toString().contains("HTMLImageElement")) {
+				onIconClick(event.getLeaf());
+			} else {
+				LayerTreeTreeNode layerTreeNode = (LayerTreeTreeNode) event.getLeaf();
+				if (null != selectedLayerTreeNode
+						&& layerTreeNode.getLayer().getId().equals(selectedLayerTreeNode.getLayer().getId())) {
+					mapModel.selectLayer(null);
+				} else {
+					mapModel.selectLayer(layerTreeNode.getLayer());
+				}
+			}
+		} catch (Exception e) {
+			GWT.log(e.getMessage());
+			// some other unusable element
 		}
 	}
-
+	
 	// -------------------------------------------------------------------------
 	// Getters:
 	// -------------------------------------------------------------------------
