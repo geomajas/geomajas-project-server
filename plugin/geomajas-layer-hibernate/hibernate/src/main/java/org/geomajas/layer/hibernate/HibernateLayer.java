@@ -139,7 +139,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	}
 
 	@PostConstruct
-	protected void postConstruct() throws GeomajasException {
+	private void postConstruct() throws GeomajasException {
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 		srid = geoService.getSridFromCrs(crs);
 	}
@@ -307,20 +307,19 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
 		log.debug("creating iterator for attribute {} and filter: {}", attributeName, filter);
-		AttributeInfo attributeInfo = null;
+		AssociationAttributeInfo attributeInfo = null;
 		for (AttributeInfo info : getFeatureInfo().getAttributes()) {
-			if (info.getName().equals(attributeName)) {
-				attributeInfo = info;
+			if (info.getName().equals(attributeName) && info instanceof AssociationAttributeInfo) {
+				attributeInfo = (AssociationAttributeInfo) info;
 				break;
 			}
 		}
-
-		String objectName = getObjectName(attributeName);
-		if (objectName == null) {
+		if (attributeInfo == null) {
 			throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
 		}
+
 		Session session = getSessionFactory().getCurrentSession();
-		Criteria criteria = session.createCriteria(objectName);
+		Criteria criteria = session.createCriteria(attributeInfo.getFeature().getDataSourceName());
 		CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
 		Criterion c = (Criterion) filter.accept(visitor, null);
 		if (c != null) {

@@ -28,6 +28,7 @@ import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
 import org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.filter.Filter;
 
 /**
  * Unit test that tests all the functions of the HibernateLayer.
@@ -87,7 +88,7 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		Assert.assertNotNull(manytoOne.getValue());
 		Assert.assertNotNull(manytoOne.getValue().getId()); // Test for ID
 	}
-	
+
 	@Test
 	public void testSave() throws Exception {
 		HibernateTestFeature feature = HibernateTestFeature.getDefaultInstance1(null);
@@ -146,14 +147,16 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		expected.add(HibernateTestFeature.getDefaultInstance1(f1.getId()));
 		Assert.assertEquals(expected, actual);
 	}
-	
+
 	@Test
 	public void testScrollableResultSet() throws Exception {
 		// this is arguably not a good unittest, there is no certainty a scrollable resultset is actually used
-		HibernateTestFeature f1 = (HibernateTestFeature) scrollableResultSetLayer.create(HibernateTestFeature.getDefaultInstance1(null));
-		HibernateTestFeature f2 = (HibernateTestFeature) scrollableResultSetLayer.create(HibernateTestFeature.getDefaultInstance2(null));
+		HibernateTestFeature f1 = (HibernateTestFeature) scrollableResultSetLayer.create(HibernateTestFeature
+				.getDefaultInstance1(null));
+		HibernateTestFeature f2 = (HibernateTestFeature) scrollableResultSetLayer.create(HibernateTestFeature
+				.getDefaultInstance2(null));
 		Iterator<?> iterator = scrollableResultSetLayer.getElements(null, 0, 0);
-		
+
 		Assert.assertTrue(iterator.hasNext());
 		Assert.assertEquals(f2, iterator.next());
 		Assert.assertTrue(iterator.hasNext());
@@ -165,7 +168,13 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 	public void testEmptyScrollableResultSet() throws Exception {
 		// this is arguably not a good unittest, there is no certainty a scrollable resultset is actually used
 		Iterator<?> iterator = scrollableResultSetLayer.getElements(null, 0, 0);
-		
+
 		Assert.assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testGetAttributes() throws Exception {
+		List<Attribute<?>> attributes = associationLayer.getAttributes(PARAM_MANY_TO_ONE, Filter.INCLUDE);
+		Assert.assertNotNull(attributes);
 	}
 }
