@@ -16,6 +16,7 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -35,6 +36,7 @@ public class LayerChangedTest {
 	private ClientVectorLayerInfo vLayerInfo;
 	private int visibleCount;
 	private int labelCount;
+	private int filterCount;
 	private VectorLayer vLayer;
 
 	@Before
@@ -50,6 +52,7 @@ public class LayerChangedTest {
 
 		visibleCount = 0;
 		labelCount = 0;
+		filterCount = 0;
 
 		vLayer.addLayerChangedHandler(new LayerChangedHandler() {
 
@@ -59,6 +62,10 @@ public class LayerChangedTest {
 
 			public void onLabelChange(LayerLabeledEvent event) {
 				labelCount++;
+			}
+
+			public void onFilterChange(LayerFilteredEvent event) {
+				filterCount++;
 			}
 		});
 	}
@@ -82,5 +89,16 @@ public class LayerChangedTest {
 		vLayer.setVisible(false);
 		Assert.assertEquals(vLayer.isVisible(), false);
 		Assert.assertEquals(2, visibleCount);
+	}
+	
+	@Test
+	public void testLayerFiltered() {
+		Assert.assertEquals(0, filterCount);
+		vLayer.setFilter("filter1");
+		Assert.assertEquals(1, filterCount);
+		vLayer.setFilter("filter2");
+		Assert.assertEquals(2, filterCount);
+		vLayer.setFilter("filter2");
+		Assert.assertEquals(2, filterCount);
 	}
 }

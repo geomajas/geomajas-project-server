@@ -25,6 +25,7 @@ import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.EqualsUtil;
 import org.geomajas.layer.tile.TileCode;
 
 /**
@@ -253,15 +254,9 @@ public class TileCache implements SpatialCache {
 	}
 	
 	public boolean isDirty(String filter) {
-		return !evictedTiles.isEmpty() || !objectEquals(filter, cacheFilter);
-	}
-
-	private boolean objectEquals(Object left, Object right) {
-		if (null == left) {
-			return null == right;
-		} else {
-			return left.equals(right);
-		}
+		String oldCacheFilter = cacheFilter;
+		cacheFilter = filter;
+		return !evictedTiles.isEmpty() || !EqualsUtil.areEqual(oldCacheFilter, cacheFilter);
 	}
 
 	public Collection<VectorTile> getTiles() {

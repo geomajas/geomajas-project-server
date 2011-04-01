@@ -69,6 +69,7 @@ import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -1022,6 +1023,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					}
 
 					public void onVisibleChange(LayerShownEvent event) {
+						render(layer, null, RenderStatus.ALL);
+					}
+
+					public void onFilterChange(LayerFilteredEvent event) {
 						render(layer, null, RenderStatus.ALL);
 					}
 				});

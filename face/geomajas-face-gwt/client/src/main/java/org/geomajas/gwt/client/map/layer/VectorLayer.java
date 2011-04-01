@@ -30,11 +30,12 @@ import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
+import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.EqualsUtil;
 
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
@@ -58,8 +59,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	private Composite selectionGroup = new Composite("selection");
 
 	private Composite labelGroup = new Composite("labels");
-
-	private HandlerManager handlerManager = new HandlerManager(this);
 
 	/** selected features id -> feature map */
 	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
@@ -201,9 +200,13 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	}
 
 	public void setFilter(String filter) {
+		String oldFilter = this.filter;
 		this.filter = filter;
-		clearSelectedFeatures(); // these features may not comply with the current filter
-		cache.clear(); // need to clear this cache as this contains data for another filter
+		if (!EqualsUtil.areEqual(this.filter, oldFilter)) {
+			clearSelectedFeatures(); // these features may not comply with the current filter
+			cache.clear(); // need to clear this cache as this contains data for another filter
+			handlerManager.fireEvent(new LayerFilteredEvent(this));
+		}
 	}
 
 	public VectorLayerStore getFeatureStore() {

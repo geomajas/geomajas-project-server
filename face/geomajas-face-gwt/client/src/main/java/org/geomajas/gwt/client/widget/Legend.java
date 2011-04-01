@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -239,6 +240,11 @@ public class Legend extends Canvas {
 
 				public void onVisibleChange(LayerShownEvent event) {
 					GWT.log("Legend: onVisibleChange()");
+					render();
+				}
+
+				public void onFilterChange(LayerFilteredEvent event) {
+					GWT.log("Legend: onFilterChange()");
 					render();
 				}
 			}));
