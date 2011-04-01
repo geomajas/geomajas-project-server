@@ -49,6 +49,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  * 
  * TODO This is a copy from LayerTree, should make original properties
  * protected, of add get/setters
+ * FIXME The @since and @Api tags are no longer valid on this copy, see the above todo
  * 
  * @author Kristof Heirwegh
  * @author Frank Wynants

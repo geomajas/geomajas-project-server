@@ -20,6 +20,8 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * Easily get a ClientInfo object (if configured).
+ * FIXME: Move this class to face-gwt, bacause it's valueable in other plugins.
+ *
  * @author Kristof Heirwegh
  *
  */
