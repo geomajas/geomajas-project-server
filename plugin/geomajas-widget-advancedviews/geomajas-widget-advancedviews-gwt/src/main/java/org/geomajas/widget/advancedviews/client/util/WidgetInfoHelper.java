@@ -20,7 +20,7 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * Easily get a ClientInfo object (if configured).
- * FIXME: Move this class to face-gwt, bacause it's valueable in other plugins.
+ * FIXME: Move this class to face-gwt, because it's valuable in other plugins.
  *
  * @author Kristof Heirwegh
  *
@@ -39,7 +39,7 @@ public final class WidgetInfoHelper {
 			} else {
 				cli = ((RasterLayer) layer).getLayerInfo().getWidgetInfo(id);
 			}
-			
+
 			if (cli != null) {
 				try {
 					// cannot check because of erasure
@@ -47,13 +47,13 @@ public final class WidgetInfoHelper {
 				} catch (Exception e) {
 					GWT.log("ClientWidgetInfo is not of expected type: " + id + " (layer: " + layer.getId());
 				}
-			} 
+			}
 		}
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends ClientWidgetInfo> T getClientWidgetInfo(String id, Class<T> clazz, MapWidget mapWidget) {
+	public static <T extends ClientWidgetInfo> T getClientWidgetInfo(String id, MapWidget mapWidget) {
 		if (mapWidget != null) {
 			if (mapWidget.getMapModel().getMapInfo() == null) {
 				GWT.log("MapInfo not found, has mapWidget been initialized?");
@@ -67,7 +67,7 @@ public final class WidgetInfoHelper {
 					GWT.log("ClientWidgetInfo is not of expected type: " + id + " (map: " + mapWidget.getMapModel().
 							getId());
 				}
-			} 
+			}
 		}
 		return null;
 	}

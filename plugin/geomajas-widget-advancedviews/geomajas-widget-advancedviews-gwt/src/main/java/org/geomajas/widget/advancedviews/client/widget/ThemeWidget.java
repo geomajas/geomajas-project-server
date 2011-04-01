@@ -35,14 +35,14 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * @author Oliver May
- * 
+ *
  */
 public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 
 	private static final String THEME_RADIO_GROUP = "themeRadioGroup";
-	
+
 	private static final int IMAGE_SIZE = 48;
-	
+
 	private static final int ROW_SIZE = IMAGE_SIZE + 8;
 
 	protected MapWidget mapWidget;
@@ -50,11 +50,11 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 	protected boolean initialized;
 
 	protected ThemesInfo themeInfo;
-	
+
 	protected ViewConfig activeViewConfig;
-	
+
 	protected List<ViewConfigItem> viewConfigItems = new ArrayList<ThemeWidget.ViewConfigItem>();
-	
+
 	public ThemeWidget(MapWidget mapWidget) {
 		super();
 //		setHeight100();
@@ -70,30 +70,30 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			}
 		});
 		mapWidget.getMapModel().getMapView().addMapViewChangedHandler(this);
-		
+
 	}
 
 	protected void initialize() {
-		themeInfo = WidgetInfoHelper.getClientWidgetInfo(ThemesInfo.IDENTIFIER, ThemesInfo.class, mapWidget);
+		themeInfo = WidgetInfoHelper.getClientWidgetInfo(ThemesInfo.IDENTIFIER, mapWidget);
 		buildWidget();
 	}
-	
+
 	protected void buildWidget() {
 		VLayout vLayout = new VLayout();
 		vLayout.setMembersMargin(5);
 		for (ViewConfig viewConfig : themeInfo.getThemeConfigs()) {
-			
+
 			RangeConfig rangeConfig = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel().getMapView()
 					.getCurrentScale());
 
 			HLayout layout = new HLayout();
-			
+
 			layout.setMembersMargin(2);
 			layout.setBorder("1px solid black");
 
 			layout.setBackgroundImage("[ISOMORPHIC]/geomajas/75pct_trancparency.png");
 			layout.setBackgroundRepeat(BkgndRepeat.REPEAT);
-			
+
 			final IButton button = new IButton();
 			button.setWidth(ROW_SIZE);
 			button.setHeight(ROW_SIZE);
@@ -106,7 +106,7 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			}
 			button.setIconWidth(IMAGE_SIZE);
 			button.setIconHeight(IMAGE_SIZE);
-			
+
 			Label label = new Label(viewConfig.getDescription());
 			label.setHeight(ROW_SIZE);
 			label.setValign(VerticalAlignment.CENTER);
@@ -115,7 +115,7 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			item.setViewConfig(viewConfig);
 			item.setButton(button);
 			item.setLabel(label);
-			
+
 			viewConfigItems.add(item);
 
 			layout.setMembers(button, label);
@@ -125,32 +125,32 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 		addChild(vLayout);
 		markForRedraw();
 	}
-	
+
 	protected RangeConfig getRangeConfigForCurrentScale(ViewConfig viewConfig, double scale) {
 		for (RangeConfig config : viewConfig.getRangeConfigs()) {
-			if (scale >= config.getMaximumScale().getPixelPerUnit() && 
+			if (scale >= config.getMaximumScale().getPixelPerUnit() &&
 					scale <= config.getMinimumScale().getPixelPerUnit()) {
 				return config;
-			} 
+			}
 		}
 		return null;
 	}
-	
+
 	protected void activateViewConfig(ViewConfig viewConfig) {
 			setActiveViewConfig(viewConfig);
 			renderViewConfig();
 	}
-		
-	
+
 	protected ViewConfig getActiveViewConfig() {
 		return activeViewConfig;
 	}
-	
+
 	protected void setActiveViewConfig(ViewConfig viewConfig) {
 		this.activeViewConfig = viewConfig;
 	}
-	
+
 	protected void renderViewConfig() {
+		// Test for all unmentioned layers (if configged thusly)
 		SC.say("render viewconfig");
 	}
 
@@ -161,10 +161,10 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		//TODO: Recalculate the visibility of layers
 	}
-	
+
 
 	/**
-	 * Model for Viewconfig 
+	 * Model for Viewconfig.
 	 * @author Oliver May
 	 *
 	 */
@@ -172,31 +172,29 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 		protected ViewConfig viewConfig;
 		protected IButton button;
 		protected Label label;
-		
+
 		public ViewConfig getViewConfig() {
 			return viewConfig;
 		}
-		
+
 		public void setViewConfig(ViewConfig viewConfig) {
 			this.viewConfig = viewConfig;
 		}
-		
+
 		public IButton getButton() {
 			return button;
 		}
-		
+
 		public void setButton(IButton button) {
 			this.button = button;
 		}
-		
+
 		public Label getLabel() {
 			return label;
 		}
-		
+
 		public void setLabel(Label label) {
 			this.label = label;
 		}
-		
 	}
-
 }

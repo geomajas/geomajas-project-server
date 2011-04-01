@@ -15,7 +15,6 @@ import java.util.List;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 
-
 /**
  * @author Oliver May
  *
@@ -29,6 +28,19 @@ public class ThemesInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 1L;
 	private List<ViewConfig> themeConfigs;
+
+	/**
+	 * If true, hide available layers that are not in the configuration.
+	 */
+	private boolean hideOtherlayers; // false
+
+	public boolean isHideOtherlayers() {
+		return hideOtherlayers;
+	}
+
+	public void setHideOtherlayers(boolean hideOtherlayers) {
+		this.hideOtherlayers = hideOtherlayers;
+	}
 
 	/**
 	 * @param themeConfigs the themeConfigs to set

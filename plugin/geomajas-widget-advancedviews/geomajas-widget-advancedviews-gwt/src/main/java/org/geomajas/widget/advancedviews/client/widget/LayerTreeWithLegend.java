@@ -510,7 +510,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	protected void initialize() {
 		super.initialize();
 		LayerTreeWithLegendInfo ltwli = WidgetInfoHelper.getClientWidgetInfo(LayerTreeWithLegendInfo.IDENTIFIER,
-				LayerTreeWithLegendInfo.class, mapWidget);
+				mapWidget);
 		setIconSize(ltwli == null ? DEFAULT_ICONSIZE : ltwli.getIconSize());
 
 		for (Layer<?> layer : mapModel.getLayers()) {
