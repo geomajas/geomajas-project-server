@@ -70,10 +70,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 
 	private static final Color TEXTBACKGROUND = new Color(0, 0, 0, 128);
 
-	private static final String DEFAULT_RASTER_IMAGE_PATH = "org/geomajas/widget/advancedviews/public/sc/geomajas/osg" +
-			"eo/layer-raster.png";
-	// private static final String DEFAULT_RASTER_IMAGE_PATH =
-	// "images/osgeo/layer-raster.png";
+	 private static final String DEFAULT_RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
 
 	private Map<String, Integer> iconSizes;
 
@@ -448,11 +445,11 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 					if (resource != null && resource.exists()) {
 						is = resource.getInputStream();
 					} else {
-						is = LegendIconsServiceImpl.class.getResourceAsStream(path);
+						is = LegendIconsServiceImpl.class.getResourceAsStream(href);
 					}
 				}
 				if (is == null) {
-					throw new AdvancedviewsException(AdvancedviewsException.IMAGE_NOT_FOUND, path);
+					throw new AdvancedviewsException(AdvancedviewsException.IMAGE_NOT_FOUND, href);
 				}
 				return ImageIO.read(is);
 			} finally {
