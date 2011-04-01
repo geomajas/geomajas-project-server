@@ -37,4 +37,6 @@ public interface FeatureInfoMessages extends Messages {
 	String tooltipOnMouseoverNoResult();
 	
 	String combinedFeatureInfoActionTooltip();
+	
+	String urlFeatureDetailWidgetBuilderNoValue();
 }

@@ -29,8 +29,8 @@ import com.smartgwt.client.widgets.Window;
  */
 public final class FeatureDetailWidgetFactory {
 
-	public static final String CLIENTWIDGETINFO_KEY = "widgetBuilderName";
 	public static final int DEFAULT_WINDOW_HEIGHT = 500;
+	public static final int DEFAULT_WINDOW_WIDTH = 500;
 
 	private FeatureDetailWidgetFactory() {
 		// utility class, hide constructor
@@ -51,11 +51,11 @@ public final class FeatureDetailWidgetFactory {
 		FeatureDetailWidgetBuilder b = null;
 		try {
 			if (layer != null) {
-				ClientWidgetInfo cwi = layer.getLayerInfo().getWidgetInfo(CLIENTWIDGETINFO_KEY);
+				ClientWidgetInfo cwi = layer.getLayerInfo().getWidgetInfo(WidgetBuilderInfo.IDENTIFIER);
 				if (cwi != null) {
 					if (cwi instanceof WidgetBuilderInfo) {
 						WidgetBuilderInfo lcfdii = (WidgetBuilderInfo) cwi;
-						WidgetBuilder wb = WidgetFactory.get(lcfdii.getBuilderName());
+						WidgetBuilder wb = WidgetFactory.get(lcfdii);
 						if (wb instanceof FeatureDetailWidgetBuilder) {
 							return (FeatureDetailWidgetBuilder) wb;
 						} else {

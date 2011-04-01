@@ -28,6 +28,36 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="maximumScale" value="1:1000" />
 		<property name="minimumScale" value="1:500000000" />
 		<property name="namedStyleInfo" ref="populatedPlaces110mStyleInfo" />
+		<property name="widgetInfo">
+			<map>
+				<entry key="WidgetBuilderInfo">
+					<bean
+						class="org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo">
+						<property name="builderName" value="UrlFeatureDetailWidgetBuilder" />
+						<property name="parameters">
+							<list>
+								<bean class="org.geomajas.configuration.Parameter">
+									<property name="name" value="windowWidth" />
+									<property name="value" value="75%" />
+								</bean>
+								<bean class="org.geomajas.configuration.Parameter">
+									<property name="name" value="windowHeight" />
+									<property name="value" value="75%" />
+								</bean>
+							<!-- urlpattern is optional, if omitted urlAttribute is expected to contain a full url -->
+								<bean class="org.geomajas.configuration.Parameter">
+									<property name="name" value="urlPattern" />
+									<property name="value" value="http://en.wikipedia.org/wiki/${attributeValue}" />
+								</bean>
+								<bean class="org.geomajas.configuration.Parameter">
+									<property name="name" value="urlAttributeName" />
+									<property name="value" value="name" />
+								</bean>
+							</list>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
 	</bean>
-
 </beans>

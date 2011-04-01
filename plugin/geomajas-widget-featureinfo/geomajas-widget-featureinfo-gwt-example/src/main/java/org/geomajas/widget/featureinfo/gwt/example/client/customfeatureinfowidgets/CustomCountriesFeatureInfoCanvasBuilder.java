@@ -13,6 +13,7 @@ package org.geomajas.widget.featureinfo.gwt.example.client.customfeatureinfowidg
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetBuilder;
+
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
@@ -29,7 +30,7 @@ public class CustomCountriesFeatureInfoCanvasBuilder implements FeatureDetailWid
 	public Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
 		Window w = new Window();
 		w.setAutoSize(true);
-		w.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
+		w.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feature.getLabel()));
 		w.setCanDragReposition(true);
 		w.setCanDragResize(true);
 		w.addItem(new CustomCountriesFeatureInfoCanvas(feature));
@@ -55,7 +56,9 @@ public class CustomCountriesFeatureInfoCanvasBuilder implements FeatureDetailWid
 	}
 
 	public Canvas createWidget() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void configure(String key, String value) {
 	}
 }

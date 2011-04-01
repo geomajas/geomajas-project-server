@@ -19,6 +19,8 @@ import org.geomajas.widget.featureinfo.client.action.toolbar.FeatureInfoModalAct
 import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.ShowCoordinatesModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.TooltipOnMouseoverModalAction;
+import org.geomajas.widget.featureinfo.client.widget.builders.UrlFeatureDetailWidgetBuilder;
+import org.geomajas.widget.featureinfo.client.widget.factory.WidgetFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 
@@ -48,16 +50,19 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 				return new MultiLayerFeatureInfoModalAction(mapWidget);
 			}
 		});
+
 		ToolbarRegistry.put(SHOW_COORDINATES_MODE_KEY, new ToolCreator() {
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ShowCoordinatesModalAction(mapWidget);
 			}
 		});
+
 		ToolbarRegistry.put(TOOLTIP_ON_MOUSEOVER_MODE_KEY, new ToolCreator() {
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new TooltipOnMouseoverModalAction(mapWidget);
 			}
 		});
+
 		ToolbarRegistry.put(SHOW_FEATUREINFOMODE_KEY, new ToolCreator() {
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new FeatureInfoModalAction(mapWidget);
@@ -69,5 +74,10 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 				return new CombinedFeatureInfoModalAction(mapWidget);
 			}
 		});
+
+		// ----------------------------------------------------------
+
+		WidgetFactory.put(UrlFeatureDetailWidgetBuilder.IDENTIFIER, new UrlFeatureDetailWidgetBuilder());
+
 	}
 }

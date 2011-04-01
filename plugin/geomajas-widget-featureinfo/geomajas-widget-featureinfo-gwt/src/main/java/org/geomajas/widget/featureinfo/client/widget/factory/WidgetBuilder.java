@@ -25,5 +25,11 @@ public interface WidgetBuilder extends Serializable {
 	 * Create an instance of the widget.
 	 */
 	Canvas createWidget();
-	
+
+	/**
+	 * Called for all parameters added through configuration.
+	 * @param key
+	 * @param value
+	 */
+	void configure(String key, String value);
 }

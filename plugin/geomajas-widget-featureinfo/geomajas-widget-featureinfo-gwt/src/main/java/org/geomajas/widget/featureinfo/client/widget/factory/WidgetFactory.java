@@ -13,6 +13,9 @@ package org.geomajas.widget.featureinfo.client.widget.factory;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.Parameter;
+import org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo;
+
 import com.smartgwt.client.widgets.Canvas;
 
 /**
@@ -46,8 +49,16 @@ public final class WidgetFactory {
 		}
 	}
 
-	public static WidgetBuilder get(String key) {
-		return WIDGETBUILDERS.get(key);
+	public static WidgetBuilder get(WidgetBuilderInfo info) {
+		WidgetBuilder wb = WIDGETBUILDERS.get(info.getBuilderName());
+		if (wb != null) {
+			if (info.getParameters() != null && info.getParameters().size() > 0) {
+				for (Parameter param : info.getParameters()) {
+					wb.configure(param.getName(), param.getValue());
+				}
+			}
+		}
+		return wb;
 	}
 	
 	/**
@@ -64,5 +75,4 @@ public final class WidgetFactory {
 		}
 		return builder.createWidget();
 	}
-
 }

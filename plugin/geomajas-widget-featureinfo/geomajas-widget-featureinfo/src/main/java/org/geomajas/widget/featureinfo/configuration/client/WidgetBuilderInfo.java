@@ -10,6 +10,10 @@
  */
 package org.geomajas.widget.featureinfo.configuration.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 
 /**
@@ -27,11 +31,24 @@ public class WidgetBuilderInfo implements ClientWidgetInfo {
 	public static final String IDENTIFIER = "WidgetBuilderInfo";
 
 	/**
-	 * The name (key) of a builder for the custom Widget.
-	 * (the type will depend on the face, eg. a Canvas builder when using GWT)
-	 * <p>Do not forget to add your builder to the widgetfactory (in EntryPoint.onModuleLoad).</p>
+	 * The name (key) of a builder for the custom Widget. (the type will depend
+	 * on the face, eg. a Canvas builder when using GWT)
+	 * <p>
+	 * Do not forget to add your builder to the widgetfactory (in
+	 * EntryPoint.onModuleLoad).
+	 * </p>
 	 */
 	private String builderName;
+
+	private List<Parameter> parameters = new ArrayList<Parameter>();
+
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<Parameter> parameters) {
+		this.parameters = parameters;
+	}
 
 	public String getBuilderName() {
 		return builderName;
@@ -40,5 +57,4 @@ public class WidgetBuilderInfo implements ClientWidgetInfo {
 	public void setBuilderName(String builderName) {
 		this.builderName = builderName;
 	}
-
 }
