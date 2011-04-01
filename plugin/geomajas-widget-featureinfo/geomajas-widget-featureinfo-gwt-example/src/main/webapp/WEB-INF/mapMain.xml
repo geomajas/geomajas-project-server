@@ -88,6 +88,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<bean class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
+						<ref bean="CombinedFeatureInfoMode" />
+						<ref bean="ToolbarSeparator" />
 						<ref bean="ZoomToRectangleMode" />
 						<ref bean="PanMode" />
 						<ref bean="ToolbarSeparator" />
@@ -133,6 +135,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</bean>
 		</property>
 	</bean>
+
+	<bean name="CombinedFeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="TooltipOnMouseOverMode" class="org.geomajas.configuration.client.ClientToolInfo" />
 

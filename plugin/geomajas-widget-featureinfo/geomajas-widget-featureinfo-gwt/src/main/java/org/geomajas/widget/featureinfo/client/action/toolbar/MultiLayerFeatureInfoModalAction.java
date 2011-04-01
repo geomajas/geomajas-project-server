@@ -56,7 +56,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	public void configure(String key, String value) {
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
-		} 
+		}
 	}
 
 	/* (non-Javadoc)
@@ -90,5 +90,9 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 */
 	public int getPixelTolerance() {
 		return pixelTolerance;
+	}
+
+	public MultiLayerFeatureInfoController getController() {
+		return controller;
 	}
 }

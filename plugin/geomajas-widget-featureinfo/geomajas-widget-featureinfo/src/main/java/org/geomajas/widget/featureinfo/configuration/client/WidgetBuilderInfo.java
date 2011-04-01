@@ -22,6 +22,11 @@ public class WidgetBuilderInfo implements ClientWidgetInfo {
 	private static final long serialVersionUID = 180L;
 
 	/**
+	 * Use this identifier in your configuration files (beans).
+	 */
+	public static final String IDENTIFIER = "WidgetBuilderInfo";
+
+	/**
 	 * The name (key) of a builder for the custom Widget.
 	 * (the type will depend on the face, eg. a Canvas builder when using GWT)
 	 * <p>Do not forget to add your builder to the widgetfactory (in EntryPoint.onModuleLoad).</p>

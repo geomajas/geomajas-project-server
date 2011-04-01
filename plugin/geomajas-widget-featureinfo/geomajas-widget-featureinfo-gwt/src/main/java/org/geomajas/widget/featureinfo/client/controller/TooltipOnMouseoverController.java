@@ -83,6 +83,7 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 	 * Initialization.
 	 */
 	public void onActivate() {
+		onDeactivate();
 	}
 
 	/** Clean everything up. */

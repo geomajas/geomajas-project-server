@@ -35,7 +35,6 @@ public interface FeatureInfoMessages extends Messages {
 
 	String tooltipOnMouseoverActionTooltip();
 	String tooltipOnMouseoverNoResult();
-}
-
 	
-
+	String combinedFeatureInfoActionTooltip();
+}

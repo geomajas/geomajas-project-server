@@ -8,48 +8,50 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
-import org.geomajas.widget.featureinfo.client.controller.TooltipOnMouseoverController;
+import org.geomajas.widget.featureinfo.client.controller.CombinedFeatureInfoController;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
- * Show a tooltip with the labels of features under mousepointer.
- * 
+ * Combination of Pan, MultiLayerFeatureInfoModalAction and TooltipOnMouseover actions.
+ *
  * @author Kristof Heirwegh
- * 
  */
-public class TooltipOnMouseoverModalAction extends ToolbarModalAction {
+public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
+
+	private MapWidget mapWidget;
+
+	private CombinedFeatureInfoController controller;
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
-	private MapWidget mapWidget;
-	private int pixelTolerance = 5; // same as FeatureInfoModalAction
-	private TooltipOnMouseoverController controller;
+	// Constructor:
 
-	public TooltipOnMouseoverModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/mouse_tooltip.png", null);
+	public CombinedFeatureInfoModalAction(MapWidget mapWidget) {
+		super("[ISOMORPHIC]/geomajas/osgeo/pan_info.png", null);
+		setTooltip(messages.combinedFeatureInfoActionTooltip());
 		this.mapWidget = mapWidget;
-		this.setTooltip(messages.tooltipOnMouseoverActionTooltip());
-		controller = new TooltipOnMouseoverController(mapWidget, pixelTolerance);
+		controller = new CombinedFeatureInfoController(mapWidget);
+
+		// if it is available it is the default:
+		mapWidget.setFallbackController(controller);
 	}
 
+	// ToolbarModalAction implementation:
+
+	@Override
 	public void onSelect(ClickEvent event) {
 		mapWidget.setController(controller);
 	}
 
+	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
-
-	public TooltipOnMouseoverController getController() {
-		return controller;
-	}
-
 }
