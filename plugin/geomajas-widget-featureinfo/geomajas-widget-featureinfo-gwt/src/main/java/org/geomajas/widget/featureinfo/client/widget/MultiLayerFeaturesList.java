@@ -20,7 +20,6 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.layer.feature.Attribute;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 
 import com.google.gwt.core.client.GWT;
