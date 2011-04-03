@@ -15,16 +15,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.types.Autofit;
 import com.smartgwt.client.types.GroupStartOpen;
+import com.smartgwt.client.widgets.grid.HoverCustomizer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -160,7 +163,7 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 * 
 	 */
 	private void buildWidget() {
-		setTitle(messages.nearbyFeaturesListTooltip());
+//		setTitle(messages.nearbyFeaturesListTooltip());
 		setShowEmptyMessage(true);
 		setWidth100();
 		setHeight100();
@@ -195,6 +198,29 @@ public class MultiLayerFeaturesList extends ListGrid {
 				featureClickHandler.onClick(feat);
 			}
 
+		});
+		
+		setShowHover(true);
+		setCanHover(true);
+		setHoverWidth(200);
+		setHoverCustomizer(new HoverCustomizer() {
+			
+			public String hoverHTML(Object value, ListGridRecord record, int rowNum, int colNum) {
+				String featureId = record.getAttribute("featureId");
+				Feature feat = features.get(featureId);
+				
+				String tooltip = "";
+				
+				if (feat != null) {
+					for (AttributeInfo a : feat.getLayer().getLayerInfo().getFeatureInfo().getAttributes()) {
+						if (a.isIdentifying()) {
+							tooltip += "<b>" + a.getLabel() + "</b>: " + feat.getAttributeValue(a.getName()) + "<br/>";
+						}
+					}
+					tooltip += messages.nearbyFeaturesListTooltip();
+				}
+				return tooltip;
+			}
 		});
 
 	}
