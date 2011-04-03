@@ -83,9 +83,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="layers">
 			<list>
+				<ref bean="clientLayerWms" />
 				<ref bean="clientLayerOsm" />
 				<ref bean="clientLayerGoogle" />
-				<ref bean="clientLayerWms" />
 				<ref bean="clientLayerCountries" />
 				<ref bean="clientLayerLines" />
 				<ref bean="clientLayerPoints" />
@@ -168,12 +168,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							<list>
 								<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig">
 									<property name="icon" value="/images/Google_theme.png" />
+									<property name="title" value="Google maps" />
 									<property name="description" value="Google maps" />
 									<property name="rangeConfigs">
 										<list>
 											<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig">
-												<property name="minimumScale" value="1:1000000000" />
-												<property name="maximumScale" value="1:1" />
+												<property name="minimumScale" value="1:3420000000" />
+												<property name="maximumScale" value="1:342" />
 												<property name="icon" value="/images/Google_theme.png" />
 												<property name="layerConfigs">
 													<list>
@@ -201,6 +202,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 								<bean class="org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig">
 									<property name="icon" value="/images/OSM_theme.png" />
+									<property name="title" value="OSM and WMS" />
 									<property name="description" value="OSM and WMS" />
 									<property name="rangeConfigs">
 										<list>

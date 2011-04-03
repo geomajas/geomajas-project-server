@@ -17,19 +17,20 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.util.WidgetInfoHelper;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
+import org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 
-import com.smartgwt.client.types.BkgndRepeat;
 import com.smartgwt.client.types.SelectionType;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -51,7 +52,7 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 
 	protected ThemesInfo themeInfo;
 
-	protected ViewConfig activeViewConfig;
+	protected ViewConfigItem activeViewConfig;
 
 	protected List<ViewConfigItem> viewConfigItems = new ArrayList<ThemeWidget.ViewConfigItem>();
 
@@ -80,6 +81,7 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 
 	protected void buildWidget() {
 		VLayout vLayout = new VLayout();
+		vLayout.setWidth100();
 		vLayout.setMembersMargin(5);
 		for (ViewConfig viewConfig : themeInfo.getThemeConfigs()) {
 
@@ -89,13 +91,9 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			HLayout layout = new HLayout();
 
 			layout.setMembersMargin(2);
-			layout.setBorder("1px solid black");
-
-			layout.setBackgroundImage("[ISOMORPHIC]/geomajas/75pct_trancparency.png");
-			layout.setBackgroundRepeat(BkgndRepeat.REPEAT);
 
 			final IButton button = new IButton();
-			button.setWidth(ROW_SIZE);
+			button.setWidth100();
 			button.setHeight(ROW_SIZE);
 			button.setActionType(SelectionType.RADIO);
 			button.setRadioGroup(getID() + THEME_RADIO_GROUP);
@@ -106,21 +104,30 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			}
 			button.setIconWidth(IMAGE_SIZE);
 			button.setIconHeight(IMAGE_SIZE);
+			button.setTitle(viewConfig.getTitle());
+			button.setIconAlign("left");
 
-			Label label = new Label(viewConfig.getDescription());
-			label.setHeight(ROW_SIZE);
-			label.setValign(VerticalAlignment.CENTER);
-
-			ViewConfigItem item = new ViewConfigItem();
+			button.setTooltip(viewConfig.getDescription());
+			
+			final ViewConfigItem item = new ViewConfigItem();
 			item.setViewConfig(viewConfig);
 			item.setButton(button);
-			item.setLabel(label);
 
+			button.addClickHandler(new ClickHandler() {
+				
+				public void onClick(ClickEvent event) {
+					if (button.isSelected()) {
+						activateViewConfig(item);
+					}
+				}
+			});
 			viewConfigItems.add(item);
 
-			layout.setMembers(button, label);
+			layout.addMember(button);
 
 			vLayout.addMember(layout);
+
+			
 		}
 		addChild(vLayout);
 		markForRedraw();
@@ -128,30 +135,51 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 
 	protected RangeConfig getRangeConfigForCurrentScale(ViewConfig viewConfig, double scale) {
 		for (RangeConfig config : viewConfig.getRangeConfigs()) {
-			if (scale >= config.getMaximumScale().getPixelPerUnit() &&
-					scale <= config.getMinimumScale().getPixelPerUnit()) {
+			//FIXME: We convert pixelperunit, but this should be done elsewhere.
+			if (config.getMaximumScale().getPixelPerUnit() == 0) {
+				config.getMaximumScale().setPixelPerUnit(config.getMaximumScale().getNumerator() / 
+						(config.getMaximumScale().getDenominator() * mapWidget.getPixelPerUnit()));
+			}
+			if (config.getMinimumScale().getPixelPerUnit() == 0) {
+				config.getMinimumScale().setPixelPerUnit(config.getMinimumScale().getNumerator() / 
+						(config.getMinimumScale().getDenominator() * mapWidget.getPixelPerUnit()));
+			}
+			double scaleMax = config.getMaximumScale().getPixelPerUnit();
+			double scaleMin = config.getMinimumScale().getPixelPerUnit();
+			if (scale <= scaleMax &&
+					scale >= scaleMin) {
 				return config;
 			}
 		}
 		return null;
 	}
 
-	protected void activateViewConfig(ViewConfig viewConfig) {
+	protected void activateViewConfig(ViewConfigItem viewConfig) {
 			setActiveViewConfig(viewConfig);
-			renderViewConfig();
+			renderViewConfig(viewConfig.getViewConfig());
 	}
 
-	protected ViewConfig getActiveViewConfig() {
+	protected ViewConfigItem getActiveViewConfig() {
 		return activeViewConfig;
 	}
 
-	protected void setActiveViewConfig(ViewConfig viewConfig) {
+	protected void setActiveViewConfig(ViewConfigItem viewConfig) {
 		this.activeViewConfig = viewConfig;
 	}
 
-	protected void renderViewConfig() {
-		// Test for all unmentioned layers (if configged thusly)
-		SC.say("render viewconfig");
+	protected void renderViewConfig(ViewConfig viewConfig) {
+		RangeConfig config = getRangeConfigForCurrentScale(viewConfig, 
+				mapWidget.getMapModel().getMapView().getCurrentScale());
+		
+		for (LayerConfig layerConfig : config.getLayerConfigs()) {
+			Layer<?> layer = mapWidget.getMapModel().getLayer(layerConfig.getLayer().getId());
+			
+			layer.setVisible(layerConfig.isVisible());
+			if (layer instanceof RasterLayer) {
+				((RasterLayer) layer).setOpacity(layerConfig.getTransparency());
+			}
+		}
+
 	}
 
 	/* (non-Javadoc)
@@ -159,7 +187,9 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 	 * MapViewChangedEvent)
 	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		//TODO: Recalculate the visibility of layers
+		if (null != activeViewConfig) {
+			renderViewConfig(activeViewConfig.getViewConfig());
+		}
 	}
 
 
@@ -171,7 +201,6 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 	protected class ViewConfigItem {
 		protected ViewConfig viewConfig;
 		protected IButton button;
-		protected Label label;
 
 		public ViewConfig getViewConfig() {
 			return viewConfig;
@@ -187,14 +216,6 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 
 		public void setButton(IButton button) {
 			this.button = button;
-		}
-
-		public Label getLabel() {
-			return label;
-		}
-
-		public void setLabel(Label label) {
-			this.label = label;
 		}
 	}
 }

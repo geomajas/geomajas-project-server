@@ -31,9 +31,6 @@ import org.geomajas.widget.advancedviews.gwt.example.client.pages.SearchPage;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.DrawPosition;
-import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
@@ -196,6 +193,7 @@ public class Application implements EntryPoint {
 		themes.setSnapTo("BL");
 		themes.setSnapOffsetTop(-50);
 		themes.setSnapOffsetLeft(10);
+		themes.setWidth(150);
 		
 		// ---------------------------------------------------------------------
 		// Finally draw everything:

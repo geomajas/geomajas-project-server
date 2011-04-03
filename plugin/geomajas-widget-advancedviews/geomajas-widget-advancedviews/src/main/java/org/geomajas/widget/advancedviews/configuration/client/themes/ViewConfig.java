@@ -30,6 +30,11 @@ public class ViewConfig implements Serializable {
 	private String icon;
 
 	/**
+	 * Name of this viewconfig
+	 */
+	private String title;
+	
+	/**
 	 * Different ranges defined in this Viewconfig.
 	 */
 	private List<RangeConfig> rangeConfigs;
@@ -82,5 +87,19 @@ public class ViewConfig implements Serializable {
 	 */
 	public String getIcon() {
 		return icon;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setTitle(String name) {
+		this.title = name;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getTitle() {
+		return title;
 	}
 }
