@@ -31,24 +31,22 @@ public interface LayerChangedHandler extends EventHandler {
 	/**
 	 * Called when the layer is made visible or invisible.
 	 * 
-	 * @param event
-	 *            event
+	 * @param event event
 	 */
 	void onVisibleChange(LayerShownEvent event);
 
 	/**
 	 * Called when labels are enabled or disabled on the layer.
 	 * 
-	 * @param event
-	 *            event
+	 * @param event event
 	 */
 	void onLabelChange(LayerLabeledEvent event);
 	
 	/**
 	 * Called when filters are added to/removed from on the layer.
 	 * 
-	 * @param event
-	 *            event
+	 * @param event event
+	 * @since 1.9.0
 	 */
 	void onFilterChange(LayerFilteredEvent event);
 }
