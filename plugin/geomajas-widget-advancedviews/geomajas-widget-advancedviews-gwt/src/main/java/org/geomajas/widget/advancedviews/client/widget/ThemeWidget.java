@@ -189,10 +189,23 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (null != activeViewConfig && !event.isSameScaleLevel()) {
 			renderViewConfig(activeViewConfig.getViewConfig());
+			resetIcons(); 
 		}
 	}
 
-
+	/**
+	 * Reset all icons
+	 */
+	protected void resetIcons() {
+		for (ViewConfigItem item : viewConfigItems) {
+			RangeConfig config = getRangeConfigForCurrentScale(item.getViewConfig(), 
+					mapWidget.getMapModel().getMapView().getCurrentScale());
+			if (null != config && null != config.getIcon()) {
+				item.getButton().setIcon("[ISOMORPHIC]/" + config.getIcon());
+			}
+		}
+	}
+	
 	/**
 	 * Model for Viewconfig.
 	 * @author Oliver May
