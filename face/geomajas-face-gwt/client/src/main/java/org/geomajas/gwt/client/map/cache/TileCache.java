@@ -25,8 +25,9 @@ import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.util.EqualsUtil;
 import org.geomajas.layer.tile.TileCode;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Cache for tiles and contained features.
@@ -57,8 +58,6 @@ public class TileCache implements SpatialCache {
 	private List<VectorTile> evictedTiles;
 
 	private MapViewState lastViewState;
-
-	private String cacheFilter; // filter which was used when filling the cache
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -202,7 +201,7 @@ public class TileCache implements SpatialCache {
 			TileFunction<VectorTile> onUpdate) {
 		MapViewState viewState = layer.getMapModel().getMapView().getViewState();
 		boolean panning = lastViewState == null || viewState.isPannableFrom(lastViewState);
-		if (!panning || isDirty(filter)) {
+		if (!panning || isDirty()) {
 			// Delete all tiles
 			clear();
 			for (VectorTile tile : evictedTiles) {
@@ -250,15 +249,9 @@ public class TileCache implements SpatialCache {
 	}
 
 	public boolean isDirty() {
-		return isDirty(cacheFilter);
+		return !evictedTiles.isEmpty();
 	}
 	
-	public boolean isDirty(String filter) {
-		String oldCacheFilter = cacheFilter;
-		cacheFilter = filter;
-		return !evictedTiles.isEmpty() || !EqualsUtil.areEqual(oldCacheFilter, cacheFilter);
-	}
-
 	public Collection<VectorTile> getTiles() {
 		return tiles.values();
 	}
@@ -337,6 +330,7 @@ public class TileCache implements SpatialCache {
 		Bbox clippedBounds = bounds.intersection(layerBounds);
 		if (clippedBounds == null) {
 			// TODO throw error? If this is null, then the server configuration is incorrect.
+			GWT.log("Map bounds outside of layer extents, check the server configuration");
 			return codes;
 		}
 		double relativeBoundX = Math.abs(clippedBounds.getX() - layerBounds.getX());

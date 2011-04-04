@@ -245,7 +245,11 @@ public class FeatureForm {
 			if (association instanceof ManyToOneAttribute) {
 				FormItem item = formWidget.getField(name);
 				if (item != null) {
-					item.setValue(attribute.getValue());
+					if (association.getValue() != null) {
+						item.setValue(((ManyToOneAttribute) association).getValue().getId().getValue());
+					} else {
+						item.clearValue();
+					}
 				}
 			} else if (association instanceof OneToManyAttribute) {
 				// TODO Implement setter for Associations as well...
@@ -315,7 +319,7 @@ public class FeatureForm {
 						ListGridRecord record = formWidget.getField(name).getSelectedRecord();
 						if (record != null) {
 							Object v = record
-									.getAttributeAsObject(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_FIELD);
+									.getAttributeAsObject(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_ATTRIBUTE);
 							if (v != null && v instanceof AssociationValue) {
 								manyToOne.setValue((AssociationValue) v);
 							}

@@ -16,13 +16,13 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports <code>Layer</code> changes.
+ * Event that reports <code>VectorLayer</code> filter changes.
  * 
  * @author Jan De Moerloose
  * @since 1.9.0
  */
 @Api(allMethods = true)
-public class LayerFilteredEvent extends GwtEvent<LayerChangedHandler> {
+public class LayerFilteredEvent extends GwtEvent<LayerFilteredHandler> {
 
 	private Layer<?> layer;
 
@@ -35,12 +35,12 @@ public class LayerFilteredEvent extends GwtEvent<LayerChangedHandler> {
 	}
 
 	@Override
-	public Type<LayerChangedHandler> getAssociatedType() {
-		return LayerChangedHandler.TYPE;
+	public Type<LayerFilteredHandler> getAssociatedType() {
+		return LayerFilteredHandler.TYPE;
 	}
 
 	@Override
-	protected void dispatch(LayerChangedHandler layerChangedHandler) {
-		layerChangedHandler.onFilterChange(this);
+	protected void dispatch(LayerFilteredHandler layerFilteredHandler) {
+		layerFilteredHandler.onFilterChange(this);
 	}
 }

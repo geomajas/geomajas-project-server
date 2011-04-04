@@ -64,12 +64,13 @@ public class ManyToOneDataSource extends DataSource {
 		setDataProtocol(DSProtocol.CLIENTCUSTOM);
 		setClientOnly(false);
 
-		// Install MANY_TO_ONE attributes as fields:
-		DataSourceField field = new DataSourceIntegerField(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_FIELD,
+		// Add id as primary key field
+		DataSourceField field = new DataSourceIntegerField(AttributeFormFieldRegistry.ASSOCIATION_ITEM_ID_FIELD,
 				attributeInfo.getFeature().getIdentifier().getLabel());
 		field.setPrimaryKey(true);
 		addField(field);
 
+		// Add field for each attribute
 		for (AttributeInfo info : attributeInfo.getFeature().getAttributes()) {
 			field = new DataSourceTextField(info.getName(), info.getLabel());
 			addField(field);
@@ -131,9 +132,11 @@ public class ManyToOneDataSource extends DataSource {
 					for (int i = 0; i < sar.getAttributes().size(); i++) {
 						ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) sar.getAttributes().get(i);
 						ListGridRecord record = new ListGridRecord();
-						record.setAttribute(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_FIELD,
+						record.setAttribute(AttributeFormFieldRegistry.ASSOCIATION_ITEM_ID_FIELD,
+								manyToOneAttribute.getValue().getId().getValue());
+						record.setAttribute(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_ATTRIBUTE,
 								manyToOneAttribute.getValue());
-						record.setAttribute(attributeInfo.getName(), manyToOneAttribute.getValue());
+						//record.setAttribute(attributeInfo.getName(), manyToOneAttribute.getValue());
 						for (String name : manyToOneAttribute.getValue().getAttributes().keySet()) {
 							PrimitiveAttribute<?> attribute = manyToOneAttribute.getValue().getAttributes().get(name);
 							record.setAttribute(name, attribute.getValue());

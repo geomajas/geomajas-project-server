@@ -83,7 +83,9 @@ import com.smartgwt.client.widgets.form.validator.Validator;
 @FutureApi(allMethods = true)
 public final class AttributeFormFieldRegistry {
 
-	public static final String ASSOCIATION_ITEM_VALUE_FIELD = "AssociationValue";
+	public static final String ASSOCIATION_ITEM_VALUE_ATTRIBUTE = "_AssociationValue";
+
+	public static final String ASSOCIATION_ITEM_ID_FIELD = "_AssociationId";
 
 	private static final Map<String, FormItemFactory> FORMITEMS;
 
@@ -453,7 +455,7 @@ public final class AttributeFormFieldRegistry {
 				if (associationInfo.getType() == AssociationType.MANY_TO_ONE && formItem instanceof SelectItem) {
 					formItem.setOptionDataSource(new ManyToOneDataSource(layer.getServerLayerId(), associationInfo));
 					formItem.setDisplayField(associationInfo.getFeature().getAttributes().get(0).getName());
-					formItem.setValueField(ASSOCIATION_ITEM_VALUE_FIELD);
+					formItem.setValueField(ASSOCIATION_ITEM_ID_FIELD);
 				}
 			}
 

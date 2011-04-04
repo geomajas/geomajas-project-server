@@ -42,11 +42,4 @@ public interface LayerChangedHandler extends EventHandler {
 	 */
 	void onLabelChange(LayerLabeledEvent event);
 	
-	/**
-	 * Called when filters are added to/removed from on the layer.
-	 * 
-	 * @param event event
-	 * @since 1.9.0
-	 */
-	void onFilterChange(LayerFilteredEvent event);
 }

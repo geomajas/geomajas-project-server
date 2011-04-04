@@ -70,6 +70,7 @@ import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
+import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -1026,13 +1027,19 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 						render(layer, null, RenderStatus.ALL);
 					}
 
-					public void onFilterChange(LayerFilteredEvent event) {
-						render(layer, null, RenderStatus.ALL);
-					}
 				});
+				
 				layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
 					public void onLayerStyleChange(LayerStyleChangeEvent event) {
+						render(layer, null, RenderStatus.ALL);
+					}
+				});
+			}
+			for (final VectorLayer layer : mapModel.getVectorLayers()) {
+				layer.addLayerFilteredHandler(new LayerFilteredHandler() {
+
+					public void onFilterChange(LayerFilteredEvent event) {
 						render(layer, null, RenderStatus.ALL);
 					}
 				});

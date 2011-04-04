@@ -8,32 +8,30 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt.client.util;
+package org.geomajas.gwt.client.map.event;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
+
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
- * Utility for equality checking.
+ * Interface for handling layer filter events.
  * 
  * @author Jan De Moerloose
  * @since 1.9.0
- * 
  */
 @Api(allMethods = true)
-public final class EqualsUtil {
+@UserImplemented
+public interface LayerFilteredHandler extends EventHandler {
 
-	private EqualsUtil() {
-
-	}
+	Type<LayerFilteredHandler> TYPE = new Type<LayerFilteredHandler>();
 
 	/**
-	 * Checks whether 2 objects are equal. Null-safe, 2 null objects are considered equal.
+	 * Called when filters are added to/removed from on the layer.
 	 * 
-	 * @param o1
-	 * @param o2
-	 * @return true if object are equal, false otherwise
+	 * @param event event
 	 */
-	public static boolean isEqual(Object o1, Object o2) {
-		return o1 == null ? o2 == null : o1.equals(o2);
-	}
+	void onFilterChange(LayerFilteredEvent event);
 }

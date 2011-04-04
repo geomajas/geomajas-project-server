@@ -25,6 +25,7 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
+import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -243,10 +244,6 @@ public class Legend extends Canvas {
 					render();
 				}
 
-				public void onFilterChange(LayerFilteredEvent event) {
-					GWT.log("Legend: onFilterChange()");
-					render();
-				}
 			}));
 			registrations.add(layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
@@ -255,6 +252,14 @@ public class Legend extends Canvas {
 					render();
 				}
 			}));
+		}
+		for (final VectorLayer layer : mapModel.getVectorLayers()) {
+			layer.addLayerFilteredHandler(new LayerFilteredHandler() {
+
+				public void onFilterChange(LayerFilteredEvent event) {
+					render();
+				}
+			});
 		}
 		GWT.log("Legend.initialize");
 		render();

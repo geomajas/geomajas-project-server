@@ -30,7 +30,9 @@ import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
+import org.geomajas.gwt.client.map.event.HasLayerFilteredHandlers;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
+import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -47,7 +49,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @since 1.6.0
  */
 @Api
-public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements HasFeatureSelectionHandlers {
+public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements HasFeatureSelectionHandlers,
+		HasLayerFilteredHandlers {
 
 	/** Storage of features in this layer. */
 	private TileCache cache;
@@ -81,6 +84,10 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	public final HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler) {
 		return handlerManager.addHandler(FeatureSelectionHandler.TYPE, handler);
+	}
+
+	public final HandlerRegistration addLayerFilteredHandler(LayerFilteredHandler handler) {
+		return handlerManager.addHandler(LayerFilteredHandler.TYPE, handler);
 	}
 
 	// -------------------------------------------------------------------------
@@ -202,7 +209,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public void setFilter(String filter) {
 		String oldFilter = this.filter;
 		this.filter = filter;
-		if (!EqualsUtil.areEqual(this.filter, oldFilter)) {
+		if (!EqualsUtil.isEqual(this.filter, oldFilter)) {
 			clearSelectedFeatures(); // these features may not comply with the current filter
 			cache.clear(); // need to clear this cache as this contains data for another filter
 			handlerManager.fireEvent(new LayerFilteredEvent(this));

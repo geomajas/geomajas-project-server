@@ -17,6 +17,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
+import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -63,6 +64,10 @@ public class LayerChangedTest {
 			public void onLabelChange(LayerLabeledEvent event) {
 				labelCount++;
 			}
+
+		});
+		
+		vLayer.addLayerFilteredHandler(new LayerFilteredHandler() {
 
 			public void onFilterChange(LayerFilteredEvent event) {
 				filterCount++;
