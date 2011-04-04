@@ -187,7 +187,7 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 	 * MapViewChangedEvent)
 	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (null != activeViewConfig) {
+		if (null != activeViewConfig && !event.isSameScaleLevel()) {
 			renderViewConfig(activeViewConfig.getViewConfig());
 		}
 	}
