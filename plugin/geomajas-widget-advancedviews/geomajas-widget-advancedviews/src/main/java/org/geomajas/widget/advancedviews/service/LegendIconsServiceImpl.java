@@ -55,10 +55,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 /**
- * 
+ *
  * @author Kristof Heirwegh
  * @since 1.0.0
- * 
+ *
  */
 @Component
 @Api
@@ -445,7 +445,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 					if (resource != null && resource.exists()) {
 						is = resource.getInputStream();
 					} else {
-						is = LegendIconsServiceImpl.class.getResourceAsStream(href);
+						is = ClassLoader.getSystemResourceAsStream(href);
 					}
 				}
 				if (is == null) {
