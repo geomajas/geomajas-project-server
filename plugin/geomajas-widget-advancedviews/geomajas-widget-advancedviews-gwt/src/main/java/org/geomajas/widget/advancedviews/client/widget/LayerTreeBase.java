@@ -121,7 +121,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When a layer deselection event comes in, the LayerTree must also deselect
 	 * the correct node in the tree, update the selected layer text, and update
 	 * all buttons icons.
-	 * 
+	 *
 	 * @since 1.0.0
 	 */
 	@Api
@@ -138,7 +138,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When a layer selection event comes in, the LayerTree must also select the
 	 * correct node in the tree, update the selected layer text, and update all
 	 * buttons icons.
-	 * 
+	 *
 	 * @since 1.0.0
 	 */
 	@Api
@@ -216,7 +216,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 	/**
 	 * Get the currently selected tree node.
-	 * 
+	 *
 	 * @return selected node
 	 */
 	public LayerTreeTreeNode getSelectedLayerTreeNode() {
@@ -289,7 +289,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * Creation of treegrid is decoupled to allow you to make a custom treegrid
 	 * (SmartGWT uses some designpatterns which only give you the ability to
 	 * customize certain aspects through subclassing)
-	 * 
+	 *
 	 * @return
 	 */
 	protected TreeGrid createTreeGrid() {
@@ -299,7 +299,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	/**
 	 * A SmartGWT Tree with one extra method 'refresh'. This is needed to update
 	 * icons on the fly in a tree
-	 * 
+	 *
 	 * @author Frank Wynants
 	 */
 	protected class RefreshableTree extends Tree {
@@ -328,7 +328,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 	/**
 	 * A node inside the LayerTree.
-	 * 
+	 *
 	 * @author Frank Wynants
 	 * @author Pieter De Graef
 	 */
@@ -340,7 +340,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 		/**
 		 * Constructor creates a TreeNode with layer.getLabel as label.
-		 * 
+		 *
 		 * @param tree
 		 *            tree for node
 		 * @param layer

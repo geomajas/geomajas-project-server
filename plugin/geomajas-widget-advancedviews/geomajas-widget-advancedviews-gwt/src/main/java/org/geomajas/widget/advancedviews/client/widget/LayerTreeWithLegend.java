@@ -58,7 +58,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 
 /**
  * A layertree widget with combined legend per layer.
- * 
+ *
  * @author Kristof Heirwegh
  * @since 1.0.0
  */
@@ -95,7 +95,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 	/**
 	 * Processes a treeNode (add it to the TreeGrid).
-	 * 
+	 *
 	 * @param treeNode
 	 *            The treeNode to process
 	 * @param nodeRoot
@@ -438,7 +438,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 	/**
 	 * General definition of a modal button for the layer tree.
-	 * 
+	 *
 	 * @author Frank Wynants
 	 * @author Pieter De Graef
 	 */
@@ -450,7 +450,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param tree
 		 *            The currently selected layer
 		 * @param modalAction
@@ -520,7 +520,14 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 
 				public void onVisibleChange(LayerShownEvent event) {
 					GWT.log("Legend: onVisibleChange()");
-					syncNodeState(true);
+					// find the node & update the icon
+					for (TreeNode node : tree.getAllNodes()) {
+						if (node.getName().equals(event.getLayer().getLabel())) {
+							if (node instanceof LayerTreeTreeNode) {
+								((LayerTreeTreeNode) node).updateIcon();
+							}
+						}
+					}
 				}
 			}));
 			registrations.add(layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
