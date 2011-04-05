@@ -519,7 +519,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 				}
 
 				public void onVisibleChange(LayerShownEvent event) {
-					GWT.log("Legend: onVisibleChange()");
+					GWT.log("Legend: onVisibleChange() - " + event.getLayer().getLabel());
 					// find the node & update the icon
 					for (TreeNode node : tree.getAllNodes()) {
 						if (node.getName().equals(event.getLayer().getLabel())) {

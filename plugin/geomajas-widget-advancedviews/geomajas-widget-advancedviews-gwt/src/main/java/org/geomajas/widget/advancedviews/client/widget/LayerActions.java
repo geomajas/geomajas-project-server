@@ -52,7 +52,7 @@ public class LayerActions extends Window {
 	private CheckboxItem labels;
 	private VectorLayer vectorLayer;
 	private RasterLayer rasterLayer;
-	
+
 	public LayerActions(Layer<?> layer) {
 		super();
 		if (layer instanceof VectorLayer) {
@@ -60,26 +60,26 @@ public class LayerActions extends Window {
 		} else {
 			this.rasterLayer = (RasterLayer) layer;
 		}
-		
+
 		setTitle(messages.layerActionsWindowTitle() + " - " + layer.getLabel());
 		setAutoCenter(true);
 		setAutoSize(true);
-		
+
 		VLayout layout = new VLayout();
 		layout.setPadding(5);
 		layout.setMembersMargin(5);
-		
+
 		// ----------------------------------------------------------
-		
+
 		layerImg = LayerIconHelper.getLargeLayerIcon(layer);
 		layerImg.setImageType(ImageStyle.NORMAL);
 		layerLabelOverlay = LayerIconHelper.getLabelOverlayImg();
 		layerLabelOverlay.setImageType(ImageStyle.NORMAL);
 		layerTransparencyUnderlay = LayerIconHelper.getTransparencyUnderlayImg();
 		layerTransparencyUnderlay.setImageType(ImageStyle.NORMAL);
-		
+
 		// ----------------------------------------------------------
-		
+
 		if (vectorLayer != null) {
 			Canvas sampleMap = new Canvas();
 			sampleMap.setAutoHeight();
@@ -87,15 +87,15 @@ public class LayerActions extends Window {
 			// sampleMap.setSize("89px", "89px");
 			sampleMap.addChild(layerImg);
 			sampleMap.addChild(layerLabelOverlay);
-			
+
 			labels = new CheckboxItem();
 			initLabels();
-			
+
 			DynamicForm	form = new DynamicForm();
 			form.setTitleOrientation(TitleOrientation.TOP);
 			form.setHeight(40);
 			form.setFields(labels);
-			
+
 			layout.addMember(sampleMap);
 			layout.addMember(form);
 
@@ -107,16 +107,25 @@ public class LayerActions extends Window {
 			layerImg.setUseOpacityFilter(true);
 			sampleMap.addChild(layerTransparencyUnderlay);
 			sampleMap.addChild(layerImg);
-			
+
 			transparencySlider = new Slider(messages.layerActionsOpacity());
-			initSlider();
+			String raw = rasterLayer.getLayerInfo().getStyle();
+			double opacity = 1d;
+			if (raw != null && !"".equals(raw)) {
+				try {
+					opacity = Double.parseDouble(raw);
+				} catch (Exception e) {
+					// ignore
+				}
+			}
+			initSlider((int) Math.round(opacity * 100));
 
 			layout.addMember(sampleMap);
 			layout.addMember(transparencySlider);
 		}
 
 		// ----------------------------------------------------------
-		
+
 		IButton legendInfo = new IButton(messages.layerActionsShowLegend());
 		legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
 		legendInfo.setWidth(230);
@@ -125,15 +134,15 @@ public class LayerActions extends Window {
 				showLegend();
 			}
 		});
-		
+
 		// ----------------------------------------------------------
-		
+
 		layout.addMember(legendInfo);
 		addItem(layout);
 	}
-	
+
 	private void initLabels() {
-		labels.setTitle(messages.layerActionsLabels()); 
+		labels.setTitle(messages.layerActionsLabels());
 		labels.setTooltip(messages.layerActionsLabelsToolTip());
 		labels.setTitleOrientation(TitleOrientation.LEFT);
 		labels.setValue(vectorLayer.isLabeled());
@@ -147,9 +156,9 @@ public class LayerActions extends Window {
 			}
 		});
 	}
-	
-	private void initSlider() {
-		transparencySlider.setValue(100);
+
+	private void initSlider(int initialValue) {
+		transparencySlider.setValue(initialValue);
 		transparencySlider.setMinValue(0);
 		transparencySlider.setMaxValue(100);
 		transparencySlider.setNumValues(101);
@@ -168,7 +177,7 @@ public class LayerActions extends Window {
 			}
 		});
 	}
-	
+
 	private void showLegend() {
 		LayerInfo li = new LayerInfo((vectorLayer != null ? vectorLayer : rasterLayer));
 		li.draw();
