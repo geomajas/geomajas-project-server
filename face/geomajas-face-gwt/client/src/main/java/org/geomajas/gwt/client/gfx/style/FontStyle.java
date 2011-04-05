@@ -46,7 +46,7 @@ public class FontStyle implements Style {
 	private String fontWeight;
 
 	/**
-	 * The style of the font: "normal", "italic", or "underline".
+	 * The style of the font: "normal", "italic", or "oblique".
 	 */
 	private String fontStyle;
 
@@ -62,7 +62,7 @@ public class FontStyle implements Style {
 	 * @param fontWeight
 	 *            Weight: normal, bold.
 	 * @param fontStyle
-	 *            The font style: normal, italic, underline.
+	 *            The font style: normal, italic, oblique.
 	 */
 	public FontStyle(String fillColor, int fontSize, String fontFamily, String fontWeight, String fontStyle) {
 		this.fillColor = fillColor;
