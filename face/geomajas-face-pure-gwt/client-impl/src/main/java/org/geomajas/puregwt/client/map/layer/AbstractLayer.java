@@ -56,6 +56,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		this.layerInfo = layerInfo;
 		this.viewPort = viewPort;
 		this.eventBus = eventBus;
+		markedAsVisible = layerInfo.isVisible();
 	}
 
 	// ------------------------------------------------------------------------

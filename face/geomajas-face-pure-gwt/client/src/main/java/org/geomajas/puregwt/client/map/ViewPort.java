@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -35,7 +35,7 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface ViewPort {
 
 	// -------------------------------------------------------------------------
@@ -102,7 +102,9 @@ public interface ViewPort {
 	 * visibility.
 	 * 
 	 * @return The location at which one started dragging (panning/translating) the map.
+	 * @deprecated Is this still needed? If not remove!
 	 */
+	@Deprecated
 	Coordinate getDragOrigin();
 
 	/**

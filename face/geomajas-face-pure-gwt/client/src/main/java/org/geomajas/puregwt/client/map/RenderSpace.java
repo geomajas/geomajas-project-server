@@ -49,17 +49,5 @@ public enum RenderSpace {
 	 * immobile and are not affected by changes in the map view.
 	 * </p>
 	 */
-	SCREEN,
-
-	/**
-	 * <p>
-	 * Pan space describes the rendering spaces wherein the map's layers are drawn. It is a scaled rendering space
-	 * optimized for easy translation of all it's objects.In essence this means that the coordinates are expected to
-	 * have been scaled for the current scale before drawing, and that only the translation still needs to occur.
-	 * </p>
-	 * <p>
-	 * For advanced use only.
-	 * </p>
-	 */
-	PAN
+	SCREEN
 }

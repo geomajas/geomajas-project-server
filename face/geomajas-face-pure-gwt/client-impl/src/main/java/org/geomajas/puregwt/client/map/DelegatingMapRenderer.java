@@ -14,7 +14,13 @@ package org.geomajas.puregwt.client.map;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
+import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
+import org.geomajas.puregwt.client.map.event.LayerShowEvent;
+import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
+import org.geomajas.puregwt.client.map.event.MapResizedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
@@ -76,89 +82,176 @@ public class DelegatingMapRenderer implements MapRenderer {
 	}
 
 	// ------------------------------------------------------------------------
-	// ViewPortChangedHandler implementation:
+	// LayerVisibleHandler implementation:
 	// ------------------------------------------------------------------------
 
-	public void onViewPortChanged(ViewPortChangedEvent event) {
-		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
+	public void onShow(LayerShowEvent event) {
+		Layer<?> layer = event.getLayer();
+		if (layer instanceof RasterLayer) {
+			((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+			((RasterLayer) layer).getRenderer().onShow(event);
+		} else if (layer instanceof VectorLayer) {
+			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().onShow(event);
+		}
+	}
+
+	public void onHide(LayerHideEvent event) {
+		Layer<?> layer = event.getLayer();
+		if (layer instanceof RasterLayer) {
+			((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+			((RasterLayer) layer).getRenderer().onHide(event);
+		} else if (layer instanceof VectorLayer) {
+			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().onHide(event);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// LayerStyleChangedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerStyleChanged(LayerStyleChangedEvent event) {
+		Layer<?> layer = event.getLayer();
+		if (layer instanceof RasterLayer) {
+			((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+			((RasterLayer) layer).getRenderer().onLayerStyleChanged(event);
+		} else if (layer instanceof VectorLayer) {
+			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().onLayerStyleChanged(event);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// MapResizedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onMapResized(MapResizedEvent event) {
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		int dx = (int) Math.round(translation.getDx());
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
 		vectorContainer.transform(translation);
-		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((RasterLayer) layer).getRenderer().onViewPortChanged(event);
+				((RasterLayer) layer).getRenderer().onMapResized(event);
 			} else if (layer instanceof VectorLayer) {
 				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
-				((VectorLayer) layer).getRenderer().onViewPortChanged(event);
+				((VectorLayer) layer).getRenderer().onMapResized(event);
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// MapCompositionHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerAdded(LayerAddedEvent event) {
+		Layer<?> layer = event.getLayer();
+		if (layer instanceof RasterLayer) {
+			((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+			((RasterLayer) layer).getRenderer().onLayerAdded(event);
+		} else if (layer instanceof VectorLayer) {
+			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().onLayerAdded(event);
+		}
+	}
+
+	public void onLayerRemoved(LayerRemovedEvent event) {
+	}
+
+	// ------------------------------------------------------------------------
+	// ViewPortChangedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onViewPortChanged(ViewPortChangedEvent event) {
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+		int dx = (int) Math.round(translation.getDx());
+		int dy = (int) Math.round(translation.getDy());
+		htmlContainer.setTop(dy);
+		htmlContainer.setLeft(dx);
+		vectorContainer.transform(translation);
+
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
+			if (layer.isShowing()) {
+				if (layer instanceof RasterLayer) {
+					((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+					((RasterLayer) layer).getRenderer().onViewPortChanged(event);
+				} else if (layer instanceof VectorLayer) {
+					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().onViewPortChanged(event);
+				}
 			}
 		}
 	}
 
 	public void onViewPortScaled(ViewPortScaledEvent event) {
-		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		int dx = (int) Math.round(translation.getDx());
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
 		vectorContainer.transform(translation);
-		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
-			if (layer instanceof RasterLayer) {
-				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((RasterLayer) layer).getRenderer().onViewPortScaled(event);
-			} else if (layer instanceof VectorLayer) {
-				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
-				((VectorLayer) layer).getRenderer().onViewPortScaled(event);
+			if (layer.isShowing()) {
+				if (layer instanceof RasterLayer) {
+					((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+					((RasterLayer) layer).getRenderer().onViewPortScaled(event);
+				} else if (layer instanceof VectorLayer) {
+					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().onViewPortScaled(event);
+				}
 			}
 		}
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		int dx = (int) Math.round(translation.getDx());
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
 		vectorContainer.transform(translation);
-		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
-			if (layer instanceof RasterLayer) {
-				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((RasterLayer) layer).getRenderer().onViewPortTranslated(event);
-			} else if (layer instanceof VectorLayer) {
-				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
-				((VectorLayer) layer).getRenderer().onViewPortTranslated(event);
+			if (layer.isShowing()) {
+				if (layer instanceof RasterLayer) {
+					((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+					((RasterLayer) layer).getRenderer().onViewPortTranslated(event);
+				} else if (layer instanceof VectorLayer) {
+					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().onViewPortTranslated(event);
+				}
 			}
 		}
 	}
 
 	public void onViewPortDragged(ViewPortDraggedEvent event) {
-		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.PAN, RenderSpace.SCREEN);
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		int dx = (int) Math.round(translation.getDx());
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
 		vectorContainer.transform(translation);
-		// DOM.setElementAttribute(vectorContainer.getElement(), "transform", "translate(" + dx + "," + dy + ")");
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
-			if (layer instanceof RasterLayer) {
-				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((RasterLayer) layer).getRenderer().onViewPortDragged(event);
-			} else if (layer instanceof VectorLayer) {
-				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
-				((VectorLayer) layer).getRenderer().onViewPortDragged(event);
+			if (layer.isShowing()) {
+				if (layer instanceof RasterLayer) {
+					((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
+					((RasterLayer) layer).getRenderer().onViewPortDragged(event);
+				} else if (layer instanceof VectorLayer) {
+					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().onViewPortDragged(event);
+				}
 			}
 		}
 	}
@@ -198,7 +291,6 @@ public class DelegatingMapRenderer implements MapRenderer {
 	}
 
 	public void setVectorContainer(VectorContainer vectorContainer) {
-		// TODO .....
 		this.vectorContainer = vectorContainer;
 	}
 
@@ -221,8 +313,6 @@ public class DelegatingMapRenderer implements MapRenderer {
 			return vectorLayerContainers.get(layer);
 		}
 		VectorGroup container = new VectorGroup();
-		// container.setWidth(htmlContainer.getWidth() + "");
-		// container.setHeight(htmlContainer.getHeight() + "");
 		vectorContainer.add(container);
 		vectorLayerContainers.put(layer, container);
 		return container;

@@ -15,6 +15,7 @@ import org.geomajas.global.Api;
 import org.geomajas.global.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
  * Interface for event handlers that catch changes in the <code>ViewPort</code>.
@@ -25,6 +26,8 @@ import com.google.gwt.event.shared.EventHandler;
 @Api(allMethods = true)
 @UserImplemented
 public interface ViewPortChangedHandler extends EventHandler {
+
+	Type<ViewPortChangedHandler> TYPE = new Type<ViewPortChangedHandler>();
 
 	/**
 	 * Catches events where the <code>ViewPort</code> has both scaled and translated.

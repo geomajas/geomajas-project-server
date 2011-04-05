@@ -13,6 +13,10 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
+import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
+import org.geomajas.puregwt.client.map.event.LayerVisibleHandler;
+import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
+import org.geomajas.puregwt.client.map.event.MapResizedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
@@ -25,7 +29,8 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
  * @author Pieter De Graef
  */
 @FutureApi(allMethods = true)
-public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler {
+public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibleHandler,
+		LayerStyleChangedHandler, MapResizedHandler, MapCompositionHandler {
 
 	/**
 	 * Determine whether or not to use a bigger bounds when rendering the map. By using a bigger scale, more tiles will

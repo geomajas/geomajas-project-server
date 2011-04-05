@@ -47,7 +47,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public VectorLayer(ClientVectorLayerInfo layerInfo, ViewPort viewPort, EventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
 		selection = new HashMap<String, Feature>();
-		renderer = new VectorLayerRenderer(this, viewPort, eventBus);
+		renderer = new VectorLayerRenderer(this, viewPort);
 	}
 
 	// ------------------------------------------------------------------------

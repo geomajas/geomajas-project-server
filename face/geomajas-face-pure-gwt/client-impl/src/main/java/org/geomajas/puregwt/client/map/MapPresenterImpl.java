@@ -30,7 +30,12 @@ import org.geomajas.puregwt.client.map.controller.NavigationController;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
+import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
+import org.geomajas.puregwt.client.map.event.LayerVisibleHandler;
+import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
+import org.geomajas.puregwt.client.map.event.MapResizedEvent;
+import org.geomajas.puregwt.client.map.event.MapResizedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
@@ -59,14 +64,14 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * ..........
+ * Default implementation of the map presenter interface. In other words this is the default GWT map object.
  * 
  * @author Pieter De Graef
  */
 public class MapPresenterImpl implements MapPresenter {
 
 	/**
-	 * ....
+	 * Map view definition.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -131,24 +136,19 @@ public class MapPresenterImpl implements MapPresenter {
 		// Initialize the default map renderer:
 		mapRenderer = new DelegatingMapRenderer(layersModel, viewPort);
 		mapRenderer.setHtmlContainer(display.getMapHtmlContainer());
-		// TODO temp code:
 		mapRenderer.setVectorContainer(display.getMapVectorContainer());
 
-		eventBus.addHandler(ViewPortChangedEvent.getType(), mapRenderer);
-		eventBus.addHandler(ViewPortDraggedEvent.getType(), mapRenderer);
-		eventBus.addHandler(ViewPortScaledEvent.getType(), mapRenderer);
-		eventBus.addHandler(ViewPortTranslatedEvent.getType(), mapRenderer);
+		eventBus.addHandler(ViewPortChangedHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
+		eventBus.addHandler(MapCompositionHandler.TYPE, mapRenderer);
+		eventBus.addHandler(LayerVisibleHandler.TYPE, mapRenderer);
+		eventBus.addHandler(LayerStyleChangedHandler.TYPE, mapRenderer);
 
 		worldContainerRenderer = new WorldContainerRenderer();
-		eventBus.addHandler(ViewPortChangedEvent.getType(), worldContainerRenderer);
-		eventBus.addHandler(ViewPortDraggedEvent.getType(), worldContainerRenderer);
-		eventBus.addHandler(ViewPortScaledEvent.getType(), worldContainerRenderer);
-		eventBus.addHandler(ViewPortTranslatedEvent.getType(), worldContainerRenderer);
+		eventBus.addHandler(ViewPortChangedHandler.TYPE, worldContainerRenderer);
 
-		eventBus.addHandler(ViewPortChangedEvent.getType(), new MapGadgetRenderer());
-		eventBus.addHandler(ViewPortTranslatedEvent.getType(), new MapGadgetRenderer());
-		eventBus.addHandler(ViewPortScaledEvent.getType(), new MapGadgetRenderer());
+		eventBus.addHandler(ViewPortChangedHandler.TYPE, new MapGadgetRenderer());
+		eventBus.addHandler(MapResizedEvent.TYPE, new GadgetPlacementHandler());
 
 		setFallbackController(new NavigationController());
 
@@ -201,6 +201,7 @@ public class MapPresenterImpl implements MapPresenter {
 		if (viewPort != null) {
 			viewPort.setMapSize(width, height);
 		}
+		eventBus.fireEvent(new MapResizedEvent(width, height));
 	}
 
 	public WorldContainer getWorldContainer(String id) {
@@ -378,6 +379,20 @@ public class MapPresenterImpl implements MapPresenter {
 		public void onViewPortDragged(ViewPortDraggedEvent event) {
 			for (WorldContainer worldContainer : display.getWorldContainers()) {
 				worldContainer.transform(viewPort);
+			}
+		}
+	}
+
+	/**
+	 * Map resized handler that passes the resize event to all registered gadgets.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class GadgetPlacementHandler implements MapResizedHandler {
+
+		public void onMapResized(MapResizedEvent event) {
+			for (MapGadget mapGadget : gadgets.values()) {
+				mapGadget.onResize();
 			}
 		}
 	}

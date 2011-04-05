@@ -20,12 +20,13 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
-import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
-import org.geomajas.puregwt.client.map.event.LayerVisibleHandler;
+import org.geomajas.puregwt.client.map.event.MapResizedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
@@ -42,7 +43,7 @@ import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
  * 
  * @author Pieter De Graef
  */
-public class VectorLayerRenderer implements MapRenderer, LayerVisibleHandler, LayerStyleChangedHandler {
+public class VectorLayerRenderer implements MapRenderer {
 
 	private VectorLayer layer;
 
@@ -64,16 +65,33 @@ public class VectorLayerRenderer implements MapRenderer, LayerVisibleHandler, La
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public VectorLayerRenderer(VectorLayer layer, ViewPort viewPort, EventBus eventBus) {
+	public VectorLayerRenderer(VectorLayer layer, ViewPort viewPort) {
 		this.layer = layer;
 		this.viewPort = viewPort;
 
 		factory = new GeometryFactoryImpl();
 		layerBounds = factory.createBbox(layer.getLayerInfo().getMaxExtent());
 		tiles = new HashMap<String, TilePresenter>();
+	}
 
-		eventBus.addHandler(LayerStyleChangedHandler.TYPE, this);
-		eventBus.addHandler(LayerVisibleHandler.TYPE, this);
+	// ------------------------------------------------------------------------
+	// MapResizedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onMapResized(MapResizedEvent event) {
+		// TODO implement me...
+	}
+
+	// ------------------------------------------------------------------------
+	// MapCompositionHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerAdded(LayerAddedEvent event) {
+		VectorLayer layer = (VectorLayer) event.getLayer();
+		vectorContainer.setVisible(layer.getLayerInfo().isVisible());
+	}
+
+	public void onLayerRemoved(LayerRemovedEvent event) {
 	}
 
 	// ------------------------------------------------------------------------
@@ -136,6 +154,7 @@ public class VectorLayerRenderer implements MapRenderer, LayerVisibleHandler, La
 			if (vectorContainer != null) {
 				vectorContainer.setVisible(true);
 			}
+			render(viewPort.getBounds());
 		}
 	}
 

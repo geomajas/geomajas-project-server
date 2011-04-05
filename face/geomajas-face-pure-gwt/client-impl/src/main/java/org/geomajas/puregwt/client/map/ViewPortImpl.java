@@ -109,6 +109,7 @@ public class ViewPortImpl implements ViewPort {
 	}
 
 	public void setMapSize(int width, int height) {
+		position = transform(new Coordinate(width / 2, height / 2), RenderSpace.SCREEN, RenderSpace.WORLD);
 		this.mapWidth = width;
 		this.mapHeight = height;
 		if (zoomStrategy != null) {

@@ -25,15 +25,14 @@ import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
 import org.geomajas.puregwt.client.map.MapRenderer;
-import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
-import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
-import org.geomajas.puregwt.client.map.event.LayerVisibleHandler;
+import org.geomajas.puregwt.client.map.event.MapResizedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
@@ -43,7 +42,6 @@ import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
  * <p>
@@ -53,7 +51,7 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * 
  * @author Pieter De Graef
  */
-public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandler, LayerVisibleHandler {
+public class RasterLayerRenderer implements MapRenderer {
 
 	private ViewPort viewPort;
 
@@ -76,11 +74,9 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	protected RasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer, EventBus eventBus) {
+	protected RasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer) {
 		this.viewPort = viewPort;
 		this.rasterLayer = rasterLayer;
-		eventBus.addHandler(LayerStyleChangedHandler.TYPE, this);
-		eventBus.addHandler(LayerVisibleHandler.TYPE, this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -97,11 +93,32 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 	}
 
 	// ------------------------------------------------------------------------
+	// MapResizedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onMapResized(MapResizedEvent event) {
+		fetchTiles(viewPort.getBounds());
+	}
+
+	// ------------------------------------------------------------------------
+	// MapCompositionHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerAdded(LayerAddedEvent event) {
+		RasterLayer layer = (RasterLayer) event.getLayer();
+		htmlContainer.setVisible(layer.getLayerInfo().isVisible());
+	}
+
+	public void onLayerRemoved(LayerRemovedEvent event) {
+	}
+
+	// ------------------------------------------------------------------------
 	// LayerVisibleHandler implementation:
 	// ------------------------------------------------------------------------
 
 	public void onShow(LayerShowEvent event) {
 		if (event.getLayer().getId().equals(rasterLayer.getId())) {
+			fetchTiles(viewPort.getBounds());
 			htmlContainer.setVisible(true);
 		}
 	}
@@ -167,7 +184,7 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 	}
 
 	public void setVectorContainer(VectorContainer vectorContainer) {
-		// TODO ....
+		// This renderer doesn't support vector rendering.
 	}
 
 	// ------------------------------------------------------------------------
@@ -205,8 +222,6 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 
 	/** Add tiles to the list and render them on the map. */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles) {
-		Matrix delta = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.PAN);
-
 		// Go over all tiles we got back from the server:
 		for (RasterTile tile : rasterTiles) {
 			TileCode code = tile.getCode().clone();
@@ -214,8 +229,8 @@ public class RasterLayerRenderer implements MapRenderer, LayerStyleChangedHandle
 			// Add only new tiles to the list:
 			if (!tiles.containsKey(code)) {
 				// Give the tile the correct location, keeping panning in mind:
-				tile.getBounds().setX(tile.getBounds().getX() + delta.getDx());
-				tile.getBounds().setY(tile.getBounds().getY() + delta.getDy());
+				tile.getBounds().setX(tile.getBounds().getX());
+				tile.getBounds().setY(tile.getBounds().getY());
 
 				// Add the tile to the list and render it:
 				tiles.put(code, tile);

@@ -42,8 +42,6 @@ public class WorldGroup extends VectorGroup implements WorldContainer {
 	}
 
 	public void transform(ViewPort viewPort) {
-		// TODO SVG only atm...
-
 		if (resizeChildren) {
 			transform(viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN));
 		} else {

@@ -24,11 +24,14 @@ import com.google.gwt.user.client.DOM;
  */
 public class VectorGroup extends Group implements VectorContainer {
 
+	/**
+	 * Transform this vector container and all it's children according to the given matrix.
+	 */
 	public void transform(Matrix matrix) {
 		if (Geomajas.hasSvgSupport()) {
 			DOM.setElementAttribute(getElement(), "transform", parseSvg(matrix));
 		} else {
-			// Internet explorer: only support translation...
+			// TODO Internet explorer: support scaling too...
 			DOM.setStyleAttribute(getElement(), "position", "absolute");
 			DOM.setStyleAttribute(getElement(), "left", (int) matrix.getDx() + "px");
 			DOM.setStyleAttribute(getElement(), "top", (int) matrix.getDy() + "px");

@@ -26,8 +26,6 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class ViewPortDraggedEvent extends GwtEvent<ViewPortChangedHandler> {
 
-	private static Type<ViewPortChangedHandler> TYPE;
-
 	private ViewPort viewPort;
 
 	// -------------------------------------------------------------------------
@@ -42,20 +40,8 @@ public class ViewPortDraggedEvent extends GwtEvent<ViewPortChangedHandler> {
 	// Event implementation:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Get the type associated with this event.
-	 * 
-	 * @return returns the handler type
-	 */
-	public static Type<ViewPortChangedHandler> getType() {
-		if (TYPE == null) {
-			TYPE = new Type<ViewPortChangedHandler>();
-		}
-		return TYPE;
-	}
-
 	public final Type<ViewPortChangedHandler> getAssociatedType() {
-		return TYPE;
+		return ViewPortChangedHandler.TYPE;
 	}
 
 	public ViewPort getViewPort() {

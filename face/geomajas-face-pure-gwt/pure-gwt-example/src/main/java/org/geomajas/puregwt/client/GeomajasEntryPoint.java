@@ -16,6 +16,7 @@ import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
+import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 
@@ -37,10 +38,14 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 	private final PureGwtExampleGinjector injector = GWT.create(PureGwtExampleGinjector.class);
 
+	private int mapWidth = 640;
+
+	private int mapHeight = 480;
+
 	public void onModuleLoad() {
 		final MapWidgetImpl mapWidget = injector.getMap();
 		final MapPresenter mapPresenter = new MapPresenterImpl("pure-gwt-app", "mapOsm", mapWidget);
-		mapPresenter.setSize(640, 480);
+		mapPresenter.setSize(mapWidth, mapHeight);
 
 		Button initButton = new Button("Init", new ClickHandler() {
 
@@ -67,6 +72,8 @@ public class GeomajasEntryPoint implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(false);
+				VectorLayer vLayer = (VectorLayer)mapPresenter.getLayersModel().getLayer("countries110mLayer");
+				vLayer.setMarkedAsVisible(false);
 			}
 		});
 		Button showButton = new Button("Show", new ClickHandler() {
@@ -74,6 +81,8 @@ public class GeomajasEntryPoint implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(true);
+				VectorLayer vLayer = (VectorLayer)mapPresenter.getLayersModel().getLayer("countries110mLayer");
+				vLayer.setMarkedAsVisible(true);
 			}
 		});
 		Button layerOrderButton = new Button("Toggle order", new ClickHandler() {
@@ -93,19 +102,13 @@ public class GeomajasEntryPoint implements EntryPoint {
 					container.clear();
 					WorldContainer wc1 = mapPresenter.getWorldContainer("world-container-1");
 					wc1.clear();
-					WorldContainer wc2 = mapPresenter.getWorldContainer("world-container-2");
-					wc2.clear();
+					ScreenContainer sc = mapPresenter.getScreenContainer("screen-container");
+					sc.clear();
 				} else {
 					WorldContainer wc1 = mapPresenter.getWorldContainer("world-container-1");
 					Circle c1 = new Circle(0, 0, 500000);
 					c1.setFillColor("red");
 					wc1.add(c1);
-
-					WorldContainer wc2 = mapPresenter.getWorldContainer("world-container-2");
-					wc2.setResizeChildren(false);
-					Circle c2 = new Circle(900000, 900000, 50);
-					c2.setFillColor("green");
-					wc2.add(c2);
 
 					ScreenContainer sc = mapPresenter.getScreenContainer("screen-container");
 					Circle c3 = new Circle(100, 100, 30);
@@ -113,6 +116,18 @@ public class GeomajasEntryPoint implements EntryPoint {
 					sc.add(c3);
 				}
 				shown = !shown;
+			}
+		});
+		Button resizeButton = new Button("Resize map", new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				mapWidth += 18;
+				mapHeight += 12;
+				if (mapWidth > 1024) {
+					mapWidth = 640;
+					mapHeight = 480;
+				}
+				mapPresenter.setSize(mapWidth, mapHeight);
 			}
 		});
 
@@ -124,6 +139,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		hPanel.add(showButton);
 		hPanel.add(layerOrderButton);
 		hPanel.add(drawButton);
+		hPanel.add(resizeButton);
 
 		RootPanel.get().add(hPanel);
 

@@ -33,7 +33,7 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements
 	 */
 	public RasterLayer(ClientRasterLayerInfo layerInfo, ViewPort viewPort, EventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
-		renderer = new SmartRasterLayerRenderer(viewPort, this, eventBus);
+		renderer = new SmartRasterLayerRenderer(viewPort, this);
 	}
 
 	/**
