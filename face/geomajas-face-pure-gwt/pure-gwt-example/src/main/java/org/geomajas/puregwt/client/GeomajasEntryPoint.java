@@ -72,7 +72,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(false);
-				VectorLayer vLayer = (VectorLayer)mapPresenter.getLayersModel().getLayer("countries110mLayer");
+				VectorLayer vLayer = (VectorLayer) mapPresenter.getLayersModel().getLayer("countries110mLayer");
 				vLayer.setMarkedAsVisible(false);
 			}
 		});
@@ -81,7 +81,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 			public void onClick(ClickEvent event) {
 				RasterLayer layer = (RasterLayer) mapPresenter.getLayersModel().getLayer("osmLayer");
 				layer.setMarkedAsVisible(true);
-				VectorLayer vLayer = (VectorLayer)mapPresenter.getLayersModel().getLayer("countries110mLayer");
+				VectorLayer vLayer = (VectorLayer) mapPresenter.getLayersModel().getLayer("countries110mLayer");
 				vLayer.setMarkedAsVisible(true);
 			}
 		});
