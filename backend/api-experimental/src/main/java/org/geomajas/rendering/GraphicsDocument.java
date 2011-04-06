@@ -37,8 +37,6 @@ public interface GraphicsDocument {
 	 * of the last element written. Throws an exception if the object cannot be
 	 * written.
 	 *
-	 * TODO: constrain this to objects with a specified interface ?
-	 *
 	 * @param o object to write
 	 * @param asChild when true, write as child element
 	 * @throws RenderException the object cannot be written
@@ -143,8 +141,6 @@ public interface GraphicsDocument {
 	/**
 	 * Adds an id attribute to the last element written using a '.' to
 	 * concatenate the current id prefix with the specified id.
-	 *
-	 * TODO: auto-manage id's as elements are added
 	 *
 	 * @param id id attribute to add
 	 * @throws RenderException write failed
