@@ -177,6 +177,28 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		return layerInfo.getLabel();
 	}
 
+	/**
+	 * Returns true if labels are visible (This does not necessarily mean that
+	 * the labels are currently showing on the map!).
+	 * 
+	 * @return
+	 */
+	public boolean isLabelsVisible() {
+		return labeled;
+	}
+
+	/**
+	 * Returns true if labels are currently showing (eg. isShowing == true && isLabelsVisible == true).
+	 * @return
+	 */
+	public boolean isLabelsShowing() {
+		return isLabelsVisible() && isShowing();
+	}
+
+	/**
+	 * @deprecated @see {@link Layer}
+	 */
+	@Deprecated
 	public boolean isLabeled() {
 		return showing && labeled;
 	}

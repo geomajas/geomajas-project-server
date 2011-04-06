@@ -22,8 +22,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>
- * The most basic interface for a layer on the client. Since we will want to paint layers on the map, it implements the
- * <code>Paintable</code> interface.
+ * The most basic interface for a layer on the client. Since we will want to
+ * paint layers on the map, it implements the <code>Paintable</code> interface.
  * </p>
  * 
  * @param <T>
@@ -58,8 +58,9 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Return the layer's label. The difference between the ID and the label, is that the ID is used behind the screens,
-	 * while the label is the visible name to the user.
+	 * Return the layer's label. The difference between the ID and the label, is
+	 * that the ID is used behind the screens, while the label is the visible
+	 * name to the user.
 	 * 
 	 * @return
 	 */
@@ -109,9 +110,12 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Get the labeled status for this layer.
 	 * 
-	 * @return True if labels are visible, false otherwise ; note that if the layer is visible the labels are automicly
-	 *         invisible
+	 * @deprecated Use isLabelsShowing() instead
+	 * 
+	 * @return True if labels are showing, false otherwise ; note that if the
+	 *         layer is not visible the labels are automatically invisible
 	 */
+	@Deprecated
 	boolean isLabeled();
 
 	/**
@@ -122,8 +126,8 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	boolean isShowing();
 
 	/**
-	 * Updates the visible status for this layer, this doesn't automicly means that the showing status is updated as
-	 * well.
+	 * Updates the visible status for this layer, this doesn't automicly means
+	 * that the showing status is updated as well.
 	 * 
 	 * @param visible
 	 *            The wished visible status
@@ -131,8 +135,8 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	void setVisible(boolean visible);
 
 	/**
-	 * Add handlers for {@link LayerChangedHandler}s. These events occur when the layer changes it's visible or labeled
-	 * values.
+	 * Add handlers for {@link LayerChangedHandler}s. These events occur when
+	 * the layer changes it's visible or labeled values.
 	 * 
 	 * @param handler
 	 * @return Returns the handler registration object.
@@ -140,7 +144,8 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	HandlerRegistration addLayerChangedHandler(LayerChangedHandler handler);
 
 	/**
-	 * Add handlers for {@link LayerStyleChangedHandler}s. These events occur when the layer style changes.
+	 * Add handlers for {@link LayerStyleChangedHandler}s. These events occur
+	 * when the layer style changes.
 	 * 
 	 * @param handler
 	 * @return Returns the handler registration object.
