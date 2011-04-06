@@ -61,7 +61,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		this.mapModel = mapModel;
 		this.layerInfo = layerInfo;
 		this.visible = layerInfo.isVisible();
-		this.updateShowing();
+		this.updateShowing(false);
 		handlerManager = new HandlerManager(this);
 	}
 
@@ -113,13 +113,25 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	}
 
 	public void updateShowing() {
+		updateShowing(true);
+	}
+
+	/**
+	 * 
+	 * @param fireEvents Should events be fired if state changes?
+	 */
+	protected void updateShowing(boolean fireEvents) {
 		double scale = mapModel.getMapView().getCurrentScale();
 		if (visible) {
+			boolean oldShowing = showing;
 			if (scale >= layerInfo.getMinimumScale().getPixelPerUnit()
 					&& scale <= layerInfo.getMaximumScale().getPixelPerUnit()) {
 				showing = true;
 			} else {
 				showing = false;
+			}
+			if (oldShowing != showing && fireEvents) {
+				handlerManager.fireEvent(new LayerShownEvent(this));
 			}
 		} else {
 			showing = false;
@@ -203,7 +215,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
-		updateShowing();
+		updateShowing(false);
 		handlerManager.fireEvent(new LayerShownEvent(this));
 	}
 }
