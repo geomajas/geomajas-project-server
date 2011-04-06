@@ -254,8 +254,8 @@ public class StringContentTilePainter implements TilePainter {
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
-			int coordWidth = (int) tile.getScreenWidth();
-			int coordHeight = (int) tile.getScreenHeight();
+			int coordWidth = tile.getScreenWidth();
+			int coordHeight = tile.getScreenHeight();
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlTileWriter(coordWidth, coordHeight));

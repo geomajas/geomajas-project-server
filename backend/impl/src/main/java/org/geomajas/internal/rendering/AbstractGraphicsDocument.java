@@ -79,7 +79,7 @@ public abstract class AbstractGraphicsDocument implements GraphicsDocument {
 		// set default number of fraction digits
 		formatter.setMaximumFractionDigits(defaultMaxDigits);
 
-		// minimun fraction digits to 0 so they get not rendered if not needed
+		// minimum fraction digits to 0 so they get not rendered if not needed
 		formatter.setMinimumFractionDigits(0);
 	}
 
@@ -233,19 +233,9 @@ public abstract class AbstractGraphicsDocument implements GraphicsDocument {
 
 	public void flush() throws RenderException {
 		try {
-			if (!elements.empty()) {
-				ElementState previous = elements.pop();
-				if (previous.needsCloseTag()) {
-					writer.write("></" + previous.getName() + ">");
-				} else {
-					writer.write("/>");
-				}
-			}
 			while (!elements.empty()) {
-				ElementState previous = elements.pop();
-				writer.write("</" + previous.getName() + ">");
+				closeElement();
 			}
-			unwindId();
 			writer.flush();
 		} catch (IOException ioe) {
 			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);

@@ -16,7 +16,6 @@ import org.geomajas.rendering.GraphicsDocument;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.validation.groups.Default;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
 
