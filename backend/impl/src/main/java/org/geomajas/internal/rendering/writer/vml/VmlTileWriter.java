@@ -23,7 +23,7 @@ import org.geomajas.rendering.RenderException;
 /**
  * This class writes the features of a feature tile as styled VML. Note that there is no surrounding group element for
  * the following reasons: - the result can be immediately assigned to innerHTML in IE - the position of the tile in
- * screen space is not known yet - the result is always cachable.
+ * screen space is not known yet - the result is always cacheable.
  * 
  * @author Jan De Moerloose
  */
@@ -42,53 +42,61 @@ public class VmlTileWriter implements GraphicsWriter {
 		InternalTile tile = (InternalTile) object;
 		String style = null;
 		for (InternalFeature feature : tile.getFeatures()) {
-			String nextStyle = feature.getStyleInfo().getIndex() + "";
-			if (style == null || !style.equals(nextStyle)) {
-				if (style != null) {
-					document.closeElement();
-					document.writeElement("vml:group", false);
-					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
+			FeatureStyleInfo featureStyle = feature.getStyleInfo();
+			if (null != featureStyle) {
+				String nextStyle = Integer.toString(featureStyle.getIndex());
+				if (style == null || !style.equals(nextStyle)) {
+					if (style != null) {
+						document.closeElement();
+						document.writeElement("vml:group", false);
+						document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+						document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
+					} else {
+						document.writeElement("vml:group", true);
+						document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+						document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
+					}
+					style = nextStyle;
+
+					VectorLayerInfo layerInfo = feature.getLayer().getLayerInfo();
+					if (layerInfo.getLayerType() != LayerType.POINT &&
+							layerInfo.getLayerType() != LayerType.MULTIPOINT) {
+
+						// the shapetype
+						document.writeElement("vml:shapetype", true);
+						document.writeAttribute("id", featureStyle.getStyleId());
+						document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
+						document.writeAttribute("style", "VISIBILITY: hidden");
+						document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+						document.writeAttribute("fillcolor", featureStyle.getFillColor());
+						document.writeAttribute("strokecolor", featureStyle.getStrokeColor());
+						document.writeAttribute("strokeweight", featureStyle.getStrokeWidth() + "px");
+
+						// Tile-fill element:
+						document.writeElement("vml:fill", true);
+						document.writeAttribute("opacity", Float.toString(featureStyle.getFillOpacity()));
+						document.closeElement();
+
+						// Tile-stroke element:
+						document.writeElement("vml:stroke", true);
+						document.writeAttribute("opacity", Float.toString(featureStyle.getStrokeOpacity()));
+						document.closeElement();
+
+						// up to style group
+						document.closeElement();
+					}
+					// now the feature
+					document.writeObject(feature, true);
 				} else {
-					document.writeElement("vml:group", true);
-					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
+					document.writeObject(feature, false);
 				}
-				style = nextStyle;
-
-				VectorLayerInfo layerInfo = feature.getLayer().getLayerInfo();
-				if (layerInfo.getLayerType() != LayerType.POINT && layerInfo.getLayerType() != LayerType.MULTIPOINT) {
-
-					// the shapetype
-					FeatureStyleInfo info = feature.getStyleInfo();
-					document.writeElement("vml:shapetype", true);
-					document.writeAttribute("id", info.getStyleId());
-					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
-					document.writeAttribute("style", "VISIBILITY: hidden");
-					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					document.writeAttribute("fillcolor", info.getFillColor());
-					document.writeAttribute("strokecolor", info.getStrokeColor());
-					document.writeAttribute("strokeweight", info.getStrokeWidth() + "px");
-
-					// Tile-fill element:
-					document.writeElement("vml:fill", true);
-					document.writeAttribute("opacity", Float.toString(info.getFillOpacity()));
-					document.closeElement();
-
-					// Tile-stroke element:
-					document.writeElement("vml:stroke", true);
-					document.writeAttribute("opacity", Float.toString(info.getStrokeOpacity()));
-					document.closeElement();
-
-					// up to style group
-					document.closeElement();
-				}
-				// now the feature
-				document.writeObject(feature, true);
-			} else {
-				document.writeObject(feature, false);
 			}
 		}
+		if (style != null) {
+			document.closeElement();
+		}
+		document.closeElement();
+
 	}
 
 }

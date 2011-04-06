@@ -32,22 +32,29 @@ public class SvgTileWriter implements GraphicsWriter {
 		document.writeId("features." + tile.getCode().toString());
 		String style = null;
 		for (InternalFeature feature : tile.getFeatures()) {
-			String nextStyle = feature.getStyleInfo().getIndex() + "";
-			if (style == null || !style.equals(nextStyle)) {
-				if (style != null) {
-					document.closeElement();
-					document.writeElement("g", false);
+			FeatureStyleInfo featureStyle = feature.getStyleInfo();
+			if (null != featureStyle) {
+				String nextStyle = Integer.toString(featureStyle.getIndex());
+				if (style == null || !style.equals(nextStyle)) {
+					if (style != null) {
+						document.closeElement();
+						document.writeElement("g", false);
+					} else {
+						document.writeElement("g", true);
+					}
+					style = nextStyle;
+					document.writeAttribute("style", parseStyle(featureStyle));
+					document.writeId(nextStyle);
+					document.writeObject(feature, true);
 				} else {
-					document.writeElement("g", true);
+					document.writeObject(feature, false);
 				}
-				style = nextStyle;
-				document.writeAttribute("style", parseStyle(feature.getStyleInfo()));
-				document.writeId(feature.getStyleInfo().getIndex() + "");
-				document.writeObject(feature, true);
-			} else {
-				document.writeObject(feature, false);
 			}
 		}
+		if (style != null) {
+			document.closeElement();
+		}
+		document.closeElement();
 	}
 
 	private String parseStyle(FeatureStyleInfo style) {
