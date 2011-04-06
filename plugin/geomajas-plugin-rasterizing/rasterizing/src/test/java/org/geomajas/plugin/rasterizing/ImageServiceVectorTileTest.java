@@ -54,6 +54,10 @@ public class ImageServiceVectorTileTest {
 	private NamedStyleInfo layerBeansMultiLineStyleInfo;
 
 	@Autowired
+	@Qualifier("layerBeansMultiLineAssociationStyleInfo")
+	private NamedStyleInfo layerBeansMultiLineAssociationStyleInfo;
+
+	@Autowired
 	@Qualifier("layerBeansMultiPolygon")
 	private VectorLayer layerBeansMultiPolygon;
 
@@ -112,6 +116,9 @@ public class ImageServiceVectorTileTest {
 		getMultiLineStyle().setStrokeOpacity(0.5f);
 		checkMultiLine("multiline_black_1_semitransparent.png", false, true);
 		getMultiLineStyle().setStrokeOpacity(1f);
+		// association
+		checkMultiLineAssociation("multiline_association.png", false, true);
+		
 	}
 
 	@Test
@@ -280,6 +287,10 @@ public class ImageServiceVectorTileTest {
 
 	private void checkMultiLine(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiLine, layerBeansMultiLineStyleInfo);
+	}
+
+	private void checkMultiLineAssociation(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
+		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiLine, layerBeansMultiLineAssociationStyleInfo);
 	}
 
 	private void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {

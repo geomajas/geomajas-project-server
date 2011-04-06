@@ -11,10 +11,13 @@
 package org.geomajas.plugin.rasterizing.layer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
@@ -100,6 +103,38 @@ public class VectorLayerFactory implements LayerFactory {
 		List<InternalFeature> features = vectorLayerService.getFeatures(vectorInfo.getServerLayerId(),
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
+		
+		// we now replace the style filters by fid filters:
+		// GT renderer is expecting simple features, it cannot deal with complex attribute filters
+		Map<Integer, List<String>> fidMap = new HashMap<Integer, List<String>>();
+		for (InternalFeature internalFeature : features) {
+			FeatureStyleInfo style = internalFeature.getStyleInfo();
+			if (!fidMap.containsKey(style.getIndex())) {
+				fidMap.put(style.getIndex(), new ArrayList<String>());
+			}
+			fidMap.get(style.getIndex()).add(internalFeature.getId());
+		}
+		for (FeatureStyleInfo style : extraInfo.getStyle().getFeatureStyles()) {
+			if (fidMap.containsKey(style.getIndex())) {
+				StringBuilder sb = null;
+				for (String id : fidMap.get(style.getIndex())) {
+					if (sb == null) {
+						sb = new StringBuilder("IN ('");
+						sb.append(id);
+						sb.append("'");
+					} else {
+						sb.append(", '");
+						sb.append(id);
+						sb.append("'");
+					}
+				}
+				sb.append(")");
+				style.setFormula(sb.toString());
+			} else {
+				style.setFormula("EXCLUDE");
+			}
+		}
+
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, extraInfo));
 		featureLayer.setTitle(vectorInfo.getLabel());
