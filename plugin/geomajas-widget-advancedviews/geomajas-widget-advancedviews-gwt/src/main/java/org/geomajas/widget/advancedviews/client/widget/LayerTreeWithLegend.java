@@ -516,6 +516,15 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 		for (Layer<?> layer : mapModel.getLayers()) {
 			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
 				public void onLabelChange(LayerLabeledEvent event) {
+					GWT.log("Legend: onLabelChange() - " + event.getLayer().getLabel());
+					// find the node & update the icon
+					for (TreeNode node : tree.getAllNodes()) {
+						if (node.getName().equals(event.getLayer().getLabel())) {
+							if (node instanceof LayerTreeTreeNode) {
+								((LayerTreeTreeNode) node).updateIcon();
+							}
+						}
+					}
 				}
 
 				public void onVisibleChange(LayerShownEvent event) {

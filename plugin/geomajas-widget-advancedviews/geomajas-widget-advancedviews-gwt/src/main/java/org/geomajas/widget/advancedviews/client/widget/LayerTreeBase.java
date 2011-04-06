@@ -21,6 +21,7 @@ import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend.LayerTreeLegendNode;
@@ -59,6 +60,13 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 @Api
 public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, FolderClickHandler,
 		LayerSelectionHandler {
+
+	protected static final String ICON_BASE = "[ISOMORPHIC]/geomajas/widget/layertree/";
+	protected static final String ICON_HIDE = ICON_BASE + "layer-hide.png";
+	protected static final String ICON_SHOW = ICON_BASE + "layer-show.png";
+	protected static final String ICON_SHOW_LABELED = ICON_BASE + "layer-show-labeled.png";
+	protected static final String ICON_SHOW_OUTOFRANGE = ICON_BASE + "layer-show-outofrange.png";
+	protected static final String ICON_SHOW_OUTOFRANGE_LABELED = ICON_BASE + "layer-show-outofrange-labeled.png";
 
 	protected static final String IMG_TAGNAME = "IMG";
 
@@ -205,7 +213,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	protected void onIconClick(TreeNode node) {
 		if (node != null && node instanceof LayerTreeTreeNode) {
 			LayerTreeTreeNode n = (LayerTreeTreeNode) node;
-			n.layer.setVisible(!n.layer.isShowing());
+			n.layer.setVisible(!n.layer.isVisible());
 			n.updateIcon();
 		}
 	}
@@ -336,7 +344,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 		protected RefreshableTree tree;
 
-		protected Layer<?> layer;
+		protected AbstractLayer<?> layer;
 
 		/**
 		 * Constructor creates a TreeNode with layer.getLabel as label.
@@ -348,7 +356,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		 */
 		public LayerTreeTreeNode(RefreshableTree tree, Layer<?> layer) {
 			super(layer.getLabel());
-			this.layer = layer;
+			this.layer = (AbstractLayer<?>) layer;
 			this.tree = tree;
 			updateIcon(false);
 		}
@@ -362,24 +370,29 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		 * and to update its icon to match its status.
 		 */
 		public void updateIcon(boolean refresh) {
-			if (getLayer().isShowing()) {
-				if (getLayer().isLabeled()) {
-					// show icon labeled and showing
-					setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png");
+			if (layer.isVisible()) {
+				if (layer.isShowing()) {
+					if (layer.isLabeled()) {
+						setIcon(ICON_SHOW_LABELED);
+					} else {
+						setIcon(ICON_SHOW);
+					}
 				} else {
-					// show showing icon
-					setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png");
+					if (layer.isLabeled()) {
+						setIcon(ICON_SHOW_OUTOFRANGE_LABELED);
+					} else {
+						setIcon(ICON_SHOW_OUTOFRANGE);
+					}
 				}
 			} else {
-				// show not showing
-				setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png");
+				setIcon(ICON_HIDE);
 			}
 			if (refresh) {
 				tree.refreshIcons();
 			}
 		}
 
-		public Layer<?> getLayer() {
+		public AbstractLayer<?> getLayer() {
 			return layer;
 		}
 	}
