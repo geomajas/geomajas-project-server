@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import org.springframework.util.StringUtils;
 
 /**
  * Writer for tile labels.
@@ -79,7 +80,7 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 						Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
 						document.writeElement("rect", createChild);
 						document.writeAttribute("id", feature.getId() + ".lblBG");
-						document.writeAttribute("x", labelPos.getX() - Math.round(textBox.getWidth()) / 2);
+						document.writeAttribute("x", labelPos.getX() - Math.round(textBox.getWidth() / 2));
 						document.writeAttribute("y", labelPos.getY() - Math.round(textBox.getHeight()));
 						document.writeAttribute("width", Math.round(textBox.getWidth()));
 						document.writeAttribute("height", Math.round(textBox.getHeight()));
@@ -91,7 +92,7 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 						document.writeAttribute("id", feature.getId() + ".lblTXT");
 						document.writeAttribute("x", labelPos.getX());
 						// pull up baseline position to accommodate for descent
-						document.writeAttribute("y", labelPos.getY() - (int) textBox.getMaxY());
+						document.writeAttribute("y", labelPos.getY() - Math.round(textBox.getMaxY()));
 						// TODO: config option, center label
 						document.writeAttribute("text-anchor", "middle");
 						document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
@@ -108,16 +109,16 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 	
 	private String getCssStyle(FontStyleInfo style) {
 		String css = "";
-		if (style.getColor() != null && !"".equals(style.getColor())) {
+		if (StringUtils.hasText(style.getColor())) {
 			css += "fill:" + style.getColor() + ";";
 		}
-		if (style.getFamily() != null && !"".equals(style.getFamily())) {
+		if (StringUtils.hasText(style.getFamily())) {
 			css += "font-family:" + style.getFamily() + ";";
 		}
-		if (style.getStyle() != null && !"".equals(style.getStyle())) {
+		if (StringUtils.hasText(style.getStyle())) {
 			css += "font-style:" + style.getStyle() + ";";
 		}
-		if (style.getWeight() != null && !"".equals(style.getWeight())) {
+		if (StringUtils.hasText(style.getWeight())) {
 			css += "font-weight:" + style.getWeight() + ";";
 		}
 		if (style.getSize() >= 0) {
