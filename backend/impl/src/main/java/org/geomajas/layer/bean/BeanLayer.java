@@ -49,6 +49,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Jan De Moerloose
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings("IS2_INCONSISTENT_SYNC")
 public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	private final Logger log = LoggerFactory.getLogger(BeanLayer.class);
