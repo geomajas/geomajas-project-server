@@ -21,6 +21,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
@@ -281,6 +282,11 @@ public final class GeoServiceImpl implements GeoService {
 				source = source.intersection(transformableArea);
 			}
 			return JTS.transform(source, crsTransform);
+		} catch (TopologyException te) {
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
+					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
+					"transformation. Object replaced by empty Geometry.", te);
+			return JTS.toGeometry(new Envelope());
 		} catch (TransformException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
@@ -359,6 +365,11 @@ public final class GeoServiceImpl implements GeoService {
 				envelope = refEnvelope.transform(crsTransform.getTarget(), true);
 				return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 			}
+		} catch (TopologyException te) {
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
+					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
+					"transformation. Object replaced by empty Bbox.", te);
+			return new Bbox();
 		} catch (TransformException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
@@ -415,6 +426,11 @@ public final class GeoServiceImpl implements GeoService {
 				ReferencedEnvelope refEnvelope = new ReferencedEnvelope(source, crsTransform.getSource());
 				return refEnvelope.transform(crsTransform.getTarget(), true);
 			}
+		} catch (TopologyException te) {
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
+					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
+					"transformation. Object replaced by empty Envelope.", te);
+			return new Envelope();
 		} catch (TransformException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
