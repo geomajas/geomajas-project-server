@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -24,14 +25,18 @@ import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeRegistry;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
+import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
+import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionType;
@@ -79,6 +84,8 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	private MapModel mapModel;
 
 	private boolean initialized;
+	
+	private final List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -279,6 +286,35 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		treeGrid.setData(tree);
 		treeGrid.addLeafClickHandler(this);
 		treeGrid.addFolderClickHandler(this);
+
+		// -- add eventlisteners to layers
+		for (Layer<?> layer : mapModel.getLayers()) {
+			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
+				public void onLabelChange(LayerLabeledEvent event) {
+				}
+
+				public void onVisibleChange(LayerShownEvent event) {
+					GWT.log("Legend: onVisibleChange() - " + event.getLayer().getLabel());
+					for (TreeNode node : tree.getAllNodes()) {
+						if (node.getName().equals(event.getLayer().getLabel())) {
+							if (node instanceof LayerTreeTreeNode) {
+								((LayerTreeTreeNode) node).updateIcon();
+							}
+						}
+					}
+				}
+			}));
+		}
+	}
+
+	/** Remove all handlers on unload. */
+	protected void onUnload() {
+		if (registrations != null) {
+			for (HandlerRegistration registration : registrations) {
+				registration.removeHandler();
+			}
+		}
+		super.onUnload();
 	}
 
 	/**
