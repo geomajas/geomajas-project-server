@@ -67,11 +67,12 @@ public class UpdateFeatureStep implements PipelineStep {
 			Map<String, Attribute> featureAttributes) {
 		feature.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
 		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
-		for (String key : featureAttributes.keySet()) {
+		for (Map.Entry<String, Attribute> entry : featureAttributes.entrySet()) {
+			String key = entry.getKey();
 			if (securityContext.isAttributeReadable(layerId, feature, key)) {
-				Attribute attribute = featureAttributes.get(key);
+				Attribute attribute = entry.getValue();
 				attribute.setEditable(securityContext.isAttributeWritable(layerId, feature, key));
-				filteredAttributes.put(key, featureAttributes.get(key));
+				filteredAttributes.put(key, attribute);
 			}
 		}
 		feature.setAttributes(filteredAttributes);

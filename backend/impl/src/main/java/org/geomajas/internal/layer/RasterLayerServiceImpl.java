@@ -22,7 +22,6 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.GeoService;
 import org.geomajas.layer.RasterLayerService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +48,6 @@ public class RasterLayerServiceImpl implements RasterLayerService {
 
 	@Autowired
 	private SecurityContext securityContext;
-
-	@Autowired
-	private GeoService geoService;
 
 	@Autowired
 	private PipelineService pipelineService;

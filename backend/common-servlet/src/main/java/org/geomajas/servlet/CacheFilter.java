@@ -144,37 +144,40 @@ public class CacheFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException,
 			ServletException {
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		boolean chainCalled = false;
+		if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
+			HttpServletRequest httpRequest = (HttpServletRequest) request;
+			HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		String requestUri = httpRequest.getRequestURI();
+			String requestUri = httpRequest.getRequestURI();
 
-		if (!checkPrefixes(requestUri, skipPrefixes)) {
-			boolean isLocalhost =
-					"localhost".equals(httpRequest.getServerName()) || "127.0.0.1".equals(httpRequest.getServerName());
+			if (!checkPrefixes(requestUri, skipPrefixes)) {
+				String serverName = httpRequest.getServerName();
+				boolean isLocalhost = "localhost".equals(serverName) || "127.0.0.1".equals(serverName);
 
-			if (!isLocalhost) {
-				if (shouldNotCache(requestUri)) {
-					configureNoCaching(httpResponse);
-				} else if (shouldCache(requestUri)) {
-					configureCaching(httpResponse);
-				}
-			}
-
-			if (shouldCompress(requestUri)) {
-				String encodings = httpRequest.getHeader("Accept-Encoding");
-				if (encodings != null && encodings.indexOf("gzip") != -1) {
-					GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
-					try {
-						filterChain.doFilter(request, responseWrapper);
-					} finally {
-						responseWrapper.finish();
+				if (!isLocalhost) {
+					if (shouldNotCache(requestUri)) {
+						configureNoCaching(httpResponse);
+					} else if (shouldCache(requestUri)) {
+						configureCaching(httpResponse);
 					}
 				}
-			} else {
-				filterChain.doFilter(request, response);
+
+				if (shouldCompress(requestUri)) {
+					String encodings = httpRequest.getHeader("Accept-Encoding");
+					if (encodings != null && encodings.indexOf("gzip") != -1) {
+						GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
+						try {
+							filterChain.doFilter(request, responseWrapper);
+							chainCalled = true;
+						} finally {
+							responseWrapper.finish();
+						}
+					}
+				}
 			}
-		} else {
+		}
+		if (!chainCalled) {
 			filterChain.doFilter(request, response);
 		}
 	}

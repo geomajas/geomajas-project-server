@@ -15,9 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -31,7 +29,6 @@ import org.springframework.core.io.Resource;
  * implementing the methods generateActual() and getExpected().
  * 
  * @author Jan De Moerloose
- * 
  */
 public abstract class BinaryStreamAssert {
 
@@ -44,7 +41,7 @@ public abstract class BinaryStreamAssert {
 	 *            name part of resource
 	 * @param rewrite
 	 *            if true, the expected will be rewritten
-	 * @throws Exception
+	 * @throws Exception oops
 	 */
 	public void assertEqual(String message, String resourceName, boolean rewrite) throws Exception {
 		if (rewrite) {
@@ -61,7 +58,7 @@ public abstract class BinaryStreamAssert {
 	 *            name part of resource
 	 * @param rewrite
 	 *            if true, the expected will be rewritten
-	 * @throws Exception
+	 * @throws Exception oops
 	 */
 	public void assertEqual(String resourceName, boolean rewrite) throws Exception {
 		assertEqual("resource " + resourceName + " not equal or writable", resourceName, rewrite);
@@ -78,7 +75,7 @@ public abstract class BinaryStreamAssert {
 	 *            if true, the expected will be rewritten
 	 * @param relativeDelta
 	 *            relative difference between the 2 images (0 <= relativeDelta <= 1)
-	 * @throws Exception
+	 * @throws Exception oops
 	 */
 	public void assertEqualImage(String message, String resourceName, boolean rewrite, double relativeDelta)
 			throws Exception {
@@ -95,9 +92,12 @@ public abstract class BinaryStreamAssert {
 						".", ".actual."));
 				if (copy.canWrite()) {
 					FileOutputStream fos = new FileOutputStream(copy);
-					fos.write(actualBytes);
-					fos.flush();
-					fos.close();
+					try {
+						fos.write(actualBytes);
+						fos.flush();
+					} finally {
+						fos.close();
+					}
 				} else {
 					System.out.println("Could not write copy of actual image to " + copy.getAbsolutePath());
 				}
@@ -129,7 +129,7 @@ public abstract class BinaryStreamAssert {
 	 *            if true, the expected will be rewritten
 	 * @param relativeDelta
 	 *            relative difference between the 2 images (0 <= relativeDelta <= 1)
-	 * @throws Exception
+	 * @throws Exception oops
 	 */
 	public void assertEqualImage(String resourceName, boolean rewrite, double relativeDelta) throws Exception {
 		assertEqualImage("resource " + resourceName + " not equal or writable", resourceName, rewrite, relativeDelta);
@@ -138,8 +138,8 @@ public abstract class BinaryStreamAssert {
 	/**
 	 * Generates the actual binary stream to the specified outputstream.
 	 * 
-	 * @param out
-	 * @throws Exception
+	 * @param out stream
+	 * @throws Exception oops
 	 */
 	public abstract void generateActual(OutputStream out) throws Exception;
 
@@ -150,18 +150,21 @@ public abstract class BinaryStreamAssert {
 	 *            the resource name (file name)
 	 * @param rewrite
 	 *            true if the resource should be rewritten
-	 * @return
+	 * @return resource
 	 */
 	public abstract Resource getExpected(String resourceName, boolean rewrite);
 
-	private void writeToFile(String resourceName) throws IOException, FileNotFoundException, Exception {
+	private void writeToFile(String resourceName) throws Exception {
 		File file;
 		file = getExpected(resourceName, true).getFile();
 		FileOutputStream fos;
 		fos = new FileOutputStream(file);
-		generateActual(fos);
-		fos.flush();
-		fos.close();
+		try {
+			generateActual(fos);
+			fos.flush();
+		} finally {
+			fos.close();
+		}
 	}
 
 	private Color diff(Color c1, Color c2) {
@@ -180,7 +183,7 @@ public abstract class BinaryStreamAssert {
 		return r * r + g * g + b * b + a * a;
 	}
 
-	private byte[] getExpectedBytes(String resourceName) throws Exception, IOException {
+	private byte[] getExpectedBytes(String resourceName) throws Exception {
 		InputStream is = getExpected(resourceName, false).getInputStream();
 		byte[] buf = new byte[1024];
 		int len;
@@ -192,7 +195,7 @@ public abstract class BinaryStreamAssert {
 		return bos.toByteArray();
 	}
 
-	private byte[] getActualBytes() throws Exception, IOException {
+	private byte[] getActualBytes() throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		generateActual(baos);
 		baos.flush();

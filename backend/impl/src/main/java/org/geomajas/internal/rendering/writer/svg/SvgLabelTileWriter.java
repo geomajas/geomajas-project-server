@@ -79,10 +79,10 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 						Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
 						document.writeElement("rect", createChild);
 						document.writeAttribute("id", feature.getId() + ".lblBG");
-						document.writeAttribute("x", labelPos.getX() - ((int) textBox.getWidth() / 2));
-						document.writeAttribute("y", labelPos.getY() - ((int) textBox.getHeight()));
-						document.writeAttribute("width", (int) textBox.getWidth());
-						document.writeAttribute("height", (int) textBox.getHeight());
+						document.writeAttribute("x", labelPos.getX() - Math.round(textBox.getWidth()) / 2);
+						document.writeAttribute("y", labelPos.getY() - Math.round(textBox.getHeight()));
+						document.writeAttribute("width", Math.round(textBox.getWidth()));
+						document.writeAttribute("height", Math.round(textBox.getHeight()));
 						document.writeAttribute("style", getCssStyle(bgStyle));
 						createChild = false;
 

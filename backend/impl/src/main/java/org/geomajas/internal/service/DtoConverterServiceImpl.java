@@ -616,9 +616,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			case MULTIPOLYGON:
 				return MultiPolygon.class;
 			case RASTER:
+			default:
 				return null;
 		}
-		return null;
 	}
 
 	/**

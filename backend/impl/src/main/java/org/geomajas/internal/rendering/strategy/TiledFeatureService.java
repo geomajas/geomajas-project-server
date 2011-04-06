@@ -19,11 +19,9 @@ import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.JTS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -52,9 +50,6 @@ import com.vividsolutions.jts.geom.Geometry;
 public class TiledFeatureService {
 
 	private final Logger log = LoggerFactory.getLogger(TiledFeatureService.class);
-
-	@Autowired
-	private DtoConverterService converterService;
 
 	/**
 	 * Helps determine when a feature is too big and must therefore be clipped.

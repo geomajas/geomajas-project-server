@@ -48,9 +48,10 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 		Map<String, Attribute> requestAttributes = newFeature.getAttributes();
 		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
 		if (null != requestAttributes) {
-			for (String key : requestAttributes.keySet()) {
+			for (Map.Entry<String, Attribute> entry : requestAttributes.entrySet()) {
+				String key = entry.getKey();
 				if (securityContext.isAttributeWritable(layerId, newFeature, key)) {
-					filteredAttributes.put(key, requestAttributes.get(key));
+					filteredAttributes.put(key, entry.getValue());
 				}
 			}
 		}

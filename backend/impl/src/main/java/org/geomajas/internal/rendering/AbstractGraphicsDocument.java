@@ -74,7 +74,7 @@ public abstract class AbstractGraphicsDocument implements GraphicsDocument {
 
 		// do not show decimal SEPARATOR if it is not needed
 		formatter.setDecimalSeparatorAlwaysShown(false);
-		formatter.setDecimalFormatSymbols(null);
+		formatter.setGroupingUsed(false);
 
 		// set default number of fraction digits
 		formatter.setMaximumFractionDigits(defaultMaxDigits);

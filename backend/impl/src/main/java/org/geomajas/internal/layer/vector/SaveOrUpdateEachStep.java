@@ -18,7 +18,6 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineInfo;
 import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -32,9 +31,6 @@ public class SaveOrUpdateEachStep implements PipelineStep {
 
 	private String id;
 	private String pipelineName;
-
-	@Autowired
-	private SecurityContext securityContext;
 
 	@Autowired
 	private PipelineService pipelineService;

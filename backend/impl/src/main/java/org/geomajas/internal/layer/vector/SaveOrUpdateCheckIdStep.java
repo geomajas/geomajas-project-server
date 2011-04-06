@@ -17,8 +17,6 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Sanity check to assure that the id of old and new feature value are th same before we start to update.
@@ -26,9 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Joachim Van der Auwera
  */
 public class SaveOrUpdateCheckIdStep implements PipelineStep {
-
-	@Autowired
-	private SecurityContext securityContext;
 
 	private String id;
 
