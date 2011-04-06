@@ -59,6 +59,31 @@
 			<artifactId>validation-api</artifactId>
 		</dependency>
 
+		<!-- @extract-start SearchAndFilterDependency, Search and filter plugin dependencies - including source -->
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-searchandfilter</artifactId>
+			<version>${version}</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-searchandfilter</artifactId>
+			<version>${version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
+			<version>${version}</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
+			<version>${version}</version>
+		</dependency>
+		<!-- @extract-end -->
+
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
