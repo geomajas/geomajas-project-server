@@ -11,6 +11,7 @@
 
 <module>
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
+	<inherits name="org.geomajas.widget.featureinfo.Featureinfo"/>
 	
 	<source path="client" />
 	

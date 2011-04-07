@@ -11,6 +11,22 @@
 
 package org.geomajas.widget.searchandfilter.gwt.example.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.widget.LayerTree;
+import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.LoadingScreen;
+import org.geomajas.gwt.client.widget.LocaleSelect;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.widget.searchandfilter.gwt.example.client.i18n.ApplicationMessages;
+import org.geomajas.widget.searchandfilter.gwt.example.client.pages.AbstractTab;
+import org.geomajas.widget.searchandfilter.gwt.example.client.pages.MultiFeatureListGridPage;
+import org.geomajas.widget.searchandfilter.gwt.example.client.pages.SearchPage;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Side;
@@ -23,21 +39,6 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import org.geomajas.widget.searchandfilter.gwt.example.client.i18n.ApplicationMessages;
-import org.geomajas.widget.searchandfilter.gwt.example.client.pages.AbstractTab;
-import org.geomajas.widget.searchandfilter.gwt.example.client.pages.FeatureListGridPage;
-import org.geomajas.widget.searchandfilter.gwt.example.client.pages.SearchPage;
-import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
-import org.geomajas.gwt.client.widget.LoadingScreen;
-import org.geomajas.gwt.client.widget.LocaleSelect;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.OverviewMap;
-import org.geomajas.gwt.client.widget.Toolbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this
@@ -155,7 +156,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Bottom left: Add tabs here:
 		// ---------------------------------------------------------------------
-		FeatureListGridPage page1 = new FeatureListGridPage(map);
+		MultiFeatureListGridPage page1 = new MultiFeatureListGridPage(map);
 		addTab(new SearchPage(map, tabSet, page1.getTable()));
 		addTab(page1);
 

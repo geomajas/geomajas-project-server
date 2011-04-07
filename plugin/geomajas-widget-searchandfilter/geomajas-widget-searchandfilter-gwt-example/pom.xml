@@ -16,7 +16,7 @@
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-searchandfilter-gwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas widget advanced views GWT example application</name>
+	<name>Geomajas widget Search and Filter GWT example application</name>
 	<description>Geomajas GWT application</description>
 	<url>http://www.geomajas.org/</url>
 
