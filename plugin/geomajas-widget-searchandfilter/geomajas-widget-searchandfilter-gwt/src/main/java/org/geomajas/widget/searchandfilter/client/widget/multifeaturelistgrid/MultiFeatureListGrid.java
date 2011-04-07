@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,6 +61,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 
 	protected boolean clearTabsetOnSearch;
 
+	protected boolean showDetailsOnSingleResult;
+
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	public MultiFeatureListGrid(MapWidget map) {
@@ -98,6 +101,14 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 		this.clearTabsetOnSearch = clearTabsetOnSearch;
 	}
 
+	public boolean isShowDetailsOnSingleResult() {
+		return showDetailsOnSingleResult;
+	}
+
+	public void setShowDetailsOnSingleResult(boolean showDetailsOnSingleResult) {
+		this.showDetailsOnSingleResult = showDetailsOnSingleResult;
+	}
+
 	/**
 	 * Remove all.
 	 */
@@ -118,15 +129,29 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 	}
 
 	public void addFeatures(VectorLayer layer, List<Feature> features) {
+		addFeatures(layer, features, showDetailsOnSingleResult);
+	}
+
+	private void addFeatures(VectorLayer layer, List<Feature> features, boolean showSingleResult) {
 		FeatureListGridTab t = getTab(layer);
 		t.empty();
 		t.addFeatures(features);
 		tabset.selectTab(t);
+		if (showSingleResult && features.size() == 1) {
+			showFeatureDetailWindow(features.get(0));
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addFeatures(Map<VectorLayer, List<Feature>> result) {
 		for (Entry<VectorLayer, List<Feature>> entry : result.entrySet()) {
-			addFeatures(entry.getKey(), entry.getValue());
+			addFeatures(entry.getKey(), entry.getValue(), false);
+		}
+		if (showDetailsOnSingleResult && result.size() == 1) {
+			List<Feature> features = (ArrayList<Feature>) result.values().toArray()[0];
+			if (features.size() == 1) {
+				showFeatureDetailWindow(features.get(0));
+			}
 		}
 	}
 
@@ -172,6 +197,13 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 			setEmpty((tabset.getTabs().length == 0));
 		}
 		return (FeatureListGridTab) t;
+	}
+
+	private void showFeatureDetailWindow(final Feature feature) {
+		Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, false);
+		window.setPageTop(map.getAbsoluteTop() + 10);
+		window.setPageLeft(map.getAbsoluteLeft() + 10);
+		window.draw();
 	}
 
 	/**
@@ -321,11 +353,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 					featureListGrid.getLayer().getFeatureStore()
 							.getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
 								public void execute(List<Feature> response) {
-									Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(
-											response.get(0), false);
-									window.setPageTop(mapWidget.getAbsoluteTop() + 10);
-									window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);
-									window.draw();
+									showFeatureDetailWindow(response.get(0));
 								}
 							});
 				}

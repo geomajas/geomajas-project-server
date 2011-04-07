@@ -54,7 +54,9 @@ public class SearchPage extends AbstractTab {
 		searchWidget.addSearchHandler(grid);
 		searchWidget.addSearchHandler(new SearchHandler() {
 			public void onSearchDone(SearchEvent event) {
-				tabSet.selectTab(1);
+				if (event.getFeatures().size() != 1) {
+					tabSet.selectTab(1);
+				}
 			}
 		});
 

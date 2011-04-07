@@ -33,6 +33,7 @@ public class MultiFeatureListGridPage extends AbstractTab {
 		// features:
 		table = new MultiFeatureListGrid(map);
 		table.setClearTabsetOnSearch(false);
+		table.setShowDetailsOnSingleResult(true);
 		mainLayout.addMember(table);
 	}
 
