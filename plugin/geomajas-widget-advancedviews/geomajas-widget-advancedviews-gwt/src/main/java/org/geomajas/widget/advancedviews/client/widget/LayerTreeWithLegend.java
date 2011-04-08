@@ -141,12 +141,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 		}
 
 		// -- update model
-		if (null != selectedLayerTreeNode
-				&& layerTreeNode.getLayer().getId().equals(selectedLayerTreeNode.getLayer().getId())) {
-			mapModel.selectLayer(null);
-		} else {
-			mapModel.selectLayer(layerTreeNode.getLayer());
-		}
+		mapModel.selectLayer(layerTreeNode.getLayer());
 	}
 
 	// ----------------------------------------------------------

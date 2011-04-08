@@ -177,7 +177,11 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 			if (IMG_TAGNAME.equals(e.getTagName())) {
 				onIconClick(event.getFolder());
 			} else {
-				mapModel.selectLayer(null);
+				if (event.getFolder() instanceof LayerTreeTreeNode) {
+					mapModel.selectLayer(((LayerTreeTreeNode) event.getFolder()).getLayer());
+				} else {
+					mapModel.selectLayer(null);
+				}
 			}
 		} catch (Exception e) {
 			GWT.log(e.getMessage());
@@ -197,12 +201,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 				onIconClick(event.getLeaf());
 			} else {
 				LayerTreeTreeNode layerTreeNode = (LayerTreeTreeNode) event.getLeaf();
-				if (null != selectedLayerTreeNode
-						&& layerTreeNode.getLayer().getId().equals(selectedLayerTreeNode.getLayer().getId())) {
-					mapModel.selectLayer(null);
-				} else {
-					mapModel.selectLayer(layerTreeNode.getLayer());
-				}
+				mapModel.selectLayer(layerTreeNode.getLayer());
 			}
 		} catch (Exception e) {
 			GWT.log(e.getMessage());
