@@ -42,7 +42,7 @@ public class GeometryUtilsCommand implements Command<GeometryUtilsRequest, Geome
 	private DtoConverterService converter;
 
 	public void execute(final GeometryUtilsRequest request, final GeometryUtilsResponse response) throws Exception {
-		if (request.getGeometries() != null && request.getGeometries().length > 1) {
+		if (request.getGeometries() != null && request.getGeometries().length > 0) {
 			int geomCount = request.getGeometries().length;
 			log.debug("GeometryUtilsCommand for " + geomCount + " geometries.");
 
@@ -97,10 +97,11 @@ public class GeometryUtilsCommand implements Command<GeometryUtilsRequest, Geome
 		}
 		return result;
 	}
-	
+
 	private Geometry[] merge(Geometry[] geoms) {
 		Geometry[] result = new Geometry[1];
-		Geometry merged = geoms[0];
+		// points/lines to polygon, prevents problems later on...
+		Geometry merged = geoms[0].buffer(0.000001, 4);
 		for (int i = 1; i < geoms.length; i++) {
 			merged = merged.union(geoms[i]);
 		}
