@@ -43,6 +43,7 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -165,7 +166,14 @@ public class FeatureForm {
 	 * @return Returns true if all values in the form are validated correctly, false otherwise.
 	 */
 	public boolean validate() {
-		return formWidget.validate();
+		boolean validate = true;
+		for (FormItem item : formWidget.getFields()) {
+			// ignore many-to-one because of bug
+			if (!(item instanceof SelectItem)) {
+				validate = validate & item.validate();
+			}
+		}
+		return validate;
 	}
 
 	/**
