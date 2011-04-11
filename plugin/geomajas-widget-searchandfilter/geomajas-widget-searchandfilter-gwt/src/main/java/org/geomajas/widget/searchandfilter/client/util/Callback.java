@@ -10,11 +10,13 @@
  */
 package org.geomajas.widget.searchandfilter.client.util;
 
+import com.smartgwt.client.core.Function;
+
 /**
  * Use for async methods to be notified when they are done.
- * 
+ *
  * @author Kristof Heirwegh
  */
-public interface Callback {
-	void execute();
+public interface Callback extends Function {
+	// Ok, I know I'm nitpicking, but "Function" is no name to call a callback...
 }

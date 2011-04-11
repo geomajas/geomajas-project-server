@@ -10,19 +10,16 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
+import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.Callback;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvRequest;
@@ -35,61 +32,54 @@ import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.Window;
 
 /**
- * TODO refactor so can be used for feature & location search.
- *
- * The default export handler. This will use the featureIds from the grid to
- * requeste the CSV. This means that if the resultset was cut (eg. there were
- * more features than the grid accepts (default 100) they will also not be in
- * the CSV.
- *
+ * Export the results of a search to CSV, supported searches are
+ * SearchFeatureRequest and SearchByLocationRequest.
+ * 
  * @author Kristof Heirwegh
  */
-public class DefaultExportToCsvHandler implements ExportToCsvHandler {
+public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 
-	private List<Feature> features;
-	private VectorLayer layer;
-	private MapModel model;
+	protected VectorLayer layer;
+	protected MapModel model;
+	protected CommandRequest request;
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
-	public DefaultExportToCsvHandler(MapModel model, VectorLayer layer) {
+	/**
+	 * @param model
+	 * @param layer
+	 * @param search
+	 *            the search to use to retrieve features.
+	 */
+	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, CommandRequest searchRequest) {
 		if (model == null || layer == null) {
 			throw new IllegalArgumentException("All parameters are required.");
 		}
 		this.layer = layer;
 		this.model = model;
+		setRequest(searchRequest);
 	}
 
-	public void setFeatures(List<Feature> features) {
-		this.features = features;
-	}
-
-	public void execute(final VectorLayer vlayer) {
+	public void execute(VectorLayer vlayer) {
 		execute(vlayer, null);
 	}
 
-	public void execute(VectorLayer vlayer, final Callback onFinished) {
+	public void execute(final VectorLayer vlayer, final Callback onFinished) {
 		if (this.layer.equals(vlayer)) {
-			ExportToCsvRequest request = new ExportToCsvRequest();
-			SearchFeatureRequest featReq = new SearchFeatureRequest();
-			request.setSearchFeatureRequest(featReq);
-			request.setEncoding(messages.exportToCsvEncoding());
-			request.setLocale(messages.exportToCsvLocale());
-			request.setSeparatorChar(messages.exportToCsvSeparatorChar());
-			request.setQuoteChar(messages.exportToCsvQuoteChar());
-			request.setLayerId(layer.getServerLayerId());
-			featReq.setCriteria(buildCriteria());
-			featReq.setBooleanOperator("OR");
-			featReq.setCrs(model.getCrs());
-			featReq.setLayerId(layer.getServerLayerId());
-			featReq.setFilter(layer.getFilter());
-			featReq.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+			ExportToCsvRequest exportRequest = new ExportToCsvRequest();
+			exportRequest.setSearchFeatureRequest(getSearchFeatureRequest());
+			exportRequest.setSearchByLocationRequest(getSearchByLocationRequest(vlayer));
+			exportRequest.setEncoding(messages.exportToCsvEncoding());
+			exportRequest.setLocale(messages.exportToCsvLocale());
+			exportRequest.setSeparatorChar(messages.exportToCsvSeparatorChar());
+			exportRequest.setQuoteChar(messages.exportToCsvQuoteChar());
+			exportRequest.setLayerId(layer.getServerLayerId());
 
 			GwtCommand command = new GwtCommand("command.searchandfilter.ExportToCsv");
-			command.setCommandRequest(request);
+			command.setCommandRequest(exportRequest);
 			Deferred deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-				private static final String CONTENT_PRE = "<div style='margin-top: 20px; width: 200px; text-align: ce" +
-						"nter'><b>";
+				private static final String CONTENT_PRE = "<div style='margin-top: 20px; width: 200px; text-align: ce"
+						+ "nter'><b>";
 				private static final String CONTENT_POST = "</b><br />";
 				private static final String LINK_POST = "</div>";
 
@@ -127,14 +117,48 @@ public class DefaultExportToCsvHandler implements ExportToCsvHandler {
 		}
 	}
 
-	private SearchCriterion[] buildCriteria() {
-		List<SearchCriterion> critters = new ArrayList<SearchCriterion>();
-		String idField = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
-		if (features != null) {
-			for (Feature feat : features) {
-				critters.add(new SearchCriterion(idField, "=", feat.getId()));
-			}
+	// ----------------------------------------------------------
+
+	protected SearchByLocationRequest getSearchByLocationRequest(VectorLayer layer) {
+		if (request != null && request instanceof SearchByLocationRequest) {
+			SearchByLocationRequest req = (SearchByLocationRequest) request;
+			SearchByLocationRequest clone = new SearchByLocationRequest();
+			clone.setBuffer(req.getBuffer());
+			clone.setCrs(req.getCrs());
+			clone.setFilter(req.getFilter());
+			clone.setFeatureIncludes(req.getFeatureIncludes());
+			clone.setLocation(req.getLocation());
+			clone.setQueryType(req.getQueryType());
+			clone.setRatio(req.getRatio());
+			clone.setSearchType(req.getSearchType());
+			// not bothering to include the other layers, we won't use the result anyway
+			clone.setLayerIds(new String[] {layer.getServerLayerId()});
+			return clone;
+		} else {
+			return null;
 		}
-		return critters.toArray(new SearchCriterion[0]);
+	}
+
+	protected SearchFeatureRequest getSearchFeatureRequest() {
+		if (request != null && request instanceof SearchFeatureRequest) {
+			return (SearchFeatureRequest) request;
+		} else {
+			return null;
+		}
+	}
+
+	protected CommandRequest getRequest() {
+		return request;
+	}
+
+	protected void setRequest(CommandRequest request) {
+		if (request == null) {
+			this.request = null;
+		} else if (request instanceof SearchFeatureRequest || request instanceof SearchByLocationRequest) {
+			this.request = request;
+		} else {
+			throw new IllegalArgumentException(
+					"Please provide a request (SearchFeatureRequest or SearchByLocationRequest)");
+		}
 	}
 }

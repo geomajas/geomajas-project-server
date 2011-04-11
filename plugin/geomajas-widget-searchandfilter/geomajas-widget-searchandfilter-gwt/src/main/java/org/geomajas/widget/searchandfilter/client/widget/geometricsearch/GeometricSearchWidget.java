@@ -12,10 +12,15 @@ package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.geomajas.command.dto.SearchByLocationRequest;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.util.Callback;
 import org.geomajas.widget.searchandfilter.client.util.CommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
@@ -51,16 +56,19 @@ public class GeometricSearchWidget extends Canvas {
 	private IButton searchBtn;
 	private IButton resetBtn;
 	private MultiFeatureListGrid targetGrid;
+	private MapWidget mapWidget;
 
 	/**
 	 * @param mapWidget
-	 * @param target the listgrid where the result will be shown
+	 * @param target
+	 *            the listgrid where the result will be shown
 	 */
 	public GeometricSearchWidget(final MapWidget mapWidget, final MultiFeatureListGrid target) {
 		if (mapWidget == null || target == null) {
 			throw new IllegalArgumentException("All parameters are required");
 		}
 
+		this.mapWidget = mapWidget;
 		this.setTitle(messages.geometricSearchWidgetTitle());
 		this.targetGrid = target;
 		VLayout layout = new VLayout(5);
@@ -76,6 +84,7 @@ public class GeometricSearchWidget extends Canvas {
 		searchBtn.setIcon(BTN_SEARCH_IMG);
 		searchBtn.setAutoFit(true);
 		searchBtn.setDisabled(true);
+		searchBtn.setShowDisabledIcon(false);
 		searchBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onSearch();
@@ -85,6 +94,7 @@ public class GeometricSearchWidget extends Canvas {
 		resetBtn.setIcon(BTN_RESET_IMG);
 		resetBtn.setAutoFit(true);
 		resetBtn.setDisabled(true);
+		resetBtn.setShowDisabledIcon(false);
 		resetBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onReset();
@@ -150,7 +160,6 @@ public class GeometricSearchWidget extends Canvas {
 		} else {
 			CommService.mergeGeometries(geoms, new DataCallback<Geometry>() {
 				public void execute(Geometry result) {
-					// TODO Auto-generated method stub
 					handleSearch(result);
 				}
 			});
@@ -158,10 +167,31 @@ public class GeometricSearchWidget extends Canvas {
 	}
 
 	private void handleSearch(Geometry geom) {
-		// TODO
-		if (!targetGrid.willShowSingleResult(null)) {
-			targetGrid.focus();
-			targetGrid.bringToFront();
-		}
+		searchBtn.setIcon(BTN_PROCESSING);
+		searchBtn.setDisabled(true);
+		final SearchByLocationRequest request = CommService.getSearchByLocationRequest(geom, mapWidget);
+		CommService.searchByLocation(request, mapWidget, new DataCallback<Map<VectorLayer, List<Feature>>>() {
+			public void execute(Map<VectorLayer, List<Feature>> result) {
+				if (result.isEmpty()) {
+					SC.say(messages.geometricSearchWidgetNoResult());
+				} else {
+					targetGrid.addFeatures(result, request);
+					if (!targetGrid.willShowSingleResult(result)) {
+						targetGrid.bringToFront();
+						targetGrid.focus();
+					}
+				}
+				resetButtons();
+			}
+		}, new Callback() {
+			public void execute() {
+				resetButtons();
+			}
+		});
+	}
+
+	private void resetButtons() {
+		searchBtn.setIcon(BTN_SEARCH_IMG);
+		searchBtn.setDisabled(false);
 	}
 }
