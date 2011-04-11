@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.gwt.example.client.i18n.ApplicationMessages;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.AbstractTab;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.GeometricSearchPage;
@@ -47,7 +48,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  *
  * @author geomajas-gwt-archetype
  */
-public class Application implements EntryPoint {
+public class Application implements EntryPoint, DataCallback<Boolean> {
 
 	private OverviewMap overviewMap;
 
@@ -158,7 +159,7 @@ public class Application implements EntryPoint {
 		// Bottom left: Add tabs here:
 		// ---------------------------------------------------------------------
 		MultiFeatureListGridPage page1 = new MultiFeatureListGridPage(map);
-		GeometricSearchPage page2 = new GeometricSearchPage("Geographic search", map, page1.getTable());
+		GeometricSearchPage page2 = new GeometricSearchPage("Geographic search", map, page1.getTable(), this);
 		addTab(new SearchPage(map, tabSet, page1.getTable()));
 		addTab(page1);
 		addTab(page2);
@@ -191,5 +192,12 @@ public class Application implements EntryPoint {
 		for (AbstractTab tab : tabs) {
 			tab.initialize();
 		}
+	}
+
+	/**
+	 * Executed when search is done (show the datagrid).
+	 */
+	public void execute(Boolean result) {
+		tabSet.selectTab(1);
 	}
 }

@@ -10,12 +10,22 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.gwt.client.map.MapView.ZoomOption;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.map.store.VectorLayerStore;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.util.CommService;
+import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
@@ -38,6 +48,8 @@ public class SelectionSearch implements GeometricSearchMethod {
 
 	private MapWidget mapWidget;
 	private DynamicForm frmBuffer;
+	private SpinnerItem spiBuffer;
+	private Geometry geometry;
 
 	public SelectionSearch() {
 		super();
@@ -49,6 +61,15 @@ public class SelectionSearch implements GeometricSearchMethod {
 
 	public String getTitle() {
 		return messages.geometricSearchWidgetSelectionSearchTitle();
+	}
+
+	public Geometry getGeometry() {
+		return geometry;
+	}
+
+	public void reset() {
+		geometry = null;
+		frmBuffer.reset();
 	}
 
 	public Canvas getSearchCanvas() {
@@ -68,9 +89,7 @@ public class SelectionSearch implements GeometricSearchMethod {
 		btnZoom.setAutoFit(true);
 		btnZoom.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
-					// TODO
-				}
+				onZoomClick();
 			}
 		});
 
@@ -79,13 +98,13 @@ public class SelectionSearch implements GeometricSearchMethod {
 		btnAdd.setAutoFit(true);
 		btnAdd.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				onAddClick();
 			}
 		});
 
 		frmBuffer = new DynamicForm();
 		frmBuffer.setWidth100();
-		SpinnerItem spiBuffer = new SpinnerItem();
+		spiBuffer = new SpinnerItem();
 		spiBuffer.setTitle(messages.geometricSearchWidgetBufferLabel());
 		spiBuffer.setDefaultValue(5);
 		spiBuffer.setMin(0);
@@ -102,12 +121,56 @@ public class SelectionSearch implements GeometricSearchMethod {
 		return mainLayout;
 	}
 
-	public Geometry getGeometry() {
-		// TODO Auto-generated method stub
-		return null;
+	private void onAddClick() {
+		List<Geometry> geoms = new ArrayList<Geometry>();
+		for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
+			if (layer.isShowing()) {
+				VectorLayerStore store = layer.getFeatureStore();
+				for (String featureId : layer.getSelectedFeatures()) {
+					Feature f = store.getPartialFeature(featureId);
+					geoms.add(f.getGeometry());
+				}
+			}
+		}
+		if (geoms.size() == 0) {
+			SC.say(messages.geometricSearchWidgetSelectionSearchNothingSelected());
+		} else {
+			Integer buffer = (Integer) spiBuffer.getValue();
+			if (buffer != 0) {
+				CommService.mergeAndBufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
+					public void execute(Geometry[] result) {
+						geometry = result[1];
+					}
+				});
+			} else {
+				CommService.mergeGeometries(geoms, new DataCallback<Geometry>() {
+					public void execute(Geometry result) {
+						geometry = result;
+					}
+				});
+			}
+		}
 	}
 
-	public void reset() {
-		frmBuffer.reset();
+	private void onZoomClick() {
+		Bbox bounds = null;
+		for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
+			if (layer.isShowing()) {
+				VectorLayerStore store = layer.getFeatureStore();
+				for (String featureId : layer.getSelectedFeatures()) {
+					Feature f = store.getPartialFeature(featureId);
+					if (bounds == null) {
+						bounds = f.getGeometry().getBounds();
+					} else {
+						bounds = bounds.union(f.getGeometry().getBounds());
+					}
+				}
+			}
+		}
+		if (bounds == null) {
+			SC.say(messages.geometricSearchWidgetSelectionSearchNothingSelected());
+		} else {
+			mapWidget.getMapModel().getMapView().applyBounds(bounds, ZoomOption.LEVEL_FIT);
+		}
 	}
 }

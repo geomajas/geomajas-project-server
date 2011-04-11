@@ -56,6 +56,8 @@ public class GeometricSearchWidget extends Canvas {
 	private IButton searchBtn;
 	private IButton resetBtn;
 	private MultiFeatureListGrid targetGrid;
+	private DataCallback<Boolean> onSearchDoneCallback;
+
 	private MapWidget mapWidget;
 
 	/**
@@ -132,7 +134,16 @@ public class GeometricSearchWidget extends Canvas {
 				searchBtn.setDisabled(false);
 				resetBtn.setDisabled(false);
 			}
+			searchMethod.initialize(mapWidget);
 		}
+	}
+
+	public DataCallback<Boolean> getOnSearchDoneCallback() {
+		return onSearchDoneCallback;
+	}
+
+	public void setOnSearchDoneCallback(DataCallback<Boolean> onSearchDoneCallback) {
+		this.onSearchDoneCallback = onSearchDoneCallback;
 	}
 
 	// ----------------------------------------------------------
@@ -141,6 +152,7 @@ public class GeometricSearchWidget extends Canvas {
 		for (GeometricSearchMethod m : searchMethods) {
 			m.reset();
 		}
+		resetButtons();
 	}
 
 	private void onSearch() {
@@ -175,11 +187,10 @@ public class GeometricSearchWidget extends Canvas {
 				if (result.isEmpty()) {
 					SC.say(messages.geometricSearchWidgetNoResult());
 				} else {
-					targetGrid.addFeatures(result, request);
-					if (!targetGrid.willShowSingleResult(result)) {
-						targetGrid.bringToFront();
-						targetGrid.focus();
+					if (onSearchDoneCallback != null) {
+						onSearchDoneCallback.execute(targetGrid.willShowSingleResult(result));
 					}
+					targetGrid.addFeatures(result, request);
 				}
 				resetButtons();
 			}

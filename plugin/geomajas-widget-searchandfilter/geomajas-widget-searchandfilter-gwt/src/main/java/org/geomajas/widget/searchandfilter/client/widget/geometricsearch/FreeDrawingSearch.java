@@ -40,6 +40,7 @@ public class FreeDrawingSearch implements GeometricSearchMethod {
 
 	private MapWidget mapWidget;
 	private DynamicForm frmBuffer;
+	private Geometry geometry;
 
 	public FreeDrawingSearch() {
 		super();
@@ -51,6 +52,15 @@ public class FreeDrawingSearch implements GeometricSearchMethod {
 
 	public String getTitle() {
 		return messages.geometricSearchWidgetFreeDrawingSearchTitle();
+	}
+
+	public Geometry getGeometry() {
+		return geometry;
+	}
+
+	public void reset() {
+		geometry = null;
+		frmBuffer.reset();
 	}
 
 	public Canvas getSearchCanvas() {
@@ -127,17 +137,6 @@ public class FreeDrawingSearch implements GeometricSearchMethod {
 		mainLayout.addMember(btnAdd);
 
 		return mainLayout;
-	}
-
-
-	public Geometry getGeometry() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	public void reset() {
-		frmBuffer.reset();
 	}
 
 	// ----------------------------------------------------------

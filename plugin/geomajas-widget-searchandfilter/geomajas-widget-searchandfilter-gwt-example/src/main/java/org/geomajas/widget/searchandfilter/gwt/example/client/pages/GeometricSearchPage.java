@@ -12,6 +12,7 @@
 package org.geomajas.widget.searchandfilter.gwt.example.client.pages;
 
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.FreeDrawingSearch;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.SelectionSearch;
@@ -29,7 +30,8 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  */
 public class GeometricSearchPage extends AbstractTab {
 
-	public GeometricSearchPage(String title, final MapWidget map, final MultiFeatureListGrid target) {
+	public GeometricSearchPage(String title, final MapWidget map, final MultiFeatureListGrid target,
+			final DataCallback<Boolean> onSearchDone) {
 		super(title, map);
 
 		IButton btnSearch = new IButton("Open Search window");
@@ -40,6 +42,7 @@ public class GeometricSearchPage extends AbstractTab {
 				GeometricSearchWidget geometricSearchWidget = new GeometricSearchWidget(map, target);
 				geometricSearchWidget.addSearchMethod(new SelectionSearch());
 				geometricSearchWidget.addSearchMethod(new FreeDrawingSearch());
+				geometricSearchWidget.setOnSearchDoneCallback(onSearchDone);
 				window.addItem(geometricSearchWidget);
 				window.setTitle(geometricSearchWidget.getTitle());
 				window.setAutoSize(true);

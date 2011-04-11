@@ -53,10 +53,10 @@ public final class CommService {
 	 * 
 	 * @param geoms
 	 * @param buffer
-	 * @param onFinished
+	 * @param onFinished callback contains two geometries, one unbuffered, one buffered
 	 */
 	public static void mergeAndBufferGeometries(List<Geometry> geoms, double buffer,
-			final DataCallback<Geometry> onFinished) {
+			final DataCallback<Geometry[]> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
 		request.setActionFlags(GeometryUtilsRequest.ACTION_BUFFER | GeometryUtilsRequest.ACTION_MERGE);
 		request.setIntermediateResults(true);
@@ -70,7 +70,10 @@ public final class CommService {
 				if (response instanceof GeometryUtilsResponse) {
 					GeometryUtilsResponse resp = (GeometryUtilsResponse) response;
 					if (onFinished != null) {
-						onFinished.execute(GeometryConverter.toGwt(resp.getGeometries()[0]));
+						Geometry[] geoms = new Geometry[2];
+						geoms[0] = GeometryConverter.toGwt(resp.getGeometries()[0]);
+						geoms[1] = GeometryConverter.toGwt(resp.getGeometries()[1]);
+						onFinished.execute(geoms);
 					}
 				}
 			}
@@ -79,7 +82,7 @@ public final class CommService {
 
 	/**
 	 * @param geoms
-	 * @param onFinished
+	 * @param onFinished callback returns one geometry
 	 */
 	public static void mergeGeometries(List<Geometry> geoms, final DataCallback<Geometry> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
