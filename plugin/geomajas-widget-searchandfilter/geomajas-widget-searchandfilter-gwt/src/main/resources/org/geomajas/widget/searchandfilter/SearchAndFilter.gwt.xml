@@ -14,11 +14,11 @@
 	<inherits name="org.geomajas.widget.featureinfo.Featureinfo"/>
 	
 	<source path="client" />
+	<source path="command/dto" />
 	
 	<!-- enable if needed
 	<source path="configuration/client" />
 	<source path="component/dto" />
-	<source path="command/dto" />
 	-->
 	
 	<extend-property name="locale" values="nl" />

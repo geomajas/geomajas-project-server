@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.widget.searchandfilter.gwt.example.client.i18n.ApplicationMessages;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.AbstractTab;
+import org.geomajas.widget.searchandfilter.gwt.example.client.pages.GeometricSearchPage;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.MultiFeatureListGridPage;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.SearchPage;
 
@@ -157,8 +158,10 @@ public class Application implements EntryPoint {
 		// Bottom left: Add tabs here:
 		// ---------------------------------------------------------------------
 		MultiFeatureListGridPage page1 = new MultiFeatureListGridPage(map);
+		GeometricSearchPage page2 = new GeometricSearchPage("Geographic search", map, page1.getTable());
 		addTab(new SearchPage(map, tabSet, page1.getTable()));
 		addTab(page1);
+		addTab(page2);
 
 		// ---------------------------------------------------------------------
 		// Finally draw everything:

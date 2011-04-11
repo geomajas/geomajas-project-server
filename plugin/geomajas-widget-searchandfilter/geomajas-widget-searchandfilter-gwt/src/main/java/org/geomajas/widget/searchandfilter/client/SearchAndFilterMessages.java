@@ -28,4 +28,33 @@ public interface SearchAndFilterMessages extends Messages {
 	String multiFeatureListGridButtonFocusSelectionTooltip();
 	String multiFeatureListGridButtonShowDetailTooltip();
 	String multiFeatureListGridButtonExportToCSVTooltip();
+
+	String exportToCsvWindowTitle();
+	String exportToCsvContentReady();
+	String exportToCsvDownloadLink(String url);
+	String exportToCsvSeparatorChar();
+	String exportToCsvQuoteChar();
+	String exportToCsvEncoding();
+	/**
+	 * Used for date/times and decimal numbers.
+	 * @return
+	 */
+	String exportToCsvLocale();
+
+	String geometricSearchWidgetTitle();
+	String geometricSearchWidgetStartSearch();
+	String geometricSearchWidgetReset();
+	String geometricSearchWidgetNoGeometry();
+	String geometricSearchWidgetBufferLabel();
+
+	String geometricSearchWidgetSelectionSearchTitle();
+	String geometricSearchWidgetSelectionSearchZoomToSelection();
+	String geometricSearchWidgetSelectionSearchAddSelection();
+
+	String geometricSearchWidgetFreeDrawingSearchTitle();
+	String geometricSearchWidgetFreeDrawingPoint();
+	String geometricSearchWidgetFreeDrawingLine();
+	String geometricSearchWidgetFreeDrawingPolygon();
+	String geometricSearchWidgetFreeDrawingAdd();
+
 }
