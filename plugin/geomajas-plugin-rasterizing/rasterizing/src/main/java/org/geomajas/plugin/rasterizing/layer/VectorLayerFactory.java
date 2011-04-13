@@ -18,9 +18,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
@@ -47,6 +49,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleAttributeExtractor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -134,9 +138,9 @@ public class VectorLayerFactory implements LayerFactory {
 				style.setFormula("EXCLUDE");
 			}
 		}
-
+		Style style = styleFactoryService.createStyle(layer, extraInfo);
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
-				mapContext.getCoordinateReferenceSystem()), styleFactoryService.createStyle(layer, extraInfo));
+				mapContext.getCoordinateReferenceSystem(), style), style);
 		featureLayer.setTitle(vectorInfo.getLabel());
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		LinkedHashMap<String, FeatureStyleInfo> styles = new LinkedHashMap<String, FeatureStyleInfo>();
@@ -149,15 +153,24 @@ public class VectorLayerFactory implements LayerFactory {
 	}
 
 	private FeatureCollection<SimpleFeatureType, SimpleFeature> createCollection(List<InternalFeature> features,
-			VectorLayer layer, CoordinateReferenceSystem mapCrs) {
+			VectorLayer layer, CoordinateReferenceSystem mapCrs, Style style ) {
 		SimpleFeatureType type = createFeatureType(layer, mapCrs);
 		ListFeatureCollection result = new ListFeatureCollection(type);
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+		StyleAttributeExtractor extractor = new StyleAttributeExtractor();
+		style.accept(extractor);
+		Set<String> styleAttributeNames = extractor.getAttributeNameSet();
+		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
 		for (InternalFeature internalFeature : features) {
 			Object[] values = new Object[internalFeature.getAttributes().size() + 1];
 			int i = 0;
-			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-				values[i++] = internalFeature.getAttributes().get(attrInfo.getName()).getValue();
+			for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
+				String name = attrInfo.getName();
+				if (styleAttributeNames.contains(name)) {
+					values[i++] = internalFeature.getAttributes().get(name).getValue();
+				} else {
+					values[i++] = null;
+				}
 			}
 			values[internalFeature.getAttributes().size()] = internalFeature.getGeometry();
 			result.add(builder.buildFeature(internalFeature.getId(), values));
