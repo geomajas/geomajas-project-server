@@ -37,7 +37,7 @@ public class ScaleInfoEditor extends PropertyEditorSupport {
 				setValue(new ScaleInfo(numerator, denominator));
 			} catch (Exception e) {
 				throw new IllegalArgumentException("Scale " + text
-						+ " could not be parsed. The following format was expected:" + " (x : y).");
+						+ " could not be parsed. The following format was expected:" + " (x : y).", e);
 			}
 		} else {
 			try {
@@ -45,7 +45,7 @@ public class ScaleInfoEditor extends PropertyEditorSupport {
 				setValue(new ScaleInfo(Double.parseDouble(text)));
 			} catch (Exception e) {
 				throw new IllegalArgumentException("Scale " + text
-						+ " could not be parsed. The following format was expected:" + " (x : y).");
+						+ " could not be parsed. The following format was expected:" + " (x : y).", e);
 			}
 		}
 	}

@@ -78,7 +78,7 @@ public class BeanFeatureModel implements FeatureModel {
 			beanClass = Class.forName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
 		} catch (ClassNotFoundException e) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, "Feature class "
-					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " was not found");
+					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " was not found", e);
 		}
 		this.srid = srid;
 		PropertyDescriptor d = BeanUtils.getPropertyDescriptor(beanClass, getGeometryAttributeName());

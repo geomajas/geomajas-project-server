@@ -136,7 +136,7 @@ public class CacheFilter implements Filter {
 				cacheDurationInMilliSeconds = cacheDurationInSeconds * 1000;
 			} catch (NumberFormatException nfe) {
 				throw new ServletException("Cannot parse " + CACHE_DURATION_IN_SECONDS + " value " + param +
-						", should be parable to integer");
+						", should be parable to integer", nfe);
 			}
 
 		}

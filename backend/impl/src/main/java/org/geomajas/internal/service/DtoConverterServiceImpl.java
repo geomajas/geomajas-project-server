@@ -121,11 +121,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				return toPrimitiveDto(object, (PrimitiveAttributeInfo) info);
 			}
 		} else if (info instanceof AssociationAttributeInfo) {
-			try {
-				return toAssociationDto(object, (AssociationAttributeInfo) info);
-			} catch (GeomajasException e) {
-				throw new GeomajasException(ExceptionCode.CONVERSION_PROBLEM, info.getName());
-			}
+			return toAssociationDto(object, (AssociationAttributeInfo) info);
 		} else {
 			throw new GeomajasException(ExceptionCode.CONVERSION_PROBLEM, info.getName());
 		}

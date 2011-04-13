@@ -377,8 +377,8 @@ public final class FilterServiceImpl implements FilterService {
 			log.warn("filter not parsable by ECQL, falling back to CQL", e);
 			try {
 				return CQL.toFilter(filter, FF);
-			} catch (CQLException e1) {
-				throw new GeomajasException(e, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
+			} catch (CQLException ce) {
+				throw new GeomajasException(ce, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
 			}
 		}
 	}
