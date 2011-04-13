@@ -95,7 +95,7 @@ public class ThreadScopeContext {
 	}
 
 	/** Private class storing bean name and destructor callback. */
-	private class Bean {
+	private static class Bean {
 
 		private Object object;
 		private Runnable destructionCallback;

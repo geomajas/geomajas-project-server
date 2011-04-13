@@ -308,7 +308,7 @@ public abstract class AbstractGraphicsDocument implements GraphicsDocument {
 	}
 
 	/** State for an element in the stack. */
-	protected class ElementState {
+	protected static class ElementState {
 
 		private String name;
 

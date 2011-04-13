@@ -140,9 +140,8 @@ public class LazyAttributeMap implements Map<String, Attribute> {
 	 * Keeps track of name/editable status for lazy attributes.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
-	private class AttributeLoadInfo {
+	private static class AttributeLoadInfo {
 
 		private String name;
 
