@@ -117,4 +117,14 @@ public class DefaultSvgDocumentTest {
 		document.closeElement();
 		Assert.assertEquals("<path points=\"M1.23457 9.87654l8.64143 -8.64254 \"/>", writer.getBuffer().toString());
 	}
+
+	@Test
+	public void escapeAttribute() throws Exception {
+		StringWriter writer = new StringWriter();
+		GraphicsDocument document = new DefaultSvgDocument(writer, false);
+		document.writeElement("x", true);
+		document.writeAttribute("bla", "<stop&go>");
+		document.closeElement();
+		Assert.assertEquals("<x bla=\"&lt;stop&amp;go&gt;\"/>", writer.getBuffer().toString());
+	}
 }

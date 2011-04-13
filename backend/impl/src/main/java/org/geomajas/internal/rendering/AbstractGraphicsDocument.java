@@ -128,7 +128,7 @@ public abstract class AbstractGraphicsDocument implements GraphicsDocument {
 	public void writeAttribute(String name, String value) throws RenderException {
 		try {
 			checkState(false);
-			writer.write(" " + name + "=" + "\"" + value + "\"");
+			writer.write(" " + name + "=" + "\"" + safeHtml(value) + "\"");
 		} catch (IOException ioe) {
 			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
@@ -305,6 +305,10 @@ public abstract class AbstractGraphicsDocument implements GraphicsDocument {
 
 	public DecimalFormat getFormatter() {
 		return formatter;
+	}
+
+	protected String safeHtml(String value) {
+		return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 	}
 
 	/** State for an element in the stack. */

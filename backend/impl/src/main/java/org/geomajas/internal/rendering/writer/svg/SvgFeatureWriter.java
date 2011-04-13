@@ -52,7 +52,6 @@ public class SvgFeatureWriter implements GraphicsWriter {
 				// write the enclosing group
 				document.writeElement("g", asChild);
 				document.writeAttribute("id", feature.getId());
-				document.writeAttribute("label", feature.getLabel());
 
 				// write the points
 				for (int i = 0; i < geom.getNumGeometries(); i++) {
