@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gadget;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
@@ -171,7 +172,8 @@ public class NavigationGadget implements MapGadget {
 		zoomIn.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
-				viewPort.applyScale(viewPort.getScale() * 2);
+				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
 				event.stopPropagation();
 			}
 		});
@@ -193,7 +195,8 @@ public class NavigationGadget implements MapGadget {
 		zoomOut.addMouseUpHandler(new MouseUpHandler() {
 
 			public void onMouseUp(MouseUpEvent event) {
-				viewPort.applyScale(viewPort.getScale() / 2);
+				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
 				event.stopPropagation();
 			}
 		});
@@ -429,7 +432,8 @@ public class NavigationGadget implements MapGadget {
 			double deltaX = (progress * translateX) - (previousProgress * translateX);
 			double deltaY = (progress * translateY) - (previousProgress * translateY);
 
-			viewPort.drag(deltaX, deltaY);
+			Coordinate position = viewPort.getPosition();
+			viewPort.applyPosition(new Coordinate(position.getX() + deltaX, position.getY() + deltaY));
 			previousProgress = progress;
 		}
 	}

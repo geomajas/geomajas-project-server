@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.map;
 import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
-import org.geomajas.puregwt.client.map.event.LayerVisibleHandler;
+import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.event.MapResizedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
@@ -29,7 +29,7 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
  * @author Pieter De Graef
  */
 @FutureApi(allMethods = true)
-public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibleHandler,
+public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibilityHandler,
 		LayerStyleChangedHandler, MapResizedHandler, MapCompositionHandler {
 
 	/**

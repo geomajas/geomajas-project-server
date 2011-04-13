@@ -33,9 +33,9 @@ import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.map.event.MapResizedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
@@ -45,6 +45,8 @@ import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 import org.geomajas.puregwt.client.spatial.Bbox;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * <p>
@@ -136,6 +138,9 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		}
 	}
 
+	public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
+	}
+
 	// ------------------------------------------------------------------------
 	// MapCompositionHandler implementation:
 	// ------------------------------------------------------------------------
@@ -165,13 +170,6 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		if (currentTileBounds == null || !currentTileBounds.contains(event.getViewPort().getBounds())) {
-			beginOrigin = viewPort.getPosition();
-			fetchTiles(event.getViewPort().getBounds(), false);
-		}
-	}
-
-	public void onViewPortDragged(ViewPortDraggedEvent event) {
 		if (currentTileBounds == null || !currentTileBounds.contains(event.getViewPort().getBounds())) {
 			beginOrigin = viewPort.getPosition();
 			fetchTiles(event.getViewPort().getBounds(), false);
@@ -308,9 +306,10 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		getTopContainer().setVisible(true);
 		beginScale = viewPort.getScale();
 		beginOrigin = viewPort.getPosition();
-		htmlContainer.remove(getBottomContainer());
-		if (!viewPort.getBounds().getCenterPoint().equals(viewPort.getPosition())) {
-			System.out.println("errrrr");
+		if (htmlContainer.getChildCount() > 1) {
+			htmlContainer.remove(getBottomContainer());
+		} else {
+			GWT.log("WARN: Trying to remove bottom container when there is no top container...");
 		}
 	}
 

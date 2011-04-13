@@ -26,8 +26,6 @@ import org.geomajas.puregwt.client.spatial.Point;
 import org.geomajas.puregwt.client.spatial.Polygon;
 import org.geomajas.puregwt.client.spatial.Vector2D;
 
-import com.google.inject.Inject;
-
 /**
  * Implementation of the transformation methods of the view port.
  * 
@@ -35,7 +33,6 @@ import com.google.inject.Inject;
  */
 public class ViewPortTransformationService {
 
-	@Inject
 	private GeometryFactory factory;
 
 	/**

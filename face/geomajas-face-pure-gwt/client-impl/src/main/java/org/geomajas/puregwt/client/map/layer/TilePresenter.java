@@ -190,7 +190,7 @@ public class TilePresenter {
 		request.setPaintGeometries(true);
 		request.setPaintLabels(false);
 		// request.setPaintLabels(renderer.getLayer().isLabeled());
-		request.setPanOrigin(renderer.getViewPort().getDragOrigin());
+		request.setPanOrigin(renderer.getViewPort().getPanOrigin());
 		// request.setRenderer(SC.isIE() ? "VML" : "SVG");
 		// TODO Add support for VML.
 		request.setRenderer("SVG");

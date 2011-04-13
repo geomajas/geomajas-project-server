@@ -26,9 +26,9 @@ import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.map.event.MapResizedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
@@ -169,6 +169,9 @@ public class VectorLayerRenderer implements MapRenderer {
 		}
 	}
 
+	public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
+	}
+
 	// ------------------------------------------------------------------------
 	// MapRenderer Implementation:
 	// ------------------------------------------------------------------------
@@ -184,10 +187,6 @@ public class VectorLayerRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		render(event.getViewPort().getBounds());
-	}
-
-	public void onViewPortDragged(ViewPortDraggedEvent event) {
 		render(event.getViewPort().getBounds());
 	}
 

@@ -52,12 +52,4 @@ public interface ViewPortChangedHandler extends EventHandler {
 	 *            The actual {@link org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent}.
 	 */
 	void onViewPortTranslated(ViewPortTranslatedEvent event);
-
-	/**
-	 * Catches events where the <code>ViewPort</code> has been dragged (panning).
-	 * 
-	 * @param event
-	 *            The actual {@link org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent}.
-	 */
-	void onViewPortDragged(ViewPortDraggedEvent event);
 }

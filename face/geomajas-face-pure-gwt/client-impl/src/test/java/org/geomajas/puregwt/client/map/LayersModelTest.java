@@ -11,6 +11,10 @@
 
 package org.geomajas.puregwt.client.map;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.EventBusImpl;
@@ -19,6 +23,7 @@ import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +37,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml",
-		"mapBeans.xml", "layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml", "mapBeans.xml",
+		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
 public class LayersModelTest {
 
 	private static final String LAYER1 = "beans1Layer";
@@ -49,6 +54,19 @@ public class LayersModelTest {
 	private EventBus eventBus = new EventBusImpl();
 
 	private int layerCount;
+
+	@Before
+	public void checkLayerOrder() {
+		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
+		for (int i = 1; i < 4; i++) {
+			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+				if (("beans" + i + "Layer").equals(layerInfo.getId())) {
+					layers.add(layerInfo);
+				}
+			}
+		}
+		mapInfo.setLayers(layers);
+	}
 
 	@Test
 	public void testInitialize() {
@@ -128,6 +146,11 @@ public class LayersModelTest {
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layer2));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer3));
+
+		layersModel.moveLayerDown(layer3);
+		Assert.assertEquals(1, layersModel.getLayerPosition(layer1));
+		Assert.assertEquals(2, layersModel.getLayerPosition(layer2));
+		Assert.assertEquals(0, layersModel.getLayerPosition(layer3));
 	}
 
 	@Test
@@ -139,6 +162,10 @@ public class LayersModelTest {
 		Layer<?> layer2 = layersModel.getLayer(LAYER2);
 		Layer<?> layer3 = layersModel.getLayer(LAYER3);
 
+		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
+		Assert.assertEquals(1, layersModel.getLayerPosition(layer2));
+		Assert.assertEquals(2, layersModel.getLayerPosition(layer3));
+
 		layersModel.moveLayerUp(layer3); // Expect no changes.
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer2));
@@ -148,6 +175,11 @@ public class LayersModelTest {
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer2));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layer3));
+
+		layersModel.moveLayerUp(layer1);
+		Assert.assertEquals(2, layersModel.getLayerPosition(layer1));
+		Assert.assertEquals(0, layersModel.getLayerPosition(layer2));
+		Assert.assertEquals(1, layersModel.getLayerPosition(layer3));
 	}
 
 	@Test

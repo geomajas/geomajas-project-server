@@ -22,6 +22,7 @@ import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
@@ -107,11 +108,15 @@ public class LayersModelImpl implements LayersModel {
 				break;
 		}
 	}
-	
+
 	public boolean removeLayer(String id) {
 		Layer<?> layer = getLayer(id);
 		if (layer != null) {
-			return layers.remove(layer);
+			boolean result = layers.remove(layer);
+			if (result) {
+				eventBus.fireEvent(new LayerRemovedEvent(layer));
+				return true;
+			}
 		}
 		return false;
 	}
@@ -151,19 +156,24 @@ public class LayersModelImpl implements LayersModel {
 		}
 		ClientLayerInfo layerInfo = mapInfo.getLayers().get(currentIndex);
 
+		// Check the new index:
+		if (index < 0) {
+			index = 0;
+		} else if (index > layers.size() - 1) {
+			index = layers.size() - 1;
+		}
+
+		// Index might have been altered; check again if it is really a change:
+		if (currentIndex == index) {
+			return false;
+		}
+
 		// First remove the layer from the list:
 		if (!layers.remove(layer)) {
 			return false;
 		}
 		if (!mapInfo.getLayers().remove(layerInfo)) {
 			return false;
-		}
-
-		// Check the new index:
-		if (index < 0) {
-			index = 0;
-		} else if (index > layers.size()) {
-			index = layers.size();
 		}
 
 		// Change the order:

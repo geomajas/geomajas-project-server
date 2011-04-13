@@ -66,6 +66,15 @@ public interface MapPresenter {
 	WorldContainer getWorldContainer(String id);
 
 	/**
+	 * Remove an existing world container from the map.
+	 * 
+	 * @param id
+	 *            The identifier of the container. If no such container exists, false will be returned.
+	 * @return Was the removal successful or not?
+	 */
+	boolean removeWorldContainer(String id);
+
+	/**
 	 * Returns a container in screen space wherein one can render new vector objects. Note that all objects drawn into
 	 * such a container should be expressed in pixel coordinates. No matter how much the map moves or zooms, these
 	 * objects will always remain on the same fixed position.
@@ -75,6 +84,15 @@ public interface MapPresenter {
 	 * @return Returns the vector container.
 	 */
 	ScreenContainer getScreenContainer(String id);
+
+	/**
+	 * Remove an existing world container from the map.
+	 * 
+	 * @param id
+	 *            The identifier of the container. If no such container exists, false will be returned.
+	 * @return Was the removal successful or not?
+	 */
+	boolean removeScreenContainer(String id);
 
 	/**
 	 * Returns the layers model for this presenter. This model is the central layer handler for the map, with methods
@@ -108,8 +126,9 @@ public interface MapPresenter {
 	 * 
 	 * @param mapGadget
 	 *            The gadget to remove from the map.
+	 * @return Was the removal successful or not?
 	 */
-	void removeMapGadget(MapGadget mapGadget);
+	boolean removeMapGadget(MapGadget mapGadget);
 
 	/**
 	 * An optional fall-back {@link MapController} to return to, when no controller is explicitly set (controller=null).

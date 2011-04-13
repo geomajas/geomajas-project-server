@@ -143,17 +143,21 @@ public class NavigationController extends AbstractMapController {
 		ViewPort viewPort = mapPresenter.getViewPort();
 		if (event.isNorth()) {
 			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				viewPort.applyScale(viewPort.getScale() * 2, viewPort.transform(
+				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1), viewPort.transform(
 						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
 			} else {
-				viewPort.applyScale(viewPort.getScale() * 2);
+				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
 			}
 		} else {
 			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				viewPort.applyScale(viewPort.getScale() / 2, viewPort.transform(
+				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1), viewPort.transform(
 						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
 			} else {
-				viewPort.applyScale(viewPort.getScale() / 2);
+				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
+				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
 			}
 		}
 	}
@@ -186,7 +190,10 @@ public class NavigationController extends AbstractMapController {
 		Coordinate end = getScreenPosition(event);
 		Coordinate beginWorld = mapPresenter.getViewPort().transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
-		mapPresenter.getViewPort().drag(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
+
+		double x = mapPresenter.getViewPort().getPosition().getX() + beginWorld.getX() - endWorld.getX();
+		double y = mapPresenter.getViewPort().getPosition().getY() + beginWorld.getY() - endWorld.getY();
+		mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
 		dragOrigin = end;
 	}
 }

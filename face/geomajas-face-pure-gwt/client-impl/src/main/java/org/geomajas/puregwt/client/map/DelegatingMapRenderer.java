@@ -20,9 +20,9 @@ import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
 import org.geomajas.puregwt.client.map.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
+import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.map.event.MapResizedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
@@ -105,6 +105,9 @@ public class DelegatingMapRenderer implements MapRenderer {
 			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
 			((VectorLayer) layer).getRenderer().onHide(event);
 		}
+	}
+
+	public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
 	}
 
 	// ------------------------------------------------------------------------
@@ -229,28 +232,6 @@ public class DelegatingMapRenderer implements MapRenderer {
 				} else if (layer instanceof VectorLayer) {
 					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
 					((VectorLayer) layer).getRenderer().onViewPortTranslated(event);
-				}
-			}
-		}
-	}
-
-	public void onViewPortDragged(ViewPortDraggedEvent event) {
-		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-		int dx = (int) Math.round(translation.getDx());
-		int dy = (int) Math.round(translation.getDy());
-		htmlContainer.setTop(dy);
-		htmlContainer.setLeft(dx);
-		vectorContainer.transform(translation);
-
-		for (int i = 0; i < layersModel.getLayerCount(); i++) {
-			Layer<?> layer = layersModel.getLayer(i);
-			if (layer.isShowing()) {
-				if (layer instanceof RasterLayer) {
-					((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-					((RasterLayer) layer).getRenderer().onViewPortDragged(event);
-				} else if (layer instanceof VectorLayer) {
-					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
-					((VectorLayer) layer).getRenderer().onViewPortDragged(event);
 				}
 			}
 		}

@@ -105,7 +105,7 @@ public interface ViewPort {
 	 * @deprecated Is this still needed? If not remove!
 	 */
 	@Deprecated
-	Coordinate getDragOrigin();
+	Coordinate getPanOrigin();
 
 	/**
 	 * Get the current center position expressed in world space.
@@ -200,7 +200,7 @@ public interface ViewPort {
 	 * @param y
 	 *            Translation factor along the Y-axis in world space.
 	 */
-	void drag(double x, double y);
+	//void drag(double x, double y);
 
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:

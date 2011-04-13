@@ -44,11 +44,39 @@ public class LayerOrderChangedEvent extends GwtEvent<LayerOrderChangedHandler> {
 		layerOrderChangedHandler.onLayerOrderChanged(this);
 	}
 
+	/**
+	 * Get the original index at which a layer has been moved.
+	 * 
+	 * @return The original index at which a layer has been moved.
+	 */
 	public int getFromIndex() {
 		return fromIndex;
 	}
 
+	/**
+	 * Get the new index at which the layer has been placed.
+	 * 
+	 * @return The new index at which the layer has been placed.
+	 */
 	public int getToIndex() {
 		return toIndex;
+	}
+
+	/**
+	 * Return the minimum of the 2 indexes (fromIndex, toIndex).
+	 * 
+	 * @return The minimum of the 2 indexes.
+	 */
+	public int getMinIndex() {
+		return (toIndex < fromIndex) ? toIndex : fromIndex;
+	}
+
+	/**
+	 * Return the maximum of the 2 indexes (fromIndex, toIndex).
+	 * 
+	 * @return The maximum of the 2 indexes.
+	 */
+	public int getMaxIndex() {
+		return (toIndex < fromIndex) ? fromIndex : toIndex;
 	}
 }

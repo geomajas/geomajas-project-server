@@ -123,8 +123,17 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
-	public void removeScreenContainer(ScreenContainer container) {
-		drawingArea.remove((VectorObject) container);
+	public boolean removeScreenContainer(String id) {
+		for (int i = 0; i < drawingArea.getVectorObjectCount(); i++) {
+			VectorObject container = drawingArea.getVectorObject(i);
+			if (container instanceof ScreenGroup) {
+				if (id.equals(((WorldGroup) container).getId())) {
+					drawingArea.remove((VectorObject) container);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public WorldGroup getWorldContainer(String id) {
@@ -145,9 +154,18 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return container;
 	}
 
-	public void removeWorldContainer(WorldContainer container) {
-		drawingArea.remove((VectorObject) container);
-		worldContainers.remove(container);
+	public boolean removeWorldContainer(String id) {
+		for (int i = 0; i < drawingArea.getVectorObjectCount(); i++) {
+			VectorObject container = drawingArea.getVectorObject(i);
+			if (container instanceof WorldGroup) {
+				if (id.equals(((WorldGroup) container).getId())) {
+					drawingArea.remove((VectorObject) container);
+					worldContainers.remove(container);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public List<WorldContainer> getWorldContainers() {

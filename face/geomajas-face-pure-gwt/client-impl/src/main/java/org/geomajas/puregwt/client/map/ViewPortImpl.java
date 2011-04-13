@@ -17,7 +17,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortDraggedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.spatial.Bbox;
@@ -133,7 +132,7 @@ public class ViewPortImpl implements ViewPort {
 	// Methods that retrieve what is visible on the map:
 	// -------------------------------------------------------------------------
 
-	public Coordinate getDragOrigin() {
+	public Coordinate getPanOrigin() {
 		return new Coordinate(dragOrigin);
 	}
 
@@ -203,34 +202,22 @@ public class ViewPortImpl implements ViewPort {
 			} else {
 				eventBus.fireEvent(new ViewPortChangedEvent(this));
 			}
-		} else {
-			eventBus.fireEvent(new ViewPortTranslatedEvent(this));
 		}
 	}
 
 	public void applyBounds(Bbox bounds) {
 		double newScale = getScaleForBounds(bounds);
-		position = checkPosition(bounds.getCenterPoint(), newScale);
+		Coordinate tempPosition = checkPosition(bounds.getCenterPoint(), newScale);
 		if (newScale == scale) {
-			eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+			if (!position.equals(tempPosition)) {
+				position = tempPosition;
+				eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+			}
 		} else {
+			position = tempPosition;
 			scale = newScale;
 			eventBus.fireEvent(new ViewPortChangedEvent(this));
 		}
-	}
-
-	/**
-	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
-	 * Other than the events, it behaves the same as a translate.
-	 * 
-	 * @param x
-	 *            Translation factor along the X-axis in world space.
-	 * @param y
-	 *            Translation factor along the Y-axis in world space.
-	 */
-	public void drag(double x, double y) {
-		position = checkPosition(new Coordinate(position.getX() + x, position.getY() + y), scale);
-		eventBus.fireEvent(new ViewPortDraggedEvent(this));
 	}
 
 	// ------------------------------------------------------------------------

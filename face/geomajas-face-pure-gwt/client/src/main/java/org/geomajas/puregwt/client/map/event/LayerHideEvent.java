@@ -23,7 +23,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LayerHideEvent extends GwtEvent<LayerVisibleHandler> {
+public class LayerHideEvent extends GwtEvent<LayerVisibilityHandler> {
 
 	private Layer<?> layer;
 
@@ -36,12 +36,12 @@ public class LayerHideEvent extends GwtEvent<LayerVisibleHandler> {
 	}
 
 	@Override
-	public Type<LayerVisibleHandler> getAssociatedType() {
-		return LayerVisibleHandler.TYPE;
+	public Type<LayerVisibilityHandler> getAssociatedType() {
+		return LayerVisibilityHandler.TYPE;
 	}
 
 	@Override
-	protected void dispatch(LayerVisibleHandler layerVisibleHandler) {
+	protected void dispatch(LayerVisibilityHandler layerVisibleHandler) {
 		layerVisibleHandler.onHide(this);
 	}
 }
