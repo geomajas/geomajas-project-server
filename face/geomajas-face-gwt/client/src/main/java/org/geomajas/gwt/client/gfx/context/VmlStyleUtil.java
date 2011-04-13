@@ -118,7 +118,7 @@ public final class VmlStyleUtil {
 		if (style.getFillColor() != null) {
 			element.setAttribute("filled", "true");
 			fills.getItem(0).setAttribute("color", style.getFillColor());
-			fills.getItem(0).setAttribute("opacity", style.getFillOpacity() + "");
+			fills.getItem(0).setAttribute("opacity", Float.toString(style.getFillOpacity()));
 		} else {
 			element.setAttribute("filled", "false");
 		}
@@ -128,8 +128,8 @@ public final class VmlStyleUtil {
 			element.setAttribute("stroked", "true");
 			NodeList<Element> strokes = element.getElementsByTagName("stroke");
 			strokes.getItem(0).setAttribute("color", style.getStrokeColor());
-			strokes.getItem(0).setAttribute("opacity", style.getStrokeOpacity() + "");
-			element.setAttribute("strokeweight", style.getStrokeWidth() + "");
+			strokes.getItem(0).setAttribute("opacity", Float.toString(style.getStrokeOpacity()));
+			element.setAttribute("strokeweight", Float.toString(style.getStrokeWidth()));
 		} else {
 			element.setAttribute("stroked", "false");
 		}

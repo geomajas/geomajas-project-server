@@ -121,7 +121,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 	}
 
 	public Object newInstance() throws LayerException {
-		String id = nextId + "";
+		String id = Long.toString(nextId);
 		nextId++;
 		return CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
 				new Object[getSchema().getAttributeCount()], getSchema(), id);

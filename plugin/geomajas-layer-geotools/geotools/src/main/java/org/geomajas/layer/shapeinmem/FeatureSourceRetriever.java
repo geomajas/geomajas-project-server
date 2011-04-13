@@ -60,16 +60,17 @@ public class FeatureSourceRetriever {
 	// Class specific functions:
 
 	/**
-	 * Retrieve the geotools featuretype for the 'featureSourceName'.
+	 * Retrieve the geotools feature type for the 'featureSourceName'.
 	 * 
 	 * @return feature type
+	 * @throws LayerException problem when retrieving feature source
 	 */
 	public SimpleFeatureType getSchema() throws LayerException {
 		return getFeatureSource().getSchema();
 	}
 
 	/**
-	 * Retrieve the FeatureSource object from the datastore.
+	 * Retrieve the FeatureSource object from the data store.
 	 * 
 	 * @return An opengis FeatureSource object;
 	 * @throws LayerException
@@ -105,11 +106,5 @@ public class FeatureSourceRetriever {
 		} else {
 			throw new LayerException(ExceptionCode.INVALID_FEATURE_OBJECT, possibleFeature.getClass().getName());
 		}
-	}
-
-	protected String getNextId() {
-		String id = nextId + "";
-		nextId++;
-		return id;
 	}
 }

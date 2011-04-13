@@ -65,9 +65,11 @@ public class SvgGraphicsContext implements GraphicsContext {
 		this.parent = parent;
 		// the root SVG node
 		Element rootNode = DOM.createElementNS(DOM.NS_SVG, "svg");
-		DOM.setElementAttribute(rootNode, "width", width + "");
-		DOM.setElementAttribute(rootNode, "height", height + "");
-		DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + width + " " + height);
+		String sWidth = Integer.toString(width);
+		String sHeight = Integer.toString(height);
+		DOM.setElementAttribute(rootNode, "width", sWidth);
+		DOM.setElementAttribute(rootNode, "height", sHeight);
+		DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + sWidth + " " + sHeight);
 		DOM.setElementAttribute(rootNode, "xml:base", GWT.getHostPageBaseURL());
 		helper = new DomHelper(rootNode, Namespace.SVG);
 
@@ -130,9 +132,9 @@ public class SvgGraphicsContext implements GraphicsContext {
 	public void drawCircle(Object parent, String name, Coordinate position, double radius, ShapeStyle style) {
 		if (isAttached()) {
 			Element circle = helper.createOrUpdateElement(parent, name, "circle", style);
-			DOM.setElementAttribute(circle, "cx", (int) position.getX() + "");
-			DOM.setElementAttribute(circle, "cy", (int) position.getY() + "");
-			DOM.setElementAttribute(circle, "r", (int) radius + "");
+			DOM.setElementAttribute(circle, "cx", Integer.toString((int) position.getX()));
+			DOM.setElementAttribute(circle, "cy", Integer.toString((int) position.getY()));
+			DOM.setElementAttribute(circle, "r", Integer.toString((int) radius));
 		}
 	}
 
@@ -333,10 +335,10 @@ public class SvgGraphicsContext implements GraphicsContext {
 	public void drawRectangle(Object parent, String name, Bbox rectangle, ShapeStyle style) {
 		if (isAttached()) {
 			Element element = helper.createOrUpdateElement(parent, name, "rect", style);
-			DOM.setElementAttribute(element, "x", rectangle.getX() + "");
-			DOM.setElementAttribute(element, "y", rectangle.getY() + "");
-			DOM.setElementAttribute(element, "width", rectangle.getWidth() + "");
-			DOM.setElementAttribute(element, "height", rectangle.getHeight() + "");
+			DOM.setElementAttribute(element, "x", Double.toString(rectangle.getX()));
+			DOM.setElementAttribute(element, "y", Double.toString(rectangle.getY()));
+			DOM.setElementAttribute(element, "width", Double.toString(rectangle.getWidth()));
+			DOM.setElementAttribute(element, "height", Double.toString(rectangle.getHeight()));
 		}
 	}
 
@@ -381,10 +383,10 @@ public class SvgGraphicsContext implements GraphicsContext {
 					height = Math.round(height / scale);
 				}
 				node = DOM.createElementNS(DOM.NS_SVG, "rect");
-				DOM.setElementAttribute(node, "width", width + "");
-				DOM.setElementAttribute(node, "height", height + "");
-				DOM.setElementAttribute(node, "x", -Math.round(width / 2) + "");
-				DOM.setElementAttribute(node, "y", -Math.round(height / 2) + "");
+				DOM.setElementAttribute(node, "width", Long.toString(width));
+				DOM.setElementAttribute(node, "height", Long.toString(height));
+				DOM.setElementAttribute(node, "x", Long.toString(-Math.round(width / 2)));
+				DOM.setElementAttribute(node, "y", Long.toString(-Math.round(height / 2)));
 			} else if (symbol.getCircle() != null) {
 				// Create the circle symbol:
 				long radius = (long) symbol.getCircle().getR();
@@ -395,7 +397,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 				node = DOM.createElementNS(DOM.NS_SVG, "circle");
 				DOM.setElementAttribute(node, "cx", "0");
 				DOM.setElementAttribute(node, "cy", "0");
-				DOM.setElementAttribute(node, "r", radius + "");
+				DOM.setElementAttribute(node, "r", Long.toString(radius));
 			} else if (symbol.getImage() != null) {
 				// Create the image symbol:
 				node = DOM.createElementNS(DOM.NS_SVG, "image");
@@ -415,10 +417,10 @@ public class SvgGraphicsContext implements GraphicsContext {
 					width = Math.round(width / scale);
 					height = Math.round(height / scale);
 				}
-				DOM.setElementAttribute(node, "width", width + "");
-				DOM.setElementAttribute(node, "height", height + "");
-				DOM.setElementAttribute(node, "x", -Math.round(width / 2) + "");
-				DOM.setElementAttribute(node, "y", -Math.round(height / 2) + "");
+				DOM.setElementAttribute(node, "width", Long.toString(width));
+				DOM.setElementAttribute(node, "height", Long.toString(height));
+				DOM.setElementAttribute(node, "x", Long.toString(-Math.round(width / 2)));
+				DOM.setElementAttribute(node, "y", Long.toString(-Math.round(height / 2)));
 
 				if (isNew) {
 					Element node2 = DOM.createElementNS(DOM.NS_SVG, "image");
@@ -428,10 +430,10 @@ public class SvgGraphicsContext implements GraphicsContext {
 						href = GWT.getHostPageBaseURL() + href;
 					}
 					DOM.setElementAttributeNS(DOM.NS_XLINK, node2, "xlink:href", href);
-					DOM.setElementAttribute(node2, "width", width + "");
-					DOM.setElementAttribute(node2, "height", height + "");
-					DOM.setElementAttribute(node2, "x", -Math.round(width / 2) + "");
-					DOM.setElementAttribute(node2, "y", -Math.round(height / 2) + "");
+					DOM.setElementAttribute(node2, "width", Long.toString(width));
+					DOM.setElementAttribute(node2, "height", Long.toString(height));
+					DOM.setElementAttribute(node2, "x", Long.toString(-Math.round(width / 2)));
+					DOM.setElementAttribute(node2, "y", Long.toString(-Math.round(height / 2)));
 
 					Element def2 = helper.createOrUpdateElement(defsGroup, id + "-selection", "symbol", null, false);
 					DOM.setElementAttribute(def2, "overflow", "visible");
@@ -473,8 +475,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 			Element useElement = helper.createOrUpdateElement(parent, name, "use", style);
 			DOM.setElementAttributeNS(DOM.NS_XLINK, useElement, "xlink:href", "#" + shapeTypeId);
 			if (position != null) {
-				DOM.setElementAttribute(useElement, "x", position.getX() + "");
-				DOM.setElementAttribute(useElement, "y", position.getY() + "");
+				DOM.setElementAttribute(useElement, "x", Double.toString(position.getX()));
+				DOM.setElementAttribute(useElement, "y", Double.toString(position.getY()));
 			}
 		}
 	}
@@ -505,8 +507,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 				if (style != null) {
 					fontSize = style.getFontSize();
 				}
-				DOM.setElementAttribute(element, "x", position.getX() + "");
-				DOM.setElementAttribute(element, "y", position.getY() + fontSize + "");
+				DOM.setElementAttribute(element, "x", Double.toString(position.getX()));
+				DOM.setElementAttribute(element, "y", Double.toString(position.getY() + fontSize));
 			}
 		}
 	}
@@ -695,9 +697,11 @@ public class SvgGraphicsContext implements GraphicsContext {
 		this.height = newHeight;
 
 		if (helper.getRootElement() != null) {
-			DOM.setElementAttribute(helper.getRootElement(), "width", newWidth + "");
-			DOM.setElementAttribute(helper.getRootElement(), "height", newHeight + "");
-			DOM.setElementAttribute(helper.getRootElement(), "viewBox", "0 0 " + newWidth + " " + newHeight);
+			String sWidth = Integer.toString(newWidth);
+			String sHeight = Integer.toString(newHeight);
+			DOM.setElementAttribute(helper.getRootElement(), "width", sWidth);
+			DOM.setElementAttribute(helper.getRootElement(), "height", sHeight);
+			DOM.setElementAttribute(helper.getRootElement(), "viewBox", "0 0 " + sWidth + " " + sHeight);
 		}
 	}
 

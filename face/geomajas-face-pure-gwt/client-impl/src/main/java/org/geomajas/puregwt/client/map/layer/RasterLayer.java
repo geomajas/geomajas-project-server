@@ -44,7 +44,7 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> implements
 	 *            visible.
 	 */
 	public void setOpacity(double opacity) {
-		getLayerInfo().setStyle(opacity + "");
+		getLayerInfo().setStyle(Double.toString(opacity));
 		eventBus.fireEvent(new LayerStyleChangedEvent(this));
 	}
 

@@ -82,7 +82,7 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 	 * @since 1.8.0
 	 */
 	public void setOpacity(double opacity) {
-		getLayerInfo().setStyle(opacity + "");
+		getLayerInfo().setStyle(Double.toString(opacity));
 		for (RasterTile tile : store.getTiles()) {
 			tile.setStyle(new PictureStyle(opacity));
 		}

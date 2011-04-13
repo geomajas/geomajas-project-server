@@ -86,7 +86,7 @@ public class DomHelper {
 	 */
 	public enum Namespace {
 		HTML, VML, SVG
-	};
+	}
 
 	public DomHelper(Element rootElement, Namespace namespace) {
 		this.rootElement = rootElement;
@@ -129,7 +129,7 @@ public class DomHelper {
 	 * @return the created or updated element or null if creation failed or name was null
 	 */
 	public Element createOrUpdateElement(Object parent, String name, String type, Style style, boolean generateId) {
-		Element element = null;
+		Element element;
 		// check existence
 		if (name != null) {
 			if (!generateId) {
@@ -305,7 +305,7 @@ public class DomHelper {
 			case SVG:
 				return createSvgGroup(parent, object, transformation, style);
 			case VML:
-				return createVmlGroup(parent, object, transformation, style);
+				return createVmlGroup(parent, object, transformation);
 			case HTML:
 			default:
 				return createHtmlGroup(parent, object, transformation, style);
@@ -333,7 +333,7 @@ public class DomHelper {
 		return group;
 	}
 
-	private Element createVmlGroup(Object parent, Object object, Matrix transformation, Style style) {
+	private Element createVmlGroup(Object parent, Object object, Matrix transformation) {
 		Element group = null;
 		// check existence
 		if (object != null) {
@@ -346,7 +346,7 @@ public class DomHelper {
 
 		if (group != null) {
 			// Get the parent element:
-			Element parentElement = null;
+			Element parentElement;
 			if (parent == null) {
 				parentElement = getRootElement();
 			} else {
@@ -662,7 +662,7 @@ public class DomHelper {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id
+	 * @param id element id
 	 * @return the group object
 	 */
 	public Object getGroupById(String id) {
@@ -677,7 +677,7 @@ public class DomHelper {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id
+	 * @param id element id
 	 * @return the name of the element
 	 */
 	public String getNameById(String id) {
@@ -694,7 +694,7 @@ public class DomHelper {
 	 * @return the newly created group element or null if creation failed
 	 */
 	protected Element createGroup(String namespace, Object parent, Object group, String type) {
-		Element parentElement = null;
+		Element parentElement;
 		if (parent == null) {
 			parentElement = getRootElement();
 		} else {
@@ -703,7 +703,7 @@ public class DomHelper {
 		if (parentElement == null) {
 			return null;
 		} else {
-			Element element = null;
+			Element element;
 			if (DOM.NS_HTML.equals(namespace)) {
 				element = DOM.createElement("div");
 			} else {
@@ -734,7 +734,7 @@ public class DomHelper {
 		if (name == null) {
 			return null;
 		}
-		String id = null;
+		String id;
 		if (parent == null) {
 			id = getRootElement().getId();
 		} else {
@@ -771,7 +771,7 @@ public class DomHelper {
 		if (parentElement == null) {
 			return null;
 		} else {
-			Element element = null;
+			Element element;
 			switch (namespace) {
 				case SVG:
 					element = DOM.createElementNS(DOM.NS_SVG, type);
@@ -825,12 +825,8 @@ public class DomHelper {
 		if (element != null) {
 			Element group = (Element) element.getParentElement();
 			if (group != null) {
-				try {
-					DOM.removeChild(group, element);
-					elementToName.remove(element.getId());
-				} catch (Exception e) {
-
-				}
+				DOM.removeChild(group, element);
+				elementToName.remove(element.getId());
 			}
 		}
 	}
@@ -859,8 +855,8 @@ public class DomHelper {
 	/**
 	 * Apply the style.
 	 * 
-	 * @param element
-	 * @param style
+	 * @param element DOM element
+	 * @param style style
 	 */
 	public void applyStyle(Element element, Style style) {
 		if (element != null && style != null) {
@@ -901,13 +897,13 @@ public class DomHelper {
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
 			DOM.setStyleAttribute(element, "fillColor", style.getFillColor());
 		}
-		DOM.setStyleAttribute(element, "fillOpacity", style.getFillOpacity() + "");
+		DOM.setStyleAttribute(element, "fillOpacity", Float.toString(style.getFillOpacity()));
 		if (style.getStrokeColor() != null && !"".equals(style.getStrokeColor())) {
 			DOM.setStyleAttribute(element, "stroke", style.getStrokeColor());
 		}
-		DOM.setStyleAttribute(element, "strokeOpacity", style.getStrokeOpacity() + "");
+		DOM.setStyleAttribute(element, "strokeOpacity", Float.toString(style.getStrokeOpacity()));
 		if (style.getStrokeWidth() >= 0) {
-			DOM.setStyleAttribute(element, "strokeWidth", style.getStrokeWidth() + "");
+			DOM.setStyleAttribute(element, "strokeWidth", Float.toString(style.getStrokeWidth()));
 		}
 	}
 
@@ -930,7 +926,7 @@ public class DomHelper {
 		if (SC.isIE()) {
 			DOM.setStyleAttribute(element, "filter", "alpha(opacity = " + (style.getOpacity() * 100) + ")");
 		} else {
-			DOM.setStyleAttribute(element, "opacity", style.getOpacity() + "");
+			DOM.setStyleAttribute(element, "opacity", Double.toString(style.getOpacity()));
 		}
 		if (style.getDisplay() != null) {
 			DOM.setStyleAttribute(element, "display", style.getDisplay());
@@ -938,47 +934,71 @@ public class DomHelper {
 	}
 
 	private void applySvgStyle(Element element, ShapeStyle style) {
-		String css = "";
+		StringBuilder css = new StringBuilder();
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
-			css += "fill:" + style.getFillColor() + ";";
+			css.append("fill:");
+			css.append(style.getFillColor());
+			css.append(";");
 		}
-		css += "fill-opacity:" + style.getFillOpacity() + ";";
+		css.append("fill-opacity:");
+		css.append(style.getFillOpacity());
+		css.append(";");
 		if (style.getStrokeColor() != null && !"".equals(style.getStrokeColor())) {
-			css += "stroke:" + style.getStrokeColor() + ";";
+			css.append("stroke:");
+			css.append(style.getStrokeColor());
+			css.append(";");
 		}
-		css += "stroke-opacity:" + style.getStrokeOpacity() + ";";
+		css.append("stroke-opacity:");
+		css.append(style.getStrokeOpacity());
+		css.append(";");
 		if (style.getStrokeWidth() >= 0) {
-			css += "stroke-width:" + style.getStrokeWidth() + ";";
+			css.append("stroke-width:");
+			css.append(style.getStrokeWidth());
+			css.append(";");
 		}
-		DOM.setElementAttribute(element, "style", css);
+		DOM.setElementAttribute(element, "style", css.toString());
 	}
 
 	private void applySvgStyle(Element element, FontStyle style) {
-		String css = "";
+		StringBuilder css = new StringBuilder();
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
-			css += "fill:" + style.getFillColor() + ";";
+			css.append("fill:");
+			css.append(style.getFillColor());
+			css.append(";");
 		}
 		if (style.getFontFamily() != null && !"".equals(style.getFontFamily())) {
-			css += "font-family:" + style.getFontFamily() + ";";
+			css.append("font-family:");
+			css.append(style.getFontFamily());
+			css.append(";");
 		}
 		if (style.getFontStyle() != null && !"".equals(style.getFontStyle())) {
-			css += "font-style:" + style.getFontStyle() + ";";
+			css.append("font-style:");
+			css.append(style.getFontStyle());
+			css.append(";");
 		}
 		if (style.getFontWeight() != null && !"".equals(style.getFontWeight())) {
-			css += "font-weight:" + style.getFontWeight() + ";";
+			css.append("font-weight:");
+			css.append(style.getFontWeight());
+			css.append(";");
 		}
 		if (style.getFontSize() >= 0) {
-			css += "stroke-width:" + style.getFontSize() + ";";
+			css.append("stroke-width:");
+			css.append(style.getFontSize());
+			css.append(";");
 		}
-		DOM.setElementAttribute(element, "style", css);
+		DOM.setElementAttribute(element, "style", css.toString());
 	}
 
 	private void applySvgStyle(Element element, PictureStyle style) {
-		String css = "opacity:" + style.getOpacity() + ";";
+		StringBuilder css = new StringBuilder();
+		css.append("opacity:");
+		css.append(style.getOpacity());
+		css.append(";");
 		if (style.getDisplay() != null) {
-			css += "display:" + style.getDisplay();
+			css.append("display:");
+			css.append(style.getDisplay());
 		}
-		DOM.setElementAttribute(element, "style", css);
+		DOM.setElementAttribute(element, "style", css.toString());
 	}
 
 }
