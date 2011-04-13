@@ -13,6 +13,7 @@ package org.geomajas.internal.rendering.writer.svg;
 
 import java.awt.geom.Rectangle2D;
 
+import com.vividsolutions.jts.geom.Point;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
@@ -69,12 +70,12 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 		for (InternalFeature feature : tile.getFeatures()) {
 			Coordinate pos = geoService.calcDefaultLabelPosition(feature);
 			if (null != pos) {
-				com.vividsolutions.jts.geom.Point p = factory.createPoint(pos);
-				com.vividsolutions.jts.geom.Point labelPos;
+				Point p = factory.createPoint(pos);
+				Point labelPos;
 				try {
 					String labelString = feature.getLabel();
 					if (null != labelString && labelString.length() > 0) {
-						labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
+						labelPos = (Point) transformer.transform(p);
 						boolean createChild = true;
 
 						Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
@@ -108,44 +109,64 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 	}
 	
 	private String getCssStyle(FontStyleInfo style) {
-		String css = "";
+		StringBuilder css = new StringBuilder();
 		if (StringUtils.hasText(style.getColor())) {
-			css += "fill:" + style.getColor() + ";";
+			css.append("fill:");
+			css.append(style.getColor());
+			css.append(";");
 		}
 		if (StringUtils.hasText(style.getFamily())) {
-			css += "font-family:" + style.getFamily() + ";";
+			css.append("font-family:");
+			css.append(style.getFamily());
+			css.append(";");
 		}
 		if (StringUtils.hasText(style.getStyle())) {
-			css += "font-style:" + style.getStyle() + ";";
+			css.append("font-style:");
+			css.append(style.getStyle());
+			css.append(";");
 		}
 		if (StringUtils.hasText(style.getWeight())) {
-			css += "font-weight:" + style.getWeight() + ";";
+			css.append("font-weight:");
+			css.append(style.getWeight());
+			css.append(";");
 		}
 		if (style.getSize() >= 0) {
-			css += "font-size:" + style.getSize() + "px;";
+			css.append("font-size:");
+			css.append(style.getSize());
+			css.append("px;");
 		}
-		return css;
+		return css.toString();
 	}
 
 
 	private String getCssStyle(FeatureStyleInfo style) {
-		String css = "";
+		StringBuilder css = new StringBuilder();
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
-			css += "fill:" + style.getFillColor() + ";";
+			css.append("fill:");
+			css.append(style.getFillColor());
+			css.append(";");
 		}
 		if (style.getFillOpacity() != -1) {
-			css += "fill-opacity:" + style.getFillOpacity() + ";";
+			css.append("fill-opacity:");
+			css.append(style.getFillOpacity());
+			css.append(";");
 		}
 		if (style.getStrokeColor() != null && !"".equals(style.getStrokeColor())) {
-			css += "stroke:" + style.getStrokeColor() + ";";
+			css.append("stroke:");
+			css.append(style.getStrokeColor());
+			css.append(";");
 		}
 		if (style.getStrokeOpacity() != -1) {
-			css += "stroke-opacity:" + style.getStrokeOpacity() + ";";
+			css.append("stroke-opacity:");
+			css.append(style.getStrokeOpacity());
+			css.append(";");
 		}
 		if (style.getStrokeWidth() >= 0) {
-			css += "stroke-width:" + style.getStrokeWidth() + ";";
+			css.append("stroke-width:");
+			css.append(style.getStrokeWidth());
+			css.append(";");
 		}
-		return css;
+		return css.toString();
 	}
 	
 }

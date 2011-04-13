@@ -166,23 +166,33 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 	}
 
 	private String getCssStyle(FontStyleInfo style) {
-		String css = "";
+		StringBuilder css = new StringBuilder();
 		if (style.getColor() != null && !"".equals(style.getColor())) {
-			css += "color:" + style.getColor() + ";";
+			css.append("color:");
+			css.append(style.getColor());
+			css.append(";");
 		}
 		if (style.getFamily() != null && !"".equals(style.getFamily())) {
-			css += "font-family:" + style.getFamily() + ";";
+			css.append("font-family:");
+			css.append(style.getFamily());
+			css.append(";");
 		}
 		if (style.getStyle() != null && !"".equals(style.getStyle())) {
-			css += "font-style:" + style.getStyle() + ";";
+			css.append("font-style:");
+			css.append(style.getStyle());
+			css.append(";");
 		}
 		if (style.getWeight() != null && !"".equals(style.getWeight())) {
-			css += "font-weight:" + style.getWeight() + ";";
+			css.append("font-weight:");
+			css.append(style.getWeight());
+			css.append(";");
 		}
 		if (style.getSize() >= 0) {
-			css += "font-size:" + style.getSize() + "px;";
+			css.append("font-size:");
+			css.append(style.getSize());
+			css.append("px;");
 		}
-		return css;
+		return css.toString();
 	}
 
 }
