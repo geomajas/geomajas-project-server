@@ -104,10 +104,8 @@ public class RectInfo implements Serializable, CacheableObject {
 
 		RectInfo rectInfo = (RectInfo) o;
 
-		if (Float.compare(rectInfo.h, h) != 0) { return false; }
-		if (Float.compare(rectInfo.w, w) != 0) { return false; }
+		return Float.compare(rectInfo.h, h) == 0 && Float.compare(rectInfo.w, w) == 0;
 
-		return true;
 	}
 
 	/**
@@ -118,8 +116,8 @@ public class RectInfo implements Serializable, CacheableObject {
 	 */
 	@Override
 	public int hashCode() {
-		int result = (h != +0.0f ? new Float(h).hashCode() : 0);
-		result = 31 * result + (w != +0.0f ? new Float(w).hashCode() : 0);
+		int result = (h != +0.0f ? Float.valueOf(h).hashCode() : 0);
+		result = 31 * result + (w != +0.0f ? Float.valueOf(w).hashCode() : 0);
 		return result;
 	}
 }

@@ -51,7 +51,7 @@ public class FloatAttribute extends PrimitiveAttribute<Float> {
 	public Object clone() {
 		FloatAttribute clone = new FloatAttribute();
 		if (getValue() != null) {
-			clone.setValue(new Float(getValue()));
+			clone.setValue(getValue());
 		}
 		clone.setEditable(isEditable());
 		return clone;

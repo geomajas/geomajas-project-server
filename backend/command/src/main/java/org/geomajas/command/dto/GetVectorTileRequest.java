@@ -231,7 +231,7 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		int result;
 		long temp;
 		result = code != null ? code.hashCode() : 0;
-		temp = scale != +0.0d ? new Double(scale).hashCode() : 0L;
+		temp = scale != +0.0d ? Double.valueOf(scale).hashCode() : 0L;
 		result = 31 * result + (int) (temp ^ (temp >>> 32));
 		result = 31 * result + (panOrigin != null ? panOrigin.hashCode() : 0);
 		result = 31 * result + (filter != null ? filter.hashCode() : 0);

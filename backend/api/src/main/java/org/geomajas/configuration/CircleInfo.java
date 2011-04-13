@@ -84,9 +84,8 @@ public class CircleInfo implements Serializable, CacheableObject {
 
 		CircleInfo that = (CircleInfo) o;
 
-		if (Float.compare(that.r, r) != 0) { return false; }
+		return Float.compare(that.r, r) == 0;
 
-		return true;
 	}
 
 	/**
@@ -97,6 +96,6 @@ public class CircleInfo implements Serializable, CacheableObject {
 	 */
 	@Override
 	public int hashCode() {
-		return (r != +0.0f ? new Float(r).hashCode() : 0);
+		return (r != +0.0f ? Float.valueOf(r).hashCode() : 0);
 	}
 }
