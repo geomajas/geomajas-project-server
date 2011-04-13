@@ -108,10 +108,9 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 						if (null != geometry) {
 							Envelope envelope = geometry.getEnvelopeInternal();
 							if (null == bounds) {
-								bounds = envelope;
-							} else {
-								bounds.expandToInclude(envelope);
+								bounds = new Envelope();
 							}
+							bounds.expandToInclude(envelope);
 						}
 
 						if (features.size() == maxResultSize) {
