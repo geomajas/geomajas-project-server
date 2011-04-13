@@ -11,31 +11,26 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Test for {@link org.geomajas.service.GeoService} implementation.
@@ -45,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/spring/transformableArea.xml", "/org/geomajas/spring/moreContext.xml"})
+@DirtiesContext
 public class GeoServiceTransformableAreaTest {
 
 	private static final double DELTA = 1e-20;

@@ -5,22 +5,17 @@ import java.util.Stack;
 import junit.framework.Assert;
 
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.LayerException;
 import org.geomajas.service.FilterService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
@@ -33,6 +28,7 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/spring/moreContext.xml" })
+@DirtiesContext
 public class FilterServiceTest {
 
 	@Autowired
@@ -308,6 +304,11 @@ public class FilterServiceTest {
 		f.clear();
 		f.expectAndReturn("geometry", contains);
 		Assert.assertFalse(filter.evaluate(f));
+	}
+	
+	@Test
+	public void testParseFilter() throws GeomajasException {
+		Filter filter = filterService.parseFilter("a.b = 1 or a.b = 2 or a.b = 2");
 	}
 
 	/**

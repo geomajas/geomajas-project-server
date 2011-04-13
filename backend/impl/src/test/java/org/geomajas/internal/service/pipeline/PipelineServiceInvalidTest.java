@@ -12,6 +12,7 @@
 package org.geomajas.internal.service.pipeline;
 
 import junit.framework.Assert;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.junit.Test;

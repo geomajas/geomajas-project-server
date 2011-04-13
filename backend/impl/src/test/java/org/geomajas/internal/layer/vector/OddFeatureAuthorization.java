@@ -11,14 +11,15 @@
 
 package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Simple authorization class, allows everything.

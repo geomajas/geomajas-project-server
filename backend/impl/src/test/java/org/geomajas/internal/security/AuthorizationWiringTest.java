@@ -11,17 +11,12 @@
 
 package org.geomajas.internal.security;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
-import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/internal/service/inMemorySecurityContext.xml", "/org/geomajas/spring/testRecorder.xml" })
+@DirtiesContext
 public class AuthorizationWiringTest {
 
 	private static final String TOKEN = "someToken";

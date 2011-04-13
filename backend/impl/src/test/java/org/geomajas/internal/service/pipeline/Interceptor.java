@@ -1,7 +1,5 @@
 package org.geomajas.internal.service.pipeline;
 
-import junit.framework.Assert;
-
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.service.pipeline.PipelineContext;

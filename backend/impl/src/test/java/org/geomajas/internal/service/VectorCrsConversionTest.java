@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeansMercator.xml"})
+@DirtiesContext
 public class VectorCrsConversionTest {
 
 	private static final String LAYER_ID = "beans";

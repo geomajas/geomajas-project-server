@@ -12,6 +12,7 @@
 package org.geomajas.internal.security;
 
 import junit.framework.Assert;
+
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.junit.Test;
@@ -29,6 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/spring/securityLoopContext.xml"})
+@DirtiesContext
 public class SecurityManagerLoopTest {
 
 	@Autowired

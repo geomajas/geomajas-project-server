@@ -11,7 +11,12 @@
 
 package org.geomajas.internal.security;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import junit.framework.Assert;
+
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SavedAuthorization;
@@ -21,12 +26,9 @@ import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Test to verify the save and restore of the security context.
@@ -36,6 +38,7 @@ import java.util.Locale;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
+@DirtiesContext
 public class SecurityContextSaveRestoreTest {
 
 	@Autowired

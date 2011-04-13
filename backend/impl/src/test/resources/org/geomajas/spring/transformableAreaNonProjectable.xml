@@ -22,10 +22,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="target" value="EPSG:31300" />
 		<property name="transformableArea">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-90" />
-				<property name="y" value="-50" />
-				<property name="width" value="180" />
-				<property name="height" value="100" />
+				<property name="x" value="50" />
+				<property name="y" value="4" />
+				<property name="width" value="6" />
+				<property name="height" value="4" />
 			</bean>
 		</property>
 	</bean>

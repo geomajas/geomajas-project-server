@@ -11,6 +11,9 @@
 
 package org.geomajas.internal.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.service.ConfigurationService;
@@ -18,11 +21,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Test for {@link ConfigurationServiceImpl}.
@@ -32,6 +33,7 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
+@DirtiesContext
 public class ConfigurationServiceTest {
 
 	@Autowired

@@ -11,39 +11,18 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
-import org.geomajas.layer.VectorLayerService;
-import org.geomajas.layer.bean.BeanLayer;
-import org.geomajas.layer.bean.FeatureBean;
-import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.layer.feature.attribute.StringAttribute;
+
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Tests for VectorLayerService.
@@ -54,6 +33,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
 		"/org/geomajas/spring/testRecorder.xml", "/org/geomajas/internal/service/layerInvalidateContext.xml"})
+@DirtiesContext
 public class ConfigurationServiceInvalidateTest {
 
 	private static final String LAYER_ID = "beans";

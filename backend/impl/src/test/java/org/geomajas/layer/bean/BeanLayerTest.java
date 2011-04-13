@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.FilterService;
@@ -25,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
+@DirtiesContext
 public class BeanLayerTest {
 
 	@Autowired

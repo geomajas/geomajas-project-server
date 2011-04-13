@@ -12,6 +12,7 @@
 package org.geomajas.spring;
 
 import junit.framework.Assert;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.TestRecorder;

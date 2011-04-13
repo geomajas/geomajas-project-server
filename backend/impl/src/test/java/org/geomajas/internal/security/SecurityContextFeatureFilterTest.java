@@ -11,8 +11,15 @@
 
 package org.geomajas.internal.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
-import org.geomajas.security.*;
+
+import org.geomajas.security.Authentication;
+import org.geomajas.security.BaseAuthorization;
+import org.geomajas.security.SecurityContext;
+import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.geomajas.service.FilterService;
 import org.junit.After;
@@ -24,9 +31,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Testing of FeatureFilter combination in the security context.
  *
@@ -35,6 +39,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/spring/moreContext.xml"})
+@DirtiesContext
 public class SecurityContextFeatureFilterTest {
 
 	private static final String SECURITY_SERVICE_ID = "ss";

@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -37,6 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
 		"/org/geomajas/internal/layer/vector/getFeaturesEachStep.xml",
 		"/org/geomajas/internal/layer/vector/oddFeatureSecurity.xml" })
+@DirtiesContext
 public class GetFeaturesEachStepSecuredTest {
 
 	// Small caveat, not everything is tested yet 

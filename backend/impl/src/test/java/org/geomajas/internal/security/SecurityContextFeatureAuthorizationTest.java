@@ -11,7 +11,13 @@
 
 package org.geomajas.internal.security;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.Assert;
+
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
@@ -24,13 +30,9 @@ import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Testing of FeatureAuthorization related data in the security context.
@@ -40,6 +42,7 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
+@DirtiesContext
 public class SecurityContextFeatureAuthorizationTest {
 
 	private static final String LAYER_ID = "beans";

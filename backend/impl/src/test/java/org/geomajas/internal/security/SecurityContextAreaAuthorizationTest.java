@@ -11,12 +11,11 @@
 
 package org.geomajas.internal.security;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
@@ -29,8 +28,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Testing of AreaAuthorization related data in the security context.
@@ -40,6 +42,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
+@DirtiesContext
 public class SecurityContextAreaAuthorizationTest {
 
 	private static final String LAYER_ID = "beans";

@@ -12,16 +12,15 @@
 package org.geomajas.internal.layer.vector;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.internal.layer.feature.LazyAttributeMap;
 import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
@@ -45,7 +44,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Get features from a vector layer.
- *
+ * 
  * @author Joachim Van der Auwera
  * @author Kristof Heirwegh
  */
@@ -131,7 +130,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	/**
 	 * Convert the generic feature object (as obtained from the layer model) into a {@link InternalFeature}, with
 	 * requested data. Part may be lazy loaded.
-	 *
+	 * 
 	 * @param feature
 	 *            A feature object that comes directly from the {@link VectorLayer}
 	 * @param geometry
@@ -153,8 +152,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	 *             oops
 	 */
 	private InternalFeature convertFeature(Object feature, Geometry geometry, String layerId, VectorLayer layer,
-										   CrsTransform transformation, List<StyleFilter> styles,
-										   LabelStyleInfo labelStyle, int featureIncludes)
+			CrsTransform transformation, List<StyleFilter> styles, LabelStyleInfo labelStyle, int featureIncludes)
 			throws GeomajasException {
 		FeatureModel featureModel = layer.getFeatureModel();
 		InternalFeatureImpl res = new InternalFeatureImpl();
@@ -188,31 +186,29 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 		// If allowed, add the attributes to the InternalFeature:
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0) {
-			filterAttributes(layerId, res, featureModel.getAttributes(feature));
+			// create the lazy feature map
+			LazyAttributeMap attributes = new LazyAttributeMap(featureModel, layer.getLayerInfo().getFeatureInfo(),
+					feature);
+			res.setAttributes(attributes);
+			filterAttributes(attributes, layerId, res);
 		}
 
 		return res;
 	}
 
-	private Map<String, Attribute> filterAttributes(String layerId, InternalFeature feature,
-													Map<String, Attribute> featureAttributes) {
-		feature.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
-		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
-		for (Map.Entry<String, Attribute> entry : featureAttributes.entrySet()) {
-			String key = entry.getKey();
-			if (securityContext.isAttributeReadable(layerId, feature, key)) {
-				Attribute attribute = entry.getValue();
-				attribute.setEditable(securityContext.isAttributeWritable(layerId, feature, key));
-				filteredAttributes.put(key, attribute);
+	private void filterAttributes(LazyAttributeMap attributes, String layerId, InternalFeature feature) {
+		for (String name : attributes.keySet()) {
+			if (securityContext.isAttributeReadable(layerId, feature, name)) {
+				attributes.setAttributeEditable(name, securityContext.isAttributeWritable(layerId, feature, name));
+			} else {
+				attributes.removeAttribute(name);
 			}
 		}
-		feature.setAttributes(filteredAttributes);
-		return filteredAttributes;
 	}
 
 	/**
 	 * Find the style filter that must be applied to this feature.
-	 *
+	 * 
 	 * @param feature
 	 *            feature to find the style for
 	 * @param styles

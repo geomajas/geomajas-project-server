@@ -11,14 +11,15 @@
 
 package org.geomajas.internal.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.allowall.AllowAllAuthorization;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Testing of BaseAuthorization related data in the security context.

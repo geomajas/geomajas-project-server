@@ -11,14 +11,15 @@
 
 package org.geomajas.internal.service.pipeline;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Test for {@link PipelineContextImpl}.
