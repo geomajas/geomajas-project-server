@@ -101,7 +101,7 @@ public class GetFeaturesInvalidateUpdateTest {
 		// update one item
 		recorder.clear();
 		InternalFeature org = features.get(0);
-		InternalFeature upd = new InternalFeatureImpl(org);
+		InternalFeature upd = org.clone();
 		upd.getAttributes().put("stringAttr", new StringAttribute("something has changed"));
 		List<InternalFeature> orgFeatures = new ArrayList<InternalFeature>();
 		orgFeatures.add(org);
