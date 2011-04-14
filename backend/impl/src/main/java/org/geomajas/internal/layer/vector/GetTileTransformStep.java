@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.service.GeoService;
@@ -54,7 +53,7 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 		List<InternalFeature> features = new ArrayList<InternalFeature>();
 		for (InternalFeature feature : response.getTile().getFeatures()) {
 			if (null != feature.getGeometry()) {
-				InternalFeature newFeature = new InternalFeatureImpl(feature);
+				InternalFeature newFeature = feature.clone();
 				newFeature.setGeometry(geoService.transform(feature.getGeometry(), transform));
 				features.add(newFeature);
 			}

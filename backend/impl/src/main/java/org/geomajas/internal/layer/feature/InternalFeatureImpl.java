@@ -77,19 +77,6 @@ public class InternalFeatureImpl implements InternalFeature {
 	public InternalFeatureImpl() {
 	}
 
-	public InternalFeatureImpl(InternalFeature other) {
-		if (null != other.getAttributes()) {
-			attributes = new HashMap<String, Attribute>(other.getAttributes());
-		}
-		if (null != other.getGeometry()) {
-			geometry = (Geometry) other.getGeometry().clone();
-		}
-		id = other.getId();
-		layer = other.getLayer();
-		styleDefinition = other.getStyleInfo();
-		label = other.getLabel();
-	}
-
 	// -------------------------------------------------------------------------
 	// Public methods:
 	// -------------------------------------------------------------------------
@@ -99,7 +86,13 @@ public class InternalFeatureImpl implements InternalFeature {
 	 */
 	public InternalFeature clone() {
 		InternalFeatureImpl f = new InternalFeatureImpl();
-		f.setAttributes(new HashMap<String, Attribute>(attributes));
+		if (null != attributes) {
+			if (attributes instanceof LazyAttributeMap) {
+				f.setAttributes((LazyAttributeMap) ((LazyAttributeMap) attributes).clone());
+			} else {
+				f.setAttributes(new HashMap<String, Attribute>(attributes));
+			}
+		}
 		if (null != geometry) {
 			f.setGeometry((Geometry) geometry.clone());
 		}

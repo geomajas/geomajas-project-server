@@ -101,7 +101,7 @@ public class TiledFeatureService {
 			// clip feature if necessary
 			if (exceedsScreenDimensions(feature, scale)) {
 				log.debug("feature {} exceeds screen dimensions", feature);
-				InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
+				InternalFeatureImpl vectorFeature = (InternalFeatureImpl) feature.clone();
 				tile.setClipped(true);
 				vectorFeature.setClipped(true);
 				if (null == maxScreenBbox) {

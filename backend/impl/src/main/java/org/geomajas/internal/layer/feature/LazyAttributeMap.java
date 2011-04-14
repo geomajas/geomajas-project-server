@@ -21,6 +21,8 @@ import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Attribute map that supports lazy access of attributes. Attributes will only be accessed when explicitly requested.
@@ -30,7 +32,11 @@ import org.geomajas.layer.feature.FeatureModel;
  */
 public class LazyAttributeMap implements Map<String, Attribute> {
 
+	private final Logger log = LoggerFactory.getLogger(LazyAttributeMap.class);
+
 	private FeatureModel featureModel;
+
+	private FeatureInfo featureInfo;
 
 	private Object feature;
 
@@ -40,6 +46,7 @@ public class LazyAttributeMap implements Map<String, Attribute> {
 
 	public LazyAttributeMap(FeatureModel featureModel, FeatureInfo featureInfo, Object feature) {
 		this.featureModel = featureModel;
+		this.featureInfo = featureInfo;
 		this.feature = feature;
 		for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
 			loadInfos.put(attrInfo.getName(), new AttributeLoadInfo(attrInfo.getName()));
@@ -85,7 +92,7 @@ public class LazyAttributeMap implements Map<String, Attribute> {
 	}
 
 	public Attribute put(String key, Attribute value) {
-		throw new UnsupportedOperationException();
+		return getNonLazyAttributes().put(key, value);
 	}
 
 	public void putAll(Map<? extends String, ? extends Attribute> m) {
@@ -102,7 +109,9 @@ public class LazyAttributeMap implements Map<String, Attribute> {
 
 	public Attribute get(Object key) {
 		try {
-			if (loadInfos.containsKey(key)) {
+			if (nonLazyAttributes != null) {
+				return nonLazyAttributes.get(key);
+			} else if (loadInfos.containsKey(key)) {
 				Attribute attr = featureModel.getAttribute(feature, (String) key);
 				attr.setEditable(loadInfos.get(key).isEditable());
 				return attr;
@@ -118,10 +127,19 @@ public class LazyAttributeMap implements Map<String, Attribute> {
 	public Attribute remove(Object key) {
 		throw new UnsupportedOperationException();
 	}
+	
+	
+
+	@Override
+	public Object clone() {
+		LazyAttributeMap other = new LazyAttributeMap(featureModel, featureInfo, feature);
+		return other;
+	}
 
 	private Map<String, Attribute> getNonLazyAttributes() {
 		try {
 			if (nonLazyAttributes == null) {
+				log.warn("Loading non-lazy attributes, performance penalty expected.");
 				nonLazyAttributes = new HashMap<String, Attribute>();
 				for (AttributeLoadInfo loadInfo : loadInfos.values()) {
 					Attribute attribute = featureModel.getAttribute(feature, loadInfo.getName());

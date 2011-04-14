@@ -320,8 +320,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		Feature dto = new Feature(feature.getId());
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0) {
-			dto.setAttributes(feature.getAttributes());
+		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0 && null != feature.getAttributes()) {
+			dto.setAttributes(new HashMap<String, Attribute>(feature.getAttributes()));
 		}
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
 			dto.setLabel(feature.getLabel());

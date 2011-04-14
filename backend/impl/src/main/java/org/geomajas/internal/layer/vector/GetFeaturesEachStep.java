@@ -12,8 +12,10 @@
 package org.geomajas.internal.layer.vector;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -196,12 +198,16 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	}
 
 	private void filterAttributes(LazyAttributeMap attributes, String layerId, InternalFeature feature) {
+		Set<String> filteredNames = new HashSet<String>();
 		for (String name : attributes.keySet()) {
 			if (securityContext.isAttributeReadable(layerId, feature, name)) {
 				attributes.setAttributeEditable(name, securityContext.isAttributeWritable(layerId, feature, name));
 			} else {
-				attributes.removeAttribute(name);
+				filteredNames.add(name);
 			}
+		}
+		for (String name : filteredNames) {
+			attributes.removeAttribute(name);
 		}
 	}
 
