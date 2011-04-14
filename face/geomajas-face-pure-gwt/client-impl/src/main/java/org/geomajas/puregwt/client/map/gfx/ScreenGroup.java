@@ -18,14 +18,4 @@ package org.geomajas.puregwt.client.map.gfx;
  * @author Pieter De Graef
  */
 public class ScreenGroup extends VectorGroup implements ScreenContainer {
-
-	private String id;
-
-	public ScreenGroup(String id) {
-		this.id = id;
-	}
-
-	public String getId() {
-		return id;
-	}
 }

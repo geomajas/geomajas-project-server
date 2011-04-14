@@ -17,6 +17,7 @@ import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 
 /**
@@ -55,44 +56,41 @@ public interface MapPresenter {
 	void setSize(int width, int height);
 
 	/**
-	 * Returns a container in world space wherein one can render new vector objects. Note that all objects drawn into
-	 * such a container should be expressed in world coordinates (the CRS of the map). These objects will also be
-	 * automatically redrawn when the view port on the map changes.
+	 * Create a new container in world space wherein one can render new vector objects and return it. Note that all
+	 * objects drawn into such a container should be expressed in world coordinates (the CRS of the map). These objects
+	 * will also be automatically redrawn when the view port on the map changes.
 	 * 
-	 * @param id
-	 *            The identifier of the container. If no such container exists, a new one will be created.
-	 * @return Returns the vector container.
+	 * @return Returns the world vector container.
 	 */
-	WorldContainer getWorldContainer(String id);
+	WorldContainer addWorldContainer();
 
 	/**
-	 * Remove an existing world container from the map.
+	 * Create a new container in screen space wherein one can render new vector objects and return it. Note that all
+	 * objects drawn into such a container should be expressed in pixel coordinates. No matter how much the map moves or
+	 * zooms, these objects will always remain on the same fixed position.
 	 * 
-	 * @param id
+	 * @return Returns the vector container.
+	 */
+	ScreenContainer addScreenContainer();
+
+	/**
+	 * Remove an existing vector container from the map. This can be either a world or a screen container.
+	 * 
+	 * @param container
 	 *            The identifier of the container. If no such container exists, false will be returned.
 	 * @return Was the removal successful or not?
 	 */
-	boolean removeWorldContainer(String id);
+	boolean removeVectorContainer(VectorContainer container);
 
 	/**
-	 * Returns a container in screen space wherein one can render new vector objects. Note that all objects drawn into
-	 * such a container should be expressed in pixel coordinates. No matter how much the map moves or zooms, these
-	 * objects will always remain on the same fixed position.
+	 * Bring an existing vector container to the front. This container must be a registered world or screen container.
 	 * 
-	 * @param id
-	 *            The identifier of the container. If no such container exists, a new one will be created.
-	 * @return Returns the vector container.
+	 * @param container
+	 *            The vector container to bring to the front. This container must be acquired either through the
+	 *            <code>addScreenContainer</code> or the <code>addWorldContainer</code> methods.
+	 * @return Could the container be successfully brought to the front or not?
 	 */
-	ScreenContainer getScreenContainer(String id);
-
-	/**
-	 * Remove an existing world container from the map.
-	 * 
-	 * @param id
-	 *            The identifier of the container. If no such container exists, false will be returned.
-	 * @return Was the removal successful or not?
-	 */
-	boolean removeScreenContainer(String id);
+	boolean bringToFront(VectorContainer container);
 
 	/**
 	 * Returns the layers model for this presenter. This model is the central layer handler for the map, with methods

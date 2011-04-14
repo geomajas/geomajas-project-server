@@ -21,17 +21,7 @@ import org.geomajas.puregwt.client.map.ViewPort;
  */
 public class WorldGroup extends VectorGroup implements WorldContainer {
 
-	private String id;
-
 	private boolean resizeChildren = true;
-
-	public WorldGroup(String id) {
-		this.id = id;
-	}
-
-	public String getId() {
-		return id;
-	}
 
 	public boolean isResizeChildren() {
 		return resizeChildren;

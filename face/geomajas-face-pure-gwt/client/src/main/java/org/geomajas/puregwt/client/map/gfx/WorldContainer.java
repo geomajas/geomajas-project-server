@@ -26,13 +26,6 @@ import org.geomajas.puregwt.client.map.ViewPort;
 public interface WorldContainer extends VectorContainer {
 
 	/**
-	 * Return the containers' identifier. There can be no 2 world containers with the same ID.
-	 * 
-	 * @return The world container identifier.
-	 */
-	String getId();
-
-	/**
 	 * Should children of this world container be resized when zooming in or out? Default is true.
 	 * 
 	 * @param resizeChildren

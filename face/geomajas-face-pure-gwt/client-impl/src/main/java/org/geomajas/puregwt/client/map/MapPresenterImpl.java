@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
@@ -81,15 +82,19 @@ public class MapPresenterImpl implements MapPresenter {
 
 		VectorContainer getMapVectorContainer();
 
-		ScreenContainer getScreenContainer(String id);
+		ScreenContainer getNewScreenContainer();
 
-		boolean removeScreenContainer(String id);
-
-		WorldContainer getWorldContainer(String id);
-
-		boolean removeWorldContainer(String id);
+		WorldContainer getNewWorldContainer();
 
 		List<WorldContainer> getWorldContainers();
+
+		boolean removeVectorContainer(VectorContainer container);
+
+		boolean bringToFront(VectorContainer container);
+		
+		VectorContainer getMapGadgetContainer();
+		
+		boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer);
 	}
 
 	private String applicationId;
@@ -114,7 +119,7 @@ public class MapPresenterImpl implements MapPresenter {
 
 	private WorldContainerRenderer worldContainerRenderer;
 
-	private Map<String, MapGadget> gadgets;
+	private Map<MapGadget, ScreenContainer> gadgets;
 
 	private EventBus eventBus;
 
@@ -124,7 +129,7 @@ public class MapPresenterImpl implements MapPresenter {
 		this.display = display;
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
-		gadgets = new HashMap<String, MapGadget>();
+		gadgets = new HashMap<MapGadget, ScreenContainer>();
 
 		eventBus = new EventBusImpl();
 		layersModel = new LayersModelImpl(eventBus);
@@ -172,9 +177,8 @@ public class MapPresenterImpl implements MapPresenter {
 					viewPort.applyBounds(initialBounds);
 
 					// If there are already some MapGadgets registered, draw them now:
-					for (String containerId : gadgets.keySet()) {
-						MapGadget mapGadget = gadgets.get(containerId);
-						mapGadget.onDraw(viewPort, getScreenContainer(containerId));
+					for (Entry<MapGadget, ScreenContainer> entry : gadgets.entrySet()) {
+						entry.getKey().onDraw(viewPort, entry.getValue());
 					}
 
 					addMapGadget(new ScalebarGadget(r.getMapInfo()));
@@ -203,22 +207,22 @@ public class MapPresenterImpl implements MapPresenter {
 		eventBus.fireEvent(new MapResizedEvent(width, height));
 	}
 
-	public WorldContainer getWorldContainer(String id) {
-		WorldContainer container = display.getWorldContainer(id);
-		container.transform(viewPort);
-		return container;
+	public WorldContainer addWorldContainer() {
+		WorldContainer worldContainer = display.getNewWorldContainer();
+		worldContainer.transform(viewPort);
+		return worldContainer;
 	}
 
-	public boolean removeWorldContainer(String id) {
-		return display.removeWorldContainer(id);
+	public ScreenContainer addScreenContainer() {
+		return display.getNewScreenContainer();
 	}
 
-	public ScreenContainer getScreenContainer(String id) {
-		return display.getScreenContainer(id);
+	public boolean removeVectorContainer(VectorContainer container) {
+		return display.removeVectorContainer(container);
 	}
 
-	public boolean removeScreenContainer(String id) {
-		return display.removeScreenContainer(id);
+	public boolean bringToFront(VectorContainer container) {
+		return display.bringToFront(container);
 	}
 
 	public LayersModel getLayersModel() {
@@ -301,19 +305,17 @@ public class MapPresenterImpl implements MapPresenter {
 	}
 
 	public void addMapGadget(MapGadget mapGadget) {
-		String id = DOM.createUniqueId();
-		gadgets.put(id, mapGadget);
+		ScreenContainer container = addScreenContainer();
+		gadgets.put(mapGadget, container);
 		if (layersModel != null && viewPort != null) {
-			mapGadget.onDraw(viewPort, getScreenContainer(id));
+			mapGadget.onDraw(viewPort, container);
 		}
 	}
 
 	public boolean removeMapGadget(MapGadget mapGadget) {
 		if (gadgets.containsValue(mapGadget)) {
 			mapGadget.onDestroy();
-			for (String containerId : gadgets.keySet()) {
-				display.removeScreenContainer(containerId);
-			}
+			display.removeVectorContainer(gadgets.get(mapGadget));
 			gadgets.remove(mapGadget);
 			return true;
 		}
@@ -336,26 +338,26 @@ public class MapPresenterImpl implements MapPresenter {
 	private class MapGadgetRenderer implements ViewPortChangedHandler, MapResizedHandler {
 
 		public void onMapResized(MapResizedEvent event) {
-			for (MapGadget mapGadget : gadgets.values()) {
+			for (MapGadget mapGadget : gadgets.keySet()) {
 				mapGadget.onResize();
 			}
 		}
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
-			for (MapGadget mapGadget : gadgets.values()) {
+			for (MapGadget mapGadget : gadgets.keySet()) {
 				mapGadget.onScale();
 				mapGadget.onTranslate();
 			}
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
-			for (MapGadget mapGadget : gadgets.values()) {
+			for (MapGadget mapGadget : gadgets.keySet()) {
 				mapGadget.onScale();
 			}
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			for (MapGadget mapGadget : gadgets.values()) {
+			for (MapGadget mapGadget : gadgets.keySet()) {
 				mapGadget.onTranslate();
 			}
 		}

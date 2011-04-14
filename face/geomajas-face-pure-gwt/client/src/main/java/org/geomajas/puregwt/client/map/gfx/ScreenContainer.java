@@ -23,11 +23,4 @@ import org.geomajas.global.FutureApi;
  */
 @FutureApi
 public interface ScreenContainer extends VectorContainer {
-
-	/**
-	 * Return the containers' identifier. There can be no 2 screen containers with the same ID.
-	 * 
-	 * @return The screen container identifier.
-	 */
-	String getId();
 }

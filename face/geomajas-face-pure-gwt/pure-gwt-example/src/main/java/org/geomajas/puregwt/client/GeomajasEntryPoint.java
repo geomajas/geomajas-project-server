@@ -96,24 +96,26 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 			private boolean shown;
 
+			private ScreenContainer screenContainer;
+
+			private WorldContainer worldContainer;
+
 			public void onClick(ClickEvent event) {
+				if (screenContainer == null) {
+					screenContainer = mapPresenter.addScreenContainer();
+					worldContainer = mapPresenter.addWorldContainer();
+				}
 				if (shown) {
-					ScreenContainer container = mapPresenter.getScreenContainer("test-container");
-					container.clear();
-					WorldContainer wc1 = mapPresenter.getWorldContainer("world-container-1");
-					wc1.clear();
-					ScreenContainer sc = mapPresenter.getScreenContainer("screen-container");
-					sc.clear();
+					screenContainer.clear();
+					worldContainer.clear();
 				} else {
-					WorldContainer wc1 = mapPresenter.getWorldContainer("world-container-1");
 					Circle c1 = new Circle(0, 0, 500000);
 					c1.setFillColor("red");
-					wc1.add(c1);
+					worldContainer.add(c1);
 
-					ScreenContainer sc = mapPresenter.getScreenContainer("screen-container");
 					Circle c3 = new Circle(100, 100, 30);
 					c3.setFillColor("blue");
-					sc.add(c3);
+					screenContainer.add(c3);
 				}
 				shown = !shown;
 			}

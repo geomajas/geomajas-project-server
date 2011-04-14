@@ -46,8 +46,6 @@ import com.google.inject.Inject;
  */
 public abstract class AbstractRectangleController extends AbstractMapController {
 
-	public static final String CONTAINER_ID = "abstract-rectangle-contoller";
-
 	protected Rectangle rectangle;
 
 	protected String fillColor = "#FF9900";
@@ -215,7 +213,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	private ScreenContainer getContainer() {
 		if (container == null) {
-			container = mapPresenter.getScreenContainer(CONTAINER_ID);
+			container = mapPresenter.addScreenContainer();
 		}
 		return container;
 	}
