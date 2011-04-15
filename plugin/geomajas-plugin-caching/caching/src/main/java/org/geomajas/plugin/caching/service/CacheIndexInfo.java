@@ -25,14 +25,14 @@ import javax.validation.constraints.NotNull;
 public class CacheIndexInfo extends LayerCategoryInfo {
 
 	@NotNull
-	private CacheIndexFactory indexFactory;
+	private CacheIndexFactory cacheIndexFactory;
 
 	public CacheIndexFactory getCacheIndexFactory() {
-		return indexFactory;
+		return cacheIndexFactory;
 	}
 
 	public void setCacheIndexFactory(CacheIndexFactory indexFactory) {
-		this.indexFactory = indexFactory;
+		this.cacheIndexFactory = indexFactory;
 	}
 
 }
