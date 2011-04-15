@@ -116,7 +116,7 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			button.addClickHandler(new ClickHandler() {
 				
 				public void onClick(ClickEvent event) {
-					if(null != getActiveViewConfig() && getActiveViewConfig().equals(item)) {
+					if (null != getActiveViewConfig() && getActiveViewConfig().equals(item)) {
 						button.setSelected(false);
 						activateViewConfig(null);
 					}
