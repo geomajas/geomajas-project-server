@@ -116,6 +116,10 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 			button.addClickHandler(new ClickHandler() {
 				
 				public void onClick(ClickEvent event) {
+					if(null != getActiveViewConfig() && getActiveViewConfig().equals(item)) {
+						button.setSelected(false);
+						activateViewConfig(null);
+					}
 					if (button.isSelected()) {
 						activateViewConfig(item);
 					}
@@ -156,7 +160,9 @@ public class ThemeWidget extends Canvas implements MapViewChangedHandler {
 
 	protected void activateViewConfig(ViewConfigItem viewConfig) {
 			setActiveViewConfig(viewConfig);
-			renderViewConfig(viewConfig.getViewConfig());
+			if (null != viewConfig && null != viewConfig.getViewConfig()) {
+				renderViewConfig(viewConfig.getViewConfig());
+			}
 	}
 
 	protected ViewConfigItem getActiveViewConfig() {
