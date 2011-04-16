@@ -54,7 +54,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 			String gwtModuleBase = request.getHeader(X_GWT_MODULE_HEADER);
 			if (null != gwtModuleBase) {
 				// Get last slash in the gwtModuleBase, ignoring the trailing slash.
-				int contextEndIndex = gwtModuleBase.lastIndexOf("/", gwtModuleBase.length() -2);
+				int contextEndIndex = gwtModuleBase.lastIndexOf("/", gwtModuleBase.length() - 2);
 				if (contextEndIndex > -1) {
 					String url = gwtModuleBase.substring(0, contextEndIndex) + "/d/";
 					return url;
