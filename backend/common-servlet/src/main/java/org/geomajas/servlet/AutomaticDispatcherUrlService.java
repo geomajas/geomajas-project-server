@@ -27,11 +27,15 @@ import javax.servlet.http.HttpServletRequest;
  * {@link org.geomajas.service.DispatcherUrlService} which tries to automatically detect the dispatcher server address.
  *
  * @author Joachim Van der Auwera
+ * @author Oliver May
  */
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
+	private static final String X_FOWARD_HOST_HEADER = "X-Forwarded-Host";
+	private static final String X_GWT_MODULE_HEADER = "X-GWT-Module-Base";
+	
 	private Logger log = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
 
 	public String getDispatcherUrl() {
@@ -43,6 +47,22 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		}
 
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+
+		// X-Forwarded-Host if behind a reverse proxy, fallback to relative URL.
+		// Alternative we could use the gwt module url to guess the real URL.
+		if (null != request.getHeader(X_FOWARD_HOST_HEADER)) {
+			String gwtModuleBase = request.getHeader(X_GWT_MODULE_HEADER);
+			if (null != gwtModuleBase) {
+				// Get last slash in the gwtModuleBase, ignoring the trailing slash.
+				int contextEndIndex = gwtModuleBase.lastIndexOf("/", gwtModuleBase.length() -2);
+				if (contextEndIndex > -1) {
+					String url = gwtModuleBase.substring(0, contextEndIndex) + "/d/";
+					return url;
+				}
+			}
+			return "./d/"; // use relative URL as back-up, will fail in many cases
+		}
+		
 		String url = request.getScheme() + "://" + request.getServerName();
 		if (80 != request.getServerPort()) {
 			url += ":" + request.getServerPort();
