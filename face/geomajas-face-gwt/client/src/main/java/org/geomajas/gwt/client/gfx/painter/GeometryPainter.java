@@ -67,7 +67,7 @@ public class GeometryPainter implements Painter {
 				String gfxId = gfxGeometry.getId();
 				GraphicsContext gc = context.getVectorContext();
 				for (int i = 0; i < m.getNumGeometries(); i++) {
-					gc.drawLine(group, gfxId + "_" + i, (LineString) m.getGeometryN(i), shapeStyle);
+					gc.drawLine(group, gfxId + "." + i, (LineString) m.getGeometryN(i), shapeStyle);
 				}
 			} else if (geometry instanceof Polygon) {
 				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry, shapeStyle);
@@ -76,23 +76,30 @@ public class GeometryPainter implements Painter {
 				String gfxId = gfxGeometry.getId();
 				GraphicsContext gc = context.getVectorContext();
 				for (int i = 0; i < m.getNumGeometries(); i++) {
-					gc.drawPolygon(group, gfxId + "_" + i, (Polygon) m.getGeometryN(i), shapeStyle);
+					gc.drawPolygon(group, gfxId + "." + i, (Polygon) m.getGeometryN(i), shapeStyle);
 				}
 			} else if (geometry instanceof Point) {
-				context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(),
-						shapeStyle, null);
+				context.getVectorContext().drawSymbolDefinition(group, gfxGeometry.getId() + ".def",
+						gfxGeometry.getSymbolInfo(), shapeStyle, null);
+				context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(), shapeStyle,
+						gfxGeometry.getId() + ".def");
 			} else if (geometry instanceof MultiPoint) {
 				Coordinate[] coordinates = geometry.getCoordinates();
-				for (Coordinate coordinate : coordinates) {
-					context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), coordinate, shapeStyle, null);
+				String gfxId = gfxGeometry.getId();
+				GraphicsContext gc = context.getVectorContext();
+				String styleTypeDef = gfxGeometry.getId() + ".def";
+				context.getVectorContext().drawSymbolDefinition(group, styleTypeDef, gfxGeometry.getSymbolInfo(),
+						shapeStyle, null);
+				for (int i = 0; i < coordinates.length; i++) {
+					gc.drawSymbol(group, gfxId + "." + i, coordinates[i], shapeStyle, styleTypeDef);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It
+	 * the object does not exist, nothing will be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
@@ -104,11 +111,14 @@ public class GeometryPainter implements Painter {
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		GfxGeometry gfxGeometry = (GfxGeometry) paintable;
 		Geometry geom = gfxGeometry.getGeometry();
-		if (geom instanceof MultiPolygon || geom instanceof MultiLineString) {
+		if (geom instanceof Point || geom instanceof MultiPoint) {
+			context.getVectorContext().deleteElement(group, gfxGeometry.getId() + ".def");
+		}
+		if (geom instanceof MultiPolygon || geom instanceof MultiLineString || geom instanceof MultiPoint) {
 			GraphicsContext gc = context.getVectorContext();
 			String gfxId = gfxGeometry.getId();
 			for (int i = 0; i < geom.getNumGeometries(); i++) {
-				gc.deleteElement(group, gfxId + "_" + i);
+				gc.deleteElement(group, gfxId + "." + i);
 			}
 		} else {
 			context.getVectorContext().deleteElement(group, gfxGeometry.getId());

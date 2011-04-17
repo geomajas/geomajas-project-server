@@ -11,9 +11,12 @@
 
 package org.geomajas.example.gwt.client.samples.mapwidget;
 
+import org.geomajas.configuration.CircleInfo;
+import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
@@ -23,6 +26,7 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
+import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
@@ -90,12 +94,14 @@ public class WorldScreenSample extends SamplePanel {
 		IButton button2 = new IButton(I18nProvider.getSampleMessages().screenWorldBTNWorld());
 		button2.setWidth("50%");
 
+		// An image
 		final Image worldImage = new Image("imageInWorldSpace");
 		worldImage.setHref(Geomajas.getIsomorphicDir() + "geomajas/example/images/smile.png");
 		worldImage.setBounds(new Bbox(-2000000, -2000000, 4000000, 4000000)); // Mercator coordinates
 		worldImage.setStyle(new PictureStyle(0.8));
 
-		final GfxGeometry worldGeometry = new GfxGeometry("geometryInWorldSpace");
+		// And some geometries
+		final GfxGeometry worldGeometry = new GfxGeometry("MultiPolygonInWorldSpace");
 		final GeometryFactory gf = new GeometryFactory(map.getMapModel().getSrid(), map.getMapModel().getPrecision());
 		Polygon p1 = gf.createPolygon(gf.createLinearRing(new Bbox(10000000d, 1000d, 1000000d, 1000000d)), null);
 		Polygon p2 = gf.createPolygon(gf.createLinearRing(new Bbox(12000000d, 1000d, 500000d, 500000d)), null);
@@ -103,12 +109,25 @@ public class WorldScreenSample extends SamplePanel {
 		worldGeometry.setStyle(new ShapeStyle("#FF0000", 0.5f, "#FF0000", 1.0f, 2));
 		worldGeometry.setGeometry(mp);
 
+		final GfxGeometry worldGeometry2 = new GfxGeometry("MultiPointInWorldSpace");
+		SymbolInfo si = new SymbolInfo();
+		CircleInfo ci = new CircleInfo();
+		ci.setR(8.0f);
+		si.setCircle(ci);
+		Point pt1 = gf.createPoint(new Coordinate(6000000, -5000000));
+		Point pt2 = gf.createPoint(new Coordinate(8000000, -5000000));
+		Point pt3 = gf.createPoint(new Coordinate(7000000, -7000000));
+		worldGeometry2.setStyle(new ShapeStyle("#0000FF", 0.3f, "#0000FF", 1.0f, 2));
+		worldGeometry2.setGeometry(gf.createMultiPoint(new Point[] {pt1, pt2, pt3}));
+		worldGeometry2.setSymbolInfo(si);
+
 		button2.addClickHandler(new ClickHandler() {
 
-			// Draw an image in world space:
+			// Draw an image and some geometries in world space:
 			public void onClick(ClickEvent event) {
 				map.registerWorldPaintable(worldImage);
 				map.registerWorldPaintable(worldGeometry);
+				map.registerWorldPaintable(worldGeometry2);
 			}
 		});
 		buttonLayout.addMember(button2);
@@ -131,10 +150,11 @@ public class WorldScreenSample extends SamplePanel {
 		button4.setWidth("50%");
 		button4.addClickHandler(new ClickHandler() {
 
-			// Delete the image in world space:
+			// Delete the image and geometries in world space:
 			public void onClick(ClickEvent event) {
 				map.unregisterWorldPaintable(worldImage);
 				map.unregisterWorldPaintable(worldGeometry);
+				map.unregisterWorldPaintable(worldGeometry2);
 			}
 		});
 		buttonLayout2.addMember(button4);

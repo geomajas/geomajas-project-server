@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
+import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -18,15 +19,18 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 
 /**
  * <p>
- * A {@link Geometry} that can be drawn onto a {@link org.geomajas.gwt.client.gfx.GraphicsContext}. It therefore the
+ * A {@link Geometry} that can be drawn onto a
+ * {@link org.geomajas.gwt.client.gfx.GraphicsContext}. It therefore the
  * {@link org.geomajas.gwt.client.gfx.Paintable} interface.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 public class GfxGeometry extends AbstractWorldPaintable {
 
 	private ShapeStyle style;
+
+	private SymbolInfo symbolInfo;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -42,13 +46,27 @@ public class GfxGeometry extends AbstractWorldPaintable {
 		original = geometry;
 	}
 
+	/**
+	 * @param id
+	 * @param geometry
+	 * @param style
+	 * @param symbolInfo Is only needed for Point and MultiPoint Geometries.
+	 */
+	public GfxGeometry(String id, Geometry geometry, ShapeStyle style, SymbolInfo symbolInfo) {
+		super(id);
+		this.style = style;
+		this.symbolInfo = symbolInfo;
+		original = geometry;
+	}
+
 	// -------------------------------------------------------------------------
 	// Paintable implementation:
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Everything that can be drawn on the map, must be accessible by a PainterVisitor!
-	 * 
+	 * Everything that can be drawn on the map, must be accessible by a
+	 * PainterVisitor!
+	 *
 	 * @param visitor
 	 *            A PainterVisitor object.
 	 */
@@ -74,5 +92,17 @@ public class GfxGeometry extends AbstractWorldPaintable {
 
 	public void setGeometry(Geometry geometry) {
 		setOriginalLocation(geometry);
+	}
+
+	/**
+	 * Only needed for Point and MultiPoint Geometries.
+	 * @return
+	 */
+	public SymbolInfo getSymbolInfo() {
+		return symbolInfo;
+	}
+
+	public void setSymbolInfo(SymbolInfo symbolInfo) {
+		this.symbolInfo = symbolInfo;
 	}
 }
