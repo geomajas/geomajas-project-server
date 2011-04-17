@@ -25,11 +25,13 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.VectorLayerLazyFeatureConversionSupport;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
@@ -48,9 +50,11 @@ import com.vividsolutions.jts.geom.Geometry;
  * A simple Java beans based layer model.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0
  */
+@Api
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("IS2_INCONSISTENT_SYNC")
-public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
+public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, VectorLayerLazyFeatureConversionSupport {
 
 	private final Logger log = LoggerFactory.getLogger(BeanLayer.class);
 
@@ -81,10 +85,19 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	private String id;
 
+	private boolean useLazyFeatureConversion;
+
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the layer id.
+	 *
+	 * @param id layer id
+	 * @since 1.9.0
+	 */
+	@Api
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -103,6 +116,21 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	public boolean isDeleteCapable() {
 		return true;
+	}
+
+	public boolean useLazyFeatureConversion() {
+		return useLazyFeatureConversion;
+	}
+
+	/**
+	 * Configure whether lazy feature conversion should be enabled for this layer. Default is true.
+	 *
+	 * @param useLazyFeatureConversion use lazy feature conversion?
+	 * @since 1.9.0
+	 */
+	@Api
+	public void setUseLazyFeatureConversion(boolean useLazyFeatureConversion) {
+		this.useLazyFeatureConversion = useLazyFeatureConversion;
 	}
 
 	/**
