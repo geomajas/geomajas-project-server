@@ -24,6 +24,8 @@ import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.layer.RasterLayerService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,6 +44,8 @@ import java.util.List;
  */
 @Component
 public class RasterLayerServiceImpl implements RasterLayerService {
+
+	private final Logger log = LoggerFactory.getLogger(RasterLayerServiceImpl.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -65,6 +69,8 @@ public class RasterLayerServiceImpl implements RasterLayerService {
 
 	public List<RasterTile> getTiles(String layerId, CoordinateReferenceSystem crs, Envelope bounds, double scale)
 			throws GeomajasException {
+		log.debug("getTiles start on layer {}", layerId);
+		long ts = System.currentTimeMillis();
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		RasterLayer layer = getRasterLayer(layerId);
@@ -74,6 +80,7 @@ public class RasterLayerServiceImpl implements RasterLayerService {
 		context.put(PipelineCode.SCALE_KEY, scale);
 		List<RasterTile> response = new ArrayList<RasterTile>();
 		pipelineService.execute(PipelineCode.PIPELINE_GET_RASTER_TILES, layerId, context, response);
+		log.debug("getTiles done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 		return response;
 	}
 }

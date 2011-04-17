@@ -69,16 +69,24 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		if (null == context) {
 			context = createContext();
 		}
-		log.debug("executing pipeline {}", pipeline.getPipelineName());
+		long ps = System.currentTimeMillis();
+		log.debug("execute pipeline {}", pipeline.getPipelineName());
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
 				log.debug("context finished, pipeline {} execution done.", pipeline.getPipelineName());
 				break;
 			}
-			log.debug("executing step {} for pipeline {}.", step.getId(), pipeline.getPipelineName());
+			log.debug("execute step {} for pipeline {}.", step.getId(), pipeline.getPipelineName());
+			long ts = System.currentTimeMillis();
 			step.execute(context, response);
+			if (log.isDebugEnabled()) {
+				log.debug("done step {}, time {}s", step.getId(), (System.currentTimeMillis() - ts) / 1000.0);
+			}
 		}
-		log.debug("");
+		if (log.isDebugEnabled()) {
+			log.debug("pipeline done, {}, time {}s", pipeline.getPipelineName(),
+					(System.currentTimeMillis() - ps) / 1000.0);
+		}
 	}
 
 	/** @inheritDoc */

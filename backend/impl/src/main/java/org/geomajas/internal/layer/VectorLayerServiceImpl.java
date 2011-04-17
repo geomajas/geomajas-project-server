@@ -92,6 +92,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	@SuppressWarnings("unchecked")
 	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
 			List<InternalFeature> newFeatures) throws GeomajasException {
+		log.debug("saveOrUpdate start on layer {}", layerId);
+		long ts = System.currentTimeMillis();
 		VectorLayer layer = getVectorLayer(layerId);
 		CrsTransform mapToLayer = geoService.getCrsTransform(crs, layer.getCrs());
 		PipelineContext context = pipelineService.createContext();
@@ -102,11 +104,14 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.NEW_FEATURES_KEY, newFeatures);
 		context.put(PipelineCode.CRS_KEY, crs);
 		pipelineService.execute(PipelineCode.PIPELINE_SAVE_OR_UPDATE, layerId, context, null);
+		log.debug("saveOrUpdate done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
 			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize) throws GeomajasException {
+		log.debug("getFeatures start on layer {}", layerId);
+		long ts = System.currentTimeMillis();
 		VectorLayer layer = getVectorLayer(layerId);
 		CrsTransform transformation = null;
 		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0 && crs != null && !crs.equals(layer.getCrs())) {
@@ -124,6 +129,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.OFFSET_KEY, offset);
 		context.put(PipelineCode.MAX_RESULT_SIZE_KEY, maxResultSize);
 		pipelineService.execute(PipelineCode.PIPELINE_GET_FEATURES, layerId, context, container);
+		log.debug("getFeatures done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 		return container.getFeatures();
 	}
 
@@ -135,6 +141,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	@SuppressWarnings("unchecked")
 	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter queryFilter)
 			throws GeomajasException {
+		log.debug("getBounds start on layer {}", layerId);
+		long ts = System.currentTimeMillis();
 		VectorLayer layer = getVectorLayer(layerId);
 		GetBoundsContainer container = new GetBoundsContainer();
 		PipelineContext context = pipelineService.createContext();
@@ -144,14 +152,16 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.CRS_TRANSFORM_KEY, geoService.getCrsTransform(layer.getCrs(), crs));
 		context.put(PipelineCode.FILTER_KEY, queryFilter);
 		pipelineService.execute(PipelineCode.PIPELINE_GET_BOUNDS, layerId, context, container);
+		log.debug("getBounds done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 		return container.getEnvelope();
 	}
 
 	@SuppressWarnings("unchecked")
 	public InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException {
+		log.debug("getTile start tileMetadata {}", tileMetadata);
+		long ts = System.currentTimeMillis();
 		String layerId = tileMetadata.getLayerId();
 		VectorLayer layer = getVectorLayer(layerId);
-		log.debug("getTile request TileMetadata {}", tileMetadata);
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
@@ -169,12 +179,15 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		response.setTile(tile);
 		pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
 		log.debug("getTile response InternalTile {}", response);
+		log.debug("getTile done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 		return response.getTile();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Attribute<?>> getAttributes(String layerId, String attributeName, Filter filter)
 			throws GeomajasException {
+		log.debug("saveOrUpdate start on layer {}", layerId);
+		long ts = System.currentTimeMillis();
 		VectorLayer layer = getVectorLayer(layerId);
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
@@ -183,6 +196,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.ATTRIBUTE_NAME_KEY, attributeName);
 		GetAttributesContainer container = new GetAttributesContainer();
 		pipelineService.execute(PipelineCode.PIPELINE_GET_ATTRIBUTES, layerId, context, container);
+		log.debug("saveOrUpdate done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 		return container.getAttributes();
 	}
 }
