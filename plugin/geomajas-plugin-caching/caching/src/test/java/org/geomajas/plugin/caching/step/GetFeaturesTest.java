@@ -14,6 +14,7 @@ package org.geomajas.plugin.caching.step;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
@@ -116,6 +117,30 @@ public class GetFeaturesTest {
 		Assert.assertEquals(4, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
 				"Put item in cache"));
+	}
+
+	@Test
+	@DirtiesContext
+	public void testFeaturesLazyConverted() throws Exception {
+		((BeanLayer)layerBeans).setUseLazyFeatureConversion(true);
+
+		List<InternalFeature> features;
+
+		// first run, this should put things in the cache
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
+				GeomajasConstant.FEATURE_INCLUDE_NONE);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(3, features.size());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE)); // no "Put item in cache"
+
+		// get features again, the result should be different because we changed the cached value
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
+				GeomajasConstant.FEATURE_INCLUDE_NONE);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(3, features.size());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE)); // no "Got item from cache"
 	}
 
 	@Test
