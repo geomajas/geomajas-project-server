@@ -379,7 +379,8 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		}
 
 		public void execute(PipelineContext context, T response) throws GeomajasException {
-			log.debug("executing beforeSteps for interceptor {}", interceptor.getId());
+			log.debug("execute beforeSteps for interceptor {}", interceptor.getId());
+			long its = System.currentTimeMillis();
 			ExecutionMode mode = interceptor.beforeSteps(context, response);
 			if (mode == null) {
 				mode = ExecutionMode.EXECUTE_ALL;
@@ -390,11 +391,16 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 					if (!context.isFinished()) {
 						for (PipelineStep<T> step : getSteps()) {
 							if (context.isFinished()) {
-								log.debug("context finished, interceptor {} execution done.", interceptor.getId());
+								log.debug("context finished, interceptor {} execution done", interceptor.getId());
 								break;
 							}
-							log.debug("executing step {} for interceptor {}.", step.getId(), interceptor.getId());
+							log.debug("execute step {} for interceptor {}", step.getId(), interceptor.getId());
+							long ts = System.currentTimeMillis();
 							step.execute(context, response);
+							if (log.isDebugEnabled()) {
+								log.debug("done step {}, time {}s", step.getId(),
+										(System.currentTimeMillis() - ts) / 1000.0);
+							}
 						}
 					}
 					break;
@@ -408,6 +414,10 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 					break;
 				default:
 					log.debug("skipping afterSteps for interceptor {}", interceptor.getId());
+			}
+			if (log.isDebugEnabled()) {
+				log.debug("beforeSteps done for {}, time {}s", interceptor.getId(),
+						(System.currentTimeMillis() - its) / 1000.0);
 			}
 		}
 	}
