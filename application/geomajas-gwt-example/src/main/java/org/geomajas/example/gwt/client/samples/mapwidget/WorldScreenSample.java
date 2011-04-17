@@ -16,9 +16,14 @@ import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
+import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
+import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -67,12 +72,12 @@ public class WorldScreenSample extends SamplePanel {
 		buttonLayout.setMembersMargin(10);
 		IButton button1 = new IButton(I18nProvider.getSampleMessages().screenWorldBTNScreen());
 		button1.setWidth("50%");
-		
+
 		final Image screenImage = new Image("imageInScreenSpace");
 		screenImage.setHref(Geomajas.getIsomorphicDir() + "geomajas/example/images/smile.png");
 		screenImage.setBounds(new Bbox(60, 60, 48, 48)); // Pixel coordinates
 		screenImage.setStyle(new PictureStyle(0.6));
-		
+
 		button1.addClickHandler(new ClickHandler() {
 
 			// Draw an image in screen space:
@@ -84,17 +89,26 @@ public class WorldScreenSample extends SamplePanel {
 
 		IButton button2 = new IButton(I18nProvider.getSampleMessages().screenWorldBTNWorld());
 		button2.setWidth("50%");
-		
+
 		final Image worldImage = new Image("imageInWorldSpace");
 		worldImage.setHref(Geomajas.getIsomorphicDir() + "geomajas/example/images/smile.png");
 		worldImage.setBounds(new Bbox(-2000000, -2000000, 4000000, 4000000)); // Mercator coordinates
 		worldImage.setStyle(new PictureStyle(0.8));
-		
+
+		final GfxGeometry worldGeometry = new GfxGeometry("geometryInWorldSpace");
+		final GeometryFactory gf = new GeometryFactory(map.getMapModel().getSrid(), map.getMapModel().getPrecision());
+		Polygon p1 = gf.createPolygon(gf.createLinearRing(new Bbox(10000000d, 1000d, 1000000d, 1000000d)), null);
+		Polygon p2 = gf.createPolygon(gf.createLinearRing(new Bbox(12000000d, 1000d, 500000d, 500000d)), null);
+		MultiPolygon mp = gf.createMultiPolygon(new Polygon[] {p1, p2});
+		worldGeometry.setStyle(new ShapeStyle("#FF0000", 0.5f, "#FF0000", 1.0f, 2));
+		worldGeometry.setGeometry(mp);
+
 		button2.addClickHandler(new ClickHandler() {
 
 			// Draw an image in world space:
 			public void onClick(ClickEvent event) {
 				map.registerWorldPaintable(worldImage);
+				map.registerWorldPaintable(worldGeometry);
 			}
 		});
 		buttonLayout.addMember(button2);
@@ -120,10 +134,11 @@ public class WorldScreenSample extends SamplePanel {
 			// Delete the image in world space:
 			public void onClick(ClickEvent event) {
 				map.unregisterWorldPaintable(worldImage);
+				map.unregisterWorldPaintable(worldGeometry);
 			}
 		});
 		buttonLayout2.addMember(button4);
-		
+
 		// Place both in the layout:
 		layout.addMember(mapLayout);
 		layout.addMember(buttonLayout);
@@ -141,8 +156,7 @@ public class WorldScreenSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/mapOsm.xml" };
+		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

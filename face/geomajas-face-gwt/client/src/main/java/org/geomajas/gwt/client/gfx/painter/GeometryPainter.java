@@ -12,6 +12,7 @@
 package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
@@ -63,14 +64,20 @@ public class GeometryPainter implements Painter {
 				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) geometry, shapeStyle);
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) m.getGeometryN(0),
-						shapeStyle);
+				String gfxId = gfxGeometry.getId();
+				GraphicsContext gc = context.getVectorContext();
+				for (int i = 0; i < m.getNumGeometries(); i++) {
+					gc.drawLine(group, gfxId + "_" + i, (LineString) m.getGeometryN(i), shapeStyle);
+				}
 			} else if (geometry instanceof Polygon) {
 				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry, shapeStyle);
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) m.getGeometryN(0),
-						shapeStyle);
+				String gfxId = gfxGeometry.getId();
+				GraphicsContext gc = context.getVectorContext();
+				for (int i = 0; i < m.getNumGeometries(); i++) {
+					gc.drawPolygon(group, gfxId + "_" + i, (Polygon) m.getGeometryN(i), shapeStyle);
+				}
 			} else if (geometry instanceof Point) {
 				context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(),
 						shapeStyle, null);
@@ -96,6 +103,15 @@ public class GeometryPainter implements Painter {
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		GfxGeometry gfxGeometry = (GfxGeometry) paintable;
-		context.getVectorContext().deleteElement(group, gfxGeometry.getId());
+		Geometry geom = gfxGeometry.getGeometry();
+		if (geom instanceof MultiPolygon || geom instanceof MultiLineString) {
+			GraphicsContext gc = context.getVectorContext();
+			String gfxId = gfxGeometry.getId();
+			for (int i = 0; i < geom.getNumGeometries(); i++) {
+				gc.deleteElement(group, gfxId + "_" + i);
+			}
+		} else {
+			context.getVectorContext().deleteElement(group, gfxGeometry.getId());
+		}
 	}
 }
