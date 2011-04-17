@@ -33,6 +33,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.VectorLayerLazyFeatureConversionSupport;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
@@ -69,7 +70,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Api
 @Transactional(rollbackFor = { Exception.class })
-public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, VectorLayerAssociationSupport {
+public class HibernateLayer extends HibernateLayerUtil
+		implements VectorLayer, VectorLayerAssociationSupport, VectorLayerLazyFeatureConversionSupport {
 
 	private final Logger log = LoggerFactory.getLogger(HibernateLayer.class);
 
@@ -104,10 +106,19 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	private String id;
 
+	private boolean useLazyFeatureConversion = true;
+
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the layer id.
+	 *
+	 * @param id layer id
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -118,6 +129,21 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	public FeatureModel getFeatureModel() {
 		return this.featureModel;
+	}
+
+	public boolean useLazyFeatureConversion() {
+		return useLazyFeatureConversion;
+	}
+
+	/**
+	 * Configure whether lazy feature conversion should be enabled for this layer. Default is true.
+	 *
+	 * @param useLazyFeatureConversion use lazy feature conversion?
+	 * @since 1.8.0
+	 */
+	@Api
+	public void setUseLazyFeatureConversion(boolean useLazyFeatureConversion) {
+		this.useLazyFeatureConversion = useLazyFeatureConversion;
 	}
 
 	/**
@@ -163,8 +189,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	/**
 	 * Set the featureModel.
 	 *
-	 * @param featureModel
-	 * @throws LayerException
+	 * @param featureModel feature model
+	 * @throws LayerException problem setting the feature model
 	 * @since 1.8.0
 	 */
 	@Api
@@ -191,9 +217,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	/**
 	 * This implementation does not support the 'offset' parameter. The
 	 * maxResultSize parameter is not used (limiting the result needs to be done after security
-	 * {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep
-	 * GetFeaturesEachStep}). If you expect large results to be returned enable
-	 * scrollableResultSet to retrieve only as many records as needed.
+	 * {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep}). If you expect large results to be
+	 * returned enable scrollableResultSet to retrieve only as many records as needed.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		try {
@@ -408,6 +433,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	 * Enforces the correct srid on incoming features.
 	 *
 	 * @param feature object to enforce srid on
+	 * @throws LayerException problem getting or setting srid
 	 */
 	private void enforceSrid(Object feature) throws LayerException {
 		Geometry geom = getFeatureModel().getGeometry(feature);
@@ -450,20 +476,6 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 			throw new HibernateLayerException(he, ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
 					.getDataSourceName(), filter.toString());
 		}
-	}
-
-	private String getObjectName(String attributeName) {
-		for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
-			if (attribute.getName().equals(attributeName)) {
-				if (attribute instanceof AssociationAttributeInfo) {
-					AssociationAttributeInfo association = (AssociationAttributeInfo) attribute;
-					return association.getName();
-				} else {
-					return null;
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
