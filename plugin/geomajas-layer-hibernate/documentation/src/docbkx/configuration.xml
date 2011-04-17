@@ -426,6 +426,13 @@ public class AreaOfInterest {
             efficient when queries return many records but needs to be
             supported by your database driver.</para>
           </listitem>
+
+          <listitem>
+            <para><emphasis>useLazyFeatureConversion</emphasis>: indicates
+            whether lazy feature conversion should be used. This is set to
+            true by default. You should only set this to false if none of
+            attributes in the feature are lazy loaded.</para>
+          </listitem>
         </itemizedlist>
       </section>
     </section>
