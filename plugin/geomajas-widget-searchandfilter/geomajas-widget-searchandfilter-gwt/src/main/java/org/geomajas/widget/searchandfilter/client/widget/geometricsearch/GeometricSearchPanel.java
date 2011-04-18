@@ -39,13 +39,12 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateHandler {
 
-	public static final String IDENTIFIER = "GeometricSearch";
-
 	private final ShapeStyle selectionStyle;
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 	private final List<GeometricSearchMethod> searchMethods = new ArrayList<GeometricSearchMethod>();
-	private TabSet tabs;
 	private final List<Geometry> geometries = new ArrayList<Geometry>();
+
+	private TabSet tabs;
 	private Geometry searchGeom;
 	private GfxGeometry worldpaintable;
 
@@ -61,7 +60,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 		selectionStyle.setStrokeOpacity(0.9f);
 		selectionStyle.setStrokeWidth(2f);
 
-//		this.shapeStyleBuffer.setDashArray("2,1");
+//		this.shapeStyleBuffer.setDashArray("2,1"); // not supported
 
 		// inner unbuffered geom
 //		this.shapeStyleCenter = this.mapWidget.getPolygonSelectStyle().clone();
@@ -73,7 +72,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 
 		this.mapWidget = mapWidget;
 		this.setTitle(messages.geometricSearchWidgetTitle());
-		VLayout layout = new VLayout(5);
+		VLayout layout = new VLayout(0);
 		layout.setWidth(300);
 		layout.setHeight(250);
 		tabs = new TabSet();
@@ -82,7 +81,6 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 		layout.addMember(tabs);
 
 		addChild(layout);
-		setMargin(5);
 	}
 
 	public void addSearchMethod(GeometricSearchMethod searchMethod) {
@@ -137,16 +135,18 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 	}
 
 	@Override
+	public void hide() {
+		super.hide();
+		// make sure everything is cleaned up from the map
+		reset();
+	}
+
+	@Override
 	public void initialize(Criterion featureSearch) {
 		// can't do that because we don't know which method created the
 		// geometry. Even more, it might be a merged geometry from several
 		// methods.
 		GWT.log("You cannot reinitialize the Geometric searchpanel!");
-	}
-
-	@Override
-	public String getName() {
-		return messages.geometricSearchWidgetTitle();
 	}
 
 	// ----------------------------------------------------------
@@ -179,7 +179,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 
 	private void updateGeomOnMap() {
 		if (worldpaintable == null) {
-			worldpaintable = new GfxGeometry(IDENTIFIER + "_SELECTION_GEOMETRY");
+			worldpaintable = new GfxGeometry(GeometricSearchCreator.IDENTIFIER + "_SELECTION_GEOMETRY");
 			worldpaintable.setStyle(selectionStyle);
 		} else {
 			mapWidget.unregisterWorldPaintable(worldpaintable);

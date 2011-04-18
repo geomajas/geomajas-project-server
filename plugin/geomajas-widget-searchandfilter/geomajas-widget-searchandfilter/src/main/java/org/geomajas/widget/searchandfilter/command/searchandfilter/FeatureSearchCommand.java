@@ -72,11 +72,14 @@ public class FeatureSearchCommand implements Command<FeatureSearchRequest, Featu
 	private SecurityContext securityContext;
 
 	public void execute(final FeatureSearchRequest request, final FeatureSearchResponse response) throws Exception {
-		if (request.getCriterion() == null || !request.getCriterion().isValid()) {
+		if (request.getCriterion() == null) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "criterion");
 		}
 		if (null == request.getMapCrs()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapCrs");
+		}
+		if (!request.getCriterion().isValid()) {
+			throw new GeomajasException(ExceptionCode.UNEXPECTED_PROBLEM, "criterion is not valid");
 		}
 
 		String mapCrsCode = request.getMapCrs();

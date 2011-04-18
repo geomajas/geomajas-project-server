@@ -10,7 +10,6 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,16 +24,18 @@ import com.smartgwt.client.util.SC;
  * TODO explain architecture.
  * <p>
  * Caveat: Please keep in mind that searchwidgets always work on a specific map.
- * As there is only one SearchController, which also operates on a specific map
+ * As there is only one SearchController, which also operates on a specific map, so
  * the search system can only work with one map.
- *
+ * 
  * @author Kristof Heirwegh
  */
 public final class SearchWidgetRegistry {
 
-	private static final Map<String, SearchWidget> REGISTRY = new LinkedHashMap<String, SearchWidget>();
+	private static final Map<String, SearchWidgetCreator> REGISTRY = new LinkedHashMap<String, SearchWidgetCreator>();
 
 	private static SearchController SEARCHCONTROLLER;
+
+	private static MapWidget MAPWIDGET;
 
 	private SearchWidgetRegistry() {
 		// utility class, hide constructor
@@ -44,15 +45,20 @@ public final class SearchWidgetRegistry {
 
 	// ----------------------------------------------------------
 
+	public static void initialize(MapWidget mapWidget, SearchHandler searchResultGrid, boolean modalSearch) {
+		MAPWIDGET = mapWidget;
+		SEARCHCONTROLLER = new SearchController(mapWidget, modalSearch);
+		if (searchResultGrid != null) {
+			SEARCHCONTROLLER.addSearchHandler(searchResultGrid);
+		}
+	}
+
 	/**
 	 * @param searchResultGrid
 	 *            can be null, add your own handler to be notified then
 	 */
 	public static void initialize(MapWidget mapWidget, MultiFeatureListGrid searchResultGrid) {
-		SEARCHCONTROLLER = new SearchController(mapWidget);
-		if (searchResultGrid != null) {
-			SEARCHCONTROLLER.addSearchHandler(searchResultGrid);
-		}
+		initialize(mapWidget, searchResultGrid, true);
 	}
 
 	public static void addSearchHandler(SearchHandler handler) {
@@ -67,36 +73,30 @@ public final class SearchWidgetRegistry {
 		}
 	}
 
-	public static void put(SearchWidget widget) {
+	public static void put(SearchWidgetCreator widgetCreator) {
 		if (checkState()) {
-			if (null != widget) {
-				REGISTRY.put(widget.getSearchWidgetId(), widget);
-				widget.addSearchRequestHandler(SEARCHCONTROLLER);
+			if (null != widgetCreator) {
+				REGISTRY.put(widgetCreator.getSearchWidgetId(), widgetCreator);
 			}
 		}
+	}
+
+	public static SearchWidget getSearchWidgetInstance(String searchWidgetId) {
+		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(MAPWIDGET);
+		sw.addSearchRequestHandler(SEARCHCONTROLLER);
+		return sw;
 	}
 
 	/**
-	 * Will be wrapped in a BasicSearchWidget.
-	 * 
-	 * @param panel
+	 * Get a list with all the ids + names of the searchwidgets in the repo.
+	 * @return
 	 */
-	public static void put(SearchPanel panel, String widgetId) {
-		if (checkState()) {
-			if (null != panel) {
-				SearchWidget widget = new BasicSearchWidget(widgetId, panel);
-				REGISTRY.put(widgetId, widget);
-				widget.addSearchRequestHandler(SEARCHCONTROLLER);
-			}
+	public static LinkedHashMap<String, String> getSearchWidgetMapping() {
+		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+		for (SearchWidgetCreator swc : REGISTRY.values()) {
+			map.put(swc.getSearchWidgetId(), swc.getSearchWidgetName());
 		}
-	}
-
-	public static SearchWidget getSearchWidget(String searchWidgetId) {
-		return REGISTRY.get(searchWidgetId);
-	}
-
-	public static Collection<SearchWidget> getSearchWidgets() {
-		return REGISTRY.values();
+		return map;
 	}
 
 	public static boolean isInitialized() {

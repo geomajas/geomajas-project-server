@@ -15,12 +15,14 @@ import org.geomajas.geometry.Geometry;
 
 /**
  * Request for GeometryUtilsCommand.
- * 
+ *
  * @author Kristof Heirwegh
  */
 public class GeometryUtilsRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final String COMMAND = "command.searchandfilter.GeometryUtils";
 
 	public static final int ACTION_MERGE = 1;
 

@@ -12,8 +12,9 @@
 package org.geomajas.widget.searchandfilter.gwt.example.client.pages;
 
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchPanel;
-import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchCreator;
+import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchCreator;
+import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
 
 import com.smartgwt.client.widgets.IButton;
@@ -34,7 +35,7 @@ public class SearchPage extends AbstractTab {
 		btnAttSearch.setAutoFit(true);
 		btnAttSearch.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				SearchWidgetRegistry.getSearchWidget(AttributeSearchPanel.IDENTIFIER).showForSearch();
+				SearchWidgetRegistry.getSearchWidgetInstance(AttributeSearchCreator.IDENTIFIER).showForSearch();
 			}
 		});
 
@@ -42,7 +43,15 @@ public class SearchPage extends AbstractTab {
 		btnGeoSearch.setAutoFit(true);
 		btnGeoSearch.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				SearchWidgetRegistry.getSearchWidget(GeometricSearchPanel.IDENTIFIER).showForSearch();
+				SearchWidgetRegistry.getSearchWidgetInstance(GeometricSearchCreator.IDENTIFIER).showForSearch();
+			}
+		});
+
+		IButton btnComSearch = new IButton("Open Combined Search window");
+		btnComSearch.setAutoFit(true);
+		btnComSearch.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				SearchWidgetRegistry.getSearchWidgetInstance(CombinedSearchCreator.IDENTIFIER).showForSearch();
 			}
 		});
 
@@ -51,6 +60,7 @@ public class SearchPage extends AbstractTab {
 
 		mainLayout.addMember(btnAttSearch);
 		mainLayout.addMember(btnGeoSearch);
+		mainLayout.addMember(btnComSearch);
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public abstract class SearchPanel extends Canvas {
 	 * Called before getFeatureSearchCriterion().
 	 * <p>
 	 * Search will be cancelled if you return false.
-	 * 
+	 *
 	 * @return true if a criterion can be returned.
 	 */
 	public abstract boolean validate();
@@ -51,14 +51,9 @@ public abstract class SearchPanel extends Canvas {
 	public abstract void reset();
 
 	/**
-	 * @return Will be used for titles and labels.
-	 */
-	public abstract String getName();
-
-	/**
 	 * Called to restore the settings previously requested through
 	 * getSettings().
-	 * 
+	 *
 	 * @param settings
 	 */
 	public abstract void initialize(Criterion featureSearch);

@@ -70,7 +70,7 @@ public final class CommService {
 		request.setBuffer(buffer);
 		request.setGeometries(toDtoGeometries(geoms));
 
-		GwtCommand command = new GwtCommand("command.searchandfilter.GeometryUtils");
+		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 			public void execute(CommandResponse response) {
@@ -97,7 +97,7 @@ public final class CommService {
 		request.setActionFlags(GeometryUtilsRequest.ACTION_MERGE);
 		request.setGeometries(toDtoGeometries(geoms));
 
-		GwtCommand command = new GwtCommand("command.searchandfilter.GeometryUtils");
+		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 			public void execute(CommandResponse response) {
@@ -137,7 +137,7 @@ public final class CommService {
 		request.setGeometries(toDtoGeometries(geoms));
 		request.setBuffer(buffer);
 
-		GwtCommand command = new GwtCommand("command.searchandfilter.GeometryUtils");
+		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 			public void execute(CommandResponse response) {
@@ -187,7 +187,7 @@ public final class CommService {
 		request.setLayerFilters(getLayerFiltersForCriterion(criterion, mapWidget.getMapModel()));
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 
-		GwtCommand commandRequest = new GwtCommand("command.searchandfilter.FeatureSearch");
+		GwtCommand commandRequest = new GwtCommand(FeatureSearchRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 			public void execute(CommandResponse commandResponse) {

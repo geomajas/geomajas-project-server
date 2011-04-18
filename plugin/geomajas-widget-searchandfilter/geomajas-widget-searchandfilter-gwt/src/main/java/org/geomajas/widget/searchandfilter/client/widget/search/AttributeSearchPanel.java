@@ -30,8 +30,6 @@ import com.google.gwt.core.client.GWT;
  */
 public class AttributeSearchPanel extends SearchPanel {
 
-	public static final String IDENTIFIER = "AttributeSearch";
-
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private FeatureSearch featureSearch;
@@ -85,10 +83,5 @@ public class AttributeSearchPanel extends SearchPanel {
 				throw new IllegalArgumentException("Criterion must be of type AttributeCriterion.");
 			}
 		}
-	}
-
-	@Override
-	public String getName() {
-		return messages.attributeSearchWidgetTitle();
 	}
 }

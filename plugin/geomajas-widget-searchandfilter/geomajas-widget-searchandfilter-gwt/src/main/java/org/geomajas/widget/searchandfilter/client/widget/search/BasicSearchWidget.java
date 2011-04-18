@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -56,6 +58,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	private HLayout saveButtonBar;
 	private SearchPanel searchPanel;
 	private String widgetId;
+	private String name;
 
 	private boolean hideAfterSearch;
 
@@ -68,14 +71,15 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	 * @param searchPanel
 	 *            your specific implementation of a search
 	 */
-	public BasicSearchWidget(String widgetId, final SearchPanel searchPanel) {
+	public BasicSearchWidget(String widgetId, String name, final SearchPanel searchPanel) {
 		if (widgetId == null || searchPanel == null) {
 			throw new IllegalArgumentException("All parameters are required");
 		}
 
 		this.searchPanel = searchPanel;
 		this.widgetId = widgetId;
-		this.setTitle(searchPanel.getName());
+		this.name = name;
+		this.setTitle(name);
 		this.setAutoCenter(true);
 
 		VLayout layout = new VLayout(10);
@@ -123,7 +127,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 				searchPanel.reset();
 			}
 		});
-		saveBtn = new IButton(messages.searchWidgetReset());
+		saveBtn = new IButton(messages.searchWidgetSave());
 		saveBtn.setIcon(BTN_SAVE_IMG);
 		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
@@ -132,14 +136,14 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 				onSave();
 			}
 		});
-		cancelBtn = new IButton(messages.searchWidgetReset());
+		cancelBtn = new IButton(messages.searchWidgetCancel());
 		cancelBtn.setIcon(BTN_CANCEL_IMG);
 		cancelBtn.setAutoFit(true);
 		cancelBtn.setShowDisabledIcon(false);
 		cancelBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				// just hide, no handlers called
 				hide();
+				destroy();
 			}
 		});
 
@@ -175,12 +179,8 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		return widgetId;
 	}
 
-	public void setSearchWidgetId(String widgetId) {
-		this.widgetId = widgetId;
-	}
-
 	public String getName() {
-		return searchPanel.getName();
+		return name;
 	}
 
 	public boolean isHideAfterSearch() {
@@ -189,7 +189,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 
 	/**
 	 * Should the widget be hidden after a search or stay open for a new search?
-	 * 
+	 *
 	 * @param hideAfterSearch
 	 */
 	public void setHideAfterSearch(boolean hideAfterSearch) {
@@ -203,7 +203,10 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		bringToFront();
 	}
 
-	public void showForSave() {
+	public void showForSave(final SaveRequestHandler handler) {
+		if (handler != null) {
+			addSaveRequestHandler(new OneOffSaveRequestHandler(handler));
+		}
 		saveButtonBar.setVisible(true);
 		searchButtonBar.setVisible(false);
 		show();
@@ -216,6 +219,11 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 
 	public void reset() {
 		searchPanel.reset();
+	}
+
+	public void hide() {
+		searchPanel.hide();
+		super.hide();
 	}
 
 	public void onSearchStart() {
@@ -250,25 +258,53 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 
 	private void onSearch() {
 		if (searchPanel.validate()) {
+			Criterion critter = searchPanel.getFeatureSearchCriterion();
+			SearchRequestEvent sre = new SearchRequestEvent(this, critter);
+			for (SearchRequestHandler h : searchHandlers) {
+				h.onSearchRequested(sre);
+			}
 			if (hideAfterSearch) {
 				hide();
-			}
-			for (SearchRequestHandler h : searchHandlers) {
-				h.onSearchRequested(new SearchRequestEvent(this, searchPanel.getFeatureSearchCriterion()));
+				destroy();
 			}
 		}
 	}
 
 	private void onSave() {
 		if (searchPanel.validate()) {
-			hide();
-			for (SearchRequestHandler h : searchHandlers) {
-				h.onSearchRequested(new SearchRequestEvent(this, searchPanel.getFeatureSearchCriterion()));
+			Criterion critter = searchPanel.getFeatureSearchCriterion();
+			for (SaveRequestHandler h : saveHandlers) {
+				h.onSaveRequested(new SaveRequestEvent(this, critter));
 			}
+			hide();
+			destroy();
 		}
 	}
 
 	private void onAddToFavourites() {
 		// TODO
 	}
+
+	// ----------------------------------------------------------
+
+	/**
+	 * @author Kristof Heirwegh
+	 */
+	private class OneOffSaveRequestHandler implements SaveRequestHandler {
+		private final SaveRequestHandler oneOffHandler; 
+		public OneOffSaveRequestHandler(SaveRequestHandler handler) {
+			this.oneOffHandler = handler;
+		}
+		public void onSaveRequested(SaveRequestEvent event) {
+			oneOffHandler.onSaveRequested(event);
+			GWT.runAsync(new RunAsyncCallback() {
+				public void onSuccess() {
+					removeSaveRequestHandler(oneOffHandler);
+				}
+				public void onFailure(Throwable reason) {
+				}
+			});
+		}
+	}
+
 }

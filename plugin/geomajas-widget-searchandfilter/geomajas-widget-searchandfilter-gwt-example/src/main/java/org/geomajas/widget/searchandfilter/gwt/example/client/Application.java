@@ -22,12 +22,14 @@ import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
-import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.FreeDrawingSearch;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchPanelCreator;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.SelectionSearch;
 import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
-import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchCreator;
+import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchHandler;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
@@ -38,12 +40,10 @@ import org.geomajas.widget.searchandfilter.gwt.example.client.pages.SearchPage;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
@@ -57,7 +57,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * 
  * @author geomajas-gwt-archetype
  */
-public class Application implements EntryPoint, DataCallback<Boolean> {
+public class Application implements EntryPoint {
 
 	private OverviewMap overviewMap;
 
@@ -208,38 +208,21 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		// ---------------------------------------------------------------------
 		// Create Searchpanels
 		// ---------------------------------------------------------------------
-		AttributeSearchPanel asp = new AttributeSearchPanel(mapWidget);
-		GeometricSearchPanel gsp = new GeometricSearchPanel(mapWidget);
-		gsp.addSearchMethod(new SelectionSearch());
-		gsp.addSearchMethod(new FreeDrawingSearch());
-
 		SearchWidgetRegistry.initialize(mapWidget, featureListGrid);
-		SearchWidgetRegistry.put(asp, AttributeSearchPanel.IDENTIFIER);
-		SearchWidgetRegistry.put(gsp, GeometricSearchPanel.IDENTIFIER);
+		SearchWidgetRegistry.put(new AttributeSearchCreator());
+		SearchWidgetRegistry.put(new CombinedSearchCreator());
+		SearchWidgetRegistry.put(new GeometricSearchCreator(new GeometricSearchPanelCreator() {
+			public GeometricSearchPanel createInstance(MapWidget mapWidget) {
+				GeometricSearchPanel gsp = new GeometricSearchPanel(mapWidget);
+				gsp.addSearchMethod(new SelectionSearch());
+				gsp.addSearchMethod(new FreeDrawingSearch());
+				return gsp;
+			}
+		}));
 
-		// -- add some fancy visualisation of search-state
+		// -- Show the grid after new result has been retrieved
 		SearchWidgetRegistry.addSearchHandler(new SearchHandler() {
-			private Window waitWin;
 			public void onSearchStart(SearchEvent event) {
-				if (waitWin == null) {
-					HLayout layout = new HLayout();
-					layout.setAutoWidth();
-					layout.addMember(new Img("[ISOMORPHIC]/geomajas/ajax-loader.gif", 18, 18));
-					layout.addMember(new Label("Retrieving features, please wait."));
-					waitWin = new Window();
-					waitWin.setTitle("Searching features");
-					waitWin.setAlign(Alignment.CENTER);
-					waitWin.setPadding(20);
-					waitWin.setHeight(100);
-					waitWin.setWidth(300);
-					waitWin.addItem(layout);
-					waitWin.setAutoCenter(true);
-					waitWin.setShowMinimizeButton(false);
-					waitWin.setShowCloseButton(false);
-					waitWin.setIsModal(true);
-					waitWin.setShowModalMask(true);
-				}
-				waitWin.show();
 			}
 			public void onSearchDone(SearchEvent event) {
 				// handled by featureListGrid, no need for us to do something
@@ -248,22 +231,11 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 				if (!(featureListGrid.isShowDetailsOnSingleResult() && event.isSingleResult())) {
 					tabSet.selectTab(1);
 				}
-				if (waitWin != null) {
-					waitWin.hide();
-				}
 			}
 		});
 
 		for (AbstractTab tab : tabs) {
 			tab.initialize();
 		}
-	}
-
-	/**
-	 * Executed when search is done (show the datagrid).
-	 */
-	// TODO remove
-	public void execute(Boolean result) {
-		tabSet.selectTab(1);
 	}
 }

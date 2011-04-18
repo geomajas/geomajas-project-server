@@ -26,6 +26,8 @@ public class FeatureSearchRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String COMMAND = "command.searchandfilter.FeatureSearch";
+
 	public static final int MAX_UNLIMITED = 0;
 
 	private int featureIncludes = GeomajasConstant.FEATURE_INCLUDE_ALL;

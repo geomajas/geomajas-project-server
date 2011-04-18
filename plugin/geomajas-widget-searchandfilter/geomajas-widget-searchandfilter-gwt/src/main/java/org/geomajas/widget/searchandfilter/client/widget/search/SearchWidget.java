@@ -14,7 +14,7 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 /**
  * Interface with common methods needed to build a SearchWidget.
- * 
+ *
  * @see SearchWidgetRegistry.
  * @author Kristof Heirwegh
  */
@@ -24,7 +24,7 @@ public interface SearchWidget {
 
 	/**
 	 * Name of the searchwidget (generally I18N name).
-	 * 
+	 *
 	 * @return name of search (to be used on buttons and such).
 	 */
 	String getName();
@@ -36,8 +36,9 @@ public interface SearchWidget {
 
 	/**
 	 * Show your widget for userinteraction, with a savebutton.
+	 * @param handler A one-off callback to use when the user presses Save.
 	 */
-	void showForSave();
+	void showForSave(SaveRequestHandler handler);
 
 	void addSearchRequestHandler(SearchRequestHandler handler);
 
