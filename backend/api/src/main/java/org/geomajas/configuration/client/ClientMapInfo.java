@@ -78,6 +78,8 @@ public class ClientMapInfo implements Serializable {
 	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	private ClientUserDataInfo userData;
+	
+	private ClientPreferredPixelsPerTile preferredPixelsPerTile = new ClientPreferredPixelsPerTile();
 
 	/**
 	 * Get the id of this map. This id is unique within the application.
@@ -556,6 +558,27 @@ public class ClientMapInfo implements Serializable {
 	 */
 	public void setUserData(ClientUserDataInfo userData) {
 		this.userData = userData;
+	}
+
+	/**
+	 * Set the preferred pixels per tile size you wish the client will fetch from the server. This allows some tweaks
+	 * for performance. The default is closest to 256x256 pixels. 
+	 * 
+	 * @param preferredPixelsPerTile the preferredPixelsPerTile to set
+	 * @since 1.9.0
+	 */
+	@Api
+	public void setPreferredPixelsPerTile(ClientPreferredPixelsPerTile preferredPixelsPerTile) {
+		this.preferredPixelsPerTile = preferredPixelsPerTile;
+	}
+
+	/**
+	 * @return the preferredPixelsPerTile
+	 * @since 1.9.0
+	 */
+	@Api
+	public ClientPreferredPixelsPerTile getPreferredPixelsPerTile() {
+		return preferredPixelsPerTile;
 	}
 
 }
