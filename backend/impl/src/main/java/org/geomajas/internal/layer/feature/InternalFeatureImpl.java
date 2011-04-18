@@ -85,6 +85,14 @@ public class InternalFeatureImpl implements InternalFeature {
 	 * Create a clone.
 	 */
 	public InternalFeature clone() {
+		InternalFeatureImpl f = (InternalFeatureImpl) cloneWithoutGeometry();
+		if (null != geometry) {
+			f.setGeometry((Geometry) geometry.clone());
+		}
+		return f;
+	}
+
+	public InternalFeature cloneWithoutGeometry() {
 		InternalFeatureImpl f = new InternalFeatureImpl();
 		if (null != attributes) {
 			if (attributes instanceof LazyAttributeMap) {
@@ -92,9 +100,6 @@ public class InternalFeatureImpl implements InternalFeature {
 			} else {
 				f.setAttributes(new HashMap<String, Attribute>(attributes));
 			}
-		}
-		if (null != geometry) {
-			f.setGeometry((Geometry) geometry.clone());
 		}
 		f.setId(id);
 		f.setLayer(layer);

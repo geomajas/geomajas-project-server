@@ -196,4 +196,12 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	 * @return deep cloned object (attributes and geometry are deep cloned).
 	 */
 	InternalFeature clone();
+
+	/**
+	 * Create a deep clone of this internal feature but without cloning the geometry (stays null).
+	 *
+	 * @return deep cloned object (attributes are deep cloned).
+	 * @since 1.9.0
+	 */
+	InternalFeature cloneWithoutGeometry();
 }

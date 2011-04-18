@@ -53,7 +53,7 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 		List<InternalFeature> features = new ArrayList<InternalFeature>();
 		for (InternalFeature feature : response.getTile().getFeatures()) {
 			if (null != feature.getGeometry()) {
-				InternalFeature newFeature = feature.clone();
+				InternalFeature newFeature = feature.cloneWithoutGeometry();
 				newFeature.setGeometry(geoService.transform(feature.getGeometry(), transform));
 				features.add(newFeature);
 			}

@@ -95,8 +95,10 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 			int count = 0;
 			while (it.hasNext()) {
+				log.debug("process feature");
 				Object featureObj = it.next();
 				Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
+				log.debug("going to convert feature");
 				InternalFeature feature = convertFeature(featureObj, geometry, layerId, layer, transformation,
 						styleFilters, style.getLabelStyle(), featureIncludes);
 				log.debug("checking feature");
