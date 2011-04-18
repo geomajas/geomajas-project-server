@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.client.ClientPreferredPixelsPerTile;
 import org.geomajas.gwt.client.map.MapViewState;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
@@ -44,7 +45,7 @@ public class TileCache implements SpatialCache {
 	protected Map<String, VectorTile> tiles;
 
 	protected Map<String, Feature> features;
-
+	
 	private int currentTileLevel;
 
 	private int currentMinX;
@@ -58,6 +59,8 @@ public class TileCache implements SpatialCache {
 	private List<VectorTile> evictedTiles;
 
 	private MapViewState lastViewState;
+
+	private int preferredTileSize;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -77,6 +80,11 @@ public class TileCache implements SpatialCache {
 		tiles = new HashMap<String, VectorTile>();
 		features = new HashMap<String, Feature>();
 		evictedTiles = new ArrayList<VectorTile>();
+		if (null != layer.getMapModel().getMapInfo()) {
+			setPreferredPixelsPerTile(layer.getMapModel().getMapInfo().getPreferredPixelsPerTile());
+		} else {
+			setPreferredPixelsPerTile(new ClientPreferredPixelsPerTile());
+		}
 		currentMinX = 0;
 		currentMinY = 0;
 		currentMaxX = 0;
@@ -275,11 +283,11 @@ public class TileCache implements SpatialCache {
 	protected int calculateTileLevel(Bbox bounds) {
 		double baseX = layerBounds.getWidth();
 		double baseY = layerBounds.getHeight();
-		// choose the tile level so the area is between 256*256 and 512*512 pixels
+		// choose the tile level so the area is between minimumTileSize and the next level (minimumTileSize * 4)
 		double baseArea = baseX * baseY;
 		double scale = layer.getMapModel().getMapView().getCurrentScale();
-		double osmArea = 256 * 256 / (scale * scale);
-		int tileLevel = (int) Math.floor(Math.log(baseArea / osmArea) / Math.log(4.0));
+		double osmArea = preferredTileSize / (scale * scale);
+		int tileLevel = (int) Math.round(Math.log(baseArea / osmArea) / Math.log(4.0));
 		if (tileLevel < 0) {
 			tileLevel = 0;
 		}
@@ -347,5 +355,22 @@ public class TileCache implements SpatialCache {
 			}
 		}
 		return codes;
+	}
+
+	/**
+	 * Set the preferred tile size in pixels.
+	 * @param width the preferred tile width
+	 * @param height the preferred tile height
+	 */
+	protected void setPreferredPixelsPerTile(ClientPreferredPixelsPerTile ppt) {
+		switch (ppt.getPreferredPixelsPerTileType()) {
+			case CONFIGURED:
+				preferredTileSize = layer.getMapModel().getMapView().getWidth() * 
+					layer.getMapModel().getMapView().getHeight();
+				break;
+			case MAP:
+				preferredTileSize = ppt.getWidth() * ppt.getHeight();
+				break;
+		}
 	}
 }

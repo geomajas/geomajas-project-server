@@ -89,7 +89,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	private boolean initialized;
 
 	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
-
+	
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------

@@ -62,7 +62,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	private Composite selectionGroup = new Composite("selection");
 
 	private Composite labelGroup = new Composite("labels");
-
+	
 	/** selected features id -> feature map */
 	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
 
@@ -231,4 +231,5 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public PaintableGroup getLabelGroup() {
 		return labelGroup;
 	}
+	
 }
