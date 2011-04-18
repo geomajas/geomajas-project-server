@@ -22,8 +22,11 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.Callback;
+import org.geomajas.widget.searchandfilter.client.util.CommService;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvRequest;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvResponse;
+import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchRequest;
+import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
@@ -33,7 +36,7 @@ import com.smartgwt.client.widgets.Window;
 
 /**
  * Export the results of a search to CSV, supported searches are
- * SearchFeatureRequest and SearchByLocationRequest.
+ * SearchFeatureRequest, SearchByLocationRequest and Criterion.
  * 
  * @author Kristof Heirwegh
  */
@@ -52,12 +55,25 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	 *            the search to use to retrieve features.
 	 */
 	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, CommandRequest searchRequest) {
+		this(model, layer);
+		setRequest(searchRequest);
+	}
+
+	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, Criterion criterion) {
+		this(model, layer);
+		FeatureSearchRequest req = new FeatureSearchRequest();
+		req.setCriterion(criterion);
+		req.setMapCrs(model.getCrs());
+		req.setLayerFilters(CommService.getLayerFiltersForCriterion(criterion, model));
+		this.request = req;
+	}
+
+	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer) {
 		if (model == null || layer == null) {
 			throw new IllegalArgumentException("All parameters are required.");
 		}
 		this.layer = layer;
 		this.model = model;
-		setRequest(searchRequest);
 	}
 
 	public void execute(VectorLayer vlayer) {
@@ -69,6 +85,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 			ExportToCsvRequest exportRequest = new ExportToCsvRequest();
 			exportRequest.setSearchFeatureRequest(getSearchFeatureRequest());
 			exportRequest.setSearchByLocationRequest(getSearchByLocationRequest(vlayer));
+			exportRequest.setSearchByCriterionRequest(getSearchCriterionRequest());
 			exportRequest.setEncoding(messages.exportToCsvEncoding());
 			exportRequest.setLocale(messages.exportToCsvLocale());
 			exportRequest.setSeparatorChar(messages.exportToCsvSeparatorChar());
@@ -131,9 +148,18 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 			clone.setQueryType(req.getQueryType());
 			clone.setRatio(req.getRatio());
 			clone.setSearchType(req.getSearchType());
-			// not bothering to include the other layers, we won't use the result anyway
-			clone.setLayerIds(new String[] {layer.getServerLayerId()});
+			// not bothering to include the other layers, we won't use the
+			// result anyway
+			clone.setLayerIds(new String[] { layer.getServerLayerId() });
 			return clone;
+		} else {
+			return null;
+		}
+	}
+
+	protected FeatureSearchRequest getSearchCriterionRequest() {
+		if (request != null && request instanceof FeatureSearchRequest) {
+			return (FeatureSearchRequest) request;
 		} else {
 			return null;
 		}

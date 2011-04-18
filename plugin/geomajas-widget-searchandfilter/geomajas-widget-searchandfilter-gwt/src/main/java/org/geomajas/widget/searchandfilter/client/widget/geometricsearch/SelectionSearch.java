@@ -19,7 +19,6 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
-import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.CommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
@@ -39,32 +38,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  * @author Bruce Palmkoeck
  */
-public class SelectionSearch implements GeometricSearchMethod {
+public class SelectionSearch extends AbstractGeometricSearchMethod {
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private static final String BTN_ADD_IMG = "[ISOMORPHIC]/geomajas/osgeo/selected-add.png";
 	private static final String BTN_FOCUS_IMG =	"[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
 
-	private MapWidget mapWidget;
 	private DynamicForm frmBuffer;
 	private SpinnerItem spiBuffer;
 	private Geometry geometry;
 
-	public SelectionSearch() {
-		super();
-	}
-
-	public void initialize(MapWidget map) {
-		this.mapWidget = map;
-	}
-
 	public String getTitle() {
 		return messages.geometricSearchWidgetSelectionSearchTitle();
-	}
-
-	public Geometry getGeometry() {
-		return geometry;
 	}
 
 	public void reset() {
@@ -128,7 +114,9 @@ public class SelectionSearch implements GeometricSearchMethod {
 				VectorLayerStore store = layer.getFeatureStore();
 				for (String featureId : layer.getSelectedFeatures()) {
 					Feature f = store.getPartialFeature(featureId);
-					geoms.add(f.getGeometry());
+					if (f.isSelected()) {
+						geoms.add(f.getGeometry());
+					}
 				}
 			}
 		}
@@ -139,12 +127,14 @@ public class SelectionSearch implements GeometricSearchMethod {
 			if (buffer != 0) {
 				CommService.mergeAndBufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
 					public void execute(Geometry[] result) {
+						updateGeometry(geometry, result[1]);
 						geometry = result[1];
 					}
 				});
 			} else {
 				CommService.mergeGeometries(geoms, new DataCallback<Geometry>() {
 					public void execute(Geometry result) {
+						updateGeometry(geometry, result);
 						geometry = result;
 					}
 				});

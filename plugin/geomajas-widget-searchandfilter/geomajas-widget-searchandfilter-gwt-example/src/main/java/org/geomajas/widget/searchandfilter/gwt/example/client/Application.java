@@ -23,18 +23,27 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.FreeDrawingSearch;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.SelectionSearch;
+import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
+import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchEvent;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchHandler;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
 import org.geomajas.widget.searchandfilter.gwt.example.client.i18n.ApplicationMessages;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.AbstractTab;
-import org.geomajas.widget.searchandfilter.gwt.example.client.pages.GeometricSearchPage;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.MultiFeatureListGridPage;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.SearchPage;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
@@ -43,14 +52,18 @@ import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 /**
- * Entry point and main class for GWT application. This class defines the layout and functionality of this
- * application.
- *
+ * Entry point and main class for GWT application. This class defines the layout
+ * and functionality of this application.
+ * 
  * @author geomajas-gwt-archetype
  */
 public class Application implements EntryPoint, DataCallback<Boolean> {
 
 	private OverviewMap overviewMap;
+
+	private MapWidget mapWidget;
+
+	private MultiFeatureListGrid featureListGrid;
 
 	private Legend legend;
 
@@ -59,6 +72,8 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
 
 	private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
+
+	private ToolStrip topBar;
 
 	public Application() {
 	}
@@ -71,7 +86,7 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		// ---------------------------------------------------------------------
 		// Top bar:
 		// ---------------------------------------------------------------------
-		ToolStrip topBar = new ToolStrip();
+		topBar = new ToolStrip();
 		topBar.setHeight(33);
 		topBar.setWidth100();
 		topBar.addSpacer(6);
@@ -99,15 +114,15 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		final MapWidget map = new MapWidget("mapMain", "app");
-		final Toolbar toolbar = new Toolbar(map);
+		mapWidget = new MapWidget("mapMain", "app");
+		final Toolbar toolbar = new Toolbar(mapWidget);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowResizeBar(true);
 		mapLayout.setResizeBarTarget("tabs");
 		mapLayout.addMember(toolbar);
-		mapLayout.addMember(map);
+		mapLayout.addMember(mapWidget);
 		mapLayout.setHeight("65%");
 		tabSet.setTabBarPosition(Side.TOP);
 		tabSet.setWidth100();
@@ -134,21 +149,21 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		// Overview map layout:
 		SectionStackSection section1 = new SectionStackSection("Overview map");
 		section1.setExpanded(true);
-		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
+		overviewMap = new OverviewMap("mapOverview", "app", mapWidget, false, true);
 		section1.addItem(overviewMap);
 		sectionStack.addSection(section1);
 
 		// LayerTree layout:
 		SectionStackSection section2 = new SectionStackSection("Layer tree");
 		section2.setExpanded(true);
-		LayerTree layerTree = new LayerTree(map);
+		LayerTree layerTree = new LayerTree(mapWidget);
 		section2.addItem(layerTree);
 		sectionStack.addSection(section2);
 
 		// Legend layout:
 		SectionStackSection section3 = new SectionStackSection("Legend");
 		section3.setExpanded(true);
-		legend = new Legend(map.getMapModel());
+		legend = new Legend(mapWidget.getMapModel());
 		section3.addItem(legend);
 		sectionStack.addSection(section3);
 
@@ -158,11 +173,11 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		// ---------------------------------------------------------------------
 		// Bottom left: Add tabs here:
 		// ---------------------------------------------------------------------
-		MultiFeatureListGridPage page1 = new MultiFeatureListGridPage(map);
-		GeometricSearchPage page2 = new GeometricSearchPage("Geographic search", map, page1.getTable(), this);
-		addTab(new SearchPage(map, tabSet, page1.getTable()));
-		addTab(page1);
+		MultiFeatureListGridPage page1 = new MultiFeatureListGridPage(mapWidget);
+		featureListGrid = page1.getTable();
+		SearchPage page2 = new SearchPage("Search features", mapWidget);
 		addTab(page2);
+		addTab(page1);
 
 		// ---------------------------------------------------------------------
 		// Finally draw everything:
@@ -171,8 +186,9 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		mainLayout.draw();
 
 		// Install a loading screen
-		// This only works if the application initially shows a map with at least 1 vector layer:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
+		// This only works if the application initially shows a map with at
+		// least 1 vector layer:
+		LoadingScreen loadScreen = new LoadingScreen(mapWidget, "Simple GWT application using Geomajas "
 				+ Geomajas.getVersion());
 		loadScreen.draw();
 
@@ -189,6 +205,55 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 		legend.setHeight(200);
 		overviewMap.setHeight(200);
 
+		// ---------------------------------------------------------------------
+		// Create Searchpanels
+		// ---------------------------------------------------------------------
+		AttributeSearchPanel asp = new AttributeSearchPanel(mapWidget);
+		GeometricSearchPanel gsp = new GeometricSearchPanel(mapWidget);
+		gsp.addSearchMethod(new SelectionSearch());
+		gsp.addSearchMethod(new FreeDrawingSearch());
+
+		SearchWidgetRegistry.initialize(mapWidget, featureListGrid);
+		SearchWidgetRegistry.put(asp, AttributeSearchPanel.IDENTIFIER);
+		SearchWidgetRegistry.put(gsp, GeometricSearchPanel.IDENTIFIER);
+
+		// -- add some fancy visualisation of search-state
+		SearchWidgetRegistry.addSearchHandler(new SearchHandler() {
+			private Window waitWin;
+			public void onSearchStart(SearchEvent event) {
+				if (waitWin == null) {
+					HLayout layout = new HLayout();
+					layout.setAutoWidth();
+					layout.addMember(new Img("[ISOMORPHIC]/geomajas/ajax-loader.gif", 18, 18));
+					layout.addMember(new Label("Retrieving features, please wait."));
+					waitWin = new Window();
+					waitWin.setTitle("Searching features");
+					waitWin.setAlign(Alignment.CENTER);
+					waitWin.setPadding(20);
+					waitWin.setHeight(100);
+					waitWin.setWidth(300);
+					waitWin.addItem(layout);
+					waitWin.setAutoCenter(true);
+					waitWin.setShowMinimizeButton(false);
+					waitWin.setShowCloseButton(false);
+					waitWin.setIsModal(true);
+					waitWin.setShowModalMask(true);
+				}
+				waitWin.show();
+			}
+			public void onSearchDone(SearchEvent event) {
+				// handled by featureListGrid, no need for us to do something
+			}
+			public void onSearchEnd(SearchEvent event) {
+				if (!(featureListGrid.isShowDetailsOnSingleResult() && event.isSingleResult())) {
+					tabSet.selectTab(1);
+				}
+				if (waitWin != null) {
+					waitWin.hide();
+				}
+			}
+		});
+
 		for (AbstractTab tab : tabs) {
 			tab.initialize();
 		}
@@ -197,6 +262,7 @@ public class Application implements EntryPoint, DataCallback<Boolean> {
 	/**
 	 * Executed when search is done (show the datagrid).
 	 */
+	// TODO remove
 	public void execute(Boolean result) {
 		tabSet.selectTab(1);
 	}

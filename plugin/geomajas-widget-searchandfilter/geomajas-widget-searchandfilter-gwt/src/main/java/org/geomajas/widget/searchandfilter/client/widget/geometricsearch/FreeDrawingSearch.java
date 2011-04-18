@@ -11,7 +11,6 @@
 package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
-import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 
 import com.google.gwt.core.client.GWT;
@@ -29,7 +28,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Kristof Heirwegh
  * @author Bruce Palmkoeck
  */
-public class FreeDrawingSearch implements GeometricSearchMethod {
+public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
@@ -38,24 +37,11 @@ public class FreeDrawingSearch implements GeometricSearchMethod {
 	private static final String BTN_POLYGON_CREATE_IMG = "[ISOMORPHIC]/geomajas/osgeo/polygon-create.png";
 	private static final String BTN_ADD_IMG = "[ISOMORPHIC]/geomajas/osgeo/selected-add.png";
 
-	private MapWidget mapWidget;
 	private DynamicForm frmBuffer;
 	private Geometry geometry;
 
-	public FreeDrawingSearch() {
-		super();
-	}
-
-	public void initialize(MapWidget map) {
-		this.mapWidget = map;
-	}
-
 	public String getTitle() {
 		return messages.geometricSearchWidgetFreeDrawingSearchTitle();
-	}
-
-	public Geometry getGeometry() {
-		return geometry;
 	}
 
 	public void reset() {
@@ -142,7 +128,7 @@ public class FreeDrawingSearch implements GeometricSearchMethod {
 	// ----------------------------------------------------------
 
 	private void onDrawPoint() {
-		// TODO
+		// TODO look at selectionSearch on how to do this
 	}
 
 	private void onDrawLine() {
@@ -156,5 +142,4 @@ public class FreeDrawingSearch implements GeometricSearchMethod {
 	private void onAdd() {
 		// TODO
 	}
-
 }

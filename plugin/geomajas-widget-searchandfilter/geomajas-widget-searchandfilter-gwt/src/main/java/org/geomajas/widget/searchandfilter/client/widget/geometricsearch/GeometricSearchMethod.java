@@ -10,7 +10,6 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
-import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -29,7 +28,7 @@ public interface GeometricSearchMethod {
 	 *            The map will be passed to your class at construction time so
 	 *            you can interact with the mapWidget.
 	 */
-	void initialize(MapWidget map);
+	void initialize(MapWidget map, GeometryUpdateHandler handler);
 
 	/**
 	 * The name of your searchwidget. Will be used as tabname.
@@ -45,24 +44,9 @@ public interface GeometricSearchMethod {
 	Canvas getSearchCanvas();
 
 	/**
-	 * When the user activates the search, this method will be called to
-	 * retrieve the geometry.
-	 * <p>
-	 * Can (should) be <code>null</code> if the search is not correctly
-	 * configured by the user. (eg. the user did not use your search).
-	 * <p>
-	 * If you have multiple geometries you need to first merge them (You can use
-	 * the CommService convenience class for this)
-	 *
-	 * @return geometry to search with
-	 */
-	Geometry getGeometry();
-
-	/**
 	 * This method will be called when the widget is reset, or the user
 	 * activates the reset-button. You are expected to restore all properties to
-	 * their default values. If getGeometry is called, null should be returned.
+	 * their default values.
 	 */
 	void reset();
-
 }

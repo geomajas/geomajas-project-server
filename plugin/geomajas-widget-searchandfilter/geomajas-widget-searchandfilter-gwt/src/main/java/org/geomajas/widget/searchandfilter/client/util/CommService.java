@@ -11,14 +11,15 @@
 package org.geomajas.widget.searchandfilter.client.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.SearchByLocationRequest;
-import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -29,8 +30,13 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.searchandfilter.client.widget.search.ErrorHandler;
+import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchRequest;
+import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchResponse;
 import org.geomajas.widget.searchandfilter.command.dto.GeometryUtilsRequest;
 import org.geomajas.widget.searchandfilter.command.dto.GeometryUtilsResponse;
+import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.GeometryCriterion;
 
 import com.google.gwt.core.client.GWT;
 
@@ -53,7 +59,8 @@ public final class CommService {
 	 * 
 	 * @param geoms
 	 * @param buffer
-	 * @param onFinished callback contains two geometries, one unbuffered, one buffered
+	 * @param onFinished
+	 *            callback contains two geometries, one unbuffered, one buffered
 	 */
 	public static void mergeAndBufferGeometries(List<Geometry> geoms, double buffer,
 			final DataCallback<Geometry[]> onFinished) {
@@ -82,7 +89,8 @@ public final class CommService {
 
 	/**
 	 * @param geoms
-	 * @param onFinished callback returns one geometry
+	 * @param onFinished
+	 *            callback returns one geometry
 	 */
 	public static void mergeGeometries(List<Geometry> geoms, final DataCallback<Geometry> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
@@ -103,6 +111,50 @@ public final class CommService {
 		});
 	}
 
+	public static void bufferGeometry(Geometry geom, double buffer, final DataCallback<Geometry> onFinished) {
+		List<Geometry> geoms = new ArrayList<Geometry>();
+		geoms.add(geom);
+		bufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
+			public void execute(Geometry[] result) {
+				if (result != null && result.length > 0) {
+					onFinished.execute(result[0]);
+				} else {
+					onFinished.execute(null);
+				}
+			}
+		});
+	}
+
+	/**
+	 * @param geoms
+	 * @param onFinished
+	 *            callback returns buffered geometries
+	 */
+	public static void bufferGeometries(List<Geometry> geoms, double buffer, final DataCallback<Geometry[]> onFinished)
+	{
+		GeometryUtilsRequest request = new GeometryUtilsRequest();
+		request.setActionFlags(GeometryUtilsRequest.ACTION_BUFFER);
+		request.setGeometries(toDtoGeometries(geoms));
+		request.setBuffer(buffer);
+
+		GwtCommand command = new GwtCommand("command.searchandfilter.GeometryUtils");
+		command.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+			public void execute(CommandResponse response) {
+				if (response instanceof GeometryUtilsResponse) {
+					GeometryUtilsResponse resp = (GeometryUtilsResponse) response;
+					if (onFinished != null) {
+						Geometry[] geoms = new Geometry[resp.getGeometries().length];
+						for (int i = 0; i < geoms.length; i++) {
+							geoms[i] = GeometryConverter.toGwt(resp.getGeometries()[i]);
+						}
+						onFinished.execute(geoms);
+					}
+				}
+			}
+		});
+	}
+
 	public static org.geomajas.geometry.Geometry[] toDtoGeometries(List<Geometry> geoms) {
 		org.geomajas.geometry.Geometry[] dtoGeoms = new org.geomajas.geometry.Geometry[geoms.size()];
 		for (int i = 0; i < geoms.size(); i++) {
@@ -111,16 +163,9 @@ public final class CommService {
 		return dtoGeoms;
 	}
 
-	public static SearchByLocationRequest getSearchByLocationRequest(final Geometry geometry, final MapWidget mapWidget)
-	{
-		SearchByLocationRequest request = new SearchByLocationRequest();
-		request.setLayerIds(getVisibleServerLayerIds(mapWidget.getMapModel()));
-		request.setLocation(GeometryConverter.toDto(geometry));
-		request.setCrs(mapWidget.getMapModel().getCrs());
-		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
-		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
-		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-		return request;
+	public static Criterion buildGeometryCriterion(final Geometry geometry, final MapWidget mapWidget) {
+		return new GeometryCriterion(getVisibleServerLayerIds(mapWidget.getMapModel()),
+				GeometryConverter.toDto(geometry));
 	}
 
 	/**
@@ -130,26 +175,57 @@ public final class CommService {
 	 * @param geometry
 	 * @param buffer
 	 * @param onFinished
-	 * @param onError callback to execute in case of error, optional use null if you don't need it
+	 * @param onError
+	 *            callback to execute in case of error, optional use null if you
+	 *            don't need it
 	 */
-	public static SearchByLocationRequest searchByLocation(final SearchByLocationRequest request,
-			final MapWidget mapWidget, final DataCallback<Map<VectorLayer, List<Feature>>> onFinished,
-			final Callback onError) {
-		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+	public static void searchByCriterion(final Criterion criterion, final MapWidget mapWidget,
+			final DataCallback<Map<VectorLayer, List<Feature>>> onFinished, final ErrorHandler onError) {
+		FeatureSearchRequest request = new FeatureSearchRequest();
+		request.setMapCrs(mapWidget.getMapModel().getCrs());
+		request.setCriterion(criterion);
+		request.setLayerFilters(getLayerFiltersForCriterion(criterion, mapWidget.getMapModel()));
+		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+
+		GwtCommand commandRequest = new GwtCommand("command.searchandfilter.FeatureSearch");
 		commandRequest.setCommandRequest(request);
 		Deferred def = GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof SearchByLocationResponse) {
-					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-					onFinished.execute(convertFromDto(response.getFeatureMap(), mapWidget.getMapModel()));
+				if (commandResponse instanceof FeatureSearchResponse) {
+					FeatureSearchResponse response = (FeatureSearchResponse) commandResponse;
+					onFinished.execute(convertFromDto(response.getFeatureMap(),
+							mapWidget.getMapModel()));
 				}
 			}
 		});
 		if (onError != null) {
 			def.addErrorCallback(onError);
 		}
-		return request;
 	}
+
+	/**
+	 * Builds a map with the filters for all layers that are used in the given criterion.
+	 *
+	 * @param critter
+	 * @param mapModel
+	 * @return
+	 */
+	public static Map<String, String> getLayerFiltersForCriterion(Criterion critter, MapModel mapModel) {
+		Map<String, String> filters = new HashMap<String, String>();
+		Set<String> serverLayerIds = new HashSet<String>();
+		critter.serverLayerIdVisitor(serverLayerIds);
+
+		for (VectorLayer vlayer : mapModel.getVectorLayers()) {
+			if (serverLayerIds.contains(vlayer.getServerLayerId())) {
+				if (vlayer.getFilter() != null && !"".equals(vlayer.getFilter())) {
+					filters.put(vlayer.getServerLayerId(), vlayer.getFilter());
+				}
+			}
+		}
+		return filters;
+	}
+
+	// ----------------------------------------------------------
 
 	/**
 	 * This also adds the features to their respective layers, so no need to do
@@ -193,13 +269,13 @@ public final class CommService {
 		return null;
 	}
 
-	private static String[] getVisibleServerLayerIds(MapModel mapModel) {
+	private static List<String> getVisibleServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
 		for (VectorLayer layer : mapModel.getVectorLayers()) {
 			if (layer.isShowing()) {
 				layerIds.add(layer.getServerLayerId());
 			}
 		}
-		return layerIds.toArray(new String[] {});
+		return layerIds;
 	}
 }

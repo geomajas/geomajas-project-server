@@ -15,6 +15,7 @@
 	
 	<source path="client" />
 	<source path="command/dto" />
+	<source path="search/dto" />
 	
 	<!-- enable if needed
 	<source path="configuration/client" />

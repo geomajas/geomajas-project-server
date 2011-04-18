@@ -16,7 +16,7 @@ import org.geomajas.command.dto.SearchFeatureRequest;
 
 /**
  * Request for ExportToCsvCommand.
- *
+ * 
  * @author Kristof Heirwegh
  */
 public class ExportToCsvRequest extends LayerIdCommandRequest implements CsvMetadata {
@@ -25,7 +25,8 @@ public class ExportToCsvRequest extends LayerIdCommandRequest implements CsvMeta
 
 	private SearchByLocationRequest searchByLocationRequest;
 	private SearchFeatureRequest searchFeatureRequest;
-	
+	private FeatureSearchRequest searchByCriterionRequest;
+
 	private String separatorChar;
 	private String quoteChar;
 	private String locale;
@@ -33,9 +34,8 @@ public class ExportToCsvRequest extends LayerIdCommandRequest implements CsvMeta
 	private boolean identifyingAttributesOnly;
 
 	/**
-	 * Encoding of CSV File.
-	 * For instance: UTF-8 or, ISO8859_1.
-	 * Default is UTF-8.
+	 * Encoding of CSV File. For instance: UTF-8 or, ISO8859_1. Default is
+	 * UTF-8.
 	 */
 	private String encoding;
 
@@ -101,5 +101,13 @@ public class ExportToCsvRequest extends LayerIdCommandRequest implements CsvMeta
 
 	public void setSearchFeatureRequest(SearchFeatureRequest searchFeatureRequest) {
 		this.searchFeatureRequest = searchFeatureRequest;
+	}
+
+	public FeatureSearchRequest getSearchByCriterionRequest() {
+		return searchByCriterionRequest;
+	}
+
+	public void setSearchByCriterionRequest(FeatureSearchRequest searchByCriterionRequest) {
+		this.searchByCriterionRequest = searchByCriterionRequest;
 	}
 }

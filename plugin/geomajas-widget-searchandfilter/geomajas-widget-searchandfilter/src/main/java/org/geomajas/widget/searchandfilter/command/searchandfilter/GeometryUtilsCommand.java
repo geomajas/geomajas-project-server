@@ -26,7 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Command to help with common geometry manipulations.
- * 
+ * <p>
  * Manipulations throw as little exceptions as possible, eg. if you give null
  * you get null returned, if you do not set an action, features are returned
  * as-is.
@@ -65,7 +65,7 @@ public class GeometryUtilsCommand implements Command<GeometryUtilsRequest, Geome
 				intermediateResults.add(lastResult);
 			}
 
-			if ((request.getActionFlags() & GeometryUtilsRequest.ACTION_MERGE) > 0) {
+			if ((request.getActionFlags() & GeometryUtilsRequest.ACTION_BUFFER) > 0) {
 				lastResult = buffer(lastResult, request.getBuffer(), request.getBufferQuadrantSegments());
 				intermediateResults.add(lastResult);
 			}
@@ -101,7 +101,7 @@ public class GeometryUtilsCommand implements Command<GeometryUtilsRequest, Geome
 	private Geometry[] merge(Geometry[] geoms) {
 		Geometry[] result = new Geometry[1];
 		// points/lines to polygon, prevents problems later on...
-		Geometry merged = geoms[0].buffer(0.000001, 4);
+		Geometry merged = geoms[0].buffer(0.000001);
 		for (int i = 1; i < geoms.length; i++) {
 			merged = merged.union(geoms[i]);
 		}

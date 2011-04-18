@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.command.dto.SearchByLocationRequest;
-import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -26,11 +24,12 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.event.SearchEvent;
-import org.geomajas.gwt.client.widget.event.SearchHandler;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.Callback;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchEvent;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchHandler;
+import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
@@ -56,7 +55,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Kristof Heirwegh
  */
-public class MultiFeatureListGrid extends Canvas implements SearchHandler, MultiLayerSearchHandler {
+public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 
 	protected final MapWidget map;
 
@@ -133,22 +132,6 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 		removeTab(layer);
 	}
 
-	/**
-	 * Conveniencemethod to check number of results.
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean willShowSingleResult(Map<VectorLayer, List<Feature>> result) {
-		if (showDetailsOnSingleResult && result.size() == 1) {
-			List<Feature> features = (ArrayList<Feature>) result.values().toArray()[0];
-			if (features.size() == 1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void addFeatures(VectorLayer layer, List<Feature> features) {
 		addFeatures(layer, features, null, showDetailsOnSingleResult);
 	}
@@ -156,13 +139,11 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 	/**
 	 * @param layer
 	 * @param features
-	 * @param requestUsedToRetrieveFeatures
-	 *            will be used by CSV Export to retrieve features only
-	 *            SearchByLocationRequest and SearchFeaturesRequest are
-	 *            supported
+	 * @param criterion
+	 *            will be used by CSV Export to retrieve features.
 	 */
-	public void addFeatures(VectorLayer layer, List<Feature> features, CommandRequest requestUsedToRetrieveFeatures) {
-		addFeatures(layer, features, requestUsedToRetrieveFeatures, showDetailsOnSingleResult);
+	public void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData) {
+		addFeatures(layer, features, csvExportData, showDetailsOnSingleResult);
 	}
 
 	public void addFeatures(Map<VectorLayer, List<Feature>> result) {
@@ -171,27 +152,35 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 
 	/**
 	 * @param result
-	 * @param requestUsedToRetrieveFeatures
-	 *            will be used by CSV Export to retrieve features only
-	 *            SearchByLocationRequest and SearchFeaturesRequest are
-	 *            supported
+	 * @param criterion
+	 *            will be used by CSV Export to retrieve features.
 	 */
-	@SuppressWarnings("unchecked")
-	public void addFeatures(Map<VectorLayer, List<Feature>> result, CommandRequest requestUsedToRetrieveFeatures) {
+	public void addFeatures(Map<VectorLayer, List<Feature>> result, Object csvExportData) {
 		for (Entry<VectorLayer, List<Feature>> entry : result.entrySet()) {
-			addFeatures(entry.getKey(), entry.getValue(), requestUsedToRetrieveFeatures, false);
+			addFeatures(entry.getKey(), entry.getValue(), csvExportData, false);
 		}
 		if (showDetailsOnSingleResult && result.size() == 1) {
-			List<Feature> features = (ArrayList<Feature>) result.values().toArray()[0];
+			List<Feature> features = (ArrayList<Feature>) result.values().iterator().next();
 			if (features.size() == 1) {
 				showFeatureDetailWindow(features.get(0));
 			}
 		}
 	}
 
-	private void addFeatures(VectorLayer layer, List<Feature> features, CommandRequest requestUsedToRetrieveFeatures,
-			boolean showSingleResult) {
-		FeatureListGridTab t = getTab(layer, requestUsedToRetrieveFeatures);
+	private void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData, boolean showSingleResult)
+	{
+		FeatureListGridTab t;
+		if (csvExportData instanceof Criterion) {
+			t = getTab(layer, (Criterion) csvExportData);
+		} else if (csvExportData instanceof CommandRequest) {
+			t = getTab(layer, (CommandRequest) csvExportData);
+		} else {
+			if (csvExportData != null) {
+				SC.logWarn("Unsuported csvExportData class: " + csvExportData.getClass().getName());
+			}
+			t = getTab(layer);
+		}
+
 		t.empty();
 		t.addFeatures(features);
 		tabset.selectTab(t);
@@ -201,21 +190,20 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 	}
 
 	// ----------------------------------------------------------
-	// -- SearchHandler, MultiLayerSearchHandler --
+	// -- SearchHandler --
 	// ----------------------------------------------------------
+
+	public void onSearchStart(SearchEvent event) {
+	} // not used
+
+	public void onSearchEnd(SearchEvent event) {
+	} // not used
 
 	public void onSearchDone(SearchEvent event) {
 		if (clearTabsetOnSearch) {
 			removeAll();
 		}
-		addFeatures(event.getLayer(), event.getFeatures());
-	}
-
-	public void onSearchDone(MultiLayerSearchEvent event) {
-		if (clearTabsetOnSearch) {
-			removeAll();
-		}
-		addFeatures(event.getResult());
+		addFeatures(event.getResult(), event.getCriterion());
 	}
 
 	// ----------------------------------------------------------
@@ -232,32 +220,30 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler, Multi
 		}
 	}
 
-	private FeatureListGridTab getTab(VectorLayer layer, CommandRequest requestUsedToRetrieveFeatures) {
+	private FeatureListGridTab getTab(VectorLayer layer) {
+		return getTab(layer, new ExportFeatureListToCsvHandler(map.getMapModel(), layer));
+	}
+
+	private FeatureListGridTab getTab(VectorLayer layer, CommandRequest searchRequest) {
+		return getTab(layer, new ExportSearchToCsvHandler(map.getMapModel(), layer, searchRequest));
+	}
+
+	private FeatureListGridTab getTab(VectorLayer layer, Criterion criterion) {
+		return getTab(layer, new ExportSearchToCsvHandler(map.getMapModel(), layer, criterion));
+	}
+
+	private FeatureListGridTab getTab(VectorLayer layer, ExportToCsvHandler handler) {
 		String id = tabset.getID() + "_" + layer.getId();
 		FeatureListGridTab t = (FeatureListGridTab) tabset.getTab(id);
-		ExportToCsvHandler etch;
-		if (requestUsedToRetrieveFeatures == null) {
-			etch = new ExportFeatureListToCsvHandler(map.getMapModel(), layer);
-
-		} else if (requestUsedToRetrieveFeatures instanceof SearchFeatureRequest
-				|| requestUsedToRetrieveFeatures instanceof SearchByLocationRequest) {
-			etch = new ExportSearchToCsvHandler(map.getMapModel(), layer, requestUsedToRetrieveFeatures);
-
-		} else {
-			SC.warn("Unsupported request type for export CSV (" + requestUsedToRetrieveFeatures.getClass().getName()
-					+ ") export not available.");
-			etch = null;
-		}
-
 		if (t == null) {
-			t = new FeatureListGridTab(map, layer, etch);
+			t = new FeatureListGridTab(map, layer, handler);
 			t.setID(id);
 			tabset.addTab(t);
 			setEmpty((tabset.getTabs().length == 0));
 
 		} else {
 			// Do not forget to update
-			t.setExportToCsvHandler(etch);
+			t.setExportToCsvHandler(handler);
 		}
 		return (FeatureListGridTab) t;
 	}

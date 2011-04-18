@@ -8,22 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
+package org.geomajas.widget.searchandfilter.client.widget.search;
 
-import com.google.gwt.event.shared.EventHandler;
+import org.geomajas.widget.searchandfilter.client.util.Callback;
 
 /**
- * @see SearchHandler.
+ * @see SearchWidgetRegistry.
  * @author Kristof Heirwegh
- *
  */
-public interface MultiLayerSearchHandler extends EventHandler {
+public interface ErrorHandler extends Callback {
 
-	/**
-	 * Called when a search over multiple layers has been executed.
-	 *
-	 * @param event
-	 *            The search event
-	 */
-	void onSearchDone(MultiLayerSearchEvent event);
 }

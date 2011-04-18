@@ -33,7 +33,7 @@ public class ExportFeatureListToCsvHandler extends ExportSearchToCsvHandler {
 	private List<Feature> features;
 
 	public ExportFeatureListToCsvHandler(MapModel model, VectorLayer layer) {
-		super(model, layer, null);
+		super(model, layer);
 	}
 
 	public void setFeatures(List<Feature> features) {

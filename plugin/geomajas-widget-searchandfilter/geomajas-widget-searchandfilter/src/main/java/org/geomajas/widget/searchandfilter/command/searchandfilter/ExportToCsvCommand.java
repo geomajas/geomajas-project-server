@@ -22,6 +22,7 @@ import org.geomajas.layer.feature.Feature;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvRequest;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvResponse;
+import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchResponse;
 import org.geomajas.widget.searchandfilter.service.csv.CsvExportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * ExportToCsvCommand.
- * <p>You can use both a searchFeatureRequest or a searchByLocationRequest to retrieve features.
+ * <p>
+ * You can use both a searchFeatureRequest or a searchByLocationRequest to retrieve features.
  *
  * @author Kristof Heirwegh
  */
@@ -46,6 +48,9 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 
 	@Autowired
 	private SearchByLocationCommand searchByLocationCommand;
+
+	@Autowired
+	private FeatureSearchCommand searchByCriterionCommand;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -84,6 +89,22 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 					features = new Feature[0];
 				}
 			}
+		} else if (request.getSearchByCriterionRequest() != null) {
+			log.debug("CSV export using CriterionRequest");
+			FeatureSearchResponse critterResponse = new FeatureSearchResponse();
+			searchByCriterionCommand.execute(request.getSearchByCriterionRequest(), critterResponse);
+			if (critterResponse.isError()) {
+				response.getErrorMessages().addAll(critterResponse.getErrorMessages());
+				response.getErrors().addAll(critterResponse.getErrors());
+			} else {
+				List<Feature> res = critterResponse.getFeatureMap().get(request.getLayerId());
+				if (res != null) {
+					features = res.toArray(new Feature[0]);
+				} else {
+					features = new Feature[0];
+				}
+			}
+			
 		} else {
 			throw new IllegalArgumentException("You must provide a feature or location search request.");
 		}

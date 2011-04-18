@@ -11,60 +11,49 @@
 
 package org.geomajas.widget.searchandfilter.gwt.example.client.pages;
 
-import org.geomajas.gwt.client.widget.FeatureSearch;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.event.SearchEvent;
-import org.geomajas.gwt.client.widget.event.SearchHandler;
-import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
+import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
 
-import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 
 /**
- * <p>
- * Example tab showing the {@link FeatureSearch} widget.
- * </p>
- *
- * @author geomajas-gwt-archetype
+ * 
+ * @author Kristof Heirwegh
+ * @author Bruce Palmkoeck
  */
 public class SearchPage extends AbstractTab {
 
-	/**
-	 * Create a tab page with a search functionality.
-	 *
-	 * @param map
-	 *            The map for whom we are searching for features.
-	 * @param tabSet
-	 *            The set of tabs to whom this tab will be added. Also when a
-	 *            search is done, this tab-set is used to make the tab with the
-	 *            feature grid visible.
-	 * @param featureGrid
-	 *            The actual feature grid instance from the second tab. This
-	 *            feature grid is used to display the features that result from
-	 *            a search.
-	 */
-	public SearchPage(MapWidget map, final TabSet tabSet, MultiFeatureListGrid grid) {
-		super("Search", map);
+	public SearchPage(String title, final MapWidget map) {
+		super(title, map);
 
-		// Create a SearchWidget, based upon a map's model:
-		FeatureSearch searchWidget = new FeatureSearch(map.getMapModel(), true);
-
-		// What to do when the result of a search comes in?
-		// The DefaultSearchHandler will add all the features in the result to
-		// the given FeatureListGrid.
-		searchWidget.addSearchHandler(grid);
-		searchWidget.addSearchHandler(new SearchHandler() {
-			public void onSearchDone(SearchEvent event) {
-				if (event.getFeatures().size() != 1) {
-					tabSet.selectTab(1);
-				}
+		IButton btnAttSearch = new IButton("Open Attribute Search Window");
+		btnAttSearch.setAutoFit(true);
+		btnAttSearch.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				SearchWidgetRegistry.getSearchWidget(AttributeSearchPanel.IDENTIFIER).showForSearch();
 			}
 		});
 
-		// Limit the maximum number of features that a search may produce:
-		searchWidget.setMaximumResultSize(100);
-		mainLayout.addMember(searchWidget);
+		IButton btnGeoSearch = new IButton("Open Geographic Search window");
+		btnGeoSearch.setAutoFit(true);
+		btnGeoSearch.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				SearchWidgetRegistry.getSearchWidget(GeometricSearchPanel.IDENTIFIER).showForSearch();
+			}
+		});
+
+		mainLayout.setMembersMargin(10);
+		mainLayout.setMargin(10);
+
+		mainLayout.addMember(btnAttSearch);
+		mainLayout.addMember(btnGeoSearch);
 	}
 
+	@Override
 	public void initialize() {
 	}
 }
