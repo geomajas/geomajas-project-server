@@ -38,6 +38,7 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,6 +189,9 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				GraphicalSymbol symbol = createSymbol(featureStyle);
 				if (symbol instanceof Mark) {
 					ps.getGraphic().setSize(((Mark) symbol).getSize());
+				} else {
+					Expression size = styleBuilder.literalExpression(featureStyle.getSymbol().getImage().getHeight());
+					ps.getGraphic().setSize(size);
 				}
 				ps.getGraphic().graphicalSymbols().clear();
 				ps.getGraphic().graphicalSymbols().add(createSymbol(featureStyle));

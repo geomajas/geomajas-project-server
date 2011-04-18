@@ -170,8 +170,12 @@ public class ImageServiceVectorTileTest {
 		checkPoint("point_rect.png", false, true);
 		getPointStyle().getSymbol().setRect(null);
 		// symbol image
-		getPointStyle().getSymbol().setImage(createImage());
+		getPointStyle().getSymbol().setImage(createImage(32));
 		checkPoint("point_image.png", false, true);
+		getPointStyle().getSymbol().setImage(null);
+		// symbol image
+		getPointStyle().getSymbol().setImage(createImage(64));
+		checkPoint("point_image_big.png", false, true);
 		getPointStyle().getSymbol().setImage(null);
 		// set circle state back
 		getPointStyle().getSymbol().setCircle(tmp);
@@ -323,10 +327,11 @@ public class ImageServiceVectorTileTest {
 		new MapAssert(mapInfo).assertEqualImage(fileName, writeImages, DELTA);
 	}
 
-	private ImageInfo createImage() {
+	private ImageInfo createImage(int height) {
 		ImageInfo info = new ImageInfo();
-		info.setHeight(32);
-		info.setWidth(46);
+		info.setHeight(height);
+		// width is not important
+		info.setWidth(height);
 		info.setHref("org/geomajas/plugin/rasterizing/images/imageservice/vectortile/point.png");
 		return info;
 	}
