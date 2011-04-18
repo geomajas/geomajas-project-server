@@ -69,15 +69,21 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		if (null == context) {
 			context = createContext();
 		}
-		long ps = System.currentTimeMillis();
-		log.debug("execute pipeline {}", pipeline.getPipelineName());
+		long ps = 0;
+		if (log.isDebugEnabled()) {
+			ps = System.currentTimeMillis();
+			log.debug("execute pipeline {}", pipeline.getPipelineName());
+		}
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
 				log.debug("context finished, pipeline {} execution done.", pipeline.getPipelineName());
 				break;
 			}
-			log.debug("execute step {} for pipeline {}.", step.getId(), pipeline.getPipelineName());
-			long ts = System.currentTimeMillis();
+			long ts = 0;
+			if (log.isDebugEnabled()) {
+				log.debug("execute step {} for pipeline {}.", step.getId(), pipeline.getPipelineName());
+				ts = System.currentTimeMillis();
+			}
 			step.execute(context, response);
 			if (log.isDebugEnabled()) {
 				log.debug("done step {}, time {}s", step.getId(), (System.currentTimeMillis() - ts) / 1000.0);
@@ -380,7 +386,10 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 
 		public void execute(PipelineContext context, T response) throws GeomajasException {
 			log.debug("execute beforeSteps for interceptor {}", interceptor.getId());
-			long its = System.currentTimeMillis();
+			long its = 0;
+			if (log.isDebugEnabled()) {
+				its  = System.currentTimeMillis();
+			}
 			ExecutionMode mode = interceptor.beforeSteps(context, response);
 			if (mode == null) {
 				mode = ExecutionMode.EXECUTE_ALL;
@@ -394,8 +403,11 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 								log.debug("context finished, interceptor {} execution done", interceptor.getId());
 								break;
 							}
-							log.debug("execute step {} for interceptor {}", step.getId(), interceptor.getId());
-							long ts = System.currentTimeMillis();
+							long ts = 0;
+							if (log.isDebugEnabled()) {
+								ts = System.currentTimeMillis();
+								log.debug("execute step {} for interceptor {}", step.getId(), interceptor.getId());
+							}
 							step.execute(context, response);
 							if (log.isDebugEnabled()) {
 								log.debug("done step {}, time {}s", step.getId(),
