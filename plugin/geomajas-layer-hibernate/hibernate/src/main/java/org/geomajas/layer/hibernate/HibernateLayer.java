@@ -47,6 +47,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
@@ -87,9 +88,6 @@ public class HibernateLayer extends HibernateLayerUtil
 	 * strings into Date objects before transforming them into Hibernate criteria.
 	 */
 	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-	@Autowired
-	private FilterService filterCreator;
 
 	@Autowired
 	private FilterService filterService;
@@ -310,7 +308,7 @@ public class HibernateLayer extends HibernateLayerUtil
 	}
 
 	public Envelope getBounds() throws LayerException {
-		return getBounds(filterCreator.createTrueFilter());
+		return getBounds(filterService.createTrueFilter());
 	}
 
 	/**
@@ -355,7 +353,7 @@ public class HibernateLayer extends HibernateLayerUtil
 			try {
 				attributes.add(converterService.toDto(object, attributeInfo));
 			} catch (GeomajasException e) {
-				throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
+				throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
 			}
 		}
 		return attributes;
@@ -482,8 +480,8 @@ public class HibernateLayer extends HibernateLayerUtil
 	 * The idea here is to replace association objects with their persistent
 	 * counterparts. This has to happen just before the saving to database. We
 	 * have to keep the persistent objects inside the HibernateLayer package.
-	 * Never let them out, because that way we'll invite exceptions. @TODO This
-	 * method is not recursive!
+	 * Never let them out, because that way we'll invite exceptions.
+	 * @TODO This method is not recursive!
 	 * 
 	 * @param feature
 	 *            feature to persist
@@ -508,7 +506,7 @@ public class HibernateLayer extends HibernateLayerUtil
 						AssociationType asoType = aso.getType();
 						if (asoType == AssociationType.MANY_TO_ONE) {
 							// Many-to-one:
-							Serializable id = meta.getIdentifier(value, EntityMode.POJO);
+							Serializable id = meta.getIdentifier(value, (SessionImplementor) session);
 							if (id != null) { // We can only replace it, if it
 								// has an ID:
 								value = session.load(aso.getName(), id);

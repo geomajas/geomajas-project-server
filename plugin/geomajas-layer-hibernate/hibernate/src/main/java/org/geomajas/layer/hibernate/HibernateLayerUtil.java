@@ -19,8 +19,6 @@ import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * General Hibernate ClassMetadata and SessionFactory provision. Package visibility only.
@@ -28,8 +26,6 @@ import org.slf4j.LoggerFactory;
  * @author Pieter De Graef
  */
 class HibernateLayerUtil {
-
-	private final Logger log = LoggerFactory.getLogger(HibernateLayerUtil.class);
 
 	public static final String XPATH_SEPARATOR = "/";
 	public static final String SEPARATOR = ".";
@@ -99,14 +95,14 @@ class HibernateLayerUtil {
 				ClassMetadata propMeta = sessionFactory.getClassMetadata(prop.getReturnedClass());
 				return getPropertyClass(propMeta, propertyName.substring(propertyName.indexOf(SEPARATOR) + 1));
 			} catch (Exception e) {
-				throw new HibernateLayerException(ExceptionCode.HIBERNATE_COULD_NOT_RESOLVE, propertyName,
+				throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_COULD_NOT_RESOLVE, propertyName,
 						meta.getEntityName());
 			}
 		} else {
 			try {
 				return meta.getPropertyType(propertyName).getReturnedClass();
 			} catch (Exception e) {
-				throw new HibernateLayerException(ExceptionCode.HIBERNATE_COULD_NOT_RESOLVE, propertyName,
+				throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_COULD_NOT_RESOLVE, propertyName,
 						meta.getEntityName());
 			}
 		}
@@ -125,8 +121,7 @@ class HibernateLayerUtil {
 		try {
 			return sessionFactory.getClassMetadata(clazz);
 		} catch (Exception e) {
-			log.error("Couldn't get metadata for " + clazz.getName(), e);
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_NO_META_DATA, clazz.getName());
+			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_NO_META_DATA, clazz.getName());
 		}
 	}
 
@@ -143,8 +138,7 @@ class HibernateLayerUtil {
 		try {
 			return sessionFactory.getClassMetadata(name);
 		} catch (Exception e) {
-			log.error("Couldn't get metadata for " + name, e);
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_NO_META_DATA, name);
+			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_NO_META_DATA, name);
 		}
 	}
 

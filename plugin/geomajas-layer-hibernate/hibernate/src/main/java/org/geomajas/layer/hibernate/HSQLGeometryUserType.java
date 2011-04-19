@@ -48,12 +48,12 @@ public class HSQLGeometryUserType extends AbstractDBGeometryType {
 		}
 		String data = (String) object;
 		int srid = Integer.parseInt(data.substring(0, SRIDLEN - 1));
-		Geometry geom = null;
+		Geometry geom;
 		try {
 			WKTReader reader = new WKTReader();
 			geom = reader.read(data.substring(SRIDLEN + 1));
 		} catch (Exception e) {
-			throw new RuntimeException("Couldn't parse incoming wkt geometry.");
+			throw new RuntimeException("Couldn't parse incoming wkt geometry.", e);
 		}
 		geom.setSRID(srid);
 		return geom;
