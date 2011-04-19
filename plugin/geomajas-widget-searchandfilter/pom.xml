@@ -76,13 +76,23 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
-				<artifactId>geomajas-plugin-searchandfilter</artifactId>
+				<artifactId>geomajas-widget-searchandfilter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
-				<artifactId>geomajas-plugin-searchandfilter-gwt</artifactId>
+				<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-featureinfo</artifactId>
+				<version>${geomajas-widget-featureinfo-version}</version>
+			</dependency>			
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
+				<version>${geomajas-widget-featureinfo-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -122,7 +132,9 @@
 	</profiles>
 
 	<properties>
+		<geomajas-widget-featureinfo-version>1.0.0-SNAPSHOT</geomajas-widget-featureinfo-version>
 		<geomajas-widget-searchandfilter-backend-version>1.9.0-SNAPSHOT</geomajas-widget-searchandfilter-backend-version>
+		<geomajas-widget-searchandfilter-gwt-version>1.9.0-SNAPSHOT</geomajas-widget-searchandfilter-gwt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>	
 </project>

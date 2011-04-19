@@ -25,7 +25,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-widget-searchandfilter-backend-version}</version>
+				<version>${geomajas-widget-searchandfilter-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -39,7 +39,6 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-searchandfilter</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -104,12 +103,10 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>			
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

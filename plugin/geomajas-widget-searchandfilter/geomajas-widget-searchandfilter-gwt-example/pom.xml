@@ -33,16 +33,36 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
+				<version>${geomajas-widget-searchandfilter-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
+				<version>${geomajas-widget-searchandfilter-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>1.8.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-epsg-wkt</artifactId>
+				<version>2.7.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+  				<artifactId>gt-shapefile</artifactId>
+				<version>2.7.0.1</version>
+			</dependency>
+			<dependency>
+			 	<groupId>org.geotools</groupId>
+ 				<artifactId>gt-postgis</artifactId>
+				<version>2.7.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -63,24 +83,24 @@
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-searchandfilter</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-searchandfilter</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-searchandfilter-gwt</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<!-- @extract-end -->
 
