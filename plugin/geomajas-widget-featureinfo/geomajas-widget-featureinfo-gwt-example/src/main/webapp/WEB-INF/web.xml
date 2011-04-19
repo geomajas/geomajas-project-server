@@ -59,6 +59,17 @@
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
 
+	<!-- Naughty Geotools! -->
+	<filter>
+		<filter-name>JettyFilter</filter-name>
+		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>JettyFilter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+
 	<!-- only needed for direct GWT -->
 	<listener>
 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
