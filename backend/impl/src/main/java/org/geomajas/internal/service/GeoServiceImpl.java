@@ -277,11 +277,15 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Geometry transform(Geometry source, CrsTransform crsTransform) {
 		try {
-			Geometry transformableArea = crsTransform.getTransformableGeometry();
-			if (null != transformableArea) {
-				source = source.intersection(transformableArea);
+			if (crsTransform.isTransforming()) {
+				Geometry transformableArea = crsTransform.getTransformableGeometry();
+				if (null != transformableArea) {
+					source = source.intersection(transformableArea);
+				}
+				return JTS.transform(source, crsTransform);
+			} else {
+				return source;
 			}
-			return JTS.transform(source, crsTransform);
 		} catch (TopologyException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
@@ -353,17 +357,21 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Bbox transform(Bbox source, CrsTransform crsTransform) {
 		try {
-			Envelope envelope = new Envelope(source.getX(), source.getMaxX(), source.getY(), source.getMaxY());
-			Envelope transformableArea = crsTransform.getTransformableEnvelope();
-			if (null != transformableArea) {
-				envelope = envelope.intersection(transformableArea);
-			}
-			if (envelope.isNull()) {
-				return new Bbox();
+			if (crsTransform.isTransforming()) {
+				Envelope envelope = new Envelope(source.getX(), source.getMaxX(), source.getY(), source.getMaxY());
+				Envelope transformableArea = crsTransform.getTransformableEnvelope();
+				if (null != transformableArea) {
+					envelope = envelope.intersection(transformableArea);
+				}
+				if (envelope.isNull()) {
+					return new Bbox();
+				} else {
+					ReferencedEnvelope refEnvelope = new ReferencedEnvelope(envelope, crsTransform.getSource());
+					envelope = refEnvelope.transform(crsTransform.getTarget(), true);
+					return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
+				}
 			} else {
-				ReferencedEnvelope refEnvelope = new ReferencedEnvelope(envelope, crsTransform.getSource());
-				envelope = refEnvelope.transform(crsTransform.getTarget(), true);
-				return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
+				return source;
 			}
 		} catch (TopologyException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
@@ -416,15 +424,19 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Envelope transform(Envelope source, CrsTransform crsTransform) {
 		try {
-			Envelope transformableArea = crsTransform.getTransformableEnvelope();
-			if (null != transformableArea) {
-				source = source.intersection(transformableArea);
-			}
-			if (source.isNull()) {
-				return source;
+			if (crsTransform.isTransforming()) {
+				Envelope transformableArea = crsTransform.getTransformableEnvelope();
+				if (null != transformableArea) {
+					source = source.intersection(transformableArea);
+				}
+				if (source.isNull()) {
+					return source;
+				} else {
+					ReferencedEnvelope refEnvelope = new ReferencedEnvelope(source, crsTransform.getSource());
+					return refEnvelope.transform(crsTransform.getTarget(), true);
+				}
 			} else {
-				ReferencedEnvelope refEnvelope = new ReferencedEnvelope(source, crsTransform.getSource());
-				return refEnvelope.transform(crsTransform.getTarget(), true);
+				return source;
 			}
 		} catch (TopologyException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +

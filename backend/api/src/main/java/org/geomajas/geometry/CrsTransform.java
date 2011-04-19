@@ -68,4 +68,15 @@ public interface CrsTransform extends MathTransform {
 	 */
 	Bbox getTransformableBbox();
 
+	/**
+	 * Indicates that this transform actually changes something.
+	 * <p/>
+	 * transforming = !(getSource().equals(getTarget()))
+	 * <p/>
+	 * When isTransforming is false then the underlying MathTransform transforms nothing.
+	 *
+	 * @return true when the transform actually does something, false otherwise
+	 * @since 1.9.0
+	 */
+	boolean isTransforming();
 }

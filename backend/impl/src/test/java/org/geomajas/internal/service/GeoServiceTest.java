@@ -139,6 +139,19 @@ public class GeoServiceTest {
 	}
 
 	@Test
+	public void transformEnvelopeCrsNoTransformTest() throws Exception {
+		CrsTransform crsTransform = geoService.getCrsTransform(MERCATOR, MERCATOR);
+		Envelope envelope = new Envelope(10, 20, 30, 40);
+		Envelope transformed = geoService.transform(envelope, crsTransform);
+		Assert.assertEquals(10, transformed.getMinX(), DELTA);
+		Assert.assertEquals(30, transformed.getMinY(), DELTA);
+		Assert.assertEquals(20, transformed.getMaxX(), DELTA);
+		Assert.assertEquals(40, transformed.getMaxY(), DELTA);
+
+		Assert.assertEquals(envelope, geoService.transform(envelope, MERCATOR, MERCATOR));
+	}
+
+	@Test
 	public void transformBboxCrsTest() throws Exception {
 		Crs source = geoService.getCrs2(MERCATOR);
 		Crs target = geoService.getCrs2(LONLAT);
@@ -173,6 +186,17 @@ public class GeoServiceTest {
 		Assert.assertEquals(2.6949458522981454E-4, transformed.getY(), DELTA);
 		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
 		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
+	}
+
+	@Test
+	public void transformBboxCrsNoTransformTest() throws Exception {
+		CrsTransform crsTransform = geoService.getCrsTransform(MERCATOR, MERCATOR);
+		Bbox bbox = new Bbox(10, 20, 30, 40);
+		Bbox transformed = geoService.transform(bbox, crsTransform);
+		Assert.assertEquals(10, transformed.getX(), DELTA);
+		Assert.assertEquals(20, transformed.getY(), DELTA);
+		Assert.assertEquals(30, transformed.getWidth(), DELTA);
+		Assert.assertEquals(40, transformed.getHeight(), DELTA);
 	}
 
 	@Test
@@ -280,6 +304,23 @@ public class GeoServiceTest {
 
 		geometry = geoService.transform(geometry, source, target);
 		assertTransformedLineString(geometry);
+	}
+
+	@Test
+	public void transformGeometryCrsNoTransform() throws Exception {
+		Geometry geometry = getLineString();
+		CrsTransform transform = geoService.getCrsTransform(LONLAT, LONLAT);
+		geometry = geoService.transform(geometry, transform);
+		Coordinate[] coordinates = geometry.getCoordinates();
+		Assert.assertEquals(4, coordinates.length);
+		Assert.assertEquals(5, coordinates[0].x, DELTA);
+		Assert.assertEquals(4, coordinates[0].y, DELTA);
+		Assert.assertEquals(30, coordinates[1].x, DELTA);
+		Assert.assertEquals(10, coordinates[1].y, DELTA);
+		Assert.assertEquals(120, coordinates[2].x, DELTA);
+		Assert.assertEquals(150, coordinates[2].y, DELTA);
+		Assert.assertEquals(50, coordinates[3].x, DELTA);
+		Assert.assertEquals(50, coordinates[3].y, DELTA);
 	}
 
 	private void assertTransformedLineString(Geometry geometry) {

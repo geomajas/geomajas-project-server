@@ -39,12 +39,14 @@ public class CrsTransformImpl implements CrsTransform {
 	private Geometry transformableGeometry;
 	private Envelope transformableEnvelope;
 	private Bbox transformableBbox;
+	private boolean transforming;
 
 	public CrsTransformImpl(String id, Crs source, Crs target, MathTransform mathTransform) {
 		this.id = id;
 		this.source = source;
 		this.target = target;
 		this.mathTransform = mathTransform;
+		transforming = !(getSource().equals(getTarget()));
 	}
 
 	public CrsTransformImpl(String id, Crs source, Crs target, MathTransform mathTransform,
@@ -100,6 +102,10 @@ public class CrsTransformImpl implements CrsTransform {
 
 	public int getTargetDimensions() {
 		return mathTransform.getTargetDimensions();
+	}
+
+	public boolean isTransforming() {
+		return transforming;
 	}
 
 	public DirectPosition transform(DirectPosition directPosition, DirectPosition directPosition1)
