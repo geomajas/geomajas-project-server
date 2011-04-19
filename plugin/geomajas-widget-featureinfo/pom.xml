@@ -86,6 +86,11 @@
 				<artifactId>geomajas-widget-featureinfo</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -124,7 +129,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-featureinfo-backend-version>1.8.0</geomajas-widget-featureinfo-backend-version>
-		<geomajas-widget-featureinfo-gwt-version>1.8.0</geomajas-widget-featureinfo-gwt-version>
+		<geomajas-widget-featureinfo-backend-version>1.9.0-SNAPSHOT</geomajas-widget-featureinfo-backend-version>
+		<geomajas-widget-featureinfo-gwt-version>1.9.0-SNAPSHOT</geomajas-widget-featureinfo-gwt-version>
 	</properties>
 </project>
