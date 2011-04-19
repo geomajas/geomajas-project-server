@@ -81,12 +81,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
-				<artifactId>geomajas-plugin-searchandfilter</artifactId>
-				<version>${project.version}</version>
-				<classifier>sources</classifier>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-plugin-searchandfilter-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -97,7 +91,7 @@
 		<module>geomajas-widget-searchandfilter</module>
 		<module>geomajas-widget-searchandfilter-gwt</module>
 		<module>geomajas-widget-searchandfilter-gwt-example</module>
-  </modules>
+	</modules>
 
 	<profiles>
 		<profile>
@@ -128,7 +122,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-searchandfilter-backend-version>1.8.0</geomajas-widget-searchandfilter-backend-version>
+		<geomajas-widget-searchandfilter-backend-version>1.9.0-SNAPSHOT</geomajas-widget-searchandfilter-backend-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 	</properties>	
 </project>
