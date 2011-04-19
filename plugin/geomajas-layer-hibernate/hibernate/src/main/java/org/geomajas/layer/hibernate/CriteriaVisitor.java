@@ -282,11 +282,11 @@ public class CriteriaVisitor implements FilterVisitor {
 	}
 
 	public Object visit(ExcludeFilter filter, Object userData) {
-		throw new UnsupportedOperationException("visit(ExcludeFilter filter, Object userData)");
+		return Restrictions.not(Restrictions.conjunction());
 	}
 
 	public Object visit(IncludeFilter filter, Object userData) {
-		return userData;
+		return Restrictions.conjunction();
 	}
 
 	public Object visit(Id filter, Object userData) {
