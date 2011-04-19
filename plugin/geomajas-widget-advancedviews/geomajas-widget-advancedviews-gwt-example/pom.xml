@@ -38,14 +38,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.8.0</version>
+				<version>${geomajas-widget-advancedviews-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
-				<version>1.8.0</version>
+				<version>${geomajas-widget-advancedviews-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
