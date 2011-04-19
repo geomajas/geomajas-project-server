@@ -48,9 +48,13 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
-		// X-Forwarded-Host if behind a reverse proxy, fallback to relative URL.
+		// X-Forwarded-Host if behind a reverse proxy, fallback to general method.
 		// Alternative we could use the gwt module url to guess the real URL.
 		if (null != request.getHeader(X_FOWARD_HOST_HEADER)) {
+			log.warn("Automaticdispatcherservice detected a X-Forwarded-Host header which means the server is " +
+					"accessed using a reverse proxy server. This might cause problems in some cases. You are " +
+					"recommended to configure your tomcat connector to be aware of the original url. " +
+					"(see http://tomcat.apache.org/tomcat-6.0-doc/proxy-howto.html )");
 			String gwtModuleBase = request.getHeader(X_GWT_MODULE_HEADER);
 			if (null != gwtModuleBase) {
 				// Get last slash in the gwtModuleBase, ignoring the trailing slash.
@@ -59,8 +63,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 					String url = gwtModuleBase.substring(0, contextEndIndex) + "/d/";
 					return url;
 				}
-			}
-			return "./d/"; // use relative URL as back-up, will fail in many cases
+			} // else use the standard method below
 		}
 		
 		String url = request.getScheme() + "://" + request.getServerName();
