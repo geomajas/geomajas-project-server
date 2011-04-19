@@ -579,18 +579,14 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 						value = new Double(value.toString());
 						break;
 					case STRING:
+					case URL:
+					case IMGURL:
 						value = value.toString();
 						break;
 					case DATE:
 						if (!(value instanceof Date)) {
 							value = Timestamp.valueOf(value.toString());
 						}
-						break;
-					case URL:
-						value = value.toString();
-						break;
-					case IMGURL:
-						value = value.toString();
 						break;
 					case BOOLEAN:
 						value = Boolean.valueOf(value.toString());
