@@ -13,15 +13,18 @@ package org.geomajas.widget.searchandfilter.command.searchandfilter;
 import java.util.List;
 
 import org.geomajas.command.Command;
+import org.geomajas.command.CommandDispatcher;
+import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
+import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
-import org.geomajas.command.feature.SearchByLocationCommand;
-import org.geomajas.command.feature.SearchFeatureCommand;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvRequest;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvResponse;
+import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchRequest;
 import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchResponse;
 import org.geomajas.widget.searchandfilter.service.csv.CsvExportService;
 import org.slf4j.Logger;
@@ -32,11 +35,12 @@ import org.springframework.stereotype.Component;
 /**
  * ExportToCsvCommand.
  * <p>
- * You can use both a searchFeatureRequest or a searchByLocationRequest to retrieve features.
- *
+ * You can use both a searchFeatureRequest or a searchByLocationRequest to
+ * retrieve features.
+ * 
  * @author Kristof Heirwegh
  */
-@Component()
+@Component
 public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToCsvResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(ExportToCsvCommand.class);
@@ -44,13 +48,10 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 	private static final String EXTENSION = ".csv";
 
 	@Autowired
-	private SearchFeatureCommand searchFeaturesCommand;
-
+	private CommandDispatcher dispatch;
+	
 	@Autowired
-	private SearchByLocationCommand searchByLocationCommand;
-
-	@Autowired
-	private FeatureSearchCommand searchByCriterionCommand;
+	private SecurityContext securityContext;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -64,25 +65,27 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 
 	public void execute(ExportToCsvRequest request, ExportToCsvResponse response) throws Exception {
 		Feature[] features = null;
+		String token = securityContext.getToken();
+		String locale = request.getLocale();
 		if (request.getSearchFeatureRequest() != null) {
 			log.debug("CSV export using FeatureRequest");
-			SearchFeatureResponse featureResponse = new SearchFeatureResponse();
-			searchFeaturesCommand.execute(request.getSearchFeatureRequest(), featureResponse);
-			if (featureResponse.isError()) {
-				response.getErrorMessages().addAll(featureResponse.getErrorMessages());
-				response.getErrors().addAll(featureResponse.getErrors());
+			SearchFeatureResponse result = (SearchFeatureResponse) dispatch.execute(SearchFeatureRequest.COMMAND,
+					request.getSearchFeatureRequest(), token, locale);
+			if (result.isError()) {
+				response.getErrorMessages().addAll(result.getErrorMessages());
+				response.getErrors().addAll(result.getErrors());
 			} else {
-				features = featureResponse.getFeatures();
+				features = result.getFeatures();
 			}
 		} else if (request.getSearchByLocationRequest() != null) {
 			log.debug("CSV export using LocationRequest");
-			SearchByLocationResponse locationResponse = new SearchByLocationResponse();
-			searchByLocationCommand.execute(request.getSearchByLocationRequest(), locationResponse);
-			if (locationResponse.isError()) {
-				response.getErrorMessages().addAll(locationResponse.getErrorMessages());
-				response.getErrors().addAll(locationResponse.getErrors());
+			SearchByLocationResponse result = (SearchByLocationResponse) dispatch.execute(
+					SearchByLocationRequest.COMMAND, request.getSearchByLocationRequest(), token, locale);
+			if (result.isError()) {
+				response.getErrorMessages().addAll(result.getErrorMessages());
+				response.getErrors().addAll(result.getErrors());
 			} else {
-				List<Feature> res = locationResponse.getFeatureMap().get(request.getLayerId());
+				List<Feature> res = result.getFeatureMap().get(request.getLayerId());
 				if (res != null) {
 					features = res.toArray(new Feature[0]);
 				} else {
@@ -91,20 +94,20 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 			}
 		} else if (request.getSearchByCriterionRequest() != null) {
 			log.debug("CSV export using CriterionRequest");
-			FeatureSearchResponse critterResponse = new FeatureSearchResponse();
-			searchByCriterionCommand.execute(request.getSearchByCriterionRequest(), critterResponse);
-			if (critterResponse.isError()) {
-				response.getErrorMessages().addAll(critterResponse.getErrorMessages());
-				response.getErrors().addAll(critterResponse.getErrors());
+			FeatureSearchResponse result = (FeatureSearchResponse) dispatch.execute(FeatureSearchRequest.COMMAND,
+					request.getSearchByCriterionRequest(), token, locale);
+			if (result.isError()) {
+				response.getErrorMessages().addAll(result.getErrorMessages());
+				response.getErrors().addAll(result.getErrors());
 			} else {
-				List<Feature> res = critterResponse.getFeatureMap().get(request.getLayerId());
+				List<Feature> res = result.getFeatureMap().get(request.getLayerId());
 				if (res != null) {
 					features = res.toArray(new Feature[0]);
 				} else {
 					features = new Feature[0];
 				}
 			}
-			
+
 		} else {
 			throw new IllegalArgumentException("You must provide a feature or location search request.");
 		}

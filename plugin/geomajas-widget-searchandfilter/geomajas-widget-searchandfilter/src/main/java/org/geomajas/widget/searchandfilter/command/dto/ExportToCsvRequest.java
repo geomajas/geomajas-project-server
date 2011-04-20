@@ -23,6 +23,8 @@ public class ExportToCsvRequest extends LayerIdCommandRequest implements CsvMeta
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String COMMAND = "command.searchandfilter.ExportToCsv";
+	
 	private SearchByLocationRequest searchByLocationRequest;
 	private SearchFeatureRequest searchFeatureRequest;
 	private FeatureSearchRequest searchByCriterionRequest;

@@ -92,7 +92,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 			exportRequest.setQuoteChar(messages.exportToCsvQuoteChar());
 			exportRequest.setLayerId(layer.getServerLayerId());
 
-			GwtCommand command = new GwtCommand("command.searchandfilter.ExportToCsv");
+			GwtCommand command = new GwtCommand(ExportToCsvRequest.COMMAND);
 			command.setCommandRequest(exportRequest);
 			Deferred deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 				private static final String CONTENT_PRE = "<div style='margin-top: 20px; width: 200px; text-align: ce"
