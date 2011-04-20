@@ -58,6 +58,9 @@ public interface SearchAndFilterMessages extends Messages {
 	String geometricSearchWidgetFreeDrawingLine();
 	String geometricSearchWidgetFreeDrawingPolygon();
 	String geometricSearchWidgetFreeDrawingAdd();
+	String geometricSearchWidgetFreeDrawingRemoveLast();
+	String geometricSearchWidgetFreeDrawingInvalidGeometry();
+	String geometricSearchWidgetFreeDrawingNothingDrawn();
 
 	String attributeSearchWidgetTitle();
 

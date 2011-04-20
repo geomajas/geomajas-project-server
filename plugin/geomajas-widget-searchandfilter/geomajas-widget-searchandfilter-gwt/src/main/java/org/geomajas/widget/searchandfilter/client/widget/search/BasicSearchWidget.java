@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
@@ -23,6 +22,8 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.CloseClientEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -142,6 +143,13 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		cancelBtn.setShowDisabledIcon(false);
 		cancelBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				hide();
+				destroy();
+			}
+		});
+		
+		addCloseClickHandler(new CloseClickHandler() {
+			public void onCloseClick(CloseClientEvent event) {
 				hide();
 				destroy();
 			}
@@ -306,5 +314,4 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 			});
 		}
 	}
-
 }

@@ -137,7 +137,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 	@Override
 	public void hide() {
 		super.hide();
-		// make sure everything is cleaned up from the map
+		// make sure everything is cleaned up, and controllers removed
 		reset();
 	}
 

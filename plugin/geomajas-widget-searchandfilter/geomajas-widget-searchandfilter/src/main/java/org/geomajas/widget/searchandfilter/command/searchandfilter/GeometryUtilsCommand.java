@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Manipulations throw as little exceptions as possible, eg. if you give null
  * you get null returned, if you do not set an action, features are returned
  * as-is.
- * 
+ * <p>Warning: Merge is not 100% exact, so do not use if area-size is important.
  * @author Kristof Heirwegh
  */
 @Component
@@ -101,9 +101,10 @@ public class GeometryUtilsCommand implements Command<GeometryUtilsRequest, Geome
 	private Geometry[] merge(Geometry[] geoms) {
 		Geometry[] result = new Geometry[1];
 		// points/lines to polygon, prevents problems later on...
-		Geometry merged = geoms[0].buffer(0.000001);
+		// TODO this works for meters (1 cm) what with other crs's ? 
+		Geometry merged = geoms[0].buffer(0.01);
 		for (int i = 1; i < geoms.length; i++) {
-			merged = merged.union(geoms[i]);
+			merged = merged.union(geoms[i].buffer(0.01));
 		}
 		result[0] = merged;
 		return result;
