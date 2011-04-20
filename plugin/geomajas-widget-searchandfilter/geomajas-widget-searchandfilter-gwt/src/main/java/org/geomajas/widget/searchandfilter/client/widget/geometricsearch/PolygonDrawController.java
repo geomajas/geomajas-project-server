@@ -8,7 +8,6 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
 import org.geomajas.geometry.Coordinate;
@@ -90,21 +89,21 @@ public class PolygonDrawController extends FreeDrawingController {
 
 	public void onMouseUp(MouseUpEvent event) {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
-			
+
 			Coordinate[] oldCoords = null;
 			Coordinate[] newCoords = null;
 			int length = 0;
-			
-			if(geometry.getCoordinates() != null){
+
+			if (geometry.getCoordinates() != null) {
 				length = geometry.getCoordinates().length;
 				oldCoords = geometry.getCoordinates();
-			}else{
-			
+			} else {
+
 				newCoords = new Coordinate[1];
 			}
 			newCoords = new Coordinate[length + 1];
-			
-			if(oldCoords != null){
+
+			if (oldCoords != null) {
 				System.arraycopy(oldCoords, 0, newCoords, 0, length);
 			}
 
@@ -157,7 +156,6 @@ public class PolygonDrawController extends FreeDrawingController {
 
 	private void createTempLine(MouseEvent<?> event) {
 		if (tempLine1 == null && geometry instanceof Polygon) {
-
 			tempLine1 = new GfxGeometry("LineStringEditController.updateLine1");
 			tempLine2 = new GfxGeometry("LineStringEditController.updateLine2");
 
@@ -178,7 +176,7 @@ public class PolygonDrawController extends FreeDrawingController {
 		}
 
 		Polygon polygon = (Polygon) geometry;
-		
+
 		if (polygon != null && polygon.getCoordinates() != null && polygon.getCoordinates().length > 0) {
 
 			LinearRing ring = geometry.getGeometryFactory().createLinearRing(polygon.getCoordinates());

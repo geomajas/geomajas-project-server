@@ -121,7 +121,7 @@ public class LineStringDrawController extends FreeDrawingController {
 		for (int i = 0; i < srCoords.length; i++) {
 			srCoords[i] = getTransformer().worldToPan(worldCoords[i]);
 		}
-		
+
 		LineString lineString = geometry.getGeometryFactory().createLineString(srCoords);
 		tempLine.setGeometry(lineString);
 	}

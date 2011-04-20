@@ -8,7 +8,6 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
 import org.geomajas.configuration.CircleInfo;
@@ -40,11 +39,11 @@ public class PointDrawController extends FreeDrawingController {
 	private String dragTargetId;
 
 	private GfxGeometry tempPoint;
-	
+
 	private ShapeStyle drawStyle;
-	
+
 	private SymbolInfo symbolStyle;
-	
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -76,12 +75,12 @@ public class PointDrawController extends FreeDrawingController {
 	// -------------------------------------------------------------------------
 	// MapController implementation:
 	// -------------------------------------------------------------------------
-	
-	public void onMouseDown(MouseDownEvent event){
+
+	public void onMouseDown(MouseDownEvent event) {
 		Coordinate newCoords = getWorldPosition(event);
 		geometry = factory.createPoint(newCoords);
 	}
-	
+
 	public void onMouseUp(MouseUpEvent event) {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
 			removeTempPoint();
@@ -99,20 +98,20 @@ public class PointDrawController extends FreeDrawingController {
 	}
 
 	// Private methods:
-	
-	private void createTempPoint(){
+
+	private void createTempPoint() {
 		tempPoint = new GfxGeometry("PointDrawController.updatePoint");
 		tempPoint.setStyle(drawStyle);
 		tempPoint.setSymbolInfo(symbolStyle);
-		
+
 		Coordinate coords = getTransformer().worldToPan(geometry.getCoordinate());
 		Point point = (Point) geometry.getGeometryFactory().createPoint(coords);
 		tempPoint.setGeometry(point);
 		mapWidget.render(tempPoint, RenderGroup.VECTOR, RenderStatus.ALL);
 	}
-	
-	private void removeTempPoint(){
-		if(tempPoint != null){
+
+	private void removeTempPoint() {
+		if (tempPoint != null) {
 			mapWidget.render(tempPoint, RenderGroup.VECTOR, RenderStatus.DELETE);
 			tempPoint = null;
 		}
