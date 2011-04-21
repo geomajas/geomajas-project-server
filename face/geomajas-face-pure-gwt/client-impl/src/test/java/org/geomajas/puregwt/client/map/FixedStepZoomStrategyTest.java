@@ -11,11 +11,15 @@
 
 package org.geomajas.puregwt.client.map;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 
 import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
@@ -23,6 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -34,6 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
 		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
+@DirtiesContext
 public class FixedStepZoomStrategyTest {
 
 	private static final double[] SCALES = new double[] { 8.0, 4.0, 2.0, 1.0 };
@@ -92,6 +98,13 @@ public class FixedStepZoomStrategyTest {
 			// Test passed!
 		}
 
+		try {
+			zoomStrategy.getZoomStepScale(Integer.MAX_VALUE);
+			Assert.fail(); // We should not get here...
+		} catch (Exception e) {
+			// Test passed!
+		}
+
 		Assert.assertEquals(SCALES[0], zoomStrategy.getZoomStepScale(0));
 		Assert.assertEquals(SCALES[1], zoomStrategy.getZoomStepScale(1));
 		Assert.assertEquals(SCALES[2], zoomStrategy.getZoomStepScale(2));
@@ -123,5 +136,38 @@ public class FixedStepZoomStrategyTest {
 		Assert.assertEquals(3, zoomStrategy.getZoomStepIndex(1.1));
 		Assert.assertEquals(3, zoomStrategy.getZoomStepIndex(0.9));
 		Assert.assertEquals(3, zoomStrategy.getZoomStepIndex(-1.0));
+	}
+
+	@Test
+	public void testCheckScale() {
+		Assert.assertEquals(SCALES[3], zoomStrategy.checkScale(0, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[2], zoomStrategy.checkScale(SCALES[3] + 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[1], zoomStrategy.checkScale(SCALES[2] + 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[0], zoomStrategy.checkScale(SCALES[1] + 0.001, ZoomOption.LEVEL_FIT));
+		Assert.assertEquals(SCALES[0], zoomStrategy.checkScale(SCALES[0] + 0.001, ZoomOption.LEVEL_FIT));
+	}
+
+	@Test
+	public void testFaultyConfiguration() {
+		GeometryFactory factory = new GeometryFactoryImpl();
+		Bbox maxBounds = factory.createBbox(mapInfo.getMaxBounds());
+
+		// Null value for scale levels:
+		mapInfo.getScaleConfiguration().setZoomLevels(null);
+		try {
+			zoomStrategy = new FixedStepZoomStrategy(mapInfo, maxBounds);
+			Assert.fail();
+		} catch (IllegalArgumentException e) {
+			// Expected exception.
+		}
+
+		// Empty list of scale levels:
+		mapInfo.getScaleConfiguration().setZoomLevels(new ArrayList<ScaleInfo>());
+		try {
+			zoomStrategy = new FixedStepZoomStrategy(mapInfo, maxBounds);
+			Assert.fail();
+		} catch (IllegalArgumentException e) {
+			// Expected exception.
+		}
 	}
 }

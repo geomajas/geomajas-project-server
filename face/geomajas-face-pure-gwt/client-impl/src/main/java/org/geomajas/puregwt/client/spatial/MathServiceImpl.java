@@ -55,7 +55,7 @@ public class MathServiceImpl implements MathService {
 	public Coordinate lineIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
 		LineSegment ls1 = new LineSegment(c1, c2);
 		LineSegment ls2 = new LineSegment(c3, c4);
-		return ls1.getIntersection(ls2);
+		return ls1.getLineIntersection(ls2);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class MathServiceImpl implements MathService {
 	public Coordinate lineSegmentIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
 		LineSegment ls1 = new LineSegment(c1, c2);
 		LineSegment ls2 = new LineSegment(c3, c4);
-		return ls1.getIntersectionSegments(ls2);
+		return ls1.getIntersection(ls2);
 	}
 
 	public double getDistance(Geometry geometry, Coordinate coordinate) {

@@ -16,6 +16,7 @@ import java.util.Collection;
 import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.gfx.WorldContainer;
@@ -33,9 +34,12 @@ public interface MapPresenter {
 	/**
 	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
 	 * on return. A special {@link org.geomajas.puregwt.client.map.event.MapInitializationEvent} will be fired once
-	 * initialization is done.
+	 * initialization is done.<br/>
+	 * TODO remove from API??
 	 */
 	void initialize();
+	
+	EventBus getEventBus();
 
 	/**
 	 * Set a new renderer on the map. This renderer is responsible for making sure the map is always renderer correctly.
@@ -58,7 +62,9 @@ public interface MapPresenter {
 	/**
 	 * Create a new container in world space wherein one can render new vector objects and return it. Note that all
 	 * objects drawn into such a container should be expressed in world coordinates (the CRS of the map). These objects
-	 * will also be automatically redrawn when the view port on the map changes.
+	 * will also be automatically redrawn when the view port on the map changes.<br/>
+	 * New containers are automatically drawn on top of all other containers - that includes both world and screen
+	 * containers.
 	 * 
 	 * @return Returns the world vector container.
 	 */
@@ -67,9 +73,11 @@ public interface MapPresenter {
 	/**
 	 * Create a new container in screen space wherein one can render new vector objects and return it. Note that all
 	 * objects drawn into such a container should be expressed in pixel coordinates. No matter how much the map moves or
-	 * zooms, these objects will always remain on the same fixed position.
+	 * zooms, these objects will always remain on the same fixed position.<br/>
+	 * New containers are automatically drawn on top of all other containers - that includes both world and screen
+	 * containers.
 	 * 
-	 * @return Returns the vector container.
+	 * @return Returns the screen vector container.
 	 */
 	ScreenContainer addScreenContainer();
 

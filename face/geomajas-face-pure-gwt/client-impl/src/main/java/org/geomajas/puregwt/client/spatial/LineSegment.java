@@ -21,26 +21,20 @@ import org.geomajas.geometry.Coordinate;
  */
 public class LineSegment {
 
-	/**
-	 * The line-segment's first(begin) coordinate.
-	 */
+	/** The line-segment's first(begin) coordinate. */
 	private Coordinate c1;
 
-	/**
-	 * The line-segment's last(end) coordinate.
-	 */
+	/** The line-segment's last(end) coordinate. */
 	private Coordinate c2;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public LineSegment() {
-		c1 = null;
-		c2 = null;
-	}
-
 	public LineSegment(Coordinate c1, Coordinate c2) {
+		if (c1 == null || c2 == null) {
+			throw new NullPointerException("Null value passed to LineSegment constructor.");
+		}
 		this.c1 = c1;
 		this.c2 = c2;
 	}
@@ -53,8 +47,8 @@ public class LineSegment {
 	 * Return the length of the line segment.
 	 */
 	public double getLength() {
-		double deltaX = this.c2.getX() - this.c1.getX();
-		double deltaY = this.c2.getY() - this.c1.getY();
+		double deltaX = c2.getX() - c1.getX();
+		double deltaY = c2.getY() - c1.getY();
 		return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 	}
 
@@ -62,8 +56,8 @@ public class LineSegment {
 	 * Return the middle point of this line segment.
 	 */
 	public Coordinate getMiddlePoint() {
-		double x = this.x1() + 0.5 * (this.x2() - this.x1());
-		double y = this.y1() + 0.5 * (this.y2() - this.y1());
+		double x = c1.getX() + 0.5 * (c2.getX() - c1.getX());
+		double y = c1.getY() + 0.5 * (c2.getY() - c1.getY());
 		return new Coordinate(x, y);
 	}
 
@@ -75,7 +69,7 @@ public class LineSegment {
 	 *            The {@link Coordinate} to check distance from.
 	 */
 	public double distance(Coordinate c) {
-		Coordinate nearest = this.nearest(c);
+		Coordinate nearest = nearest(c);
 		LineSegment ls = new LineSegment(c, nearest);
 		return ls.getLength();
 	}
@@ -88,14 +82,14 @@ public class LineSegment {
 	 * @return Returns true if they intersect in 1 point, false otherwise.
 	 */
 	public boolean intersects(LineSegment lineSegment) {
-		double x1 = this.x1();
-		double y1 = this.y1();
-		double x2 = this.x2();
-		double y2 = this.y2();
-		double x3 = lineSegment.x1();
-		double y3 = lineSegment.y1();
-		double x4 = lineSegment.x2();
-		double y4 = lineSegment.y2();
+		double x1 = c1.getX();
+		double y1 = c1.getY();
+		double x2 = c2.getX();
+		double y2 = c2.getY();
+		double x3 = lineSegment.getCoordinate1().getX();
+		double y3 = lineSegment.getCoordinate1().getY();
+		double x4 = lineSegment.getCoordinate2().getX();
+		double y4 = lineSegment.getCoordinate2().getY();
 
 		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
 		if (denom == 0) {
@@ -115,16 +109,16 @@ public class LineSegment {
 	 *            The other LineSegment.
 	 * @return A {@link Coordinate} representing the intersection point.
 	 */
-	public Coordinate getIntersection(LineSegment lineSegment) { // may not be on either one of the line segments.
+	public Coordinate getLineIntersection(LineSegment lineSegment) { // may not be on either one of the line segments.
 		// http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
-		double x1 = this.x1();
-		double y1 = this.y1();
-		double x2 = this.x2();
-		double y2 = this.y2();
-		double x3 = lineSegment.x1();
-		double y3 = lineSegment.y1();
-		double x4 = lineSegment.x2();
-		double y4 = lineSegment.y2();
+		double x1 = c1.getX();
+		double y1 = c1.getY();
+		double x2 = c2.getX();
+		double y2 = c2.getY();
+		double x3 = lineSegment.getCoordinate1().getX();
+		double y3 = lineSegment.getCoordinate1().getY();
+		double x4 = lineSegment.getCoordinate2().getX();
+		double y4 = lineSegment.getCoordinate2().getY();
 
 		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
 		double u1 = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
@@ -142,16 +136,16 @@ public class LineSegment {
 	 * @return A {@link Coordinate} representing the intersection point (so on both line segments), null if segments are
 	 *         not intersecting or corresponding lines are coinciding.
 	 */
-	public Coordinate getIntersectionSegments(LineSegment lineSegment) {
+	public Coordinate getIntersection(LineSegment lineSegment) {
 		// http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
-		double x1 = this.x1();
-		double y1 = this.y1();
-		double x2 = this.x2();
-		double y2 = this.y2();
-		double x3 = lineSegment.x1();
-		double y3 = lineSegment.y1();
-		double x4 = lineSegment.x2();
-		double y4 = lineSegment.y2();
+		double x1 = c1.getX();
+		double y1 = c1.getY();
+		double x2 = c2.getX();
+		double y2 = c2.getY();
+		double x3 = lineSegment.getCoordinate1().getX();
+		double y3 = lineSegment.getCoordinate1().getY();
+		double x4 = lineSegment.getCoordinate2().getX();
+		double y4 = lineSegment.getCoordinate2().getY();
 
 		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
 		if (denom == 0) {
@@ -180,26 +174,25 @@ public class LineSegment {
 	 * @return The point on the LineSegment nearest to the given coordinate.
 	 */
 	public Coordinate nearest(Coordinate c) {
-		double len = this.getLength();
+		double len = getLength();
 
-		double u = (c.getX() - this.c1.getX()) * (this.c2.getX() - this.c1.getX()) + (c.getY() - this.c1.getY())
-				* (this.c2.getY() - this.c1.getY());
+		double u = (c.getX() - c1.getX()) * (c2.getX() - c1.getX()) + (c.getY() - c1.getY()) * (c2.getY() - c1.getY());
 		u = u / (len * len);
 
 		if (u < 0.00001 || u > 1) {
 			// Shortest point not within LineSegment, so take closest end-point.
-			LineSegment ls1 = new LineSegment(c, this.c1);
-			LineSegment ls2 = new LineSegment(c, this.c2);
+			LineSegment ls1 = new LineSegment(c, c1);
+			LineSegment ls2 = new LineSegment(c, c2);
 			double len1 = ls1.getLength();
 			double len2 = ls2.getLength();
 			if (len1 < len2) {
-				return this.c1;
+				return c1;
 			}
-			return this.c2;
+			return c2;
 		} else {
 			// Intersecting point is on the line, use the formula: P = P1 + u (P2 - P1)
-			double x1 = this.c1.getX() + u * (this.c2.getX() - this.c1.getX());
-			double y1 = this.c1.getY() + u * (this.c2.getY() - this.c1.getY());
+			double x1 = c1.getX() + u * (c2.getX() - c1.getX());
+			double y1 = c1.getY() + u * (c2.getY() - c1.getY());
 			return new Coordinate(x1, y1);
 		}
 	}
@@ -208,27 +201,11 @@ public class LineSegment {
 	// Getters
 	// -------------------------------------------------------------------------
 
-	public double x1() {
-		return this.c1.getX();
+	public Coordinate getCoordinate1() {
+		return c1;
 	}
 
-	public double y1() {
-		return this.c1.getY();
-	}
-
-	public double x2() {
-		return this.c2.getX();
-	}
-
-	public double y2() {
-		return this.c2.getY();
-	}
-
-	public Coordinate getC1() {
-		return this.c1;
-	}
-
-	public Coordinate getC2() {
-		return this.c2;
+	public Coordinate getCoordinate2() {
+		return c2;
 	}
 }

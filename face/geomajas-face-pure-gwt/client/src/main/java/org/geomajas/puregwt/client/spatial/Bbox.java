@@ -26,7 +26,8 @@ import org.geomajas.global.Api;
 public interface Bbox {
 
 	/**
-	 * Is this bounding box equal to the other?
+	 * Is this bounding box equal to the other?<br/>
+	 * TODO remove? There are no references to it....
 	 * 
 	 * @param other
 	 *            The other bounding box to compare against.

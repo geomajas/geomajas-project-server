@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -46,6 +47,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml", "mapBeans.xml",
 		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
+@DirtiesContext
 public class LayersModelEventTest {
 
 	private static final String LAYER1 = "beans1Layer";
@@ -236,6 +238,14 @@ public class LayersModelEventTest {
 		Assert.assertEquals(1, fromIndex);
 		Assert.assertEquals(0, toIndex);
 
+		fromIndex = 342;
+		toIndex = 342;
+
+		// Corner case - move to same position. We don't expect an event.
+		layersModel.moveLayer(layer3, 0);
+		Assert.assertEquals(342, fromIndex);
+		Assert.assertEquals(342, toIndex);
+		
 		reg.removeHandler();
 	}
 
@@ -265,7 +275,16 @@ public class LayersModelEventTest {
 		Assert.assertEquals(1, layerCount);
 		layersModel.removeLayer(LAYER2);
 		Assert.assertEquals(0, layerCount);
-
+		
+		// Corner cases:
+		Assert.assertFalse(layersModel.removeLayer("this-layer-does-not-exist"));
+		try {
+			layersModel.removeLayer(null);
+			Assert.fail();
+		} catch(NullPointerException npe) {
+			// Test passed.
+		}
+		
 		reg.removeHandler();
 	}
 }

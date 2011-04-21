@@ -233,6 +233,10 @@ public class MapPresenterImpl implements MapPresenter {
 		return viewPort;
 	}
 
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
 	public void setMapController(MapController mapController) {
 		for (HandlerRegistration registration : handlers) {
 			registration.removeHandler();

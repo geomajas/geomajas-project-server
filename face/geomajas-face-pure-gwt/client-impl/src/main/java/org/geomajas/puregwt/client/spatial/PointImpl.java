@@ -94,11 +94,11 @@ public class PointImpl extends AbstractGeometry implements Point {
 	/**
 	 * Return the minimal distance between coordinate and this point.
 	 * 
-	 * @return Return the minimal distance
+	 * @return Return the minimal distance. If this point is empty, Double.MAX_VALUE is returned.
 	 */
 	public double getDistance(Coordinate point) {
 		if (isEmpty()) {
-			return Double.MIN_VALUE;
+			return Double.MAX_VALUE;
 		}
 		return this.coordinate.distance(point);
 	}
@@ -170,7 +170,7 @@ public class PointImpl extends AbstractGeometry implements Point {
 		if (isEmpty()) {
 			return "POINT(EMPTY)";
 		}
-		return "POINT(" + coordinate.getX() + ", " + coordinate.getY() + ")";
+		return "POINT(" + coordinate.getX() + " " + coordinate.getY() + ")";
 	}
 
 	// -------------------------------------------------------------------------

@@ -20,7 +20,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
  * General interface for a GWT client side feature.<br/>
- * TODO what about lazy loading here?
+ * TODO what about lazy loading here? Remove the concept entirely?
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose

@@ -44,7 +44,21 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * ...
+ * <p>
+ * Implementation of the MapWidget interface as described by the
+ * {@link org.geomajas.puregwt.client.map.MapPresenterImpl}. It represents the MVP 'view' of the map's presenter (aka
+ * MapPresenter).
+ * </p>
+ * <p>
+ * This widget is able to render all required objects that the MapPresenter supports, and does this in the following
+ * order:
+ * <ol>
+ * <li>Raster layers & rassterized vector layers.</li>
+ * <li>Vector layers (SVG/VML)</li>
+ * <li>All screen and world containers</li>
+ * <li>All map gadgets</li>
+ * </ol>
+ * </p>
  * 
  * @author Pieter De Graef
  */

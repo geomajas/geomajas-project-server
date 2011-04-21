@@ -57,25 +57,14 @@ public class BboxImpl implements Bbox {
 		this.height = height;
 	}
 
-	/**
-	 * Private constructor. Construct a bounding box by copying another one.
-	 * 
-	 * @param bounds
-	 *            Another bounding box instance.
-	 */
-	private BboxImpl(Bbox bounds) {
-		x = bounds.getX();
-		y = bounds.getY();
-		width = bounds.getWidth();
-		height = bounds.getHeight();
-	}
-
 	// -------------------------------------------------------------------------
 	// Class specific functions:
 	// -------------------------------------------------------------------------
 
 	/**
 	 * Create a clone of the object.
+	 * 
+	 * @return Returns a new bounding box that equals this one.
 	 */
 	public Object clone() {
 		return new BboxImpl(x, y, width, height);
@@ -102,23 +91,6 @@ public class BboxImpl implements Bbox {
 	 */
 	public Coordinate getEndPoint() {
 		return new Coordinate(x + width, y + height);
-	}
-
-	/**
-	 * Get the coordinates of the bounding box as an array.
-	 * 
-	 * @return Returns 5 coordinates so that the array is closed. This can be useful when using this array to creating a
-	 *         <code>LinearRing</code>.
-	 */
-	public Coordinate[] getCoordinates() {
-		Coordinate[] result = new Coordinate[5];
-
-		result[0] = new Coordinate(x, y);
-		result[1] = new Coordinate(x + width, y);
-		result[2] = new Coordinate(x + width, y + height);
-		result[3] = new Coordinate(x, y + height);
-		result[4] = new Coordinate(x, y);
-		return result;
 	}
 
 	/**
@@ -218,7 +190,7 @@ public class BboxImpl implements Bbox {
 	 *            Must be a positive number, otherwise null will be returned.
 	 * @return
 	 */
-	public BboxImpl buffer(double range) {
+	public Bbox buffer(double range) {
 		if (range > 0) {
 			double r2 = range * 2;
 			return new BboxImpl(x - range, y - range, width + r2, height + r2);
@@ -233,7 +205,7 @@ public class BboxImpl implements Bbox {
 	 *            The scale factor (must be > 0).
 	 * @return
 	 */
-	public BboxImpl scale(double factor) {
+	public Bbox scale(double factor) {
 		if (factor > 0) {
 			double scaledWidth = width * factor;
 			double scaledHeight = height * factor;
@@ -241,33 +213,7 @@ public class BboxImpl implements Bbox {
 			return new BboxImpl(center.getX() - scaledWidth / 2, center.getY() - scaledHeight / 2, scaledWidth,
 					scaledHeight);
 		} else {
-			return new BboxImpl(this);
-		}
-	}
-
-	/**
-	 * Creates a bounding box that fits exactly in this box but has a different width/height ratio.
-	 * 
-	 * @param ratioWidth
-	 * @param ratioHeight
-	 * @return
-	 */
-	public BboxImpl createFittingBox(double ratioWidth, double ratioHeight) {
-		if (ratioWidth > 0 && ratioHeight > 0) {
-			double newRatio = ratioWidth / ratioHeight;
-			double oldRatio = width / height;
-			double newWidth = width;
-			double newHeight = height;
-			if (newRatio > oldRatio) {
-				newHeight = width / newRatio;
-			} else {
-				newWidth = height * newRatio;
-			}
-			BboxImpl result = new BboxImpl(0, 0, newWidth, newHeight);
-			result.setCenterPoint(getCenterPoint());
-			return result;
-		} else {
-			return new BboxImpl(this);
+			return (Bbox) clone();
 		}
 	}
 
@@ -282,22 +228,6 @@ public class BboxImpl implements Bbox {
 	public void translate(double dx, double dy) {
 		this.x = this.x + dx;
 		this.y = this.y + dy;
-	}
-
-	/**
-	 * Create a new bounds by transforming this bounds with the specified tranformation matrix.
-	 * 
-	 * @param t
-	 *            the transformation matrix
-	 * @return the transformed bounds
-	 */
-	public BboxImpl transform(MatrixImpl t) {
-		Coordinate c1 = transform(t, new Coordinate(x, y));
-		Coordinate c2 = transform(t, new Coordinate(x + width, y + height));
-		Coordinate origin = new Coordinate(Math.min(c1.getX(), c2.getX()), Math.min(c1.getY(), c2.getY()));
-		Coordinate endPoint = new Coordinate(Math.max(c1.getX(), c2.getX()), Math.max(c1.getY(), c2.getY()));
-		return new BboxImpl(origin.getX(), origin.getY(), endPoint.getX() - origin.getX(), endPoint.getY()
-				- origin.getY());
 	}
 
 	/**
@@ -334,32 +264,16 @@ public class BboxImpl implements Bbox {
 		return height;
 	}
 
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
 	public double getWidth() {
 		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
 	}
 
 	public double getX() {
 		return x;
 	}
 
-	public void setX(double x) {
-		this.x = x;
-	}
-
 	public double getY() {
 		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
 	}
 
 	public double getMaxX() {
@@ -393,11 +307,5 @@ public class BboxImpl implements Bbox {
 
 	protected boolean equals(double d1, double d2, double delta) {
 		return Math.abs(d1 - d2) <= delta;
-	}
-
-	private Coordinate transform(MatrixImpl t, Coordinate coordinate) {
-		double x = t.getXx() * coordinate.getX() + t.getXy() * coordinate.getY() + t.getDx();
-		double y = t.getYx() * coordinate.getY() + t.getYy() * coordinate.getY() + t.getDy();
-		return new Coordinate(x, y);
 	}
 }

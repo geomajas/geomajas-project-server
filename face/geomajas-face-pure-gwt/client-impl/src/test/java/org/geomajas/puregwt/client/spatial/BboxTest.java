@@ -155,7 +155,7 @@ public class BboxTest {
 	}
 
 	@Test
-	public void intersects() {
+	public void testIntersects() {
 		Assert.assertTrue(empty.intersects(empty));
 		Assert.assertTrue(empty.intersects(origin));
 		Assert.assertTrue(origin.intersects(empty));
@@ -165,7 +165,34 @@ public class BboxTest {
 	}
 
 	@Test
-	public void contains() {
-		Assert.assertTrue(normal.intersects(empty));
+	public void testContains() {
+		Assert.assertTrue(normal.contains(empty));
+		Assert.assertTrue(normal.contains(origin));
+		Assert.assertTrue(normal.contains(normal));
+		Assert.assertFalse(origin.contains(normal));
+	}
+
+	@Test
+	public void testScale() {
+		Bbox scaled = normal.scale(2);
+		Assert.assertEquals(normal.getCenterPoint().getX(), scaled.getCenterPoint().getX());
+		Assert.assertEquals(normal.getCenterPoint().getY(), scaled.getCenterPoint().getY());
+		Assert.assertEquals(scaled.getX(), -15.0);
+		Assert.assertEquals(scaled.getWidth(), 40.0);
+		Assert.assertEquals(scaled.getY(), -15.0);
+		Assert.assertEquals(scaled.getHeight(), 40.0);
+	}
+
+	@Test
+	public void testIsEmpty() {
+		Assert.assertTrue(empty.isEmpty());
+		Assert.assertFalse(normal.isEmpty());
+	}
+
+	@Test
+	public void testEquals() {
+		Assert.assertTrue(empty.equals(empty));
+		Assert.assertFalse(normal.equals(empty));
+		Assert.assertFalse(empty.equals(new Integer(342)));
 	}
 }

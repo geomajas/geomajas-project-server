@@ -112,11 +112,9 @@ public class LayersModelImpl implements LayersModel {
 	public boolean removeLayer(String id) {
 		Layer<?> layer = getLayer(id);
 		if (layer != null) {
-			boolean result = layers.remove(layer);
-			if (result) {
-				eventBus.fireEvent(new LayerRemovedEvent(layer));
-				return true;
-			}
+			layers.remove(layer);
+			eventBus.fireEvent(new LayerRemovedEvent(layer));
+			return true;
 		}
 		return false;
 	}
@@ -169,20 +167,12 @@ public class LayersModelImpl implements LayersModel {
 		}
 
 		// First remove the layer from the list:
-		if (!layers.remove(layer)) {
-			return false;
-		}
-		if (!mapInfo.getLayers().remove(layerInfo)) {
-			return false;
-		}
+		layers.remove(layer);
+		mapInfo.getLayers().remove(layerInfo);
 
 		// Change the order:
-		try {
-			layers.add(index, layer);
-			mapInfo.getLayers().add(index, layerInfo);
-		} catch (Exception e) {
-			return false;
-		}
+		layers.add(index, layer);
+		mapInfo.getLayers().add(index, layerInfo);
 
 		// Send out the correct event:
 		eventBus.fireEvent(new LayerOrderChangedEvent(currentIndex, index));
@@ -190,19 +180,11 @@ public class LayersModelImpl implements LayersModel {
 	}
 
 	public boolean moveLayerUp(Layer<?> layer) {
-		int position = getLayerPosition(layer);
-		if (position < 0) {
-			return false;
-		}
-		return moveLayer(layer, position + 1);
+		return moveLayer(layer, getLayerPosition(layer) + 1);
 	}
 
 	public boolean moveLayerDown(Layer<?> layer) {
-		int position = getLayerPosition(layer);
-		if (position < 0) {
-			return false;
-		}
-		return moveLayer(layer, position - 1);
+		return moveLayer(layer, getLayerPosition(layer) - 1);
 	}
 
 	/**
@@ -215,7 +197,7 @@ public class LayersModelImpl implements LayersModel {
 	 */
 	public int getLayerPosition(Layer<?> layer) {
 		if (layer == null) {
-			return -1;
+			throw new NullPointerException("Null value passed to the getLayerPosition method.");
 		}
 		for (int i = 0; i < layers.size(); i++) {
 			if (layer.getId().equals(layers.get(i).getId())) {

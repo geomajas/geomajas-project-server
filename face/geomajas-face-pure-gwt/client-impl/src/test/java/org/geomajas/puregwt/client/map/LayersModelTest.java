@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -39,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml", "mapBeans.xml",
 		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
+@DirtiesContext
 public class LayersModelTest {
 
 	private static final String LAYER1 = "beans1Layer";
@@ -66,6 +68,12 @@ public class LayersModelTest {
 			}
 		}
 		mapInfo.setLayers(layers);
+	}
+
+	@Test
+	public void testBeforeInit() {
+		LayersModel layersModel = new LayersModelImpl(eventBus);
+		Assert.assertNull(layersModel.getSelectedLayer());
 	}
 
 	@Test
@@ -112,6 +120,14 @@ public class LayersModelTest {
 		Assert.assertEquals(layersModel.getLayer(0), layersModel.getLayer(LAYER1));
 		Assert.assertEquals(layersModel.getLayer(1), layersModel.getLayer(LAYER2));
 		Assert.assertEquals(layersModel.getLayer(2), layersModel.getLayer(LAYER3));
+
+		// Corner cases:
+		try {
+			layersModel.getLayer(null);
+			Assert.fail();
+		} catch (NullPointerException npe) {
+			// Test passed.
+		}
 	}
 
 	@Test
@@ -126,6 +142,14 @@ public class LayersModelTest {
 		Assert.assertEquals(0, layersModel.getLayerPosition(layersModel.getLayer(LAYER1)));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layersModel.getLayer(LAYER2)));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layersModel.getLayer(LAYER3)));
+
+		// Corner cases:
+		try {
+			layersModel.getLayerPosition(null);
+			Assert.fail();
+		} catch (NullPointerException npe) {
+			// Test passed.
+		}
 	}
 
 	@Test
@@ -212,6 +236,12 @@ public class LayersModelTest {
 		Assert.assertEquals(2, layersModel.getLayerPosition(layer2));
 
 		layersModel.moveLayer(layer3, 0);
+		Assert.assertEquals(0, layersModel.getLayerPosition(layer3));
+		Assert.assertEquals(1, layersModel.getLayerPosition(layer1));
+		Assert.assertEquals(2, layersModel.getLayerPosition(layer2));
+
+		// Corner cases:
+		Assert.assertFalse(layersModel.moveLayer(layer3, 0));
 		Assert.assertEquals(0, layersModel.getLayerPosition(layer3));
 		Assert.assertEquals(1, layersModel.getLayerPosition(layer1));
 		Assert.assertEquals(2, layersModel.getLayerPosition(layer2));
