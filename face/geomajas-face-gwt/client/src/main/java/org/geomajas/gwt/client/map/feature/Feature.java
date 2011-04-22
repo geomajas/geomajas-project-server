@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.map.feature;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,7 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationAttribute;
+import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.CurrencyAttribute;
 import org.geomajas.layer.feature.attribute.DateAttribute;
@@ -161,30 +163,58 @@ public class Feature implements Paintable, Cloneable {
 
 	public Object getAttributeValue(String attributeName) {
 		Attribute attribute = getAttributes().get(attributeName);
-		if (attribute instanceof BooleanAttribute) {
-			return ((BooleanAttribute) attribute).getValue();
-		} else if (attribute instanceof CurrencyAttribute) {
-			return ((CurrencyAttribute) attribute).getValue();
-		} else if (attribute instanceof DateAttribute) {
-			return ((DateAttribute) attribute).getValue();
-		} else if (attribute instanceof DoubleAttribute) {
-			return ((DoubleAttribute) attribute).getValue();
-		} else if (attribute instanceof FloatAttribute) {
-			return ((FloatAttribute) attribute).getValue();
-		} else if (attribute instanceof ImageUrlAttribute) {
-			return ((ImageUrlAttribute) attribute).getValue();
-		} else if (attribute instanceof IntegerAttribute) {
-			return ((IntegerAttribute) attribute).getValue();
-		} else if (attribute instanceof LongAttribute) {
-			return ((LongAttribute) attribute).getValue();
-		} else if (attribute instanceof ShortAttribute) {
-			return ((ShortAttribute) attribute).getValue();
-		} else if (attribute instanceof StringAttribute) {
-			return ((StringAttribute) attribute).getValue();
-		} else if (attribute instanceof UrlAttribute) {
-			return ((UrlAttribute) attribute).getValue();
+		if (attribute != null) {
+			return attribute.getValue();
 		}
 		return null;
+	}
+	
+	public void setBooleanAttribute(String name, Boolean value) {
+		((BooleanAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setCurrencyAttribute(String name, String value) {
+		((CurrencyAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setDateAttribute(String name, Date value) {
+		((DateAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setDoubleAttribute(String name, Double value) {
+		((DoubleAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setFloatAttribute(String name, Float value) {
+		((FloatAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setImageUrlAttribute(String name, String value) {
+		((ImageUrlAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setIntegerAttribute(String name, Integer value) {
+		((IntegerAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setLongAttribute(String name, Long value) {
+		((LongAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setShortAttribute(String name, Short value) {
+		((ShortAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setStringAttribute(String name, String value) {
+		((StringAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setUrlAttribute(String name, String value) {
+		((UrlAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void setManyToOneAttribute(String name, AssociationValue value) {
+		((ManyToOneAttribute) getAttributes().get(name)).setValue(value);
 	}
 
 	/**

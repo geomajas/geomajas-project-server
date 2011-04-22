@@ -168,7 +168,7 @@ public class FeatureForm {
 	public boolean validate() {
 		boolean validate = true;
 		for (FormItem item : formWidget.getFields()) {
-			// ignore many-to-one because of bug
+			// workaround for SmartGWT bug, see http://jira.geomajas.org/browse/GWT-226
 			if (!(item instanceof SelectItem)) {
 				validate = validate & item.validate();
 			}
