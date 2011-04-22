@@ -96,10 +96,12 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		long ts = System.currentTimeMillis();
 		VectorLayer layer = getVectorLayer(layerId);
 		CrsTransform mapToLayer = geoService.getCrsTransform(crs, layer.getCrs());
+		CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
 		context.put(PipelineCode.CRS_TRANSFORM_KEY, mapToLayer);
+		context.put(PipelineCode.CRS_BACK_TRANSFORM_KEY, layerToMap);
 		context.put(PipelineCode.OLD_FEATURES_KEY, oldFeatures);
 		context.put(PipelineCode.NEW_FEATURES_KEY, newFeatures);
 		context.put(PipelineCode.CRS_KEY, crs);

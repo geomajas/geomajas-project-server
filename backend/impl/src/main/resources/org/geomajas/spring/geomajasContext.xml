@@ -341,6 +341,15 @@ PROJCS["Google Mercator",
 					<property name="id" value="postUpdateSave" />
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preBackTransformGeometry" />
+				</bean>
+				<bean class="org.geomajas.internal.layer.vector.FeatureBackTransformGeometryStep">
+					<property name="id" value="FeatureBackTransformGeometryStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postBackTransformGeometry" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preUpdateFeature" />
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.UpdateFeatureStep">
