@@ -44,6 +44,7 @@ public interface VectorLayerStore extends LayerStore<VectorTile> {
 	 * @param id
 	 *            The feature's identifier.
 	 * @param featureIncludes what data should be available in the features
+	 * See {@link org.geomajas.global.GeomajasConstant}.
 	 * @param callback callback which gets the features
 	 */
 	void getFeature(String id, int featureIncludes, LazyLoadCallback callback);
@@ -61,7 +62,8 @@ public interface VectorLayerStore extends LayerStore<VectorTile> {
 	/**
 	 * Return a set of all features currently in the store.
 	 *
-	 * @param featureIncludes what data should be available in the features
+	 * @param featureIncludes what data should be available in the features. 
+	 * See {@link org.geomajas.global.GeomajasConstant}.
 	 * @param callback callback which gets the features
 	 */
 	void getFeatures(int featureIncludes, LazyLoadCallback callback);
