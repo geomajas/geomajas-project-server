@@ -263,7 +263,7 @@ public class FeatureForm {
 				// TODO Implement setter for Associations as well...
 			}
 		}
-		if(item != null) {
+		if (item != null) {
 			item.fireEvent(new ChangedEvent(item.getJsObj()));
 		}
 	}
