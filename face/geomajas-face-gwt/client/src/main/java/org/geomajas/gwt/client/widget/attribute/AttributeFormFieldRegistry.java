@@ -384,20 +384,20 @@ public final class AttributeFormFieldRegistry {
 	 */
 	public static DataSourceField createDataSourceField(VectorLayer layer, AttributeInfo info) {
 		DataSourceField field = null;
-		List<Validator> validators = null;
+		List<Validator> validators = new ArrayList<Validator>();
 		if (info.getFormInputType() != null) {
 			field = DATESOURCEFIELDS.get(info.getFormInputType()).create();
-			validators = FIELDVALIDATORS.get(info.getFormInputType());
+			validators.addAll(FIELDVALIDATORS.get(info.getFormInputType()));
 		}
 		if (field == null) {
 			if (info instanceof PrimitiveAttributeInfo) {
 				String name = ((PrimitiveAttributeInfo) info).getType().name();
 				field = DATESOURCEFIELDS.get(name).create();
-				validators = FIELDVALIDATORS.get(name);
+				validators = new ArrayList<Validator>(FIELDVALIDATORS.get(name));
 			} else if (info instanceof AssociationAttributeInfo) {
 				String name = ((AssociationAttributeInfo) info).getType().name();
 				field = DATESOURCEFIELDS.get(name).create();
-				validators = FIELDVALIDATORS.get(name);
+				validators.addAll(FIELDVALIDATORS.get(name));
 			}
 		}
 		if (field != null) {
@@ -412,7 +412,9 @@ public final class AttributeFormFieldRegistry {
 
 				}
 			}
-			field.setValidators(validators.toArray(new Validator[] {}));
+			if (validators.size() > 0) {
+				field.setValidators(validators.toArray(new Validator[] {}));
+			}
 			return field;
 		}
 		return null;
