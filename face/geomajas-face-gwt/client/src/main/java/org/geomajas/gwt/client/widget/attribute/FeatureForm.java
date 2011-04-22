@@ -175,7 +175,7 @@ public class FeatureForm {
 		}
 		return validate;
 	}
-
+	
 	/**
 	 * Attach a handler that reacts to changes in the fields as the user makes them.
 	 * 
@@ -205,10 +205,11 @@ public class FeatureForm {
 	 */
 	public void toForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = attributeInfoMap.get(name);
+		FormItem item = formWidget.getField(info.getName());
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
-			if (attribute == null && formWidget.getField(info.getName()) != null) {
-				formWidget.getField(info.getName()).setDisabled(true);
+			if (attribute == null && item != null) {
+				item.setDisabled(true);
 			} else {
 				if (!primitive.isEmpty()) {
 					switch (primitive.getType()) {
@@ -251,7 +252,6 @@ public class FeatureForm {
 		} else if (info instanceof AssociationAttributeInfo) {
 			AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
 			if (association instanceof ManyToOneAttribute) {
-				FormItem item = formWidget.getField(name);
 				if (item != null) {
 					if (association.getValue() != null) {
 						item.setValue(((ManyToOneAttribute) association).getValue().getId().getValue());
@@ -263,7 +263,9 @@ public class FeatureForm {
 				// TODO Implement setter for Associations as well...
 			}
 		}
-		formWidget.fireEvent(new ItemChangedEvent(formWidget.getJsObj()));
+		if(item != null) {
+			item.fireEvent(new ChangedEvent(item.getJsObj()));
+		}
 	}
 
 	/**
