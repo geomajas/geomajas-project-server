@@ -16,7 +16,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * This event is thrown when the command dispatcher starts dispatching.
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.0.0
  */
@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 
 	/** Handler type. */
-	private static Type<DispatchStartedHandler> TYPE;
+	private static Type<DispatchStartedHandler> TYPE = new Type<DispatchStartedHandler>();
 
 	// -------------------------------------------------------------------------
 	// Event implementation:
@@ -32,13 +32,10 @@ public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 
 	/**
 	 * Get the type associated with this event.
-	 *
+	 * 
 	 * @return the handler type
 	 */
 	public static Type<DispatchStartedHandler> getType() {
-		if (TYPE == null) {
-			TYPE = new Type<DispatchStartedHandler>();
-		}
 		return TYPE;
 	}
 
@@ -48,7 +45,7 @@ public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 
 	/**
 	 * Get the type associated with this event.
-	 *
+	 * 
 	 * @return the handler type
 	 */
 	public final Type<DispatchStartedHandler> getAssociatedType() {

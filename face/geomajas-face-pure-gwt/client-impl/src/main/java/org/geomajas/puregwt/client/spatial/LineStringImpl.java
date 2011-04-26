@@ -88,11 +88,12 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 				}
 			}
 		} else {
-			final Coordinate[] coords = geometry.getCoordinates();
-			if (coords.length > 1 && coordinates.length > 1) {
+			final Coordinate[] geomCoords = geometry.getCoordinates();
+			if (geomCoords.length > 1 && coordinates.length > 1) {
 				for (int i = 0; i < coordinates.length - 1; i++) {
-					for (int j = 0; j < coords.length - 1; j++) {
-						if (service.lineIntersects(coordinates[i], coordinates[i + 1], coords[j], coords[j + 1])) {
+					for (int j = 0; j < geomCoords.length - 1; j++) {
+						if (service.intersectsLineSegment(coordinates[i], coordinates[i + 1], geomCoords[j],
+								geomCoords[j + 1])) {
 							return true;
 						}
 					}
@@ -110,10 +111,6 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 
 	public Coordinate[] getCoordinates() {
 		return coordinates;
-	}
-
-	void setCoordinates(Coordinate[] coordinates) {
-		this.coordinates = coordinates;
 	}
 
 	/**

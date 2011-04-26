@@ -101,16 +101,16 @@ public class BboxImpl implements Bbox {
 	 * @return true if the other is completely surrounded by this one, false otherwise.
 	 */
 	public boolean contains(Bbox other) {
-		if (other.getX() < this.getX()) {
+		if (other.getX() < x) {
 			return false;
 		}
-		if (other.getY() < this.getY()) {
+		if (other.getY() < y) {
 			return false;
 		}
-		if (other.getEndPoint().getX() > this.getEndPoint().getX()) {
+		if (other.getMaxX() > getMaxX()) {
 			return false;
 		}
-		if (other.getEndPoint().getY() > this.getEndPoint().getY()) {
+		if (other.getMaxY() > getMaxY()) {
 			return false;
 		}
 		return true;
@@ -124,16 +124,16 @@ public class BboxImpl implements Bbox {
 	 * @return true if the other intersects this one, false otherwise.
 	 */
 	public boolean intersects(Bbox other) {
-		if (other.getX() > this.getEndPoint().getX()) {
+		if (other.getX() > getMaxX()) {
 			return false;
 		}
-		if (other.getY() > this.getEndPoint().getY()) {
+		if (other.getY() > getMaxY()) {
 			return false;
 		}
-		if (other.getEndPoint().getX() < this.getX()) {
+		if (other.getMaxX() < x) {
 			return false;
 		}
-		if (other.getEndPoint().getY() < this.getY()) {
+		if (other.getMaxY() < y) {
 			return false;
 		}
 		return true;
@@ -146,16 +146,14 @@ public class BboxImpl implements Bbox {
 	 *            Another bounding box.
 	 * @return bounding box of intersection or null if they do not intersect.
 	 */
-	public BboxImpl intersection(Bbox other) {
-		if (!this.intersects(other)) {
+	public Bbox intersection(Bbox other) {
+		if (!intersects(other)) {
 			return null;
 		} else {
-			double minx = other.getX() > this.getX() ? other.getX() : this.getX();
-			double maxx = other.getEndPoint().getX() < this.getEndPoint().getX() ? other.getEndPoint().getX() : this
-					.getEndPoint().getX();
-			double miny = other.getY() > this.getY() ? other.getY() : this.getY();
-			double maxy = other.getEndPoint().getY() < this.getEndPoint().getY() ? other.getEndPoint().getY() : this
-					.getEndPoint().getY();
+			double minx = other.getX() > x ? other.getX() : x;
+			double maxx = other.getMaxX() < getMaxX() ? other.getMaxX() : getMaxX();
+			double miny = other.getY() > y ? other.getY() : y;
+			double maxy = other.getMaxY() < getMaxY() ? other.getMaxY() : getMaxY();
 			return new BboxImpl(minx, miny, (maxx - minx), (maxy - miny));
 		}
 	}
@@ -174,12 +172,10 @@ public class BboxImpl implements Bbox {
 			return (Bbox) ((BboxImpl) other).clone();
 		}
 
-		double minx = other.getX() < this.getX() ? other.getX() : this.getX();
-		double maxx = other.getEndPoint().getX() > this.getEndPoint().getX() ? other.getEndPoint().getX() : this
-				.getEndPoint().getX();
-		double miny = other.getY() < this.getY() ? other.getY() : this.getY();
-		double maxy = other.getEndPoint().getY() > this.getEndPoint().getY() ? other.getEndPoint().getY() : this
-				.getEndPoint().getY();
+		double minx = other.getX() < x ? other.getX() : x;
+		double maxx = other.getMaxX() > getMaxX() ? other.getMaxX() : getMaxX();
+		double miny = other.getY() < y ? other.getY() : y;
+		double maxy = other.getMaxY() > getMaxY() ? other.getMaxY() : getMaxY();
 		return new BboxImpl(minx, miny, (maxx - minx), (maxy - miny));
 	}
 
@@ -191,11 +187,11 @@ public class BboxImpl implements Bbox {
 	 * @return
 	 */
 	public Bbox buffer(double range) {
-		if (range > 0) {
+		if (range >= 0) {
 			double r2 = range * 2;
 			return new BboxImpl(x - range, y - range, width + r2, height + r2);
 		}
-		return null;
+		throw new IllegalArgumentException("Buffer range must always be positive.");
 	}
 
 	/**
@@ -212,9 +208,8 @@ public class BboxImpl implements Bbox {
 			Coordinate center = getCenterPoint();
 			return new BboxImpl(center.getX() - scaledWidth / 2, center.getY() - scaledHeight / 2, scaledWidth,
 					scaledHeight);
-		} else {
-			return (Bbox) clone();
 		}
+		throw new IllegalArgumentException("Scale factor must always be strictly positive.");
 	}
 
 	/**
@@ -226,8 +221,8 @@ public class BboxImpl implements Bbox {
 	 *            y displacement
 	 */
 	public void translate(double dx, double dy) {
-		this.x = this.x + dx;
-		this.y = this.y + dy;
+		x += dx;
+		y += dy;
 	}
 
 	/**
@@ -237,8 +232,8 @@ public class BboxImpl implements Bbox {
 	 *            new center point
 	 */
 	public void setCenterPoint(Coordinate coordinate) {
-		this.x = coordinate.getX() - 0.5 * this.width;
-		this.y = coordinate.getY() - 0.5 * this.height;
+		x = coordinate.getX() - 0.5 * width;
+		y = coordinate.getY() - 0.5 * height;
 	}
 
 	/**
@@ -277,23 +272,24 @@ public class BboxImpl implements Bbox {
 	}
 
 	public double getMaxX() {
-		return getX() + getWidth();
+		return x + width;
 	}
 
 	public double getMaxY() {
-		return getY() + getHeight();
+		return y + height;
 	}
 
 	public boolean equals(Object other) {
-		if (!(other instanceof BboxImpl)) {
+		if (!(other instanceof Bbox)) {
 			return false;
 		}
-		BboxImpl otherBbox = (BboxImpl) other;
-		return x == otherBbox.x && y == otherBbox.y && width == otherBbox.width && height == otherBbox.height;
+		Bbox otherBbox = (Bbox) other;
+		return x == otherBbox.getX() && y == otherBbox.getY() && width == otherBbox.getWidth()
+				&& height == otherBbox.getHeight();
 	}
 
 	public int hashCode() {
-		return 0;
+		return new Double(x * y * width * height / 31).hashCode();
 	}
 
 	public boolean equals(Bbox other, double delta) {

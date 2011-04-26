@@ -16,7 +16,7 @@ import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * This event is thrown when the command dispatcher stops dispatching (no callbacks left).
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.0.0
  */
@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 
 	/** Handler type. */
-	private static Type<DispatchStoppedHandler> TYPE;
+	private static Type<DispatchStoppedHandler> TYPE = new Type<DispatchStoppedHandler>();
 
 	// -------------------------------------------------------------------------
 	// Event implementation:
@@ -32,13 +32,10 @@ public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 
 	/**
 	 * Get the type associated with this event.
-	 *
+	 * 
 	 * @return returns the handler type
 	 */
 	public static Type<DispatchStoppedHandler> getType() {
-		if (TYPE == null) {
-			TYPE = new Type<DispatchStoppedHandler>();
-		}
 		return TYPE;
 	}
 

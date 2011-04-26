@@ -111,7 +111,7 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 		double distance = Double.MAX_VALUE;
 		if (!isEmpty()) {
 			for (Point point : points) {
-				double temp = new LineSegment(point.getCoordinate(), coordinate).getLength();
+				double temp = service.distance(point.getCoordinate(), coordinate);
 				if (temp < distance) {
 					distance = temp;
 				}
@@ -203,17 +203,5 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 			wkt += lineWkt.substring(lineWkt.indexOf("("));
 		}
 		return wkt + ")";
-	}
-
-	// ------------------------------------------------------------------------
-	// Protected methods:
-	// ------------------------------------------------------------------------
-
-	protected Point[] getPoints() {
-		return points;
-	}
-
-	protected void setPoints(Point[] points) {
-		this.points = points;
 	}
 }

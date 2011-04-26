@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * General service for calculating mathematical properties of geometries.
@@ -20,7 +20,7 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface MathService {
 
 	/**
@@ -36,7 +36,7 @@ public interface MathService {
 	 *            Second coordinate of the second line-segment.
 	 * @return Returns true or false.
 	 */
-	boolean lineIntersects(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4);
+	boolean intersectsLineSegment(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4);
 
 	/**
 	 * Calculates the intersection point of 2 lines.
@@ -69,20 +69,6 @@ public interface MathService {
 	Coordinate lineSegmentIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4);
 
 	/**
-	 * Return the minimal distance between this coordinate and any vertex of the geometry.
-	 * 
-	 * @return Return the minimal distance
-	 */
-	double getDistance(Geometry geometry, Coordinate coordinate);
-
-	/**
-	 * Return the minimal distance between this coordinate and any vertex of the geometry.
-	 * 
-	 * @return Return the minimal distance
-	 */
-	double getDistance(Geometry geometry1, Geometry geometry2);
-
-	/**
 	 * Distance between 2 points.
 	 * 
 	 * @param c1
@@ -93,16 +79,31 @@ public interface MathService {
 	double distance(Coordinate c1, Coordinate c2);
 
 	/**
-	 * Distance between a point and a line.
+	 * Distance between a point and a line segment. This method looks at the line segment c1-c2, it does not regard it
+	 * as a line. This means that the distance to c is calculated to a point between c1 and c2.
 	 * 
 	 * @param c1
-	 *            First coordinate of the line.
+	 *            First coordinate of the line segment.
 	 * @param c2
-	 *            Second coordinate of the line.
-	 * @param c3
+	 *            Second coordinate of the line segment.
+	 * @param coordinate
 	 *            Coordinate to calculate distance to line from.
 	 */
-	double distance(Coordinate c1, Coordinate c2, Coordinate c3);
+	double distance(Coordinate c1, Coordinate c2, Coordinate coordinate);
+
+	/**
+	 * Calculate which point on a line segment is nearest to the given coordinate. Will be perpendicular or one of the
+	 * end-points.
+	 * 
+	 * @param c1
+	 *            First coordinate of the line segment.
+	 * @param c2
+	 *            Second coordinate of the line segment.
+	 * @param coordinate
+	 *            The coordinate to search the nearest point for.
+	 * @return The point on the line segment nearest to the given coordinate.
+	 */
+	Coordinate nearest(Coordinate c1, Coordinate c2, Coordinate coordinate);
 
 	/**
 	 * Does a certain coordinate touch a given geometry?

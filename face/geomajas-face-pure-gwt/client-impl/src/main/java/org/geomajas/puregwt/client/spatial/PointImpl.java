@@ -38,10 +38,6 @@ public class PointImpl extends AbstractGeometry implements Point {
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	void setCoordinate(Coordinate coordinate) {
-		this.coordinate = coordinate;
-	}
-
 	public Coordinate[] getCoordinates() {
 		return new Coordinate[] { coordinate };
 	}

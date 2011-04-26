@@ -236,16 +236,4 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 		}
 		return wkt + ")";
 	}
-
-	// ------------------------------------------------------------------------
-	// Protected methods:
-	// ------------------------------------------------------------------------
-
-	protected LineString[] getLineStrings() {
-		return lineStrings;
-	}
-
-	protected void setLineStrings(LineString[] lineStrings) {
-		this.lineStrings = lineStrings;
-	}
 }

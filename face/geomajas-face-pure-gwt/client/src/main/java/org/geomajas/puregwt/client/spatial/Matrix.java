@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.spatial;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * <p>
@@ -21,8 +21,40 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface Matrix {
+
+	/**
+	 * The identity matrix.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	Matrix IDENTITY = new Matrix() {
+
+		public double getXx() {
+			return 1;
+		}
+
+		public double getXy() {
+			return 0;
+		}
+
+		public double getYx() {
+			return 0;
+		}
+
+		public double getYy() {
+			return 1;
+		}
+
+		public double getDx() {
+			return 0;
+		}
+
+		public double getDy() {
+			return 0;
+		}
+	};
 
 	/**
 	 * Get the scale factor along the X-axis.

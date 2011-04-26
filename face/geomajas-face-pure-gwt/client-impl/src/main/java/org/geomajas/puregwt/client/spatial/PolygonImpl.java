@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.spatial;
 import org.geomajas.geometry.Coordinate;
 
 /**
- * Ploygon client-side GWT object.
+ * Polygon client-side GWT object.
  * 
  * @author Pieter De Graef
  */
@@ -39,16 +39,11 @@ public class PolygonImpl extends AbstractGeometry implements Polygon {
 	// Class specific functions:
 	// -------------------------------------------------------------------------
 
-	LinearRing[] getInteriorRings() {
+	/**
+	 * Get an array of all interior rings.
+	 */
+	public LinearRing[] getInteriorRings() {
 		return interiorRings;
-	}
-
-	void setInteriorRings(LinearRing[] interiorRings) {
-		this.interiorRings = interiorRings;
-	}
-
-	void setExteriorRing(LinearRing exteriorRing) {
-		this.exteriorRing = exteriorRing;
 	}
 
 	/**

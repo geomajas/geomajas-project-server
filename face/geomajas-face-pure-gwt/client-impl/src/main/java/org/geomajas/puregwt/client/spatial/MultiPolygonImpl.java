@@ -220,16 +220,4 @@ public class MultiPolygonImpl extends AbstractGeometry implements MultiPolygon {
 		}
 		return wkt + ")";
 	}
-
-	// ------------------------------------------------------------------------
-	// Protected methods:
-	// ------------------------------------------------------------------------
-
-	protected Polygon[] getPolygons() {
-		return polygons;
-	}
-
-	protected void setPolygons(Polygon[] polygons) {
-		this.polygons = polygons;
-	}
 }

@@ -33,10 +33,23 @@ public class MathServiceImpl implements MathService {
 	 *            Second coordinate of the second line-segment.
 	 * @return Returns true or false.
 	 */
-	public boolean lineIntersects(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
-		LineSegment ls1 = new LineSegment(c1, c2);
-		LineSegment ls2 = new LineSegment(c3, c4);
-		return ls1.intersects(ls2);
+	public boolean intersectsLineSegment(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
+		double x1 = c1.getX();
+		double y1 = c1.getY();
+		double x2 = c2.getX();
+		double y2 = c2.getY();
+		double x3 = c3.getX();
+		double y3 = c3.getY();
+		double x4 = c4.getX();
+		double y4 = c4.getY();
+
+		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+		if (denom == 0) {
+			return false;
+		}
+		double u1 = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+		double u2 = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
+		return (u1 > 0 && u1 < 1 && u2 > 0 && u2 < 1);
 	}
 
 	/**
@@ -53,9 +66,22 @@ public class MathServiceImpl implements MathService {
 	 * @return Returns a coordinate.
 	 */
 	public Coordinate lineIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
-		LineSegment ls1 = new LineSegment(c1, c2);
-		LineSegment ls2 = new LineSegment(c3, c4);
-		return ls1.getLineIntersection(ls2);
+		// http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
+		double x1 = c1.getX();
+		double y1 = c1.getY();
+		double x2 = c2.getX();
+		double y2 = c2.getY();
+		double x3 = c3.getX();
+		double y3 = c3.getY();
+		double x4 = c4.getX();
+		double y4 = c4.getY();
+
+		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+		double u1 = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+
+		double x = x1 + u1 * (x2 - x1);
+		double y = y1 + u1 * (y2 - y1);
+		return new Coordinate(x, y);
 	}
 
 	/**
@@ -72,19 +98,32 @@ public class MathServiceImpl implements MathService {
 	 * @return Returns a coordinate or null if not a single intersection point.
 	 */
 	public Coordinate lineSegmentIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
-		LineSegment ls1 = new LineSegment(c1, c2);
-		LineSegment ls2 = new LineSegment(c3, c4);
-		return ls1.getIntersection(ls2);
-	}
+		// http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
+		double x1 = c1.getX();
+		double y1 = c1.getY();
+		double x2 = c2.getX();
+		double y2 = c2.getY();
+		double x3 = c3.getX();
+		double y3 = c3.getY();
+		double x4 = c4.getX();
+		double y4 = c4.getY();
 
-	public double getDistance(Geometry geometry, Coordinate coordinate) {
-		// TODO implement me
-		return 0;
-	}
+		double denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+		if (denom == 0) {
+			return null;
+		}
 
-	public double getDistance(Geometry geometry1, Geometry geometry2) {
-		// TODO implement me
-		return 0;
+		double u1 = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+		if (u1 <= 0 || u1 >= 1) {
+			return null;
+		}
+		double u2 = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
+		if (u2 <= 0 || u2 >= 1) {
+			return null;
+		}
+		double x = x1 + u1 * (x2 - x1);
+		double y = y1 + u1 * (y2 - y1);
+		return new Coordinate(x, y);
 	}
 
 	/**
@@ -102,18 +141,52 @@ public class MathServiceImpl implements MathService {
 	}
 
 	/**
-	 * Distance between a point and a line.
+	 * Distance between a point and a line segment. This method looks at the line segment c1-c2, it does not regard it
+	 * as a line. This means that the distance to c is calculated to a point between c1 and c2.
 	 * 
 	 * @param c1
-	 *            First coordinate of the line.
+	 *            First coordinate of the line segment.
 	 * @param c2
-	 *            Second coordinate of the line.
-	 * @param c3
+	 *            Second coordinate of the line segment.
+	 * @param c
 	 *            Coordinate to calculate distance to line from.
 	 */
-	public double distance(Coordinate c1, Coordinate c2, Coordinate c3) {
-		LineSegment ls = new LineSegment(c1, c2);
-		return ls.distance(c3);
+	public double distance(Coordinate c1, Coordinate c2, Coordinate c) {
+		return distance(nearest(c1, c2, c), c);
+	}
+
+	/**
+	 * Calculate which point on a line segment is nearest to the given coordinate. Will be perpendicular or one of the
+	 * end-points.
+	 * 
+	 * @param c1
+	 *            First coordinate of the line segment.
+	 * @param c2
+	 *            Second coordinate of the line segment.
+	 * @param c
+	 *            The coordinate to search the nearest point for.
+	 * @return The point on the line segment nearest to the given coordinate.
+	 */
+	public Coordinate nearest(Coordinate c1, Coordinate c2, Coordinate c) {
+		double len = distance(c1, c2);
+
+		double u = (c.getX() - c1.getX()) * (c2.getX() - c1.getX()) + (c.getY() - c1.getY()) * (c2.getY() - c1.getY());
+		u = u / (len * len);
+
+		if (u < 0.00001 || u > 1) {
+			// Shortest point not within LineSegment, so take closest end-point.
+			double len1 = distance(c, c1);
+			double len2 = distance(c, c2);
+			if (len1 < len2) {
+				return c1;
+			}
+			return c2;
+		} else {
+			// Intersecting point is on the line, use the formula: P = P1 + u (P2 - P1)
+			double x1 = c1.getX() + u * (c2.getX() - c1.getX());
+			double y1 = c1.getY() + u * (c2.getY() - c1.getY());
+			return new Coordinate(x1, y1);
+		}
 	}
 
 	/**
@@ -154,10 +227,7 @@ public class MathServiceImpl implements MathService {
 		} else if (geometry instanceof LineString) {
 			return touchesLineString((LineString) geometry, coordinate);
 		} else if (geometry instanceof Point) {
-			Coordinate c = geometry.getCoordinates()[0];
-			Vector2D v1 = new Vector2D(c.getX(), c.getY());
-			Vector2D v2 = new Vector2D(coordinate.getX(), coordinate.getY());
-			return (v1.distance(v2) < GeometryFactory.PARAM_DEFAULT_DELTA);
+			return distance(geometry.getCoordinate(), coordinate) < GeometryFactory.PARAM_DEFAULT_DELTA;
 		}
 		return false;
 	}
@@ -201,7 +271,7 @@ public class MathServiceImpl implements MathService {
 	/**
 	 * @private
 	 */
-	private static boolean touchesLineString(LineString lineString, Coordinate coordinate) {
+	private boolean touchesLineString(LineString lineString, Coordinate coordinate) {
 		// First loop over the end-points. This will be the most common case, certainly if we take snapping into
 		// account...
 		for (int i = 0; i < lineString.getNumPoints(); i++) {
@@ -212,8 +282,8 @@ public class MathServiceImpl implements MathService {
 
 		// Now loop over the edges:
 		for (int i = 1; i < lineString.getNumPoints(); i++) {
-			LineSegment edge = new LineSegment(lineString.getCoordinateN(i - 1), lineString.getCoordinateN(i));
-			if (edge.distance(coordinate) < GeometryFactory.PARAM_DEFAULT_DELTA) {
+			double distance = distance(lineString.getCoordinateN(i - 1), lineString.getCoordinateN(i), coordinate);
+			if (distance < GeometryFactory.PARAM_DEFAULT_DELTA) {
 				return true;
 			}
 		}
@@ -224,7 +294,7 @@ public class MathServiceImpl implements MathService {
 	/**
 	 * @private
 	 */
-	private static boolean isWithinRing(LinearRing linearRing, Coordinate coordinate) {
+	private boolean isWithinRing(LinearRing linearRing, Coordinate coordinate) {
 		int counter = 0;
 		int num = linearRing.getNumPoints();
 		Coordinate c1 = linearRing.getCoordinateN(0);

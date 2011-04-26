@@ -23,7 +23,15 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
+import org.geomajas.puregwt.client.spatial.LineString;
+import org.geomajas.puregwt.client.spatial.LinearRing;
+import org.geomajas.puregwt.client.spatial.Matrix;
 import org.geomajas.puregwt.client.spatial.MatrixImpl;
+import org.geomajas.puregwt.client.spatial.MultiLineString;
+import org.geomajas.puregwt.client.spatial.MultiPoint;
+import org.geomajas.puregwt.client.spatial.MultiPolygon;
+import org.geomajas.puregwt.client.spatial.Point;
+import org.geomajas.puregwt.client.spatial.Polygon;
 
 /**
  * Implementation of the ViewPort interface.
@@ -42,8 +50,6 @@ public class ViewPortImpl implements ViewPort {
 
 	/** The maximum bounding box available to this MapView. Never go outside it! */
 	private Bbox maxBounds;
-
-	private ViewPortTransformationService transformationService;
 
 	private EventBus eventBus;
 
@@ -69,7 +75,6 @@ public class ViewPortImpl implements ViewPort {
 		}
 		this.eventBus = eventBus;
 		factory = new GeometryFactoryImpl();
-		transformationService = new ViewPortTransformationService(this);
 		dragOrigin = new Coordinate();
 		position = new Coordinate();
 	}
@@ -225,23 +230,113 @@ public class ViewPortImpl implements ViewPort {
 	// ------------------------------------------------------------------------
 
 	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
-		return transformationService.transform(coordinate, from, to);
+		switch (from) {
+			case SCREEN:
+				switch (to) {
+					case SCREEN:
+						return new Coordinate(coordinate);
+					case WORLD:
+						return screenToWorld(coordinate);
+				}
+			case WORLD:
+				switch (to) {
+					case SCREEN:
+						return worldToScreen(coordinate);
+					case WORLD:
+						return new Coordinate(coordinate);
+				}
+		}
+		return coordinate;
 	}
 
 	public Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to) {
-		return transformationService.transform(geometry, from, to);
+		switch (from) {
+			case SCREEN:
+				switch (to) {
+					case SCREEN:
+						return factory.createGeometry(geometry);
+					case WORLD:
+						return screenToWorld(geometry);
+				}
+			case WORLD:
+				switch (to) {
+					case SCREEN:
+						return worldToScreen(geometry);
+					case WORLD:
+						return factory.createGeometry(geometry);
+				}
+		}
+		return geometry;
 	}
 
 	public Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
-		return transformationService.transform(bbox, from, to);
+		switch (from) {
+			case SCREEN:
+				switch (to) {
+					case SCREEN:
+						return factory.createBbox(bbox);
+					case WORLD:
+						return screenToWorld(bbox);
+				}
+			case WORLD:
+				switch (to) {
+					case SCREEN:
+						return worldToScreen(bbox);
+					case WORLD:
+						return factory.createBbox(bbox);
+				}
+		}
+		return bbox;
 	}
 
-	public MatrixImpl getTransformationMatrix(RenderSpace from, RenderSpace to) {
-		return transformationService.getTransformationMatrix(from, to);
+	public Matrix getTransformationMatrix(RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case SCREEN:
+				switch (to) {
+					case SCREEN:
+						return Matrix.IDENTITY;
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case WORLD:
+				switch (to) {
+					case SCREEN:
+						if (scale > 0) {
+							double dX = -(position.getX() * scale) + mapWidth / 2;
+							double dY = position.getY() * scale + mapHeight / 2;
+							return new MatrixImpl(scale, 0, 0, -scale, dX, dY);
+						}
+						return new MatrixImpl(1, 0, 0, 1, 0, 0);
+					case WORLD:
+						return Matrix.IDENTITY;
+				}
+		}
+		return null;
 	}
 
-	public MatrixImpl getTranslationMatrix(RenderSpace from, RenderSpace to) {
-		return transformationService.getTranslationMatrix(from, to);
+	public Matrix getTranslationMatrix(RenderSpace from, RenderSpace to) {
+		switch (from) {
+			case SCREEN:
+				switch (to) {
+					case SCREEN:
+						return Matrix.IDENTITY;
+					case WORLD:
+						throw new RuntimeException("Not implemented.");
+				}
+			case WORLD:
+				switch (to) {
+					case SCREEN:
+						if (scale > 0) {
+							double dX = -(position.getX() * scale) + mapWidth / 2;
+							double dY = position.getY() * scale + mapHeight / 2;
+							return new MatrixImpl(1, 0, 0, 1, dX, dY);
+						}
+						return new MatrixImpl(1, 0, 0, 1, 0, 0);
+					case WORLD:
+						return Matrix.IDENTITY;
+				}
+		}
+		return null;
 	}
 
 	// -------------------------------------------------------------------------
@@ -298,5 +393,158 @@ public class ViewPortImpl implements ViewPort {
 			}
 		}
 		return new Coordinate(xCenter, yCenter);
+	}
+
+	// -------------------------------------------------------------------------
+	// Private Transformation methods:
+	// -------------------------------------------------------------------------
+
+	private Coordinate worldToScreen(Coordinate coordinate) {
+		if (coordinate != null) {
+			double x = coordinate.getX() * scale;
+			double y = -coordinate.getY() * scale;
+			double translateX = -(position.getX() * scale) + (mapWidth / 2);
+			double translateY = (position.getY() * scale) + (mapHeight / 2);
+			x += translateX;
+			y += translateY;
+			return new Coordinate(x, y);
+		}
+		return null;
+	}
+
+	private Geometry worldToScreen(Geometry geometry) {
+		if (geometry != null) {
+			if (geometry instanceof Point) {
+				Coordinate transformed = worldToScreen(geometry.getCoordinate());
+				return factory.createPoint(transformed);
+			} else if (geometry instanceof LinearRing) {
+				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
+				for (int i = 0; i < coordinates.length; i++) {
+					coordinates[i] = worldToScreen(geometry.getCoordinates()[i]);
+				}
+				return factory.createLinearRing(coordinates);
+			} else if (geometry instanceof LineString) {
+				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
+				for (int i = 0; i < coordinates.length; i++) {
+					coordinates[i] = worldToScreen(geometry.getCoordinates()[i]);
+				}
+				return factory.createLineString(coordinates);
+			} else if (geometry instanceof Polygon) {
+				Polygon polygon = (Polygon) geometry;
+				LinearRing shell = (LinearRing) worldToScreen(polygon.getExteriorRing());
+				LinearRing[] holes = new LinearRing[polygon.getNumInteriorRing()];
+				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
+					holes[n] = (LinearRing) worldToScreen(polygon.getInteriorRingN(n));
+				}
+				return factory.createPolygon(shell, holes);
+			} else if (geometry instanceof MultiPoint) {
+				Point[] points = new Point[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					points[n] = (Point) worldToScreen(geometry.getGeometryN(n));
+				}
+				return factory.createMultiPoint(points);
+			} else if (geometry instanceof MultiLineString) {
+				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					lineStrings[n] = (LineString) worldToScreen(geometry.getGeometryN(n));
+				}
+				return factory.createMultiLineString(lineStrings);
+			} else if (geometry instanceof MultiPolygon) {
+				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					polygons[n] = (Polygon) worldToScreen(geometry.getGeometryN(n));
+				}
+				return factory.createMultiPolygon(polygons);
+			}
+		}
+		return null;
+	}
+
+	private Bbox worldToScreen(Bbox bbox) {
+		if (bbox != null) {
+			Coordinate c1 = worldToScreen(bbox.getOrigin());
+			Coordinate c2 = worldToScreen(bbox.getEndPoint());
+			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
+			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+		}
+		return null;
+	}
+
+	private Coordinate screenToWorld(Coordinate coordinate) {
+		if (coordinate != null) {
+			double inverseScale = 1 / scale;
+			double x = coordinate.getX() * inverseScale;
+			double y = -coordinate.getY() * inverseScale;
+
+			double w = mapWidth / scale;
+			double h = mapHeight / scale;
+			// -cam: center X axis around cam. +bbox.w/2: to place the origin in the center of the screen
+			double translateX = -position.getX() + (w / 2);
+			double translateY = -position.getY() - (h / 2); // Inverted Y-axis here...
+			x -= translateX;
+			y -= translateY;
+			return new Coordinate(x, y);
+		}
+		return null;
+	}
+
+	private Geometry screenToWorld(Geometry geometry) {
+		if (geometry != null) {
+			if (geometry instanceof Point) {
+				Coordinate transformed = screenToWorld(geometry.getCoordinate());
+				return factory.createPoint(transformed);
+			} else if (geometry instanceof LinearRing) {
+				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
+				for (int i = 0; i < coordinates.length; i++) {
+					coordinates[i] = screenToWorld(geometry.getCoordinates()[i]);
+				}
+				return factory.createLinearRing(coordinates);
+			} else if (geometry instanceof LineString) {
+				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
+				for (int i = 0; i < coordinates.length; i++) {
+					coordinates[i] = screenToWorld(geometry.getCoordinates()[i]);
+				}
+				return factory.createLineString(coordinates);
+			} else if (geometry instanceof Polygon) {
+				Polygon polygon = (Polygon) geometry;
+				LinearRing shell = (LinearRing) screenToWorld(polygon.getExteriorRing());
+				LinearRing[] holes = new LinearRing[polygon.getNumInteriorRing()];
+				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
+					holes[n] = (LinearRing) screenToWorld(polygon.getInteriorRingN(n));
+				}
+				return factory.createPolygon(shell, holes);
+			} else if (geometry instanceof MultiPoint) {
+				Point[] points = new Point[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					points[n] = (Point) screenToWorld(geometry.getGeometryN(n));
+				}
+				return factory.createMultiPoint(points);
+			} else if (geometry instanceof MultiLineString) {
+				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					lineStrings[n] = (LineString) screenToWorld(geometry.getGeometryN(n));
+				}
+				return factory.createMultiLineString(lineStrings);
+			} else if (geometry instanceof MultiPolygon) {
+				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					polygons[n] = (Polygon) screenToWorld(geometry.getGeometryN(n));
+				}
+				return factory.createMultiPolygon(polygons);
+			}
+		}
+		return null;
+	}
+
+	private Bbox screenToWorld(Bbox bbox) {
+		if (bbox != null) {
+			Coordinate c1 = screenToWorld(bbox.getOrigin());
+			Coordinate c2 = screenToWorld(bbox.getEndPoint());
+			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
+			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
+			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+		}
+		return null;
 	}
 }

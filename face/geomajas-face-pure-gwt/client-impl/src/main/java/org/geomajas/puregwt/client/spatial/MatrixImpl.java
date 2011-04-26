@@ -20,8 +20,6 @@ package org.geomajas.puregwt.client.spatial;
  */
 public class MatrixImpl implements Matrix {
 
-	public static final MatrixImpl IDENTITY = new MatrixImpl(1, 0, 0, 1, 0, 0);
-
 	private double xx;
 
 	private double xy;
