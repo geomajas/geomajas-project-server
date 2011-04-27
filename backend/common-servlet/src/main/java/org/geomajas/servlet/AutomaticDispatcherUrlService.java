@@ -72,7 +72,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		}
 		String cp = request.getContextPath();
 		if (null != cp && cp.length() > 0) {
-			url += "/" + request.getContextPath();
+			url += request.getContextPath();
 		}
 		url += "/d/";
 		return url;

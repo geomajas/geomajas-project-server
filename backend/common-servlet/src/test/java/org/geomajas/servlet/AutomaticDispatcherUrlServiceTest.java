@@ -33,7 +33,7 @@ public class AutomaticDispatcherUrlServiceTest {
 		mockRequest.setScheme("http");
 		mockRequest.setServerName("geomajas.org");
 		mockRequest.setServerPort(80);
-		mockRequest.setContextPath("test");
+		mockRequest.setContextPath("/test");
 		ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
 		RequestContextHolder.setRequestAttributes(attributes);
 
