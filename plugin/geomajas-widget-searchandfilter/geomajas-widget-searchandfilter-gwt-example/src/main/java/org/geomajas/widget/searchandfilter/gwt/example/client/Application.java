@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.plugin.staticsecurity.client.Authentication;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.FreeDrawingSearch;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchPanel;
@@ -33,6 +34,7 @@ import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCr
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchHandler;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
+import org.geomajas.widget.searchandfilter.client.widget.searchfavourites.SearchFavouritesListCreator;
 import org.geomajas.widget.searchandfilter.gwt.example.client.i18n.ApplicationMessages;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.AbstractTab;
 import org.geomajas.widget.searchandfilter.gwt.example.client.pages.MultiFeatureListGridPage;
@@ -193,6 +195,7 @@ public class Application implements EntryPoint {
 		loadScreen.draw();
 
 		// Then initialize:
+		Authentication.getInstance().login("luc", "luc", null);
 		initialize();
 	}
 
@@ -211,6 +214,7 @@ public class Application implements EntryPoint {
 		SearchWidgetRegistry.initialize(mapWidget, featureListGrid);
 		SearchWidgetRegistry.put(new AttributeSearchCreator());
 		SearchWidgetRegistry.put(new CombinedSearchCreator());
+		SearchWidgetRegistry.put(new SearchFavouritesListCreator());
 		SearchWidgetRegistry.put(new GeometricSearchCreator(new GeometricSearchPanelCreator() {
 			public GeometricSearchPanel createInstance(MapWidget mapWidget) {
 				GeometricSearchPanel gsp = new GeometricSearchPanel(mapWidget);
@@ -224,9 +228,11 @@ public class Application implements EntryPoint {
 		SearchWidgetRegistry.addSearchHandler(new SearchHandler() {
 			public void onSearchStart(SearchEvent event) {
 			}
+
 			public void onSearchDone(SearchEvent event) {
 				// handled by featureListGrid, no need for us to do something
 			}
+
 			public void onSearchEnd(SearchEvent event) {
 				if (!(featureListGrid.isShowDetailsOnSingleResult() && event.isSingleResult())) {
 					tabSet.selectTab(1);

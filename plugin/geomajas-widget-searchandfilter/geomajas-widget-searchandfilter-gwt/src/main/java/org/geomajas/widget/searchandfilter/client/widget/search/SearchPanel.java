@@ -43,6 +43,22 @@ public abstract class SearchPanel extends Canvas {
 	public abstract boolean validate();
 
 	/**
+	 * Should the "Add To Favourites" button be shown?
+	 * @return
+	 */
+	public boolean canAddToFavourites() {
+		return true;
+	}
+
+	/**
+	 * Should the "Reset" button be shown?
+	 * @return
+	 */
+	public boolean canBeReset() {
+		return true;
+	}
+
+	/**
 	 * @return an object with the settings of your search, allowing the
 	 *         specifics of the search to be stored (in favourites).
 	 */

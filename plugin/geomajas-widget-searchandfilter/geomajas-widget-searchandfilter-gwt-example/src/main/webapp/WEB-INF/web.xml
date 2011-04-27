@@ -33,6 +33,7 @@
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
 			WEB-INF/layerPopulatedPlaces110m.xml
+			WEB-INF/security.xml
    
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml

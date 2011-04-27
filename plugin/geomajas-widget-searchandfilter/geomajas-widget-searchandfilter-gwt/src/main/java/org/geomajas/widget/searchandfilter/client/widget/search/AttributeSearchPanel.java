@@ -24,12 +24,13 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * Searchpanel using the default attributesearch widget.
- *
+ * 
  * @see SearchWidgetRegistry.
  * @author Kristof Heirwegh
  */
 public class AttributeSearchPanel extends SearchPanel {
 
+	@SuppressWarnings("unused")
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private FeatureSearch featureSearch;
@@ -83,5 +84,27 @@ public class AttributeSearchPanel extends SearchPanel {
 				throw new IllegalArgumentException("Criterion must be of type AttributeCriterion.");
 			}
 		}
+	}
+
+	public static boolean canHandle(Criterion criterion) {
+		if (criterion == null) {
+			return false;
+		}
+		List<Criterion> critters;
+		if (criterion instanceof OrCriterion) {
+			critters = ((OrCriterion) criterion).getCriteria();
+		} else if (criterion instanceof AndCriterion) {
+			critters = ((AndCriterion) criterion).getCriteria();
+		} else {
+			return false;
+		}
+
+		for (Criterion critter : critters) {
+			if (!(critter instanceof AttributeCriterion)) {
+				// TODO we could handle nested and/or criteria if we wanted to.
+				return false;
+			}
+		}
+		return true;
 	}
 }

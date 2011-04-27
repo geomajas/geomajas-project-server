@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
+import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteChangeHandler;
 
 import com.smartgwt.client.util.SC;
 
@@ -34,6 +35,7 @@ public final class SearchWidgetRegistry {
 	private static final Map<String, SearchWidgetCreator> REGISTRY = new LinkedHashMap<String, SearchWidgetCreator>();
 
 	private static SearchController SEARCHCONTROLLER;
+	private static FavouritesController FAVOURITESCONTROLLER;
 
 	private static MapWidget MAPWIDGET;
 
@@ -48,6 +50,7 @@ public final class SearchWidgetRegistry {
 	public static void initialize(MapWidget mapWidget, SearchHandler searchResultGrid, boolean modalSearch) {
 		MAPWIDGET = mapWidget;
 		SEARCHCONTROLLER = new SearchController(mapWidget, modalSearch);
+		FAVOURITESCONTROLLER = new FavouritesController();
 		if (searchResultGrid != null) {
 			SEARCHCONTROLLER.addSearchHandler(searchResultGrid);
 		}
@@ -73,6 +76,26 @@ public final class SearchWidgetRegistry {
 		}
 	}
 
+	public static void addFavouriteChangeHandler(FavouriteChangeHandler handler) {
+		if (checkState()) {
+			FAVOURITESCONTROLLER.addFavouriteChangeHandler(handler);
+		}
+	}
+
+	public static void removeFavouriteChangeHandler(FavouriteChangeHandler handler) {
+		if (checkState()) {
+			FAVOURITESCONTROLLER.removeFavouriteChangeHandler(handler);
+		}
+	}
+
+	public static FavouritesController getFavouritesController() {
+		if (checkState()) {
+			return FAVOURITESCONTROLLER;
+		} else {
+			return null;
+		}
+	}
+
 	public static void put(SearchWidgetCreator widgetCreator) {
 		if (checkState()) {
 			if (null != widgetCreator) {
@@ -84,6 +107,7 @@ public final class SearchWidgetRegistry {
 	public static SearchWidget getSearchWidgetInstance(String searchWidgetId) {
 		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(MAPWIDGET);
 		sw.addSearchRequestHandler(SEARCHCONTROLLER);
+		sw.addFavouriteRequestHandler(FAVOURITESCONTROLLER);
 		return sw;
 	}
 

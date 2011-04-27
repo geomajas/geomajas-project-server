@@ -45,12 +45,12 @@ import com.google.gwt.core.client.GWT;
  * 
  * @author Kristof Heirwegh
  */
-public final class CommService {
+public final class SearchCommService {
 
 	/**
 	 * Utility class
 	 */
-	private CommService() {
+	private SearchCommService() {
 	}
 
 	/**

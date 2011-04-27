@@ -22,7 +22,7 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.Callback;
-import org.geomajas.widget.searchandfilter.client.util.CommService;
+import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvRequest;
 import org.geomajas.widget.searchandfilter.command.dto.ExportToCsvResponse;
 import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchRequest;
@@ -64,7 +64,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 		FeatureSearchRequest req = new FeatureSearchRequest();
 		req.setCriterion(criterion);
 		req.setMapCrs(model.getCrs());
-		req.setLayerFilters(CommService.getLayerFiltersForCriterion(criterion, model));
+		req.setLayerFilters(SearchCommService.getLayerFiltersForCriterion(criterion, model));
 		this.request = req;
 	}
 

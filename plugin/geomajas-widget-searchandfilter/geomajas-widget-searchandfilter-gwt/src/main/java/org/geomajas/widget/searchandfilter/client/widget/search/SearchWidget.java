@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
+import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 /**
@@ -48,6 +49,10 @@ public interface SearchWidget {
 
 	void removeSaveRequestHandler(SaveRequestHandler handler);
 
+	void addFavouriteRequestHandler(FavouriteRequestHandler handler);
+
+	void removeFavouriteRequestHandler(FavouriteRequestHandler handler);
+
 	/**
 	 * Conveniencemethod so you don't have to add an eventlistener to the searchsystem.
 	 * <p>
@@ -75,6 +80,12 @@ public interface SearchWidget {
 	void initialize(Criterion settings);
 
 	/**
+	 * This method allows you to manually start the search, it's like the user clicked te search button.
+	 * (Handy in case you have/want to add multiple ways to start the search (for instance on doubleclick in a list))
+	 */
+	void startSearch();
+
+	/**
 	 * clean up the widget to its initial state.
 	 */
 	void reset();
@@ -97,6 +108,17 @@ public interface SearchWidget {
 	 */
 	public interface SearchRequestHandler {
 		void onSearchRequested(SearchRequestEvent event);
+	}
+
+	/**
+	 * Handler to be notified when the user presses the favourites button.
+	 * 
+	 * @author Kristof Heirwegh
+	 */
+	public interface FavouriteRequestHandler {
+		void onAddRequested(FavouriteEvent event);
+		void onDeleteRequested(FavouriteEvent event);
+		void onChangeRequested(FavouriteEvent event);
 	}
 
 	/**
@@ -128,8 +150,8 @@ public interface SearchWidget {
 	 * @author Kristof Heirwegh
 	 */
 	public static class SaveRequestEvent extends SearchWidgetEvent {
-		public SaveRequestEvent(SearchWidget source, Criterion featureSearchCriterion) {
-			super(source, featureSearchCriterion);
+		public SaveRequestEvent(SearchWidget source, Criterion criterion) {
+			super(source, criterion);
 		}
 	}
 
@@ -143,5 +165,4 @@ public interface SearchWidget {
 			super(source, criterion);
 		}
 	}
-
 }

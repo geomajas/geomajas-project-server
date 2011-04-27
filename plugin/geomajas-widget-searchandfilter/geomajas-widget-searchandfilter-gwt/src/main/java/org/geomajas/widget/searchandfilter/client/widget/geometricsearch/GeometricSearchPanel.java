@@ -18,7 +18,7 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.CommService;
+import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchPanel;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
@@ -62,24 +62,18 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 
 //		this.shapeStyleBuffer.setDashArray("2,1"); // not supported
 
-		// inner unbuffered geom
-//		this.shapeStyleCenter = this.mapWidget.getPolygonSelectStyle().clone();
-//		this.shapeStyleCenter.setStrokeColor("#B45F04"); /* orange */
-//		this.shapeStyleCenter.setStrokeWidth("2");
-//		this.shapeStyleCenter.setStrokeOpacity("0.9");
-//		//this.shapeStyleCenter.setDashArray("1,1");
-//		this.shapeStyleCenter.setFillOpacity("0");	
-
 		this.mapWidget = mapWidget;
 		this.setTitle(messages.geometricSearchWidgetTitle());
 		VLayout layout = new VLayout(0);
-		layout.setWidth(300);
-		layout.setHeight(250);
+		layout.setWidth100();
+		layout.setHeight100();
 		tabs = new TabSet();
 		tabs.setWidth100();
 		tabs.setHeight100();
 		layout.addMember(tabs);
 
+		setWidth(350);
+		setHeight(250);
 		addChild(layout);
 	}
 
@@ -121,7 +115,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 
 	@Override
 	public Criterion getFeatureSearchCriterion() {
-		return CommService.buildGeometryCriterion(searchGeom, mapWidget);
+		return SearchCommService.buildGeometryCriterion(searchGeom, mapWidget);
 	}
 
 	@Override
@@ -168,7 +162,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 			updateGeomOnMap();
 
 		} else {
-			 CommService.mergeGeometries(geometries, new DataCallback<Geometry>() {
+			 SearchCommService.mergeGeometries(geometries, new DataCallback<Geometry>() {
 				public void execute(Geometry result) {
 					searchGeom = result;
 					updateGeomOnMap();

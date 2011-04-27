@@ -8,7 +8,6 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
 package org.geomajas.widget.searchandfilter.gwt.example.client.pages;
 
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -16,6 +15,7 @@ import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.Geometr
 import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
+import org.geomajas.widget.searchandfilter.client.widget.searchfavourites.SearchFavouritesListCreator;
 
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -55,12 +55,21 @@ public class SearchPage extends AbstractTab {
 			}
 		});
 
+		IButton btnFavSearch = new IButton("Open Favourite Searches window");
+		btnFavSearch.setAutoFit(true);
+		btnFavSearch.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				SearchWidgetRegistry.getSearchWidgetInstance(SearchFavouritesListCreator.IDENTIFIER).showForSearch();
+			}
+		});
+
 		mainLayout.setMembersMargin(10);
 		mainLayout.setMargin(10);
 
 		mainLayout.addMember(btnAttSearch);
 		mainLayout.addMember(btnGeoSearch);
 		mainLayout.addMember(btnComSearch);
+		mainLayout.addMember(btnFavSearch);
 	}
 
 	@Override

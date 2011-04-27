@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -32,7 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * A generic Searchwidget with common functionality.
  * <p>
  * To build a Searchwidget combine this Searchwidget with a SearchPanel.
- * 
+ *
  * @see SearchWidgetRegistry.
  * @author Kristof Heirwegh
  */
@@ -48,6 +50,8 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 	private final List<SearchRequestHandler> searchHandlers = new ArrayList<SearchWidget.SearchRequestHandler>();
 	private final List<SaveRequestHandler> saveHandlers = new ArrayList<SearchWidget.SaveRequestHandler>();
+	private final List<FavouriteRequestHandler> favouriteHandlers = new ArrayList<SearchWidget.
+		FavouriteRequestHandler>();
 
 	private IButton favouritesSBtn;
 	private IButton favouritesRBtn;
@@ -147,7 +151,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 				destroy();
 			}
 		});
-		
+
 		addCloseClickHandler(new CloseClickHandler() {
 			public void onCloseClick(CloseClientEvent event) {
 				hide();
@@ -164,14 +168,20 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		lsr.setWidth("*");
 
 		searchButtonBar.setWidth(searchPanel.getWidthAsString());
-		searchButtonBar.addMember(favouritesRBtn);
+		if (searchPanel.canAddToFavourites()) {
+			searchButtonBar.addMember(favouritesRBtn);
+		}
 		searchButtonBar.addMember(lsr);
 		searchButtonBar.addMember(searchBtn);
-		searchButtonBar.addMember(resetBtn);
+		if (searchPanel.canBeReset()) {
+			searchButtonBar.addMember(resetBtn);
+		}
 		layout.addMember(searchButtonBar);
 
 		saveButtonBar.setWidth(searchPanel.getWidthAsString());
-		saveButtonBar.addMember(favouritesSBtn);
+		if (searchPanel.canAddToFavourites()) {
+			saveButtonBar.addMember(favouritesSBtn);
+		}
 		saveButtonBar.addMember(lss);
 		saveButtonBar.addMember(saveBtn);
 		saveButtonBar.addMember(cancelBtn);
@@ -197,7 +207,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 
 	/**
 	 * Should the widget be hidden after a search or stay open for a new search?
-	 *
+	 * 
 	 * @param hideAfterSearch
 	 */
 	public void setHideAfterSearch(boolean hideAfterSearch) {
@@ -260,6 +270,18 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		saveHandlers.remove(handler);
 	}
 
+	public void addFavouriteRequestHandler(FavouriteRequestHandler handler) {
+		favouriteHandlers.add(handler);
+	}
+
+	public void removeFavouriteRequestHandler(FavouriteRequestHandler handler) {
+		favouriteHandlers.remove(handler);
+	}
+
+	public void startSearch() {
+		onSearch();
+	}
+
 	// ----------------------------------------------------------
 	// -- buttonActions --
 	// ----------------------------------------------------------
@@ -290,7 +312,13 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	}
 
 	private void onAddToFavourites() {
-		// TODO
+		if (searchPanel.validate()) {
+			SearchFavourite fav = new SearchFavourite();
+			fav.setCriterion(searchPanel.getFeatureSearchCriterion());
+			for (FavouriteRequestHandler h : favouriteHandlers) {
+				h.onAddRequested(new FavouriteEvent(null, fav, this));
+			}
+		}
 	}
 
 	// ----------------------------------------------------------
@@ -299,16 +327,19 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	 * @author Kristof Heirwegh
 	 */
 	private class OneOffSaveRequestHandler implements SaveRequestHandler {
-		private final SaveRequestHandler oneOffHandler; 
+		private final SaveRequestHandler oneOffHandler;
+
 		public OneOffSaveRequestHandler(SaveRequestHandler handler) {
 			this.oneOffHandler = handler;
 		}
+
 		public void onSaveRequested(SaveRequestEvent event) {
 			oneOffHandler.onSaveRequested(event);
 			GWT.runAsync(new RunAsyncCallback() {
 				public void onSuccess() {
 					removeSaveRequestHandler(oneOffHandler);
 				}
+
 				public void onFailure(Throwable reason) {
 				}
 			});

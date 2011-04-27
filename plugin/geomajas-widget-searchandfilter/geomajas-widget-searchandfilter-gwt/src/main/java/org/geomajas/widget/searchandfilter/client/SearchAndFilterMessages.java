@@ -58,9 +58,10 @@ public interface SearchAndFilterMessages extends Messages {
 	String geometricSearchWidgetFreeDrawingLine();
 	String geometricSearchWidgetFreeDrawingPolygon();
 	String geometricSearchWidgetFreeDrawingAdd();
-	String geometricSearchWidgetFreeDrawingRemoveLast();
 	String geometricSearchWidgetFreeDrawingInvalidGeometry();
 	String geometricSearchWidgetFreeDrawingNothingDrawn();
+	String geometricSearchWidgetFreeDrawingUndo();
+	String geometricSearchWidgetFreeDrawingRedo();
 
 	String attributeSearchWidgetTitle();
 
@@ -78,7 +79,32 @@ public interface SearchAndFilterMessages extends Messages {
 	String combinedSearchWidgetOr();
 	String combinedSearchWidgetSelectSearch();
 	String combinedSearchWidgetNoValue();
-	
+
 	String searchControllerSearchingTitle();
 	String searchControllerSearchingMessage();
+
+	String favouritesControllerAddTitle();
+	String favouritesControllerAddName();
+	String favouritesControllerAddNameTooltip();
+	String favouritesControllerAddShared();
+	String favouritesControllerAddSharedTooltip();
+	String favouritesControllerAddAdd();
+	String favouritesControllerAddCancel();
+	String favouritesControllerAddCrudError();
+	String favouritesControllerAddGroupTitle();
+
+	String searchFavouritesListWidgetTitle();
+	String searchFavouritesListWidgetFavourites();
+	String searchFavouritesListWidgetNoSelection();
+	String searchFavouritesListWidgetGroupTitle();
+	String searchFavouritesListWidgetLastChange();
+	String searchFavouritesListWidgetLastChangeBy();
+	String searchFavouritesListWidgetSave();
+	String searchFavouritesListWidgetCancel();
+	String searchFavouritesListWidgetDelete();
+	String searchFavouritesListWidgetDeleteMessage();
+	String searchFavouritesListWidgetEditFilter();
+	String searchFavouritesListWidgetEditFilterTooltip();
+	String searchFavouritesListWidgetAttributeSearchNotFound();
+	String searchFavouritesListWidgetFilter();
 }

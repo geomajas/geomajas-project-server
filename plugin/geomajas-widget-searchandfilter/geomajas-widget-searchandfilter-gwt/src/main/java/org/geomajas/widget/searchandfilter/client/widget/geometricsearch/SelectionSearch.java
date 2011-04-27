@@ -20,7 +20,7 @@ import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.CommService;
+import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 
 import com.google.gwt.core.client.GWT;
@@ -125,14 +125,14 @@ public class SelectionSearch extends AbstractGeometricSearchMethod {
 		} else {
 			Integer buffer = (Integer) spiBuffer.getValue();
 			if (buffer != 0) {
-				CommService.mergeAndBufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
+				SearchCommService.mergeAndBufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
 					public void execute(Geometry[] result) {
 						updateGeometry(geometry, result[1]);
 						geometry = result[1];
 					}
 				});
 			} else {
-				CommService.mergeGeometries(geoms, new DataCallback<Geometry>() {
+				SearchCommService.mergeGeometries(geoms, new DataCallback<Geometry>() {
 					public void execute(Geometry result) {
 						updateGeometry(geometry, result);
 						geometry = result;

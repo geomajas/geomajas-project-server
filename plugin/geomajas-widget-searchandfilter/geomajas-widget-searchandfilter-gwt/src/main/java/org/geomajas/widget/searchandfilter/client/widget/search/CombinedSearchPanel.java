@@ -148,7 +148,7 @@ public class CombinedSearchPanel extends SearchPanel {
 
 		// ----------------------------------------------------------
 
-		setWidth(300);
+		setWidth(350);
 		setHeight(250);
 		addChild(layout);
 	}

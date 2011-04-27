@@ -19,7 +19,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.CommService;
+import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SearchRequestEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SearchRequestHandler;
@@ -57,7 +57,7 @@ public class SearchController implements SearchRequestHandler {
 		final SearchEvent searchEvent = new SearchEvent();
 		searchEvent.setCriterion(event.getCriterion());
 		fireSearchStartEvent(searchEvent);
-		CommService.searchByCriterion(event.getCriterion(), mapWidget,
+		SearchCommService.searchByCriterion(event.getCriterion(), mapWidget,
 				new DataCallback<Map<VectorLayer, List<Feature>>>() {
 					public void execute(Map<VectorLayer, List<Feature>> result) {
 						searchEvent.setResult(result);

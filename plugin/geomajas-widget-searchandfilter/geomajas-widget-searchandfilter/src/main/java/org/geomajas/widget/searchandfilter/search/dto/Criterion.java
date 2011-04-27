@@ -15,23 +15,23 @@ import java.util.Set;
 
 /**
  * Contains all necessary data to execute a search for features.
- * 
+ *
  * @author Kristof Heirwegh
- * 
+ *
  */
 public interface Criterion extends Serializable {
 
 	/**
 	 * A limited validation just to make sure all necessary properties are
 	 * filled in (not that for instance the layer exists and is readable).
-	 * 
+	 *
 	 * @return
 	 */
 	boolean isValid();
 
 	/**
 	 * Add all serverlayerIds this criterion operates on to the given Set.
-	 * 
+	 *
 	 * @param layerIds
 	 */
 	void serverLayerIdVisitor(Set<String> layerIds);

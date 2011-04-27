@@ -17,8 +17,8 @@ import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.CommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
+import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
@@ -46,14 +46,17 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	private static final String BTN_LINE_CREATE_IMG = "[ISOMORPHIC]/geomajas/osgeo/line-create.png";
 	private static final String BTN_POLYGON_CREATE_IMG = "[ISOMORPHIC]/geomajas/osgeo/polygon-create.png";
 	private static final String BTN_ADD_IMG = "[ISOMORPHIC]/geomajas/osgeo/selected-add.png";
-	private static final String BTN_CANCEL_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
+	private static final String BTN_UNDO_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
+	private static final String BTN_REDO_IMG = "[ISOMORPHIC]/geomajas/osgeo/redo.png";
 
 	private DynamicForm frmBuffer;
 	private SpinnerItem spiBuffer;
-	private IButton btnRemoveLast;
-	
+	private IButton btnUndo;
+	private IButton btnRedo;
+
 	private Geometry mergedGeom;
 	private final ArrayList<Geometry> geometries = new ArrayList<Geometry>();
+	private final ArrayList<Geometry> redoGeoms = new ArrayList<Geometry>();
 
 	private GraphicsController originalController;
 	private ParentDrawController drawController;
@@ -73,7 +76,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	public void reset() {
 		geometries.clear();
 		frmBuffer.reset();
-		btnRemoveLast.setDisabled(true);
+		btnUndo.setDisabled(true);
+		btnRedo.setDisabled(true);
 		removeFreeDrawingController();
 	}
 
@@ -134,14 +138,25 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		btnRemoveLast = new IButton(messages.geometricSearchWidgetFreeDrawingRemoveLast());
-		btnRemoveLast.setIcon(BTN_CANCEL_IMG);
-		btnRemoveLast.setAutoFit(true);
-		btnRemoveLast.setDisabled(true);
-		btnRemoveLast.setShowDisabledIcon(false);
-		btnRemoveLast.addClickHandler(new ClickHandler() {
+		btnUndo = new IButton(messages.geometricSearchWidgetFreeDrawingUndo());
+		btnUndo.setIcon(BTN_UNDO_IMG);
+		btnUndo.setAutoFit(true);
+		btnUndo.setDisabled(true);
+		btnUndo.setShowDisabledIcon(false);
+		btnUndo.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				onRemoveLast();
+				onUndo();
+			}
+		});
+
+		btnRedo = new IButton(messages.geometricSearchWidgetFreeDrawingRedo());
+		btnRedo.setIcon(BTN_REDO_IMG);
+		btnRedo.setAutoFit(true);
+		btnRedo.setDisabled(true);
+		btnRedo.setShowDisabledIcon(false);
+		btnRedo.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				onRedo();
 			}
 		});
 
@@ -164,9 +179,10 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		geomsButtonBar.addMember(btnPoint);
 		geomsButtonBar.addMember(btnLine);
 		geomsButtonBar.addMember(btnPolygon);
-		
+
 		actionsButtonBar.addMember(btnAdd);
-		actionsButtonBar.addMember(btnRemoveLast);
+		actionsButtonBar.addMember(btnUndo);
+		actionsButtonBar.addMember(btnRedo);
 
 		mainLayout.addMember(titleBar);
 		mainLayout.addMember(geomsButtonBar);
@@ -202,14 +218,30 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	private void onAdd() {
 		addNewGeometry();
 	}
-	
-	private void onRemoveLast() {
+
+	private void onUndo() {
 		if (geometries.size() > 0) {
-			geometries.remove(geometries.size() - 1);
+			Geometry geom = geometries.remove(geometries.size() - 1);
+			redoGeoms.add(geom);
+			btnRedo.setDisabled(false);
 			updateView();
 		}
 		if (geometries.size() == 0) {
-			btnRemoveLast.setDisabled(true);
+			btnUndo.setDisabled(true);
+		}
+	}
+
+	private void onRedo() {
+		if (redoGeoms.size() > 0) {
+			Geometry geom = redoGeoms.remove(redoGeoms.size() - 1);
+			geometries.add(geom);
+			if (geometries.size() == 1) {
+				btnUndo.setDisabled(false);
+			}
+			updateView();
+		}
+		if (redoGeoms.size() == 0) {
+			btnRedo.setDisabled(true);
 		}
 	}
 
@@ -233,10 +265,10 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			if (!geom.isEmpty()
 					&& geom.isValid()
 					&& !geometries.contains(geom)) {
-	
+
 				geometries.add(geom);
 				if (geometries.size() == 1) {
-					btnRemoveLast.setDisabled(false);
+					btnUndo.setDisabled(false);
 				}
 				updateView();
 				removeFreeDrawingController();
@@ -248,19 +280,19 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			SC.say(messages.geometricSearchWidgetFreeDrawingNothingDrawn());
 		}
 	}
-	
+
 	private void updateView() {
 		if (geometries.size() > 0) {
 			Integer buffer = (Integer) spiBuffer.getValue();
 			if (buffer != 0) {
-				CommService.mergeAndBufferGeometries(geometries, buffer, new DataCallback<Geometry[]>() {
+				SearchCommService.mergeAndBufferGeometries(geometries, buffer, new DataCallback<Geometry[]>() {
 					public void execute(Geometry[] result) {
 						updateGeometry(mergedGeom, result[1]);
 						mergedGeom = result[1];
 					}
 				});
 			} else {
-				CommService.mergeGeometries(geometries, new DataCallback<Geometry>() {
+				SearchCommService.mergeGeometries(geometries, new DataCallback<Geometry>() {
 					public void execute(Geometry result) {
 						updateGeometry(mergedGeom, result);
 						mergedGeom = result;
