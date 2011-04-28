@@ -13,9 +13,9 @@ package org.geomajas.gwt.client.spatial.geometry;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.util.Assert;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -28,11 +28,11 @@ import org.junit.Test;
  */
 public class GwtMultiPolygonTest {
 
-	private final static int SRID = 4326;
+	private static final int SRID = 4326;
 
-	private final static int PRECISION = -1;
+	private static final int PRECISION = -1;
 
-	private final static double ZERO = 0.00001;
+	private static final double DELTA = 1e-10;
 
 	private GeometryFactory gwtFactory;
 
@@ -80,59 +80,59 @@ public class GwtMultiPolygonTest {
 
 	@Test
 	public void getCentroid() {
-		Assert.isTrue(jts.getCentroid().getCoordinate().x - gwt.getCentroid().getX() < ZERO);
-		Assert.isTrue(jts.getCentroid().getCoordinate().y - gwt.getCentroid().getY() < ZERO);
+		Assert.assertEquals(jts.getCentroid().getCoordinate().x, gwt.getCentroid().getX(), DELTA);
+		Assert.assertEquals(jts.getCentroid().getCoordinate().y, gwt.getCentroid().getY(), DELTA);
 	}
 
 	@Test
 	public void getCoordinate() {
-		Assert.equals(jts.getCoordinate().x, gwt.getCoordinate().getX());
+		Assert.assertEquals(jts.getCoordinate().x, gwt.getCoordinate().getX(), DELTA);
 	}
 
 	@Test
 	public void getCoordinates() {
-		Assert.equals(jts.getCoordinates()[0].x, gwt.getCoordinates()[0].getX());
+		Assert.assertEquals(jts.getCoordinates()[0].x, gwt.getCoordinates()[0].getX(), DELTA);
 	}
 
 	@Test
 	public void getBounds() {
 		Envelope env = jts.getEnvelopeInternal();
 		Bbox bbox = gwt.getBounds();
-		Assert.equals(env.getMinX(), bbox.getX());
-		Assert.equals(env.getMinY(), bbox.getY());
-		Assert.equals(env.getMaxX(), bbox.getMaxX());
-		Assert.equals(env.getMaxY(), bbox.getMaxY());
+		Assert.assertEquals(env.getMinX(), bbox.getX(), DELTA);
+		Assert.assertEquals(env.getMinY(), bbox.getY(), DELTA);
+		Assert.assertEquals(env.getMaxX(), bbox.getMaxX(), DELTA);
+		Assert.assertEquals(env.getMaxY(), bbox.getMaxY(), DELTA);
 	}
 
 	@Test
 	public void getNumPoints() {
-		Assert.equals(jts.getNumPoints(), gwt.getNumPoints());
+		Assert.assertEquals(jts.getNumPoints(), gwt.getNumPoints());
 	}
 
 	@Test
 	public void getGeometryN() {
-		Assert.equals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX());
-		Assert.equals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX());
+		Assert.assertEquals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX(), DELTA);
+		Assert.assertEquals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX(), DELTA);
 	}
 
 	@Test
 	public void getNumGeometries() {
-		Assert.equals(jts.getNumGeometries(), gwt.getNumGeometries());
+		Assert.assertEquals(jts.getNumGeometries(), gwt.getNumGeometries());
 	}
 
 	@Test
 	public void isEmpty() {
-		Assert.equals(jts.isEmpty(), gwt.isEmpty());
+		Assert.assertEquals(jts.isEmpty(), gwt.isEmpty());
 	}
 
 	@Test
 	public void isSimple() {
-		Assert.equals(jts.isSimple(), gwt.isSimple());
+		Assert.assertEquals(jts.isSimple(), gwt.isSimple());
 	}
 
 	@Test
 	public void isValid() {
-		Assert.equals(jts.isValid(), gwt.isValid());
+		Assert.assertEquals(jts.isValid(), gwt.isValid());
 	}
 
 	@Test
@@ -157,18 +157,18 @@ public class GwtMultiPolygonTest {
 		// LineString gwtLine3 = gwtFactory.createLineString(new Coordinate[] { new Coordinate(0, 0),
 		// new Coordinate(15, 15) });
 
-		Assert.equals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
-		// Assert.equals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
-		// Assert.equals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
+		Assert.assertEquals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
+		// Assert.assertEquals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
+		// Assert.assertEquals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
 	}
 
 	@Test
 	public void getArea() {
-		Assert.isTrue((jts.getArea() - gwt.getArea()) < ZERO);
+		Assert.assertEquals(jts.getArea(), gwt.getArea(), DELTA);
 	}
 
 	@Test
 	public void getLength() {
-		Assert.isTrue((jts.getLength() - gwt.getLength()) < ZERO);
+		Assert.assertEquals(jts.getLength(), gwt.getLength(), DELTA);
 	}
 }

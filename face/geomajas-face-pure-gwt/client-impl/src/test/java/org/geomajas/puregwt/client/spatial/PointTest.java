@@ -33,9 +33,9 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 public class PointTest {
 
-	private final static int SRID = 4326;
+	private static final int SRID = 4326;
 
-	private final static double DELTA = 1E-10;
+	private static final double DELTA = 1E-10;
 
 	private GeometryFactory gwtFactory;
 

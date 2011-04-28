@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt.client.spatial.geometry.operation;
 
-import com.vividsolutions.jts.util.Assert;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -25,9 +25,11 @@ import org.junit.Test;
  */
 public class TranslateCoordinateOperationTest {
 
-	private final static int SRID = 4326;
+	private static final int SRID = 4326;
 
-	private final static int PRECISION = -1;
+	private static final int PRECISION = -1;
+
+	private static final double DELTA = 1e-10;
 
 	private LineString lineString;
 
@@ -53,56 +55,56 @@ public class TranslateCoordinateOperationTest {
 	public void testLineStringZeroIndex() {
 		TranslateCoordinateOperation op = new TranslateCoordinateOperation(0, 10, -10);
 		LineString result = (LineString) op.execute(lineString);
-		Assert.equals(20.0, result.getCoordinateN(0).getX());
-		Assert.equals(20.0, result.getCoordinateN(1).getX());
-		Assert.equals(lineString.getNumPoints(), result.getNumPoints());
+		Assert.assertEquals(20.0, result.getCoordinateN(0).getX(), DELTA);
+		Assert.assertEquals(20.0, result.getCoordinateN(1).getX(), DELTA);
+		Assert.assertEquals(lineString.getNumPoints(), result.getNumPoints());
 	}
 
 	@Test
 	public void testLineStringBigIndex() {
 		TranslateCoordinateOperation op = new TranslateCoordinateOperation(10, 10, -10);
 		LineString result = (LineString) op.execute(lineString);
-		Assert.equals(10.0, result.getCoordinateN(0).getX());
-		Assert.equals(30.0, result.getCoordinateN(result.getNumPoints() - 1).getX());
-		Assert.equals(lineString.getNumPoints(), result.getNumPoints());
+		Assert.assertEquals(10.0, result.getCoordinateN(0).getX(), DELTA);
+		Assert.assertEquals(30.0, result.getCoordinateN(result.getNumPoints() - 1).getX(), DELTA);
+		Assert.assertEquals(lineString.getNumPoints(), result.getNumPoints());
 	}
 
 	@Test
 	public void testLineStringMiddleIndex() {
 		TranslateCoordinateOperation op = new TranslateCoordinateOperation(2, 10, -10);
 		LineString result = (LineString) op.execute(lineString);
-		Assert.equals(10.0, result.getCoordinateN(0).getX());
-		Assert.equals(30.0, result.getCoordinateN(2).getX());
-		Assert.equals(lineString.getNumPoints(), result.getNumPoints());
+		Assert.assertEquals(10.0, result.getCoordinateN(0).getX(), DELTA);
+		Assert.assertEquals(30.0, result.getCoordinateN(2).getX(), DELTA);
+		Assert.assertEquals(lineString.getNumPoints(), result.getNumPoints());
 	}
 
 	@Test
 	public void testLinearRingZeroIndex() {
 		TranslateCoordinateOperation op = new TranslateCoordinateOperation(0, 10, -10);
 		LinearRing result = (LinearRing) op.execute(linearRing);
-		Assert.equals(20.0, result.getCoordinateN(0).getX());
-		Assert.equals(20.0, result.getCoordinateN(1).getX());
-		Assert.equals(linearRing.getNumPoints(), result.getNumPoints());
-		Assert.isTrue(result.isClosed());
+		Assert.assertEquals(20.0, result.getCoordinateN(0).getX(), DELTA);
+		Assert.assertEquals(20.0, result.getCoordinateN(1).getX(), DELTA);
+		Assert.assertEquals(linearRing.getNumPoints(), result.getNumPoints());
+		Assert.assertTrue(result.isClosed());
 	}
 
 	@Test
 	public void testLinearRingBigIndex() {
 		TranslateCoordinateOperation op = new TranslateCoordinateOperation(10, 10, -10);
 		LinearRing result = (LinearRing) op.execute(linearRing);
-		Assert.equals(10.0, result.getCoordinateN(0).getX());
-		Assert.equals(30.0, result.getCoordinateN(result.getNumPoints() - 2).getX());
-		Assert.equals(linearRing.getNumPoints(), result.getNumPoints());
-		Assert.isTrue(result.isClosed());
+		Assert.assertEquals(10.0, result.getCoordinateN(0).getX(), DELTA);
+		Assert.assertEquals(30.0, result.getCoordinateN(result.getNumPoints() - 2).getX(), DELTA);
+		Assert.assertEquals(linearRing.getNumPoints(), result.getNumPoints());
+		Assert.assertTrue(result.isClosed());
 	}
 
 	@Test
 	public void testLinearRingMiddleIndex() {
 		TranslateCoordinateOperation op = new TranslateCoordinateOperation(2, 10, -10);
 		LinearRing result = (LinearRing) op.execute(linearRing);
-		Assert.equals(10.0, result.getCoordinateN(0).getX());
-		Assert.equals(30.0, result.getCoordinateN(2).getX());
-		Assert.equals(linearRing.getNumPoints(), result.getNumPoints());
-		Assert.isTrue(result.isClosed());
+		Assert.assertEquals(10.0, result.getCoordinateN(0).getX(), DELTA);
+		Assert.assertEquals(30.0, result.getCoordinateN(2).getX(), DELTA);
+		Assert.assertEquals(linearRing.getNumPoints(), result.getNumPoints());
+		Assert.assertTrue(result.isClosed());
 	}
 }

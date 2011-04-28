@@ -17,7 +17,6 @@ import java.util.List;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
@@ -29,9 +28,8 @@ import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.layer.LayerType;
+import org.junit.Assert;
 import org.junit.Test;
-
-import com.vividsolutions.jts.util.Assert;
 
 /**
  * Testcase for the SequenceProcessor implementation of the workflow.
@@ -84,7 +82,7 @@ public class TestSequenceProcessor {
 	private class ExpectErrorHandler implements WorkflowErrorHandler {
 
 		public void handleError(WorkflowContext context, Throwable throwable) {
-			Assert.shouldNeverReachHere();
+			Assert.fail();
 		}
 	}
 }

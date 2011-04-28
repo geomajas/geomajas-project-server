@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt.client.spatial.snapping;
 
-import com.vividsolutions.jts.util.Assert;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,6 +29,8 @@ import java.util.List;
  * @author Pieter De Graef
  */
 public class SnappingAlgorithmTest {
+
+	private static final double DELTA = 1e-10;
 
 	private List<Geometry> geometries = new ArrayList<Geometry>();
 
@@ -55,21 +57,21 @@ public class SnappingAlgorithmTest {
 	public void testClosestPoint() {
 		SnappingAlgorithm algorithm = new ClosestPointAlgorithm(geometries, ruleDistance);
 		Coordinate snapped = algorithm.getSnappingPoint(new Coordinate(16, 16), Double.MAX_VALUE);
-		Assert.equals(18.0, snapped.getX());
-		Assert.equals(18.0, snapped.getY());
+		Assert.assertEquals(18.0, snapped.getX(), DELTA);
+		Assert.assertEquals(18.0, snapped.getY(), DELTA);
 		snapped = algorithm.getSnappingPoint(new Coordinate(7, 7.5), Double.MAX_VALUE);
-		Assert.equals(5.0, snapped.getX());
-		Assert.equals(5.0, snapped.getY());
+		Assert.assertEquals(5.0, snapped.getX(), DELTA);
+		Assert.assertEquals(5.0, snapped.getY(), DELTA);
 	}
 
 	@Test
 	public void testNearest() {
 		SnappingAlgorithm algorithm = new NearestAlgorithm(geometries, ruleDistance);
 		Coordinate snapped = algorithm.getSnappingPoint(new Coordinate(16, 16), Double.MAX_VALUE);
-		Assert.equals(15.0, snapped.getX());
-		Assert.equals(16.0, snapped.getY());
+		Assert.assertEquals(15.0, snapped.getX(), DELTA);
+		Assert.assertEquals(16.0, snapped.getY(), DELTA);
 		snapped = algorithm.getSnappingPoint(new Coordinate(14, 18.9), Double.MAX_VALUE);
-		Assert.equals(14.0, snapped.getX());
-		Assert.equals(18.0, snapped.getY());
+		Assert.assertEquals(14.0, snapped.getX(), DELTA);
+		Assert.assertEquals(18.0, snapped.getY(), DELTA);
 	}
 }

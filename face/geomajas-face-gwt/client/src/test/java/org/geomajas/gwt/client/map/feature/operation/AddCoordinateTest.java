@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt.client.map.feature.operation;
 
-import com.vividsolutions.jts.util.Assert;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
@@ -22,6 +21,7 @@ import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -31,9 +31,11 @@ import org.junit.Test;
  */
 public class AddCoordinateTest {
 
-	private final static int SRID = 4326;
+	private static final int SRID = 4326;
 
-	private final static int PRECISION = -1;
+	private static final int PRECISION = -1;
+
+	private static final double DELTA = 1e-10;
 
 	private LineString lineString;
 
@@ -80,9 +82,9 @@ public class AddCoordinateTest {
 		feature.setGeometry((LineString) lineString.clone());
 		op.execute(feature);
 		Geometry g = feature.getGeometry();
-		Assert.equals(50.0, g.getCoordinates()[g.getNumPoints() - 1].getX());
+		Assert.assertEquals(50.0, g.getCoordinates()[g.getNumPoints() - 1].getX(), DELTA);
 		op.undo(feature);
-		Assert.equals(lineString.toWkt(), feature.getGeometry().toWkt());
+		Assert.assertEquals(lineString.toWkt(), feature.getGeometry().toWkt());
 	}
 
 	@Test
@@ -91,9 +93,9 @@ public class AddCoordinateTest {
 		feature.setGeometry((MultiLineString) multiLineString.clone());
 		op.execute(feature);
 		Geometry g = feature.getGeometry();
-		Assert.equals(50.0, g.getCoordinates()[g.getNumPoints() - 1].getX());
+		Assert.assertEquals(50.0, g.getCoordinates()[g.getNumPoints() - 1].getX(), DELTA);
 		op.undo(feature);
-		Assert.equals(multiLineString.toWkt(), feature.getGeometry().toWkt());
+		Assert.assertEquals(multiLineString.toWkt(), feature.getGeometry().toWkt());
 	}
 
 	@Test
@@ -103,9 +105,9 @@ public class AddCoordinateTest {
 		op.execute(feature);
 		Polygon p = (Polygon) feature.getGeometry();
 		LinearRing r = p.getInteriorRingN(index.getInteriorRingIndex());
-		Assert.equals(50.0, r.getCoordinateN(r.getNumPoints() - 2).getX());
+		Assert.assertEquals(50.0, r.getCoordinateN(r.getNumPoints() - 2).getX(), DELTA);
 		op.undo(feature);
-		Assert.equals(polygon.toWkt(), feature.getGeometry().toWkt());
+		Assert.assertEquals(polygon.toWkt(), feature.getGeometry().toWkt());
 	}
 
 	@Test
@@ -116,8 +118,8 @@ public class AddCoordinateTest {
 		MultiPolygon m = (MultiPolygon) feature.getGeometry();
 		Polygon p = (Polygon) m.getGeometryN(index.getGeometryIndex());
 		LinearRing r = p.getInteriorRingN(index.getInteriorRingIndex());
-		Assert.equals(50.0, r.getCoordinateN(r.getNumPoints() - 2).getX());
+		Assert.assertEquals(50.0, r.getCoordinateN(r.getNumPoints() - 2).getX(), DELTA);
 		op.undo(feature);
-		Assert.equals(multiPolygon.toWkt(), feature.getGeometry().toWkt());
+		Assert.assertEquals(multiPolygon.toWkt(), feature.getGeometry().toWkt());
 	}
 }
