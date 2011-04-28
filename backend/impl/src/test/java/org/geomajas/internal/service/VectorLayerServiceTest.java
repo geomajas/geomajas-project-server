@@ -17,12 +17,17 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.internal.layer.tile.TileMetadataImpl;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -44,6 +49,8 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.PrecisionModel;
+
+import javax.swing.text.StyleContext;
 
 /**
  * Tests for VectorLayerService.
@@ -236,6 +243,42 @@ public class VectorLayerServiceTest {
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(1, bounds.getMaxX(), ALLOWANCE);
 		Assert.assertEquals(1, bounds.getMaxY(), ALLOWANCE);
+	}
+
+
+	@Test
+	public void getTile()  throws Exception {
+		TileMetadata tileMetadata = getTileMetadata();
+		InternalTile tile = layerService.getTile(tileMetadata);
+		Assert.assertNotNull(tile);
+		Assert.assertNotNull(tile.getFeatures());
+		Assert.assertEquals(3, tile.getFeatures().size());
+	}
+
+	@Test
+	public void getFilteredTile()  throws Exception {
+		TileMetadata tileMetadata = getTileMetadata();
+		tileMetadata.setFilter("doubleAttr is null");
+		InternalTile tile = layerService.getTile(tileMetadata);
+		Assert.assertNotNull(tile);
+		Assert.assertNotNull(tile.getFeatures());
+		Assert.assertEquals(2, tile.getFeatures().size());
+
+	}
+
+	private TileMetadata getTileMetadata() {
+		TileMetadata tileMetadata = new TileMetadataImpl();
+		tileMetadata.setCrs("EPSG:4326");
+		tileMetadata.setCode(new TileCode(0,0,0));
+		tileMetadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
+		tileMetadata.setLayerId(LAYER_ID);
+		tileMetadata.setPaintGeometries(true);
+		tileMetadata.setScale(1.0);
+		NamedStyleInfo styleInfo = new NamedStyleInfo();
+		styleInfo.setName("beansStyleInfo");
+		tileMetadata.setStyleInfo(styleInfo);
+		tileMetadata.setPanOrigin(new org.geomajas.geometry.Coordinate(0, 0));
+		return tileMetadata;
 	}
 
 	// @todo should also test the getObjects() method.
