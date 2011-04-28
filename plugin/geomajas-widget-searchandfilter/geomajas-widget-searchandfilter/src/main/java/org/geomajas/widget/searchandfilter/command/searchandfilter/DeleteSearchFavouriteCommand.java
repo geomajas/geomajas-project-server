@@ -19,6 +19,7 @@ import org.geomajas.security.SecurityContext;
 import org.geomajas.widget.searchandfilter.command.dto.DeleteSearchFavouriteRequest;
 import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 import org.geomajas.widget.searchandfilter.service.SearchFavouritesService;
+import org.geomajas.widget.searchandfilter.service.SearchFavouritesSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class DeleteSearchFavouriteCommand implements Command<DeleteSearchFavouri
 	@Autowired
 	private SearchFavouritesService searchFavouritesService;
 
+	@Autowired(required = false)
+	private SearchFavouritesSettings settings;
+
 	@Autowired
 	private SecurityContext securityContext;
 
@@ -48,8 +52,14 @@ public class DeleteSearchFavouriteCommand implements Command<DeleteSearchFavouri
 		}
 
 		String user = securityContext.getUserName();
+		boolean anonymous = false;
 		if (user == null || "".equals(user)) {
-			throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, "Need username.");
+			if (settings != null && settings.isAllowAnonymous() && settings.isAnonymousCanEdit()) {
+				user = "anonymous";
+				anonymous = true;
+			} else {
+				throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, "Need username.");
+			}
 		}
 
 		try {
@@ -58,8 +68,13 @@ public class DeleteSearchFavouriteCommand implements Command<DeleteSearchFavouri
 				response.setSuccess(false);
 				response.getErrorMessages().add("No SearchFavourite found with id: " + request.getSearchFavouriteId());
 			} else {
-				searchFavouritesService.deleteSearchFavourite(sf);
-				response.setSuccess(true);
+				if (anonymous && !user.equals(sf.getCreator())) {
+					response.setSuccess(false);
+					response.getErrorMessages().add("User Anonymous can only delete his own favourites.");
+				} else {
+					searchFavouritesService.deleteSearchFavourite(sf);
+					response.setSuccess(true);
+				}
 			}
 		} catch (Exception e) {
 			response.setSuccess(false);

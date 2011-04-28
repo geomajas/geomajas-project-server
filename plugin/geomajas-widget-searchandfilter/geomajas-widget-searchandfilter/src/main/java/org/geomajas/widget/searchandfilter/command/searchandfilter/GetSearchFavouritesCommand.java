@@ -17,6 +17,7 @@ import org.geomajas.security.SecurityContext;
 import org.geomajas.widget.searchandfilter.command.dto.GetSearchFavouritesRequest;
 import org.geomajas.widget.searchandfilter.command.dto.GetSearchFavouritesResponse;
 import org.geomajas.widget.searchandfilter.service.SearchFavouritesService;
+import org.geomajas.widget.searchandfilter.service.SearchFavouritesSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class GetSearchFavouritesCommand implements Command<GetSearchFavouritesRe
 	@Autowired
 	private SearchFavouritesService searchFavouritesService;
 
+	@Autowired(required = false)
+	private SearchFavouritesSettings settings;
+
 	@Autowired
 	private SecurityContext securityContext;
 
@@ -43,7 +47,11 @@ public class GetSearchFavouritesCommand implements Command<GetSearchFavouritesRe
 			throws Exception {
 		String user = securityContext.getUserName();
 		if (user == null || "".equals(user)) {
-			throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, "need username.");
+			if (settings != null && settings.isAllowAnonymous() && settings.isAnonymousCanEdit()) {
+				user = "anonymous";
+			} else {
+				throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, "Need username.");
+			}
 		}
 
 		response.setPrivateSearchFavourites(searchFavouritesService.getPrivateSearchFavourites(user));

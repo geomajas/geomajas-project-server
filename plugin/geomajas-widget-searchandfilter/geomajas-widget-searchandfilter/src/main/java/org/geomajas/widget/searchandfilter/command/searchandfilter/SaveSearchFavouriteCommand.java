@@ -21,6 +21,7 @@ import org.geomajas.widget.searchandfilter.command.dto.SaveSearchFavouriteReques
 import org.geomajas.widget.searchandfilter.command.dto.SaveSearchFavouriteResponse;
 import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 import org.geomajas.widget.searchandfilter.service.SearchFavouritesService;
+import org.geomajas.widget.searchandfilter.service.SearchFavouritesSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class SaveSearchFavouriteCommand implements Command<SaveSearchFavouriteRe
 	@Autowired
 	private SearchFavouritesService searchFavouritesService;
 
+	@Autowired(required = false)
+	private SearchFavouritesSettings settings;
+
 	@Autowired
 	private SecurityContext securityContext;
 
@@ -54,8 +58,14 @@ public class SaveSearchFavouriteCommand implements Command<SaveSearchFavouriteRe
 		}
 
 		String user = securityContext.getUserName();
+		boolean anonymous = false;
 		if (user == null || "".equals(user)) {
-			throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, "Need username.");
+			if (settings != null && settings.isAllowAnonymous() && settings.isAnonymousCanEdit()) {
+				user = "anonymous";
+				anonymous = true;
+			} else {
+				throw new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, "Need username.");
+			}
 		}
 
 		try {
@@ -72,10 +82,14 @@ public class SaveSearchFavouriteCommand implements Command<SaveSearchFavouriteRe
 					response.getErrorMessages().add("Id is set but not found??");
 					return;
 				} else {
-					// not trusting client one.
-					sf.setCreator(persisted.getCreator());
-					sf.setLastChange(new Date());
-					sf.setLastChangeBy(user);
+					if (anonymous && !user.equals(sf.getCreator())) {
+						response.getErrorMessages().add("User Anonymous can only delete his own favourites.");
+					} else {
+						// not trusting client one.
+						sf.setCreator(persisted.getCreator());
+						sf.setLastChange(new Date());
+						sf.setLastChangeBy(user);
+					}
 				}
 			}
 			searchFavouritesService.saveOrUpdateSearchFavourite(sf);

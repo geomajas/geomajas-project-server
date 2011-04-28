@@ -47,7 +47,8 @@ public interface SearchAndFilterMessages extends Messages {
 	String geometricSearchWidgetNoGeometry();
 	String geometricSearchWidgetBufferLabel();
 	String geometricSearchWidgetNoResult();
-
+	String geometricSearchWidgetNoLayers();
+	
 	String geometricSearchWidgetSelectionSearchTitle();
 	String geometricSearchWidgetSelectionSearchZoomToSelection();
 	String geometricSearchWidgetSelectionSearchAddSelection();

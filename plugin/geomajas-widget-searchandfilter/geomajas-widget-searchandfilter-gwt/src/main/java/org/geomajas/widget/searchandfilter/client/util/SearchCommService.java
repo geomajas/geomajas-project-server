@@ -269,7 +269,7 @@ public final class SearchCommService {
 		return null;
 	}
 
-	private static List<String> getVisibleServerLayerIds(MapModel mapModel) {
+	public static List<String> getVisibleServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
 		for (VectorLayer layer : mapModel.getVectorLayers()) {
 			if (layer.isShowing()) {

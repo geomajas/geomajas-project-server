@@ -72,7 +72,7 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 		tabs.setHeight100();
 		layout.addMember(tabs);
 
-		setWidth(350);
+		setWidth(400);
 		setHeight(250);
 		addChild(layout);
 	}
@@ -107,6 +107,9 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 	public boolean validate() {
 		if (searchGeom == null) {
 			SC.say(messages.geometricSearchWidgetTitle(), messages.geometricSearchWidgetNoGeometry());
+			return false;
+		} else if (SearchCommService.getVisibleServerLayerIds(mapWidget.getMapModel()).size() < 1) {
+			SC.say(messages.geometricSearchWidgetTitle(), messages.geometricSearchWidgetNoLayers());
 			return false;
 		} else {
 			return true;
