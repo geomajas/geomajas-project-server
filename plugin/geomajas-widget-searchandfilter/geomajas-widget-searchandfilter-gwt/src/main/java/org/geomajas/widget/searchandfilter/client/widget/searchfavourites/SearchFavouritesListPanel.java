@@ -79,8 +79,8 @@ public class SearchFavouritesListPanel extends SearchPanel implements FavouriteC
 		favouriteItems.setCanExpandRecords(true);
 		favouriteItems.setCanExpandMultipleRecords(false);
 		favouriteItems.setShowAllRecords(true);
-		favouriteItems.setShowRecordComponents(true);
-		favouriteItems.setShowRecordComponentsByCell(true);
+		favouriteItems.setShowRecordComponents(false);
+		favouriteItems.setShowRecordComponentsByCell(false);
 		favouriteItems.setShowRollOverCanvas(true);
 		favouriteItems.setSelectionType(SelectionStyle.SINGLE);
 		favouriteItems.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {

@@ -29,11 +29,8 @@ public class GeometryCriterion implements Criterion {
 
 	// TODO change to enums
 	public static final int INTERSECTS = SearchByLocationRequest.QUERY_INTERSECTS;
-
 	public static final int TOUCHES = SearchByLocationRequest.QUERY_TOUCHES;
-
 	public static final int WITHIN = SearchByLocationRequest.QUERY_WITHIN;
-
 	public static final int CONTAINS = SearchByLocationRequest.QUERY_CONTAINS;
 
 	private List<String> serverLayerIds;
