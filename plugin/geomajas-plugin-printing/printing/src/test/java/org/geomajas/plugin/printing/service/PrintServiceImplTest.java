@@ -14,6 +14,7 @@ package org.geomajas.plugin.printing.service;
 import java.util.List;
 
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.vividsolutions.jts.util.Assert;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
@@ -49,7 +48,7 @@ public class PrintServiceImplTest {
 	@Test
 	public void testGetAllTemplates() throws Exception {
 		List<PrintTemplate> templates = printService.getAllTemplates();
-		Assert.equals(11, templates.size());
+		Assert.assertEquals(11, templates.size());
 	}
 
 }
