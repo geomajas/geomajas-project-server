@@ -188,7 +188,7 @@ public class Point extends AbstractGeometry {
 		if (isEmpty()) {
 			return "POINT(EMPTY)";
 		}
-		return "POINT(" + coordinate.getX() + ", " + coordinate.getY() + ")";
+		return "POINT(" + coordinate.getX() + " " + coordinate.getY() + ")";
 	}
 
 	// -------------------------------------------------------------------------

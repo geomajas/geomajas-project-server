@@ -11,34 +11,40 @@
 
 package org.geomajas.gwt.client.spatial.geometry;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.util.Assert;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.junit.Assert;
 import org.junit.Test;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * <p>
- * The purpose of this class is to test the methods of the GWT {@link LineString} class. We do this by comparing them to
- * JTS results.
+ * The purpose of this class is to test the methods of the GWT
+ * {@link LineString} class. We do this by comparing them to JTS results.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class GwtLineStringTest {
 
-	private final static int SRID = 4326;
+	private static final int SRID = 4326;
 
-	private final static int PRECISION = -1;
+	private static final int PRECISION = -1;
 
-	private final static double ZERO = 0.00001;
+	private static final double ZERO = 0.00001;
+
+	private static final double DELTA = 1E-10;
 
 	private GeometryFactory gwtFactory;
 
 	private com.vividsolutions.jts.geom.GeometryFactory jtsFactory;
 
 	private LineString gwt;
+
+	private LineString empty;
 
 	private com.vividsolutions.jts.geom.LineString jts;
 
@@ -50,6 +56,7 @@ public class GwtLineStringTest {
 		gwtFactory = new GeometryFactory(SRID, PRECISION);
 		gwt = gwtFactory.createLineString(new Coordinate[] {new Coordinate(10.0, 10.0), new Coordinate(20.0, 10.0),
 				new Coordinate(20.0, 20.0)});
+		empty = gwtFactory.createLineString(null);
 
 		jtsFactory = new com.vividsolutions.jts.geom.GeometryFactory(new PrecisionModel(), SRID);
 		jts = jtsFactory.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
@@ -60,60 +67,60 @@ public class GwtLineStringTest {
 
 	@Test
 	public void getCentroid() {
-		Assert.equals(jts.getCentroid().getCoordinate().x, gwt.getCentroid().getX());
-		Assert.equals(jts.getCentroid().getCoordinate().y, gwt.getCentroid().getY());
+		Assert.assertEquals(jts.getCentroid().getCoordinate().x, gwt.getCentroid().getX(), DELTA);
+		Assert.assertEquals(jts.getCentroid().getCoordinate().y, gwt.getCentroid().getY(), DELTA);
 	}
 
 	@Test
 	public void getCoordinate() {
-		Assert.equals(jts.getCoordinate().x, gwt.getCoordinate().getX());
+		Assert.assertEquals(jts.getCoordinate().x, gwt.getCoordinate().getX(), DELTA);
 	}
 
 	@Test
 	public void getCoordinates() {
-		Assert.equals(jts.getCoordinates()[0].x, gwt.getCoordinates()[0].getX());
+		Assert.assertEquals(jts.getCoordinates()[0].x, gwt.getCoordinates()[0].getX(), DELTA);
 	}
 
 	@Test
 	public void getBounds() {
 		Envelope env = jts.getEnvelopeInternal();
 		Bbox bbox = gwt.getBounds();
-		Assert.equals(env.getMinX(), bbox.getX());
-		Assert.equals(env.getMinY(), bbox.getY());
-		Assert.equals(env.getMaxX(), bbox.getMaxX());
-		Assert.equals(env.getMaxY(), bbox.getMaxY());
+		Assert.assertEquals(env.getMinX(), bbox.getX(), DELTA);
+		Assert.assertEquals(env.getMinY(), bbox.getY(), DELTA);
+		Assert.assertEquals(env.getMaxX(), bbox.getMaxX(), DELTA);
+		Assert.assertEquals(env.getMaxY(), bbox.getMaxY(), DELTA);
 	}
 
 	@Test
 	public void getNumPoints() {
-		Assert.equals(jts.getNumPoints(), gwt.getNumPoints());
+		Assert.assertEquals(jts.getNumPoints(), gwt.getNumPoints());
 	}
 
 	@Test
 	public void getGeometryN() {
-		Assert.equals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX());
-		Assert.equals(jts.getGeometryN(-1).getCoordinate().x, gwt.getGeometryN(-1).getCoordinate().getX());
-		Assert.equals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX());
+		Assert.assertEquals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX(), DELTA);
+		Assert.assertEquals(jts.getGeometryN(-1).getCoordinate().x, gwt.getGeometryN(-1).getCoordinate().getX(), DELTA);
+		Assert.assertEquals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX(), DELTA);
 	}
 
 	@Test
 	public void getNumGeometries() {
-		Assert.equals(jts.getNumGeometries(), gwt.getNumGeometries());
+		Assert.assertEquals(jts.getNumGeometries(), gwt.getNumGeometries());
 	}
 
 	@Test
 	public void isEmpty() {
-		Assert.equals(jts.isEmpty(), gwt.isEmpty());
+		Assert.assertEquals(jts.isEmpty(), gwt.isEmpty());
 	}
 
 	@Test
 	public void isSimple() {
-		Assert.equals(jts.isSimple(), gwt.isSimple());
+		Assert.assertEquals(jts.isSimple(), gwt.isSimple());
 	}
 
 	@Test
 	public void isValid() {
-		Assert.equals(jts.isValid(), gwt.isValid());
+		Assert.assertEquals(jts.isValid(), gwt.isValid());
 	}
 
 	@Test
@@ -138,18 +145,27 @@ public class GwtLineStringTest {
 		LineString gwtLine3 = gwtFactory.createLineString(new Coordinate[] {new Coordinate(0, 0),
 				new Coordinate(15, 15)});
 
-		Assert.equals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
-		Assert.equals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
-		Assert.equals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
+		Assert.assertEquals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
+		Assert.assertEquals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
+		Assert.assertEquals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
 	}
 
 	@Test
 	public void getArea() {
-		Assert.isTrue((jts.getArea() - gwt.getArea()) < ZERO);
+		Assert.assertTrue((jts.getArea() - gwt.getArea()) < ZERO);
 	}
 
 	@Test
 	public void getLength() {
-		Assert.isTrue((jts.getLength() - gwt.getLength()) < ZERO);
+		Assert.assertTrue((jts.getLength() - gwt.getLength()) < ZERO);
+	}
+
+	@Test
+	public void toWkt() throws Exception {
+		WKTReader reader = new WKTReader();
+		com.vividsolutions.jts.geom.Geometry result = reader.read(gwt.toWkt());
+		Assert.assertEquals(gwt.getCoordinate().getX(), result.getCoordinate().x, DELTA);
+		Assert.assertEquals(gwt.getCoordinate().getY(), result.getCoordinate().y, DELTA);
+		Assert.assertEquals("LINESTRING(EMPTY)", empty.toWkt());
 	}
 }

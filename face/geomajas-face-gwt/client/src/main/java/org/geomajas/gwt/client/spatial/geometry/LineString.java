@@ -271,9 +271,9 @@ public class LineString extends AbstractGeometry {
 		String wkt = "LINESTRING(";
 		for (int i = 0; i < coordinates.length; i++) {
 			if (i > 0) {
-				wkt += " ";
+				wkt += ", ";
 			}
-			wkt += coordinates[i].getX() + "," + coordinates[i].getY();
+			wkt += coordinates[i].getX() + " " + coordinates[i].getY();
 		}
 		return wkt + ")";
 	}
