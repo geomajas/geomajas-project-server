@@ -39,4 +39,10 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
 	</bean>
 
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
+		<property name="layerId" value="layerBeansMultiLine"/>
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED" />
+	</bean>
+
 </beans>

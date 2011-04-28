@@ -11,9 +11,11 @@
 
 package org.geomajas.plugin.rasterizing.step;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
 import org.geomajas.plugin.caching.step.CacheStepConstant;
@@ -42,6 +44,7 @@ public class GetRasterizedTileAllCachingInterceptor extends
 			PipelineCode.FEATURE_INCLUDES_KEY };
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
+		clearPanOrigin(context);
 		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, CacheStepConstant.CACHE_TILE_CONTEXT,
 				KEYS, CacheCategory.TILE, context, TileCacheContainer.class);
 		if (cc != null) {
@@ -69,4 +72,13 @@ public class GetRasterizedTileAllCachingInterceptor extends
 					RasterizingPipelineCode.IMAGE_ID_CONTEXT, rc, response.getTile().getBounds());
 		}
 	}
+	
+	private void clearPanOrigin(PipelineContext context) throws GeomajasException {
+		TileMetadata tileMetadata = context.getOptional(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
+		if (tileMetadata != null) {
+			// set to origin
+			tileMetadata.setPanOrigin(new Coordinate());
+		}
+	}
+
 }

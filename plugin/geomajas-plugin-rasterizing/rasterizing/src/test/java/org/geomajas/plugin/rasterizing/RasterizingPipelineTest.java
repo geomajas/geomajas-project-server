@@ -49,7 +49,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-pipelines.xml", "/org/geomajas/spring/testRecorder.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
-		"/org/geomajas/testdata/layerBeansPoint.xml" })
+		"/org/geomajas/testdata/layerBeansPoint.xml","/org/geomajas/testdata/layerBeansMultiLine.xml" })
 @DirtiesContext
 public class RasterizingPipelineTest {
 
@@ -68,9 +68,18 @@ public class RasterizingPipelineTest {
 	@Qualifier("layerBeansPoint")
 	private VectorLayer layerBeansPoint;
 
+
 	@Autowired
 	@Qualifier("layerBeansPointStyleInfo")
 	private NamedStyleInfo layerBeansPointStyleInfo;
+
+	@Autowired
+	@Qualifier("layerBeansMultiLine")
+	private VectorLayer layerBeansMultiLine;
+
+	@Autowired
+	@Qualifier("layerBeansMultiLineStyleInfo")
+	private NamedStyleInfo layerBeansMultiLineStyleInfo;
 
 	@Autowired
 	RasterizingController controller;
@@ -140,7 +149,7 @@ public class RasterizingPipelineTest {
 		metadata.setCode(new TileCode(4, 8, 8));
 		metadata.setCrs("EPSG:4326");
 		metadata.setLayerId(layerBeansPoint.getId());
-		metadata.setPanOrigin(new Coordinate(0, 0));
+		metadata.setPanOrigin(new Coordinate(1, 1));
 		metadata.setScale(16);
 		metadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
 		metadata.setStyleInfo(layerBeansPointStyleInfo);
@@ -164,6 +173,35 @@ public class RasterizingPipelineTest {
 				"Put item in cache"));
 		new ServletResponseAssert(response).assertEqualImage("beansPoint-4-8-8.png", writeImages, DELTA);
 		cacheManager.drop(layerBeansPoint);
+	}
+
+	@Test
+	public void testRasterizeFromAllCache() throws Exception {
+		InternalTile tile;
+		recorder.clear();
+		// create metadata
+		GetVectorTileRequest metadata = createRequest();
+		// get tile
+		tile = vectorLayerService.getTile(metadata);
+		// recreate same metadata and get tile again
+		metadata = createRequest();
+		tile = vectorLayerService.getTile(metadata);
+		cacheManager.drop(layerBeansMultiLine);
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache", "Got item from cache"));
+	}
+
+	private GetVectorTileRequest createRequest() {
+		GetVectorTileRequest metadata = new GetVectorTileRequest();
+		metadata.setCode(new TileCode(4, 8, 8));
+		metadata.setCrs("EPSG:4326");
+		metadata.setLayerId(layerBeansMultiLine.getId());
+		metadata.setPanOrigin(new Coordinate(12, 10));
+		metadata.setScale(16);
+		metadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
+		metadata.setStyleInfo(layerBeansMultiLineStyleInfo);
+		metadata.setPaintLabels(false);
+		metadata.setPaintGeometries(true);
+		return metadata;
 	}
 
 	class ServletResponseAssert extends TestPathBinaryStreamAssert {
