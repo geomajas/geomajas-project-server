@@ -10,6 +10,7 @@
  */
 package org.geomajas.dojo.server.json;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.geomajas.geometry.Geometry;
@@ -30,7 +31,6 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
-import com.vividsolutions.jts.util.Assert;
 
 /**
  * Serializer test for the DTO geometry objects.
@@ -62,7 +62,7 @@ public class DtoGeometrySerializerTest extends TestCase {
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, p);
 		Geometry dto = converter.toDto(p);
 		JSONObject dtoJson = (JSONObject) dtoSerializer.marshall(null, dto);
-		Assert.equals(jtsJson.toString(), dtoJson.toString());
+		Assert.assertEquals(jtsJson.toString(), dtoJson.toString());
 	}
 
 	public void testLineString() throws MarshallException, GeomajasException {
@@ -73,7 +73,7 @@ public class DtoGeometrySerializerTest extends TestCase {
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, p);
 		Geometry dto = converter.toDto(p);
 		JSONObject dtoJson = (JSONObject) dtoSerializer.marshall(null, dto);
-		Assert.equals(jtsJson.toString(), dtoJson.toString());
+		Assert.assertEquals(jtsJson.toString(), dtoJson.toString());
 	}
 
 	public void testPolygon() throws MarshallException, GeomajasException {
@@ -86,18 +86,18 @@ public class DtoGeometrySerializerTest extends TestCase {
 
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, p);
 		JSONObject dtoJson = (JSONObject) dtoSerializer.marshall(null, dto);
-		Assert.equals(jtsJson.toString().length(), dtoJson.toString().length());
-		Assert.equals(jtsJson.get("type").toString(), dtoJson.get("type").toString());
-		Assert.equals(jtsJson.get("holes").toString(), dtoJson.get("holes").toString());
-		Assert.equals(jtsJson.get("srid").toString(), dtoJson.get("srid").toString());
-		Assert.equals(jtsJson.get("precision").toString(), dtoJson.get("precision").toString());
+		Assert.assertEquals(jtsJson.toString().length(), dtoJson.toString().length());
+		Assert.assertEquals(jtsJson.get("type").toString(), dtoJson.get("type").toString());
+		Assert.assertEquals(jtsJson.get("holes").toString(), dtoJson.get("holes").toString());
+		Assert.assertEquals(jtsJson.get("srid").toString(), dtoJson.get("srid").toString());
+		Assert.assertEquals(jtsJson.get("precision").toString(), dtoJson.get("precision").toString());
 
 		JSONObject jtsShell = jtsJson.getJSONObject("shell");
 		JSONObject dtoShell = dtoJson.getJSONObject("shell");
-		Assert.equals(jtsShell.get("type").toString(), dtoShell.get("type").toString());
-		Assert.equals(jtsShell.get("srid").toString(), dtoShell.get("srid").toString());
-		Assert.equals(jtsShell.get("precision").toString(), dtoShell.get("precision").toString());
-		Assert.equals(jtsShell.get("coordinates").toString(), dtoShell.get("coordinates").toString());
+		Assert.assertEquals(jtsShell.get("type").toString(), dtoShell.get("type").toString());
+		Assert.assertEquals(jtsShell.get("srid").toString(), dtoShell.get("srid").toString());
+		Assert.assertEquals(jtsShell.get("precision").toString(), dtoShell.get("precision").toString());
+		Assert.assertEquals(jtsShell.get("coordinates").toString(), dtoShell.get("coordinates").toString());
 	}
 
 	public void testMultiPolygon() throws MarshallException, GeomajasException {
@@ -111,24 +111,24 @@ public class DtoGeometrySerializerTest extends TestCase {
 
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, m);
 		JSONObject dtoJson = (JSONObject) dtoSerializer.marshall(null, dto);
-		Assert.equals(jtsJson.toString().length(), dtoJson.toString().length());
-		Assert.equals(jtsJson.get("type").toString(), dtoJson.get("type").toString());
-		Assert.equals(jtsJson.get("srid").toString(), dtoJson.get("srid").toString());
-		Assert.equals(jtsJson.get("precision").toString(), dtoJson.get("precision").toString());
+		Assert.assertEquals(jtsJson.toString().length(), dtoJson.toString().length());
+		Assert.assertEquals(jtsJson.get("type").toString(), dtoJson.get("type").toString());
+		Assert.assertEquals(jtsJson.get("srid").toString(), dtoJson.get("srid").toString());
+		Assert.assertEquals(jtsJson.get("precision").toString(), dtoJson.get("precision").toString());
 
 		JSONObject jtsPolygon = jtsJson.getJSONArray("polygons").getJSONObject(0);
 		JSONObject dtoPolygon = dtoJson.getJSONArray("polygons").getJSONObject(0);
-		Assert.equals(jtsPolygon.get("type").toString(), dtoPolygon.get("type").toString());
-		Assert.equals(jtsPolygon.get("holes").toString(), dtoPolygon.get("holes").toString());
-		Assert.equals(jtsPolygon.get("srid").toString(), dtoPolygon.get("srid").toString());
-		Assert.equals(jtsPolygon.get("precision").toString(), dtoPolygon.get("precision").toString());
+		Assert.assertEquals(jtsPolygon.get("type").toString(), dtoPolygon.get("type").toString());
+		Assert.assertEquals(jtsPolygon.get("holes").toString(), dtoPolygon.get("holes").toString());
+		Assert.assertEquals(jtsPolygon.get("srid").toString(), dtoPolygon.get("srid").toString());
+		Assert.assertEquals(jtsPolygon.get("precision").toString(), dtoPolygon.get("precision").toString());
 
 		JSONObject jtsShell = jtsPolygon.getJSONObject("shell");
 		JSONObject dtoShell = dtoPolygon.getJSONObject("shell");
-		Assert.equals(jtsShell.get("type").toString(), dtoShell.get("type").toString());
-		Assert.equals(jtsShell.get("srid").toString(), dtoShell.get("srid").toString());
-		Assert.equals(jtsShell.get("precision").toString(), dtoShell.get("precision").toString());
-		Assert.equals(jtsShell.get("coordinates").toString(), dtoShell.get("coordinates").toString());
+		Assert.assertEquals(jtsShell.get("type").toString(), dtoShell.get("type").toString());
+		Assert.assertEquals(jtsShell.get("srid").toString(), dtoShell.get("srid").toString());
+		Assert.assertEquals(jtsShell.get("precision").toString(), dtoShell.get("precision").toString());
+		Assert.assertEquals(jtsShell.get("coordinates").toString(), dtoShell.get("coordinates").toString());
 	}
 
 	public void testMultiLineString() throws MarshallException, GeomajasException {
@@ -140,6 +140,6 @@ public class DtoGeometrySerializerTest extends TestCase {
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, m);
 		Geometry dto = converter.toDto(m);
 		JSONObject dtoJson = (JSONObject) dtoSerializer.marshall(null, dto);
-		Assert.equals(jtsJson.toString(), dtoJson.toString());
+		Assert.assertEquals(jtsJson.toString(), dtoJson.toString());
 	}
 }
