@@ -48,7 +48,7 @@ public class LongAttribute extends PrimitiveAttribute<Long> {
 	 * @since 1.7.0
 	 * @return A copy of this long attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		LongAttribute clone = new LongAttribute();
 		if (getValue() != null) {
 			clone.setValue(Long.valueOf(getValue()));

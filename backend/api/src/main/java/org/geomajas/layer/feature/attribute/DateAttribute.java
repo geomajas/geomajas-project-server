@@ -52,7 +52,7 @@ public class DateAttribute extends PrimitiveAttribute<Date> {
 	 * @since 1.7.0
 	 * @return A copy of this date attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		DateAttribute clone = new DateAttribute();
 		if (getValue() != null) {
 			clone.setValue((Date) getValue().clone());

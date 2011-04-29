@@ -158,7 +158,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 *
 	 * @return cloned coordinate
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		return new Coordinate(x, y);
 	}
 

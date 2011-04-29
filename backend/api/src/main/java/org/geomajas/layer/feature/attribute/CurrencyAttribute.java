@@ -49,7 +49,7 @@ public class CurrencyAttribute extends PrimitiveAttribute<String> {
 	 * @since 1.7.0
 	 * @return A copy of this currency attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		CurrencyAttribute clone = new CurrencyAttribute();
 		if (getValue() != null) {
 			clone.setValue(new String(getValue()));

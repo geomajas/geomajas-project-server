@@ -48,7 +48,7 @@ public class FloatAttribute extends PrimitiveAttribute<Float> {
 	 * @since 1.7.0
 	 * @return A copy of this float attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		FloatAttribute clone = new FloatAttribute();
 		if (getValue() != null) {
 			clone.setValue(getValue());

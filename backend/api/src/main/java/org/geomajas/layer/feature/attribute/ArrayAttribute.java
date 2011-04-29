@@ -103,7 +103,7 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 	 * @return A copy of this array attribute.
 	 */
 	@SuppressWarnings("unchecked")
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		ArrayAttribute clone = new ArrayAttribute();
 		if (value != null) {
 			Object[] clones = new Object[value.length];

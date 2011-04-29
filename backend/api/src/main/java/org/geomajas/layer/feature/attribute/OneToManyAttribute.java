@@ -86,7 +86,7 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 	 * @since 1.7.0
 	 * @return A copy of this ManyToOne attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		OneToManyAttribute clone = new OneToManyAttribute();
 		if (value != null) {
 			List<AssociationValue> clones = new ArrayList<AssociationValue>();

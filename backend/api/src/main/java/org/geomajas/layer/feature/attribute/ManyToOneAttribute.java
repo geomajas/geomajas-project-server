@@ -81,7 +81,7 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 * @since 1.7.0
 	 * @return A copy of this ManyToOne attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		ManyToOneAttribute clone = new ManyToOneAttribute();
 		if (value != null) {
 			clone.setValue((AssociationValue) value.clone());

@@ -48,7 +48,7 @@ public class IntegerAttribute extends PrimitiveAttribute<Integer> {
 	 * @since 1.7.0
 	 * @return A copy of this integer attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		IntegerAttribute clone = new IntegerAttribute();
 		if (getValue() != null) {
 			clone.setValue(Integer.valueOf(getValue()));

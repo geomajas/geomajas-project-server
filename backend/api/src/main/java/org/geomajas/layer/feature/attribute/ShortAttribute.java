@@ -48,7 +48,7 @@ public class ShortAttribute extends PrimitiveAttribute<Short> {
 	 * @since 1.7.0
 	 * @return A copy of this short attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		ShortAttribute clone = new ShortAttribute();
 		if (getValue() != null) {
 			clone.setValue(Short.valueOf(getValue()));

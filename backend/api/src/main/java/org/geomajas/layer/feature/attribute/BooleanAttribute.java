@@ -48,7 +48,7 @@ public class BooleanAttribute extends PrimitiveAttribute<Boolean> {
 	 * @since 1.7.0
 	 * @return A copy of this boolean attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		BooleanAttribute clone = new BooleanAttribute();
 		if (getValue() != null) {
 			clone.setValue(getValue().booleanValue());

@@ -48,7 +48,7 @@ public class ImageUrlAttribute extends PrimitiveAttribute<String> {
 	 * @since 1.7.0
 	 * @return A copy of this image URL attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		ImageUrlAttribute clone = new ImageUrlAttribute();
 		if (getValue() != null) {
 			clone.setValue(new String(getValue()));

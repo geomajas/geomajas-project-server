@@ -48,7 +48,7 @@ public class DoubleAttribute extends PrimitiveAttribute<Double> {
 	 * @since 1.7.0
 	 * @return A copy of this double attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		DoubleAttribute clone = new DoubleAttribute();
 		if (getValue() != null) {
 			clone.setValue(Double.valueOf(getValue()));

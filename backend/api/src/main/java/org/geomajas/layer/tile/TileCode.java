@@ -86,7 +86,7 @@ public class TileCode implements Serializable, CacheableObject {
 	 *
 	 * @return cloned tile code
 	 */
-	public TileCode clone() {
+	public TileCode clone() { // NOSONAR
 		return new TileCode(tileLevel, x, y);
 	}
 

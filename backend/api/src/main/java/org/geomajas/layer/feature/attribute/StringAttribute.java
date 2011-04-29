@@ -48,7 +48,7 @@ public class StringAttribute extends PrimitiveAttribute<String> {
 	 * @since 1.7.0
 	 * @return A copy of this string attribute.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		StringAttribute clone = new StringAttribute();
 		if (getValue() != null) {
 			clone.setValue(new String(getValue()));

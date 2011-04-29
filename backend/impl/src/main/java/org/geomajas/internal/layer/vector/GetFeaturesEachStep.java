@@ -12,17 +12,15 @@
 package org.geomajas.internal.layer.vector;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.layer.feature.AttributeService;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.feature.LazyAttributeMap;
 import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
@@ -31,7 +29,6 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
-import org.geomajas.security.SecurityContext;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -57,10 +54,10 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	private String id;
 
 	@Autowired
-	private SecurityContext securityContext;
+	private GeoService geoService;
 
 	@Autowired
-	private GeoService geoService;
+	private AttributeService attributeService;
 
 	public String getId() {
 		return id;
@@ -82,7 +79,6 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 			int offset = context.get(PipelineCode.OFFSET_KEY, Integer.class);
 			int maxResultSize = context.get(PipelineCode.MAX_RESULT_SIZE_KEY, Integer.class);
 			int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
-			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 			NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
 			CrsTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
 			List<StyleFilter> styleFilters = context.getOptional(GetFeaturesStyleStep.STYLE_FILTERS_KEY, List.class);
@@ -98,15 +94,11 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 				log.debug("process feature");
 				Object featureObj = it.next();
 				Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
-				log.debug("going to convert feature");
-				InternalFeature feature = convertFeature(featureObj, geometry, layerId, layer, transformation,
+				InternalFeature feature = convertFeature(featureObj, geometry, layer, transformation,
 						styleFilters, style.getLabelStyle(), featureIncludes);
-				log.debug("checking feature");
-				if (securityContext.isFeatureVisible(layerId, feature)) {
+				if (null != feature) {
 					count++;
 					if (count > offset) {
-						feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
-						feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
 						features.add(feature);
 
 						if (null != geometry) {
@@ -122,12 +114,15 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 						}
 					}
 				} else {
-					log.debug("feature not visible");
+					if (log.isDebugEnabled()) {
+						log.debug("feature not visible {}", feature.getId());
+					}
 				}
 			}
 			response.setBounds(bounds);
 		}
-		log.debug("getElements done, features {}, bounds {}", response.getFeatures(), response.getBounds());
+		log.debug("getElements done, bounds {}", response.getBounds());
+		log.trace("features {}", response.getFeatures());
 	}
 
 	/**
@@ -138,8 +133,6 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	 *            A feature object that comes directly from the {@link VectorLayer}
 	 * @param geometry
 	 *            geometry of the feature, passed in as needed in surrounding code to calc bounding box
-	 * @param layerId
-	 *            layer id
 	 * @param layer
 	 *            vector layer for the feature
 	 * @param transformation
@@ -154,63 +147,52 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	private InternalFeature convertFeature(Object feature, Geometry geometry, String layerId, VectorLayer layer,
+	private InternalFeature convertFeature(Object feature, Geometry geometry, VectorLayer layer,
 			CrsTransform transformation, List<StyleFilter> styles, LabelStyleInfo labelStyle, int featureIncludes)
 			throws GeomajasException {
 		FeatureModel featureModel = layer.getFeatureModel();
-		InternalFeatureImpl res = new InternalFeatureImpl();
+		InternalFeature res = new InternalFeatureImpl();
 		res.setId(featureModel.getId(feature));
 		res.setLayer(layer);
+		res.setGeometry(geometry); // in layer coordinate space for security checks
+		res = attributeService.getAttributes(layer, res, feature); // includes security checks
 
-		// If allowed, add the label to the InternalFeature:
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
-			String labelAttr = labelStyle.getLabelAttributeName();
-			Attribute attribute = featureModel.getAttribute(feature, labelAttr);
-			if (null != attribute && null != attribute.getValue()) {
-				res.setLabel(attribute.getValue().toString());
+		if (null != res) {
+			// add and clear data according to the feature includes
+			// unfortunately the data needs to be there for the security tests and can only be removed later
+			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
+				String labelAttr = labelStyle.getLabelAttributeName();
+				Attribute attribute = featureModel.getAttribute(feature, labelAttr);
+				if (null != attribute && null != attribute.getValue()) {
+					res.setLabel(attribute.getValue().toString());
+				}
 			}
-		}
 
-		// If allowed, add the geometry (transformed!) to the InternalFeature:
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
-			Geometry transformed;
-			if (null != transformation) {
-				transformed = geoService.transform(geometry, transformation);
+			// If allowed, add the geometry (transformed!) to the InternalFeature:
+			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
+				Geometry transformed;
+				if (null != transformation) {
+					transformed = geoService.transform(geometry, transformation);
+				} else {
+					transformed = geometry;
+				}
+				res.setGeometry(transformed);
 			} else {
-				transformed = geometry;
+				res.setGeometry(null);
 			}
-			res.setGeometry(transformed);
-		}
 
-		// If allowed, add the style definition to the InternalFeature:
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0) {
-			res.setStyleDefinition(findStyleFilter(feature, styles).getStyleDefinition());
-		}
+			// If allowed, add the style definition to the InternalFeature:
+			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0) {
+				res.setStyleDefinition(findStyleFilter(feature, styles).getStyleDefinition());
+			}
 
-		// If allowed, add the attributes to the InternalFeature:
-		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0) {
-			// create the lazy feature map
-			LazyAttributeMap attributes = new LazyAttributeMap(featureModel, layer.getLayerInfo().getFeatureInfo(),
-					feature);
-			res.setAttributes(attributes);
-			filterAttributes(attributes, layerId, res);
+			// If allowed, add the attributes to the InternalFeature:
+			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) == 0) {
+				res.setAttributes(null);
+			}
 		}
 
 		return res;
-	}
-
-	private void filterAttributes(LazyAttributeMap attributes, String layerId, InternalFeature feature) {
-		Set<String> filteredNames = new HashSet<String>();
-		for (String name : attributes.keySet()) {
-			if (securityContext.isAttributeReadable(layerId, feature, name)) {
-				attributes.setAttributeEditable(name, securityContext.isAttributeWritable(layerId, feature, name));
-			} else {
-				filteredNames.add(name);
-			}
-		}
-		for (String name : filteredNames) {
-			attributes.removeAttribute(name);
-		}
 	}
 
 	/**

@@ -12,18 +12,13 @@
 package org.geomajas.internal.layer.vector;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.layer.feature.AttributeService;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Update an existing {@link InternalFeature} from the underlying feature data object.
@@ -33,7 +28,7 @@ import java.util.Map;
 public class UpdateFeatureStep implements PipelineStep {
 
 	@Autowired
-	private SecurityContext securityContext;
+	private AttributeService attributeService;
 
 	private String id;
 
@@ -49,34 +44,15 @@ public class UpdateFeatureStep implements PipelineStep {
 		Object feature = context.get(PipelineCode.FEATURE_DATA_OBJECT_KEY);
 		InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		String layerId = layer.getId();
-		FeatureModel featureModel = layer.getFeatureModel();
 
 //		// Not needed for existing features, but no problem to re-set feature id
 //		String id = featureModel.getId(feature);
 //		newFeature.setId(id);
 
-		filterAttributes(layerId, newFeature, featureModel.getAttributes(feature));
-
-		newFeature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, newFeature));
-		newFeature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, newFeature));
-
-	}
-
-	private Map<String, Attribute> filterAttributes(String layerId, InternalFeature feature,
-			Map<String, Attribute> featureAttributes) {
-		feature.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
-		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
-		for (Map.Entry<String, Attribute> entry : featureAttributes.entrySet()) {
-			String key = entry.getKey();
-			if (securityContext.isAttributeReadable(layerId, feature, key)) {
-				Attribute attribute = entry.getValue();
-				attribute.setEditable(securityContext.isAttributeWritable(layerId, feature, key));
-				filteredAttributes.put(key, attribute);
-			}
+		newFeature = attributeService.getAttributes(layer, newFeature, feature);
+		if (null == newFeature) {
+			context.put(PipelineCode.FEATURE_KEY, null);
 		}
-		feature.setAttributes(filteredAttributes);
-		return filteredAttributes;
 	}
 
 }

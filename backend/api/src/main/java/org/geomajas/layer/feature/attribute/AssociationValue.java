@@ -64,7 +64,7 @@ public class AssociationValue implements Serializable {
 	 * @since 1.7.0
 	 * @return A new AssociationValue with the same contents.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR
 		PrimitiveAttribute<?> idClone = (PrimitiveAttribute<?>) id.clone();
 		Map<String, PrimitiveAttribute<?>> attrClone = new HashMap<String, PrimitiveAttribute<?>>();
 		if (attributes != null) {
