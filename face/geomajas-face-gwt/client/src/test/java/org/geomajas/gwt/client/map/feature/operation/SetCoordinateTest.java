@@ -94,7 +94,7 @@ public class SetCoordinateTest {
 		op.execute(feature);
 		MultiLineString m = (MultiLineString) feature.getGeometry();
 		LineString l = (LineString) m.getGeometryN(index.getGeometryIndex());
-		Assert.assertEquals(50.0, l.getCoordinateN(index.getCoordinateIndex()).getX());
+		Assert.assertEquals(50.0, l.getCoordinateN(index.getCoordinateIndex()).getX(), DELTA);
 		op.undo(feature);
 		Assert.assertEquals(multiLineString.toWkt(), feature.getGeometry().toWkt());
 	}
@@ -106,7 +106,7 @@ public class SetCoordinateTest {
 		op.execute(feature);
 		Polygon p = (Polygon) feature.getGeometry();
 		LinearRing r = p.getInteriorRingN(index.getInteriorRingIndex());
-		Assert.assertEquals(50.0, r.getCoordinateN(index.getCoordinateIndex()).getX());
+		Assert.assertEquals(50.0, r.getCoordinateN(index.getCoordinateIndex()).getX(), DELTA);
 		op.undo(feature);
 		Assert.assertEquals(polygon.toWkt(), feature.getGeometry().toWkt());
 	}
@@ -119,7 +119,7 @@ public class SetCoordinateTest {
 		MultiPolygon m = (MultiPolygon) feature.getGeometry();
 		Polygon p = (Polygon) m.getGeometryN(index.getGeometryIndex());
 		LinearRing r = p.getInteriorRingN(index.getInteriorRingIndex());
-		Assert.assertEquals(50.0, r.getCoordinateN(index.getCoordinateIndex()).getX());
+		Assert.assertEquals(50.0, r.getCoordinateN(index.getCoordinateIndex()).getX(), DELTA);
 		op.undo(feature);
 		Assert.assertEquals(multiPolygon.toWkt(), feature.getGeometry().toWkt());
 	}

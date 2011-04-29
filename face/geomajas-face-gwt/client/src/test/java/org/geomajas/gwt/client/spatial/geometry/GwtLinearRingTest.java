@@ -16,6 +16,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -46,7 +47,8 @@ public class GwtLinearRingTest {
 	// Constructor, initializes the 2 LineString geometries:
 	// -------------------------------------------------------------------------
 
-	public GwtLinearRingTest() {
+	@Before
+	public void init() {
 		gwtFactory = new GeometryFactory(SRID, PRECISION);
 		gwt = gwtFactory.createLinearRing(new Coordinate[] {new Coordinate(10.0, 10.0), new Coordinate(20.0, 10.0),
 				new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0)});
@@ -146,7 +148,18 @@ public class GwtLinearRingTest {
 
 	@Test
 	public void getArea() {
-		Assert.assertEquals(jts.getArea(), gwt.getArea(), DELTA);
+		double ja = jts.getArea();
+		if (ja > 0) { // sanity check, getArea does not seem to work for linear ring. Once it does, the test will use it
+			Assert.assertEquals(ja, gwt.getArea(), DELTA);
+		}
+	}
+
+	@Test
+	public void getAreaJtsBugFix() {
+		// convert LinearRing to polygon to make the test work because of JTS problem with getArea() on LinearRing
+		com.vividsolutions.jts.geom.Polygon p = jts.getFactory().createPolygon(jts,null);
+		double ja = p.getArea();
+		Assert.assertEquals(ja, gwt.getArea(), DELTA);
 	}
 
 	@Test
