@@ -103,6 +103,8 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 	 * @return A copy of this array attribute.
 	 */
 	@SuppressWarnings("unchecked")
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
 	public Object clone() { // NOSONAR
 		ArrayAttribute clone = new ArrayAttribute();
 		if (value != null) {

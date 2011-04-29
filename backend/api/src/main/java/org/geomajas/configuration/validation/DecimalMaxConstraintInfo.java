@@ -23,6 +23,8 @@ import javax.validation.constraints.NotNull;
 @Api(allMethods = true)
 public class DecimalMaxConstraintInfo implements ConstraintInfo {
 
+	private static final long serialVersionUID = 190L;
+
 	@NotNull
 	private String value;
 

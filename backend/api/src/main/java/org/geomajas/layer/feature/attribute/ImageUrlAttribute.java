@@ -48,7 +48,9 @@ public class ImageUrlAttribute extends PrimitiveAttribute<String> {
 	 * @since 1.7.0
 	 * @return A copy of this image URL attribute.
 	 */
-	public Object clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() {
 		ImageUrlAttribute clone = new ImageUrlAttribute();
 		if (getValue() != null) {
 			clone.setValue(new String(getValue()));

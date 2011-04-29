@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
  */
 public class LazyManyToOneAttribute extends ManyToOneAttribute {
 
+	private static final long serialVersionUID = 190L;
+
 	private FeatureModel featureModel;
 	private Object pojo;
 	private String name;

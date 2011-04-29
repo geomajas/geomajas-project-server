@@ -158,7 +158,9 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 *
 	 * @return cloned coordinate
 	 */
-	public Object clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() {
 		return new Coordinate(x, y);
 	}
 

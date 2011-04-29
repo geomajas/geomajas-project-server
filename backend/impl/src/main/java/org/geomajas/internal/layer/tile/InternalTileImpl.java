@@ -29,6 +29,8 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class InternalTileImpl implements InternalTile {
 
+	private static final long serialVersionUID = 190L;
+
 	private List<InternalFeature> features = new ArrayList<InternalFeature>();
 
 	private List<TileCode> codes = new ArrayList<TileCode>();

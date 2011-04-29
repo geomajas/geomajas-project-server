@@ -81,7 +81,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 * @since 1.7.0
 	 * @return A copy of this ManyToOne attribute.
 	 */
-	public Object clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() {
 		ManyToOneAttribute clone = new ManyToOneAttribute();
 		if (value != null) {
 			clone.setValue((AssociationValue) value.clone());

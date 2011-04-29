@@ -21,6 +21,8 @@ import org.geomajas.global.Api;
 @Api(allMethods = true)
 public class SizeConstraintInfo implements ConstraintInfo {
 
+	private static final long serialVersionUID = 190L;
+
 	private int min;
 	private int max;
 

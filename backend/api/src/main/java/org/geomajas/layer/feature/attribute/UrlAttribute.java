@@ -48,7 +48,9 @@ public class UrlAttribute extends PrimitiveAttribute<String> {
 	 * @since 1.7.0
 	 * @return A copy of this URL attribute.
 	 */
-	public Object clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() {
 		UrlAttribute clone = new UrlAttribute();
 		if (getValue() != null) {
 			clone.setValue(new String(getValue()));

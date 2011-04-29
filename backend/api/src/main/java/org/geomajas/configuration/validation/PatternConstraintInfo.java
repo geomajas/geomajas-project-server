@@ -22,6 +22,8 @@ import org.geomajas.global.Api;
 @Api(allMethods = true)
 public class PatternConstraintInfo implements ConstraintInfo {
 
+	private static final long serialVersionUID = 190L;
+
 	private String regexp;
 
 	/**

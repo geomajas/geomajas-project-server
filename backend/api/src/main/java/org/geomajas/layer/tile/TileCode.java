@@ -86,7 +86,9 @@ public class TileCode implements Serializable, CacheableObject {
 	 *
 	 * @return cloned tile code
 	 */
-	public TileCode clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public TileCode clone() {
 		return new TileCode(tileLevel, x, y);
 	}
 

@@ -24,6 +24,8 @@ import org.geomajas.geometry.Geometry;
  */
 public class TransformGeometryResponse extends CommandResponse {
 
+	private static final long serialVersionUID = 190L;
+
 	private Geometry geometry;
 
 	private List<Geometry> geometryCollection = new ArrayList<Geometry>();

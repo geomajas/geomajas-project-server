@@ -48,6 +48,8 @@ import java.util.Set;
 @Deprecated
 public class ResourceServlet extends HttpServlet {
 
+	private static final long serialVersionUID = 190L;
+
 	private static final String HTTP_CONTENT_LENGTH_HEADER = "Content-Length";
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
 	private static final String HTTP_EXPIRES_HEADER = "Expires";

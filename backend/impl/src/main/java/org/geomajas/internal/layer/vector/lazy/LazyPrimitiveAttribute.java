@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
  */
 public class LazyPrimitiveAttribute<VALUE_TYPE> extends PrimitiveAttribute<VALUE_TYPE> {
 
+	private static final long serialVersionUID = 190L;
+
 	private FeatureModel featureModel;
 	private Object pojo;
 	private String name;

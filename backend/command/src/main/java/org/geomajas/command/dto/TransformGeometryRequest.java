@@ -24,6 +24,8 @@ import org.geomajas.geometry.Geometry;
  */
 public class TransformGeometryRequest implements CommandRequest {
 
+	private static final long serialVersionUID = 190L;
+
 	/**
 	 * Command name for this request.
 	 * */

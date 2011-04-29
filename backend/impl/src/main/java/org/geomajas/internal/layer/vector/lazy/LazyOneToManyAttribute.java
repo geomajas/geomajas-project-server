@@ -28,6 +28,8 @@ import java.util.List;
  */
 public class LazyOneToManyAttribute extends OneToManyAttribute {
 
+	private static final long serialVersionUID = 190L;
+
 	private FeatureModel featureModel;
 	private Object pojo;
 	private String name;

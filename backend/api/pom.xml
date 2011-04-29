@@ -66,6 +66,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>net.sourceforge.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

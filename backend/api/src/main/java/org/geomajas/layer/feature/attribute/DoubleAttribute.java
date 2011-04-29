@@ -48,7 +48,9 @@ public class DoubleAttribute extends PrimitiveAttribute<Double> {
 	 * @since 1.7.0
 	 * @return A copy of this double attribute.
 	 */
-	public Object clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() {
 		DoubleAttribute clone = new DoubleAttribute();
 		if (getValue() != null) {
 			clone.setValue(Double.valueOf(getValue()));

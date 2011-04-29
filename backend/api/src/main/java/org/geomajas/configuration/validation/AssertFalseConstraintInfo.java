@@ -11,6 +11,7 @@
 package org.geomajas.configuration.validation;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.Json;
 
 /**
  * The constrained attribute must be false.
@@ -20,5 +21,18 @@ import org.geomajas.global.Api;
  */
 @Api(allMethods = true)
 public class AssertFalseConstraintInfo implements ConstraintInfo {
+
+	private static final long serialVersionUID = 190L;
+
+	/**
+	 * Dummy method, provided to assure Checkstyle doesn't complain.
+	 *
+	 * @return 0
+	 * @since 1.9.0
+	 */
+	@Json(serialize = false)
+	public int getDummy() {
+		return 0;
+	}
 
 }

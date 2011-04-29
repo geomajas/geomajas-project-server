@@ -48,7 +48,9 @@ public class FloatAttribute extends PrimitiveAttribute<Float> {
 	 * @since 1.7.0
 	 * @return A copy of this float attribute.
 	 */
-	public Object clone() { // NOSONAR
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
+	public Object clone() {
 		FloatAttribute clone = new FloatAttribute();
 		if (getValue() != null) {
 			clone.setValue(getValue());
