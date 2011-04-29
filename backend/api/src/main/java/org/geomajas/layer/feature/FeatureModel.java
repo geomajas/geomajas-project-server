@@ -56,7 +56,9 @@ public interface FeatureModel {
 	 * @param feature the feature
 	 * @return map of attribute values
 	 * @throws LayerException oops
+	 * @deprecated the back-end implements this itself since 1.9.0 to provide lazy attribute loading if needed
 	 */
+	@Deprecated
 	Map<String, Attribute> getAttributes(Object feature) throws LayerException;
 
 	/**
