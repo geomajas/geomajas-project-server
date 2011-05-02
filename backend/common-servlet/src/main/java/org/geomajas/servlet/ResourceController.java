@@ -61,8 +61,8 @@ public class ResourceController implements LastModified, ServletContextAware {
 	private ServletContext servletContext;
 
 	private final Logger log = LoggerFactory.getLogger(ResourceController.class);
-	private final String protectedPath = "/?WEB-INF/.*";
-	private final String[] allowedResourcePaths = new String[]{
+	private static final String PROTECTED_PATH = "/?WEB-INF/.*";
+	private static final String[] ALLOWED_RESOURCE_PATHS = new String[]{
 			"/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
 			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png",
 			"META-INF/**/*.css", "META-INF/**/*.gif", "META-INF/**/*.ico", "META-INF/**/*.jpeg",
@@ -71,25 +71,23 @@ public class ResourceController implements LastModified, ServletContextAware {
 
 	private File fileLocation;
 
-	private Map<String, String> defaultMimeTypes = new HashMap<String, String>();
+	private static final Map<String, String> DEFAULT_MIME_TYPES = new HashMap<String, String>();
+	private static final Set<String> COMPRESSED_MIME_TYPES = new HashSet<String>();
 
+	static
 	{
-		defaultMimeTypes.put(".css", "text/css");
-		defaultMimeTypes.put(".gif", "image/gif");
-		defaultMimeTypes.put(".ico", "image/vnd.microsoft.icon");
-		defaultMimeTypes.put(".jpeg", "image/jpeg");
-		defaultMimeTypes.put(".jpg", "image/jpeg");
-		defaultMimeTypes.put(".js", "text/javascript");
-		defaultMimeTypes.put(".png", "image/png");
-	}
+		DEFAULT_MIME_TYPES.put(".css", "text/css");
+		DEFAULT_MIME_TYPES.put(".gif", "image/gif");
+		DEFAULT_MIME_TYPES.put(".ico", "image/vnd.microsoft.icon");
+		DEFAULT_MIME_TYPES.put(".jpeg", "image/jpeg");
+		DEFAULT_MIME_TYPES.put(".jpg", "image/jpeg");
+		DEFAULT_MIME_TYPES.put(".js", "text/javascript");
+		DEFAULT_MIME_TYPES.put(".png", "image/png");
 
-	private Set<String> compressedMimeTypes = new HashSet<String>();
-
-	{
-		compressedMimeTypes.add("text/css");
-		compressedMimeTypes.add("text/javascript");
-		compressedMimeTypes.add("application/javascript");
-		compressedMimeTypes.add("application/x-javascript");
+		COMPRESSED_MIME_TYPES.add("text/css");
+		COMPRESSED_MIME_TYPES.add("text/javascript");
+		COMPRESSED_MIME_TYPES.add("application/javascript");
+		COMPRESSED_MIME_TYPES.add("application/x-javascript");
 	}
 
 	public void setServletContext(ServletContext servletContext) {
@@ -161,13 +159,15 @@ public class ResourceController implements LastModified, ServletContextAware {
 		String mimeType = response.getContentType();
 
 		if (StringUtils.hasText(acceptEncoding) && acceptEncoding.contains("gzip")
-				&& compressedMimeTypes.contains(mimeType)) {
+				&& COMPRESSED_MIME_TYPES.contains(mimeType)) {
 			log.debug("Enabling GZIP compression for the current response.");
 			return new GzipResponseStream(response);
 		} else {
-			log.debug("No compression for the current response.");
-
-			log.debug(StringUtils.hasText(acceptEncoding) + "&&" + acceptEncoding.contains("gzip") + "&&" + mimeType);
+			if (log.isDebugEnabled()) {
+				log.debug("No compression for the current response.");
+				log.debug(StringUtils.hasText(acceptEncoding) + "&&" + acceptEncoding.contains("gzip") + "&&" +
+						mimeType);
+			}
 
 			return response.getOutputStream();
 		}
@@ -191,7 +191,7 @@ public class ResourceController implements LastModified, ServletContextAware {
 			String currentMimeType = servletContext.getMimeType(resource.getPath());
 			if (currentMimeType == null) {
 				String extension = resource.getPath().substring(resource.getPath().lastIndexOf('.'));
-				currentMimeType = defaultMimeTypes.get(extension);
+				currentMimeType = DEFAULT_MIME_TYPES.get(extension);
 			}
 			if (mimeType == null) {
 				mimeType = currentMimeType;
@@ -318,11 +318,11 @@ public class ResourceController implements LastModified, ServletContextAware {
 	}
 
 	private boolean isAllowed(String resourcePath) {
-		if (resourcePath.matches(protectedPath)) {
+		if (resourcePath.matches(PROTECTED_PATH)) {
 			return false;
 		}
 		PathMatcher pathMatcher = new AntPathMatcher();
-		for (String pattern : allowedResourcePaths) {
+		for (String pattern : ALLOWED_RESOURCE_PATHS) {
 			if (pathMatcher.match(pattern, resourcePath)) {
 				return true;
 			}
