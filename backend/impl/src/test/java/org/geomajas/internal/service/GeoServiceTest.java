@@ -11,32 +11,44 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * Test for {@link GeoService} implementation.
@@ -48,6 +60,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/spring/moreContext.xml"})
 @DirtiesContext
 public class GeoServiceTest {
+
+	
 
 	private static final double DELTA = 1e-20;
 	private static final String MERCATOR = "EPSG:900913";
@@ -307,6 +321,47 @@ public class GeoServiceTest {
 	}
 
 	@Test
+	public void transformGeometryEmptyResultOnException() throws Exception {
+		GeometryFactory geometryFactory = new GeometryFactory();
+		WKTReader reader = new WKTReader( geometryFactory );
+		
+		Point point = (Point) reader.read("POINT (1 1)");
+		Geometry geometry = geoService.transform(point, new ThrowingTransform());
+		Assert.assertEquals(Point.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+		
+		LineString lineString = (LineString) reader.read("LINESTRING (0 1,1 1)");
+		geometry = geoService.transform(lineString, new ThrowingTransform());
+		Assert.assertEquals(LineString.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+		
+		Polygon polygon = (Polygon) reader.read("POLYGON ((0 0,1 1,0 1,0 0))");
+		geometry = geoService.transform(polygon, new ThrowingTransform());
+		Assert.assertEquals(Polygon.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+
+		MultiPoint multipoint = (MultiPoint) reader.read("MULTIPOINT ((1 1),(2 1))");
+		geometry = geoService.transform(multipoint, new ThrowingTransform());
+		Assert.assertEquals(MultiPoint.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+		
+		MultiLineString multilineString = (MultiLineString) reader.read("MULTILINESTRING ((0 1,1 1),(0 2,2 2))");
+		geometry = geoService.transform(multilineString, new ThrowingTransform());
+		Assert.assertEquals(MultiLineString.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+		
+		MultiPolygon multipolygon = (MultiPolygon) reader.read("MULTIPOLYGON (((0 0,1 1,0 1,0 0)),((0 0,2 2,0 2,0 0)))");
+		geometry = geoService.transform(multipolygon, new ThrowingTransform());
+		Assert.assertEquals(MultiPolygon.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+		
+		Geometry collection = (GeometryCollection) reader.read("GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10)) ");
+		geometry = geoService.transform(collection, new ThrowingTransform());
+		Assert.assertEquals(GeometryCollection.class, geometry.getClass());
+		Assert.assertTrue(geometry.isEmpty());
+	}
+
+	@Test
 	public void transformGeometryCrsNoTransform() throws Exception {
 		Geometry geometry = getLineString();
 		CrsTransform transform = geoService.getCrsTransform(LONLAT, LONLAT);
@@ -342,4 +397,54 @@ public class GeoServiceTest {
 				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
 
 	}
+	
+	public class ThrowingTransform extends CrsTransformImpl {
+
+		public ThrowingTransform() throws LayerException {
+			super(null, geoService.getCrs2(MERCATOR), geoService.getCrs2(LAMBERT72), null);
+		}
+
+		@Override
+		public DirectPosition transform(DirectPosition directPosition, DirectPosition directPosition1)
+				throws MismatchedDimensionException, TransformException {
+					throw new IllegalArgumentException();
+		}
+
+		@Override
+		public void transform(double[] doubles, int i, double[] doubles1, int i1, int i2) throws TransformException {
+			throw new IllegalArgumentException();
+		}
+
+		@Override
+		public void transform(float[] floats, int i, float[] floats1, int i1, int i2) throws TransformException {
+			throw new IllegalArgumentException();
+		}
+
+		@Override
+		public void transform(float[] floats, int i, double[] doubles, int i1, int i2) throws TransformException {
+			throw new IllegalArgumentException();
+		}
+
+		@Override
+		public void transform(double[] doubles, int i, float[] floats, int i1, int i2) throws TransformException {
+			throw new IllegalArgumentException();
+		}
+
+		@Override
+		public Geometry getTransformableGeometry() {
+			return JTS.toGeometry(getTransformableEnvelope());
+		}
+
+		@Override
+		public Envelope getTransformableEnvelope() {
+			return new Envelope(-10E20, 10E20, -10E20, 10E20);
+		}
+
+		@Override
+		public Bbox getTransformableBbox() {
+			return null;
+		}
+		
+	}
+
 }

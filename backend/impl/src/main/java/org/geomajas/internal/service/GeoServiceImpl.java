@@ -10,18 +10,12 @@
  */
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.algorithm.InteriorPointArea;
-import com.vividsolutions.jts.algorithm.InteriorPointLine;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.PostConstruct;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
@@ -47,13 +41,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.vividsolutions.jts.algorithm.InteriorPointArea;
+import com.vividsolutions.jts.algorithm.InteriorPointLine;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 
 /**
  * Collection of utility functions concerning geometries.
- *
+ * 
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
  * @author Pieter De Graef
@@ -72,6 +77,9 @@ public final class GeoServiceImpl implements GeoService {
 	private Map<String, Crs> crsCache = new ConcurrentHashMap<String, Crs>();
 
 	private Map<String, CrsTransform> transformCache = new ConcurrentHashMap<String, CrsTransform>();
+
+	private static final Map<Class<? extends Geometry>, Geometry> EMPTY_GEOMETRIES = 
+		new HashMap<Class<? extends Geometry>, Geometry>();
 
 	@PostConstruct
 	protected void postConstruct() throws GeomajasException {
@@ -92,6 +100,14 @@ public final class GeoServiceImpl implements GeoService {
 				transformCache.put(key, getCrsTransform(key, crsTransformInfo));
 			}
 		}
+		GeometryFactory factory = new GeometryFactory();
+		EMPTY_GEOMETRIES.put(Point.class, factory.createPoint((Coordinate) null));
+		EMPTY_GEOMETRIES.put(LineString.class, factory.createLineString((Coordinate[]) null));
+		EMPTY_GEOMETRIES.put(Polygon.class, factory.createPolygon(null, null));
+		EMPTY_GEOMETRIES.put(MultiPoint.class, factory.createMultiPoint((Coordinate[]) null));
+		EMPTY_GEOMETRIES.put(MultiLineString.class, factory.createMultiLineString((LineString[]) null));
+		EMPTY_GEOMETRIES.put(MultiPolygon.class, factory.createMultiPolygon((Polygon[]) null));
+		EMPTY_GEOMETRIES.put(Geometry.class, factory.createGeometryCollection(null));
 	}
 
 	private String getTransformKey(CrsTransformInfo crsTransformInfo) {
@@ -109,6 +125,14 @@ public final class GeoServiceImpl implements GeoService {
 		MathTransform mathTransform = getBaseMathTransform(source, target);
 
 		return new CrsTransformImpl(key, source, target, mathTransform, crsTransformInfo.getTransformableArea());
+	}
+
+	private static Geometry createEmptyGeometryForClass(Class<? extends Geometry> geomClass) {
+		Geometry empty = EMPTY_GEOMETRIES.get(geomClass);
+		if (empty == null) {
+			empty = EMPTY_GEOMETRIES.get(Geometry.class);
+		}
+		return empty;
 	}
 
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
@@ -135,7 +159,7 @@ public final class GeoServiceImpl implements GeoService {
 
 	/**
 	 * Isn't there a method for this in GeoTools?
-	 *
+	 * 
 	 * @param crs
 	 *            CRS string in the form of 'EPSG:<srid>'.
 	 * @return SRID as integer.
@@ -170,8 +194,9 @@ public final class GeoServiceImpl implements GeoService {
 
 	/**
 	 * Unreliable but works if srids are same as EPSG numbers.
-	 *
-	 * @param crs reference system of EPSG type.
+	 * 
+	 * @param crs
+	 *            reference system of EPSG type.
 	 * @return SRID as integer.
 	 */
 	public int getSridFromCrs(CoordinateReferenceSystem crs) {
@@ -188,24 +213,23 @@ public final class GeoServiceImpl implements GeoService {
 			}
 			return transform;
 		} catch (FactoryException fe) {
-			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE,
-					sourceCrs.getId(), targetCrs.getId());
+			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs.getId(),
+					targetCrs.getId());
 		}
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs,
-			CoordinateReferenceSystem targetCrs) throws GeomajasException {
+	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException {
 		return getCrsTransform(getCrs2(getCodeFromCrs(sourceCrs)), getCrs2(getCodeFromCrs(targetCrs)));
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public CrsTransform getCrsTransform(String sourceCrs, String targetCrs)
-			throws GeomajasException {
+	public CrsTransform getCrsTransform(String sourceCrs, String targetCrs) throws GeomajasException {
 		return getCrsTransform(getCrs2(sourceCrs), getCrs2(targetCrs));
 	}
 
@@ -231,8 +255,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public CrsTransform getCrsTransform(Crs sourceCrs, Crs targetCrs)
-			throws GeomajasException {
+	public CrsTransform getCrsTransform(Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		String key = getTransformKey(sourceCrs, targetCrs);
 		CrsTransform transform = transformCache.get(key);
 		if (null == transform) {
@@ -243,9 +266,8 @@ public final class GeoServiceImpl implements GeoService {
 			try {
 				org.opengis.geometry.Envelope ogEnvelope = CRS.getEnvelope(targetCrs);
 				if (null != ogEnvelope) {
-					Envelope envelope = new Envelope(ogEnvelope.getLowerCorner().getCoordinate()[0],
-							ogEnvelope.getUpperCorner().getCoordinate()[0],
-							ogEnvelope.getLowerCorner().getCoordinate()[1],
+					Envelope envelope = new Envelope(ogEnvelope.getLowerCorner().getCoordinate()[0], ogEnvelope
+							.getUpperCorner().getCoordinate()[0], ogEnvelope.getLowerCorner().getCoordinate()[1],
 							ogEnvelope.getUpperCorner().getCoordinate()[1]);
 					log.info("CRS " + targetCrs.getId() + " envelope " + envelope);
 					ReferencedEnvelope refEnvelope = new ReferencedEnvelope(envelope, targetCrs);
@@ -253,17 +275,14 @@ public final class GeoServiceImpl implements GeoService {
 					log.info("transformable area for " + key + " is " + transformableArea);
 				}
 			} catch (MismatchedDimensionException mde) {
-				log.warn(
-						"Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and " +
-								targetCrs.getId() + ", " + mde.getMessage());
+				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
+						+ targetCrs.getId() + ", " + mde.getMessage());
 			} catch (TransformException te) {
-				log.warn(
-						"Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and " +
-								targetCrs.getId() + ", " + te.getMessage());
+				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
+						+ targetCrs.getId() + ", " + te.getMessage());
 			} catch (FactoryException fe) {
-				log.warn(
-						"Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and " +
-								targetCrs.getId() + ", " + fe.getMessage());
+				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
+						+ targetCrs.getId() + ", " + fe.getMessage());
 			}
 
 			transform = new CrsTransformImpl(key, sourceCrs, targetCrs, mathTransform, transformableArea);
@@ -286,24 +305,18 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (TopologyException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Geometry.", te);
-			return JTS.toGeometry(new Envelope());
-		} catch (TransformException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Geometry.", te);
-			return JTS.toGeometry(new Envelope());
+		} catch (Exception e) {
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Envelope.", e);
+			return createEmptyGeometryForClass(source.getClass());
 		}
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public Geometry transform(Geometry geometry, Crs sourceCrs, Crs targetCrs)
-			throws GeomajasException {
+	public Geometry transform(Geometry geometry, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return geometry;
@@ -316,8 +329,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public Geometry transform(Geometry geometry, String sourceCrs, String targetCrs)
-			throws GeomajasException {
+	public Geometry transform(Geometry geometry, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			return geometry;
 		}
@@ -330,8 +342,7 @@ public final class GeoServiceImpl implements GeoService {
 	 * @inheritDoc
 	 */
 	public Geometry transform(Geometry geometry, CoordinateReferenceSystem sourceCrs,
-			CoordinateReferenceSystem targetCrs)
-			throws GeomajasException {
+			CoordinateReferenceSystem targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return geometry;
@@ -374,19 +385,19 @@ public final class GeoServiceImpl implements GeoService {
 				return source;
 			}
 		} catch (TopologyException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Bbox.", te);
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Bbox.", te);
 			return new Bbox();
 		} catch (TransformException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Bbox.", te);
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Bbox.", te);
 			return new Bbox();
 		} catch (FactoryException fe) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Bbox.", fe);
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Bbox.", fe);
 			return new Bbox();
 		}
 	}
@@ -394,8 +405,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public Bbox transform(Bbox bbox, Crs sourceCrs, Crs targetCrs)
-			throws GeomajasException {
+	public Bbox transform(Bbox bbox, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return bbox;
@@ -408,8 +418,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public Bbox transform(Bbox bbox, String sourceCrs, String targetCrs)
-			throws GeomajasException {
+	public Bbox transform(Bbox bbox, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			// only works when the caching of the CRSs works
 			return bbox;
@@ -439,19 +448,19 @@ public final class GeoServiceImpl implements GeoService {
 				return source;
 			}
 		} catch (TopologyException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Envelope.", te);
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Envelope.", te);
 			return new Envelope();
 		} catch (TransformException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Envelope.", te);
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Envelope.", te);
 			return new Envelope();
 		} catch (FactoryException fe) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
-					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
-					"transformation. Object replaced by empty Envelope.", fe);
+			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
+					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
+					+ "transformation. Object replaced by empty Envelope.", fe);
 			return new Envelope();
 		}
 	}
@@ -459,8 +468,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public Envelope transform(Envelope source, Crs sourceCrs, Crs targetCrs)
-			throws GeomajasException {
+	public Envelope transform(Envelope source, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
 			return source;
@@ -473,8 +481,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public Envelope transform(Envelope source, String sourceCrs, String targetCrs)
-			throws GeomajasException {
+	public Envelope transform(Envelope source, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			// only works when the caching of the CRSs works
 			return source;
@@ -495,7 +502,7 @@ public final class GeoServiceImpl implements GeoService {
 				try {
 					InteriorPointArea ipa = new InteriorPointArea(geometry);
 					labelPoint = ipa.getInteriorPoint();
-				} catch (Throwable t) { //NOPMD
+				} catch (Throwable t) { // NOPMD
 					// BUG in JTS for some valid geometries ? fall back to centroid
 					log.warn("getInteriorPoint() failed", t);
 				}
