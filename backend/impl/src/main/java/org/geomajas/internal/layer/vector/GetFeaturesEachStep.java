@@ -115,7 +115,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 					}
 				} else {
 					if (log.isDebugEnabled()) {
-						log.debug("feature not visible {}", feature.getId());
+						log.debug("feature not visible {}", layer.getFeatureModel().getId(featureObj));
 					}
 				}
 			}
