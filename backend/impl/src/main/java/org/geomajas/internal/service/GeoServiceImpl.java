@@ -54,7 +54,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
 
 /**
  * Collection of utility functions concerning geometries.
@@ -171,7 +170,7 @@ public final class GeoServiceImpl implements GeoService {
 		} else {
 			try {
 				crsInt = Integer.parseInt(crs);
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				crsInt = 0;
 			}
 		}
@@ -294,6 +293,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public Geometry transform(Geometry source, CrsTransform crsTransform) {
 		try {
 			if (crsTransform.isTransforming()) {
@@ -305,7 +305,7 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
 					+ "transformation. Object replaced by empty Envelope.", e);
@@ -366,6 +366,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public Bbox transform(Bbox source, CrsTransform crsTransform) {
 		try {
 			if (crsTransform.isTransforming()) {
@@ -384,20 +385,10 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (TopologyException te) {
+		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Bbox.", te);
-			return new Bbox();
-		} catch (TransformException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Bbox.", te);
-			return new Bbox();
-		} catch (FactoryException fe) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Bbox.", fe);
+					+ "transformation. Object replaced by empty Bbox.", e);
 			return new Bbox();
 		}
 	}
@@ -431,6 +422,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public Envelope transform(Envelope source, CrsTransform crsTransform) {
 		try {
 			if (crsTransform.isTransforming()) {
@@ -447,20 +439,10 @@ public final class GeoServiceImpl implements GeoService {
 			} else {
 				return source;
 			}
-		} catch (TopologyException te) {
+		} catch (Exception e) { // typically TopologyException, TransformException or FactoryException, but be safe
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
 					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Envelope.", te);
-			return new Envelope();
-		} catch (TransformException te) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Envelope.", te);
-			return new Envelope();
-		} catch (FactoryException fe) {
-			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source
-					+ ", maybe you need to configure the transformable area using a CrsTransformInfo object for this "
-					+ "transformation. Object replaced by empty Envelope.", fe);
+					+ "transformation. Object replaced by empty Envelope.", e);
 			return new Envelope();
 		}
 	}
