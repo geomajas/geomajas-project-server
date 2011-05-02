@@ -31,6 +31,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.internal.layer.vector.lazy.LazyAttribute;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
@@ -208,8 +209,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				return new UrlAttribute((String) value);
 			case IMGURL:
 				return new ImageUrlAttribute((String) value);
+			default:
+				throw new IllegalArgumentException("Cannot create primitive attribute of type " + info);
 		}
-		throw new IllegalArgumentException("Cannot create primitive attribute of type " + info);
 	}
 
 	private ArrayAttribute<?> toArrayDto(Object[] value, PrimitiveAttributeInfo info) {
@@ -321,7 +323,16 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		Feature dto = new Feature(feature.getId());
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0 && null != feature.getAttributes()) {
-			dto.setAttributes(new HashMap<String, Attribute>(feature.getAttributes()));
+			// need to assure lazy attributes are converted to non-lazy attributes
+			Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+			for (Map.Entry<String, Attribute> entry : feature.getAttributes().entrySet()) {
+				Attribute value = entry.getValue();
+				if (value instanceof LazyAttribute) {
+					value = ((LazyAttribute) value).instantiate();
+				}
+				attributes.put(entry.getKey(), value);
+			}
+			dto.setAttributes(attributes);
 		}
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
 			dto.setLabel(feature.getLabel());
@@ -387,7 +398,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			precision = (int) Math.log10(precisionmodel.getScale());
 		}
 
-		Geometry dto = null;
+		Geometry dto;
 		if (geometry instanceof Point) {
 			dto = new Geometry(Geometry.POINT, srid, precision);
 			dto.setCoordinates(convertCoordinates(geometry));
@@ -445,7 +456,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			model = new PrecisionModel(Math.pow(10, precision));
 		}
 		GeometryFactory factory = new GeometryFactory(model, srid);
-		com.vividsolutions.jts.geom.Geometry jts = null;
+		com.vividsolutions.jts.geom.Geometry jts;
 
 		String geometryType = geometry.getGeometryType();
 		if (Geometry.POINT.equals(geometryType)) {
@@ -540,8 +551,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setClipped(tile.isClipped());
 			dto.setCode(tile.getCode());
 			dto.setCodes(tile.getCodes());
-			dto.setScreenHeight((int) tile.getScreenHeight());
-			dto.setScreenWidth((int) tile.getScreenWidth());
+			dto.setScreenHeight(tile.getScreenHeight());
+			dto.setScreenWidth(tile.getScreenWidth());
 			List<Feature> features = new ArrayList<Feature>();
 			for (InternalFeature feature : tile.getFeatures()) {
 				Feature fdto = toDto(feature, featureIncludes);

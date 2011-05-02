@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-public class LazyOneToManyAttribute extends OneToManyAttribute {
+public class LazyOneToManyAttribute extends OneToManyAttribute implements LazyAttribute<List<AssociationValue>> {
 
 	private static final long serialVersionUID = 190L;
 
@@ -40,6 +40,11 @@ public class LazyOneToManyAttribute extends OneToManyAttribute {
 		this.featureModel = featureModel;
 		this.pojo = pojo;
 		this.name = attribute;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Attribute<List<AssociationValue>> instantiate() {
+		return new OneToManyAttribute(getValue());
 	}
 
 	@Override

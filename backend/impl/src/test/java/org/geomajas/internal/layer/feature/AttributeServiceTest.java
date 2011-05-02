@@ -13,12 +13,16 @@ package org.geomajas.internal.layer.feature;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.internal.layer.vector.lazy.LazyAttribute;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerLazyFeatureConversionSupport;
 import org.geomajas.layer.bean.FeatureBean;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.service.DtoConverterService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +35,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Test for AttributeService.
@@ -58,6 +63,9 @@ public class AttributeServiceTest {
 	private AttributeService attributeService;
 
 	@Autowired
+	private DtoConverterService dtoConverter;
+
+	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
 
 	@Before
@@ -80,6 +88,10 @@ public class AttributeServiceTest {
 		Assert.assertEquals(TEST_STRING, feature.getAttributes().get("stringAttr").getValue());
 		Assert.assertEquals(TEST_INTEGER, feature.getAttributes().get("integerAttr").getValue());
 		Assert.assertTrue((Boolean) feature.getAttributes().get("booleanAttr").getValue());
+
+		Assert.assertFalse(containsLazy(feature.getAttributes()));
+		Feature dto = dtoConverter.toDto(feature);
+		Assert.assertFalse(containsLazy(dto.getAttributes()));
 	}
 
 	@Test
@@ -89,6 +101,19 @@ public class AttributeServiceTest {
 		Assert.assertEquals(TEST_STRING, feature.getAttributes().get("stringAttr").getValue());
 		Assert.assertEquals(TEST_INTEGER, feature.getAttributes().get("integerAttr").getValue());
 		Assert.assertTrue((Boolean) feature.getAttributes().get("booleanAttr").getValue());
+
+		Assert.assertTrue(containsLazy(feature.getAttributes()));
+		Feature dto = dtoConverter.toDto(feature);
+		Assert.assertFalse(containsLazy(dto.getAttributes()));
+	}
+
+	private boolean containsLazy(Map<String, Attribute> attributes) {
+		for (Attribute attribute : attributes.values()) {
+			if (attribute instanceof LazyAttribute) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private class LazyVectorLayer implements VectorLayer, VectorLayerLazyFeatureConversionSupport {

@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joachim Van der Auwera
  */
-public class LazyManyToOneAttribute extends ManyToOneAttribute {
+public class LazyManyToOneAttribute extends ManyToOneAttribute implements LazyAttribute<AssociationValue> {
 
 	private static final long serialVersionUID = 190L;
 
@@ -38,6 +38,11 @@ public class LazyManyToOneAttribute extends ManyToOneAttribute {
 		this.featureModel = featureModel;
 		this.pojo = pojo;
 		this.name = attribute;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Attribute<AssociationValue> instantiate() {
+		return new ManyToOneAttribute(getValue());
 	}
 
 	@Override
