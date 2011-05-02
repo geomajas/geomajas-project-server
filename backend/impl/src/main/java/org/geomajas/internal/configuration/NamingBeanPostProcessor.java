@@ -38,6 +38,7 @@ public class NamingBeanPostProcessor implements BeanPostProcessor {
 		return bean;
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	private void assignId(Object bean, String beanName, boolean override) {
 		try {
 			PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(bean.getClass(), "id");

@@ -58,6 +58,7 @@ public class GeomajasContextListener implements ServletContextListener, ServletR
 	private static final String REQUEST_ATTRIBUTES_ATTRIBUTE =
 			RequestContextListener.class.getName() + ".REQUEST_ATTRIBUTES";
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 
 		ServletContext servletContext = servletContextEvent.getServletContext();

@@ -77,6 +77,7 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 		return name;
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		// use name provided in annotation if any
 		if (definition instanceof AnnotatedBeanDefinition) {

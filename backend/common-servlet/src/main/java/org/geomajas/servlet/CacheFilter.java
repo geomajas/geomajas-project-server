@@ -142,6 +142,8 @@ public class CacheFilter implements Filter {
 		}
 	}
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "AvoidUsingHardCodedIP",
+			justification = "double-safe check on localhost")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException,
 			ServletException {
 		boolean chainCalled = false;

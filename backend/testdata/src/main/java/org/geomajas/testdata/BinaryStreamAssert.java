@@ -90,7 +90,10 @@ public abstract class BinaryStreamAssert {
 				// directory)
 				File copy = new File(getExpected(resourceName, false).getFile().getParentFile(), resourceName.replace(
 						".", ".actual."));
-				if (copy.canWrite()) {
+				if (!copy.getParentFile().exists()) {
+					copy.getParentFile().mkdirs(); // NOSONAR ignore response
+				}
+				if (copy.getParentFile().canWrite()) {
 					FileOutputStream fos = new FileOutputStream(copy);
 					try {
 						fos.write(actualBytes);
@@ -99,7 +102,7 @@ public abstract class BinaryStreamAssert {
 						fos.close();
 					}
 				} else {
-					System.out.println("Could not write copy of actual image to " + copy.getAbsolutePath());
+					Assert.fail("Could not write copy of actual image to " + copy.getAbsolutePath());
 				}
 			}
 			BufferedImage expimg = ImageIO.read(is);

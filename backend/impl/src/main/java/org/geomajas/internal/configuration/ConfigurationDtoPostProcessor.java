@@ -266,7 +266,7 @@ public class ConfigurationDtoPostProcessor {
 	 */
 	public void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels) {
 		if (0 == mapUnitInPixels) {
-			throw new RuntimeException("ScaleInfo.completeScale mapUnitInPixels should never be zero.");
+			throw new IllegalArgumentException("ScaleInfo.completeScale mapUnitInPixels should never be zero.");
 		}
 		double denominator = scaleInfo.getDenominator();
 		double numerator = scaleInfo.getNumerator();

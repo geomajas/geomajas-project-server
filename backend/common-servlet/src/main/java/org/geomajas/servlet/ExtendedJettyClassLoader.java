@@ -103,7 +103,7 @@ public class ExtendedJettyClassLoader extends URLClassLoader {
 	public static boolean isGwtJettyClassLoader(ClassLoader cl) {
 		ClassLoader sys = ClassLoader.getSystemClassLoader();
 		// move up until we find the system class loader or null
-		while (cl != sys && cl != null) {
+		while (cl != sys && cl != null) { // NOSONAR really is object equality
 			cl = cl.getParent();
 		}
 		// found null, must be gwt classloader !

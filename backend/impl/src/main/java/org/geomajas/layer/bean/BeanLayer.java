@@ -200,11 +200,11 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	}
 
 	public Object create(Object feature) throws LayerException {
-		String id = featureModel.getId(feature);
+		String newId = featureModel.getId(feature);
 		synchronized (featuresById) {
-			if (id != null && !featuresById.containsKey(id)) {
+			if (newId != null && !featuresById.containsKey(newId)) {
 				features.add(feature);
-				featuresById.put(id, feature);
+				featuresById.put(newId, feature);
 				return feature;
 			} else {
 				throw new IllegalStateException("BeanLayer cannot auto assign the feature id");
