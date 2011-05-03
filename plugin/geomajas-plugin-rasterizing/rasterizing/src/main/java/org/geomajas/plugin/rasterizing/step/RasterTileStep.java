@@ -12,12 +12,10 @@
 package org.geomajas.plugin.rasterizing.step;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
@@ -33,7 +31,6 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.jboss.serial.io.JBossObjectOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,12 +91,7 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		vectorLayerRasterizingInfo.setPaintGeometries(tileMetadata.isPaintGeometries());
 		vectorLayerRasterizingInfo.setPaintLabels(tileMetadata.isPaintLabels());
 		vectorLayerRasterizingInfo.setFilter(tileMetadata.getFilter());
-		try {
-			vectorLayerRasterizingInfo.setStyle((NamedStyleInfo) cloneObject(style));
-		} catch (IOException e) {
-			// should not happen
-			throw new GeomajasException(e, ExceptionCode.UNEXPECTED_PROBLEM);
-		}
+		vectorLayerRasterizingInfo.setStyle(style);
 		clientVectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
 		mapInfo.getLayers().add(clientVectorLayerInfo);
 
@@ -116,11 +108,5 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		byte[] image = imageStream.toByteArray();
 		rasterizingContainer.setImage(image);
 		context.put(RasterizingPipelineCode.CONTAINER_KEY, rasterizingContainer);
-	}
-	
-	public Object cloneObject(Object input) throws IOException {
-		JBossObjectOutputStream jbossSerializer = new JBossObjectOutputStream(null);
-		Object obj = jbossSerializer.smartClone(input);
-		return obj;
 	}
 }

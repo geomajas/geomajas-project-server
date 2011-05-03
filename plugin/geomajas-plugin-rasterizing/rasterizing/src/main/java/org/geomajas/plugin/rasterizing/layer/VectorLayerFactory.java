@@ -10,14 +10,12 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
@@ -30,6 +28,7 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Crs;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
@@ -51,6 +50,7 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleAttributeExtractor;
+import org.jboss.serial.io.JBossObjectOutputStream;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -68,6 +68,8 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 @Component
 public class VectorLayerFactory implements LayerFactory {
+
+	private static final String STYLE_INDEX_ATTRIBUTE_NAME = "geomajas_style";
 
 	@Autowired
 	private VectorLayerService vectorLayerService;
@@ -108,37 +110,13 @@ public class VectorLayerFactory implements LayerFactory {
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 		
-		// we now replace the style filters by fid filters:
-		// GT renderer is expecting simple features, it cannot deal with complex attribute filters
-		Map<Integer, List<String>> fidMap = new HashMap<Integer, List<String>>();
-		for (InternalFeature internalFeature : features) {
-			FeatureStyleInfo style = internalFeature.getStyleInfo();
-			if (!fidMap.containsKey(style.getIndex())) {
-				fidMap.put(style.getIndex(), new ArrayList<String>());
-			}
-			fidMap.get(style.getIndex()).add(internalFeature.getId());
+		// need to clone the extra info object before changing it !
+		VectorLayerRasterizingInfo copy = cloneInfo(extraInfo);
+		// we now replace the style filters by simple filters on an artificial extra style attribute
+		for (FeatureStyleInfo style : copy.getStyle().getFeatureStyles()) {
+			style.setFormula(STYLE_INDEX_ATTRIBUTE_NAME + " = " + style.getIndex());
 		}
-		for (FeatureStyleInfo style : extraInfo.getStyle().getFeatureStyles()) {
-			if (fidMap.containsKey(style.getIndex())) {
-				StringBuilder sb = null;
-				for (String id : fidMap.get(style.getIndex())) {
-					if (sb == null) {
-						sb = new StringBuilder("IN ('");
-						sb.append(id);
-						sb.append("'");
-					} else {
-						sb.append(", '");
-						sb.append(id);
-						sb.append("'");
-					}
-				}
-				sb.append(")");
-				style.setFormula(sb.toString());
-			} else {
-				style.setFormula("EXCLUDE");
-			}
-		}
-		Style style = styleFactoryService.createStyle(layer, extraInfo);
+		Style style = styleFactoryService.createStyle(layer, copy);
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem(), style), style);
 		featureLayer.setTitle(vectorInfo.getLabel());
@@ -162,7 +140,8 @@ public class VectorLayerFactory implements LayerFactory {
 		Set<String> styleAttributeNames = extractor.getAttributeNameSet();
 		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
 		for (InternalFeature internalFeature : features) {
-			Object[] values = new Object[internalFeature.getAttributes().size() + 1];
+			// 2 more attributes : geometry + style attribute
+			Object[] values = new Object[internalFeature.getAttributes().size() + 2];
 			int i = 0;
 			for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
 				String name = attrInfo.getName();
@@ -172,7 +151,8 @@ public class VectorLayerFactory implements LayerFactory {
 					values[i++] = null;
 				}
 			}
-			values[internalFeature.getAttributes().size()] = internalFeature.getGeometry();
+			values[i++] = internalFeature.getStyleInfo().getIndex();
+			values[i++] = internalFeature.getGeometry();
 			result.add(builder.buildFeature(internalFeature.getId(), values));
 		}
 		return result;
@@ -234,10 +214,24 @@ public class VectorLayerFactory implements LayerFactory {
 				}
 			}
 		}
+		// add the extra style index attribute 
+		builder.add(STYLE_INDEX_ATTRIBUTE_NAME, Integer.class);
+		// add the geometry attribute 
 		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
 		builder.add(geom.getName(), dtoConverterService.toInternal(info.getLayerType()), mapCrs);
 		builder.setDefaultGeometry(geom.getName());
 		return builder.buildFeatureType();
+	}
+	
+	private VectorLayerRasterizingInfo cloneInfo(VectorLayerRasterizingInfo input) throws GeomajasException {
+		try {
+			JBossObjectOutputStream jbossSerializer = new JBossObjectOutputStream(null);
+			Object obj = jbossSerializer.smartClone(input);
+			return (VectorLayerRasterizingInfo) obj;
+		} catch (IOException e) {
+			// should not happen
+			throw new GeomajasException(e, ExceptionCode.UNEXPECTED_PROBLEM);
+		}
 	}
 
 }
