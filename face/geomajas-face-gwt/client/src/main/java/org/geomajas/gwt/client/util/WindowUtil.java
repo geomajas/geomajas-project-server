@@ -34,7 +34,7 @@ public final class WindowUtil {
 	 */
 	public static void setLocation(String location) {
 		// avoid messages from outstanding requests !
-		GwtCommandDispatcher.getInstance().setConsoleEnabled(false);
+		GwtCommandDispatcher.getInstance().setShowError(false);
 		Window.Location.assign(location);
 	}
 }

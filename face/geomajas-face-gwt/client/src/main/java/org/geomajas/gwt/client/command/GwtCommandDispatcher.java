@@ -63,7 +63,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private int lazyFeatureIncludesAll;
 	
-	private boolean consoleEnabled;
+	private boolean showError;
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -75,7 +75,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
 		endpoint.setServiceEntryPoint(moduleRelativeURL);
 		setUseLazyLoading(true);
-		setConsoleEnabled(true);
+		setShowError(true);
 	}
 
 	// -------------------------------------------------------------------------
@@ -129,7 +129,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						callback.execute();
 					}
 					GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-					if (isConsoleEnabled()) {
+					if (isShowError()) {
 						SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
 					}
 				} catch (Throwable t) {
@@ -148,11 +148,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 						GWT.log(message, null);
 						if (response.getExceptions() == null || response.getExceptions().size() == 0) {
-							if (isConsoleEnabled()) {
+							if (isShowError()) {
 								SC.warn(message, null);
 							}
 						} else {
-							if (isConsoleEnabled()) {
+							if (isShowError()) {
 								// The error messaging window only supports 1 exception to display:
 								ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
 								window.show();
@@ -286,23 +286,23 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	}
 	
 	/**
-	 * Should the dispatcher send messages to the console ?
+	 * Should the dispatcher show error messages ?
 	 * 
-	 * @return true if sending messages to console, false otherwise
+	 * @return true if showing error messages, false otherwise
 	 * @since 1.9.0
 	 */
-	public boolean isConsoleEnabled() {
-		return consoleEnabled;
+	public boolean isShowError() {
+		return showError;
 	}
 
 	/**
-	 * Sets whether the dispatcher should send messages to the console.
+	 * Sets whether the dispatcher should show error messages.
 	 * 
-	 * @param consoleEnabled true if sending messages to console, false otherwise
+	 * @param consoleEnabled true if showing error messages, false otherwise
 	 * @since 1.9.0
 	 */
-	public void setConsoleEnabled(boolean consoleEnabled) {
-		this.consoleEnabled = consoleEnabled;
+	public void setShowError(boolean showError) {
+		this.showError = showError;
 	}
 
 	// -------------------------------------------------------------------------
