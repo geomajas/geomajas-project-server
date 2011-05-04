@@ -42,6 +42,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class LayerActions extends Window {
 
 	private static final String BTN_SHOWLEGEND_IMG = "[ISOMORPHIC]/geomajas/silk/information.png";
+	private static final String BTN_REMOVEFILTER_IMG = "[SKIN]/actions/remove.png";
 
 	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
 
@@ -126,6 +127,26 @@ public class LayerActions extends Window {
 
 		// ----------------------------------------------------------
 
+		if (vectorLayer != null && vectorLayer.getFilter() != null && !"".equals(vectorLayer.getFilter())) {
+			final IButton removeFilter = new IButton(messages.layerActionsRemoveFilter());
+			removeFilter.setIcon(BTN_REMOVEFILTER_IMG);
+			removeFilter.setWidth(230);
+			String tooltip = vectorLayer.getFilter();
+			if ( tooltip.length() > 1000) {
+				tooltip = tooltip.substring(0, 1000);
+			}
+			removeFilter.setTooltip(tooltip);
+			removeFilter.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					vectorLayer.setFilter(null);
+					removeFilter.setVisible(false);
+				}
+			});
+			layout.addMember(removeFilter);
+		}
+
+		// ----------------------------------------------------------
+
 		IButton legendInfo = new IButton(messages.layerActionsShowLegend());
 		legendInfo.setIcon(BTN_SHOWLEGEND_IMG);
 		legendInfo.setWidth(230);
@@ -134,10 +155,10 @@ public class LayerActions extends Window {
 				showLegend();
 			}
 		});
+		layout.addMember(legendInfo);
 
 		// ----------------------------------------------------------
 
-		layout.addMember(legendInfo);
 		addItem(layout);
 	}
 
@@ -145,8 +166,8 @@ public class LayerActions extends Window {
 		labels.setTitle(messages.layerActionsLabels());
 		labels.setTooltip(messages.layerActionsLabelsToolTip());
 		labels.setTitleOrientation(TitleOrientation.LEFT);
-		labels.setValue(vectorLayer.isLabeled());
-		Boolean val = vectorLayer.isLabeled();
+		labels.setValue(vectorLayer.isLabelsVisible());
+		Boolean val = vectorLayer.isLabelsVisible();
 		layerLabelOverlay.setVisible(val);
 		labels.addChangedHandler(new ChangedHandler() {
 			public void onChanged(ChangedEvent event) {

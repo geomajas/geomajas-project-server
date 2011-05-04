@@ -23,6 +23,7 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend.LayerTreeLegendNode;
 
@@ -63,10 +64,11 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 	protected static final String ICON_BASE = "[ISOMORPHIC]/geomajas/widget/layertree/";
 	protected static final String ICON_HIDE = ICON_BASE + "layer-hide.png";
-	protected static final String ICON_SHOW = ICON_BASE + "layer-show.png";
-	protected static final String ICON_SHOW_LABELED = ICON_BASE + "layer-show-labeled.png";
-	protected static final String ICON_SHOW_OUTOFRANGE = ICON_BASE + "layer-show-outofrange.png";
-	protected static final String ICON_SHOW_OUTOFRANGE_LABELED = ICON_BASE + "layer-show-outofrange-labeled.png";
+	protected static final String ICON_SHOW = ICON_BASE + "layer-show";
+	protected static final String ICON_SHOW_OUTOFRANGE = "-outofrange";
+	protected static final String ICON_SHOW_LABELED = "-labeled";
+	protected static final String ICON_SHOW_FILTERED = "-filtered";
+	protected static final String ICON_SHOW_END = ".png";
 
 	protected static final String IMG_TAGNAME = "IMG";
 
@@ -370,19 +372,22 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		 */
 		public void updateIcon(boolean refresh) {
 			if (layer.isVisible()) {
-				if (layer.isShowing()) {
-					if (layer.isLabeled()) {
-						setIcon(ICON_SHOW_LABELED);
-					} else {
-						setIcon(ICON_SHOW);
-					}
-				} else {
-					if (layer.isLabeled()) {
-						setIcon(ICON_SHOW_OUTOFRANGE_LABELED);
-					} else {
-						setIcon(ICON_SHOW_OUTOFRANGE);
+				String icon = ICON_SHOW;
+				if (!layer.isShowing()) {
+					icon += ICON_SHOW_OUTOFRANGE;
+				}
+				if (layer.isLabelsVisible()) {
+					icon += ICON_SHOW_LABELED;
+				}
+				if (layer instanceof VectorLayer) {
+					VectorLayer vl = (VectorLayer) layer;
+					if (vl.getFilter() != null && !"".equals(vl.getFilter())) {
+						icon += ICON_SHOW_FILTERED;
 					}
 				}
+					
+				icon += ICON_SHOW_END;
+				setIcon(icon);
 			} else {
 				setIcon(ICON_HIDE);
 			}

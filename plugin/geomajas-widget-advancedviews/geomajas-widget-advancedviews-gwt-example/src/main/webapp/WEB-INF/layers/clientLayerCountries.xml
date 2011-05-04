@@ -25,7 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="serverLayerId" value="layerCountries" />
 		<property name="label" value="Polygons" />
 		<property name="visible" value="true" />
-		<property name="maximumScale" value="1:1000" />
+		<property name="maximumScale" value="1:25000" />
 		<property name="minimumScale" value="1:500000000" />
 		<property name="snappingRules">
 			<list>

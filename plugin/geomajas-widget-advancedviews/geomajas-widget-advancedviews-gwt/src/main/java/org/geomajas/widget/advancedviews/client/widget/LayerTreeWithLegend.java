@@ -26,6 +26,8 @@ import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeRegistry;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
+import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
@@ -540,6 +542,23 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 					// TODO update layerstyles
 				}
 			}));
+			
+			if (layer instanceof VectorLayer) {
+				VectorLayer vl = (VectorLayer) layer;
+				registrations.add(vl.addLayerFilteredHandler(new LayerFilteredHandler() {
+					public void onFilterChange(LayerFilteredEvent event) {
+						GWT.log("Legend: onLayerFilterChange() - " + event.getLayer().getLabel());
+						// find the node & update the icon
+						for (TreeNode node : tree.getAllNodes()) {
+							if (node.getName().equals(event.getLayer().getLabel())) {
+								if (node instanceof LayerTreeTreeNode) {
+									((LayerTreeTreeNode) node).updateIcon();
+								}
+							}
+						}
+					}
+				}));
+			}
 		}
 	}
 

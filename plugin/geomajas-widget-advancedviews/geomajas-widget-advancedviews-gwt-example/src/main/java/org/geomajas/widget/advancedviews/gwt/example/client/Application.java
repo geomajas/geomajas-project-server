@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.LoadingScreen;
@@ -209,6 +212,14 @@ public class Application implements EntryPoint {
 
 		// Then initialize:
 		initialize();
+		
+		// -- Filter layer to show filterIcon
+		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+			public void onMapModelChange(MapModelEvent event) {
+				VectorLayer countries = map.getMapModel().getVectorLayer("clientLayerCountries");
+				countries.setFilter("NAME NOT like 'France'");
+			}
+		});
 	}
 
 	private void addTab(AbstractTab tab) {
@@ -218,7 +229,7 @@ public class Application implements EntryPoint {
 
 	private void initialize() {
 		overviewMap.setHeight(200);
-		
+
 		for (AbstractTab tab : tabs) {
 			tab.initialize();
 		}

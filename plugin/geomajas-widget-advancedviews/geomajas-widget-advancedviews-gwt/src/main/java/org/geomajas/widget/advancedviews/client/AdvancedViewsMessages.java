@@ -29,6 +29,7 @@ public interface AdvancedViewsMessages extends Messages {
 	String layerActionsLabels();
 	String layerActionsLabelsToolTip();
 	String layerActionsShowLegend();
+	String layerActionsRemoveFilter();
 	
 	String layerInfoWindowTitle();
 	String layerInfoLayerInfo();
