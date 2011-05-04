@@ -13,8 +13,6 @@ package org.geomajas.global;
 
 /**
  * Constants which are used in Geomajas (and which are not local to a class).
- * <p/>
- * This is specified as normal class (instead of an interface), to enable GWT use.
  *
  * @author Joachim Van der Auwera
  * @since 1.6.0
