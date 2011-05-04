@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.Json;
 import org.geomajas.layer.feature.Feature;
 
 /**
@@ -29,7 +30,7 @@ import org.geomajas.layer.feature.Feature;
 @Api(allMethods = true)
 public class VectorTile implements Serializable {
 
-	private static final long serialVersionUID = 151L;
+	private static final long serialVersionUID = 190L;
 
 	/**
 	 * <p>
@@ -49,8 +50,6 @@ public class VectorTile implements Serializable {
 		/** Rendering method that contains an URL to an image that contains the actual rendering of a tile. */
 		URL_CONTENT
 	}
-
-	private List<Feature> features = new ArrayList<Feature>();
 
 	private List<TileCode> codes = new ArrayList<TileCode>();
 
@@ -147,9 +146,12 @@ public class VectorTile implements Serializable {
 	 * Returns the list of features that are stored in this tile.
 	 *
 	 * @return list of features in tile
+	 * @deprecated features are no longer included in tile
 	 */
+	@Deprecated
+	@Json(serialize = false)
 	public List<Feature> getFeatures() {
-		return features;
+		return new ArrayList<Feature>(); // for backward compatibility
 	}
 
 	/**
@@ -157,9 +159,11 @@ public class VectorTile implements Serializable {
 	 * 
 	 * @param features
 	 *            The full list of features stored and rendered in this tile.
+	 * @deprecated features are no longer included in tile
 	 */
+	@Deprecated
 	public void setFeatures(List<Feature> features) {
-		this.features = features;
+		// nothing to do, just available for backwards compatibility
 	}
 
 	/**
@@ -270,8 +274,7 @@ public class VectorTile implements Serializable {
 	@Override
 	public String toString() {
 		return "VectorTile{" +
-				"features=" + features +
-				", codes=" + codes +
+				"codes=" + codes +
 				", code=" + code +
 				", screenWidth=" + screenWidth +
 				", screenHeight=" + screenHeight +
