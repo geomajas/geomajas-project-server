@@ -19,6 +19,7 @@ import com.google.gwt.user.client.Window;
  * Window related utility methods.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0
  *
  */
 @Api(allMethods = true)

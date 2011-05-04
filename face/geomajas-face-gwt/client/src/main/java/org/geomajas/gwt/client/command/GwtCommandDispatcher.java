@@ -289,6 +289,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Should the dispatcher send messages to the console ?
 	 * 
 	 * @return true if sending messages to console, false otherwise
+	 * @since 1.9.0
 	 */
 	public boolean isConsoleEnabled() {
 		return consoleEnabled;
@@ -298,6 +299,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Sets whether the dispatcher should send messages to the console.
 	 * 
 	 * @param consoleEnabled true if sending messages to console, false otherwise
+	 * @since 1.9.0
 	 */
 	public void setConsoleEnabled(boolean consoleEnabled) {
 		this.consoleEnabled = consoleEnabled;
