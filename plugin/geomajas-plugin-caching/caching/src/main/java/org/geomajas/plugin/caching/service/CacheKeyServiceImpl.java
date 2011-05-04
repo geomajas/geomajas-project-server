@@ -163,8 +163,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		StringBuilder res = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
 			char c = source.charAt(i);
-			int code = Character.getNumericValue(c);
-			if ((code >= 32 && code <= 127) || Character.isSpaceChar(c)) {
+			if ((c >= 32 && c <= 127) || Character.isSpaceChar(c)) {
 				res.append(c);
 			} else {
 				res.append("\\u");
