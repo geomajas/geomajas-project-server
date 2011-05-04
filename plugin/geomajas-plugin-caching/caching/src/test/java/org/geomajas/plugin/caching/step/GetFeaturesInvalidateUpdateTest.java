@@ -12,7 +12,6 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasConstant;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;

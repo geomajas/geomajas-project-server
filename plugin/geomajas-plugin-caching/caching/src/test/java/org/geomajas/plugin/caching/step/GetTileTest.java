@@ -23,7 +23,6 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
-import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -166,6 +165,8 @@ public class GetTileTest {
 
 	/**
 	 * Test which verifies that the cached feature data is not changed while in the cache.
+	 *
+	 * @throws Exception oops
 	 */
 	@Test
 	public void testGetTileWithTransformationCheckFeatureCache() throws Exception {
@@ -200,7 +201,6 @@ public class GetTileTest {
 
 		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);
 		Assert.assertEquals(1, cache.size());
-		String key = cache.getKey();
 		FeaturesCacheContainer fcc = (FeaturesCacheContainer) cache.getObject();
 		List<InternalFeature> features = fcc.getFeatures();
 		Assert.assertEquals(3, features.size());
@@ -225,7 +225,6 @@ public class GetTileTest {
 
 		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);
 		Assert.assertEquals(1, cache.size());
-		key = cache.getKey();
 		fcc = (FeaturesCacheContainer) cache.getObject();
 		features = fcc.getFeatures();
 		Assert.assertEquals(3, features.size());

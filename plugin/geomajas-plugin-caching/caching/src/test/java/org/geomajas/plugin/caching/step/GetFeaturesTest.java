@@ -96,7 +96,6 @@ public class GetFeaturesTest {
 		// verify that data is in the cache
 		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);
 		Assert.assertEquals(1, cache.size());
-		String key = cache.getKey();
 		FeaturesCacheContainer bcc = (FeaturesCacheContainer) cache.getObject();
 		bcc.getFeatures().remove(2);
 

@@ -27,7 +27,6 @@ import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.service.TestRecorder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.DirtiesContext;
