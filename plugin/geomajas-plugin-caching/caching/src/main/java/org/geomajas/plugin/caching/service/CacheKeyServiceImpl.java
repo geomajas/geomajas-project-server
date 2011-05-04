@@ -147,6 +147,17 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		return duplicateKey + CHARACTERS[random.nextInt(CHARACTERS.length)];
 	}
 
+	/**
+	 * Convert StringBuilder output to a string while escaping characters. This prevents outputting control characters
+	 * and unreadable characters. It seems both cause problems for certain editors.
+	 * <p/>
+	 * The ASCII characters (excluding controls characters) are copied to the result as is, other characters are
+	 * escaped using \uxxxx notation. Note that string comparisons on this result may be inaccurate as both (Java
+	 * strings) "\\u1234" and "\u1234" will produce the same converted string!
+	 *
+	 * @param source StringBuilder to convert
+	 * @return String representation using only ASCI characters
+	 */
 	private String forceAscii(StringBuilder source) {
 		int length = source.length();
 		StringBuilder res = new StringBuilder(length);
