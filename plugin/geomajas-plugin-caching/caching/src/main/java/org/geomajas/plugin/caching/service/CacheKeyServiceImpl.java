@@ -152,7 +152,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	 * and unreadable characters. It seems both cause problems for certain editors.
 	 * <p/>
 	 * The ASCII characters (excluding controls characters) are copied to the result as is, other characters are
-	 * escaped using \uxxxx notation. Note that string comparisons on this result may be inaccurate as both (Java
+	 * escaped using \\uxxxx notation. Note that string comparisons on this result may be inaccurate as both (Java
 	 * strings) "\\u1234" and "\u1234" will produce the same converted string!
 	 *
 	 * @param source StringBuilder to convert
