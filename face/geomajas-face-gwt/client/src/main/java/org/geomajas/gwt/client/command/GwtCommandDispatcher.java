@@ -62,6 +62,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	private int lazyFeatureIncludesSelect;
 
 	private int lazyFeatureIncludesAll;
+	
+	private boolean consoleEnabled;
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -73,6 +75,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
 		endpoint.setServiceEntryPoint(moduleRelativeURL);
 		setUseLazyLoading(true);
+		setConsoleEnabled(true);
 	}
 
 	// -------------------------------------------------------------------------
@@ -126,7 +129,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						callback.execute();
 					}
 					GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-					SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+					if (isConsoleEnabled()) {
+						SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+					}
 				} catch (Throwable t) {
 					GWT.log("Command failed on error callback", t);
 				} finally {
@@ -143,11 +148,15 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 						GWT.log(message, null);
 						if (response.getExceptions() == null || response.getExceptions().size() == 0) {
-							SC.warn(message, null);
+							if (isConsoleEnabled()) {
+								SC.warn(message, null);
+							}
 						} else {
-							// The error messaging window only supports 1 exception to display:
-							ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
-							window.show();
+							if (isConsoleEnabled()) {
+								// The error messaging window only supports 1 exception to display:
+								ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
+								window.show();
+							}
 						}
 					} else {
 						if (!deferred.isCancelled()) {
@@ -275,11 +284,30 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		setUseLazyLoading(false);
 		this.lazyFeatureIncludesAll = lazyFeatureIncludesAll;
 	}
+	
+	/**
+	 * Should the dispatcher send messages to the console ?
+	 * 
+	 * @return true if sending messages to console, false otherwise
+	 */
+	public boolean isConsoleEnabled() {
+		return consoleEnabled;
+	}
+
+	/**
+	 * Sets whether the dispatcher should send messages to the console.
+	 * 
+	 * @param consoleEnabled true if sending messages to console, false otherwise
+	 */
+	public void setConsoleEnabled(boolean consoleEnabled) {
+		this.consoleEnabled = consoleEnabled;
+	}
 
 	// -------------------------------------------------------------------------
 	// Protected methods:
 	// -------------------------------------------------------------------------
 
+	
 	protected void incrementDispatched() {
 		boolean started = nrOfDispatchedCommands == 0;
 		nrOfDispatchedCommands++;
