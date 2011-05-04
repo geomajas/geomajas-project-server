@@ -118,8 +118,4 @@ public interface VectorLayerService extends GeomajasConstant {
 	 * @throws GeomajasException oops
 	 */
 	InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException;
-
-	/*
-	void getTileImage(String layerId, InternalTile tile, OutputStream destination) throws GeomajasException;
-	*/
 }
