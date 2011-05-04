@@ -40,8 +40,7 @@ public class GetRasterizedTileAllCachingInterceptor extends
 	@Autowired
 	private TestRecorder recorder;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
-			PipelineCode.FEATURE_INCLUDES_KEY };
+	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY};
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		clearPanOrigin(context);
