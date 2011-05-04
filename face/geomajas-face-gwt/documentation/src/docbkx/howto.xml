@@ -9,12 +9,24 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-
 <chapter id="chapter-howto">
   <title>How-to</title>
 
   <para></para>
+
+  <section>
+    <title>How to avoid error messages when changing the current window
+    location ?</title>
+
+    <para>Sometimes you will want to redirect the current browser window to
+    another location (different URL). This is the expected behaviour when a
+    user clicks on an external link, for example. When the client is still
+    waiting for outstanding command responses, this can cause warning messages
+    to pop up (default Geomajas behaviour). To avoid such messages, use the
+    following code:</para>
+
+    <programlisting>WindowUtil.setLocation("&lt;put your external url here&gt;");</programlisting>
+  </section>
 </chapter>
