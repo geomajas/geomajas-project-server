@@ -58,7 +58,6 @@ public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVe
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 
-		response.setTile(converter.toDto(layerService.getTile(request), request.getCrs(),
-				request.getFeatureIncludes()));
+		response.setTile(converter.toDto(layerService.getTile(request)));
 	}
 }

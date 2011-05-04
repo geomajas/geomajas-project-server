@@ -181,7 +181,9 @@ public interface TileMetadata {
 	 * {@link org.geomajas.layer.VectorLayerService}.
 	 *
 	 * @return what to include
+	 * @deprecated features no longer included in tile
 	 */
+	@Deprecated
 	int getFeatureIncludes();
 
 	/**
@@ -189,7 +191,9 @@ public interface TileMetadata {
 	 * {@link org.geomajas.layer.VectorLayerService}.
 	 *
 	 * @param featureIncludes what the include
+	 * @deprecated features no longer included in tile
 	 */
+	@Deprecated
 	void setFeatureIncludes(int featureIncludes);
 
 }

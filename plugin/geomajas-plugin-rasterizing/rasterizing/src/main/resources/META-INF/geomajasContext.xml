@@ -134,11 +134,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						<property name="id" value="RasterUrl" />
 					</bean>
 				</entry>
-				<entry key="postGetStringContent">
-					<bean class="org.geomajas.plugin.rasterizing.step.RemoveTileFeaturesStep" >
-						<property name="id" value="RemoveTileFeatures" />
-					</bean>
-				</entry>
 			</map>
 		</property>
 		<property name="interceptors">

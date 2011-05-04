@@ -70,7 +70,6 @@ public class RebuildCacheCachingInterceptor extends AbstractSecurityContextCachi
 			context.put(PipelineCode.CRS_KEY, crs);
 			CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
 			context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
-			context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
 			Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
 			Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
 			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);

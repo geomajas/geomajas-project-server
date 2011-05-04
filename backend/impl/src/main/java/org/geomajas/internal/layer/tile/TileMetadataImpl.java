@@ -13,6 +13,8 @@ package org.geomajas.internal.layer.tile;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.GeomajasConstant;
+import org.geomajas.global.Json;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 
@@ -33,7 +35,6 @@ public class TileMetadataImpl implements TileMetadata {
 	private NamedStyleInfo styleInfo;
 	private boolean paintGeometries;
 	private boolean paintLabels;
-	private int featureIncludes;
 
 	public String getLayerId() {
 		return layerId;
@@ -115,11 +116,12 @@ public class TileMetadataImpl implements TileMetadata {
 		this.paintLabels = paintLabels;
 	}
 
+	@Json(serialize = false)
 	public int getFeatureIncludes() {
-		return featureIncludes;
+		return GeomajasConstant.FEATURE_INCLUDE_ALL; // for backward compatibility
 	}
 
 	public void setFeatureIncludes(int featureIncludes) {
-		this.featureIncludes = featureIncludes;
+		// no longer needed, deprecated
 	}
 }
