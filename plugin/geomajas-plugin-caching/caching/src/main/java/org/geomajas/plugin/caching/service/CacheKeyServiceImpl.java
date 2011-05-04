@@ -14,11 +14,6 @@ package org.geomajas.plugin.caching.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CodingErrorAction;
 import java.util.Map;
 import java.util.Random;
 
@@ -91,7 +86,9 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 				}
 			}
 			String key = md5.asHex();
-			log.debug("key for context {} which is a hash for {}", key, new AsciiWrapper(toHash));
+			if (log.isDebugEnabled()) {
+				log.debug("key for context {} which is a hash for {}", key, forceAscii(toHash));
+			}
 			return key;
 		} catch (UnsupportedEncodingException uee) {
 			log.error("Impossible error, UTF-8 should be supported:" + uee.getMessage(), uee);
@@ -149,36 +146,25 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		log.debug("Need to make key {} unique.", duplicateKey);
 		return duplicateKey + CHARACTERS[random.nextInt(CHARACTERS.length)];
 	}
-	
-	/**
-	 * Wraps StringBuffer and writes it out as ASCII on toString().
-	 * 
-	 * @author Jan De Moerloose
-	 *
-	 */
-	private class AsciiWrapper {
 
-		private StringBuilder utf8;
-
-		public AsciiWrapper(StringBuilder utf8) {
-			this.utf8 = utf8;
-		}
-
-		public String toString() {
-			CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
-			decoder.onMalformedInput(java.nio.charset.CodingErrorAction.REPLACE);
-			decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-			String str;
-			try {
-				str = decoder.decode(ByteBuffer.wrap(utf8.toString().getBytes())).toString();
-			} catch (CharacterCodingException e) {
-				log.error("Problem converting UTF-8 to Ascii representation : " + e.getMessage(), e);
-				// should not happen
-				return "???";
+	private String forceAscii(StringBuilder source) {
+		int length = source.length();
+		StringBuilder res = new StringBuilder(length);
+		for (int i = 0; i < length; i++) {
+			char c = source.charAt(i);
+			int code = Character.getNumericValue(c);
+			if ((code >= 32 && code <= 127) || Character.isSpaceChar(c)) {
+				res.append(c);
+			} else {
+				res.append("\\u");
+				String scode = Integer.toHexString(i);
+				while (scode.length() < 4) {
+					scode = "0" + scode;
+				}
+				res.append(scode);
 			}
-			return str;
 		}
-
+		return res.toString();
 	}
-	
+
 }
