@@ -28,7 +28,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
@@ -110,17 +109,11 @@ public class CombinedSearchPanel extends SearchPanel {
 		HLayout addBar = new HLayout(0);
 		addBar.setAlign(Alignment.LEFT);
 		addBar.setHeight(20);
-		Canvas imgWrapper = new Canvas();
 		Img addImg = new Img(ADD_IMAGE, 16, 16);
-		imgWrapper.addChild(addImg);
-		imgWrapper.setPadding(2);
-		imgWrapper.setWidth(22);
-		imgWrapper.setHeight(22);
-		imgWrapper.setBorder("thin solid red");
 		addImg.setTooltip(messages.combinedSearchWidgetAdd());
 		DynamicForm searchForm = new DynamicForm();
 		selectSearch = new SelectItem();
-		selectSearch.setTitle("");
+		selectSearch.setTitle(addImg.getInnerHTML());
 		selectSearch.setWidth(200);
 		selectSearch.setTooltip(messages.combinedSearchWidgetSelectSearch());
 		selectSearch.addChangeHandler(new ChangeHandler() {
@@ -129,7 +122,6 @@ public class CombinedSearchPanel extends SearchPanel {
 					final SearchWidget sw = SearchWidgetRegistry.getSearchWidgetInstance((String) event.getValue());
 					sw.showForSave(new SaveRequestHandler() {
 						public void onSaveRequested(SaveRequestEvent event) {
-							// TODO change for favourites
 							searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
 						}
 					});
@@ -138,7 +130,6 @@ public class CombinedSearchPanel extends SearchPanel {
 			}
 		});
 		searchForm.setFields(selectSearch);
-		addBar.addMember(imgWrapper);
 		addBar.addMember(searchForm);
 
 		wrapper.setOverflow(Overflow.AUTO);
@@ -216,9 +207,29 @@ public class CombinedSearchPanel extends SearchPanel {
 
 	@Override
 	public void initialize(Criterion featureSearch) {
-		// can't do that because we don't know which search created the
-		// criteria.
-		GWT.log("You cannot reinitialize the Combined searchpanel!");
+		List<Criterion> critters;
+		if (featureSearch instanceof AndCriterion) {
+			critters = ((AndCriterion) featureSearch).getCriteria();
+			type.setValue(messages.combinedSearchWidgetAnd());
+		} else if (featureSearch instanceof OrCriterion) {
+			critters = ((OrCriterion) featureSearch).getCriteria();
+			type.setValue(messages.combinedSearchWidgetOr());
+		} else {
+			return;
+		} // not supported
+
+		if (critters != null && critters.size() > 0) {
+			for (Criterion cr : critters) {
+				searchItems.addData(new SearchListRecord(SearchWidgetRegistry.getI18nTypeName(cr), cr));
+			}
+		}
+	}
+
+	public static boolean canHandle(Criterion criterion) {
+		if (criterion == null) {
+			return false;
+		}
+		return (criterion instanceof OrCriterion || criterion instanceof AndCriterion);
 	}
 
 	// ----------------------------------------------------------

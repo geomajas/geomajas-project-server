@@ -38,9 +38,9 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Converts Dto Criterion to map of filters.
- * 
+ *
  * @author Kristof Heirwegh
- * 
+ *
  */
 @Service("DtoSearchConverterService")
 public class DtoSearchConverterServiceImpl implements DtoSearchConverterService {
@@ -61,7 +61,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 	private FilterService filterService;
 
 	/**
-	 * 
+	 *
 	 * @param criterion
 	 * @param mapCrs
 	 *            the geometry in geometrycriterion's are expected to be in
@@ -102,7 +102,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, criterion.getServerLayerId());
 		}
 		String operator = criterion.getOperator();
-		if ("like".equals(operator)) {
+		if ("LIKE".equals(operator.toUpperCase())) {
 			f = filterService.createLikeFilter(criterion.getAttributeName(), criterion.getValue());
 
 		} else {

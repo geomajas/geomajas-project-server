@@ -19,9 +19,9 @@ import org.geomajas.geometry.Geometry;
 
 /**
  * Criterion with attribute criteria.
- * 
+ *
  * @author Kristof Heirwegh
- * 
+ *
  */
 public class GeometryCriterion implements Criterion {
 

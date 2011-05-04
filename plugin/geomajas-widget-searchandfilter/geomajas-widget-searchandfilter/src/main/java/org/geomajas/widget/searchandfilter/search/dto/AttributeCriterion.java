@@ -26,10 +26,18 @@ public class AttributeCriterion implements Criterion {
 
 	private String attributeName;
 
-	// TODO use enums
-	private static final String OPERATORS = "<,<=,=,<>,>,=>,like";
+	public AttributeCriterion() {};
+
+	public AttributeCriterion(String serverLayerId, String attributeName, String operator, String value) {
+		this.serverLayerId = serverLayerId;
+		this.attributeName = attributeName;
+		this.operator = operator;
+		this.value = value;
+	}
+
+	private static final String OPERATORS = "<,<=,=,<>,>,=>,LIKE,DURING,BEFORE,AFTER";
 	/**
-	 * <, <=, =, <>, >=, >, like.
+	 * <, <=, =, <>, >=, >, like, during, before, after.
 	 */
 	private String operator;
 
@@ -75,7 +83,7 @@ public class AttributeCriterion implements Criterion {
 
 	public boolean isValidOperator() {
 		if (operator != null) {
-			return (OPERATORS.contains(operator) && !",".equals(operator));
+			return (OPERATORS.contains(operator.toUpperCase()) && !",".equals(operator));
 		} else {
 			return false;
 		}

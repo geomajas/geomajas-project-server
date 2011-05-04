@@ -11,8 +11,8 @@
 package org.geomajas.widget.searchandfilter.gwt.example.client.pages;
 
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.searchandfilter.client.widget.attributesearch.AttributeSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchCreator;
-import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCreator;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry;
 import org.geomajas.widget.searchandfilter.client.widget.searchfavourites.SearchFavouritesListCreator;

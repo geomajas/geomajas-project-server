@@ -48,7 +48,7 @@ public interface SearchAndFilterMessages extends Messages {
 	String geometricSearchWidgetBufferLabel();
 	String geometricSearchWidgetNoResult();
 	String geometricSearchWidgetNoLayers();
-	
+
 	String geometricSearchWidgetSelectionSearchTitle();
 	String geometricSearchWidgetSelectionSearchZoomToSelection();
 	String geometricSearchWidgetSelectionSearchAddSelection();
@@ -65,6 +65,10 @@ public interface SearchAndFilterMessages extends Messages {
 	String geometricSearchWidgetFreeDrawingRedo();
 
 	String attributeSearchWidgetTitle();
+	String attributeSearchWidgetNoLayerSelected();
+	String attributeSearchWidgetNoValidCriterionUnsupportedType();
+	String attributeSearchWidgetNoValidCriterionNoLayer();
+	String attributeSearchWidgetNoValidCriterionNoCriteria();
 
 	String searchWidgetSearch();
 	String searchWidgetReset();
@@ -106,6 +110,11 @@ public interface SearchAndFilterMessages extends Messages {
 	String searchFavouritesListWidgetDeleteMessage();
 	String searchFavouritesListWidgetEditFilter();
 	String searchFavouritesListWidgetEditFilterTooltip();
-	String searchFavouritesListWidgetAttributeSearchNotFound();
+	String searchFavouritesListWidgetSearchWindowNotFound();
 	String searchFavouritesListWidgetFilter();
+
+	String searchWidgetRegistryCriterionTypeAnd();
+	String searchWidgetRegistryCriterionTypeOr();
+	String searchWidgetRegistryCriterionTypeGeometry();
+	String searchWidgetRegistryCriterionTypeAttribute();
 }

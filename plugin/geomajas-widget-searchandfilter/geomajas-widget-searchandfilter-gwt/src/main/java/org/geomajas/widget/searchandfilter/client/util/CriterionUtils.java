@@ -70,7 +70,7 @@ public final class CriterionUtils {
 	/**
 	 * This does the same as dtoConverterservice but uses strings for filters
 	 * instead of (serverside) filter objects.
-	 *
+	 * 
 	 * @param criterion
 	 * @param mapCrs
 	 */
@@ -101,9 +101,10 @@ public final class CriterionUtils {
 	private static Map<String, String> attributeCriterionToFilters(AttributeCriterion criterion) {
 		Map<String, String> filters = new LinkedHashMap<String, String>();
 		String filter = criterion.getAttributeName() + " " + criterion.getOperator() + " ";
-		if (criterion.getValue() != null && (criterion.getValue().contains("\"") || criterion.getValue().contains(" ")))
-		{
-			filter += "\"" + criterion.getValue() + "\"";
+		if (criterion.getValue() != null
+				&& ((criterion.getValue().contains("\"") || criterion.getValue().contains(" ") || !criterion.getValue()
+						.matches("(\\.|\\-|[0-9])*")) || "LIKE".equalsIgnoreCase(criterion.getOperator()))) {
+			filter += "\'" + criterion.getValue().replaceAll("\\*", "%") + "\'";
 		} else {
 			filter += criterion.getValue();
 		}

@@ -8,10 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.widget.searchandfilter.client.widget.search;
+package org.geomajas.widget.searchandfilter.client.widget.attributesearch;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.widget.search.BasicSearchWidget;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget;
+import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetCreator;
 
 import com.google.gwt.core.client.GWT;
 

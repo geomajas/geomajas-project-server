@@ -14,9 +14,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteChangeHandler;
+import org.geomajas.widget.searchandfilter.search.dto.AndCriterion;
+import org.geomajas.widget.searchandfilter.search.dto.AttributeCriterion;
+import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.GeometryCriterion;
+import org.geomajas.widget.searchandfilter.search.dto.OrCriterion;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -27,12 +34,14 @@ import com.smartgwt.client.util.SC;
  * Caveat: Please keep in mind that searchwidgets always work on a specific map.
  * As there is only one SearchController, which also operates on a specific map, so
  * the search system can only work with one map.
- * 
+ *
  * @author Kristof Heirwegh
  */
 public final class SearchWidgetRegistry {
 
 	private static final Map<String, SearchWidgetCreator> REGISTRY = new LinkedHashMap<String, SearchWidgetCreator>();
+
+	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 
 	private static SearchController SEARCHCONTROLLER;
 	private static FavouritesController FAVOURITESCONTROLLER;
@@ -134,6 +143,20 @@ public final class SearchWidgetRegistry {
 			SC.logWarn("SearchWidgetRegistry has not been initialized. call initialize from your entrypoint on program "
 					+ "startup.");
 			return false;
+		}
+	}
+
+	public static String getI18nTypeName(Criterion criterion) {
+		if (criterion instanceof AndCriterion) {
+			return MESSAGES.searchWidgetRegistryCriterionTypeAnd();
+		} else if (criterion instanceof OrCriterion) {
+			return MESSAGES.searchWidgetRegistryCriterionTypeOr();
+		} else if (criterion instanceof AttributeCriterion) {
+			return MESSAGES.searchWidgetRegistryCriterionTypeAttribute();
+		} else if (criterion instanceof GeometryCriterion) {
+			return MESSAGES.searchWidgetRegistryCriterionTypeGeometry();
+		} else {
+			return "??";
 		}
 	}
 }

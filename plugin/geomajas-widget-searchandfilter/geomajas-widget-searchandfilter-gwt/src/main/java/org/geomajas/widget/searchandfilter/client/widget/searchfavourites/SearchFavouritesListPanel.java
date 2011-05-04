@@ -17,8 +17,10 @@ import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.CriterionUtils;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.util.FavouritesCommService;
-import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometricSearchCreator;
-import org.geomajas.widget.searchandfilter.client.widget.search.AttributeSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.attributesearch.AttributeSearchCreator;
+import org.geomajas.widget.searchandfilter.client.widget.attributesearch.AttributeSearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCreator;
+import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchPanel;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteChangeHandler;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchPanel;
@@ -59,7 +61,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * A simple system of searchFavourites. Favourites can be either private or
  * shared (with everybody)
- *
+ * 
  * @author Kristof Heirwegh
  */
 public class SearchFavouritesListPanel extends SearchPanel implements FavouriteChangeHandler {
@@ -188,7 +190,7 @@ public class SearchFavouritesListPanel extends SearchPanel implements FavouriteC
 
 	/**
 	 * Custom ListGrid
-	 *
+	 * 
 	 * @author Kristof Heirwegh
 	 */
 	private class FavouritesListGrid extends ListGrid {
@@ -337,22 +339,29 @@ public class SearchFavouritesListPanel extends SearchPanel implements FavouriteC
 			editCritButton.setTooltip(messages.searchFavouritesListWidgetEditFilterTooltip());
 			editCritButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					SearchWidget sw = SearchWidgetRegistry.getSearchWidgetInstance(GeometricSearchCreator.IDENTIFIER);
-					if (sw == null) {
-						SC.say(messages.searchFavouritesListWidgetAttributeSearchNotFound());
-					} else {
-						sw.initialize(fav.getCriterion());
-						sw.showForSave(new SaveRequestHandler() {
-							public void onSaveRequested(SaveRequestEvent event) {
-								SearchFavourite oldFav = flr.getFavourite();
-								SearchFavourite newFav = (SearchFavourite) oldFav.clone();
-								newFav.setCriterion(event.getCriterion());
-								flr.setFavourite(newFav);
-								SearchWidgetRegistry.getFavouritesController().onChangeRequested(
-										new FavouriteEvent(oldFav, newFav, SearchFavouritesListPanel.this));
-							}
-						});
+					SearchWidget sw = null;
+					if (AttributeSearchPanel.canHandle(fav.getCriterion())) {
+						sw = SearchWidgetRegistry.getSearchWidgetInstance(AttributeSearchCreator.IDENTIFIER);
 					}
+					if (sw == null && CombinedSearchPanel.canHandle(fav.getCriterion())) {
+						sw = SearchWidgetRegistry.getSearchWidgetInstance(CombinedSearchCreator.IDENTIFIER);
+					}
+					if (sw == null) {
+						SC.say(messages.searchFavouritesListWidgetSearchWindowNotFound());
+						return;
+					}
+
+					sw.showForSave(new SaveRequestHandler() {
+						public void onSaveRequested(SaveRequestEvent event) {
+							SearchFavourite oldFav = flr.getFavourite();
+							SearchFavourite newFav = (SearchFavourite) oldFav.clone();
+							newFav.setCriterion(event.getCriterion());
+							flr.setFavourite(newFav);
+							SearchWidgetRegistry.getFavouritesController().onChangeRequested(
+									new FavouriteEvent(oldFav, newFav, SearchFavouritesListPanel.this));
+						}
+					});
+					sw.initialize(fav.getCriterion());
 				}
 			});
 
@@ -401,7 +410,8 @@ public class SearchFavouritesListPanel extends SearchPanel implements FavouriteC
 			sharedItem.setValue(fav.isShared());
 			lastEditItem.setValue(fav.getLastChangeBy());
 			lastEditDateItem.setValue(fav.getLastChange());
-			editCritButton.setDisabled(!AttributeSearchPanel.canHandle(fav.getCriterion()));
+			editCritButton.setDisabled(!AttributeSearchPanel.canHandle(fav.getCriterion())
+					&& !CombinedSearchPanel.canHandle(fav.getCriterion()));
 
 			return layout;
 		}
