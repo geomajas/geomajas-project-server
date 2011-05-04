@@ -250,7 +250,9 @@ public class SearchFavouritesListPanel extends SearchPanel implements FavouriteC
 				rollOverTools.addMember(searchBtn);
 			}
 
-			filterBtn.setSelected(rollOverRecord.isFilterActivated());
+			if (rollOverRecord != null) {
+				filterBtn.setSelected(rollOverRecord.isFilterActivated());
+			}
 			return rollOverTools;
 		}
 

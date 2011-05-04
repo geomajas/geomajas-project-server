@@ -21,7 +21,7 @@ import com.google.gwt.core.client.GWT;
 /**
  * Creator (or factory) pattern needed because GWT cannot instantiate classes
  * starting from name (as String).
- * 
+ *
  * @author Kristof Heirwegh
  */
 public class AttributeSearchCreator implements SearchWidgetCreator {
