@@ -16,6 +16,8 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 import org.geomajas.global.CacheableObject;
+import org.geomajas.global.GeomajasConstant;
+import org.geomajas.global.Json;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 
@@ -28,7 +30,7 @@ import org.geomajas.layer.tile.TileMetadata;
 @Api(allMethods = true)
 public class GetVectorTileRequest extends LayerIdCommandRequest implements TileMetadata, CacheableObject {
 
-	private static final long serialVersionUID = 151L;
+	private static final long serialVersionUID = 190L;
 
 	/**
 	 * Command name for this request.
@@ -56,8 +58,6 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	private boolean paintGeometries = true;
 
 	private boolean paintLabels;
-
-	private int featureIncludes = 0x7fff;
 
 	public TileCode getCode() {
 		return code;
@@ -147,9 +147,12 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	 * {@link org.geomajas.layer.VectorLayerService}.
 	 *
 	 * @return what to include
+	 * @deprecated features are no longer included in response
 	 */
+	@Deprecated
+	@Json(serialize = false)
 	public int getFeatureIncludes() {
-		return featureIncludes;
+		return GeomajasConstant.FEATURE_INCLUDE_ALL; // for backward compatibility
 	}
 
 	/**
@@ -157,9 +160,11 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	 * {@link org.geomajas.layer.VectorLayerService}.
 	 *
 	 * @param featureIncludes what the include
+	 * @deprecated features are no longer included in response
 	 */
+	@Deprecated
 	public void setFeatureIncludes(int featureIncludes) {
-		this.featureIncludes = featureIncludes;
+		// nothing to do, just available for backwards compatibility
 	}
 
 	/**
@@ -183,7 +188,6 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 				", styleInfo=" + styleInfo +
 				", paintGeometries=" + paintGeometries +
 				", paintLabels=" + paintLabels +
-				", featureIncludes=" + featureIncludes +
 				'}';
 	}
 
@@ -206,7 +210,6 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 
 		GetVectorTileRequest that = (GetVectorTileRequest) o;
 
-		if (featureIncludes != that.featureIncludes) { return false; }
 		if (paintGeometries != that.paintGeometries) { return false; }
 		if (paintLabels != that.paintLabels) { return false; }
 		if (Math.abs(that.scale - scale) > EQUALS_DELTA) { return false; }
@@ -240,7 +243,6 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		result = 31 * result + (styleInfo != null ? styleInfo.hashCode() : 0);
 		result = 31 * result + (paintGeometries ? 1 : 0);
 		result = 31 * result + (paintLabels ? 1 : 0);
-		result = 31 * result + featureIncludes;
 		return result;
 	}
 }
