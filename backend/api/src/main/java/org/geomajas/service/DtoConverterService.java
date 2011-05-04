@@ -140,7 +140,9 @@ public interface DtoConverterService {
 	 *            Indicate which aspects of the should be included @see {@link org.geomajas.layer.VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
 	 * @throws GeomajasException conversion failed
+	 * @deprecated use {@link #toDto(InternalTile)}
 	 */
+	@Deprecated
 	VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException;
 
 	/**

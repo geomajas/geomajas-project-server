@@ -546,6 +546,17 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
 	public VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException {
+		return toDto(tile);
+	}
+
+	/**
+	 * Convert a server-side tile representations into a DTO tile.
+	 *
+	 * @param tile
+	 *            The server-side representation of a tile.
+	 * @return Returns the DTO version that can be sent to the client.
+	 */
+	public VectorTile toDto(InternalTile tile) throws GeomajasException {
 		if (null != tile) {
 			VectorTile dto = new VectorTile();
 			dto.setClipped(tile.isClipped());
@@ -553,13 +564,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setCodes(tile.getCodes());
 			dto.setScreenHeight(tile.getScreenHeight());
 			dto.setScreenWidth(tile.getScreenWidth());
-			List<Feature> features = new ArrayList<Feature>();
-			for (InternalFeature feature : tile.getFeatures()) {
-				Feature fdto = toDto(feature, featureIncludes);
-				fdto.setCrs(crs);
-				features.add(fdto);
-			}
-			dto.setFeatures(features);
 			dto.setFeatureContent(tile.getFeatureContent());
 			dto.setLabelContent(tile.getLabelContent());
 			dto.setContentType(tile.getContentType());
@@ -567,10 +571,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 
 		return null;
-	}
-
-	public VectorTile toDto(InternalTile tile) throws GeomajasException {
-		return toDto(tile, null, VectorLayerService.FEATURE_INCLUDE_ALL);
 	}
 
 	// -------------------------------------------------------------------------
