@@ -364,11 +364,11 @@ public class TileCache implements SpatialCache {
 	 */
 	protected void setPreferredPixelsPerTile(ClientPreferredPixelsPerTile ppt) {
 		switch (ppt.getPreferredPixelsPerTileType()) {
-			case CONFIGURED:
+			case MAP:
 				preferredTileSize = layer.getMapModel().getMapView().getWidth() * 
 					layer.getMapModel().getMapView().getHeight();
 				break;
-			case MAP:
+			case CONFIGURED:
 				preferredTileSize = ppt.getWidth() * ppt.getHeight();
 				break;
 		}
