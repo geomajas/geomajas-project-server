@@ -88,6 +88,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		client.setDisplayUnitType(original.getDisplayUnitType());
 		client.setId(original.getId());
 		client.setInitialBounds(original.getInitialBounds());
+		client.setPreferredPixelsPerTile(original.getPreferredPixelsPerTile());
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		client.setLayers(layers);
 		for (ClientLayerInfo layer : original.getLayers()) {
