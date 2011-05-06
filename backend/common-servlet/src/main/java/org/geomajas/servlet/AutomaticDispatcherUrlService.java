@@ -11,6 +11,8 @@
 
 package org.geomajas.servlet;
 
+import java.util.Enumeration;
+
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,8 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
+		String serverName = request.getServerName();
+		
 		// X-Forwarded-Host if behind a reverse proxy, fallback to general method.
 		// Alternative we could use the gwt module url to guess the real URL.
 		if (null != request.getHeader(X_FOWARD_HOST_HEADER)) {
@@ -56,6 +60,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 					"recommended to configure your tomcat connector to be aware of the original url. " +
 					"(see http://tomcat.apache.org/tomcat-6.0-doc/proxy-howto.html )");
 			String gwtModuleBase = request.getHeader(X_GWT_MODULE_HEADER);
+			Enumeration<String> headers = request.getHeaderNames();
 			if (null != gwtModuleBase) {
 				// Get last slash in the gwtModuleBase, ignoring the trailing slash.
 				int contextEndIndex = gwtModuleBase.lastIndexOf("/", gwtModuleBase.length() - 2);
@@ -63,10 +68,13 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 					String url = gwtModuleBase.substring(0, contextEndIndex) + "/d/";
 					return url;
 				}
-			} // else use the standard method below
+			} else {
+				// else get the information from the X-forwarded-host header and default to the standard behaviour 
+				serverName = request.getHeader(X_FOWARD_HOST_HEADER);
+			}
 		}
 		
-		String url = request.getScheme() + "://" + request.getServerName();
+		String url = request.getScheme() + "://" + serverName;
 		if (80 != request.getServerPort()) {
 			url += ":" + request.getServerPort();
 		}
