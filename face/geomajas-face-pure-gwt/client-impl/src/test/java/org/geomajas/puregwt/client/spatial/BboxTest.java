@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.spatial;
 import junit.framework.Assert;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class BboxTest {
 
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
+		Injector myInjector = Guice.createInjector(new GeomajasTestModule());
 		factory = myInjector.getInstance(GeometryFactory.class);
 		empty = factory.createBbox(0, 0, 0, 0);
 		origin = factory.createBbox(0, 0, 10, 10);

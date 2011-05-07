@@ -29,7 +29,6 @@ import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.controller.NavigationController;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
@@ -50,7 +49,6 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
@@ -62,13 +60,15 @@ import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
  * 
  * @author Pieter De Graef
  */
-public class MapPresenterImpl implements MapPresenter {
+public final class MapPresenterImpl implements MapPresenter {
 
 	/**
 	 * Map view definition.
@@ -91,17 +91,11 @@ public class MapPresenterImpl implements MapPresenter {
 		boolean removeVectorContainer(VectorContainer container);
 
 		boolean bringToFront(VectorContainer container);
-		
+
 		VectorContainer getMapGadgetContainer();
-		
+
 		boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer);
 	}
-
-	private String applicationId;
-
-	private String id;
-
-	private MapWidget display;
 
 	private List<HandlerRegistration> handlers;
 
@@ -111,9 +105,11 @@ public class MapPresenterImpl implements MapPresenter {
 
 	private Map<MapListener, List<HandlerRegistration>> listeners;
 
+	@Inject
 	private LayersModel layersModel;
 
-	private ViewPortImpl viewPort;
+	@Inject
+	private ViewPort viewPort;
 
 	private MapRenderer mapRenderer;
 
@@ -121,22 +117,27 @@ public class MapPresenterImpl implements MapPresenter {
 
 	private Map<MapGadget, ScreenContainer> gadgets;
 
+	@Inject
 	private EventBus eventBus;
 
-	public MapPresenterImpl(String applicationId, String id, MapWidget display) {
-		this.applicationId = applicationId;
-		this.id = id;
-		this.display = display;
+	@Inject
+	private MapWidget display;
+
+	@Inject
+	private GeometryFactory factory;
+
+	@Inject
+	private MapPresenterImpl() {
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, ScreenContainer>();
-
-		eventBus = new EventBusImpl();
-		layersModel = new LayersModelImpl(eventBus);
-		viewPort = new ViewPortImpl(eventBus);
 	}
 
-	public void initialize() {
+	// ------------------------------------------------------------------------
+	// MapPresenter implementation:
+	// ------------------------------------------------------------------------
+
+	public void initialize(String applicationId, String id) {
 		mapRenderer = new DelegatingMapRenderer(layersModel, viewPort);
 		mapRenderer.setHtmlContainer(display.getMapHtmlContainer());
 		mapRenderer.setVectorContainer(display.getMapVectorContainer());
@@ -168,11 +169,10 @@ public class MapPresenterImpl implements MapPresenter {
 
 					// Configure the ViewPort. This will immediately zoom to the initial bounds:
 					viewPort.setMapSize(display.asWidget().getOffsetWidth(), display.asWidget().getOffsetHeight());
-					layersModel.initialize(r.getMapInfo(), viewPort);
-					viewPort.initialize(r.getMapInfo());
+					layersModel.initialize(r.getMapInfo(), viewPort, eventBus);
+					viewPort.initialize(r.getMapInfo(), eventBus);
 
 					// Immediately zoom to the initial bounds as configured:
-					GeometryFactory factory = new GeometryFactoryImpl();
 					Bbox initialBounds = factory.createBbox(r.getMapInfo().getInitialBounds());
 					viewPort.applyBounds(initialBounds);
 
@@ -193,6 +193,10 @@ public class MapPresenterImpl implements MapPresenter {
 			public void onFailure(Throwable error) {
 			}
 		});
+	}
+
+	public Widget asWidget() {
+		return display.asWidget();
 	}
 
 	public void setMapRenderer(MapRenderer mapRenderer) {

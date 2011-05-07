@@ -30,7 +30,7 @@ public class FixedStepZoomStrategy extends FreeForAllZoomStrategy {
 
 	private List<Double> scales;
 
-	public FixedStepZoomStrategy(ClientMapInfo mapInfo, Bbox maxBounds) {
+	protected FixedStepZoomStrategy(ClientMapInfo mapInfo, Bbox maxBounds) {
 		super(mapInfo, maxBounds);
 
 		// Check for the existence of resolutions:

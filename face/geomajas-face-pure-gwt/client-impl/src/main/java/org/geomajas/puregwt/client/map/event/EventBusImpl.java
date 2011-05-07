@@ -16,15 +16,20 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.inject.Inject;
 
 /**
  * ....
  * 
  * @author Jan De Moerloose
  */
-public class EventBusImpl implements EventBus {
+public final class EventBusImpl implements EventBus {
 
 	private SimpleEventBus eventBus = new SimpleEventBus();
+
+	@Inject
+	private EventBusImpl() {
+	}
 
 	public <H extends EventHandler> HandlerRegistration addHandler(Type<H> type, H handler) {
 		return eventBus.addHandler(type, handler);

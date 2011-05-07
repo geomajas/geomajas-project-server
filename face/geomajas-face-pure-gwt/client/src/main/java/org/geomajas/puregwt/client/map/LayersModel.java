@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.Api;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
@@ -31,12 +32,16 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 public interface LayersModel {
 
 	/**
-	 * Initialization method for the map model.
+	 * Initialization method for the layers model.
 	 * 
 	 * @param mapInfo
 	 *            The configuration object from which this model should build itself.
+	 * @param viewPort
+	 *            The view port that is associated with the same map this layer model belongs to.
+	 * @param eventBus
+	 *            Event bus that governs all event related to this layers model.
 	 */
-	void initialize(ClientMapInfo mapInfo, ViewPort viewPort);
+	void initialize(ClientMapInfo mapInfo, ViewPort viewPort, EventBus eventBus);
 
 	/**
 	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the

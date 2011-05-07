@@ -28,7 +28,8 @@ public class MultiPolygonImpl extends AbstractGeometry implements MultiPolygon {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPolygonImpl(Polygon[] polygons) {
+	MultiPolygonImpl(MathService mathService, Polygon[] polygons) {
+		super(mathService);
 		this.polygons = polygons;
 	}
 

@@ -12,7 +12,9 @@
 package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.command.CommandService;
+import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.MathService;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -28,4 +30,8 @@ public interface GeomajasGinjector extends Ginjector {
 	CommandService getCommandService();
 
 	GeometryFactory getGeometryFactory();
+
+	MathService getMathService();
+
+	MapPresenter getMapPresenter();
 }

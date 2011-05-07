@@ -28,7 +28,8 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	LineStringImpl(Coordinate[] coordinates) {
+	LineStringImpl(MathService mathService, Coordinate[] coordinates) {
+		super(mathService);
 		this.coordinates = coordinates;
 	}
 
@@ -92,12 +93,12 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 			if (geomCoords.length > 1 && coordinates.length > 1) {
 				for (int i = 0; i < coordinates.length - 1; i++) {
 					for (int j = 0; j < geomCoords.length - 1; j++) {
-						if (service.intersectsLineSegment(coordinates[i], coordinates[i + 1], geomCoords[j],
+						if (mathService.intersectsLineSegment(coordinates[i], coordinates[i + 1], geomCoords[j],
 								geomCoords[j + 1])) {
 							return true;
 						}
 					}
-					if (service.touches(geometry, coordinates[i])) {
+					if (mathService.touches(geometry, coordinates[i])) {
 						return true;
 					}
 				}
@@ -181,7 +182,7 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 
 		if (!isEmpty()) {
 			for (int i = 0; i < this.coordinates.length - 1; i++) {
-				double dist = service.distance(this.coordinates[i], this.coordinates[i + 1], coordinate);
+				double dist = mathService.distance(this.coordinates[i], this.coordinates[i + 1], coordinate);
 				if (dist < minDistance) {
 					minDistance = dist;
 				}

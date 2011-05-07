@@ -22,7 +22,6 @@ import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -33,13 +32,16 @@ import org.geomajas.puregwt.client.spatial.MultiPolygon;
 import org.geomajas.puregwt.client.spatial.Point;
 import org.geomajas.puregwt.client.spatial.Polygon;
 
+import com.google.inject.Inject;
+
 /**
  * Implementation of the ViewPort interface.
  * 
  * @author Pieter De Graef
  */
-public class ViewPortImpl implements ViewPort {
+public final class ViewPortImpl implements ViewPort {
 
+	@Inject
 	private GeometryFactory factory;
 
 	/** The map's width in pixels. */
@@ -69,12 +71,8 @@ public class ViewPortImpl implements ViewPort {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public ViewPortImpl(EventBus eventBus) {
-		if (eventBus == null) {
-			throw new NullPointerException("EventBus should not be null.");
-		}
-		this.eventBus = eventBus;
-		factory = new GeometryFactoryImpl();
+	@Inject
+	private ViewPortImpl() {
 		dragOrigin = new Coordinate();
 		position = new Coordinate();
 	}
@@ -83,7 +81,8 @@ public class ViewPortImpl implements ViewPort {
 	// Configuration stuff:
 	// -------------------------------------------------------------------------
 
-	public void initialize(ClientMapInfo mapInfo) {
+	public void initialize(ClientMapInfo mapInfo, EventBus eventBus) {
+		this.eventBus = eventBus;
 		crs = mapInfo.getCrs();
 
 		// Calculate maximum bounds:
@@ -177,7 +176,9 @@ public class ViewPortImpl implements ViewPort {
 
 	public void applyPosition(Coordinate coordinate) {
 		position = checkPosition(coordinate, scale);
-		eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+		if (eventBus != null) {
+			eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+		}
 	}
 
 	public void applyScale(double scale) {
@@ -202,10 +203,12 @@ public class ViewPortImpl implements ViewPort {
 			// Now apply on this view port:
 			scale = limitedScale;
 			position = newBbox.getCenterPoint();
-			if (dX == 0 && dY == 0) {
-				eventBus.fireEvent(new ViewPortScaledEvent(this));
-			} else {
-				eventBus.fireEvent(new ViewPortChangedEvent(this));
+			if (eventBus != null) {
+				if (dX == 0 && dY == 0) {
+					eventBus.fireEvent(new ViewPortScaledEvent(this));
+				} else {
+					eventBus.fireEvent(new ViewPortChangedEvent(this));
+				}
 			}
 		}
 	}
@@ -216,12 +219,16 @@ public class ViewPortImpl implements ViewPort {
 		if (newScale == scale) {
 			if (!position.equals(tempPosition)) {
 				position = tempPosition;
-				eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+				if (eventBus != null) {
+					eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+				}
 			}
 		} else {
 			position = tempPosition;
 			scale = newScale;
-			eventBus.fireEvent(new ViewPortChangedEvent(this));
+			if (eventBus != null) {
+				eventBus.fireEvent(new ViewPortChangedEvent(this));
+			}
 		}
 	}
 

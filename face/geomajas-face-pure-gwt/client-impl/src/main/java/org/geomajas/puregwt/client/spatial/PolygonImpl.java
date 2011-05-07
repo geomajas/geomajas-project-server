@@ -30,7 +30,8 @@ public class PolygonImpl extends AbstractGeometry implements Polygon {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	PolygonImpl(LinearRing exteriorRing, LinearRing[] interiorRings) {
+	PolygonImpl(MathService mathService, LinearRing exteriorRing, LinearRing[] interiorRings) {
+		super(mathService);
 		this.exteriorRing = exteriorRing;
 		this.interiorRings = interiorRings;
 	}

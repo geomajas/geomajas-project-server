@@ -1,0 +1,67 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+package org.geomajas.puregwt.client;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
+
+/**
+ * A view of a {@link ContentWidget}.
+ * 
+ * @author Pieter De Graef
+ */
+public class ContentPanelView extends Composite {
+
+	/**
+	 * ...
+	 * 
+	 * @author Pieter De Graef
+	 */
+	interface ContentWidgetViewUiBinder extends UiBinder<Widget, ContentPanelView> {
+	}
+
+	private static ContentWidgetViewUiBinder UIBINDER = GWT.create(ContentWidgetViewUiBinder.class);
+
+	@UiField
+	protected Element titleElement;
+
+	@UiField
+	protected Element descriptionElement;
+
+	@UiField
+	protected SimplePanel contentWidget;
+
+	public ContentPanelView() {
+		initWidget(UIBINDER.createAndBindUi(this));
+
+		contentWidget.getElement().getStyle().setMarginLeft(10, Unit.PX);
+		contentWidget.getElement().getStyle().setMarginRight(10, Unit.PX);
+	}
+
+	public void setDescription(String html) {
+		descriptionElement.setInnerHTML(html);
+	}
+
+	public void setContentWidget(Widget widget) {
+		contentWidget.setWidget(widget);
+	}
+
+	public void setName(String text) {
+		titleElement.setInnerText(text);
+	}
+}

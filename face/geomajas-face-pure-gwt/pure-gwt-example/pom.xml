@@ -51,6 +51,18 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts</artifactId>
+			<version>1.11</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xerces</groupId>
+					<artifactId>xercesImpl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -60,6 +72,11 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -85,11 +102,6 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
@@ -125,7 +137,6 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<!--i18nConstantsWithLookupBundle>org.geomajas.plaingwt.client.i18n.Translation</i18nConstantsWithLookupBundle-->
 				</configuration>
 			</plugin>
 
@@ -153,7 +164,7 @@
 						<configuration>
 							<tasks>
 								<delete dir="src/main/webapp/WEB-INF/lib" />
-								<delete dir="src/main/webapp/org.geomajas.puregwt.GeomajasEntryPoint" />
+								<delete dir="src/main/webapp/showcase" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -171,7 +182,7 @@
 
 		</plugins>
 	</build>
-
+<!-- 
 	<profiles>
 		<profile>
 			<id>defaultGWT</id>
@@ -190,7 +201,6 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
-									<!--goal>i18n</goal-->
 									<goal>compile</goal>
 									<goal>test</goal>
 								</goals>
@@ -217,7 +227,6 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
-									<!--goal>i18n</goal-->
 								</goals>
 							</execution>
 						</executions>
@@ -242,7 +251,6 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
-									<!--goal>i18n</goal-->
 								</goals>
 							</execution>
 						</executions>
@@ -251,7 +259,7 @@
 			</build>
 		</profile>	
 	</profiles>
-
+ -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

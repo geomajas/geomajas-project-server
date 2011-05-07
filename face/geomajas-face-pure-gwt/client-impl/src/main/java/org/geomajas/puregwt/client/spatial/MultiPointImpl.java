@@ -28,7 +28,8 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPointImpl(Point[] points) {
+	MultiPointImpl(MathService mathService, Point[] points) {
+		super(mathService);
 		this.points = points;
 	}
 
@@ -111,7 +112,7 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 		double distance = Double.MAX_VALUE;
 		if (!isEmpty()) {
 			for (Point point : points) {
-				double temp = service.distance(point.getCoordinate(), coordinate);
+				double temp = mathService.distance(point.getCoordinate(), coordinate);
 				if (temp < distance) {
 					distance = temp;
 				}

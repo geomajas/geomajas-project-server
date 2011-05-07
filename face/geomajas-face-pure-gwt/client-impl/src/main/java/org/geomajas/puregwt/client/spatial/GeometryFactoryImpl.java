@@ -13,6 +13,8 @@ package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
 
+import com.google.inject.Inject;
+
 /**
  * The main factory class for creating geometry objects on the GWT client.
  * 
@@ -26,10 +28,14 @@ public class GeometryFactoryImpl implements GeometryFactory {
 
 	private double delta;
 
+	@Inject
+	private MathService mathService;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
+	@Inject
 	public GeometryFactoryImpl() {
 		delta = PARAM_DEFAULT_DELTA;
 	}
@@ -59,9 +65,9 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public Point createPoint(Coordinate coordinate) {
 		if (coordinate == null) {
-			return new PointImpl(null);
+			return new PointImpl(mathService, null);
 		}
-		return new PointImpl(new Coordinate(coordinate.getX(), coordinate.getY()));
+		return new PointImpl(mathService, new Coordinate(coordinate.getX(), coordinate.getY()));
 	}
 
 	/**
@@ -73,13 +79,13 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public LineString createLineString(Coordinate[] coordinates) {
 		if (coordinates == null) {
-			return new LineStringImpl(null);
+			return new LineStringImpl(mathService, null);
 		}
 		Coordinate[] clones = new Coordinate[coordinates.length];
 		for (int i = 0; i < coordinates.length; i++) {
 			clones[i] = (Coordinate) coordinates[i].clone();
 		}
-		return new LineStringImpl(clones);
+		return new LineStringImpl(mathService, clones);
 	}
 
 	/**
@@ -91,13 +97,13 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public MultiLineString createMultiLineString(LineString[] lineStrings) {
 		if (lineStrings == null) {
-			return new MultiLineStringImpl(null);
+			return new MultiLineStringImpl(mathService, null);
 		}
 		LineString[] clones = new LineString[lineStrings.length];
 		for (int i = 0; i < lineStrings.length; i++) {
 			clones[i] = createLineString(lineStrings[i].getCoordinates());
 		}
-		return new MultiLineStringImpl(clones);
+		return new MultiLineStringImpl(mathService, clones);
 	}
 
 	/**
@@ -110,7 +116,7 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public LinearRing createLinearRing(Coordinate[] coordinates) {
 		if (coordinates == null || coordinates.length == 0) {
-			return new LinearRingImpl(null);
+			return new LinearRingImpl(mathService, null);
 		}
 		boolean isClosed = true;
 		if (coordinates.length == 1 || !coordinates[0].equals(coordinates[coordinates.length - 1])) {
@@ -129,7 +135,7 @@ public class GeometryFactoryImpl implements GeometryFactory {
 		if (!isClosed) {
 			clones[coordinates.length] = (Coordinate) clones[0].clone();
 		}
-		return new LinearRingImpl(clones);
+		return new LinearRingImpl(mathService, clones);
 	}
 
 	/**
@@ -144,7 +150,7 @@ public class GeometryFactoryImpl implements GeometryFactory {
 		Coordinate tr = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY());
 		Coordinate br = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY() + bbox.getHeight());
 		Coordinate bl = new Coordinate(bbox.getX(), bbox.getY() + bbox.getHeight());
-		return new LinearRingImpl(new Coordinate[] { tl, tr, br, bl, tl });
+		return new LinearRingImpl(mathService, new Coordinate[] { tl, tr, br, bl, tl });
 	}
 
 	/**
@@ -158,7 +164,7 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public Polygon createPolygon(LinearRing exteriorRing, LinearRing[] interiorRings) {
 		if (exteriorRing == null) {
-			return new PolygonImpl(null, null);
+			return new PolygonImpl(mathService, null, null);
 		}
 		LinearRing[] clones = null;
 		if (interiorRings != null) {
@@ -167,7 +173,7 @@ public class GeometryFactoryImpl implements GeometryFactory {
 				clones[i] = createLinearRing(interiorRings[i].getCoordinates());
 			}
 		}
-		return new PolygonImpl(createLinearRing(exteriorRing.getCoordinates()), clones);
+		return new PolygonImpl(mathService, createLinearRing(exteriorRing.getCoordinates()), clones);
 	}
 
 	/**
@@ -182,7 +188,8 @@ public class GeometryFactoryImpl implements GeometryFactory {
 		Coordinate tr = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY());
 		Coordinate br = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY() + bbox.getHeight());
 		Coordinate bl = new Coordinate(bbox.getX(), bbox.getY() + bbox.getHeight());
-		return new PolygonImpl(new LinearRingImpl(new Coordinate[] { tl, tr, br, bl, tl }), null);
+		return new PolygonImpl(mathService, new LinearRingImpl(mathService, new Coordinate[] { tl, tr, br, bl, tl }),
+				null);
 	}
 
 	/**
@@ -194,13 +201,13 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public MultiPolygon createMultiPolygon(Polygon[] polygons) {
 		if (polygons == null) {
-			return new MultiPolygonImpl(null);
+			return new MultiPolygonImpl(mathService, null);
 		}
 		Polygon[] clones = new Polygon[polygons.length];
 		for (int i = 0; i < polygons.length; i++) {
 			clones[i] = createPolygon(polygons[i].getExteriorRing(), ((PolygonImpl) polygons[i]).getInteriorRings());
 		}
-		return new MultiPolygonImpl(clones);
+		return new MultiPolygonImpl(mathService, clones);
 	}
 
 	/**
@@ -212,13 +219,13 @@ public class GeometryFactoryImpl implements GeometryFactory {
 	 */
 	public MultiPoint createMultiPoint(Point[] points) {
 		if (points == null) {
-			return new MultiPointImpl(null);
+			return new MultiPointImpl(mathService, null);
 		}
 		Point[] clones = new Point[points.length];
 		for (int i = 0; i < points.length; i++) {
 			clones[i] = createPoint(points[i].getCoordinate());
 		}
-		return new MultiPointImpl(clones);
+		return new MultiPointImpl(mathService, clones);
 	}
 
 	/**
@@ -242,25 +249,25 @@ public class GeometryFactoryImpl implements GeometryFactory {
 			for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
 				interiorRings[n] = createLinearRing(polygon.getInteriorRingN(n).getCoordinates());
 			}
-			return new PolygonImpl(exteriorRing, interiorRings);
+			return new PolygonImpl(mathService, exteriorRing, interiorRings);
 		} else if (geometry instanceof MultiPoint) {
 			Point[] clones = new Point[geometry.getNumGeometries()];
 			for (int n = 0; n < geometry.getNumGeometries(); n++) {
 				clones[n] = createPoint(geometry.getGeometryN(n).getCoordinate());
 			}
-			return new MultiPointImpl(clones);
+			return new MultiPointImpl(mathService, clones);
 		} else if (geometry instanceof MultiLineString) {
 			LineString[] clones = new LineString[geometry.getNumGeometries()];
 			for (int n = 0; n < geometry.getNumGeometries(); n++) {
 				clones[n] = createLineString(geometry.getGeometryN(n).getCoordinates());
 			}
-			return new MultiLineStringImpl(clones);
+			return new MultiLineStringImpl(mathService, clones);
 		} else if (geometry instanceof MultiPolygon) {
 			Polygon[] clones = new Polygon[geometry.getNumGeometries()];
 			for (int n = 0; n < geometry.getNumGeometries(); n++) {
 				clones[n] = (Polygon) createGeometry(geometry.getGeometryN(n));
 			}
-			return new MultiPolygonImpl(clones);
+			return new MultiPolygonImpl(mathService, clones);
 		}
 		return null;
 	}

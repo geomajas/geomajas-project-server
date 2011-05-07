@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
@@ -38,6 +38,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Tests for the layersModelImpl class to see if it fires the correct events.
@@ -50,6 +52,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @DirtiesContext
 public class LayersModelEventTest {
 
+	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
+
 	private static final String LAYER1 = "beans1Layer";
 
 	private static final String LAYER2 = "beans2Layer";
@@ -60,7 +64,9 @@ public class LayersModelEventTest {
 	@Qualifier(value = "mapBeans")
 	private ClientMapInfo mapInfo;
 
-	private EventBus eventBus = new EventBusImpl();
+	private EventBus eventBus;
+
+	private ViewPort viewPort;
 
 	private int layerCount;
 
@@ -74,6 +80,9 @@ public class LayersModelEventTest {
 
 	@Before
 	public void checkLayerOrder() {
+		eventBus = INJECTOR.getInstance(EventBus.class);
+		viewPort = INJECTOR.getInstance(ViewPort.class);
+
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		for (int i = 1; i < 4; i++) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
@@ -87,7 +96,7 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testInitialize() {
-		LayersModel layersModel = new LayersModelImpl(eventBus);
+		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
 		final MapCompositionHandler layerCounter = new MapCompositionHandler() {
 
 			public void onLayerAdded(LayerAddedEvent event) {
@@ -99,15 +108,15 @@ public class LayersModelEventTest {
 			}
 		};
 		eventBus.addHandler(MapCompositionHandler.TYPE, layerCounter);
-		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
+		layersModel.initialize(mapInfo, viewPort, eventBus);
 		Assert.assertEquals(3, layerCount);
 		Assert.assertEquals(3, layersModel.getLayerCount());
 	}
 
 	@Test
 	public void testLayerSelection() {
-		LayersModel layersModel = new LayersModelImpl(eventBus);
-		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
+		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
+		layersModel.initialize(mapInfo, viewPort, eventBus);
 		Layer<?> layer1 = layersModel.getLayer(LAYER1);
 		Layer<?> layer2 = layersModel.getLayer(LAYER2);
 
@@ -142,8 +151,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testMoveLayerDown() {
-		LayersModel layersModel = new LayersModelImpl(eventBus);
-		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
+		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
+		layersModel.initialize(mapInfo, viewPort, eventBus);
 		Layer<?> layer1 = layersModel.getLayer(LAYER1);
 		Layer<?> layer3 = layersModel.getLayer(LAYER3);
 
@@ -171,8 +180,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testMoveLayerUp() {
-		LayersModel layersModel = new LayersModelImpl(eventBus);
-		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
+		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
+		layersModel.initialize(mapInfo, viewPort, eventBus);
 		Layer<?> layer1 = layersModel.getLayer(LAYER1);
 		Layer<?> layer3 = layersModel.getLayer(LAYER3);
 
@@ -200,8 +209,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testMoveLayer() {
-		LayersModel layersModel = new LayersModelImpl(eventBus);
-		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
+		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
+		layersModel.initialize(mapInfo, viewPort, eventBus);
 
 		Layer<?> layer1 = layersModel.getLayer(LAYER1);
 		Layer<?> layer2 = layersModel.getLayer(LAYER2);
@@ -245,14 +254,14 @@ public class LayersModelEventTest {
 		layersModel.moveLayer(layer3, 0);
 		Assert.assertEquals(342, fromIndex);
 		Assert.assertEquals(342, toIndex);
-		
+
 		reg.removeHandler();
 	}
 
 	@Test
 	public void testLayerRemoval() {
-		LayersModel layersModel = new LayersModelImpl(eventBus);
-		layersModel.initialize(mapInfo, new ViewPortImpl(eventBus));
+		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
+		layersModel.initialize(mapInfo, viewPort, eventBus);
 
 		layerCount = layersModel.getLayerCount();
 		Assert.assertEquals(3, layerCount);
@@ -275,16 +284,16 @@ public class LayersModelEventTest {
 		Assert.assertEquals(1, layerCount);
 		layersModel.removeLayer(LAYER2);
 		Assert.assertEquals(0, layerCount);
-		
+
 		// Corner cases:
 		Assert.assertFalse(layersModel.removeLayer("this-layer-does-not-exist"));
 		try {
 			layersModel.removeLayer(null);
 			Assert.fail();
-		} catch(NullPointerException npe) {
+		} catch (NullPointerException npe) {
 			// Test passed.
 		}
-		
+
 		reg.removeHandler();
 	}
 }

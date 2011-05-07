@@ -17,8 +17,8 @@ import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
@@ -36,6 +36,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Unit test that checks if the correct events are fired by the ViewPortImpl.
@@ -47,6 +49,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
 @DirtiesContext
 public class ViewPortEventTest {
+
+	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
 
 	@Autowired
 	@Qualifier(value = "mapViewPortBeans")
@@ -60,10 +64,10 @@ public class ViewPortEventTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new EventBusImpl();
-		viewPort = new ViewPortImpl(eventBus);
+		eventBus = INJECTOR.getInstance(EventBus.class);
+		viewPort = INJECTOR.getInstance(ViewPort.class);
+		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);
-		viewPort.initialize(mapInfo);
 	}
 
 	@Before

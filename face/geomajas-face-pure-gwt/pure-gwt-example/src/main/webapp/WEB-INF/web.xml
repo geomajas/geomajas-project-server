@@ -17,17 +17,13 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-			<!-- generic Geomajas context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
-			<!-- local application context -->
 			WEB-INF/applicationContext.xml
-			<!-- Server side layers -->
 			WEB-INF/layer*.xml
-			<!-- Map Configurations -->
 			WEB-INF/map*.xml
        </param-value>
     </context-param>
-
+ 
 	<filter>
 	    <filter-name>CacheFilter</filter-name>
 	    <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
@@ -67,7 +63,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/GeomajasSamples/geomajasService</url-pattern>
+		<url-pattern>/showcase/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

@@ -61,7 +61,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public DelegatingMapRenderer(LayersModel layersModel, ViewPort viewPort) {
+	protected DelegatingMapRenderer(LayersModel layersModel, ViewPort viewPort) {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
 		layerContainers = new HashMap<Layer<?>, HtmlContainer>();

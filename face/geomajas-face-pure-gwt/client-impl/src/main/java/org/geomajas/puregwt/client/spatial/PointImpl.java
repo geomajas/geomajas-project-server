@@ -30,7 +30,8 @@ public class PointImpl extends AbstractGeometry implements Point {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	PointImpl(Coordinate c) {
+	PointImpl(MathService mathService, Coordinate c) {
+		super(mathService);
 		coordinate = c;
 	}
 
@@ -151,7 +152,7 @@ public class PointImpl extends AbstractGeometry implements Point {
 				return coordinate.equals(coordinates[0]);
 			} else {
 				for (int i = 0; i < coordinates.length - 1; i++) {
-					double distance = service.distance(coordinates[i], coordinates[i + 1], coordinate);
+					double distance = mathService.distance(coordinates[i], coordinates[i + 1], coordinate);
 					if (distance < GeometryFactory.PARAM_DEFAULT_DELTA) {
 						return true;
 					}

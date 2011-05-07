@@ -29,12 +29,14 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 
+import com.google.inject.Inject;
+
 /**
- * ...
+ * Default implementation of the {@link LayersModel} interface.
  * 
  * @author Pieter De Graef
  */
-public class LayersModelImpl implements LayersModel {
+public final class LayersModelImpl implements LayersModel {
 
 	private ClientMapInfo mapInfo;
 
@@ -52,7 +54,27 @@ public class LayersModelImpl implements LayersModel {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public LayersModelImpl(EventBus eventBus) {
+	@Inject
+	private LayersModelImpl() {
+	}
+
+	// ------------------------------------------------------------------------
+	// MapModel implementation:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Initialization method for the layers model.
+	 * 
+	 * @param mapInfo
+	 *            The configuration object from which this model should build itself.
+	 * @param viewPort
+	 *            The view port that is associated with the same map this layer model belongs to.
+	 * @param eventBus
+	 *            Event bus that governs all event related to this layers model.
+	 */
+	public void initialize(ClientMapInfo mapInfo, ViewPort viewPort, EventBus eventBus) {
+		this.mapInfo = mapInfo;
+		this.viewPort = viewPort;
 		this.eventBus = eventBus;
 
 		// Add a layer selection handler that allows only one selected layer at a time:
@@ -69,23 +91,6 @@ public class LayersModelImpl implements LayersModel {
 			public void onDeselectLayer(LayerDeselectedEvent event) {
 			}
 		});
-	}
-
-	// ------------------------------------------------------------------------
-	// MapModel implementation:
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Initialization method for the layers model.
-	 * 
-	 * @param mapInfo
-	 *            The configuration object from which this model should build itself.
-	 * @param viewPort
-	 *            The view port that is associated with the same map this layer model belongs to.
-	 */
-	public void initialize(ClientMapInfo mapInfo, ViewPort viewPort) {
-		this.mapInfo = mapInfo;
-		this.viewPort = viewPort;
 
 		// Create all the layers:
 		layers = new ArrayList<Layer<?>>();

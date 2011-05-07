@@ -17,8 +17,8 @@ import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +27,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Unit test that checks if the ViewPortImpl positions correctly.
@@ -39,6 +42,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DirtiesContext
 public class ViewPortPositionTest {
 
+	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
+
 	@Autowired
 	@Qualifier(value = "mapViewPortBeans")
 	private ClientMapInfo mapInfo;
@@ -49,10 +54,10 @@ public class ViewPortPositionTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new EventBusImpl();
-		viewPort = new ViewPortImpl(eventBus);
+		eventBus = INJECTOR.getInstance(EventBus.class);
+		viewPort = INJECTOR.getInstance(ViewPort.class);
+		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(200, 200);
-		viewPort.initialize(mapInfo);
 	}
 
 	@Before
@@ -65,7 +70,7 @@ public class ViewPortPositionTest {
 		Assert.assertEquals(0.0, viewPort.getPosition().getX());
 		Assert.assertEquals(0.0, viewPort.getPosition().getY());
 
-		viewPort.applyPosition(new Coordinate(10,10));
+		viewPort.applyPosition(new Coordinate(10, 10));
 		Assert.assertEquals(0.0, viewPort.getPosition().getX());
 		Assert.assertEquals(0.0, viewPort.getPosition().getY());
 	}
@@ -79,11 +84,11 @@ public class ViewPortPositionTest {
 		Assert.assertEquals(0.0, viewPort.getPosition().getX());
 		Assert.assertEquals(0.0, viewPort.getPosition().getY());
 
-		viewPort.applyPosition(new Coordinate(10,10));
+		viewPort.applyPosition(new Coordinate(10, 10));
 		Assert.assertEquals(10.0, viewPort.getPosition().getX());
 		Assert.assertEquals(10.0, viewPort.getPosition().getY());
 
-		viewPort.applyPosition(new Coordinate(1000,1000));
+		viewPort.applyPosition(new Coordinate(1000, 1000));
 		Assert.assertEquals(50.0, viewPort.getPosition().getX());
 		Assert.assertEquals(50.0, viewPort.getPosition().getY());
 	}

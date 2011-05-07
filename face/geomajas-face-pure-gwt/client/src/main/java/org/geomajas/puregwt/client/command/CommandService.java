@@ -56,8 +56,12 @@ public class CommandService {
 		// The reason why this initialization is not in the constructor is because unit tests fail if GWT.create is used
 		// in a constructor...so here we are.
 		if (service == null) {
-			locale = LocaleInfo.getCurrentLocale().getLocaleName();
-			if ("default".equals(locale)) {
+			try {
+				locale = LocaleInfo.getCurrentLocale().getLocaleName();
+				if ("default".equals(locale)) {
+					locale = null;
+				}
+			} catch (NullPointerException e) {
 				locale = null;
 			}
 			service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);

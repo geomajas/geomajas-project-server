@@ -22,14 +22,15 @@ public abstract class AbstractGeometry implements Geometry {
 
 	private static final long serialVersionUID = 100L;
 
-	protected MathService service = new MathServiceImpl();
+	protected MathService mathService;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
 	/** Only protected constructors. */
-	protected AbstractGeometry() {
+	protected AbstractGeometry(MathService mathService) {
+		this.mathService = mathService;
 	}
 
 	// -------------------------------------------------------------------------
@@ -106,7 +107,7 @@ public abstract class AbstractGeometry implements Geometry {
 			if (coords1.length > 1 && coords2.length > 1) {
 				for (int i = 0; i < coords2.length - 1; i++) {
 					for (int j = 0; j < coords1.length - 1; j++) {
-						if (service.intersectsLineSegment(coords2[i], coords2[i + 1], coords1[j], coords1[j + 1])) {
+						if (mathService.intersectsLineSegment(coords2[i], coords2[i + 1], coords1[j], coords1[j + 1])) {
 							return false;
 						}
 					}
@@ -142,7 +143,7 @@ public abstract class AbstractGeometry implements Geometry {
 		Coordinate[] arr2 = geometry.getCoordinates();
 		for (int i = 0; i < arr1.length - 1; i++) {
 			for (int j = 0; j < arr2.length - 1; j++) {
-				if (service.intersectsLineSegment(arr1[i], arr1[i + 1], arr2[j], arr2[j + 1])) {
+				if (mathService.intersectsLineSegment(arr1[i], arr1[i + 1], arr2[j], arr2[j + 1])) {
 					return true;
 				}
 			}

@@ -9,7 +9,21 @@
  * details, see LICENSE.txt in the project root.
  */
 
-.test {
-	background-color: #666666;
-	border: 1px solid blue;
+.banner {
+	font-size: 48px;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: right;
+	line-height: 100px;
+	border-bottom: 1px solid #337428;
+	background-color: #337428;
+}
+
+.layer-block {
+	background: #E6F6E6;
+	padding: 3px;
+	border: 1px solid #C0D6C0;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+	line-height: 24px;
 }

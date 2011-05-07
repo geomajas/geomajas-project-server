@@ -42,6 +42,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ import com.google.gwt.user.client.ui.Widget;
  * This widget is able to render all required objects that the MapPresenter supports, and does this in the following
  * order:
  * <ol>
- * <li>Raster layers & rassterized vector layers.</li>
+ * <li>Raster layers & rasterized vector layers.</li>
  * <li>Vector layers (SVG/VML)</li>
  * <li>All screen and world containers</li>
  * <li>All map gadgets</li>
@@ -62,7 +63,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * @author Pieter De Graef
  */
-public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
+public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// Container for raster layers or rasterized layers:
 	private HtmlGroup layerHtmlContainer;
@@ -86,8 +87,8 @@ public class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	// @Inject
-	public MapWidgetImpl() {
+	@Inject
+	private MapWidgetImpl() {
 		super();
 
 		// Attach an HtmlContainer inside the clipping area (used for rendering layers):

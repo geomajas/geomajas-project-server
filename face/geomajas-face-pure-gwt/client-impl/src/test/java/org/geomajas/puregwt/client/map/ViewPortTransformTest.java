@@ -15,12 +15,11 @@ import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -39,6 +38,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 /**
  * Unit test that checks if the correct events are fired by the ViewPortImpl.
  * 
@@ -49,6 +51,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
 @DirtiesContext
 public class ViewPortTransformTest {
+
+	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
 
 	private static final double DELTA = 0.00001;
 
@@ -68,12 +72,11 @@ public class ViewPortTransformTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new EventBusImpl();
-		viewPort = new ViewPortImpl(eventBus);
+		factory = INJECTOR.getInstance(GeometryFactory.class);
+		eventBus = INJECTOR.getInstance(EventBus.class);
+		viewPort = INJECTOR.getInstance(ViewPort.class);
+		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(MAP_WIDTH, MAP_HEIGHT);
-		viewPort.initialize(mapInfo);
-
-		factory = new GeometryFactoryImpl();
 	}
 
 	@Before

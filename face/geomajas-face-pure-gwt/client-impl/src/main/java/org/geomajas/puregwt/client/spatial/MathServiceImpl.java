@@ -13,12 +13,18 @@ package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
 
+import com.google.inject.Inject;
+
 /**
  * Implementation of the general {@link MathService}.
  * 
  * @author Pieter De Graef
  */
-public class MathServiceImpl implements MathService {
+public final class MathServiceImpl implements MathService {
+
+	@Inject
+	private MathServiceImpl() {
+	}
 
 	/**
 	 * Calculates whether or not 2 line-segments intersect.

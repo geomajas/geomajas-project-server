@@ -1,8 +1,13 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Unit tests for the MathService.
@@ -23,7 +28,13 @@ public class MathServiceTest {
 
 	private Coordinate c5 = new Coordinate(20, 10);
 
-	private MathService service = new MathServiceImpl();
+	private MathService service;
+
+	@Before
+	public void setup() {
+		Injector myInjector = Guice.createInjector(new GeomajasTestModule());
+		service = myInjector.getInstance(MathService.class);
+	}
 
 	@Test
 	public void testDistanceTwoPoint() {

@@ -32,7 +32,7 @@ public class FreeForAllZoomStrategy implements ZoomStrategy {
 
 	private Bbox maxBounds;
 
-	public FreeForAllZoomStrategy(ClientMapInfo mapInfo, Bbox maxBounds) {
+	protected FreeForAllZoomStrategy(ClientMapInfo mapInfo, Bbox maxBounds) {
 		ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
 		maximumScale = scaleConfigurationInfo.getMaximumScale().getPixelPerUnit();
 		this.maxBounds = maxBounds;

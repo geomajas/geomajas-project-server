@@ -21,6 +21,8 @@ import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 
+import com.google.gwt.user.client.ui.Widget;
+
 /**
  * Central map definition.
  * 
@@ -35,11 +37,13 @@ public interface MapPresenter {
 	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
 	 * on return. A special {@link org.geomajas.puregwt.client.map.event.MapInitializationEvent} will be fired once
 	 * initialization is done.<br/>
-	 * TODO remove from API??
+	 * TODO complete JAVADOC
 	 */
-	void initialize();
-	
+	void initialize(String applicationId, String id);
+
 	EventBus getEventBus();
+	
+	Widget asWidget();
 
 	/**
 	 * Set a new renderer on the map. This renderer is responsible for making sure the map is always renderer correctly.

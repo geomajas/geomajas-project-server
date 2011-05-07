@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.FutureApi;
+import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.Matrix;
@@ -49,8 +50,10 @@ public interface ViewPort {
 	 * 
 	 * @param mapInfo
 	 *            The map information meta-data from which to initialize the <code>ViewPort</code>.
+	 * @param eventBus
+	 *            TODO
 	 */
-	void initialize(ClientMapInfo mapInfo);
+	void initialize(ClientMapInfo mapInfo, EventBus eventBus);
 
 	/**
 	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
@@ -200,7 +203,7 @@ public interface ViewPort {
 	 * @param y
 	 *            Translation factor along the Y-axis in world space.
 	 */
-	//void drag(double x, double y);
+	// void drag(double x, double y);
 
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:

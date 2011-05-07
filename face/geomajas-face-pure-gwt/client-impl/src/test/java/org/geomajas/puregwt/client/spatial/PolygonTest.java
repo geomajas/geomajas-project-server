@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class PolygonTest {
 	 */
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
+		Injector myInjector = Guice.createInjector(new GeomajasTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
 		LinearRing gwtShell = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
 				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });

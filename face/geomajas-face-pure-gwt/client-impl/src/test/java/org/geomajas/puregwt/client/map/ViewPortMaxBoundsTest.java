@@ -16,8 +16,8 @@ import javax.annotation.PostConstruct;
 import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +27,16 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
 		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
 @DirtiesContext
 public class ViewPortMaxBoundsTest {
+
+	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
 
 	@Autowired
 	@Qualifier(value = "mapViewPortBeans")
@@ -43,14 +48,15 @@ public class ViewPortMaxBoundsTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new EventBusImpl();
-		viewPort = new ViewPortImpl(eventBus);
+		eventBus = INJECTOR.getInstance(EventBus.class);
+		viewPort = INJECTOR.getInstance(ViewPort.class);
+		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);
 	}
 
 	@Test
 	public void testInitialBounds() {
-		viewPort.initialize(mapInfo);
+		viewPort.initialize(mapInfo, eventBus);
 		Bbox maxBounds = viewPort.getMaximumBounds();
 		Assert.assertEquals(maxBounds.getX(), -100.0);
 		Assert.assertEquals(maxBounds.getY(), -100.0);
@@ -61,7 +67,7 @@ public class ViewPortMaxBoundsTest {
 	@Test
 	public void testSetMaxBounds() {
 		mapInfo.setMaxBounds(new org.geomajas.geometry.Bbox(0, 0, 10, 10));
-		viewPort.initialize(mapInfo);
+		viewPort.initialize(mapInfo, eventBus);
 		Bbox maxBounds = viewPort.getMaximumBounds();
 		Assert.assertEquals(maxBounds.getX(), 0.0);
 		Assert.assertEquals(maxBounds.getY(), 0.0);
@@ -73,7 +79,7 @@ public class ViewPortMaxBoundsTest {
 	public void testLayerUnion() {
 		mapInfo.setMaxBounds(org.geomajas.geometry.Bbox.ALL);
 		mapInfo.getLayers().get(0).setMaxExtent(new org.geomajas.geometry.Bbox(0, 0, 500, 500));
-		viewPort.initialize(mapInfo);
+		viewPort.initialize(mapInfo, eventBus);
 		Bbox maxBounds = viewPort.getMaximumBounds();
 		Assert.assertEquals(maxBounds.getX(), -100.0);
 		Assert.assertEquals(maxBounds.getY(), -100.0);

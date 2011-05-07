@@ -24,6 +24,13 @@
 	<description>Geomajas pure gwt face, client side</description>
 
 	<dependencies>
+		<!-- Overwrite the xerces version that comes with JTS to make sure it is compatible with GWT UiBinder. -->
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -40,8 +47,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<classifier>sources</classifier>
 			<artifactId>geomajas-command</artifactId>
+			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -55,19 +62,11 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Other GWT projects -->
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>gwt-graphics</artifactId>
 		</dependency>
-
-
-		<!-- Other dependencies -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>

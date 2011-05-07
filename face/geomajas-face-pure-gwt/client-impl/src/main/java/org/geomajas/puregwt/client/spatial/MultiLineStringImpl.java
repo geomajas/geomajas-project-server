@@ -28,7 +28,8 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 	// Constructor (package visibility)
 	// -------------------------------------------------------------------------
 
-	MultiLineStringImpl(LineString[] lineStrings) {
+	MultiLineStringImpl(MathService mathService, LineString[] lineStrings) {
+		super(mathService);
 		this.lineStrings = lineStrings;
 	}
 

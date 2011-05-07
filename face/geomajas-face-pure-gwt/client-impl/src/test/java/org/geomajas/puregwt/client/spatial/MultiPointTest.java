@@ -12,6 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class MultiPointTest {
 
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
+		Injector myInjector = Guice.createInjector(new GeomajasTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
 		Point point1 = gwtFactory.createPoint(new Coordinate(10.0, 10.0));
 		Point point2 = gwtFactory.createPoint(new Coordinate(10.0, 20.0));
