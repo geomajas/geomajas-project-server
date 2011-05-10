@@ -126,6 +126,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<!-- pipeline which is needed for rasterizing -->
+	<bean name="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
+	</bean>
+
 	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_CACHED" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
