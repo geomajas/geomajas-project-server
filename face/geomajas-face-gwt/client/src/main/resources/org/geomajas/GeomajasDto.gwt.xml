@@ -37,11 +37,16 @@
 		<exclude name="InternalUrlTile.java"/>
 	</source>
 	<source path="configuration"/>
+	<source path="configuration/client">
+		<exclude name="*Test*.java"/>
+	</source>
 	<source path="geometry">
 		<exclude name="Crs.java"/>
 		<exclude name="CrsTransform.java"/>
 	</source>
-	<source path="command/dto"/>
+	<source path="command/dto">
+		<exclude name="*Test*.java"/>
+	</source>
 	<source path="global">
 		<include name="GeomajasConstant.java"/>
 		<include name="CopyrightInfo.java"/>

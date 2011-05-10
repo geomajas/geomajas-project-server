@@ -57,5 +57,8 @@
 	<source path="client/widget/attribute">
 		<exclude name="*Test*.java"/>
 	</source>
+	<source path="client/widget/wizard">
+		<exclude name="*Test*.java"/>
+	</source>
 
 </module>
