@@ -343,9 +343,12 @@ public class FeatureForm {
 		}
 	}
 
-	/** Clear the entire form. This will remove the entire visual representation. */
+
+	/**
+	 * Clear all form values.
+	 */
 	public void clear() {
-		formWidget.clear();
+		formWidget.clearValues();
 	}
 
 	// -------------------------------------------------------------------------
