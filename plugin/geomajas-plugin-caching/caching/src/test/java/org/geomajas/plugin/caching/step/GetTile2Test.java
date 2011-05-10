@@ -86,7 +86,6 @@ public class GetTile2Test {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-0-0\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-0-0.0\"><path fill-rule=\"evenodd\" d=\"M0 0l1 0 0 -1 -1 0 0 1 Z\" id=\"1\"/></g></g>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// first run, this should put things in the cache
@@ -96,7 +95,6 @@ public class GetTile2Test {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-1-0\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-1-0.0\"><path fill-rule=\"evenodd\" d=\"M4 0l2 0 0 -3 -2 0 0 3 Z\" id=\"2\"/></g></g>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// first run, this should put things in the cache
@@ -106,7 +104,6 @@ public class GetTile2Test {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-1-1\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-1-1.0\"><path fill-rule=\"evenodd\" d=\"M2 -1l4 0 1 -1 -5 0 0 1 Z\" id=\"3\"/></g></g>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// first run, this should put things in the cache
@@ -116,7 +113,6 @@ public class GetTile2Test {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-0-1\"/>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// first run, this should put things in the cache
@@ -127,7 +123,6 @@ public class GetTile2Test {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-1-1\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-1-1.0\"><path fill-rule=\"evenodd\" d=\"M4 -2l8 0 2 -2 -10 0 0 2 Z\" id=\"3\"/></g></g>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// get tile again, the result should be different because we changed the cached value
@@ -139,7 +134,6 @@ public class GetTile2Test {
 		Assert.assertEquals("<g id=\"beans.features.1-1-0\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-1-0.0\"><path fill-rule=\"evenodd\" d=\"M4 0l2 0 0 -3 -2 0 0 3 Z\" id=\"2\"/></g></g>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Got item from cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG));
 	}
 
 }

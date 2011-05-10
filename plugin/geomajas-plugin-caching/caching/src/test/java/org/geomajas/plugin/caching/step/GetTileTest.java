@@ -90,7 +90,6 @@ public class GetTileTest {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-0-1\"/>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// verify that data is in the cache
@@ -106,7 +105,6 @@ public class GetTileTest {
 		Assert.assertEquals("<dummy />", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Got item from cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG));
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();
@@ -115,7 +113,6 @@ public class GetTileTest {
 		Assert.assertNotNull(tile);
 		//Assert.assertEquals(4, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 	}
 
@@ -136,7 +133,6 @@ public class GetTileTest {
 		Assert.assertNotNull(tile);
 		Assert.assertEquals("<g id=\"beans.features.1-0-1\"/>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// verify that data is in the cache
@@ -144,22 +140,12 @@ public class GetTileTest {
 		Assert.assertEquals(1, cache.size());
 		cache.clear(); // remove tile from cache
 
-		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.SVG);
-		Assert.assertEquals(1, cache.size());
-		String key = cache.getKey();
-		TileContentCacheContainer tccc = (TileContentCacheContainer) cache.getObject();
-		CacheContext cc = tccc.getContext();
-		tccc = new TileContentCacheContainer("<blabla />", "");
-		tccc.setContext(cc);
-		cache.put(key, tccc);
-
 		// get tile again, should put tile in cache again but use features and string from cache
 		recorder.clear();
 		tile = vectorLayerService.getTile(tmd);
 		Assert.assertNotNull(tile);
-		Assert.assertEquals("<blabla />", tile.getFeatureContent());
+		Assert.assertEquals("<g id=\"beans.features.1-0-1\"/>", tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Got item from cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Got item from cache"));
 	}
 
@@ -191,7 +177,6 @@ public class GetTileTest {
 						"d=\"M222639 -111325l0 -111359 556597 0 -111319 111359 -445278 0 Z\" id=\"3\"/></g></g>",
 				tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// verify that data is in the cache
@@ -220,7 +205,6 @@ public class GetTileTest {
 						"d=\"M222639 -111325l0 -111359 556597 0 -111319 111359 -445278 0 Z\" id=\"3\"/></g></g>",
 				tile.getFeatureContent());
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
-		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Got item from cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Got item from cache"));
 
 		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);

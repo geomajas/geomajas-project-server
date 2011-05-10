@@ -61,7 +61,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<!-- @extract-end -->
 				<!-- @extract-start CacheOffSample, Switch off caching -->
 				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML" /></key>
+					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.FEATURE" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
 							<property name="cacheEnabled" value="false" />
 						</bean>

@@ -77,10 +77,8 @@ public class InfinispanCacheFactoryConfigurationTest {
 	 */
 	@Test
 	public void testCacheOff() {
-		cacheManagerService.put(layer, CacheCategory.VML, "albalb", "2", null);
-		Assert.assertNull(cacheManagerService.get(layer, CacheCategory.VML, "albalb"));
-		cacheManagerService.put(layer, CacheCategory.SVG, "albalb", "2", null);
-		Assert.assertNull(cacheManagerService.get(layer, CacheCategory.SVG, "albalb"));
+		cacheManagerService.put(layer, CacheCategory.FEATURE, "albalb", "2", null);
+		Assert.assertNull(cacheManagerService.get(layer, CacheCategory.FEATURE, "albalb"));
 	}
 
 	@Test

@@ -150,23 +150,15 @@
     application context contains more than one bean matching bean (for each of
     the lines above) the last definition is used.</para>
 
-    <para>As an example you could use this mechanism to disable the VML and
-    SVG caching using the following configuration:</para>
+    <para>As an example you could use this mechanism to disable the bounds
+    caching using the following configuration:</para>
 
     <example>
       <title>Disable caching for SVG and VML.</title>
 
       <programlisting>&lt;bean class="org.geomajas.plugin.caching.service.CacheServiceInfo"&gt;
     &lt;property name="category"&gt;
-        &lt;util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/&gt;
-    &lt;/property&gt;
-    &lt;property name="cacheFactory"&gt;
-        &lt;bean class="org.geomajas.plugin.caching.cache.NoCacheCacheFactory" /&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-&lt;bean class="org.geomajas.plugin.caching.service.CacheServiceInfo"&gt;
-    &lt;property name="category"&gt;
-        &lt;util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML"/&gt;
+        &lt;util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/&gt;
     &lt;/property&gt;
     &lt;property name="cacheFactory"&gt;
         &lt;bean class="org.geomajas.plugin.caching.cache.NoCacheCacheFactory" /&gt;

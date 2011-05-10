@@ -126,23 +126,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean name="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
-		<property name="interceptors">
-			<list>
-				<bean
-					class="org.geomajas.plugin.caching.step.GetTileStringContentCachingInterceptor">
-					<property name="id" value="GetTileStringContentCache" />
-					<property name="stepId" value="GetTileStringContentStep" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
 	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
 		<property name="interceptors">
 			<list>
 				<bean
@@ -167,18 +153,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="defaultInfinispanCacheConfig" class="org.geomajas.plugin.caching.configuration.CacheInfo">
 		<property name="configuration">
 			<map>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="512" />
-						</bean>
-				</entry>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="512" />
-						</bean>
-				</entry>
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
 						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">

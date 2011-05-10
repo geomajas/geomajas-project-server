@@ -58,7 +58,7 @@ public class CacheManagerServiceTest {
 		CacheServiceInfo serviceInfo;
 
 		// full match, use last
-		serviceInfo = cacheManager.getInfo("test", CacheCategory.SVG, CacheServiceInfo.class);
+		serviceInfo = cacheManager.getInfo("test", CacheCategory.BOUNDS, CacheServiceInfo.class);
 		Assert.assertEquals("full2", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// match on layer only
@@ -66,15 +66,15 @@ public class CacheManagerServiceTest {
 		Assert.assertEquals("semiTest", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// match on category only
-		serviceInfo = cacheManager.getInfo("bla", CacheCategory.SVG, CacheServiceInfo.class);
-		Assert.assertEquals("semiSVG", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
+		serviceInfo = cacheManager.getInfo("bla", CacheCategory.BOUNDS, CacheServiceInfo.class);
+		Assert.assertEquals("semiBOUNDS", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// no match, use default
 		serviceInfo = cacheManager.getInfo("bla", CacheCategory.RASTER, CacheServiceInfo.class);
 		Assert.assertEquals("default", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 
 		// match on layer only and on category only, check use layer
-		serviceInfo = cacheManager.getInfo("blabla", CacheCategory.VML, CacheServiceInfo.class);
+		serviceInfo = cacheManager.getInfo("blabla", CacheCategory.BOUNDS, CacheServiceInfo.class);
 		Assert.assertEquals("semiBlabla", ((DummyCacheFactory) serviceInfo.getCacheFactory()).getTest());
 	}
 

@@ -41,7 +41,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
 		<property name="layerId" value="test" />
 		<property name="category">
-			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/>
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/>
 		</property>
 		<property name="cacheIndexFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheIndexFactory">
@@ -63,7 +63,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="layerId" value="test" />
 		<property name="category">
-			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/>
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/>
 		</property>
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
@@ -75,7 +75,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="category">
-			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/>
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/>
 		</property>
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
@@ -96,7 +96,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="layerId" value="test" />
 		<property name="category">
-			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/>
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/>
 		</property>
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
@@ -116,11 +116,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="category">
-			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML"/>
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/>
 		</property>
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
-				<property name="test" value="semiVML" />
+				<property name="test" value="semiBOUNDS" />
 			</bean>
 		</property>
 	</bean>
