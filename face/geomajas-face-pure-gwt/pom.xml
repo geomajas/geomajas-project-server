@@ -135,10 +135,25 @@
 				<artifactId>geomajas-pure-gwt-client</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-pure-gwt-client</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-pure-gwt-client-impl</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<dependency>
@@ -148,9 +163,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.googlecode.gwt.inject</groupId>
+				<groupId>com.google.gwt.inject</groupId>
 				<artifactId>gin</artifactId>
-				<version>1.0</version>
+				<version>1.5.0</version>
 			</dependency>
 
 			<dependency>
