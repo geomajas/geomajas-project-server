@@ -92,4 +92,8 @@ public class AttributeCriterion implements Criterion {
 	public void serverLayerIdVisitor(Set<String> layerIds) {
 		layerIds.add(serverLayerId);
 	}
+	
+	public String toString() {
+		return "(" + attributeName + " " + operator + " " + value + ")";
+	}
 }
