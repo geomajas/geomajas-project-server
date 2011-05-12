@@ -38,9 +38,9 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Converts Dto Criterion to map of filters.
- *
+ * 
  * @author Kristof Heirwegh
- *
+ * 
  */
 @Service("DtoSearchConverterService")
 public class DtoSearchConverterServiceImpl implements DtoSearchConverterService {
@@ -61,12 +61,11 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 	private FilterService filterService;
 
 	/**
-	 *
+	 * 
 	 * @param criterion
 	 * @param mapCrs
-	 *            the geometry in geometrycriterion's are expected to be in
-	 *            mapCrs, the will be converted to their respective layerCrs's
-	 *            for the filters.
+	 *            the geometry in geometrycriterion's are expected to be in mapCrs, the will be converted to their
+	 *            respective layerCrs's for the filters.
 	 * @return
 	 * @throws GeomajasException
 	 */
@@ -96,19 +95,23 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 	private Map<VectorLayer, Filter> dtoAttributeCriterionToFilters(AttributeCriterion criterion)
 			throws GeomajasException {
 		Map<VectorLayer, Filter> filters = new LinkedHashMap<VectorLayer, Filter>();
-		Filter f;
+		Filter f = null;
 		VectorLayer l = configurationService.getVectorLayer(criterion.getServerLayerId());
 		if (l == null) {
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, criterion.getServerLayerId());
 		}
+		
 		String operator = criterion.getOperator();
-		if ("LIKE".equals(operator.toUpperCase())) {
+		if("LIKE".equals(operator.toUpperCase())){
 			f = filterService.createLikeFilter(criterion.getAttributeName(), criterion.getValue());
-
-		} else {
+		}else if("DURING".equals(operator.toUpperCase()) || "BEFORE".equals(operator.toUpperCase())
+				|| "AFTER".equals(operator.toUpperCase())){
+			f = filterService.parseFilter(criterion.toString()); // In case of a date filter
+		}else{
 			f = filterService.createCompareFilter(criterion.getAttributeName(), criterion.getOperator(),
 					criterion.getValue());
 		}
+
 		filters.put(l, f);
 		return filters;
 	}
@@ -133,24 +136,27 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 			Geometry layerGeometry = geoService.transform(mapGeom, mapCrs, vl.getCrs());
 
 			switch (criterion.getOperator()) {
-			case SearchByLocationRequest.QUERY_INTERSECTS:
-				f = filterService
-						.createIntersectsFilter(layerGeometry, vl.getFeatureModel().getGeometryAttributeName());
-				break;
-			case SearchByLocationRequest.QUERY_CONTAINS:
-				f = filterService.createContainsFilter(layerGeometry, vl.getFeatureModel().getGeometryAttributeName());
-				break;
+				case SearchByLocationRequest.QUERY_INTERSECTS:
+					f = filterService.createIntersectsFilter(layerGeometry, vl.getFeatureModel()
+							.getGeometryAttributeName());
+					break;
+				case SearchByLocationRequest.QUERY_CONTAINS:
+					f = filterService.createContainsFilter(layerGeometry, vl.getFeatureModel()
+							.getGeometryAttributeName());
+					break;
 
-			case SearchByLocationRequest.QUERY_TOUCHES:
-				f = filterService.createTouchesFilter(layerGeometry, vl.getFeatureModel().getGeometryAttributeName());
-				break;
+				case SearchByLocationRequest.QUERY_TOUCHES:
+					f = filterService.createTouchesFilter(layerGeometry, vl.getFeatureModel()
+							.getGeometryAttributeName());
+					break;
 
-			case SearchByLocationRequest.QUERY_WITHIN:
-				f = filterService.createWithinFilter(layerGeometry, vl.getFeatureModel().getGeometryAttributeName());
-				break;
+				case SearchByLocationRequest.QUERY_WITHIN:
+					f = filterService
+							.createWithinFilter(layerGeometry, vl.getFeatureModel().getGeometryAttributeName());
+					break;
 
-			default:
-				throw new GeomajasException(ExceptionCode.ATTRIBUTE_UNKNOWN, "QueryType");
+				default:
+					throw new GeomajasException(ExceptionCode.ATTRIBUTE_UNKNOWN, "QueryType");
 			}
 
 			filters.put(vl, f);
