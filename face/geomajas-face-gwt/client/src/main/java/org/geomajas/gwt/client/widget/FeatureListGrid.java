@@ -125,6 +125,17 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	// -------------------------------------------------------------------------
 
 	public FeatureListGrid(MapModel mapModel) {
+		this(mapModel, null);
+	}
+
+	/**
+	 * @param mapModel
+	 *            If this is null it throws an IllegalArgumentException
+	 * @param doubleClickhandler
+	 *            It gives the possibility to show your own {@link FeatureAttributeWindow}. If this is null the default
+	 *            {@link FeatureAttributeWindow} will be shown
+	 */
+	public FeatureListGrid(MapModel mapModel, DoubleClickHandler doubleClickhandler) {
 		super();
 		if (mapModel == null) {
 			throw new IllegalArgumentException("The given MapModel should not be 'null'.");
@@ -134,7 +145,11 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		setIdInTable(false);
 		setEditingEnabled(false);
 		setSelectionEnabled(true);
-		addDoubleClickHandler(new FeatureDoubleClickHandler());
+		if (doubleClickhandler != null) {
+			addDoubleClickHandler(doubleClickhandler);
+		} else {
+			addDoubleClickHandler(new FeatureDoubleClickHandler());
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -229,7 +244,8 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 * Adds or removes this widget as a handler for selection onto the MapModel. What this means is that when selection
 	 * is enabled, selected rows in the grid will result in selected features in the MapModel and vice versa.
 	 * 
-	 * @param selectionEnabled is selection enabled?
+	 * @param selectionEnabled
+	 *            is selection enabled?
 	 */
 	public void setSelectionEnabled(boolean selectionEnabled) {
 		// Clean up first! Otherwise the handler list would just keep on growing.
@@ -410,20 +426,21 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 				layer.getFeatureStore().getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL,
 						new LazyLoadCallback() {
 
-					public void execute(List<Feature> response) {
-						layer.selectFeature(response.get(0));
-					}
-				});
+							public void execute(List<Feature> response) {
+								layer.selectFeature(response.get(0));
+							}
+						});
 			}
 		} else {
 			// Only deselect a feature if it is not yet deselected:
 			if (layer.isFeatureSelected(featureId)) {
 				layer.getFeatureStore().getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL,
 						new LazyLoadCallback() {
-					public void execute(List<Feature> response) {
-						layer.deselectFeature(response.get(0));
-					}
-				});
+
+							public void execute(List<Feature> response) {
+								layer.deselectFeature(response.get(0));
+							}
+						});
 			}
 		}
 	}
@@ -458,8 +475,9 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 
 	/**
 	 * Create a single field definition from a attribute definition.
-	 *
-	 * @param attributeInfo attribute info
+	 * 
+	 * @param attributeInfo
+	 *            attribute info
 	 * @return field for grid
 	 */
 	private ListGridField createAttributeGridField(final AttributeInfo attributeInfo) {
@@ -547,11 +565,12 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			ListGridRecord selected = getSelectedRecord();
 			String featureId = selected.getAttribute("featureId");
 			if (featureId != null && layer != null) {
-				layer.getFeatureStore()
-						.getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
+				layer.getFeatureStore().getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
+						new LazyLoadCallback() {
+
 							public void execute(List<Feature> response) {
-								FeatureAttributeWindow window =
-										new FeatureAttributeWindow(response.get(0), editingEnabled);
+								FeatureAttributeWindow window = new FeatureAttributeWindow(response.get(0),
+										editingEnabled);
 								window.draw();
 							}
 						});
