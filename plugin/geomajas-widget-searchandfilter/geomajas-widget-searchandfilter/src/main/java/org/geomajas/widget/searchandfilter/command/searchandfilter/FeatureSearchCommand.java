@@ -95,7 +95,8 @@ public class FeatureSearchCommand implements Command<FeatureSearchRequest, Featu
 			if (securityContext.isLayerVisible(layerId)) {
 				Filter f = entry.getValue();
 				if (layerFilters.containsKey(layerId)) {
-					f = filterService.createAndFilter(filterService.parseFilter(layerFilters.get(layerId)), f);
+					String layerFilter = layerFilters.get(layerId);
+					f = filterService.createAndFilter(filterService.parseFilter(layerFilter), f);
 				}
 
 				List<InternalFeature> temp = layerService.getFeatures(layerId, mapCrs, f, null,
