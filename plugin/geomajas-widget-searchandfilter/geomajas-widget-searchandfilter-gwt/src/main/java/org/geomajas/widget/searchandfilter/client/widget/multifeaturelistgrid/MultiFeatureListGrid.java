@@ -39,6 +39,8 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
@@ -254,7 +256,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		window.setPageLeft(map.getAbsoluteLeft() + 10);
 		window.draw();
 	}
-
+	
 	/**
 	 * Wraps a FeatureListGrid in a Tab and adds some actions.
 	 * 
@@ -327,8 +329,11 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			toolStrip.addButton(focusButton);
 			toolStrip.addButton(showButton);
 			toolStrip.addButton(exportButton);
-
-			featureListGrid = new FeatureListGrid(mapWidget.getMapModel());
+			featureListGrid = new FeatureListGrid(mapWidget.getMapModel(),new DoubleClickHandler() {
+				public void onDoubleClick(DoubleClickEvent event) {
+					showFeatureDetail(mapWidget);
+				}
+			});
 			featureListGrid.setLayer(layer);
 			featureListGrid.addSelectionChangedHandler(this);
 
@@ -417,7 +422,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				}
 			}
 		}
-
+		
 		private void showFeatureDetail(final MapWidget mapWidget) {
 			ListGridRecord selected = featureListGrid.getSelectedRecord();
 			if (selected != null) {

@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -119,6 +120,12 @@ public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateH
 	@Override
 	public Criterion getFeatureSearchCriterion() {
 		return SearchCommService.buildGeometryCriterion(searchGeom, mapWidget);
+	}
+	
+	@Override
+	public VectorLayer getFeatureSearchVectorLayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

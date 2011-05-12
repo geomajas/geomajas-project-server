@@ -12,6 +12,7 @@ package org.geomajas.widget.searchandfilter.client.widget.searchfavourites;
 
 import java.util.List;
 
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.CriterionUtils;
@@ -129,6 +130,12 @@ public class SearchFavouritesListPanel extends SearchPanel implements FavouriteC
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	public VectorLayer getFeatureSearchVectorLayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

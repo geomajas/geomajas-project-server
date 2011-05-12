@@ -288,6 +288,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 
 	private void onSearch() {
 		if (searchPanel.validate()) {
+			setVectorLayerOnWhichSearchIsHappeningVisible();
 			Criterion critter = searchPanel.getFeatureSearchCriterion();
 			SearchRequestEvent sre = new SearchRequestEvent(this, critter);
 			for (SearchRequestHandler h : searchHandlers) {
@@ -318,6 +319,12 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 			for (FavouriteRequestHandler h : favouriteHandlers) {
 				h.onAddRequested(new FavouriteEvent(null, fav, this));
 			}
+		}
+	}
+	
+	private void setVectorLayerOnWhichSearchIsHappeningVisible(){
+		if(searchPanel.getFeatureSearchVectorLayer() != null && !searchPanel.getFeatureSearchVectorLayer().isVisible()){
+			searchPanel.getFeatureSearchVectorLayer().setVisible(true);
 		}
 	}
 

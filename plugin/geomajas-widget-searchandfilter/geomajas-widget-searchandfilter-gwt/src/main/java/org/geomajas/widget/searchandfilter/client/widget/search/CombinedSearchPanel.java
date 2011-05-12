@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestEvent;
@@ -169,6 +170,12 @@ public class CombinedSearchPanel extends SearchPanel {
 			crit.setCriteria(criteria);
 			return crit;
 		}
+	}
+	
+	@Override
+	public VectorLayer getFeatureSearchVectorLayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

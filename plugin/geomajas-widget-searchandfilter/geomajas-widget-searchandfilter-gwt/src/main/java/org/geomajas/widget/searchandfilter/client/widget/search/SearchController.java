@@ -26,6 +26,7 @@ import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.Sea
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
@@ -63,10 +64,12 @@ public class SearchController implements SearchRequestHandler {
 						searchEvent.setResult(result);
 						fireSearchDoneEvent(searchEvent);
 						fireSearchEndEvent(searchEvent);
+						
 					}
 				}, new ErrorHandler() {
 					public void execute() {
-						fireSearchEndEvent(searchEvent);
+						destroyModalWindow();
+						SC.say(messages.searchControllerFailureMessage());
 					}
 				});
 	}
@@ -142,6 +145,12 @@ public class SearchController implements SearchRequestHandler {
 	private void hideModalWindow() {
 		if (modalWindow != null) {
 			modalWindow.hide();
+		}
+	}
+	
+	private void destroyModalWindow(){
+		if(modalWindow != null){
+			modalWindow.destroy();
 		}
 	}
 }

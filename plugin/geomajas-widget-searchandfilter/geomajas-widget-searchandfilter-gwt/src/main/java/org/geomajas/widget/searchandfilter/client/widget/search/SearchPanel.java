@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometryUpdateHandler;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
@@ -63,6 +64,13 @@ public abstract class SearchPanel extends Canvas {
 	 *         specifics of the search to be stored (in favourites).
 	 */
 	public abstract Criterion getFeatureSearchCriterion();
+	
+	
+	/**
+	 * @return the vector layer to search in.
+	 *       
+	 */
+	public abstract VectorLayer getFeatureSearchVectorLayer();
 
 	public abstract void reset();
 
