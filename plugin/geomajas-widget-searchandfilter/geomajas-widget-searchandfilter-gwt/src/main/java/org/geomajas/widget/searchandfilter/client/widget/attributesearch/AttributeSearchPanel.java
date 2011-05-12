@@ -85,6 +85,11 @@ public class AttributeSearchPanel extends SearchPanel {
 	public Criterion getFeatureSearchCriterion() {
 		return featureSearch.getSearchCriteria();
 	}
+	
+	@Override
+	public VectorLayer getFeatureSearchVectorLayer() {
+		return featureSearch.getLayer();
+	}
 
 	@Override
 	public void reset() {
