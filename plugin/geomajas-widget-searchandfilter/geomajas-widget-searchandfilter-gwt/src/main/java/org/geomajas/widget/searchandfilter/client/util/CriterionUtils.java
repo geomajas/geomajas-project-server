@@ -68,8 +68,7 @@ public final class CriterionUtils {
 	}
 
 	/**
-	 * This does the same as dtoConverterservice but uses strings for filters
-	 * instead of (serverside) filter objects.
+	 * This does the same as dtoConverterservice but uses strings for filters instead of (serverside) filter objects.
 	 * 
 	 * @param criterion
 	 * @param mapCrs
@@ -103,7 +102,9 @@ public final class CriterionUtils {
 		String filter = criterion.getAttributeName() + " " + criterion.getOperator() + " ";
 		if (criterion.getValue() != null
 				&& ((criterion.getValue().contains("\"") || criterion.getValue().contains(" ") || !criterion.getValue()
-						.matches("(\\.|\\-|[0-9])*")) || "LIKE".equalsIgnoreCase(criterion.getOperator()))) {
+						.matches("(\\.|\\-|[0-9])*")) || "LIKE".equalsIgnoreCase(criterion.getOperator()))
+				&& ((!"DURING".equals(criterion.getOperator().toUpperCase()) && !"BEFORE".equals(criterion.getOperator().toUpperCase()) && !"AFTER"
+						.equals(criterion.getOperator().toUpperCase())))) {
 			filter += "\'" + criterion.getValue().replaceAll("\\*", "%") + "\'";
 		} else {
 			filter += criterion.getValue();
@@ -118,20 +119,20 @@ public final class CriterionUtils {
 		String wktGeom = mapGeom.toWkt();
 		String method;
 		switch (criterion.getOperator()) {
-		case SearchByLocationRequest.QUERY_INTERSECTS:
-			method = "INTERSECTS";
-			break;
-		case SearchByLocationRequest.QUERY_CONTAINS:
-			method = "CONTAINS";
-			break;
-		case SearchByLocationRequest.QUERY_TOUCHES:
-			method = "TOUCHES";
-			break;
-		case SearchByLocationRequest.QUERY_WITHIN:
-			method = "WITHIN";
-			break;
-		default:
-			return null;
+			case SearchByLocationRequest.QUERY_INTERSECTS:
+				method = "INTERSECTS";
+				break;
+			case SearchByLocationRequest.QUERY_CONTAINS:
+				method = "CONTAINS";
+				break;
+			case SearchByLocationRequest.QUERY_TOUCHES:
+				method = "TOUCHES";
+				break;
+			case SearchByLocationRequest.QUERY_WITHIN:
+				method = "WITHIN";
+				break;
+			default:
+				return null;
 		}
 		for (String serverLayerId : criterion.getServerLayerIds()) {
 			VectorLayer vl = findVectorLayer(mapModel, serverLayerId);
