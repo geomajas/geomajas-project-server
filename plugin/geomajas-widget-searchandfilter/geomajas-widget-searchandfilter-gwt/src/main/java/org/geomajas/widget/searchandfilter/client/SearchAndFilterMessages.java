@@ -87,6 +87,7 @@ public interface SearchAndFilterMessages extends Messages {
 
 	String searchControllerSearchingTitle();
 	String searchControllerSearchingMessage();
+	String searchControllerFailureMessage();
 
 	String favouritesControllerAddTitle();
 	String favouritesControllerAddName();
