@@ -103,8 +103,9 @@ public final class CriterionUtils {
 		if (criterion.getValue() != null
 				&& ((criterion.getValue().contains("\"") || criterion.getValue().contains(" ") || !criterion.getValue()
 						.matches("(\\.|\\-|[0-9])*")) || "LIKE".equalsIgnoreCase(criterion.getOperator()))
-				&& ((!"DURING".equals(criterion.getOperator().toUpperCase()) && !"BEFORE".equals(criterion.getOperator().toUpperCase()) && !"AFTER"
-						.equals(criterion.getOperator().toUpperCase())))) {
+				&& ((!"DURING".equals(criterion.getOperator().toUpperCase())
+						&& !"BEFORE".equals(criterion.getOperator().toUpperCase()) && !"AFTER".equals(criterion
+						.getOperator().toUpperCase())))) {
 			filter += "\'" + criterion.getValue().replaceAll("\\*", "%") + "\'";
 		} else {
 			filter += criterion.getValue();
