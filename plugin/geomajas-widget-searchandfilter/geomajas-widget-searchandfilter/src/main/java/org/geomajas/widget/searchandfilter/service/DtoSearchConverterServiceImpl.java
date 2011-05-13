@@ -100,14 +100,14 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 		if (l == null) {
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, criterion.getServerLayerId());
 		}
-		
+
 		String operator = criterion.getOperator();
-		if("LIKE".equals(operator.toUpperCase())){
+		if ("LIKE".equals(operator.toUpperCase())) {
 			f = filterService.createLikeFilter(criterion.getAttributeName(), criterion.getValue());
-		}else if("DURING".equals(operator.toUpperCase()) || "BEFORE".equals(operator.toUpperCase())
-				|| "AFTER".equals(operator.toUpperCase())){
+		} else if ("DURING".equals(operator.toUpperCase()) || "BEFORE".equals(operator.toUpperCase())
+				|| "AFTER".equals(operator.toUpperCase())) {
 			f = filterService.parseFilter(criterion.toString()); // In case of a date filter
-		}else{
+		} else {
 			f = filterService.createCompareFilter(criterion.getAttributeName(), criterion.getOperator(),
 					criterion.getValue());
 		}
