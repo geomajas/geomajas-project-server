@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
-	private static final String X_FOWARD_HOST_HEADER = "X-Forwarded-Host";
+	private static final String X_FORWARD_HOST_HEADER = "X-Forwarded-Host";
 	private static final String X_GWT_MODULE_HEADER = "X-GWT-Module-Base";
 	
 	private Logger log = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
@@ -54,23 +54,21 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		
 		// X-Forwarded-Host if behind a reverse proxy, fallback to general method.
 		// Alternative we could use the gwt module url to guess the real URL.
-		if (null != request.getHeader(X_FOWARD_HOST_HEADER)) {
-			log.warn("Automaticdispatcherservice detected a X-Forwarded-Host header which means the server is " +
+		if (null != request.getHeader(X_FORWARD_HOST_HEADER)) {
+			log.warn("AutomaticDispatcherService detected a X-Forwarded-Host header which means the server is " +
 					"accessed using a reverse proxy server. This might cause problems in some cases. You are " +
 					"recommended to configure your tomcat connector to be aware of the original url. " +
 					"(see http://tomcat.apache.org/tomcat-6.0-doc/proxy-howto.html )");
 			String gwtModuleBase = request.getHeader(X_GWT_MODULE_HEADER);
-			Enumeration<String> headers = request.getHeaderNames();
 			if (null != gwtModuleBase) {
 				// Get last slash in the gwtModuleBase, ignoring the trailing slash.
 				int contextEndIndex = gwtModuleBase.lastIndexOf("/", gwtModuleBase.length() - 2);
 				if (contextEndIndex > -1) {
-					String url = gwtModuleBase.substring(0, contextEndIndex) + "/d/";
-					return url;
+					return gwtModuleBase.substring(0, contextEndIndex) + "/d/";
 				}
 			} else {
 				// else get the information from the X-forwarded-host header and default to the standard behaviour 
-				serverName = request.getHeader(X_FOWARD_HOST_HEADER);
+				serverName = request.getHeader(X_FORWARD_HOST_HEADER);
 			}
 		}
 		
