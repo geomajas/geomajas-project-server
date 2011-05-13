@@ -60,13 +60,15 @@ public class SearchController implements SearchRequestHandler {
 		fireSearchStartEvent(searchEvent);
 		SearchCommService.searchByCriterion(event.getCriterion(), mapWidget,
 				new DataCallback<Map<VectorLayer, List<Feature>>>() {
+
 					public void execute(Map<VectorLayer, List<Feature>> result) {
 						searchEvent.setResult(result);
 						fireSearchDoneEvent(searchEvent);
 						fireSearchEndEvent(searchEvent);
-						
+
 					}
 				}, new ErrorHandler() {
+
 					public void execute() {
 						destroyModalWindow();
 						SC.say(messages.searchControllerFailureMessage());
@@ -76,7 +78,7 @@ public class SearchController implements SearchRequestHandler {
 
 	/**
 	 * For instance {@link MultiFeatureListGrid}.
-	 *
+	 * 
 	 * @param handler
 	 */
 	public void addSearchHandler(SearchHandler handler) {
@@ -147,9 +149,9 @@ public class SearchController implements SearchRequestHandler {
 			modalWindow.hide();
 		}
 	}
-	
-	private void destroyModalWindow(){
-		if(modalWindow != null){
+
+	private void destroyModalWindow() {
+		if (modalWindow != null) {
 			modalWindow.destroy();
 		}
 	}
