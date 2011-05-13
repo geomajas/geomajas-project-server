@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.map.feature;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -215,6 +216,14 @@ public class Feature implements Paintable, Cloneable {
 
 	public void setManyToOneAttribute(String name, AssociationValue value) {
 		((ManyToOneAttribute) getAttributes().get(name)).setValue(value);
+	}
+
+	public void addOneToManyValue(String name, AssociationValue value) {
+		OneToManyAttribute oneToMany = (OneToManyAttribute) getAttributes().get(name);
+		if (oneToMany.getValue() == null) {
+			oneToMany.setValue(new ArrayList<AssociationValue>());
+		}
+		oneToMany.getValue().add(value);
 	}
 
 	/**
