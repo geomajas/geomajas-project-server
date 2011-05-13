@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * A generic Searchwidget with common functionality.
  * <p>
  * To build a Searchwidget combine this Searchwidget with a SearchPanel.
- *
+ * 
  * @see SearchWidgetRegistry.
  * @author Kristof Heirwegh
  */
@@ -50,8 +50,8 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 	private final List<SearchRequestHandler> searchHandlers = new ArrayList<SearchWidget.SearchRequestHandler>();
 	private final List<SaveRequestHandler> saveHandlers = new ArrayList<SearchWidget.SaveRequestHandler>();
-	private final List<FavouriteRequestHandler> favouriteHandlers = new ArrayList<SearchWidget.
-		FavouriteRequestHandler>();
+	private final List<FavouriteRequestHandler> favouriteHandlers = 
+		new ArrayList<SearchWidget.FavouriteRequestHandler>();
 
 	private IButton favouritesSBtn;
 	private IButton favouritesRBtn;
@@ -101,6 +101,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		favouritesSBtn.setAutoFit(true);
 		favouritesSBtn.setShowDisabledIcon(false);
 		favouritesSBtn.addClickHandler(new ClickHandler() {
+
 			public void onClick(ClickEvent event) {
 				onAddToFavourites();
 			}
@@ -110,6 +111,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		favouritesRBtn.setAutoFit(true);
 		favouritesRBtn.setShowDisabledIcon(false);
 		favouritesRBtn.addClickHandler(new ClickHandler() {
+
 			public void onClick(ClickEvent event) {
 				onAddToFavourites();
 			}
@@ -119,6 +121,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		searchBtn.setAutoFit(true);
 		searchBtn.setShowDisabledIcon(false);
 		searchBtn.addClickHandler(new ClickHandler() {
+
 			public void onClick(ClickEvent event) {
 				onSearch();
 			}
@@ -128,6 +131,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		resetBtn.setAutoFit(true);
 		resetBtn.setShowDisabledIcon(false);
 		resetBtn.addClickHandler(new ClickHandler() {
+
 			public void onClick(ClickEvent event) {
 				searchPanel.reset();
 			}
@@ -137,6 +141,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
 		saveBtn.addClickHandler(new ClickHandler() {
+
 			public void onClick(ClickEvent event) {
 				onSave();
 			}
@@ -146,6 +151,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		cancelBtn.setAutoFit(true);
 		cancelBtn.setShowDisabledIcon(false);
 		cancelBtn.addClickHandler(new ClickHandler() {
+
 			public void onClick(ClickEvent event) {
 				hide();
 				destroy();
@@ -153,6 +159,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		});
 
 		addCloseClickHandler(new CloseClickHandler() {
+
 			public void onCloseClick(CloseClientEvent event) {
 				hide();
 				destroy();
@@ -321,9 +328,10 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 			}
 		}
 	}
-	
-	private void setVectorLayerOnWhichSearchIsHappeningVisible(){
-		if(searchPanel.getFeatureSearchVectorLayer() != null && !searchPanel.getFeatureSearchVectorLayer().isVisible()){
+
+	private void setVectorLayerOnWhichSearchIsHappeningVisible() {
+		if (searchPanel.getFeatureSearchVectorLayer() != null 
+				&& !searchPanel.getFeatureSearchVectorLayer().isVisible()) {
 			searchPanel.getFeatureSearchVectorLayer().setVisible(true);
 		}
 	}
@@ -334,6 +342,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 	 * @author Kristof Heirwegh
 	 */
 	private class OneOffSaveRequestHandler implements SaveRequestHandler {
+
 		private final SaveRequestHandler oneOffHandler;
 
 		public OneOffSaveRequestHandler(SaveRequestHandler handler) {
@@ -343,6 +352,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		public void onSaveRequested(SaveRequestEvent event) {
 			oneOffHandler.onSaveRequested(event);
 			GWT.runAsync(new RunAsyncCallback() {
+
 				public void onSuccess() {
 					removeSaveRequestHandler(oneOffHandler);
 				}
