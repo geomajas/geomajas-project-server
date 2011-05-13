@@ -79,6 +79,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		tabset.setWidth100();
 		tabset.setHeight100();
 		tabset.addCloseClickHandler(new CloseClickHandler() {
+
 			public void onCloseClick(TabCloseClickEvent event) {
 				setEmpty((tabset.getTabs().length == 1));
 			}
@@ -169,7 +170,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		}
 	}
 
-	private void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData, boolean showSingleResult)
+	private void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData, boolean showSingleResult) 
 	{
 		FeatureListGridTab t;
 		if (csvExportData instanceof Criterion) {
@@ -256,13 +257,14 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		window.setPageLeft(map.getAbsoluteLeft() + 10);
 		window.draw();
 	}
-	
+
 	/**
 	 * Wraps a FeatureListGrid in a Tab and adds some actions.
 	 * 
 	 * @author Kristof Heirwegh
 	 */
 	private class FeatureListGridTab extends Tab implements SelectionChangedHandler {
+
 		private static final String BTN_FOCUSSELECTION = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
 		private static final String BTN_SHOWDETAIL = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/info.gif";
 		private static final String BTN_EXPORT = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/table_save.png";
@@ -279,7 +281,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			this.handler = handler;
 		}
 
-		public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final ExportToCsvHandler handler)
+		public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final ExportToCsvHandler handler) 
 		{
 			super(layer.getLabel());
 			this.handler = handler;
@@ -303,21 +305,25 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				exportButton.setVisible(false);
 			}
 			focusButton.addClickHandler(new ClickHandler() {
+
 				public void onClick(ClickEvent event) {
 					zoomToBounds();
 				}
 			});
 			showButton.addClickHandler(new ClickHandler() {
+
 				public void onClick(ClickEvent event) {
 					showFeatureDetail(mapWidget);
 				}
 			});
 			exportButton.addClickHandler(new ClickHandler() {
+
 				public void onClick(ClickEvent event) {
 					if (handler != null) {
 						exportButton.setDisabled(true);
 						exportButton.setIcon(PROCESSING);
 						handler.execute(layer, new Callback() {
+
 							public void execute() {
 								exportButton.setDisabled(false);
 								exportButton.setIcon(BTN_EXPORT);
@@ -329,7 +335,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			toolStrip.addButton(focusButton);
 			toolStrip.addButton(showButton);
 			toolStrip.addButton(exportButton);
-			featureListGrid = new FeatureListGrid(mapWidget.getMapModel(),new DoubleClickHandler() {
+			featureListGrid = new FeatureListGrid(mapWidget.getMapModel(), new DoubleClickHandler() {
+
 				public void onDoubleClick(DoubleClickEvent event) {
 					showFeatureDetail(mapWidget);
 				}
@@ -393,12 +400,12 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		}
 
 		/**
-		 * Statefull callback that zooms to bounds when all features have been
-		 * retrieved
+		 * Statefull callback that zooms to bounds when all features have been retrieved
 		 * 
 		 * @author Kristof Heirwegh
 		 */
 		private class ZoomToBoundsFeatureLazyLoadCallback implements LazyLoadCallback {
+
 			private int featureCount;
 			private Bbox bounds;
 
@@ -422,7 +429,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				}
 			}
 		}
-		
+
 		private void showFeatureDetail(final MapWidget mapWidget) {
 			ListGridRecord selected = featureListGrid.getSelectedRecord();
 			if (selected != null) {
@@ -430,6 +437,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				if (featureId != null && featureListGrid.getLayer() != null) {
 					featureListGrid.getLayer().getFeatureStore()
 							.getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
+
 								public void execute(List<Feature> response) {
 									showFeatureDetailWindow(response.get(0));
 								}
