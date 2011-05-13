@@ -1,0 +1,168 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- DataSource Property -->
+	<bean id="testDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:mem:baseball" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+
+	<!-- Hibernate SessionFactory -->
+	<bean id="testSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="testDataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
+	</bean>
+
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="testSessionFactory" />
+	</bean>
+
+	<bean name="simpleDateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg type="java.lang.String" value="dd/MM/yyyy" />
+	</bean>
+
+	<bean name="layer" class="org.geomajas.layer.hibernate.HibernateLayer">
+		<property name="layerInfo" ref="layerInfo" />
+		<property name="featureModel">
+			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
+				<property name="sessionFactory" ref="testSessionFactory" />
+			</bean>
+		</property>
+		<property name="sessionFactory" ref="testSessionFactory" />
+		<property name="dateFormat" ref="simpleDateFormat" />
+	</bean>
+
+	<bean name="scrollableResultSetLayer" class="org.geomajas.layer.hibernate.HibernateLayer">
+		<property name="layerInfo" ref="layerInfo" />
+		<property name="scrollableResultSet" value="true" />
+		<property name="featureModel">
+			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
+				<property name="sessionFactory" ref="testSessionFactory" />
+			</bean>
+		</property>
+		<property name="sessionFactory" ref="testSessionFactory" />
+		<property name="dateFormat" ref="simpleDateFormat" />
+	</bean>
+
+	<bean name="featureInfo" class="org.geomajas.configuration.FeatureInfo">
+		<property name="dataSourceName" value="org.geomajas.layer.hibernate.simple.pojo.SimpleFeature" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="id" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="sortAttributeName">
+			<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_TEXT_ATTR" />
+		</property>
+		<property name="sortType" value="DESC" />
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name">
+					<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_GEOMETRY_ATTR" />
+				</property>
+				<property name="editable" value="false" />
+			</bean>
+		</property>
+
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_TEXT_ATTR" />
+					</property>
+					<property name="name">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_TEXT_ATTR" />
+					</property>
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_INT_ATTR" />
+					</property>
+					<property name="name">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_INT_ATTR" />
+					</property>
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_FLOAT_ATTR" />
+					</property>
+					<property name="name">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_FLOAT_ATTR" />
+					</property>
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="FLOAT" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_DOUBLE_ATTR" />
+					</property>
+					<property name="name">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_DOUBLE_ATTR" />
+					</property>
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DOUBLE" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_BOOLEAN_ATTR" />
+					</property>
+					<property name="name">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_BOOLEAN_ATTR" />
+					</property>
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="BOOLEAN" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_DATE_ATTR" />
+					</property>
+					<property name="name">
+						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateSimpleTest.PARAM_DATE_ATTR" />
+					</property>
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DATE" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="layerInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="crs" value="EPSG:4326" />
+		<property name="featureInfo" ref="featureInfo" />
+		<property name="layerType" value="MULTIPOLYGON"/>
+	</bean>
+
+</beans>

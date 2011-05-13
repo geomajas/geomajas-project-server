@@ -9,40 +9,42 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.hibernate.pojo;
+package org.geomajas.layer.hibernate.association.pojo;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.Type;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Hibernate test feature.
+ * Attribute object that is used as a one-to-many association in the Hibernate model.
  * 
  * @author Pieter De Graef
- * @author Jan De Moerloose
  */
 @Entity
-@Table(name = "pojo")
-public class HibernateTestFeature {
+@Table(name = "oneToManyProperty")
+public class OneToManyProperty {
+
+	public static final String PARAM_TEXT_ATTR = "textAttr";
+
+	public static final String PARAM_INT_ATTR = "intAttr";
+
+	public static final String PARAM_FLOAT_ATTR = "floatAttr";
+
+	public static final String PARAM_DOUBLE_ATTR = "doubleAttr";
+
+	public static final String PARAM_BOOLEAN_ATTR = "booleanAttr";
+
+	public static final String PARAM_DATE_ATTR = "dateAttr";
 
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
@@ -67,30 +69,23 @@ public class HibernateTestFeature {
 	@Column(name = "dateAttr")
 	private Date dateAttr;
 
-	@ManyToOne(cascade = { CascadeType.ALL })
-	private HibernateTestManyToOne manyToOne;
-
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "feature")
-	private Set<HibernateTestOneToMany> oneToMany = new HashSet<HibernateTestOneToMany>();
-
-	@Type(type = "org.hibernatespatial.GeometryUserType")
-	@Column(name = "the_geom")
-	private Geometry geometry;
+	@ManyToOne
+	private AssociationFeature feature;
 
 	// Constructors:
 
-	public HibernateTestFeature() {
+	public OneToManyProperty() {
 	}
 
-	public HibernateTestFeature(Long id) {
+	public OneToManyProperty(Long id) {
 		this.id = id;
 	}
 
-	public HibernateTestFeature(String textAttr) {
+	public OneToManyProperty(String textAttr) {
 		this.textAttr = textAttr;
 	}
 
-	public HibernateTestFeature(Long id, String textAttr) {
+	public OneToManyProperty(Long id, String textAttr) {
 		this.id = id;
 		this.textAttr = textAttr;
 	}
@@ -101,13 +96,13 @@ public class HibernateTestFeature {
 		return ReflectionToStringBuilder.toString(this);
 	}
 
-	public static HibernateTestFeature getDefaultInstance1(Long id) {
-		HibernateTestFeature p = new HibernateTestFeature(id);
-		p.setTextAttr("default-name-1");
+	public static OneToManyProperty getDefaultInstance1(Long id, AssociationFeature feature) {
+		OneToManyProperty p = new OneToManyProperty(id);
+		p.setTextAttr("oneToMany-1");
 		p.setBooleanAttr(true);
-		p.setIntAttr(10);
-		p.setFloatAttr(10.0f);
-		p.setDoubleAttr(10.0);
+		p.setIntAttr(1000);
+		p.setFloatAttr(1000.0f);
+		p.setDoubleAttr(1000.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -116,16 +111,17 @@ public class HibernateTestFeature {
 			date = new Date();
 		}
 		p.setDateAttr(date);
+		p.setFeature(feature);
 		return p;
 	}
 
-	public static HibernateTestFeature getDefaultInstance2(Long id) {
-		HibernateTestFeature p = new HibernateTestFeature(id);
-		p.setTextAttr("default-name-2");
+	public static OneToManyProperty getDefaultInstance2(Long id, AssociationFeature feature) {
+		OneToManyProperty p = new OneToManyProperty(id);
+		p.setTextAttr("oneToMany-2");
 		p.setBooleanAttr(false);
-		p.setIntAttr(20);
-		p.setFloatAttr(20.0f);
-		p.setDoubleAttr(20.0);
+		p.setIntAttr(2000);
+		p.setFloatAttr(2000.0f);
+		p.setDoubleAttr(2000.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -134,16 +130,17 @@ public class HibernateTestFeature {
 			date = new Date();
 		}
 		p.setDateAttr(date);
+		p.setFeature(feature);
 		return p;
 	}
 
-	public static HibernateTestFeature getDefaultInstance3(Long id) {
-		HibernateTestFeature p = new HibernateTestFeature(id);
-		p.setTextAttr("default-name-3");
+	public static OneToManyProperty getDefaultInstance3(Long id, AssociationFeature feature) {
+		OneToManyProperty p = new OneToManyProperty(id);
+		p.setTextAttr("oneToMany-3");
 		p.setBooleanAttr(true);
-		p.setIntAttr(30);
-		p.setFloatAttr(30.0f);
-		p.setDoubleAttr(30.0);
+		p.setIntAttr(3000);
+		p.setFloatAttr(3000.0f);
+		p.setDoubleAttr(3000.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -152,16 +149,26 @@ public class HibernateTestFeature {
 			date = new Date();
 		}
 		p.setDateAttr(date);
+		p.setFeature(feature);
 		return p;
 	}
 
-	public static HibernateTestFeature getDefaultInstance4(Long id) {
-		HibernateTestFeature p = new HibernateTestFeature(id);
-		p.setTextAttr("default-name-4");
+	public static OneToManyProperty getDefaultInstance4(Long id, AssociationFeature feature) {
+		OneToManyProperty p = new OneToManyProperty(id);
+		p.setTextAttr("oneToMany-4");
 		p.setBooleanAttr(false);
-		p.setIntAttr(40);
-		p.setFloatAttr(40.0f);
-		p.setDoubleAttr(40.0);
+		p.setIntAttr(4000);
+		p.setFloatAttr(4000.0f);
+		p.setDoubleAttr(4000.0);
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Date date;
+		try {
+			date = format.parse("01/01/2006");
+		} catch (ParseException e) {
+			date = new Date();
+		}
+		p.setDateAttr(date);
+		p.setFeature(feature);
 		return p;
 	}
 
@@ -173,14 +180,6 @@ public class HibernateTestFeature {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public HibernateTestManyToOne getManyToOne() {
-		return manyToOne;
-	}
-
-	public void setManyToOne(HibernateTestManyToOne manyToOne) {
-		this.manyToOne = manyToOne;
 	}
 
 	public String getTextAttr() {
@@ -231,35 +230,11 @@ public class HibernateTestFeature {
 		this.dateAttr = dateAttr;
 	}
 
-	public Set<HibernateTestOneToMany> getOneToMany() {
-		return oneToMany;
+	public AssociationFeature getFeature() {
+		return feature;
 	}
 
-	public void setOneToMany(Set<HibernateTestOneToMany> oneToMany) {
-		this.oneToMany = oneToMany;
+	public void setFeature(AssociationFeature feature) {
+		this.feature = feature;
 	}
-
-	public void addOneToMany(HibernateTestOneToMany oneToMany) {
-		this.oneToMany.add(oneToMany);
-		oneToMany.setFeature(this);
-	}
-
-	public Geometry getGeometry() {
-		return geometry;
-	}
-
-	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		return EqualsBuilder.reflectionEquals(this, other);
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
-	}
-
 }

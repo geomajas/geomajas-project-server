@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.layer.hibernate;
 
 import java.io.Serializable;
@@ -71,8 +72,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Api
 @Transactional(rollbackFor = { Exception.class })
-public class HibernateLayer extends HibernateLayerUtil
-		implements VectorLayer, VectorLayerAssociationSupport, VectorLayerLazyFeatureConversionSupport {
+public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, VectorLayerAssociationSupport,
+		VectorLayerLazyFeatureConversionSupport {
 
 	private final Logger log = LoggerFactory.getLogger(HibernateLayer.class);
 
@@ -84,8 +85,8 @@ public class HibernateLayer extends HibernateLayerUtil
 	private boolean scrollableResultSet;
 
 	/**
-	 * When parsing dates from filters, this model must know how to parse these
-	 * strings into Date objects before transforming them into Hibernate criteria.
+	 * When parsing dates from filters, this model must know how to parse these strings into Date objects before
+	 * transforming them into Hibernate criteria.
 	 */
 	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -112,8 +113,9 @@ public class HibernateLayer extends HibernateLayerUtil
 
 	/**
 	 * Set the layer id.
-	 *
-	 * @param id layer id
+	 * 
+	 * @param id
+	 *            layer id
 	 * @since 1.8.0
 	 */
 	@Api
@@ -126,7 +128,7 @@ public class HibernateLayer extends HibernateLayerUtil
 	}
 
 	public FeatureModel getFeatureModel() {
-		return this.featureModel;
+		return featureModel;
 	}
 
 	public boolean useLazyFeatureConversion() {
@@ -135,8 +137,9 @@ public class HibernateLayer extends HibernateLayerUtil
 
 	/**
 	 * Configure whether lazy feature conversion should be enabled for this layer. Default is true.
-	 *
-	 * @param useLazyFeatureConversion use lazy feature conversion?
+	 * 
+	 * @param useLazyFeatureConversion
+	 *            use lazy feature conversion?
 	 * @since 1.8.0
 	 */
 	@Api
@@ -163,6 +166,7 @@ public class HibernateLayer extends HibernateLayerUtil
 	}
 
 	@PostConstruct
+	@SuppressWarnings("unused")
 	private void postConstruct() throws GeomajasException {
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 		srid = geoService.getSridFromCrs(crs);
@@ -186,9 +190,11 @@ public class HibernateLayer extends HibernateLayerUtil
 
 	/**
 	 * Set the featureModel.
-	 *
-	 * @param featureModel feature model
-	 * @throws LayerException problem setting the feature model
+	 * 
+	 * @param featureModel
+	 *            feature model
+	 * @throws LayerException
+	 *             problem setting the feature model
 	 * @since 1.8.0
 	 */
 	@Api
@@ -202,9 +208,11 @@ public class HibernateLayer extends HibernateLayerUtil
 
 	/**
 	 * Set the session factory for creating Hibernate sessions.
-	 *
-	 * @param sessionFactory session factory
-	 * @throws HibernateLayerException factory could not be set
+	 * 
+	 * @param sessionFactory
+	 *            session factory
+	 * @throws HibernateLayerException
+	 *             factory could not be set
 	 * @since 1.8.0
 	 */
 	@Api
@@ -213,10 +221,9 @@ public class HibernateLayer extends HibernateLayerUtil
 	}
 
 	/**
-	 * This implementation does not support the 'offset' parameter. The
-	 * maxResultSize parameter is not used (limiting the result needs to be done after security
-	 * {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep}). If you expect large results to be
-	 * returned enable scrollableResultSet to retrieve only as many records as needed.
+	 * This implementation does not support the 'offset' parameter. The maxResultSize parameter is not used (limiting
+	 * the result needs to be done after security {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep}). If
+	 * you expect large results to be returned enable scrollableResultSet to retrieve only as many records as needed.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		try {
@@ -224,8 +231,7 @@ public class HibernateLayer extends HibernateLayerUtil
 			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
 			if (filter != null) {
 				if (filter != Filter.INCLUDE) {
-					CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), 
-							dateFormat);
+					CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) featureModel, dateFormat);
 					Criterion c = (Criterion) filter.accept(visitor, criteria);
 					if (c != null) {
 						criteria.add(c);
@@ -344,9 +350,11 @@ public class HibernateLayer extends HibernateLayerUtil
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(attributeInfo.getFeature().getDataSourceName());
 		CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
-		Criterion c = (Criterion) filter.accept(visitor, null);
-		if (c != null) {
-			criteria.add(c);
+		if (filter != null) {
+			Criterion c = (Criterion) filter.accept(visitor, null);
+			if (c != null) {
+				criteria.add(c);
+			}
 		}
 		List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
 		for (Object object : criteria.list()) {
@@ -379,8 +387,9 @@ public class HibernateLayer extends HibernateLayerUtil
 	 * <p>
 	 * Should the result be retrieved as a scrollable resultset? Your database(driver) needs to support this.
 	 * </p>
-	 *
-	 * @param scrollableResultSet true when a scrollable resultset should be used
+	 * 
+	 * @param scrollableResultSet
+	 *            true when a scrollable resultset should be used
 	 * @since 1.8.0
 	 */
 	@Api
@@ -397,10 +406,11 @@ public class HibernateLayer extends HibernateLayerUtil
 	 * 
 	 * ScrollableResults are annoying they run 1 step behind an iterator...
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private class ScrollIterator implements Iterator {
 
 		private final ScrollableResults sr;
+
 		private boolean hasnext;
 
 		public ScrollIterator(ScrollableResults sr) {
@@ -429,9 +439,11 @@ public class HibernateLayer extends HibernateLayerUtil
 
 	/**
 	 * Enforces the correct srid on incoming features.
-	 *
-	 * @param feature object to enforce srid on
-	 * @throws LayerException problem getting or setting srid
+	 * 
+	 * @param feature
+	 *            object to enforce srid on
+	 * @throws LayerException
+	 *             problem getting or setting srid
 	 */
 	private void enforceSrid(Object feature) throws LayerException {
 		Geometry geom = getFeatureModel().getGeometry(feature);
@@ -442,8 +454,7 @@ public class HibernateLayer extends HibernateLayerUtil
 	}
 
 	/**
-	 * Bounds are calculated locally, can use any filter, but slower than
-	 * native.
+	 * Bounds are calculated locally, can use any filter, but slower than native.
 	 * 
 	 * @param filter
 	 *            filter which needs to be applied
@@ -477,10 +488,10 @@ public class HibernateLayer extends HibernateLayerUtil
 	}
 
 	/**
-	 * The idea here is to replace association objects with their persistent
-	 * counterparts. This has to happen just before the saving to database. We
-	 * have to keep the persistent objects inside the HibernateLayer package.
-	 * Never let them out, because that way we'll invite exceptions.
+	 * The idea here is to replace association objects with their persistent counterparts. This has to happen just
+	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayer package. Never
+	 * let them out, because that way we'll invite exceptions.
+	 * 
 	 * @TODO This method is not recursive!
 	 * 
 	 * @param feature
@@ -535,7 +546,8 @@ public class HibernateLayer extends HibernateLayerUtil
 
 							// Loop over all detached values:
 							for (int i = 0; i < array.length; i++) {
-								Serializable id = meta.getIdentifier(array[i], EntityMode.POJO);
+								Serializable id = meta.getIdentifier(array[i], (SessionImplementor) getSessionFactory()
+										.getCurrentSession());
 								if (id != null) {
 									// Existing values: need replacing!
 									Object persistent = session.load(aso.getName(), id);
@@ -552,8 +564,7 @@ public class HibernateLayer extends HibernateLayerUtil
 									meta.setPropertyValue(array[i], refPropName, feature, EntityMode.POJO);
 								} else {
 									// New values:
-									// do nothing...it can stay a detached
-									// value. Better hope for cascading.
+									// do nothing...it can stay a detached value. Better hope for cascading.
 								}
 								col.add(array[i]);
 							}

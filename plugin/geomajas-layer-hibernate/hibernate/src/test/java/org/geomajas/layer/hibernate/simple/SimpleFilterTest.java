@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.layer.hibernate;
+package org.geomajas.layer.hibernate.simple;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,7 +16,8 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
+import org.geomajas.layer.hibernate.AbstractHibernateSimpleTest;
+import org.geomajas.layer.hibernate.simple.pojo.SimpleFeature;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,18 +26,18 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
 /**
- * Unit test that tests filters for the HibernateLayer.
+ * Unit test that tests filters for the HibernateLayer. All tests are executed using the simple domain model.
  * 
  * @author Pieter De Graef
  */
-public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTest {
+public class SimpleFilterTest extends AbstractHibernateSimpleTest {
 
 	@Before
 	public void setUpTestDataWithinTransaction() throws LayerException {
-		layer.create(HibernateTestFeature.getDefaultInstance1(null));
-		layer.create(HibernateTestFeature.getDefaultInstance2(null));
-		layer.create(HibernateTestFeature.getDefaultInstance3(null));
-		layer.create(HibernateTestFeature.getDefaultInstance4(null));
+		layer.create(SimpleFeature.getDefaultInstance1(null));
+		layer.create(SimpleFeature.getDefaultInstance2(null));
+		layer.create(SimpleFeature.getDefaultInstance3(null));
+		layer.create(SimpleFeature.getDefaultInstance4(null));
 	}
 
 	@Test
@@ -45,8 +46,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		Iterator<?> it = layer.getElements(intFilter, 0, 0);
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(2, t);
@@ -59,8 +59,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(2, t);
@@ -73,8 +72,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(2, t);
@@ -87,8 +85,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -97,8 +94,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -111,8 +107,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -121,8 +116,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -135,8 +129,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -145,8 +138,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -163,8 +155,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(1, t);
@@ -177,8 +168,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(2, t);
@@ -188,8 +178,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(2, t);
@@ -202,8 +191,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(1, t);
@@ -213,8 +201,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(3, t);
@@ -227,8 +214,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(4, t);
@@ -244,8 +230,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(1, t);
@@ -256,11 +241,11 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		Iterator<?> it = layer.getElements(filterCreator.createTrueFilter(), 0, 0);
 		// iterate and check if they can be fetched with the fid filter
 		while (it.hasNext()) {
-			HibernateTestFeature expected = (HibernateTestFeature) it.next();
+			SimpleFeature expected = (SimpleFeature) it.next();
 			Filter filter = filterCreator.createFidFilter(new String[] { layer.getFeatureModel().getId(expected) });
 			Iterator<?> it2 = layer.getElements(filter, 0, 0);
 			Assert.assertTrue("FidFilter should return an iterator with 1 feature.", it2.hasNext());
-			HibernateTestFeature actual = (HibernateTestFeature) it2.next();
+			SimpleFeature actual = (SimpleFeature) it2.next();
 			Assert.assertEquals(expected, actual);
 		}
 	}
@@ -273,8 +258,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 		int t = 0;
 		while (it.hasNext()) {
-			Assert.assertTrue("Returned object must be a HibernateTestFeature",
-					it.next() instanceof HibernateTestFeature);
+			Assert.assertTrue("Returned object must be a SimpleFeature", it.next() instanceof SimpleFeature);
 			t++;
 		}
 		Assert.assertEquals(1, t);

@@ -9,14 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.hibernate.pojo;
+package org.geomajas.layer.hibernate.simple.pojo;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,38 +23,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.geomajas.layer.feature.attribute.AssociationValue;
-import org.geomajas.layer.feature.attribute.BooleanAttribute;
-import org.geomajas.layer.feature.attribute.DateAttribute;
-import org.geomajas.layer.feature.attribute.DoubleAttribute;
-import org.geomajas.layer.feature.attribute.FloatAttribute;
-import org.geomajas.layer.feature.attribute.IntegerAttribute;
-import org.geomajas.layer.feature.attribute.LongAttribute;
-import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
-import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
-import org.geomajas.layer.feature.attribute.StringAttribute;
+import org.hibernate.annotations.Type;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Hibernate test object for associations.
- *
+ * Hibernate test feature.
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
 @Entity
-@Table(name = "manyToOne")
-public class HibernateTestManyToOne {
-
-	public static final String PARAM_TEXT_ATTR = "textAttr";
-
-	public static final String PARAM_INT_ATTR = "intAttr";
-
-	public static final String PARAM_FLOAT_ATTR = "floatAttr";
-
-	public static final String PARAM_DOUBLE_ATTR = "doubleAttr";
-
-	public static final String PARAM_BOOLEAN_ATTR = "booleanAttr";
-
-	public static final String PARAM_DATE_ATTR = "dateAttr";
+@Table(name = "pojo")
+public class SimpleFeature {
 
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
@@ -81,20 +60,24 @@ public class HibernateTestManyToOne {
 	@Column(name = "dateAttr")
 	private Date dateAttr;
 
+	@Type(type = "org.hibernatespatial.GeometryUserType")
+	@Column(name = "the_geom")
+	private Geometry geometry;
+
 	// Constructors:
 
-	public HibernateTestManyToOne() {
+	public SimpleFeature() {
 	}
 
-	public HibernateTestManyToOne(Long id) {
+	public SimpleFeature(Long id) {
 		this.id = id;
 	}
 
-	public HibernateTestManyToOne(String textAttr) {
+	public SimpleFeature(String textAttr) {
 		this.textAttr = textAttr;
 	}
 
-	public HibernateTestManyToOne(Long id, String textAttr) {
+	public SimpleFeature(Long id, String textAttr) {
 		this.id = id;
 		this.textAttr = textAttr;
 	}
@@ -105,13 +88,13 @@ public class HibernateTestManyToOne {
 		return ReflectionToStringBuilder.toString(this);
 	}
 
-	public static HibernateTestManyToOne getDefaultInstance1(Long id) {
-		HibernateTestManyToOne p = new HibernateTestManyToOne(id);
-		p.setTextAttr("manyToOne-1");
+	public static SimpleFeature getDefaultInstance1(Long id) {
+		SimpleFeature p = new SimpleFeature(id);
+		p.setTextAttr("default-name-1");
 		p.setBooleanAttr(true);
-		p.setIntAttr(100);
-		p.setFloatAttr(100.0f);
-		p.setDoubleAttr(100.0);
+		p.setIntAttr(10);
+		p.setFloatAttr(10.0f);
+		p.setDoubleAttr(10.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -123,13 +106,13 @@ public class HibernateTestManyToOne {
 		return p;
 	}
 
-	public static HibernateTestManyToOne getDefaultInstance2(Long id) {
-		HibernateTestManyToOne p = new HibernateTestManyToOne(id);
-		p.setTextAttr("manyToOne-2");
+	public static SimpleFeature getDefaultInstance2(Long id) {
+		SimpleFeature p = new SimpleFeature(id);
+		p.setTextAttr("default-name-2");
 		p.setBooleanAttr(false);
-		p.setIntAttr(200);
-		p.setFloatAttr(200.0f);
-		p.setDoubleAttr(200.0);
+		p.setIntAttr(20);
+		p.setFloatAttr(20.0f);
+		p.setDoubleAttr(20.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -141,13 +124,13 @@ public class HibernateTestManyToOne {
 		return p;
 	}
 
-	public static HibernateTestManyToOne getDefaultInstance3(Long id) {
-		HibernateTestManyToOne p = new HibernateTestManyToOne(id);
-		p.setTextAttr("manyToOne-3");
+	public static SimpleFeature getDefaultInstance3(Long id) {
+		SimpleFeature p = new SimpleFeature(id);
+		p.setTextAttr("default-name-3");
 		p.setBooleanAttr(true);
-		p.setIntAttr(300);
-		p.setFloatAttr(300.0f);
-		p.setDoubleAttr(300.0);
+		p.setIntAttr(30);
+		p.setFloatAttr(30.0f);
+		p.setDoubleAttr(30.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -159,41 +142,14 @@ public class HibernateTestManyToOne {
 		return p;
 	}
 
-	public static HibernateTestManyToOne getDefaultInstance4(Long id) {
-		HibernateTestManyToOne p = new HibernateTestManyToOne(id);
-		p.setTextAttr("manyToOne-4");
+	public static SimpleFeature getDefaultInstance4(Long id) {
+		SimpleFeature p = new SimpleFeature(id);
+		p.setTextAttr("default-name-4");
 		p.setBooleanAttr(false);
-		p.setIntAttr(400);
-		p.setFloatAttr(400.0f);
-		p.setDoubleAttr(400.0);
-		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Date date;
-		try {
-			date = format.parse("01/01/2006");
-		} catch (ParseException e) {
-			date = new Date();
-		}
-		p.setDateAttr(date);
+		p.setIntAttr(40);
+		p.setFloatAttr(40.0f);
+		p.setDoubleAttr(40.0);
 		return p;
-	}
-
-	public static ManyToOneAttribute getDefaultAttributeInstance1(Long id) {
-		 Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
-		attributes.put("textAttr", new StringAttribute("manyToOne-1"));
-		attributes.put("booleanAttr", new BooleanAttribute(true));
-		attributes.put("intAttr", new IntegerAttribute(100));
-		attributes.put("floatAttr", new FloatAttribute(100.0f));
-		attributes.put("doubleAttr", new DoubleAttribute(100.0));
-		
-		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Date date;
-		try {
-			date = format.parse("01/01/2009");
-		} catch (ParseException e) {
-			date = new Date();
-		}
-		attributes.put("dateAttr", new DateAttribute(date));
-		return new ManyToOneAttribute(new AssociationValue(new LongAttribute(id), attributes));
 	}
 
 	// Getters and setters:
@@ -252,5 +208,13 @@ public class HibernateTestManyToOne {
 
 	public void setDateAttr(Date dateAttr) {
 		this.dateAttr = dateAttr;
+	}
+
+	public Geometry getGeometry() {
+		return geometry;
+	}
+
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
 	}
 }

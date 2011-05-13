@@ -24,8 +24,21 @@
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">false</property>
-		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestFeature" />
-		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne" />
-		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany" />
+		
+		<mapping class="org.geomajas.layer.hibernate.simple.pojo.SimpleFeature" />
+		
+		<mapping class="org.geomajas.layer.hibernate.association.pojo.AssociationFeature" />
+		<mapping class="org.geomajas.layer.hibernate.association.pojo.ManyToOneProperty" />
+		<mapping class="org.geomajas.layer.hibernate.association.pojo.OneToManyProperty" />
+		
+		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveAttribute" />
+		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveAttributeFeature" />
+		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveTopFeature" />
+		
+		<mapping class="org.geomajas.layer.hibernate.inheritance.pojo.AbstractAttribute" />
+		<mapping class="org.geomajas.layer.hibernate.inheritance.pojo.AbstractHibernateTestFeature" />
+		<mapping class="org.geomajas.layer.hibernate.inheritance.pojo.ExtendedAttribute" />
+		<mapping class="org.geomajas.layer.hibernate.inheritance.pojo.ExtendedHibernateTestFeature" />
+
 	</session-factory>
 </hibernate-configuration>

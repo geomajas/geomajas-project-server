@@ -9,31 +9,41 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.hibernate.pojo;
+package org.geomajas.layer.hibernate.association.pojo;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.geomajas.layer.feature.attribute.AssociationValue;
+import org.geomajas.layer.feature.attribute.BooleanAttribute;
+import org.geomajas.layer.feature.attribute.DateAttribute;
+import org.geomajas.layer.feature.attribute.DoubleAttribute;
+import org.geomajas.layer.feature.attribute.FloatAttribute;
+import org.geomajas.layer.feature.attribute.IntegerAttribute;
+import org.geomajas.layer.feature.attribute.LongAttribute;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 
 /**
- * Hibernate test object for associations.
+ * Attribute object that is used as a many-to-one association in the Hibernate model.
  * 
  * @author Pieter De Graef
- * @author Jan De Moerloose
  */
 @Entity
-@Table(name = "oneToMany")
-public class HibernateTestOneToMany {
+@Table(name = "manyToOneProperty")
+public class ManyToOneProperty {
 
 	public static final String PARAM_TEXT_ATTR = "textAttr";
 
@@ -70,23 +80,20 @@ public class HibernateTestOneToMany {
 	@Column(name = "dateAttr")
 	private Date dateAttr;
 
-	@ManyToOne
-	private HibernateTestFeature feature;
-
 	// Constructors:
 
-	public HibernateTestOneToMany() {
+	public ManyToOneProperty() {
 	}
 
-	public HibernateTestOneToMany(Long id) {
+	public ManyToOneProperty(Long id) {
 		this.id = id;
 	}
 
-	public HibernateTestOneToMany(String textAttr) {
+	public ManyToOneProperty(String textAttr) {
 		this.textAttr = textAttr;
 	}
 
-	public HibernateTestOneToMany(Long id, String textAttr) {
+	public ManyToOneProperty(Long id, String textAttr) {
 		this.id = id;
 		this.textAttr = textAttr;
 	}
@@ -97,13 +104,13 @@ public class HibernateTestOneToMany {
 		return ReflectionToStringBuilder.toString(this);
 	}
 
-	public static HibernateTestOneToMany getDefaultInstance1(Long id) {
-		HibernateTestOneToMany p = new HibernateTestOneToMany(id);
-		p.setTextAttr("oneToMany-1");
+	public static ManyToOneProperty getDefaultInstance1(Long id) {
+		ManyToOneProperty p = new ManyToOneProperty(id);
+		p.setTextAttr("manyToOne-1");
 		p.setBooleanAttr(true);
-		p.setIntAttr(1000);
-		p.setFloatAttr(1000.0f);
-		p.setDoubleAttr(1000.0);
+		p.setIntAttr(100);
+		p.setFloatAttr(100.0f);
+		p.setDoubleAttr(100.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -115,13 +122,13 @@ public class HibernateTestOneToMany {
 		return p;
 	}
 
-	public static HibernateTestOneToMany getDefaultInstance2(Long id) {
-		HibernateTestOneToMany p = new HibernateTestOneToMany(id);
-		p.setTextAttr("oneToMany-2");
+	public static ManyToOneProperty getDefaultInstance2(Long id) {
+		ManyToOneProperty p = new ManyToOneProperty(id);
+		p.setTextAttr("manyToOne-2");
 		p.setBooleanAttr(false);
-		p.setIntAttr(2000);
-		p.setFloatAttr(2000.0f);
-		p.setDoubleAttr(2000.0);
+		p.setIntAttr(200);
+		p.setFloatAttr(200.0f);
+		p.setDoubleAttr(200.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -133,13 +140,13 @@ public class HibernateTestOneToMany {
 		return p;
 	}
 
-	public static HibernateTestOneToMany getDefaultInstance3(Long id) {
-		HibernateTestOneToMany p = new HibernateTestOneToMany(id);
-		p.setTextAttr("oneToMany-3");
+	public static ManyToOneProperty getDefaultInstance3(Long id) {
+		ManyToOneProperty p = new ManyToOneProperty(id);
+		p.setTextAttr("manyToOne-3");
 		p.setBooleanAttr(true);
-		p.setIntAttr(3000);
-		p.setFloatAttr(3000.0f);
-		p.setDoubleAttr(3000.0);
+		p.setIntAttr(300);
+		p.setFloatAttr(300.0f);
+		p.setDoubleAttr(300.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -151,13 +158,13 @@ public class HibernateTestOneToMany {
 		return p;
 	}
 
-	public static HibernateTestOneToMany getDefaultInstance4(Long id) {
-		HibernateTestOneToMany p = new HibernateTestOneToMany(id);
-		p.setTextAttr("oneToMany-4");
+	public static ManyToOneProperty getDefaultInstance4(Long id) {
+		ManyToOneProperty p = new ManyToOneProperty(id);
+		p.setTextAttr("manyToOne-4");
 		p.setBooleanAttr(false);
-		p.setIntAttr(4000);
-		p.setFloatAttr(4000.0f);
-		p.setDoubleAttr(4000.0);
+		p.setIntAttr(400);
+		p.setFloatAttr(400.0f);
+		p.setDoubleAttr(400.0);
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date;
 		try {
@@ -167,6 +174,25 @@ public class HibernateTestOneToMany {
 		}
 		p.setDateAttr(date);
 		return p;
+	}
+
+	public static ManyToOneAttribute getDefaultAttributeInstance(Long id) {
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Date date;
+		try {
+			date = format.parse("01/01/2009");
+		} catch (ParseException e) {
+			date = new Date();
+		}
+		Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
+		attributes.put(PARAM_TEXT_ATTR, new StringAttribute("manyToOne-1"));
+		attributes.put(PARAM_BOOLEAN_ATTR, new BooleanAttribute(true));
+		attributes.put(PARAM_INT_ATTR, new IntegerAttribute(100));
+		attributes.put(PARAM_FLOAT_ATTR, new FloatAttribute(100.0f));
+		attributes.put(PARAM_DOUBLE_ATTR, new DoubleAttribute(100.0));
+		attributes.put(PARAM_DATE_ATTR, new DateAttribute(date));
+
+		return new ManyToOneAttribute(new AssociationValue(new LongAttribute(id), attributes));
 	}
 
 	// Getters and setters:
@@ -226,13 +252,4 @@ public class HibernateTestOneToMany {
 	public void setDateAttr(Date dateAttr) {
 		this.dateAttr = dateAttr;
 	}
-
-	public HibernateTestFeature getFeature() {
-		return feature;
-	}
-
-	public void setFeature(HibernateTestFeature feature) {
-		this.feature = feature;
-	}
-
 }
