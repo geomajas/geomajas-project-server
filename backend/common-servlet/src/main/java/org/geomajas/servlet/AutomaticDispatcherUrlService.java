@@ -11,8 +11,6 @@
 
 package org.geomajas.servlet;
 
-import java.util.Enumeration;
-
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
