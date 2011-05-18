@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
-@Component()
+@Component(LogRequest.COMMAND)
 public class LogCommand implements Command<LogRequest, CommandResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(LogCommand.class);

@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * 
  * @author Jan De Moerloose
  */
-@Component
+@Component(RefreshConfigurationRequest.COMMAND)
 public class RefreshConfigurationCommand implements Command<RefreshConfigurationRequest, RefreshConfigurationResponse> {
 
 	@Autowired

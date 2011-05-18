@@ -12,6 +12,7 @@ package org.geomajas.command.general;
 
 import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.command.dto.CopyrightRequest;
 import org.geomajas.command.dto.CopyrightResponse;
 import org.geomajas.global.Api;
 import org.geomajas.global.CopyrightInfo;
@@ -35,7 +36,7 @@ import java.util.Map;
  * @since 1.7.0
  */
 @Api
-@Component()
+@Component(CopyrightRequest.COMMAND)
 public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(CopyrightCommand.class);

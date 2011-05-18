@@ -44,7 +44,7 @@ import org.springframework.stereotype.Component;
  * @since 1.6.0
  */
 @Api
-@Component()
+@Component(GetMapConfigurationRequest.COMMAND)
 public class GetMapConfigurationCommand implements Command<GetMapConfigurationRequest, GetMapConfigurationResponse> {
 
 	@Autowired

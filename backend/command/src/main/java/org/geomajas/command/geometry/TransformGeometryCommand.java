@@ -28,7 +28,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Jan De Moerloose
  * 
  */
-@Component()
+@Component(TransformGeometryRequest.COMMAND)
 public class TransformGeometryCommand implements Command<TransformGeometryRequest, TransformGeometryResponse> {
 
 	@Autowired

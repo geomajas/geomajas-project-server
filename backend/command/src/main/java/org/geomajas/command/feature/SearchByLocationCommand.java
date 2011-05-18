@@ -68,7 +68,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @since 1.6.0
  */
 @Api
-@Component
+@Component(SearchByLocationRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
 

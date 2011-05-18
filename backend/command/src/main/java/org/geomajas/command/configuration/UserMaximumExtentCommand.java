@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Kristof Heirwegh
  * @author Joachim Van der Auwera
  */
-@Component()
+@Component(UserMaximumExtentRequest.COMMAND)
 public class UserMaximumExtentCommand implements Command<UserMaximumExtentRequest, UserMaximumExtentResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(UserMaximumExtentCommand.class);

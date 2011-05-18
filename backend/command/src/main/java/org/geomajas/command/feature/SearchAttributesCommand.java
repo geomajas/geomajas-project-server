@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author Pieter De Graef
  */
-@Component()
+@Component(SearchAttributesRequest.COMMAND)
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchAttributesCommand implements Command<SearchAttributesRequest, SearchAttributesResponse> {
 

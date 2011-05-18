@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Pieter De Graef
  */
-@Component()
+@Component(SplitPolygonRequest.COMMAND)
 public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPolygonResponse> {
 
 	@Autowired

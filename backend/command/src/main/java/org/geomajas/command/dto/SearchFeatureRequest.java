@@ -33,7 +33,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	 *
 	 * @since 1.9.0
 	 * */
-	public static final String COMMAND = "command.feature.SearchFeature";
+	public static final String COMMAND = "command.feature.Search";
 
 	public static final int MAX_UNLIMITED = 0;
 
