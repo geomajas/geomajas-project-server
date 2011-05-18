@@ -22,7 +22,6 @@
 	<packaging>pom</packaging>
 	<name>geomajas-widget-advancedviews plug-in parent</name>
 	<description>geomajas-widget-advancedviews plug-in grouping module</description>
-
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</developerConnection>
