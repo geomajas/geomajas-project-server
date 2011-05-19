@@ -23,14 +23,26 @@
 		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
 
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">false</property>
+		<property name="show_sql">true</property>
 		
 		<mapping class="org.geomajas.layer.hibernate.simple.pojo.SimpleFeature" />
 		
+		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestFeature" />
+		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne" />
+		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany" />
+
 		<mapping class="org.geomajas.layer.hibernate.association.pojo.AssociationFeature" />
 		<mapping class="org.geomajas.layer.hibernate.association.pojo.ManyToOneProperty" />
 		<mapping class="org.geomajas.layer.hibernate.association.pojo.OneToManyProperty" />
 		
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedFeature" />
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedMany" />
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedManyInMany" />
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedManyInOne" />
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedOne" />
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedOneInMany" />
+		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedOneInOne" />
+
 		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveAttribute" />
 		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveAttributeFeature" />
 		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveTopFeature" />

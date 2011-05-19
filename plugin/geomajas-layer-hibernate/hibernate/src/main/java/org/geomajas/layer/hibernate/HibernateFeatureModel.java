@@ -343,7 +343,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				if (association.getType().equals(AssociationType.MANY_TO_ONE)) {
 					// Many-to-one: expect an object of type AssociationValue:
 					if (value instanceof AssociationValue) {
-						setAssociationValue(bean, propertyName, (AssociationValue) value);
+						setAssociationValue(bean, propertyName, (AssociationValue) value, association);
 					} else {
 						throw new IllegalArgumentException("The value of a many-to-one should be of type"
 								+ " AssociationValue.");
@@ -455,7 +455,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					// If the first property is the only one: set the entire complex object:
 					if (aso.getType().equals(AssociationType.MANY_TO_ONE)) {
 						// Many-to-one; apply the AssociationValue on the correct bean:
-						setAssociationValue(parent, attribute.getName(), (AssociationValue) value);
+						setAssociationValue(parent, attribute.getName(), (AssociationValue) value, aso);
 					} else if (aso.getType().equals(AssociationType.ONE_TO_MANY)) {
 						// One-to-many apply the list of AssociationValues on the correct bean:
 						Type type = getMetadata(parent.getClass()).getPropertyType(attribute.getName());
@@ -529,8 +529,10 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 * <li>If the value does not contain an ID: we assume we should cascade a persist. In other words, we will try to
 	 * create a new value into the target table.</li>
 	 * </ul>
+	 * @throws LayerException 
 	 */
-	private void setAssociationValue(Object parent, String property, AssociationValue value) {
+	private void setAssociationValue(Object parent, String property, AssociationValue value,
+			AssociationAttributeInfo attributeInfo) throws LayerException {
 		// Find the correct child bean:
 		ClassMetadata meta = getSessionFactory().getClassMetadata(parent.getClass());
 
@@ -553,10 +555,16 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			Object bean = beanMeta.instantiate(null, (SessionImplementor) getSessionFactory().getCurrentSession());
 			meta.setPropertyValue(parent, property, bean, EntityMode.POJO);
 
+			// map the nested attribute info's for lookup later on
+			Map<String, AttributeInfo> infos = new HashMap<String, AttributeInfo>();
+			for (AttributeInfo info : attributeInfo.getFeature().getAttributes()) {
+				infos.put(info.getName(), info);
+			}
 			// Copy the individual bean properties to the bean: (this may overwrite existing values)
 			ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
-			for (Entry<String, PrimitiveAttribute<?>> entry : value.getAttributes().entrySet()) {
-				propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
+			for (Entry<String, Attribute<?>> entry : value.getAllAttributes().entrySet()) {
+				setAttributeRecursively(bean, entry.getKey(), entry.getValue().getValue(), infos.get(entry.getKey()));
+				//propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
 			}
 		}
 	}
@@ -584,6 +592,12 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				break;
 			}
 		}
+		
+		// map the nested attribute info's for lookup later on
+		Map<String, AttributeInfo> infos = new HashMap<String, AttributeInfo>();
+		for (AttributeInfo info : attributeInfo.getFeature().getAttributes()) {
+			infos.put(info.getName(), info);
+		}
 
 		// Search for new rows and updates:
 		Collection<Object> toAdd = new ArrayList<Object>();
@@ -594,8 +608,10 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				Object bean = childMetaData.instantiate(null, (SessionImplementor) getSessionFactory()
 						.getCurrentSession());
 				ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
-				for (Entry<String, PrimitiveAttribute<?>> entry : newChild.getAttributes().entrySet()) {
-					propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
+				for (Entry<String, Attribute<?>> entry : newChild.getAllAttributes().entrySet()) {
+					setAttributeRecursively(bean, entry.getKey(), entry.getValue().getValue(),
+							infos.get(entry.getKey()));
+					//propertyMeta.setPropertyValue(bean, entry.getKey(), , EntityMode.POJO);
 				}
 				toAdd.add(bean);
 				if (parentName != null) {
@@ -611,7 +627,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					if (oldId.equals(newId)) {
 						List<AttributeInfo> attribs = attributeInfo.getFeature().getAttributes();
 						for (AttributeInfo attrib : attribs) {
-							Object baseValue = newChild.getAttributes().get(attrib.getName()).getValue();
+							Object baseValue = newChild.getAllAttributes().get(attrib.getName()).getValue();
 							setAttributeRecursively2(oldChild, attrib, attrib.getName(), baseValue);
 						}
 					}
