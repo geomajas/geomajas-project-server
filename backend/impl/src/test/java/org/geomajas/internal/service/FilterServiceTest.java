@@ -309,6 +309,7 @@ public class FilterServiceTest {
 	@Test
 	public void testParseFilter() throws GeomajasException {
 		Filter filter = filterService.parseFilter("a.b = 1 or a.b = 2 or a.b = 2");
+		Filter exclude = filterService.parseFilter("EXCLUDE");
 	}
 
 	/**

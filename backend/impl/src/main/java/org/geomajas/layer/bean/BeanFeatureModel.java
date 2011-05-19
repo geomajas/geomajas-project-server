@@ -10,28 +10,6 @@
  */
 package org.geomajas.layer.bean;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
-import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.configuration.FeatureInfo;
-import org.geomajas.configuration.PrimitiveAttributeInfo;
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.LayerException;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
-import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
-import org.geomajas.service.DtoConverterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -43,6 +21,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
+import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.service.DtoConverterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * A simple Java beans based feature model.
@@ -343,9 +343,9 @@ public class BeanFeatureModel implements FeatureModel {
 								writeProperty(manyToOneBean, attrValue.getValue().getId().getValue(), identifierName);
 
 								// Write the other attributes:
-								for (String key : attrValue.getValue().getAttributes().keySet()) {
-									PrimitiveAttribute<?> attr = attrValue.getValue().getAttributes().get(key);
-									writeProperty(manyToOneBean, attr.getValue(), key);
+								for (Map.Entry<String, Attribute<?>> entry : attrValue.getValue().getAllAttributes()
+										.entrySet()) {
+									writeProperty(manyToOneBean, entry.getValue(), entry.getKey());
 								}
 							}
 							break;

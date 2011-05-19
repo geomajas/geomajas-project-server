@@ -65,7 +65,7 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 * {@inheritDoc}
 	 */
 	public boolean isEmpty() {
-		return value == null || value.getAttributes() == null;
+		return value == null || value.getAllAttributes() == null;
 	}
 
 	/**

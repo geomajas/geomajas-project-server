@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.global.Api;
+import org.geomajas.layer.feature.Attribute;
 
 /**
  * <p>
@@ -37,7 +38,9 @@ public class AssociationValue implements Serializable {
 
 	private PrimitiveAttribute<?> id;
 
-	private Map<String, PrimitiveAttribute<?>> attributes;
+	private Map<String, Attribute<?>> attributes;
+
+	private boolean primitiveOnly;
 
 	/**
 	 * Constructor, create attribute without value (needed for GWT).
@@ -46,16 +49,35 @@ public class AssociationValue implements Serializable {
 	}
 
 	/**
-	 * Create attribute with specified value.
+	 * Create attribute with specified value and primitive attributes only.
 	 * 
-	 * @param id
-	 *            id attribute for association
-	 * @param attributes
-	 *            values for the attributes
+	 * @param id id attribute for association
+	 * @param attributes values for the attributes
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public AssociationValue(PrimitiveAttribute<?> id, Map<String, PrimitiveAttribute<?>> attributes) {
+		this(id, (Map) attributes, true);
+	}
+
+	/**
+	 * Create attribute with specified value and optionally restrict attribute values to primitives.
+	 * 
+	 * @param id id attribute for association
+	 * @param attributes values for the attributes
+	 * @param primitiveOnly true if only primitive attributes should be allowed, false otherwise
+	 * @since 1.9.0
+	 */
+	public AssociationValue(PrimitiveAttribute<?> id, Map<String, Attribute<?>> attributes, boolean primitiveOnly) {
 		this.id = id;
 		this.attributes = attributes;
+		this.primitiveOnly = primitiveOnly;
+		if (primitiveOnly) {
+			for (Attribute<?> attribute : attributes.values()) {
+				if (!attribute.isPrimitive()) {
+					throw new IllegalArgumentException("Expected primitive attributes only");
+				}
+			}
+		}
 	}
 
 	/**
@@ -65,14 +87,17 @@ public class AssociationValue implements Serializable {
 	 * @return A new AssociationValue with the same contents.
 	 */
 	public Object clone() { // NOSONAR
-		PrimitiveAttribute<?> idClone = (PrimitiveAttribute<?>) id.clone();
-		Map<String, PrimitiveAttribute<?>> attrClone = new HashMap<String, PrimitiveAttribute<?>>();
+		PrimitiveAttribute<?> idClone = null;
+		if (id != null) {
+			idClone = (PrimitiveAttribute<?>) id.clone();
+		}
+		Map<String, Attribute<?>> attrClone = new HashMap<String, Attribute<?>>();
 		if (attributes != null) {
-			for (Entry<String, PrimitiveAttribute<?>> entry : attributes.entrySet()) {
-				attrClone.put(entry.getKey(), (PrimitiveAttribute<?>) entry.getValue().clone());
+			for (Entry<String, Attribute<?>> entry : attributes.entrySet()) {
+				attrClone.put(entry.getKey(), (Attribute<?>) entry.getValue().clone());
 			}
 		}
-		return new AssociationValue(idClone, attrClone);
+		return new AssociationValue(idClone, attrClone, primitiveOnly);
 	}
 
 	/**
@@ -87,29 +112,80 @@ public class AssociationValue implements Serializable {
 	/**
 	 * Set the id for the associated object.
 	 * 
-	 * @param id
-	 *            id for associated object
+	 * @param id id for associated object
 	 */
 	public void setId(PrimitiveAttribute<?> id) {
 		this.id = id;
 	}
 
 	/**
+	 * Get the primitive attributes for the associated object.
+	 * 
+	 * @return attributes for associated objects
+	 * @deprecated replaced by {@link #getAllAttributes()} after introduction of nested associations
+	 */
+	@Deprecated
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Map<String, PrimitiveAttribute<?>> getAttributes() {
+		if (!isPrimitiveOnly()) {
+			throw new UnsupportedOperationException("Primitive API not supported for nested association values");
+		}
+		return (Map) attributes;
+	}
+
+	/**
+	 * Set the attributes for the associated object.
+	 * 
+	 * @param attributes attributes for associated objects
+	 * @deprecated replaced by {@link #setAllAttributes(Map)} after introduction of nested associations
+	 */
+	@Deprecated
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setAttributes(Map<String, PrimitiveAttribute<?>> attributes) {
+		if (!isPrimitiveOnly()) {
+			throw new UnsupportedOperationException("Primitive API not supported for nested association values");
+		}
+		this.attributes = (Map) attributes;
+	}
+
+	/**
 	 * Get the attributes for the associated object.
 	 * 
 	 * @return attributes for associated objects
+	 * @since 1.9.0
 	 */
-	public Map<String, PrimitiveAttribute<?>> getAttributes() {
+	public Map<String, Attribute<?>> getAllAttributes() {
 		return attributes;
 	}
 
 	/**
 	 * Set the attributes for the associated object.
 	 * 
-	 * @param attributes
-	 *            attributes for associated objects
+	 * @param attributes attributes for associated objects
+	 * @since 1.9.0
 	 */
-	public void setAttributes(Map<String, PrimitiveAttribute<?>> attributes) {
+	public void setAllAttributes(Map<String, Attribute<?>> attributes) {
 		this.attributes = attributes;
 	}
+
+	/**
+	 * Returns whether this value can only contain primitive attributes.
+	 * 
+	 * @return true if only primitive attributes, false otherwise
+	 * @since 1.9.0
+	 */
+	public boolean isPrimitiveOnly() {
+		return primitiveOnly;
+	}
+
+	/**
+	 * Specify whether this value can only contain primitive attributes.
+	 * 
+	 * @param primitiveOnly true if only primitive attributes, false otherwise
+	 * @since 1.9.0
+	 */
+	public void setPrimitiveOnly(boolean primitiveOnly) {
+		this.primitiveOnly = primitiveOnly;
+	}
+
 }
