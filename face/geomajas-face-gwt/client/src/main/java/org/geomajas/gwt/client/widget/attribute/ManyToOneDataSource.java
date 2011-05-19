@@ -20,8 +20,8 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
-import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -137,8 +137,8 @@ public class ManyToOneDataSource extends DataSource {
 						record.setAttribute(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_ATTRIBUTE,
 								manyToOneAttribute.getValue());
 						//record.setAttribute(attributeInfo.getName(), manyToOneAttribute.getValue());
-						for (String name : manyToOneAttribute.getValue().getAttributes().keySet()) {
-							PrimitiveAttribute<?> attribute = manyToOneAttribute.getValue().getAttributes().get(name);
+						for (String name : manyToOneAttribute.getValue().getAllAttributes().keySet()) {
+							Attribute<?> attribute = manyToOneAttribute.getValue().getAllAttributes().get(name);
 							record.setAttribute(name, attribute.getValue());
 						}
 						list[i] = record;
