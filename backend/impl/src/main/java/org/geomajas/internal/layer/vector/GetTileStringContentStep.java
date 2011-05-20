@@ -16,6 +16,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.rendering.painter.tile.StringContentTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -54,18 +55,20 @@ public class GetTileStringContentStep implements PipelineStep<GetTileContainer> 
 	}
 
 	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		if (null == response.getTile().getFeatureContent()) {
+		InternalTile tile = response.getTile();
+		if (null == tile.getFeatureContent()) {
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 
-			response.getTile().setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
+			tile.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 			TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
 					.getRenderer(), metadata.getScale(), panOrigin, geoService, textService);
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
-			log.debug("Going to paint features {}", response.getTile().getFeatures());
-			tilePainter.paint(response.getTile());
+			log.debug("Going to paint features {}", tile.getFeatures());
+
+			tilePainter.paint(tile);
 		}
 	}
 }

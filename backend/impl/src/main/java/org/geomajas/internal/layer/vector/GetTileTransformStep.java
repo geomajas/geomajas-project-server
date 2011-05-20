@@ -18,6 +18,7 @@ import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetTileContainer;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -47,11 +48,12 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 
 	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		// Determine transformation to apply
+		InternalTile tile = response.getTile();
 		CrsTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
 
 		// convert feature geometries to layer, need to copy to assure cache is not affected
 		List<InternalFeature> features = new ArrayList<InternalFeature>();
-		for (InternalFeature feature : response.getTile().getFeatures()) {
+		for (InternalFeature feature : tile.getFeatures()) {
 			if (null != feature.getGeometry()) {
 				InternalFeature newFeature = feature.cloneWithoutGeometry();
 				newFeature.setGeometry(geoService.transform(feature.getGeometry(), transform));
@@ -59,6 +61,6 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 			}
 		}
 		// replace the contents of the list
-		response.getTile().setFeatures(features);
+		tile.setFeatures(features);
 	}
 }

@@ -13,6 +13,7 @@ package org.geomajas.internal.rendering.painter.tile;
 
 import java.awt.geom.AffineTransform;
 import java.io.StringWriter;
+import java.util.Collections;
 
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -176,8 +177,9 @@ public class StringContentTilePainter implements TilePainter {
 	 * @return Returns a fully rendered vector tile.
 	 */
 	public InternalTile paint(InternalTile tileToPaint) throws RenderException {
-		if (tileToPaint != null) {
+		if (tileToPaint != null && null != tileToPaint.getFeatures()) {
 			tile = tileToPaint;
+			Collections.sort(tile.getFeatures()); // make sure features are sorted by style, needed for grouping
 
 			// Create the SVG / VML feature fragment:
 			if (paintGeometries && featureDocument == null) {

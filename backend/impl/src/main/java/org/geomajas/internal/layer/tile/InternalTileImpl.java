@@ -11,7 +11,6 @@
 package org.geomajas.internal.layer.tile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.internal.rendering.strategy.TileUtil;
@@ -108,7 +107,6 @@ public class InternalTileImpl implements InternalTile {
 
 	/** Returns the list of features that are stored in this tile. */
 	public List<InternalFeature> getFeatures() {
-		Collections.sort(features);
 		return features;
 	}
 
