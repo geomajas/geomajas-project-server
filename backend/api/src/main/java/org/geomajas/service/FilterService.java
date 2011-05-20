@@ -129,7 +129,7 @@ public interface FilterService {
 	Filter createFidFilter(String[] featureIDs);
 
 	/**
-	 * Creates a filter with all the geometries that lie completely within the parameterized geometry (including the
+	 * Creates a filter with all the geometries that lie completely within the given geometry (including the
 	 * geometry itself).
 	 *
 	 * @param geometry
@@ -141,7 +141,7 @@ public interface FilterService {
 	Filter createWithinFilter(Geometry geometry, String geomName);
 
 	/**
-	 * Creates a filter with all the geometries that contain the parameterized geometry (including the geometry itself).
+	 * Creates a filter with all the geometries that contain the given geometry (including the geometry itself).
 	 *
 	 * @param geometry
 	 *            the geometry
@@ -152,8 +152,8 @@ public interface FilterService {
 	Filter createContainsFilter(Geometry geometry, String geomName);
 
 	/**
-	 * Creates a filter with all the geometries that have a non-empty intersection (overlap or touching) with the
-	 * parameterized geometry (including the geometry itself).
+	 * Creates a filter with all the geometries that have a non-empty intersection (overlap or touching) with
+	 * given geometry (including the geometry itself).
 	 *
 	 * @param geometry
 	 *            the geometry
@@ -164,7 +164,7 @@ public interface FilterService {
 	Filter createIntersectsFilter(Geometry geometry, String geomName);
 
 	/**
-	 * Creates a filter with all the geometries that touch the parameterized geometry.
+	 * Creates a filter with all the geometries that touch the given geometry.
 	 *
 	 * @param geometry
 	 *            the geometry
@@ -203,7 +203,7 @@ public interface FilterService {
 	
 
 	/**
-	 * Creates a filter with all the geometries that overlap the parameterized geometry.
+	 * Creates a filter with all the geometries that overlap the given geometry.
 	 *
 	 * @param geometry
 	 *            the geometry

@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
- * Utility class for creating filters with static functions. Make sure all arguments are correct before you use these
+ * Utility class for creating ECQL filters. Make sure all arguments are correct before you use these
  * functions. This class uses the OpenGIS FilterFactory2 interface, which extends the OGC FilterFactory specification
  * with JTS geometry support.
  * </p>
@@ -236,7 +236,7 @@ public final class FilterServiceImpl implements FilterService {
 	}
 
 	/**
-	 * Creates a filter with all the geometries that lie completely within the parameterized geometry (including the
+	 * Creates a filter with all the geometries which are completely within the given geometry (including the
 	 * geometry itself).
 	 * 
 	 * @param geometry
@@ -253,7 +253,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Creates a filter with all the geometries that have a non-empty intersection (overlap or touching) with the
-	 * parameterized geometry (including the geometry itself).
+	 * given geometry (including the geometry itself).
 	 * 
 	 * @param geometry
 	 *            the geometry
@@ -268,7 +268,7 @@ public final class FilterServiceImpl implements FilterService {
 	}
 
 	/**
-	 * Creates a filter with all the geometries that touch the parameterized geometry.
+	 * Creates a filter with all the geometries that touch the given geometry.
 	 * 
 	 * @param geometry
 	 *            the geometry
@@ -313,7 +313,7 @@ public final class FilterServiceImpl implements FilterService {
 	}
 
 	/**
-	 * Creates a filter with all the geometries that overlap the parameterized geometry.
+	 * Creates a filter with all the geometries that overlap the given geometry.
 	 * 
 	 * @param geometry
 	 *            the geometry
@@ -374,7 +374,7 @@ public final class FilterServiceImpl implements FilterService {
 		} catch (CQLException e) {
 			// ECQL should be a superset of CQL, but there are apparently extra key words like "id"
 			// fall back to CQL for backwards compatibility
-			log.warn("filter not parsable by ECQL, falling back to CQL", e);
+			log.warn("Filter not parsable by ECQL, falling back to CQL", e);
 			try {
 				return CQL.toFilter(filter, FF);
 			} catch (CQLException ce) {
