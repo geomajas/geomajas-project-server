@@ -14,14 +14,15 @@ package org.geomajas.puregwt.client.map.controller;
 import java.util.Date;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -45,6 +46,8 @@ import com.google.inject.Inject;
  * @author Joachim Van der Auwera
  */
 public abstract class AbstractRectangleController extends AbstractMapController {
+
+	private final GeomajasGinjector injector = GWT.create(GeomajasGinjector.class);
 
 	protected Rectangle rectangle;
 
@@ -76,7 +79,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	// ------------------------------------------------------------------------
 
 	public AbstractRectangleController() {
-		factory = new GeometryFactoryImpl();
+		factory = injector.getGeometryFactory();
 	}
 
 	// ------------------------------------------------------------------------

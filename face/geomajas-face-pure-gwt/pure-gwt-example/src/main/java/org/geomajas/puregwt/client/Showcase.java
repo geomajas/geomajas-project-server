@@ -13,6 +13,8 @@ package org.geomajas.puregwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  * Entry point and main class for pure GWT example application.
@@ -21,14 +23,21 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class Showcase implements EntryPoint {
 
-	// private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
-
-	// private int mapWidth = 640;
-
-	// private int mapHeight = 480;
-
 	public void onModuleLoad() {
-		ShowcaseLayout layout = new ShowcaseLayout();
+		final SingleSelectionModel<ContentPanel> selectionModel = new SingleSelectionModel<ContentPanel>();
+		final ShowcaseLayout layout = new ShowcaseLayout(new ShowcaseTreeViewModel(selectionModel));
+
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+			public void onSelectionChange(SelectionChangeEvent event) {
+				ContentPanel selected = selectionModel.getSelectedObject();
+				if (selected != null) {
+					// History.newItem(getContentWidgetToken(selected), true);
+					layout.setContent(selected);
+				}
+			}
+		});
+
 		RootPanel.get().add(layout);
 	}
 }

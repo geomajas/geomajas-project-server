@@ -91,6 +91,10 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
+		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -102,6 +106,13 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+
+		<!-- External GWT libraries -->
+		<dependency>
+		    <groupId>com.google.code.gwt-dnd</groupId>
+		    <artifactId>gwt-dnd</artifactId>
+		    <version>3.1.0</version>
 		</dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->

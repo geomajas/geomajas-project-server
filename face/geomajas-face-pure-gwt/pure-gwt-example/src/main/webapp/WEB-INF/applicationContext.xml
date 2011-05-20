@@ -31,6 +31,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="maps">
 			<list>
 				<ref bean="mapOsm" />
+				<ref bean="mapWms" />
+				<ref bean="mapLegend" />
+				<ref bean="mapLayerVisibility" />
 			</list>
 		</property>
 	</bean>

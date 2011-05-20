@@ -11,18 +11,20 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.layers.DefaultContentPanel;
+import org.geomajas.puregwt.client.layers.IntroductionContentPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellTree;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.TreeViewModel;
 
 /**
- * ...
+ * Top layout for the Geomajas pure GWT showcase.
  * 
  * @author Pieter De Graef
  */
@@ -31,7 +33,7 @@ public class ShowcaseLayout extends Composite {
 	private static final TestLayoutUiBinder UIBINDER = GWT.create(TestLayoutUiBinder.class);
 
 	/**
-	 * ...
+	 * UI binder interface for this showcase layout.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -44,12 +46,29 @@ public class ShowcaseLayout extends Composite {
 	@UiField
 	protected ScrollPanel contentPanel;
 
-	public ShowcaseLayout() {
+	private CellTree mainMenu;
+
+	private ContentPanel content;
+
+	public ShowcaseLayout(TreeViewModel treeModel) {
 		initWidget(UIBINDER.createAndBindUi(this));
-		Label blop = new Label("Dit is een label");
-		leftPanel.add(blop);
-		ContentPanel panel = new DefaultContentPanel();
-		contentPanel.add(panel);
-		panel.ensureWidget();
+
+		// Left panel - the show case tree view:
+		mainMenu = new CellTree(treeModel, null);
+		mainMenu.setAnimationEnabled(true);
+		mainMenu.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
+		leftPanel.add(mainMenu);
+
+		// Content panel:
+		setContent(new IntroductionContentPanel());
+	}
+
+	public void setContent(final ContentPanel content) {
+		if (this.content != null) {
+			contentPanel.remove(this.content);
+		}
+		contentPanel.add(content);
+		this.content = content;
+		content.ensureWidget();
 	}
 }

@@ -10,14 +10,16 @@
   -->
 
 <module>
-	<inherits name="org.geomajas.puregwt.GeomajasClient"/>
-	<inherits name="com.google.gwt.inject.Inject"/>
+    <inherits name="org.geomajas.puregwt.GeomajasClient"/>
+    <inherits name="com.google.gwt.inject.Inject"/>
 
-	<source path="client"/>
-	<source path="client/spatial">
-		<exclude name="*Test*.java"/>
-	</source>
-	<source path="client/map">
-		<exclude name="*Test*.java"/>
-	</source>
+    <source path="client">
+        <exclude name="*Test*.java"/>
+    </source>
+    <source path="client/spatial">
+        <exclude name="*Test*.java"/>
+    </source>
+    <source path="client/map">
+        <exclude name="*Test*.java"/>
+    </source>
 </module>

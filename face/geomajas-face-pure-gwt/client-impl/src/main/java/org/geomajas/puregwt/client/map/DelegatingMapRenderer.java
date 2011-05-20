@@ -34,6 +34,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.spatial.Matrix;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * <p>
@@ -73,11 +74,24 @@ public class DelegatingMapRenderer implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onLayerOrderChanged(LayerOrderChangedEvent event) {
-		HtmlObject layerContainer = htmlContainer.getChild(event.getFromIndex());
-		if (layerContainer != null) {
-			// Not entirely correct:
-			htmlContainer.remove(layerContainer);
-			htmlContainer.insert(layerContainer, event.getToIndex());
+		if (event.getFromIndex() < htmlContainer.getChildCount()) {
+			// Source is rasterized layer:
+			int toIndex = event.getToIndex() > htmlContainer.getChildCount() ? htmlContainer.getChildCount() : event
+					.getToIndex();
+			HtmlObject layerContainer = htmlContainer.getChild(event.getFromIndex());
+			if (layerContainer != null) {
+				htmlContainer.remove(layerContainer);
+				htmlContainer.insert(layerContainer, toIndex);
+			}
+		} else {
+			// Source is vector layer:
+			int fromIndex = event.getFromIndex() - htmlContainer.getChildCount();
+			int toIndex = event.getToIndex() - htmlContainer.getChildCount();
+			VectorObject layerContainer = vectorContainer.getVectorObject(fromIndex);
+			if (layerContainer != null) {
+				vectorContainer.remove(layerContainer);
+				vectorContainer.insert(layerContainer, toIndex);
+			}
 		}
 	}
 

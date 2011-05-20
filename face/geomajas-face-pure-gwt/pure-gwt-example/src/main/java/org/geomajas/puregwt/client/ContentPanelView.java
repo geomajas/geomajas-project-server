@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class ContentPanelView extends Composite {
 
 	/**
-	 * ...
+	 * UI binder for content widgets.
 	 * 
 	 * @author Pieter De Graef
 	 */

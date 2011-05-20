@@ -124,6 +124,15 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 				event.preventDefault();
 			}
 		});
+		
+		// We don't want scrolling on the page and zooming at the same time.
+		// TODO: make this optional. When no zoom on scroll is used, scrolling the page should be possible.
+		addMouseWheelHandler(new MouseWheelHandler() {
+
+			public void onMouseWheel(MouseWheelEvent event) {
+				event.preventDefault();
+			}
+		});
 	}
 
 	public Widget asWidget() {

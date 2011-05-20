@@ -18,6 +18,11 @@ import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerShowEvent;
+import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
+import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 
 /**
  * Abstraction of the basic layer interface. Specific layer implementations should use this as a base.
@@ -38,6 +43,8 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	private boolean markedAsVisible;
 
+	private boolean visibleAtPreviousScale;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -57,6 +64,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		this.viewPort = viewPort;
 		this.eventBus = eventBus;
 		markedAsVisible = layerInfo.isVisible();
+		eventBus.addHandler(ViewPortChangedHandler.TYPE, new LayerScaleVisibilityHandler());
 	}
 
 	// ------------------------------------------------------------------------
@@ -94,9 +102,12 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	public void setMarkedAsVisible(boolean markedAsVisible) {
 		this.markedAsVisible = markedAsVisible;
+		eventBus.fireEvent(new LayerVisibilityMarkedEvent(this));
 		if (isShowing()) {
+			visibleAtPreviousScale = true;
 			eventBus.fireEvent(new LayerShowEvent(this));
 		} else {
+			visibleAtPreviousScale = false;
 			eventBus.fireEvent(new LayerHideEvent(this));
 		}
 	}
@@ -113,5 +124,30 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Every time the scale on the map changes, this handler checks to see if the layer should become visible or not.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class LayerScaleVisibilityHandler implements ViewPortChangedHandler {
+
+		public void onViewPortChanged(ViewPortChangedEvent event) {
+			onViewPortScaled(null);
+		}
+
+		public void onViewPortScaled(ViewPortScaledEvent event) {
+			if (!visibleAtPreviousScale && isShowing()) {
+				visibleAtPreviousScale = true;
+				eventBus.fireEvent(new LayerShowEvent(AbstractLayer.this));
+			} else if (visibleAtPreviousScale && !isShowing()) {
+				visibleAtPreviousScale = false;
+				eventBus.fireEvent(new LayerHideEvent(AbstractLayer.this));
+			}
+		}
+
+		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+		}
 	}
 }

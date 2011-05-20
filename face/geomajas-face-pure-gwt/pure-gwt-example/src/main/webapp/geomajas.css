@@ -20,6 +20,8 @@
 }
 
 .layer-block {
+	width: 100%;
+	margin-bottom: 5px;
 	background: #E6F6E6;
 	padding: 3px;
 	border: 1px solid #C0D6C0;

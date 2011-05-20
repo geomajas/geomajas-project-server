@@ -11,15 +11,18 @@
 
 package org.geomajas.puregwt.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.LazyPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * ...
+ * General definition of a content panel for a single example in the showcase.
  * 
  * @author Pieter De Graef
  */
 public abstract class ContentPanel extends LazyPanel {
+
+	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
 
 	private ContentPanelView view;
 
@@ -35,5 +38,9 @@ public abstract class ContentPanel extends LazyPanel {
 		view.setDescription(getDescription());
 		view.setContentWidget(getContentWidget());
 		return view;
+	}
+	
+	public GeomajasGinjector getInjector() {
+		return geomajasInjector;
 	}
 }

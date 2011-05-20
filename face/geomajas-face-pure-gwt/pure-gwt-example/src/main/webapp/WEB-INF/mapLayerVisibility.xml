@@ -16,8 +16,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<!-- OpenStreetMap sample -->
-	<bean name="mapOsm" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapLayerVisibility" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#E0E0E0" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -74,16 +73,22 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="osmLayer" />
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
+					<property name="serverLayerId" value="osm" />
+					<property name="label" value="OpenStreetMap" />
+					<property name="visible" value="true" />
+					<property name="style" value="1" />
+				</bean>
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
+					<property name="serverLayerId" value="layerCountries110m" />
+					<property name="label" value="Countries" />
+					<property name="visible" value="false" />
+					<property name="maximumScale" value="1:1000000" />
+					<property name="minimumScale" value="1:10000000" />
+					<property name="namedStyleInfo" ref="layerCountries110mStyleInfo" />
+				</bean>
 			</list>
 		</property>
-	</bean>
-
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-		<property name="serverLayerId" value="osm" />
-		<property name="label" value="OpenStreetMap (raster)" />
-		<property name="visible" value="true" />
-		<property name="style" value="1" />
 	</bean>
 
 </beans>
