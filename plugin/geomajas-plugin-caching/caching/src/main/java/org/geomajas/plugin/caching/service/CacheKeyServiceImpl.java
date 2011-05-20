@@ -132,11 +132,11 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	public CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys) {
 		CacheContext res = new CacheContextImpl();
 		for (String key : keys) {
-			if (!pipelineContext.containsKey(key)) {
-				res = null;
-				break;
+			Object value = pipelineContext.getOptional(key);
+			if (null != value) {
+				res.put(key, value);
 			} else {
-				res.put(key, pipelineContext.getOptional(key));
+				log.warn("No value for context key " + key);
 			}
 		}
 		return res;

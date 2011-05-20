@@ -30,10 +30,11 @@ public interface CacheKeyService {
 
 	/**
 	 * Build a cache context object from the requested keys of the pipeline context.
+	 * Note that the keys are optional, though a warning is logged for null values.
 	 *
 	 * @param pipelineContext pipeline context to key base info from
 	 * @param keys keys for items to include from pipeline context
-	 * @return cache context or null (if not all keys are available in the context)
+	 * @return cache context
 	 */
 	CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys);
 
