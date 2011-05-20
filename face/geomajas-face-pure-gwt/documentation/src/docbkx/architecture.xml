@@ -39,7 +39,9 @@
       <title>MapPresenter</title>
 
       <para>The MapPresenter represents the central map interface and as such
-      it determines the map's functionalities.</para>
+      it determines the map's functionalities. It provides support for many of
+      the topics that are discussed in the following sections, such as
+      MapControllers or an EventBus.</para>
     </sect2>
 
     <sect2>
@@ -66,8 +68,7 @@
 
       <para>This model provides methods to add and remove layers, to change
       layer order, to retrieve layer information etc. Most changes in the
-      layer model will trigger some event which can always be captured by
-      interested parties.</para>
+      layer model will trigger some event that can always be captured.</para>
     </sect2>
 
     <sect2>
@@ -182,7 +183,7 @@
             </row>
 
             <row>
-              <entry>ViewPortDraggedEvent (TODO check again)</entry>
+              <entry>ViewPortDraggedEvent</entry>
 
               <entry>ViewPortChangedHandler</entry>
 
@@ -393,6 +394,12 @@
           and are not affected by changes in the map view.</para>
         </listitem>
       </itemizedlist>
+
+      <caution>
+        <para>Beware that drawing a great many objects in WorldSpace can slow
+        down an application, as their positions need to be recalculated every
+        time the map navgates.</para>
+      </caution>
     </sect2>
 
     <sect2>
