@@ -156,13 +156,19 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
+		boolean primitiveOnly = true;
 		for (AttributeInfo attributeInfo : associationAttributeInfo.getFeature().getAttributes()) {
 			Object propertyValue = getBeanProperty(value, attributeInfo.getName());
-			attributes.put(attributeInfo.getName(), toDto(propertyValue, attributeInfo));
+			Attribute<?> attrib = toDto(propertyValue, attributeInfo);
+			attributes.put(attributeInfo.getName(), attrib);
+			if (!attrib.isPrimitive()) {
+				primitiveOnly = false;
+			}
 		}
-		PrimitiveAttribute<?> id = (PrimitiveAttribute<?>) toDto(getBeanProperty(value, associationAttributeInfo
-				.getFeature().getIdentifier().getName()), associationAttributeInfo.getFeature().getIdentifier());
-		return new AssociationValue(id, attributes, false);
+		PrimitiveAttribute<?> id = (PrimitiveAttribute<?>) toDto(
+				getBeanProperty(value, associationAttributeInfo.getFeature().getIdentifier().getName()),
+				associationAttributeInfo.getFeature().getIdentifier());
+		return new AssociationValue(id, attributes, primitiveOnly);
 	}
 
 	private Object getBeanProperty(Object bean, String property) throws GeomajasException {
