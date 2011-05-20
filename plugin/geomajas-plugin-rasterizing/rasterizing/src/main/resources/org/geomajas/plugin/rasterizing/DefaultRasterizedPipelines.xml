@@ -30,12 +30,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZED" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" />
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE" />
 	</bean>
 
 

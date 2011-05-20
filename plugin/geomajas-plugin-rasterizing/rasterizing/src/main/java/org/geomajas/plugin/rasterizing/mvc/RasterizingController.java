@@ -13,13 +13,23 @@ package org.geomajas.plugin.rasterizing.mvc;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.CrsTransform;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
+import org.geomajas.plugin.rasterizing.step.RebuildCacheContainer;
 import org.geomajas.service.ConfigurationService;
+import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -53,7 +63,16 @@ public class RasterizingController {
 	private CacheManagerService cacheManagerService;
 
 	@Autowired
+	private DtoConverterService dtoConverterService;
+
+	@Autowired
+	private GeoService geoService;
+
+	@Autowired
 	private TestRecorder recorder;
+
+	@Autowired
+	private CachingSupportServiceSecurityContextAdder securityContextAdder;
 
 	@RequestMapping(value = "/rasterizing/layer/{layerId}/{key}.png", method = RequestMethod.GET)
 	public void getImage(@PathVariable String layerId, @PathVariable String key, HttpServletResponse response)
@@ -70,6 +89,30 @@ public class RasterizingController {
 				context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
 				context.put(PipelineCode.LAYER_ID_KEY, layerId);
 				context.put(PipelineCode.LAYER_KEY, layer);
+
+				// get data from rebuild cache
+				RebuildCacheContainer rebuildCacheContainer = cacheManagerService.get(layer, CacheCategory.REBUILD, key,
+						RebuildCacheContainer.class);
+				if (null == rebuildCacheContainer) {
+					log.error("Data to rebuild the raster image is no longer available for key " + key);
+					response.sendError(HttpServletResponse.SC_NO_CONTENT);
+					return;
+				}
+				recorder.record(CacheCategory.REBUILD, "Got rebuild info from cache");
+				TileMetadata tileMetadata = rebuildCacheContainer.getMetadata();
+				context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
+				Crs crs = geoService.getCrs2(tileMetadata.getCrs());
+				context.put(PipelineCode.CRS_KEY, crs);
+				CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
+				context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
+				Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
+				Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
+				context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
+				// can't stop here, we have only prepared the context, not built the tile !
+				InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
+				tileContainer.setTile(tile);
+				securityContextAdder.restoreSecurityContext(rebuildCacheContainer.getContext());
+
 				pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
 						tileContainer);
 				rasterizeContainer = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);

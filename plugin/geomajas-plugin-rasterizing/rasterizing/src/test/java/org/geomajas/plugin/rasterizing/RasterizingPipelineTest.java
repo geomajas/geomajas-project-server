@@ -47,7 +47,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml",
-		"/org/geomajas/plugin/rasterizing/rasterizing-pipelines.xml", "/org/geomajas/spring/testRecorder.xml",
+		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml",
+		"/org/geomajas/spring/testRecorder.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/org/geomajas/testdata/layerBeansPoint.xml","/org/geomajas/testdata/layerBeansMultiLine.xml" })
 @DirtiesContext
@@ -93,8 +94,6 @@ public class RasterizingPipelineTest {
 	@Autowired
 	private VectorLayerService vectorLayerService;
 
-	private static byte[] DUMMY_BYTES = new byte[] { 0, 1, 2 };
-
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/rasterizingpipeline";
 
 	private static final double DELTA = 1E-6;
@@ -111,7 +110,6 @@ public class RasterizingPipelineTest {
 	@Test
 	public void testRasterizeFromCache() throws Exception {
 		InternalTile tile;
-		recorder.clear();
 		// create metadata
 		GetVectorTileRequest metadata = new GetVectorTileRequest();
 		metadata.setCode(new TileCode(4, 8, 8));
@@ -124,18 +122,20 @@ public class RasterizingPipelineTest {
 		metadata.setPaintLabels(false);
 		metadata.setPaintGeometries(true);
 		// get tile
+		recorder.clear();
 		tile = vectorLayerService.getTile(metadata);
+		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER));
 		// find the key
 		String url = tile.getFeatureContent();
 		Assert.assertTrue(url.startsWith("http://test/rasterizing/layer/beans/"));
 		Assert.assertTrue(url.contains("?"));
 		String key = url.substring("http://test/rasterizing/layer/beans/".length(), url.indexOf(".png"));
-		Object o = cacheManager.get(layerBeans, CacheCategory.RASTER, key);
-		Assert.assertNotNull("Missing raster in cache", o);
+		Object o = cacheManager.get(layerBeans, CacheCategory.REBUILD, key);
+		Assert.assertNotNull("Missing rebuild data in cache", o);
 		MockHttpServletResponse response = new MockHttpServletResponse();
+		recorder.clear();
 		controller.getImage(layerBeans.getId(), key, response);
-		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Rasterization success", "Put item in cache",
-				"Put item in cache", "Got item from cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Rasterization success", "Put item in cache"));
 		new ServletResponseAssert(response).assertEqualImage("beans-4-8-8.png", writeImages, DELTA);
 		cacheManager.drop(layerBeans);
 	}
@@ -143,7 +143,6 @@ public class RasterizingPipelineTest {
 	@Test
 	public void testRasterizeFromRebuildCache() throws Exception {
 		InternalTile tile;
-		recorder.clear();
 		// create metadata
 		GetVectorTileRequest metadata = new GetVectorTileRequest();
 		metadata.setCode(new TileCode(4, 8, 8));
@@ -156,6 +155,7 @@ public class RasterizingPipelineTest {
 		metadata.setPaintLabels(false);
 		metadata.setPaintGeometries(true);
 		// get tile
+		recorder.clear();
 		tile = vectorLayerService.getTile(metadata);
 		// find the key
 		String url = tile.getFeatureContent();
@@ -164,30 +164,47 @@ public class RasterizingPipelineTest {
 		String key = url.substring("http://test/rasterizing/layer/layerBeansPoint/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeansPoint, CacheCategory.RASTER, key);
 		Assert.assertNull("Unexpected raster in cache", o);
+		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache"));
 
 		// clear to test without security context
 		securityManager.clearSecurityContext();
 		MockHttpServletResponse response = new MockHttpServletResponse();
+		recorder.clear();
 		controller.getImage(layerBeansPoint.getId(), key, response);
-		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache", "Got item from cache",
-				"Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Got rebuild info from cache"));
 		new ServletResponseAssert(response).assertEqualImage("beansPoint-4-8-8.png", writeImages, DELTA);
 		cacheManager.drop(layerBeansPoint);
 	}
 
 	@Test
-	public void testRasterizeFromAllCache() throws Exception {
+	public void testGetVectorTileRasterized() throws Exception {
 		InternalTile tile;
-		recorder.clear();
-		// create metadata
-		GetVectorTileRequest metadata = createRequest();
+		GetVectorTileRequest metadata;
+		String url;
 		// get tile
+		metadata = createRequest();
+		recorder.clear();
 		tile = vectorLayerService.getTile(metadata);
+		url = tile.getFeatureContent();
+		Assert.assertTrue(url.contains("http://test"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE));
 		// recreate same metadata and get tile again
 		metadata = createRequest();
+		recorder.clear();
 		tile = vectorLayerService.getTile(metadata);
+		Assert.assertEquals(removeRandom(url), removeRandom(tile.getFeatureContent()));
 		cacheManager.drop(layerBeansMultiLine);
-		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache", "Got item from cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE));
+	}
+
+	private String removeRandom(String url) {
+		int pos = url.indexOf('?');
+		if (pos > 0) {
+			return url.substring(0, pos);
+		}
+		return url;
 	}
 
 	private GetVectorTileRequest createRequest() {

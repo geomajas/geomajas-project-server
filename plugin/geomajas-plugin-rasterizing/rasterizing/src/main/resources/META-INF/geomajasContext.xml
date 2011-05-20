@@ -117,21 +117,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<!-- define pipelines for VectorLayerService -->
-
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED" />
+	<!--
+		Pipeline which rasterizes a tile. Does not cache the raster.
+		This is used in the RasterizingController and should be installed as
+		RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING for the layer
+	-->
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_NON_CACHED" />
 		<property name="extensions">
 			<map>
-				<entry key="preTileFilter">
-					<bean class="org.geomajas.plugin.rasterizing.step.ClearPanOriginStep" >
-						<property name="id" value="ClearPanOrigin" />
-					</bean>
-				</entry>
-				<entry key="preGetStringContent">
-					<bean class="org.geomajas.plugin.rasterizing.step.RasterUrlStep" >
-						<property name="id" value="RasterUrl" />
+				<entry key="preTileFill">
+					<bean class="org.geomajas.plugin.rasterizing.step.RasterTileStep" >
+						<property name="id" value="RasterTileStep" />
 					</bean>
 				</entry>
 			</map>
@@ -148,84 +146,32 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="id" value="SkipTileFill" />
 					<property name="stepId" value="GetTileFillStep" />
 				</bean>
-				<bean
-					class="org.geomajas.plugin.rasterizing.step.RebuildCacheCachingInterceptor">
-					<property name="id" value="RebuildCache" />
-					<property name="stepId" value="GetTileFilterStep" />
-				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<!-- @todo needed -->
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
+	<!--
+		Pipeline which rasterizes a tile and caches the rasterized image.
+		This is used in the RasterizingController and should be installed as
+		RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING for the layer
+	-->
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_WITH_CACHING" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_WITH_CACHING" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE" />
 		<property name="extensions">
 			<map>
-				<entry key="preTileFill">
-					<bean class="org.geomajas.plugin.rasterizing.step.RasterTileStep" >
-						<property name="id" value="RasterTileStep" />
+				<entry key="postTileFill">
+					<bean class="org.geomajas.plugin.rasterizing.step.RasterCachePutStep" >
+						<property name="id" value="RasterCachePutStep" />
 					</bean>
 				</entry>
 			</map>
 		</property>
-		<property name="interceptors">
-			<list>
-				<bean
-					class="org.geomajas.plugin.rasterizing.step.RasterTileCachingInterceptor">
-					<property name="id" value="RasterTileCache" />
-					<property name="stepId" value="RasterTileStep" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-	
-	<!-- define cached pipelines for VectorLayerService -->
-
-	<!-- @todo delete ? -->
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
-		<property name="interceptors">
-			<list>
-				<bean
-					class="org.geomajas.plugin.rasterizing.step.GetRasterizedTileAllCachingInterceptor">
-					<property name="id" value="GetTileAllCache" />
-				</bean>
-			</list>
-		</property>
 	</bean>
 
-	<!-- @todo needed -->
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
-		<property name="interceptors">
-			<list>
-				<bean
-					class="org.geomajas.plugin.rasterizing.step.GetRasterizedTileAllCachingInterceptor">
-					<property name="id" value="GetTileAllCache" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean name="PIPELINE_RASTERIZE_VECTOR_TILE" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
-		<property name="interceptors">
-			<list>
-				<bean
-					class="org.geomajas.plugin.rasterizing.step.GetRasterizedTileAllCachingInterceptor">
-					<property name="id" value="GetTileAllCache" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZED" />
+	<!-- Pipeline to replace PIPELINE_GET_VECTOR_PIPELINE for rasterized layers, fill REBUILD cache and set URL -->
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" />
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.plugin.rasterizing.step.ClearPanOriginStep" >
@@ -242,7 +188,5 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-		
-	
 </beans>
 

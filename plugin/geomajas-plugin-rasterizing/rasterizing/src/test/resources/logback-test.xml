@@ -17,6 +17,10 @@
         </encoder>
     </appender>
 
+	<!--
+	<logger name="org.geomajas.internal.service.pipeline" level="DEBUG" />
+	-->
+
     <root>
         <level value="OFF"/>
         <appender-ref ref="CONSOLE"/>
