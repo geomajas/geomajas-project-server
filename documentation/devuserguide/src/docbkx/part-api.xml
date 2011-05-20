@@ -2087,8 +2087,12 @@
     <section id="FilterService">
       <title>FilterService</title>
 
-      <para>FilterService allows you to build filters which can be applied
-      when requesting vector features.</para>
+      <para>The FilterService allows you to build filters at runtime on the
+      client-side which are applied when requesting vector features. The
+      service is implemented by setting the filter parameter of a vector layer
+      with an <ulink
+      url="http://docs.codehaus.org/display/GEOTOOLS/ECQL+Parser+Design">ECQL</ulink>
+      string. </para>
     </section>
 
     <section id="TextService">
