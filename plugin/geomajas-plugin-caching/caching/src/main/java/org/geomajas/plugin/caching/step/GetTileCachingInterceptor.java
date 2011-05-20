@@ -49,6 +49,7 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 	public void afterSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		recorder.record(CacheCategory.TILE, "Put item in cache");
 		InternalTile tile = response.getTile();
+		tile.setFeatures(null); // clear features to reduce amount of cached data, not converted to VectorTile anyway
 		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_KEY,
 				CacheStepConstant.CACHE_TILE_CONTEXT, new TileCacheContainer(tile), tile.getBounds());
 	}

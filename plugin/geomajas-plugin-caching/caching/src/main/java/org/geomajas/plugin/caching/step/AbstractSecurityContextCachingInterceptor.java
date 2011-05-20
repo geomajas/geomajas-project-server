@@ -13,11 +13,7 @@ package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.Api;
 import org.geomajas.plugin.caching.service.CacheContext;
-import org.geomajas.security.SavedAuthorization;
-import org.geomajas.security.SecurityContext;
-import org.geomajas.security.SecurityManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -32,13 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Api(allMethods = true)
 public class AbstractSecurityContextCachingInterceptor<T> extends AbstractCachingInterceptor<T> {
 
-	private final Logger log = LoggerFactory.getLogger(AbstractSecurityContextCachingInterceptor.class);
-
 	@Autowired
-	private SecurityContext securityContext;
-
-	@Autowired
-	private SecurityManager securityManager;
+	private CachingSupportServiceSecurityContextAdder securityContextAdder;
 
 	/**
 	 * Puts the cached security context in the thread local.
@@ -46,13 +37,7 @@ public class AbstractSecurityContextCachingInterceptor<T> extends AbstractCachin
 	 * @param context the cache context
 	 */
 	public void restoreSecurityContext(CacheContext context) {
-		SavedAuthorization cached = context.get(CacheContext.SECURITY_CONTEXT_KEY, SavedAuthorization.class);
-		if (cached != null) {
-			log.debug("Restoring security context {}", cached);
-			securityManager.restoreSecurityContext(cached);
-		} else {
-			securityManager.clearSecurityContext();
-		}
+		securityContextAdder.restoreSecurityContext(context);
 	}
 
 	/**
@@ -60,13 +45,8 @@ public class AbstractSecurityContextCachingInterceptor<T> extends AbstractCachin
 	 *
 	 * @param context cache context
 	 */
-	protected void addMoreContext(CacheContext context) {
-		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
-		if (cached == null) {
-			SavedAuthorization sa = securityContext.getSavedAuthorization();
-			log.debug("Storing SavedAuthorization {}", sa);
-			context.put(CacheContext.SECURITY_CONTEXT_KEY, sa);
-		}
+	public void addMoreContext(CacheContext context) {
+		securityContextAdder.addMoreContext(context);
 	}
 
 }

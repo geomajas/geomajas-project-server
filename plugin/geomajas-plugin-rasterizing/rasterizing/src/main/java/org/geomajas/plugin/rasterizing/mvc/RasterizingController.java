@@ -69,7 +69,7 @@ public class RasterizingController {
 				PipelineContext context = pipelineService.createContext();
 				context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
 				context.put(PipelineCode.LAYER_ID_KEY, layerId);
-				context.put(PipelineCode.LAYER_KEY, configurationService.getVectorLayer(layerId));
+				context.put(PipelineCode.LAYER_KEY, layer);
 				pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
 						tileContainer);
 				rasterizeContainer = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);

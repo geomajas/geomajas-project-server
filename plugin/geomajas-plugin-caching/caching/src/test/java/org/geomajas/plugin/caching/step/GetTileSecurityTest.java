@@ -88,28 +88,28 @@ public class GetTileSecurityTest {
 		login("luc");
 		recorder.clear();
 		tile = layerService.getTile(tileMetadata);
-		Assert.assertEquals(1, tile.getFeatures().size());
+		Assert.assertTrue(tile.getFeatureContent().contains("path"));
 		org.junit.Assert.assertEquals("", recorder.matches(CacheCategory.TILE,
 				"Put item in cache"));
 
 		login("marino");
 		recorder.clear();
 		tile = layerService.getTile(tileMetadata);
-		Assert.assertEquals(0, tile.getFeatures().size());
+		Assert.assertFalse(tile.getFeatureContent().contains("path"));
 		org.junit.Assert.assertEquals("", recorder.matches(CacheCategory.TILE,
 				"Put item in cache"));
 
 		login("luc");
 		recorder.clear();
 		tile = layerService.getTile(tileMetadata);
-		Assert.assertEquals(1, tile.getFeatures().size());
+		Assert.assertTrue(tile.getFeatureContent().contains("path"));
 		org.junit.Assert.assertEquals("", recorder.matches(CacheCategory.TILE,
 				"Got item from cache"));
 
 		login("marino");
 		recorder.clear();
 		tile = layerService.getTile(tileMetadata);
-		Assert.assertEquals(0, tile.getFeatures().size());
+		Assert.assertFalse(tile.getFeatureContent().contains("path"));
 		org.junit.Assert.assertEquals("", recorder.matches(CacheCategory.TILE,
 				"Got item from cache"));
 	}

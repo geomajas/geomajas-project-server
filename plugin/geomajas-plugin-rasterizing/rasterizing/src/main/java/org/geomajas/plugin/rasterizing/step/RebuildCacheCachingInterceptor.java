@@ -54,30 +54,31 @@ public class RebuildCacheCachingInterceptor extends AbstractSecurityContextCachi
 	private TestRecorder recorder;
 	
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY,
-				RasterizingPipelineCode.IMAGE_ID_CONTEXT, KEYS, CacheCategory.REBUILD, context,
-				RebuildCacheContainer.class);
-		if (rcc != null) {
+		if (context.containsKey(PipelineCode.TILE_METADATA_KEY)) {
+			RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY,
+					RasterizingPipelineCode.IMAGE_ID_CONTEXT, KEYS, CacheCategory.REBUILD, context,
+					RebuildCacheContainer.class);
 			recorder.record(CacheCategory.REBUILD, "Got item from cache");
-			rcc.getContext();
-			TileMetadata tileMetadata = rcc.getMetadata();
-			context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-			context.put(PipelineCode.LAYER_ID_KEY, tileMetadata.getLayerId());
-			VectorLayer layer = configurationService.getVectorLayer(tileMetadata.getLayerId());
-			context.put(PipelineCode.LAYER_KEY, layer);
-			context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-			Crs crs = geoService.getCrs2(tileMetadata.getCrs());
-			context.put(PipelineCode.CRS_KEY, crs);
-			CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
-			context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
-			Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
-			Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
-			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
-			// can't stop here, we have only prepared the context, not built the tile !
-			InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
-			response.setTile(tile);
-			restoreSecurityContext(rcc.getContext());
-			return ExecutionMode.EXECUTE_ALL;
+			if (null != rcc) {
+				rcc.getContext();
+				TileMetadata tileMetadata = rcc.getMetadata();
+				context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
+				context.put(PipelineCode.LAYER_ID_KEY, tileMetadata.getLayerId());
+				VectorLayer layer = configurationService.getVectorLayer(tileMetadata.getLayerId());
+				context.put(PipelineCode.LAYER_KEY, layer);
+				context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
+				Crs crs = geoService.getCrs2(tileMetadata.getCrs());
+				context.put(PipelineCode.CRS_KEY, crs);
+				CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
+				context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
+				Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
+				Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
+				context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
+				// can't stop here, we have only prepared the context, not built the tile !
+				InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
+				response.setTile(tile);
+				restoreSecurityContext(rcc.getContext());
+			}
 		}
 		return ExecutionMode.EXECUTE_ALL;
 	}

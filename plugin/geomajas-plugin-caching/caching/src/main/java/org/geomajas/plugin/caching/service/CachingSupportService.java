@@ -9,32 +9,21 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.step;
-
-import org.geomajas.global.Api;
-import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CachingSupportService;
-import org.geomajas.plugin.caching.service.CachingSupportServiceContextAdder;
-import org.geomajas.service.pipeline.AbstractPipelineInterceptor;
-import org.geomajas.service.pipeline.PipelineContext;
-import org.springframework.beans.factory.annotation.Autowired;
+package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.global.Api;
+import org.geomajas.plugin.caching.step.CacheContainer;
+import org.geomajas.service.pipeline.PipelineContext;
 
 /**
- * Abstract base class for pipeline interceptors that implement a cache cycle. Caches the security context.
- * 
- * @param <T> pipeline result type
+ * Support service for pipeline classes which use caching.
  *
- * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInterceptor<T> implements
-		CachingSupportServiceContextAdder {
-
-	@Autowired
-	private CachingSupportService cachingSupportService;
+public interface CachingSupportService {
 
 	/**
 	 * Get the requested object from the cache. The key is either obtained from the pipeline context (keyKey) if
@@ -45,20 +34,20 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	 * @param keys keys which need to be include in the cache context
 	 * @param category cache category
 	 * @param pipelineContext pipeline context
+	 * @param contextAdder class to add additional context
 	 * @param containerClass container class
 	 * @param <CONTAINER> container class
 	 * @return cache container
 	 */
-	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String keyKey, String contextKey,
-			String[] keys, CacheCategory category, PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
-		return cachingSupportService.getContainer(keyKey, contextKey, keys, category, pipelineContext, this,
-				containerClass);
-	}
+	<CONTAINER extends CacheContainer> CONTAINER getContainer(String keyKey, String contextKey,
+			String[] keys, CacheCategory category, PipelineContext pipelineContext,
+			CachingSupportServiceContextAdder contextAdder, Class<CONTAINER> containerClass);
 
 	/**
 	 * Put {@link CacheContainer} in the cache. The cache key is stored in the pipeline context.
 	 *
 	 * @param pipelineContext pipeline context
+	 * @param contextAdder class to add additional context
 	 * @param category cache category
 	 * @param keys keys which need to be include in the cache context
 	 * @param contextKey key to put the cache context in the pipeline context
@@ -66,10 +55,8 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	 * @param cacheContainer cache container
 	 * @param envelope envelope
 	 */
-	protected void putContainer(PipelineContext pipelineContext, CacheCategory category, String[] keys, String keyKey,
-			String contextKey, CacheContainer cacheContainer, Envelope envelope) {
-		cachingSupportService.putContainer(pipelineContext, this, category, keys, keyKey, contextKey, cacheContainer,
-				envelope);
-	}
+	void putContainer(PipelineContext pipelineContext, CachingSupportServiceContextAdder contextAdder,
+			CacheCategory category, String[] keys, String keyKey, String contextKey, CacheContainer cacheContainer,
+			Envelope envelope);
 
 }
