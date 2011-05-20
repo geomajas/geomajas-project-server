@@ -73,9 +73,8 @@
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_PARTLY_CACHED: pipeline to get a tile
-          for a vector layer only including intermediate caches, not the tile
-          cache.</para>
+          <para>PIPELINE_GET_VECTOR_TILE_NON_CACHED: pipeline to get a tile
+          for a vector layer without caching, so the original definition before caching.</para>
         </listitem>
       </itemizedlist>You can set a specific pipeline using a configuration
     like this:</para>

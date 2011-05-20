@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
  * {@link CachingSupportService} implementation.
  *
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
 @Component
 public class CachingSupportServiceImpl implements CachingSupportService {
@@ -42,7 +43,6 @@ public class CachingSupportServiceImpl implements CachingSupportService {
 			String[] keys, CacheCategory category, PipelineContext pipelineContext,
 			CachingSupportServiceContextAdder contextAdder, Class<CONTAINER> containerClass) {
 		CONTAINER cc = null;
-log.debug("1");
 		try {
 			VectorLayer layer = pipelineContext.getOptional(PipelineCode.LAYER_KEY, VectorLayer.class);
 			String cacheKey = null;
@@ -52,17 +52,14 @@ log.debug("1");
 			if (cacheKey != null) {
 				cc = cacheManager.get(layer, category, cacheKey, containerClass);
 			}
-log.debug("2");
 			if (null == cc) {
 				CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
 				if (null != contextAdder) {
 					contextAdder.addMoreContext(cacheContext); // add more data...
 				}
-log.debug("3");
 
 				cacheKey = cacheKeyService.getCacheKey(cacheContext);
 				cc = cacheManager.get(layer, category, cacheKey, containerClass);
-log.debug("4 {}", cc);
 				while (null != cc) {
 					if (!cacheContext.equals(cc.getContext())) {
 						cacheKey = cacheKeyService.makeUnique(cacheKey);
@@ -78,7 +75,6 @@ log.debug("4 {}", cc);
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
-log.debug("5");
 		return cc;
 	}
 
@@ -87,7 +83,6 @@ log.debug("5");
 			CacheCategory category, String[] keys, String keyKey, String contextKey, CacheContainer cacheContainer,
 			Envelope envelope) {
 		try {
-log.debug("10");
 			VectorLayer layer = pipelineContext.getOptional(PipelineCode.LAYER_KEY, VectorLayer.class);
 			CacheContext cacheContext = pipelineContext.getOptional(contextKey, CacheContext.class);
 			if (null == cacheContext) {
@@ -96,19 +91,15 @@ log.debug("10");
 					contextAdder.addMoreContext(cacheContext); // add more data...
 				}
 			}
-log.debug("11");
 
 			cacheContainer.setContext(cacheContext);
-log.debug("12");
 
 			String cacheKey = pipelineContext.getOptional(keyKey, String.class);
 			if (null == cacheKey) {
 				cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			}
-log.debug("13");
 			CacheContainer cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
 			while (null != cc && !cacheContext.equals(cc.getContext())) {
-log.debug("14");
 				cacheKey = cacheKeyService.makeUnique(cacheKey);
 				cc = cacheManager.get(layer, category, cacheKey, CacheContainer.class);
 			}
@@ -121,7 +112,6 @@ log.debug("14");
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
-log.debug("15");
 	}
 
 }
