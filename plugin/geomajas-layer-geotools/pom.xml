@@ -150,7 +150,7 @@
 	
 	<properties>
 		<geotools-layer-backend-version>1.9.0-SNAPSHOT</geotools-layer-backend-version>
-		<geotools-version>2.7.0.1</geotools-version>
+		<geotools-version>2.7.1</geotools-version>
 	</properties>
 	
 </project>
