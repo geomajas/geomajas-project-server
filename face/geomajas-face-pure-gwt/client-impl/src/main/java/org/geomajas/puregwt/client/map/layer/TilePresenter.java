@@ -17,13 +17,16 @@ import java.util.List;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
+import org.geomajas.puregwt.client.Geomajas;
 import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.command.Deferred;
+import org.geomajas.puregwt.client.map.gfx.RasterTileObject;
 import org.geomajas.puregwt.client.map.gfx.VectorTileObject;
 
 /**
@@ -166,7 +169,11 @@ public class TilePresenter {
 						display.setContent(tile.getFeatureContent());
 						renderer.getVectorContainer().add((VectorTileObject) display);
 					} else {
-						throw new RuntimeException("TilePresenter - Rendering rasterized tiles: Not implemented...");
+						Coordinate position = getTilePosition(tile);
+						display = new RasterTileObject(tile.getFeatureContent(), tile.getScreenWidth(), tile
+								.getScreenHeight(), (int) position.getY(), (int) position.getX());
+						display.setContent(tile.getFeatureContent());
+						renderer.getHtmlContainer().add((RasterTileObject) display);
 					}
 					if (renderSiblings) {
 						renderSiblings();
@@ -191,14 +198,32 @@ public class TilePresenter {
 		request.setPaintLabels(false);
 		// request.setPaintLabels(renderer.getLayer().isLabeled());
 		request.setPanOrigin(renderer.getViewPort().getPanOrigin());
-		// request.setRenderer(SC.isIE() ? "VML" : "SVG");
-		// TODO Add support for VML.
-		request.setRenderer("SVG");
+		request.setRenderer(Geomajas.isIE() ? "VML" : "SVG");
 		request.setScale(renderer.getViewPort().getScale());
 		request.setStyleInfo(renderer.getLayer().getLayerInfo().getNamedStyleInfo());
 		request.setFeatureIncludes(0);
 		Command command = new Command("command.render.GetVectorTile");
 		command.setCommandRequest(request);
 		return command;
+	}
+
+	private Coordinate getTilePosition(VectorTile tile) {
+		double scale = renderer.getViewPort().getScale();
+		org.geomajas.geometry.Bbox layerBounds = renderer.getLayer().getLayerInfo().getMaxExtent();
+
+		// Calculate tile width and height for tileLevel=tileCode.getTileLevel(); This is in world space.
+		double div = Math.pow(2, tileCode.getTileLevel());
+		double tileWidth = Math.ceil((scale * layerBounds.getWidth()) / div) / scale;
+		double tileHeight = Math.ceil((scale * layerBounds.getHeight()) / div) / scale;
+
+		// Now get the top-left corner for the tile in world space:
+		double x = layerBounds.getX() + tileCode.getX() * tileWidth;
+		double y = layerBounds.getY() + tileCode.getY() * tileHeight;
+
+		// Convert to screen space. Note that the Y-axis is inverted, and so the top corner from the tile BBOX (world)
+		// becomes the bottom corner (screen). That is why the tileHeight is added before compensating with the scale.
+		x *= scale;
+		y = -Math.round(scale * (y + tileHeight));
+		return new Coordinate(x, y);
 	}
 }

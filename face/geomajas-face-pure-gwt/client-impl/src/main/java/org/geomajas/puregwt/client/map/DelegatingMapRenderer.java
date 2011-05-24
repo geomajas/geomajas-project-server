@@ -106,6 +106,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 			((RasterLayer) layer).getRenderer().onShow(event);
 		} else if (layer instanceof VectorLayer) {
 			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 			((VectorLayer) layer).getRenderer().onShow(event);
 		}
 	}
@@ -117,6 +118,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 			((RasterLayer) layer).getRenderer().onHide(event);
 		} else if (layer instanceof VectorLayer) {
 			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 			((VectorLayer) layer).getRenderer().onHide(event);
 		}
 	}
@@ -135,6 +137,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 			((RasterLayer) layer).getRenderer().onLayerStyleChanged(event);
 		} else if (layer instanceof VectorLayer) {
 			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 			((VectorLayer) layer).getRenderer().onLayerStyleChanged(event);
 		}
 	}
@@ -158,6 +161,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 				((RasterLayer) layer).getRenderer().onMapResized(event);
 			} else if (layer instanceof VectorLayer) {
 				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+				((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((VectorLayer) layer).getRenderer().onMapResized(event);
 			}
 		}
@@ -174,6 +178,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 			((RasterLayer) layer).getRenderer().onLayerAdded(event);
 		} else if (layer instanceof VectorLayer) {
 			((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+			((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 			((VectorLayer) layer).getRenderer().onLayerAdded(event);
 		}
 	}
@@ -201,6 +206,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 					((RasterLayer) layer).getRenderer().onViewPortChanged(event);
 				} else if (layer instanceof VectorLayer) {
 					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 					((VectorLayer) layer).getRenderer().onViewPortChanged(event);
 				}
 			}
@@ -223,6 +229,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 					((RasterLayer) layer).getRenderer().onViewPortScaled(event);
 				} else if (layer instanceof VectorLayer) {
 					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 					((VectorLayer) layer).getRenderer().onViewPortScaled(event);
 				}
 			}
@@ -245,6 +252,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 					((RasterLayer) layer).getRenderer().onViewPortTranslated(event);
 				} else if (layer instanceof VectorLayer) {
 					((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+					((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 					((VectorLayer) layer).getRenderer().onViewPortTranslated(event);
 				}
 			}
@@ -263,6 +271,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 				((RasterLayer) layer).getRenderer().clear();
 			} else if (layer instanceof VectorLayer) {
 				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+				((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((VectorLayer) layer).getRenderer().clear();
 			}
 		}
@@ -276,6 +285,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 				((RasterLayer) layer).getRenderer().setMapExentScaleAtFetch(scale);
 			} else if (layer instanceof VectorLayer) {
 				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
+				((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
 				((VectorLayer) layer).getRenderer().setMapExentScaleAtFetch(scale);
 			}
 		}
@@ -308,6 +318,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 			return vectorLayerContainers.get(layer);
 		}
 		VectorGroup container = new VectorGroup();
+		//container.setSize(viewPort.getMapWidth() + "px", viewPort.getMapHeight() + "px");
 		vectorContainer.add(container);
 		vectorLayerContainers.put(layer, container);
 		return container;

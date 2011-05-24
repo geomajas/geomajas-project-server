@@ -32,7 +32,7 @@ public final class Geomajas {
 	 * @return true or false - yes or no.
 	 */
 	public static boolean isIE() {
-		return getUserAgent().contains("microsoft");
+		return getUserAgent().contains("msie");
 	}
 
 	/**

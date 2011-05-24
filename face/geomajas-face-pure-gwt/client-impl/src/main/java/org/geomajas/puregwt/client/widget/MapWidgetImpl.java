@@ -96,7 +96,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		add(layerHtmlContainer, 0, 0);
 
 		// Attach a DrawingArea inside the clipping area (used for vector rendering):
-		drawingArea = new DrawingArea(0, 0);
+		drawingArea = new DrawingArea(100, 100);
 		add(drawingArea, 0, 0);
 
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
@@ -208,24 +208,36 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	public void setPixelSize(int width, int height) {
 		layerHtmlContainer.setPixelSize(width, height);
+		//layerVectorContainer.setPixelSize(width, height);
+		//userVectorContainer.setPixelSize(width, height);
+		//gadgetVectorContainer.setPixelSize(width, height);
 		drawingArea.setPixelSize(width, height);
 		super.setPixelSize(width, height);
 	}
 
 	public void setSize(String width, String height) {
 		layerHtmlContainer.setSize(width, height);
+		//layerVectorContainer.setSize(width, height);
+		//userVectorContainer.setSize(width, height);
+		//gadgetVectorContainer.setSize(width, height);
 		drawingArea.setSize(width, height);
 		super.setSize(width, height);
 	}
 
 	public void setWidth(String width) {
 		layerHtmlContainer.setWidth(width);
+		//layerVectorContainer.setWidth(width);
+		//userVectorContainer.setWidth(width);
+		//gadgetVectorContainer.setWidth(width);
 		drawingArea.setWidth(width);
 		super.setWidth(width);
 	}
 
 	public void setHeight(String height) {
 		layerHtmlContainer.setHeight(height);
+		//layerVectorContainer.setHeight(height);
+		//userVectorContainer.setHeight(height);
+		//gadgetVectorContainer.setHeight(height);
 		drawingArea.setHeight(height);
 		super.setHeight(height);
 	}
