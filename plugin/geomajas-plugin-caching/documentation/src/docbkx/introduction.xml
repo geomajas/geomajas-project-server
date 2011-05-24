@@ -70,9 +70,9 @@
     <para>The GetVectorTile pipeline can be enhanced to support caching as in
     figure <xref linkend="fig-getvectortile-pipeline" />. Interceptors are
     added to get items from the cache and or store them in the cache. This is
-    specifically the cache for caching the entire tile and for producing the
-    string content for the tile. The features are also cached (strictly
-    speaking this is done in the get features pipeline).</para>
+    specifically the cache for caching the entire tile and for getting the
+    features (strictly speaking feature caching is done in the get features
+    pipeline).</para>
 
     <figure id="fig-getvectortile-pipeline">
       <title>Cache interceptors in the GetVectorTile pipeline</title>
@@ -87,8 +87,8 @@
     <para>This is a pipeline only reads data and thus only shows how to get
     data from the cache. In figure <xref
     linkend="fig-saveorupdate-pipeline" /> below a part of the SaveOrUpdate
-    pipeline is shown. As all changes to data occur through this layer, this
-    is useful to handle invalidation of cache data.</para>
+    pipeline is shown. As all changes to data occur through this layer, it is
+    useful to handle invalidation of cached data.</para>
 
     <figure id="fig-saveorupdate-pipeline">
       <title>Cache hooks in (a part of) the SaveOrUpdate pipeline</title>
@@ -147,8 +147,8 @@
         <listitem>
           <para>The raster cache does not need to store much in memory. The
           data may very quickly be evicted to disk. On disk this cache may be
-          allowed to grow very big (disk space is very cheap). It can be
-          chosen how long data is kept. Removing data from the cache is no
+          allowed to grow very big (disk space is cheaper than memory). It can
+          be chosen how long data is kept. Removing data from the cache is no
           problem as the image can be rendered at any time. Keeping data in
           memory is no real advantage as the only purpose is to stream the
           data to the network.</para>
