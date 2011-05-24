@@ -30,15 +30,15 @@ import com.google.gwt.view.client.TreeViewModel;
  */
 public class ShowcaseLayout extends Composite {
 
-	private static final TestLayoutUiBinder UIBINDER = GWT.create(TestLayoutUiBinder.class);
-
 	/**
 	 * UI binder interface for this showcase layout.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface TestLayoutUiBinder extends UiBinder<Widget, ShowcaseLayout> {
+	interface ShowcaseLayoutUiBinder extends UiBinder<Widget, ShowcaseLayout> {
 	}
+
+	private static final ShowcaseLayoutUiBinder UIBINDER = GWT.create(ShowcaseLayoutUiBinder.class);
 
 	@UiField
 	protected ScrollPanel leftPanel;

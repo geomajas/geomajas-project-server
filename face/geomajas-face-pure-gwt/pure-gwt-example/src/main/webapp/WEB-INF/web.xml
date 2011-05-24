@@ -18,6 +18,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
 			classpath:org/geomajas/spring/geomajasContext.xml
+			classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml
 			WEB-INF/applicationContext.xml
 			WEB-INF/layer*.xml
 			WEB-INF/map*.xml
