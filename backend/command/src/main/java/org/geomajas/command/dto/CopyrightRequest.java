@@ -10,19 +10,23 @@
  */
 package org.geomajas.command.dto;
 
+import org.geomajas.command.EmptyCommandRequest;
+
 /**
- * Interface that defines the command name (for consistency with other commands). Don't pass this but pass null as the
+ * Command name (for consistency with other commands). Don't pass this but pass null as the
  * request object.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface CopyrightRequest {
+public class CopyrightRequest extends EmptyCommandRequest {
 
+	private static final long serialVersionUID = 190L;
+	
 	/**
 	 * Command name for this request.
 	 * 
 	 * */
-	String COMMAND = "command.general.Copyright";
+	public static final String COMMAND = "command.general.Copyright";
 
 }
