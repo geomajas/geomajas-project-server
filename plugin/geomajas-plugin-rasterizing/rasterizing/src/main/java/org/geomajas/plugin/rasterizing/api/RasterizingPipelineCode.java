@@ -23,11 +23,6 @@ import org.geomajas.global.Api;
 public interface RasterizingPipelineCode {
 
 	/**
-	 * Pipeline for building the raster image, invoked by the controller.
-	 */
-	String PIPELINE_RASTERIZING = "rasterizing.rasterize";
-
-	/**
 	 * Pipeline for building the map image, invoked by the controller.
 	 */
 	String PIPELINE_RASTERIZING_GET_MAP_IMAGE = "rasterizing.getMapImage";
@@ -40,7 +35,7 @@ public interface RasterizingPipelineCode {
 	/**
 	 * Pipeline which actually builds the raster image while getting the vector tile.
 	 */
-	String PIPELINE_GET_VECTOR_TILE_RASTERIZING = "rasterizing.getVectorTile"; // command pipeline
+	String PIPELINE_GET_VECTOR_TILE_RASTERIZING = "rasterizing.getVectorTile";
 
 	/**
 	 * Pipeline context key for image id (=rebuild and raster image cache id).

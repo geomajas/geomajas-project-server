@@ -71,11 +71,11 @@
 
     <para>The only pipeline that can optionally use rasterization is the
     GetVectorTile pipeline used by the VectorLayerService. If you want to use
-    rasterization without extra caching of the complete tile, you can add the
+    rasterization without caching of the rasterized image, you can add the
     following configuration location to your web.xml file:<programlisting>classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml</programlisting></para>
 
-    <para>If you want to maximize caching, add the following location
-    instead:<programlisting>classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml</programlisting></para>
+    <para>If you want to maximize caching (including enabling caching for all
+    layers), add the following location instead:<programlisting>classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml</programlisting></para>
 
     <para>Alternatively you can configure for each layer individually which
     pipeline should be used.</para>
@@ -84,37 +84,26 @@
 
     <para><itemizedlist>
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED: pipeline to get a
-          tile for a vector layer. This will just generate the URL, the
-          rasterization will take place when the URL is requested.</para>
-        </listitem>
-
-        <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE: pipeline to get
-          a tile for a vector layer. This includes rasterization, the image
-          will be cached.</para>
-        </listitem>
-
-        <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED: pipeline to
-          get a tile for a vector layer and cache it. This will just generate
-          the URL, the rasterization will take place when the URL is
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL: pipeline to get
+          a tile for a vector layer. This will just generate the raster image
+          URL, the rasterization will take place when the URL is
           requested.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED: pipeline
-          to get a tile for a vector layer and cache it. This includes
-          rasterization, so the image will also be cached.</para>
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE: pipeline to rasterize a
+          tile for a vector layer. This image is built but not cached.</para>
+        </listitem>
+
+        <listitem>
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_WITH_CACHING: pipeline to
+          rasterize a tile for a vector layer and cache the image.</para>
         </listitem>
       </itemizedlist></para>
 
-    <para>With the default configurations, rasterization is set to
-    PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED or
-    PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED for all layers.</para>
-
-    <para>You can set a specific pipeline for a layer using a configuration
-    like this:</para>
+    <para>A pipeline needs to be defined for generating the raster image
+    itself. You can set the specific pipelines to use for a layer using a
+    configuration like this:</para>
 
     <example>
       <title>Applying the rasterized pipeline for getVectorTile() on
@@ -125,7 +114,15 @@
         &lt;util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/&gt;
     &lt;/property&gt;
     &lt;property name="layerId" value="myLayer" /&gt;
-    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" /&gt;
+    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" /&gt;
+&lt;/bean&gt;
+
+&lt;bean class="org.geomajas.service.pipeline.PipelineInfo"&gt;
+    &lt;property name="pipelineName"&gt;
+        &lt;util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING" /&gt;
+    &lt;/property&gt;
+    &lt;property name="layerId" value="myLayer" /&gt;
+    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE" /&gt;
 &lt;/bean&gt;</programlisting>
     </example>
   </section>
@@ -133,7 +130,7 @@
   <section>
     <title>Rasterizing service configuration</title>
 
-    <para>The rasterizing service defaults to a geotools implementation. You
+    <para>The rasterizing service defaults to a GeoTools implementation. You
     can configure the following parameters of this service:<itemizedlist>
         <listitem>
           <para>transparent: boolean to indicate that the generated image

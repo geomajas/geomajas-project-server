@@ -14,20 +14,20 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>The rasterization plug-in enables the conversion of vector data
+  <para>The rasterizing plug-in enables the conversion of vector data
   (coordinate-based geometry definitions) to raster data (images). It allows
   to extend the vector layer rendering pipeline by introducing an extra
-  rasterization step. The vector tile response will thereby contain an URL
+  rasterizing step. The vector tile response will thereby contain an URL
   content-type that allows the client to fetch the tile as a normal
   image.</para>
 
-  <para>From a visualization view point, rasterized tiles are quite comparable
-  to vector tiles for many use cases such as panning and zooming. They have
-  significant advantages when the amount of vector data is high, either in
-  terms of features or in the amount of coordinates for each feature.
-  Especially for web clients, DOM-based vector rendering (SVG/VML) is quite
-  slow and should not be used beyond a couple of thousand features (state of
-  the art as of beginning 2011). In this case rasterization provides a
+  <para>From a visualization view point, rasterizing tiles are quite
+  comparable to vector tiles for many use cases such as panning and zooming.
+  They have significant advantages when the amount of vector data is high,
+  either in terms of features or in the amount of coordinates for each
+  feature. Especially for web clients, DOM-based vector rendering (SVG/VML) is
+  quite slow and should not be used beyond a couple of thousand features
+  (state of the art as of beginning 2011). In this case rasterizing provides a
   significant performance boost, especially when combined with server-side
   caching of the image tiles.</para>
 
@@ -52,25 +52,25 @@
   <section>
     <title>Pipeline overview</title>
 
-    <para>The rasterization plug-in adds a rasterization service and some
-    pipeline steps to the framework, as well as a controller to serve the tile
+    <para>The rasterizing plug-in adds a rasterizing service and some pipeline
+    steps to the framework, as well as a controller to serve the tile
     images.</para>
 
     <para>The normal pipeline for getting the vector tiles is enhanced with an
-    extra rasterization step which is indicated in green in the following
+    extra rasterizing step which is indicated in green in the following
     figure:</para>
 
     <para><figure>
-        <title>Vector tile pipeline for rasterization</title>
+        <title>Vector tile pipeline for rasterizing</title>
 
         <mediaobject>
           <imageobject>
             <imagedata fileref="images/rastertilestep.png" width="100%" />
           </imageobject>
         </mediaobject>
-      </figure>The rasterization takes place in the RasterTile step, right
-    after the point where all the features have been collected and transformed
-    to the screen coordinate system. It goes in front of the GetTileFill step
+      </figure>The rasterizing takes place in the RasterTile step, right after
+    the point where all the features have been collected and transformed to
+    the screen coordinate system. It goes in front of the GetTileFill step
     because it has to work with the complete set of interacting features of
     the tile. The GetTileFill step filters the features to assure they are
     only drawn in one of the tiles<footnote>
@@ -78,7 +78,7 @@
         being drawn twice. Features are included in the tile which contains
         the first point of the geometry or (if the first point is not inside
         the layer maximum bounds) to the super-tile.</para>
-      </footnote>. For rasterization this is not necessary, as drawing cannot
+      </footnote>. For rasterizing this is not necessary, as drawing cannot
     span the tile boundary.</para>
 
     <para>The RasterTile step performs the following actions:</para>
@@ -148,7 +148,7 @@
         </listitem>
       </itemizedlist></para>
 
-    <para>Note that you can configure when the initial rasterization takes
+    <para>Note that you can configure when the initial rasterizing takes
     place. This can either be done when requesting the vector tile or when
     requesting the tile image. There is a trade of, handling the rasterizing
     at vector tile requests is most increases throughput for the back-end, but
@@ -158,16 +158,16 @@
   <section>
     <title>The image and rendering services</title>
 
-    <para>The rasterization process has an application-level service, called
+    <para>The rasterizing process has an application-level service, called
     <code>ImageService</code> ,which has methods for creating a legend and map
     image. This service internally calls a pipeline with three steps. The most
     important step, and the step which is responsible for the actual
     rendering, is the <code>RenderMapStep</code>, This step uses itself a
     <code>RenderingService</code>, which is primarily a wrapper of the
-    Geotools <code>StreamRenderer</code> class.</para>
+    GeoTools <code>StreamRenderer</code> class.</para>
 
-    <para>Our rasterization is based on the Geotools rasterization approach.
-    In this approach, a map context is constructed that contains all the
+    <para>Our rasterizing is based on the GeoTools rasterizing approach. In
+    this approach, a map context is constructed that contains all the
     necessary information to rasterize a map. A map context contains the
     following components:</para>
 
@@ -185,7 +185,7 @@
       </listitem>
     </itemizedlist>
 
-    <para>The actual rasterization happens by passing the map context to the
+    <para>The actual rasterizing happens by passing the map context to the
     <code>RenderingService</code> along with a <code>Graphics2D</code> object
     for drawing (usually to an internal buffer).</para>
 
@@ -217,6 +217,6 @@
 }</programlisting>
 
     <para>The <code>ClientMapInfo</code> DTO object has been extended a bit to
-    include all the rasterization information needed.</para>
+    include all the rasterizing information needed.</para>
   </section>
 </chapter>
