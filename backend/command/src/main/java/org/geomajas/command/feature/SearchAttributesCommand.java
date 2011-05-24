@@ -61,7 +61,7 @@ public class SearchAttributesCommand implements Command<SearchAttributesRequest,
 			filter = filterService.parseFilter(request.getFilter());
 		}
 
-		List<Attribute<?>> attributes = layerService.getAttributes(layerId, request.getAttributeName(), filter);
+		List<Attribute<?>> attributes = layerService.getAttributes(layerId, request.getAttributePath(), filter);
 		response.setAttributes(attributes);
 	}
 }

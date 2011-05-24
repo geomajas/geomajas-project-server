@@ -103,12 +103,12 @@ public interface VectorLayerService extends GeomajasConstant {
 	 * Return the list of possible attribute values.
 	 *
 	 * @param layerId id of layer to get objects from
-	 * @param attributeName attribute to get objects for
+	 * @param attributePath attribute path to get objects for
 	 * @param filter filter to be applied
 	 * @return possible object values
 	 * @throws GeomajasException oops
 	 */
-	List<Attribute<?>> getAttributes(String layerId, String attributeName, Filter filter) throws GeomajasException;
+	List<Attribute<?>> getAttributes(String layerId, String attributePath, Filter filter) throws GeomajasException;
 	
 	/**
 	 * Get a vector tile for the request tile.

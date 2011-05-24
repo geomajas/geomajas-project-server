@@ -29,15 +29,13 @@ import org.opengis.filter.Filter;
 public interface VectorLayerAssociationSupport {
 
 	/**
-	 * Return the list of possible object values.
+	 * Return the list of possible object values for the specified attribute path. An attribute path is a recursive path
+	 * to a (possibly nested) attribute name, using '.' as a separator.
 	 * 
-	 * @param attributeName
-	 *            attribute to get objects for
-	 * @param filter
-	 *            filter to be applied
+	 * @param attributePath attribute path to get objects for
+	 * @param filter filter to be applied
 	 * @return possible object values
-	 * @throws LayerException
-	 *             oops
+	 * @throws LayerException oops
 	 */
-	List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException;
+	List<Attribute<?>> getAttributes(String attributePath, Filter filter) throws LayerException;
 }

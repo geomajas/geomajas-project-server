@@ -28,7 +28,7 @@ public class SearchAttributesRequest extends LayerIdCommandRequest {
 	 * */
 	public static final String COMMAND = "command.feature.SearchAttributes";
 
-	private String attributeName;
+	private String attributePath;
 
 	private String filter;
 
@@ -37,25 +37,25 @@ public class SearchAttributesRequest extends LayerIdCommandRequest {
 	public SearchAttributesRequest() {
 	}
 
-	public SearchAttributesRequest(String layerId, String attributeName) {
+	public SearchAttributesRequest(String layerId, String attributePath) {
 		setLayerId(layerId);
-		this.attributeName = attributeName;
+		this.attributePath = attributePath;
 	}
 
-	public SearchAttributesRequest(String layerId, String attributeName, String filter) {
+	public SearchAttributesRequest(String layerId, String attributePath, String filter) {
 		setLayerId(layerId);
-		this.attributeName = attributeName;
+		this.attributePath = attributePath;
 		this.filter = filter;
 	}
 
 	// Getters and setters:
 
-	public String getAttributeName() {
-		return attributeName;
+	public String getAttributePath() {
+		return attributePath;
 	}
 
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
+	public void setAttributePath(String attributePath) {
+		this.attributePath = attributePath;
 	}
 
 	public String getFilter() {
