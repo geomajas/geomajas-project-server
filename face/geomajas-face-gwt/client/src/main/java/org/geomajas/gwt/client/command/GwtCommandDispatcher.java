@@ -38,6 +38,7 @@ import com.smartgwt.client.util.SC;
  * function to execute an asynchronous command on the server.
  * 
  * @author Pieter De Graef
+ * @author Oliver May
  * @since 1.6.0
  */
 @Api(allMethods = true)
@@ -107,16 +108,18 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * 
 	 * @param command
 	 *            The command to be executed. This command is a wrapper around the actual request object.
-	 * @param onSuccess
-	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
+	 * @param callback
+	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns. The
+	 *            callbacks may implement CommunicationExceptionCallback or CommandExceptionCallback to allow error 
+	 *            handling.
 	 * @return deferred object which can be used to add extra callbacks
 	 */
-	public Deferred execute(GwtCommand command, final CommandCallback... onSuccess) {
+	public Deferred execute(GwtCommand command, final CommandCallback... callback) {
 		incrementDispatched();
 
 		final Deferred deferred = new Deferred();
-		for (CommandCallback callback : onSuccess) {
-			deferred.addSuccessCallback(callback);
+		for (CommandCallback successCallback : callback) {
+			deferred.addSuccessCallback(successCallback);
 		}
 
 		command.setLocale(locale);
@@ -127,6 +130,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 				try {
 					for (Function callback : deferred.getOnErrorCallbacks()) {
 						callback.execute();
+					}
+					for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
+						if (callback instanceof CommunicationExceptionCallback) { 
+							((CommunicationExceptionCallback) callback).onCommunicationException(error);
+						}
 					}
 					GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
 					if (isShowError()) {
@@ -142,20 +150,30 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 			public void onSuccess(CommandResponse response) {
 				try {
 					if (response.isError()) {
-						String message = I18nProvider.getGlobal().commandError() + ":";
-						for (String error : response.getErrorMessages()) {
-							message += "\n" + error;
-						}
-						GWT.log(message, null);
-						if (response.getExceptions() == null || response.getExceptions().size() == 0) {
-							if (isShowError()) {
-								SC.warn(message, null);
+						boolean errorHandled = false;
+						for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
+							if (callback instanceof CommandExceptionCallback) {
+								((CommandExceptionCallback) callback).onCommandException(response);
+								errorHandled = true;
 							}
-						} else {
-							if (isShowError()) {
-								// The error messaging window only supports 1 exception to display:
-								ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
-								window.show();
+						}
+						// fallback to the default behaviour
+						if (!errorHandled) {
+							String message = I18nProvider.getGlobal().commandError() + ":";
+							for (String error : response.getErrorMessages()) {
+								message += "\n" + error;
+							}
+							GWT.log(message, null);
+							if (response.getExceptions() == null || response.getExceptions().size() == 0) {
+								if (isShowError()) {
+									SC.warn(message, null);
+								}
+							} else {
+								if (isShowError()) {
+									// The error messaging window only supports 1 exception to display:
+									ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
+									window.show();
+								}
 							}
 						}
 					} else {

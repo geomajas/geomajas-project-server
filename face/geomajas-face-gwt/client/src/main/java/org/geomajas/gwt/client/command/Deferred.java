@@ -40,9 +40,14 @@ public class Deferred {
 		onErrorCallbacks.clear();
 		cancelled = true;
 	}
-
-	public void addSuccessCallback(CommandCallback onSuccess) {
-		onSuccessCallbacks.add(onSuccess);
+	
+	/**
+	 * 
+	 * @param callback, despite the method nam, this may also be a commandcallback that implements
+	 * CommandExceptionCallback or CommunicationExceptionCallback. 
+	 */
+	public void addSuccessCallback(CommandCallback callback) {
+		onSuccessCallbacks.add(callback);
 	}
 
 	public void addErrorCallback(Function onError) {
