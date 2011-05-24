@@ -32,6 +32,7 @@ public class FeatureInfo implements Serializable {
 	private String dataSourceName;
 	private PrimitiveAttributeInfo identifier;
 	private String sortAttributeName;
+	private String displayAttributeName;
 	private SortType sortType;
 	private GeometryAttributeInfo geometryType;
 	private List<AttributeInfo> attributes = new ArrayList<AttributeInfo>();
@@ -88,6 +89,26 @@ public class FeatureInfo implements Serializable {
 	 */
 	public void setSortAttributeName(String sortAttributeName) {
 		this.sortAttributeName = sortAttributeName;
+	}
+
+	/**
+	 * Get name of the display attribute (attribute to be used for display to end users).
+	 *
+	 * @return display attribute name
+	 * @since 1.9.0
+	 */
+	public String getDisplayAttributeName() {
+		return displayAttributeName;
+	}
+
+	/**
+	 * Set the name of the display attribute.
+	 * 
+	 * @param displayAttributeName display attribute name
+	 * @since 1.9.0
+	 */
+	public void setDisplayAttributeName(String displayAttributeName) {
+		this.displayAttributeName = displayAttributeName;
 	}
 
 	/**
