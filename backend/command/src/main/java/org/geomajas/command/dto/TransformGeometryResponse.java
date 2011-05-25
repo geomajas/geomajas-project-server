@@ -22,6 +22,7 @@ import org.geomajas.global.Api;
  * Response object for {@link org.geomajas.command.geometry.TransformGeometryCommand}.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0
  */
 @Api(allMethods = true)
 public class TransformGeometryResponse extends CommandResponse {

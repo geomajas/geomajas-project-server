@@ -76,7 +76,9 @@ public class TransformGeometryCommandTest {
 		TransformGeometryRequest request = new TransformGeometryRequest();
 		WKTReader reader = new WKTReader();
 		Geometry origin = converterService.toDto(reader.read("POLYGON((10 30, 20 30,20 40,10 40,10 30))"));
-		request.getGeometryCollection().add(origin);
+		List<Geometry> geometries = request.getGeometryCollection(); // assure not-null
+		geometries.add(origin);
+		request.setGeometryCollection(geometries); // assure setter is called/tested
 		request.setSourceCrs(MERCATOR);
 		request.setTargetCrs(LONLAT);
 		// execute

@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Command to perform CRS transformations on various geometry types: bounding box, geometry, geometry collection.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0.
  */
 @Api
 @Component()
