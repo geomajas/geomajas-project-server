@@ -292,7 +292,7 @@ public class AttributeCriterionPane extends Canvas {
 					operatorSelect.setValue(operators[0]);
 
 					// Adjust value form item and enable:
-					valueItem.setAttributeInfo(selectedAttribute);
+					valueItem.setAttributeInfo(selectedAttribute.getName(), selectedAttribute);
 					valueItem.setDisabled(false);
 					valueItem.setWidth(form.getWidth() - 290);
 				}
@@ -371,12 +371,12 @@ public class AttributeCriterionPane extends Canvas {
 		 * <code>FormItem</code> for the new type of attribute. In order to accomplish this, a
 		 * {@link AttributeFormFieldRegistry} is used.
 		 * 
-		 * @param attributeInfo
-		 *            The new attribute definition for whom to display the correct <code>FormItem</code>.
+		 * @param attributeName The new attribute name, possibly recursive.
+		 * @param attributeInfo The new attribute definition for whom to display the correct <code>FormItem</code>.
 		 */
-		public void setAttributeInfo(AttributeInfo attributeInfo) {
-			formItem = AttributeFormFieldRegistry.createFormItem(layer, attributeInfo);
-			//formItem = factory.createEditableFormItem(null, attributeInfo);
+		public void setAttributeInfo(String attributeName, AttributeInfo attributeInfo) {
+			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, new DefaultAttributeProvider(layer
+					.getLayerInfo().getServerLayerId()));
 			if (formItem != null) {
 				formItem.setDisabled(false);
 				formItem.setShowTitle(false);

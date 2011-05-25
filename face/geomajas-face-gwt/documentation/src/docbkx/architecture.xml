@@ -361,9 +361,9 @@
       <para>The <code>Geometry</code> implementations themselves do not have
       any setters methods. Instead the editing of geometries is done through a
       series of operations, all implementing the <code>
-      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
-      </code> interface. This interface consists of only one method, accepting
-      a geometry, and returning the result as a new geometry.</para>
+          <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+        </code> interface. This interface consists of only one method,
+      accepting a geometry, and returning the result as a new geometry.</para>
 
       <para>Geometries have no public constructors, so the creation of new
       geometries is done using a factory,
@@ -902,11 +902,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       requires your to specify an icon and a tool tip on creation.</para>
 
       <para><code>ToolbarAction</code> classes need to be registered in the
-      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
-      get an instance of the widget to put in the tool bar. The tools which
-      are part of the GWT face are statically defined in the class. Other
-      tools can be added (or overwritten) at runtime before the map is
-      initialised.</para>
+      <code>
+          <code>ToolbarRegistry</code>
+        </code> class. This allows you to get an instance of the widget to put
+      in the tool bar. The tools which are part of the GWT face are statically
+      defined in the class. Other tools can be added (or overwritten) at
+      runtime before the map is initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable (XML
       configuration), it should implement the <code>ConfigurableAction</code>
@@ -932,11 +933,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       buttons.</para>
 
       <para><code>ToolbarModalAction</code> classes need to be registered in
-      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
-      to get an instance of the widget to put in the tool bar. The tools which
-      are always part of the GWT face are statically defined in the class.
-      Other tools can be added (or overwritten) at runtime before the map is
-      initialised.</para>
+      the <code>
+          <code>ToolbarRegistry</code>
+        </code> class. This allows you to get an instance of the widget to put
+      in the tool bar. The tools which are always part of the GWT face are
+      statically defined in the class. Other tools can be added (or
+      overwritten) at runtime before the map is initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable, it should
       implement the <code>ConfigurableAction</code> interface. This contains a
@@ -1055,14 +1057,16 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
           <itemizedlist>
             <listitem>
-              <para><emphasis> <code>AbstractRectangleController</code>
-              </emphasis>: abstract controller that handles drawing a
+              <para><emphasis>
+                  <code>AbstractRectangleController</code>
+                </emphasis>: abstract controller that handles drawing a
               rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis> <code>AbstractSnappingController</code>
-              </emphasis>: abstract controller that allows snapping to be
+              <para><emphasis>
+                  <code>AbstractSnappingController</code>
+                </emphasis>: abstract controller that allows snapping to be
               enabled and disabled. When enabled, the returned points when
               asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
@@ -1073,7 +1077,9 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to disable the active controller, set a "null" value as
         controller:</para>
 
-        <para><programlisting>mapWidget.setController(null);</programlisting></para>
+        <para>
+          <programlisting>mapWidget.setController(null);</programlisting>
+        </para>
       </section>
 
       <section id="activeAndFallback">
@@ -1242,19 +1248,47 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 }</programlisting></para>
     </example>
 
-    <para>A default implementation of this factory has been implemented
-    <code>org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory</code>.
-    When the default layout of a feature form is sufficient use this one,
-    otherwise feel free to implement your own factory.</para>
+    <para>The default implementation of this factory has been implemented
+    <code>as DefaultFeatureFormFactory</code>. This factory returns a default
+    implementation for the feature form for each layer:
+    <code>DefaultFeatureForm</code>. When the default layout of a feature form
+    is sufficient use the <code>DefaultFeatureFormFactory</code> as is,
+    otherwise feel free to implement your own factory that returns custom
+    instances of a <code>FeatureForm</code>.</para>
 
-    <para>The FeatureForm is a form definition that has been tuned towards the
-    Geomajas GWT feature definition, and is used in the central editing
-    widgets (<code>FeatureAttirbuteEditor</code> and
+    <para>The <code>FeatureForm</code> is a form definition that has been
+    tuned towards the Geomajas GWT feature definition, and is used in the
+    central editing widgets (<code>FeatureAttributeEditor</code> and
     <code>FeatureAttributeWindow</code>). Note that those editing widgets have
-    constructors to accept a <code>FeatureFormFactory</code>, in case you
-    whish to use your own factory.</para>
+    constructors to accept a <code>FeatureFormFactory</code>, so you have to
+    pass them a custom factory that returns your custom form.</para>
 
-    <para>Of course implementing your own factory might be a bit overwhelming.
+    <para>Of course implementing your own <code>FeatureForm</code> might be a
+    bit overwhelming and fortunately is usually not necessary as you can
+    easily extend the <code>DefaultFeatureForm</code> to suit your needs. The
+    <code>DefaultFeatureForm</code> has several hooks to allow you to
+    influence its layout:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>The <code>createField(AttributeInfo)</code> and/or
+        <code>createItem(AttributeInfo)</code> methods can be overridden to
+        customize form items or create your own</para>
+      </listitem>
+
+      <listitem>
+        <para>The <code>isIncluded(AttributeInfo)</code> method can be
+        overridden to omit certain attributes</para>
+      </listitem>
+
+      <listitem>
+        <para>The <code>prepareForm(FormItemList, DataSource)</code> method
+        can be overridden to set the layout properties of the form and add
+        additional items such as spacers or headers</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Adding new form item types can also be done in a more global way.
     Therefore, an extra utility class has been added to create the individual
     form items that represent the feature's attributes. This utility class is
     the <code>AttributeFormFieldRegistry</code>. This registry keeps a
@@ -1267,15 +1301,15 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
     <note>
       <para>Internally, the
-      <code>org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory</code>
+      <code>org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm</code>
       makes use of the AttributeFormFieldRegistry. This means that if you
       register custom form items for certain attribute types, these custom
       items will also appear in the default feature forms, without you having
-      to implement a custom FeatureFormFactory.</para>
+      to implement a custom FeatureForm.</para>
     </note>
 
     <para>In the following sections, the details of registering custom form
-    items and creting custom forms will be explained.</para>
+    items and creating custom forms will be explained.</para>
 
     <section>
       <title>Using custom form items within a FeatureForm</title>
@@ -1342,32 +1376,15 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     </section>
 
     <section>
-      <title>Creating a custom FeatureFormFactory</title>
+      <title>Creating a custom FeatureForm</title>
 
-      <para>The next step is to create a custom
-      <code>FeatureFormFactory</code>. Let us again start with a short code
-      example:</para>
+      <para>The next step is to create a custom <code>FeatureForm</code>. Let
+      us again start with a short code example:</para>
 
-      <xi:include href="listing/CustomFeatureFormFactory.xml"
+      <xi:include href="listing/CustomFeatureForm.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>The example above is a custom implementation of the only method
-      within the <code>FeatureFormFactory</code>. It checks for a specific
-      layer, and will otherwise simply use the
-      <code>DefaultFeatureFormFactory</code>. Basically it starts out all
-      normal, by creating a list of <code>FormItems</code> and a
-      <code>DataSource</code> and adding them to the <code>FeatureForm</code>
-      - this is all quite obligatory, unless you want to go crazy and skip
-      using the <code>AttributeFormFieldRegistry</code> altogether. Everything
-      up to the point of setting the fields (form items) is the same as what
-      the <code>DefaultFeatureFormFactory</code> does.</para>
-
-      <para>Note that it simply goes over all attribute definitions and let's
-      the AttributeFormFieldRegistry create the correct FormItems and
-      DataSourceFields for it. Note also that if an attribute does not want to
-      be included in the form, we don't put it in.</para>
-
-      <para>From that point on some custom settings are used, such as applying
+      <para>Some custom settings are used, such as applying
       4 columns and a group title. The form that results from this will not
       differ all too much from the default implementation, but it should get
       you on your way.</para>

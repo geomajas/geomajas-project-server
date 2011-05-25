@@ -36,7 +36,6 @@ import org.geomajas.configuration.validation.PatternConstraintInfo;
 import org.geomajas.configuration.validation.SizeConstraintInfo;
 import org.geomajas.configuration.validation.ValidatorInfo;
 import org.geomajas.global.FutureApi;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceBooleanField;
@@ -53,7 +52,6 @@ import com.smartgwt.client.widgets.form.fields.FloatItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.IntegerItem;
 import com.smartgwt.client.widgets.form.fields.LinkItem;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.validator.DateRangeValidator;
 import com.smartgwt.client.widgets.form.validator.FloatPrecisionValidator;
@@ -83,10 +81,6 @@ import com.smartgwt.client.widgets.form.validator.Validator;
 @FutureApi(allMethods = true)
 public final class AttributeFormFieldRegistry {
 
-	public static final String ASSOCIATION_ITEM_VALUE_ATTRIBUTE = "_AssociationValue";
-
-	public static final String ASSOCIATION_ITEM_ID_FIELD = "_AssociationId";
-
 	private static final Map<String, FormItemFactory> FORMITEMS;
 
 	private static final Map<String, DataSourceFieldFactory> DATESOURCEFIELDS;
@@ -95,7 +89,7 @@ public final class AttributeFormFieldRegistry {
 
 	/**
 	 * Definition of a factory capable of creating a certain kind of {@link FormItem}. These factories are stored within
-	 * this registry and used for building {@link FeatureForm}s.
+	 * this registry and used for building {@link DefaultFeatureForm}s.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -106,7 +100,7 @@ public final class AttributeFormFieldRegistry {
 
 	/**
 	 * Definition of a factory capable of creating a certain kind of {@link DataSourceField}. These factories are stored
-	 * within this registry and used for building {@link FeatureForm}s.
+	 * within this registry and used for building {@link DefaultFeatureForm}s.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -293,7 +287,9 @@ public final class AttributeFormFieldRegistry {
 		}, new FormItemFactory() {
 
 			public FormItem create() {
-				return new SelectItem();
+				DefaultManyToOneItem manyToOneItem = new DefaultManyToOneItem();
+				manyToOneItem.getItem().setAttribute(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY, manyToOneItem);
+				return manyToOneItem.getItem();
 			}
 		}, null);
 
@@ -301,12 +297,15 @@ public final class AttributeFormFieldRegistry {
 		registerCustomFormItem(AssociationType.ONE_TO_MANY.name(), new DataSourceFieldFactory() {
 
 			public DataSourceField create() {
-				return new DataSourceTextField();
+				DataSourceField field = new DataSourceField();
+				return field;
 			}
 		}, new FormItemFactory() {
 
 			public FormItem create() {
-				return new TextItem();
+				DefaultOneToManyItem manyToOneItem = new DefaultOneToManyItem();
+				manyToOneItem.getItem().setAttribute(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY, manyToOneItem);
+				return manyToOneItem.getItem();
 			}
 		}, null);
 	}
@@ -328,21 +327,17 @@ public final class AttributeFormFieldRegistry {
 	 * the same key here in this factory.
 	 * </p>
 	 * 
-	 * @param key
-	 *            The key associated with the given {@link FormItemFactory} and {@link DataSourceFieldFactory}. This key
-	 *            is either the name of an attribute type (i.e. <code>PrimitiveType.DATE.name()</code>) to overwrite the
-	 *            default definitions, or a completely new type which can be configured in the attribute definitions
-	 *            with the <code>formInputType</code> field.
-	 * @param fieldType
-	 *            The type of {@link DataSourceFieldFactory} associated with the given key. This factory will create the
-	 *            correct {@link DataSourceField} for the given key.
-	 * @param formItem
-	 *            The type of {@link FormItemFactory} associated with the given key. This factory will create the
-	 *            correct {@link FormItem} for the given key.
-	 * @param validators
-	 *            A list of validators that can be applied to the {@link DataSourceField}. This is optional and can be
-	 *            null. These validators protect the data, and can for example make sure that a user does not use any
-	 *            letters while filling an integer type field.
+	 * @param key The key associated with the given {@link FormItemFactory} and {@link DataSourceFieldFactory}. This key
+	 *        is either the name of an attribute type (i.e. <code>PrimitiveType.DATE.name()</code>) to overwrite the
+	 *        default definitions, or a completely new type which can be configured in the attribute definitions with
+	 *        the <code>formInputType</code> field.
+	 * @param fieldType The type of {@link DataSourceFieldFactory} associated with the given key. This factory will
+	 *        create the correct {@link DataSourceField} for the given key.
+	 * @param formItem The type of {@link FormItemFactory} associated with the given key. This factory will create the
+	 *        correct {@link FormItem} for the given key.
+	 * @param validators A list of validators that can be applied to the {@link DataSourceField}. This is optional and
+	 *        can be null. These validators protect the data, and can for example make sure that a user does not use any
+	 *        letters while filling an integer type field.
 	 */
 	public static void registerCustomFormItem(String key, DataSourceFieldFactory fieldType, FormItemFactory editorType,
 			List<Validator> validators) {
@@ -371,18 +366,15 @@ public final class AttributeFormFieldRegistry {
 	}
 
 	/**
-	 * Create a new {@link DataSourceField} instance for the given attribute info within the given layer. This field can
-	 * provide additional validators on the field type (if they are registered), to protect the data.<br/>
+	 * Create a new {@link DataSourceField} instance for the given attribute info. This field can provide additional
+	 * validators on the field type (if they are registered), to protect the data.<br/>
 	 * If the attribute info object has the <code>formInputType</code> set, than that will be used to search for the
 	 * correct field type, otherwise the attribute TYPE name is used (i.e. PrimitiveType.INTEGER.name()).
 	 * 
-	 * @param layer
-	 *            The layer in which the attribute info is a part.
-	 * @param info
-	 *            The actual attribute info to create a data source field for.
+	 * @param info The actual attribute info to create a data source field for.
 	 * @return The new data source field instance associated with the type of attribute.
 	 */
-	public static DataSourceField createDataSourceField(VectorLayer layer, AttributeInfo info) {
+	public static DataSourceField createDataSourceField(AttributeInfo info) {
 		DataSourceField field = null;
 		List<Validator> validators = new ArrayList<Validator>();
 		if (info.getFormInputType() != null) {
@@ -407,10 +399,6 @@ public final class AttributeFormFieldRegistry {
 			field.setRequired(isRequired(info.getValidator()));
 			if (info instanceof PrimitiveAttributeInfo) {
 				validators.addAll(convertConstraints((PrimitiveAttributeInfo) info));
-			} else if (info instanceof AssociationAttributeInfo) {
-				if (((AssociationAttributeInfo) info).getType() == AssociationType.MANY_TO_ONE) {
-
-				}
 			}
 			if (validators.size() > 0) {
 				field.setValidators(validators.toArray(new Validator[] {}));
@@ -421,17 +409,14 @@ public final class AttributeFormFieldRegistry {
 	}
 
 	/**
-	 * Create a new {@link FormItem} instance for the given attribute info within the given layer.<br/>
+	 * Create a new {@link FormItem} instance for the given attribute info.<br/>
 	 * If the attribute info object has the <code>formInputType</code> set, than that will be used to search for the
 	 * correct field type, otherwise the attribute TYPE name is used (i.e. PrimitiveType.INTEGER.name()).
 	 * 
-	 * @param layer
-	 *            The layer in which the attribute info is a part.
-	 * @param info
-	 *            The actual attribute info to create a data source field for.
+	 * @param info The actual attribute info to create a data source field for.
 	 * @return The new form item instance associated with the type of attribute.
 	 */
-	public static FormItem createFormItem(VectorLayer layer, AttributeInfo info) {
+	public static FormItem createFormItem(AttributeInfo info, AttributeProvider attributeProvider) {
 		FormItem formItem = null;
 		if (info.getFormInputType() != null) {
 			formItem = FORMITEMS.get(info.getFormInputType()).create();
@@ -451,16 +436,23 @@ public final class AttributeFormFieldRegistry {
 			formItem.setValidateOnChange(true);
 			formItem.setWidth("*");
 
-			// Exception for ManyToOnes...
+			// Special treatment for associations
 			if (info instanceof AssociationAttributeInfo) {
 				AssociationAttributeInfo associationInfo = (AssociationAttributeInfo) info;
-				if (associationInfo.getType() == AssociationType.MANY_TO_ONE && formItem instanceof SelectItem) {
-					formItem.setOptionDataSource(new ManyToOneDataSource(layer.getServerLayerId(), associationInfo));
-					formItem.setDisplayField(associationInfo.getFeature().getAttributes().get(0).getName());
-					formItem.setValueField(ASSOCIATION_ITEM_ID_FIELD);
+				String displayName = associationInfo.getFeature().getDisplayAttributeName();
+				if (displayName == null) {
+					displayName = associationInfo.getFeature().getAttributes().get(0).getName();
+				}
+				formItem.setDisplayField(displayName);
+				Object o = formItem.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
+				if (o instanceof OneToManyItem<?>) {
+					OneToManyItem<?> item = (OneToManyItem<?>) o;
+					item.init(associationInfo, attributeProvider);
+				} else if (o instanceof ManyToOneItem<?>) {
+					ManyToOneItem<?> item = (ManyToOneItem<?>) o;
+					item.init(associationInfo, attributeProvider);
 				}
 			}
-
 			return formItem;
 		}
 		return null;

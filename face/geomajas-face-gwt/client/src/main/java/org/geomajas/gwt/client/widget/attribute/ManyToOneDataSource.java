@@ -11,15 +11,12 @@
 
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.SearchAttributesRequest;
-import org.geomajas.command.dto.SearchAttributesResponse;
+import java.util.List;
+
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.widget.attribute.AttributeProvider.CallBack;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 
@@ -43,21 +40,25 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
  */
 public class ManyToOneDataSource extends DataSource {
 
-	private String serverLayerId;
-
 	private AssociationAttributeInfo attributeInfo;
+
+	private AttributeProvider attributeProvider;
+
+	public static final String ASSOCIATION_ITEM_VALUE_ATTRIBUTE = "_AssociationValue";
+
+	public static final String ASSOCIATION_ITEM_ID_FIELD = "_AssociationId";
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public ManyToOneDataSource(String serverLayerId, AssociationAttributeInfo attributeInfo) {
+	public ManyToOneDataSource(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		if (attributeInfo.getType() != AssociationType.MANY_TO_ONE) {
 			throw new IllegalArgumentException("AttributeInfo (name=" + attributeInfo.getName()
 					+ ") passed in ManyToOneDataSource is not of type MANY_TO_ONE.");
 		}
-		this.serverLayerId = serverLayerId;
 		this.attributeInfo = attributeInfo;
+		this.attributeProvider = attributeProvider;
 
 		// Make sure we can use Geomajas commands for client-server communication:
 		setDataFormat(DSDataFormat.CUSTOM);
@@ -65,8 +66,8 @@ public class ManyToOneDataSource extends DataSource {
 		setClientOnly(false);
 
 		// Add id as primary key field
-		DataSourceField field = new DataSourceIntegerField(AttributeFormFieldRegistry.ASSOCIATION_ITEM_ID_FIELD,
-				attributeInfo.getFeature().getIdentifier().getLabel());
+		DataSourceField field = new DataSourceIntegerField(ASSOCIATION_ITEM_ID_FIELD, attributeInfo.getFeature()
+				.getIdentifier().getLabel());
 		field.setPrimaryKey(true);
 		addField(field);
 
@@ -116,38 +117,33 @@ public class ManyToOneDataSource extends DataSource {
 	}
 
 	protected void executeFetch(final String requestId, final DSRequest dsRequest, final DSResponse dsResponse) {
-		GwtCommand command = new GwtCommand("command.feature.SearchAttributes");
-		command.setCommandRequest(new SearchAttributesRequest(serverLayerId, attributeInfo.getName()));
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		attributeProvider.getAttributes(new CallBack() {
 
-			public void execute(CommandResponse response) {
-				if (response.isError()) {
-					dsResponse.setStatus(RPCResponse.STATUS_FAILURE);
-					processResponse(requestId, dsResponse);
-				} else if (response instanceof SearchAttributesResponse) {
-					SearchAttributesResponse sar = (SearchAttributesResponse) response;
-
-					// Add the values to the list:
-					ListGridRecord[] list = new ListGridRecord[sar.getAttributes().size()];
-					for (int i = 0; i < sar.getAttributes().size(); i++) {
-						ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) sar.getAttributes().get(i);
-						ListGridRecord record = new ListGridRecord();
-						record.setAttribute(AttributeFormFieldRegistry.ASSOCIATION_ITEM_ID_FIELD,
-								manyToOneAttribute.getValue().getId().getValue());
-						record.setAttribute(AttributeFormFieldRegistry.ASSOCIATION_ITEM_VALUE_ATTRIBUTE,
-								manyToOneAttribute.getValue());
-						//record.setAttribute(attributeInfo.getName(), manyToOneAttribute.getValue());
-						for (String name : manyToOneAttribute.getValue().getAllAttributes().keySet()) {
-							Attribute<?> attribute = manyToOneAttribute.getValue().getAllAttributes().get(name);
-							record.setAttribute(name, attribute.getValue());
-						}
-						list[i] = record;
+			public void onSuccess(List<Attribute<?>> attributes) {
+				// Add the values to the list:
+				ListGridRecord[] list = new ListGridRecord[attributes.size()];
+				for (int i = 0; i < attributes.size(); i++) {
+					ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) attributes.get(i);
+					ListGridRecord record = new ListGridRecord();
+					record.setAttribute(ASSOCIATION_ITEM_ID_FIELD, manyToOneAttribute.getValue().getId().getValue());
+					record.setAttribute(ASSOCIATION_ITEM_VALUE_ATTRIBUTE, manyToOneAttribute.getValue());
+					// record.setAttribute(attributeInfo.getName(), manyToOneAttribute.getValue());
+					for (String name : manyToOneAttribute.getValue().getAllAttributes().keySet()) {
+						Attribute<?> attribute = manyToOneAttribute.getValue().getAllAttributes().get(name);
+						record.setAttribute(name, attribute.getValue());
 					}
-					dsResponse.setData(list);
-					dsResponse.setStatus(RPCResponse.STATUS_SUCCESS);
-					processResponse(requestId, dsResponse);
+					list[i] = record;
 				}
+				dsResponse.setData(list);
+				dsResponse.setStatus(RPCResponse.STATUS_SUCCESS);
+				processResponse(requestId, dsResponse);
 			}
+
+			public void onError(List<String> errorMessages) {
+				dsResponse.setStatus(RPCResponse.STATUS_FAILURE);
+				processResponse(requestId, dsResponse);
+			}
+
 		});
 	}
 }

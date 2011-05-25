@@ -38,7 +38,7 @@ public class FeatureAttributeEditor extends VLayout {
 
 	private VectorLayer layer;
 
-	private FeatureForm featureForm;
+	private FeatureForm<?> featureForm;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -72,9 +72,9 @@ public class FeatureAttributeEditor extends VLayout {
 	 * @param disabled
 	 *            Should the form initially be disabled or not? When disabled, editing is not possible.
 	 * @param formFactory
-	 *            The factory that should be used for creating the {@link FeatureForm} in this editor.
+	 *            The factory that should be used for creating the {@link DefaultFeatureForm} in this editor.
 	 */
-	public FeatureAttributeEditor(VectorLayer layer, boolean disabled, FeatureFormFactory formFactory) {
+	public FeatureAttributeEditor(VectorLayer layer, boolean disabled, FeatureFormFactory<?> formFactory) {
 		this.layer = layer;
 		setMembersMargin(0);
 		featureForm = formFactory.createFeatureForm(layer);

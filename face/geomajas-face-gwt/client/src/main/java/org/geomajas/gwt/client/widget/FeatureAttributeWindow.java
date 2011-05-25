@@ -80,7 +80,7 @@ public class FeatureAttributeWindow extends Window {
 	 */
 	private FeatureAttributeEditor attributeTable;
 
-	private FeatureFormFactory factory;
+	private FeatureFormFactory<?> factory;
 
 	private boolean editingAllowed;
 
@@ -136,7 +136,7 @@ public class FeatureAttributeWindow extends Window {
 	 * @since 1.9.0
 	 */
 	@Api
-	public FeatureAttributeWindow(Feature feature, boolean editingAllowed, FeatureFormFactory factory) {
+	public FeatureAttributeWindow(Feature feature, boolean editingAllowed, FeatureFormFactory<?> factory) {
 		super();
 		if (factory == null) {
 			this.factory = new DefaultFeatureFormFactory();
