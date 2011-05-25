@@ -14,6 +14,8 @@ import org.geomajas.command.Command;
 import org.geomajas.command.dto.SplitPolygonRequest;
 import org.geomajas.command.dto.SplitPolygonResponse;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,12 +44,18 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 
 	public void execute(SplitPolygonRequest request, SplitPolygonResponse response) throws Exception {
 		// convert to most accurate precision model
-		Polygon polygon = null;
-		polygon = (Polygon) converter.toInternal(request.getGeometry());
+		com.vividsolutions.jts.geom.Geometry jtsGeometry = converter.toInternal(request.getGeometry());
+		if (!(jtsGeometry instanceof Polygon)) {
+			throw new GeomajasException(ExceptionCode.UNEXPECTED_PROBLEM, "geometry has to be a Polygon");
+		}
+		Polygon polygon = (Polygon) converter.toInternal(request.getGeometry());
 
 		// Convert to the polygons precision model:
-		LineString preciseLine = (LineString) polygon.getFactory().createGeometry(
-				converter.toInternal(request.getSplitter()));
+		jtsGeometry = converter.toInternal(request.getSplitter());
+		if (!(jtsGeometry instanceof LineString)) {
+			throw new GeomajasException(ExceptionCode.UNEXPECTED_PROBLEM, "splitter has to be a LineString");
+		}
+		LineString preciseLine = (LineString) jtsGeometry;
 		int precision = polygon.getPrecisionModel().getMaximumSignificantDigits() - 1;
 		com.vividsolutions.jts.geom.Geometry bufferedLine = preciseLine.buffer(Math.pow(10.0, -precision));
 		com.vividsolutions.jts.geom.Geometry diff = polygon.difference(bufferedLine);

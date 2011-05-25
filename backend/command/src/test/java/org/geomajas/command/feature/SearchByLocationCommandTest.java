@@ -10,9 +10,11 @@
  */
 package org.geomajas.command.feature;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
@@ -25,21 +27,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test for the SearchByLocationCommand class.
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
 public class SearchByLocationCommandTest {
 
 	private static final String LAYER_ID = "countries";
@@ -57,11 +56,11 @@ public class SearchByLocationCommandTest {
 		request.setCrs("EPSG:4326");
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
-		request.setLayerIds(new String[] { LAYER_ID });
+		request.setLayerIds(new String[] {LAYER_ID});
 
 		GeometryFactory factory = new GeometryFactory();
-		LineString equator = factory.createLineString(new Coordinate[] { new Coordinate(0, 0),
-				new Coordinate(-180, 180) });
+		LineString equator = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),
+				new Coordinate(-180, 180)});
 		request.setLocation(converter.toDto(equator));
 
 		// execute
@@ -90,12 +89,12 @@ public class SearchByLocationCommandTest {
 		request.setCrs("EPSG:4326");
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
-		request.setLayerIds(new String[] { LAYER_ID });
+		request.setLayerIds(new String[] {LAYER_ID});
 		request.setFilter("region='Region 1'");
 
 		GeometryFactory factory = new GeometryFactory();
-		LineString equator = factory.createLineString(new Coordinate[] { new Coordinate(0, 0),
-				new Coordinate(-180, 180) });
+		LineString equator = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),
+				new Coordinate(-180, 180)});
 		request.setLocation(converter.toDto(equator));
 
 		// execute
@@ -123,12 +122,12 @@ public class SearchByLocationCommandTest {
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setRatio(0.5f);
-		request.setLayerIds(new String[] { LAYER_ID });
+		request.setLayerIds(new String[] {LAYER_ID});
 
 		// create a rectangle that overlaps 50 %
 		GeometryFactory factory = new GeometryFactory();
-		LinearRing half1 = factory.createLinearRing(new Coordinate[] { new Coordinate(0, 0), new Coordinate(1, 0),
-				new Coordinate(1, 0.5), new Coordinate(0, 0.5), new Coordinate(0, 0) });
+		LinearRing half1 = factory.createLinearRing(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 0),
+				new Coordinate(1, 0.5), new Coordinate(0, 0.5), new Coordinate(0, 0)});
 		Polygon polygon = factory.createPolygon(half1, null);
 		request.setLocation(converter.toDto(polygon));
 
@@ -148,7 +147,7 @@ public class SearchByLocationCommandTest {
 		expected.add("Country 1");
 		Assert.assertEquals(expected, actual);
 	}
-	
+
 	@Test
 	public void intersect50percentOverlapAlmost() throws Exception {
 		// prepare command
@@ -157,12 +156,12 @@ public class SearchByLocationCommandTest {
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setRatio(0.5f);
-		request.setLayerIds(new String[] { LAYER_ID });
+		request.setLayerIds(new String[] {LAYER_ID});
 
 		// create a rectangle that overlaps 49 %
 		GeometryFactory factory = new GeometryFactory();
-		LinearRing half1 = factory.createLinearRing(new Coordinate[] { new Coordinate(0, 0), new Coordinate(1, 0),
-				new Coordinate(1, 0.49), new Coordinate(0, 0.49), new Coordinate(0, 0) });
+		LinearRing half1 = factory.createLinearRing(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 0),
+				new Coordinate(1, 0.49), new Coordinate(0, 0.49), new Coordinate(0, 0)});
 		Polygon polygon = factory.createPolygon(half1, null);
 		request.setLocation(converter.toDto(polygon));
 

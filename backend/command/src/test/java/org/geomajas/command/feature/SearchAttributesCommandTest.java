@@ -14,11 +14,14 @@ package org.geomajas.command.feature;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SearchAttributesRequest;
 import org.geomajas.command.dto.SearchAttributesResponse;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,8 +33,8 @@ import java.util.List;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml" })
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
 public class SearchAttributesCommandTest {
 
 	private static final String LAYER_ID = "beans";
@@ -39,7 +42,12 @@ public class SearchAttributesCommandTest {
 	@Autowired
 	private CommandDispatcher dispatcher;
 
+	@Autowired
+	@Qualifier(LAYER_ID)
+	private VectorLayer layer;
+
 	@Test
+	@DirtiesContext // @todo need to check why this is necessary, otherwise next test fails? (GetVectorTileCommandTest)
 	public void testSearchAttributes() throws Exception {
 		SearchAttributesRequest request = new SearchAttributesRequest();
 		request.setLayerId(LAYER_ID);
@@ -52,7 +60,6 @@ public class SearchAttributesCommandTest {
 		Assert.assertFalse(response.isError());
 		List<Attribute<?>> attributes = response.getAttributes();
 		Assert.assertNotNull(attributes);
-		System.out.println(attributes);
 		Assert.assertEquals(2, attributes.size());
 	}
 

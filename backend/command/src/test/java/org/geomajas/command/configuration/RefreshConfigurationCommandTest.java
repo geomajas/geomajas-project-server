@@ -12,8 +12,6 @@
 package org.geomajas.command.configuration;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.command.dto.GetConfigurationRequest;
-import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
 import org.geomajas.command.dto.RefreshConfigurationResponse;
 import org.geomajas.service.TestRecorder;
@@ -30,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
 		"/org/geomajas/spring/testRecorder.xml"})
 public class RefreshConfigurationCommandTest {

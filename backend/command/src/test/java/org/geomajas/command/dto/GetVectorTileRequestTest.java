@@ -39,7 +39,7 @@ public class GetVectorTileRequestTest {
 	}
 
 	private void set(GetVectorTileRequest obj) {
-		obj.setCode(new TileCode(1,0,0));
+		obj.setCode(new TileCode(1, 0, 0));
 		obj.setCrs("EPSG:900913");
 		obj.setFeatureIncludes(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
 		obj.setFilter("bla");

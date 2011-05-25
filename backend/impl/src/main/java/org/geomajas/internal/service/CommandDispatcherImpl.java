@@ -88,6 +88,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 		try {
 			if (!tokenIdentical) {
 				// need to change security context
+				log.debug("login using token {}", userToken);
 				if (!securityManager.createSecurityContext(userToken)) {
 					// not authorized
 					response = new CommandResponse();

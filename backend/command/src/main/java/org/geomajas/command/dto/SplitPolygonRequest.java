@@ -33,21 +33,38 @@ public class SplitPolygonRequest implements CommandRequest {
 
 	private Geometry splitter;
 
-	public SplitPolygonRequest() {
-	}
-
+	/**
+	 * Get the geometry which needs to be split. This has to be a polygon.
+	 *
+	 * @return polygon to split
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Set the geometry which needs to be split. This has to be a polygon.
+	 *
+	 * @param geometry polygon to split
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * Get the linestring to use as splitter.
+	 *
+	 * @return linestring to use as splitter
+	 */
 	public Geometry getSplitter() {
 		return splitter;
 	}
 
+	/**
+	 * Set the linestring to use as splitter.
+	 *
+	 * @param splitter linestring to use as splitter
+	 */
 	public void setSplitter(Geometry splitter) {
 		this.splitter = splitter;
 	}

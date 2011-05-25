@@ -33,8 +33,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
 public class GetConfigurationCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
@@ -103,11 +103,11 @@ public class GetConfigurationCommandTest {
 		Assert.assertNotNull(mapInfo.getWidgetInfo("layerTree"));
 		Assert.assertEquals("layer1, layer2",
 				((ClientApplicationInfo.DummyClientWidgetInfo) mapInfo.getWidgetInfo("layerTree")).getDummy());
-		
+
 		// widget data on the layer
 		ClientLayerInfo layerInfo = mapInfo.getLayers().get(0);
-		for(ClientLayerInfo i: mapInfo.getLayers()) {
-			if(i.getId().equals("countries")) {
+		for (ClientLayerInfo i : mapInfo.getLayers()) {
+			if (i.getId().equals("countries")) {
 				layerInfo = i;
 			}
 		}
@@ -116,8 +116,9 @@ public class GetConfigurationCommandTest {
 		Assert.assertNull(layerInfo.getWidgetInfo("layerTree"));
 		Assert.assertNotNull(layerInfo.getWidgetInfo("customLayerInfoWidget"));
 		Assert.assertEquals("org.geomajas.widget.IpsumWidget",
-				((ClientApplicationInfo.DummyClientWidgetInfo) layerInfo.getWidgetInfo("customLayerInfoWidget")).getDummy());
-		
+				((ClientApplicationInfo.DummyClientWidgetInfo) layerInfo.getWidgetInfo("customLayerInfoWidget"))
+						.getDummy());
+
 	}
 
 }

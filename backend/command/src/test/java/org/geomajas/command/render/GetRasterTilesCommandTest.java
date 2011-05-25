@@ -9,12 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.command.configuration;
+package org.geomajas.command.render;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.command.dto.UserMaximumExtentRequest;
-import org.geomajas.command.dto.UserMaximumExtentResponse;
-import org.geomajas.geometry.Bbox;
+import org.geomajas.command.dto.GetRasterTilesRequest;
+import org.geomajas.command.dto.GetRasterTilesResponse;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.GeoService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,38 +26,39 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for {@link UserMaximumExtentCommand}.
+ * Test for {@link GetRasterTilesCommand}.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
-public class UserMaximumExtentCommandTest {
+public class GetRasterTilesCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
-	private static final String LAYER_ID = "countries";
 	private static final String CRS = "EPSG:4326";
 
 	@Autowired
 	private CommandDispatcher dispatcher;
 
+	@Autowired
+	private GeoService geoService;
+
+	@Autowired
+	private DtoConverterService dtoConverter;
+
+	// @todo need to add a dummy raster layer in the context to do a normal test run
+
 	@Test
-	public void testUserMaximumExtent() throws Exception {
-		UserMaximumExtentRequest request = new UserMaximumExtentRequest();
+	public void testNoLayerIdRequest() throws Exception {
+		GetRasterTilesRequest request = new GetRasterTilesRequest();
 		request.setCrs(CRS);
-		request.setLayerIds(new String[] {LAYER_ID});
-		UserMaximumExtentResponse response = (UserMaximumExtentResponse) dispatcher.execute(
-				UserMaximumExtentRequest.COMMAND, request, null, "en");
-		if (response.isError()) {
-			response.getErrors().get(0).printStackTrace();
-		}
-		Assert.assertFalse(response.isError());
-		Bbox bounds = response.getBounds();
-		Assert.assertNotNull(bounds);
-		Assert.assertEquals(-1.0, bounds.getX(), DOUBLE_TOLERANCE);
-		Assert.assertEquals(-1.0, bounds.getY(), DOUBLE_TOLERANCE);
-		Assert.assertEquals(1.0, bounds.getMaxX(), DOUBLE_TOLERANCE);
-		Assert.assertEquals(1.0, bounds.getMaxY(), DOUBLE_TOLERANCE);
+		GetRasterTilesResponse response = (GetRasterTilesResponse) dispatcher.execute(
+				GetRasterTilesRequest.COMMAND, request, null, "en");
+		Assert.assertTrue(response.isError());
+		Assert.assertTrue(response.getErrors().get(0) instanceof GeomajasException);
+		Assert.assertEquals(ExceptionCode.PARAMETER_MISSING,
+				((GeomajasException) response.getErrors().get(0)).getExceptionCode());
 	}
+
 }

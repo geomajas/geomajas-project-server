@@ -10,10 +10,6 @@
  */
 package org.geomajas.command.feature;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
@@ -30,14 +26,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Test for the SearchFeatureCommand class.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
 public class SearchFeatureCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .00000001;
@@ -111,10 +111,18 @@ public class SearchFeatureCommandTest {
 			actual.add(feature.getLabel());
 		}
 		int count = 0;
-		if (actual.contains("Country 1")) count++;
-		if (actual.contains("Country 2")) count++;
-		if (actual.contains("Country 3")) count++;
-		if (actual.contains("Country 4")) count++;
+		if (actual.contains("Country 1")) {
+			count++;
+		}
+		if (actual.contains("Country 2")) {
+			count++;
+		}
+		if (actual.contains("Country 3")) {
+			count++;
+		}
+		if (actual.contains("Country 4")) {
+			count++;
+		}
 		Assert.assertEquals(3, count);
 	}
 
@@ -145,7 +153,7 @@ public class SearchFeatureCommandTest {
 		List<Feature> features = Arrays.asList(response.getFeatures());
 		Assert.assertNotNull(features);
 		Assert.assertEquals(4, features.size());
-		
+
 		List<String> actual = new ArrayList<String>();
 		for (Feature feature : features) {
 			actual.add(feature.getLabel());
@@ -219,8 +227,10 @@ public class SearchFeatureCommandTest {
 
 		// try again using mercator
 		request.setCrs("EPSG:900913");
-		response = (SearchFeatureResponse) dispatcher.execute( SearchFeatureRequest.COMMAND, request, null, "en");
-		if (response.isError()) response.getErrors().get(0).printStackTrace();
+		response = (SearchFeatureResponse) dispatcher.execute(SearchFeatureRequest.COMMAND, request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
 		Assert.assertFalse(response.isError());
 		Assert.assertEquals(LAYER_ID, response.getLayerId());
 		features = response.getFeatures();
