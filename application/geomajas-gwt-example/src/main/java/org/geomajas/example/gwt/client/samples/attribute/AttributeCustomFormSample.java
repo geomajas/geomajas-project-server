@@ -11,10 +11,6 @@
 
 package org.geomajas.example.gwt.client.samples.attribute;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
@@ -26,16 +22,14 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.DataSourceFieldFactory;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.FormItemFactory;
-import org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory;
 import org.geomajas.gwt.client.widget.attribute.FeatureForm;
 import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.RowSpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -75,66 +69,13 @@ public class AttributeCustomFormSample extends SamplePanel {
 			}
 		}, null);
 
-		// @extract-start CustomFeatureFormFactory, CustomFeatureFormFactory
-		// Creating the custom form factory:
-		final FeatureFormFactory myFactory = new FeatureFormFactory() {
+		final FeatureFormFactory<DynamicForm> myFactory = new FeatureFormFactory<DynamicForm>() {
 
-			public FeatureForm createFeatureForm(VectorLayer layer) {
-
-				// Create a custom form only for this layer:
-				if ("beansLayerCustomForm".equals(layer.getId())) {
-
-					// Create a form, and apply some specific parameters:
-					FeatureForm form = new FeatureForm(layer);
-					form.getWidget().setNumCols(4);
-					form.getWidget().setWidth(450);
-					form.getWidget().setColWidths(100, 180, 20, 150);
-
-					form.getWidget().setGroupTitle("Custom Attribute Form");
-					form.getWidget().setIsGroup(true);
-
-					// Prepare the DataSource and FormItems:
-					DataSource source = new DataSource();
-					List<FormItem> formItems = new ArrayList<FormItem>();
-
-					// Go over all attribute definitions:
-					for (AttributeInfo info : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-
-						// Only include attributes that want to:
-						if (info.isIncludedInForm()) {
-
-							// For each attribute, create a DataSourceField and a FormItem:
-							DataSourceField field = AttributeFormFieldRegistry.createDataSourceField(layer, info);
-							field.setCanEdit(info.isEditable());
-							source.addField(field);
-
-							FormItem formItem = AttributeFormFieldRegistry.createFormItem(layer, info);
-							formItem.setWidth("*");
-
-							// Apply some specifics to the attributes:
-							if ("dateAttr".equals(info.getName())) {
-								// The data attribute will span all 4 columns:
-								formItem.setColSpan(4);
-							} else if ("stringAttr".equals(info.getName())) {
-								// Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
-								formItems.add(new RowSpacerItem());
-							}
-							formItems.add(formItem);
-						}
-					}
-
-					// Finish: Add the DataSource and the FormItems:
-					form.getWidget().setDataSource(source);
-					form.getWidget().setFields(formItems.toArray(new FormItem[] {}));
-					return form;
-				} else {
-					// For all other layers, use the default:
-					DefaultFeatureFormFactory factory = new DefaultFeatureFormFactory();
-					return factory.createFeatureForm(layer);
-				}
+			public FeatureForm<DynamicForm> createFeatureForm(VectorLayer layer) {
+				return new AttributeCustomForm(layer);
 			}
+
 		};
-		// @extract-end
 
 		// Continue creating the layout:
 		final VLayout layout = new VLayout();
