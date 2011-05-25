@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.6.0
  */
 @Api
-@Component(PersistTransactionRequest.COMMAND)
+@Component()
 @Transactional(rollbackFor = { Exception.class })
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 

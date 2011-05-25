@@ -14,6 +14,8 @@ import org.geomajas.command.Command;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.CrsTransform;
+import org.geomajas.global.Api;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * Command to perform CRS transformations on various geometry types: bounding box, geometry, geometry collection.
  * 
  * @author Jan De Moerloose
- * 
  */
-@Component(TransformGeometryRequest.COMMAND)
+@Api
+@Component()
 public class TransformGeometryCommand implements Command<TransformGeometryRequest, TransformGeometryResponse> {
 
 	@Autowired
@@ -44,26 +46,26 @@ public class TransformGeometryCommand implements Command<TransformGeometryReques
 	public void execute(TransformGeometryRequest request, TransformGeometryResponse response) throws Exception {
 		Crs sourceCrs = geoService.getCrs2(request.getSourceCrs());
 		Crs targetCrs = geoService.getCrs2(request.getTargetCrs());
+		CrsTransform transform = geoService.getCrsTransform(sourceCrs, targetCrs);
 
 		if (request.getBounds() != null) {
 			Envelope source = converter.toInternal(request.getBounds());
-			Envelope target = geoService.transform(source, sourceCrs, targetCrs);
+			Envelope target = geoService.transform(source, transform);
 			response.setBounds(converter.toDto(target));
 		}
 
 		if (request.getGeometry() != null) {
 			Geometry source = converter.toInternal(request.getGeometry());
-			Geometry target = geoService.transform(source, sourceCrs, targetCrs);
+			Geometry target = geoService.transform(source, transform);
 			response.setGeometry(converter.toDto(target));
 		}
 
 		if (request.getGeometryCollection() != null) {
 			for (org.geomajas.geometry.Geometry geometry : request.getGeometryCollection()) {
 				Geometry source = converter.toInternal(geometry);
-				Geometry target = geoService.transform(source, sourceCrs, targetCrs);
+				Geometry target = geoService.transform(source, transform);
 				response.getGeometryCollection().add(converter.toDto(target));
 			}
 		}
-
 	}
 }

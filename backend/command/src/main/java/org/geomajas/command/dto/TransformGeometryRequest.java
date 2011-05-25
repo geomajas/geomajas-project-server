@@ -16,12 +16,14 @@ import java.util.List;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.geometry.TransformGeometryCommand}.
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class TransformGeometryRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 190L;
@@ -41,42 +43,92 @@ public class TransformGeometryRequest implements CommandRequest {
 
 	private String targetCrs;
 
+	/**
+	 * Get geometry to transform.
+	 *
+	 * @return geometry
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Set geometry to transform.
+	 *
+	 * @param geometry geometry
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * Get list of geometries to transform.
+	 *
+	 * @return list of geometries
+	 */
 	public List<Geometry> getGeometryCollection() {
 		return geometryCollection;
 	}
 
+	/**
+	 * Set list of geometries to transform.
+	 *
+	 * @param geometryCollection collection of geometries
+	 */
 	public void setGeometryCollection(List<Geometry> geometryCollection) {
 		this.geometryCollection = geometryCollection;
 	}
 
+	/**
+	 * Get bounds to transform.
+	 *
+	 * @return bbox
+	 */
 	public Bbox getBounds() {
 		return bounds;
 	}
 
+	/**
+	 * Set bounds to transform.
+	 *
+	 * @param bounds bbox
+	 */
 	public void setBounds(Bbox bounds) {
 		this.bounds = bounds;
 	}
 
+	/**
+	 * Get source CRS.
+	 *
+	 * @return source CRS
+	 */
 	public String getSourceCrs() {
 		return sourceCrs;
 	}
 
+	/**
+	 * Set source CRS.
+	 *
+	 * @param sourceCrs source CRS
+	 */
 	public void setSourceCrs(String sourceCrs) {
 		this.sourceCrs = sourceCrs;
 	}
 
+	/**
+	 * Get target CRS.
+	 *
+	 * @return target CRS
+	 */
 	public String getTargetCrs() {
 		return targetCrs;
 	}
 
+	/**
+	 * Set target CRS.
+	 *
+	 * @param targetCrs target CRS
+	 */
 	public void setTargetCrs(String targetCrs) {
 		this.targetCrs = targetCrs;
 	}

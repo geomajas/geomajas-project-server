@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.6.0
  */
 @Api
-@Component(SearchFeatureRequest.COMMAND)
+@Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {
 

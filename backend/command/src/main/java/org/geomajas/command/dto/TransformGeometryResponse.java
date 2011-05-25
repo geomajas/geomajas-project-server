@@ -16,12 +16,14 @@ import java.util.List;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 
 /**
  * Response object for {@link org.geomajas.command.geometry.TransformGeometryCommand}.
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class TransformGeometryResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 190L;
@@ -32,26 +34,56 @@ public class TransformGeometryResponse extends CommandResponse {
 
 	private Bbox bounds;
 
+	/**
+	 * Get transformed geometry.
+	 *
+	 * @return transformed geometry
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Set transformed geometry.
+	 *
+	 * @param geometry transformed geometry
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * Get transformed geometry collection.
+	 *
+	 * @return transformed geometry collection
+	 */
 	public List<Geometry> getGeometryCollection() {
 		return geometryCollection;
 	}
 
+	/**
+	 * Set transformed geometry collection.
+	 *
+	 * @param geometryCollection transformed geometry collection
+	 */
 	public void setGeometryCollection(List<Geometry> geometryCollection) {
 		this.geometryCollection = geometryCollection;
 	}
 
+	/**
+	 * Get transformed bounds.
+	 *
+	 * @return transformed bounds
+	 */
 	public Bbox getBounds() {
 		return bounds;
 	}
 
+	/**
+	 * Set transformed bounds.
+	 *
+	 * @param bounds transformed bounds.
+	 */
 	public void setBounds(Bbox bounds) {
 		this.bounds = bounds;
 	}
