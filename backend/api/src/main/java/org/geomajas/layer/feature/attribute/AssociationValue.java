@@ -170,21 +170,36 @@ public class AssociationValue implements Serializable {
 	
 	/**
 	 * Convenience method that returns the attribute value for the specified attribute name and type.
-	 * @param <TYPE>
+	 *
+	 * @param <TYPE> type of the attribute value to return
 	 * @param attributeName the name of the attribute
-	 * @param type the return type (the value will be cast to this type !)
-	 * @return the value of the attribute or null if no such attribute exists
-	 * @throws ClassCastException if casting fails
+	 * @param type type for the return object
+	 * @return the value of the attribute or null if no such attribute exists or the object is of the wrong type
 	 * @since 1.9.0
 	 */
+	@SuppressWarnings("unchecked")
 	public <TYPE> TYPE getAttributeValue(String attributeName, Class<TYPE> type) {
-		Attribute attribute = getAllAttributes().get(attributeName);
-		if (attribute != null) {
-			Object value = attribute.getValue();
+		Object value = getAttributeValue(attributeName);
+		if (null != value && type.isAssignableFrom(value.getClass())) {
 			return (TYPE) value;
 		}
 		return null;
 	}	
+
+	/**
+	 * Convenience method that returns the attribute value for the specified attribute name.
+	 *
+	 * @param attributeName the name of the attribute
+	 * @return the value of the attribute or null if no such attribute exists
+	 * @since 1.9.0
+	 */
+	public Object getAttributeValue(String attributeName) {
+		Attribute attribute = getAllAttributes().get(attributeName);
+		if (attribute != null) {
+			return attribute.getValue();
+		}
+		return null;
+	}
 
 	/**
 	 * Returns whether this value can only contain primitive attributes.
