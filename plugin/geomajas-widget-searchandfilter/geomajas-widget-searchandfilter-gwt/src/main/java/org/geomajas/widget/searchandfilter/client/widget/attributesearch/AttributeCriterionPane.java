@@ -20,6 +20,7 @@ import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
+import org.geomajas.gwt.client.widget.attribute.DefaultAttributeProvider;
 import org.geomajas.widget.searchandfilter.search.dto.AttributeCriterion;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -430,7 +431,8 @@ public class AttributeCriterionPane extends Canvas {
 		 *            The new attribute definition for whom to display the correct <code>FormItem</code>.
 		 */
 		public void setAttributeInfo(AttributeInfo attributeInfo) {
-			formItem = AttributeFormFieldRegistry.createFormItem(layer, attributeInfo);
+			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, 
+					new DefaultAttributeProvider(layer.getServerLayerId()));
 			//formItem = factory.createEditableFormItem(null, attributeInfo);
 			if (formItem != null) {
 				formItem.setDisabled(false);
