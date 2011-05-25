@@ -167,6 +167,24 @@ public class AssociationValue implements Serializable {
 	public void setAllAttributes(Map<String, Attribute<?>> attributes) {
 		this.attributes = attributes;
 	}
+	
+	/**
+	 * Convenience method that returns the attribute value for the specified attribute name and type.
+	 * @param <TYPE>
+	 * @param attributeName the name of the attribute
+	 * @param type the return type (the value will be cast to this type !)
+	 * @return the value of the attribute or null if no such attribute exists
+	 * @throws ClassCastException if casting fails
+	 * @since 1.9.0
+	 */
+	public <TYPE> TYPE getAttributeValue(String attributeName, Class<TYPE> type) {
+		Attribute attribute = getAllAttributes().get(attributeName);
+		if (attribute != null) {
+			Object value = attribute.getValue();
+			return (TYPE) value;
+		}
+		return null;
+	}	
 
 	/**
 	 * Returns whether this value can only contain primitive attributes.
