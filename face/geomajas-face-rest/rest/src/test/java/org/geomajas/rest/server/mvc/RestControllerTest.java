@@ -60,7 +60,7 @@ public class RestControllerTest {
 	private GeoService geoservice;
 
 	@Autowired
-	@Qualifier("GeoJsonView")
+	@Qualifier("rest.server.mvc.GeoJsonView")
 	private View view;
 
 	private HandlerAdapter adapter;

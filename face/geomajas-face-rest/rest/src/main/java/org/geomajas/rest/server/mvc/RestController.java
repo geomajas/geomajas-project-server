@@ -67,7 +67,7 @@ public class RestController {
 	@Autowired
 	private GeoService geoService;
 
-	static final String VIEW = "GeoJsonView";
+	static final String VIEW = "rest.server.mvc.GeoJsonView";
 
 	static final String FEATURE_COLLECTION = "FeatureCollection";
 

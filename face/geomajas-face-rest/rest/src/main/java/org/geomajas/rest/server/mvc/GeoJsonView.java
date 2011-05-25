@@ -30,12 +30,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
 /**
+ * JSON view.
  * 
  * @author Oliver May
- * 
  */
-
-@Component("GeoJsonView")
+@Component("rest.server.mvc.GeoJsonView")
 public class GeoJsonView extends AbstractView {
 
 	@Autowired
