@@ -15,16 +15,13 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -41,21 +38,14 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.hibernate.Criteria;
-import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
-import org.hibernate.engine.SessionImplementor;
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.type.CollectionType;
-import org.hibernate.type.Type;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,8 +64,6 @@ import com.vividsolutions.jts.geom.Geometry;
 @Transactional(rollbackFor = { Exception.class })
 public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, VectorLayerAssociationSupport,
 		VectorLayerLazyFeatureConversionSupport {
-
-	private final Logger log = LoggerFactory.getLogger(HibernateLayer.class);
 
 	private FeatureModel featureModel;
 
@@ -265,30 +253,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	public Object create(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
-
-		// Replace associations with persistent versions:
-		// Map<String, Object> attributes = featureModel.getAttributes(feature);
-		setPersistentAssociations(feature);
 		Session session = getSessionFactory().getCurrentSession();
-		session.save(feature); // do not replace feature by managed object !
-
-		// Set the original detached associations back where they belong:
-		// @TODO THIS SHOULD ONLY RESTORE ASSOCIATIONS NOT ALL ATTRIBUTES (fails
-		// for complex attributes (ddd/ddd)
-		// featureModel.setAttributes(feature, attributes);
+		session.save(feature);
 		return feature;
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
-		String id = getFeatureModel().getId(feature);
-		if (getFeature(id) != null) {
-			update(feature);
-		} else {
-			feature = create(feature);
-		}
-		return feature;
+		Session session = getSessionFactory().getCurrentSession();
+		// using merge to allow detached objects, although Geomajas avoids them
+		return session.merge(feature);
 	}
 
 	public void delete(String featureId) throws LayerException {
@@ -306,11 +281,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	}
 
 	public void update(Object feature) throws LayerException {
-		Object persistent = read(getFeatureModel().getId(feature));
-		Map<String, Attribute> attributes = featureModel.getAttributes(feature);
-		// replace all modified attributes by their new values
-		featureModel.setAttributes(persistent, attributes);
-		featureModel.setGeometry(feature, featureModel.getGeometry(feature));
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(feature);
 	}
 
 	public Envelope getBounds() throws LayerException {
@@ -335,18 +307,11 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	}
 
 	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
-		log.debug("creating iterator for attribute {} and filter: {}", attributeName, filter);
-		AssociationAttributeInfo attributeInfo = null;
-		for (AttributeInfo info : getFeatureInfo().getAttributes()) {
-			if (info.getName().equals(attributeName) && info instanceof AssociationAttributeInfo) {
-				attributeInfo = (AssociationAttributeInfo) info;
-				break;
-			}
+		if (attributeName == null) {
+			throw new HibernateLayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, (Object) null);
 		}
-		if (attributeInfo == null) {
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
-		}
-
+		AssociationAttributeInfo attributeInfo = getRecursiveAttributeInfo(attributeName, getFeatureInfo()
+				.getAttributes());
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(attributeInfo.getFeature().getDataSourceName());
 		CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
@@ -487,101 +452,26 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		}
 	}
 
-	/**
-	 * The idea here is to replace association objects with their persistent counterparts. This has to happen just
-	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayer package. Never
-	 * let them out, because that way we'll invite exceptions.
-	 * 
-	 * @TODO This method is not recursive!
-	 * 
-	 * @param feature
-	 *            feature to persist
-	 * @throws LayerException
-	 *             oops
-	 */
-	@SuppressWarnings("unchecked")
-	private void setPersistentAssociations(Object feature) throws LayerException {
-		try {
-			Map<String, Attribute> attributes = featureModel.getAttributes(feature);
-			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
-				// We're looping over all associations:
-				if (attribute instanceof AssociationAttributeInfo) {
-					String name = ((AssociationAttributeInfo) attribute).getFeature().getDataSourceName();
-					Object value = attributes.get(name);
-					if (value != null) {
-						// Find the association's meta-data:
-						Session session = getSessionFactory().getCurrentSession();
-						AssociationAttributeInfo aso = (AssociationAttributeInfo) attribute;
-						ClassMetadata meta = getSessionFactory().getClassMetadata(aso.getName());
-
-						AssociationType asoType = aso.getType();
-						if (asoType == AssociationType.MANY_TO_ONE) {
-							// Many-to-one:
-							Serializable id = meta.getIdentifier(value, (SessionImplementor) session);
-							if (id != null) { // We can only replace it, if it
-								// has an ID:
-								value = session.load(aso.getName(), id);
-								getEntityMetadata().setPropertyValue(feature, name, value, EntityMode.POJO);
-							}
-						} else if (asoType == AssociationType.ONE_TO_MANY) {
-							// One-to-many - value is a collection:
-
-							// Get the reflection property name:
-							String refPropName = null;
-							Type[] types = meta.getPropertyTypes();
-							for (int i = 0; i < types.length; i++) {
-								String name1 = types[i].getName();
-								String name2 = feature.getClass().getCanonicalName();
-								if (name1.equals(name2)) {
-									// Only for circular references?
-									refPropName = meta.getPropertyNames()[i];
-								}
-							}
-
-							// Instantiate a new collection:
-							Object[] array = (Object[]) value;
-							Type type = getEntityMetadata().getPropertyType(name);
-							CollectionType colType = (CollectionType) type;
-							Collection<Object> col = (Collection<Object>) colType.instantiate(0);
-
-							// Loop over all detached values:
-							for (int i = 0; i < array.length; i++) {
-								Serializable id = meta.getIdentifier(array[i], (SessionImplementor) getSessionFactory()
-										.getCurrentSession());
-								if (id != null) {
-									// Existing values: need replacing!
-									Object persistent = session.load(aso.getName(), id);
-									String[] props = meta.getPropertyNames();
-									for (String prop : props) {
-										if (!(prop.equals(refPropName))) {
-											Object propVal = meta.getPropertyValue(array[i], prop, EntityMode.POJO);
-											meta.setPropertyValue(persistent, prop, propVal, EntityMode.POJO);
-										}
-									}
-									array[i] = persistent;
-								} else if (refPropName != null) {
-									// Circular reference to the feature itself:
-									meta.setPropertyValue(array[i], refPropName, feature, EntityMode.POJO);
-								} else {
-									// New values:
-									// do nothing...it can stay a detached value. Better hope for cascading.
-								}
-								col.add(array[i]);
-							}
-							getEntityMetadata().setPropertyValue(feature, name, col, EntityMode.POJO);
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED, getFeatureInfo()
-					.getDataSourceName());
-		}
-	}
-
 	private Object getFeature(String featureId) throws HibernateLayerException {
 		Session session = getSessionFactory().getCurrentSession();
 		return session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.convert(featureId,
 				getEntityMetadata().getIdentifierType().getReturnedClass()));
 	}
+	
+	
+	private AssociationAttributeInfo getRecursiveAttributeInfo(String name, List<AttributeInfo> infos) {
+		for (AttributeInfo attributeInfo : infos) {
+			if (attributeInfo instanceof AssociationAttributeInfo) {
+				AssociationAttributeInfo associationAttributeInfo = (AssociationAttributeInfo) attributeInfo;
+				if (name.equals(attributeInfo.getName())) {
+					return associationAttributeInfo;
+				} else if (name.startsWith(attributeInfo.getName())) {
+					String childName = name.substring(attributeInfo.getName().length() + 1);
+					return getRecursiveAttributeInfo(childName, associationAttributeInfo.getFeature().getAttributes());
+				}
+			}
+		}
+		return null;
+	}
+
 }

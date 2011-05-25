@@ -10,7 +10,6 @@
  */
 package org.geomajas.layer.hibernate.association;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +23,6 @@ import org.geomajas.layer.hibernate.AbstractHibernateAssociationTest;
 import org.geomajas.layer.hibernate.HibernateLayerException;
 import org.geomajas.layer.hibernate.association.pojo.AssociationFeature;
 import org.geomajas.layer.hibernate.association.pojo.ManyToOneProperty;
-import org.geomajas.layer.hibernate.simple.pojo.SimpleFeature;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
