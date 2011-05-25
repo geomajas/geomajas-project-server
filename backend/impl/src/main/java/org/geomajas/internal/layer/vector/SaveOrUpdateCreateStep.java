@@ -36,12 +36,13 @@ public class SaveOrUpdateCreateStep extends AbstractSaveOrUpdateStep {
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			FeatureModel featureModel = layer.getFeatureModel();
 			if (securityContext.isFeatureCreateAuthorized(layerId, newFeature)) {
+				Object feature;
 				if (newFeature.getId() == null) {
-					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, featureModel.newInstance());
+					feature = featureModel.newInstance();
 				} else {
-					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY,
-							featureModel.newInstance(newFeature.getId()));
+					feature = featureModel.newInstance(newFeature.getId());
 				}
+				context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, feature);
 				context.put(PipelineCode.IS_CREATE_KEY, true);
 			} else {
 				throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED, securityContext

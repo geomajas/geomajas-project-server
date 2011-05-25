@@ -229,7 +229,7 @@ public class BeanFeatureModel implements FeatureModel {
 			WKTWriter writer = new WKTWriter();
 			String wktStr = null;
 			if (null != geometry) {
-				writer.write(geometry);
+				wktStr = writer.write(geometry);
 			}
 			writeProperty(feature, wktStr, getGeometryAttributeName());
 		} else {
