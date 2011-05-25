@@ -11,22 +11,22 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.global.Api;
 
 /**
- * Command name (for consistency with other commands). Don't pass this but pass null as the
- * request object.
+ * Command name (for consistency with other commands). You don't have to use this, just pass null as request object.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.9.0
  */
+@Api(allMethods = true)
 public class CopyrightRequest extends EmptyCommandRequest {
 
 	private static final long serialVersionUID = 190L;
 	
 	/**
 	 * Command name for this request.
-	 * 
-	 * */
+	 */
 	public static final String COMMAND = "command.general.Copyright";
 
 }

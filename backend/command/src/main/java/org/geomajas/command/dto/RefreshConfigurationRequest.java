@@ -26,7 +26,7 @@ public class RefreshConfigurationRequest implements CommandRequest {
 	 *
 	 * @since 1.9.0
 	 * */
-	public static final String COMMAND = "command.configuration.RefreshConfiguration";
+	public static final String COMMAND = "command.configuration.Refresh";
 
 	private String[] configLocations;
 

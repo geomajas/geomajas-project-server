@@ -72,7 +72,7 @@ public final class LazyLoader {
 			request.setFilter(first.getLayer().getFilter());
 			request.setFeatureIncludes(featureIncludes);
 
-			GwtCommand command = new GwtCommand("command.feature.Search");
+			GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 			command.setCommandRequest(request);
 			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 

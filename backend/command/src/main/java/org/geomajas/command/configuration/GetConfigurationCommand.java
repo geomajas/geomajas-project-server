@@ -30,7 +30,7 @@ import java.util.List;
  * 
  * @author Pieter De Graef
  */
-@Component(GetConfigurationRequest.COMMAND)
+@Component()
 public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
 
 	@Autowired

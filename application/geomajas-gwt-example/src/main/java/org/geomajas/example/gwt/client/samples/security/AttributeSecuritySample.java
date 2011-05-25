@@ -128,7 +128,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		request.setLayerId("layerBeans");
 		request.setMax(1);
 		request.setCriteria(new SearchCriterion[] { new SearchCriterion("id", "=", "1") });
-		final GwtCommand command = new GwtCommand("command.feature.Search");
+		final GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		// Create a button that executes the search command:

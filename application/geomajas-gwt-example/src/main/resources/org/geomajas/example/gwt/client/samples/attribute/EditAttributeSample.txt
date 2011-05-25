@@ -25,7 +25,7 @@
 //				request.setLayerId("beansAssociationLayer");
 //				request.setMax(1);
 //				request.setCriteria(new SearchCriterion[] { new SearchCriterion("id", "=", "1") });
-//				final GwtCommand command = new GwtCommand("command.feature.Search");
+//				final GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 //				command.setCommandRequest(request);
 //				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 //

@@ -67,7 +67,7 @@ public class SearchFeatureCommandTest {
 
 		// execute
 		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
-				"command.feature.Search", request, null, "en");
+				SearchFeatureRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -98,7 +98,7 @@ public class SearchFeatureCommandTest {
 
 		// execute
 		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
-				"command.feature.Search", request, null, "en");
+				SearchFeatureRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -137,7 +137,7 @@ public class SearchFeatureCommandTest {
 
 		// execute
 		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
-				"command.feature.Search", request, null, "en");
+				SearchFeatureRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -164,7 +164,7 @@ public class SearchFeatureCommandTest {
 		request.setCrs("EPSG:4326");
 		// execute
 		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
-				"command.feature.Search", request, null, "en");
+				SearchFeatureRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -202,7 +202,7 @@ public class SearchFeatureCommandTest {
 
 		// execute
 		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
-				"command.feature.Search", request, null, "en");
+				SearchFeatureRequest.COMMAND, request, null, "en");
 
 		// test
 		Assert.assertFalse(response.isError());
@@ -219,7 +219,7 @@ public class SearchFeatureCommandTest {
 
 		// try again using mercator
 		request.setCrs("EPSG:900913");
-		response = (SearchFeatureResponse) dispatcher.execute( "command.feature.Search", request, null, "en");
+		response = (SearchFeatureResponse) dispatcher.execute( SearchFeatureRequest.COMMAND, request, null, "en");
 		if (response.isError()) response.getErrors().get(0).printStackTrace();
 		Assert.assertFalse(response.isError());
 		Assert.assertEquals(LAYER_ID, response.getLayerId());

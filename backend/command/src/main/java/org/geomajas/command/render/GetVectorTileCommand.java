@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.6.0
  */
 @Api
-@Component(GetVectorTileRequest.COMMAND)
+@Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVectorTileResponse> {
 

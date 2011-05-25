@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * 
  * @author Pieter De Graef
  */
-@Component(MergePolygonRequest.COMMAND)
+@Component()
 public class MergePolygonCommand implements Command<MergePolygonRequest, MergePolygonResponse> {
 
 	@Autowired

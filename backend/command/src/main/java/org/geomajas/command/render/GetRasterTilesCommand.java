@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
  * @since 1.6.0
  */
 @Api
-@Component(GetRasterTilesRequest.COMMAND)
+@Component()
 public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, GetRasterTilesResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetRasterTilesCommand.class);
