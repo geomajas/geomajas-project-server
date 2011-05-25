@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * Very simple data bean implementation
+ * Very simple data bean implementation.
  *
  * @author Joachim Van der Auwera
  */

@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * ...
+ * Test data factory.
  *
  * @author Joachim Van der Auwera
  */
