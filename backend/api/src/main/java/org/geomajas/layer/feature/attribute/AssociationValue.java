@@ -175,16 +175,16 @@ public class AssociationValue implements Serializable {
 	 * @param <TYPE> type of the attribute value to return
 	 * @param attributeName the name of the attribute
 	 * @param type type for the return object
-	 * @return the value of the attribute or null if no such attribute exists or the object is of the wrong type
+	 * @return the value of the attribute or null if no such attribute exists //or the object is of the wrong type
 	 * @since 1.9.0
 	 */
 	@SuppressWarnings("unchecked")
 	public <TYPE> TYPE getAttributeValue(String attributeName, Class<TYPE> type) {
 		Object value = getAttributeValue(attributeName);
-		if (null != value && type.isAssignableFrom(value.getClass())) {
+		//if (null != value && type.isAssignableFrom(value.getClass())) {
 			return (TYPE) value;
-		}
-		return null;
+		//}
+		//return null;
 	}	
 
 	/**
