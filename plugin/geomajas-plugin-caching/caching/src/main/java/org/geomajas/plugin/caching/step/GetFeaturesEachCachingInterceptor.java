@@ -31,7 +31,8 @@ public class GetFeaturesEachCachingInterceptor extends AbstractSecurityContextCa
 	private TestRecorder recorder;
 
 	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY,
-			PipelineCode.OFFSET_KEY, PipelineCode.MAX_RESULT_SIZE_KEY, PipelineCode.FEATURE_INCLUDES_KEY};
+			PipelineCode.STYLE_KEY, PipelineCode.OFFSET_KEY, PipelineCode.MAX_RESULT_SIZE_KEY,
+			PipelineCode.FEATURE_INCLUDES_KEY};
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		// do not cache features which are converted lazily, this would put detached objects in cache

@@ -19,6 +19,8 @@
 
 	<!--
 	<logger name="org.geomajas.internal.service.pipeline" level="DEBUG" />
+	<logger name="org.geomajas.plugin.caching" level="DEBUG" />
+	<logger name="org.geomajas.internal.layer.vector.GetFeaturesEachStep" level="DEBUG" />
 	-->
 
     <root>
