@@ -13,10 +13,13 @@ package org.geomajas.layer.bean;
 
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.service.FilterService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -166,4 +169,29 @@ public class BeanLayerTest {
 		Assert.assertEquals(3, t);
 	}
 
+	@Test
+	public void testGetAttributes() throws Exception {
+		// this stuff is very much hardcoded to work only for this specific field
+		List<Attribute<?>> attributes = ((VectorLayerAssociationSupport) layer).getAttributes("manyToOneAttr", null);
+		Assert.assertNotNull(attributes);
+		Assert.assertEquals(2, attributes.size());
+	}
+
+	@Test
+	@DirtiesContext // adding a bean
+	public void testCreateNullId() throws Exception {
+		Assert.assertEquals(3, count(layer.getElements(null, 0, 0)));
+		layer.saveOrUpdate(new FeatureBean());
+		Assert.assertEquals(4, count(layer.getElements(null, 0, 0)));
+		Assert.assertNotNull(layer.read("4")); // should be assigned id 4
+	}
+
+	private int count(Iterator it) {
+		int count = 0;
+		while (it.hasNext()) {
+			count++;
+			it.next();
+		}
+		return count;
+	}
 }

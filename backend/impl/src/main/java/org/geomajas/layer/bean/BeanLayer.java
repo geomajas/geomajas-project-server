@@ -66,7 +66,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	 */
 	private List<Object> features = new ArrayList<Object>();
 
-	private FeatureModel featureModel;
+	private BeanFeatureModel featureModel;
 
 	private VectorLayerInfo layerInfo;
 
@@ -84,6 +84,8 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	protected Comparator<Object> comparator;
 
 	private String id;
+
+	private int nextId = 1;
 
 	private boolean useLazyFeatureConversion;
 
@@ -137,6 +139,9 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
+		if (null == filter) {
+			filter = Filter.INCLUDE;
+		}
 		List<Object> filteredList = new ArrayList<Object>();
 		try {
 			synchronized (featuresById) {
@@ -202,13 +207,16 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	public Object create(Object feature) throws LayerException {
 		String newId = featureModel.getId(feature);
 		synchronized (featuresById) {
-			if (newId != null && !featuresById.containsKey(newId)) {
-				features.add(feature);
-				featuresById.put(newId, feature);
-				return feature;
-			} else {
-				throw new IllegalStateException("BeanLayer cannot auto assign the feature id");
+			if (null == newId) {
+				// need to create a new id
+				do {
+					newId = Integer.toString(nextId++);
+				} while (featuresById.containsKey(newId));
+				featureModel.setId(feature, newId);
 			}
+			features.add(feature);
+			featuresById.put(newId, feature);
+			return feature;
 		}
 	}
 
@@ -320,7 +328,6 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	 * Compares features by a single attribute.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class FeatureComparator implements Comparator<Object> {
 

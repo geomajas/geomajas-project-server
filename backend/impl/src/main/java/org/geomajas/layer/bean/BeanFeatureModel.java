@@ -171,7 +171,12 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public String getId(Object feature) throws LayerException {
-		return getAttributeRecursively(feature, getFeatureInfo().getIdentifier().getName()).toString();
+		Object value = getAttributeRecursively(feature, getFeatureInfo().getIdentifier().getName());
+		if (null == value) {
+			return null;
+		} else {
+			return value.toString();
+		}
 	}
 
 	public int getSrid() throws LayerException {
@@ -189,23 +194,27 @@ public class BeanFeatureModel implements FeatureModel {
 	public Object newInstance(String id) throws LayerException {
 		try {
 			Object instance = beanClass.newInstance();
-			PrimitiveAttributeInfo pai = vectorLayerInfo.getFeatureInfo().getIdentifier();
-			Object value;
-			switch (pai.getType()) {
-				case LONG:
-					value = Long.parseLong(id);
-					break;
-				case STRING:
-					value = id;
-					break;
-				default:
-					throw new IllegalStateException("BeanFeatureModel only accepts String and long ids.");
-			}
-			writeProperty(instance, value, getFeatureInfo().getIdentifier().getName());
+			setId(instance, id);
 			return instance;
 		} catch (Throwable t) {
 			throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
+	}
+
+	public void setId(Object instance, String id) throws LayerException {
+		PrimitiveAttributeInfo pai = vectorLayerInfo.getFeatureInfo().getIdentifier();
+		Object value;
+		switch (pai.getType()) {
+			case LONG:
+				value = Long.parseLong(id);
+				break;
+			case STRING:
+				value = id;
+				break;
+			default:
+				throw new IllegalStateException("BeanFeatureModel only accepts String and long ids.");
+		}
+		writeProperty(instance, value, getFeatureInfo().getIdentifier().getName());
 	}
 
 	/** Does not support many-to-one and one-to-many.... */
@@ -218,7 +227,10 @@ public class BeanFeatureModel implements FeatureModel {
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		if (wkt) {
 			WKTWriter writer = new WKTWriter();
-			String wktStr = writer.write(geometry);
+			String wktStr = null;
+			if (null != geometry) {
+				writer.write(geometry);
+			}
 			writeProperty(feature, wktStr, getGeometryAttributeName());
 		} else {
 			writeProperty(feature, geometry, getGeometryAttributeName());
