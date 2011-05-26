@@ -36,6 +36,7 @@ import org.geomajas.configuration.validation.PatternConstraintInfo;
 import org.geomajas.configuration.validation.SizeConstraintInfo;
 import org.geomajas.configuration.validation.ValidatorInfo;
 import org.geomajas.global.FutureApi;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceBooleanField;
@@ -409,11 +410,25 @@ public final class AttributeFormFieldRegistry {
 	}
 
 	/**
+	 * Create a new {@link FormItem} instance for the given attribute info (top level attribute).<br/>
+	 * If the attribute info object has the <code>formInputType</code> set, than that will be used to search for the
+	 * correct field type, otherwise the attribute TYPE name is used (i.e. PrimitiveType.INTEGER.name()).
+	 * 
+	 * @param info The actual attribute info to create a form item for
+	 * @param layer The layer to create a form item for (needed to fetch association values)
+	 * @return The new form item instance associated with the type of attribute.
+	 */
+	public static FormItem createFormItem(AttributeInfo info, VectorLayer layer) {
+		return createFormItem(info, new DefaultAttributeProvider(layer));
+	}
+
+	/**
 	 * Create a new {@link FormItem} instance for the given attribute info.<br/>
 	 * If the attribute info object has the <code>formInputType</code> set, than that will be used to search for the
 	 * correct field type, otherwise the attribute TYPE name is used (i.e. PrimitiveType.INTEGER.name()).
 	 * 
-	 * @param info The actual attribute info to create a data source field for.
+	 * @param info The actual attribute info to create a form item for.
+	 * @param attributeProvider The attribute value provider for association attributes
 	 * @return The new form item instance associated with the type of attribute.
 	 */
 	public static FormItem createFormItem(AttributeInfo info, AttributeProvider attributeProvider) {
