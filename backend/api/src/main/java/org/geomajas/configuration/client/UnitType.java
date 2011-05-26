@@ -23,5 +23,6 @@ public enum UnitType {
 
 	METRIC,
 	ENGLISH,
+	ENGLISH_FOOT,
 	CRS
 }
