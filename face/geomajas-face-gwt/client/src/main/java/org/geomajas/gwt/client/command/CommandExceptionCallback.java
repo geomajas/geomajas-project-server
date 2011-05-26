@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command;
 
 import org.geomajas.command.CommandResponse;
@@ -15,14 +16,19 @@ import org.geomajas.global.Api;
 
 
 /**
- * Execution function that can be passed on to the CommandDispatcher to be executed when a command returns errors.
+ * Execution function that can be passed on to the {@link GwtCommandDispatcher} to be executed when a command response
+ * includes errors.
  * 
- * @since 1.9.0
  * @author Oliver May
- *
+ * @since 1.9.0
  */
 @Api(allMethods = true)
 public interface CommandExceptionCallback {
 
+	/**
+	 * Called when the CommandResponse includes exception details.
+	 *
+	 * @param response command response
+	 */
 	void onCommandException(CommandResponse response);
 }

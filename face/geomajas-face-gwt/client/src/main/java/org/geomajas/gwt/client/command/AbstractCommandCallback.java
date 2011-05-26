@@ -11,38 +11,25 @@
 package org.geomajas.gwt.client.command;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.widget.ExceptionWindow;
-
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.SC;
+import org.geomajas.global.Api;
 
 /**
- * Convenience class that implements CommandExceptionCallback and CommunicationExceptionCallback with the default 
- * SC.say behavior. 
+ * Convenience class that implements {@link CommandExceptionCallback} and {@link CommunicationExceptionCallback} with
+ * the default SC.say behavior.
  * 
  * @author Oliver May
+ * @since 1.9.0
  */
+@Api()
 public abstract class AbstractCommandCallback implements CommandCallback, CommandExceptionCallback,
 		CommunicationExceptionCallback {
 
 	public void onCommunicationException(Throwable error) {
-		SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+		GwtCommandDispatcher.getInstance().onCommunicationException(error);
 	}
 
 	public void onCommandException(CommandResponse response) {
-		String message = I18nProvider.getGlobal().commandError() + ":";
-		for (String error : response.getErrorMessages()) {
-			message += "\n" + error;
-		}
-		GWT.log(message, null);
-		if (response.getExceptions() == null || response.getExceptions().size() == 0) {
-			SC.warn(message, null);
-		} else {
-			// The error messaging window only supports 1 exception to display:
-			ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
-			window.show();
-		}
+		GwtCommandDispatcher.getInstance().onCommandException(response);
 	}
 
 }

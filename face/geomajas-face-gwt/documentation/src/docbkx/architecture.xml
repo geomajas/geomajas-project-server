@@ -32,9 +32,10 @@
     implementation of the <code>CommandRequest</code> and
     <code>CommandResponse</code> objects. Note that these request and response
     objects must also be known server-side, and thus will not be packaged
-    within the GWT client packages. As a second parameter for the execute
-    method, a <code>CommandCallback</code> object is required that will
-    execute it's only method on a successful return of a command.</para>
+    within the GWT client packages. As additional parameters for the execute
+    method, <code>CommandCallback</code> objects can be passed. These can
+    contain methods to call after successful or unsuccessful completion of the
+    command.</para>
 
     <para>The execution will immediately return a <code>Deferred</code>
     object, that can be used to add more callback methods, both for successful

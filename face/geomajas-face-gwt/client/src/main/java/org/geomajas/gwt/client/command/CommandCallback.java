@@ -12,20 +12,24 @@ package org.geomajas.gwt.client.command;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.
+ * <p />
+ * It is recommended to extend {@link AbstractCommandCallback} instead of implementing this.
  *
  * @since 1.6.0
  * @author Pieter De Graef
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface CommandCallback {
 
 	/**
 	 * The actual execution function. If the command returns successfully, this will be executed.
 	 *
-	 * @param response
+	 * @param response command response
 	 */
 	void execute(CommandResponse response);
 }

@@ -119,7 +119,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 		final Deferred deferred = new Deferred();
 		for (CommandCallback successCallback : callback) {
-			deferred.addSuccessCallback(successCallback);
+			deferred.addCallback(successCallback);
 		}
 
 		command.setLocale(locale);
@@ -128,17 +128,18 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 			public void onFailure(Throwable error) {
 				try {
-					for (Function callback : deferred.getOnErrorCallbacks()) {
+					for (Function callback : deferred.getErrorCallbacks()) {
 						callback.execute();
 					}
-					for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
-						if (callback instanceof CommunicationExceptionCallback) { 
+					boolean errorHandled = false;
+					for (CommandCallback callback : deferred.getCallbacks()) {
+						if (callback instanceof CommunicationExceptionCallback) {
 							((CommunicationExceptionCallback) callback).onCommunicationException(error);
+							errorHandled = true;
 						}
 					}
-					GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-					if (isShowError()) {
-						SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+					if (!errorHandled) {
+						onCommunicationException(error);
 					}
 				} catch (Throwable t) {
 					GWT.log("Command failed on error callback", t);
@@ -151,7 +152,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 				try {
 					if (response.isError()) {
 						boolean errorHandled = false;
-						for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
+						for (CommandCallback callback : deferred.getCallbacks()) {
 							if (callback instanceof CommandExceptionCallback) {
 								((CommandExceptionCallback) callback).onCommandException(response);
 								errorHandled = true;
@@ -159,26 +160,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 						// fallback to the default behaviour
 						if (!errorHandled) {
-							String message = I18nProvider.getGlobal().commandError() + ":";
-							for (String error : response.getErrorMessages()) {
-								message += "\n" + error;
-							}
-							GWT.log(message, null);
-							if (response.getExceptions() == null || response.getExceptions().size() == 0) {
-								if (isShowError()) {
-									SC.warn(message, null);
-								}
-							} else {
-								if (isShowError()) {
-									// The error messaging window only supports 1 exception to display:
-									ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
-									window.show();
-								}
-							}
+							onCommandException(response);
 						}
 					} else {
 						if (!deferred.isCancelled()) {
-							for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
+							for (CommandCallback callback : deferred.getCallbacks()) {
 								callback.execute(response);
 							}
 						}
@@ -191,6 +177,42 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 			}
 		});
 		return deferred;
+	}
+
+	/**
+	 * Default behaviour for handling a communication exception. Shows a warning window to the user.
+	 *
+	 * @since 1.9.0
+	 * @param error error to report
+	 */
+	public void onCommunicationException(Throwable error) {
+		if (isShowError()) {
+			GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+			SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+		}
+	}
+
+	/**
+	 * Default behaviour for handling a command execution exception. Shows an exception report to the user.
+	 *
+	 * @since 1.9.0
+	 * @param response command response with error
+	 */
+	public void onCommandException(CommandResponse response) {
+		if (isShowError()) {
+			String message = I18nProvider.getGlobal().commandError() + ":";
+			for (String error : response.getErrorMessages()) {
+				message += "\n" + error;
+			}
+			GWT.log(message, null);
+			if (response.getExceptions() == null || response.getExceptions().size() == 0) {
+				SC.warn(message, null);
+			} else {
+				// The error messaging window only supports 1 exception to display:
+				ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
+				window.show();
+			}
+		}
 	}
 
 	/**
@@ -316,7 +338,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	/**
 	 * Sets whether the dispatcher should show error messages.
 	 * 
-	 * @param consoleEnabled true if showing error messages, false otherwise
+	 * @param showError true if showing error messages, false otherwise
 	 * @since 1.9.0
 	 */
 	public void setShowError(boolean showError) {

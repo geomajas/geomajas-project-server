@@ -53,9 +53,6 @@ public class VectorTile extends AbstractVectorTile {
 
 	private VectorTileContentType contentType;
 
-	/** Array of feature ID's. */
-	private List<String> featureIds = new ArrayList<String>();
-
 	/** width in screen units */
 	private double screenWidth;
 
@@ -91,29 +88,23 @@ public class VectorTile extends AbstractVectorTile {
 	 *            what data should be available in the features
 	 * @param callback
 	 *            callback which gets the features
+	 * @deprecated features are no longer included in the tile
 	 */
+	@Deprecated
 	public void getFeatures(int featureIncludes, LazyLoadCallback callback) {
 		List<Feature> list = new ArrayList<Feature>();
-		for (String id : featureIds) {
-			Feature feature = cache.getPartialFeature(id);
-			if (null != feature) {
-				list.add(feature);
-			}
-		}
 		LazyLoader.lazyLoad(list, featureIncludes, callback);
 	}
 
 	/**
 	 * Return all partial features in this tile. Warning : this will return possibly incomplete features !
 	 * 
-	 *@return a list of all features in this tile
+	 * @return a list of all features in this tile
+	 * @deprecated features are no longer included in the tile
 	 */
+	@Deprecated
 	public List<Feature> getPartialFeatures() {
-		List<Feature> partials = new ArrayList<Feature>();
-		for (String id : featureIds) {
-			partials.add(getCache().getPartialFeature(id));
-		}
-		return partials;
+		return new ArrayList<Feature>();
 	}
 
 	/**
@@ -133,12 +124,6 @@ public class VectorTile extends AbstractVectorTile {
 				if (!(deferred != null && deferred.isCancelled()) && response instanceof GetVectorTileResponse) {
 					GetVectorTileResponse tileResponse = (GetVectorTileResponse) response;
 					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
-					if (tile.getFeatures() != null) {
-						for (org.geomajas.layer.feature.Feature dto : tileResponse.getTile().getFeatures()) {
-							cache.addFeature(new Feature(dto, cache.getLayer()));
-							featureIds.add(dto.getId());
-						}
-					}
 					for (TileCode relatedTile : tile.getCodes()) {
 						codes.add(relatedTile);
 					}
@@ -202,7 +187,7 @@ public class VectorTile extends AbstractVectorTile {
 				break;
 			case LOADING:
 				final VectorTile self = this;
-				deferred.addSuccessCallback(new CommandCallback() {
+				deferred.addCallback(new CommandCallback() {
 
 					public void execute(CommandResponse response) {
 						if (response instanceof GetVectorTileResponse) {
@@ -212,7 +197,7 @@ public class VectorTile extends AbstractVectorTile {
 				});
 				break;
 			case LOADED:
-				if (cache.getLayer().isLabeled() && !labelContent.isLoaded()) {
+				if (cache.getLayer().isLabelsShowing() && !labelContent.isLoaded()) {
 					// Check if the labels need to be fetched as well:
 					fetch(filter, callback);
 				} else {
@@ -280,7 +265,6 @@ public class VectorTile extends AbstractVectorTile {
 	 * Holds string content.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public class ContentHolder implements PaintableGroup {
 
@@ -329,7 +313,6 @@ public class VectorTile extends AbstractVectorTile {
 		request.setRenderer(SC.isIE() ? "VML" : "SVG");
 		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
 		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
-		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesDefault());
 		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
 		return command;

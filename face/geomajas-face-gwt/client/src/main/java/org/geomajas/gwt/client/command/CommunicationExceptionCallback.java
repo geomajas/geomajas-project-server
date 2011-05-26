@@ -8,21 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command;
 
 import org.geomajas.global.Api;
 
 
 /**
- * Execution function that can be passed on to the CommandDispatcher to be executed when a command fails because of a 
- * communication error.
+ * Execution function that can be passed on to the {@link GwtCommandDispatcher} to be executed when a command fails
+ * because of a communication error.
  * 
- * @since 1.9.0
  * @author Oliver May
- *
+ * @since 1.9.0
  */
 @Api(allMethods = true)
 public interface CommunicationExceptionCallback {
 
+	/**
+	 * Called when a command invocation failed because of communication problems.
+	 *
+	 * @param error problem which occurred
+	 */
 	void onCommunicationException(Throwable error);
 }
