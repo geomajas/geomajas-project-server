@@ -33,6 +33,8 @@ public class ClientPreferredPixelsPerTile implements Serializable {
 	private int height = 256;
 
 	/**
+	 * Set the preferred pixels per tile.
+	 *
 	 * @param preferredPixelsPerTileType the preferredPixelsPerTileType to set
 	 */
 	public void setPreferredPixelsPerTileType(PreferredPixelsPerTileType preferredPixelsPerTileType) {
@@ -40,6 +42,8 @@ public class ClientPreferredPixelsPerTile implements Serializable {
 	}
 
 	/**
+	 * Get the preferred pixels per tile.
+	 *
 	 * @return the preferredPixelsPerTileType
 	 */
 	public PreferredPixelsPerTileType getPreferredPixelsPerTileType() {
@@ -47,6 +51,8 @@ public class ClientPreferredPixelsPerTile implements Serializable {
 	}
 
 	/**
+	 * Get width of the preferred tile size in pixels.
+	 *
 	 * @return the width
 	 */
 	public int getWidth() {
@@ -63,6 +69,8 @@ public class ClientPreferredPixelsPerTile implements Serializable {
 	}
 
 	/**
+	 * Get height of the preferred tile size in pixels.
+	 *
 	 * @return the height
 	 */
 	public int getHeight() {
@@ -78,6 +86,4 @@ public class ClientPreferredPixelsPerTile implements Serializable {
 		this.height = height;
 	}
 
-	
-	
 }
