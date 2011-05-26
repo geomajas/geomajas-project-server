@@ -30,6 +30,7 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 
 	public DefaultManyToOneItem() {
 		selectItem = new SelectItem();
+		selectItem.setValueField(ManyToOneDataSource.ASSOCIATION_ITEM_ID_FIELD);
 	}
 
 	public SelectItem getItem() {
@@ -37,7 +38,11 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 	}
 
 	public void toItem(ManyToOneAttribute attribute) {
-		selectItem.setValue(attribute.getValue().getId().getValue());
+		if (attribute != null && attribute.getValue() != null) {
+			selectItem.setValue(attribute.getValue().getId().getValue());
+		} else {
+			selectItem.clearValue();
+		}
 	}
 
 	public void fromItem(ManyToOneAttribute attribute) {

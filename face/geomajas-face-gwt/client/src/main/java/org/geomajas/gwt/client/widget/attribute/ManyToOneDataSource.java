@@ -66,8 +66,19 @@ public class ManyToOneDataSource extends DataSource {
 		setClientOnly(false);
 
 		// Add id as primary key field
-		DataSourceField field = new DataSourceIntegerField(ASSOCIATION_ITEM_ID_FIELD, attributeInfo.getFeature()
-				.getIdentifier().getLabel());
+		String idLabel = attributeInfo.getFeature().getIdentifier().getLabel();
+		DataSourceField field;
+		switch (attributeInfo.getFeature().getIdentifier().getType()) {
+			case SHORT:
+			case INTEGER:
+			case LONG:
+				field = new DataSourceIntegerField(ASSOCIATION_ITEM_ID_FIELD, idLabel);
+				break;
+			case STRING:
+			default:
+				field = new DataSourceTextField(ASSOCIATION_ITEM_ID_FIELD, idLabel);
+				break;
+		}
 		field.setPrimaryKey(true);
 		addField(field);
 

@@ -419,7 +419,7 @@ public final class AttributeFormFieldRegistry {
 	 * @return The new form item instance associated with the type of attribute.
 	 */
 	public static FormItem createFormItem(AttributeInfo info, VectorLayer layer) {
-		return createFormItem(info, new DefaultAttributeProvider(layer));
+		return createFormItem(info, new DefaultAttributeProvider(layer, info.getName()));
 	}
 
 	/**
