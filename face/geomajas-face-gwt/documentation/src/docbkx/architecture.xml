@@ -1379,15 +1379,43 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <title>Creating a custom FeatureForm</title>
 
       <para>The next step is to create a custom <code>FeatureForm</code>. Let
-      us again start with a short code example:</para>
+      us again start with a short code example:<programlisting>public class AttributeCustomForm extends DefaultFeatureForm {
 
-      <xi:include href="listing/CustomFeatureForm.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+ public AttributeCustomForm(VectorLayer vectorLayer) {
+  super(vectorLayer);
+ }
 
-      <para>Some custom settings are used, such as applying
-      4 columns and a group title. The form that results from this will not
-      differ all too much from the default implementation, but it should get
-      you on your way.</para>
+ @Override
+ protected FormItem createItem(AttributeInfo info) {
+  FormItem formItem = super.createItem(info); // call super to create the default item
+  formItem.setWidth("*");
+  if ("dateAttr".equals(info.getName())) {
+   // The data attribute will span all 4 columns:
+   formItem.setColSpan(4);
+  }
+  return formItem;
+ }
+
+ @Override
+ protected void prepareForm(FormItemList formItems, DataSource source) {
+  // Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
+  formItems.insertBefore("stringAttr", new RowSpacerItem()); // inserting an item via the FormItemList
+  getWidget().setNumCols(4);
+  getWidget().setWidth(450);
+  getWidget().setColWidths(100, 180, 20, 150);
+  getWidget().setGroupTitle("Custom Attribute Form");
+  getWidget().setIsGroup(true);
+ }
+}
+</programlisting></para>
+
+      <para>The <code>createItem(AttributeInfo info)</code> method is
+      overridden to set the item width and make the data attribute span 4
+      columns. The <code>prepareForm(FormItemList formItems, DataSource
+      source)</code> method is overridden to insert an extra spacer item
+      before the string attribute and set the general column layout. The form
+      that results from this will not differ all too much from the default
+      implementation, but it should get you on your way.</para>
     </section>
   </section>
 </chapter>

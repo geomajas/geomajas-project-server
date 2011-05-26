@@ -16,6 +16,7 @@ import org.geomajas.command.dto.SearchAttributesResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 /**
  * Default implementation of {@link AttributeProvider}. This provider calls the server with the
@@ -32,10 +33,42 @@ public class DefaultAttributeProvider implements AttributeProvider {
 
 	private String attributePath;
 
-	public DefaultAttributeProvider(String serverLayerId) {
-		this.serverLayerId = serverLayerId;
+	/**
+	 * Constructs an {@link DefaultAttributeProvider} for the specified layer that fetches top level attributes.
+	 * 
+	 * @param layer the layer
+	 */
+	public DefaultAttributeProvider(VectorLayer layer) {
+		this(layer.getLayerInfo().getServerLayerId(), null);
 	}
 
+	/**
+	 * Constructs an {@link DefaultAttributeProvider} for the specified layer that fetches attributes, starting from the
+	 * specified path.
+	 * 
+	 * @param layer the layer
+	 * @param attributePath the path from which to start (should refer to an association attribute)
+	 */
+	public DefaultAttributeProvider(VectorLayer layer, String attributePath) {
+		this(layer.getLayerInfo().getServerLayerId(), attributePath);
+	}
+
+	/**
+	 * Constructs an {@link DefaultAttributeProvider} for the specified layer that fetches top level attributes.
+	 * 
+	 * @param serverLayerId the server layer id
+	 */
+	public DefaultAttributeProvider(String serverLayerId) {
+		this(serverLayerId, null);
+	}
+
+	/**
+	 * Constructs an {@link DefaultAttributeProvider} for the specified layer that fetches attributes, starting from the
+	 * specified path.
+	 * 
+	 * @param serverLayerId the server layer id
+	 * @param attributePath the path from which to start (should refer to an association attribute)
+	 */
 	public DefaultAttributeProvider(String serverLayerId, String attributePath) {
 		this.serverLayerId = serverLayerId;
 		this.attributePath = attributePath;

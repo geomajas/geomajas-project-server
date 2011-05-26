@@ -11,6 +11,7 @@
 package org.geomajas.gwt.client.widget.attribute;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -767,22 +768,23 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		 * @param name name of the item before which to insert
 		 * @param newItem the item to insert
 		 */
-		public void insertBefore(String name, FormItem newItem) {
+		public void insertBefore(String name, FormItem... newItem) {
 			int index = indexOf(name);
 			if (index >= 0) {
-				add(index, newItem);
+				addAll(index, Arrays.asList(newItem));
 			}
 		}
 
 		/**
 		 * Insert a form item after the item with the specified name.
+		 * 
 		 * @param name name of the item after which to insert
 		 * @param newItem the item to insert
 		 */
-		public void insertAfter(String name, FormItem newItem) {
+		public void insertAfter(String name, FormItem... newItem) {
 			int index = indexOf(name);
 			if (index >= 0) {
-				add(index + 1, newItem);
+				addAll(index + 1, Arrays.asList(newItem));
 			}
 		}
 	}
