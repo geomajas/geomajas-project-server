@@ -21,25 +21,25 @@ import org.geomajas.global.Api;
 @Api(allMethods = true)
 public enum UnitType {
 	/**
-	 * Metric Units
+	 * Metric Units.
 	 * Meters(m) -- Kilometers(km)
 	 */
 	METRIC,
 
 	/**
-	 * English Units
+	 * English Units.
 	 * Yards(yd) -- Miles(mi)
 	 */
 	ENGLISH,
 
 	/**
-	 * English Units
-	 * Feet(ft) and Miles(mi)
+	 * English Units.
+	 * Feet(ft) -- Miles(mi)
 	 */
 	ENGLISH_FOOT,
 
 	/**
-	 * Coordinate Reference System Units
+	 * Coordinate Reference System Units.
 	 * Units(u)
 	 */
 	CRS
