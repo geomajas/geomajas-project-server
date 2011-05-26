@@ -137,7 +137,7 @@ public class ScalebarGadget implements MapGadget {
 		int len = 0;
 		long px = 0;
 		if (UnitType.ENGLISH.equals(unitType)) {
-			// try miles
+			// try miles.
 			for (int i = lengths.length - 1; i > -1; i--) {
 				len = this.lengths[i];
 				px = Math.round((len * scale / unitLength) * METERSINMILE);
@@ -145,7 +145,7 @@ public class ScalebarGadget implements MapGadget {
 					break;
 				}
 			}
-			// try yards
+			// try yards.
 			if (px > MAXSIZEINPIXELS) {
 				for (int i = yardStartingPoint; i > -1; i--) {
 					len = this.lengths[i];
@@ -159,7 +159,7 @@ public class ScalebarGadget implements MapGadget {
 				widthInUnitsIsMiles = true;
 			}
 		} else if(UnitType.ENGLISH_FOOT.equals(unitType)){
-			 // try miles
+			 // try miles.
 			for (int i = lengths.length - 1; i > -1; i--) {
 				len = this.lengths[i];
 				px = Math.round((len * scale / unitLength) * METERSINMILE);
@@ -167,7 +167,7 @@ public class ScalebarGadget implements MapGadget {
 					break;
 				}
 			}
-			// try feet
+			// try feet.
 			if (px > MAXSIZEINPIXELS) {
 				for (int i = yardStartingPoint; i > -1; i--) {
 					len = this.lengths[i];
