@@ -43,6 +43,8 @@ public class ScaleBar extends MapAddon {
 
 	private static final double METERSINYARD = 0.9144d;
 
+	private static final double FEETINMETER = 3.2808399d;
+
 	private static final int HORIZONTALPADDING = 3; // px
 
 	private static final int VERTICALPADDING = 3; // px
@@ -243,6 +245,28 @@ public class ScaleBar extends MapAddon {
 			} else {
 				widthInUnitsIsMiles = true;
 			}
+		} else if (UnitType.ENGLISH_FOOT.equals(unitType)) {
+			// try miles
+			for (int i = lengths.length - 1; i > -1; i--) {
+				len = this.lengths[i];
+				px = Math.round((len * scale / unitLength) * METERSINMILE);
+				if (px < MAXSIZEINPIXELS) {
+					break;
+				}
+			}
+			// try feet
+			if (px > MAXSIZEINPIXELS) {
+				for (int i = yardStartingPoint; i > -1; i--) {
+					len = this.lengths[i];
+					px = Math.round((len * scale / unitLength) / FEETINMETER);
+					if (px < MAXSIZEINPIXELS) {
+						break;
+					}
+				}
+				widthInUnitsIsMiles = false;
+			} else {
+				widthInUnitsIsMiles = true;
+			}
 		} else {
 			for (int i = lengths.length - 1; i > -1; i--) {
 				len = this.lengths[i];
@@ -279,7 +303,8 @@ public class ScaleBar extends MapAddon {
 		switch (unitType) {
 			case ENGLISH:
 				return NumberFormat.getDecimalFormat().format(units) + (widthInUnitsIsMiles ? " mi" : " yd");
-
+			case ENGLISH_FOOT:
+				return NumberFormat.getDecimalFormat().format(units) + (widthInUnitsIsMiles ? " mi" : " ft");
 			case METRIC:
 				if (units < 10000) {
 					return NumberFormat.getDecimalFormat().format(units) + " m";

@@ -27,6 +27,10 @@ public final class DistanceFormat {
 
 	private static final double METERS_IN_YARD = 0.9144d;
 
+	private static final double FEET_IN_METER = 3.2808399d;
+
+	private static final double FEET_IN_MILE = 5280d;
+
 	private static final double METERS_IN_KM = 1000;
 
 	private DistanceFormat() {
@@ -65,7 +69,16 @@ public final class DistanceFormat {
 				distance /= METERS_IN_YARD; // use yards.
 				unit = "yd";
 			}
-		} else if (map.getMapModel().getMapInfo().getDisplayUnitType() == UnitType.CRS) {
+		} else if (map.getMapModel().getMapInfo().getDisplayUnitType() == UnitType.ENGLISH_FOOT) {
+			if (distance * FEET_IN_METER > FEET_IN_MILE) {
+				// More than 1 mile (5280 feet); switch to mile:
+				distance = distance / METERS_IN_MILE;
+				unit = "mi";
+			} else {
+				distance *= FEET_IN_METER; // use feet.
+				unit = "ft";
+			}
+		}  else if (map.getMapModel().getMapInfo().getDisplayUnitType() == UnitType.CRS) {
 			unit = "u";
 		}
 
