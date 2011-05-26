@@ -58,7 +58,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * 
  * @author Jan De Moerloose
  */
-@Component("VectorLayerComponentPrototype")
+@Component()
 @Scope(value = "prototype")
 public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayerComponentInfo> {
 

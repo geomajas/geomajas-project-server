@@ -30,9 +30,9 @@ import com.lowagie.text.Rectangle;
  *
  * @author Jan De Moerloose
  */
-@Component("LegendIconComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class LegendIconComponentImpl extends PrintComponentImpl<LegendIconComponentInfo> {
+public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconComponentInfo> {
 
 	private String label;
 

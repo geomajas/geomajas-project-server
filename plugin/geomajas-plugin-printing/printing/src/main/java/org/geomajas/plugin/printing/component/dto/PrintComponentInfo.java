@@ -32,6 +32,8 @@ public abstract class PrintComponentInfo implements Serializable {
 
 	private static final long serialVersionUID = 200L;
 
+	private static final String ORG_GEOMAJAS = "org.geomajas.";
+
 	private String id;
 
 	private String tag;
@@ -89,14 +91,12 @@ public abstract class PrintComponentInfo implements Serializable {
 	}
 	
 	public String getPrototypeName() {
-		return getSimpleClassName().replace("Info", "Prototype");
+		String name = getClass().getName();
+		if (name.startsWith(ORG_GEOMAJAS)) {
+			name = name.substring(ORG_GEOMAJAS.length());
+		}
+		name = name.replace(".dto.", ".impl.");
+		return name.substring(0, name.length() - 4) + "Impl";
 	}
-
-	private String getSimpleClassName() {
-		// should be in GWT but is not !
-		String fullName = getClass().getName();
-		String[] parts = fullName.split("\\.");
-		return parts[parts.length - 1];
-	}	
 
 }

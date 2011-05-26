@@ -33,9 +33,9 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * 
  * @author Jan De Moerloose
  */
-@Component("LabelComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class LabelComponentImpl extends PrintComponentImpl<LabelComponentInfo> implements LabelComponent {
+public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInfo> implements LabelComponent {
 
 	/**
 	 * The font for the text

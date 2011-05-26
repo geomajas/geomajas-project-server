@@ -39,9 +39,9 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  *
  * @author Jan De Moerloose
  */
-@Component("LegendComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class LegendComponentImpl extends PrintComponentImpl<LegendComponentInfo> implements LegendComponent {
+public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentInfo> implements LegendComponent {
 
 	/**
 	 * Application id

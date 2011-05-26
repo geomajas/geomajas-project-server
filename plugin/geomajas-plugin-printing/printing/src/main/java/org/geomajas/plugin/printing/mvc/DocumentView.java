@@ -22,11 +22,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
 /**
- * 
+ * View to produce PDF documents.
+ *
  * @author Jan De Moerloose
- * 
  */
-@Component("documentView")
+@Component(PrintingController.DOCUMENT_VIEW_NAME)
 public class DocumentView extends AbstractView {
 
 	@Override
@@ -44,8 +44,10 @@ public class DocumentView extends AbstractView {
 		// check download method
 		if (download.equals(PrintingController.DOWNLOAD_METHOD_SAVE)) {
 			response.setHeader("Content-Disposition", " attachment; filename=\"" + fileName + "\"");
-		} else {
+		} else if (download.equals(PrintingController.DOWNLOAD_METHOD_BROWSER)) {
 			response.setHeader("Content-Disposition", " inline; filename=\"" + fileName + "\"");
+		} else {
+			throw new IllegalArgumentException("invalid download method " + download);
 		}
 
 		// Write the docmuent

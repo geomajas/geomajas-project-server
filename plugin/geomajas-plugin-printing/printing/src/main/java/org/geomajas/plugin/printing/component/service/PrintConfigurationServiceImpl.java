@@ -26,9 +26,8 @@ import org.springframework.stereotype.Component;
  * Trimmed down configuration service for printing.
  * 
  * @author Jan De Moerloose
- *
  */
-@Component("printConfigurationService")
+@Component()
 public class PrintConfigurationServiceImpl implements PrintConfigurationService {
 
 	@Autowired(required = false)

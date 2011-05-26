@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.printing.mvc;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.plugin.printing.PrintingException;
@@ -35,9 +34,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller("/printing/**")
 public class PrintingController {
 
-	public static final String DOCUMENT_VIEW_NAME = "documentView";
+	public static final String DOCUMENT_VIEW_NAME = "plugin.printing.mvc.DocumentView";
 
-	public static final String IMAGE_VIEW_NAME = "imageView";
+	//public static final String IMAGE_VIEW_NAME = "plugin.printing.mvc.ImageView";
 
 	public static final String DOCUMENT_KEY = "document";
 
@@ -47,7 +46,7 @@ public class PrintingController {
 
 	public static final String FORMAT_KEY = "format";
 	
-	public static final String IMAGE_KEY = "image";
+	//public static final String IMAGE_KEY = "image";
 
 	public static final String DOWNLOAD_METHOD_BROWSER = "0";
 
@@ -62,7 +61,7 @@ public class PrintingController {
 	@RequestMapping(value = "/printing", method = RequestMethod.GET)
 	public ModelAndView printDocument(@RequestParam("documentId") String documentId,
 			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
-			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName, HttpServletRequest request)
+			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName)
 			throws PrintingException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(DOCUMENT_VIEW_NAME);

@@ -35,9 +35,9 @@ import com.vividsolutions.jts.geom.Coordinate;
  * 
  * @param <T> DTO object class
  */
-@Component("MapComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class MapComponentImpl<T extends MapComponentInfo> extends PrintComponentImpl<T> implements MapComponent<T> {
+public class MapComponentImpl<T extends MapComponentInfo> extends AbstractPrintComponent<T> implements MapComponent<T> {
 
 	/**
 	 * Map id

@@ -25,9 +25,9 @@ import com.lowagie.text.Rectangle;
  * 
  * @author Jan De Moerloose
  */
-@Component("ImageComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class ImageComponentImpl extends PrintComponentImpl<ImageComponentInfo> {
+public class ImageComponentImpl extends AbstractPrintComponent<ImageComponentInfo> {
 
 	/**
 	 * The (relative) path of the image

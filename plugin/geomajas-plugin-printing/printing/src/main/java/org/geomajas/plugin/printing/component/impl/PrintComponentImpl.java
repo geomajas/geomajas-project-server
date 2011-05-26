@@ -18,7 +18,6 @@ import java.util.List;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
 import org.geomajas.global.Json;
-import org.geomajas.global.UserImplemented;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
@@ -38,9 +37,10 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * @since 2.0.0
  * 
  * @param <T> DTO object class
+ * @deprecated use AbstractPrintComponent instead
  */
+@Deprecated
 @Api(allMethods = true)
-@UserImplemented
 public abstract class PrintComponentImpl<T extends PrintComponentInfo> implements PrintComponent<T> {
 
 	@XStreamConverter(RectangleConverter.class)

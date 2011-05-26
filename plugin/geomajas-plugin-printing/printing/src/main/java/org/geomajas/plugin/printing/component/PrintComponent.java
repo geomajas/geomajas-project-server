@@ -22,6 +22,8 @@ import com.lowagie.text.Rectangle;
 /**
  * A print component is a UI component that can be rendered in a PDF context. Examples are maps, images, labels, text
  * boxes, etc.. A print component can be composed of child components.
+ * <p />
+ * Use the abstract {@link org.geomajas.plugin.printing.component.impl.AbstractPrintComponent} class as base class.
  *
  * @author Jan De Moerloose
  * @since 2.0.0

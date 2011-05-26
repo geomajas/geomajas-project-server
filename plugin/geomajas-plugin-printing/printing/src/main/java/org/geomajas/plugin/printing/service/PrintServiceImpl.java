@@ -70,6 +70,8 @@ public class PrintServiceImpl implements PrintService {
 
 	private final Logger log = LoggerFactory.getLogger(PrintServiceImpl.class);
 
+	private static final String ORG_GEOMAJAS = "org.geomajas.";
+
 	@Autowired
 	private PrintTemplateDao printTemplateDao;
 
@@ -77,11 +79,11 @@ public class PrintServiceImpl implements PrintService {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	@Qualifier("printMarshaller")
+	@Qualifier("printing.printMarshaller")
 	private Marshaller marshaller;
 
 	@Autowired
-	@Qualifier("printMarshaller")
+	@Qualifier("printing.printMarshaller")
 	private Unmarshaller unMarshaller;
 
 	private int jaiTileCacheInMB = 64;
@@ -148,7 +150,7 @@ public class PrintServiceImpl implements PrintService {
 	/**
 	 * Puts a new document in the service. The generate key is globally unique.
 	 * 
-	 * @param document
+	 * @param document document
 	 * @return key unique key to reference the document
 	 */
 	public String putDocument(Document document) {
@@ -280,8 +282,17 @@ public class PrintServiceImpl implements PrintService {
 		return bar;
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> T createInstance(Class<T> clazz) {
-		return (T) applicationContext.getBean(clazz.getSimpleName().replace("Impl", "Prototype"));
+		return (T) applicationContext.getBean(getPrototypeName(clazz));
+	}
+
+	private String getPrototypeName(Class serviceClass) {
+		String name = serviceClass.getName();
+		if (name.startsWith(ORG_GEOMAJAS)) {
+			name = name.substring(ORG_GEOMAJAS.length());
+		}
+		return name;
 	}
 
 }

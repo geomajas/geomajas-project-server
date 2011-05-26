@@ -28,9 +28,9 @@ import org.springframework.stereotype.Component;
  *
  * @author Jan De Moerloose
  */
-@Component("LegendItemComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class LegendItemComponentImpl extends PrintComponentImpl<LegendItemComponentInfo> {
+public class LegendItemComponentImpl extends AbstractPrintComponent<LegendItemComponentInfo> {
 
 	public LegendItemComponentImpl() {
 		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM,

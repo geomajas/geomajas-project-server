@@ -32,7 +32,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  *
  * @author Jan De Moerloose
  */
-@Component("ViewPortComponentPrototype")
+@Component()
 @Scope(value = "prototype")
 public class ViewPortComponentImpl extends MapComponentImpl<ViewPortComponentInfo> implements ViewPortComponent {
 

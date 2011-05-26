@@ -14,15 +14,15 @@ package org.geomajas.plugin.printing.component.impl;
 import org.geomajas.plugin.printing.component.DummyComponent;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
-import org.geomajas.plugin.printing.component.impl.PrintComponentImpl;
+import org.geomajas.plugin.printing.component.impl.AbstractPrintComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
-@Component("DummyComponentPrototype")
+@Component()
 @Scope("prototype")
-public class DummyComponentImpl extends PrintComponentImpl implements DummyComponent {
+public class DummyComponentImpl extends AbstractPrintComponent implements DummyComponent {
 
 	@Autowired
 	VectorLayerService layerService;

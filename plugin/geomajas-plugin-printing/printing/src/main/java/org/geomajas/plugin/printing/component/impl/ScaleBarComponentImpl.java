@@ -41,9 +41,9 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * 
  * @author Jan De Moerloose
  */
-@Component("ScaleBarComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class ScaleBarComponentImpl extends PrintComponentImpl<ScaleBarComponentInfo> implements ScaleBarComponent {
+public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarComponentInfo> implements ScaleBarComponent {
 
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(ScaleBarComponentImpl.class);

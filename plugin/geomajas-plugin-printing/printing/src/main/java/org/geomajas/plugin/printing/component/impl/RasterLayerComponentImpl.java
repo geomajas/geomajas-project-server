@@ -75,7 +75,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  */
-@Component("RasterLayerComponentPrototype")
+@Component()
 @Scope(value = "prototype")
 public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayerComponentInfo> {
 

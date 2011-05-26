@@ -23,8 +23,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @param <T>
  *            DTO object class
  */
-public abstract class BaseLayerComponentImpl<T extends BaseLayerComponentInfo> extends PrintComponentImpl<T> implements
-		BaseLayerComponent<T> {
+public abstract class BaseLayerComponentImpl<T extends BaseLayerComponentInfo>
+		extends AbstractPrintComponent<T> implements BaseLayerComponent<T> {
 
 	/**
 	 * True if layer is visible.

@@ -25,9 +25,9 @@ import com.lowagie.text.Rectangle;
  *
  * @author Jan De Moerloose
  */
-@Component("PageComponentPrototype")
+@Component()
 @Scope(value = "prototype")
-public class PageComponentImpl extends PrintComponentImpl<PageComponentInfo> implements PageComponent {
+public class PageComponentImpl extends AbstractPrintComponent<PageComponentInfo> implements PageComponent {
 
 	public PageComponentImpl() {
 		this("A4", true);
