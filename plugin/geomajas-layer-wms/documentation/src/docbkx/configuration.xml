@@ -154,7 +154,7 @@
     <para>Let us go over the properties for the authentication bean:</para>
 
     <table>
-      <title>WMS layer properties</title>
+      <title>WMS authentication properties</title>
 
       <tgroup cols="2">
         <colspec colnum="1" colwidth="1*" />
