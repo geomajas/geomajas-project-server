@@ -212,6 +212,12 @@ public class SelectionController extends AbstractRectangleController {
 		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		request.setLayerIds(getSelectionLayerIds());
+		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+			if (layer.isShowing() && layer instanceof VectorLayer) {
+				request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+			}
+		}
+
 		Polygon polygon = mapWidget.getMapModel().getGeometryFactory().createPolygon(selectedArea);
 		request.setLocation(GeometryConverter.toDto(polygon));
 		request.setCrs(mapWidget.getMapModel().getCrs());
@@ -220,9 +226,6 @@ public class SelectionController extends AbstractRectangleController {
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
-		if (null != layer && layer instanceof VectorLayer) {
-			request.setFilter(((VectorLayer) layer).getFilter());
-		}
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 

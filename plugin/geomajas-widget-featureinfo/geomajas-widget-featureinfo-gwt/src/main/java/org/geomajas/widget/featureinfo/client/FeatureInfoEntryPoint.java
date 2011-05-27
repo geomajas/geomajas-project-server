@@ -12,13 +12,14 @@ package org.geomajas.widget.featureinfo.client;
 
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.toolbar.FeatureInfoModalAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.action.toolbar.CombinedFeatureInfoModalAction;
-import org.geomajas.widget.featureinfo.client.action.toolbar.FeatureInfoModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.ShowCoordinatesModalAction;
 import org.geomajas.widget.featureinfo.client.action.toolbar.TooltipOnMouseoverModalAction;
+import org.geomajas.widget.featureinfo.client.controller.MultiLayerFeatureInfoController;
 import org.geomajas.widget.featureinfo.client.widget.builders.UrlFeatureDetailWidgetBuilder;
 import org.geomajas.widget.featureinfo.client.widget.factory.WidgetFactory;
 
@@ -60,12 +61,6 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 		ToolbarRegistry.put(TOOLTIP_ON_MOUSEOVER_MODE_KEY, new ToolCreator() {
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new TooltipOnMouseoverModalAction(mapWidget);
-			}
-		});
-
-		ToolbarRegistry.put(SHOW_FEATUREINFOMODE_KEY, new ToolCreator() {
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new FeatureInfoModalAction(mapWidget);
 			}
 		});
 

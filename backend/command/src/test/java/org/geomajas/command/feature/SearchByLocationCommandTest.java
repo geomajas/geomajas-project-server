@@ -90,7 +90,7 @@ public class SearchByLocationCommandTest {
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setLayerIds(new String[] {LAYER_ID});
-		request.setFilter("region='Region 1'");
+		request.setFilter(LAYER_ID, "region='Region 1'");
 
 		GeometryFactory factory = new GeometryFactory();
 		LineString equator = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),

@@ -10,6 +10,9 @@
  */
 package org.geomajas.command.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.Api;
@@ -19,6 +22,7 @@ import org.geomajas.global.GeomajasConstant;
  * Request object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
  * 
  * @author Joachim Van der Auwera
+ * @author Oliver May
  * @since 1.6.0
  */
 @Api(allMethods = true)
@@ -99,6 +103,8 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	private String crs;
 
 	private String filter;
+	
+	private Map<String, String> filters = new HashMap<String, String>();
 
 	/**
 	 * The optional buffer that should be added around the location before executing the search.
@@ -264,29 +270,58 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	public void setFeatureIncludes(int featureIncludes) {
 		this.featureIncludes = featureIncludes;
 	}
-
+	
+	/**
+	 * Set the filter expression which should be applied on the given layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
+	 *
+	 * @param layerId layer to set this filter on
+	 * @param filter filter expression
+	 * @since 1.9.0
+	 */
+	public void setFilter(String layerId, String filter) {
+		filters.put(layerId, filter);
+	}
 	/**
 	 * Get the filter expression which should be applied on the layer.
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 *
 	 * @return filter expression
-	 * @since 1.8.0
+	 * @param layerId for the filter
+	 * @since 1.9.0
 	 */
-	public String getFilter() {
-		return filter;
+	public String getFilter(String layerId) {
+		return filters.get(layerId);
 	}
 
 	/**
 	 * Set the filter expression which should be applied on the layer.
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
+	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
+	 * be set on all layers. To add filters to individual layers use setFilter(String layerId, String filter).
 	 *
 	 * @param filter filter expression
 	 * @since 1.8.0
 	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
+	}
+	
+	/**
+	 * Get the filter expression which should be applied on the layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
+	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
+	 * be set on all layers. To add filters to individual layers use setFilter(String layerId, String filter).
+	 *
+	 * @return filter expression
+	 * @since 1.8.0
+	 */
+	public String getFilter() {
+		return filter;
 	}
 
 	/**

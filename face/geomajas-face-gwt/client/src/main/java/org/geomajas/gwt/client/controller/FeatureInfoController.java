@@ -67,9 +67,10 @@ public class FeatureInfoController extends AbstractGraphicsController {
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
-		Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
-		if (null != layer && layer instanceof VectorLayer) {
-			request.setFilter(((VectorLayer) layer).getFilter());
+		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+			if (layer.isShowing() && layer instanceof VectorLayer) {
+				request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+			}
 		}
 
 		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);

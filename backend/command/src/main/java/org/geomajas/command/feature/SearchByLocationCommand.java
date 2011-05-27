@@ -16,6 +16,7 @@ import java.util.List;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -29,7 +30,6 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +115,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		int queryType = request.getQueryType();
 		double ratio = request.getRatio();
 		int searchType = request.getSearchType();
-		CoordinateReferenceSystem crs = geoService.getCrs(request.getCrs());
+		Crs crs = geoService.getCrs2(request.getCrs());
 
 		// Check if a buffer should be added around the location:
 		Geometry geometry = location;
@@ -151,6 +151,15 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 								f = filterCreator.createWithinFilter(layerGeometry, geomName);
 								break;
 						}
+						//Set the per layer filter
+						if (null != request.getFilter(layerId)) {
+							if (null == f) {
+								f = filterCreator.parseFilter(request.getFilter(layerId));
+							} else {
+								f = filterCreator.createAndFilter(filterCreator.parseFilter(request.getFilter(layerId)), f);
+							}
+						}
+						//Set the global filter
 						if (null != request.getFilter()) {
 							if (null == f) {
 								f = filterCreator.parseFilter(request.getFilter());

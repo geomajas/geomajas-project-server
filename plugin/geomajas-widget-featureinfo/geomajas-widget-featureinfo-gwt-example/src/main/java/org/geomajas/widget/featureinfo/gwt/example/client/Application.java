@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.LoadingScreen;
@@ -177,7 +180,14 @@ public class Application implements EntryPoint {
 		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
 				+ Geomajas.getVersion());
 		loadScreen.draw();
-
+		
+		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+			
+			public void onMapModelChange(MapModelEvent event) {
+				VectorLayer layer = map.getMapModel().getVectorLayer("clientLayerCountries");
+				layer.setFilter("NAME like '%e%'");
+			}
+		});
 		// Then initialize:
 		initialize();
 	}

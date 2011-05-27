@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Mathlib;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
@@ -227,6 +228,12 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+			if (layer.isShowing() && layer instanceof VectorLayer) {
+				request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+			}
+		}
+		
 
 		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
 		commandRequest.setCommandRequest(request);

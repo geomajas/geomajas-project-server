@@ -22,7 +22,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.controller.AbstractGraphicsController;
+import org.geomajas.gwt.client.controller.FeatureInfoController;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -49,7 +49,7 @@ import com.smartgwt.client.widgets.Window;
  * @author Oliver May
  * @author Kristof Heirwegh
  */
-public class MultiLayerFeatureInfoController extends AbstractGraphicsController {
+public class MultiLayerFeatureInfoController extends FeatureInfoController {
 
 	private boolean dragging;
 	private boolean clickstart;
@@ -61,7 +61,7 @@ public class MultiLayerFeatureInfoController extends AbstractGraphicsController 
 	private int pixelTolerance;
 
 	public MultiLayerFeatureInfoController(MapWidget mapWidget, int pixelTolerance) {
-		super(mapWidget);
+		super(mapWidget, pixelTolerance);
 		this.pixelTolerance = pixelTolerance;
 	}
 
@@ -105,15 +105,12 @@ public class MultiLayerFeatureInfoController extends AbstractGraphicsController 
 			request.setBuffer(calculateBufferFromPixelTolerance());
 			request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 			request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
-			Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
-			if (null != layer && layer instanceof VectorLayer) {
-				request.setFilter(((VectorLayer) layer).getFilter());
+			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+				if (layer.isShowing() && layer instanceof VectorLayer) {
+					request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+				}
 			}
-
-			GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
-			// FIXME this is 1.9.0-SNAPSHOT functionality
-			// GwtCommand commandRequest = new
-			// GwtCommand(SearchByLocationRequest.COMMAND);
+			GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 			commandRequest.setCommandRequest(request);
 			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
