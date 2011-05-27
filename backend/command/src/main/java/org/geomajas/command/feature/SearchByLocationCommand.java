@@ -156,7 +156,8 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 							if (null == f) {
 								f = filterCreator.parseFilter(request.getFilter(layerId));
 							} else {
-								f = filterCreator.createAndFilter(filterCreator.parseFilter(request.getFilter(layerId)), f);
+								f = filterCreator.createAndFilter(
+										filterCreator.parseFilter(request.getFilter(layerId)), f);
 							}
 						}
 						//Set the global filter
