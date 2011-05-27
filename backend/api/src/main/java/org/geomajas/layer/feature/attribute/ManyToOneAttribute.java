@@ -91,4 +91,15 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 		clone.setEditable(isEditable());
 		return clone;
 	}
+	
+	/**
+	 * Returns a string representation of this attribute's value.
+	 *
+	 * @return string value
+	 * @since 1.9.0
+	 * @see AssociationValue#toString()
+	 */
+	public String toString() {
+		return value == null ? "null" : value.toString();
+	}
 }

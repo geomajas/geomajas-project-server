@@ -135,4 +135,14 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
+	
+	/**
+	 * Returns a string representation of the primitive value using {@link Object#toString()}.
+	 *
+	 * @return string value
+	 * @since 1.9.0
+	 */
+	public String toString() {
+		return value == null ? "null" : value.toString();
+	}
 }

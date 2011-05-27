@@ -115,5 +115,4 @@ public class AssociationValueTest {
 		Assert.assertEquals(null, value.getAttributeValue("missing"));
 	}
 	
-
 }

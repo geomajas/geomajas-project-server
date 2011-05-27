@@ -12,6 +12,7 @@ package org.geomajas.layer.feature.attribute;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -202,6 +203,37 @@ public class AssociationValue implements Serializable {
 	 */
 	public void setPrimitiveOnly(boolean primitiveOnly) {
 		this.primitiveOnly = primitiveOnly;
+	}
+	
+	/**
+	 * Returns a string representation of the value of the form <code>{id=1, attr1=a, attr2=0.5}</code>.
+	 * 
+	 * @return string value
+	 * @since 1.9.0
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("{id=");
+		builder.append(id);
+		if (attributes != null) {
+			builder.append(", ");
+			Iterator<Map.Entry<String, Attribute<?>>> it = attributes.entrySet().iterator();
+			if (it.hasNext()) {
+				while (it.hasNext()) {
+					Map.Entry<String, Attribute<?>> entry = it.next();
+					builder.append(entry.getKey()).append("=").append(entry.getValue());
+					if (it.hasNext()) {
+						builder.append(", ");
+					}
+				}
+			} else {
+				// indicate empty map !
+				builder.append("attrs={}");
+			}
+		} else {
+			builder.append(", attrs=null");
+		}
+		return builder.append("}").toString();
 	}
 
 }

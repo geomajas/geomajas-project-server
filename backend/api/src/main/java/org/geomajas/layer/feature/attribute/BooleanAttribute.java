@@ -58,4 +58,5 @@ public class BooleanAttribute extends PrimitiveAttribute<Boolean> {
 		clone.setEditable(isEditable());
 		return clone;
 	}
+	
 }

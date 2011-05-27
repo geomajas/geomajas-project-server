@@ -12,6 +12,7 @@
 package org.geomajas.layer.feature.attribute;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.geomajas.configuration.AssociationType;
@@ -100,4 +101,32 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 		clone.setEditable(isEditable());
 		return clone;
 	}
+	
+	/**
+	 * Returns a string representation of this attributes value of the form
+	 * <code>[{id=1, attr1=a}, {id=2, attr1=b}]</code>.
+	 * 
+	 * @return string value
+	 * @since 1.9.0
+	 * @see AssociationValue#toString()
+	 */
+	@Override
+	public String toString() {
+		if (value != null) {
+			Iterator<AssociationValue> it = value.iterator();
+			StringBuilder builder = new StringBuilder("[");
+			while (it.hasNext()) {
+				AssociationValue part = it.next();
+				builder.append(part.toString());
+				if (it.hasNext()) {
+					builder.append(", ");
+				}
+			}
+			builder.append("]");
+			return builder.toString();
+		} else {
+			return "null";
+		}
+	}
+
 }
