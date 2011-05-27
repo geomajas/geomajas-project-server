@@ -301,7 +301,7 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
-	 * be set on all layers. To add filters to individual layers use setFilter(String layerId, String filter).
+	 * be set on all layers. To add filters to individual layers use {@link setFilter(String layerId, String filter)}.
 	 *
 	 * @param filter filter expression
 	 * @since 1.8.0
@@ -315,7 +315,7 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
-	 * be set on all layers. To add filters to individual layers use setFilter(String layerId, String filter).
+	 * be set on all layers. To add filters to individual layers use {@link setFilter(String layerId, String filter)}.
 	 *
 	 * @return filter expression
 	 * @since 1.8.0
