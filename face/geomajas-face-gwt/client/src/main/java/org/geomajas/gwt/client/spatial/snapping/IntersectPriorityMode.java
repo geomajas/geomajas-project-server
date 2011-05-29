@@ -17,10 +17,7 @@ import java.util.List;
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.configuration.SnappingRuleInfo.SnappingType;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.GeomajasConstant;
-import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.spatial.Mathlib;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
@@ -60,65 +57,61 @@ public class IntersectPriorityMode extends SnappingMode {
 		super(rule);
 	}
 
-	public void execute(VectorTile tile) {
-		tile.getFeatures(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, new LazyLoadCallback() {
-			public void execute(List<Feature> features) {
-				List<Geometry> geometries = new ArrayList<Geometry>();
+	public void execute(List<Feature> features) {
+		List<Geometry> geometries = new ArrayList<Geometry>();
 
-				for (Feature feature : features) {
-					Geometry geometry = feature.getGeometry();
-					// For multipolygons and multilinestrings, we calculate bounds intersection
-					// for each partial geometry. This way we can send parts of the complex
-					// geometries to the snapping list, and not always the entire geometry.(=faster)
-					List<Geometry> currentGeometries = new ArrayList<Geometry>();
-					if (geometry instanceof MultiLineString || geometry instanceof MultiPoint
-							|| geometry instanceof MultiPolygon) {
-						for (int n = 0; n < geometry.getNumGeometries(); n++) {
-							Geometry geometryN = geometry.getGeometryN(n);
-							if (geometryN.getBounds().intersects(bounds)) {
-								currentGeometries.add(geometryN);
-							}
-						}
-					} else {
-						if (geometry.getBounds().intersects(bounds)) {
-							currentGeometries.add(geometry);
-						}
-					}
-					if (currentGeometries.size() != 0) {
-						if (Mathlib.isWithin(geometry, coordinate)) {
-							SnappingAlgorithm algorithm;
-							if (rule.getType() == SnappingType.CLOSEST_ENDPOINT) {
-								algorithm = new ClosestPointAlgorithm(currentGeometries, rule.getDistance());
-							} else {
-								algorithm = new NearestAlgorithm(currentGeometries, rule.getDistance());
-							}
-							Coordinate snapPointIfFound = algorithm.getSnappingPoint(coordinate, intersectDistance);
-							if (snapPointIfFound != null) {
-								snappedCoordinate = snapPointIfFound;
-								intersectSnappedCoordinate = snappedCoordinate;
-								intersectDistance = algorithm.getMinimumDistance();
-							}
-						} else {
-							geometries.addAll(currentGeometries);
-						}
+		for (Feature feature : features) {
+			Geometry geometry = feature.getGeometry();
+			// For multipolygons and multilinestrings, we calculate bounds intersection
+			// for each partial geometry. This way we can send parts of the complex
+			// geometries to the snapping list, and not always the entire geometry.(=faster)
+			List<Geometry> currentGeometries = new ArrayList<Geometry>();
+			if (geometry instanceof MultiLineString || geometry instanceof MultiPoint
+					|| geometry instanceof MultiPolygon) {
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					Geometry geometryN = geometry.getGeometryN(n);
+					if (geometryN.getBounds().intersects(bounds)) {
+						currentGeometries.add(geometryN);
 					}
 				}
-
-				if (intersectSnappedCoordinate == null && !geometries.isEmpty()) {
+			} else {
+				if (geometry.getBounds().intersects(bounds)) {
+					currentGeometries.add(geometry);
+				}
+			}
+			if (currentGeometries.size() != 0) {
+				if (Mathlib.isWithin(geometry, coordinate)) {
 					SnappingAlgorithm algorithm;
 					if (rule.getType() == SnappingType.CLOSEST_ENDPOINT) {
-						algorithm = new ClosestPointAlgorithm(geometries, rule.getDistance());
+						algorithm = new ClosestPointAlgorithm(currentGeometries, rule.getDistance());
 					} else {
-						algorithm = new NearestAlgorithm(geometries, rule.getDistance());
+						algorithm = new NearestAlgorithm(currentGeometries, rule.getDistance());
 					}
 					Coordinate snapPointIfFound = algorithm.getSnappingPoint(coordinate, intersectDistance);
 					if (snapPointIfFound != null) {
 						snappedCoordinate = snapPointIfFound;
-						distance = algorithm.getMinimumDistance();
+						intersectSnappedCoordinate = snappedCoordinate;
+						intersectDistance = algorithm.getMinimumDistance();
 					}
+				} else {
+					geometries.addAll(currentGeometries);
 				}
 			}
-		});
+		}
+
+		if (intersectSnappedCoordinate == null && !geometries.isEmpty()) {
+			SnappingAlgorithm algorithm;
+			if (rule.getType() == SnappingType.CLOSEST_ENDPOINT) {
+				algorithm = new ClosestPointAlgorithm(geometries, rule.getDistance());
+			} else {
+				algorithm = new NearestAlgorithm(geometries, rule.getDistance());
+			}
+			Coordinate snapPointIfFound = algorithm.getSnappingPoint(coordinate, intersectDistance);
+			if (snapPointIfFound != null) {
+				snappedCoordinate = snapPointIfFound;
+				distance = algorithm.getMinimumDistance();
+			}
+		}
 	}
 
 	public void setCoordinate(Coordinate coordinate) {

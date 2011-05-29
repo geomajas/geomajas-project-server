@@ -11,28 +11,23 @@
 
 package org.geomajas.gwt.client.spatial.snapping;
 
+import java.util.List;
+
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.cache.tile.TileFunction;
-import org.geomajas.gwt.client.map.cache.tile.VectorTile;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * <p>
- * The base class for a tile-function that handles snapping on the features of a single tile. Why a tile? Because the
- * general {@link org.geomajas.gwt.client.spatial.snapping.Snapper} uses the {@link org.geotools.data.FeatureStore}'s
- * <code>query</code> method to search for features within certain bounds and then apply a callback on them (namely
- * implementations of this class).
- * </p>
  * <p>
  * This abstract class acts a a setter for basic values that are needed before a snapping operation can begin. Most of
  * these settings are automatically done, by calling the "setCoordinate" method. This will not only set the original
  * coordinate that needs snapping, but also all sorts of initializers.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  */
-public abstract class SnappingMode implements TileFunction<VectorTile> {
+public abstract class SnappingMode {
 
 	/**
 	 * The snapping rules that we're acting on.
@@ -75,8 +70,10 @@ public abstract class SnappingMode implements TileFunction<VectorTile> {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/** The callback's execution function. This is where the actual search for a snapping points happens. */
-	public abstract void execute(VectorTile tile);
+	/**
+	 * The callback's execution function. This is where the actual search for a snapping points happens.
+	 */
+	public abstract void execute(List<Feature> features);
 
 	/** Set a new coordinate ready to be snapped. */
 	public void setCoordinate(Coordinate coordinate) {
