@@ -31,19 +31,19 @@ import com.google.gwt.i18n.client.NumberFormat;
  */
 public class ScalebarGadget implements MapGadget {
 
-	private static final double METERSINMILE = 1609.344d;
+	private static final double METERS_IN_MILE = 1609.344d;
 
-	private static final double METERSINYARD = 0.9144d;
+	private static final double METERS_IN_YARD = 0.9144d;
 
-	private static final double FEETINMETER = 3.2808399d;
+	private static final double FEET_IN_METER = 3.2808399d;
 
-	private static final int MAXSIZEINPIXELS = 125;
+	private static final int MAX_SIZE_IN_PIXELS = 125;
 
 	private int[] lengths = new int[] { 1, 2, 5, 10, 25, 50, 100, 250, 500, 750, 1000, 2000, 5000, 10000, 25000, 50000,
 			75000, 100000, 250000, 500000, 750000, 1000000, 2000000, 5000000, 10000000 };
 
 	// position in lengths array up to where to test for yards (larger values is for miles)
-	private int yardStartingPoint = 11;
+	private static final int YARD_STARTING_POINT = 11;
 
 	private Rectangle backGround;
 
@@ -140,17 +140,17 @@ public class ScalebarGadget implements MapGadget {
 			// try miles.
 			for (int i = lengths.length - 1; i > -1; i--) {
 				len = this.lengths[i];
-				px = Math.round((len * scale / unitLength) * METERSINMILE);
-				if (px < MAXSIZEINPIXELS) {
+				px = Math.round((len * scale / unitLength) * METERS_IN_MILE);
+				if (px < MAX_SIZE_IN_PIXELS) {
 					break;
 				}
 			}
 			// try yards.
-			if (px > MAXSIZEINPIXELS) {
-				for (int i = yardStartingPoint; i > -1; i--) {
+			if (px > MAX_SIZE_IN_PIXELS) {
+				for (int i = YARD_STARTING_POINT; i > -1; i--) {
 					len = this.lengths[i];
-					px = Math.round((len * scale / unitLength) * METERSINYARD);
-					if (px < MAXSIZEINPIXELS) {
+					px = Math.round((len * scale / unitLength) * METERS_IN_YARD);
+					if (px < MAX_SIZE_IN_PIXELS) {
 						break;
 					}
 				}
@@ -158,21 +158,21 @@ public class ScalebarGadget implements MapGadget {
 			} else {
 				widthInUnitsIsMiles = true;
 			}
-		} else if(UnitType.ENGLISH_FOOT.equals(unitType)){
+		} else if (UnitType.ENGLISH_FOOT.equals(unitType)) {
 			 // try miles.
 			for (int i = lengths.length - 1; i > -1; i--) {
 				len = this.lengths[i];
-				px = Math.round((len * scale / unitLength) * METERSINMILE);
-				if (px < MAXSIZEINPIXELS) {
+				px = Math.round((len * scale / unitLength) * METERS_IN_MILE);
+				if (px < MAX_SIZE_IN_PIXELS) {
 					break;
 				}
 			}
 			// try feet.
-			if (px > MAXSIZEINPIXELS) {
-				for (int i = yardStartingPoint; i > -1; i--) {
+			if (px > MAX_SIZE_IN_PIXELS) {
+				for (int i = YARD_STARTING_POINT; i > -1; i--) {
 					len = this.lengths[i];
-					px = Math.round((len * scale / unitLength) / FEETINMETER);
-					if (px < MAXSIZEINPIXELS) {
+					px = Math.round((len * scale / unitLength) / FEET_IN_METER);
+					if (px < MAX_SIZE_IN_PIXELS) {
 						break;
 					}
 				}
@@ -180,11 +180,11 @@ public class ScalebarGadget implements MapGadget {
 			} else {
 				widthInUnitsIsMiles = true;
 			}
-		}else {
+		} else {
 			for (int i = lengths.length - 1; i > -1; i--) {
 				len = this.lengths[i];
 				px = Math.round(len * scale / unitLength);
-				if (px < MAXSIZEINPIXELS) {
+				if (px < MAX_SIZE_IN_PIXELS) {
 					break;
 				}
 			}

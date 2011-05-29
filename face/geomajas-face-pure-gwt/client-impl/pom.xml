@@ -20,7 +20,7 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-pure-gwt-client-impl</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas pure gwt face, client side</name>
+	<name>Geomajas pure gwt face, client side, impl</name>
 	<description>Geomajas pure gwt face, client side</description>
 
 	<dependencies>
