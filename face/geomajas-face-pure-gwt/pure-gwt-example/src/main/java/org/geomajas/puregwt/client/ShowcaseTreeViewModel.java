@@ -17,6 +17,8 @@ import java.util.List;
 import org.geomajas.puregwt.client.layers.IntroductionContentPanel;
 import org.geomajas.puregwt.client.layers.LayerOrderPanel;
 import org.geomajas.puregwt.client.layers.LayerVisibilityPanel;
+import org.geomajas.puregwt.client.rendering.ScreenSpaceRenderingPanel;
+import org.geomajas.puregwt.client.rendering.WorldSpaceRenderingPanel;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.prefetch.RunAsyncCode;
@@ -88,6 +90,12 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catList.add(catLayerMan);
 		catLayerMan.addExample(new LayerVisibilityPanel(), null);
 		catLayerMan.addExample(new LayerOrderPanel(), null);
+
+		// Drawing:
+		Category catDrawing = new Category("Custom Drawing");
+		catList.add(catDrawing);
+		catDrawing.addExample(new ScreenSpaceRenderingPanel(), null);
+		catDrawing.addExample(new WorldSpaceRenderingPanel(), null);
 	}
 
 	// ------------------------------------------------------------------------
