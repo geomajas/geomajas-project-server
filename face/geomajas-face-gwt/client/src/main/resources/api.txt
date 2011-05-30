@@ -83,7 +83,7 @@ org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createT
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static ToolbarBaseAction getToolbarAction(String, MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static void put(String, ToolCreator, ):1.6.0
 org.geomajas.gwt.client.command.CommandCallback::1.6.0
-org.geomajas.gwt.client.command.CommandCallback:void execute(CommandResponse, ):1.6.0
+org.geomajas.gwt.client.command.CommandCallback:void execute(RESPONSE, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommand::1.6.0
 org.geomajas.gwt.client.command.GwtCommand:CommandRequest getCommandRequest():1.6.0
 org.geomajas.gwt.client.command.GwtCommand:GwtCommand():1.6.0

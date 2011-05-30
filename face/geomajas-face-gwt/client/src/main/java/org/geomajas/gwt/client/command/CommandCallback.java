@@ -19,17 +19,18 @@ import org.geomajas.global.UserImplemented;
  * <p />
  * It is recommended to extend {@link AbstractCommandCallback} instead of implementing this.
  *
+ * @param <RESPONSE> type of response object for the command
  * @since 1.6.0
  * @author Pieter De Graef
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface CommandCallback {
+public interface CommandCallback<RESPONSE extends CommandResponse> {
 
 	/**
 	 * The actual execution function. If the command returns successfully, this will be executed.
 	 *
 	 * @param response command response
 	 */
-	void execute(CommandResponse response);
+	void execute(RESPONSE response);
 }

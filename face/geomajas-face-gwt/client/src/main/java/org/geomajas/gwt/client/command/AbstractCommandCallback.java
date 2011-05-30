@@ -16,13 +16,14 @@ import org.geomajas.global.Api;
 /**
  * Convenience class that implements {@link CommandExceptionCallback} and {@link CommunicationExceptionCallback} with
  * the default SC.say behavior.
- * 
+ *
+ * @param <RESPONSE> type of response object for the command
  * @author Oliver May
  * @since 1.9.0
  */
 @Api()
-public abstract class AbstractCommandCallback implements CommandCallback, CommandExceptionCallback,
-		CommunicationExceptionCallback {
+public abstract class AbstractCommandCallback<RESPONSE extends CommandResponse>
+		implements CommandCallback<RESPONSE>, CommandExceptionCallback, CommunicationExceptionCallback {
 
 	public void onCommunicationException(Throwable error) {
 		GwtCommandDispatcher.getInstance().onCommunicationException(error);
