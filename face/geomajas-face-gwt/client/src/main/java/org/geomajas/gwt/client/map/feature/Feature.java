@@ -17,9 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
@@ -27,9 +25,9 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.util.AttributeUtil;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.attribute.AssociationAttribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.CurrencyAttribute;
@@ -41,7 +39,6 @@ import org.geomajas.layer.feature.attribute.IntegerAttribute;
 import org.geomajas.layer.feature.attribute.LongAttribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
-import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
@@ -120,7 +117,7 @@ public class Feature implements Paintable, Cloneable {
 			if (layer != null) {
 				// Create empty attributes:
 				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-					attributes.put(attrInfo.getName(), createEmptyAttribute(attrInfo));
+					attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
 				}
 			}
 			setUpdatable(true);
@@ -382,65 +379,4 @@ public class Feature implements Paintable, Cloneable {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private Attribute<?> createEmptyAttribute(AttributeInfo attrInfo) {
-		if (attrInfo instanceof PrimitiveAttributeInfo) {
-			return createEmptyPrimitiveAttribute((PrimitiveAttributeInfo) attrInfo);
-		} else if (attrInfo instanceof AssociationAttributeInfo) {
-			return createEmptyAssociationAttribute((AssociationAttributeInfo) attrInfo);
-		}
-		return null;
-	}
-
-	private PrimitiveAttribute<?> createEmptyPrimitiveAttribute(PrimitiveAttributeInfo info) {
-		PrimitiveAttribute<?> attribute = null;
-		switch (info.getType()) {
-			case BOOLEAN:
-				attribute = new BooleanAttribute();
-				break;
-			case SHORT:
-				attribute = new ShortAttribute();
-				break;
-			case INTEGER:
-				attribute = new IntegerAttribute();
-				break;
-			case LONG:
-				attribute = new LongAttribute();
-				break;
-			case FLOAT:
-				attribute = new FloatAttribute();
-				break;
-			case DOUBLE:
-				attribute = new DoubleAttribute();
-				break;
-			case CURRENCY:
-				attribute = new CurrencyAttribute();
-				break;
-			case STRING:
-				attribute = new StringAttribute();
-				break;
-			case DATE:
-				attribute = new DateAttribute();
-				break;
-			case URL:
-				attribute = new UrlAttribute();
-				break;
-			case IMGURL:
-				attribute = new ImageUrlAttribute();
-		}
-		attribute.setEditable(info.isEditable());
-		return attribute;
-	}
-
-	private AssociationAttribute<?> createEmptyAssociationAttribute(AssociationAttributeInfo info) {
-		AssociationAttribute<?> association = null;
-		switch (info.getType()) {
-			case MANY_TO_ONE:
-				association = new ManyToOneAttribute();
-				break;
-			case ONE_TO_MANY:
-				association = new OneToManyAttribute();
-		}
-		association.setEditable(info.isEditable());
-		return association;
-	}
 }
