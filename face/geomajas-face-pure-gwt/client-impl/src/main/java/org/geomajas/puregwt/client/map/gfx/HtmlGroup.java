@@ -14,6 +14,8 @@ package org.geomajas.puregwt.client.map.gfx;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.puregwt.client.Geomajas;
+
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.user.client.DOM;
 
@@ -194,7 +196,11 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		DOM.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
 		DOM.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
 
-		// TODO what about Internet Explorer?
+		if (Geomajas.isIE()) {
+			DOM.setStyleAttribute(getElement(), "zoom", scale + "");
+			// filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+		}
+		// Safari - if webkit stuff doesn't work, try: -o-transform: rotate(-90deg) translate(0px, -45px);
 	}
 
 	// ------------------------------------------------------------------------
