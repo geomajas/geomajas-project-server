@@ -27,6 +27,7 @@ import org.geomajas.global.FutureApi;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationAttribute;
+import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.CurrencyAttribute;
 import org.geomajas.layer.feature.attribute.DateAttribute;
@@ -42,6 +43,9 @@ import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.types.DSDataFormat;
@@ -98,6 +102,8 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	private FeatureInfo featureInfo;
 
 	private AttributeProvider attributeProvider;
+
+	private HandlerManager manager = new HandlerManager(this);
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -253,22 +259,41 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		return validate;
 	}
 
+	public void fireEvent(GwtEvent<?> event) {
+		manager.fireEvent(event);
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#addItemChangedHandler(
 	 * com.smartgwt.client.widgets.form.events .ItemChangedHandler)
 	 */
-	public void addItemChangedHandler(final ItemChangedHandler handler) {
+	public HandlerRegistration addItemChangedHandler(ItemChangedHandler handler) {
+		MultiHandlerRegistration registration = new MultiHandlerRegistration();
 		// Due to custom made FormItems, we can't set the handler on the form anymore...
+		final ItemChangedHandler itemChangedHandler = handler;
+		registration.addRegistration(manager.addHandler(ItemChangedEvent.getType(), handler));
 		for (final FormItem formItem : formWidget.getFields()) {
 			ChangedHandler h = new ChangedHandler() {
 
 				public void onChanged(ChangedEvent event) {
-					handler.onItemChanged(new ItemChangedEvent(formItem.getJsObj()));
+					itemChangedHandler.onItemChanged(new ItemChangedEvent(formItem.getJsObj()));
 				}
 			};
-			formItem.addChangedHandler(h);
+			registration.addRegistration(formItem.addChangedHandler(h));
+		}
+		return registration;
+	}
+
+	public void toForm(AssociationValue value) {
+		for (Map.Entry<String, Attribute<?>> entry : value.getAllAttributes().entrySet()) {
+			toForm(entry.getKey(), entry.getValue());
+		}
+	}
+
+	public void fromForm(AssociationValue value) {
+		for (Map.Entry<String, Attribute<?>> entry : value.getAllAttributes().entrySet()) {
+			fromForm(entry.getKey(), entry.getValue());
 		}
 	}
 
@@ -289,42 +314,40 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			if (attribute == null && item != null) {
 				item.setDisabled(true);
 			} else {
-				if (!primitive.isEmpty()) {
-					switch (primitive.getType()) {
-						case BOOLEAN:
-							setValue(info.getName(), (BooleanAttribute) primitive);
-							break;
-						case SHORT:
-							setValue(info.getName(), (ShortAttribute) primitive);
-							break;
-						case INTEGER:
-							setValue(info.getName(), (IntegerAttribute) primitive);
-							break;
-						case LONG:
-							setValue(info.getName(), (LongAttribute) primitive);
-							break;
-						case FLOAT:
-							setValue(info.getName(), (FloatAttribute) primitive);
-							break;
-						case DOUBLE:
-							setValue(info.getName(), (DoubleAttribute) primitive);
-							break;
-						case CURRENCY:
-							setValue(info.getName(), (CurrencyAttribute) primitive);
-							break;
-						case STRING:
-							setValue(info.getName(), (StringAttribute) primitive);
-							break;
-						case URL:
-							setValue(info.getName(), (UrlAttribute) primitive);
-							break;
-						case IMGURL:
-							setValue(info.getName(), (ImageUrlAttribute) primitive);
-							break;
-						case DATE:
-							setValue(info.getName(), (DateAttribute) primitive);
-							break;
-					}
+				switch (primitive.getType()) {
+					case BOOLEAN:
+						setValue(info.getName(), (BooleanAttribute) primitive);
+						break;
+					case SHORT:
+						setValue(info.getName(), (ShortAttribute) primitive);
+						break;
+					case INTEGER:
+						setValue(info.getName(), (IntegerAttribute) primitive);
+						break;
+					case LONG:
+						setValue(info.getName(), (LongAttribute) primitive);
+						break;
+					case FLOAT:
+						setValue(info.getName(), (FloatAttribute) primitive);
+						break;
+					case DOUBLE:
+						setValue(info.getName(), (DoubleAttribute) primitive);
+						break;
+					case CURRENCY:
+						setValue(info.getName(), (CurrencyAttribute) primitive);
+						break;
+					case STRING:
+						setValue(info.getName(), (StringAttribute) primitive);
+						break;
+					case URL:
+						setValue(info.getName(), (UrlAttribute) primitive);
+						break;
+					case IMGURL:
+						setValue(info.getName(), (ImageUrlAttribute) primitive);
+						break;
+					case DATE:
+						setValue(info.getName(), (DateAttribute) primitive);
+						break;
 				}
 			}
 		} else if (info instanceof AssociationAttributeInfo) {
@@ -765,6 +788,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 
 		/**
 		 * Insert a form item before the item with the specified name.
+		 * 
 		 * @param name name of the item before which to insert
 		 * @param newItem the item to insert
 		 */
@@ -788,4 +812,27 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			}
 		}
 	}
+
+	/**
+	 * Class that represents multiple registrations as one.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class MultiHandlerRegistration implements HandlerRegistration {
+
+		private List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
+
+		public void addRegistration(HandlerRegistration registration) {
+			registrations.add(registration);
+		}
+
+		public void removeHandler() {
+			for (HandlerRegistration registration : registrations) {
+				registration.removeHandler();
+			}
+		}
+
+	}
+
 }

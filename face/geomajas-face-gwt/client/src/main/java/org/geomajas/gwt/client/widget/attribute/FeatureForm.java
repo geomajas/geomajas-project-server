@@ -12,8 +12,11 @@ package org.geomajas.gwt.client.widget.attribute;
 
 import org.geomajas.global.FutureApi;
 import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.attribute.AssociationValue;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
+import com.smartgwt.client.widgets.form.events.HasItemChangedHandlers;
 import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
 
 /**
@@ -34,7 +37,7 @@ import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
  * @author Jan De Moerloose
  */
 @FutureApi
-public interface FeatureForm<W extends Widget> {
+public interface FeatureForm<W extends Widget> extends HasItemChangedHandlers {
 
 	/**
 	 * Return the actual widget that is used behind the screens. This method is used in the {@link FeatureFormFactory}s
@@ -69,9 +72,23 @@ public interface FeatureForm<W extends Widget> {
 	 * Attach a handler that reacts to changes in the fields as the user makes them.
 	 * 
 	 * @param handler
-	 * @return
+	 * @return registration
 	 */
-	void addItemChangedHandler(final ItemChangedHandler handler);
+	HandlerRegistration addItemChangedHandler(final ItemChangedHandler handler);
+
+	/**
+	 * Copy the attribute values from the specified association value to the form.
+	 * 
+	 * @param value the association value to copy the form values from.
+	 */
+	void toForm(AssociationValue value);
+
+	/**
+	 * Copy the attribute values from the form to the specified association value.
+	 * 
+	 * @param value the association value to copy the form values to.
+	 */
+	void fromForm(AssociationValue value);
 
 	/**
 	 * Apply an <code>attribute</code> value with the given <code>name</code> onto the form.
