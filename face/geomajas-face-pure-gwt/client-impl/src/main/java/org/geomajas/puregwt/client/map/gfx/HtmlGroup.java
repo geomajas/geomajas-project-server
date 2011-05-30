@@ -197,8 +197,7 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		DOM.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
 
 		if (Geomajas.isIE()) {
-			DOM.setStyleAttribute(getElement(), "zoom", scale + "");
-			// filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+			DOM.setStyleAttribute(getElement(), "zoom", Double.toString(scale));
 		}
 		// Safari - if webkit stuff doesn't work, try: -o-transform: rotate(-90deg) translate(0px, -45px);
 	}
