@@ -44,6 +44,10 @@ public class ManyToOneAttributeBean {
 	private String stringAttr;
 
 	private String urlAttr;
+	
+	private ManyToOneAttributeBean manyToOneAttr;
+
+	private List<OneToManyAttributeBean> oneToManyAttr;
 
 	public static List<ManyToOneAttributeBean> manyToOneValues() {
 		List<ManyToOneAttributeBean> values = new ArrayList<ManyToOneAttributeBean>();
@@ -157,6 +161,26 @@ public class ManyToOneAttributeBean {
 
 	public void setUrlAttr(String urlAttr) {
 		this.urlAttr = urlAttr;
+	}
+
+	
+	public ManyToOneAttributeBean getManyToOneAttr() {
+		return manyToOneAttr;
+	}
+
+	
+	public void setManyToOneAttr(ManyToOneAttributeBean manyToOneAttr) {
+		this.manyToOneAttr = manyToOneAttr;
+	}
+
+	
+	public List<OneToManyAttributeBean> getOneToManyAttr() {
+		return oneToManyAttr;
+	}
+
+	
+	public void setOneToManyAttr(List<OneToManyAttributeBean> oneToManyAttr) {
+		this.oneToManyAttr = oneToManyAttr;
 	}
 
 }

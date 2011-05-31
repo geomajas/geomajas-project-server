@@ -11,6 +11,7 @@
 package org.geomajas.layer.bean;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Java bean for one to many attribute.
@@ -42,6 +43,10 @@ public class OneToManyAttributeBean {
 	private String stringAttr;
 
 	private String urlAttr;
+
+	private ManyToOneAttributeBean manyToOneAttr;
+
+	private List<OneToManyAttributeBean> oneToManyAttr;
 
 	public Long getId() {
 		return id;
@@ -137,6 +142,26 @@ public class OneToManyAttributeBean {
 
 	public void setUrlAttr(String urlAttr) {
 		this.urlAttr = urlAttr;
+	}
+
+	
+	public ManyToOneAttributeBean getManyToOneAttr() {
+		return manyToOneAttr;
+	}
+
+	
+	public void setManyToOneAttr(ManyToOneAttributeBean manyToOneAttr) {
+		this.manyToOneAttr = manyToOneAttr;
+	}
+
+	
+	public List<OneToManyAttributeBean> getOneToManyAttr() {
+		return oneToManyAttr;
+	}
+
+	
+	public void setOneToManyAttr(List<OneToManyAttributeBean> oneToManyAttr) {
+		this.oneToManyAttr = oneToManyAttr;
 	}
 
 }
