@@ -24,8 +24,10 @@ import org.geomajas.layer.feature.Attribute;
  * 
  * @author Pieter De Graef
  * @since 1.6.0
+ * @deprecated use {@link OneToManyAttribute} instead
  */
 @Api(allMethods = true)
+@Deprecated 
 public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 
 	private static final long serialVersionUID = 151L;
