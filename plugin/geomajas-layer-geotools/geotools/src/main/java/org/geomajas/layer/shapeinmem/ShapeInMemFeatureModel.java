@@ -72,7 +72,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		AttributeInfo attributeInfo = attributeInfoMap.get(name);
 		if (null == attributeInfo) {
-			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
+			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name, attributeInfoMap.keySet());
 		}
 		try {
 			return converterService.toDto(asFeature(feature).getAttribute(name), attributeInfo);
