@@ -46,7 +46,7 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml" })
-@DirtiesContext // @todo should not be needed, test to see whether this fixes Jenkins build
+@DirtiesContext
 public class AttributeServiceTest {
 
 	private static final long TEST_ID = 17;
