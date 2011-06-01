@@ -65,6 +65,14 @@ public class NestedFeature {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
+	
+	public void updateOne(String oldText, String newText){
+		if(getOne().getTextAttr().equals(oldText)){
+			getOne().setTextAttr(newText);
+		} else {
+			
+		}
+	}
 
 	public static NestedFeature getDefaultInstance1() {
 		NestedFeature feature = new NestedFeature();
