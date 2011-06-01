@@ -4,22 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.AssociationValue;
-import org.geomajas.layer.feature.attribute.LongAttribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.hibernate.AbstractHibernateNestedTest;
 import org.geomajas.layer.hibernate.nested.pojo.NestedFeature;
-import org.geomajas.layer.hibernate.nested.pojo.NestedOne;
-import org.geomajas.layer.hibernate.nested.pojo.NestedOneInMany;
-import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -135,40 +129,6 @@ public class NestedFeatureModelTest extends AbstractHibernateNestedTest {
 		featureModel.setAttributes(o, attributes);
 		Object feature = layer.create(o);
 		Assert.assertNotNull(feature);
-	}
-
-	@Test
-	public void testExistingOneInMany() throws Exception {
-		NestedOneInMany oneInMany1 = new NestedOneInMany();
-		oneInMany1.setTextAttr("existing1");
-		factory.getCurrentSession().save(oneInMany1);
-		factory.getCurrentSession().flush();
-		
-		Object o = featureModel.newInstance();
-		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
-		// create many attribute
-		OneToManyAttribute many = new OneToManyAttribute(new ArrayList<AssociationValue>());
-		// create empty and add
-		AssociationValue many1 = new AssociationValue(null, new HashMap<String, Attribute<?>>(), false);
-		many.getValue().add(many1);
-		// create an existing one-in-many and add
-		ManyToOneAttribute oneInMany2 = new ManyToOneAttribute();
-		AssociationValue oneInManyValue = new AssociationValue(new LongAttribute(oneInMany1.getId()), new HashMap<String, Attribute<?>>(), false);
-		oneInMany2.setValue(oneInManyValue);
-		AssociationValue many2 = new AssociationValue(null, new HashMap<String, Attribute<?>>(), false);
-		many2.getAllAttributes().put("oneInMany", oneInMany2);
-		many.getValue().add(many2);
-		// add many
-		attributes.put("many", many);
-		featureModel.setAttributes(o, attributes);
-		
-		// check text attr
-		Object feature = layer.create(o);
-		OneToManyAttribute attr = (OneToManyAttribute)featureModel.getAttribute(feature, "many");
-		AssociationValue val = attr.getValue().get(1);
-		ManyToOneAttribute one = (ManyToOneAttribute)val.getAllAttributes().get("oneInMany");
-		Assert.assertEquals("existing1", one.getValue().getAttributeValue("textAttr"));
-
 	}
 
 }

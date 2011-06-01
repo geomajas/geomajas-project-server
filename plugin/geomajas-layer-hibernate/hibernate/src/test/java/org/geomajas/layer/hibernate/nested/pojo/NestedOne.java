@@ -29,8 +29,6 @@ public class NestedOne {
 	@OneToMany(cascade = { CascadeType.ALL })
 	private List<NestedManyInOne> manyInOne = new ArrayList<NestedManyInOne>();
 
-	@Column(name = "textAttr")
-	private String textAttr;
 
 	
 	public Long getId() {
@@ -65,20 +63,6 @@ public class NestedOne {
 	
 	public void setManyInOne(List<NestedManyInOne> manyInOne) {
 		this.manyInOne = manyInOne;
-	}
-
-
-
-	
-	public String getTextAttr() {
-		return textAttr;
-	}
-
-
-
-	
-	public void setTextAttr(String textAttr) {
-		this.textAttr = textAttr;
 	}
 
 
