@@ -11,18 +11,18 @@
 
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.layer.feature.Feature;
 
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * Event which is passed when a feature is selected.
- *
+ * 
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public class FeatureSelectedEvent extends GwtEvent<FeatureSelectionHandler> {
 
 	private Feature feature;

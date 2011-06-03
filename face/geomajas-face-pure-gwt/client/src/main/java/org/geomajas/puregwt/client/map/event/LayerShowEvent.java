@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -22,7 +22,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public class LayerShowEvent extends GwtEvent<LayerVisibilityHandler> {
 
 	private Layer<?> layer;

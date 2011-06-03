@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.command.Command;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,7 +25,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface GeomajasServiceAsync {
 
 	/**

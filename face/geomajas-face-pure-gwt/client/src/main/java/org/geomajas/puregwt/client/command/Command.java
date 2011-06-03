@@ -14,16 +14,16 @@ package org.geomajas.puregwt.client.command;
 import java.io.Serializable;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * GWT implementation of an RPC request. On the server-side this request is transformed into a command object that is
- * then executed by a {@link CommandDispatcher} instance.
+ * then executed by a {@link org.geomajas.command.CommandDispatcher} instance.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public class Command implements Serializable {
 
 	private static final long serialVersionUID = 100L;

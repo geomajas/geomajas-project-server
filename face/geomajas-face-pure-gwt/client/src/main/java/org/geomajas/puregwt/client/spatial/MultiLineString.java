@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.spatial;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * MultiLineString client-side GWT object.
@@ -19,6 +19,6 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface MultiLineString extends Geometry {
 }

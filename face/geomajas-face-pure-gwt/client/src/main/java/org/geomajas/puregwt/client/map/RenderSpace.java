@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * <p>
@@ -27,7 +27,7 @@ import org.geomajas.global.Api;
  * 
  * @author Pieter De Graef
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public enum RenderSpace {
 
 	/**

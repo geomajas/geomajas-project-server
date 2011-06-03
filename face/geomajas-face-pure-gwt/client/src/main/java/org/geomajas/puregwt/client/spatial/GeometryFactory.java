@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * The main factory interface for creating geometry objects on the GWT client.
@@ -20,7 +20,7 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface GeometryFactory {
 
 	int PARAM_DEFAULT_PRECISION = 5;

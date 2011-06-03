@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map;
 
 import java.util.Collection;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.event.EventBus;
@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface MapPresenter {
 
 	/**

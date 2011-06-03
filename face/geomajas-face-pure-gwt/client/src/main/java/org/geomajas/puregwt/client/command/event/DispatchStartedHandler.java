@@ -10,24 +10,24 @@
  */
 package org.geomajas.puregwt.client.command.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
+import org.geomajas.global.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
-import org.geomajas.global.UserImplemented;
 
 /**
  * Interface for event handlers that catch {@link DispatchStartedEvent}s.
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 @UserImplemented
 public interface DispatchStartedHandler extends EventHandler {
 
 	/**
 	 * The event catching method.
-	 *
+	 * 
 	 * @param event
 	 *            The actual {@link DispatchStartedEvent}.
 	 */

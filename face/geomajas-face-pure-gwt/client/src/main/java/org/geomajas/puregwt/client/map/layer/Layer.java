@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * The basic definition of a layer within the GWT client.
@@ -23,7 +23,7 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface Layer<T extends ClientLayerInfo> {
 
 	/**

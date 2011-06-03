@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.spatial;
 import java.io.Serializable;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 /**
  * Gwt client-side Geometry representation.
@@ -22,7 +22,7 @@ import org.geomajas.global.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public interface Geometry extends Serializable {
 
 	/**

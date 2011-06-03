@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -20,7 +20,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public class MapResizedEvent extends GwtEvent<MapResizedHandler> {
 
 	public static final Type<MapResizedHandler> TYPE = new Type<MapResizedHandler>();

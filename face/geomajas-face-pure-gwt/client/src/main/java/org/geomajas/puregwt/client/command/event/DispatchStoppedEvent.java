@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.command.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -20,7 +20,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 
 	/** Handler type. */

@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.global.FutureApi;
 import org.geomajas.global.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -23,7 +23,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 @UserImplemented
 public interface ViewPortChangedHandler extends EventHandler {
 
