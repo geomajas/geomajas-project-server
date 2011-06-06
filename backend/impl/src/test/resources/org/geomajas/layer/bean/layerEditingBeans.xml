@@ -74,6 +74,69 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="type" value="STRING" />
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Boolean attribute" />
+					<property name="name" value="booleanAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="BOOLEAN" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Currency attribute" />
+					<property name="name" value="currencyAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="CURRENCY" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Date attribute" />
+					<property name="name" value="dateAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DATE" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Double attribute" />
+					<property name="name" value="doubleAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DOUBLE" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Float attribute" />
+					<property name="name" value="floatAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="FLOAT" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Image attribute" />
+					<property name="name" value="imageUrlAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="IMGURL" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Integer attribute" />
+					<property name="name" value="integerAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Long attribute" />
+					<property name="name" value="longAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="LONG" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Short attribute" />
+					<property name="name" value="shortAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="SHORT" />
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 					<property name="label" value="URL attribute" />
 					<property name="name" value="urlAttr" />
 					<property name="editable" value="true" />
