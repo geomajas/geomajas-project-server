@@ -37,6 +37,7 @@ public interface LayerFeatureInfoSupport {
 	 * @param coord coordinate used to search for features
 	 * @param targetCrs Coordinate reference system used for bounds
 	 * @param mapBounds the bounds of the map
+	 * @param scale the scale of the map
 	 * @return features a list of features
 	 * @throws LayerException oops
 	 */
