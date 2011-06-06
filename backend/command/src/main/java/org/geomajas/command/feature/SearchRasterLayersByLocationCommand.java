@@ -60,8 +60,8 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Api
 @Component()
-public class SearchRasterLayersByLocationCommand implements Command<SearchRasterLayersByLocationRequest, 
-SearchByLocationResponse>{
+public class SearchRasterLayersByLocationCommand 
+	implements Command<SearchRasterLayersByLocationRequest, SearchByLocationResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SearchRasterLayersByLocationCommand.class);
 
