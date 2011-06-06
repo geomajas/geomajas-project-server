@@ -11,7 +11,6 @@
 package org.geomajas.layer.bean;
 
 import java.beans.PropertyDescriptor;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +22,10 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.bean.BeanEntityMapper.BeanEntity;
 import org.geomajas.layer.entity.Entity;
+import org.geomajas.layer.entity.EntityAttributeService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -61,16 +59,16 @@ public class BeanFeatureModel implements FeatureModel {
 
 	private boolean wkt;
 
-	private DtoConverterService converterService;
-
 	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
 
-	private BeanEntityMapper mapper;
+	private EntityAttributeService entityMappingService;
+	
+	private BeanEntityMapper entityMapper;
 
-	public BeanFeatureModel(VectorLayerInfo vectorLayerInfo, int srid, DtoConverterService converterService)
+	public BeanFeatureModel(VectorLayerInfo vectorLayerInfo, int srid, EntityAttributeService entityMappingService)
 			throws LayerException {
 		this.vectorLayerInfo = vectorLayerInfo;
-		this.converterService = converterService;
+		this.entityMappingService = entityMappingService;
 
 		try {
 			beanClass = Class.forName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
@@ -95,7 +93,7 @@ public class BeanFeatureModel implements FeatureModel {
 		for (AttributeInfo info : featureInfo.getAttributes()) {
 			addAttribute(null, info);
 		}
-		mapper = new BeanEntityMapper(featureInfo);
+		entityMapper = new BeanEntityMapper();
 	}
 
 	private void addAttribute(String prefix, AttributeInfo info) {
@@ -118,14 +116,8 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
-		Object attr = getAttributeRecursively(feature, name);
-		name = name.replace(XPATH_SEPARATOR, SEPARATOR);
-		AttributeInfo attributeInfo = attributeInfoMap.get(name);
-		if (null == attributeInfo) {
-			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name, attributeInfoMap.keySet());
-		}
 		try {
-			return converterService.toDto(attr, attributeInfo);
+			return entityMappingService.getAttribute(feature, getFeatureInfo(), entityMapper, name);
 		} catch (GeomajasException e) {
 			throw new LayerException(e);
 		}
@@ -148,7 +140,8 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
-		Object geometry = getAttributeRecursively(feature, getGeometryAttributeName());
+		Entity entity = entityMapper.asEntity(feature);
+		Object geometry = entity.getAttribute(getGeometryAttributeName());
 		if (!wkt || null == geometry) {
 			log.debug("bean.getGeometry {}", geometry);
 			return (Geometry) geometry;
@@ -169,7 +162,7 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public String getId(Object feature) throws LayerException {
-		Entity entity = mapper.asEntity(feature);
+		Entity entity = entityMapper.asEntity(feature);
 		Object id = entity.getId(getFeatureInfo().getIdentifier().getName());
 		return id == null ? null : id.toString();
 	}
@@ -209,26 +202,26 @@ public class BeanFeatureModel implements FeatureModel {
 			default:
 				throw new IllegalStateException("BeanFeatureModel only accepts String and long ids.");
 		}
-		Entity entity = mapper.asEntity(instance);
-		entity.setPrimitiveAttribute(getFeatureInfo().getIdentifier().getName(), value);
+		Entity entity = entityMapper.asEntity(instance);
+		entity.setAttribute(getFeatureInfo().getIdentifier().getName(), value);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
-		mapper.mergeEntity(feature, (Map) attributes);
+		entityMappingService.setAttributes(feature, getFeatureInfo(), entityMapper, (Map) attributes);
 	}
 
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
-		Entity entity = mapper.asEntity(feature);
+		Entity entity = entityMapper.asEntity(feature);
 		if (wkt) {
 			WKTWriter writer = new WKTWriter();
 			String wktStr = null;
 			if (null != geometry) {
 				wktStr = writer.write(geometry);
 			}
-			entity.setPrimitiveAttribute(getGeometryAttributeName(), wktStr);
+			entity.setAttribute(getGeometryAttributeName(), wktStr);
 		} else {
-			entity.setPrimitiveAttribute(getGeometryAttributeName(), geometry);
+			entity.setAttribute(getGeometryAttributeName(), geometry);
 		}
 	}
 
@@ -239,48 +232,5 @@ public class BeanFeatureModel implements FeatureModel {
 	public FeatureInfo getFeatureInfo() {
 		return vectorLayerInfo.getFeatureInfo();
 	}
-
-	/**
-	 * A recursive getAttribute method. In case a one-to-many is passed, an array will be returned.
-	 * 
-	 * @param feature The feature wherein to search for the attribute
-	 * @param name The attribute's full name. (can be attr1.attr2)
-	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.
-	 * @throws LayerException oops
-	 */
-	private Object getAttributeRecursively(Object feature, String name) throws LayerException {
-		if (feature == null) {
-			return null;
-		}
-		// Split up properties: the first and the rest.
-		name = name.replace(XPATH_SEPARATOR, SEPARATOR);
-		String[] properties = name.split(SEPARATOR_REGEXP, 2);
-
-		// Get the first property:
-		Entity entity = mapper.asEntity(feature);
-		BeanEntity child = (BeanEntity) entity.getChild(properties[0]);
-		Object tempFeature = child == null ? null : child.getBean();
-
-		// Detect if the first property is a collection (one-to-many):
-		if (tempFeature instanceof Collection<?>) {
-			Collection<?> features = (Collection<?>) tempFeature;
-			Object[] values = new Object[features.size()];
-			int count = 0;
-			for (Object value : features) {
-				if (properties.length == 1) {
-					values[count++] = value;
-				} else {
-					values[count++] = getAttributeRecursively(value, properties[1]);
-				}
-			}
-			return values;
-		} else { // Else first property is not a collection (one-to-many):
-			if (properties.length == 1 || tempFeature == null) {
-				return tempFeature;
-			} else {
-				return getAttributeRecursively(tempFeature, properties[1]);
-			}
-		}
-	}
-
+	
 }

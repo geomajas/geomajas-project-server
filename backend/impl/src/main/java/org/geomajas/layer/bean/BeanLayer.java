@@ -32,6 +32,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
 import org.geomajas.layer.VectorLayerLazyFeatureConversionSupport;
+import org.geomajas.layer.entity.EntityAttributeService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
@@ -78,6 +79,9 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 
 	@Autowired
 	private DtoConverterService converterService;
+
+	@Autowired
+	private EntityAttributeService entityMappingService;
 
 	private CoordinateReferenceSystem crs;
 
@@ -260,7 +264,12 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 			if (null != featureModel) {
 				synchronized (featuresById) {
 					for (Object f : features) {
+						String id = featureModel.getId(f);
 						featuresById.put(featureModel.getId(f), f);
+						int idInt = Integer.parseInt(id);
+						if (nextId <= idInt) {
+							nextId = idInt + 1;
+						}
 					}
 				}
 			}
@@ -305,7 +314,8 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	}
 
 	protected synchronized void initFeatureModel() throws LayerException {
-		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
+		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()),
+				entityMappingService);
 		filterService.registerFeatureModel(featureModel);
 		synchronized (featuresById) {
 			for (Object f : features) {

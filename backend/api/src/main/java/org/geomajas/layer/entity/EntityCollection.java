@@ -10,6 +10,8 @@
  */
 package org.geomajas.layer.entity;
 
+import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.LayerException;
 
 /**
@@ -17,8 +19,11 @@ import org.geomajas.layer.LayerException;
  * graph.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0
  * 
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface EntityCollection extends Iterable<Entity> {
 
 	/**

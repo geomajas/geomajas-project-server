@@ -11,8 +11,12 @@
 
 package org.geomajas.layer.feature.attribute;
 
+import java.util.Date;
+import java.util.HashMap;
+
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.global.Api;
+import org.geomajas.layer.feature.Attribute;
 
 /**
  * <p>
@@ -101,5 +105,144 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public String toString() {
 		return value == null ? "null" : value.toString();
+	}
+	
+	/**
+	 * Sets the specified boolean attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setBooleanAttribute(String name, Boolean value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new BooleanAttribute(value));
+	}
+
+	/**
+	 * Sets the specified currency attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setCurrencyAttribute(String name, String value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new CurrencyAttribute(value));
+	}
+
+	/**
+	 * Sets the specified date attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setDateAttribute(String name, Date value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new DateAttribute(value));
+	}
+
+	/**
+	 * Sets the specified double attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setDoubleAttribute(String name, Double value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new DoubleAttribute(value));
+	}
+
+	/**
+	 * Sets the specified float attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setFloatAttribute(String name, Float value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new FloatAttribute(value));
+	}
+
+	/**
+	 * Sets the specified image URL attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setImageUrlAttribute(String name, String value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new ImageUrlAttribute(value));
+	}
+	
+	/**
+	 * Sets the specified integer attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setIntegerAttribute(String name, Integer value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new IntegerAttribute(value));
+	}
+	
+	/**
+	 * Sets the specified long attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setLongAttribute(String name, Long value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new LongAttribute(value));
+	}
+
+	/**
+	 * Sets the specified short attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setShortAttribute(String name, Short value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new ShortAttribute(value));
+	}
+
+	/**
+	 * Sets the specified string attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setStringAttribute(String name, String value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new StringAttribute(value));
+	}
+
+	/**
+	 * Sets the specified URL attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setUrlAttribute(String name, String value) {
+		ensureValue();
+		getValue().getAllAttributes().put(name, new UrlAttribute(value));
+	}
+
+	private void ensureValue() {
+		AssociationValue value = getValue();
+		if (value == null) {
+			value = new AssociationValue(null, new HashMap<String, Attribute<?>>(), false);
+		}
 	}
 }

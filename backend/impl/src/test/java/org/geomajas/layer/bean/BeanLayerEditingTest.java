@@ -37,16 +37,23 @@ public class BeanLayerEditingTest {
 
 	@Test
 	public void testCreateNested() throws LayerException {
-		Object tranzient = createNested();
-		Object persistent = layer.create(tranzient);
-		String id = layer.getFeatureModel().getId(persistent);
-		// retrieve feature
-		Object read = layer.getElements(filterService.createFidFilter(new String[] { id }), 0, 1).next();
-		// check attributes
-		Attribute stringAttr = layer.getFeatureModel().getAttribute(read, "stringAttr");
-		Assert.assertNotNull(stringAttr);
-		Assert.assertTrue(stringAttr.isPrimitive());
-		Assert.assertEquals("bean1", stringAttr.getValue());
+		// retrieve test feature
+		Object test = layer.getElements(filterService.createFidFilter(new String[] { "1" }), 0, 1).next();
+		// retrieve the feature with modified primitive attrs
+		FeatureBean prim = (FeatureBean)layer.getElements(filterService.createFidFilter(new String[] { "2" }), 0, 1).next();
+		// assemble the attributes
+		Map<String, Attribute> attrs = new HashMap<String, Attribute>();
+		attrs.put("urlAttr", layer.getFeatureModel().getAttribute(prim, "urlAttr"));
+		attrs.put("stringAttr", layer.getFeatureModel().getAttribute(prim, "stringAttr"));
+		attrs.put("manyToOneAttr", layer.getFeatureModel().getAttribute(prim, "manyToOneAttr"));
+		attrs.put("oneToManyAttr", layer.getFeatureModel().getAttribute(prim, "oneToManyAttr"));
+		// apply to the test feature
+		layer.getFeatureModel().setAttributes(test, attrs);
+		// test and modified should be the same after setting id to 1L
+		prim.setId(1L);
+		Assert.assertEquals(prim, test);
+		
+		
 	}
 
 	@Test
@@ -63,7 +70,7 @@ public class BeanLayerEditingTest {
 		// update primitives
 		Map<String, Attribute> attribs = new HashMap<String, Attribute>();
 		attribs.put("stringAttr", new StringAttribute("bean2"));
-		ManyToOneAttribute manyToOne2 = (ManyToOneAttribute)manyToOne.clone();
+		ManyToOneAttribute manyToOne2 = (ManyToOneAttribute) manyToOne.clone();
 		manyToOne2.getValue().getAllAttributes().put("stringAttr", new StringAttribute("one2"));
 		attribs.put("manyToOneAttr", manyToOne2);
 		layer.getFeatureModel().setAttributes(read, attribs);
@@ -75,18 +82,22 @@ public class BeanLayerEditingTest {
 		Assert.assertNotNull(stringAttr);
 		Assert.assertTrue(stringAttr.isPrimitive());
 		Assert.assertEquals("bean2", stringAttr.getValue());
-		ManyToOneAttribute manyToOne3 = (ManyToOneAttribute) layer.getFeatureModel().getAttribute(read, "manyToOneAttr");
-		Assert.assertEquals("one2",manyToOne3.getValue().getAttributeValue("stringAttr"));
+		ManyToOneAttribute manyToOne3 = (ManyToOneAttribute) layer.getFeatureModel()
+				.getAttribute(read, "manyToOneAttr");
+		Assert.assertEquals("one2", manyToOne3.getValue().getAttributeValue("stringAttr"));
 
 	}
 
 	@Test
-	public void testCreateWithExistingManyToOne() throws LayerException {
+	public void testUpdateManyToOneWithExisting() throws LayerException {
 		Object tranzient = createExistingManyToOne();
 		Object persistent = layer.create(tranzient);
 		Attribute stringAttr = layer.getFeatureModel().getAttribute(persistent, "manyToOneAttr.stringAttr");
 		Assert.assertEquals("ManyToOne - 1", stringAttr.getValue());
-		
+	}
+
+	public void testUpdateManyToOneWithNew() throws LayerException {
+
 	}
 
 	public void testUpdateAssociationsUsingNew() {
@@ -156,11 +167,11 @@ public class BeanLayerEditingTest {
 		layer.getFeatureModel().setAttributes(o, attributes);
 		return o;
 	}
-	
+
 	public Object createExistingManyToOne() throws LayerException {
 		Object o = layer.getFeatureModel().newInstance();
-		ManyToOneAttribute one = new ManyToOneAttribute(new AssociationValue(new LongAttribute(1L), new HashMap<String, Attribute<?>>(),
-				false));
+		ManyToOneAttribute one = new ManyToOneAttribute(new AssociationValue(new LongAttribute(1L),
+				new HashMap<String, Attribute<?>>(), false));
 		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		attributes.put("manyToOneAttr", one);
 		layer.getFeatureModel().setAttributes(o, attributes);

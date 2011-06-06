@@ -18,12 +18,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.entity.AbstractEntityMapper;
 import org.geomajas.layer.entity.Entity;
 import org.geomajas.layer.entity.EntityCollection;
+import org.geomajas.layer.entity.EntityMapper;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -32,18 +31,12 @@ import org.springframework.beans.BeanUtils;
  * @author Jan De Moerloose
  * 
  */
-public class BeanEntityMapper extends AbstractEntityMapper {
+public class BeanEntityMapper implements  EntityMapper {
 
-	public BeanEntityMapper(FeatureInfo featureInfo) {
-		super(featureInfo);
-	}
-
-	@Override
 	public Entity findOrCreateEntity(String dataSourceName, Object id) throws LayerException {
 		return new BeanEntity(dataSourceName, id);
 	}
 
-	@Override
 	public Entity asEntity(Object object) {
 		return new BeanEntity(object);
 	}
@@ -106,7 +99,11 @@ public class BeanEntityMapper extends AbstractEntityMapper {
 			return new BeanEntityCollection(collection);
 		}
 
-		public void setPrimitiveAttribute(String name, Object value) throws LayerException {
+		public Object getAttribute(String name) throws LayerException {
+			return readProperty(bean, name);
+		}
+
+		public void setAttribute(String name, Object value) throws LayerException {
 			writeProperty(bean, name, value);
 		}
 
@@ -150,6 +147,7 @@ public class BeanEntityMapper extends AbstractEntityMapper {
 				}
 			}
 		}
+
 
 	}
 

@@ -10,15 +10,20 @@
  */
 package org.geomajas.layer.entity;
 
+import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.LayerException;
 
 /**
- * An {@link Entity} is a representation of a layer object (feature, association attribute) as a tree of objects.
- * Navigation and modification of the tree is possible in a generic way by the provided methods.
+ * An {@link Entity} is a representation of an internal layer object (feature, association attribute) as a tree of
+ * objects. Navigation and modification of the tree is possible in a generic way by the provided methods.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0
  * 
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface Entity {
 
 	/**
@@ -26,7 +31,7 @@ public interface Entity {
 	 * 
 	 * @param name name of the identifier attribute
 	 * @return id
-	 * @throws LayerException
+	 * @throws LayerException oops
 	 */
 	Object getId(String name) throws LayerException;
 
@@ -36,7 +41,7 @@ public interface Entity {
 	 * 
 	 * @param name attribute name
 	 * @return the child entity
-	 * @throws LayerException
+	 * @throws LayerException oops
 	 */
 	Entity getChild(String name) throws LayerException;
 
@@ -52,21 +57,30 @@ public interface Entity {
 
 	/**
 	 * Gets the collection of entities with the specified name. An empty collection is returned if the corresponding
-	 * object value is null.
+	 * object value is null. An entity collection represents a one-to-many association.
 	 * 
-	 * @param attribute name
+	 * @param name attribute name
 	 * @return a modifiable collection of entities
 	 * @throws LayerException oops
 	 */
 	EntityCollection getChildCollection(String name) throws LayerException;
 
 	/**
-	 * Sets the primitive attribute value with the specified name.
+	 * Sets the specified primitive (or geometry) attribute value.
 	 * 
 	 * @param name attribute name
-	 * @param value primitive value
+	 * @param value attribute value
 	 * @throws LayerException oops
 	 */
-	void setPrimitiveAttribute(String name, Object value) throws LayerException;
+	void setAttribute(String name, Object value) throws LayerException;
+
+	/**
+	 * Gets the specified primitive (or geometry) value.
+	 * 
+	 * @param name attribute name
+	 * @return the attribute value
+	 * @throws LayerException oops
+	 */
+	Object getAttribute(String name) throws LayerException;
 
 }
