@@ -141,8 +141,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		FeatureInfo childInfo = associationAttributeInfo.getFeature();
 		PrimitiveAttribute<?> id;
 		try {
-			id = (PrimitiveAttribute) dtoConverterService.toDto(entity.getId(idInfo.getName()),
-					idInfo);
+			id = (PrimitiveAttribute) dtoConverterService.toDto(entity.getId(idInfo.getName()), idInfo);
 		} catch (GeomajasException e) {
 			throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM);
 		}
@@ -387,15 +386,18 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			}
 			for (Map.Entry<String, Attribute<?>> entry : attributes.entrySet()) {
 				Attribute<?> attribute = entry.getValue();
-				if (attribute.isPrimitive()) {
+				if (!infoMap.containsKey(entry.getKey())) {
 					addPrimitive(entry.getKey(), (PrimitiveAttribute<?>) attribute);
 				} else {
 					AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
-					switch (association.getType()) {
+					AssociationAttributeInfo associationAttributeInfo = infoMap.get(entry.getKey());
+					switch (associationAttributeInfo.getType()) {
 						case MANY_TO_ONE:
+							association = (association == null ? new ManyToOneAttribute() : association);
 							addManyToOne(entry.getKey(), infoMap.get(entry.getKey()), (ManyToOneAttribute) association);
 							break;
 						case ONE_TO_MANY:
+							association = (association == null ? new OneToManyAttribute() : association);
 							addOneToMany(entry.getKey(), infoMap.get(entry.getKey()), (OneToManyAttribute) association);
 							break;
 					}
@@ -405,7 +407,8 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 
 		public void execute() throws LayerException {
 			for (Map.Entry<String, PrimitiveAttribute<?>> entry : primitives.entrySet()) {
-				entity.setAttribute(entry.getKey(), entry.getValue().getValue());
+				Object value = (entry.getValue() == null ? null : entry.getValue().getValue());
+				entity.setAttribute(entry.getKey(), value);
 			}
 			for (Operation operation : children) {
 				operation.execute();
@@ -465,7 +468,8 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 						addChild(new UpdateManyValue(getMapper(), existingMap.get(id), attributeInfo,
 								associationValue));
 					} else {
-						addChild(new AddManyValue(getMapper(), collection, attributeInfo, associationValue));
+						addChild(new AddManyValue(getMapper(), collection, attributeInfo,
+								associationValue));
 					}
 				}
 				for (Object id : deleteIds) {
@@ -488,8 +492,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 					addChild(new CreateManyToOneOperation(getMapper(), getEntity(), attributeInfo,
 							association.getValue()));
 				} else {
-					addChild(new UpdateManyToOneOperation(getMapper(), attributeInfo, existing, 
-							association.getValue()));
+					addChild(new UpdateManyToOneOperation(getMapper(), attributeInfo, existing, value));
 				}
 			}
 		}
