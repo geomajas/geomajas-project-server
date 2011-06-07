@@ -23,6 +23,8 @@ import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
@@ -131,6 +133,18 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 			// Fetch features
 			try {
 				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
+
+				// If MapCRS does not equal LayerCRS then project the bbox
+				String mapCRS = map.getCrs();
+				String layerCRS = configurationService.getVectorLayerInfo(getLayerId()).getCrs();
+				CrsTransform transform = null;
+				if (!mapCRS.matches(layerCRS)) {
+					Crs sourceCrs = geoService.getCrs2(mapCRS);
+					Crs targetCrs = geoService.getCrs2(layerCRS);
+					transform = geoService.getCrsTransform(sourceCrs, targetCrs);
+					bbox = geoService.transform(bbox, transform);
+				}
+
 				String geomName = configurationService.getVectorLayerInfo(getLayerId()).getFeatureInfo()
 						.getGeometryType().getName();
 				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
@@ -143,6 +157,14 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 
 				features = layerService.getFeatures(getLayerId(), geoService.getCrs2(map.getCrs()), filter, styleInfo,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
+
+				// If transform is not null then the mapCrs does not equal the layerCrs so transform feature geometry
+				if (null != transform) {
+					for (InternalFeature feature : features) {
+						feature.setGeometry(geoService.transform(feature.getGeometry(), transform));
+					}
+				}
+
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
 			}
