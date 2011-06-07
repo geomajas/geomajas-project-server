@@ -10,10 +10,10 @@
  */
 package org.geomajas.layer.bean;
 
+import org.springframework.util.ObjectUtils;
+
 import java.util.Date;
 import java.util.List;
-
-import org.geomajas.internal.util.EqualsUtil;
 
 /**
  * Java bean for one to many attribute.
@@ -199,20 +199,20 @@ public class OneToManyAttributeBean {
 			return false;
 		}
 		OneToManyAttributeBean other = (OneToManyAttributeBean) obj;
-		return EqualsUtil.isEqual(booleanAttr, other.booleanAttr)
-				&& EqualsUtil.isEqual(currencyAttr, other.currencyAttr) 
-				&& EqualsUtil.isEqual(dateAttr, other.dateAttr)
-				&& EqualsUtil.isEqual(floatAttr, other.floatAttr)
-				&& EqualsUtil.isEqual(doubleAttr, other.doubleAttr)
-				&& EqualsUtil.isEqual(id, other.id)
-				&& EqualsUtil.isEqual(imageUrlAttr, other.imageUrlAttr)
-				&& EqualsUtil.isEqual(integerAttr, other.integerAttr)
-				&& EqualsUtil.isEqual(longAttr, other.longAttr)
-				&& EqualsUtil.isEqual(manyToOneAttr, other.manyToOneAttr)
-				&& EqualsUtil.isEqual(oneToManyAttr, other.oneToManyAttr)
-				&& EqualsUtil.isEqual(shortAttr, other.shortAttr)
-				&& EqualsUtil.isEqual(stringAttr, other.stringAttr)
-				&& EqualsUtil.isEqual(urlAttr, other.urlAttr);
+		return ObjectUtils.nullSafeEquals(booleanAttr, other.booleanAttr)
+				&& ObjectUtils.nullSafeEquals(currencyAttr, other.currencyAttr)
+				&& ObjectUtils.nullSafeEquals(dateAttr, other.dateAttr)
+				&& ObjectUtils.nullSafeEquals(floatAttr, other.floatAttr)
+				&& ObjectUtils.nullSafeEquals(doubleAttr, other.doubleAttr)
+				&& ObjectUtils.nullSafeEquals(id, other.id)
+				&& ObjectUtils.nullSafeEquals(imageUrlAttr, other.imageUrlAttr)
+				&& ObjectUtils.nullSafeEquals(integerAttr, other.integerAttr)
+				&& ObjectUtils.nullSafeEquals(longAttr, other.longAttr)
+				&& ObjectUtils.nullSafeEquals(manyToOneAttr, other.manyToOneAttr)
+				&& ObjectUtils.nullSafeEquals(oneToManyAttr, other.oneToManyAttr)
+				&& ObjectUtils.nullSafeEquals(shortAttr, other.shortAttr)
+				&& ObjectUtils.nullSafeEquals(stringAttr, other.stringAttr)
+				&& ObjectUtils.nullSafeEquals(urlAttr, other.urlAttr);
 	}
 
 	@Override
