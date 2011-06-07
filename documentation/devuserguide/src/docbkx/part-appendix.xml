@@ -32,7 +32,7 @@
           <listitem>
             <para>In the GetVectorTile pipeline the GetTileTransformStep has
             been split in the GetTileTransformStep and GetTileFillStep. The
-            postTileTransform hook is still after tge GetTileTransformStep, so
+            postTileTransform hook is still after the GetTileTransformStep, so
             the filtering of features to ensure they are only included in one
             tile has not yet happened.</para>
           </listitem>
@@ -53,7 +53,7 @@
 
             <para>It is now up to the application definition to specify which
             SmartGwt theme to use. This must be done by inheriting the
-            specific theme module like this:</para>
+            specific theme module in your .gwt.xml file like this:</para>
 
             <programlisting>&lt;module&gt;
    &lt;inherits name="com.smartclient.theme.enterprise.Enterprise"/&gt;
@@ -62,7 +62,7 @@
 
           <listitem>
             <para>GeoTools has been upgraded to 2.7.1. This causes some
-            incompatibilities. The GeoTools plug-in also needs to be updates
+            incompatibilities. The GeoTools plug-in also needs to be updated
             to 1.8.0-SNAPSHOT to avoid problems.</para>
           </listitem>
 
@@ -72,9 +72,25 @@
             nested attributes
             (<code>&lt;a&gt;&lt;b&gt;&lt;c&gt;&lt;/c&gt;&lt;/b&gt;&lt;/a&gt;</code>).
             A custom form/datasource should be created if one wants to use
-            nested attributes as top level attributes in SmartGWT. In the next
-            release, reintroduction of recursive attributes at the
-            presentation level will be considered.</para>
+            nested attributes as top level attributes in SmartGWT. For the
+            future, we consider improving widget configurations to allow
+            explicitly mentioning the attributes to be displayed (including
+            linked attributes). We would welcome feedback and contributions
+            for this.</para>
+          </listitem>
+
+          <listitem>
+            <para>While we have updated to GeoTools 2.7.1 we have not changed
+            the definition of the projections. It may be useful to update the
+            gwt-epsg-wkt dependency to 2.7.1 as well (though this could break
+            tests if you have tests which verify (re)projection. This could be
+            done by adding the following in your dependencies section:</para>
+
+            <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+    &lt;artifactId&gt;gt-epsg-wkt&lt;/artifactId&gt;
+    &lt;version&gt;2.7.1&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
           </listitem>
         </itemizedlist></para>
     </section>
