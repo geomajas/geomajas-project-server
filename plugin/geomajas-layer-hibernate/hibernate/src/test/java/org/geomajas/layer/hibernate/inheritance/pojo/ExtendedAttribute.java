@@ -11,10 +11,12 @@
 
 package org.geomajas.layer.hibernate.inheritance.pojo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -28,33 +30,30 @@ public class ExtendedAttribute extends AbstractAttribute {
 
 	public static final String PARAM_INT_ATTR = "intAttr";
 
-	@Id
-	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
 
 	@Column(name = "intAttr")
 	private Integer intAttr;
+	
+	
+	@ManyToOne(cascade = { CascadeType.ALL })
+	private ExtendedHibernateTestFeature feature;
 
 	// Constructors:
 
-	public ExtendedAttribute() {
-		super();
-	}
 
 	public ExtendedAttribute(Long id) {
-		super();
-		this.id = id;
+		super(id);
 	}
 
 	public ExtendedAttribute(String textAttr) {
-		super(textAttr);
+		super(null, textAttr);
 	}
 
 	public ExtendedAttribute(Long id, String textAttr) {
-		super(textAttr);
-		this.id = id;
+		super(id, textAttr);
 	}
+	
+	
 
 	// Class specific functions:
 
@@ -88,14 +87,6 @@ public class ExtendedAttribute extends AbstractAttribute {
 
 	// Getters and setters:
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Integer getIntAttr() {
 		return intAttr;
 	}
@@ -103,4 +94,16 @@ public class ExtendedAttribute extends AbstractAttribute {
 	public void setIntAttr(Integer intAttr) {
 		this.intAttr = intAttr;
 	}
+
+	
+	public ExtendedHibernateTestFeature getFeature() {
+		return feature;
+	}
+
+	
+	public void setFeature(ExtendedHibernateTestFeature feature) {
+		this.feature = feature;
+	}
+	
+	
 }

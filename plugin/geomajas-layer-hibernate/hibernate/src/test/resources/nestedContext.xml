@@ -179,7 +179,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="feature">
 						<bean class="org.geomajas.configuration.FeatureInfo">
 							<property name="dataSourceName"
-								value="org.geomajas.layer.hibernate.nested.pojo.NestedManyInOne" />
+								value="org.geomajas.layer.hibernate.nested.pojo.NestedOne" />
 							<property name="identifier">
 								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 									<property name="label" value="Id" />

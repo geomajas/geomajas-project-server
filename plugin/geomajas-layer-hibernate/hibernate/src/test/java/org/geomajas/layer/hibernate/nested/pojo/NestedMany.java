@@ -27,7 +27,21 @@ public class NestedMany {
 	@ManyToOne(cascade = { CascadeType.ALL })
 	private NestedOneInMany oneInMany;
 
+	@Column(name = "textAttr")
+	private String textAttr;
 	
+	
+	public String getTextAttr() {
+		return textAttr;
+	}
+
+
+	
+	public void setTextAttr(String textAttr) {
+		this.textAttr = textAttr;
+	}
+
+
 	public Long getId() {
 		return id;
 	}

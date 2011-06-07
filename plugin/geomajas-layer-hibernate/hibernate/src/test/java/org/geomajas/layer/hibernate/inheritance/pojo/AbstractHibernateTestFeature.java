@@ -16,6 +16,9 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
@@ -31,7 +34,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Pieter De Graef
  */
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AbstractHibernateTestFeature {
 
 	public static final String PARAM_TEXT_ATTR = "textAttr";
@@ -55,15 +59,28 @@ public abstract class AbstractHibernateTestFeature {
 	@Column(name = "the_geom")
 	private Geometry geometry;
 
+	@Id
+	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 	// Constructors:
 
-	public AbstractHibernateTestFeature() {
+	public AbstractHibernateTestFeature(Long id) {
+		this(id, null);
 	}
 
-	public AbstractHibernateTestFeature(String textAttr) {
+	public AbstractHibernateTestFeature(Long id, String textAttr) {
+		this.id =id;
 		this.textAttr = textAttr;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	// Class specific functions:
 
 	public String toString() {

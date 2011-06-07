@@ -17,7 +17,9 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.attribute.IntegerAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.hibernate.AbstractHibernateInheritanceTest;
+import org.geomajas.layer.hibernate.inheritance.pojo.AbstractHibernateTestFeature;
 import org.geomajas.layer.hibernate.inheritance.pojo.ExtendedHibernateTestFeature;
+import org.hibernate.metadata.ClassMetadata;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +43,7 @@ public class InheritanceFeatureModelTest extends AbstractHibernateInheritanceTes
 	private ExtendedHibernateTestFeature feature2;
 
 	private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+	
 
 	@Before
 	public void setUpTestDataWithinTransaction() throws LayerException {
@@ -55,6 +58,7 @@ public class InheritanceFeatureModelTest extends AbstractHibernateInheritanceTes
 
 	@Test
 	public void testGetAttribute() throws LayerException {
+		ClassMetadata metadata = factory.getClassMetadata(AbstractHibernateTestFeature.class);
 		Attribute<?> attribute = featureModel.getAttribute(feature1, PARAM_INT_ATTR);
 		Assert.assertNotNull(attribute);
 		Assert.assertTrue(attribute instanceof IntegerAttribute);

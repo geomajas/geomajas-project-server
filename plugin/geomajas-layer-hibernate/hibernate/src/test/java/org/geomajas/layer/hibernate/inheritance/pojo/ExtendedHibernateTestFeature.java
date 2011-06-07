@@ -16,8 +16,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -33,10 +31,6 @@ public class ExtendedHibernateTestFeature extends AbstractHibernateTestFeature {
 
 	public static final String PARAM_INT_ATTR = "intAttr";
 
-	@Id
-	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
 
 	@Column(name = "intAttr")
 	private Integer intAttr;
@@ -44,12 +38,11 @@ public class ExtendedHibernateTestFeature extends AbstractHibernateTestFeature {
 	// Constructors:
 
 	public ExtendedHibernateTestFeature(Long id) {
-		this.id = id;
+		super(id);
 	}
 
 	public ExtendedHibernateTestFeature(Long id, String textAttr, Integer intAttr) {
-		super(textAttr);
-		this.id = id;
+		super(id, textAttr);
 		this.intAttr = intAttr;
 	}
 
@@ -85,13 +78,6 @@ public class ExtendedHibernateTestFeature extends AbstractHibernateTestFeature {
 
 	// Getters and setters:
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Integer getIntAttr() {
 		return intAttr;
