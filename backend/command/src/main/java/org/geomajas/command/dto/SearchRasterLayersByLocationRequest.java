@@ -12,15 +12,15 @@ package org.geomajas.command.dto;
 
 import org.geomajas.geometry.Bbox;
 
-
 /**
- * Request that allows searching features on raster layers that implement {@link LayerFeatureInfoSupport}.
- * @author Oliver May
+ * Request for {@link org.geomajas.command.feature.SearchRasterLayersByLocationCommand} that allows searching features
+ * on raster layers that implement {@link org.geomajas.layer.LayerFeatureInfoSupport}.
  *
+ * @author Oliver May
  */
 public class SearchRasterLayersByLocationRequest extends SearchByLocationRequest {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 190L;
 
 	/**
 	 * Command name for this request.
@@ -34,6 +34,8 @@ public class SearchRasterLayersByLocationRequest extends SearchByLocationRequest
 	
 	
 	/**
+	 * Get the scale for the search.
+	 *
 	 * @return the scale
 	 */
 	public double getScale() {
@@ -41,6 +43,8 @@ public class SearchRasterLayersByLocationRequest extends SearchByLocationRequest
 	}
 	
 	/**
+	 * Set the scale for the search.
+	 *
 	 * @param scale the scale to set
 	 */
 	public void setScale(double scale) {
@@ -48,6 +52,8 @@ public class SearchRasterLayersByLocationRequest extends SearchByLocationRequest
 	}
 
 	/**
+	 * Get the bounding box.
+	 *
 	 * @param bbox the bbox to set
 	 */
 	public void setBbox(Bbox bbox) {
@@ -55,11 +61,12 @@ public class SearchRasterLayersByLocationRequest extends SearchByLocationRequest
 	}
 
 	/**
+	 * Set the bounding box.
+	 *
 	 * @return the bbox
 	 */
 	public Bbox getBbox() {
 		return bbox;
 	}
-	
-	
+
 }

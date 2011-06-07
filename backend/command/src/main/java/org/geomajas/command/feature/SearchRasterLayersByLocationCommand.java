@@ -99,14 +99,14 @@ public class SearchRasterLayersByLocationCommand
 		if (request.getBuffer() > 0) {
 			geometry = location.buffer(request.getBuffer());
 		}
-		log.debug("search by location " + geometry);
+		log.debug("search by location {}", geometry);
 
 		if (layerIds != null && layerIds.length > 0) {
 			for (String layerId : layerIds) {
 				if (securityContext.isLayerVisible(layerId)) {
 					RasterLayer rasterLayer = configurationService.getRasterLayer(layerId);
 					if (rasterLayer != null && rasterLayer instanceof LayerFeatureInfoSupport) {
-						List<Feature> features = ((LayerFeatureInfoSupport) rasterLayer).getFeaturseByLocation(
+						List<Feature> features = ((LayerFeatureInfoSupport) rasterLayer).getFeaturesByLocation(
 								coordinate, crs, env, request.getScale());
 						if (features != null && features.size() > 0) {
 							response.addLayer(layerId, features);
