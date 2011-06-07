@@ -65,6 +65,17 @@
             incompatibilities. The GeoTools plug-in also needs to be updates
             to 1.8.0-SNAPSHOT to avoid problems.</para>
           </listitem>
+
+          <listitem>
+            <para>Recursive primitive attribute names (<code>a.b.c</code>) are
+            not allowed in this release. They should be replaced by equivalent
+            nested attributes
+            (<code>&lt;a&gt;&lt;b&gt;&lt;c&gt;&lt;/c&gt;&lt;/b&gt;&lt;/a&gt;</code>).
+            A custom form/datasource should be created if one wants to use
+            nested attributes as top level attributes in SmartGWT. In the next
+            release, reintroduction of recursive attributes at the
+            presentation level will be considered.</para>
+          </listitem>
         </itemizedlist></para>
     </section>
 
