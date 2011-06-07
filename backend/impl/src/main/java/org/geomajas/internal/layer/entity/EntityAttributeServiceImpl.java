@@ -478,17 +478,17 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 				throws LayerException {
 			Entity existing = entity.getChild(name);
 			AssociationValue value = association.getValue();
-			if (association.getValue() == null) {
+			if (value == null) {
 				addChild(new DeleteManyToOneOperation(getMapper(), getEntity(), attributeInfo));
 			} else if (existing == null) {
 				addChild(new CreateManyToOneOperation(getMapper(), getEntity(), attributeInfo, association.getValue()));
 			} else {
 				Object id = existing.getId(attributeInfo.getFeature().getIdentifier().getName());
-				if (value.getId().isEmpty() || !value.getId().getValue().equals(id)) {
+				if (value.getId() == null || value.getId().isEmpty() || !value.getId().getValue().equals(id)) {
 					addChild(new CreateManyToOneOperation(getMapper(), getEntity(), attributeInfo,
 							association.getValue()));
 				} else {
-					addChild(new UpdateManyToOneOperation(getMapper(), attributeInfo, existing,
+					addChild(new UpdateManyToOneOperation(getMapper(), attributeInfo, existing, 
 							association.getValue()));
 				}
 			}
