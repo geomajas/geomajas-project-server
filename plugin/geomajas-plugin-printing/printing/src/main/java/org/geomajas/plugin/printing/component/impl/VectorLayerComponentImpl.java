@@ -23,7 +23,6 @@ import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
@@ -56,7 +55,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * Internal implementation of {@link VectorLayerComponent}.
+ * Internal implementation of {@link org.geomajas.plugin.printing.component.BaseLayerComponent}.
  * 
  * @author Jan De Moerloose
  */
@@ -120,9 +119,10 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor
+	 * @param visitor visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
+		// nothing to do
 	}
 
 	@Override
@@ -139,9 +139,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 				String layerCRS = configurationService.getVectorLayerInfo(getLayerId()).getCrs();
 				CrsTransform transform = null;
 				if (!mapCRS.matches(layerCRS)) {
-					Crs sourceCrs = geoService.getCrs2(mapCRS);
-					Crs targetCrs = geoService.getCrs2(layerCRS);
-					transform = geoService.getCrsTransform(sourceCrs, targetCrs);
+					transform = geoService.getCrsTransform(mapCRS, layerCRS);
 					bbox = geoService.transform(bbox, transform);
 				}
 
