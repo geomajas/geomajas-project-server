@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * Context for PDF printing. This is a wrapper on a PdfWriter on which components of a print template can render
  * themselves. Components do not need to know about the template's layout and can draw in a relative coordinate system
  * in which their bottom-left origin corresponds to (0,0).
- * 
+ *
  * @author Jan De Moerloose
  */
 public class PdfContext {
@@ -66,7 +66,7 @@ public class PdfContext {
 
 	/**
 	 * Constructs a context for the specified writer and application.
-	 * 
+	 *
 	 * @param writer writer
 	 * @param configurationService configuration service
 	 */
@@ -76,7 +76,7 @@ public class PdfContext {
 
 	/**
 	 * Initializes context size.
-	 * 
+	 *
 	 * @param rectangle rectangle
 	 */
 	public void initSize(Rectangle rectangle) {
@@ -90,7 +90,7 @@ public class PdfContext {
 
 	/**
 	 * Return the text box for the specified text and font.
-	 * 
+	 *
 	 * @param text text
 	 * @param font font
 	 * @return text box
@@ -116,7 +116,7 @@ public class PdfContext {
 
 	/**
 	 * Draw text in the center of the specified box.
-	 * 
+	 *
 	 * @param text text
 	 * @param font font
 	 * @param box box to put text int
@@ -150,7 +150,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangular boundary.
-	 * 
+	 *
 	 * @param rect rectangle
 	 */
 	public void strokeRectangle(Rectangle rect) {
@@ -159,7 +159,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangular boundary with this color and linewidth.
-	 * 
+	 *
 	 * @param rect
 	 *            rectangle
 	 * @param color
@@ -181,7 +181,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rounded rectangular boundary.
-	 * 
+	 *
 	 * @param rect rectangle
 	 * @param color colour
 	 * @param linewidth line width
@@ -197,7 +197,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangle's interior.
-	 * 
+	 *
 	 * @param rect rectangle
 	 */
 	public void fillRectangle(Rectangle rect) {
@@ -206,7 +206,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangle's interior with this color.
-	 * 
+	 *
 	 * @param rect rectangle
 	 * @param color colour
 	 */
@@ -228,13 +228,14 @@ public class PdfContext {
 
 	/**
 	 * Draw an elliptical interior with this color.
-	 * 
+	 *
 	 * @param rect
 	 */
 	public void strokeEllipse(Rectangle rect, Color color, float linewidth) {
 		template.saveState();
 		setStroke(color, linewidth, null);
-		template.ellipse(origX + rect.getLeft(), origY + rect.getBottom(), rect.getRight(), rect.getTop());
+		template.ellipse(origX + rect.getLeft(), origY + rect.getBottom(), origX + rect.getRight(),
+				origY + rect.getTop());
 		template.stroke();
 		template.restoreState();
 	}
@@ -242,14 +243,15 @@ public class PdfContext {
 	public void fillEllipse(Rectangle rect, Color color) {
 		template.saveState();
 		setFill(color);
-		template.ellipse(origX + rect.getLeft(), origY + rect.getBottom(), rect.getRight(), rect.getTop());
+		template.ellipse(origX + rect.getLeft(), origY + rect.getBottom(), origX + rect.getRight(),
+				origY + rect.getTop());
 		template.fill();
 		template.restoreState();
 	}
 
 	/**
 	 * Move this rectangle to the specified bottom-left point.
-	 * 
+	 *
 	 * @param rect
 	 * @param x
 	 * @param y
@@ -265,7 +267,7 @@ public class PdfContext {
 
 	/**
 	 * Translate this rectangle over the specified following distances.
-	 * 
+	 *
 	 * @param rect
 	 * @param dx
 	 * @param dy
@@ -328,7 +330,7 @@ public class PdfContext {
 
 	/**
 	 * Draws the specified image with the first rect's bounds, clipping with the second one and adding transparency.
-	 * 
+	 *
 	 * @param img image
 	 * @param rect rectangle
 	 * @param clipRect clipping bounds
@@ -336,10 +338,10 @@ public class PdfContext {
 	public void drawImage(Image img, Rectangle rect, Rectangle clipRect) {
 		drawImage(img, rect, clipRect, 1);
 	}
-	
+
 	/**
 	 * Draws the specified image with the first rect's bounds, clipping with the second one.
-	 * 
+	 *
 	 * @param img image
 	 * @param rect rectangle
 	 * @param clipRect clipping bounds
@@ -371,7 +373,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a path specified by relative coordinates in [0,1] range wrt the specified rectangle.
-	 * 
+	 *
 	 * @param x x-ordinate
 	 * @param y y-ordinate
 	 * @param rect rectangle
@@ -424,7 +426,7 @@ public class PdfContext {
 
 	/**
 	 * Draw the specified geometry.
-	 * 
+	 *
 	 * @param geometry
 	 * @param symbol
 	 * @param fillColor
@@ -492,7 +494,16 @@ public class PdfContext {
 	}
 
 	private void drawPoint(Coordinate coord, SymbolInfo symbol) {
-		if (symbol.getCircle() != null) {
+		if (symbol.getImage() != null) {
+			try {
+				Image pointImage = Image.getInstance(symbol.getImage().getHref());
+				//template.addImage(image, width, 0, 0, height, x, y)
+				template.addImage(pointImage, symbol.getImage().getWidth(), 0, 0, symbol.getImage().getHeight()
+						, origX + (float) coord.x, origY + (float) coord.y);
+			} catch (Exception ex) {
+				log.error("Not able to create POINT image for rendering", ex);
+			}
+		} else if (symbol.getCircle() != null) {
 			float radius = symbol.getCircle().getR();
 
 			template.circle(origX + (float) coord.x, origY + (float) coord.y, radius);
@@ -510,7 +521,7 @@ public class PdfContext {
 
 	/**
 	 * Return this context as an image.
-	 * 
+	 *
 	 * @return this context as image
 	 * @throws BadElementException oops
 	 */
@@ -550,7 +561,7 @@ public class PdfContext {
 
 	/**
 	 * Converts an absolute rectangle to a relative one wrt to the current coordinate system.
-	 * 
+	 *
 	 * @param rect absolute rectangle
 	 * @return relative rectangle
 	 */

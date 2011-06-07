@@ -12,6 +12,7 @@ package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Color;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.LayerType;
@@ -19,6 +20,8 @@ import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +42,9 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 	private LayerType layerType;
 
 	private FeatureStyleInfo styleInfo;
+
+	@XStreamOmitField
+	private final Logger log = LoggerFactory.getLogger(LegendIconComponentImpl.class);
 
 	public LegendIconComponentImpl() {
 	}
@@ -74,7 +80,7 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
-	
+
 	@Override
 	public void calculateSize(PdfContext context) {
 		Rectangle textSize = context.getTextSize(label, getLegend().getFont());
@@ -104,31 +110,31 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 		}
 		float baseWidth = iconRect.getWidth() / 10;
 		// draw symbol
-		switch (layerType) {
-			case RASTER:
-				Image img = context.getImage("/images/layer-raster.png");
-				context.drawImage(img, iconRect, null);
-				break;
-			case POINT:
-			case MULTIPOINT:
-				SymbolInfo symbol = styleInfo.getSymbol();
-				if (symbol.getRect() != null) {
-					context.fillRectangle(iconRect, fillColor);
-					context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
-				} else {
-					context.fillEllipse(iconRect, fillColor);
-					context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
+		if (layerType.equals(LayerType.RASTER)) {
+			Image img = context.getImage("/images/layer-raster.png");
+			context.drawImage(img, iconRect, null);
+		} else if (layerType.equals(LayerType.POINT) || layerType.equals(LayerType.MULTIPOINT)) {
+			SymbolInfo symbol = styleInfo.getSymbol();
+			if (symbol.getImage() != null) {
+				try {
+					Image pointImage = Image.getInstance(symbol.getImage().getHref());
+					context.drawImage(pointImage, iconRect, iconRect);
+				} catch (Exception ex) {
+					log.error("Not able to create image for POINT Symbol", ex);
 				}
-				break;
-			case LINESTRING:
-			case MULTILINESTRING:
-				context.drawRelativePath(new float[] {0f, 0.75f, 0.25f, 1f},
-						new float[] {0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
-				break;
-			case POLYGON:
-			case MULTIPOLYGON:
+			} else if (symbol.getRect() != null) {
 				context.fillRectangle(iconRect, fillColor);
-				context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
+				context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
+			} else {
+				context.fillEllipse(iconRect, fillColor);
+				context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
+			}
+		} else if (layerType.equals(LayerType.LINESTRING) || layerType.equals(LayerType.MULTIPOINT)) {
+			context.drawRelativePath(new float[]{0f, 0.75f, 0.25f, 1f},
+					new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
+		} else if (layerType.equals(LayerType.POLYGON) || layerType.equals(LayerType.MULTIPOLYGON)) {
+			context.fillRectangle(iconRect, fillColor);
+			context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
 		}
 	}
 
