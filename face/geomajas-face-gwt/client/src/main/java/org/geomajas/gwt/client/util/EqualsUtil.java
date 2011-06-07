@@ -17,20 +17,19 @@ import org.geomajas.global.Api;
  * 
  * @author Jan De Moerloose
  * @since 1.9.0
- * 
  */
 @Api(allMethods = true)
 public final class EqualsUtil {
 
 	private EqualsUtil() {
-
+		// hide constructor
 	}
 
 	/**
 	 * Checks whether 2 objects are equal. Null-safe, 2 null objects are considered equal.
 	 * 
-	 * @param o1
-	 * @param o2
+	 * @param o1 first object to compare
+	 * @param o2 second object to compare
 	 * @return true if object are equal, false otherwise
 	 */
 	public static boolean isEqual(Object o1, Object o2) {
