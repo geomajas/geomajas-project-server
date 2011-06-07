@@ -68,7 +68,6 @@ public class PdfContext {
 	 * Constructs a context for the specified writer and application.
 	 *
 	 * @param writer writer
-	 * @param configurationService configuration service
 	 */
 	public PdfContext(PdfWriter writer) {
 		this.writer = writer;
@@ -102,14 +101,10 @@ public class PdfContext {
 		BaseFont bf = mapper.awtToPdf(font);
 		template.setFontAndSize(bf, font.getSize());
 		// calculate text width and height
-		float textWidth = 0;
-		float textHeight = 0;
-		float ascent = 0;
-		float descent = 0;
-		textWidth = template.getEffectiveStringWidth(text, false);
-		ascent = bf.getAscentPoint(text, font.getSize());
-		descent = bf.getDescentPoint(text, font.getSize());
-		textHeight = ascent - descent;
+		float textWidth = template.getEffectiveStringWidth(text, false);
+		float ascent = bf.getAscentPoint(text, font.getSize());
+		float descent = bf.getDescentPoint(text, font.getSize());
+		float textHeight = ascent - descent;
 		template.restoreState();
 		return new Rectangle(0, 0, textWidth, textHeight);
 	}
@@ -227,9 +222,11 @@ public class PdfContext {
 	}
 
 	/**
-	 * Draw an elliptical interior with this color.
+	 * Draw an elliptical exterior with this color.
 	 *
-	 * @param rect
+	 * @param rect rectangle in which ellipse should fit
+	 * @param color colour to use for stroking
+	 * @param linewidth line width
 	 */
 	public void strokeEllipse(Rectangle rect, Color color, float linewidth) {
 		template.saveState();
@@ -240,6 +237,12 @@ public class PdfContext {
 		template.restoreState();
 	}
 
+	/**
+	 * Draw an elliptical interior with this color.
+	 *
+	 * @param rect rectangle in which ellipse should fit
+	 * @param color colour to use for filling
+	 */
 	public void fillEllipse(Rectangle rect, Color color) {
 		template.saveState();
 		setFill(color);
@@ -252,9 +255,9 @@ public class PdfContext {
 	/**
 	 * Move this rectangle to the specified bottom-left point.
 	 *
-	 * @param rect
-	 * @param x
-	 * @param y
+	 * @param rect rectangle to move
+	 * @param x new x origin
+	 * @param y new y origin
 	 */
 	public void moveRectangleTo(Rectangle rect, float x, float y) {
 		float width = rect.getWidth();
@@ -268,9 +271,9 @@ public class PdfContext {
 	/**
 	 * Translate this rectangle over the specified following distances.
 	 *
-	 * @param rect
-	 * @param dx
-	 * @param dy
+	 * @param rect rectangle to move
+	 * @param dx delta x
+	 * @param dy delta y
 	 */
 	public void translateRectangle(Rectangle rect, float dx, float dy) {
 		float width = rect.getWidth();
@@ -292,8 +295,7 @@ public class PdfContext {
 		} else {
 			color = Color.decode(css);
 		}
-		Color opaque = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (opacity * 255));
-		return opaque;
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (opacity * 255));
 	}
 
 	public float[] getDashArray(String dashArrayString) {
@@ -320,8 +322,7 @@ public class PdfContext {
 			if (url == null) {
 				url = Utilities.toURL(path);
 			}
-			Image img = Image.getInstance(url);
-			return img;
+			return Image.getInstance(url);
 		} catch (Exception e) {
 			log.warn("could not fetch image", e);
 			return null;
@@ -329,7 +330,8 @@ public class PdfContext {
 	}
 
 	/**
-	 * Draws the specified image with the first rect's bounds, clipping with the second one and adding transparency.
+	 * Draws the specified image with the first rectangle's bounds, clipping with the second one and adding
+	 * transparency.
 	 *
 	 * @param img image
 	 * @param rect rectangle
@@ -340,7 +342,7 @@ public class PdfContext {
 	}
 
 	/**
-	 * Draws the specified image with the first rect's bounds, clipping with the second one.
+	 * Draws the specified image with the first rectangle's bounds, clipping with the second one.
 	 *
 	 * @param img image
 	 * @param rect rectangle
@@ -427,12 +429,12 @@ public class PdfContext {
 	/**
 	 * Draw the specified geometry.
 	 *
-	 * @param geometry
-	 * @param symbol
-	 * @param fillColor
-	 * @param strokeColor
-	 * @param lineWidth
-	 * @param clipRect
+	 * @param geometry geometry to draw
+	 * @param symbol symbol for geometry
+	 * @param fillColor fill colour
+	 * @param strokeColor stroke colour
+	 * @param lineWidth line width
+	 * @param clipRect clipping rectangle
 	 */
 	public void drawGeometry(Geometry geometry, SymbolInfo symbol, Color fillColor, Color strokeColor, float lineWidth,
 			float[] dashArray, Rectangle clipRect) {
