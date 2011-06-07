@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -127,6 +128,12 @@ public class ConfigurationDtoPostProcessor {
 	private void postProcess(VectorLayer layer) throws LayerException {
 		// apply defaults to all styles
 		VectorLayerInfo info = layer.getLayerInfo();
+		// check for invalid attribute names
+		for (AttributeInfo attributeInfo : info.getFeatureInfo().getAttributes()) {
+			if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
+				throw new LayerException(ExceptionCode.INVALID_ATTRIBUTE_NAME, attributeInfo.getName(), layer.getId());
+			}
+		}
 		if (info != null) {
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {

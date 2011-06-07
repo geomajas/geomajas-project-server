@@ -140,4 +140,8 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int DEPENDENCY_CHECK_INVALID_DUPLICATE = 75;
+	/**
+	 * @since 1.9.0
+	 */
+	int INVALID_ATTRIBUTE_NAME = 76;
 }

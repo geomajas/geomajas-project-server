@@ -43,4 +43,24 @@ public class ConfigurationDtoPostProcessorLayerTreeTest {
 					"A LayerTreeNodeInfo object can only reference layers which are part of the map, layer "));
 		}
 	}
+	
+	@Test
+	public void testAttributeNameCheck() {
+		try {
+			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+			context.setId("test");
+			context.setDisplayName("test");
+			context.setConfigLocation(
+					"/org/geomajas/spring/geomajasContext.xml " +
+					"/org/geomajas/layer/bean/beanContext.xml " +
+					"/org/geomajas/layer/bean/layerBeans.xml " +
+					"/org/geomajas/internal/configuration/layerBeansInvalid.xml " +
+					"");
+			context.refresh();
+			Assert.fail("Context initialization should have failed.");
+		} catch (BeanCreationException bce) {
+			Assert.assertTrue(bce.getCause().getCause().getMessage().contains(
+					"manyToOne.stringAttr"));
+		}
+	}
 }
