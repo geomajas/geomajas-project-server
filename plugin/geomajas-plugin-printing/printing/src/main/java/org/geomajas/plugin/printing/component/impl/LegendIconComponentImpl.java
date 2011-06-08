@@ -110,31 +110,37 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 		}
 		float baseWidth = iconRect.getWidth() / 10;
 		// draw symbol
-		if (layerType.equals(LayerType.RASTER)) {
-			Image img = context.getImage("/images/layer-raster.png");
-			context.drawImage(img, iconRect, null);
-		} else if (layerType.equals(LayerType.POINT) || layerType.equals(LayerType.MULTIPOINT)) {
-			SymbolInfo symbol = styleInfo.getSymbol();
-			if (symbol.getImage() != null) {
-				try {
-					Image pointImage = Image.getInstance(symbol.getImage().getHref());
-					context.drawImage(pointImage, iconRect, iconRect);
-				} catch (Exception ex) {
-					log.error("Not able to create image for POINT Symbol", ex);
-				}
-			} else if (symbol.getRect() != null) {
-				context.fillRectangle(iconRect, fillColor);
-				context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
-			} else {
-				context.fillEllipse(iconRect, fillColor);
-				context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
-			}
-		} else if (layerType.equals(LayerType.LINESTRING) || layerType.equals(LayerType.MULTIPOINT)) {
-			context.drawRelativePath(new float[]{0f, 0.75f, 0.25f, 1f},
+		switch (layerType) {
+			case RASTER:
+				Image img = context.getImage("/images/layer-raster.png");
+				context.drawImage(img, iconRect, null);
+				break;
+			case MULTILINESTRING:
+			case LINESTRING:
+				context.drawRelativePath(new float[]{0f, 0.75f, 0.25f, 1f},
 					new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
-		} else if (layerType.equals(LayerType.POLYGON) || layerType.equals(LayerType.MULTIPOLYGON)) {
-			context.fillRectangle(iconRect, fillColor);
-			context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
+				break;
+			case MULTIPOINT:
+			case POINT:
+				SymbolInfo symbol = styleInfo.getSymbol();
+				if (symbol.getImage() != null) {
+					try {
+						Image pointImage = Image.getInstance(symbol.getImage().getHref());
+						context.drawImage(pointImage, iconRect, iconRect);
+					} catch (Exception ex) {
+						log.error("Not able to create image for POINT Symbol", ex);
+					}
+				} else if (symbol.getRect() != null) {
+					context.fillRectangle(iconRect, fillColor);
+					context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
+				} else {
+					context.fillEllipse(iconRect, fillColor);
+					context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
+				}
+				break;
+ 			default:
+				context.fillRectangle(iconRect, fillColor);
+				context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
 		}
 	}
 
