@@ -42,10 +42,6 @@
 		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedOne" />
 		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedOneInMany" />
 		<mapping class="org.geomajas.layer.hibernate.nested.pojo.NestedOneInOne" />
-
-		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveAttribute" />
-		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveAttributeFeature" />
-		<mapping class="org.geomajas.layer.hibernate.recursive.pojo.RecursiveTopFeature" />
 		
 		<mapping class="org.geomajas.layer.hibernate.inheritance.pojo.AbstractAttribute" />
 		<mapping class="org.geomajas.layer.hibernate.inheritance.pojo.AbstractHibernateTestFeature" />
