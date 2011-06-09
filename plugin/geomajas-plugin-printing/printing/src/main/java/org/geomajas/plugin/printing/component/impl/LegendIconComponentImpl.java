@@ -76,7 +76,7 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 	/**
 	 * Call back visitor.
 	 *
-	 * @param visitor
+	 * @param visitor visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
@@ -115,13 +115,8 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 				Image img = context.getImage("/images/layer-raster.png");
 				context.drawImage(img, iconRect, null);
 				break;
-			case MULTILINESTRING:
-			case LINESTRING:
-				context.drawRelativePath(new float[]{0f, 0.75f, 0.25f, 1f},
-					new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
-				break;
-			case MULTIPOINT:
 			case POINT:
+			case MULTIPOINT:
 				SymbolInfo symbol = styleInfo.getSymbol();
 				if (symbol.getImage() != null) {
 					try {
@@ -138,9 +133,18 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 					context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
 				}
 				break;
- 			default:
+			case LINESTRING:
+			case MULTILINESTRING:
+				context.drawRelativePath(new float[] {0f, 0.75f, 0.25f, 1f},
+						new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
+				break;
+			case POLYGON:
+			case MULTIPOLYGON:
 				context.fillRectangle(iconRect, fillColor);
 				context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
+				break;
+			default:
+				log.warn("Cannot draw unknown layerType " + layerType);
 		}
 	}
 
