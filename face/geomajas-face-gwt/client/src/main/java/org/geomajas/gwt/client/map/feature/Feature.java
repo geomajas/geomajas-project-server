@@ -94,8 +94,13 @@ public class Feature implements Paintable, Cloneable {
 		this(null);
 	}
 
+	public Feature(String id, VectorLayer layer) {
+		this((org.geomajas.layer.feature.Feature) null, layer);
+		this.id = id;
+	}
+
 	public Feature(VectorLayer layer) {
-		this(null, layer);
+		this((org.geomajas.layer.feature.Feature) null, layer);
 	}
 
 	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {

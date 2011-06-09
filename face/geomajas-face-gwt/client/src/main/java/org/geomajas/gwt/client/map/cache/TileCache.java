@@ -133,6 +133,10 @@ public class TileCache implements SpatialCache {
 
 	public void getFeature(String id, int featureIncludes, LazyLoadCallback callback) {
 		List<Feature> list = new ArrayList<Feature>();
+		if (!contains(id)) {
+			Feature feature = new Feature(id, getLayer());
+			features.put(id, feature);
+		}
 		list.add(features.get(id));
 		LazyLoader.lazyLoad(list, featureIncludes, callback);
 	}
