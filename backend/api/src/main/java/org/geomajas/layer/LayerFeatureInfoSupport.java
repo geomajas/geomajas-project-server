@@ -12,13 +12,11 @@ package org.geomajas.layer;
 
 import java.util.List;
 
-import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;
 import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.feature.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Extension for any type of layer that supports retrieving feature info. 
@@ -31,15 +29,13 @@ import com.vividsolutions.jts.geom.Envelope;
 public interface LayerFeatureInfoSupport {
 	
 	/**
-	 * Return the list of features that lay on a given coordinate for the given viewscale.
-	 * @param coordinate coordinate used to search for features
-	 * @param targetCrs Coordinate reference system used for bounds
-	 * @param mapBounds the bounds of the map
-	 * @param scale the scale of the map
+	 * Return the list of features that lay within a given coordinate and buffer for the given viewscale.
+	 * @param coordinate coordinate used to search for features in the layer coordinate space
+	 * @param scale the scale of the layer
+	 * @param buffer a buffer round the coordinate in layer units
 	 * @return features a list of features
 	 * @throws LayerException oops
 	 */
-	List<Feature> getFeaturesByLocation(Coordinate coordinate, Crs targetCrs, Envelope mapBounds,
-			double scale) throws LayerException;
+	List<Feature> getFeaturesByLocation(Coordinate coordinate, double layerScale, double buffer) throws LayerException;
 	
 }
