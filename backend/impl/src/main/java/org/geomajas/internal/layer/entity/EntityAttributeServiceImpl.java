@@ -26,9 +26,9 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.entity.Entity;
+import org.geomajas.layer.entity.EntityAttributeService;
 import org.geomajas.layer.entity.EntityCollection;
 import org.geomajas.layer.entity.EntityMapper;
-import org.geomajas.layer.entity.EntityAttributeService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationAttribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
@@ -378,27 +378,34 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		}
 
 		protected void addChildOperations() throws LayerException {
-			Map<String, AssociationAttributeInfo> infoMap = new HashMap<String, AssociationAttributeInfo>();
+			Map<String, AssociationAttributeInfo> associationMap = new HashMap<String, AssociationAttributeInfo>();
+			Map<String, PrimitiveAttributeInfo> primitiveMap = new HashMap<String, PrimitiveAttributeInfo>();
 			for (AttributeInfo attributeInfo : featureInfo.getAttributes()) {
-				if (attributeInfo instanceof AssociationAttributeInfo) {
-					infoMap.put(attributeInfo.getName(), (AssociationAttributeInfo) attributeInfo);
+				if (attributeInfo.isEditable()) {
+					if (attributeInfo instanceof AssociationAttributeInfo) {
+						associationMap.put(attributeInfo.getName(), (AssociationAttributeInfo) attributeInfo);
+					} else if (attributeInfo instanceof PrimitiveAttributeInfo) {
+						primitiveMap.put(attributeInfo.getName(), (PrimitiveAttributeInfo) attributeInfo);
+					}
 				}
 			}
 			for (Map.Entry<String, Attribute<?>> entry : attributes.entrySet()) {
 				Attribute<?> attribute = entry.getValue();
-				if (!infoMap.containsKey(entry.getKey())) {
+				if (primitiveMap.containsKey(entry.getKey())) {
 					addPrimitive(entry.getKey(), (PrimitiveAttribute<?>) attribute);
-				} else {
+				} else if (associationMap.containsKey(entry.getKey())) {
 					AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
-					AssociationAttributeInfo associationAttributeInfo = infoMap.get(entry.getKey());
+					AssociationAttributeInfo associationAttributeInfo = associationMap.get(entry.getKey());
 					switch (associationAttributeInfo.getType()) {
 						case MANY_TO_ONE:
 							association = (association == null ? new ManyToOneAttribute() : association);
-							addManyToOne(entry.getKey(), infoMap.get(entry.getKey()), (ManyToOneAttribute) association);
+							addManyToOne(entry.getKey(), associationMap.get(entry.getKey()),
+									(ManyToOneAttribute) association);
 							break;
 						case ONE_TO_MANY:
 							association = (association == null ? new OneToManyAttribute() : association);
-							addOneToMany(entry.getKey(), infoMap.get(entry.getKey()), (OneToManyAttribute) association);
+							addOneToMany(entry.getKey(), associationMap.get(entry.getKey()),
+									(OneToManyAttribute) association);
 							break;
 					}
 				}

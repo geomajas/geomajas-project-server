@@ -45,13 +45,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/layer/bean/layerBeans.xml" })
+		"/org/geomajas/layer/bean/layerBeans.xml","/org/geomajas/internal/layer/entity/layerNonEditableBeans.xml" })
 @DirtiesContext
 public class EntityAttributeServiceTest {
 
 	@Autowired
 	@Qualifier("beans")
-	private VectorLayer layer;
+	private VectorLayer layerBeans;
+
+	@Autowired
+	@Qualifier("layerNonEditableBeans")
+	private VectorLayer layerNonEditableBeans;
 
 	@Autowired
 	private EntityAttributeService service;
@@ -60,7 +64,7 @@ public class EntityAttributeServiceTest {
 	public void testNoAttributes() throws LayerException {
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
 		FeatureBean bean = new FeatureBean();
-		service.setAttributes(bean, layer.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
+		service.setAttributes(bean, layerBeans.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
 	}
 
 	@Test
@@ -73,7 +77,7 @@ public class EntityAttributeServiceTest {
 		attributes.put("floatAttr", new FloatAttribute(1.67F));
 		attributes.put("shortAttr", new ShortAttribute((short) 6));
 		attributes.put("urlAttr", new UrlAttribute("http://haha"));
-		service.setAttributes(bean, layer.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
+		service.setAttributes(bean, layerBeans.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
 		Assert.assertEquals("s1", bean.getStringAttr());
 		Assert.assertEquals(1.23, bean.getDoubleAttr(), 0.0001);
 		Assert.assertEquals(12L, bean.getLongAttr().longValue());
@@ -89,7 +93,7 @@ public class EntityAttributeServiceTest {
 		AssociationValue value = new AssociationValue(new LongAttribute(),new HashMap<String, Attribute<?>>(), false);
 		value.getAllAttributes().put("stringAttr",new StringAttribute("mto"));
 		attributes.put("manyToOneAttr", new ManyToOneAttribute(value));
-		service.setAttributes(bean, layer.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
+		service.setAttributes(bean, layerBeans.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
 		Assert.assertNotNull(bean.getManyToOneAttr());
 		Assert.assertEquals("mto",bean.getManyToOneAttr().getStringAttr());
 		// test replacing
@@ -97,11 +101,25 @@ public class EntityAttributeServiceTest {
 		original.setId(5L);
 		original.setStringAttr("original");
 		bean.setManyToOneAttr(original);
-		service.setAttributes(bean, layer.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
+		service.setAttributes(bean, layerBeans.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
 		Assert.assertNotNull(bean.getManyToOneAttr());
 		// should be replaced
 		Assert.assertNotSame(original,bean.getManyToOneAttr());
 		Assert.assertEquals(null,bean.getManyToOneAttr().getId());
+	}
+	
+	@Test
+	public void testNonEditable() throws LayerException {
+		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
+		FeatureBean bean = new FeatureBean();
+		AssociationValue value = new AssociationValue(new LongAttribute(),new HashMap<String, Attribute<?>>(), false);
+		value.getAllAttributes().put("stringAttr",new StringAttribute("mto"));
+		attributes.put("manyToOneAttr", new ManyToOneAttribute(value));
+		attributes.put("stringAttr", new StringAttribute("top"));
+		service.setAttributes(bean, layerNonEditableBeans.getLayerInfo().getFeatureInfo(), new DummyMapper(), attributes);
+		Assert.assertNotNull(bean.getManyToOneAttr());
+		Assert.assertNull(bean.getManyToOneAttr().getStringAttr());
+		Assert.assertNull(bean.getStringAttr());
 	}
 	
 	
