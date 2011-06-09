@@ -80,7 +80,8 @@ public class EnableToggleFormItem extends CanvasItem {
 		enabledForm.addItemChangedHandler(new ItemChangedHandler() {
 
 			public void onItemChanged(ItemChangedEvent event) {
-				disabledForm.getItem(FORM_FIELD_NAME).setValue(event.getNewValue().toString());
+				String disabledValue = (event.getNewValue() == null ? null : event.getNewValue().toString());
+				disabledForm.getItem(FORM_FIELD_NAME).setValue(disabledValue);
 			}
 		});
 	}
@@ -114,6 +115,13 @@ public class EnableToggleFormItem extends CanvasItem {
 		super.setDisabled(realValue);
 		enabledForm.setVisible(!realValue);
 		disabledForm.setVisible(realValue);
+	}
+	
+	
+
+	@Override
+	public Boolean validate() {
+		return enabledForm.validate();
 	}
 
 	public void disable() {

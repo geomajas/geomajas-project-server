@@ -62,11 +62,18 @@ public interface FeatureForm<W extends Widget> extends HasItemChangedHandlers {
 	boolean isDisabled();
 
 	/**
-	 * Validate the contents of the entire attribute form.
+	 * Validate the contents of the entire attribute form and show warning icons.
 	 * 
 	 * @return Returns true if all values in the form are validated correctly, false otherwise.
 	 */
 	boolean validate();
+	
+	/**
+	 * Validate the contents of the entire attribute form without showing warnings.
+	 * 
+	 * @return Returns true if all values in the form are validated correctly, false otherwise.
+	 */
+	boolean silentValidate();
 
 	/**
 	 * Attach a handler that reacts to changes in the fields as the user makes them.

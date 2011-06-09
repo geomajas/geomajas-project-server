@@ -259,6 +259,10 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		return validate;
 	}
 
+	public boolean silentValidate() {
+		return formWidget.valuesAreValid(false);
+	}
+
 	public void fireEvent(GwtEvent<?> event) {
 		manager.fireEvent(event);
 	}
