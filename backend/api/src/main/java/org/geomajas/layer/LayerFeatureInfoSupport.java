@@ -31,7 +31,7 @@ public interface LayerFeatureInfoSupport {
 	/**
 	 * Return the list of features that lay within a given coordinate and buffer for the given viewscale.
 	 * @param coordinate coordinate used to search for features in the layer coordinate space
-	 * @param scale the scale of the layer
+	 * @param layerScale the scale of the layer
 	 * @param buffer a buffer round the coordinate in layer units
 	 * @return features a list of features
 	 * @throws LayerException oops
