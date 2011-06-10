@@ -339,6 +339,18 @@ public class AssociationValue implements Serializable {
 	}
 
 	/**
+	 * Sets the specified many-to-one attribute to the specified value.
+	 * 
+	 * @param name name of the attribute
+	 * @param value value of the attribute
+	 * @since 1.9.0
+	 */
+	public void setManyToOneAttribute(String name, AssociationValue value) {
+		ensureAttributes();
+		getAllAttributes().put(name, new ManyToOneAttribute(value));
+	}
+
+	/**
 	 * Returns a string representation of the value of the form <code>{id=1, attr1=a, attr2=0.5}</code>.
 	 * 
 	 * @return string value
