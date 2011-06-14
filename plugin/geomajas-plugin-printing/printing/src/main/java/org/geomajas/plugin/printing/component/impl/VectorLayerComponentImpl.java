@@ -134,13 +134,13 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 			try {
 				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 
-				// If MapCRS does not equal LayerCRS then project the bbox
+				// If MapCRS does not equal LayerCRS then instantiate
+				// the CrsTransform which will be used for transforming the bbox
 				String mapCRS = map.getCrs();
 				String layerCRS = configurationService.getVectorLayerInfo(getLayerId()).getCrs();
 				CrsTransform transform = null;
 				if (!mapCRS.matches(layerCRS)) {
 					transform = geoService.getCrsTransform(mapCRS, layerCRS);
-					bbox = geoService.transform(bbox, transform);
 				}
 
 				String geomName = configurationService.getVectorLayerInfo(getLayerId()).getFeatureInfo()
@@ -148,20 +148,19 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
 						geoService.getSridFromCrs(map.getCrs()));
 
-				Filter filter = filterService.createIntersectsFilter(factory.toGeometry(bbox), geomName);
+				// If the transform is null then just use the bbox for the filter
+				// Else if the transform is not null then transform the bbox for the filter
+				Filter filter = transform == null
+						? filterService.createIntersectsFilter(factory.toGeometry(bbox), geomName)
+						: filterService.createIntersectsFilter(factory.toGeometry(
+									geoService.transform(bbox, transform)), geomName);
+
 				if (getFilter() != null) {
 					filter = filterService.createAndFilter(filterService.parseFilter(getFilter()), filter);
 				}
 
 				features = layerService.getFeatures(getLayerId(), geoService.getCrs2(map.getCrs()), filter, styleInfo,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
-
-				// If transform is not null then the mapCrs does not equal the layerCrs so transform feature geometry
-				if (null != transform) {
-					for (InternalFeature feature : features) {
-						feature.setGeometry(geoService.transform(feature.getGeometry(), transform));
-					}
-				}
 
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
