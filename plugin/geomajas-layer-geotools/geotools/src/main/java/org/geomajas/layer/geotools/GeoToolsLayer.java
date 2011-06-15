@@ -13,6 +13,7 @@ package org.geomajas.layer.geotools;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -63,6 +65,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @author Kristof Heirwegh
  * @since 1.7.1
  */
 @Api
@@ -70,6 +73,12 @@ import com.vividsolutions.jts.geom.Envelope;
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
+
+	private static final long DEFAULT_COOLDOWNTIME = 60000; // millis
+
+	// -- caveat this might fail on change of Geotools library version
+	private static final String MAGIC_STRING_LIBRARY_MISSING = "No datastore found. Possible causes are missing fact"
+			+ "ory or missing library for your datastore (e.g. database driver).";
 
 	private FilterFactory filterFactory;
 
@@ -101,6 +110,12 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private CoordinateReferenceSystem crs;
 
 	private String id;
+
+	private boolean initialized;
+
+	private Date lastInitFeaturesRetry = new Date();
+
+	private long cooldownTimeBetweenInitializationRetries = DEFAULT_COOLDOWNTIME;
 
 	public String getId() {
 		return id;
@@ -180,6 +195,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		crs = geoService.getCrs2(layerInfo.getCrs());
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		try {
+			this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
 			if (null == getDataStore()) {
 				Map<String, String> params = new HashMap<String, String>();
 				if (null != url) {
@@ -199,13 +215,17 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			if (null == getDataStore()) {
 				return;
 			}
-			this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
 			this.featureModel = new GeoToolsFeatureModel(getDataStore(),
 					layerInfo.getFeatureInfo().getDataSourceName(), geoService.getSridFromCrs(layerInfo.getCrs()),
 					converterService);
 			featureModel.setLayerInfo(layerInfo);
+			initialized = true;
 		} catch (IOException ioe) {
-			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
+			if (MAGIC_STRING_LIBRARY_MISSING.equals(ioe.getMessage())) {
+				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION, url);
+			} else {
+				log.warn("The layer could not be correctly initialized: " + getId(), ioe);
+			}
 		}
 	}
 
@@ -356,7 +376,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/**
-	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
+	 * This implementation does not support the 'offset' and 'maxResultSize'
+	 * parameters.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
@@ -379,6 +400,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	public FeatureModel getFeatureModel() {
+		if (!initialized) {
+			retryInitFeatures();
+		}
 		return this.featureModel;
 	}
 
@@ -417,4 +441,52 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	}
 
+	@Override
+	public DataStore getDataStore() {
+		if (!initialized) {
+			retryInitFeatures();
+		}
+		return super.getDataStore();
+	}
+
+	private void retryInitFeatures() {
+		// do not hammer the service
+		Date now = new Date();
+		if (lastInitFeaturesRetry == null
+				|| now.getTime() - (lastInitFeaturesRetry.getTime() + cooldownTimeBetweenInitializationRetries) > 0) {
+			lastInitFeaturesRetry = now;
+			try {
+				log.info("Retrying to initialize layer");
+				initFeatures();
+			} catch (Exception e) {
+				log.warn("Failed initializing layer: ", e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public SimpleFeatureSource getFeatureSource() throws LayerException {
+		if (!initialized) {
+			retryInitFeatures();
+		}
+		return super.getFeatureSource();
+	}
+
+	/**
+	 * The time to wait between initialization retries in case the service is unavailable.
+	 * @since 1.8.0
+	 * @return time to wait in milliseconds
+	 */
+	public long getCooldownTimeBetweenInitializationRetries() {
+		return cooldownTimeBetweenInitializationRetries;
+	}
+
+	/**
+	 * The time to wait between initialization retries in case the service is unavailable.
+	 * @since 1.8.0
+	 * @return time to wait in milliseconds
+	 */
+	public void setCooldownTimeBetweenInitializationRetries(long cooldownTimeBetweenInitializationRetries) {
+		this.cooldownTimeBetweenInitializationRetries = cooldownTimeBetweenInitializationRetries;
+	}
 }
