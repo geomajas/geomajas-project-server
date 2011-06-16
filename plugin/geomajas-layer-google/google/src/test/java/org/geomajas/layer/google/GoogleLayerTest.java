@@ -172,7 +172,7 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://khm0.google.com/kh?v=57&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://khm0.google.com/kh?v=87&x=8&y=7&z=4", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(8, tile.getCode().getX());
 		Assert.assertEquals(7, tile.getCode().getY());
@@ -188,7 +188,7 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?lyrs=t@125,r@128&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://mt0.google.com/vt?lyrs=t@127,r@156000000&x=8&y=7&z=4", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(8, tile.getCode().getX());
 		Assert.assertEquals(7, tile.getCode().getY());
@@ -220,7 +220,7 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://khm0.google.com/kh?v=57&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://khm0.google.com/kh?v=87&x=8&y=7&z=4", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(8, tile.getCode().getX());
 		Assert.assertEquals(7, tile.getCode().getY());
@@ -236,7 +236,7 @@ public class GoogleLayerTest {
 				new Envelope(10000, 10010, 4000, 4010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://mt0.google.com/vt?lyrs=t@125,r@128&x=8&y=7&z=4", tile.getUrl());
+		Assert.assertEquals("http://mt0.google.com/vt?lyrs=t@127,r@156000000&x=8&y=7&z=4", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(8, tile.getCode().getX());
 		Assert.assertEquals(7, tile.getCode().getY());

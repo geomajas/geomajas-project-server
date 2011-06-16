@@ -207,7 +207,7 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	@PostConstruct
-	private void postConstruct() throws Exception {
+	protected void postConstruct() throws Exception {
 		tileServiceState.postConstruct(geoService, converterService);
 
 		String layerName = getLayerInfo().getDataSourceName();
