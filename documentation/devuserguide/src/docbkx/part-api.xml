@@ -1478,6 +1478,177 @@
           </listitem>
         </itemizedlist></para>
     </section>
+
+    <section>
+      <title>VectorLayer</title>
+
+      <para>A vector layer can be considered as a collection of homogeneous
+      features. As Geomajas is a POJO-based framework, features are not
+      required to implement a specific interface or extend from a common
+      parent class. This can be seen from the <code>VectorLayer</code>
+      interface, which expects plain Java objects as arguments and return
+      objects:</para>
+
+      <para><programlisting>@Api(allMethods = true)
+@UserImplemented
+public interface VectorLayer extends Layer&lt;VectorLayerInfo&gt; {
+
+ boolean isCreateCapable();
+
+ boolean isUpdateCapable();
+
+ boolean isDeleteCapable();
+
+ FeatureModel getFeatureModel();
+
+ Object create(Object feature) throws LayerException;
+
+ Object saveOrUpdate(Object feature) throws LayerException;
+
+ Object read(String featureId) throws LayerException;
+
+ void delete(String featureId) throws LayerException;
+
+ Iterator&lt;?&gt; getElements(Filter filter, int offset, int maxResultSize) throws LayerException;
+
+ Envelope getBounds(Filter filter) throws LayerException;
+
+ Envelope getBounds() throws LayerException;
+}
+</programlisting>To achieve this, we apply a form of indirection. The full
+      knowledge of how to access and modify the state of the layer objects is
+      captured in a separate interface, called <code>FeatureModel</code>. This
+      class acts as a sort of gateway between the layer and the internal
+      feature model of Geomajas. This limits the layer's responsibility to the
+      actual persistence of the features, which can be as simple as doing
+      nothing (in the case of updating an existing Hibernate object).</para>
+    </section>
+
+    <section>
+      <title>FeatureModel</title>
+
+      <para>The conversion between layer-specific feature objects and<code>
+      InternalFeature</code> objects is handled by the vector layer's
+      <code>FeatureModel</code> implementation. The FeatureModel provides the
+      following contract:</para>
+
+      <para><programlisting>@Api(allMethods = true)
+@UserImplemented
+public interface FeatureModel {
+
+ void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException;
+
+ Attribute getAttribute(Object feature, String name) throws LayerException;
+
+ Map&lt;String, Attribute&gt; getAttributes(Object feature) throws LayerException;
+
+ String getId(Object feature) throws LayerException;
+
+ Geometry getGeometry(Object feature) throws LayerException;
+
+ void setAttributes(Object feature, java.util.Map&lt;String, Attribute&gt; attributes) throws LayerException;
+
+ void setGeometry(Object feature, Geometry geometry) throws LayerException;
+
+ Object newInstance() throws LayerException;
+
+ Object newInstance(String id) throws LayerException;
+
+ int getSrid() throws LayerException;
+
+ String getGeometryAttributeName() throws LayerException;
+
+ boolean canHandle(Object feature);
+}
+</programlisting>It basically acts as a layer object factory and modifier and
+      prepares layer objects to reflect their new state before they are
+      persisted by the layer itself. A <code>FeatureModel</code> is free to
+      interpret attribute changes as it likes, although most
+      <code>FeatureModel</code> implementations will adhere to certain
+      assumptions (see next paragraph).</para>
+    </section>
+
+    <section>
+      <title>EntityAttributeService</title>
+
+      <para>In most cases, the process of transferring attribute information
+      to layer objects will follow a concise set of rules:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>if a primitive attribute is changed to a new value, the new
+          value will replace the old value</para>
+        </listitem>
+
+        <listitem>
+          <para>if any attribute is changed to a null value, it will be
+          deleted</para>
+        </listitem>
+
+        <listitem>
+          <para>if a many-to-one attribute is changed to an existing
+          attribute, it will be replaced by the existing attribute value and
+          updated with the new state</para>
+        </listitem>
+
+        <listitem>
+          <para>if a one-to-many attribute is changed to an empty collection
+          or null value, it will become an empty collection (whether the
+          resulting orphan attributes should be deleted depends on the
+          <code>FeatureModel</code> or <code>VectorLayer</code>
+          implementation, though)</para>
+        </listitem>
+
+        <listitem>
+          <para>if a one-to-many attribute is changed to a new collection of
+          attributes: existing attributes are updated, new attributes are
+          created and missing attributes become orphans (whether they are
+          deleted depends on the <code>FeatureModel</code> or
+          <code>VectorLayer</code> implementation, though)</para>
+        </listitem>
+
+        <listitem>
+          <para>the previous rules are recursively applied</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The graph-merging of object trees has been captured in a separate
+      service that can be used by the <code>FeatureModel</code>. This service
+      is called <code>EntityAttributeService</code> and assumes the the layer
+      objects can be converted to <code>Entity</code> instances. The
+      <code>Entity</code> interface is a minimal contract that allows
+      navigation and modification of the object tree to apply the above set of
+      rules:</para>
+
+      <para><programlisting>@Api(allMethods = true)
+@UserImplemented
+public interface Entity {
+
+ Object getId(String name) throws LayerException;
+
+ Entity getChild(String name) throws LayerException;
+
+ void setChild(String name, Entity entity) throws LayerException;
+
+ EntityCollection getChildCollection(String name) throws LayerException;
+
+ void setAttribute(String name, Object value) throws LayerException;
+
+ Object getAttribute(String name) throws LayerException;
+
+}
+</programlisting>Starting with a root entity, one-to-many and many-to-one
+      attributes can be navigated as entities by using the
+      <code>getChild()</code> and <code>getChildCollection()</code> accessors,
+      respectively. The <code>Entitycollection</code> interface provides
+      iteration, creation and deletion of one-to-many attributes.</para>
+
+      <para>Examples of how to implement a <code>FeatureModel</code> using the
+      <code>EntityAttributeService</code> can be found in the
+      <code>BeanFeatureModel</code> (backend) and
+      <code>HibernateFeatureModel</code> (Hibernate layer plugin)
+      implementations.</para>
+    </section>
   </chapter>
 
   <chapter id="chapter-security">
@@ -2092,7 +2263,7 @@
       service is implemented by setting the filter parameter of a vector layer
       with an <ulink
       url="http://docs.codehaus.org/display/GEOTOOLS/ECQL+Parser+Design">ECQL</ulink>
-      string. </para>
+      string.</para>
     </section>
 
     <section id="TextService">
