@@ -240,7 +240,6 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	}
 
 	private void ensureValue() {
-		AssociationValue value = getValue();
 		if (value == null) {
 			value = new AssociationValue(null, new HashMap<String, Attribute<?>>(), false);
 		}
