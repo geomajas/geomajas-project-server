@@ -18,8 +18,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * A layer which is is normally used as part of a map.
  * 
- * @param <T>
- *            type of layer configuration info
+ * @param <T> type of layer configuration info
  * 
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
@@ -40,7 +39,7 @@ public interface Layer<T extends LayerInfo> {
 	 * Get coordinate reference system for this layer.
 	 *
 	 * @return Coordinate reference system for this layer.
-	 * @deprecated use {@link org.geomajas.service.ConfigurationService#getLayerCrs(Layer)}
+	 * @deprecated use {@link org.geomajas.layer.LayerService#getCrs(Layer)}
 	 */
 	@Deprecated
 	CoordinateReferenceSystem getCrs();

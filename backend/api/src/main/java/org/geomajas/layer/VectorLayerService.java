@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public interface VectorLayerService extends GeomajasConstant {
+public interface VectorLayerService extends LayerService, GeomajasConstant {
 
 	/**
 	 * Update an existing feature of the model or creates a new feature.

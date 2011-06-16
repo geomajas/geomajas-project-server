@@ -43,7 +43,7 @@ import java.util.List;
  * @author Joachim Van der Auwera
  */
 @Component
-public class RasterLayerServiceImpl implements RasterLayerService {
+public class RasterLayerServiceImpl extends LayerServiceImpl implements RasterLayerService {
 
 	private final Logger log = LoggerFactory.getLogger(RasterLayerServiceImpl.class);
 

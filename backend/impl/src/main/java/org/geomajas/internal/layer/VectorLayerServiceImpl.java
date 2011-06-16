@@ -59,7 +59,7 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 @Transactional(rollbackFor = { Exception.class })
 @Component
-public class VectorLayerServiceImpl implements VectorLayerService {
+public class VectorLayerServiceImpl extends LayerServiceImpl implements VectorLayerService {
 
 	private final Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 

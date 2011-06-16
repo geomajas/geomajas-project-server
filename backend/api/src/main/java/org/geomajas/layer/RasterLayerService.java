@@ -30,7 +30,7 @@ import java.util.List;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public interface RasterLayerService {
+public interface RasterLayerService extends LayerService {
 
 	/**
 	 * Get the raster tiles for the specified bounds, optimized for the scale in pixels/unit.

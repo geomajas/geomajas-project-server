@@ -88,13 +88,6 @@ public class ConfigurationServiceTest {
 		Assert.assertEquals(MAP_ID, map.getId());
 	}
 
-	@Test
-	public void getLayerCrsTest() throws Exception {
-		Crs crs = configurationService.getLayerCrs(beansLayer);
-		Assert.assertNotNull(crs);
-		Assert.assertEquals(beansLayer.getLayerInfo().getCrs(), crs.getId());
-	}
-
 	private class ExtraString implements LayerExtraInfo {
 		private String str;
 

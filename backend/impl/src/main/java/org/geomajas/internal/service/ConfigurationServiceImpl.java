@@ -15,7 +15,6 @@ import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
@@ -140,12 +139,4 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		return null;
 	}
 
-	/** {@inheritDoc} */
-	public Crs getLayerCrs(Layer layer) throws LayerException {
-		CoordinateReferenceSystem check = layer.getCrs();
-		if (check instanceof Crs) {
-			return (Crs) check;
-		}
-		return geoService.getCrs2(layer.getLayerInfo().getCrs());
-	}
 }
