@@ -61,8 +61,6 @@ import com.vividsolutions.jts.io.WKTReader;
 @DirtiesContext
 public class GeoServiceTest {
 
-	
-
 	private static final double DELTA = 1e-20;
 	private static final String MERCATOR = "EPSG:900913";
 	private static final String LONLAT = "EPSG:4326";
@@ -377,6 +375,27 @@ public class GeoServiceTest {
 		Assert.assertEquals(50, coordinates[3].x, DELTA);
 		Assert.assertEquals(50, coordinates[3].y, DELTA);
 	}
+
+	@Test
+	public void transformCoordinateTest() throws Exception {
+		double llx = 10;
+		double lly = 30;
+		double mx = 8.983152841195215E-5;
+		double my = 2.6949458522981454E-4;
+		Coordinate ll = new Coordinate(llx, lly);
+		Coordinate mc;
+		mc = geoService.transform(ll, MERCATOR, LONLAT);
+		Assert.assertEquals(mx, mc.x, DELTA);
+		Assert.assertEquals(my, mc.y, DELTA);
+		mc = geoService.transform(ll, geoService.getCrs2(MERCATOR), geoService.getCrs2(LONLAT));
+		Assert.assertEquals(mx, mc.x, DELTA);
+		Assert.assertEquals(my, mc.y, DELTA);
+		CrsTransform crsTransform = geoService.getCrsTransform(MERCATOR, LONLAT);
+		mc = geoService.transform(ll, crsTransform);
+		Assert.assertEquals(mx, mc.x, DELTA);
+		Assert.assertEquals(my, mc.y, DELTA);
+	}
+
 
 	private void assertTransformedLineString(Geometry geometry) {
 		Coordinate[] coordinates = geometry.getCoordinates();

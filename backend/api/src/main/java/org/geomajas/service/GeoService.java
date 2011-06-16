@@ -276,6 +276,46 @@ public interface GeoService {
 	Bbox transform(Bbox source, String sourceCrs, String targetCrs) throws GeomajasException;
 
 	/**
+	 * Transform a {@link Coordinate} using the given transformation.
+	 * <p/>
+	 * Null is returned (and a warning logged) if the transformation failed.
+	 *
+	 * @param source source coordinate
+	 * @param crsTransform transformation to be applied
+	 * @return transformed source, now in target CRS
+	 * @since 1.9.0
+	 */
+	Coordinate transform(Coordinate source, CrsTransform crsTransform);
+
+	/**
+	 * Transform a {@link Coordinate} from the source to the target CRS.
+	 * <p/>
+	 * An empty bbox is returned (and a warning logged) if the transformation failed.
+	 *
+	 * @param source source bbox
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation
+	 * @since 1.9.0
+	 */
+	Coordinate transform(Coordinate source, Crs sourceCrs, Crs targetCrs) throws GeomajasException;
+
+	/**
+	 * Transform a {@link Coordinate} from the source to the target CRS.
+	 * <p/>
+	 * An empty bbox is returned (and a warning logged) if the transformation failed.
+	 *
+	 * @param source source bbox
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation
+	 * @since 1.8.0
+	 */
+	Coordinate transform(Coordinate source, String sourceCrs, String targetCrs) throws GeomajasException;
+
+	/**
 	 * Determine a default position for positioning the label for a feature.
 	 *
 	 * @param feature feature which needs the label
