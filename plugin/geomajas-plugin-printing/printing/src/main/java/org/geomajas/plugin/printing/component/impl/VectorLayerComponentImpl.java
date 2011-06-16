@@ -22,8 +22,8 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.geometry.CrsTransform;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
@@ -45,14 +45,12 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Internal implementation of {@link org.geomajas.plugin.printing.component.BaseLayerComponent}.
@@ -136,24 +134,19 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 
 				// If MapCRS does not equal LayerCRS then instantiate
 				// the CrsTransform which will be used for transforming the bbox
-				String mapCRS = map.getCrs();
-				String layerCRS = configurationService.getVectorLayerInfo(getLayerId()).getCrs();
-				CrsTransform transform = null;
-				if (!mapCRS.matches(layerCRS)) {
-					transform = geoService.getCrsTransform(mapCRS, layerCRS);
+				VectorLayerInfo layerInfo = configurationService.getVectorLayerInfo(getLayerId());
+				String mapCrs = map.getCrs();
+				String layerCrs = layerInfo.getCrs();
+				Envelope layerBbox = bbox;
+				if (!mapCrs.equals(layerCrs)) {
+					layerBbox = geoService.transform(layerBbox, mapCrs, layerCrs);
 				}
 
-				String geomName = configurationService.getVectorLayerInfo(getLayerId()).getFeatureInfo()
-						.getGeometryType().getName();
-				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
-						geoService.getSridFromCrs(map.getCrs()));
+				String geomName = layerInfo.getFeatureInfo().getGeometryType().getName();
 
 				// If the transform is null then just use the bbox for the filter
 				// Else if the transform is not null then transform the bbox for the filter
-				Filter filter = transform == null
-						? filterService.createIntersectsFilter(factory.toGeometry(bbox), geomName)
-						: filterService.createIntersectsFilter(factory.toGeometry(
-									geoService.transform(bbox, transform)), geomName);
+				Filter filter = filterService.createBboxFilter(layerCrs, layerBbox, geomName);
 
 				if (getFilter() != null) {
 					filter = filterService.createAndFilter(filterService.parseFilter(getFilter()), filter);
@@ -163,7 +156,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			} catch (Exception e) {
-				log.error("Error rendering vectorlayerRenderer", e);
+				log.error("Error getting features", e);
 			}
 			
 			// order features, selected last
@@ -362,10 +355,6 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 
 	public void setLabelsVisible(boolean labelsVisible) {
 		this.labelsVisible = labelsVisible;
-	}
-
-	public List<InternalFeature> getFeatures() {
-		return features;
 	}
 
 	public void fromDto(VectorLayerComponentInfo vectorLayerInfo) {
