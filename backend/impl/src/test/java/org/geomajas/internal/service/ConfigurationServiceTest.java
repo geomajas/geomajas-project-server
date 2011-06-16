@@ -16,11 +16,16 @@ import java.util.Map;
 
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Crs;
+import org.geomajas.layer.Layer;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ConfigurationService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,8 +41,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DirtiesContext
 public class ConfigurationServiceTest {
 
+	private static final String APPLICATION_ID = "bean";
+	private static final String MAP_ID = "beanMap";
+	private static final String VECTOR_LAYER_ID = "beans";
+
 	@Autowired
 	private ConfigurationService configurationService;
+
+	@Autowired
+	@Qualifier("beans")
+	Layer beansLayer;
 
 	@Test
 	public void testGetLayerExtraInfo() {
@@ -54,6 +67,32 @@ public class ConfigurationServiceTest {
 		Assert.assertNull(configurationService.getLayerExtraInfo(layerInfo, "one", ExtraString2.class));
 		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, ExtraString2.class));
 		Assert.assertNotNull(configurationService.getLayerExtraInfo(layerInfo, "one", ExtraString.class));
+	}
+
+	@Test
+	public void getVectorLayerTest() throws Exception {
+		Layer layer;
+		Assert.assertNull(configurationService.getRasterLayer(VECTOR_LAYER_ID));
+		layer = configurationService.getLayer(VECTOR_LAYER_ID);
+		Assert.assertNotNull(layer);
+		Assert.assertTrue(layer instanceof VectorLayer);
+		layer = configurationService.getVectorLayer(VECTOR_LAYER_ID);
+		Assert.assertNotNull(layer);
+		Assert.assertTrue(layer instanceof VectorLayer);
+	}
+
+	@Test
+	public void getMapTest() throws Exception {
+		ClientMapInfo map = configurationService.getMap(MAP_ID, APPLICATION_ID);
+		Assert.assertNotNull(map);
+		Assert.assertEquals(MAP_ID, map.getId());
+	}
+
+	@Test
+	public void getLayerCrsTest() throws Exception {
+		Crs crs = configurationService.getLayerCrs(beansLayer);
+		Assert.assertNotNull(crs);
+		Assert.assertEquals(beansLayer.getLayerInfo().getCrs(), crs.getId());
 	}
 
 	private class ExtraString implements LayerExtraInfo {

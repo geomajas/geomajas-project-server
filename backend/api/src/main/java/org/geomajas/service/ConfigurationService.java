@@ -13,6 +13,7 @@ package org.geomajas.service;
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
@@ -77,7 +78,7 @@ public interface ConfigurationService {
 	 * Get information about the map with specified mapId in the application with the specified applicationId.
 	 *
 	 * @param mapId map Id
-	 * @param applicationId  application id
+	 * @param applicationId application id
 	 * @return {@link org.geomajas.configuration.client.ClientMapInfo}
 	 */
 	ClientMapInfo getMap(String mapId, String applicationId);
@@ -116,5 +117,17 @@ public interface ConfigurationService {
 	 * @since 1.9.0
 	 */
 	<TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type);
+
+	/**
+	 * The the {@link Crs} for a layer.
+	 * <p/>
+	 * This can be used as alternative to the deprecated {@link Layer#getCrs()} method.
+	 *
+	 * @param layer layer to get Crs for
+	 * @return crs for layer
+	 * @throws LayerException the declared CRS from the layer info does not exist
+	 * @since 1.9.0
+	 */
+	Crs getLayerCrs(Layer layer) throws LayerException;
 
 }

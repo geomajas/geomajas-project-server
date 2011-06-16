@@ -144,4 +144,8 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int INVALID_ATTRIBUTE_NAME = 76;
+	/**
+	 * @since 1.9.0
+	 */
+	int PARAMETER_INVALID_VALUE = 77;
 }

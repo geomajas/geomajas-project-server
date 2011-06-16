@@ -15,6 +15,7 @@ import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
@@ -62,18 +63,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	@Autowired
 	private GeoService geoService;
 
+	/** {@inheritDoc} */
 	public VectorLayer getVectorLayer(String id) {
 		return id == null ? null : vectorLayerMap.get(id);
 	}
 
+	/** {@inheritDoc} */
 	public RasterLayer getRasterLayer(String id) {
 		return id == null ? null : rasterLayerMap.get(id);
 	}
 
+	/** {@inheritDoc} */
 	public Layer<?> getLayer(String id) {
 		return id == null ? null : layerMap.get(id);
 	}
 
+	/** {@inheritDoc} */
 	public ClientMapInfo getMap(String mapId, String applicationId) {
 		if (null == mapId || null == applicationId) {
 			return null;
@@ -89,10 +94,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
 		return geoService.getCrs2(crs);
 	}
 
+	/** {@inheritDoc} */
 	public void invalidateLayer(String layerId) throws GeomajasException {
 		if (null != layerId && null != layerInvalidationServices) {
 			Layer layer = getLayer(layerId);
@@ -112,16 +119,19 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void invalidateAllLayers() throws GeomajasException {
 		for (Map.Entry<String, Layer<?>> entry : layerMap.entrySet()) {
 			invalidateLayer(entry.getValue());
 		}
 	}
 
+	/** {@inheritDoc} */
 	public <TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, Class<TYPE> type) {
 		return getLayerExtraInfo(layerInfo, type.getName(), type);
 	}
 
+	/** {@inheritDoc} */
 	public <TYPE extends LayerExtraInfo> TYPE getLayerExtraInfo(LayerInfo layerInfo, String key, Class<TYPE> type) {
 		Object obj = layerInfo.getExtraInfo().get(key);
 		if (null != obj && type.isAssignableFrom(obj.getClass())) {
@@ -130,4 +140,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		return null;
 	}
 
+	/** {@inheritDoc} */
+	public Crs getLayerCrs(Layer layer) throws LayerException {
+		CoordinateReferenceSystem check = layer.getCrs();
+		if (check instanceof Crs) {
+			return (Crs) check;
+		}
+		return geoService.getCrs2(layer.getLayerInfo().getCrs());
+	}
 }

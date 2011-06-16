@@ -38,9 +38,11 @@ public interface Layer<T extends LayerInfo> {
 
 	/**
 	 * Get coordinate reference system for this layer.
-	 * 
+	 *
 	 * @return Coordinate reference system for this layer.
+	 * @deprecated use {@link org.geomajas.service.ConfigurationService#getLayerCrs(Layer)}
 	 */
+	@Deprecated
 	CoordinateReferenceSystem getCrs();
 	
 	/**
@@ -49,6 +51,5 @@ public interface Layer<T extends LayerInfo> {
 	 * @return Unique id of the layer (auto-set to name of bean in Spring context)
 	 */
 	String getId();
-
 
 }
