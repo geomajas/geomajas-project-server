@@ -21,7 +21,7 @@
 
     <para>This section handles possible configurations using the GeoTools
     layer. As GeoTools supports a whole range of data formats, not all of them
-    will be covered here. </para>
+    will be covered here.</para>
 
     <para></para>
 
@@ -48,7 +48,7 @@
           <row>
             <entry>url</entry>
 
-            <entry>Url for the shape file. Apart from standard protocCols
+            <entry>Url for the shape file. Apart from standard protocols
             supported by java, you can also use the "classpath:" protocol (the
             resource location should not start with a slash) to refer to shape
             files on the classpath.</entry>
@@ -68,6 +68,17 @@
             the GeoTools data store. These are name/value pairs which are
             passed in <code>org.geomajas.configuration.Parameter</code>
             objects.</entry>
+          </row>
+
+          <row>
+            <entry>cooldownTimeBetweenInitializationRetries</entry>
+
+            <entry>Period in milliseconds that the system has to wait between
+            attempts to connect to the data source. When the layer fails to
+            access the data store, it is discarded and it will try to rebuild
+            the data store on the next access. However, to prevent hammering
+            the server, it will only try to rebuild the data store when the
+            configured time has passed.</entry>
           </row>
         </tbody>
       </tgroup>
@@ -197,7 +208,8 @@
     </section>
 
     <section id="db">
-      <title>Configuring a database layer (PostGIS, Oracle Spatial,...)</title>
+      <title>Configuring a database layer (PostGIS, Oracle
+      Spatial,...)</title>
 
       <warning>
         <para>The configurations in this section still need to be

@@ -12,8 +12,6 @@ package org.geomajas.layer.geotools;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +28,6 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.shapeinmem.FeatureSourceRetriever;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -40,17 +37,12 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Geotools layer model.
+ * GeoTools layer model.
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
@@ -74,13 +66,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
 
-	private static final long DEFAULT_COOLDOWNTIME = 60000; // millis
+	private static final long DEFAULT_COOLDOWN_TIME = 60000; // millis
 
-	// -- caveat this might fail on change of Geotools library version
-	private static final String MAGIC_STRING_LIBRARY_MISSING = "No datastore found. Possible causes are missing fact"
-			+ "ory or missing library for your datastore (e.g. database driver).";
-
-	private FilterFactory filterFactory;
+	// WARNING this may change when using a different GeoTools library version
+	private static final String MAGIC_STRING_LIBRARY_MISSING = "No datastore found. Possible causes are " +
+			"missing factory or missing library for your datastore (e.g. database driver).";
 
 	private FeatureModel featureModel;
 
@@ -93,13 +83,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private List<Parameter> parameters;
 
 	@Autowired
-	private FilterService filterCreator;
+	private FilterService filterService;
 
 	@Autowired
 	private GeoService geoService;
-
-	@Autowired
-	private ConfigurationService configurationService;
 
 	@Autowired(required = false)
 	private GeoToolsTransactionManager transactionManager;
@@ -111,42 +98,74 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private String id;
 
-	private boolean initialized;
+	private boolean featureModelUsable;
 
-	private Date lastInitFeaturesRetry = new Date();
+	private long lastInitFeaturesRetry;
 
-	private long cooldownTimeBetweenInitializationRetries = DEFAULT_COOLDOWNTIME;
+	private long cooldownTimeBetweenInitializationRetries = DEFAULT_COOLDOWN_TIME;
 
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id for this layer.
+	 *
+	 * @param id layer id
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
+	/**
+	 * Set the URL for the case when the data source is a shape file.
+	 * <p/>
+	 * You cal also use "classpath" as protocol if the shape file is stored in the classpath.
+	 * <p/>
+	 * Important note: the shape file data store (specifically the indexing code) is not thread safe, so it should not
+	 * be used for writing.
+	 *
+	 * @param url shape file url
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	public String getDbtype() {
-		return dbtype;
-	}
-
+	/**
+	 * Set database type. Useful when the data store is a database.
+	 *
+	 * @param dbtype database type
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setDbtype(String dbtype) {
 		this.dbtype = dbtype;
 	}
 
-	public List<Parameter> getParameters() {
-		return parameters;
-	}
-
+	/**
+	 * Set additional parameters for the GeoTools data store.
+	 *
+	 * @param parameters parameter list
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
+	}
+
+	/**
+	 * The time to wait between initialization retries in case the service is unavailable.
+	 *
+	 * @param cooldownTimeBetweenInitializationRetries cooldown time in milliseconds
+	 * @since 1.8.0
+	 */
+	@Api
+	public void setCooldownTimeBetweenInitializationRetries(long cooldownTimeBetweenInitializationRetries) {
+		this.cooldownTimeBetweenInitializationRetries = cooldownTimeBetweenInitializationRetries;
 	}
 
 	public CoordinateReferenceSystem getCrs() {
@@ -195,7 +214,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		crs = geoService.getCrs2(layerInfo.getCrs());
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		try {
-			this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
 			if (null == getDataStore()) {
 				Map<String, String> params = new HashMap<String, String>();
 				if (null != url) {
@@ -219,11 +237,12 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 					layerInfo.getFeatureInfo().getDataSourceName(), geoService.getSridFromCrs(layerInfo.getCrs()),
 					converterService);
 			featureModel.setLayerInfo(layerInfo);
-			initialized = true;
+			featureModelUsable = true;
 		} catch (IOException ioe) {
 			if (MAGIC_STRING_LIBRARY_MISSING.equals(ioe.getMessage())) {
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION, url);
 			} else {
+				featureModelUsable = false;
 				log.warn("The layer could not be correctly initialized: " + getId(), ioe);
 			}
 		}
@@ -241,6 +260,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			try {
 				store.addFeatures(col);
 			} catch (IOException ioe) {
+				featureModelUsable = false;
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 			}
 			return feature;
@@ -256,8 +276,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			Identifier identifier = new FeatureIdImpl(getFeatureModel().getId(feature));
-			Id filter = filterFactory.id(Collections.singleton(identifier));
+			String featureId = getFeatureModel().getId(feature);
+			Filter filter = filterService.createFidFilter(new String[] {featureId});
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
@@ -273,8 +293,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				store.modifyFeatures(names.toArray(new Name[names.size()]), values.toArray(), filter);
 				store.modifyFeatures(store.getSchema().getGeometryDescriptor().getName(), getFeatureModel()
 						.getGeometry(feature), filter);
-				log.debug("Updated feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
+				log.debug("Updated feature {} in {}", featureId, getFeatureSourceName());
 			} catch (IOException ioe) {
+				featureModelUsable = false;
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 			}
 		} else {
@@ -289,17 +310,17 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
-			Identifier identifier = new FeatureIdImpl(featureId);
-			Id filter = filterFactory.id(Collections.singleton(identifier));
+			Filter filter = filterService.createFidFilter(new String[] {featureId});
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
 			try {
 				store.removeFeatures(filter);
 				if (log.isDebugEnabled()) {
-					log.debug("Deleted feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
+					log.debug("Deleted feature {} in {}", featureId, getFeatureSourceName());
 				}
 			} catch (IOException ioe) {
+				featureModelUsable = false;
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 			}
 		} else {
@@ -320,8 +341,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	public Object read(String featureId) throws LayerException {
-		Identifier identifier = new FeatureIdImpl(featureId);
-		Id filter = filterFactory.id(Collections.singleton(identifier));
+		Filter filter = filterService.createFidFilter(new String[] {featureId});
 		Iterator<?> iterator = getElements(filter, 0, 0);
 		if (iterator.hasNext()) {
 			return iterator.next();
@@ -365,7 +385,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
-			FeatureIterator it = fc.features();
+			FeatureIterator<SimpleFeature> it = fc.features();
 			if (transactionManager != null) {
 				transactionManager.addIterator(it);
 			}
@@ -376,8 +396,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/**
-	 * This implementation does not support the 'offset' and 'maxResultSize'
-	 * parameters.
+	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
@@ -400,15 +419,14 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	public FeatureModel getFeatureModel() {
-		if (!initialized) {
+		if (!featureModelUsable) {
 			retryInitFeatures();
 		}
 		return this.featureModel;
 	}
 
 	private boolean exists(String featureId) throws LayerException {
-		Identifier identifier = new FeatureIdImpl(featureId);
-		Id filter = filterFactory.id(Collections.singleton(identifier));
+		Filter filter = filterService.createFidFilter(new String[] {featureId});
 		Iterator<?> iterator = getElements(filter, 0, 0);
 		return iterator.hasNext();
 	}
@@ -443,7 +461,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	@Override
 	public DataStore getDataStore() {
-		if (!initialized) {
+		if (!featureModelUsable) {
 			retryInitFeatures();
 		}
 		return super.getDataStore();
@@ -451,9 +469,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private void retryInitFeatures() {
 		// do not hammer the service
-		Date now = new Date();
-		if (lastInitFeaturesRetry == null
-				|| now.getTime() - (lastInitFeaturesRetry.getTime() + cooldownTimeBetweenInitializationRetries) > 0) {
+		long now = System.currentTimeMillis();
+		if (now > lastInitFeaturesRetry + cooldownTimeBetweenInitializationRetries) {
 			lastInitFeaturesRetry = now;
 			try {
 				log.info("Retrying to initialize layer");
@@ -466,27 +483,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	@Override
 	public SimpleFeatureSource getFeatureSource() throws LayerException {
-		if (!initialized) {
+		if (!featureModelUsable) {
 			retryInitFeatures();
 		}
 		return super.getFeatureSource();
 	}
 
-	/**
-	 * The time to wait between initialization retries in case the service is unavailable.
-	 * @since 1.8.0
-	 * @return time to wait in milliseconds
-	 */
-	public long getCooldownTimeBetweenInitializationRetries() {
-		return cooldownTimeBetweenInitializationRetries;
-	}
-
-	/**
-	 * The time to wait between initialization retries in case the service is unavailable.
-	 * @since 1.8.0
-	 * @return time to wait in milliseconds
-	 */
-	public void setCooldownTimeBetweenInitializationRetries(long cooldownTimeBetweenInitializationRetries) {
-		this.cooldownTimeBetweenInitializationRetries = cooldownTimeBetweenInitializationRetries;
-	}
 }
