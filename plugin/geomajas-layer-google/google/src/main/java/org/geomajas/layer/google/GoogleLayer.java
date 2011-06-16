@@ -13,6 +13,8 @@ package org.geomajas.layer.google;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
@@ -28,8 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Envelope;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Layer for displaying Google Maps images. Caution: you must comply with the Google terms of service to display the
@@ -80,14 +80,14 @@ public class GoogleLayer implements RasterLayer {
 		NORMAL_URLS.add("http://mt1.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
 		NORMAL_URLS.add("http://mt2.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
 		NORMAL_URLS.add("http://mt3.google.com/vt?v=w2.95&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm0.google.com/kh?v=57&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm1.google.com/kh?v=57&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm2.google.com/kh?v=57&x=${x}&y=${y}&z=${level}");
-		SATELLITE_URLS.add("http://khm3.google.com/kh?v=57&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt0.google.com/vt?lyrs=t@125,r@128&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt1.google.com/vt?lyrs=t@125,r@128&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt2.google.com/vt?lyrs=t@125,r@128&x=${x}&y=${y}&z=${level}");
-		PHYSICAL_URLS.add("http://mt3.google.com/vt?lyrs=t@125,r@128&x=${x}&y=${y}&z=${level}");
+		SATELLITE_URLS.add("http://khm0.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
+		SATELLITE_URLS.add("http://khm1.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
+		SATELLITE_URLS.add("http://khm2.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
+		SATELLITE_URLS.add("http://khm3.google.com/kh?v=87&x=${x}&y=${y}&z=${level}");
+		PHYSICAL_URLS.add("http://mt0.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
+		PHYSICAL_URLS.add("http://mt1.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
+		PHYSICAL_URLS.add("http://mt2.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
+		PHYSICAL_URLS.add("http://mt3.google.com/vt?lyrs=t@127,r@156000000&x=${x}&y=${y}&z=${level}");
 	}
 
 	public String getId() {
@@ -207,7 +207,7 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	@PostConstruct
-	protected void postConstruct() throws Exception {
+	private void postConstruct() throws Exception {
 		tileServiceState.postConstruct(geoService, converterService);
 
 		String layerName = getLayerInfo().getDataSourceName();
