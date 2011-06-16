@@ -15,14 +15,14 @@ import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.layer.google.gwt.client.GoogleAddon;
 
 /**
- * Sample that shows two Google maps, one with normal, one satellite, one with terrain.
+ * Sample that shows three Google maps, one with normal, one satellite, one with terrain.
  * 
  * @author Joachim Van der Auwera
  * @author Oliver May
@@ -58,23 +58,23 @@ public class GoogleSample extends SamplePanel {
 		mapLayout1.addMember(googleMap);
 
 		// Create map with Google layer (satellite), and add a PanController to it:
-//		VLayout mapLayout2 = new VLayout();
-//		mapLayout2.setShowEdges(true);
-//		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
-//		googleSatMap.setController(new PanController(googleSatMap));
-//		mapLayout2.addMember(googleSatMap);
-//
-//		// Create map with Google layer (terrain), and add a PanController to it:
-//		VLayout mapLayout3 = new VLayout();
-//		mapLayout3.setShowEdges(true);
-//		googleTerrainMap = new MapWidget("mapGoogleTerrain", "gwt-samples");
-//		googleTerrainMap.setController(new PanController(googleTerrainMap));
-//		mapLayout3.addMember(googleTerrainMap);
+		VLayout mapLayout2 = new VLayout();
+		mapLayout2.setShowEdges(true);
+		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
+		googleSatMap.setController(new PanController(googleSatMap));
+		mapLayout2.addMember(googleSatMap);
+
+		// Create map with Google layer (terrain), and add a PanController to it:
+		VLayout mapLayout3 = new VLayout();
+		mapLayout3.setShowEdges(true);
+		googleTerrainMap = new MapWidget("mapGoogleTerrain", "gwt-samples");
+		googleTerrainMap.setController(new PanController(googleTerrainMap));
+		mapLayout3.addMember(googleTerrainMap);
 
 		// Place all three in the layout:
 		layout.addMember(mapLayout1);
-//		layout.addMember(mapLayout2);
-//		layout.addMember(mapLayout3);
+		layout.addMember(mapLayout2);
+		layout.addMember(mapLayout3);
 
 		return layout;
 	}
