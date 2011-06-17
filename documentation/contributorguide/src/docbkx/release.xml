@@ -375,7 +375,7 @@
       <para>Start a vote on majas-dev for release of the part. The voting
       period should be at least two working days and span a weekend. The
       voting message should read something like "VOTE: release blabla plug-in
-      v1.0.0".</para>
+      v1.0.0" (please note capitalization).</para>
 
       <para>The body of the vote needs to include:</para>
 
@@ -440,8 +440,9 @@
       binding votes.</para>
 
       <para>Reply to your original vote message on majas-dev, change the title
-      to start with "VOTE SUCCESSFUL" or "VOTE FAILED". In the body of the
-      vote, include the full name of all voters and their vote.</para>
+      to start with "VOTE SUCCESSFUL" or "VOTE FAILED" (please note
+      capitalization). In the body of the vote, include the full name of all
+      voters and their vote.</para>
     </section>
 
     <section>
@@ -496,24 +497,14 @@
   <section>
     <title>Additional notes for releasing the back-end</title>
 
-    <para>The Geomajas back-end requires a stable version of the
-    geomajas-parent module. Make sure that the pom.xml in the backend folder
-    points to a released version of the geomajas-parent. If not, release the
-    geomajas-parent first, than change the version in the back-end pom.xml to
-    this newly released version.</para>
-
     <para>When releasing the back-end core, you will have problems building
-    the javadocs. In order to account for these you must create a local build
-    of the backend using the next release version, before actually preparing
-    and performing the release.</para>
+    the javadocs. Once the "release:perform" failed, execute the following
+    steps.</para>
 
-    <para>So go into all pom.xml files (backend, api, api-experimental, impl,
-    …) and change the version to the one you're trying to release, than run a
-    "mvn install".</para>
-
-    <para>Than revert the changes and start the release procedure (prepare +
-    perform). Afterward, it might be a good idea to remove the jars again that
-    you created before the release procedure.</para>
+    <programlisting>cd target/checkout
+mvn install
+cd ../..
+mvn release:perform</programlisting>
 
     <para>At this moment, the back-end should be available in sonatype.
     Download one of the jars and check the contents to see if all is well. If
@@ -543,7 +534,7 @@
       </listitem>
 
       <listitem>
-        <para>GWT shocase</para>
+        <para>GWT showcase</para>
       </listitem>
     </itemizedlist>
 
@@ -660,8 +651,8 @@
   <section>
     <title>Additional notes for releasing the GWT showcase</title>
 
-    <para>Just like the geomajas-dep and the archetype, the showacase must be
-    built upon the new stable releases of the backend and GWT client.</para>
+    <para>Just like the geomajas-dep and the archetype, the showcase must be
+    built upon the new stable releases of the back-end and GWT client.</para>
 
     <section>
       <title>Finish the release</title>
@@ -680,7 +671,7 @@
     before releasing. Don't forget the the version of geomajas-dep should
     reflect the &lt;major&gt;.&lt;year&gt;.&lt;week&gt;, where the week number
     should be even. Example: 1.11.4, means the 4th week in 2011. The major
-    number should be equal to the backend version referenced in the
+    number should be equal to the back-end version referenced in the
     pom.xml.</para>
   </section>
 
