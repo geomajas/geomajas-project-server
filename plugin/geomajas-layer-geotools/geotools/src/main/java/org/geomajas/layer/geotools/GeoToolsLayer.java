@@ -214,7 +214,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		crs = geoService.getCrs2(layerInfo.getCrs());
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		try {
-			if (null == getDataStore()) {
+			if (null == super.getDataStore()) {
 				Map<String, String> params = new HashMap<String, String>();
 				if (null != url) {
 					params.put("url", url);
@@ -230,10 +230,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				DataStore store = DataStoreFactory.create(params);
 				setDataStore(store);
 			}
-			if (null == getDataStore()) {
+			if (null == super.getDataStore()) {
 				return;
 			}
-			this.featureModel = new GeoToolsFeatureModel(getDataStore(),
+			this.featureModel = new GeoToolsFeatureModel(super.getDataStore(),
 					layerInfo.getFeatureInfo().getDataSourceName(), geoService.getSridFromCrs(layerInfo.getCrs()),
 					converterService);
 			featureModel.setLayerInfo(layerInfo);
