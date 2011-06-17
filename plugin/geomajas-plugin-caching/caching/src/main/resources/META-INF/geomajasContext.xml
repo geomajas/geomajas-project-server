@@ -65,11 +65,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="BSD"/>
 					<property name="licenseUrl" value="http://jdbm.sourceforge.net/"/>
 				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="jboss-serialization"/>
-					<property name="licenseName" value="GNU Lesser General Public License"/>
-					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html"/>
-				</bean>
 			</list>
 		</property>
 	</bean>

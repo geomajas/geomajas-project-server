@@ -67,6 +67,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="GeoTools-DateUtils" />
+					<property name="copyright"
+							  value="Copyright © 2002-2004, Dennis M. Sosnoski." />
+					<property name="licenseName" value="" />
+					<property name="licenseUrl"
+							  value="http://docs.geotools.org/latest/userguide/library/main/index.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Spring Framework" />
 					<property name="copyright" value="" />
 					<property name="licenseName" value="Apache License, Version 2.0" />
@@ -138,6 +146,47 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="copyright" value="" />
 					<property name="licenseName" value="CDDL 1.0 or GPL 2 (dual license)" />
 					<property name="licenseUrl" value="https://glassfish.dev.java.net/public/CDDL+GPL.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="xerces" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="Apache License, Version 2.0" />
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="jboss-serialization"/>
+					<property name="licenseName" value="GNU Lesser General Public License"/>
+					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html"/>
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="FindBugs" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="stax-api" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="Apache License, Version 2.0" />
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Geronimo-specs" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="Apache License, Version 2.0" />
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="ImageIO-EXT" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Trove" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
 				</bean>
 			</list>
 		</property>
