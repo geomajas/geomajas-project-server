@@ -39,7 +39,7 @@ public class CardLayout extends Canvas {
 		card.setTop(0);
 		addChild(card);
 		cards.put(key, card);
-		currentCard = card;
+		showCard(key);
 	}
 
 	/**
@@ -67,5 +67,5 @@ public class CardLayout extends Canvas {
 	public Canvas getCurrentCard() {
 		return currentCard;
 	}
-
+	
 }
