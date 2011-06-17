@@ -167,6 +167,17 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>4.0.2.GA</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-activation_1.1_spec</artifactId>
+				<version>1.0</version>
 			</dependency>
 			
 			<dependency>
@@ -178,12 +189,6 @@
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-main</artifactId>
 				<version>${geotools-version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.activation</groupId>
-						<artifactId>activation</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>
@@ -296,13 +301,6 @@
 
 		</dependencies>
 	</dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-activation_1.1_spec</artifactId>
-			<version>1.0</version>
-		</dependency>
-	</dependencies>
 
 	<properties>
 		<geotools-version>2.7.1</geotools-version>
