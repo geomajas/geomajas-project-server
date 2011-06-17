@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="getting-started">
@@ -475,7 +474,7 @@
       your workspace. If this is the case, run the GWT plugin with an embedded
       Jetty server as explained in the previous chapter and you should be
       fine. Note that this should be the first listener in your web.xm files,
-	  before the spring listeners.</para>
+      before the spring listeners.</para>
 
       <para>The following steps are needed to run GPE directly:</para>
 
@@ -595,26 +594,39 @@
     <para><itemizedlist>
         <listitem>
           <para>main configuration :
-          <code>src/main/resources/shapeinmem/applicationContext.xml</code></para>
+          <code>src/main/webapp/WEB-INF/applicationContext.xml</code></para>
+        </listitem>
+
+        <listitem>
+          <para>map configuration :
+          <code>src/main/webapp/WEB-INF/mapMain.xml</code></para>
+        </listitem>
+
+        <listitem>
+          <para>overview map configuration:
+          <code>src/main/webapp/WEB-INF/mapOverview.xml</code></para>
         </listitem>
 
         <listitem>
           <para>countries layer configuration :
-          <code>src/main/resources/shapeinmem/layerCountries110m.xml</code></para>
+          <code>src/main/webapp/WEB-INF/clientLayerCountries.xml</code> and
+          <code>src/main/webapp/WEB-INF/layerCountries.xml</code></para>
         </listitem>
 
         <listitem>
-          <para>bluemarble WMS layer configuration :
-          <code>src/main/resources/shapeinmem/layerWmsBluemarble.xml</code></para>
+          <para>OpenStreetMap layer configuration :
+          <code>src/main/webapp/WEB-INF/clientLayerOsm.xml</code> and
+          <code>src/main/webapp/WEB-INF/layerOsm.xml</code></para>
         </listitem>
 
         <listitem>
           <para>GWT configuration file :
-          <code>src/main/resources/Application.gwt.xml</code></para>
+          <code>src/main/java/Application.gwt.xml</code></para>
         </listitem>
 
         <listitem>
-          <para>web.xml: <code>war/WEB-INF/web.xml</code></para>
+          <para>web.xml:
+          <code>src/main/webapp/WEB-INF/WEB-INF/web.xml</code></para>
         </listitem>
       </itemizedlist>More details about the Geomajas configuration are found
     in the <ulink
@@ -635,7 +647,7 @@
         </listitem>
 
         <listitem>
-          <para>dzone's GWT refcardz: <ulink
+          <para>DZone's GWT refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js">http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js</ulink>.</para>
 
           <para></para>
@@ -647,7 +659,7 @@
         </listitem>
 
         <listitem>
-          <para>dzone's spring configuration refcardz: <ulink
+          <para>DZone's spring configuration refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/spring-configuration">http://refcardz.dzone.com/refcardz/spring-configuration</ulink>.</para>
 
           <para></para>
@@ -669,7 +681,7 @@
         </listitem>
 
         <listitem>
-          <para>dzone's maven 2 refcardz: <ulink
+          <para>DZone's maven 2 refcardz: <ulink
           url="http://refcardz.dzone.com/refcardz/apache-maven-2">http://refcardz.dzone.com/refcardz/apache-maven-2</ulink>.</para>
         </listitem>
       </itemizedlist></para>

@@ -90,7 +90,7 @@
     command.</para>
 
     <para>For the dependencies of the Geomajas back-end, we only allow
-    dependencies which are freely distributable for commercial puposes (this
+    dependencies which are freely distributable for commercial purposes (this
     for example excludes GPL and AGPL licensed dependencies).</para>
   </section>
 

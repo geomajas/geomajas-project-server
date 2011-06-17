@@ -16,7 +16,8 @@
 
   <warning>
     <para>This chapter is out of date and uses an older, no longer supported
-    version of Geomajas</para>
+    version of Geomajas. Paths have been modified to comply with current
+    conventions.</para>
   </warning>
 
   <section id="rw-marine">
@@ -177,18 +178,15 @@
     <orderedlist>
       <listitem>
         <para>Place your shape files in
-        <code>src/main/resources/be/fks/shapeinmem/shapes</code> (note that
-        you can configure the exact location of these; when creating a project
-        based on Geomajas however the default configuration is already
-        pointing to the shapeinmem directory; for this reason we will be
-        placing everything inside shapeinmem to keep things simple).</para>
+        <code>src/main/resources/be/fks/shapes</code> (note that you can
+        configure the exact location of these).</para>
       </listitem>
 
       <listitem>
         <para>Now modify
-        <code>src\main\resources\be\fks\shapeinmem\applicationContext.xml</code>
-        Note that you can use the existing road shape file layer as a
-        reference to help you out.</para>
+        <code>src/main/webapps/WEB-INF/applicationContext.xml</code> Note that
+        you can use the existing road shape file layer as a reference to help
+        you out.</para>
 
         <orderedlist>
           <listitem>
@@ -234,7 +232,8 @@
       </listitem>
 
       <listitem>
-        <para>Modify <code>war\WEB-INF\web.xml.</code><figure>
+        <para>Modify <code>src/main/webapp/WEB-INF/web.xml (please remove the
+        "be/fks/shapeinmem/" from the displayed text).</code><figure>
             <title>Add a reference to layerVha.xml in your web.xml</title>
 
             <mediaobject>
@@ -247,14 +246,13 @@
       </listitem>
 
       <listitem>
-        <para>Create
-        <code>src/main/resources/be/fks/shapeinmem/layerVha.xml</code>. Note
+        <para>Create <code>src/main/webapp/WEB-INF/layerVha.xml</code>. Note
         that you can use the existing layerRoads.xml as a reference to help
         you out.</para>
 
         <para>Use a tool like <ulink
         url="http://udig.refractions.net/">uDig</ulink> to help you. With uDig
-        you can view shape files, postGIS data,... and you can view all
+        you can view shape files, PostGIS data,... and you can view the
         available fields.</para>
 
         <para>If you get really stuck you can download an example layerVha.xml
@@ -279,15 +277,15 @@
   </section>
 
   <section id="rw-ma-pg">
-    <title>Show your own postGIS data in Geomajas</title>
+    <title>Show your own PostGIS data in Geomajas</title>
 
     <para>In this section we are going to explain how to add a layer to your
     Geomajas showing some of your own shape files. The layer we will be
     creating has the name <code>EcdisLayer</code>.</para>
 
     <para>Ecdis files are provided as simple feature files. The first step we
-    are going to do is convert these files to postGIS. After this we will
-    configure Geomajas to display our created postGIS data using
+    are going to do is convert these files to PostGIS. After this we will
+    configure Geomajas to display our created PostGIS data using
     hibernate.</para>
 
     <orderedlist>
@@ -296,7 +294,7 @@
       </listitem>
 
       <listitem>
-        <para>Be sure you have a postgis database available.</para>
+        <para>Be sure you have a PostgGIS database available.</para>
       </listitem>
 
       <listitem>
@@ -309,7 +307,7 @@
         included in the zip must be visible to ogr2ogr.</para>
 
         <example>
-          <title>Use ogr2ogr to convert Ecdis files to postGIS</title>
+          <title>Use ogr2ogr to convert Ecdis files to PostGIS</title>
 
           <para><programlisting>ogr2ogr.exe -f "PostgreSQL" "PG:dbname=ecdis user=postgres password=postgres host=localhost 
 port=5432" Y:\1R5EK012.000 -append</programlisting></para>
@@ -317,14 +315,14 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       </listitem>
 
       <listitem>
-        <para>Check your postGIS database (remember that you can use a tool
+        <para>Check your PostGIS database (remember that you can use a tool
         like <ulink url="http://udig.refractions.net/">uDig</ulink> for
         this).</para>
       </listitem>
 
       <listitem>
         <para>Now modify
-        <code>src\main\resources\be\fks\shapeinmem\applicationContext.xml</code></para>
+        <code>src/main/webapp/WEB-INF/applicationContext.xml</code></para>
 
         <orderedlist>
           <listitem>
@@ -397,7 +395,8 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       </listitem>
 
       <listitem>
-        <para>Modify <code>war\WEB-INF\web.xml</code><figure>
+        <para>Modify <code>src/main/webapp/WEB-INF/web.xml (please remove the
+        "be/fks/shapeinmem/" from the displayed text)</code><figure>
             <title>Enable PostgisDialect</title>
 
             <mediaobject>
@@ -419,13 +418,12 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       </listitem>
 
       <listitem>
-        <para>Create
-        <code>src/main/resources/be/fks/shapeinmem/layerEcdis.xml</code>. Base
-        yourself on an example layerfile using hibernate.</para>
+        <para>Create <code>src/main/webapp/WEB-INF/layerEcdis.xml</code>. Base
+        yourself on an example layer file using Hibernate.</para>
 
         <para>Use a tool like <ulink
         url="http://udig.refractions.net/">uDig</ulink> to help you. With uDig
-        you can view shape files, postGIS data,... and you can view all
+        you can view shape files, PostGIS data,... and you can view all
         available fields.</para>
 
         <para>If you get really stuck you can download an example
@@ -446,7 +444,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
     <orderedlist>
       <listitem>
         <para>Modify
-        <code>src\main\resources\be\fks\shapeinmem\applicationContext.xml</code></para>
+        <code>src/main/webapp/WEB-INF/applicationContext.xml</code></para>
 
         <orderedlist>
           <listitem>
@@ -476,7 +474,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       </listitem>
 
       <listitem>
-        <para>Modify <code>war\WEB-INF\web.xml. </code></para>
+        <para>Modify <code>src/main/webapp/WEB-INF/web.xml. </code></para>
 
         <para>Add a reference to layerWmsAgiv.xml in your web.xml just like
         you did in the previous 2 examples.</para>
@@ -639,21 +637,6 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       <listitem>
         <para>Add a reference to security.xml to the web.xml just like you
         would do for a normal layer.</para>
-      </listitem>
-
-      <listitem>
-        <para>Add a reference to security in web.xml in preloadClasses</para>
-
-        <figure>
-          <title>Security web.xml</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/realworldexample/securitywebxml.png"
-                         width="-" />
-            </imageobject>
-          </mediaobject>
-        </figure>
       </listitem>
 
       <listitem>
