@@ -445,9 +445,7 @@ public final class GeoServiceImpl implements GeoService {
 			if (crsTransform.isTransforming()) {
 				Envelope transformableArea = crsTransform.getTransformableEnvelope();
 				if (null == transformableArea || transformableArea.contains(source)) {
-					ReferencedEnvelope refEnvelope = new ReferencedEnvelope(
-							source.x, source.x, source.y, source.y, crsTransform.getSource());
-					return refEnvelope.transform(crsTransform.getTarget(), true).centre();
+					return JTS.transform(source, new Coordinate(), crsTransform);
 				}
 				return null;
 			} else {
