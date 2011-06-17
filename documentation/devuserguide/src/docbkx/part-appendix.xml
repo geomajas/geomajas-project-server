@@ -63,7 +63,7 @@
           <listitem>
             <para>GeoTools has been upgraded to 2.7.1. This causes some
             incompatibilities. The GeoTools plug-in also needs to be updated
-            to 1.8.0-SNAPSHOT to avoid problems.</para>
+            to 1.8.0 to avoid problems.</para>
           </listitem>
 
           <listitem>
