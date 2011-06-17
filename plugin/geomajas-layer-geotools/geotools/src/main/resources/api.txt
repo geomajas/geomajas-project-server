@@ -1,6 +1,11 @@
-// geomajas-layer-geotools module API, 1.7.1
+// geomajas-layer-geotools module API, 1.8.0
 org.geomajas.layer.geotools.GeoToolsLayer::1.7.1
+org.geomajas.layer.geotools.GeoToolsLayer:void setCooldownTimeBetweenInitializationRetries(long, ):1.8.0
+org.geomajas.layer.geotools.GeoToolsLayer:void setDbtype(String, ):1.8.0
+org.geomajas.layer.geotools.GeoToolsLayer:void setId(String, ):1.8.0
 org.geomajas.layer.geotools.GeoToolsLayer:void setLayerInfo(VectorLayerInfo, ):1.7.1
+org.geomajas.layer.geotools.GeoToolsLayer:void setParameters(List<Parameter>, ):1.8.0
+org.geomajas.layer.geotools.GeoToolsLayer:void setUrl(String, ):1.8.0
 org.geomajas.layer.shapeinmem.ShapeInMemLayer::1.7.1
 org.geomajas.layer.shapeinmem.ShapeInMemLayer:void setLayerInfo(VectorLayerInfo, ):1.7.1
 org.geomajas.layer.shapeinmem.ShapeInMemLayer:void setUrl(String, ):1.7.1
