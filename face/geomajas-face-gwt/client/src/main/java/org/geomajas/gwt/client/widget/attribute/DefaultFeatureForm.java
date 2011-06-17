@@ -309,7 +309,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 */
 	public void toForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = attributeInfoMap.get(name);
-		if (!isIncluded(info)) {
+		if (info == null || !isIncluded(info)) {
 			return;
 		}
 		FormItem item = formWidget.getField(info.getName());
