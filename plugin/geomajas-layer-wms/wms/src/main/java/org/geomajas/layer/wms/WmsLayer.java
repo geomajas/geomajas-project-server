@@ -31,12 +31,10 @@ import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
@@ -223,7 +221,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 			FeatureIterator<SimpleFeature> it = collection.features();
 			
 			while (it.hasNext()) {
-				features.add(converterService.toDto(toInternalFeature(it.next())));
+				features.add(toDto(it.next()));
 			}
 			
 		} catch (GeomajasException e) {
@@ -247,20 +245,27 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return features;
 	}
 	
-	private InternalFeature toInternalFeature(SimpleFeature sf) {
-		InternalFeatureImpl f = new InternalFeatureImpl();
+	
+	private Feature toDto(SimpleFeature feature) {
+		if (feature == null) {
+			return null;
+		}
+		Feature dto = new Feature(feature.getID());
 		
 		HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
 		
-		for (AttributeDescriptor desc : sf.getType().getAttributeDescriptors()) {
-			attributes.put(desc.getLocalName(), new StringAttribute("" + sf.getAttribute(desc.getName())));
+		for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
+			attributes.put(desc.getLocalName(), new StringAttribute("" + feature.getAttribute(desc.getName())));
 		}
-		f.setAttributes(attributes);
-		f.setId(sf.getID());
-		return f;
+		dto.setAttributes(attributes);
+		dto.setId(feature.getID());
+
+		dto.setUpdatable(false);
+		dto.setDeletable(false);
+		return dto;
+		
 	}
-	
-	
+
 	/**
 	 * Paints the specified bounds optimized for the specified scale in pixel/unit.
 	 *
