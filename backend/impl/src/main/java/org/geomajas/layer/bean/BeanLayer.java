@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
@@ -266,9 +268,13 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 					for (Object f : features) {
 						String id = featureModel.getId(f);
 						featuresById.put(featureModel.getId(f), f);
-						int idInt = Integer.parseInt(id);
-						if (nextId <= idInt) {
-							nextId = idInt + 1;
+						try {
+							int idInt = Integer.parseInt(id);
+							if (nextId <= idInt) {
+								nextId = idInt + 1;
+							}
+						} catch (NumberFormatException e) {
+							nextId = new Random().nextInt();
 						}
 					}
 				}
