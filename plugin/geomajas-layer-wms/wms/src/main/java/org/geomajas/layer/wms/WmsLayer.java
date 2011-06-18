@@ -10,8 +10,18 @@
  */
 package org.geomajas.layer.wms;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import java.io.IOException;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
@@ -21,25 +31,33 @@ import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.Feature;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geotools.GML;
+import org.geotools.GML.Version;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.xml.sax.SAXException;
 
-import javax.annotation.PostConstruct;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -69,7 +87,7 @@ import java.util.List;
  * @since 1.7.1
  */
 @Api
-public class WmsLayer implements RasterLayer {
+public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private List<Resolution> resolutions = new ArrayList<Resolution>();
 
@@ -169,8 +187,73 @@ public class WmsLayer implements RasterLayer {
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}
+	
 
+	public List<Feature> getFeaturesByLocation(Coordinate layerCoordinate, double layerScale, double buffer) 
+	throws LayerException {
+		List<Feature> features = new ArrayList<Feature>();
 
+		Resolution bestResolution = getResolutionForScale(layerScale);
+		RasterGrid grid = getRasterGrid(new Envelope(layerCoordinate), bestResolution.getTileWidth(),
+				bestResolution.getTileHeight(), layerScale);
+		int x = (int) (((layerCoordinate.x - grid.getLowerLeft().x) * bestResolution.getTileWidthPx()) / grid
+				.getTileWidth());
+		int y = (int) (bestResolution.getTileHeightPx() - (((layerCoordinate.y - grid.getLowerLeft().y) * bestResolution
+				.getTileHeightPx()) / grid.getTileHeight()));
+		
+		Bbox layerBox = new Bbox(grid.getLowerLeft().x, grid.getLowerLeft().y, grid.getTileWidth(), 
+				grid.getTileHeight());
+		
+		try {
+			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(), 
+					layerBox, x, y);
+			log.info("getFeaturesByLocation: {} {} {} {}", new Object[] {layerCoordinate, layerScale, buffer, url});
+			GML gml = new GML(Version.GML3);
+
+			URL urlFile = new URL(url);
+			
+			FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(urlFile.openStream());
+			FeatureIterator<SimpleFeature> it = collection.features();
+			
+			while (it.hasNext()) {
+				features.add(converterService.toDto(toInternalFeature(it.next())));
+			}
+			
+		} catch (GeomajasException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
+		return features;
+	}
+	
+	private InternalFeature toInternalFeature(SimpleFeature sf) {
+		InternalFeatureImpl f = new InternalFeatureImpl();
+		
+		HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
+		
+		for (AttributeDescriptor desc : sf.getType().getAttributeDescriptors()) {
+			attributes.put(desc.getLocalName(), new StringAttribute("" + sf.getAttribute(desc.getName())));
+		}
+		f.setAttributes(attributes);
+		f.setId(sf.getID());
+		return f;
+	}
+	
+	
 	/**
 	 * Paints the specified bounds optimized for the specified scale in pixel/unit.
 	 *
@@ -265,7 +348,37 @@ public class WmsLayer implements RasterLayer {
 		}
 	}
 
+	private String formatGetFeatureInfoUrl(int width, int height, Bbox box, int x, int y) throws GeomajasException {
+		String url = formatBaseUrl(width, height, box);
+		String layers = getId();
+		if (layerInfo.getDataSourceName() != null) {
+			layers = layerInfo.getDataSourceName();
+		}
+		url += "&QUERY_LAYERS=" + layers;		
+		url += "&request=GetFeatureInfo";
+		url += "&request=";
+		url += "&X=" + x;
+		url += "&Y=" + y;
+		url += "&INFO_FORMAT=application/vnd.ogc.gml";
+		return url;
+	}
+	
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
+		String url = formatBaseUrl(width, height, box);
+		url += "&request=GetMap";
+		log.debug(url);
+		return url;
+	}
+	
+	/**
+	 * Build the base part of the url (doesn't change for getMap or getFeatureInfo requests).
+	 * @param width
+	 * @param height
+	 * @param box
+	 * @return
+	 * @throws GeomajasException
+	 */
+	private String formatBaseUrl(int width, int height, Bbox box) throws GeomajasException {
 		String url = getWmsTargetUrl();
 		if (null == url) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
@@ -276,8 +389,6 @@ public class WmsLayer implements RasterLayer {
 		} else {
 			url += "?SERVICE=WMS";
 		}
-		url += "&request=GetMap";
-
 		String layers = getId();
 		if (layerInfo.getDataSourceName() != null) {
 			layers = layerInfo.getDataSourceName();
@@ -285,7 +396,6 @@ public class WmsLayer implements RasterLayer {
 		url += "&layers=" + layers;
 		url += "&WIDTH=" + width;
 		url += "&HEIGHT=" + height;
-
 		DecimalFormat decimalFormat = new DecimalFormat(); // create new as this is not threadsafe
 		decimalFormat.setDecimalSeparatorAlwaysShown(false);
 		decimalFormat.setGroupingUsed(false);
@@ -310,10 +420,9 @@ public class WmsLayer implements RasterLayer {
 				url += "&" + p.getName() + "=" + p.getValue();
 			}
 		}
-		log.debug(url);
 		return url;
 	}
-
+	
 	private Resolution getResolutionForScale(double scale) {
 		if (null == resolutions || resolutions.size() == 0) {
 			return calculateBestQuadTreeResolution(scale);
@@ -618,4 +727,6 @@ public class WmsLayer implements RasterLayer {
 			return resolution;
 		}
 	}
+
+
 }
