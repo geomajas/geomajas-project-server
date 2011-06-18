@@ -25,6 +25,8 @@ public class City {
 
 	private Integer worldcity;
 
+	private Integer id;
+	
 	public String getName() {
 		return name;
 	}
@@ -55,6 +57,20 @@ public class City {
 
 	public void setWorldcity(Integer worldcity) {
 		this.worldcity = worldcity;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
 	}
 
 }

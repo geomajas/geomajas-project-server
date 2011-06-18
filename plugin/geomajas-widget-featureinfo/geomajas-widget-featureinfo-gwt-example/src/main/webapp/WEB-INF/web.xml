@@ -29,8 +29,10 @@
 			WEB-INF/mapOverview.xml
 			WEB-INF/clientLayerOsm.xml
 			WEB-INF/clientLayerCountries.xml
+			WEB-INF/clientLayerCountriesWms.xml
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
+			WEB-INF/layerCountriesWms.xml
 			
 			WEB-INF/clientLayerPopulatedPlaces110m.xml 
 			WEB-INF/layerPopulatedPlaces110m.xml

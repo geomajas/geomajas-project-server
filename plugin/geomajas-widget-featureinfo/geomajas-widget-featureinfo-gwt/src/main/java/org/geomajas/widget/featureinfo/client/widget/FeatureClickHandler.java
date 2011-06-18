@@ -11,6 +11,7 @@
 package org.geomajas.widget.featureinfo.client.widget;
 
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.Layer;
 /**
  * Definition of an interface to specify a handler that has to be called when the user clicks on a 
  * org.geomajas.gwt.client.map.feature.Feature feature.
@@ -19,5 +20,5 @@ import org.geomajas.gwt.client.map.feature.Feature;
  */
 public interface FeatureClickHandler {
 
-	void onClick(Feature feat);
+	void onClick(Feature feat, Layer layer);
 }

@@ -18,6 +18,8 @@ import java.util.Map;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
+import org.geomajas.command.dto.SearchLayersByPointRequest;
+import org.geomajas.command.dto.SearchLayersByPointResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -26,6 +28,7 @@ import org.geomajas.gwt.client.controller.FeatureInfoController;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Mathlib;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
@@ -53,7 +56,8 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 
 	private boolean dragging;
 	private boolean clickstart;
-
+	private boolean includeRasterLayers = true;
+	
 	/**
 	 * Number of pixels that describes the tolerance allowed when trying to
 	 * select features.
@@ -110,31 +114,74 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 					request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
 				}
 			}
+
+			final SearchLayersByPointRequest rasterLayerRequest = new SearchLayersByPointRequest();
+			rasterLayerRequest.setLocation(point.getCoordinate());
+			rasterLayerRequest.setCrs(mapWidget.getMapModel().getCrs());
+			rasterLayerRequest.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
+			rasterLayerRequest.setBuffer(calculateBufferFromPixelTolerance());
+			rasterLayerRequest.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+			rasterLayerRequest.setBbox(toBbox(mapWidget.getMapModel().getMapView().getBounds()));
+			rasterLayerRequest.setScale(mapWidget.getMapModel().getMapView().getCurrentScale());
+			
+			
 			GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 			commandRequest.setCommandRequest(request);
+			//TODO: commands are now chained. Perhaps we should combine this into a single command?
 			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
 				public void execute(CommandResponse commandResponse) {
 					if (commandResponse instanceof SearchByLocationResponse) {
-						SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-						Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
-
-						Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
-						window.setPageTop(mapWidget.getAbsoluteTop() + 10);
-						window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
-						window.draw();
+						final SearchByLocationResponse vectorResponse = (SearchByLocationResponse) commandResponse;
+						if (includeRasterLayers) {
+							
+							GwtCommand commandRequest = new GwtCommand(SearchLayersByPointRequest.COMMAND);
+							commandRequest.setCommandRequest(rasterLayerRequest);
+							GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+								public void execute(CommandResponse commandRasterResponse) {
+									SearchLayersByPointResponse rasterResponse = 
+										(SearchLayersByPointResponse) commandRasterResponse;
+									Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = 
+										vectorResponse.getFeatureMap();
+									featureMap.putAll(rasterResponse.getFeatureMap());
+									showWindow(featureMap);
+								}
+							});
+							
+						} else {
+							showWindow(vectorResponse.getFeatureMap());
+						}
 					}
 				}
 			});
+			
+			
+			
 		} else {
 			dragging = false;
 		}
 		clickstart = false;
 	}
+	
+	private void showWindow(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
+		
+		Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
+		window.setPageTop(mapWidget.getAbsoluteTop() + 10);
+		window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
+		window.draw();
+	}
 
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
+
+	/**
+	 * @param bounds
+	 * @return
+	 */
+	private org.geomajas.geometry.Bbox toBbox(Bbox bounds) {
+		return new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+	}
 
 	private String[] getServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
@@ -151,5 +198,19 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 		Coordinate c1 = transformer.viewToWorld(new Coordinate(0, 0));
 		Coordinate c2 = transformer.viewToWorld(new Coordinate(pixelTolerance, 0));
 		return Mathlib.distance(c1, c2);
+	}
+
+	/**
+	 * @param includeRasterLayers whether to include raster layers in the result
+	 */
+	public void setIncludeRasterLayers(boolean includeRasterLayers) {
+		this.includeRasterLayers = includeRasterLayers;
+	}
+
+	/**
+	 * @return the whether to include raster layer features in the result
+	 */
+	public boolean isIncludeRasterLayers() {
+		return includeRasterLayers;
 	}
 }

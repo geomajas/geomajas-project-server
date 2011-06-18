@@ -72,14 +72,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-1000000" />
-				<property name="y" value="5000000" />
+				<property name="y" value="3000000" />
 				<property name="width" value="4000000" />
-				<property name="height" value="2000000" />
+				<property name="height" value="4000000" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
 				<ref bean="clientLayerOsm" />
+				<ref bean="clientLayerCountriesWms" />
 				<ref bean="clientLayerCountries" />
 				<ref bean="clientLayerPopulatedPlaces110m" />
 			</list>
@@ -125,6 +126,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<property name="layers">
 							<list>
 								<ref bean="clientLayerOsm" />
+								<ref bean="clientLayerCountriesWms" />
 								<ref bean="clientLayerCountries" />
 								<ref bean="clientLayerPopulatedPlaces110m" />
 							</list>

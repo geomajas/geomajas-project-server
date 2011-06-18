@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
@@ -66,12 +67,13 @@ public class MultiLayerFeatureInfoWindow extends Window {
 
 		featuresList = new MultiLayerFeaturesList(mapWidget, new FeatureClickHandler() {
 
-			public void onClick(Feature feature) {
-				Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, false);
+			public void onClick(Feature feature, Layer layer) {
+				Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, layer, false);
 				window.setPageTop(mapWidget.getAbsoluteTop() + 25);
 				window.setPageLeft(mapWidget.getAbsoluteLeft() + 25);
 				window.draw();
 			}
+
 		});
 		addItem(featuresList);
 	}

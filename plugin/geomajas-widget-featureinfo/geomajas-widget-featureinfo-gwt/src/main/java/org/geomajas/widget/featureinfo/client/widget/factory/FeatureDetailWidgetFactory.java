@@ -12,6 +12,7 @@ package org.geomajas.widget.featureinfo.client.widget.factory;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo;
@@ -36,18 +37,20 @@ public final class FeatureDetailWidgetFactory {
 		// utility class, hide constructor
 	}
 
-	public static Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
-		FeatureDetailWidgetBuilder customBuilder = getCustomBuilder(feature.getLayer());
+	public static Window createFeatureDetailWindow(Feature feature, Layer layer, boolean editingAllowed) {
+		FeatureDetailWidgetBuilder customBuilder = getCustomBuilder(layer);
 		if (customBuilder != null) {
 			return customBuilder.createFeatureDetailWindow(feature, editingAllowed);
-		} else {
+		} else if (layer instanceof VectorLayer ) {
 			return new FeatureAttributeWindow(feature, editingAllowed);
+		} else {
+			return new RasterLayerAttributeWindow(feature, layer);
 		}
 	}
-
+	
 	// ----------------------------------------------------------
 
-	private static FeatureDetailWidgetBuilder getCustomBuilder(VectorLayer layer) {
+	private static FeatureDetailWidgetBuilder getCustomBuilder(Layer layer) {
 		FeatureDetailWidgetBuilder b = null;
 		try {
 			if (layer != null) {
