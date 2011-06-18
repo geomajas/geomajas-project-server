@@ -38,5 +38,12 @@ public interface LayerFeatureInfoSupport {
 	 * @throws LayerException oops
 	 */
 	List<Feature> getFeaturesByLocation(Coordinate coordinate, double layerScale, double buffer) throws LayerException;
+
+	/**
+	 * Return wheter the layer should support feature info support.
+	 * 
+	 * @return the enableFeatureInfoSupport true if featureinfosupport is enabled
+	 */
+	boolean isEnableFeatureInfoSupport();
 	
 }
