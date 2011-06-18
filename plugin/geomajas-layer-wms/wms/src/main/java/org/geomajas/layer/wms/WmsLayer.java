@@ -96,8 +96,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private String baseWmsUrl, format, version, styles = "";
 
 	private List<Parameter> parameters;
-
-
+	
+	private boolean enableFeatureInfoSupport;
+	
 	@Autowired
 	private GeoService geoService;
 
@@ -188,9 +189,15 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		this.layerInfo = layerInfo;
 	}
 	
-
+	/**
+	 * See {@link LayerFeatureInfoSupport}.
+	 */
 	public List<Feature> getFeaturesByLocation(Coordinate layerCoordinate, double layerScale, double buffer) 
 	throws LayerException {
+		if (!isEnableFeatureInfoSupport()) {
+			return Collections.emptyList();
+		}
+		
 		List<Feature> features = new ArrayList<Feature>();
 
 		Resolution bestResolution = getResolutionForScale(layerScale);
@@ -207,7 +214,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		try {
 			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(), 
 					layerBox, x, y);
-			log.info("getFeaturesByLocation: {} {} {} {}", new Object[] {layerCoordinate, layerScale, buffer, url});
+			log.debug("getFeaturesByLocation: {} {} {} {}", new Object[] {layerCoordinate, layerScale, buffer, url});
 			GML gml = new GML(Version.GML3);
 
 			URL urlFile = new URL(url);
@@ -607,6 +614,25 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	@Api
 	public void setUseProxy(boolean useProxy) {
 		this.useProxy = useProxy;
+	}
+
+	/**
+	 * Set wheter the WMS layer should support feature info support. This allows to retrieve feature info from a 
+	 * raster layer. This only makes sense if the WMS layer is based on some kind of feature store like a database.
+	 * 
+	 * @param enableFeatureInfoSupport whether featureinfosupport is enabled for this layer
+	 */
+	public void setEnableFeatureInfoSupport(boolean enableFeatureInfoSupport) {
+		this.enableFeatureInfoSupport = enableFeatureInfoSupport;
+	}
+
+	/**
+	 * Get wheter the WMS layer should support feature info support.
+	 * 
+	 * @return the enableFeatureInfoSupport true if featureinfosupport is enabled
+	 */
+	public boolean isEnableFeatureInfoSupport() {
+		return enableFeatureInfoSupport;
 	}
 
 	/**
