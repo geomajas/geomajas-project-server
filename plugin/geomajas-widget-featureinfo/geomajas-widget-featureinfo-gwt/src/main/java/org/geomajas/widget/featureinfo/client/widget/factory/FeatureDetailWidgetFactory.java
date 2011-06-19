@@ -48,6 +48,10 @@ public final class FeatureDetailWidgetFactory {
 		}
 	}
 	
+	public static Window createFeWindowDetailWindow(Feature feature, boolean editingAllowed) {
+		return createFeatureDetailWindow(feature, feature.getLayer(), editingAllowed);
+	}
+	
 	// ----------------------------------------------------------
 
 	private static FeatureDetailWidgetBuilder getCustomBuilder(Layer layer) {
