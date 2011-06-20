@@ -153,7 +153,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.8.0</version>
+				<version>1.9.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -172,10 +172,9 @@
 			</dependency>
 
 			<dependency>
-				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>1.7.1</version>
+				<artifactId>geomajas-plugin-geotools-all</artifactId>
+				<version>1.8.0</version>
 			</dependency>
 			<dependency>
 				<!-- from next version on, this should depend on "all" -->
@@ -315,7 +314,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<geotools-version>2.6.3</geotools-version>
+		<geotools-version>2.7.1</geotools-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<dojo-version>1.1.0</dojo-version>
 		<slf4j-version>1.6.0</slf4j-version>

@@ -83,11 +83,11 @@ include "org.geomajas.documentation" "docbook-gettingstarted" "1.9.0-SNAPSHOT" \
     "incubating" "Getting_Started.pdf" \
     "org.geomajas" "geomajas-command" "1.8.0"
 
-include "org.geomajas.documentation" "docbook-devuserguide" "1.9.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-devuserguide" "1.10.0-SNAPSHOT" \
     "User guide for developers" \
     "Reference guide detailing architecture, implementation and extension possibilities of the back-end core." \
     "incubating" "User_Guide_for_Developers.pdf" \
-    "org.geomajas" "geomajas-api" "1.8.0"
+    "org.geomajas" "geomajas-api" "1.9.0"
 
 
 # faces
@@ -106,11 +106,11 @@ include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-S
 
 # plug-ins
 
-include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.9.0-SNAPSHOT" \
     "Geotools layer" \
     "This is a layer which allows accessing GIS data through Geotools, for example for accessing WFS data." \
     "incubating" "Geotools_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-geotools" "1.7.1"
+    "org.geomajas.plugin" "geomajas-layer-geotools" "1.8.0"
 
 include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.8.0-SNAPSHOT" \
     "Google layer" \
