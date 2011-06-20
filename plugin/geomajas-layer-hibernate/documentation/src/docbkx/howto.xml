@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-howto">
@@ -18,7 +17,7 @@
   <para>This section covers a few specific cases that might come in handy when
   really using the Geomajas Hibernate layer plug-in.</para>
 
-  <sect1>
+  <section>
     <title>How to use a many-to-one relation</title>
 
     <para>A many-to-one relation is the Hibernate term for what would in the
@@ -42,7 +41,7 @@
       </listitem>
     </itemizedlist>
 
-    <sect2>
+    <section>
       <title>Spatial database tables</title>
 
       <para>This time, 2 tables must be present in the database, in order for
@@ -78,9 +77,9 @@
 
 ALTER TABLE ONLY areaofinterest ADD CONSTRAINT fk_areaofinterest_aoitype FOREIGN KEY (type_id) REFERENCES aoitype(id);</programlisting>
       </example>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Java O/R mapping</title>
 
       <para>For both database table, we will now create Java mapping classes.
@@ -135,9 +134,9 @@ public class AreaOfInterest {
     // Constructors, getters, and setters
     ....</programlisting>
       </example>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Vector layer configuration</title>
 
       <para>Lastly, you add the new many-to-one relation to the list of
@@ -199,16 +198,16 @@ public class AreaOfInterest {
     &lt;/property&gt;
 ...</programlisting>
       </example>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>How to use a one-to-many relation</title>
 
     <para>TODO</para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>How to create my own DAOs</title>
 
     <para>If you have followed the configuration guidelines and made use of
@@ -250,9 +249,9 @@ public class ZoneDaoImpl implements ZoneDao {
 
     <para>And that's it! No more worrying about sessions or transactions, or
     how the hell everything should get initialized...</para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title>How to use scrollable resultsets</title>
 
     <para>If you have a very large table it might be desirable to retrieve
@@ -278,6 +277,85 @@ public class ZoneDaoImpl implements ZoneDao {
     &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
 &lt;/bean&gt;</programlisting>
     </example>
-    <para>Please note that your databasedriver needs to support Scrollable resultsets.</para>
-  </sect1>
+
+    <para>Please note that your databasedriver needs to support Scrollable
+    resultsets.</para>
+  </section>
+
+  <section>
+    <title>How to configure a connection pool</title>
+
+    <para>There are many connection pool libraries which can be used. Some of
+    the best known include DBCP and C3P0. The former may cause deadlocks while
+    the latter is not known for its speed. An alternative connection pool
+    library is <ulink url="http://jolbox.com/">BoneCP</ulink>. This can be
+    included using the following dependency:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;com.jolbox&lt;/groupId&gt;
+    &lt;artifactId&gt;bonecp&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+
+    <para>A sample Hibernate definition looks like this:</para>
+
+    <programlisting>&lt;!-- BoneCP configuration --&gt;
+&lt;bean id="postgisDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close"&gt;
+   &lt;property name="driverClass" value="org.postgresql.Driver" /&gt;
+   &lt;property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/databaseName" /&gt;
+   &lt;property name="username" value="dbUser"/&gt;
+   &lt;property name="password" value="dbPw"/&gt;
+   &lt;property name="idleConnectionTestPeriod" value="60"/&gt;
+   &lt;property name="idleMaxAge" value="240"/&gt;
+   &lt;property name="maxConnectionsPerPartition" value="30"/&gt;
+   &lt;property name="minConnectionsPerPartition" value="10"/&gt;
+   &lt;property name="partitionCount" value="3"/&gt;
+   &lt;property name="acquireIncrement" value="5"/&gt;
+   &lt;property name="statementsCacheSize" value="100"/&gt;
+   &lt;property name="releaseHelperThreads" value="3"/&gt;
+&lt;/bean&gt;
+
+&lt;!-- Hibernate SessionFactory --&gt;
+&lt;bean id="postgisSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"&gt;
+    &lt;property name="dataSource" ref="postgisDataSource" /&gt;
+    &lt;property name="configLocation" value="classpath:/hibernate.cfg.xml" /&gt;
+    &lt;property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" /&gt;
+&lt;/bean&gt;
+
+&lt;!-- enable the configuration of transactional behavior based on annotations --&gt;
+&lt;tx:annotation-driven transaction-manager="transactionManager" /&gt;
+
+&lt;bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"&gt;
+    &lt;property name="sessionFactory" ref="postgisSessionFactory" /&gt;
+&lt;/bean&gt;
+
+&lt;!-- Needed when the Hibernate pojo classes contain dates. --&gt;
+&lt;bean name="simpleDateFormat" class="java.text.SimpleDateFormat"&gt;
+    &lt;constructor-arg type="java.lang.String" value="dd/MM/yyyy" /&gt;
+&lt;/bean
+</programlisting>
+  </section>
+
+  <section>
+    <title>How to use a second level cache</title>
+
+    <para>In your hibernate.cfg.xml file, add the following excerpt:</para>
+
+    <programlisting>&lt;property name="hibernate.cache.use_second_level_cache"&gt;true&lt;/property&gt;
+&lt;property name="hibernate.cache.use_query_cache"&gt;true&lt;/property&gt;
+&lt;property name="hibernate.cache.region.factory_class"&gt;
+    org.hibernate.cache.infinispan.InfinispanRegionFactory
+&lt;/property&gt;
+</programlisting>
+
+    <para>To make sure this works, you also need the <ulink
+    url="http://www.jboss.org/infinispan/">Infinispan</ulink> dependencies
+    (these are already available when using the caching plug-in. Additionally,
+    you also need the Hibernate-Infinispan bridge:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-infinispan&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</programlisting>
+  </section>
 </chapter>
