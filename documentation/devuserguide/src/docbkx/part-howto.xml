@@ -55,7 +55,8 @@
     intermediate package (between "command" and the class name) and the class
     name itself. Some examples:</para>
 
-    <para><table>
+    <para>
+      <table>
         <title>Samples of command name resolution</title>
 
         <tgroup cols="2">
@@ -117,7 +118,8 @@
             </row>
           </tbody>
         </tgroup>
-      </table></para>
+      </table>
+    </para>
 
     <para>You have to include a line in your Spring configuration to scan
     class files for annotation to make the components available. For the case
@@ -163,7 +165,7 @@
     <xi:include href="listing/StaticSecurityDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para></para>
+    <para />
   </chapter>
 
   <chapter id="ch-howto-plugin">
@@ -565,5 +567,69 @@ public class GeomajasMapWrapper {
         </mediaobject>
       </figure>
     </section>
+  </chapter>
+
+  <chapter>
+    <title>Setting up logging to a file</title>
+
+    <para>This is not really Geomajas specific, but as a simple guide, a
+    configuration which can be used to setup logging to a file, using logback
+    as the logging framework:</para>
+
+    <programlisting>&lt;configuration debug="true"&gt;
+
+  &lt;appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"&gt;
+    &lt;file&gt;/var/log/ktunaxa/log.txt&lt;/file&gt;
+    &lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;
+      &lt;!-- rollover daily --&gt;
+      &lt;fileNamePattern&gt;/var/log/ktunaxa/log-%d{yyyy-MM-dd}.%i.gz&lt;/fileNamePattern&gt; &lt;!-- zipped! --&gt;  
+      &lt;maxHistory&gt;60&lt;/maxHistory&gt; &lt;!-- keep logs two months --&gt;
+      &lt;timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"&gt;
+        &lt;!-- or whenever the file size reaches 20MB --&gt;
+        &lt;maxFileSize&gt;20MB&lt;/maxFileSize&gt;
+      &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;
+    &lt;/rollingPolicy&gt;
+
+    &lt;encoder&gt;
+      &lt;pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+      &lt;charset&gt;UTF-8&lt;/charset&gt;
+    &lt;/encoder&gt;
+  &lt;/appender&gt;
+
+  &lt;logger name="org.geomajas" level="DEBUG"/&gt;
+
+  &lt;root level="INFO"&gt;
+    &lt;appender-ref ref="FILE"/&gt;
+  &lt;/root&gt;
+
+&lt;/configuration&gt;</programlisting>
+
+    <para>Some comments<itemizedlist>
+        <listitem>
+          <para>Daily rolling log and also rolls when larger than 20MB.</para>
+        </listitem>
+
+        <listitem>
+          <para>Previous logs are zipped using gzip.</para>
+        </listitem>
+
+        <listitem>
+          <para>Two months worth or logs are kept (60 days to be
+          precise).</para>
+        </listitem>
+
+        <listitem>
+          <para>This example does enable debug logging. This is not really
+          recommended in production!</para>
+        </listitem>
+
+        <listitem>
+          <para>The default log level is set to INFO. This is recommended. Do
+          not set the logging OFF as this will also hide all warnings and
+          errors. If you think INFO is too verbose, use WARN (and maybe start
+          a discussion in the project to see whether the log level is correct
+          for the messages).</para>
+        </listitem>
+      </itemizedlist></para>
   </chapter>
 </part>
