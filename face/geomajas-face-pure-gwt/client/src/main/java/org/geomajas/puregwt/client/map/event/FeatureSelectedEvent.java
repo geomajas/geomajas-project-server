@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.map.event;
 
 import org.geomajas.global.FutureApi;
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.puregwt.client.map.feature.Feature;
 
 import com.google.gwt.event.shared.GwtEvent;
 

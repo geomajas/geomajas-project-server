@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.layer.feature.Feature;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.EventBus;
@@ -24,6 +23,7 @@ import org.geomajas.puregwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.map.event.LayerLabelHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerLabelShowEvent;
+import org.geomajas.puregwt.client.map.feature.Feature;
 
 /**
  * Vector layer representation.
@@ -57,7 +57,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public void setFilter(String filter) {
 		this.filter = filter;
 		renderer.clear();
-		renderer.render(viewPort.getBounds());
+		viewPort.applyBounds(viewPort.getBounds());
 	}
 
 	public String getFilter() {
@@ -69,7 +69,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	}
 
 	public boolean selectFeature(Feature feature) {
-		if (!selection.containsValue(feature)) {
+		if (!selection.containsValue(feature) && feature.getLayer() == this) {
 			selection.put(feature.getId(), feature);
 			eventBus.fireEvent(new FeatureSelectedEvent(feature));
 		}

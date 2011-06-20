@@ -13,14 +13,14 @@ package org.geomajas.puregwt.client.map.feature;
 
 import java.util.Map;
 
-import org.geomajas.geometry.Geometry;
 import org.geomajas.global.FutureApi;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.spatial.Geometry;
 
 /**
  * General interface for a GWT client side feature.<br/>
- * TODO what about lazy loading here? Remove the concept entirely?
+ * TODO what about lazy loading here? Add it later on?
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
@@ -57,33 +57,15 @@ public interface Feature {
 	 * Get the attributes map, null when it needs to be lazy loaded.
 	 * 
 	 * @return attributes map
-	 * @throws IllegalStateException
-	 *             attributes not present because of lazy loading
 	 */
-	Map<String, Attribute<?>> getAttributes() throws IllegalStateException;
-
-	/**
-	 * Check whether the attributes are already available or should be lazy loaded.
-	 * 
-	 * @return true when attributes are available
-	 */
-	boolean isAttributesLoaded();
+	Map<String, Attribute<?>> getAttributes();
 
 	/**
 	 * Get the feature's geometry, , null when it needs to be lazy loaded.
 	 * 
 	 * @return geometry
-	 * @throws IllegalStateException
-	 *             attributes not present because of lazy loading
 	 */
-	Geometry getGeometry() throws IllegalStateException;
-
-	/**
-	 * Check whether the geometry is already available or should be lazy loaded.
-	 * 
-	 * @return true when geometry are available
-	 */
-	boolean isGeometryLoaded();
+	Geometry getGeometry();
 
 	/**
 	 * Has this feature been selected or not?

@@ -21,6 +21,8 @@ import java.util.Map.Entry;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.puregwt.client.command.Command;
 import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.command.CommandService;
@@ -29,9 +31,15 @@ import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.controller.NavigationController;
 import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.map.event.FeatureDeselectedEvent;
+import org.geomajas.puregwt.client.map.event.FeatureSelectedEvent;
+import org.geomajas.puregwt.client.map.event.FeatureSelectionHandler;
+import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
+import org.geomajas.puregwt.client.map.event.LayerShowEvent;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
+import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
 import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.MapResizedEvent;
@@ -40,15 +48,25 @@ import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
+import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
+import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.LineString;
+import org.geomajas.puregwt.client.spatial.LinearRing;
+import org.geomajas.puregwt.client.spatial.MultiLineString;
+import org.geomajas.puregwt.client.spatial.MultiPoint;
+import org.geomajas.puregwt.client.spatial.MultiPolygon;
+import org.geomajas.puregwt.client.spatial.Point;
+import org.geomajas.puregwt.client.spatial.Polygon;
+import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
@@ -127,6 +145,9 @@ public final class MapPresenterImpl implements MapPresenter {
 	private GeometryFactory factory;
 
 	@Inject
+	private GfxUtil gfxUtil;
+
+	@Inject
 	private MapPresenterImpl() {
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
@@ -147,6 +168,10 @@ public final class MapPresenterImpl implements MapPresenter {
 		eventBus.addHandler(MapCompositionHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerVisibilityHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerStyleChangedHandler.TYPE, mapRenderer);
+
+		final FeatureSelectionRenderer selectionRenderer = new FeatureSelectionRenderer();
+		eventBus.addHandler(LayerVisibilityHandler.TYPE, selectionRenderer);
+		eventBus.addHandler(FeatureSelectionHandler.TYPE, selectionRenderer);
 
 		worldContainerRenderer = new WorldContainerRenderer();
 		eventBus.addHandler(ViewPortChangedHandler.TYPE, worldContainerRenderer);
@@ -180,6 +205,9 @@ public final class MapPresenterImpl implements MapPresenter {
 					for (Entry<MapGadget, ScreenContainer> entry : gadgets.entrySet()) {
 						entry.getKey().onDraw(viewPort, entry.getValue());
 					}
+
+					// Initialize the FeatureSelecrtionRenderer:
+					selectionRenderer.initialize(r.getMapInfo());
 
 					addMapGadget(new ScalebarGadget(r.getMapInfo()));
 					addMapGadget(new WatermarkGadget());
@@ -394,6 +422,64 @@ public final class MapPresenterImpl implements MapPresenter {
 			for (WorldContainer worldContainer : display.getWorldContainers()) {
 				worldContainer.transform(viewPort);
 			}
+		}
+	}
+
+	/**
+	 * This feature selection handler will render the selection on the map.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class FeatureSelectionRenderer implements FeatureSelectionHandler, LayerVisibilityHandler {
+
+		private WorldContainer container;
+
+		private FeatureStyleInfo pointStyle;
+
+		private FeatureStyleInfo lineStyle;
+
+		private FeatureStyleInfo ringStyle;
+
+		public FeatureSelectionRenderer() {
+			container = addWorldContainer();
+		}
+
+		public void initialize(ClientMapInfo mapInfo) {
+			pointStyle = mapInfo.getPointSelectStyle();
+			lineStyle = mapInfo.getLineSelectStyle();
+			ringStyle = mapInfo.getPolygonSelectStyle();
+		}
+
+		public void onFeatureSelected(FeatureSelectedEvent event) {
+			Feature feature = event.getFeature();
+			if (feature.getLayer().isShowing()) {
+				render(feature);
+			}
+		}
+
+		public void onFeatureDeselected(FeatureDeselectedEvent event) {
+		}
+
+		public void onShow(LayerShowEvent event) {
+		}
+
+		public void onHide(LayerHideEvent event) {
+		}
+
+		public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
+		}
+
+		private void render(Feature f) {
+			Path path = gfxUtil.toPath(f.getGeometry());
+			if (f.getGeometry() instanceof Point || f.getGeometry() instanceof MultiPoint) {
+				gfxUtil.applyStyle(path, pointStyle);
+			} else if (f.getGeometry() instanceof LineString || f.getGeometry() instanceof MultiLineString) {
+				gfxUtil.applyStyle(path, lineStyle);
+			} else if (f.getGeometry() instanceof Polygon || f.getGeometry() instanceof MultiPolygon
+					|| f.getGeometry() instanceof LinearRing) {
+				gfxUtil.applyStyle(path, ringStyle);
+			}
+			container.add(path);
 		}
 	}
 }

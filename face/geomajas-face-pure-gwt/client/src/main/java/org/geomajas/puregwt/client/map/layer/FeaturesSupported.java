@@ -14,11 +14,12 @@ package org.geomajas.puregwt.client.map.layer;
 import java.util.Collection;
 
 import org.geomajas.global.FutureApi;
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.puregwt.client.map.feature.Feature;
 
 /**
- * Extension for the layer interface which signifies that this particular layer has support for features. This means
- * that the individual objects that make up a layer are available.
+ * Extension for the layer interface which signifies that this particular layer has support for features. Features are
+ * the individual objects that make up a layer. Most methods in this interface will revolve around filtering (usually
+ * using the feature attributes) and feature selection.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

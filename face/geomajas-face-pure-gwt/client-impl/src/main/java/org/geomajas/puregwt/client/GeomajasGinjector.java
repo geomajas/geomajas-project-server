@@ -13,6 +13,9 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.map.MapPresenter;
+import org.geomajas.puregwt.client.map.feature.FeatureSearch;
+import org.geomajas.puregwt.client.map.feature.GeometryConverter;
+import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.MathService;
 
@@ -34,4 +37,10 @@ public interface GeomajasGinjector extends Ginjector {
 	MathService getMathService();
 
 	MapPresenter getMapPresenter();
+	
+	GeometryConverter getGeometryConverter();
+	
+	FeatureSearch getFeatureSearch();
+	
+	GfxUtil getGfxUtil();
 }

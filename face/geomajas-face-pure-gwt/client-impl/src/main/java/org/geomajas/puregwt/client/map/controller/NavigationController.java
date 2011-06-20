@@ -12,13 +12,14 @@
 package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -51,6 +52,8 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  */
 public class NavigationController extends AbstractMapController {
 
+	protected static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
+
 	/** Zooming types on mouse wheel scroll. */
 	public static enum ScrollZoomType {
 		/** When scroll zooming, retain the center of the map position. */
@@ -62,15 +65,15 @@ public class NavigationController extends AbstractMapController {
 
 	private ZoomToRectangleController zoomToRectangleController;
 
-	private GeometryFactory factory;
+	protected GeometryFactory factory;
 
-	private Coordinate dragOrigin;
+	protected Coordinate dragOrigin;
 
-	private Coordinate lastClickPosition;
+	protected Coordinate lastClickPosition;
 
-	private boolean zooming;
+	protected boolean zooming;
 
-	private boolean dragging;
+	protected boolean dragging;
 
 	private ScrollZoomType scrollZoomType = ScrollZoomType.ZOOM_POSITION;
 
@@ -80,7 +83,7 @@ public class NavigationController extends AbstractMapController {
 
 	public NavigationController() {
 		super();
-		factory = new GeometryFactoryImpl();
+		factory = INJECTOR.getGeometryFactory();
 		zoomToRectangleController = new ZoomToRectangleController();
 	}
 
@@ -178,7 +181,7 @@ public class NavigationController extends AbstractMapController {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private void stopPanning(MouseUpEvent event) {
+	protected void stopPanning(MouseUpEvent event) {
 		dragging = false;
 		mapPresenter.setCursor("default");
 		if (null != event) {
@@ -186,7 +189,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
-	private void updateView(MouseEvent<?> event) {
+	protected void updateView(MouseEvent<?> event) {
 		Coordinate end = getScreenPosition(event);
 		Coordinate beginWorld = mapPresenter.getViewPort().transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);

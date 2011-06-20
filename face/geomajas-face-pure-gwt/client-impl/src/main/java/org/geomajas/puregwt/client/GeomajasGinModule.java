@@ -21,6 +21,9 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.EventBusImpl;
+import org.geomajas.puregwt.client.map.feature.FeatureSearch;
+import org.geomajas.puregwt.client.map.feature.GeometryConverter;
+import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.geomajas.puregwt.client.spatial.MathService;
@@ -52,5 +55,10 @@ public class GeomajasGinModule extends AbstractGinModule {
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(EventBus.class).to(EventBusImpl.class);
 		bind(MapWidget.class).to(MapWidgetImpl.class);
+
+		// Other:
+		bind(GeometryConverter.class);
+		bind(FeatureSearch.class);
+		bind(GfxUtil.class);
 	}
 }
