@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.layers;
+package org.geomajas.puregwt.client.general;
 
 import org.geomajas.puregwt.client.ContentPanel;
 

@@ -14,9 +14,12 @@ package org.geomajas.puregwt.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.puregwt.client.layers.IntroductionContentPanel;
-import org.geomajas.puregwt.client.layers.LayerOrderPanel;
-import org.geomajas.puregwt.client.layers.LayerVisibilityPanel;
+import org.geomajas.puregwt.client.feature.FeatureSelectionPanel;
+import org.geomajas.puregwt.client.general.IntroductionContentPanel;
+import org.geomajas.puregwt.client.general.ResizeMapPanel;
+import org.geomajas.puregwt.client.layer.LayerOrderPanel;
+import org.geomajas.puregwt.client.layer.LayerVisibilityPanel;
+import org.geomajas.puregwt.client.rendering.DrawingInteractionPanel;
 import org.geomajas.puregwt.client.rendering.ScreenSpaceRenderingPanel;
 import org.geomajas.puregwt.client.rendering.WorldSpaceRenderingPanel;
 
@@ -84,6 +87,7 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		Category catGeneral = new Category("General");
 		catList.add(catGeneral);
 		catGeneral.addExample(new IntroductionContentPanel(), null);
+		catGeneral.addExample(new ResizeMapPanel(), null);
 
 		// Layer Manipulation:
 		Category catLayerMan = new Category("Layer Manipulation");
@@ -91,11 +95,17 @@ public class ShowcaseTreeViewModel implements TreeViewModel {
 		catLayerMan.addExample(new LayerVisibilityPanel(), null);
 		catLayerMan.addExample(new LayerOrderPanel(), null);
 
+		// Features:
+		Category catFeature = new Category("Feature Manipulation");
+		catList.add(catFeature);
+		catFeature.addExample(new FeatureSelectionPanel(), null);
+
 		// Drawing:
 		Category catDrawing = new Category("Custom Drawing");
 		catList.add(catDrawing);
 		catDrawing.addExample(new ScreenSpaceRenderingPanel(), null);
 		catDrawing.addExample(new WorldSpaceRenderingPanel(), null);
+		catDrawing.addExample(new DrawingInteractionPanel(), null);
 	}
 
 	// ------------------------------------------------------------------------

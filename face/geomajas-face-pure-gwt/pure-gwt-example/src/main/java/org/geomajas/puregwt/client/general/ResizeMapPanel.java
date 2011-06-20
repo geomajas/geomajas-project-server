@@ -9,14 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.rendering;
+package org.geomajas.puregwt.client.general;
 
 import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.gfx.WorldContainer;
-import org.vaadin.gwtgraphics.client.shape.Circle;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,25 +26,20 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * ContentPanel that demonstrates rendering abilities in world space.
+ * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
  * 
  * @author Pieter De Graef
  */
-public class WorldSpaceRenderingPanel extends ContentPanel {
+public class ResizeMapPanel extends ContentPanel {
 
 	private MapPresenter mapPresenter;
 
-	private WorldContainer container;
-
 	public String getTitle() {
-		return "Drawing in world space";
+		return "Map resize";
 	}
 
 	public String getDescription() {
-		return "This example shows the vector object drawing capabilities of the Geomajas map. In this particular "
-				+ "example, all objects are rendered in world space. For more information regarding screen space and "
-				+ "world space, visit the javadocs (TODO make this a link).<br/>Try navigating the map to see the "
-				+ "difference with screen space.";
+		return "This example shows map resizing capabilities.";
 	}
 
 	public Widget getContentWidget() {
@@ -54,30 +47,31 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 		VerticalPanel leftLayout = new VerticalPanel();
 		leftLayout.setSize("220px", "100%");
 
-		leftLayout.add(new HTML("<h3>Drawing options:</h3>"));
+		leftLayout.add(new HTML("<h3>Resize the map:</h3>"));
 
-		Button circleBtn = new Button("Draw circle");
-		circleBtn.setWidth("200");
-		circleBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				Circle circle = new Circle(0, 0, 3000000);
-				circle.setFillColor("#66CC66");
-				circle.setFillOpacity(0.4);
-				container.add(circle);
-			}
-		});
-		leftLayout.add(circleBtn);
-
-		Button deleteBtn = new Button("Delete all drawings");
-		deleteBtn.setWidth("200");
-		deleteBtn.addClickHandler(new ClickHandler() {
+		Button resizeBtn = new Button("Enlarge map");
+		resizeBtn.setWidth("200");
+		resizeBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent arg0) {
-				container.clear();
+				int width = mapPresenter.getViewPort().getMapWidth() + 20;
+				int height = mapPresenter.getViewPort().getMapHeight() + 15;
+				mapPresenter.setSize(width, height);
 			}
 		});
-		leftLayout.add(deleteBtn);
+		leftLayout.add(resizeBtn);
+
+		Button shrinkBtn = new Button("Shrink map");
+		shrinkBtn.setWidth("200");
+		shrinkBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent arg0) {
+				int width = mapPresenter.getViewPort().getMapWidth() - 20;
+				int height = mapPresenter.getViewPort().getMapHeight() - 15;
+				mapPresenter.setSize(width, height);
+			}
+		});
+		leftLayout.add(shrinkBtn);
 
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = getInjector().getMapPresenter();
@@ -97,15 +91,15 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 	}
 
 	/**
-	 * Map initialization handler that adds a CheckBox to the layout for every layer. With these CheckBoxes, the user
-	 * can toggle the layer's visibility.
+	 * Map initialization handler that zooms in.
 	 * 
 	 * @author Pieter De Graef
 	 */
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			container = mapPresenter.addWorldContainer();
+			double scale = mapPresenter.getViewPort().getScale() * 4;
+			mapPresenter.getViewPort().applyScale(scale);
 		}
 	}
 }

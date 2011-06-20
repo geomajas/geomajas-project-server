@@ -21,8 +21,7 @@
 			width: 100%;
 			height: 100%;
 			background: #E0FFE0;
-			background-image: -webkit-gradient(linear, left top, left bottom, from(#E0FFE0),
-				to(#FFFFFF) );
+			background-image: -webkit-gradient(linear, left top, left bottom, from(#E0FFE0), to(#FFFFFF) );
 			background-image: -moz-linear-gradient(top, #E0FFE0, #FFFFFF);
 		}
 
@@ -40,7 +39,7 @@
 	<g:DockLayoutPanel unit='PX' styleName='{style.viewMe}'>
 
 		<!-- Banner -->
-		<g:north size='106'>
+		<g:north size='53'>
 			<g:HTMLPanel styleName='{style.titleBar}'>
 				<table cellpadding='0' cellspacing='0' width='100%'>
 					<tr>

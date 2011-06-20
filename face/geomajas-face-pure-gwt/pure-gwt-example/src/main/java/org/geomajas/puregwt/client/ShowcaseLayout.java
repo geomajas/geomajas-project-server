@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.layers.IntroductionContentPanel;
+import org.geomajas.puregwt.client.general.IntroductionContentPanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
