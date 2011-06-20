@@ -1,4 +1,8 @@
-// geomajas-impl module API, 1.8.0
+// geomajas-impl module API, 1.9.0
+org.geomajas.layer.bean.BeanLayer::1.9.0
+org.geomajas.layer.bean.BeanLayer:void setId(String, ):1.9.0
+org.geomajas.layer.bean.BeanLayer:void setUseLazyFeatureConversion(boolean, ):1.9.0
+org.geomajas.layer.bean.FeatureComparator::1.9.0
 org.geomajas.security.allowall.AllowAllSecurityService::1.6.0
 org.geomajas.service.impl.StaticDispatcherUrlService::1.8.0
 org.geomajas.service.impl.StaticDispatcherUrlService:String getDispatcherUrl():1.8.0

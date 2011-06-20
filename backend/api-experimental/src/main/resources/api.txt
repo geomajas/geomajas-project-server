@@ -1,4 +1,4 @@
-// geomajas-api-experimental module API, 1.7.1
+// geomajas-api-experimental module API, 1.9.0
 org.geomajas.rendering.RenderException::1.6.0
 org.geomajas.rendering.RenderException:RenderException():1.6.0
 org.geomajas.rendering.RenderException:RenderException(Exception, ):1.6.0

@@ -1,5 +1,7 @@
-// geomajas-command module API, 1.8.0
+// geomajas-command module API, 1.9.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
+org.geomajas.command.dto.CopyrightRequest::1.9.0
+org.geomajas.command.dto.CopyrightRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.CopyrightResponse::1.7.1
 org.geomajas.command.dto.CopyrightResponse:List<CopyrightInfo> getCopyrights():1.7.1
 org.geomajas.command.dto.CopyrightResponse:void setCopyrights(List<CopyrightInfo>, ):1.7.1
@@ -8,6 +10,7 @@ org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest()
 org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest(String, String, ):1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:String getApplicationId():1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:String getMapId():1.6.0
+org.geomajas.command.dto.GetMapConfigurationRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.GetMapConfigurationRequest:void setApplicationId(String, ):1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:void setMapId(String, ):1.6.0
 org.geomajas.command.dto.GetMapConfigurationResponse::1.6.0
@@ -20,6 +23,7 @@ org.geomajas.command.dto.GetRasterTilesRequest:Bbox getBbox():1.6.0
 org.geomajas.command.dto.GetRasterTilesRequest:GetRasterTilesRequest():1.6.0
 org.geomajas.command.dto.GetRasterTilesRequest:String getCrs():1.6.0
 org.geomajas.command.dto.GetRasterTilesRequest:double getScale():1.6.0
+org.geomajas.command.dto.GetRasterTilesRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.GetRasterTilesRequest:void setBbox(Bbox, ):1.6.0
 org.geomajas.command.dto.GetRasterTilesRequest:void setCrs(String, ):1.6.0
 org.geomajas.command.dto.GetRasterTilesRequest:void setScale(double, ):1.6.0
@@ -44,6 +48,7 @@ org.geomajas.command.dto.GetVectorTileRequest:boolean isPaintLabels():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:double getScale():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:int getFeatureIncludes():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:int hashCode():1.8.0
+org.geomajas.command.dto.GetVectorTileRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.GetVectorTileRequest:void setCode(TileCode, ):1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:void setCrs(String, ):1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:void setFeatureIncludes(int, ):1.6.0
@@ -63,6 +68,7 @@ org.geomajas.command.dto.PersistTransactionRequest::1.6.0
 org.geomajas.command.dto.PersistTransactionRequest:FeatureTransaction getFeatureTransaction():1.6.0
 org.geomajas.command.dto.PersistTransactionRequest:PersistTransactionRequest():1.6.0
 org.geomajas.command.dto.PersistTransactionRequest:String getCrs():1.6.0
+org.geomajas.command.dto.PersistTransactionRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.PersistTransactionRequest:void setCrs(String, ):1.6.0
 org.geomajas.command.dto.PersistTransactionRequest:void setFeatureTransaction(FeatureTransaction, ):1.6.0
 org.geomajas.command.dto.PersistTransactionResponse::1.6.0
@@ -74,12 +80,14 @@ org.geomajas.command.dto.SearchByLocationRequest:Geometry getLocation():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:SearchByLocationRequest():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:String getCrs():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:String getFilter():1.8.0
+org.geomajas.command.dto.SearchByLocationRequest:String getFilter(String, ):1.9.0
 org.geomajas.command.dto.SearchByLocationRequest:String toString():1.8.0
 org.geomajas.command.dto.SearchByLocationRequest:double getBuffer():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:float getRatio():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:int getFeatureIncludes():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:int getQueryType():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:int getSearchType():1.6.0
+org.geomajas.command.dto.SearchByLocationRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.SearchByLocationRequest:static final int QUERY_CONTAINS:1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:static final int QUERY_INTERSECTS:1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:static final int QUERY_TOUCHES:1.6.0
@@ -90,6 +98,7 @@ org.geomajas.command.dto.SearchByLocationRequest:void setBuffer(double, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setCrs(String, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setFeatureIncludes(int, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setFilter(String, ):1.8.0
+org.geomajas.command.dto.SearchByLocationRequest:void setFilter(String, String, ):1.9.0
 org.geomajas.command.dto.SearchByLocationRequest:void setLocation(Geometry, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setQueryType(int, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setRatio(float, ):1.6.0
@@ -108,6 +117,7 @@ org.geomajas.command.dto.SearchFeatureRequest:String getFilter():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:String toString():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:int getFeatureIncludes():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:int getMax():1.6.0
+org.geomajas.command.dto.SearchFeatureRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.SearchFeatureRequest:static final String ID_ATTRIBUTE:1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:static final int MAX_UNLIMITED:1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:void setBooleanOperator(String, ):1.6.0
@@ -122,9 +132,29 @@ org.geomajas.command.dto.SearchFeatureResponse:SearchFeatureResponse():1.6.0
 org.geomajas.command.dto.SearchFeatureResponse:String getLayerId():1.6.0
 org.geomajas.command.dto.SearchFeatureResponse:void setFeatures(Feature[], ):1.6.0
 org.geomajas.command.dto.SearchFeatureResponse:void setLayerId(String, ):1.6.0
+org.geomajas.command.dto.TransformGeometryRequest::1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:Bbox getBounds():1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:Geometry getGeometry():1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:List<Geometry> getGeometryCollection():1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:String getSourceCrs():1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:String getTargetCrs():1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:static final String COMMAND:1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:void setBounds(Bbox, ):1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:void setGeometry(Geometry, ):1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:void setGeometryCollection(List<Geometry>, ):1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:void setSourceCrs(String, ):1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:void setTargetCrs(String, ):1.9.0
+org.geomajas.command.dto.TransformGeometryResponse::1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:Bbox getBounds():1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:Geometry getGeometry():1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:List<Geometry> getGeometryCollection():1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:void setBounds(Bbox, ):1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:void setGeometry(Geometry, ):1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:void setGeometryCollection(List<Geometry>, ):1.9.0
 org.geomajas.command.feature.PersistTransactionCommand::1.6.0
 org.geomajas.command.feature.SearchByLocationCommand::1.6.0
 org.geomajas.command.feature.SearchFeatureCommand::1.6.0
 org.geomajas.command.general.CopyrightCommand::1.7.0
+org.geomajas.command.geometry.TransformGeometryCommand::1.9.0.
 org.geomajas.command.render.GetRasterTilesCommand::1.6.0
 org.geomajas.command.render.GetVectorTileCommand::1.6.0
