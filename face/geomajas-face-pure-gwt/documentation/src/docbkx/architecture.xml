@@ -18,7 +18,7 @@
   of the Pure GWT face for Geomajas. For actual code examples or more detail
   on how to use them, visit the "HowTo" guide.</para>
 
-  <sect1>
+  <section>
     <title>The central Map API</title>
 
     <para>This section describes the interfaces of the most crucial object
@@ -35,16 +35,16 @@
     hand is what it's name implies: a model that governs a set of
     layers.</para>
 
-    <sect2>
+    <section>
       <title>MapPresenter</title>
 
       <para>The MapPresenter represents the central map interface and as such
       it determines the map's functionalities. It provides support for many of
       the topics that are discussed in the following sections, such as
       MapControllers or an EventBus.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>ViewPort</title>
 
       <para>The <code>ViewPort</code> can be seen of as the navigator behind
@@ -54,9 +54,9 @@
       "WorldSpace" and "ViewSpace" (visit the <link
       linkend="world_vs_screen">WorldSpace vs ScreenSpace</link> section for
       more information).</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>LayersModel</title>
 
       <para>Also part of the central map model, is a separate interface for
@@ -69,9 +69,9 @@
       <para>This model provides methods to add and remove layers, to change
       layer order, to retrieve layer information etc. Most changes in the
       layer model will trigger some event that can always be captured.</para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Layers</title>
 
       <para>As many different types of layers exist all with their own
@@ -83,10 +83,10 @@
       they don't.</para>
 
       <para></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Events</title>
 
     <para>Associated with the functionalities in the central map interfaces,
@@ -353,9 +353,9 @@
           </tbody>
         </tgroup>
       </table></para>
-  </sect1>
+  </section>
 
-  <sect1>
+  <section>
     <title id="graphics_rendering">Graphics &amp; Rendering</title>
 
     <para>This section will handle all rendering related topics, explaining
@@ -365,7 +365,7 @@
     interface for defining functional gadgets at a fixed location on the
     map.</para>
 
-    <sect2>
+    <section>
       <title id="world_vs_screen">WorldSpace vs ScreenSpace</title>
 
       <para>Before trying to render anything on a map, it is crucial you
@@ -400,9 +400,9 @@
         down an application, as their positions need to be recalculated every
         time the map navgates.</para>
       </caution>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>VectorObjectContainers &amp; VectorObjects</title>
 
       <para>For vector object rendering, the Pure GWT face makes use of the
@@ -438,19 +438,19 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
 
       <remark>TODO: How about removing these containers again? Also add
       architectural images here.</remark>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>MapGadgets</title>
 
       <para>The MapGadget is a standalone functional gadget that can be placed
       at a fixed position on the map. Examples are the navigation buttons and
       the scalebar. MapGadgets are notified of map navigation events, because
       they often require updating on those events.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Geometry manipulation</title>
 
     <para>The spatial package
@@ -463,7 +463,7 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
     Polygon, ...) this package also provides a few mathematical concepts such
     as a Vector, Matrix or LineSegment.</para>
 
-    <sect2>
+    <section>
       <title>Geometry definitions</title>
 
       <para>The geometry definitions on the client have been written to
@@ -516,16 +516,16 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
           multiple Polygon geometries.</para>
         </listitem>
       </itemizedlist>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>Spatial services</title>
 
       <para></para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>User Interaction on the Map</title>
 
     <para>This section will handle the basics of interacting with the map, by
@@ -547,7 +547,7 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
     <para>The next 2 sections will cover the following 2 basic interfaces: the
     MapController and the MapListener. </para>
 
-    <sect2>
+    <section>
       <title>MapController</title>
 
       <para>The MapController is an interface which listens to all mouse
@@ -565,9 +565,9 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
       allows the user to navigate all around the map. </para>
 
       <para></para>
-    </sect2>
+    </section>
 
-    <sect2>
+    <section>
       <title>MapListener</title>
 
       <para>The other way of interacting with the map, is through
@@ -580,12 +580,12 @@ ScreenContainer screenContainer = mapPresenter.getScreenContainer("myScreen");</
       one time. The MapListener is would therefore be the perfect tool for
       reporting or reacting without interfering, while a MapController is all
       about the interference.</para>
-    </sect2>
-  </sect1>
+    </section>
+  </section>
 
-  <sect1>
+  <section>
     <title>Client/Server communication</title>
 
     <para></para>
-  </sect1>
+  </section>
 </chapter>
