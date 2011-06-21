@@ -117,7 +117,7 @@ public class SearchLayersByPointCommand
 			for (String layerId : layerIds) {
 				if (securityContext.isLayerVisible(layerId)) {
 					Layer<?> layer = configurationService.getLayer(layerId);
-					if (layer != null && layer instanceof LayerFeatureInfoSupport &&
+					if (layer instanceof LayerFeatureInfoSupport &&
 							((LayerFeatureInfoSupport) layer).isEnableFeatureInfoSupport()) {
 						Crs layerCrs = layerService.getCrs(layer);
 						double layerScale = calculateLayerScale(crs, layerCrs, mapBounds, request.getScale());

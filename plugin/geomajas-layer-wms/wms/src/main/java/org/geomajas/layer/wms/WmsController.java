@@ -22,6 +22,8 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.service.ConfigurationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +48,8 @@ import java.util.StringTokenizer;
 public class WmsController {
 
 	private static final int TIMEOUT = 5000;
+
+	private final Logger log = LoggerFactory.getLogger(WmsController.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -86,6 +90,7 @@ public class WmsController {
 			response.setContentType(layer.getFormat());
 			response.getOutputStream().write(get.getResponseBody());
 		} catch (Exception e) {
+			log.error("Cannot get original WMS image", e);
 			// Create an error image to make the reason for the error visible:
 			byte[] b = createErrorImage(layer.getLayerInfo().getTileWidth(), layer.getLayerInfo().getTileHeight(), e);
 			response.setContentType("image/png");
@@ -122,7 +127,7 @@ public class WmsController {
 	 */
 	private WmsLayer getLayer(String layerId) {
 		RasterLayer layer = configurationService.getRasterLayer(layerId);
-		if (null != layer && layer instanceof WmsLayer) {
+		if (layer instanceof WmsLayer) {
 			return (WmsLayer) layer;
 		}
 		return null;
