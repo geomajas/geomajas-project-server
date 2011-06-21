@@ -62,7 +62,7 @@ import java.util.List;
  * <li><b>version</b>: The version of WMS to use.</li>
  * <li><b>styles</b>: The styles to use when rendering the WMS images.</li>
  * <li><b>useProxy</b>: Set to true to use a proxy for rendering the WMS, hiding the URL from the client.
- * This automatically happend when setting the authentication object.</li>
+ * This automatically happens when setting the authentication object.</li>
  * </ul>
  * There always is the option of adding additional parameters to the WMS GetMap requests, by filling the
  * <code>parameters</code> list. Such parameters could include optional WMS GetMap parameters, such as "transparency",
@@ -373,24 +373,27 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @throws GeomajasException missing parameter
 	 */
 	private String formatBaseUrl(int width, int height, Bbox box) throws GeomajasException {
-		String url = getWmsTargetUrl();
+		StringBuilder url = new StringBuilder(getWmsTargetUrl());
 		if (null == url) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
 		}
-		int pos = url.lastIndexOf('?');
+		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
-			url += "&SERVICE=WMS";
+			url.append("&SERVICE=WMS");
 		} else {
-			url += "?SERVICE=WMS";
+			url.append("?SERVICE=WMS");
 		}
 		String layers = getId();
 		if (layerInfo.getDataSourceName() != null) {
 			layers = layerInfo.getDataSourceName();
 		}
-		url += "&layers=" + layers;
-		url += "&WIDTH=" + width;
-		url += "&HEIGHT=" + height;
-		DecimalFormat decimalFormat = new DecimalFormat(); // create new as this is not threadsafe
+		url.append("&layers=");
+		url.append(layers);
+		url.append("&WIDTH=");
+		url.append(Integer.toString(width));
+		url.append("&HEIGHT=");
+		url.append(Integer.toOctalString(height));
+		DecimalFormat decimalFormat = new DecimalFormat(); // create new as this is not thread safe
 		decimalFormat.setDecimalSeparatorAlwaysShown(false);
 		decimalFormat.setGroupingUsed(false);
 		decimalFormat.setMinimumFractionDigits(0);
@@ -399,22 +402,35 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		symbols.setDecimalSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(symbols);
 
-		url += "&bbox=" + decimalFormat.format(box.getX()) + "," + decimalFormat.format(box.getY()) + ","
-				+ decimalFormat.format(box.getMaxX()) + "," + decimalFormat.format(box.getMaxY());
-		url += "&format=" + format;
-		url += "&version=" + version;
+		url.append("&bbox=");
+		url.append(decimalFormat.format(box.getX()));
+		url.append(",");
+		url.append(decimalFormat.format(box.getY()));
+		url.append(",");
+		url.append(decimalFormat.format(box.getMaxX()));
+		url.append(",");
+		url.append(decimalFormat.format(box.getMaxY()));
+		url.append("&format=");
+		url.append(format);
+		url.append("&version=");
+		url.append(version);
 		if ("1.3.0".equals(version)) {
-			url += "&crs=" + layerInfo.getCrs();
+			url.append("&crs=");
 		} else {
-			url += "&srs=" + layerInfo.getCrs();
+			url.append("&srs=");
 		}
-		url += "&styles=" + styles;
+		url.append(layerInfo.getCrs());
+		url.append("&styles=" );
+		url.append(styles);
 		if (null != parameters) {
 			for (Parameter p : parameters) {
-				url += "&" + p.getName() + "=" + p.getValue();
+				url.append("&");
+				url.append(p.getName());
+				url.append("=");
+				url.append(p.getValue());
 			}
 		}
-		return url;
+		return url.toString();
 	}
 
 	private Resolution getResolutionForScale(double scale) {
@@ -486,9 +502,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 		Bbox bbox = getLayerInfo().getMaxExtent();
 		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getY()) / realHeight);
-		int ymax = (int) Math.floor((bounds.getMaxY() - bbox.getY()) / realHeight) + 1;
+		int ymax = (int) Math.ceil((bounds.getMaxY() - bbox.getY()) / realHeight);
 		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getX()) / realWidth);
-		int xmax = (int) Math.floor((bounds.getMaxX() - bbox.getX()) / realWidth) + 1;
+		int xmax = (int) Math.ceil((bounds.getMaxX() - bbox.getX()) / realWidth);
 		// same adjustment for corner
 		double realXmin = ((int) (bbox.getX() * scale)) / scale;
 		double realYmin = ((int) (bbox.getY() * scale)) / scale;
@@ -628,7 +644,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @author Jan De Moerloose
 	 * @author Pieter De Graef
 	 */
-	private class RasterGrid {
+	private static class RasterGrid {
 
 		private Coordinate lowerLeft;
 
@@ -691,7 +707,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @author Jan De Moerloose
 	 * @author Pieter De Graef
 	 */
-	private class Resolution {
+	private static class Resolution {
 
 		private double resolution;
 
