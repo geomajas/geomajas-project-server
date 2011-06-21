@@ -121,7 +121,20 @@
 
             <entry>Optional basic or digest HTTP authentication. This bean is
             of the type:
-            <code>org.geomajas.layer.wms.WmsAuthentication</code></entry>
+            <code>org.geomajas.layer.wms.WmsAuthentication</code>. When set,
+            the WMS request is automatically proxied to assure that
+            credentials are not leaked to the client.</entry>
+          </row>
+
+          <row>
+            <entry><emphasis role="bold">useProxy</emphasis>
+            (optional)</entry>
+
+            <entry>Allows you to force the use of a proxy to get the image.
+            This can be useful if you want to hide the WMS URL (excluding the
+            parameters that is). This is automatically enabled when the
+            authentication property is set (to assure that credentials are not
+            visible on the user).</entry>
           </row>
         </tbody>
       </tgroup>
