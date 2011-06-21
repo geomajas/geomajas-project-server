@@ -119,7 +119,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			rasterLayerRequest.setLocation(point.getCoordinate());
 			rasterLayerRequest.setCrs(mapWidget.getMapModel().getCrs());
 			rasterLayerRequest.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
-			rasterLayerRequest.setBuffer(calculateBufferFromPixelTolerance());
+			rasterLayerRequest.setPixelTolerance(pixelTolerance);
 			rasterLayerRequest.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
 			rasterLayerRequest.setBbox(toBbox(mapWidget.getMapModel().getMapView().getBounds()));
 			rasterLayerRequest.setScale(mapWidget.getMapModel().getMapView().getCurrentScale());
@@ -190,7 +190,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 				layerIds.add(layer.getServerLayerId());
 			}
 		}
-		return layerIds.toArray(new String[] {});
+		return layerIds.toArray(new String[layerIds.size()]);
 	}
 
 	private double calculateBufferFromPixelTolerance() {
