@@ -10,8 +10,19 @@
  */
 package org.geomajas.layer.wms;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
@@ -43,15 +54,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -83,12 +87,13 @@ import java.util.List;
 @Api
 public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
+	private static final int TIMEOUT = 1000;
+
 	private List<Resolution> resolutions = new ArrayList<Resolution>();
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
-	@NotNull
-	private String baseWmsUrl;
+	private String baseWmsUrl = "";
 
 	private String format, version, styles = "";
 
@@ -213,22 +218,68 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					new Object[] {layerCoordinate, layerScale, pixelTolerance, url});
 			GML gml = new GML(Version.GML3);
 
-			URL urlFile = new URL(url);
 
-			FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(urlFile.openStream());
-			FeatureIterator<SimpleFeature> it = collection.features();
+			// Create a HTTP client object, which will initiate the connection:
+			HttpClient client = new HttpClient();
+			client.setConnectionTimeout(TIMEOUT);
 
-			while (it.hasNext()) {
-				features.add(toDto(it.next()));
+			// Preemptive: In this mode HttpClient will send the basic authentication response even before the server 
+			// gives an unauthorized response in certain situations, thus reducing the overhead of making the 
+			// connection.
+			client.getState().setAuthenticationPreemptive(true);
+
+			// Set up the WMS credentials:
+			Credentials credentials = new UsernamePasswordCredentials(getAuthentication().getUser(), 
+					getAuthentication().getPassword());
+			client.getState().setCredentials(getAuthentication().getRealm(), parseDomain(getBaseWmsUrl()),
+					credentials);
+
+			// Create the GET method with the correct URL:
+			GetMethod get = new GetMethod(url);
+			get.setDoAuthentication(true);
+
+			try {
+				// Execute the GET:
+				client.executeMethod(get);
+
+				FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(get
+						.getResponseBodyAsStream());
+				FeatureIterator<SimpleFeature> it = collection.features();
+
+				while (it.hasNext()) {
+					features.add(toDto(it.next()));
+				}
+				
+			} catch (Exception e) {
+				throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
+			} finally {
+				get.releaseConnection();
 			}
 
 		} catch (LayerException le) {
 			throw le;
 		} catch (Exception e) {
 			throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
-		}
+		} 
 
 		return features;
+	}
+
+	/**
+	 * Get the domain out of a full URL.
+	 *
+	 * @param url base url
+	 * @return domain name
+	 */
+	private String parseDomain(String url) {
+		int index = url.indexOf("://");
+		String domain = url.substring(index + 3);
+		domain = domain.substring(0, domain.indexOf('/'));
+		int colonPos = domain.indexOf(':');
+		if (colonPos >= 0) {
+			domain = domain.substring(0, colonPos);
+		}
+		return domain;
 	}
 
 	private Feature toDto(SimpleFeature feature) {
@@ -349,7 +400,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	private String formatGetFeatureInfoUrl(int width, int height, Bbox box, int x, int y) throws GeomajasException {
-		StringBuilder url = formatBaseUrl(width, height, box);
+		// Always use direct url
+		StringBuilder url = formatBaseUrl(baseWmsUrl, width, height, box);
 		String layers = getId();
 		if (layerInfo.getDataSourceName() != null) {
 			layers = layerInfo.getDataSourceName();
@@ -357,7 +409,6 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		url.append("&QUERY_LAYERS=");
 		url.append(layers);
 		url.append("&request=GetFeatureInfo");
-		url.append("&request=");
 		url.append("&X=");
 		url.append(Integer.toString(x));
 		url.append("&Y=");
@@ -367,7 +418,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
-		StringBuilder url = formatBaseUrl(width, height, box);
+		StringBuilder url = formatBaseUrl(getWmsTargetUrl(), width, height, box);
 		url.append("&request=GetMap");
 		return url.toString();
 	}
@@ -381,8 +432,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @return base WMS url
 	 * @throws GeomajasException missing parameter
 	 */
-	private StringBuilder formatBaseUrl(int width, int height, Bbox box) throws GeomajasException {
-		StringBuilder url = new StringBuilder(getWmsTargetUrl());
+	private StringBuilder formatBaseUrl(String targetUrl, int width, int height, Bbox box) throws GeomajasException {
+		StringBuilder url = new StringBuilder(targetUrl);
 		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
 			url.append("&SERVICE=WMS");
