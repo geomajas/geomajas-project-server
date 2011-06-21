@@ -10,40 +10,41 @@
  */
 package org.geomajas.layer.wms;
 
-import java.util.List;
-
-import org.geomajas.global.Api;
+import com.vividsolutions.jts.geom.Coordinate;
+import org.geomajas.global.FutureApi;
 import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Feature;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import java.util.List;
 
 /**
- * Extension for any type of layer that supports retrieving feature info. 
- * 
+ * Extension for any type of layer that supports retrieving feature info.
+ *
  * @author Oliver May
- * @since 1.9.0
+ * @since 1.8.0
  */
-@Api(allMethods = true)
+@FutureApi(allMethods = true)
 @UserImplemented
 public interface LayerFeatureInfoSupport {
-	
+
 	/**
-	 * Return the list of features that lay within a given coordinate and buffer for the given viewscale.
+	 * Return the list of features that lay within a given coordinate and buffer for the given view scale.
+	 *
 	 * @param coordinate coordinate used to search for features in the layer coordinate space
 	 * @param layerScale the scale of the layer
-	 * @param buffer a buffer round the coordinate in layer units
+	 * @param pixelTolerance pixel tolerance for searching
 	 * @return features a list of features
 	 * @throws LayerException oops
 	 */
-	List<Feature> getFeaturesByLocation(Coordinate coordinate, double layerScale, double buffer) throws LayerException;
+	List<Feature> getFeaturesByLocation(Coordinate coordinate, double layerScale, int pixelTolerance)
+			throws LayerException;
 
 	/**
-	 * Return wheter the layer should support feature info support.
-	 * 
-	 * @return the enableFeatureInfoSupport true if featureinfosupport is enabled
+	 * Return whether the layer should support feature info support.
+	 *
+	 * @return the enableFeatureInfoSupport true if feature info support is enabled
 	 */
 	boolean isEnableFeatureInfoSupport();
-	
+
 }

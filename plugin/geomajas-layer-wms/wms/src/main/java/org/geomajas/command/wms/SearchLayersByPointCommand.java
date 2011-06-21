@@ -8,18 +8,20 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.command;
+package org.geomajas.command.wms;
 
-import java.util.List;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import org.geomajas.command.Command;
 import org.geomajas.command.dto.SearchLayersByPointRequest;
 import org.geomajas.command.dto.SearchLayersByPointResponse;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
+import org.geomajas.layer.LayerService;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.wms.LayerFeatureInfoSupport;
 import org.geomajas.security.SecurityContext;
@@ -29,38 +31,37 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-
+import java.util.List;
 
 /**
  * <p>
- * Execute a search for features by location. The location can be any type of geometry, but it will be converted to a 
- * coordinate. In the case the location is not a single point, the center will be used. 
- * The command only expects the location to be described using the map's coordinate system. 
+ * Execute a search for features by location/point. You can also specify a tolerance (in pixels) for the search.
+ * This tolerance may or may not be supported (it is not for WMS GetFeatureInfo).
  * </p>
  * <p>
- * It is required that at least one layer-ID is given to search in. If multiple layers are given, an extra parameter 
- * comes into play: searchType. This searchType specifies whether to search features in all given layers, to start 
+ * It is required that at least one layer ID is given to search in. If multiple layers are given, an extra parameter
+ * comes into play: searchType. This searchType specifies whether to search features in all given layers, to start
  * searching from the first layer, and stop once features are found (can be in the first layer, or in the second, ...).
  * </p>
  * <p>
- * It will go over all given layers (provided they're layers that support feature info by implementing 
- * {@link LayerFeatureInfoSupport}), and fetch the features, using the location geometry and the query type. The 
+ * It will go over all given layers (provided they're layers that support feature info by implementing
+ * {@link LayerFeatureInfoSupport}), and fetch the features, using the location and the query type. The
  * resulting list of features is added to the command result so it can be send back to the client.
  * </p>
  * <p>
- * This class is based on the {@link SearchByLocationCommand} class.
+ * This class is based on the {@link org.geomajas.command.feature.SearchByLocationCommand} class.
  * </p>
+ *
  * @author Oliver May
- * @since 1.9.0
+ * @since 1.8.0
  */
 @Api
-@Component(SearchLayersByPointRequest.COMMAND)
-public class SearchLayersByPointCommand 
-	implements Command<SearchLayersByPointRequest, SearchLayersByPointResponse> {
+@Component()
+public class SearchLayersByPointCommand
+		implements Command<SearchLayersByPointRequest, SearchLayersByPointResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SearchLayersByPointCommand.class);
 
@@ -71,40 +72,61 @@ public class SearchLayersByPointCommand
 	private GeoService geoService;
 
 	@Autowired
+	@Qualifier("layer.LayerService")
+	private LayerService layerService;
+
+	@Autowired
 	private SecurityContext securityContext;
 
-	public void execute(SearchLayersByPointRequest request, SearchLayersByPointResponse response) 
-	throws Exception {
-		if (null == request.getLayerIds()) {
+	public void execute(SearchLayersByPointRequest request, SearchLayersByPointResponse response)
+			throws Exception {
+		String[] layerIds = request.getLayerIds();
+		if (null == layerIds) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerIds");
 		}
 		String crsCode = request.getCrs();
 		if (null == crsCode) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
-		String[] layerIds = request.getLayerIds();
-		Coordinate coordinate = new Coordinate(request.getLocation().getX(), request.getLocation().getY());
-		int searchType = request.getSearchType();
+		org.geomajas.geometry.Coordinate requestLocation = request.getLocation();
+		if (null == requestLocation) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "location");
+		}
+		Bbox mapBounds = request.getMapBounds();
+		if (null == mapBounds) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapBounds");
+		}
+
+		Coordinate coordinate = new Coordinate(requestLocation.getX(), requestLocation.getY());
 		Crs crs = geoService.getCrs2(request.getCrs());
-		Envelope mapBounds = new Envelope(request.getBbox().getX(), request.getBbox().getMaxX(), 
-				request.getBbox().getY(), request.getBbox().getMaxY());
+		boolean searchFirstLayerOnly;
+		switch (request.getSearchType()) {
+			case SearchLayersByPointRequest.SEARCH_FIRST_LAYER:
+				searchFirstLayerOnly = true;
+				break;
+			case SearchLayersByPointRequest.SEARCH_ALL_LAYERS:
+				searchFirstLayerOnly = false;
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid value for searchType");
+		}
 
 		log.debug("search by location {}", coordinate);
 
-		if (layerIds != null && layerIds.length > 0) {
+		if (layerIds.length > 0) {
 			for (String layerId : layerIds) {
 				if (securityContext.isLayerVisible(layerId)) {
 					Layer<?> layer = configurationService.getLayer(layerId);
-					if (layer != null && layer instanceof LayerFeatureInfoSupport && 
+					if (layer != null && layer instanceof LayerFeatureInfoSupport &&
 							((LayerFeatureInfoSupport) layer).isEnableFeatureInfoSupport()) {
-						double layerScale = calculateLayerScale(crs, (Crs) layer.getCrs(), mapBounds, 
-								request.getScale());
-						Coordinate layerCoordinate = calculateLayerCoordinate(crs, (Crs) layer.getCrs(), coordinate);
+						Crs layerCrs = layerService.getCrs(layer);
+						double layerScale = calculateLayerScale(crs, layerCrs, mapBounds, request.getScale());
+						Coordinate layerCoordinate = geoService.transform(coordinate, crs, layerCrs);
 						List<Feature> features = ((LayerFeatureInfoSupport) layer).getFeaturesByLocation(
-								layerCoordinate, layerScale, request.getBuffer());
+								layerCoordinate, layerScale, request.getPixelTolerance());
 						if (features != null && features.size() > 0) {
 							response.addLayer(layerId, features);
-							if (searchType == SearchLayersByPointRequest.SEARCH_FIRST_LAYER) {
+							if (searchFirstLayerOnly) {
 								break;
 							}
 						}
@@ -113,42 +135,24 @@ public class SearchLayersByPointCommand
 			}
 		}
 	}
-	
+
 	public SearchLayersByPointResponse getEmptyCommandResponse() {
 		return new SearchLayersByPointResponse();
 	}
-	
-	private Coordinate calculateLayerCoordinate(Crs mapCrs, Crs layerCrs, Coordinate mapCoordinate) 
-	throws GeomajasException {
-		Coordinate layerCoordinate = mapCoordinate;
-		try {
-			// We don't necessarily need to split into same CRS and different CRS cases, the latter implementation uses
-			// identity transform if crs's are equal for map and layer but might introduce bugs in rounding and/or
-			// conversions.
-			if (!mapCrs.equals(layerCrs)) {
-				CrsTransform mapToLayer = geoService.getCrsTransform(mapCrs, layerCrs);
 
-				layerCoordinate = geoService.transform(new Envelope(mapCoordinate), mapToLayer).centre();
-			}
-		} catch (MismatchedDimensionException e) {
-			throw new GeomajasException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
-		}
-		return layerCoordinate;
-	}
-	
-	private double calculateLayerScale(Crs mapCrs, Crs layerCrs, Envelope mapBounds, double mapScale) 
-	throws GeomajasException {
+	private double calculateLayerScale(Crs mapCrs, Crs layerCrs, Bbox mapBounds, double mapScale)
+			throws GeomajasException {
 		double layerScale = mapScale;
 
 		try {
 			// We don't necessarily need to split into same CRS and different CRS cases, the latter implementation uses
-			// identity transform if crs's are equal for map and layer but might introduce bugs in rounding and/or
+			// identity transform if CRSs are equal for map and layer but might introduce bugs in rounding and/or
 			// conversions.
 			if (!mapCrs.equals(layerCrs)) {
 				CrsTransform mapToLayer = geoService.getCrsTransform(mapCrs, layerCrs);
 
 				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
-				Envelope layerBounds = geoService.transform(mapBounds, mapToLayer);
+				Bbox layerBounds = geoService.transform(mapBounds, mapToLayer);
 				layerScale = mapBounds.getWidth() * mapScale / layerBounds.getWidth();
 			}
 		} catch (MismatchedDimensionException e) {

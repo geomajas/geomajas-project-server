@@ -10,18 +10,8 @@
  */
 package org.geomajas.layer.wms;
 
-import java.io.IOException;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
@@ -52,10 +42,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.xml.sax.SAXException;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
+import javax.annotation.PostConstruct;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -94,9 +89,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private String baseWmsUrl, format, version, styles = "";
 
 	private List<Parameter> parameters;
-	
+
 	private boolean enableFeatureInfoSupport;
-	
+
 	@Autowired
 	private GeoService geoService;
 
@@ -186,16 +181,14 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}
-	
-	/**
-	 * See {@link LayerFeatureInfoSupport}.
-	 */
-	public List<Feature> getFeaturesByLocation(Coordinate layerCoordinate, double layerScale, double buffer) 
-	throws LayerException {
+
+	/** {@inheritDoc}. */
+	public List<Feature> getFeaturesByLocation(Coordinate layerCoordinate, double layerScale, int pixelTolerance)
+			throws LayerException {
 		if (!isEnableFeatureInfoSupport()) {
 			return Collections.emptyList();
 		}
-		
+
 		List<Feature> features = new ArrayList<Feature>();
 
 		Resolution bestResolution = getResolutionForScale(layerScale);
@@ -205,55 +198,43 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				.getTileWidth());
 		int y = (int) (bestResolution.getTileHeightPx() - (((layerCoordinate.y - grid.getLowerLeft().y) * bestResolution
 				.getTileHeightPx()) / grid.getTileHeight()));
-		
-		Bbox layerBox = new Bbox(grid.getLowerLeft().x, grid.getLowerLeft().y, grid.getTileWidth(), 
+
+		Bbox layerBox = new Bbox(grid.getLowerLeft().x, grid.getLowerLeft().y, grid.getTileWidth(),
 				grid.getTileHeight());
-		
+
 		try {
-			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(), 
+			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(),
 					layerBox, x, y);
-			log.debug("getFeaturesByLocation: {} {} {} {}", new Object[] {layerCoordinate, layerScale, buffer, url});
+			log.debug("getFeaturesByLocation: {} {} {} {}",
+					new Object[] {layerCoordinate, layerScale, pixelTolerance, url});
 			GML gml = new GML(Version.GML3);
 
 			URL urlFile = new URL(url);
-			
+
 			FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(urlFile.openStream());
 			FeatureIterator<SimpleFeature> it = collection.features();
-			
+
 			while (it.hasNext()) {
 				features.add(toDto(it.next()));
 			}
-			
-		} catch (GeomajasException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		} catch (LayerException le) {
+			throw le;
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
-		
-		
+
 		return features;
 	}
-	
-	
+
 	private Feature toDto(SimpleFeature feature) {
 		if (feature == null) {
 			return null;
 		}
 		Feature dto = new Feature(feature.getID());
-		
+
 		HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
-		
+
 		for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
 			attributes.put(desc.getLocalName(), new StringAttribute("" + feature.getAttribute(desc.getName())));
 		}
@@ -263,7 +244,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		dto.setUpdatable(false);
 		dto.setDeletable(false);
 		return dto;
-		
+
 	}
 
 	/**
@@ -328,8 +309,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				// Rounding to avoid white space between raster tiles lower-left becomes upper-left in inverted y-space
 				Bbox screenbox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale * worldBox.getMaxY()),
 						Math.round(scale * worldBox.getMaxX()) - Math.round(scale * worldBox.getX()), Math.round(scale
-								* worldBox.getMaxY())
-								- Math.round(scale * worldBox.getY()));
+						* worldBox.getMaxY())
+						- Math.round(scale * worldBox.getY()));
 
 				RasterTile image = new RasterTile(screenbox, getId() + "." + bestResolution.getLevel() + "." + i
 						+ "," + j);
@@ -366,7 +347,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		if (layerInfo.getDataSourceName() != null) {
 			layers = layerInfo.getDataSourceName();
 		}
-		url += "&QUERY_LAYERS=" + layers;		
+		url += "&QUERY_LAYERS=" + layers;
 		url += "&request=GetFeatureInfo";
 		url += "&request=";
 		url += "&X=" + x;
@@ -374,21 +355,22 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		url += "&INFO_FORMAT=application/vnd.ogc.gml";
 		return url;
 	}
-	
+
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
 		String url = formatBaseUrl(width, height, box);
 		url += "&request=GetMap";
 		log.debug(url);
 		return url;
 	}
-	
+
 	/**
 	 * Build the base part of the url (doesn't change for getMap or getFeatureInfo requests).
-	 * @param width
-	 * @param height
-	 * @param box
-	 * @return
-	 * @throws GeomajasException
+	 *
+	 * @param width image width
+	 * @param height image height
+	 * @param box bounding box
+	 * @return base WMS url
+	 * @throws GeomajasException missing parameter
 	 */
 	private String formatBaseUrl(int width, int height, Bbox box) throws GeomajasException {
 		String url = getWmsTargetUrl();
@@ -434,7 +416,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		}
 		return url;
 	}
-	
+
 	private Resolution getResolutionForScale(double scale) {
 		if (null == resolutions || resolutions.size() == 0) {
 			return calculateBestQuadTreeResolution(scale);
@@ -450,7 +432,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					Resolution lower = resolutions.get(i + 1);
 					if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
 						if ((upper.getResolution() - screenResolution) >
-							2 * (screenResolution - lower.getResolution())) {
+								2 * (screenResolution - lower.getResolution())) {
 							return lower;
 						} else {
 							return upper;
@@ -622,10 +604,10 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	/**
-	 * Set wheter the WMS layer should support feature info support. This allows to retrieve feature info from a 
+	 * Set wheter the WMS layer should support feature info support. This allows to retrieve feature info from a
 	 * raster layer. This only makes sense if the WMS layer is based on some kind of feature store like a database.
-	 * 
-	 * @param enableFeatureInfoSupport whether featureinfosupport is enabled for this layer
+	 *
+	 * @param enableFeatureInfoSupport whether feature info support is enabled for this layer
 	 */
 	public void setEnableFeatureInfoSupport(boolean enableFeatureInfoSupport) {
 		this.enableFeatureInfoSupport = enableFeatureInfoSupport;
@@ -633,8 +615,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	/**
 	 * Get wheter the WMS layer should support feature info support.
-	 * 
-	 * @return the enableFeatureInfoSupport true if featureinfosupport is enabled
+	 *
+	 * @return the enableFeatureInfoSupport true if feature info support is enabled
 	 */
 	public boolean isEnableFeatureInfoSupport() {
 		return enableFeatureInfoSupport;
@@ -758,6 +740,5 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 			return resolution;
 		}
 	}
-
 
 }
