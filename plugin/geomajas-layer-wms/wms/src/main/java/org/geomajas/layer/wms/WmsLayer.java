@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -86,7 +87,10 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
-	private String baseWmsUrl, format, version, styles = "";
+	@NotNull
+	private String baseWmsUrl;
+
+	private String format, version, styles = "";
 
 	private List<Parameter> parameters;
 
@@ -288,7 +292,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		RasterGrid grid = getRasterGrid(layerBounds, bestResolution.getTileWidth(),
 				bestResolution.getTileHeight(), layerScale);
 
-		// We calculate the first tile's screenbox with this assumption
+		// We calculate the first tile's screen box with this assumption
 		List<RasterTile> result = new ArrayList<RasterTile>();
 		for (int i = grid.getXmin(); i < grid.getXmax(); i++) {
 			for (int j = grid.getYmin(); j < grid.getYmax(); j++) {
@@ -307,12 +311,12 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					layerBox = worldBox;
 				}
 				// Rounding to avoid white space between raster tiles lower-left becomes upper-left in inverted y-space
-				Bbox screenbox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale * worldBox.getMaxY()),
+				Bbox screenBox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale * worldBox.getMaxY()),
 						Math.round(scale * worldBox.getMaxX()) - Math.round(scale * worldBox.getX()), Math.round(scale
 						* worldBox.getMaxY())
 						- Math.round(scale * worldBox.getY()));
 
-				RasterTile image = new RasterTile(screenbox, getId() + "." + bestResolution.getLevel() + "." + i
+				RasterTile image = new RasterTile(screenBox, getId() + "." + bestResolution.getLevel() + "." + i
 						+ "," + j);
 
 				image.setCode(new TileCode(bestResolution.getLevel(), i, j));
@@ -325,7 +329,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return result;
 	}
 
-	private String getWmsTargetUrl() {
+	private String getWmsTargetUrl() throws GeomajasException {
 		if (useProxy || null != authentication) {
 			if (null != dispatcherUrlService) {
 				String url = dispatcherUrlService.getDispatcherUrl();
@@ -337,30 +341,35 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				return "./d/wms/" + getId() + "/";
 			}
 		} else {
+			if (null == baseWmsUrl) {
+				throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
+			}
 			return baseWmsUrl;
 		}
 	}
 
 	private String formatGetFeatureInfoUrl(int width, int height, Bbox box, int x, int y) throws GeomajasException {
-		String url = formatBaseUrl(width, height, box);
+		StringBuilder url = formatBaseUrl(width, height, box);
 		String layers = getId();
 		if (layerInfo.getDataSourceName() != null) {
 			layers = layerInfo.getDataSourceName();
 		}
-		url += "&QUERY_LAYERS=" + layers;
-		url += "&request=GetFeatureInfo";
-		url += "&request=";
-		url += "&X=" + x;
-		url += "&Y=" + y;
-		url += "&INFO_FORMAT=application/vnd.ogc.gml";
-		return url;
+		url.append("&QUERY_LAYERS=");
+		url.append(layers);
+		url.append("&request=GetFeatureInfo");
+		url.append("&request=");
+		url.append("&X=");
+		url.append(Integer.toString(x));
+		url.append("&Y=");
+		url.append(Integer.toString(y));
+		url.append("&INFO_FORMAT=application/vnd.ogc.gml)");
+		return url.toString();
 	}
 
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
-		String url = formatBaseUrl(width, height, box);
-		url += "&request=GetMap";
-		log.debug(url);
-		return url;
+		StringBuilder url = formatBaseUrl(width, height, box);
+		url.append("&request=GetMap");
+		return url.toString();
 	}
 
 	/**
@@ -372,11 +381,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * @return base WMS url
 	 * @throws GeomajasException missing parameter
 	 */
-	private String formatBaseUrl(int width, int height, Bbox box) throws GeomajasException {
+	private StringBuilder formatBaseUrl(int width, int height, Bbox box) throws GeomajasException {
 		StringBuilder url = new StringBuilder(getWmsTargetUrl());
-		if (null == url) {
-			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
-		}
 		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
 			url.append("&SERVICE=WMS");
@@ -392,7 +398,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		url.append("&WIDTH=");
 		url.append(Integer.toString(width));
 		url.append("&HEIGHT=");
-		url.append(Integer.toOctalString(height));
+		url.append(Integer.toString(height));
 		DecimalFormat decimalFormat = new DecimalFormat(); // create new as this is not thread safe
 		decimalFormat.setDecimalSeparatorAlwaysShown(false);
 		decimalFormat.setGroupingUsed(false);
@@ -430,7 +436,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				url.append(p.getValue());
 			}
 		}
-		return url.toString();
+		return url;
 	}
 
 	private Resolution getResolutionForScale(double scale) {
