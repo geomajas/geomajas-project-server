@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.widget;
 import java.util.HashMap;
 
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Layout behaving like a deck of cards. Only one card visible at a time.
@@ -20,7 +21,7 @@ import com.smartgwt.client.widgets.Canvas;
  * @author Jan De Moerloose
  * 
  */
-public class CardLayout extends Canvas {
+public class CardLayout extends VLayout {
 
 	private HashMap<Object, Canvas> cards = new HashMap<Object, Canvas>();
 
@@ -33,11 +34,7 @@ public class CardLayout extends Canvas {
 	 * @param card the card
 	 */
 	public void addCard(Object key, Canvas card) {
-		card.setWidth100();
-		card.setHeight100();
-		card.setLeft(0);
-		card.setTop(0);
-		addChild(card);
+		addMember(card);
 		cards.put(key, card);
 		showCard(key);
 	}
@@ -67,5 +64,4 @@ public class CardLayout extends Canvas {
 	public Canvas getCurrentCard() {
 		return currentCard;
 	}
-	
 }
