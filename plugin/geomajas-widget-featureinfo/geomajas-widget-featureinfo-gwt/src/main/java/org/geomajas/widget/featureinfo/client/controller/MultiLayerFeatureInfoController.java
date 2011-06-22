@@ -11,9 +11,10 @@
 
 package org.geomajas.widget.featureinfo.client.controller;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
@@ -189,7 +190,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 	}
 
 	private String[] getServerLayerIds(MapModel mapModel) {
-		List<String> layerIds = new ArrayList<String>();
+		Set<String> layerIds = new HashSet<String>();
 		for (Layer<?> layer : mapModel.getLayers()) {
 			if (layer.isShowing()) {
 				layerIds.add(layer.getServerLayerId());

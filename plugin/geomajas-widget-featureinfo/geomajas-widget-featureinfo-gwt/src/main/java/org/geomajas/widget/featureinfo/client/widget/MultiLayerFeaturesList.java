@@ -90,14 +90,12 @@ public class MultiLayerFeaturesList extends ListGrid {
 	 */
 	public void setFeatures(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		MapModel mapModel = mapWidget.getMapModel();
+		
 		for (String serverLayerId : featureMap.keySet()) {
-			List<Layer<?>> layers = mapModel.getLayersByServerId(serverLayerId); /*
-																						 * ??there can be more than one
-																						 * Client VectorLayer for the
-																						 * same serverLayerId
-																						 */
-			for (Layer layer : layers) {
-
+			List<Layer<?>> layers = mapModel.getLayersByServerId(serverLayerId);
+			if (layers.size() > 0) {
+				 // There can be more than one Client VectorLayer for the same serverLayerId
+				Layer<?> layer = layers.get(0);
 				List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(serverLayerId);
 				if (!orgFeatures.isEmpty()) {
 					if (layer instanceof VectorLayer) {

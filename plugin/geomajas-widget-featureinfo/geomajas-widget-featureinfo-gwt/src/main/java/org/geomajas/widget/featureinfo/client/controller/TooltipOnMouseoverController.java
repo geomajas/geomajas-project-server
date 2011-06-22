@@ -11,9 +11,10 @@
 
 package org.geomajas.widget.featureinfo.client.controller;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
@@ -203,6 +204,8 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 							count += features.size();
 						}
 					}
+					// remove in case there are multiple clientlayers for this serverlayer
+					featureMap.remove(layer.getServerLayerId());
 				}
 			}
 			if (count > maxLabelCount) {
@@ -233,9 +236,8 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 				request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
 			}
 		}
-		
 
-		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 			public void execute(CommandResponse commandResponse) {
@@ -268,7 +270,7 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 	}
 
 	private String[] getServerLayerIds(MapModel mapModel) {
-		List<String> layerIds = new ArrayList<String>();
+		Set<String> layerIds = new HashSet<String>();
 		for (VectorLayer layer : mapModel.getVectorLayers()) {
 			if (layer.isShowing()) {
 				layerIds.add(layer.getServerLayerId());
