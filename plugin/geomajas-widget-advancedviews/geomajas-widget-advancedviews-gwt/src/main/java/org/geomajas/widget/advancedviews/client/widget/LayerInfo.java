@@ -65,6 +65,7 @@ public class LayerInfo extends Window {
 		setTitle(messages.layerInfoWindowTitle() + " - " + layer.getLabel());
 		setAutoCenter(true);
 		setAutoSize(true);
+		setKeepInParentRect(true);
 
 		VLayout layout = new VLayout();
 		layout.setWidth(450);

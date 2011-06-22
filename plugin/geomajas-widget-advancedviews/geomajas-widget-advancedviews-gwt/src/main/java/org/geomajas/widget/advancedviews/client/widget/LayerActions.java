@@ -65,6 +65,7 @@ public class LayerActions extends Window {
 		setTitle(messages.layerActionsWindowTitle() + " - " + layer.getLabel());
 		setAutoCenter(true);
 		setAutoSize(true);
+		setKeepInParentRect(true);
 
 		VLayout layout = new VLayout();
 		layout.setPadding(5);
