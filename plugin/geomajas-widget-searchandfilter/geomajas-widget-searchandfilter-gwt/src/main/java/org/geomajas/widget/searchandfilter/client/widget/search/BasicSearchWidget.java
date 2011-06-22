@@ -86,6 +86,7 @@ public class BasicSearchWidget extends Window implements SearchWidget {
 		this.name = name;
 		this.setTitle(name);
 		this.setAutoCenter(true);
+		this.setKeepInParentRect(true);
 
 		VLayout layout = new VLayout(10);
 		layout.setWidth100();

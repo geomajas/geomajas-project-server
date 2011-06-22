@@ -59,6 +59,7 @@ public class FavouritesController implements FavouriteRequestHandler {
 		addWindow.setAutoCenter(true);
 		addWindow.setShowMinimizeButton(false);
 		addWindow.setIsModal(true);
+		addWindow.setKeepInParentRect(true);
 		//addWindow.setShowModalMask(true);
 
 		VLayout mainLayout = new VLayout(10);

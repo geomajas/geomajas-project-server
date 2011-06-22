@@ -139,6 +139,7 @@ public class SearchController implements SearchRequestHandler {
 				modalWindow.setShowCloseButton(false);
 				modalWindow.setIsModal(true);
 				modalWindow.setShowModalMask(true);
+				modalWindow.setKeepInParentRect(true);
 			}
 			modalWindow.show();
 		}

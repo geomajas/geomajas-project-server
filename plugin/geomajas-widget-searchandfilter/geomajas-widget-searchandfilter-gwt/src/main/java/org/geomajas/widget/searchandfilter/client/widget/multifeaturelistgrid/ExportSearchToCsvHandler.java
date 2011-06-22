@@ -117,6 +117,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 							window.centerInPage();
 							window.setAutoSize(true);
 							window.show();
+							window.setKeepInParentRect(true);
 						}
 						if (onFinished != null) {
 							onFinished.execute();
