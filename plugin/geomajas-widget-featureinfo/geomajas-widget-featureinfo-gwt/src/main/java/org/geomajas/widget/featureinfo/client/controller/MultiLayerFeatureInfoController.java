@@ -34,8 +34,11 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
+import org.geomajas.widget.featureinfo.client.widget.Notify;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -57,7 +60,8 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 	private boolean dragging;
 	private boolean clickstart;
 	private boolean includeRasterLayers = true;
-	
+	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+
 	/**
 	 * Number of pixels that describes the tolerance allowed when trying to
 	 * select features.
@@ -155,26 +159,27 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 				}
 			});
 			
-			
-			
 		} else {
 			dragging = false;
 		}
 		clickstart = false;
 	}
 	
-	private void showWindow(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
-		
-		Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
-		window.setPageTop(mapWidget.getAbsoluteTop() + 10);
-		window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
-		window.draw();
-	}
-
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
 
+	private void showWindow(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
+		if (featureMap.size() > 0) {
+			Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
+			window.setPageTop(mapWidget.getAbsoluteTop() + 10);
+			window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
+			window.draw();
+		} else {
+			Notify.info(messages.multiLayerFeatureInfoNoResult());
+		}
+	}
+	
 	/**
 	 * @param bounds
 	 * @return

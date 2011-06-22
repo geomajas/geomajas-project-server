@@ -39,4 +39,6 @@ public interface FeatureInfoMessages extends Messages {
 	String combinedFeatureInfoActionTooltip();
 	
 	String urlFeatureDetailWidgetBuilderNoValue();
+	
+	String multiLayerFeatureInfoNoResult();
 }
