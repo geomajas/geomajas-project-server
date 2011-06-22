@@ -64,6 +64,7 @@ public class MultiLayerFeatureInfoWindow extends Window {
 		setCanDragResize(true);
 		setWidth("250px");
 		setMinWidth(250);
+		setKeepInParentRect(true);
 
 		featuresList = new MultiLayerFeaturesList(mapWidget, new FeatureClickHandler() {
 

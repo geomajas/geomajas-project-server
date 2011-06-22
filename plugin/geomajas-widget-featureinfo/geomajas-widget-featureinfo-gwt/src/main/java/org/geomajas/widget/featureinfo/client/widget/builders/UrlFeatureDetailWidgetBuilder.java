@@ -55,6 +55,7 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 		w.setCanDragReposition(true);
 		w.setCanDragResize(true);
 		w.setAutoCenter(true);
+		w.setKeepInParentRect(true);
 
 		String url = buildUrl(feature);
 		if (url == null) {

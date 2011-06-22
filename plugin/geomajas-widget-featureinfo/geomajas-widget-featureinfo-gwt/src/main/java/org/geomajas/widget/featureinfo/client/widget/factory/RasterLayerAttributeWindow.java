@@ -46,6 +46,7 @@ public class RasterLayerAttributeWindow extends Window {
 		setCanDragReposition(true);
 		setCanDragResize(true);
 		setOverflow(Overflow.AUTO);
+		setKeepInParentRect(true);
 		setTitle("Object Detail - " + rasterFeature.getId());
 		addItem(new RasterLayerAttributeCanvas(rasterFeature));
 	}
