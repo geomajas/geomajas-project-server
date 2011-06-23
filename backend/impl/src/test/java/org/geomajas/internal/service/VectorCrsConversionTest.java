@@ -22,13 +22,13 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -42,7 +42,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeansMercator.xml"})
-@DirtiesContext
 public class VectorCrsConversionTest {
 
 	private static final String LAYER_ID = "beans";
@@ -86,10 +85,9 @@ public class VectorCrsConversionTest {
 		securityManager.createSecurityContext(null);
 	}
 
-	@Test
-	@DirtiesContext
-	public void testDummy() throws Exception {
-		// dummy test method which (thanks to the DirtiesContext annotation) assure the ThreadScope is re-initialized.
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -47,7 +46,6 @@ public class SearchAttributesCommandTest {
 	private VectorLayer layer;
 
 	@Test
-	@DirtiesContext // @todo need to check why this is necessary, otherwise next test fails? (GetVectorTileCommandTest)
 	public void testSearchAttributes() throws Exception {
 		SearchAttributesRequest request = new SearchAttributesRequest();
 		request.setLayerId(LAYER_ID);

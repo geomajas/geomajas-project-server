@@ -23,6 +23,7 @@ import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.layer.VectorLayerService;
 import org.geotools.referencing.CRS;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,11 @@ public class VectorLayerServiceInvisibleLayerTest {
 
 	@Autowired
 	private CommandDispatcher commandDispatcher;
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
 
 	// assure we are logged in as a specific user to set correct authorizations
 	public void login(String name) {

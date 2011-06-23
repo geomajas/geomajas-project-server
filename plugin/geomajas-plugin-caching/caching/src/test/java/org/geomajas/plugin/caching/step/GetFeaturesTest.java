@@ -22,6 +22,7 @@ import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,6 @@ import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -79,8 +79,12 @@ public class GetFeaturesTest {
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
 	}
 
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
-	@DirtiesContext
 	public void testFeatures() throws Exception {
 		List<InternalFeature> features;
 
@@ -119,7 +123,6 @@ public class GetFeaturesTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testFeaturesLazyConverted() throws Exception {
 		((BeanLayer)layerBeans).setUseLazyFeatureConversion(true);
 
@@ -143,7 +146,6 @@ public class GetFeaturesTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testFeaturesFiltered() throws Exception {
 		List<InternalFeature> features;
 		InternalFeature feature;
@@ -175,7 +177,6 @@ public class GetFeaturesTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testFeaturesFilteredTransformed() throws Exception {
 		List<InternalFeature> features;
 		InternalFeature feature;

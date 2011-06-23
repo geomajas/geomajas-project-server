@@ -15,6 +15,7 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -15,6 +15,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContext;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,6 +50,11 @@ public class RasterDirectLayerTest {
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

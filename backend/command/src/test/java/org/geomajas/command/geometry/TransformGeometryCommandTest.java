@@ -8,6 +8,7 @@ import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.service.DtoConverterService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

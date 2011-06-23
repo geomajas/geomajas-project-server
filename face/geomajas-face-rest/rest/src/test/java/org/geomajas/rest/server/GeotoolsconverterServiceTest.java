@@ -20,6 +20,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.FilterService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +58,11 @@ public class GeotoolsconverterServiceTest {
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

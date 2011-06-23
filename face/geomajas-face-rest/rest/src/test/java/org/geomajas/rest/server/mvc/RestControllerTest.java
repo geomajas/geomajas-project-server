@@ -23,6 +23,7 @@ import org.geotools.geometry.jts.JTS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,11 @@ public class RestControllerTest {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
 		adapter = new AnnotationMethodHandlerAdapter();
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

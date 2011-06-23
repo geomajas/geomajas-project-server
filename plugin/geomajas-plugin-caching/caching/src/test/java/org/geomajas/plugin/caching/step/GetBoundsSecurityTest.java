@@ -21,12 +21,12 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.service.TestRecorder;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -72,8 +72,12 @@ public class GetBoundsSecurityTest {
 		securityManager.createSecurityContext(((LoginResponse) response).getToken());
 	}
 
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
-	@DirtiesContext
 	public void testGetBoundsVisibleArea() throws Exception {
 		CoordinateReferenceSystem crs = beanLayer.getCrs();
 		Envelope envelope;

@@ -39,7 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/spring/moreContext.xml"})
-@DirtiesContext
 public class SecurityContextFeatureFilterTest {
 
 	private static final String SECURITY_SERVICE_ID = "ss";
@@ -61,7 +60,7 @@ public class SecurityContextFeatureFilterTest {
 	}
 
 	@Test
-	@DirtiesContext
+	@DirtiesContext // setting SecurityContext
 	public void testNoFilters() {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();

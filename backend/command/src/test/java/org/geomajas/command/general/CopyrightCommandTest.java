@@ -15,8 +15,6 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.CopyrightRequest;
 import org.geomajas.command.dto.CopyrightResponse;
 import org.geomajas.global.CopyrightInfo;
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.GeoService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,12 +36,6 @@ public class CopyrightCommandTest {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
-
-	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private DtoConverterService dtoConverter;
 
 	@Test
 	public void testCopyright() throws Exception {

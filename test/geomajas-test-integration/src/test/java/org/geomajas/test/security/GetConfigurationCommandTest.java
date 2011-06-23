@@ -26,6 +26,7 @@ import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.security.*;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,11 @@ public class GetConfigurationCommandTest {
 
 	@Autowired
 	private CommandDispatcher commandDispatcher;
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
 
 	// assure we are logged in as a specific user to set correct authorizations
 	public void login(String name) {

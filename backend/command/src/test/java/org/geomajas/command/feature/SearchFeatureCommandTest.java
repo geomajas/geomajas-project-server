@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -246,6 +247,8 @@ public class SearchFeatureCommandTest {
 	}
 
 	@Test
+	@DirtiesContext // @todo need to check why this is necessary, otherwise next test fails? (GetVectorTileCommandTest)
+	// probably cause by directly using the command service which has an injected security context
 	public void createFilterTest() throws Exception {
 		SearchFeatureRequest request = new SearchFeatureRequest();
 		request.setLayerId(LAYER_ID);

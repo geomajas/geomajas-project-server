@@ -16,6 +16,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchLayersByPointRequest;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,11 @@ public class SearchLayersByPointCommandTest {
 	@Before
 	public void login() {
 		securityManager.createSecurityContext("");
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

@@ -23,6 +23,7 @@ import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.allowall.AllowAllAuthorization;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
-@DirtiesContext
 public class SecurityContextSaveRestoreTest {
 
 	@Autowired
@@ -54,7 +54,13 @@ public class SecurityContextSaveRestoreTest {
 	private static final String USER_ORGANIZATION = "Geosparc";
 	private static final String USER_DIVISION = "Development";
 
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
+	@DirtiesContext
 	public void testSameUser() {
 		SecurityContextImpl context = new SecurityContextImpl();
 		List<Authentication> authentications = new ArrayList<Authentication>();

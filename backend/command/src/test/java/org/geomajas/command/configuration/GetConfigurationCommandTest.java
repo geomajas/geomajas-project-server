@@ -20,6 +20,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.service.ConfigurationService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

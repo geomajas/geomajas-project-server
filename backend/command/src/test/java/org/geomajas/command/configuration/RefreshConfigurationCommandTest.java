@@ -15,6 +15,7 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
 import org.geomajas.command.dto.RefreshConfigurationResponse;
 import org.geomajas.service.TestRecorder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

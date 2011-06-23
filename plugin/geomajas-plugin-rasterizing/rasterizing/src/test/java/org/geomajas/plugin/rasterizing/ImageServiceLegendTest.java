@@ -17,12 +17,12 @@ import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -32,7 +32,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
 		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml",
 		"/org/geomajas/testdata/layerBluemarble.xml" })
-@DirtiesContext
 public class ImageServiceLegendTest {
 
 	@Autowired
@@ -72,6 +71,11 @@ public class ImageServiceLegendTest {
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

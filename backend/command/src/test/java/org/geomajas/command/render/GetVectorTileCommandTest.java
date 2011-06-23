@@ -17,6 +17,7 @@ import org.geomajas.command.dto.GetVectorTileResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

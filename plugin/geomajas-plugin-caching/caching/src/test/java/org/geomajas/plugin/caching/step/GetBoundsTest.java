@@ -19,11 +19,11 @@ import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -58,8 +58,12 @@ public class GetBoundsTest {
 	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
 
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
-	@DirtiesContext
 	public void testGetBounds() throws Exception {
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
 		Envelope bounds;

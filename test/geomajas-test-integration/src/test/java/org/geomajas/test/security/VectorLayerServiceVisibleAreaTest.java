@@ -33,6 +33,7 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geotools.referencing.CRS;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
@@ -79,6 +80,11 @@ public class VectorLayerServiceVisibleAreaTest {
 
 	@Autowired
 	private FilterService filterService;
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
 
 	// assure we are logged in as a specific user to set correct authorizations
 	public void login(String name) {

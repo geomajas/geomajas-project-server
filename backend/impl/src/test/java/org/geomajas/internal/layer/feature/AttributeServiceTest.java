@@ -23,6 +23,7 @@ import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.DtoConverterService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,6 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -46,7 +46,6 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml" })
-@DirtiesContext
 public class AttributeServiceTest {
 
 	private static final long TEST_ID = 17;
@@ -81,6 +80,11 @@ public class AttributeServiceTest {
 		securityManager.createSecurityContext(""); // log in
 
 		lazyLayerBeans = new LazyVectorLayer(layerBeans);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

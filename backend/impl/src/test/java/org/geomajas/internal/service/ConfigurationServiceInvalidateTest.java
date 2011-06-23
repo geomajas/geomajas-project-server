@@ -16,11 +16,11 @@ import junit.framework.Assert;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.TestRecorder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -33,7 +33,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
 		"/org/geomajas/spring/testRecorder.xml", "/org/geomajas/internal/service/layerInvalidateContext.xml"})
-@DirtiesContext
 public class ConfigurationServiceInvalidateTest {
 
 	private static final String LAYER_ID = "beans";
@@ -51,6 +50,11 @@ public class ConfigurationServiceInvalidateTest {
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

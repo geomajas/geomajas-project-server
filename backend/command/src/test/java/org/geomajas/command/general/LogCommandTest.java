@@ -18,7 +18,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -36,7 +35,6 @@ public class LogCommandTest {
 	private CommandDispatcher dispatcher;
 
 	@Test
-	@DirtiesContext
 	public void testLog() throws Exception {
 		LogRequest request = new LogRequest();
 		request.setLevel(LogRequest.LEVEL_INFO);

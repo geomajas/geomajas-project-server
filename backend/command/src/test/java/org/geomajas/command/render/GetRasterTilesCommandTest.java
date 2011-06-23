@@ -18,6 +18,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

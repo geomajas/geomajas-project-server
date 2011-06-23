@@ -42,7 +42,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
-@DirtiesContext
 public class SecurityContextFeatureAuthorizationTest {
 
 	private static final String LAYER_ID = "beans";
@@ -55,6 +54,7 @@ public class SecurityContextFeatureAuthorizationTest {
 	private SecurityContext securityContext;
 
 	@Test
+	@DirtiesContext
 	public void testBaseAuthorization() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		securityContext.setAuthentications(null, null);
@@ -77,6 +77,7 @@ public class SecurityContextFeatureAuthorizationTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testAllAndFeatureAuthorization() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
@@ -98,6 +99,7 @@ public class SecurityContextFeatureAuthorizationTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testFeatureAuthorization() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();

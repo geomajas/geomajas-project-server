@@ -15,10 +15,10 @@ import junit.framework.Assert;
 
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,7 +30,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/spring/securityLoopContext.xml"})
-@DirtiesContext
 public class SecurityManagerLoopTest {
 
 	@Autowired
@@ -39,22 +38,24 @@ public class SecurityManagerLoopTest {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
-	@DirtiesContext
 	public void testLooping() {
 		Assert.assertTrue(securityManager.createSecurityContext("TEST"));
 		Assert.assertEquals(2, securityContext.getSecurityServiceResults().size());
 	}
 
 	@Test
-	@DirtiesContext
 	public void testNotAuthenticated() {
 		Assert.assertFalse(securityManager.createSecurityContext("false"));
 		Assert.assertEquals(0, securityContext.getSecurityServiceResults().size());
 	}
 
 	@Test
-	@DirtiesContext
 	public void testSecondOnly() {
 		Assert.assertTrue(securityManager.createSecurityContext("SECOND"));
 		Assert.assertEquals(1, securityContext.getSecurityServiceResults().size());

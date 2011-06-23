@@ -17,11 +17,11 @@ import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -33,7 +33,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/internal/service/inMemorySecurityContext.xml", "/org/geomajas/spring/testRecorder.xml" })
-@DirtiesContext
 public class AuthorizationWiringTest {
 
 	private static final String TOKEN = "someToken";
@@ -50,8 +49,13 @@ public class AuthorizationWiringTest {
 	@Autowired
 	private TestRecorder testRecorder;
 
+	@After
+	public void clearSecurityContext() {
+		// need to clear security context
+		securityManager.clearSecurityContext();
+	}
+
 	@Test
-	@DirtiesContext
 	public void testValidToken() {
 		securityService.put(TOKEN, createTestAuthentication());
 

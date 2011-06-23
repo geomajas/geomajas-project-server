@@ -42,7 +42,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
-@DirtiesContext
 public class SecurityContextAreaAuthorizationTest {
 
 	private static final String LAYER_ID = "beans";
@@ -55,7 +54,7 @@ public class SecurityContextAreaAuthorizationTest {
 	private SecurityContext securityContext;
 
 	@Test
-	@DirtiesContext
+	@DirtiesContext // changing security context
 	public void testNotAuthenticatedVisibleArea() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
 		securityContext.setAuthentications(null, null);

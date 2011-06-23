@@ -17,6 +17,7 @@ import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -42,7 +42,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
 		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml",
 		"/org/geomajas/testdata/layerBeansMixedGeometry.xml" })
-@DirtiesContext
 public class ImageServiceVectorTileTest {
 
 	@Autowired
@@ -100,6 +99,11 @@ public class ImageServiceVectorTileTest {
 	public void login() {
 		// assure security context is set
 		securityManager.createSecurityContext(null);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test

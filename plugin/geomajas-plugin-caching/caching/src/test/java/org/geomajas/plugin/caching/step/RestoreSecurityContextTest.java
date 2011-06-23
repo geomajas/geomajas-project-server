@@ -24,13 +24,13 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -72,6 +72,11 @@ public class RestoreSecurityContextTest {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
+	}
+
 	// assure we are logged in as a specific user to set correct authorizations
 	public void login(String name) {
 		LoginRequest request = new LoginRequest();
@@ -84,7 +89,6 @@ public class RestoreSecurityContextTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testRestoreSecurityContext() throws Exception {
 		String key;
 		StringContainer container;

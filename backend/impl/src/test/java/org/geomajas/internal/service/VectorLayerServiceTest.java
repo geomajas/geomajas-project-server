@@ -32,6 +32,7 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +61,6 @@ import javax.swing.text.StyleContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
-@DirtiesContext
 public class VectorLayerServiceTest {
 
 	private static final String LAYER_ID = "beans";
@@ -92,10 +92,9 @@ public class VectorLayerServiceTest {
 		securityManager.createSecurityContext(null);
 	}
 
-	@Test
-	@DirtiesContext
-	public void testDummy() throws Exception {
-		// dummy test method which (thanks to the DirtiesContext annotation) assure the ThreadScope is re-initialized.
+	@After
+	public void clearSecurityContext() {
+		securityManager.clearSecurityContext();
 	}
 
 	@Test
