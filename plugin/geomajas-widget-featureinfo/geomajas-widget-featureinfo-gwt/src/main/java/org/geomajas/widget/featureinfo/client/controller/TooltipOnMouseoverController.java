@@ -98,7 +98,9 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
+		// do not use getRelative(mapwidget.getElement()) -- it reinitializes the map...
 		currentPosition = new Coordinate(event.getClientX(), event.getClientY());
+		
 		if (lastPosition == null) {
 			lastPosition = currentPosition;
 		} else {
@@ -129,7 +131,10 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
-		onDeactivate();
+		// when label is repositioned in corner it can be put under mouse, which (falsely) generates a mouseOutEvent
+		if (!overlapsTooltip(event.getClientX(), event.getClientY())) {
+			onDeactivate();
+		}
 	}
 
 	// ----------------------------------------------------------
@@ -140,8 +145,7 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 
 	private void showTooltip() {
 		if (!isShowing()) {
-			// SC.logWarn("Showing tooltip");
-			createTooltip((int) currentPosition.getX(), (int) currentPosition.getY());
+			createTooltip((int) currentPosition.getX() + 12, (int) currentPosition.getY() + 12, null);
 			getData();
 		}
 	}
@@ -213,9 +217,15 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 			} else if (count == 0) {
 				writeNone(sb);
 			}
-			tooltip.removeChild(loadingImg);
-			tooltip.setContents("<div style='margin:5px; width: " + (widest * 5 + 15) + "px'>" + sb.toString()
-					+ "</div>");
+			
+			int left = tooltip.getLeft();
+			int top = tooltip.getTop();
+			destroyTooltip();
+			Label content = new Label(sb.toString());
+			content.setWidth(widest * 6 + 10);
+			content.setAutoHeight();
+			content.setMargin(5);
+			createTooltip(left, top, content);
 		} // else - mouse moved between request and data retrieval
 	}
 
@@ -249,17 +259,45 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		});
 	}
 
-	private void createTooltip(int x, int y) {
-		tooltip = new Label();
-		tooltip.setBackgroundColor("white");
-		tooltip.setShowShadow(true);
-		tooltip.setOpacity(85);
-		tooltip.setBorder("thin solid #AAAAAA");
-		tooltip.moveTo(x + 12, y + 12);
-		tooltip.addChild(loadingImg);
-		tooltip.setAutoWidth();
-		tooltip.setAutoHeight();
-		tooltip.draw();
+	private void createTooltip(int x, int y, Label content) {
+		if (mapWidget != null) {
+			tooltip = new Label();
+			tooltip.setBackgroundColor("white");
+			tooltip.setShowShadow(true);
+			tooltip.setOpacity(85);
+			tooltip.setBorder("thin solid #AAAAAA");
+			if (content != null) {
+				tooltip.addChild(content);
+			} else {
+				tooltip.addChild(loadingImg);
+			}
+			tooltip.setAutoWidth();
+			tooltip.setAutoHeight();
+			tooltip.hide();
+			tooltip.draw(); // need this to get correct size of tooltip
+			placeTooltip(x, y);
+			tooltip.show();
+		}
+	}
+	
+	private void placeTooltip(int x, int y) {
+		if (tooltip != null) {
+			int realx = x;
+			int realy = y;
+			
+			int tooltipWidth = tooltip.getRight() - tooltip.getLeft();
+			int tooltipHeight = tooltip.getBottom() - tooltip.getTop();
+			
+			int overlapX = (x + (tooltipWidth)) - mapWidget.getRight();
+			int overlapY = (y + (tooltipHeight)) - mapWidget.getBottom();
+			if (overlapX > 0) {
+				realx -= overlapX;
+			}
+			if (overlapY > 0) {
+				realy -= overlapY;
+			}
+			tooltip.moveTo(realx, realy);
+		}
 	}
 
 	private void destroyTooltip() {
@@ -269,6 +307,15 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		}
 	}
 
+	private boolean overlapsTooltip(int x, int y) {
+		if (tooltip == null) {
+			 return false;
+		} else {
+			return (!(x < tooltip.getLeft() || x > tooltip.getRight() || y < tooltip.getTop() || y > tooltip
+					.getBottom()));
+		}
+	}
+	
 	private String[] getServerLayerIds(MapModel mapModel) {
 		Set<String> layerIds = new HashSet<String>();
 		for (VectorLayer layer : mapModel.getVectorLayers()) {
@@ -285,5 +332,4 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		Coordinate c2 = transformer.viewToWorld(new Coordinate(pixelTolerance, 0));
 		return Mathlib.distance(c1, c2);
 	}
-
 }
