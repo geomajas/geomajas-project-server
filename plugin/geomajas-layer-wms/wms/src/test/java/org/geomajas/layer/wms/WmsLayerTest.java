@@ -14,6 +14,8 @@ package org.geomajas.layer.wms;
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
 import org.geomajas.geometry.Crs;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
@@ -21,6 +23,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -225,6 +229,34 @@ public class WmsLayerTest {
 		Assert.assertEquals(-398.0, tile.getBounds().getY(), DELTA);
 		Assert.assertEquals(712.0, tile.getBounds().getHeight(), DELTA);
 		Assert.assertEquals(712.0, tile.getBounds().getWidth(), DELTA);
+	}
+
+	@Test
+	public void noBaseWmsUrl() throws Exception {
+		try {
+			loadApplicationContext("/wmsInvalidContext.xml");
+			Assert.fail("invalid layer declaration was allowed");
+		} catch(GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.PARAMETER_MISSING, ge.getExceptionCode());
+		}
+	}
+
+	private ApplicationContext loadApplicationContext(String location) throws Exception {
+		String[] locations = new String[2];
+		locations[0] = "/org/geomajas/spring/geomajasContext.xml";
+		locations[1] = location;
+		try {
+			return new ClassPathXmlApplicationContext(locations);
+		} catch (Exception ex) {
+			Throwable ge = ex;
+			while (null != ge) {
+				if (ge instanceof GeomajasException) {
+					throw (GeomajasException)ge;
+				}
+				ge = ge.getCause();
+			}
+			throw ex;
+		}
 	}
 
 }

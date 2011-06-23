@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
@@ -93,7 +94,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
-	private String baseWmsUrl = "";
+	@NotNull
+	private String baseWmsUrl;
 
 	private String format, version, styles = "";
 
@@ -147,16 +149,18 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return layerInfo;
 	}
 
-	/**
-	 * Return this layers coordinate reference system (CRS). This value is initialized when the <code>LayerInfo</code>
-	 * object is set.
-	 */
+	/** @{inheritDoc} */
+	@Deprecated
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
 	@PostConstruct
 	protected void postConstruct() throws GeomajasException {
+		if (null == baseWmsUrl) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
+		}
+
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 
 		// calculate resolutions
@@ -380,7 +384,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return result;
 	}
 
-	private String getWmsTargetUrl() throws GeomajasException {
+	private String getWmsTargetUrl() {
 		if (useProxy || null != authentication) {
 			if (null != dispatcherUrlService) {
 				String url = dispatcherUrlService.getDispatcherUrl();
@@ -392,9 +396,6 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				return "./d/wms/" + getId() + "/";
 			}
 		} else {
-			if (null == baseWmsUrl) {
-				throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
-			}
 			return baseWmsUrl;
 		}
 	}
