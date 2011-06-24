@@ -207,14 +207,15 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		Resolution bestResolution = getResolutionForScale(layerScale);
 		RasterGrid grid = getRasterGrid(new Envelope(layerCoordinate), bestResolution.getTileWidth(),
 				bestResolution.getTileHeight(), layerScale);
-		int x = (int) (((layerCoordinate.x - grid.getLowerLeft().x) * bestResolution.getTileWidthPx()) / grid
-				.getTileWidth());
-		int y = (int) (bestResolution.getTileHeightPx() - (((layerCoordinate.y - grid.getLowerLeft().y) * bestResolution
-				.getTileHeightPx()) / grid.getTileHeight()));
+		int x = (int) (((layerCoordinate.x - grid.getLowerLeft().x) * bestResolution.getTileWidthPx())
+				/ grid.getTileWidth());
+		int y = (int) (bestResolution.getTileHeightPx() - (((layerCoordinate.y - grid.getLowerLeft().y) *
+				bestResolution .getTileHeightPx()) / grid.getTileHeight()));
 
-		Bbox layerBox = new Bbox(grid.getLowerLeft().x, grid.getLowerLeft().y, grid.getTileWidth(),
-				grid.getTileHeight());
+		Bbox layerBox = new Bbox(grid.getLowerLeft().x, grid.getLowerLeft().y,
+				grid.getTileWidth(), grid.getTileHeight());
 
+		InputStream stream = null;
 		try {
 			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(),
 					layerBox, x, y);
@@ -223,29 +224,26 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 					new Object[] {layerCoordinate, layerScale, pixelTolerance, url});
 			GML gml = new GML(Version.GML3);
 
-			InputStream stream = null;
-			try {
-				stream = httpService.getStream(url, getAuthentication());
-				FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
-				FeatureIterator<SimpleFeature> it = collection.features();
+			stream = httpService.getStream(url, getAuthentication());
+			FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
+			FeatureIterator<SimpleFeature> it = collection.features();
 
-				while (it.hasNext()) {
-					features.add(toDto(it.next()));
-				}
-				
-			} catch (IOException e) {
-				throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
-			} finally {
-				if (null != stream) {
-					stream.close();
-				}
+			while (it.hasNext()) {
+				features.add(toDto(it.next()));
 			}
-
 		} catch (LayerException le) {
 			throw le;
 		} catch (Exception e) {
 			throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
-		} 
+		} finally {
+			if (null != stream) {
+				try {
+					stream.close();
+				} catch (IOException ioe) {
+					// ignore, closing anyway
+				}
+			}
+		}
 
 		return features;
 	}
