@@ -22,6 +22,7 @@ import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -81,7 +82,9 @@ public class GetFeaturesTest {
 
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		cacheManager.drop(layerBeans);
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

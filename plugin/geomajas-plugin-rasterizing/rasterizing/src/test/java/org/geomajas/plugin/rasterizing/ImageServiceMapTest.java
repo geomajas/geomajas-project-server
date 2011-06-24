@@ -18,6 +18,7 @@ import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.After;
 import org.junit.Before;
@@ -85,7 +86,7 @@ public class ImageServiceMapTest {
 
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

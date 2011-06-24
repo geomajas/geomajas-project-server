@@ -10,6 +10,7 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
@@ -54,7 +55,7 @@ public class RasterDirectLayerTest {
 
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

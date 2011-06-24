@@ -26,6 +26,7 @@ import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.After;
 import org.junit.Assert;
@@ -108,7 +109,7 @@ public class RasterizingPipelineTest {
 
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

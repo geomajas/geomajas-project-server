@@ -75,6 +75,8 @@ public class GetTileTest {
 
 	@After
 	public void clearSecurityContext() {
+		cacheManager.drop(layerBeans);
+		recorder.clear();
 		securityManager.clearSecurityContext();
 	}
 

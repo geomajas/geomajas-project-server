@@ -69,6 +69,8 @@ public class GetTile2Test {
 
 	@After
 	public void clearSecurityContext() {
+		cacheManager.drop(layerBeans);
+		recorder.clear();
 		securityManager.clearSecurityContext();
 	}
 
