@@ -44,28 +44,21 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
+				<version>${rasterizing-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
+				<version>${rasterizing-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geotools-all</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.8.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

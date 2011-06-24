@@ -111,6 +111,6 @@
 	</repositories>	
 
 	<properties>
-		<test-integration-backend-version>1.9.0-SNAPSHOT</test-integration-backend-version>
+		<test-integration-backend-version>1.10.0-SNAPSHOT</test-integration-backend-version>
 	</properties>
 </project>

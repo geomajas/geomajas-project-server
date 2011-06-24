@@ -121,7 +121,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-advancedviews-backend-version>1.9.0-SNAPSHOT</geomajas-widget-advancedviews-backend-version>
+		<geomajas-widget-advancedviews-backend-version>1.9.0</geomajas-widget-advancedviews-backend-version>
 		<geomajas-widget-advancedviews-gwt-version>1.9.0-SNAPSHOT</geomajas-widget-advancedviews-gwt-version>
 	</properties>	
 </project>

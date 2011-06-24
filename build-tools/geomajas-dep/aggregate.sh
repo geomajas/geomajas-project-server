@@ -77,7 +77,7 @@ template_start
 
 # main guides
 
-include "org.geomajas.documentation" "docbook-gettingstarted" "1.9.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-gettingstarted" "1.10.0-SNAPSHOT" \
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
@@ -108,7 +108,7 @@ include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-S
 
 include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.9.0-SNAPSHOT" \
     "Geotools layer" \
-    "This is a layer which allows accessing GIS data through Geotools, for example for accessing WFS data." \
+    "This is a layer which allows accessing GIS data through GeoTools, for example for accessing WFS data." \
     "incubating" "Geotools_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-geotools" "1.8.0"
 
@@ -193,7 +193,7 @@ include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1
 
 # contributors guide
 
-include "org.geomajas.documentation" "docbook-contributorguide" "1.9.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-contributorguide" "1.10.0-SNAPSHOT" \
     "Contributors guide" \
     "Information for contributors of the project." \
     "incubating" "Contributor_Guide.pdf" \

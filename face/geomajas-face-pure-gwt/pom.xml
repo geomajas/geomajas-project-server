@@ -232,7 +232,7 @@
 	</profiles>
 
 	<properties>
-		<gwt-pure-face-backend-version>1.9.0-SNAPSHOT</gwt-pure-face-backend-version>
+		<gwt-pure-face-backend-version>1.9.0</gwt-pure-face-backend-version>
 		<gwt-version>2.3.0</gwt-version>
 	</properties>
 	
