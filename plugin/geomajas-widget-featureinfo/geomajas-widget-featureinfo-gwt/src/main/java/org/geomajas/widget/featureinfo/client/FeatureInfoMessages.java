@@ -41,4 +41,5 @@ public interface FeatureInfoMessages extends Messages {
 	String urlFeatureDetailWidgetBuilderNoValue();
 	
 	String multiLayerFeatureInfoNoResult();
+	String multiLayerFeatureInfoLayerNotFound();
 }

@@ -72,6 +72,7 @@ public class MultiLayerFeatureInfoWindow extends Window {
 				Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, layer, false);
 				window.setPageTop(mapWidget.getAbsoluteTop() + 25);
 				window.setPageLeft(mapWidget.getAbsoluteLeft() + 25);
+				window.setKeepInParentRect(true);
 				window.draw();
 			}
 

@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.FeatureInfoController;
 import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -38,6 +39,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
 import org.geomajas.widget.featureinfo.client.widget.Notify;
+import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -47,9 +49,11 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.widgets.Window;
 
 /**
- * Shows information of the features (per visible vector layer) near the position where the user clicked on the map.
- * First a list of all the appropriate features is shown in a floating window. Clicking on a feature of the list shows
- * its attributes in a feature attribute window under the list window. As a starting point for this class the
+ * Shows information of the features (per visible vector layer) near the
+ * position where the user clicked on the map. First a list of all the
+ * appropriate features is shown in a floating window. Clicking on a feature of
+ * the list shows its attributes in a feature attribute window under the list
+ * window. As a starting point for this class the
  * org.geomajas.gwt.client.controller.FeatureInfoController was used.
  * 
  * @author An Buyle
@@ -128,59 +132,83 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			rasterLayerRequest.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
 			rasterLayerRequest.setBbox(toBbox(mapWidget.getMapModel().getMapView().getBounds()));
 			rasterLayerRequest.setScale(mapWidget.getMapModel().getMapView().getCurrentScale());
-			
-			
+
 			GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 			commandRequest.setCommandRequest(request);
-			//TODO: commands are now chained. Perhaps we should combine this into a single command?
+			// TODO: commands are now chained. Perhaps we should combine this
+			// into a single command?
 			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
 				public void execute(CommandResponse commandResponse) {
 					if (commandResponse instanceof SearchByLocationResponse) {
 						final SearchByLocationResponse vectorResponse = (SearchByLocationResponse) commandResponse;
 						if (includeRasterLayers) {
-							
+
 							GwtCommand commandRequest = new GwtCommand(SearchLayersByPointRequest.COMMAND);
 							commandRequest.setCommandRequest(rasterLayerRequest);
 							GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 								public void execute(CommandResponse commandRasterResponse) {
-									SearchLayersByPointResponse rasterResponse = 
-										(SearchLayersByPointResponse) commandRasterResponse;
-									Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = 
-										vectorResponse.getFeatureMap();
+									SearchLayersByPointResponse rasterResponse = (SearchLayersByPointResponse) 
+											commandRasterResponse;
+									Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = vectorResponse
+											.getFeatureMap();
 									featureMap.putAll(rasterResponse.getFeatureMap());
-									showWindow(featureMap);
+									showFeatureInfo(featureMap);
 								}
 							});
-							
+
 						} else {
-							showWindow(vectorResponse.getFeatureMap());
+							showFeatureInfo(vectorResponse.getFeatureMap());
 						}
 					}
 				}
 			});
-			
+
 		} else {
 			dragging = false;
 		}
 		clickstart = false;
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private void showWindow(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
+	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
-			Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
-			window.setPageTop(mapWidget.getAbsoluteTop() + 10);
-			window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
-			window.draw();
+			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
+				List<Layer<?>> layers = mapWidget.getMapModel().getLayersByServerId(
+						featureMap.keySet().iterator().next());
+				if (layers.size() > 0) {
+					// There can be more than one Client VectorLayer for the
+					// same serverLayerId
+					Layer<?> layer = layers.get(0);
+					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
+					Feature feature;
+					if (layer instanceof VectorLayer) {
+						feature = new Feature(featDTO, (VectorLayer) layer);
+					} else {
+						feature = new Feature(featDTO, null);
+					}
+					Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, layer, false);
+					window.setPageTop(mapWidget.getAbsoluteTop() + 25);
+					window.setPageLeft(mapWidget.getAbsoluteLeft() + 25);
+					window.setKeepInParentRect(true);
+					window.draw();
+				} else {
+					Notify.error(messages.multiLayerFeatureInfoLayerNotFound());
+				}
+			} else {
+				Window window = new MultiLayerFeatureInfoWindow(mapWidget, featureMap);
+				window.setPageTop(mapWidget.getAbsoluteTop() + 10);
+				window.setPageLeft(mapWidget.getAbsoluteLeft() + 50);
+				window.draw();
+			}
 		} else {
 			Notify.info(messages.multiLayerFeatureInfoNoResult());
 		}
 	}
-	
+
 	/**
 	 * @param bounds
 	 * @return
@@ -207,7 +235,8 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 	}
 
 	/**
-	 * @param includeRasterLayers whether to include raster layers in the result
+	 * @param includeRasterLayers
+	 *            whether to include raster layers in the result
 	 */
 	public void setIncludeRasterLayers(boolean includeRasterLayers) {
 		this.includeRasterLayers = includeRasterLayers;
