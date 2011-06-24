@@ -34,8 +34,6 @@ public class FeatureAttributeEditor extends VLayout {
 
 	private Feature feature;
 
-	private Feature original;
-
 	private VectorLayer layer;
 
 	private FeatureForm<?> featureForm;
@@ -120,8 +118,7 @@ public class FeatureAttributeEditor extends VLayout {
 
 	/** Resets the original values of the feature. */
 	public void reset() {
-		if (original != null) {
-			feature = (Feature) original.clone();
+		if (feature != null) {
 			copyToForm(feature);
 		}
 	}
@@ -147,13 +144,10 @@ public class FeatureAttributeEditor extends VLayout {
 	 */
 	public void setFeature(Feature feature) {
 		if (feature != null) {
-			// TODO why do these need to be cloned? document or fix
-			this.original = feature.clone();
-			this.feature = feature.clone();
+			this.feature = feature;
 			copyToForm(this.feature);
 		} else {
-			original = null;
-			feature = null;
+			this.feature = null;
 			featureForm.clear();
 		}
 	}
