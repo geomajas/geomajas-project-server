@@ -48,7 +48,8 @@ public class RealTestRecorderTest {
 		recorder.clear();
 		Assert.assertEquals("", recorder.matches("bla"));
 		Assert.assertNotSame("", recorder.matches("bla", "something", "more"));
-		Assert.assertEquals("no messages for group", recorder.matches("bla", "something", "more"));
+		Assert.assertEquals("no messages for group, expected [something, more]",
+				recorder.matches("bla", "something", "more"));
 		recorder.record("bla", "something");
 		Assert.assertEquals("too little recorded messages, only 1 available, [something]",
 				recorder.matches("bla", "something", "more"));
@@ -56,6 +57,7 @@ public class RealTestRecorderTest {
 				recorder.matches("bla", "bla"));
 		recorder.record("bla", "more");
 		recorder.record("bla", "and more");
-		Assert.assertEquals("more recorded messages then tested, [something, more, and more]", recorder.matches("bla", "something", "more"));
+		Assert.assertEquals("more recorded messages then tested, first 2 ok, [something, more, and more]",
+				recorder.matches("bla", "something", "more"));
 	}
 }

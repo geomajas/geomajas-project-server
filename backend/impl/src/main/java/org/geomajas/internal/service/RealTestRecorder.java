@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class RealTestRecorder implements TestRecorder {
 		List<String> list = messages.get(group);
 		if (null == list) {
 			if (compare.length > 0) {
-				return "no messages for group";
+				return "no messages for group, expected " + Arrays.asList(compare);
 			} else {
 				return "";
 			}
@@ -69,7 +71,7 @@ public class RealTestRecorder implements TestRecorder {
 			}
 		}
 		if (list.size() > compare.length) {
-			return "more recorded messages then tested, " + list;
+			return "more recorded messages then tested, first " + compare.length + " ok, " + list;
 		}
 		return "";
 	}
