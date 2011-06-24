@@ -41,6 +41,10 @@ public class WmsAuthentication implements Serializable {
 	private String password;
 
 	private String realm;
+	private String userKey = "user";
+	private String passwordKey = "password";
+
+	private WmsAuthenticationMethod authenticationMethod = WmsAuthenticationMethod.BASIC;
 
 	/**
 	 * Get the user name.
@@ -97,5 +101,67 @@ public class WmsAuthentication implements Serializable {
 	 */
 	public void setRealm(String realm) {
 		this.realm = realm;
+	}
+
+	/**
+	 * Get the key which is used for the user name in the URL. Defaults to "user"
+	 * <p/>
+	 * Only used when {@link #getAuthenticationMethod()} is {@link WmsAuthenticationMethod#URL}.
+	 *
+	 * @return key for the user name parameter
+	 */
+	public String getUserKey() {
+		return userKey;
+	}
+
+	/**
+	 * Set the key which is used for the user name in the URL. Defaults to "user"
+	 * <p/>
+	 * Only used when {@link #getAuthenticationMethod()} is {@link WmsAuthenticationMethod#URL}.
+	 *
+	 * @param userKey key for the user name parameter
+	 */
+	public void setUserKey(String userKey) {
+		this.userKey = userKey;
+	}
+
+	/**
+	 * Get the key which is used for the password in the URL. Defaults to "password".
+	 * <p/>
+	 * Only used when {@link #getAuthenticationMethod()} is {@link WmsAuthenticationMethod#URL}.
+	 *
+	 * @return key for the user name parameter
+	 */
+	public String getPasswordKey() {
+		return passwordKey;
+	}
+
+	/**
+	 * Set the key which is used for the user name in the URL. Defaults to "password"
+	 * <p/>
+	 * Only used when {@link #getAuthenticationMethod()} is {@link WmsAuthenticationMethod#URL}.
+	 *
+	 * @param passwordKey key for the user name parameter
+	 */
+	public void setPasswordKey(String passwordKey) {
+		this.passwordKey = passwordKey;
+	}
+
+	/**
+	 * Get the authentication method to use.
+	 *
+	 * @return authentication method
+	 */
+	public WmsAuthenticationMethod getAuthenticationMethod() {
+		return authenticationMethod;
+	}
+
+	/**
+	 * Set the authentication method to use.
+	 *
+	 * @param authenticationMethod authentication method
+	 */
+	public void setAuthenticationMethod(WmsAuthenticationMethod authenticationMethod) {
+		this.authenticationMethod = authenticationMethod;
 	}
 }

@@ -10,6 +10,8 @@
  */
 package org.geomajas.layer.wms;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -20,10 +22,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
@@ -88,23 +86,19 @@ import com.vividsolutions.jts.geom.Envelope;
 @Api
 public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
-	private static final int TIMEOUT = 1000;
+	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
 	private List<Resolution> resolutions = new ArrayList<Resolution>();
-
-	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
 	@NotNull
 	private String baseWmsUrl;
 
-	private String format, version, styles = "";
-
+	private String format;
+	private String version;
+	private String styles = "";
 	private List<Parameter> parameters;
 
 	private boolean enableFeatureInfoSupport;
-
-	@Autowired
-	private GeoService geoService;
 
 	private RasterLayerInfo layerInfo;
 
@@ -115,6 +109,12 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private WmsAuthentication authentication;
 
 	private boolean useProxy;
+
+	@Autowired
+	private GeoService geoService;
+
+	@Autowired
+	private WmsHttpService httpService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -218,46 +218,27 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		try {
 			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(),
 					layerBox, x, y);
+			url = httpService.addCredentialsToUrl(url, getAuthentication());
 			log.debug("getFeaturesByLocation: {} {} {} {}",
 					new Object[] {layerCoordinate, layerScale, pixelTolerance, url});
 			GML gml = new GML(Version.GML3);
 
-
-			// Create a HTTP client object, which will initiate the connection:
-			HttpClient client = new HttpClient();
-			client.setConnectionTimeout(TIMEOUT);
-
-			// Preemptive: In this mode HttpClient will send the basic authentication response even before the server 
-			// gives an unauthorized response in certain situations, thus reducing the overhead of making the 
-			// connection.
-			client.getState().setAuthenticationPreemptive(true);
-
-			// Set up the WMS credentials:
-			Credentials credentials = new UsernamePasswordCredentials(getAuthentication().getUser(), 
-					getAuthentication().getPassword());
-			client.getState().setCredentials(getAuthentication().getRealm(), parseDomain(getBaseWmsUrl()),
-					credentials);
-
-			// Create the GET method with the correct URL:
-			GetMethod get = new GetMethod(url);
-			get.setDoAuthentication(true);
-
+			InputStream stream = null;
 			try {
-				// Execute the GET:
-				client.executeMethod(get);
-
-				FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(get
-						.getResponseBodyAsStream());
+				stream = httpService.getStream(url, getAuthentication());
+				FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(stream);
 				FeatureIterator<SimpleFeature> it = collection.features();
 
 				while (it.hasNext()) {
 					features.add(toDto(it.next()));
 				}
 				
-			} catch (Exception e) {
+			} catch (IOException e) {
 				throw new LayerException(e, ExceptionCode.UNEXPECTED_PROBLEM);
 			} finally {
-				get.releaseConnection();
+				if (null != stream) {
+					stream.close();
+				}
 			}
 
 		} catch (LayerException le) {
@@ -267,23 +248,6 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		} 
 
 		return features;
-	}
-
-	/**
-	 * Get the domain out of a full URL.
-	 *
-	 * @param url base url
-	 * @return domain name
-	 */
-	private String parseDomain(String url) {
-		int index = url.indexOf("://");
-		String domain = url.substring(index + 3);
-		domain = domain.substring(0, domain.indexOf('/'));
-		int colonPos = domain.indexOf(':');
-		if (colonPos >= 0) {
-			domain = domain.substring(0, colonPos);
-		}
-		return domain;
 	}
 
 	private Feature toDto(SimpleFeature feature) {
@@ -427,6 +391,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	/**
 	 * Build the base part of the url (doesn't change for getMap or getFeatureInfo requests).
 	 *
+	 * @param targetUrl base url
 	 * @param width image width
 	 * @param height image height
 	 * @param box bounding box

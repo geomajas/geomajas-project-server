@@ -133,7 +133,11 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		CacheContext res = new CacheContextImpl();
 		for (String key : keys) {
 			Object value = pipelineContext.getOptional(key);
+<<<<<<< Updated upstream
 			if (null != value) {
+=======
+			if (null == value) {
+>>>>>>> Stashed changes
 				res.put(key, value);
 			} else {
 				log.warn("No value for context key " + key);
