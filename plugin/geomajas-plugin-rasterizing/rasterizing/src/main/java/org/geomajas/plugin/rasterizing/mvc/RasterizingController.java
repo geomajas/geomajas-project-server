@@ -89,7 +89,6 @@ public class RasterizingController {
 				context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
 				context.put(PipelineCode.LAYER_ID_KEY, layerId);
 				context.put(PipelineCode.LAYER_KEY, layer);
-<<<<<<< Updated upstream
 
 				// get data from rebuild cache
 				RebuildCacheContainer rebuildCacheContainer = cacheManagerService.get(layer, CacheCategory.REBUILD, key,
@@ -114,8 +113,6 @@ public class RasterizingController {
 				tileContainer.setTile(tile);
 				securityContextAdder.restoreSecurityContext(rebuildCacheContainer.getContext());
 
-=======
->>>>>>> Stashed changes
 				pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
 						tileContainer);
 				rasterizeContainer = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);
