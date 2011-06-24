@@ -77,10 +77,12 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
+		<!-- should use this instead
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

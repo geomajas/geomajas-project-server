@@ -86,11 +86,13 @@
 				<artifactId>commons-httpclient</artifactId>
 				<version>2.0</version>
 			</dependency>
+			<!-- should use this instead
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.1</version>
 			</dependency>
+			-->
 
 		</dependencies>
 	</dependencyManagement>
@@ -128,6 +130,6 @@
 	</profiles>
 
 	<properties>
-		<wms-layer-backend-version>1.9.0-SNAPSHOT</wms-layer-backend-version>
+		<wms-layer-backend-version>1.9.0</wms-layer-backend-version>
 	</properties>
 </project>

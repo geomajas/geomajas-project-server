@@ -11,13 +11,11 @@
 package org.geomajas.layer.wms;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
@@ -34,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -47,12 +46,18 @@ import java.util.StringTokenizer;
 @Controller("/wms/**")
 public class WmsController {
 
-	private static final int TIMEOUT = 5000;
-
 	private final Logger log = LoggerFactory.getLogger(WmsController.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
+
+	@Autowired
+	private WmsHttpService httpService;
+
+	// method provided for testing
+	protected void setHttpService(WmsHttpService httpService) {
+		this.httpService = httpService;
+	}
 
 	@RequestMapping(value = "/wms/**", method = RequestMethod.GET)
 	public void getWms(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -63,41 +68,34 @@ public class WmsController {
 		if (layer == null) {
 			throw new LayerException(ExceptionCode.LAYER_NOT_FOUND, layerId);
 		}
+		RasterLayerInfo layerInfo = layer.getLayerInfo();
 
-		// Create a HTTP client object, which will initiate the connection:
-		HttpClient client = new HttpClient();
-		client.setConnectionTimeout(TIMEOUT);
-
-		// Preemptive: In this mode HttpClient will send the basic authentication response even before the server gives
-		// an unauthorized response in certain situations, thus reducing the overhead of making the connection.
-		client.getState().setAuthenticationPreemptive(true);
-
-		// Set up the WMS credentials:
-		Credentials credentials = new UsernamePasswordCredentials(layer.getAuthentication().getUser(), layer
-				.getAuthentication().getPassword());
-		client.getState().setCredentials(layer.getAuthentication().getRealm(), parseDomain(layer.getBaseWmsUrl()),
-				credentials);
-
-		// Create the GET method with the correct URL:
-		GetMethod get = new GetMethod(layer.getBaseWmsUrl() + "?" + request.getQueryString());
-		get.setDoAuthentication(true);
+		String url = layer.getBaseWmsUrl() + "?" + request.getQueryString();
+		url = httpService.addCredentialsToUrl(url, layer.getAuthentication());
+		InputStream stream = null;
 
 		try {
-			// Execute the GET:
-			client.executeMethod(get);
-
-			// Prepare the response:
 			response.setContentType(layer.getFormat());
-			response.getOutputStream().write(get.getResponseBody());
+			stream = httpService.getStream(url, layer.getAuthentication());
+			ServletOutputStream out = response.getOutputStream();
+			int b;
+			while ((b = stream.read()) >= 0 ) {
+				out.write(b);
+			}
 		} catch (Exception e) {
 			log.error("Cannot get original WMS image", e);
 			// Create an error image to make the reason for the error visible:
-			byte[] b = createErrorImage(layer.getLayerInfo().getTileWidth(), layer.getLayerInfo().getTileHeight(), e);
+			byte[] b = createErrorImage(layerInfo.getTileWidth(), layerInfo.getTileHeight(), e);
 			response.setContentType("image/png");
 			response.getOutputStream().write(b);
 		} finally {
-			// Release any connection resources used by the method:
-			get.releaseConnection();
+			if (null != stream) {
+				try {
+					stream.close();
+				} catch (IOException ioe) {
+					// ignore, closing anyway
+				}
+			}
 		}
 	}
 
@@ -131,23 +129,6 @@ public class WmsController {
 			return (WmsLayer) layer;
 		}
 		return null;
-	}
-
-	/**
-	 * Get the domain out of a full URL.
-	 *
-	 * @param url base url
-	 * @return domain name
-	 */
-	private String parseDomain(String url) {
-		int index = url.indexOf("://");
-		String domain = url.substring(index + 3);
-		domain = domain.substring(0, domain.indexOf('/'));
-		int colonPos = domain.indexOf(':');
-		if (colonPos >= 0) {
-			domain = domain.substring(0, colonPos);
-		}
-		return domain;
 	}
 
 	/**

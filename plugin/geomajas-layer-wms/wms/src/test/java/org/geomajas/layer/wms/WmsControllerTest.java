@@ -12,23 +12,20 @@
 package org.geomajas.layer.wms;
 
 import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.HandlerExecutionChain;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Test for {@link WmsController}.
@@ -39,23 +36,48 @@ import javax.servlet.http.HttpServletResponse;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/wmsContext.xml"})
 public class WmsControllerTest {
 
+	private static final String TEST_VALUE = "A test value";
+
 	@Autowired
 	private WmsController wmsController;
 
 	@Test
+	@DirtiesContext // changing the controller
 	public void testDoSomething() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
+		wmsController.setHttpService(new MockHttpService());
 
-		wmsController.getWms();
-		request.setRequestURI("d/wms/proxyblue/?SERVICE=WMS&layers=bluemarble&" +
+
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("SERVICE", "WMS");
+		parameters.put("layers", "bluemarble");
+		parameters.put("WIDTH", "512");
+		parameters.put("HEIGHT", "512");
+		parameters.put("bbox", "-52.01245495052001,-28.207099921352835,11.947593278789554,35.75294830795673");
+		parameters.put("format", "image/jpeg");
+		parameters.put("version", "1.1.1");
+		parameters.put("srs", "EPSG:4326");
+		parameters.put("styles", "");
+		parameters.put("request", "GetMap");
+		request.setParameters(parameters);
+		request.setRequestURI("d/wms/proxyblue/");
+		request.setQueryString("SERVICE=WMS&layers=bluemarble&" +
 				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
 				"35.75294830795673&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap");
 		request.setMethod("GET");
-		final ModelAndView mav = handle(request, response);
-		System.out.println(mav);
-		//assertViewName(mav, "view");
-		// assert something else
+		wmsController.getWms(request, response);
+		Assert.assertEquals(TEST_VALUE, new String(response.getContentAsByteArray(), "UTF-8"));
 	}
 
+	private class MockHttpService implements WmsHttpService {
+
+		public String addCredentialsToUrl(String url, WmsAuthentication authentication) {
+			return url;
+		}
+
+		public InputStream getStream(String url, WmsAuthentication authentication) throws IOException {
+			return new ByteArrayInputStream(TEST_VALUE.getBytes("UTF-8"));
+		}
+	}
 }

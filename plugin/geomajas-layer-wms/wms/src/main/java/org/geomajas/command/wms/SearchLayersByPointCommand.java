@@ -16,7 +16,6 @@ import org.geomajas.command.dto.SearchLayersByPointRequest;
 import org.geomajas.command.dto.SearchLayersByPointResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
-import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -149,10 +148,9 @@ public class SearchLayersByPointCommand
 			// identity transform if CRSs are equal for map and layer but might introduce bugs in rounding and/or
 			// conversions.
 			if (!mapCrs.equals(layerCrs)) {
-				CrsTransform mapToLayer = geoService.getCrsTransform(mapCrs, layerCrs);
 
 				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
-				Bbox layerBounds = geoService.transform(mapBounds, mapToLayer);
+				Bbox layerBounds = geoService.transform(mapBounds, mapCrs, layerCrs);
 				layerScale = mapBounds.getWidth() * mapScale / layerBounds.getWidth();
 			}
 		} catch (MismatchedDimensionException e) {

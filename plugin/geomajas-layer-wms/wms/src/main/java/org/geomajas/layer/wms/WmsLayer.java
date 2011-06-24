@@ -149,7 +149,12 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return layerInfo;
 	}
 
-	/** @{inheritDoc} */
+	/**
+	 * Get coordinate reference system for this layer.
+	 *
+	 * @return Coordinate reference system for this layer.
+	 * @deprecated use {@link org.geomajas.layer.LayerService#getCrs(Layer)}
+	 */
 	@Deprecated
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
