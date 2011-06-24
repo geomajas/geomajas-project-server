@@ -23,6 +23,7 @@ import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -83,8 +84,8 @@ public class AttributeServiceTest {
 	}
 
 	@After
-	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+	public void fixSideEffects() {
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

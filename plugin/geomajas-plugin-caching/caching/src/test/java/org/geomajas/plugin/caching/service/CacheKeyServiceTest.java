@@ -16,12 +16,10 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import junit.framework.Assert;
 import org.geomajas.internal.service.pipeline.PipelineContextImpl;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -37,10 +35,6 @@ import java.util.Map;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/managerContext.xml",
 		"/dummySecurity.xml", "/org/geomajas/testdata/layerBeans.xml"})
 public class CacheKeyServiceTest {
-
-	@Autowired
-	@Qualifier("beans")
-	private VectorLayer beans;
 
 	@Autowired
 	private CacheKeyService cacheKeyService;

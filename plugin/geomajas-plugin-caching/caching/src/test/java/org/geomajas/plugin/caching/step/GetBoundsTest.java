@@ -12,6 +12,7 @@
 package org.geomajas.plugin.caching.step;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
@@ -19,11 +20,13 @@ import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -56,11 +59,19 @@ public class GetBoundsTest {
 	private GeoService geoService;
 
 	@Autowired
+	@Qualifier(LAYER_BEANS)
+	private VectorLayer layerBeans;
+
+	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
 
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		System.out.println("+++++++++++++++++ running @AfterStart");
+		cacheManager.drop(layerBeans);
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
+		System.out.println("+++++++++++++++++ running @AfterStop");
 	}
 
 	@Test

@@ -11,7 +11,9 @@
 
 package org.geomajas.plugin.caching.step;
 
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
@@ -52,9 +54,14 @@ public class GetFeaturesTest {
 	private static final String LAYER_COUNTRIES = "countries";
 	private static final double DELTA = 1e-10;
 
+
 	@Autowired
 	@Qualifier(LAYER_BEANS)
 	private VectorLayer layerBeans;
+
+	@Autowired
+	@Qualifier(LAYER_COUNTRIES)
+	private VectorLayer layerCountries;
 
 	@Autowired
 	private TestRecorder recorder;
@@ -74,15 +81,21 @@ public class GetFeaturesTest {
 	@Autowired
 	private FilterService filterService;
 
+	private Crs wgs84;
+	private Crs mercator;
+
 	@Before
-	public void init() {
+	public void init() throws LayerException {
 		cacheManager.drop(layerBeans);
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
+		wgs84 = geoService.getCrs2("EPSG:4326");
+		mercator = geoService.getCrs2("EPSG:900913");
 	}
 
 	@After
 	public void clearSecurityContext() {
 		cacheManager.drop(layerBeans);
+		cacheManager.drop(layerCountries);
 		recorder.clear();
 		ThreadScopeContextHolder.clear();
 	}
@@ -93,7 +106,7 @@ public class GetFeaturesTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, wgs84, null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -108,7 +121,7 @@ public class GetFeaturesTest {
 
 		// get features again, the result should be different because we changed the cached value
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, wgs84, null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(2, features.size());
@@ -117,7 +130,7 @@ public class GetFeaturesTest {
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_COUNTRIES, geoService.getCrs2("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_COUNTRIES, wgs84, null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(4, features.size());
@@ -133,7 +146,7 @@ public class GetFeaturesTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, wgs84, null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -141,7 +154,7 @@ public class GetFeaturesTest {
 
 		// get features again, the result should be different because we changed the cached value
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, wgs84, null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -156,7 +169,7 @@ public class GetFeaturesTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), filter, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, wgs84, filter, null,
 				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(1, features.size());
@@ -168,7 +181,7 @@ public class GetFeaturesTest {
 
 		// get features again, the result should come from the cache and be the same
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), filter, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, wgs84, filter, null,
 				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(1, features.size());
@@ -187,7 +200,7 @@ public class GetFeaturesTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:900913"), filter, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, mercator, filter, null,
 				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(1, features.size());
@@ -199,7 +212,7 @@ public class GetFeaturesTest {
 
 		// get features again, the result should come from the cache and be the same
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:900913"), filter, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, mercator, filter, null,
 				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(1, features.size());

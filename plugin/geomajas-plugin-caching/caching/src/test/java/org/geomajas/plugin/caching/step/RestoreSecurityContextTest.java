@@ -17,6 +17,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.security.SecurityContext;
@@ -24,6 +25,8 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.infinispan.manager.CacheManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,7 +60,7 @@ public class RestoreSecurityContextTest {
 	private VectorLayerService layerService;
 
 	@Autowired
-	@Qualifier("beans")
+	@Qualifier(LAYER_ID)
 	private BeanLayer beanLayer;
 
 	@Autowired
@@ -72,9 +75,14 @@ public class RestoreSecurityContextTest {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private CacheManagerServiceImpl cacheManager;
+
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		cacheManager.drop(beanLayer);
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 	// assure we are logged in as a specific user to set correct authorizations
@@ -82,7 +90,7 @@ public class RestoreSecurityContextTest {
 		LoginRequest request = new LoginRequest();
 		request.setLogin(name);
 		request.setPassword(name);
-		CommandResponse response = commandDispatcher.execute("command.staticsecurity.Login", request, null, "en");
+		CommandResponse response = commandDispatcher.execute(LoginRequest.COMMAND, request, null, "en");
 		junit.framework.Assert.assertFalse(response.isError());
 		junit.framework.Assert.assertTrue(response instanceof LoginResponse);
 		securityManager.createSecurityContext(((LoginResponse)response).getToken());

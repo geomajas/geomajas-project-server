@@ -15,8 +15,8 @@ import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
-import org.geomajas.plugin.caching.service.CacheServiceInfo;
-import org.geomajas.plugin.caching.service.DummyCacheFactory;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +55,13 @@ public class DefaultConfigurationTest {
 	public void init() throws Exception {
 		envelope = new Envelope(0, 10, 0, 10);
 		overlappingEnvelope = new Envelope(5, 15, 5, 15);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		cacheManager.drop(layer);
+		cacheManager.drop(otherLayer);
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

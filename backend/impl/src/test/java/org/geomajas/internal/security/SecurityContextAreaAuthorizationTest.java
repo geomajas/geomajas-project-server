@@ -21,6 +21,8 @@ import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.allowall.AllowAllAuthorization;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,11 @@ public class SecurityContextAreaAuthorizationTest {
 
 	@Autowired
 	private SecurityContext securityContext;
+
+	@After
+	public void fixSideEffects() {
+		ThreadScopeContextHolder.clear();
+	}
 
 	@Test
 	@DirtiesContext // changing security context

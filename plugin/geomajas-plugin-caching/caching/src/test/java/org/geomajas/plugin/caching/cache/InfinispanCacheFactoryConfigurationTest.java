@@ -15,6 +15,8 @@ import org.geomajas.layer.Layer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +45,15 @@ public class InfinispanCacheFactoryConfigurationTest {
 	@Autowired
 	@Qualifier("infiniLayer")
 	private Layer layer;
+
+	@After
+	public void clearSecurityContext() {
+		cacheManagerService.drop(layer);
+		cacheManagerService.drop(null);
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
+	}
+
 
 	/**
 	 * Verify that the configured Infinispan configuration is used when requested.

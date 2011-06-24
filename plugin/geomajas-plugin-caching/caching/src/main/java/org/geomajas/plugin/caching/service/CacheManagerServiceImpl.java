@@ -65,7 +65,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		for (IndexedCache cache : layerCaches) {
 			cache.drop();
 		}
-		caches.remove(layer.getId());
+		caches.remove(getLayerId(layer));
 	}
 
 	public void invalidate(Layer layer, CacheCategory category, Envelope envelope) {
@@ -106,10 +106,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	}
 
 	IndexedCache getCache(Layer layer, CacheCategory cacheCategory, boolean createIfNotExists) {
-		String layerId = "";
-		if (null != layer) {
-			layerId = layer.getId();
-		}
+		String layerId = getLayerId(layer);
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
 		IndexedCache cache;
 		if (null == layerCaches) {
@@ -126,10 +123,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	}
 
 	List<IndexedCache> getCaches(Layer layer) {
-		String layerId = "";
-		if (null != layer) {
-			layerId = layer.getId();
-		}
+		String layerId = getLayerId(layer);
 		List<IndexedCache> list = new ArrayList<IndexedCache>();
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
 		if (null != layerCaches) {
@@ -139,10 +133,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	}
 
 	IndexedCache createCache(Layer layer, CacheCategory cacheCategory) {
-		String layerId = "";
-		if (null != layer) {
-			layerId = layer.getId();
-		}
+		String layerId = getLayerId(layer);
 		CacheServiceInfo cacheServiceInfo = getInfo(layerId, cacheCategory, CacheServiceInfo.class);
 		CacheIndexInfo cacheIndexInfo = getInfo(layerId, cacheCategory, CacheIndexInfo.class);
 		return new IndexedCache(cacheServiceInfo.getCacheFactory().create(layer, cacheCategory),
@@ -200,4 +191,13 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		}
 		return fallback;
 	}
+
+	private String getLayerId(Layer layer) {
+		String layerId = "";
+		if (null != layer) {
+			layerId = layer.getId();
+		}
+		return layerId;
+	}
+
 }

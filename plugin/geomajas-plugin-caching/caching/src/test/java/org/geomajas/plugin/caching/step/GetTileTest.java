@@ -23,6 +23,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -77,7 +78,7 @@ public class GetTileTest {
 	public void clearSecurityContext() {
 		cacheManager.drop(layerBeans);
 		recorder.clear();
-		securityManager.clearSecurityContext();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

@@ -13,6 +13,8 @@ package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.spring.ThreadScopeContextHolder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +53,15 @@ public class CacheManagerServiceTest {
 	public void init() throws Exception {
 		envelope = new Envelope(0, 10, 0, 10);
 		overlappingEnvelope = new Envelope(5, 15, 5, 15);
+	}
+
+	@After
+	public void clearSecurityContext() {
+		System.out.println("+++++++++++++++++ running @AfterStart");
+		cacheManager.drop(layer);
+		cacheManager.drop(otherLayer);
+		ThreadScopeContextHolder.clear();
+		System.out.println("+++++++++++++++++ running @AfterStop");
 	}
 
 	@Test
@@ -98,9 +109,12 @@ public class CacheManagerServiceTest {
 		String data = "data";
 		String key = "123";
 		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(layer, CacheCategory.FEATURE, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
 		cacheManager.drop(layer, CacheCategory.REBUILD);
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
 	}
 
 	@Test

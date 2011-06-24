@@ -19,6 +19,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -74,7 +75,9 @@ public class GetFeaturesInvalidateDeleteTest {
 
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		cacheManager.drop(layerBeans);
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 	@Test

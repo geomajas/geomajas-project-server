@@ -18,9 +18,11 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.service.TestRecorder;
+import org.geomajas.spring.ThreadScopeContextHolder;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,9 +64,14 @@ public class GetFeaturesSecurityTest {
 	@Autowired
 	private CommandDispatcher commandDispatcher;
 
+	@Autowired
+	private CacheManagerServiceImpl cacheManager;
+
 	@After
 	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
+		cacheManager.drop(beanLayer);
+		recorder.clear();
+		ThreadScopeContextHolder.clear();
 	}
 
 	// assure we are logged in as a specific user to set correct authorizations
