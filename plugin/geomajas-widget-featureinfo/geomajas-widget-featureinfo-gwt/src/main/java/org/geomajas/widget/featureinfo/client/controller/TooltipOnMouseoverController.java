@@ -42,7 +42,6 @@ import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * 
@@ -54,7 +53,6 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private Label tooltip;
 	private int pixelTolerance;
-	private Canvas loadingImg;
 
 	private Coordinate lastPosition; // screen
 	private Coordinate currentPosition; // screen
@@ -73,12 +71,6 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 	public TooltipOnMouseoverController(MapWidget mapWidget, int pixelTolerance) {
 		super(mapWidget);
 		this.pixelTolerance = pixelTolerance;
-		VLayout vl = new VLayout();
-		vl.setPadding(5);
-		vl.setWidth(26);
-		vl.setHeight(26);
-		vl.addMember(new Img("[ISOMORPHIC]/geomajas/loading_small.gif", 16, 16));
-		loadingImg = vl;
 	}
 
 	/**
@@ -269,7 +261,7 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 			if (content != null) {
 				tooltip.addChild(content);
 			} else {
-				tooltip.addChild(loadingImg);
+				tooltip.addChild(getLoadingImg());
 			}
 			tooltip.setAutoWidth();
 			tooltip.setAutoHeight();
@@ -331,5 +323,14 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		Coordinate c1 = transformer.viewToWorld(new Coordinate(0, 0));
 		Coordinate c2 = transformer.viewToWorld(new Coordinate(pixelTolerance, 0));
 		return Mathlib.distance(c1, c2);
+	}
+	
+	private Canvas getLoadingImg() {
+		Canvas c = new Canvas();
+		c.setMargin(5);
+		c.setWidth(26);
+		c.setHeight(26);
+		c.addChild(new Img("[ISOMORPHIC]/geomajas/loading_small.gif", 16, 16));
+		return c;
 	}
 }
