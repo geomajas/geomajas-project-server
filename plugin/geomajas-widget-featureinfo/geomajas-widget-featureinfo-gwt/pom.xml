@@ -23,17 +23,6 @@
 	<name>geomajas-widget-featureinfo (GWT face)</name>
 	<description>geomajas-widget-featureinfo (GWT face)</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-widget-featureinfo-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
