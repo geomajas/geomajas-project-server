@@ -215,5 +215,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
+		<!-- no invalidation on REBUILD cache (otherwise invalidated data cannot be rebuilt) -->
+		<property name="category"><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.REBUILD"/></property>
+		<property name="cacheIndexFactory">
+			<bean class="org.geomajas.plugin.caching.index.NoInvalidateIndexFactory" />
+		</property>
+	</bean>
+
 </beans>
 

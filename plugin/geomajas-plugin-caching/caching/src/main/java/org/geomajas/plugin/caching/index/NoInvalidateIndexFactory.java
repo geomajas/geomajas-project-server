@@ -18,14 +18,16 @@ import org.geomajas.plugin.caching.service.CacheIndexFactory;
 import org.geomajas.plugin.caching.service.CacheIndexService;
 
 /**
- * Create a spatial index which does not index anything (thus always forces everything to be invalidated).
+ * Spatial index implementation which does not really index. It never says that something needs to be invalidated.
+ * <p/>
+ * This is used for the rebuild cache as this does not contain the actual data, only how to get it.
  *
  * @author Joachim Van der Auwera
  */
 @FutureApi
-public class NoCacheIndexFactory implements CacheIndexFactory {
+public class NoInvalidateIndexFactory implements CacheIndexFactory {
 
-	private static final NoCacheIndexService INSTANCE = new NoCacheIndexService();
+	private static final NoInvalidateIndexService INSTANCE = new NoInvalidateIndexService();
 
 	public CacheIndexService create(Layer layer, CacheCategory category) {
 		return INSTANCE;
