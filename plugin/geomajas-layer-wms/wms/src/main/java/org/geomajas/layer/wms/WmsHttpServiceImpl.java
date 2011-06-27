@@ -105,7 +105,7 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	 *
 	 * @author Joachim Van der Auwera
 	 */
-	private class WmsHttpServiceStream extends InputStream {
+	private static class WmsHttpServiceStream extends InputStream {
 
 		private GetMethod get;
 		private InputStream inputStream;
