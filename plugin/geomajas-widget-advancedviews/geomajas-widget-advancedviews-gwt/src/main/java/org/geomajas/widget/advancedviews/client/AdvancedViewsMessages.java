@@ -55,4 +55,6 @@ public interface AdvancedViewsMessages extends Messages {
 	String layerInfoLayerInfoAttNo(); 
 	String layerInfoLayerInfoLegend();
 	
+	String expandingThemeWidgetNoThemeSelected();
+	
 }

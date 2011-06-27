@@ -25,6 +25,7 @@ import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.widget.advancedviews.client.widget.ExpandingThemeWidget;
 import org.geomajas.widget.advancedviews.client.widget.LayerTreeWithLegend;
 import org.geomajas.widget.advancedviews.client.widget.ThemeWidget;
 import org.geomajas.widget.advancedviews.gwt.example.client.i18n.ApplicationMessages;
@@ -64,6 +65,8 @@ public class Application implements EntryPoint {
 	private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
 
 	private ThemeWidget themes;
+	
+	private ExpandingThemeWidget exthemes;
 
 	public Application() {
 	}
@@ -197,7 +200,13 @@ public class Application implements EntryPoint {
 		themes.setSnapOffsetTop(-50);
 		themes.setSnapOffsetLeft(10);
 		themes.setWidth(150);
-		
+
+		exthemes = new ExpandingThemeWidget(map);
+		exthemes.setParentElement(map);
+		exthemes.setSnapTo("BR");
+		exthemes.setSnapOffsetTop(-50);
+		exthemes.setSnapOffsetLeft(-20);
+
 		// ---------------------------------------------------------------------
 		// Finally draw everything:
 		// ---------------------------------------------------------------------
