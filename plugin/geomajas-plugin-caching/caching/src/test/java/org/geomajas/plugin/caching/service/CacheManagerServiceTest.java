@@ -141,16 +141,16 @@ public class CacheManagerServiceTest {
 	public void invalidateOne() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(layer, CacheCategory.BOUNDS, key, data, envelope);
 		cacheManager.put(layer, CacheCategory.FEATURE, key, data, envelope);
-		cacheManager.put(null, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(null, CacheCategory.BOUNDS, key, data, envelope);
 		cacheManager.put(null, CacheCategory.FEATURE, key, data, envelope);
-		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.BOUNDS, key));
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
-		Assert.assertEquals(data, cacheManager.get(null, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(null, CacheCategory.BOUNDS, key));
 		Assert.assertEquals(data, cacheManager.get(null, CacheCategory.FEATURE, key));
-		cacheManager.invalidate(layer, CacheCategory.REBUILD, overlappingEnvelope);
-		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
+		cacheManager.invalidate(layer, CacheCategory.BOUNDS, overlappingEnvelope);
+		Assert.assertNull(cacheManager.get(layer, CacheCategory.BOUNDS, key));
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
 		Assert.assertNull(cacheManager.get(null, CacheCategory.REBUILD, key));
 		Assert.assertEquals(data, cacheManager.get(null, CacheCategory.FEATURE, key));
@@ -160,14 +160,14 @@ public class CacheManagerServiceTest {
 	public void invalidateLayer() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(layer, CacheCategory.BOUNDS, key, data, envelope);
 		cacheManager.put(layer, CacheCategory.FEATURE, key, data, envelope);
 		cacheManager.put(null, CacheCategory.FEATURE, key, data, envelope);
-		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.BOUNDS, key));
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
 		Assert.assertEquals(data, cacheManager.get(null, CacheCategory.FEATURE, key));
 		cacheManager.invalidate(layer, overlappingEnvelope);
-		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
+		Assert.assertNull(cacheManager.get(layer, CacheCategory.BOUNDS, key));
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.FEATURE, key));
 		Assert.assertNull(cacheManager.get(null, CacheCategory.FEATURE, key));
 	}
