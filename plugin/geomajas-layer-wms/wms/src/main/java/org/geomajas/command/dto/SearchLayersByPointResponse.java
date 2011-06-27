@@ -34,6 +34,7 @@ public class SearchLayersByPointResponse extends CommandResponse {
 	private Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>();
 
 	public SearchLayersByPointResponse() {
+		super();
 	}
 
 	public boolean addLayer(String layerId, List<Feature> features) {

@@ -261,7 +261,10 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		HashMap<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 		for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
-			attributes.put(desc.getLocalName(), new StringAttribute("" + feature.getAttribute(desc.getName())));
+			Object obj = feature.getAttribute(desc.getName());
+			if (null != obj) {
+				attributes.put(desc.getLocalName(), new StringAttribute(obj.toString()));
+			}
 		}
 		dto.setAttributes(attributes);
 		dto.setId(feature.getID());

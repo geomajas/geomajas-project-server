@@ -111,6 +111,7 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 		private InputStream inputStream;
 
 		public WmsHttpServiceStream(GetMethod getMethod) throws IOException {
+			super();
 			this.get = getMethod;
 			this.inputStream = get.getResponseBodyAsStream();
 		}
