@@ -30,7 +30,7 @@ public interface CacheIndexService {
 	/**
 	 * Special return value which can be used to indicate that the entire cache needs to be cleared.
 	 * <p/>
-	 * No items should even be added in this object. Should be tested for using object equality (==).
+	 * No items should ever be added in this object. Should be tested for using object equality (==).
 	 */
 	List<String> ALL_KEYS = new ArrayList<String>();
 

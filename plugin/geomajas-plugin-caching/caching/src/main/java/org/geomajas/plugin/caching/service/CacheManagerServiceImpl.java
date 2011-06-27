@@ -37,53 +37,92 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	private Map<String, Map<CacheCategory, IndexedCache>> caches =
 			new ConcurrentHashMap<String, Map<CacheCategory, IndexedCache>>();
 
+	/** {@inheritDoc} */
 	public void put(Layer layer, CacheCategory category, String key, Object object, Envelope envelope) {
 		getCache(layer, category).put(key, object, envelope);
 	}
 
+	/** {@inheritDoc} */
 	public Object get(Layer layer, CacheCategory category, String key) {
 		return getCache(layer, category).get(key, Object.class);
 	}
 
+	/** {@inheritDoc} */
 	public <TYPE> TYPE get(Layer layer, CacheCategory category, String key, Class<TYPE> type) {
 		return getCache(layer, category).get(key, type);
 	}
 
+	/** {@inheritDoc} */
 	public void remove(Layer layer, CacheCategory category, String key) {
 		getCache(layer, category).remove(key);
 	}
 
+	/** {@inheritDoc} */
 	public void drop(Layer layer, CacheCategory category) {
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
 			cache.drop();
 		}
-	}
-
-	public void drop(Layer layer) {
-		List<IndexedCache> layerCaches = getCaches(layer);
-		for (IndexedCache cache : layerCaches) {
-			cache.drop();
+		if (null != layer) {
+			IndexedCache metaCache = getCache(null, category, false);
+			if (null != metaCache) {
+				metaCache.clear();
+			}
 		}
-		caches.remove(getLayerId(layer));
 	}
 
+	/** {@inheritDoc} */
+	public void drop(Layer layer) {
+		if (null != layer) {
+			// drop requested layer if not null
+			List<IndexedCache> layerCaches = getCaches(layer);
+			for (IndexedCache cache : layerCaches) {
+				cache.drop();
+			}
+			caches.remove(getLayerId(layer));
+		}
+		// clea meta-layer
+		List<IndexedCache> layerCaches = getCaches(null);
+		for (IndexedCache cache : layerCaches) {
+			cache.clear();
+		}
+	}
+
+	/** {@inheritDoc} */
 	public void invalidate(Layer layer, CacheCategory category, Envelope envelope) {
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
 			cache.invalidate(envelope);
 		}
+		if (null != layer) {
+			IndexedCache metaCache = getCache(null, category, false);
+			if (null != metaCache) {
+				metaCache.invalidate(envelope);
+			}
+		}
 	}
 
+	/** {@inheritDoc} */
 	public void invalidate(Layer layer, Envelope envelope) {
 		for (IndexedCache cache : getCaches(layer)) {
 			cache.invalidate(envelope);
 		}
+		if (null != layer) {
+			for (IndexedCache cache : getCaches(null)) {
+				cache.invalidate(envelope);
+			}
+		}
 	}
 
+	/** {@inheritDoc} */
 	public void invalidate(Layer layer) {
 		for (IndexedCache cache : getCaches(layer)) {
 			cache.clear();
+		}
+		if (null != layer) {
+			for (IndexedCache cache : getCaches(null)) {
+				cache.clear();
+			}
 		}
 	}
 
@@ -91,6 +130,13 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		return getCache(layer, cacheCategory, true);
 	}
 
+	/**
+	 * Get {@link CacheService} instance to allow testing content.
+	 *
+	 * @param layerId layer id
+	 * @param cacheCategory cache category
+	 * @return cache service
+	 */
 	public CacheService getCacheForTesting(String layerId, CacheCategory cacheCategory) {
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
 		if (null == layerCaches) {

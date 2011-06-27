@@ -17,7 +17,7 @@ import org.geomajas.plugin.caching.service.CacheIndexService;
 import java.util.List;
 
 /**
- * Spatial index implementation which does not really indexes. When something needs to be invalidated, everything
+ * Spatial index implementation which does not really index. When something needs to be invalidated, everything
  * is invalidated.
  *
  * @author Joachim Van der Auwera

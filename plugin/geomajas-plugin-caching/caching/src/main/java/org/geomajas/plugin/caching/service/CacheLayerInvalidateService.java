@@ -34,7 +34,11 @@ public class CacheLayerInvalidateService implements LayerInvalidationService {
 	private TestRecorder recorder;
 	
 	public void invalidateLayer(Layer layer) throws GeomajasException {
-		recorder.record(layer.getId(), "Layer invalidated");
+		String layerId = "--null-layer--";
+		if (null != layer) {
+			layerId = layer.getId();
+		}
+		recorder.record(layerId, "Layer invalidated");
 		cacheManager.drop(layer);
 	}
 }
