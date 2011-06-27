@@ -180,11 +180,12 @@
     <para>The cache also has to consider security. All entries in the cache
     are stored based on keys. These keys are determined based on the context
     which is relevant when building the cached object, including the security
-    context. When a key is determined, As the key is determined using a
+    context. When a key is determined, as the key is determined using a
     hashing algorithm, the chances of having two different contexts which may
-    to the same key is very small. Still, when getting an object from the
-    cache, it is checked that the (security) context matches (and not just the
-    key).</para>
+    to the same key is very small. Still, when putting an object in the cache,
+    if the key was already used in the cache, it is checked that the cache
+    context (including security) matches and if not, the key is modified to
+    make it unique.</para>
 
     <para>The situation as displayed in figure <xref
     linkend="figure-cache-usage-raster" /> is a little bit different. When
