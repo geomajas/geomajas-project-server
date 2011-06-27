@@ -16,7 +16,6 @@ import junit.framework.Assert;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
-import org.geomajas.plugin.printing.component.impl.AbstractPrintComponent;
 import org.junit.Test;
 
 public class BaseComponentImplTest {
@@ -50,7 +49,7 @@ public class BaseComponentImplTest {
 	@Test
 	public void testLayoutJustified() {
 		AbsoluteComponent root = new AbsoluteComponent(100, 200, 0, 0);
-		FullWidthAbsoluteHeigthComponent level1 = new FullWidthAbsoluteHeigthComponent(60, 0, 0);
+		FullWidthAbsoluteHeightComponent level1 = new FullWidthAbsoluteHeightComponent(60, 0, 0);
 		FullHeightAbsoluteWidthComponent level2 = new FullHeightAbsoluteWidthComponent(80, 0, 0);
 		root.addComponent(level1);
 		root.addComponent(level2);
@@ -112,9 +111,9 @@ public class BaseComponentImplTest {
 		}
 	}
 
-	class FullWidthAbsoluteHeigthComponent extends BaseComponent {
+	class FullWidthAbsoluteHeightComponent extends BaseComponent {
 
-		public FullWidthAbsoluteHeigthComponent(float height, float marginX, float marginY) {
+		public FullWidthAbsoluteHeightComponent(float height, float marginX, float marginY) {
 			getConstraint().setMarginX(marginX);
 			getConstraint().setMarginY(marginY);
 			getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
