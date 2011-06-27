@@ -83,7 +83,12 @@ public class GeocoderAlternativesGrid extends ListGrid {
 		return records;
 	}
 
-	private static class GeocoderRecordClickHandler implements RecordClickHandler {
+	/**
+	 * Default click handler for the alterantives.
+	 *
+	 * @author Joachim Van der Auwera
+	 */
+	private static final class GeocoderRecordClickHandler implements RecordClickHandler {
 
 		private GeocoderWidget widget;
 
