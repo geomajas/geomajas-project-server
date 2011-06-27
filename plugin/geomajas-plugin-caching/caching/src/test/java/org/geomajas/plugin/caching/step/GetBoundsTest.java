@@ -67,11 +67,9 @@ public class GetBoundsTest {
 
 	@After
 	public void clearSecurityContext() {
-		System.out.println("+++++++++++++++++ running @AfterStart");
 		cacheManager.drop(layerBeans);
 		recorder.clear();
 		ThreadScopeContextHolder.clear();
-		System.out.println("+++++++++++++++++ running @AfterStop");
 	}
 
 	@Test

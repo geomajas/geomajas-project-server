@@ -57,11 +57,9 @@ public class CacheManagerServiceTest {
 
 	@After
 	public void clearSecurityContext() {
-		System.out.println("+++++++++++++++++ running @AfterStart");
 		cacheManager.drop(layer);
 		cacheManager.drop(otherLayer);
 		ThreadScopeContextHolder.clear();
-		System.out.println("+++++++++++++++++ running @AfterStop");
 	}
 
 	@Test
