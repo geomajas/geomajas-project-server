@@ -26,7 +26,6 @@ import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.spring.ThreadScopeContextHolder;
-import org.infinispan.manager.CacheManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
