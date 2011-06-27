@@ -33,7 +33,7 @@ public interface LayerInvalidationService {
 	 * Invalidate the layer. This should be called whenever significant changes to the layer have occurred. These
 	 * include deleting the layer, changes in the style, data structure, security, authorizations,...
 	 *
-	 * @param layer layer which needs to be invalidated
+	 * @param layer layer which needs to be invalidated (can be null indicating the across-layer cache)
 	 * @throws GeomajasException oops (should not happen, steps should just log and not (re)throw exceptions)
 	 */
 	void invalidateLayer(Layer layer) throws GeomajasException;

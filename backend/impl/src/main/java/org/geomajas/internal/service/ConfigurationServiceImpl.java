@@ -100,17 +100,21 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	/** {@inheritDoc} */
 	public void invalidateLayer(String layerId) throws GeomajasException {
-		if (null != layerId && null != layerInvalidationServices) {
-			Layer layer = getLayer(layerId);
-			invalidateLayer(layer);
+		Layer layer = null;
+		if (null != layerId) {
+			layer = getLayer(layerId);
 		}
+		invalidateLayer(layer);
 	}
 
 	private void invalidateLayer(Layer layer) {
-		if (null != layer) {
+		if (null != layerInvalidationServices) {
 			for (LayerInvalidationService service : layerInvalidationServices) {
 				try {
 					service.invalidateLayer(layer);
+					if (null != layer) {
+						service.invalidateLayer(null);
+					}
 				} catch (GeomajasException ge) {
 					log.error("Error during invalidateLayer, not rethrown, " + ge.getMessage(), ge);
 				}

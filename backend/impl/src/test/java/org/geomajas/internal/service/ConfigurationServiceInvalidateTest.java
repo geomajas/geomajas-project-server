@@ -62,6 +62,7 @@ public class ConfigurationServiceInvalidateTest {
 		recorder.clear();
 		configurationService.invalidateLayer(LAYER_ID);
 		Assert.assertEquals("", recorder.matches("beans", "Invalidate layer"));
+		Assert.assertEquals("", recorder.matches("--nullLayer--", "Invalidate layer"));
 
 		// assure no errors thrown for null or invalid layer if
 		configurationService.invalidateLayer(null);
@@ -73,5 +74,6 @@ public class ConfigurationServiceInvalidateTest {
 		recorder.clear();
 		configurationService.invalidateAllLayers();
 		Assert.assertEquals("", recorder.matches("beans", "Invalidate layer"));
+		Assert.assertEquals("", recorder.matches("--nullLayer--", "Invalidate layer", "Invalidate layer"));
 	}
 }

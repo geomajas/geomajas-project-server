@@ -28,6 +28,10 @@ public class RecordLayerInvalidateService implements LayerInvalidationService {
 	private TestRecorder recorder;
 
 	public void invalidateLayer(Layer layer) throws GeomajasException {
-		recorder.record(layer.getId(), "Invalidate layer");
+		String layerId = "--nullLayer--";
+		if (null != layer) {
+			layerId = layer.getId();
+		}
+		recorder.record(layerId, "Invalidate layer");
 	}
 }
