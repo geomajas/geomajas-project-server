@@ -19,8 +19,29 @@
   <section id="dependencies">
     <title>Dependencies</title>
 
-    <para>Make sure your include the plug-in in your project. If you are using
-    Maven, add the following dependency to your pom:</para>
+    <para>Make sure sure you include the correct version of the plug-in in
+    your project. Use the following excerpt (with the correct version) in the
+    dependencyManagement section of your project:</para>
+
+    <informalexample>
+      <programlisting> &lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-geocoder-all&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+    &lt;scope&gt;import&lt;/scope&gt;
+&lt;/dependency&gt;
+</programlisting>
+    </informalexample>
+
+    <para>If you are using geomajas-dep, this includes the latest released
+    version of the caching plug-in (at the time of publishing of that
+    version). If you want to overwrite the caching plug-in version, make sure
+    to include this excerpt <emphasis>before</emphasis> the geomajas-dep
+    dependency.</para>
+
+    <para>You can now include the actual dependency without explicit
+    version.</para>
 
     <example>
       <title>Plug-in dependency</title>
@@ -28,12 +49,11 @@
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-plugin-geocoder&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para>If you want to use the geocoder widget for the GWT face, then you
-    need the following two dependencies:</para>
+    <para>If you want to use the geocoder widget for the GWT face, you need
+    the following dependency:</para>
 
     <example>
       <title>Plug-in GWT dependency</title>
@@ -41,13 +61,6 @@
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-plugin-geocoder-gwt&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-geocoder-gwt&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
-    &lt;classifier&gt;sources&lt;/classifier&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
 
