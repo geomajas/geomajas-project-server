@@ -42,6 +42,7 @@ public class GeocoderAlternativesGrid extends ListGrid {
 	 */
 	@Api
 	public GeocoderAlternativesGrid(final GeocoderWidget widget, List<GetLocationForStringAlternative> alternatives) {
+		super();
 		this.setWidth(300);
 		this.setHeight(200);
 		this.setCanEdit(false);
@@ -52,14 +53,7 @@ public class GeocoderAlternativesGrid extends ListGrid {
 		locationField.setCanSort(false);
 		locationField.setCanGroupBy(false);
 		this.setFields(locationField);
-		this.addRecordClickHandler(new RecordClickHandler() {
-			public void onRecordClick(RecordClickEvent recordClickEvent) {
-				GetLocationForStringAlternative alternative;
-				alternative = (GetLocationForStringAlternative) recordClickEvent.getRecord()
-						.getAttributeAsObject(LOCATION_OBJECT);
-				widget.fireEvent(new SelectLocationEvent(widget.getMap(), alternative));
-			}
-		});
+		this.addRecordClickHandler(new GeocoderRecordClickHandler(widget));
 		update(alternatives);
 	}
 
@@ -89,4 +83,19 @@ public class GeocoderAlternativesGrid extends ListGrid {
 		return records;
 	}
 
+	private static class GeocoderRecordClickHandler implements RecordClickHandler {
+
+		private GeocoderWidget widget;
+
+		private GeocoderRecordClickHandler(GeocoderWidget widget) {
+			this.widget = widget;
+		}
+
+		public void onRecordClick(RecordClickEvent recordClickEvent) {
+			GetLocationForStringAlternative alternative;
+			alternative = (GetLocationForStringAlternative) recordClickEvent.getRecord()
+					.getAttributeAsObject(LOCATION_OBJECT);
+			widget.fireEvent(new SelectLocationEvent(widget.getMap(), alternative));
+		}
+	}
 }

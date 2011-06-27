@@ -32,7 +32,7 @@ public class SplitCommaReverseService implements SplitGeocoderStringService {
 	public List<String> split(String location) {
 		List<String> res = new ArrayList<String>();
 		String remaining = location;
-		for (int pos = remaining.indexOf(","); pos >= 0; pos = remaining.indexOf(",")) {
+		for (int pos = remaining.indexOf(','); pos >= 0; pos = remaining.indexOf(',')) {
 			String part = remaining.substring(0, pos).trim();
 			if (part.length() > 0) {
 				res.add(0, part);

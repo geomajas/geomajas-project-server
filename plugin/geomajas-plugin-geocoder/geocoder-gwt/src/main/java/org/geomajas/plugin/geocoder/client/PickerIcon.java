@@ -36,6 +36,7 @@ public class PickerIcon extends FormItemIcon {
 	 * @param icon the icon
 	 */
 	public PickerIcon(Picker icon) {
+		super();
 		setSrc(icon.url);
 		setWidth(18);
 		setHeight(22);

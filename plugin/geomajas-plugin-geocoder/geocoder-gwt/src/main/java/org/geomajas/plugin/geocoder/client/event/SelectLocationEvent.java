@@ -47,6 +47,7 @@ public class SelectLocationEvent extends GwtEvent<SelectLocationHandler> {
 	}
 
 	public SelectLocationEvent(MapWidget mapWidget, GetLocationForStringAlternative alternative) {
+		super();
 		this.mapWidget = mapWidget;
 		canonicalLocation = alternative.getCanonicalLocation();
 		center = alternative.getCenter();
@@ -56,6 +57,7 @@ public class SelectLocationEvent extends GwtEvent<SelectLocationHandler> {
 	}
 
 	public SelectLocationEvent(MapWidget mapWidget, GetLocationForStringResponse alternative) {
+		super();
 		this.mapWidget = mapWidget;
 		canonicalLocation = alternative.getCanonicalLocation();
 		center = alternative.getCenter();

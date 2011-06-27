@@ -49,6 +49,7 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
+		super();
 		presenter = new GeocoderPresenter(map, this);
 		this.map = map;
 

@@ -27,6 +27,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -181,23 +182,13 @@ public class GeonamesGeocoderService implements GeocoderService {
 			Toponym left = toponyms.get(pos);
 			for (int sec = toponyms.size() - 1; sec > pos; sec--) {
 				Toponym right = toponyms.get(sec);
-				if (oeq(left.getName(), right.getName()) && oeq(left.getCountryCode(), right.getCountryCode())
+				if (ObjectUtils.nullSafeEquals(left.getName(), right.getName())
+						&& ObjectUtils.nullSafeEquals(left.getCountryCode(), right.getCountryCode())
 						&& Math.abs(left.getLongitude() - right.getLongitude()) < DELTA
 						&& Math.abs(left.getLatitude() - right.getLatitude()) < DELTA) {
 					toponyms.remove(sec);
 				}
 			}
-		}
-	}
-
-	private boolean oeq(Object left, Object right) {
-		if (left == right) {
-			return true;
-		}
-		if (null != left) {
-			return left.equals(right);
-		} else {
-			return right.equals(left);
 		}
 	}
 
