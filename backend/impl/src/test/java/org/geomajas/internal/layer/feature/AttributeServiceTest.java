@@ -33,6 +33,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -102,6 +103,7 @@ public class AttributeServiceTest {
 	}
 
 	@Test
+	@DirtiesContext // ?? don't know why this is needed, it affects SecurityContextAttributeAuthorizationTest
 	public void testLazy() throws Exception {
 		InternalFeature feature = new InternalFeatureImpl();
 		Assert.assertNotNull(attributeService.getAttributes(lazyLayerBeans, feature, featureBean));
