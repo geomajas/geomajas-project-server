@@ -224,7 +224,6 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		try {
 			String url = formatGetFeatureInfoUrl(bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(),
 					layerBox, x, y);
-			url = httpService.addCredentialsToUrl(url, getAuthentication());
 			log.debug("getFeaturesByLocation: {} {} {} {}",
 					new Object[] {layerCoordinate, layerScale, pixelTolerance, url});
 			GML gml = new GML(Version.GML3);

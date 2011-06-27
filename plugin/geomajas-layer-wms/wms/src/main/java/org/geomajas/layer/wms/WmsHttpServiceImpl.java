@@ -34,7 +34,7 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	private static final String URL_PROTOCOL_SEPARATOR = "://";
 	private static final int TIMEOUT = 5000;
 
-	public String addCredentialsToUrl(String url, WmsAuthentication authentication) {
+	public String addCredentialsToUrl(final String url, final WmsAuthentication authentication) {
 		if (null != authentication && WmsAuthenticationMethod.URL.equals(authentication.getAuthenticationMethod())) {
 			StringBuilder res = new StringBuilder(url);
 			if (res.indexOf(URL_PARAM_START) >= 0) {
@@ -54,20 +54,24 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 		return url;
 	}
 
-	public InputStream getStream(String url, WmsAuthentication authentication) throws IOException {
+	public InputStream getStream(final String baseUrl, final WmsAuthentication authentication) throws IOException {
 		// Create a HTTP client object, which will initiate the connection:
 		HttpClient client = new HttpClient();
 		client.setConnectionTimeout(TIMEOUT);
 
-		// Preemptive: In this mode HttpClient will send the basic authentication response even before the server
-		// gives an unauthorized response in certain situations, thus reducing the overhead of making the
-		// connection.
-		client.getState().setAuthenticationPreemptive(true);
+		String url = addCredentialsToUrl(baseUrl, authentication);
 
-		// Set up the WMS credentials:
-		Credentials credentials = new UsernamePasswordCredentials(authentication.getUser(),
-				authentication.getPassword());
-		client.getState().setCredentials(authentication.getRealm(), parseDomain(url), credentials);
+		if (null != authentication && WmsAuthenticationMethod.BASIC.equals(authentication.getAuthenticationMethod())) {
+			// Preemptive: In this mode HttpClient will send the basic authentication response even before the server
+			// gives an unauthorized response in certain situations, thus reducing the overhead of making the
+			// connection.
+			client.getState().setAuthenticationPreemptive(true);
+
+			// Set up the WMS credentials:
+			Credentials credentials = new UsernamePasswordCredentials(authentication.getUser(),
+					authentication.getPassword());
+			client.getState().setCredentials(authentication.getRealm(), parseDomain(url), credentials);
+		}
 
 		// Create the GET method with the correct URL:
 		GetMethod get = new GetMethod(url);

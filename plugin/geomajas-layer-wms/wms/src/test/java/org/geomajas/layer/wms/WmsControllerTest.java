@@ -48,7 +48,6 @@ public class WmsControllerTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		wmsController.setHttpService(new MockHttpService());
 
-
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("SERVICE", "WMS");
 		parameters.put("layers", "bluemarble");

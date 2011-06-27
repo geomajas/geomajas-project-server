@@ -71,7 +71,6 @@ public class WmsController {
 		RasterLayerInfo layerInfo = layer.getLayerInfo();
 
 		String url = layer.getBaseWmsUrl() + "?" + request.getQueryString();
-		url = httpService.addCredentialsToUrl(url, layer.getAuthentication());
 		InputStream stream = null;
 
 		try {
