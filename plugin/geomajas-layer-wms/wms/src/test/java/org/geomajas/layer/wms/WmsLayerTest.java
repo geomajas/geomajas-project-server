@@ -53,8 +53,12 @@ public class WmsLayerTest {
 	private WmsLayer wms;
 
 	@Autowired
-	@Qualifier("proxyblue")
+	@Qualifier("proxyBlue")
 	private WmsLayer proxyWms;
+
+	@Autowired
+	@Qualifier("defaultBlue")
+	private WmsLayer defaultWms;
 
 	@Autowired
 	private GeoService geoService;
@@ -218,9 +222,36 @@ public class WmsLayerTest {
 		List<RasterTile> tiles = proxyWms.paint(latlon, latlonEnvelope, latlonScale);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("./d/wms/proxyblue/?SERVICE=WMS&layers=bluemarble&" +
+		Assert.assertEquals("./d/wms/proxyBlue/?SERVICE=WMS&layers=bluemarble&" +
 				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
-				"35.75294830795673&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap",
+				"35.75294830795673&format=image/jpeg&version=1.3.0&crs=EPSG:4326&styles=&request=GetMap",
+				tile.getUrl());
+		Assert.assertEquals(3, tile.getCode().getTileLevel());
+		Assert.assertEquals(2, tile.getCode().getX());
+		Assert.assertEquals(6, tile.getCode().getY());
+		Assert.assertEquals(-579.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-398.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(712.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(712.0, tile.getBounds().getWidth(), DELTA);
+	}
+
+	@Test
+	public void testDefaultsOne() throws Exception {
+		Envelope googleEnvelope = new Envelope(10000, 10010, 5000, 5010);
+		// back-transform envelope to latlon
+		Crs google = geoService.getCrs2(MERCATOR);
+		Crs latlon = geoService.getCrs2(LONLAT);
+		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
+				.getEnvelopeInternal();
+		// back-transform scale to latlon
+		double latlonScale = ZOOMED_IN_SCALE * googleEnvelope.getWidth() / latlonEnvelope.getWidth();
+		// paint with reprojection (affine is fine for now...:-)
+		List<RasterTile> tiles = defaultWms.paint(latlon, latlonEnvelope, latlonScale);
+		Assert.assertEquals(1, tiles.size());
+		RasterTile tile = tiles.get(0);
+		Assert.assertEquals("http://apps.geomajas.org/geoserver/wms?SERVICE=WMS&layers=bluemarble&" +
+				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
+				"35.75294830795673&format=image/png&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap",
 				tile.getUrl());
 		Assert.assertEquals(3, tile.getCode().getTileLevel());
 		Assert.assertEquals(2, tile.getCode().getX());

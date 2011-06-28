@@ -51,14 +51,20 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.
 		<property name="styles" value=""/>
 	</bean>
 
-	<bean name="proxyblue" class="org.geomajas.layer.wms.WmsLayer">
+	<bean name="proxyBlue" class="org.geomajas.layer.wms.WmsLayer">
 		<property name="layerInfo" ref="bluemarbleInfo"/>
 		<!-- When configuring your own applications, please do not use this WMS server -->
 		<property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
-		<property name="version" value="1.1.1"/>
+		<property name="version" value="1.3.0"/>
 		<property name="format" value="image/jpeg"/>
 		<property name="styles" value=""/>
 		<property name="useProxy" value="true"/>
+	</bean>
+
+	<bean name="defaultBlue" class="org.geomajas.layer.wms.WmsLayer">
+		<property name="layerInfo" ref="bluemarbleInfo"/>
+		<!-- When configuring your own applications, please do not use this WMS server -->
+		<property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
 	</bean>
 
 </beans>

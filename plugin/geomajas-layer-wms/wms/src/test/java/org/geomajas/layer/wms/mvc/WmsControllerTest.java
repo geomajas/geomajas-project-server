@@ -62,7 +62,7 @@ public class WmsControllerTest {
 		parameters.put("styles", "");
 		parameters.put("request", "GetMap");
 		request.setParameters(parameters);
-		request.setRequestURI("d/wms/proxyblue/");
+		request.setRequestURI("d/wms/proxyBlue/");
 		request.setQueryString("SERVICE=WMS&layers=bluemarble&" +
 				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
 				"35.75294830795673&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap");

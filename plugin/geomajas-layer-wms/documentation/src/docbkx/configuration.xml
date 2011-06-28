@@ -19,8 +19,29 @@
   <section id="dependencies">
     <title>Dependencies</title>
 
-    <para>Make sure your include the plug-in in your project. If you are using
-    Maven, add the following dependency to your pom:</para>
+    <para>Make sure sure you include the correct version of the plug-in in
+    your project. Use the following excerpt (with the correct version) in the
+    dependencyManagement section of your project:</para>
+
+    <informalexample>
+      <programlisting> &lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-wms-all&lt;/artifactId&gt;
+    &lt;version&gt;1.8.0&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+    &lt;scope&gt;import&lt;/scope&gt;
+&lt;/dependency&gt;
+</programlisting>
+    </informalexample>
+
+    <para>If you are using geomajas-dep, this includes the latest released
+    version of the wms layer (at the time of publishing of that version). If
+    you want to overwrite the caching plug-in version, make sure to include
+    this excerpt <emphasis>before</emphasis> the geomajas-dep
+    dependency.</para>
+
+    <para>You can now include the actual dependency without explicit
+    version.</para>
 
     <example>
       <title>WMS layer dependency</title>
@@ -28,7 +49,6 @@
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-layer-wms&lt;/artifactId&gt;
-    &lt;version&gt;1.7.1&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
   </section>
@@ -82,24 +102,25 @@
 
           <row>
             <entry><emphasis role="bold">version<emphasis>
-            (required)</emphasis></emphasis></entry>
+            (optional)</emphasis></emphasis></entry>
 
             <entry>Version of the WMS protocol which should be used. Check
-            your server configuration for possible values.</entry>
+            your server configuration for possible values. This defaults to
+            "1.1.1".</entry>
           </row>
 
           <row>
             <entry><emphasis role="bold">format
-            <emphasis>(required)</emphasis></emphasis></entry>
+            <emphasis>(optional)</emphasis></emphasis></entry>
 
             <entry>The mime type in which the images should be returned, for
             example "image/gif". Check your server configuration for possible
-            values.</entry>
+            values. This defaults to "image/png".</entry>
           </row>
 
           <row>
             <entry><emphasis role="bold">styles
-            <emphasis>(required)</emphasis></emphasis></entry>
+            <emphasis>(optional)</emphasis></emphasis></entry>
 
             <entry>Some WMS servers support multiple styles for their layers.
             Check your server configuration for possible values.</entry>
@@ -206,16 +227,28 @@
           </row>
 
           <row>
-            <entry><emphasis role="bold">applicationUrl
-            <emphasis>(required)</emphasis></emphasis></entry>
+            <entry><emphasis role="bold">authenticationMethod
+            <emphasis>(optional)</emphasis></emphasis></entry>
 
-            <entry>The URL to the web application itself. In order for the WMS
-            layer to add authentication headers to each WMS request, it works
-            with a proxy servlet. This means that the WMS layer must be
-            capable of determining the URL to this servlet. Therefore it needs
-            the base URL to the Geomajas web application. If you leave this
-            empty, a relative URL will be used, which is not always guaranteed
-            to work.</entry>
+            <entry>Authentication method to use. Options are
+            <code>WmsAuthenticationMethod.BASIC</code> (default) and
+            <code>WmsAuthenticationMethod.URL</code>.</entry>
+          </row>
+
+          <row>
+            <entry><emphasis role="bold">userKey</emphasis>
+            <emphasis>(optional)</emphasis></entry>
+
+            <entry>Key which is used to pass the user name when using the URL
+            authentication type.</entry>
+          </row>
+
+          <row>
+            <entry><emphasis role="bold">passwordKey</emphasis>
+            <emphasis>(optional)</emphasis></entry>
+
+            <entry>Key which is used to set the password when using the URL
+            authentication type.</entry>
           </row>
         </tbody>
       </tgroup>

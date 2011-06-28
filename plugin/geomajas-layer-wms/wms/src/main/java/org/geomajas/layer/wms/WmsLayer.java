@@ -92,8 +92,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	// @NotNull this seems to cause problems, it is tested in @PostConstruct anyway
 	private String baseWmsUrl;
 
-	private String format;
-	private String version;
+	private String format = "image/png";
+	private String version = "1.1.1";
 	private String styles = "";
 	private List<Parameter> parameters;
 
