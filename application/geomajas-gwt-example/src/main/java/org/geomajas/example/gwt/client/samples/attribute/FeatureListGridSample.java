@@ -11,23 +11,20 @@
 
 package org.geomajas.example.gwt.client.samples.attribute;
 
-import java.util.List;
-
+import org.geomajas.command.dto.SearchFeatureRequest;
+import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.map.cache.tile.TileFunction;
-import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -75,26 +72,28 @@ public class FeatureListGridSample extends SamplePanel {
 		grid.setShowResizeBar(true);
 
 		// Add a trigger to fill the grid when the map has finished loading:
+
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				MapModel mapModel = map.getMapModel();
-				VectorLayer layer = (VectorLayer) mapModel.getLayer("clientLayerCountries110mGrid");
+				final VectorLayer layer = map.getMapModel().getVectorLayer("clientLayerCountries110mGrid");
 				grid.setLayer(layer);
-				Bbox bounds = mapModel.getMapView().getBounds();
-				layer.getFeatureStore().queryAndSync(bounds, null, null, new TileFunction<VectorTile>() {
+				SearchFeatureRequest searchFeatureRequest = new SearchFeatureRequest();
+				searchFeatureRequest.setCrs(map.getMapModel().getCrs());
+				searchFeatureRequest.setFeatureIncludes(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
+				searchFeatureRequest.setLayerId("layerCountries110m");
+				GwtCommand searchCommand = new GwtCommand(SearchFeatureRequest.COMMAND);
+				searchCommand.setCommandRequest(searchFeatureRequest);
 
-					public void execute(VectorTile tile) {
-						tile.getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+				GwtCommandDispatcher.getInstance().execute(searchCommand,
+						new AbstractCommandCallback<SearchFeatureResponse>() {
 
-							public void execute(List<Feature> response) {
-								for (Feature feature : response) {
-									grid.addFeature(feature);
+							public void execute(SearchFeatureResponse response) {
+								for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
+									grid.addFeature(new Feature(feature, layer));
 								}
 							}
 						});
-					}
-				});
 			}
 		});
 
