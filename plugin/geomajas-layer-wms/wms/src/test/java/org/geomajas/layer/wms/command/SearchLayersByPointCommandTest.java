@@ -13,7 +13,7 @@ package org.geomajas.layer.wms.command;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.SearchLayersByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchLayersByPointRequest;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.junit.After;
@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 /**
- * Test for {@link org.geomajas.command.wms.SearchLayersByPointCommand}
+ * Test for {@link org.geomajas.layer.wms.command.wms.SearchLayersByPointCommand}
  *
  * @author Joachim Van der Auwera
  */

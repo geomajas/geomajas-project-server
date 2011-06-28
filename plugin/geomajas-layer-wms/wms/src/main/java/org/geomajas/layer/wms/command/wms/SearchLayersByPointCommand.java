@@ -8,12 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.command.wms;
+package org.geomajas.layer.wms.command.wms;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.command.Command;
-import org.geomajas.command.dto.SearchLayersByPointRequest;
-import org.geomajas.command.dto.SearchLayersByPointResponse;
+import org.geomajas.layer.wms.command.dto.SearchLayersByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchLayersByPointResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;

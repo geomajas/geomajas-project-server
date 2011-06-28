@@ -544,7 +544,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		return bounds.intersection(maxExtent);
 	}
 
-	String getBaseWmsUrl() {
+	public String getBaseWmsUrl() {
 		return baseWmsUrl;
 	}
 
@@ -559,7 +559,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		this.baseWmsUrl = baseWmsUrl;
 	}
 
-	String getFormat() {
+	public String getFormat() {
 		return format;
 	}
 

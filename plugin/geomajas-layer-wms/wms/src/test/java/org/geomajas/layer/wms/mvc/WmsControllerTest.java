@@ -9,9 +9,11 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.layer.wms;
+package org.geomajas.layer.wms.mvc;
 
 import junit.framework.Assert;
+import org.geomajas.layer.wms.WmsAuthentication;
+import org.geomajas.layer.wms.WmsHttpService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

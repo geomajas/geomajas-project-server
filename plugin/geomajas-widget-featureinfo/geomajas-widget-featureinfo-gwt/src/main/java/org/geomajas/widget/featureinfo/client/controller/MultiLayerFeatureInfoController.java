@@ -19,8 +19,8 @@ import java.util.Set;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
-import org.geomajas.command.dto.SearchLayersByPointRequest;
-import org.geomajas.command.dto.SearchLayersByPointResponse;
+import org.geomajas.layer.wms.command.dto.SearchLayersByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchLayersByPointResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -148,7 +148,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 							commandRequest.setCommandRequest(rasterLayerRequest);
 							GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 								public void execute(CommandResponse commandRasterResponse) {
-									SearchLayersByPointResponse rasterResponse = (SearchLayersByPointResponse) 
+									SearchLayersByPointResponse rasterResponse = (SearchLayersByPointResponse)
 											commandRasterResponse;
 									Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = vectorResponse
 											.getFeatureMap();

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.layer.wms;
+package org.geomajas.layer.wms.mvc;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -19,6 +19,8 @@ import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.wms.WmsHttpService;
+import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

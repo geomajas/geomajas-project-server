@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.command.dto;
+package org.geomajas.layer.wms.command.dto;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Response object for {@link org.geomajas.command.wms.SearchLayersByPointCommand}.
+ * Response object for {@link org.geomajas.layer.wms.command.wms.SearchLayersByPointCommand}.
  *
  * @author Jan De Moerloose
  * @author Pieter De Graef

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.command.dto;
+package org.geomajas.layer.wms.command.dto;
 
 import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Bbox;
@@ -16,7 +16,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 
 /**
- * Request for {@link org.geomajas.command.wms.SearchLayersByPointCommand} that allows searching features
+ * Request for {@link org.geomajas.layer.wms.command.wms.SearchLayersByPointCommand} that allows searching features
  * on raster layers that implement {@link org.geomajas.layer.wms.LayerFeatureInfoSupport}.
  *
  * @author Oliver May
