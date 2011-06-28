@@ -77,4 +77,12 @@ public class CombinedFeatureInfoController extends AbstractGraphicsController {
 		tomC.onMouseOut(event);
 		mlfC.onMouseOut(event);
 	}
+
+	@Override
+	public void onDeactivate() {
+		super.onDeactivate();
+		panC.onDeactivate();
+		tomC.onDeactivate();
+		mlfC.onDeactivate();
+	}
 }
