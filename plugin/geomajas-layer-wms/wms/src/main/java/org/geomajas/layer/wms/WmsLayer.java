@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
 
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
@@ -90,7 +89,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private List<Resolution> resolutions = new ArrayList<Resolution>();
 
-	@NotNull
+	// @NotNull this seems to cause problems, it is tested in @PostConstruct anyway
 	private String baseWmsUrl;
 
 	private String format;
