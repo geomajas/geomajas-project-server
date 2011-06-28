@@ -41,7 +41,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Label;
 
 /**
  * 
@@ -51,7 +50,7 @@ import com.smartgwt.client.widgets.Label;
 public class TooltipOnMouseoverController extends AbstractGraphicsController {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
-	private Label tooltip;
+	private Canvas tooltip;
 	private int pixelTolerance;
 
 	private Coordinate lastPosition; // screen
@@ -213,7 +212,8 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 			int left = tooltip.getLeft();
 			int top = tooltip.getTop();
 			destroyTooltip();
-			Label content = new Label(sb.toString());
+			Canvas content = new Canvas();
+			content.setContents(sb.toString());
 			content.setWidth(widest * 6 + 10);
 			content.setAutoHeight();
 			content.setMargin(5);
@@ -251,9 +251,9 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		});
 	}
 
-	private void createTooltip(int x, int y, Label content) {
+	private void createTooltip(int x, int y, Canvas content) {
 		if (mapWidget != null) {
-			tooltip = new Label();
+			tooltip = new Canvas();
 			tooltip.setBackgroundColor("white");
 			tooltip.setShowShadow(true);
 			tooltip.setOpacity(85);
@@ -327,7 +327,7 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 	
 	private Canvas getLoadingImg() {
 		Canvas c = new Canvas();
-		c.setMargin(5);
+		c.setMargin(4);
 		c.setWidth(26);
 		c.setHeight(26);
 		c.addChild(new Img("[ISOMORPHIC]/geomajas/loading_small.gif", 16, 16));
