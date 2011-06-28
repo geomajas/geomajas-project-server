@@ -157,4 +157,10 @@ public class PanController extends AbstractGraphicsController {
 				beginWorld.getY() - endWorld.getY());
 		begin = end;
 	}
+
+	@Override
+	public void onDeactivate() {
+		super.onDeactivate();
+		zoomToRectangleController.onDeactivate();
+	}
 }

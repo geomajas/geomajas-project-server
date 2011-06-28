@@ -105,6 +105,7 @@ public class SelectionController extends AbstractRectangleController {
 
 	@Override
 	public void onDeactivate() {
+		super.onDeactivate();
 		onDoubleClick(null);
 		menu.destroy();
 		menu = null;

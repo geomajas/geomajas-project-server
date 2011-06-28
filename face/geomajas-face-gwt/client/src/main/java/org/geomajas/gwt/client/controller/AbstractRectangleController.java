@@ -49,6 +49,8 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 
 	protected boolean shift;
 
+	protected boolean leftWidget;
+
 	protected ShapeStyle rectangleStyle = new ShapeStyle("#FF9900", 0.2f, "#FF9900", 1f, 2);
 
 	protected Menu menu;
@@ -73,9 +75,14 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 	 */
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
+		if (dragging && leftWidget) {
+			// mouse was moved outside of widget
+			doSelect(event);
+
+		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			// no point trying to select when there is no active layer
 			dragging = true;
+			leftWidget = false;
 			timestamp = new Date().getTime();
 			begin = getScreenPosition(event);
 			bounds = new Bbox(begin.getX(), begin.getY(), 0.0, 0.0);
@@ -97,16 +104,20 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 	public void onMouseUp(MouseUpEvent event) {
 		// assure dragging or clicking started inside this widget
 		if (dragging) {
-			dragging = false;
-			shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
-			updateRectangle(event);
-
-			WorldViewTransformer transformer = new WorldViewTransformer(mapWidget.getMapModel().getMapView());
-			Bbox worldBounds = transformer.viewToWorld(bounds);
-			selectRectangle(worldBounds);
-
-			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
+			doSelect(event);
 		}
+	}
+
+	private void doSelect(MouseEvent<?> event) {
+		dragging = false;
+		shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
+		updateRectangle(event);
+
+		WorldViewTransformer transformer = new WorldViewTransformer(mapWidget.getMapModel().getMapView());
+		Bbox worldBounds = transformer.viewToWorld(bounds);
+		selectRectangle(worldBounds);
+
+		mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
 	}
 
 	/**
@@ -127,7 +138,8 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
-		stopDragging();
+		leftWidget = true;
+		 // stopDragging();
 	}
 
 	protected void stopDragging() {
@@ -155,5 +167,12 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 		bounds.setY(y);
 		bounds.setWidth(width);
 		bounds.setHeight(height);
+	}
+
+	@Override
+	public void onDeactivate() {
+		super.onDeactivate();
+		// make sure to clean up
+		stopDragging();
 	}
 }
