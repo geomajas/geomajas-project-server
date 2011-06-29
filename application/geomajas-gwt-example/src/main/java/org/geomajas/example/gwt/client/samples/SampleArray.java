@@ -16,6 +16,7 @@ import org.geomajas.example.gwt.client.samples.attribute.AttributeCustomTypeSamp
 import org.geomajas.example.gwt.client.samples.attribute.AttributeIncludeInFormSample;
 import org.geomajas.example.gwt.client.samples.attribute.AttributeSearchSample;
 import org.geomajas.example.gwt.client.samples.attribute.EditAttributeSample;
+import org.geomajas.example.gwt.client.samples.attribute.EditableGridSample;
 import org.geomajas.example.gwt.client.samples.attribute.FeatureListGridSample;
 import org.geomajas.example.gwt.client.samples.attribute.SearchSample;
 import org.geomajas.example.gwt.client.samples.base.SampleTreeNode;
@@ -172,6 +173,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().search2Title(),
 						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeSearchSample.TITLE, "FeatureListGridGroup",
 						AttributeSearchSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editableGridTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/table.png", EditableGridSample.TITLE, "FeatureListGridGroup",
+						EditableGridSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editAttributeTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/table.png", EditAttributeSample.TITLE, "FeatureListGridGroup",
 						EditAttributeSample.FACTORY),

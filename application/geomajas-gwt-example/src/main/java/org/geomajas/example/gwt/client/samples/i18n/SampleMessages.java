@@ -453,6 +453,12 @@ public interface SampleMessages extends Messages {
 
 	String search2InnerTitle();
 
+	// Editable grid
+
+	String editableGridTitle();
+	
+	String editableGridDescription();
+
 	// Edit Attribute sample:
 
 	String editAttributeTitle();
