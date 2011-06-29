@@ -11,13 +11,14 @@
 
 package org.geomajas.gwt.client.spatial.geometry;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * <p>
@@ -117,6 +118,9 @@ public class GwtLinearRingTest {
 	@Test
 	public void isValid() {
 		Assert.assertEquals(jts.isValid(), gwt.isValid());
+		LineString gwtCoords = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
+				new Coordinate(20.0, 10.0), new Coordinate(10.0, 10.0) });
+		Assert.assertFalse(gwtCoords.isValid());
 	}
 
 	@Test
@@ -157,7 +161,7 @@ public class GwtLinearRingTest {
 	@Test
 	public void getAreaJtsBugFix() {
 		// convert LinearRing to polygon to make the test work because of JTS problem with getArea() on LinearRing
-		com.vividsolutions.jts.geom.Polygon p = jts.getFactory().createPolygon(jts,null);
+		com.vividsolutions.jts.geom.Polygon p = jts.getFactory().createPolygon(jts, null);
 		double ja = p.getArea();
 		Assert.assertEquals(ja, gwt.getArea(), DELTA);
 	}
