@@ -153,30 +153,36 @@ public class AttributeListGrid extends ListGrid {
 			} else {
 				AssociationAttributeInfo associationAttributeInfo = (AssociationAttributeInfo) attributeInfo;
 				String displayName = associationAttributeInfo.getFeature().getDisplayAttributeName();
-				if (displayName == null) {
-					displayName = associationAttributeInfo.getFeature().getAttributes().get(0).getName();
-				}
-				switch (associationAttributeInfo.getType()) {
-					case MANY_TO_ONE:
-						ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) attr;
-						Object value = manyToOneAttribute.getValue().getAllAttributes().get(displayName).getValue();
-						if (value != null) {
-							record.setAttribute(attributeInfo.getName(), value.toString());
-						} else {
-							record.setAttribute(attributeInfo.getName(), "");
-						}
-						break;
-					case ONE_TO_MANY:
-						OneToManyAttribute oneToManyAttribute = (OneToManyAttribute) attr;
-						List<String> values = new ArrayList<String>();
-						for (AssociationValue assoc : oneToManyAttribute.getValue()) {
-							Object o = assoc.getAllAttributes().get(displayName).getValue();
-							if (o != null) {
-								values.add(o.toString());
+				Object value = attr.getValue();
+				if (value != null) {
+					if (displayName == null) {
+						displayName = associationAttributeInfo.getFeature().getAttributes().get(0).getName();
+					}
+					switch (associationAttributeInfo.getType()) {
+						case MANY_TO_ONE:
+							ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) attr;
+							Object displayValue = manyToOneAttribute.getValue().getAllAttributes().get(displayName)
+									.getValue();
+							if (displayValue != null) {
+								record.setAttribute(attributeInfo.getName(), displayValue.toString());
+							} else {
+								record.setAttribute(attributeInfo.getName(), "");
 							}
-						}
-						record.setAttribute(attributeInfo.getName(), StringUtil.join(values, ","));
-						break;
+							break;
+						case ONE_TO_MANY:
+							OneToManyAttribute oneToManyAttribute = (OneToManyAttribute) attr;
+							List<String> values = new ArrayList<String>();
+							for (AssociationValue assoc : oneToManyAttribute.getValue()) {
+								Object o = assoc.getAllAttributes().get(displayName).getValue();
+								if (o != null) {
+									values.add(o.toString());
+								}
+							}
+							record.setAttribute(attributeInfo.getName(), StringUtil.join(values, ","));
+							break;
+					}
+				} else {
+					record.setAttribute(attributeInfo.getName(), "");
 				}
 			}
 		}

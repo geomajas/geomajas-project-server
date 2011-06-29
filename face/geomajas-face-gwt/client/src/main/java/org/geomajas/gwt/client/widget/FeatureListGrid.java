@@ -26,6 +26,11 @@ import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.StringUtil;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.attribute.AssociationValue;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
@@ -34,7 +39,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
 import com.smartgwt.client.widgets.events.DoubleClickHandler;
@@ -188,16 +192,48 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		// Feature checks out, add it to the grid:
 		ListGridRecord record = new ListGridRecord();
 		record.setAttribute("featureId", feature.getId());
+		
 		for (AttributeInfo attributeInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			Object value = feature.getAttributeValue(attributeInfo.getName());
-			if (value != null) {
-				if (value instanceof Boolean) {
-					record.setAttribute(attributeInfo.getName(), (Boolean) value); // "false" != false
+			Attribute<?> attr = feature.getAttributes().get(attributeInfo.getName());
+			if (attr.isPrimitive()) {
+				Object value = attr.getValue();
+				if (value != null) {
+					if (value instanceof Boolean) {
+						record.setAttribute(attributeInfo.getName(), (Boolean) value); // "false" != false
+					} else {
+						record.setAttribute(attributeInfo.getName(), value.toString());
+					}
 				} else {
-					record.setAttribute(attributeInfo.getName(), value.toString());
+					record.setAttribute(attributeInfo.getName(), "");
 				}
 			} else {
-				record.setAttribute(attributeInfo.getName(), "");
+				AssociationAttributeInfo associationAttributeInfo = (AssociationAttributeInfo) attributeInfo;
+				String displayName = associationAttributeInfo.getFeature().getDisplayAttributeName();
+				if (displayName == null) {
+					displayName = associationAttributeInfo.getFeature().getAttributes().get(0).getName();
+				}
+				switch (associationAttributeInfo.getType()) {
+					case MANY_TO_ONE:
+						ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) attr;
+						Object value = manyToOneAttribute.getValue().getAllAttributes().get(displayName).getValue();
+						if (value != null) {
+							record.setAttribute(attributeInfo.getName(), value.toString());
+						} else {
+							record.setAttribute(attributeInfo.getName(), "");
+						}
+						break;
+					case ONE_TO_MANY:
+						OneToManyAttribute oneToManyAttribute = (OneToManyAttribute) attr;
+						List<String> values = new ArrayList<String>();
+						for (AssociationValue assoc : oneToManyAttribute.getValue()) {
+							Object o = assoc.getAllAttributes().get(displayName).getValue();
+							if (o != null) {
+								values.add(o.toString());
+							}
+						}
+						record.setAttribute(attributeInfo.getName(), StringUtil.join(values, ","));
+						break;
+				}
 			}
 		}
 		addData(record);
@@ -517,7 +553,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 				addCellClickHandler(new UrlCellHandler(attributeInfo));
 			}
 		} else if (attributeInfo instanceof AssociationAttributeInfo) {
-			SC.warn("FeatureListTable.addAttributeTypeToHeader - associations: not implemented.", null);
+			gridField.setType(ListGridFieldType.TEXT);
 		}
 
 		return gridField;

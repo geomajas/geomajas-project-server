@@ -96,6 +96,7 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 				openEditor();
 			}
 		});
+		canvasItem = new CanvasItem();
 		canvasItem.setCanvas(canvas);
 	}
 
