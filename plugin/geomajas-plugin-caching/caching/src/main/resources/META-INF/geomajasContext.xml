@@ -40,9 +40,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="optionalDependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<!-- when static security is used, need a minimum of 1.8.0-SNAPSHOT or all matches will fail -->
+					<!-- when static security is used, need a minimum of 1.8.0 or all matches will fail -->
 					<property name="name" value="Static security" />
-					<property name="version" value="1.8.0-SNAPSHOT" />
+					<property name="version" value="1.8.0" />
 				</bean>
 			</list>
 		</property>
