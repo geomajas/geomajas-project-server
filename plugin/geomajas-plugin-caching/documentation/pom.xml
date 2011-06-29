@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>caching-documentation</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>Caching documentation</name>
 	<description>Caching documentation</description>
@@ -28,4 +28,10 @@
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
 	
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-caching-all-1.0.0/caching-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-caching-all-1.0.0/caching-documentation</developerConnection>
+    <url>https://svn.geomajas.org/majas/tags/geomajas-plugin-caching-all-1.0.0/caching-documentation</url>
+  </scm>
 </project>
