@@ -513,7 +513,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 				upper = new Resolution(Math.max(width / tileWidth, height / tileHeight), level, tileWidth,
 						tileHeight);
 			}
-			if ((upper.getResolution() - screenResolution) > 2 * (screenResolution - lower.getResolution())) {
+			if ((screenResolution - upper.getResolution()) > 2 * (lower.getResolution() - screenResolution)) {
 				return lower;
 			} else {
 				return upper;
@@ -524,8 +524,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private RasterGrid getRasterGrid(Envelope bounds, double width, double height, double scale) {
 		// slightly adjust the width and height so it becomes integer for the
 		// current scale
-		double realWidth = ((int) (width * scale)) / scale;
-		double realHeight = ((int) (height * scale)) / scale;
+		double realWidth = Math.round(width * scale) / scale;
+		double realHeight =  Math.round(height * scale) / scale;
 
 		Bbox bbox = getLayerInfo().getMaxExtent();
 		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getY()) / realHeight);
