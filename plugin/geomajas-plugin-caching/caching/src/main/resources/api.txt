@@ -1,0 +1,74 @@
+// geomajas caching plug-in 1.0.0
+org.geomajas.plugin.caching.cache.CacheSelector::1.0.0
+org.geomajas.plugin.caching.cache.InfinispanCacheFactory::1.0.0
+org.geomajas.plugin.caching.cache.InfinispanCacheFactory:void setConfigurationFile(String, ):1.0.0
+org.geomajas.plugin.caching.cache.NoCacheCacheFactory::1.0.0
+org.geomajas.plugin.caching.cache.NoCacheCacheService::1.0.0
+org.geomajas.plugin.caching.configuration.CacheInfo::1.0.0
+org.geomajas.plugin.caching.configuration.CacheInfo:Map<CacheCategory,InfinispanConfiguration> getConfiguration():1.0.0
+org.geomajas.plugin.caching.configuration.CacheInfo:String getId():1.0.0
+org.geomajas.plugin.caching.configuration.CacheInfo:static final String KEY:1.0.0
+org.geomajas.plugin.caching.configuration.CacheInfo:void setConfiguration(Map<CacheCategory,InfinispanConfiguration>, ):1.0.0
+org.geomajas.plugin.caching.configuration.CacheInfo:void setId(String, ):1.0.0
+org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo::1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo::1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:Configuration getInfinispanConfiguration():1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:SimpleInfinispanCacheInfo():1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionStrategy(., ):1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionWakeUpInterval(long, ):1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setExpiration(int, ):1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setIsolationLevel(IsolationLevel, ):1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setLevel2CacheLocation(String, ):1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setMaxEntries(int, ):1.0.0
+org.geomajas.plugin.caching.service.CacheCategory::1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:CacheCategory(String, ):1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:String getName():1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:String toString():1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:boolean equals(Object, ):1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:int hashCode():1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:static final CacheCategory BOUNDS:1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:static final CacheCategory FEATURE:1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:static final CacheCategory RASTER:1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:static final CacheCategory REBUILD:1.0.0
+org.geomajas.plugin.caching.service.CacheCategory:static final CacheCategory TILE:1.0.0
+org.geomajas.plugin.caching.service.CacheFactory::1.0.0
+org.geomajas.plugin.caching.service.CacheFactory:CacheService create(Layer, CacheCategory, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService::1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:Object get(Layer, CacheCategory, String, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:TYPE get(Layer, CacheCategory, String, Class<TYPE>, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void drop(Layer, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void drop(Layer, CacheCategory, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void invalidate(Layer, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void invalidate(Layer, CacheCategory, Envelope, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void invalidate(Layer, Envelope, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void put(Layer, CacheCategory, String, Object, Envelope, ):1.0.0
+org.geomajas.plugin.caching.service.CacheManagerService:void remove(Layer, CacheCategory, String, ):1.0.0
+org.geomajas.plugin.caching.service.CacheService::1.0.0
+org.geomajas.plugin.caching.service.CacheService:Object get(String, ):1.0.0
+org.geomajas.plugin.caching.service.CacheService:TYPE get(String, Class<TYPE>, ):1.0.0
+org.geomajas.plugin.caching.service.CacheService:void clear():1.0.0
+org.geomajas.plugin.caching.service.CacheService:void drop():1.0.0
+org.geomajas.plugin.caching.service.CacheService:void put(String, Object, ):1.0.0
+org.geomajas.plugin.caching.service.CacheService:void remove(String, ):1.0.0
+org.geomajas.plugin.caching.service.CacheServiceInfo::1.0.0
+org.geomajas.plugin.caching.service.CacheServiceInfo:CacheFactory getCacheFactory():1.0.0
+org.geomajas.plugin.caching.service.CacheServiceInfo:void setCacheFactory(CacheFactory, ):1.0.0
+org.geomajas.plugin.caching.service.CachingSupportService::1.0.0
+org.geomajas.plugin.caching.service.CachingSupportService:CONTAINER getContainer(String, String, String[], CacheCategory, PipelineContext, CachingSupportServiceContextAdder, Class<CONTAINER>, ):1.0.0
+org.geomajas.plugin.caching.service.CachingSupportService:void putContainer(PipelineContext, CachingSupportServiceContextAdder, CacheCategory, String[], String, String, CacheContainer, Envelope, ):1.0.0
+org.geomajas.plugin.caching.service.CachingSupportServiceContextAdder::1.0.0
+org.geomajas.plugin.caching.service.CachingSupportServiceContextAdder:void addMoreContext(CacheContext, ):1.0.0
+org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder::1.0.0
+org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder:void restoreSecurityContext(CacheContext, ):1.0.0
+org.geomajas.plugin.caching.service.LayerCategoryInfo::1.0.0
+org.geomajas.plugin.caching.service.LayerCategoryInfo:CacheCategory getCategory():1.0.0
+org.geomajas.plugin.caching.service.LayerCategoryInfo:String getLayerId():1.0.0
+org.geomajas.plugin.caching.service.LayerCategoryInfo:void setCategory(CacheCategory, ):1.0.0
+org.geomajas.plugin.caching.service.LayerCategoryInfo:void setLayerId(String, ):1.0.0
+org.geomajas.plugin.caching.step.AbstractCachingInterceptor::1.0.0
+org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor::1.0.0
+org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor:void addMoreContext(CacheContext, ):1.0.0
+org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor:void restoreSecurityContext(CacheContext, ):1.0.0
+org.geomajas.plugin.caching.step.CacheContainer::1.0.0
+org.geomajas.plugin.caching.step.CacheContainer:CacheContext getContext():1.0.0
+org.geomajas.plugin.caching.step.CacheContainer:void setContext(CacheContext, ):1.0.0
