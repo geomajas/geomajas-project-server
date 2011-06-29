@@ -14,8 +14,6 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
-
   <section id="dependencies">
     <title>Dependencies</title>
 
@@ -56,118 +54,164 @@
   <section id="wmsconf">
     <title>WMS layer configuration</title>
 
-    <para>A complete WMS layer configuration looks as follows:</para>
+    <section>
+      <title>Defining a WMS layer</title>
 
-    <xi:include href="listing/WmsLayerSample.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <para>A complete WMS layer configuration looks as follows:</para>
 
-    <para>As you can see, the bean class refers to the actual layer type:
-    <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
+      <xi:include href="listing/WmsLayerSample.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>The first property is the layer info object, which describes the
-    metadata common to all raster layers. Visit the <ulink
-    url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#conf-raster">Geomajas
-    developer guide</ulink> to learn more about it. This guide will focus on
-    the WMS specific configuration options.</para>
+      <para>The first property is the layer info object, which describes the
+      metadata common to all raster layers. Visit the <ulink
+      url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#conf-raster">Geomajas
+      developer guide</ulink> to learn more about it. This guide will focus on
+      the WMS specific configuration options.</para>
 
-    <para>The layer object contains some extra properties which are
-    specifically tied to the WMS server. Some of these are required, some are
-    optional.</para>
+      <para><remark>The most important parameter here, is the dataSourceName,
+      which must point to a layer name as specified by the WMS server. Note
+      that comma separated values are supported, as the layer name is
+      literally used in the WMS requests.</remark></para>
 
-    <table>
-      <title>WMS layer properties</title>
+      <para>As you can see, the bean class refers to the actual layer type:
+      <code>org.geomajas.layer.wms.WmsLayer</code>. The layer object contains
+      some extra properties which are specifically tied to the WMS server.
+      Some of these are required, some are optional.</para>
 
-      <tgroup cols="2">
-        <colspec colnum="1" colwidth="1*" />
+      <table>
+        <title>WMS layer properties</title>
 
-        <colspec colnum="2" colwidth="2*" />
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="1*" />
 
-        <thead>
-          <row>
-            <entry>Name</entry>
+          <colspec colnum="2" colwidth="2*" />
 
-            <entry>Description</entry>
-          </row>
-        </thead>
+          <thead>
+            <row>
+              <entry>Name</entry>
 
-        <tbody>
-          <row>
-            <entry><emphasis role="bold">baseWmsUrl
-            <emphasis>(required)</emphasis></emphasis></entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
 
-            <entry>The base url of the WMS server. This is the base part
-            (excluding the request parameters) of the url that would be called
-            to execute a WMS request.</entry>
-          </row>
+          <tbody>
+            <row>
+              <entry><emphasis role="bold">baseWmsUrl
+              <emphasis>(required)</emphasis></emphasis></entry>
 
-          <row>
-            <entry><emphasis role="bold">version<emphasis>
-            (optional)</emphasis></emphasis></entry>
+              <entry>The base url of the WMS server. This is the base part
+              (excluding the request parameters) of the url that would be
+              called to execute a WMS request.</entry>
+            </row>
 
-            <entry>Version of the WMS protocol which should be used. Check
-            your server configuration for possible values. This defaults to
-            "1.1.1".</entry>
-          </row>
+            <row>
+              <entry><emphasis role="bold">version<emphasis>
+              (optional)</emphasis></emphasis></entry>
 
-          <row>
-            <entry><emphasis role="bold">format
-            <emphasis>(optional)</emphasis></emphasis></entry>
+              <entry>Version of the WMS protocol which should be used. Check
+              your server configuration for possible values. This defaults to
+              "1.1.1".</entry>
+            </row>
 
-            <entry>The mime type in which the images should be returned, for
-            example "image/gif". Check your server configuration for possible
-            values. This defaults to "image/png".</entry>
-          </row>
+            <row>
+              <entry><emphasis role="bold">format
+              <emphasis>(optional)</emphasis></emphasis></entry>
 
-          <row>
-            <entry><emphasis role="bold">styles
-            <emphasis>(optional)</emphasis></emphasis></entry>
+              <entry>The mime type in which the images should be returned, for
+              example "image/gif". Check your server configuration for
+              possible values. This defaults to "image/png".</entry>
+            </row>
 
-            <entry>Some WMS servers support multiple styles for their layers.
-            Check your server configuration for possible values.</entry>
-          </row>
+            <row>
+              <entry><emphasis role="bold">styles
+              <emphasis>(optional)</emphasis></emphasis></entry>
 
-          <row>
-            <entry><emphasis role="bold">parameters<emphasis>
-            (optional)</emphasis></emphasis></entry>
+              <entry>Some WMS servers support multiple styles for their
+              layers. Check your server configuration for possible
+              values.</entry>
+            </row>
 
-            <entry>You can define additional parameters which can be passed to
-            the WMS server for each GetMap request. These are name/value pairs
-            which are passed in
-            <code>org.geomajas.configuration.Parameter</code> objects.</entry>
-          </row>
+            <row>
+              <entry><emphasis role="bold">parameters<emphasis>
+              (optional)</emphasis></emphasis></entry>
 
-          <row>
-            <entry><emphasis role="bold">authentication</emphasis>
-            (optional)</entry>
+              <entry>You can define additional parameters which can be passed
+              to the WMS server for each GetMap request. These are name/value
+              pairs which are passed in
+              <code>org.geomajas.configuration.Parameter</code> objects. See
+              "<link linkend="wms_extra_params">Adding extra
+              parameters</link>" for more information.</entry>
+            </row>
 
-            <entry>Optional basic or digest HTTP authentication. This bean is
-            of the type:
-            <code>org.geomajas.layer.wms.WmsAuthentication</code>. When set,
-            the WMS request is automatically proxied to assure that
-            credentials are not leaked to the client.</entry>
-          </row>
+            <row>
+              <entry><emphasis role="bold">authentication</emphasis>
+              (optional)</entry>
 
-          <row>
-            <entry><emphasis role="bold">useProxy</emphasis>
-            (optional)</entry>
+              <entry>Optional basic or digest HTTP authentication. This bean
+              is of the type:
+              <code>org.geomajas.layer.wms.WmsAuthentication</code>. When set,
+              the WMS request is automatically proxied to assure that
+              credentials are not leaked to the client. See "<link
+              linkend="wms_authentication">Using authentication</link>" for
+              more information.</entry>
+            </row>
 
-            <entry>Allows you to force the use of a proxy to get the image.
-            This can be useful if you want to hide the WMS URL (excluding the
-            parameters that is). This is automatically enabled when the
-            authentication property is set (to assure that credentials are not
-            visible on the user).</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+            <row>
+              <entry><emphasis role="bold">useProxy</emphasis>
+              (optional)</entry>
 
-    <para>The optional HTTP authentication allows the WMS layer to send user
-    credentials to the WMS server in the HTTP headers. Although this is an
-    option, often WMS server will be secured, and require such authentication.
-    Below is an example of a WMS layer configuration that uses the HTTP
-    authentication:</para>
+              <entry>Allows you to force the use of a proxy to get the image.
+              This can be useful if you want to hide the WMS URL (excluding
+              the parameters that is). This is automatically enabled when the
+              authentication property is set (to assure that credentials are
+              not visible on the user).</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
 
-    <programlisting>&lt;bean name="wmsOrtho" class="be.geomajas.layer.wms.WmsLayer" &gt;
+    <section>
+      <title id="wms_extra_params">Adding extra parameters to the WMS
+      requests</title>
+
+      <para>In the previous paragraph, we mentioned the possibility to
+      configure extra parameters to be passed to the WMS server when executing
+      the GetMap requests. This option can be useful for example for
+      configuring the use of transparency.</para>
+
+      <para>Below is an example of a WMS layer configuration which uses
+      transparency:</para>
+
+      <para><programlisting>&lt;bean name="wms03" class="org.geomajas.layer.wms.WmsLayer" &gt;
+    &lt;property name="layerInfo" ref="wms03Info" /&gt;
+
+    &lt;!-- When configuring your own applications, please do not use this WMS server --&gt;
+    &lt;property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms" /&gt;
+    &lt;property name="version" value="1.1.1"/&gt;
+    &lt;property name="format" value="image/png;%20mode=24bit"/&gt;
+    &lt;property name="styles" value=""/&gt;
+    &lt;property name="parameters"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="transparent" /&gt;
+                &lt;property name="value" value="TRUE" /&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting></para>
+    </section>
+
+    <section>
+      <title id="wms_authentication">Using authentication</title>
+
+      <para>The optional HTTP authentication allows the WMS layer to send user
+      credentials to the WMS server in the HTTP headers. Although this is an
+      option, often WMS server will be secured, and require such
+      authentication. Below is an example of a WMS layer configuration that
+      uses the HTTP authentication:</para>
+
+      <programlisting>&lt;bean name="wmsOrtho" class="be.geomajas.layer.wms.WmsLayer" &gt;
     &lt;property name="layerInfo" ref="wmsOrthoInfo" /&gt;
 
     &lt;property name="baseWmsUrl" value="http://ogc.beta.agiv.be/ogc/wms/orthoklm" /&gt;
@@ -185,73 +229,74 @@
     &lt;/property&gt;
 &lt;/bean&gt;</programlisting>
 
-    <para>Let us go over the properties for the authentication bean:</para>
+      <para>Let us go over the properties for the authentication bean:</para>
 
-    <table>
-      <title>WMS authentication properties</title>
+      <table>
+        <title>WMS authentication properties</title>
 
-      <tgroup cols="2">
-        <colspec colnum="1" colwidth="1*" />
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="1*" />
 
-        <colspec colnum="2" colwidth="2*" />
+          <colspec colnum="2" colwidth="2*" />
 
-        <thead>
-          <row>
-            <entry>Name</entry>
+          <thead>
+            <row>
+              <entry>Name</entry>
 
-            <entry>Description</entry>
-          </row>
-        </thead>
+              <entry>Description</entry>
+            </row>
+          </thead>
 
-        <tbody>
-          <row>
-            <entry><emphasis role="bold">user
-            <emphasis>(required)</emphasis></emphasis></entry>
+          <tbody>
+            <row>
+              <entry><emphasis role="bold">user
+              <emphasis>(required)</emphasis></emphasis></entry>
 
-            <entry>The user login name.</entry>
-          </row>
+              <entry>The user login name.</entry>
+            </row>
 
-          <row>
-            <entry><emphasis role="bold">password<emphasis>
-            (required)</emphasis></emphasis></entry>
+            <row>
+              <entry><emphasis role="bold">password<emphasis>
+              (required)</emphasis></emphasis></entry>
 
-            <entry>The users password.</entry>
-          </row>
+              <entry>The users password.</entry>
+            </row>
 
-          <row>
-            <entry><emphasis role="bold">realm
-            <emphasis>(optional)</emphasis></emphasis></entry>
+            <row>
+              <entry><emphasis role="bold">realm
+              <emphasis>(optional)</emphasis></emphasis></entry>
 
-            <entry>The HTTP realm for this user. This is an optional
-            value.</entry>
-          </row>
+              <entry>The HTTP realm for this user. This is an optional
+              value.</entry>
+            </row>
 
-          <row>
-            <entry><emphasis role="bold">authenticationMethod
-            <emphasis>(optional)</emphasis></emphasis></entry>
+            <row>
+              <entry><emphasis role="bold">authenticationMethod
+              <emphasis>(optional)</emphasis></emphasis></entry>
 
-            <entry>Authentication method to use. Options are
-            <code>WmsAuthenticationMethod.BASIC</code> (default) and
-            <code>WmsAuthenticationMethod.URL</code>.</entry>
-          </row>
+              <entry>Authentication method to use. Options are
+              <code>WmsAuthenticationMethod.BASIC</code> (default) and
+              <code>WmsAuthenticationMethod.URL</code>.</entry>
+            </row>
 
-          <row>
-            <entry><emphasis role="bold">userKey</emphasis>
-            <emphasis>(optional)</emphasis></entry>
+            <row>
+              <entry><emphasis role="bold">userKey</emphasis>
+              <emphasis>(optional)</emphasis></entry>
 
-            <entry>Key which is used to pass the user name when using the URL
-            authentication type.</entry>
-          </row>
+              <entry>Key which is used to pass the user name when using the
+              URL authentication type.</entry>
+            </row>
 
-          <row>
-            <entry><emphasis role="bold">passwordKey</emphasis>
-            <emphasis>(optional)</emphasis></entry>
+            <row>
+              <entry><emphasis role="bold">passwordKey</emphasis>
+              <emphasis>(optional)</emphasis></entry>
 
-            <entry>Key which is used to set the password when using the URL
-            authentication type.</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
+              <entry>Key which is used to set the password when using the URL
+              authentication type.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
   </section>
 </chapter>
