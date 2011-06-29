@@ -209,10 +209,14 @@ public class LineString extends AbstractGeometry {
 	}
 
 	/**
-	 * Return true.
+	 * A linestring is valid if isEmpty() == true or coordinates.length != 1.
 	 */
 	public boolean isValid() {
-		return true;
+		if (isEmpty()) {
+			return true;
+		}
+
+		return (coordinates.length != 1);
 	}
 
 	public boolean isEmpty() {

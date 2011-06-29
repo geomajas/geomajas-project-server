@@ -120,7 +120,9 @@ public class GwtLineStringTest {
 
 	@Test
 	public void isValid() {
+		LineString gwtBad = gwtFactory.createLineString(new Coordinate[] {new Coordinate(10.0, 10.0)});
 		Assert.assertEquals(jts.isValid(), gwt.isValid());
+		Assert.assertFalse(gwtBad.isValid());
 	}
 
 	@Test
