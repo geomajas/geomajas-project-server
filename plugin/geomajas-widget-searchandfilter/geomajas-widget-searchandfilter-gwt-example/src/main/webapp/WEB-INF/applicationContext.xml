@@ -42,24 +42,28 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="features">
 			<list>
 				<bean class="org.geomajas.widget.searchandfilter.gwt.example.server.City">
+					<property name="id" value="1" />
 					<property name="name" value="Ghent" />
 					<property name="country" value="Belgium" />
 					<property name="worldcity" value="0" />
 					<property name="geometry" value="POINT(3.733333 51.05)" />
  				</bean>				
 				<bean class="org.geomajas.widget.searchandfilter.gwt.example.server.City">
+					<property name="id" value="2" />
 					<property name="name" value="Brussels" />
 					<property name="country" value="Belgium" />
 					<property name="worldcity" value="1" />
 					<property name="geometry" value="POINT(4.35 50.85)" />
  				</bean>				
 				<bean class="org.geomajas.widget.searchandfilter.gwt.example.server.City">
+					<property name="id" value="3" />
 					<property name="name" value="Paris" />
 					<property name="country" value="France" />
 					<property name="worldcity" value="1" />
 					<property name="geometry" value="POINT(2.350833 48.856667)" />
  				</bean>				
 				<bean class="org.geomajas.widget.searchandfilter.gwt.example.server.City">
+					<property name="id" value="4" />
 					<property name="name" value="Barcelona" />
 					<property name="country" value="Spain" />
 					<property name="worldcity" value="1" />
