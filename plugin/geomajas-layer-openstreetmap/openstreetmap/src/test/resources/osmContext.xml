@@ -19,8 +19,12 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<!--
-	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<!-- @extract-start OsmLayerSample, OpenStreetMap layer configuration example -->
+	<bean name="layerOsm" class="org.geomajas.layer.osm.OsmLayer" >
+		<property name="layerInfo" ref="layerOsmInfo" />
+	</bean>
+
+	<bean name="layerOsmInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -30,15 +34,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.
 				<property name="height" value="40052752.787419834"/>
 			</bean>
 		</property>
-		<property name="tileWidth" value="256"/>
-		<property name="tileHeight" value="256"/>
+        <property name="tileWidth" value="256"/>
+        <property name="tileHeight" value="256"/>
  	</bean>
-
-	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer" >
-		<property name="layerInfo" ref="osmInfo" />
-		<property name="maxZoomLevel" value="21" />
-	</bean>
- 	-->
+	<!-- @extract-end -->
 
 	<!-- @extract-start SimpleOsmConfig, Simple OpenStreetMap layer configuration -->
 	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer"/>
