@@ -16,6 +16,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<!-- @extract-start GeoToolsTx, GeoTools transaction configuration -->
 	<!--
 		enable the configuration of transactional behavior based on
 		annotations
@@ -24,6 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager">
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="filterTest" class="org.geomajas.layer.geotools.GeoToolsLayer">
 		<property name="url">
