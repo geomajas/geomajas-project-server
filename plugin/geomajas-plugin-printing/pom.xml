@@ -103,6 +103,12 @@
 				<artifactId>geomajas-plugin-printing-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing-gwt</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<dependency>
 				<!-- from next version on, this should depend on "all" -->

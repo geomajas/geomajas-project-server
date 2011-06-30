@@ -40,7 +40,7 @@
 &lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-plugin-printing-gwt&lt;/artifactId&gt;
-    &lt;version&gt;2.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;2.1.0&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
 
