@@ -45,7 +45,7 @@ public interface GeometryFactory {
 	 *            The width of the bounding box.
 	 * @param height
 	 *            The height of the bounding box.
-	 * @return
+	 * @return bounding box
 	 */
 	Bbox createBbox(double x, double y, double width, double height);
 

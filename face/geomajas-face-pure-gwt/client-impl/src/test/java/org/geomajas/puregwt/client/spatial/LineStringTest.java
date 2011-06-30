@@ -136,8 +136,13 @@ public class LineStringTest {
 
 	@Test
 	public void isValid() {
+		LineString noPoints = gwtFactory.createLineString(new Coordinate[] {});
+		LineString onePoint = gwtFactory.createLineString(new Coordinate[] {new Coordinate(10.0, 10.0)});
 		Assert.assertEquals(jts.isValid(), gwt.isValid());
+		Assert.assertTrue(noPoints.isValid());
+		Assert.assertFalse(onePoint.isValid());
 	}
+
 
 	@Test
 	public void isClosed() {

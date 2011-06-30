@@ -67,10 +67,7 @@ public class LineString extends AbstractGeometry {
 	 * @return Returns true if the first coordinate equals the last coordinate.
 	 */
 	public boolean isClosed() {
-		if (isEmpty()) {
-			return false;
-		}
-		return getCoordinateN(0).equals(getCoordinateN(getNumPoints() - 1));
+		return !isEmpty() && getCoordinateN(0).equals(getCoordinateN(getNumPoints() - 1));
 	}
 
 	// -------------------------------------------------------------------------
@@ -127,6 +124,8 @@ public class LineString extends AbstractGeometry {
 	/**
 	 * Create a copy of this geometry and return it.
 	 */
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
 	public Object clone() {
 		return getGeometryFactory().createLineString(coordinates);
 	}
@@ -212,11 +211,7 @@ public class LineString extends AbstractGeometry {
 	 * A linestring is valid if isEmpty() == true or coordinates.length != 1.
 	 */
 	public boolean isValid() {
-		if (isEmpty()) {
-			return true;
-		}
-
-		return (coordinates.length != 1);
+		return isEmpty() || (coordinates.length != 1);
 	}
 
 	public boolean isEmpty() {
@@ -239,18 +234,18 @@ public class LineString extends AbstractGeometry {
 		double maxX = -Double.MAX_VALUE;
 		double maxY = -Double.MAX_VALUE;
 
-		for (int i = 0; i < coordinates.length; i++) {
-			if (coordinates[i].getX() < minX) {
-				minX = coordinates[i].getX();
+		for (Coordinate coordinate : coordinates) {
+			if (coordinate.getX() < minX) {
+				minX = coordinate.getX();
 			}
-			if (coordinates[i].getY() < minY) {
-				minY = coordinates[i].getY();
+			if (coordinate.getY() < minY) {
+				minY = coordinate.getY();
 			}
-			if (coordinates[i].getX() > maxX) {
-				maxX = coordinates[i].getX();
+			if (coordinate.getX() > maxX) {
+				maxX = coordinate.getX();
 			}
-			if (coordinates[i].getY() > maxY) {
-				maxY = coordinates[i].getY();
+			if (coordinate.getY() > maxY) {
+				maxY = coordinate.getY();
 			}
 		}
 

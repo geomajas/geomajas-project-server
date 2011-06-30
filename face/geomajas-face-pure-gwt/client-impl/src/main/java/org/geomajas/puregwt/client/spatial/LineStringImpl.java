@@ -60,10 +60,7 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 	 * @return Returns true if the first coordinate equals the last coordinate.
 	 */
 	public boolean isClosed() {
-		if (isEmpty()) {
-			return false;
-		}
-		return getCoordinateN(0).equals(getCoordinateN(getNumPoints() - 1));
+		return !isEmpty() && getCoordinateN(0).equals(getCoordinateN(getNumPoints() - 1));
 	}
 
 	// -------------------------------------------------------------------------
@@ -195,7 +192,7 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 	 * Return true.
 	 */
 	public boolean isValid() {
-		return true;
+		return isEmpty() || (coordinates.length != 1);
 	}
 
 	public boolean isEmpty() {
@@ -218,18 +215,18 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 		double maxX = -Double.MAX_VALUE;
 		double maxY = -Double.MAX_VALUE;
 
-		for (int i = 0; i < coordinates.length; i++) {
-			if (coordinates[i].getX() < minX) {
-				minX = coordinates[i].getX();
+		for (Coordinate coordinate : coordinates) {
+			if (coordinate.getX() < minX) {
+				minX = coordinate.getX();
 			}
-			if (coordinates[i].getY() < minY) {
-				minY = coordinates[i].getY();
+			if (coordinate.getY() < minY) {
+				minY = coordinate.getY();
 			}
-			if (coordinates[i].getX() > maxX) {
-				maxX = coordinates[i].getX();
+			if (coordinate.getX() > maxX) {
+				maxX = coordinate.getX();
 			}
-			if (coordinates[i].getY() > maxY) {
-				maxY = coordinates[i].getY();
+			if (coordinate.getY() > maxY) {
+				maxY = coordinate.getY();
 			}
 		}
 
