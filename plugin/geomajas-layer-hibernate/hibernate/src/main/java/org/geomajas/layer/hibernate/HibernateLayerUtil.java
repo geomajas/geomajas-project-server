@@ -14,6 +14,7 @@ import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.metadata.ClassMetadata;
@@ -94,51 +95,17 @@ class HibernateLayerUtil {
 				}
 				ClassMetadata propMeta = sessionFactory.getClassMetadata(prop.getReturnedClass());
 				return getPropertyClass(propMeta, propertyName.substring(propertyName.indexOf(SEPARATOR) + 1));
-			} catch (Exception e) {
+			} catch (HibernateException e) {
 				throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_COULD_NOT_RESOLVE, propertyName,
 						meta.getEntityName());
 			}
 		} else {
 			try {
 				return meta.getPropertyType(propertyName).getReturnedClass();
-			} catch (Exception e) {
+			} catch (HibernateException e) {
 				throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_COULD_NOT_RESOLVE, propertyName,
 						meta.getEntityName());
 			}
-		}
-	}
-
-	/**
-	 * Search the Hibernate configuration for the metadata of a certain class.
-	 * 
-	 * @param clazz
-	 *            The class you are searching metadata for.
-	 * @return Returns the ClassMetadata object if found.
-	 * @throws HibernateLayerException
-	 *             Throws an exception if the metadata for the given class could not be found.
-	 */
-	protected ClassMetadata getMetadata(Class<?> clazz) throws HibernateLayerException {
-		try {
-			return sessionFactory.getClassMetadata(clazz);
-		} catch (Exception e) {
-			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_NO_META_DATA, clazz.getName());
-		}
-	}
-
-	/**
-	 * Search the Hibernate configuration for the metadata of a certain class.
-	 * 
-	 * @param name
-	 *            The class name you are searching metadata for.
-	 * @return Returns the ClassMetadata object if found.
-	 * @throws HibernateLayerException
-	 *             Throws an exception if the metadata for the given class could not be found.
-	 */
-	protected ClassMetadata getMetadata(String name) throws HibernateLayerException {
-		try {
-			return sessionFactory.getClassMetadata(name);
-		} catch (Exception e) {
-			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_NO_META_DATA, name);
 		}
 	}
 

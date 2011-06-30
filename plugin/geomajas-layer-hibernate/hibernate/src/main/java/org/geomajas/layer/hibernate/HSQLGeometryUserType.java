@@ -26,7 +26,9 @@ import com.vividsolutions.jts.io.WKTWriter;
  */
 public class HSQLGeometryUserType extends AbstractDBGeometryType {
 
-	private static final int SRIDLEN = 4;
+	private static final long serialVersionUID = 180L;
+
+	private static final int SRID_LENGTH = 4;
 
 	private static final int[] GEOMETRY_TYPES = new int[] { Types.VARCHAR };
 
@@ -47,11 +49,11 @@ public class HSQLGeometryUserType extends AbstractDBGeometryType {
 			return null;
 		}
 		String data = (String) object;
-		int srid = Integer.parseInt(data.substring(0, SRIDLEN - 1));
+		int srid = Integer.parseInt(data.substring(0, SRID_LENGTH - 1));
 		Geometry geom;
 		try {
 			WKTReader reader = new WKTReader();
-			geom = reader.read(data.substring(SRIDLEN + 1));
+			geom = reader.read(data.substring(SRID_LENGTH + 1));
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't parse incoming wkt geometry.", e);
 		}

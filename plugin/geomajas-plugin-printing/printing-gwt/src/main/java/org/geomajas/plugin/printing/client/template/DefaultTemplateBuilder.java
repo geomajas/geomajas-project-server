@@ -12,6 +12,7 @@ package org.geomajas.plugin.printing.client.template;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
@@ -41,7 +42,6 @@ import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
  * Default print template builder, parameters include title, size, raster DPI, orientation, etc...
  * 
  * @author Jan De Moerloose
- * 
  */
 public class DefaultTemplateBuilder extends TemplateBuilder {
 
@@ -108,7 +108,8 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 				info.setFilter(vectorLayer.getFilter());
 				info.setLabelsVisible(vectorLayer.isLabeled());
 				info.setSelected(vectorLayer.isSelected());
-				info.setSelectedFeatureIds(vectorLayer.getSelectedFeatures().toArray(new String[0]));
+				Set<String> features = vectorLayer.getSelectedFeatures();
+				info.setSelectedFeatureIds(features.toArray(new String[features.size()]));
 				layerChildren.add(info);
 			} else if (layer instanceof RasterLayer && layer.isShowing()) {
 				RasterLayerComponentInfo info = new RasterLayerComponentInfo();
@@ -156,7 +157,7 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 				String label = layerInfo.getLabel();
 				List<FeatureStyleInfo> defs = layerInfo.getNamedStyleInfo().getFeatureStyles();
 				for (FeatureStyleInfo styleDefinition : defs) {
-					String text = "";
+					String text;
 					if (defs.size() > 1) {
 						text = label + "(" + styleDefinition.getName() + ")";
 					} else {

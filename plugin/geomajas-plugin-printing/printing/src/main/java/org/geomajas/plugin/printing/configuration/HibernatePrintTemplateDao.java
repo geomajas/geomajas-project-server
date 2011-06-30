@@ -25,8 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Jan De Moerloose
  */
-public class HibernatePrintTemplateDao implements
-		PrintTemplateDao {
+public class HibernatePrintTemplateDao implements PrintTemplateDao {
 
 	private final Logger log = LoggerFactory.getLogger(PrintTemplateDao.class);
 
@@ -38,17 +37,14 @@ public class HibernatePrintTemplateDao implements
 		sessionFactory.getCurrentSession().save(template);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<PrintTemplate> findAll() throws IOException {
 		try {
 			Query q = sessionFactory.getCurrentSession().createQuery("from PrintTemplate");
 			return q.list();
 		} catch (HibernateException e) {
-			log.error("find all print template names failed", e);
-			throw new IOException("find all print template names failed");
+			throw new IOException("find all print template names failed", e);
 		}
 	}
-
-
-	
 
 }

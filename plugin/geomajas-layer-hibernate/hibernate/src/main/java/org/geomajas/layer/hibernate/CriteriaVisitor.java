@@ -103,6 +103,9 @@ public class CriteriaVisitor implements FilterVisitor {
 	/**
 	 * The only constructor. A CriteriaVisitor object can only create criteria for one specific FeatureModel. This is
 	 * because it always needs the Hibernate meta data that the FeatureModel stores.
+	 *
+	 * @param featureModel feature model
+	 * @param dateFormat date format
 	 */
 	public CriteriaVisitor(HibernateFeatureModel featureModel, DateFormat dateFormat) {
 		this.featureModel = featureModel;
@@ -123,9 +126,7 @@ public class CriteriaVisitor implements FilterVisitor {
 
 	public Object visit(And filter, Object userData) {
 		Criterion c = null;
-		Iterator<?> iter = filter.getChildren().iterator();
-		while (iter.hasNext()) {
-			Filter element = (Filter) iter.next();
+		for (Filter element : filter.getChildren()) {
 			if (c == null) {
 				c = (Criterion) element.accept(this, userData);
 			} else {
@@ -142,9 +143,7 @@ public class CriteriaVisitor implements FilterVisitor {
 
 	public Object visit(Or filter, Object userData) {
 		Criterion c = null;
-		Iterator<?> iter = filter.getChildren().iterator();
-		while (iter.hasNext()) {
-			Filter element = (Filter) iter.next();
+		for (Filter element : filter.getChildren()) {
 			if (c == null) {
 				c = (Criterion) element.accept(this, userData);
 			} else {
@@ -317,6 +316,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	 * @param userData
 	 *            The userData object that is passed in each method of the FilterVisitor. Should always be of the info
 	 *            "Criteria".
+	 * @return property name
 	 */
 	private String parsePropertyName(String propertyName, Object userData) {
 		// try to assure the correct separator is used
@@ -324,7 +324,7 @@ public class CriteriaVisitor implements FilterVisitor {
 
 		// split the path (separator is defined in the HibernateLayerUtil)
 		String[] props = propertyName.split(HibernateLayerUtil.SEPARATOR_REGEXP);
-		String finalName = null;
+		String finalName;
 		if (props.length > 1 && userData instanceof Criteria) {
 			// the criteria API requires an alias for each join table !!!
 			String prevAlias = null;
@@ -412,7 +412,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	}
 	
 	private Geometry asGeometry(Object geometry) {
-		if (null != geometry && geometry instanceof Geometry) {
+		if (geometry instanceof Geometry) {
 			Geometry geom = (Geometry) geometry;
 			geom.setSRID(srid);
 			return geom;

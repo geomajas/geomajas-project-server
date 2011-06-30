@@ -47,10 +47,12 @@ public class TiledRasterLayerService {
 	public static final String MERCATOR = "EPSG:900913";
 	
 	public static final double EQUATOR_IN_METERS = 40075016.686;
+	public static final double HALF_EQUATOR_IN_METERS = 40075016.686 / 2;
+	public static final double MAP_UNIT_PER_GOOGLE_METER_DEFAULT = 0.653;
 
 	public static final int MAX_ZOOM_LEVEL = 31;
 
-	protected static final int[] POWERS_OF_TWO;
+	private static final int[] POWERS_OF_TWO;
 
 	@Autowired
 	private GeoService geoService;
@@ -88,8 +90,8 @@ public class TiledRasterLayerService {
 			}
 
 			// find the center of the map in map coordinates (positive y-axis)
-			Coordinate boundsCenter = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
-					.getMinY() + bounds.getMaxY()));
+			Coordinate boundsCenter = new Coordinate((bounds.getMinX() + bounds.getMaxX()) / 2,
+					(bounds.getMinY() + bounds.getMaxY()) / 2);
 
 			// find zoomlevel
 			// scale in pix/m should just above the given scale so we have at least one
@@ -109,9 +111,9 @@ public class TiledRasterLayerService {
 			// center
 			Coordinate indicesUpperLeft = new Coordinate(Math.floor(indicesCenter.x), Math.floor(indicesCenter.y));
 			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y + 1);
-			Coordinate mapUpperLeft = getMapFromTileIndices(tileServiceState, layerToMap, indicesUpperLeft, zoomLevel);
+			Coordinate mapUpperLeft = getMapFromTileIndices(layerToMap, indicesUpperLeft, zoomLevel);
 			Coordinate mapLowerRight =
-					getMapFromTileIndices(tileServiceState, layerToMap, indicesLowerRight, zoomLevel);
+					getMapFromTileIndices(layerToMap, indicesLowerRight, zoomLevel);
 			double width = Math.abs(mapLowerRight.x - mapUpperLeft.x);
 			if (0 == width) {
 				width = 1.0;
@@ -201,7 +203,7 @@ public class TiledRasterLayerService {
 	private int getBestZoomLevelForScaleInPixPerMeter(TiledRasterLayerServiceState tileServiceState,
 			CrsTransform layerToGoogle, Coordinate mapPosition,
 			double scale) {
-		double scaleRatio = 0.653;
+		double scaleRatio = MAP_UNIT_PER_GOOGLE_METER_DEFAULT;
 		try {
 			Coordinate mercatorCenter = JTS.transform(mapPosition, new Coordinate(), layerToGoogle);
 			Coordinate dx = JTS.transform(new Coordinate(mapPosition.x + 1, mapPosition.y), new Coordinate(),
@@ -234,19 +236,18 @@ public class TiledRasterLayerService {
 		return MAX_ZOOM_LEVEL;
 	}
 
-	private Coordinate getMapFromTileIndices(TiledRasterLayerServiceState tileServiceState, CrsTransform mapToLayer,
-			Coordinate indices, int zoomLevel)
+	private Coordinate getMapFromTileIndices(CrsTransform mapToLayer, Coordinate indices, int zoomLevel)
 			throws TransformException {
-		double xMeter = EQUATOR_IN_METERS * indices.x / POWERS_OF_TWO[zoomLevel] - 0.5 * EQUATOR_IN_METERS;
-		double yMeter = -EQUATOR_IN_METERS * indices.y / POWERS_OF_TWO[zoomLevel] + 0.5 * EQUATOR_IN_METERS;
+		double xMeter = EQUATOR_IN_METERS * indices.x / POWERS_OF_TWO[zoomLevel] - HALF_EQUATOR_IN_METERS;
+		double yMeter = -EQUATOR_IN_METERS * indices.y / POWERS_OF_TWO[zoomLevel] + HALF_EQUATOR_IN_METERS;
 		return JTS.transform(new Coordinate(xMeter, yMeter), new Coordinate(), mapToLayer);
 	}
 
 	private Coordinate getTileIndicesFromMap(CrsTransform mapToLayer, Coordinate centerMapCoor, int zoomLevel)
 			throws TransformException {
 		Coordinate centerLayerCoor = JTS.transform(centerMapCoor, new Coordinate(), mapToLayer);
-		double xIndex = (centerLayerCoor.x + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;
-		double yIndex = (-centerLayerCoor.y + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;
+		double xIndex = (centerLayerCoor.x + HALF_EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;
+		double yIndex = (-centerLayerCoor.y + HALF_EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;
 		return new Coordinate(xIndex, yIndex);
 	}
 

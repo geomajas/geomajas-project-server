@@ -72,6 +72,8 @@ public class PrintServiceImpl implements PrintService {
 
 	private static final String ORG_GEOMAJAS = "org.geomajas.";
 
+	private static final long MB = 1024L * 1024L;
+
 	@Autowired
 	private PrintTemplateDao printTemplateDao;
 
@@ -86,7 +88,7 @@ public class PrintServiceImpl implements PrintService {
 	@Qualifier("printing.printMarshaller")
 	private Unmarshaller unMarshaller;
 
-	private int jaiTileCacheInMB = 64;
+	private int jaiTileCacheInMb = 64;
 
 	private Map<String, Document> documentMap = Collections.synchronizedMap(new HashMap<String, Document>());
 
@@ -216,26 +218,39 @@ public class PrintServiceImpl implements PrintService {
 	 * 
 	 * @return size in MB of tile cache
 	 */
-	public int getJaiTileCacheInMB() {
-		return jaiTileCacheInMB;
+	public int getJaiTileCacheInMb() {
+		return jaiTileCacheInMb;
 	}
 
 	/**
 	 * Sets the JAI (Java Advanced Imaging) tile cache size to the specified value.
 	 * 
-	 * @param jaiTileCacheInMB
+	 * @param jaiTileCacheInMb
+	 *            size in MB of tile cache
+	 * @deprecated use {@link #setJaiTileCacheInMb(int)}
+	 */
+	@Api
+	@Deprecated
+	public void setJaiTileCacheInMB(int jaiTileCacheInMb) {
+		setJaiTileCacheInMb(jaiTileCacheInMb);
+	}
+
+	/**
+	 * Sets the JAI (Java Advanced Imaging) tile cache size to the specified value.
+	 *
+	 * @param jaiTileCacheInMb
 	 *            size in MB of tile cache
 	 */
 	@Api
-	public void setJaiTileCacheInMB(int jaiTileCacheInMB) {
-		this.jaiTileCacheInMB = jaiTileCacheInMB;
+	public void setJaiTileCacheInMb(int jaiTileCacheInMb) {
+		this.jaiTileCacheInMb = jaiTileCacheInMb;
 	}
 
 	@PostConstruct
 	protected void initJai() {
 		TileCache cache = JAI.getDefaultInstance().getTileCache();
-		cache.setMemoryCapacity(getJaiTileCacheInMB() * 1024 * 1024L);
-		log.info("JAI cache size set to " + cache.getMemoryCapacity() / (1024L * 1024L) + " MB");
+		cache.setMemoryCapacity(getJaiTileCacheInMb() * MB);
+		log.info("JAI cache size set to " + cache.getMemoryCapacity() / MB + " MB");
 	}
 
 	private MapComponentImpl createMap() {

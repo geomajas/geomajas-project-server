@@ -340,8 +340,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		}
 	}
 
-	protected void addImage(PdfContext context, ImageResult imageResult) throws BadElementException,
-			MalformedURLException, IOException {
+	protected void addImage(PdfContext context, ImageResult imageResult) throws BadElementException, IOException {
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		float scaleFactor = (float) (72 / getMap().getRasterResolution());
 		float width = (float) imageBounds.getWidth() * scaleFactor;
@@ -369,7 +368,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		float height = (float) imageBounds.getHeight() * scaleFactor;
 		// subtract screen position of lower-left corner
 		float x = (float) (imageBounds.getX() - rasterScale * bbox.getMinX()) * scaleFactor;
-		// shift y to lowerleft corner, flip y to user space and subtract
+		// shift y to lower left corner, flip y to user space and subtract
 		// screen position of lower-left
 		// corner
 		float y = (float) (-imageBounds.getY() - imageBounds.getHeight() - rasterScale * bbox.getMinY()) * scaleFactor;
@@ -413,7 +412,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	}
 
 	/**
-	 * ???
+	 * Image Exception
 	 */
 	private class ImageException extends Exception {
 
@@ -422,6 +421,12 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		private RasterTile rasterImage;
 
 		public ImageException(RasterTile rasterImage) {
+			super();
+			this.rasterImage = rasterImage;
+		}
+
+		public ImageException(RasterTile rasterImage, Throwable cause) {
+			super(cause);
 			this.rasterImage = rasterImage;
 		}
 
@@ -466,7 +471,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 				} catch (Exception e) {
 					triesLeft--;
 					if (triesLeft == 0) {
-						throw new ImageException(result.getRasterImage());
+						throw new ImageException(result.getRasterImage(), e);
 					} else {
 						log.debug("Fetching image: retrying ", result.getRasterImage().getUrl());
 					}

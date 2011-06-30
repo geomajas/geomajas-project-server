@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.GeoJsonParser;
-import org.geomajas.rest.server.GeotoolsConvertorService;
+import org.geomajas.rest.server.GeoToolsConverterService;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
@@ -38,7 +38,7 @@ import org.springframework.web.servlet.view.AbstractView;
 public class GeoJsonView extends AbstractView {
 
 	@Autowired
-	private GeotoolsConvertorService convertorService;
+	private GeoToolsConverterService convertorService;
 
 	private GeoJsonParser parser = new GeoJsonParser();
 

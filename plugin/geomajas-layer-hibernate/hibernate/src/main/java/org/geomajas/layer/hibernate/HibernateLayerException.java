@@ -20,6 +20,7 @@ import org.geomajas.layer.LayerException;
 public class HibernateLayerException extends LayerException {
 
 	public HibernateLayerException() {
+		super();
 	}
 
 	public HibernateLayerException(Throwable ex) {

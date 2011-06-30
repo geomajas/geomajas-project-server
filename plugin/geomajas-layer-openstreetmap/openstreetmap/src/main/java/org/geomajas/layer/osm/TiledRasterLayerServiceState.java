@@ -47,8 +47,7 @@ public class TiledRasterLayerServiceState {
 
 	private Envelope maxBounds;
 
-	protected double[] resolutions;
-
+	private double[] resolutions;
 
 	public TiledRasterLayerServiceState(List<String> tileUrls, int tileSize, int maxZoomLevel) {
 		setTileUrls(tileUrls);
@@ -122,7 +121,7 @@ public class TiledRasterLayerServiceState {
 			layerInfo = new RasterLayerInfo();
 		}
 		layerInfo.setCrs(TiledRasterLayerService.MERCATOR);
-		crs = geoService.getCrs(TiledRasterLayerService.MERCATOR);
+		crs = geoService.getCrs2(TiledRasterLayerService.MERCATOR);
 		layerInfo.setTileWidth(tileSize);
 		layerInfo.setTileHeight(tileSize);
 		Bbox bbox = new Bbox(-20026376.393709917, -20026376.393709917, 40052752.787419834, 40052752.787419834);

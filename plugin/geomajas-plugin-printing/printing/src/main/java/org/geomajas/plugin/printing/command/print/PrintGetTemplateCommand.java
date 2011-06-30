@@ -25,7 +25,6 @@ import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
 import org.geomajas.plugin.printing.service.PrintService;
-import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +44,6 @@ import com.lowagie.text.Rectangle;
 public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest, PrintGetTemplateResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(PrintGetTemplateCommand.class);
-
-	@Autowired
-	private ConfigurationService runtime;
 
 	@Autowired
 	private PrintDtoConverterService converterService;
@@ -109,9 +105,9 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 	}
 
 	private float getPageSizeRelativeToA3(PrintGetTemplateRequest request) {
-		Rectangle r = null;
+		Rectangle r;
 		if (request.getPageSize() != null) {
-			PageSize.getRectangle(request.getPageSize());
+			r = PageSize.getRectangle(request.getPageSize());
 		} else {
 			float width = request.getTemplate().getPage().getLayoutConstraint().getWidth();
 			float height = request.getTemplate().getPage().getLayoutConstraint().getHeight();

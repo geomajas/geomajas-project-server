@@ -28,41 +28,35 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * 
+ * Service to convert from Geomajas to GeoTools objects.
+ *
  * @author Oliver May
  * @author Jan De Moerloose
- * 
  */
 @Component
-public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
+public class GeoToolsConverterServiceImpl implements GeoToolsConverterService {
 
-	private static String NAMESPACE_URI = "http://www.geomajas.org";
+	private static final String NAMESPACE_URI = "http://www.geomajas.org";
+
+	private final Logger log = LoggerFactory.getLogger(GeoToolsConverterServiceImpl.class);
 
 	@Autowired
 	private GeoService geoservice;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.rest.server.GeotoolsConvertorServiceInterface#toSimpleFeatureType(org.geomajas.configuration.
-	 * VectorLayerInfo)
-	 */
+	/** {@inheritDoc} */
 	public SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		return toSimpleFeatureType(vectorLayerInfo, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.rest.server.GeotoolsConvertorServiceInterface#toSimpleFeature(
-	 * org.geomajas.layer.feature.InternalFeature , org.opengis.feature.simple.SimpleFeatureType)
-	 */
+	/** {@inheritDoc} */
 	public SimpleFeature toSimpleFeature(InternalFeature feature, SimpleFeatureType featureType) {
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
 		List<Object> attr = new ArrayList<Object>();
@@ -84,6 +78,7 @@ public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
 
 	}
 
+	/** {@inheritDoc} */
 	public SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo, List<String> attributeNames)
 			throws LayerException {
 
@@ -128,19 +123,17 @@ public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
 							builder.add(attr.getName(), Double.class);
 							break;
 						case CURRENCY:
-							builder.add(attr.getName(), String.class);
-							break;
 						case STRING:
+						case URL:
+						case IMGURL:
 							builder.add(attr.getName(), String.class);
 							break;
 						case DATE:
 							builder.add(attr.getName(), Date.class);
 							break;
-						case URL:
-							builder.add(attr.getName(), String.class);
-							break;
-						case IMGURL:
-							builder.add(attr.getName(), String.class);
+						default:
+							log.error("Don't know how to convert attribute of type " + attr.getType() + ", skipped, " +
+									attr);
 							break;
 					}
 				}
@@ -150,6 +143,5 @@ public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
 		builder.setDefaultGeometry(vectorLayerInfo.getFeatureInfo().getGeometryType().getName());
 
 		return builder.buildFeatureType();
-
 	}
 }

@@ -45,8 +45,6 @@ public class DefaultConfigurationVisitor extends TopDownVisitor {
 
 	private boolean withArrow;
 
-	private static DateFormat LONG_DATE = DateFormat.getDateInstance(DateFormat.LONG);
-
 	public String getTitle() {
 		return title;
 	}
@@ -134,7 +132,8 @@ public class DefaultConfigurationVisitor extends TopDownVisitor {
 		if (label.getTag() != null && label.getTag().equals(PrintTemplate.TITLE)) {
 			String text = title;
 			if (isWithDate()) {
-				text += " (" + LONG_DATE.format(new Date()) + ")";
+				DateFormat longDate = DateFormat.getDateInstance(DateFormat.LONG);
+				text += " (" + longDate.format(new Date()) + ")";
 			}
 			label.setText(text);
 		}

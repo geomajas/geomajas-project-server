@@ -99,7 +99,7 @@ public class PageSize {
 		for (PageSize p : ALL) {
 			names.add(p.getName());
 		}
-		return names.toArray(new String[0]);
+		return names.toArray(new String[names.size()]);
 	}
 
 }

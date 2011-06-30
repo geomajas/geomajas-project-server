@@ -39,7 +39,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GeotoolsconverterServiceTest {
 
 	@Autowired
-	private GeotoolsConvertorService service;
+	private GeoToolsConverterService service;
 
 	@Autowired
 	@Qualifier("beans")

@@ -26,8 +26,6 @@ import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -40,8 +38,6 @@ import com.lowagie.text.pdf.PdfWriter;
  * @author Jan De Moerloose
  */
 public class SinglePageDocument extends AbstractDocument {
-
-	private final Logger log = LoggerFactory.getLogger(SinglePageDocument.class);
 
 	/**
 	 * the page to render
@@ -59,16 +55,10 @@ public class SinglePageDocument extends AbstractDocument {
 	private ByteArrayOutputStream baos;
 
 	/**
-	 * Format of the in-memory context.
-	 */
-	private Format format;
-	/**
 	 * Constructs a document with the specified dimensions.
 	 * 
-	 * @param page
-	 * @param application
-	 * @param runtime
-	 * @param filters
+	 * @param page page
+	 * @param filters filters
 	 */
 	public SinglePageDocument(PageComponent page, Map<String, String> filters) {
 		this.page = page;
@@ -96,8 +86,9 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Re-calculates the layout and renders to internal memory stream. Always call this method before calling render()
 	 * to make sure that the latest document changes have been taken into account for rendering.
-	 * 
-	 * @throws PrintingException
+	 *
+	 * @param format format
+	 * @throws PrintingException oops
 	 */
 	public void layout(Format format) throws PrintingException {
 		try {
@@ -110,16 +101,16 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Prepare the document before rendering.
 	 * 
-	 * @param outputStream
-	 *            outputstream to render to, null if only for layout
-	 * @throws DocumentException
-	 * @throws IOException
-	 * @throws PrintingException 
+	 * @param outputStream output stream to render to, null if only for layout
+	 * @param format format
+	 * @throws DocumentException oops
+	 * @throws IOException oops
+	 * @throws PrintingException oops
 	 */
 	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
 			PrintingException {
 		// first render or re-render for different layout
-		if (outputStream == null || baos == null || this.format != format) {
+		if (outputStream == null || baos == null || null != format) {
 			if (baos == null) {
 				baos = new ByteArrayOutputStream(10 * 1024);
 			}
@@ -192,11 +183,14 @@ public class SinglePageDocument extends AbstractDocument {
 						/** close the pdf file */
 						decodePdf.closePdfFile();
 						baos.reset();
-						ImageIO.write(img, getExtensionAsString(format), baos);
+						ImageIO.write(img, format.getExtension(), baos);
 					} catch (PdfException e) {
 						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
 					} 
 					break;
+				default:
+					throw new IllegalStateException(
+							"Oops, software error, need to support extra format at end of render" + format);
 			}
 			if (outputStream != null) {
 				baos.writeTo(outputStream);
@@ -204,18 +198,6 @@ public class SinglePageDocument extends AbstractDocument {
 		} else {
 			baos.writeTo(outputStream);
 		}
-	}
-
-	private String getExtensionAsString(Format format) {
-		switch (format) {
-			case PDF:
-				return "pdf";
-			case PNG:
-				return "png";
-			case JPG:
-				return "jpg";
-		}
-		return "pdf";
 	}
 
 	public PageComponent getPage() {

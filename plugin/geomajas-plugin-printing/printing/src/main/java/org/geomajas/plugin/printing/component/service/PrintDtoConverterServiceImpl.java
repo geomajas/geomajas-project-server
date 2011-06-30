@@ -26,7 +26,6 @@ import org.springframework.stereotype.Component;
  * Implementation of a print DTO converter service. Prints to pdf.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
@@ -34,13 +33,14 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	@SuppressWarnings("unchecked")
 	public <T extends PrintComponentInfo> PrintComponent<T> toInternal(T info) throws PrintingException {
 		// creates a new component, this is a prototype !!!
 		Object bean;
 		try {
 			bean = applicationContext.getBean(info.getPrototypeName(), PrintComponent.class);
 		} catch (BeansException be) {
-			throw new PrintingException(PrintingException.DTO_IMPLEMENTATION_NOT_FOUND,
+			throw new PrintingException(be, PrintingException.DTO_IMPLEMENTATION_NOT_FOUND,
 					info.getClass().getSimpleName(), info.getPrototypeName());
 		}
 		PrintComponent<T> component = (PrintComponent<T>) bean;

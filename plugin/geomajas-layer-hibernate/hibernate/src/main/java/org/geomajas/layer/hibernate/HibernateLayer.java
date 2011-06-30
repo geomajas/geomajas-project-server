@@ -155,13 +155,9 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	@PostConstruct
 	@SuppressWarnings("unused")
-	private void postConstruct() throws GeomajasException {
+	protected void postConstruct() throws GeomajasException {
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 		srid = geoService.getSridFromCrs(crs);
-	}
-
-	public VectorLayerInfo getLayerInfo() {
-		return super.getLayerInfo();
 	}
 
 	public boolean isCreateCapable() {
@@ -372,24 +368,24 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	 * ScrollableResults are annoying they run 1 step behind an iterator...
 	 */
 	@SuppressWarnings("rawtypes")
-	private class ScrollIterator implements Iterator {
+	private static class ScrollIterator implements Iterator {
 
 		private final ScrollableResults sr;
 
-		private boolean hasnext;
+		private boolean hasNext;
 
 		public ScrollIterator(ScrollableResults sr) {
 			this.sr = sr;
-			hasnext = sr.first();
+			hasNext = sr.first();
 		}
 
 		public boolean hasNext() {
-			return hasnext;
+			return hasNext;
 		}
 
 		public Object next() {
 			Object o = sr.get(0);
-			hasnext = sr.next();
+			hasNext = sr.next();
 			return o;
 		}
 

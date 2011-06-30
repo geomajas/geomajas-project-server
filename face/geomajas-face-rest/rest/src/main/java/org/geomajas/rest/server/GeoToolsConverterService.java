@@ -23,7 +23,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Oliver May
  * 
  */
-public interface GeotoolsConvertorService {
+public interface GeoToolsConverterService {
 
 	SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo) throws LayerException;
 

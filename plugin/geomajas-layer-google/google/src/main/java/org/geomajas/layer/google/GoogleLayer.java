@@ -207,7 +207,7 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	@PostConstruct
-	protected void postConstruct() throws Exception {
+	protected void postConstruct() throws GeomajasException {
 		tileServiceState.postConstruct(geoService, converterService);
 
 		String layerName = getLayerInfo().getDataSourceName();
@@ -232,7 +232,6 @@ public class GoogleLayer implements RasterLayer {
 				tileServiceState.setTileUrls(PHYSICAL_URLS);
 			}
 		}
-
 	}
 
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)

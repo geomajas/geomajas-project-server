@@ -44,14 +44,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * 
  * Spring MVC controller that maps a REST request to vectorlayers.
  * 
  * @author Oliver May
  * @author Jan De Moerlose
- * 
  */
-
 @Controller("/rest/**")
 public class RestController {
 
@@ -148,27 +145,19 @@ public class RestController {
 	}
 
 	public ModelAndView createUpdateFeatures() {
-		ModelAndView mav = new ModelAndView();
-
-		return mav;
+		return new ModelAndView();
 	}
 
 	public ModelAndView updateFeature() {
-		ModelAndView mav = new ModelAndView();
-
-		return mav;
+		return new ModelAndView();
 	}
 
 	public ModelAndView deleteFeature() {
-		ModelAndView mav = new ModelAndView();
-
-		return mav;
+		return new ModelAndView();
 	}
 
 	public ModelAndView countFeatures() {
-		ModelAndView mav = new ModelAndView();
-
-		return mav;
+		return new ModelAndView();
 	}
 
 	@InitBinder
@@ -222,7 +211,7 @@ public class RestController {
 					return filterService.createBboxFilter(layer.getLayerInfo().getCrs(), envelope, layer
 							.getFeatureModel().getGeometryAttributeName());
 				} catch (LayerException e) {
-					throw new RestException(RestException.PROBLEM_READING_LAYERSERVICE, layerId);
+					throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 				}
 			}
 		}
@@ -269,9 +258,8 @@ public class RestController {
 	 * Compares features based on a single attribute.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
-	class InternalFeatureComparator implements Comparator<InternalFeature> {
+	static class InternalFeatureComparator implements Comparator<InternalFeature> {
 
 		private FeatureOrder order;
 

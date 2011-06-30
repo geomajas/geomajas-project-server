@@ -41,6 +41,8 @@ import org.geomajas.gwt.client.widget.MapWidget;
 @Api
 public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
+	private static final double HALF_CIRCLE = 180.0;
+
 	private MapWidget map;
 
 	private JavaScriptObject googleMap;
@@ -191,9 +193,9 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	}
 
 	private Coordinate convertToLatLon(Coordinate coordinate) {
-		double lat = (coordinate.getY() / MERCATOR_WIDTH) * 180.0;
-		double lon = (coordinate.getX() / MERCATOR_WIDTH) * 180.0;
-		lat = 180 / Math.PI * (2 * Math.atan(Math.exp(lat * Math.PI / 180.0)) - Math.PI / 2.0);
+		double lat = (coordinate.getY() / MERCATOR_WIDTH) * HALF_CIRCLE;
+		double lon = (coordinate.getX() / MERCATOR_WIDTH) * HALF_CIRCLE;
+		lat = HALF_CIRCLE / Math.PI * (2 * Math.atan(Math.exp(lat * Math.PI / HALF_CIRCLE)) - Math.PI / 2.0);
 		return new Coordinate(lat, lon);
 	}
 

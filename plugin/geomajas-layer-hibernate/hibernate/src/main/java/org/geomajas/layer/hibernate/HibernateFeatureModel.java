@@ -29,8 +29,6 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.hibernate.HibernateEntityMapper.HibernateEntity;
 import org.geomajas.service.GeoService;
 import org.hibernate.engine.SessionImplementor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -44,8 +42,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Pieter De Graef
  */
 public class HibernateFeatureModel extends HibernateLayerUtil implements FeatureModel {
-
-	private final Logger log = LoggerFactory.getLogger(HibernateFeatureModel.class);
 
 	@Autowired
 	private GeoService geoService;
@@ -68,16 +64,6 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		entityMapper = new HibernateEntityMapper(getSessionFactory());
 	}
 	
-	public EntityMapper getEntityMapper() {
-		return entityMapper;
-	}
-	
-	public void setEntityMapper(EntityMapper entityMapper) {
-		this.entityMapper = entityMapper;
-	}
-
-
-
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		try {
 			return entityMappingService.getAttribute(feature, getFeatureInfo(), entityMapper, name);
@@ -99,8 +85,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			}
 			return attribs;
 		} catch (Exception e) {
-			log.error("Getting all attributes failed ", e);
-			throw new LayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_ALL_GET_FAILED, feature);
+			throw new LayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_ALL_GET_FAILED, feature);
 		}
 	}
 
@@ -122,6 +107,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
 		entityMappingService.setAttributes(feature, getFeatureInfo(), entityMapper, (Map) attributes);
 	}
