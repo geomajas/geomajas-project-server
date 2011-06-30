@@ -1,3 +1,9 @@
-// geomajas-layer-hibernate module API, 1.7.1
+// geomajas-layer-hibernate module API, 1.8.0
 org.geomajas.layer.hibernate.HibernateLayer::1.7.1
+org.geomajas.layer.hibernate.HibernateLayer:void setFeatureModel(FeatureModel, ):1.8.0
+org.geomajas.layer.hibernate.HibernateLayer:void setId(String, ):1.8.0
 org.geomajas.layer.hibernate.HibernateLayer:void setLayerInfo(VectorLayerInfo, ):1.7.1
+org.geomajas.layer.hibernate.HibernateLayer:void setScrollableResultSet(boolean, ):1.8.0
+org.geomajas.layer.hibernate.HibernateLayer:void setSessionFactory(SessionFactory, ):1.8.0
+org.geomajas.layer.hibernate.HibernateLayer:void setUseLazyFeatureConversion(boolean, ):1.8.0
+org.geomajas.layer.hibernate.ScrollIterator::1.7.1

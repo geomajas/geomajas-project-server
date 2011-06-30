@@ -1,3 +1,26 @@
-// geomajas-layer-openstreetmap module API, 1.7.1
+// geomajas-layer-openstreetmap module API, 1.8.0
 org.geomajas.layer.osm.OsmLayer::1.7.1
+org.geomajas.layer.osm.OsmLayer:void setId(String, ):1.8.0
 org.geomajas.layer.osm.OsmLayer:void setLayerInfo(RasterLayerInfo, ):1.7.1
+org.geomajas.layer.osm.OsmLayer:void setMaxZoomLevel(int, ):1.8.0
+org.geomajas.layer.osm.OsmLayer:void setTileUrls(List<String>, ):1.8.0
+org.geomajas.layer.osm.OsmLayer:void setUrlSelectionStrategy(UrlSelectionStrategy, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerService::1.8.0
+org.geomajas.layer.osm.TiledRasterLayerService:List<RasterTile> paint(TiledRasterLayerServiceState, CoordinateReferenceSystem, Envelope, double, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState::1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:CoordinateReferenceSystem getCrs():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:Envelope getMaxBounds():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:List<String> getTileUrls():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:RasterLayerInfo getLayerInfo():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:String getId():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:TiledRasterLayerServiceState(List<String>, int, int, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:UrlSelectionStrategy getUrlSelectionStrategy():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:double[] getResolutions():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:int getMaxZoomLevel():1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void postConstruct(GeoService, DtoConverterService, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void setCrs(CoordinateReferenceSystem, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void setId(String, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void setLayerInfo(RasterLayerInfo, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void setMaxZoomLevel(int, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void setTileUrls(List<String>, ):1.8.0
+org.geomajas.layer.osm.TiledRasterLayerServiceState:void setUrlSelectionStrategy(UrlSelectionStrategy, ):1.8.0

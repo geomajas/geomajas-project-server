@@ -1,4 +1,4 @@
-// geomajas-plugin-printing module API, 2.0.0
+// geomajas-plugin-printing plugin-core, 2.1.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest::2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:PrintGetTemplateRequest():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:PrintTemplateInfo getTemplate():2.0.0
@@ -166,6 +166,10 @@ org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo:float getZoomSc
 org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo:void setUserX(float, ):2.0.0
 org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo:void setUserY(float, ):2.0.0
 org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo:void setZoomScale(float, ):2.0.0
+org.geomajas.plugin.printing.component.impl.AbstractPrintComponent::2.1.0
+org.geomajas.plugin.printing.component.impl.AbstractPrintComponent:AbstractPrintComponent():2.1.0
+org.geomajas.plugin.printing.component.impl.AbstractPrintComponent:AbstractPrintComponent(String, ):2.1.0
+org.geomajas.plugin.printing.component.impl.AbstractPrintComponent:AbstractPrintComponent(String, LayoutConstraint, ):2.1.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl::2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:LayoutConstraint getConstraint():2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:List<PrintComponent<?>> getChildren():2.0.0
@@ -206,3 +210,4 @@ org.geomajas.plugin.printing.service.PrintService:String putDocument(Document, )
 org.geomajas.plugin.printing.service.PrintService:void saveOrUpdateTemplate(PrintTemplate, ):2.0.0
 org.geomajas.plugin.printing.service.PrintServiceImpl::2.0.0
 org.geomajas.plugin.printing.service.PrintServiceImpl:void setJaiTileCacheInMB(int, ):2.0.0
+org.geomajas.plugin.printing.service.PrintServiceImpl:void setJaiTileCacheInMb(int, ):2.1.0

@@ -1,1 +1,1 @@
-// geomajas-plugin-printing-gwt module API, 2.0.0
+// geomajas-plugin-printing plug-in, gwt module API, 2.1.0
