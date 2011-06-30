@@ -131,7 +131,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 				showing = false;
 			}
 			if (oldShowing != showing && fireEvents) {
-				handlerManager.fireEvent(new LayerShownEvent(this));
+				handlerManager.fireEvent(new LayerShownEvent(this, true));
 			}
 		} else {
 			showing = false;

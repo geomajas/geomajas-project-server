@@ -11,8 +11,8 @@
 
 package org.geomajas.gwt.client.map.layer;
 
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
@@ -20,14 +20,13 @@ import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
 import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
-import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.layer.LayerType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for the handling of the {@link LayerShownEvent} and {@link LayerLabeledEvent}
+ * Tests for the handling of the {@link LayerShownEvent} and {@link LayerLabeledEvent}.
  *
  * @author Frank Wynants
  */
@@ -66,7 +65,7 @@ public class LayerChangedTest {
 			}
 
 		});
-		
+
 		vLayer.addLayerFilteredHandler(new LayerFilteredHandler() {
 
 			public void onFilterChange(LayerFilteredEvent event) {
@@ -95,7 +94,7 @@ public class LayerChangedTest {
 		Assert.assertEquals(vLayer.isVisible(), false);
 		Assert.assertEquals(2, visibleCount);
 	}
-	
+
 	@Test
 	public void testLayerFiltered() {
 		Assert.assertEquals(0, filterCount);

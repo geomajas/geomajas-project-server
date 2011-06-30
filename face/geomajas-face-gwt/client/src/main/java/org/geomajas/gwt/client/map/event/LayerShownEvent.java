@@ -26,12 +26,33 @@ public class LayerShownEvent extends GwtEvent<LayerChangedHandler> {
 
 	private Layer<?> layer;
 
+	private boolean scaleChange;
+
 	public LayerShownEvent(Layer<?> layer) {
+		this(layer, false);
+	}
+
+	/**
+	 * @since 1.9.0
+	 */
+	public LayerShownEvent(Layer<?> layer, boolean scaleChange) {
 		this.layer = layer;
+		this.scaleChange = scaleChange;
 	}
 
 	public Layer<?> getLayer() {
 		return layer;
+	}
+
+	/**
+	 * True if this event was fired because the layer came into view or went out
+	 * of view by a scale change.
+	 * 
+	 * @return if a scalechange fired this event
+	 * @since 1.9.0
+	 */
+	public boolean isScaleChange() {
+		return scaleChange;
 	}
 
 	@Override
