@@ -21,6 +21,7 @@ import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
@@ -53,7 +54,11 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	private SpinnerItem spiBuffer;
 	private IButton btnUndo;
 	private IButton btnRedo;
-
+	
+	private IButton btnPoint;
+	private IButton btnLine;
+	private IButton btnPolygon;
+	
 	private Geometry mergedGeom;
 	private final ArrayList<Geometry> geometries = new ArrayList<Geometry>();
 	private final ArrayList<Geometry> redoGeoms = new ArrayList<Geometry>();
@@ -82,7 +87,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	}
 
 	public Canvas getSearchCanvas() {
-		VLayout mainLayout = new VLayout(20);
+		final VLayout mainLayout = new VLayout(20);
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
 		mainLayout.setPadding(5);
@@ -102,27 +107,33 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		actionsButtonBar.setAutoHeight();
 		actionsButtonBar.setMembersMargin(10);
 
-		IButton btnPoint = new IButton(messages.geometricSearchWidgetFreeDrawingPoint());
+		btnPoint = new IButton(messages.geometricSearchWidgetFreeDrawingPoint());
 		btnPoint.setIcon(BTN_POINT_CREATE_IMG);
 		btnPoint.setAutoFit(true);
+		btnPoint.setActionType(SelectionType.RADIO);
+		btnPoint.setRadioGroup("drawType");
 		btnPoint.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onDrawPoint();
 			}
 		});
 
-		IButton btnLine = new IButton(messages.geometricSearchWidgetFreeDrawingLine());
+		btnLine = new IButton(messages.geometricSearchWidgetFreeDrawingLine());
 		btnLine.setIcon(BTN_LINE_CREATE_IMG);
 		btnLine.setAutoFit(true);
+		btnLine.setActionType(SelectionType.RADIO);
+		btnLine.setRadioGroup("drawType");
 		btnLine.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onDrawLine();
 			}
 		});
 
-		IButton btnPolygon = new IButton(messages.geometricSearchWidgetFreeDrawingPolygon());
+		btnPolygon = new IButton(messages.geometricSearchWidgetFreeDrawingPolygon());
 		btnPolygon.setIcon(BTN_POLYGON_CREATE_IMG);
 		btnPolygon.setAutoFit(true);
+		btnPolygon.setActionType(SelectionType.RADIO);
+		btnPolygon.setRadioGroup("drawType");
 		btnPolygon.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onDrawPolygon();
@@ -194,9 +205,16 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 
 	// ----------------------------------------------------------
 
+	private void resetButtonState() {
+		btnLine.deselect();
+		btnPoint.deselect();
+		btnPolygon.deselect();
+	}
+	
 	private void onDrawPoint() {
 		if (drawController.getController() != null) {
 			addNewGeometry();
+			btnPoint.select();
 		}
 		startDrawing(new PointDrawController(mapWidget, drawController));
 	}
@@ -204,6 +222,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	private void onDrawLine() {
 		if (drawController.getController() != null) {
 			addNewGeometry();
+			btnLine.select();
 		}
 		startDrawing(new LineStringDrawController(mapWidget, drawController));
 	}
@@ -211,6 +230,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	private void onDrawPolygon() {
 		if (drawController.getController() != null) {
 			addNewGeometry();
+			btnPolygon.select();
 		}
 		startDrawing(new PolygonDrawController(mapWidget, drawController));
 	}
@@ -257,6 +277,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			drawController.cleanup();
 			mapWidget.setController(originalController);
 		}
+		resetButtonState();
 	}
 
 	private void addNewGeometry() {
@@ -273,8 +294,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 				updateView();
 				removeFreeDrawingController();
 			} else {
-				removeFreeDrawingController();
 				SC.say(messages.geometricSearchWidgetFreeDrawingInvalidGeometry());
+				removeFreeDrawingController();
 			}
 		} else {
 			SC.say(messages.geometricSearchWidgetFreeDrawingNothingDrawn());
