@@ -266,6 +266,15 @@ public class FeatureAttributeWindow extends Window {
 		}
 	}
 
+	/**
+	 * The toolstrip at the top which contains the zoom and save buttons.
+	 * 
+	 * @return
+	 */
+	public ToolStrip getToolStrip() {
+		return toolStrip;
+	}
+
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
