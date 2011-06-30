@@ -87,7 +87,7 @@ public class WizardTest {
 
 		private WizardPage<String> currentPage;
 
-		private TestButton back = new TestButton(ButtonType.BACK);
+		private TestButton back = new TestButton(ButtonType.PREVIOUS);
 
 		private TestButton next = new TestButton(ButtonType.NEXT);
 

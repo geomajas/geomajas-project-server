@@ -49,13 +49,10 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 	private List<WizardButton<DATA>> buttons;
 
 	public WizardWidget(String title, String helpText) {
-		setLayoutAlign(Alignment.CENTER);
-		setStyleName("block");
 		this.title = title;
 		buttons = new ArrayList<WizardButton<DATA>>();
-		// setWidth(1000);
+		setStyleName("wizardWidget");
 		setLayoutAlign(Alignment.CENTER);
-		setStyleName("block");
 
 		addMember(createTitle());
 
@@ -150,7 +147,7 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 		loadingDiv.setVisible(false);
 		layout.addMember(pageTitleDiv);
 		layout.addMember(loadingDiv);
-		layout.addMember(new DefaultWizardButton(ButtonType.BACK));
+		layout.addMember(new DefaultWizardButton(ButtonType.PREVIOUS));
 		layout.addMember(new DefaultWizardButton(ButtonType.NEXT));
 		layout.addMember(new DefaultWizardButton(ButtonType.CANCEL));
 		layout.addMember(new DefaultWizardButton(ButtonType.FINISH));
@@ -162,7 +159,7 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 		layout.setAlign(VerticalAlignment.CENTER);
 		layout.setHeight(40);
 		layout.addMember(new LayoutSpacer());
-		layout.addMember(new DefaultWizardButton(ButtonType.BACK));
+		layout.addMember(new DefaultWizardButton(ButtonType.PREVIOUS));
 		layout.addMember(new DefaultWizardButton(ButtonType.NEXT));
 		layout.addMember(new DefaultWizardButton(ButtonType.CANCEL));
 		layout.addMember(new DefaultWizardButton(ButtonType.FINISH));
@@ -231,8 +228,8 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 				case NEXT:
 					setTitle("Next");
 					break;
-				case BACK:
-					setTitle("Back");
+				case PREVIOUS:
+					setTitle("Previous");
 					break;
 			}
 			this.type = type;

@@ -33,7 +33,7 @@ public interface WizardButton<DATA> extends HasClickHandlers {
 	 * 
 	 */
 	enum ButtonType {
-		NEXT, BACK, CANCEL, FINISH, PAGE
+		NEXT, PREVIOUS, CANCEL, FINISH, PAGE
 	}
 
 	/**

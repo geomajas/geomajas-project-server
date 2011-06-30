@@ -169,7 +169,7 @@ public abstract class Wizard<DATA> {
 	private void initHandlers() {
 		for (WizardButton<DATA> button : wizardView.getButtons()) {
 			switch (button.getType()) {
-				case BACK:
+				case PREVIOUS:
 					button.addClickHandler(new BackHandler());
 					break;
 				case CANCEL:
@@ -193,7 +193,7 @@ public abstract class Wizard<DATA> {
 	private void updateState() {
 		for (WizardButton<DATA> button : wizardView.getButtons()) {
 			switch (button.getType()) {
-				case BACK:
+				case PREVIOUS:
 					if (currentPage.getBackPage() != null) {
 						button.setEnabled(true);
 					} else {
