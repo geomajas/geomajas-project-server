@@ -13,6 +13,9 @@ package org.geomajas.widget.advancedviews.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
+import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
@@ -26,6 +29,8 @@ import org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 
@@ -36,7 +41,7 @@ import com.smartgwt.client.widgets.IButton;
  * @author Kristof Heirwegh
  *
  */
-public abstract class AbstractThemeWidget extends Canvas implements MapViewChangedHandler {
+public abstract class AbstractThemeWidget extends Canvas implements MapViewChangedHandler, LayerChangedHandler {
 
 	protected MapWidget mapWidget;
 
@@ -45,6 +50,8 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	protected ThemesInfo themeInfo;
 
 	protected ViewConfigItem activeViewConfig;
+	
+	protected boolean themeChange;
 
 	protected List<ViewConfigItem> viewConfigItems = new ArrayList<AbstractThemeWidget.ViewConfigItem>();
 
@@ -67,6 +74,9 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	protected void initialize() {
 		themeInfo = WidgetInfoHelper.getClientWidgetInfo(ThemesInfo.IDENTIFIER, mapWidget);
 		buildWidget();
+		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+			layer.addLayerChangedHandler(this);
+		}
 	}
 
 	protected abstract void buildWidget();
@@ -108,6 +118,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	}
 
 	protected void renderViewConfig(ViewConfig viewConfig) {
+		themeChange = true;
 		RangeConfig config = getRangeConfigForCurrentScale(viewConfig, 
 				mapWidget.getMapModel().getMapView().getCurrentScale());
 		
@@ -119,12 +130,38 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 				((RasterLayer) layer).setOpacity(layerConfig.getTransparency());
 			}
 		}
+		// LayerShownEvents are run async, we need to deactivate after these.
+		GWT.runAsync(new RunAsyncCallback() {
+			public void onSuccess() {
+				themeChange = false;
+			}
+			public void onFailure(Throwable reason) {
+			}
+		});
 	}
 
+	// ----------------------------------------------------------
+	// -- MapViewChangedHandler --
+	// ----------------------------------------------------------
+	
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (null != activeViewConfig && !event.isSameScaleLevel()) {
 			renderViewConfig(activeViewConfig.getViewConfig());
 		}
+	}
+
+	// ----------------------------------------------------------
+	// -- LayerChangedHandler --
+	// ----------------------------------------------------------
+	
+	public void onVisibleChange(LayerShownEvent event) {
+		if (!themeChange && getActiveViewConfig() != null && !event.isScaleChange()) {
+			activateViewConfig(null);
+		}
+	}
+
+	public void onLabelChange(LayerLabeledEvent event) {
+		// ignore
 	}
 
 	/**
