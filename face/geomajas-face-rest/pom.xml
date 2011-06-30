@@ -19,15 +19,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-rest-all</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>geomajas-face-rest plug-in parent</name>
 	<description>geomajas-face-rest plug-in grouping module</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-rest-all-1.0.0</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-rest-all-1.0.0</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-face-rest-all-1.0.0</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-face-rest</url>
 	</scm>
 
 	<repositories>
