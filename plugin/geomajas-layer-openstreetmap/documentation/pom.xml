@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-openstreetmap-documentation</artifactId>
-	<version>1.9.0-SNAPSHOT</version>
+	<version>1.9.0</version>
 	<packaging>jar</packaging>
 	<name>Geomajas OpenStreetMap layer documentation</name>
 	<description>Geomajas OpenStreetMap layer documentation</description>
@@ -27,4 +27,10 @@
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
 	
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-openstreetmap-all-1.9.0/geomajas-layer-openstreetmap-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-openstreetmap-all-1.9.0/geomajas-layer-openstreetmap-documentation</developerConnection>
+    <url>https://svn.geomajas.org/majas/tags/geomajas-plugin-openstreetmap-all-1.9.0/geomajas-layer-openstreetmap-documentation</url>
+  </scm>
 </project>
