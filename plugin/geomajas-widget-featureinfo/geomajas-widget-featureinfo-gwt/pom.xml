@@ -40,7 +40,6 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<classifier>sources</classifier>
 			<artifactId>geomajas-layer-wms</artifactId>
-			<version>${geomajas-layer-wms-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
