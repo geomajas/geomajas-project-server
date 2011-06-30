@@ -66,6 +66,10 @@ public class LinearRingImpl extends LineStringImpl implements LinearRing {
 			return false;
 		}
 		Coordinate[] coordinates = getCoordinates();
+		if (coordinates.length < 4) {
+			return false;
+		}
+
 		for (int i = 0; i < coordinates.length - 1; i++) {
 			for (int j = 0; j < coordinates.length - 1; j++) {
 				if (mathService.intersectsLineSegment(coordinates[i], coordinates[i + 1], coordinates[j],

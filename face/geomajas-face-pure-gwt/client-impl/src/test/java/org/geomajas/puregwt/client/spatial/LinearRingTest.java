@@ -119,6 +119,21 @@ public class LinearRingTest {
 	@Test
 	public void isValid() {
 		Assert.assertEquals(jts.isValid(), gwt.isValid());
+		LineString one = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0) });
+		LineString two = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
+				new Coordinate(10.0, 10.0) });
+		LineString three = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
+				new Coordinate(20.0, 10.0), new Coordinate(10.0, 10.0) });
+		LineString four = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
+				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });
+		LineString intersects = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
+				new Coordinate(20.0, 10.0), new Coordinate(10.0, 20.0), new Coordinate(20.0, 20.0),
+				new Coordinate(10.0, 10.0) });
+		Assert.assertFalse(one.isValid());
+		Assert.assertFalse(two.isValid());
+		Assert.assertFalse(three.isValid());
+		Assert.assertTrue(four.isValid());
+		Assert.assertFalse(intersects.isValid());
 	}
 
 	@Test
