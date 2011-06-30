@@ -22,44 +22,7 @@
 	<packaging>jar</packaging>
 	<name>Geomajas WMS layer documentation</name>
 	<description>Geomajas WMS layer documentation</description>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>explode-resources</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-gwt-simple</artifactId>
-									<version>1.7.1</version>
-									<classifier>sources</classifier>
-									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-gwt-example</artifactId>
-									<version>1.7.1</version>
-									<classifier>sources</classifier>
-									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-	
+
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
