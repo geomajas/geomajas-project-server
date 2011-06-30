@@ -19,7 +19,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- ================================================================== -->
 	<!--                   Hibernate-Spring configuration                   -->
 	<!-- ================================================================== -->
-	
+
+	<!-- @extract-start HibernateTx, Hibernate transaction configuration -->
 	<bean id="testDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
 		<property name="url" value="jdbc:hsqldb:mem:baseball" />
@@ -42,7 +43,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="simpleDateFormat" class="java.text.SimpleDateFormat">
 		<constructor-arg type="java.lang.String" value="dd/MM/yyyy" />
 	</bean>
-
+	<!-- @extract-end -->
 
 
 	<!-- ================================================================== -->

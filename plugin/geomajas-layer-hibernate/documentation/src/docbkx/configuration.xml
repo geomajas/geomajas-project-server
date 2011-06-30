@@ -28,9 +28,32 @@
     a PostGIS database. Then you would need to include the following
     dependencies:</para>
 
-    <xi:include href="listing/HibernateLayerDependency.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-  </section>
+<example id="HibernateLayerDependency">
+	<title>Hibernate layer dependency</title>
+	<programlisting language="xml"><![CDATA[<dependency>
+    <groupId>org.geomajas.plugin</groupId>
+    <artifactId>geomajas-layer-hibernate</artifactId>
+    <version>${geomajas-layer-hibernate-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernatespatial</groupId>
+    <artifactId>hibernate-spatial-postgis</artifactId>
+    <version>1.0</version>
+</dependency>
+<dependency>
+    <groupId>org.postgis</groupId>
+    <artifactId>postgis-jdbc</artifactId>
+    <version>1.1.6</version>
+</dependency>
+<dependency>
+    <groupId>postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>8.1-407.jdbc3</version>
+</dependency>
+]]>
+	</programlisting>
+</example>
+</section>
 
   <section id="basichib">
     <title>Basic Hibernate configuration</title>
