@@ -30,7 +30,6 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 
 	public DefaultManyToOneItem() {
 		selectItem = new SelectItem();
-		selectItem.setValueField(ManyToOneDataSource.ASSOCIATION_ITEM_ID_FIELD);
 	}
 
 	public SelectItem getItem() {
@@ -39,7 +38,8 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 
 	public void toItem(ManyToOneAttribute attribute) {
 		if (attribute != null && attribute.getValue() != null) {
-			selectItem.setValue(attribute.getValue().getId().getValue());
+			// value field = id as text field !
+			selectItem.setValue(attribute.getValue().getId().getValue().toString());
 		} else {
 			selectItem.clearValue();
 		}
@@ -48,7 +48,7 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 	public void fromItem(ManyToOneAttribute attribute) {
 		ListGridRecord record = selectItem.getSelectedRecord();
 		if (record != null) {
-			Object v = record.getAttributeAsObject(ManyToOneDataSource.ASSOCIATION_ITEM_VALUE_ATTRIBUTE);
+			Object v = record.getAttributeAsObject(ManyToOneDataSource.ASSOCIATION_ITEM_VALUE_OBJECT_NAME);
 			if (v != null && v instanceof AssociationValue) {
 				attribute.setValue((AssociationValue) v);
 			}
@@ -56,6 +56,7 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 	}
 
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
+		selectItem.setValueField(ManyToOneDataSource.ASSOCIATION_ITEM_VALUE_FIELD_NAME);
 		selectItem.setOptionDataSource(new ManyToOneDataSource(attributeInfo, attributeProvider));
 	}
 

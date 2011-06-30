@@ -24,7 +24,6 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
-import com.smartgwt.client.data.fields.DataSourceIntegerField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.rpc.RPCResponse;
 import com.smartgwt.client.types.DSDataFormat;
@@ -44,9 +43,9 @@ public class ManyToOneDataSource extends DataSource {
 
 	private AttributeProvider attributeProvider;
 
-	public static final String ASSOCIATION_ITEM_VALUE_ATTRIBUTE = "_AssociationValue";
+	public static final String ASSOCIATION_ITEM_VALUE_OBJECT_NAME = "_AssociationValueObject";
 
-	public static final String ASSOCIATION_ITEM_ID_FIELD = "_AssociationId";
+	public static final String ASSOCIATION_ITEM_VALUE_FIELD_NAME = "_AssociationValueField";
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -65,23 +64,13 @@ public class ManyToOneDataSource extends DataSource {
 		setDataProtocol(DSProtocol.CLIENTCUSTOM);
 		setClientOnly(false);
 
-		// Add id as primary key field
+		// Add id as both value text field and primary key field
 		String idLabel = attributeInfo.getFeature().getIdentifier().getLabel();
 		DataSourceField field;
-		switch (attributeInfo.getFeature().getIdentifier().getType()) {
-			case SHORT:
-			case INTEGER:
-			case LONG:
-				field = new DataSourceIntegerField(ASSOCIATION_ITEM_ID_FIELD, idLabel);
-				break;
-			case STRING:
-			default:
-				field = new DataSourceTextField(ASSOCIATION_ITEM_ID_FIELD, idLabel);
-				break;
-		}
+		field = new DataSourceTextField(ASSOCIATION_ITEM_VALUE_FIELD_NAME, idLabel);
 		field.setPrimaryKey(true);
 		addField(field);
-
+		
 		// Add field for each attribute
 		for (AttributeInfo info : attributeInfo.getFeature().getAttributes()) {
 			field = new DataSourceTextField(info.getName(), info.getLabel());
@@ -136,9 +125,10 @@ public class ManyToOneDataSource extends DataSource {
 				for (int i = 0; i < attributes.size(); i++) {
 					ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) attributes.get(i);
 					ListGridRecord record = new ListGridRecord();
-					record.setAttribute(ASSOCIATION_ITEM_ID_FIELD, manyToOneAttribute.getValue().getId().getValue());
-					record.setAttribute(ASSOCIATION_ITEM_VALUE_ATTRIBUTE, manyToOneAttribute.getValue());
-					// record.setAttribute(attributeInfo.getName(), manyToOneAttribute.getValue());
+					// set value field to id as text field !
+					record.setAttribute(ASSOCIATION_ITEM_VALUE_FIELD_NAME, manyToOneAttribute.getValue().getId()
+							.getValue().toString());
+					record.setAttribute(ASSOCIATION_ITEM_VALUE_OBJECT_NAME, manyToOneAttribute.getValue());
 					for (String name : manyToOneAttribute.getValue().getAllAttributes().keySet()) {
 						Attribute<?> attribute = manyToOneAttribute.getValue().getAllAttributes().get(name);
 						record.setAttribute(name, attribute.getValue());
