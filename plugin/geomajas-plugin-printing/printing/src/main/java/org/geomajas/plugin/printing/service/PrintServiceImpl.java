@@ -240,6 +240,7 @@ public class PrintServiceImpl implements PrintService {
 	 *
 	 * @param jaiTileCacheInMb
 	 *            size in MB of tile cache
+	 * @since 2.1.0
 	 */
 	@Api
 	public void setJaiTileCacheInMb(int jaiTileCacheInMb) {
