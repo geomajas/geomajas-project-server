@@ -11,15 +11,14 @@
 package org.geomajas.widget.featureinfo.client.widget.factory;
 
 import org.geomajas.gwt.client.map.feature.Feature;
-
-import com.smartgwt.client.widgets.Window;
+import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 /**
  * A Window with one extra method to set a new feature, so featuredetailwindows can be reused.
  * @author Kristof Heirwegh
  *
  */
-public abstract class FeatureDetailWindow extends Window {
+public abstract class FeatureDetailWindow extends DockableWindow {
 
 	public abstract void setFeature(Feature feature, int maxHeight);
 }

@@ -15,10 +15,10 @@ import java.util.Map.Entry;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.layer.feature.Attribute;
+import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Oliver May
  *
  */
-public class RasterLayerAttributeWindow extends Window {
+public class RasterLayerAttributeWindow extends DockableWindow {
 
 	/**
 	 * @param rasterFeature
