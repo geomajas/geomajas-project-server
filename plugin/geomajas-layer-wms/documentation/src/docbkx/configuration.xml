@@ -49,6 +49,23 @@
     &lt;artifactId&gt;geomajas-layer-wms&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
+
+    <para>If you are using the GWT face and want the access the GetFeatureInfo
+    capability of your WMS server, then you should use the following
+    dependency instead.</para>
+
+    <example>
+      <title>WMS layer dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-wms-gwt-&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>In that case you should also put "&lt;inherits
+    name="org.geomajas.layer.wms.GeomajasWms"/&gt;" in your .gwt.xml
+    file.</para>
   </section>
 
   <section id="wmsconf">
@@ -68,10 +85,12 @@
       developer guide</ulink> to learn more about it. This guide will focus on
       the WMS specific configuration options.</para>
 
-      <para><remark>The most important parameter here, is the dataSourceName,
-      which must point to a layer name as specified by the WMS server. Note
-      that comma separated values are supported, as the layer name is
-      literally used in the WMS requests.</remark></para>
+      <para>
+        <remark>The most important parameter here, is the dataSourceName,
+        which must point to a layer name as specified by the WMS server. Note
+        that comma separated values are supported, as the layer name is
+        literally used in the WMS requests.</remark>
+      </para>
 
       <para>As you can see, the bean class refers to the actual layer type:
       <code>org.geomajas.layer.wms.WmsLayer</code>. The layer object contains
@@ -96,8 +115,10 @@
 
           <tbody>
             <row>
-              <entry><emphasis role="bold">baseWmsUrl
-              <emphasis>(required)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">baseWmsUrl
+                <emphasis>(required)</emphasis></emphasis>
+              </entry>
 
               <entry>The base url of the WMS server. This is the base part
               (excluding the request parameters) of the url that would be
@@ -105,8 +126,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">version<emphasis>
-              (optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">version<emphasis>
+                (optional)</emphasis></emphasis>
+              </entry>
 
               <entry>Version of the WMS protocol which should be used. Check
               your server configuration for possible values. This defaults to
@@ -114,8 +137,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">format
-              <emphasis>(optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">format
+                <emphasis>(optional)</emphasis></emphasis>
+              </entry>
 
               <entry>The mime type in which the images should be returned, for
               example "image/gif". Check your server configuration for
@@ -123,8 +148,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">styles
-              <emphasis>(optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">styles
+                <emphasis>(optional)</emphasis></emphasis>
+              </entry>
 
               <entry>Some WMS servers support multiple styles for their
               layers. Check your server configuration for possible
@@ -132,8 +159,10 @@
             </row>
 
             <row>
-              <entry><emphasis role="bold">parameters<emphasis>
-              (optional)</emphasis></emphasis></entry>
+              <entry>
+                <emphasis role="bold">parameters<emphasis>
+                (optional)</emphasis></emphasis>
+              </entry>
 
               <entry>You can define additional parameters which can be passed
               to the WMS server for each GetMap request. These are name/value

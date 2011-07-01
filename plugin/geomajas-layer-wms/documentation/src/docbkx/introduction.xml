@@ -23,6 +23,6 @@
   to add user name and password parameters as GET parameters to each WMS
   GetMap request.</para>
 
-  <para>A command is also available to access the GetFeatureInfo request which
-  is available on some WMS servers.</para>
+  <para>A command exists to access the GetFeatureInfo request which is
+  available on some WMS servers.</para>
 </chapter>
