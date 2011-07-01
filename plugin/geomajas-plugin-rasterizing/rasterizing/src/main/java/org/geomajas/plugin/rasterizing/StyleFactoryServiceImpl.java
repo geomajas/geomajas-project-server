@@ -110,7 +110,8 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		// apply the label style
 		if (vectorLayerRasterizingInfo.isPaintLabels()) {
 			// create the rule
-			TextSymbolizer textSymbolizer = createTextSymbolizer(vectorLayerRasterizingInfo.getStyle().getLabelStyle());
+			TextSymbolizer textSymbolizer = createTextSymbolizer(vectorLayerRasterizingInfo.getStyle().getLabelStyle(),
+					layerType);
 			Rule labelRule = styleBuilder.createRule(textSymbolizer);
 			// create the style
 			FeatureTypeStyle labelStyle = styleBuilder.createFeatureTypeStyle(typeName, labelRule);
@@ -201,7 +202,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		return symbolizer;
 	}
 	
-	private TextSymbolizer createTextSymbolizer(LabelStyleInfo labelStyle) {
+	private TextSymbolizer createTextSymbolizer(LabelStyleInfo labelStyle, LayerType layerType) {
 		Fill fontFill = styleBuilder.createFill(styleBuilder.literalExpression(labelStyle.getFontStyle().getColor()),
 				styleBuilder.literalExpression(labelStyle.getFontStyle().getOpacity()));
 		TextSymbolizer symbolizer = styleBuilder.createTextSymbolizer();
@@ -216,6 +217,15 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				styleBuilder.literalExpression(labelStyle.getBackgroundStyle().getFillColor()),
 				styleBuilder.literalExpression(labelStyle.getBackgroundStyle().getFillOpacity()));
 		symbolizer.setHalo(styleBuilder.createHalo(haloFill, 1));
+		// label placement : point at bottom-center of label (same as vectorized)
+		switch(layerType) {
+			case MULTIPOINT:
+			case POINT:
+				symbolizer.setLabelPlacement(styleBuilder.createPointPlacement(0.5, 0, 0));
+				break;
+			default:
+				break;			
+		}
 		return symbolizer;
 	}
 
