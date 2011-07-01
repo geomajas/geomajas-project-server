@@ -13,6 +13,7 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
@@ -21,7 +22,6 @@ import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @see SearchWidgetRegistry.
  * @author Kristof Heirwegh
  */
-public class BasicSearchWidget extends Window implements SearchWidget {
+public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 
 	private static final String BTN_FAVOURITES_IMG = "[ISOMORPHIC]/geomajas/osgeo/bookmark_new.png";
 	private static final String BTN_SAVE_IMG = "[ISOMORPHIC]/geomajas/osgeo/save1.png";

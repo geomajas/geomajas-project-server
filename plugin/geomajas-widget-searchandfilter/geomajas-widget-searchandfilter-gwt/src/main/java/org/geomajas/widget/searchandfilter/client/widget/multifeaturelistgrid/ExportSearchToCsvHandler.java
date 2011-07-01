@@ -20,6 +20,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.Callback;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
@@ -109,7 +110,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 							ub.setParameter("id", resp.getDocumentId());
 							String link = ub.buildString().replaceFirst("http:///", GWT.getHostPageBaseURL());
 
-							Window window = new Window();
+							Window window = new DockableWindow();
 							window.setTitle(messages.exportToCsvWindowTitle());
 							String content = CONTENT_PRE + messages.exportToCsvContentReady() + CONTENT_POST;
 							String linktocsv = messages.exportToCsvDownloadLink(link) + LINK_POST;

@@ -13,6 +13,7 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.util.FavouritesCommService;
@@ -52,7 +53,7 @@ public class FavouritesController implements FavouriteRequestHandler {
 
 	public void onAddRequested(final FavouriteEvent event) {
 		final SearchFavourite fav = event.getNewFav();
-		final Window addWindow = new Window();
+		final Window addWindow = new DockableWindow();
 		addWindow.setTitle(messages.favouritesControllerAddTitle());
 		addWindow.setWidth(310);
 		addWindow.setHeight(145);

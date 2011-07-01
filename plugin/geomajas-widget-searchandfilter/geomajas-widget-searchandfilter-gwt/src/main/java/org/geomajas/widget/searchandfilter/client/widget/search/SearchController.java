@@ -18,9 +18,10 @@ import java.util.Set;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
+import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SearchRequestEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SearchRequestHandler;
 
@@ -77,7 +78,7 @@ public class SearchController implements SearchRequestHandler {
 	}
 
 	/**
-	 * For instance {@link MultiFeatureListGrid}.
+	 * For instance {@link org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid}.
 	 * 
 	 * @param handler
 	 */
@@ -127,7 +128,7 @@ public class SearchController implements SearchRequestHandler {
 				layout.setWidth100();
 				layout.addMember(new Img("[ISOMORPHIC]/geomajas/ajax-loader.gif", 18, 18));
 				layout.addMember(new Label(messages.searchControllerSearchingMessage()));
-				modalWindow = new Window();
+				modalWindow = new DockableWindow();
 				modalWindow.setTitle(messages.searchControllerSearchingTitle());
 				modalWindow.setAlign(Alignment.CENTER);
 				modalWindow.setPadding(20);
