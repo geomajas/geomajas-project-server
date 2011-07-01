@@ -78,6 +78,11 @@
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
