@@ -136,11 +136,11 @@ include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10
     "incubating" "Openstreetmap_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-openstreetmap" "1.9.0"
 
-include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.9.0-SNAPSHOT" \
     "WMS layer" \
     "This is a layer which allows accessing WMS images as raster layer." \
     "incubating" "WMS_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-wms" "1.7.1"
+    "org.geomajas.plugin" "geomajas-layer-wms" "1.8.0"
 
 include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.9.0-SNAPSHOT" \
     "Staticsecurity plug-in" \

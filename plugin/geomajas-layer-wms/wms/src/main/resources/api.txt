@@ -1,10 +1,47 @@
-// geomajas-layer-wms module API, 1.7.1
+// geomajas-layer-wms module API, 1.8.0
 org.geomajas.layer.wms.RasterGrid::1.7.1
 org.geomajas.layer.wms.Resolution::1.7.1
+org.geomajas.layer.wms.WmsAuthentication::1.8.0
+org.geomajas.layer.wms.WmsAuthentication:String getPassword():1.8.0
+org.geomajas.layer.wms.WmsAuthentication:String getPasswordKey():1.8.0
+org.geomajas.layer.wms.WmsAuthentication:String getRealm():1.8.0
+org.geomajas.layer.wms.WmsAuthentication:String getUser():1.8.0
+org.geomajas.layer.wms.WmsAuthentication:String getUserKey():1.8.0
+org.geomajas.layer.wms.WmsAuthentication:WmsAuthenticationMethod getAuthenticationMethod():1.8.0
+org.geomajas.layer.wms.WmsAuthentication:void setAuthenticationMethod(WmsAuthenticationMethod, ):1.8.0
+org.geomajas.layer.wms.WmsAuthentication:void setPassword(String, ):1.8.0
+org.geomajas.layer.wms.WmsAuthentication:void setPasswordKey(String, ):1.8.0
+org.geomajas.layer.wms.WmsAuthentication:void setRealm(String, ):1.8.0
+org.geomajas.layer.wms.WmsAuthentication:void setUser(String, ):1.8.0
+org.geomajas.layer.wms.WmsAuthentication:void setUserKey(String, ):1.8.0
 org.geomajas.layer.wms.WmsLayer::1.7.1
+org.geomajas.layer.wms.WmsLayer:void setAuthentication(WmsAuthentication, ):1.8.0
 org.geomajas.layer.wms.WmsLayer:void setBaseWmsUrl(String, ):1.7.1
 org.geomajas.layer.wms.WmsLayer:void setFormat(String, ):1.7.1
 org.geomajas.layer.wms.WmsLayer:void setLayerInfo(RasterLayerInfo, ):1.7.1
 org.geomajas.layer.wms.WmsLayer:void setParameters(List<Parameter>, ):1.7.1
 org.geomajas.layer.wms.WmsLayer:void setStyles(String, ):1.7.1
+org.geomajas.layer.wms.WmsLayer:void setUseProxy(boolean, ):1.8.0
 org.geomajas.layer.wms.WmsLayer:void setVersion(String, ):1.7.1
+org.geomajas.layer.wms.command.dto.SearchByPointRequest::1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:Bbox getMapBounds():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:Coordinate getLocation():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:String getCrs():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:String toString():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:double getScale():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:int getPixelTolerance():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:int getSearchType():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:static final String COMMAND:1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:static final int SEARCH_ALL_LAYERS:1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:static final int SEARCH_FIRST_LAYER:1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setBbox(Bbox, ):1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setCrs(String, ):1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setLocation(Coordinate, ):1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setPixelTolerance(int, ):1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setScale(double, ):1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setSearchType(int, ):1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse::1.6.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse:Map<String,List<Feature>> getFeatureMap():1.6.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse:SearchByPointResponse():1.6.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse:boolean addLayer(String, List<Feature>, ):1.6.0
+org.geomajas.layer.wms.command.wms.SearchByPointCommand::1.8.0
