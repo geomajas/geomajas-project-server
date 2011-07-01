@@ -34,8 +34,8 @@
     rasterLayerRequest.setLocation(point.getCoordinate());
     rasterLayerRequest.setCrs(mapWidget.getMapModel().getCrs());
     rasterLayerRequest.setSearchType(SearchByPointRequest.SEARCH_FIRST_LAYER);<co
-          id="???" />
-    rasterLayerRequest.setPixelTolerance(pixelTolerance);<co id="???" />
+          id="coco1" />
+    rasterLayerRequest.setPixelTolerance(pixelTolerance);<co id="coco2" />
     rasterLayerRequest.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
     rasterLayerRequest.setBbox(toBbox(mapWidget.getMapModel().getMapView().getBounds()));
     rasterLayerRequest.setScale(mapWidget.getMapModel().getMapView().getCurrentScale());
@@ -46,22 +46,22 @@
         public void execute(CommandResponse commandRasterResponse) {
             SearchByPointResponse rasterResponse = (SearchByPointResponse)
                     commandRasterResponse;
-            // ... process response<co id="???" />
+            // ... process response<co id="coco3" />
         }
     });
 }</programlisting>
 
       <calloutlist>
-        <callout arearefs="???">
+        <callout arearefs="coco1">
           <para>This is the default.</para>
         </callout>
 
-        <callout arearefs="???">
+        <callout arearefs="coco2">
           <para>Pixel tolerance if known. Currently not used by the WMS
           layer.</para>
         </callout>
 
-        <callout arearefs="???">
+        <callout arearefs="coco3">
           <para>Here you can do what needs to be done with the
           response.</para>
         </callout>
