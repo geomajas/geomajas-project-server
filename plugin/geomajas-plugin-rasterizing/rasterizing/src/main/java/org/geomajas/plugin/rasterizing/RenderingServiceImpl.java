@@ -54,6 +54,7 @@ public class RenderingServiceImpl implements RenderingService {
 	@Autowired
 	private TextService textService;
 
+	@SuppressWarnings("unchecked")
 	public RenderedImage paintLegend(MapContext mapContext) {
 		LegendBuilder builder = new LegendBuilder();
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(

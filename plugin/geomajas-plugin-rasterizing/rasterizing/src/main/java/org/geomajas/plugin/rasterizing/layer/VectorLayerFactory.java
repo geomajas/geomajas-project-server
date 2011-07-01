@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -48,6 +49,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.geotools.renderer.lite.MetaBufferEstimator;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleAttributeExtractor;
 import org.jboss.serial.io.JBossObjectOutputStream;
@@ -99,7 +101,25 @@ public class VectorLayerFactory implements LayerFactory {
 				.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
 		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
 		VectorLayer layer = configurationService.getVectorLayer(vectorInfo.getServerLayerId());
-		Envelope layerBounds = geoService.transform(areaOfInterest,
+		// need to clone the extra info object before changing it !
+		VectorLayerRasterizingInfo copy = cloneInfo(extraInfo);
+		// we now replace the style filters by simple filters on an artificial extra style attribute
+		for (FeatureStyleInfo style : copy.getStyle().getFeatureStyles()) {
+			style.setFormula(STYLE_INDEX_ATTRIBUTE_NAME + " = " + style.getIndex());
+		}
+		// create the style
+		Style style = styleFactoryService.createStyle(layer, copy);
+		// estimate the buffer
+		MetaBufferEstimator estimator = new MetaBufferEstimator();
+		estimator.visit(style);
+		int bufferInPixels = estimator.getBuffer();
+		// expand area to include buffer
+		Rectangle tileInpix = mapContext.getViewport().getScreenArea();
+		ReferencedEnvelope metaArea = new ReferencedEnvelope(areaOfInterest);
+		metaArea.expandBy(bufferInPixels / tileInpix.getWidth() * areaOfInterest.getWidth(),
+				bufferInPixels / tileInpix.getHeight() * areaOfInterest.getHeight());
+		// fetch features in meta area
+		Envelope layerBounds = geoService.transform(metaArea,
 				(Crs) areaOfInterest.getCoordinateReferenceSystem(), (Crs) layer.getCrs());
 		Filter filter = filterService.createBboxFilter((Crs) layer.getCrs(), layerBounds, layer.getLayerInfo()
 				.getFeatureInfo().getGeometryType().getName());
@@ -110,13 +130,6 @@ public class VectorLayerFactory implements LayerFactory {
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 		
-		// need to clone the extra info object before changing it !
-		VectorLayerRasterizingInfo copy = cloneInfo(extraInfo);
-		// we now replace the style filters by simple filters on an artificial extra style attribute
-		for (FeatureStyleInfo style : copy.getStyle().getFeatureStyles()) {
-			style.setFormula(STYLE_INDEX_ATTRIBUTE_NAME + " = " + style.getIndex());
-		}
-		Style style = styleFactoryService.createStyle(layer, copy);
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem(), style), style);
 		featureLayer.setTitle(vectorInfo.getLabel());
