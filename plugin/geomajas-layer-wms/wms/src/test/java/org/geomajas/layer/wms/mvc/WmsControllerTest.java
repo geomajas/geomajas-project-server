@@ -14,6 +14,7 @@ package org.geomajas.layer.wms.mvc;
 import junit.framework.Assert;
 import org.geomajas.layer.wms.WmsAuthentication;
 import org.geomajas.layer.wms.WmsHttpService;
+import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,10 @@ import java.util.Map;
 public class WmsControllerTest {
 
 	private static final String TEST_VALUE = "A test value";
+
+	private static final String IMAGE_CLASS_PATH = "reference";
+
+	private static final double DELTA = 1E-6;
 
 	@Autowired
 	private WmsController wmsController;
@@ -71,6 +77,32 @@ public class WmsControllerTest {
 		Assert.assertEquals(TEST_VALUE, new String(response.getContentAsByteArray(), "UTF-8"));
 	}
 
+	@Test
+	public void testReadImage() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+
+		Map<String, String> parameters = new HashMap<String, String>();
+		parameters.put("SERVICE", "WMS");
+		parameters.put("layers", "bluemarble");
+		parameters.put("WIDTH", "512");
+		parameters.put("HEIGHT", "512");
+		parameters.put("bbox", "-52.01245495052001,-28.207099921352835,11.947593278789554,35.75294830795673");
+		parameters.put("format", "image/jpeg");
+		parameters.put("version", "1.1.1");
+		parameters.put("srs", "EPSG:4326");
+		parameters.put("styles", "");
+		parameters.put("request", "GetMap");
+		request.setParameters(parameters);
+		request.setRequestURI("d/wms/proxyBlue/");
+		request.setQueryString("SERVICE=WMS&layers=bluemarble&" +
+				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
+				"35.75294830795673&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap");
+		request.setMethod("GET");
+		wmsController.getWms(request, response);
+		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
+	}
+
 	private class MockHttpService implements WmsHttpService {
 
 		public String addCredentialsToUrl(String url, WmsAuthentication authentication) {
@@ -81,4 +113,19 @@ public class WmsControllerTest {
 			return new ByteArrayInputStream(TEST_VALUE.getBytes("UTF-8"));
 		}
 	}
+
+	class ImageAssert extends TestPathBinaryStreamAssert {
+
+		private MockHttpServletResponse response;
+
+		public ImageAssert(MockHttpServletResponse response) {
+			super(IMAGE_CLASS_PATH);
+			this.response = response;
+		}
+
+		public void generateActual(OutputStream out) throws Exception {
+			out.write(response.getContentAsByteArray());
+		}
+	}
+
 }
