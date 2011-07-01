@@ -72,6 +72,12 @@
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -99,6 +105,7 @@
 
 	<modules>
 		<module>wms</module>
+		<module>wms-gwt</module>
 	</modules>
 
 	<profiles>

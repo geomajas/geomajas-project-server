@@ -214,10 +214,6 @@ public class WmsLayerTest {
 		double height = tiles.get(0).getBounds().getHeight();
 		for (int i = 0; i <= 1; i++) {
 			for (int j = 0; j <= 1; j++) {
-				System.out.println((x + i * width) + " : " + tiles.get(2 * i + j).getBounds().getX());
-				System.out.println((y - j * height) + " : " + tiles.get(2 * i + j).getBounds().getY());
-				System.out.println(width + " : " + tiles.get(2 * i + j).getBounds().getWidth());
-				System.out.println(height + " : " + tiles.get(2 * i + j).getBounds().getHeight());
 				Assert.assertEquals(x + i * width, tiles.get(2 * i + j).getBounds().getX(), DELTA);
 				Assert.assertEquals(y - j * height, tiles.get(2 * i + j).getBounds().getY(), DELTA);
 				Assert.assertEquals(width, tiles.get(2 * i + j).getBounds().getWidth(), DELTA);

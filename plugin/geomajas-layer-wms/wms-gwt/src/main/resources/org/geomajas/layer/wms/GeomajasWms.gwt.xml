@@ -11,7 +11,7 @@
 
 <module>
 
-	<source path="layer/wms/command/dto">
+	<source path="command/dto">
 		<exclude name="*Test*.java"/>
 	</source>
 </module>

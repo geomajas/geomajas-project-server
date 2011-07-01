@@ -93,7 +93,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-wms</artifactId>
+				<artifactId>geomajas-plugin-wms-all</artifactId>
 				<version>${geomajas-layer-wms-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
