@@ -12,8 +12,8 @@ package org.geomajas.layer.wms.command.wms;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.command.Command;
-import org.geomajas.layer.wms.command.dto.SearchLayersByPointRequest;
-import org.geomajas.layer.wms.command.dto.SearchLayersByPointResponse;
+import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;
@@ -59,10 +59,10 @@ import java.util.List;
  */
 @Api
 @Component()
-public class SearchLayersByPointCommand
-		implements Command<SearchLayersByPointRequest, SearchLayersByPointResponse> {
+public class SearchByPointCommand
+		implements Command<SearchByPointRequest, SearchByPointResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(SearchLayersByPointCommand.class);
+	private final Logger log = LoggerFactory.getLogger(SearchByPointCommand.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -77,7 +77,7 @@ public class SearchLayersByPointCommand
 	@Autowired
 	private SecurityContext securityContext;
 
-	public void execute(SearchLayersByPointRequest request, SearchLayersByPointResponse response)
+	public void execute(SearchByPointRequest request, SearchByPointResponse response)
 			throws Exception {
 		String[] layerIds = request.getLayerIds();
 		if (null == layerIds) {
@@ -100,10 +100,10 @@ public class SearchLayersByPointCommand
 		Crs crs = geoService.getCrs2(request.getCrs());
 		boolean searchFirstLayerOnly;
 		switch (request.getSearchType()) {
-			case SearchLayersByPointRequest.SEARCH_FIRST_LAYER:
+			case SearchByPointRequest.SEARCH_FIRST_LAYER:
 				searchFirstLayerOnly = true;
 				break;
-			case SearchLayersByPointRequest.SEARCH_ALL_LAYERS:
+			case SearchByPointRequest.SEARCH_ALL_LAYERS:
 				searchFirstLayerOnly = false;
 				break;
 			default:
@@ -135,8 +135,8 @@ public class SearchLayersByPointCommand
 		}
 	}
 
-	public SearchLayersByPointResponse getEmptyCommandResponse() {
-		return new SearchLayersByPointResponse();
+	public SearchByPointResponse getEmptyCommandResponse() {
+		return new SearchByPointResponse();
 	}
 
 	private double calculateLayerScale(Crs mapCrs, Crs layerCrs, Bbox mapBounds, double mapScale)

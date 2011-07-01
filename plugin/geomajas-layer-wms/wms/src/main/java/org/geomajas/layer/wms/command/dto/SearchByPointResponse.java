@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Response object for {@link org.geomajas.layer.wms.command.wms.SearchLayersByPointCommand}.
+ * Response object for {@link org.geomajas.layer.wms.command.wms.SearchByPointCommand}.
  *
  * @author Jan De Moerloose
  * @author Pieter De Graef
@@ -27,13 +27,13 @@ import java.util.Map;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class SearchLayersByPointResponse extends CommandResponse {
+public class SearchByPointResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 180L;
 
 	private Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>();
 
-	public SearchLayersByPointResponse() {
+	public SearchByPointResponse() {
 		super();
 	}
 

@@ -19,8 +19,8 @@ import java.util.Set;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
-import org.geomajas.layer.wms.command.dto.SearchLayersByPointRequest;
-import org.geomajas.layer.wms.command.dto.SearchLayersByPointResponse;
+import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -124,7 +124,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 				}
 			}
 
-			final SearchLayersByPointRequest rasterLayerRequest = new SearchLayersByPointRequest();
+			final SearchByPointRequest rasterLayerRequest = new SearchByPointRequest();
 			rasterLayerRequest.setLocation(point.getCoordinate());
 			rasterLayerRequest.setCrs(mapWidget.getMapModel().getCrs());
 			rasterLayerRequest.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
@@ -144,11 +144,11 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 						final SearchByLocationResponse vectorResponse = (SearchByLocationResponse) commandResponse;
 						if (includeRasterLayers) {
 
-							GwtCommand commandRequest = new GwtCommand(SearchLayersByPointRequest.COMMAND);
+							GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);
 							commandRequest.setCommandRequest(rasterLayerRequest);
 							GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 								public void execute(CommandResponse commandRasterResponse) {
-									SearchLayersByPointResponse rasterResponse = (SearchLayersByPointResponse)
+									SearchByPointResponse rasterResponse = (SearchByPointResponse)
 											commandRasterResponse;
 									Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = vectorResponse
 											.getFeatureMap();

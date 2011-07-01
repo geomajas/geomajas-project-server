@@ -16,21 +16,21 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 
 /**
- * Request for {@link org.geomajas.layer.wms.command.wms.SearchLayersByPointCommand} that allows searching features
+ * Request for {@link org.geomajas.layer.wms.command.wms.SearchByPointCommand} that allows searching features
  * on raster layers that implement {@link org.geomajas.layer.wms.LayerFeatureInfoSupport}.
  *
  * @author Oliver May
  * @since 1.8.0
  */
 @Api(allMethods = true)
-public class SearchLayersByPointRequest extends LayerIdsCommandRequest {
+public class SearchByPointRequest extends LayerIdsCommandRequest {
 
 	private static final long serialVersionUID = 180L;
 
 	/**
 	 * Command name for this request.
 	 */
-	public static final String COMMAND = "command.wms.SearchLayersByPoint";
+	public static final String COMMAND = "command.wms.SearchByPoint";
 
 	// -------------------------------------------------------------------------
 	// Command statics:
@@ -179,4 +179,15 @@ public class SearchLayersByPointRequest extends LayerIdsCommandRequest {
 		return pixelTolerance;
 	}
 
+	@Override
+	public String toString() {
+		return "SearchByPointRequest{" +
+				"scale=" + scale +
+				", bbox=" + bbox +
+				", location=" + location +
+				", searchType=" + searchType +
+				", crs='" + crs + '\'' +
+				", pixelTolerance=" + pixelTolerance +
+				'}';
+	}
 }

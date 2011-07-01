@@ -382,7 +382,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		url.append(Integer.toString(x));
 		url.append("&Y=");
 		url.append(Integer.toString(y));
-		url.append("&INFO_FORMAT=application/vnd.ogc.gml)");
+		url.append("&INFO_FORMAT=application/vnd.ogc.gml");
 		return url.toString();
 	}
 

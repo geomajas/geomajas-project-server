@@ -13,9 +13,13 @@ package org.geomajas.layer.wms.command;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.layer.wms.command.dto.SearchLayersByPointRequest;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.Feature;
+import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,15 +30,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Test for {@link org.geomajas.layer.wms.command.wms.SearchLayersByPointCommand}
+ * Test for {@link org.geomajas.layer.wms.command.wms.SearchByPointCommand}
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/wmsContext.xml"})
-public class SearchLayersByPointCommandTest {
+public class SearchByPointCommandTest {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
@@ -54,8 +59,8 @@ public class SearchLayersByPointCommandTest {
 
 	@Test
 	public void testInvalidRequest() throws Exception {
-		SearchLayersByPointRequest request = new SearchLayersByPointRequest();
-		CommandResponse response = dispatcher.execute(SearchLayersByPointRequest.COMMAND, request, null, "en");
+		SearchByPointRequest request = new SearchByPointRequest();
+		CommandResponse response = dispatcher.execute(SearchByPointRequest.COMMAND, request, null, "en");
 		Assert.assertTrue(response.isError());
 		List<Throwable> errors = response.getErrors();
 		Assert.assertNotNull(errors);
@@ -65,5 +70,27 @@ public class SearchLayersByPointCommandTest {
 		Assert.assertEquals(ExceptionCode.PARAMETER_MISSING, ((GeomajasException) error).getExceptionCode());
 	}
 
-	// @todo needs more tests, at least one test which verifies the "normal" behaviour
+	@Test
+	public void testSearchByPoint() throws Exception {
+		String layer = "layerWmsCountries";
+		SearchByPointRequest request = new SearchByPointRequest();
+		request.setBbox(new Bbox(-3211986.0066263545, 98246.25012821658, 1.065471024672729E7, 3365675.229452881));
+		request.setCrs("EPSG:900913");
+		request.setLayerIds(new String[] {layer});
+		request.setLocation(new Coordinate(672238.022713162, 2554015.0948743597));
+		request.setScale(1.022083167709322E-4);
+		CommandResponse response = dispatcher.execute(SearchByPointRequest.COMMAND, request, null, "en");
+		Assert.assertFalse(response.isError());
+		Assert.assertTrue(response instanceof SearchByPointResponse);
+		SearchByPointResponse sbp = (SearchByPointResponse) response;
+		Map<String, List<Feature>> map = sbp.getFeatureMap();
+		Assert.assertNotNull(map);
+		List<Feature> features = map.get(layer);
+		Assert.assertEquals(1, features.size());
+		Feature feature = features.get(0);
+		Assert.assertEquals("belt.2", feature.getId());
+		Assert.assertEquals("Tropical", feature.getAttributes().get("BELT").getValue());
+		Assert.assertEquals("2", feature.getAttributes().get("FID").getValue());
+	}
+
 }
