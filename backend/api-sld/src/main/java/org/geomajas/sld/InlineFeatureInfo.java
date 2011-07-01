@@ -11,11 +11,8 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.geomajas.global.Api;
-import org.w3c.dom.Element;
+import org.geomajas.annotations.Api;
 
 /**
  * Schema fragment(s) for this class:...
@@ -23,7 +20,7 @@ import org.w3c.dom.Element;
  * <pre>
  * &lt;xs:element
  * xmlns:ns="http://www.opengis.net/sld" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" name="InlineFeature">
  *   &lt;xs:complexType>
  *     &lt;xs:sequence>
@@ -32,7 +29,7 @@ import org.w3c.dom.Element;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
@@ -41,23 +38,7 @@ public class InlineFeatureInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
-	private List<Element> anyList = new ArrayList<Element>();
+	protected InlineFeatureInfo() {
 
-	/**
-	 * Get the list of 'InlineFeature' element items.
-	 * 
-	 * @return list
-	 */
-	public List<Element> getAnyList() {
-		return anyList;
-	}
-
-	/**
-	 * Set the list of 'InlineFeature' element items.
-	 * 
-	 * @param list
-	 */
-	public void setAnyList(List<Element> list) {
-		anyList = list;
 	}
 }

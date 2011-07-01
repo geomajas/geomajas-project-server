@@ -15,7 +15,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-api-sld</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas SLD API</name>
 	<description>Geomajas SLD API</description>
@@ -65,7 +64,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
+			<artifactId>geomajas-api-annotations</artifactId>
+		</dependency>
+		<!--  the following libraries should be added by dependent projects that use the jibx binding  -->
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-run</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-extras</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -73,16 +83,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jibx</groupId>
-			<artifactId>jibx-run</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jibx</groupId>
-			<artifactId>jibx-extras</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.geotools.xsd</groupId>
 			<artifactId>gt-xsd-sld</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

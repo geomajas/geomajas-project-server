@@ -10,11 +10,11 @@
  */
 package org.geomajas.command.dto;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
-import org.geomajas.global.CopyrightInfo;
-
 import java.util.List;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.command.CommandResponse;
+import org.geomajas.global.CopyrightInfo;
 
 /**
  * Response class for {@link org.geomajas.command.general.CopyrightCommand}.

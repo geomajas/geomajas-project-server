@@ -10,9 +10,9 @@
  */
 package org.geomajas.rendering;
 
-import com.vividsolutions.jts.geom.Coordinate;
-
 import java.text.DecimalFormat;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 
 /**

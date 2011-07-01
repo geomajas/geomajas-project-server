@@ -11,13 +11,13 @@
 
 package org.geomajas.internal.layer.vector;
 
+import java.util.List;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-
-import java.util.List;
 
 /**
  * Assure the lists of old and new features are the same size.

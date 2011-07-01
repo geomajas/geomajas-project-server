@@ -13,8 +13,8 @@ package org.geomajas.service;
 
 import java.util.Date;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.geometry.Crs;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;

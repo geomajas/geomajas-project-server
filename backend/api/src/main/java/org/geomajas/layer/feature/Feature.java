@@ -14,8 +14,8 @@ package org.geomajas.layer.feature;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
 
 /**
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.

@@ -10,11 +10,11 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Snapping rule configuration information.

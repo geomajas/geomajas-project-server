@@ -12,14 +12,14 @@ package org.geomajas.layer;
 
 import java.util.List;
 
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.tile.RasterTile;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A layer of raster data (could be based on local files, WMS or some non-standard image server).

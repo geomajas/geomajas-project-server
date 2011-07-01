@@ -10,6 +10,9 @@
  */
 package org.geomajas.command.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
@@ -20,9 +23,6 @@ import org.geomajas.global.GeomajasException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This command fetches, and returns the initial application configuration for the user. This is typically the first

@@ -11,10 +11,10 @@
 
 package org.geomajas.rendering.painter.image;
 
+import java.awt.Graphics2D;
+
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.TilePaintContext;
-
-import java.awt.Graphics2D;
 
 /**
  * <p>

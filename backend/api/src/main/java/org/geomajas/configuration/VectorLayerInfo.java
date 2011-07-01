@@ -10,13 +10,14 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 
 /**
  * Information about a vector layer.
@@ -35,6 +36,10 @@ public class VectorLayerInfo extends LayerInfo implements Serializable {
 	private FeatureInfo featureInfo;
 
 	private List<NamedStyleInfo> namedStyleInfos = new ArrayList<NamedStyleInfo>();
+	
+	private StyledLayerDescriptorInfo styledLayerInfo;
+	
+	private String sld;
 
 	/**
 	 * Get filter which needs to be applied to all queries on this layer.
@@ -70,6 +75,46 @@ public class VectorLayerInfo extends LayerInfo implements Serializable {
 	 */
 	public void setFeatureInfo(FeatureInfo featureInfo) {
 		this.featureInfo = featureInfo;
+	}
+	
+	/**
+	 * Get the SLD info for this layer.
+	 *
+	 * @return SLD info
+	 * @since 1.10.0
+	 */
+	public StyledLayerDescriptorInfo getStyledLayerInfo() {
+		return styledLayerInfo;
+	}
+	
+	/**
+	 * Set SLD info, the style configuration for this layer.
+	 *
+	 * @param styledLayerInfo SLD info
+	 * @since 1.10.0
+	 */
+	public void setStyledLayerInfo(StyledLayerDescriptorInfo styledLayerInfo) {
+		this.styledLayerInfo = styledLayerInfo;
+	}
+
+	/**
+	 * Get the SLD file location (Spring resource format).
+	 * 
+	 * @return the location of the SLD file
+	 * @since 1.10.0
+	 */
+	public String getSld() {
+		return sld;
+	}
+
+	/**
+	 * Set the SLD file location (Spring resource format).
+	 * 
+	 * @param sld the SLD location
+	 * @since 1.10.0
+	 */
+	public void setSld(String sld) {
+		this.sld = sld;
 	}
 
 	/**

@@ -11,6 +11,12 @@
 
 package org.geomajas.spring;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.PluginInfo;
@@ -18,11 +24,6 @@ import org.geomajas.global.PluginVersionInfo;
 import org.geomajas.service.TestRecorder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Spring configuration post-processor which verifies that all registered plug-ins (including the back-end), have their

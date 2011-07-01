@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.AssociationType;
-import org.geomajas.global.Api;
 
 /**
  * <p>

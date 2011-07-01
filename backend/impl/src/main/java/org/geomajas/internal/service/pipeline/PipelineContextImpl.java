@@ -11,12 +11,12 @@
 
 package org.geomajas.internal.service.pipeline;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Context which is provided to a pipeline context to help execute.

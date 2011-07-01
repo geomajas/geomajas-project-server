@@ -39,8 +39,9 @@
 	</scm>
 
 	<modules>
-		<module>api</module>
+		<module>api-annotations</module>
 		<module>api-sld</module>
+		<module>api</module>
 		<module>api-experimental</module>
 		<module>impl</module>
 		<module>common-servlet</module>
@@ -67,51 +68,73 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api-annotations</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api-annotations</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api-sld</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api-sld</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
 				<classifier>sources</classifier>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api-experimental</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api-experimental</artifactId>
 				<classifier>sources</classifier>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-impl</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-common-servlet</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-testdata</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
 				<classifier>sources</classifier>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>

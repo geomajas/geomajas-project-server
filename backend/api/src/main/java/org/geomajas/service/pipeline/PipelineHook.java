@@ -11,10 +11,10 @@
 
 package org.geomajas.service.pipeline;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.GeomajasException;
-
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.global.GeomajasException;
 
 /**
  * Special pipeline step which is used fo weaving a base pipeline and extensions steps.

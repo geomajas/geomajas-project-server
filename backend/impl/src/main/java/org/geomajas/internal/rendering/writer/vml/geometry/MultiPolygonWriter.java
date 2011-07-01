@@ -10,12 +10,13 @@
  */
 package org.geomajas.internal.rendering.writer.vml.geometry;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
+
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * <p>

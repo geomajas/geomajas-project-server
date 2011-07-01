@@ -10,10 +10,10 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.CacheableObject;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.global.CacheableObject;
 
 /**
  * Circle configuration information.

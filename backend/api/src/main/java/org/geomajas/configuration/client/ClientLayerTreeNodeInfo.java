@@ -10,13 +10,13 @@
  */
 package org.geomajas.configuration.client;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Representation of a node in the layer tree widget.

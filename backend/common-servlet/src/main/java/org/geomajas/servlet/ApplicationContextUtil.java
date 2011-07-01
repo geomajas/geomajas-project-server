@@ -10,12 +10,12 @@
  */
 package org.geomajas.servlet;
 
-import org.geomajas.global.Api;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
+import org.geomajas.annotations.Api;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * Utility class to obtain the (Spring) applicationContext from the servlet.

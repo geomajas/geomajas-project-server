@@ -11,19 +11,19 @@
 
 package org.geomajas.internal.layer.vector;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.opengis.filter.Filter;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Save the data from the feature data object (read from the context) into the layer.

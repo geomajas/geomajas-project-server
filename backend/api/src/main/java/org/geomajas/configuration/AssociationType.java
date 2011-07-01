@@ -10,7 +10,7 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * Association type.

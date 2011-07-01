@@ -11,12 +11,13 @@
 
 package org.geomajas.security.allowall;
 
+import org.geomajas.security.AreaAuthorization;
+import org.geomajas.security.BaseAuthorization;
+
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.geomajas.security.AreaAuthorization;
-import org.geomajas.security.BaseAuthorization;
 
 /**
  * Simple authorization class, allows everything.

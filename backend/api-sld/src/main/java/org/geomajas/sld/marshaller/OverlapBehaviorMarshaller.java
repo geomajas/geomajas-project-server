@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.marshaller;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.geomajas.sld.OverlapBehaviorInfo;
 import org.geomajas.sld.OverlapBehaviorInfo.OverlapBehaviorInfoInner;
 import org.jibx.runtime.IAliasable;

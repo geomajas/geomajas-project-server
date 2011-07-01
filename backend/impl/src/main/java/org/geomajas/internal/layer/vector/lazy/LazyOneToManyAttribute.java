@@ -11,6 +11,8 @@
 
 package org.geomajas.internal.layer.vector.lazy;
 
+import java.util.List;
+
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
@@ -18,8 +20,6 @@ import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * Lazy variant of a {@link OneToManyAttribute}. The value is only converted at first use, not at instantiation.

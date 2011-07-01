@@ -11,10 +11,10 @@
 
 package org.geomajas.command.dto;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.Json;

@@ -10,8 +10,6 @@
  */
 package org.geomajas.configuration.client;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Base application info entry point.

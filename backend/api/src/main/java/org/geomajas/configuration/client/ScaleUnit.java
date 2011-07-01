@@ -12,7 +12,7 @@ package org.geomajas.configuration.client;
 
 import java.io.Serializable;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * Scale unit type.

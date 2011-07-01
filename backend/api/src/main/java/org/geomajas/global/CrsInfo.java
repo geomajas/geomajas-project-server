@@ -13,6 +13,8 @@ package org.geomajas.global;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.annotations.Api;
+
 /**
  * Description object for adding CRS definitions to Geomajas.
  *

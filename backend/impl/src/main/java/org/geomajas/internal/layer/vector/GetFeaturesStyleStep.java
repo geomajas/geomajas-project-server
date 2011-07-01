@@ -11,21 +11,21 @@
 
 package org.geomajas.internal.layer.vector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.layer.VectorLayerService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Prepare the style filters for the {@link org.geomajas.layer.VectorLayerService} getFeatures.

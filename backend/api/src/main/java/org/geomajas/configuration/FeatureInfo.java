@@ -10,13 +10,13 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Information about a Feature, indicates how an object can be converted to a feature.

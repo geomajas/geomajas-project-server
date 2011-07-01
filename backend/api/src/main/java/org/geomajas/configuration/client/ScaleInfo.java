@@ -10,9 +10,9 @@
  */
 package org.geomajas.configuration.client;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Represents a single scale. This class is needed to support 1:x notation because annotation-based formatters only

@@ -10,9 +10,9 @@
  */
 package org.geomajas.layer;
 
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 import org.geomajas.configuration.LayerInfo;
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

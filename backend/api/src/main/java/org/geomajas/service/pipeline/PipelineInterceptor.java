@@ -11,7 +11,7 @@
 
 package org.geomajas.service.pipeline;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.geomajas.global.GeomajasException;
 
 /**

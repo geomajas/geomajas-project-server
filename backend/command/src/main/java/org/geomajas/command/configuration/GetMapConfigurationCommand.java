@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.SerializationUtils;
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
@@ -27,7 +28,6 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.security.SecurityContext;

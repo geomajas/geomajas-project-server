@@ -11,7 +11,6 @@
 
 package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -22,6 +21,8 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Step for getBounds in {@link org.geomajas.layer.VectorLayerService}.

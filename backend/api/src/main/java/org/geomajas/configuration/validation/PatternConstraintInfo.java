@@ -10,7 +10,7 @@
  */
 package org.geomajas.configuration.validation;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * The constrained string attribute must match the following regular expression. The regular expression follows the Java

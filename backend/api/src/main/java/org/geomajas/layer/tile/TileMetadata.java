@@ -11,9 +11,9 @@
 
 package org.geomajas.layer.tile;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
 
 /**
  * <p>

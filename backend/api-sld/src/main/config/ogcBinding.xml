@@ -315,8 +315,6 @@
 	<mapping abstract="true" type-name="ogc:LiteralType"
 		class="org.geomajas.sld.expression.LiteralTypeInfo">
 		<structure map-as="ogc:ExpressionType" />
-		<structure get-method="getAny" set-method="setAny" usage="optional"
-			marshaller="org.jibx.extras.DomElementMapper" unmarshaller="org.jibx.extras.DomElementMapper" />
 	</mapping>
 	<mapping extends="org.geomajas.sld.expression.ExpressionInfo"
 		class="org.geomajas.sld.expression.LiteralTypeInfo" name="Literal">

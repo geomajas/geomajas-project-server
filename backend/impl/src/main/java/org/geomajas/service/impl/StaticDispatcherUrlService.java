@@ -11,10 +11,10 @@
 
 package org.geomajas.service.impl;
 
-import org.geomajas.global.Api;
-import org.geomajas.service.DispatcherUrlService;
-
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.service.DispatcherUrlService;
 
 /**
  * {@link DispatcherUrlService} which allows you to statically configure the URL for the dispatcher service.

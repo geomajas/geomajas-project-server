@@ -11,13 +11,14 @@
 
 package org.geomajas.layer;
 
-import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.Api;
+import java.util.List;
+
+import org.geomajas.annotations.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Service which allows accessing data from a raster layer.

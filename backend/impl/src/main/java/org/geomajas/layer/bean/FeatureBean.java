@@ -10,10 +10,10 @@
  */
 package org.geomajas.layer.bean;
 
-import org.springframework.util.ObjectUtils;
-
-import java.util.List;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.util.ObjectUtils;
 
 /**
  * Java bean feature containing all attribute types. For easy Spring configuration, the geometry can be specified in wkt

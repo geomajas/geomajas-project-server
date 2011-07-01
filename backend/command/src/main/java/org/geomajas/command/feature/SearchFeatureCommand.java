@@ -12,20 +12,20 @@ package org.geomajas.command.feature;
 
 import java.util.List;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
-import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;

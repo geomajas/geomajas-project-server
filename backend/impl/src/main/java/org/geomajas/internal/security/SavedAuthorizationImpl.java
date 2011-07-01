@@ -11,13 +11,13 @@
 
 package org.geomajas.internal.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.security.Authentication;
 import org.geomajas.security.SavedAuthentication;
 import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class to cache security context information. Should allow to safely cache and restore the security context. This

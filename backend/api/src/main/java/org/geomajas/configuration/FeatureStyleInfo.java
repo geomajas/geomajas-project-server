@@ -10,12 +10,12 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.CacheableObject;
-
 import java.io.Serializable;
 
 import javax.validation.constraints.Null;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.global.CacheableObject;
 
 /**
  * Style configuration information.

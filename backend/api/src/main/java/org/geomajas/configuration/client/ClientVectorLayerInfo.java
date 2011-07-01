@@ -15,10 +15,10 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SnappingRuleInfo;
-import org.geomajas.global.Api;
 
 /**
  * Client side vector layer metadata.

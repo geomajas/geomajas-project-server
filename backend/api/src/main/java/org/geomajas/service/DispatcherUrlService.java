@@ -11,7 +11,7 @@
 
 package org.geomajas.service;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * Service which allows you to get the URL of the dispatcher service, allowing you to build absolute URLs to

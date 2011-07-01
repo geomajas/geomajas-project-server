@@ -10,9 +10,9 @@
  */
 package org.geomajas.command;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
 
 /**
  * The <code>CommandDispatcher</code> is the main command execution center. It accepts command from the client and

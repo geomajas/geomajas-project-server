@@ -180,6 +180,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 										<property name="identifying" value="true" />
 										<property name="type" value="URL" />
 									</bean>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="Double attribute" />
+										<property name="name" value="doubleAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="DOUBLE" />
+									</bean>
 									<bean class="org.geomajas.configuration.AssociationAttributeInfo">
 										<property name="label" value="ManyToOne attribute" />
 										<property name="name" value="manyToOneAttr" />
@@ -212,6 +219,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 															<property name="editable" value="true" />
 															<property name="identifying" value="true" />
 															<property name="type" value="URL" />
+														</bean>
+														<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+															<property name="label" value="Double attribute" />
+															<property name="name" value="doubleAttr" />
+															<property name="editable" value="true" />
+															<property name="identifying" value="true" />
+															<property name="type" value="DOUBLE" />
 														</bean>
 													</list>
 												</property>
@@ -250,6 +264,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 															<property name="editable" value="true" />
 															<property name="identifying" value="true" />
 															<property name="type" value="URL" />
+														</bean>
+														<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+															<property name="label" value="Double attribute" />
+															<property name="name" value="doubleAttr" />
+															<property name="editable" value="true" />
+															<property name="identifying" value="true" />
+															<property name="type" value="DOUBLE" />
 														</bean>
 													</list>
 												</property>
@@ -294,6 +315,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 										<property name="identifying" value="true" />
 										<property name="type" value="URL" />
 									</bean>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="Double attribute" />
+										<property name="name" value="doubleAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="DOUBLE" />
+									</bean>
 									<bean class="org.geomajas.configuration.AssociationAttributeInfo">
 										<property name="label" value="ManyToOne attribute" />
 										<property name="name" value="manyToOneAttr" />
@@ -326,6 +354,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 															<property name="editable" value="true" />
 															<property name="identifying" value="true" />
 															<property name="type" value="URL" />
+														</bean>
+														<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+															<property name="label" value="Double attribute" />
+															<property name="name" value="doubleAttr" />
+															<property name="editable" value="true" />
+															<property name="identifying" value="true" />
+															<property name="type" value="DOUBLE" />
 														</bean>
 													</list>
 												</property>
@@ -365,6 +400,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 															<property name="identifying" value="true" />
 															<property name="type" value="URL" />
 														</bean>
+														<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+															<property name="label" value="Double attribute" />
+															<property name="name" value="doubleAttr" />
+															<property name="editable" value="true" />
+															<property name="identifying" value="true" />
+															<property name="type" value="DOUBLE" />
+														</bean>
 													</list>
 												</property>
 											</bean>
@@ -384,11 +426,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layerInfo" ref="layerEditingBeansInfo" />
 		<property name="features">
 			<list>
-				<!--  test bean -->
+				<!-- test bean -->
 				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="1" />
 					<property name="urlAttr" value="url-b1" />
 					<property name="stringAttr" value="b1" />
+					<property name="doubleAttr" value="1.234567" />
 					<property name="manyToOneAttr">
 						<bean class="org.geomajas.layer.bean.ManyToOneAttributeBean">
 							<property name="id" value="1" />
@@ -423,6 +466,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 								<property name="id" value="1" />
 								<property name="urlAttr" value="url-many1" />
 								<property name="stringAttr" value="many1" />
+								<property name="doubleAttr" value="3.1415926" />
 								<property name="manyToOneAttr">
 									<bean class="org.geomajas.layer.bean.ManyToOneAttributeBean">
 										<property name="id" value="12" />
@@ -453,7 +497,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						</list>
 					</property>
 				</bean>
-				<!--  primitive test, input -->
+				<!-- primitive test, input -->
 				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="2" />
 					<property name="urlAttr" value="url-b1-modified" />

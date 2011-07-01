@@ -12,7 +12,7 @@ package org.geomajas.sld.xlink;
 
 import java.io.Serializable;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * The 'actuate' attribute is used to communicate the desired timing of traversal from the starting resource to the

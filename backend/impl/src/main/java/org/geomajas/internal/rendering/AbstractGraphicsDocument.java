@@ -11,13 +11,6 @@
 
 package org.geomajas.internal.rendering;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.internal.rendering.writer.GraphicsWriter;
-import org.geomajas.internal.util.WebSafeStringEncoder;
-import org.geomajas.rendering.GraphicsDocument;
-import org.geomajas.rendering.RenderException;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DecimalFormat;
@@ -26,6 +19,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
+
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
+import org.geomajas.internal.util.WebSafeStringEncoder;
+import org.geomajas.rendering.GraphicsDocument;
+import org.geomajas.rendering.RenderException;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Abstract base class for {@link GraphicsDocument} implementations.

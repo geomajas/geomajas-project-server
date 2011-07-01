@@ -11,7 +11,7 @@
 
 package org.geomajas.security.allowall;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityService;

@@ -10,7 +10,7 @@
  */
 package org.geomajas.configuration.validation;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * The value of the constrained number attribute (integer type) must be lower or equal to the specified maximum.

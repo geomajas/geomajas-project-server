@@ -10,10 +10,11 @@
  */
 package org.geomajas.internal.rendering.writer.svg.geometry;
 
-import com.vividsolutions.jts.geom.Point;
 import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
+
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * <p>

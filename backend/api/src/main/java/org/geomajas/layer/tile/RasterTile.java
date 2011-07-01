@@ -10,10 +10,10 @@
  */
 package org.geomajas.layer.tile;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.geometry.Bbox;
 
 /**
  * <p>

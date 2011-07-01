@@ -14,6 +14,8 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.geomajas.annotations.Api;
+
 /**
  * General exception thrown by Geomajas when problems occur.
  * This allows specifying exception codes through which the (translated) exception message is found.

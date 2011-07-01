@@ -11,7 +11,7 @@
 
 package org.geomajas.geometry;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

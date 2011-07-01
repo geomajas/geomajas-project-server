@@ -10,10 +10,10 @@
  */
 package org.geomajas.internal.layer.feature;
 
-import org.geomajas.layer.feature.FeatureModel;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.layer.feature.FeatureModel;
 
 /**
  * Feature model registry.

@@ -11,9 +11,9 @@
 
 package org.geomajas.layer;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
 
 /**
  * <p>

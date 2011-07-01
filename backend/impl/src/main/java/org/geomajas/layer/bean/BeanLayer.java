@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;

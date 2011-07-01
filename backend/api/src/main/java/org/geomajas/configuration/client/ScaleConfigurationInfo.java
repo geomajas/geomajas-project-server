@@ -10,11 +10,11 @@
  */
 package org.geomajas.configuration.client;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Scale configuration of the map. The map needs a maximum scale (minimum is determined by maximum bounds) and

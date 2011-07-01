@@ -11,9 +11,12 @@
 
 package org.geomajas.global;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Metadata for a plugin, allowing dependencies to be declared, and plug-in information to be made available to the

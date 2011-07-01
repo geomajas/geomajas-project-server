@@ -11,10 +11,11 @@
 
 package org.geomajas.internal.rendering.writer.svg.geometry;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
 import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
+
+import com.vividsolutions.jts.geom.GeometryCollection;
 
 /**
  * <p>

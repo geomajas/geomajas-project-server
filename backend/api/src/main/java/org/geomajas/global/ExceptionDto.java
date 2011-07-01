@@ -13,6 +13,8 @@ package org.geomajas.global;
 
 import java.io.Serializable;
 
+import org.geomajas.annotations.Api;
+
 /**
  * A Data Transfer Object (DTO) that is used when exceptions that occurred on the server need to be send back to the
  * client. Instead of send general exceptions we take the safe route and this type of object instead.

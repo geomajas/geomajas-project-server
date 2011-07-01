@@ -10,10 +10,10 @@
  */
 package org.geomajas.configuration.client;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 
 /**
  * Marker interface for widget information which is contained in the map (or application)

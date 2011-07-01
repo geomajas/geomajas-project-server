@@ -10,9 +10,9 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Primitive attribute configuration information.

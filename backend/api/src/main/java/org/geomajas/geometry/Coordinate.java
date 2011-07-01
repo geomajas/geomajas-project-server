@@ -10,9 +10,9 @@
  */
 package org.geomajas.geometry;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
 
 /**
  * General coordinate class. It is based upon the Coordinate class from JTS4GWT (LGPL).

@@ -11,9 +11,9 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-
 import java.util.List;
+
+import org.geomajas.annotations.Api;
 
 /**
  * The security context is a thread scoped service which allows you to query the authorization details for the

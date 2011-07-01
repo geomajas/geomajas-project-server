@@ -11,11 +11,12 @@
 
 package org.geomajas.service.pipeline;
 
-import org.geomajas.global.Api;
-
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Configuration info for a pipeline service.

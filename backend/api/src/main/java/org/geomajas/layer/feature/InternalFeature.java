@@ -12,8 +12,8 @@ package org.geomajas.layer.feature;
 
 import java.util.Map;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.global.Api;
 import org.geomajas.layer.VectorLayer;
 
 import com.vividsolutions.jts.geom.Envelope;

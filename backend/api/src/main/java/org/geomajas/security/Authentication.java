@@ -11,10 +11,10 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-
 import java.util.Date;
 import java.util.Locale;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Success object which is returned on successful authentication by the {@link SecurityManager}.

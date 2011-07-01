@@ -10,7 +10,7 @@
  */
 package org.geomajas.configuration.validation;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * The constrained attribute must have a size between the specified boundaries (included).

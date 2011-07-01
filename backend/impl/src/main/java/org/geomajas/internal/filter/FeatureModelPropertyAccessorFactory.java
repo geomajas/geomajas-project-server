@@ -11,14 +11,14 @@
 
 package org.geomajas.internal.filter;
 
+import java.util.regex.Pattern;
+
 import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
-
-import java.util.regex.Pattern;
 
 /**
  * <p>

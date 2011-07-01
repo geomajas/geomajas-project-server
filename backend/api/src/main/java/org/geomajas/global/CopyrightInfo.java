@@ -11,8 +11,11 @@
 
 package org.geomajas.global;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Copyright information for a plug-in and the dependencies.

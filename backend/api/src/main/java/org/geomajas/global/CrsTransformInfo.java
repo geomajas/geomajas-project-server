@@ -11,9 +11,10 @@
 
 package org.geomajas.global;
 
-import org.geomajas.geometry.Bbox;
-
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Description object for configuring the transformable area for CRS conversions.

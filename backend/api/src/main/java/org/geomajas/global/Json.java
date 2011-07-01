@@ -13,6 +13,8 @@ package org.geomajas.global;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import org.geomajas.annotations.Api;
+
 /**
  * Indicates that the property should be serialized by JSON.
  *

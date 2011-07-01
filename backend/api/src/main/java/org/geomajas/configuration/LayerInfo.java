@@ -16,8 +16,8 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
 import org.geomajas.layer.LayerType;
 
 /**

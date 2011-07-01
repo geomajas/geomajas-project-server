@@ -10,11 +10,11 @@
  */
 package org.geomajas.layer.bean;
 
-import org.springframework.util.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.util.ObjectUtils;
 
 /**
  * Java bean for many-to-one attribute.

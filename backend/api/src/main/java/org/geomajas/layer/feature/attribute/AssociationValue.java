@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.geomajas.layer.feature.Attribute;
 
 /**

@@ -11,7 +11,8 @@
 
 package org.geomajas.internal.layer.raster;
 
-import com.vividsolutions.jts.geom.Envelope;
+import java.util.List;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
@@ -20,7 +21,7 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Main step for the {@link org.geomajas.layer.RasterLayerService} getTiles method.

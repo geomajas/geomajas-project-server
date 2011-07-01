@@ -10,9 +10,9 @@
  */
 package org.geomajas.configuration.validation;
 
-import org.geomajas.global.Api;
-
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
 
 /**
  * The value of the constrained number attribute must be higher or equal to the specified minimum.

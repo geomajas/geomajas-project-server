@@ -11,7 +11,6 @@
 
 package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.rendering.painter.tile.StringContentTilePainter;
 import org.geomajas.layer.VectorLayer;
@@ -28,6 +27,8 @@ import org.geomajas.service.pipeline.PipelineStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Set the string content in the tile.

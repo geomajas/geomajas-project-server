@@ -10,14 +10,15 @@
  */
 package org.geomajas.layer;
 
-import com.vividsolutions.jts.geom.Envelope;
+import java.util.Iterator;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
-import java.util.Iterator;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * A layer which contains vector data.

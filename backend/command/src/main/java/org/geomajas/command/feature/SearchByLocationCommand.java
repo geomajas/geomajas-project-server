@@ -13,11 +13,11 @@ package org.geomajas.command.feature;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Crs;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;

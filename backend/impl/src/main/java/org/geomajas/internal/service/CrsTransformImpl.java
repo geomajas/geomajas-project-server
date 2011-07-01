@@ -11,8 +11,6 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
@@ -23,6 +21,9 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Extension of a {@link MathTransform} which allows getting the source and target CRSs and a

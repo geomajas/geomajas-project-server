@@ -11,6 +11,8 @@
 
 package org.geomajas.global;
 
+import org.geomajas.annotations.Api;
+
 /**
  * Constants which are used in Geomajas (and which are not local to a class).
  *

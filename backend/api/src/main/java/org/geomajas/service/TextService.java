@@ -14,8 +14,8 @@ package org.geomajas.service;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.global.Api;
 
 /**
  * Utility functions for calculating text and font related parameters server-side. These parameters can of course be

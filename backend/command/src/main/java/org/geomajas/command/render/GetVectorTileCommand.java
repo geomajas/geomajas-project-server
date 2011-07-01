@@ -11,14 +11,14 @@
 
 package org.geomajas.command.render;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.service.DtoConverterService;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

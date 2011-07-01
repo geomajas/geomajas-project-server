@@ -12,8 +12,7 @@ package org.geomajas.sld.expression;
 
 import java.io.Serializable;
 
-import org.geomajas.global.Api;
-import org.w3c.dom.Element;
+import org.geomajas.annotations.Api;
 
 /**
  * Schema fragment(s) for this class:...
@@ -41,23 +40,4 @@ public class LiteralTypeInfo extends ExpressionInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
-	private Element any;
-
-	/**
-	 * Get the any value.
-	 * 
-	 * @return value
-	 */
-	public Element getAny() {
-		return any;
-	}
-
-	/**
-	 * Set the any value.
-	 * 
-	 * @param any
-	 */
-	public void setAny(Element any) {
-		this.any = any;
-	}
 }

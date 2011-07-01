@@ -10,13 +10,14 @@
  */
 package org.geomajas.layer.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.Map;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.LayerException;
 
-import java.util.Map;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * A feature model provides sufficient information to generically create/read and update a feature. This level of

@@ -12,8 +12,8 @@ package org.geomajas.layer.feature.attribute;
 
 import java.util.Date;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.PrimitiveType;
-import org.geomajas.global.Api;
 
 /**
  * Attribute with value of type <code>PrimitiveType.DATE</code>.

@@ -11,9 +11,9 @@
 
 package org.geomajas.command.dto;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.render.GetRasterTilesCommand}.

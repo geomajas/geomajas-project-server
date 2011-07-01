@@ -11,7 +11,7 @@
 
 package org.geomajas.layer.pipeline;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.geomajas.layer.tile.InternalTile;
 
 /**

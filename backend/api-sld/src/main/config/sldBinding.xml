@@ -44,7 +44,6 @@
     <collection item-type="org.geomajas.sld.UserStyleInfo" get-method="getUserStyleList" set-method="setUserStyleList" create-type="java.util.ArrayList"/>
   </mapping>
   <mapping class="org.geomajas.sld.InlineFeatureInfo" name="InlineFeature">
-    <structure get-method="getAnyList" set-method="setAnyList" usage="optional" marshaller="org.jibx.extras.DomListMapper" unmarshaller="org.jibx.extras.DomListMapper"/>
   </mapping>
   <mapping class="org.geomajas.sld.RemoteOWSInfo" name="RemoteOWS">
     <structure type="org.geomajas.sld.ServiceInfo" get-method="getService" set-method="setService"/>

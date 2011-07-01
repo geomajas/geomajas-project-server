@@ -11,6 +11,9 @@
 
 package org.geomajas.internal.layer.feature;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
@@ -29,9 +32,6 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Service which provides utility methods for handling feature attributes.

@@ -61,14 +61,14 @@ public class ParserTest {
 
 		CountDownLatch countDown = new CountDownLatch(2);
 		ArrayList<Style> styles = new ArrayList<Style>();
-		new Thread(new MarshallerRunner(countDown, parser, styles)).start();
-		new Thread(new ParserRunner(countDown, mctx, sld)).start();
+		new Thread(new Parser(countDown, parser, styles)).start();
+		new Thread(new Marshaller(countDown, mctx, sld)).start();
 		countDown.await();
 
 		Assert.assertEquals("GEOSYM", styles.get(0).getName());
 	}
 
-	public class ParserRunner implements Runnable {
+	public class Marshaller implements Runnable {
 
 		private CountDownLatch countDown;
 
@@ -76,7 +76,7 @@ public class ParserTest {
 
 		private StyledLayerDescriptorInfo sld;
 
-		public ParserRunner(CountDownLatch countDown, IMarshallingContext marshallingContext, StyledLayerDescriptorInfo sld) {
+		public Marshaller(CountDownLatch countDown, IMarshallingContext marshallingContext, StyledLayerDescriptorInfo sld) {
 			this.countDown = countDown;
 			this.marshallingContext = marshallingContext;
 			this.sld = sld;
@@ -93,7 +93,7 @@ public class ParserTest {
 
 	}
 
-	public class MarshallerRunner implements Runnable {
+	public class Parser implements Runnable {
 
 		private CountDownLatch countDown;
 
@@ -101,7 +101,7 @@ public class ParserTest {
 
 		private ArrayList<Style> styles;
 
-		public MarshallerRunner(CountDownLatch countDown, SLDParser parser, ArrayList<Style> styles) {
+		public Parser(CountDownLatch countDown, SLDParser parser, ArrayList<Style> styles) {
 			this.countDown = countDown;
 			this.parser = parser;
 			this.styles = styles;

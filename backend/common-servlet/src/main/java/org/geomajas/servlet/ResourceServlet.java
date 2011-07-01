@@ -10,18 +10,6 @@
  */
 package org.geomajas.servlet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.PathMatcher;
-import org.springframework.util.StringUtils;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +22,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 
 /**
  * Special resource servlet for efficiently resolving and rendering static resources from within a JAR file. The cache

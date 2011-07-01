@@ -54,6 +54,7 @@ public class BeanLayerEditingTest {
 		Map<String, Attribute> attrs = new HashMap<String, Attribute>();
 		attrs.put("urlAttr", layer.getFeatureModel().getAttribute(prim, "urlAttr"));
 		attrs.put("stringAttr", layer.getFeatureModel().getAttribute(prim, "stringAttr"));
+		attrs.put("doubleAttr", layer.getFeatureModel().getAttribute(prim, "doubleAttr"));
 		attrs.put("manyToOneAttr", layer.getFeatureModel().getAttribute(prim, "manyToOneAttr"));
 		attrs.put("oneToManyAttr", layer.getFeatureModel().getAttribute(prim, "oneToManyAttr"));
 		// apply to the test feature

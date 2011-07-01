@@ -10,14 +10,14 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.CacheableObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.global.CacheableObject;
 
 /**
  * A named layer style for vector layers. The layer style consists of a list of feature styles. Each style has a unique

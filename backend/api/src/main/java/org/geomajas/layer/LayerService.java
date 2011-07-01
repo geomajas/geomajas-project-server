@@ -11,8 +11,8 @@
 
 package org.geomajas.layer;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.geometry.Crs;
-import org.geomajas.global.Api;
 
 /**
  * Service for accessing layers in ways which can apply to all types of layers.

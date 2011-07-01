@@ -11,9 +11,9 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-
 import java.util.List;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Configuration for the security.

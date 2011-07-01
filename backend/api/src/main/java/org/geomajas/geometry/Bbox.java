@@ -11,10 +11,10 @@
 
 package org.geomajas.geometry;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.Json;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.global.Json;
 
 /**
  * DTO bounding box definition.

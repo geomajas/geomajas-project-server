@@ -11,9 +11,6 @@
 
 package org.geomajas.internal.rendering.writer.svg;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.Point;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
@@ -22,6 +19,10 @@ import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Writer for converting features to svg.

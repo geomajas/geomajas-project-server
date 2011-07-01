@@ -11,6 +11,8 @@
 
 package org.geomajas.servlet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * {@link org.geomajas.service.DispatcherUrlService} which tries to automatically detect the dispatcher server address.

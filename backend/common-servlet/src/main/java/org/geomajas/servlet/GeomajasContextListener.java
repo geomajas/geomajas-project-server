@@ -10,6 +10,13 @@
  */
 package org.geomajas.servlet;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
@@ -18,13 +25,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.XmlWebApplicationContext;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Note: This class is no longer needed, you can use the standard Spring ContextLoaderListener with the following 

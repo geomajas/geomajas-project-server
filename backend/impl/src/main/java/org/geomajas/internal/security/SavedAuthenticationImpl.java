@@ -11,16 +11,16 @@
 
 package org.geomajas.internal.security;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SavedAuthentication;
 import org.jboss.serial.io.JBossObjectInputStream;
 import org.jboss.serial.io.JBossObjectOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * This SavedAuthentication class is a placeholder for the {@link org.geomajas.security.Authorization}s and the

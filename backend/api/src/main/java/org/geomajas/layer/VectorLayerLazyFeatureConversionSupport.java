@@ -11,8 +11,8 @@
 
 package org.geomajas.layer;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 
 /**
  * Allow vector layers to indicate that they support lazy feature conversion.

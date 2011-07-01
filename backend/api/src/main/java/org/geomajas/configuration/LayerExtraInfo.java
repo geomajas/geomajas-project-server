@@ -11,10 +11,10 @@
 
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 
 /**
  * Marker interface objects which can be added in layer configuration, using

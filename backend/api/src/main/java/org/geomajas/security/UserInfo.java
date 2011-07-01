@@ -11,10 +11,10 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
-
 import java.util.Locale;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 
 /**
  * Information about the logged in user (all data is optional).

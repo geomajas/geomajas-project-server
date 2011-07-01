@@ -11,6 +11,8 @@
 
 package org.geomajas.global;
 
+import org.geomajas.annotations.Api;
+
 /**
  * Constants to be used for setting the exception codes.
  * The actual messages are maintained in the GeomajasException resource bundle

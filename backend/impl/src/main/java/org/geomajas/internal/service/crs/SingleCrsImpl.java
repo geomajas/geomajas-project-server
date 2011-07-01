@@ -11,6 +11,9 @@
 
 package org.geomajas.internal.service.crs;
 
+import java.util.Collection;
+import java.util.Set;
+
 import org.geomajas.geometry.Crs;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.referencing.ReferenceIdentifier;
@@ -19,9 +22,6 @@ import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.datum.Datum;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
-
-import java.util.Collection;
-import java.util.Set;
 
 /**
  * Implementation of a {@link SingleCRS} containing an id and delegating to another implementation.

@@ -10,10 +10,10 @@
  */
 package org.geomajas.service;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;

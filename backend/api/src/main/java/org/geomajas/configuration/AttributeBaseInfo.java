@@ -11,9 +11,9 @@
 
 package org.geomajas.configuration;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Base information which is shared between all attributes.

@@ -11,10 +11,10 @@
 
 package org.geomajas.service;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.feature.Attribute;

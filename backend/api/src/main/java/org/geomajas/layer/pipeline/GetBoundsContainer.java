@@ -11,8 +11,9 @@
 
 package org.geomajas.layer.pipeline;
 
+import org.geomajas.annotations.Api;
+
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.Api;
 
 /**
  * Container for result of getBounds in {@link org.geomajas.layer.VectorLayerService}.

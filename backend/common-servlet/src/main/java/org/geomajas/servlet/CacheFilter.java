@@ -10,9 +10,7 @@
  */
 package org.geomajas.servlet;
 
-import org.geomajas.global.Api;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -25,7 +23,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import java.io.IOException;
+
+import org.geomajas.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link Filter} that alters response in two ways: adding cache control headers and compressing the response.

@@ -11,6 +11,8 @@
 
 package org.geomajas.internal.layer.vector;
 
+import java.util.List;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
@@ -22,8 +24,6 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * Get the features for the tile.

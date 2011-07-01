@@ -11,6 +11,8 @@
 
 package org.geomajas.internal.layer.vector;
 
+import java.util.List;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
@@ -19,8 +21,6 @@ import org.geomajas.service.pipeline.PipelineInfo;
 import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * Execute the vectorLayer.saveOrUpdateOne" pipeline for each of the features to saveOrUpdate.

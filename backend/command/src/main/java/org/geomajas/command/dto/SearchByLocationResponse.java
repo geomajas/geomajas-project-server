@@ -10,13 +10,13 @@
  */
 package org.geomajas.command.dto;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
-import org.geomajas.layer.feature.Feature;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.command.CommandResponse;
+import org.geomajas.layer.feature.Feature;
 
 /**
  * Response object for {@link org.geomajas.command.feature.SearchByLocationCommand}.

@@ -11,10 +11,10 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
 import java.util.List;
+
+import org.geomajas.annotations.Api;
 
 /**
  * Saved authorizations, usable to persist and restore a security context. Acts as a serialized security context.

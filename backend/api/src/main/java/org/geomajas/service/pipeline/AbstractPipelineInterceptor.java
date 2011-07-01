@@ -11,10 +11,10 @@
 
 package org.geomajas.service.pipeline;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.GeomajasException;
-
 import javax.annotation.PostConstruct;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.global.GeomajasException;
 
 /**
  * Interceptor that unconditionally skips one or more steps.

@@ -13,9 +13,9 @@ package org.geomajas.command.dto;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
 
 /**

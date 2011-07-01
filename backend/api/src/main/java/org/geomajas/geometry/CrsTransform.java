@@ -11,10 +11,11 @@
 
 package org.geomajas.geometry;
 
+import org.geomajas.annotations.Api;
+import org.opengis.referencing.operation.MathTransform;
+
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.global.Api;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Extension of a {@link MathTransform} which allows getting the source and target CRSs and a

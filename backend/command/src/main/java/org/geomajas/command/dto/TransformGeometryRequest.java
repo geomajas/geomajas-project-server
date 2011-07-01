@@ -13,10 +13,10 @@ package org.geomajas.command.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.geometry.TransformGeometryCommand}.

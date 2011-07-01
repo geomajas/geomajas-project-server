@@ -16,8 +16,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.Parameter;
-import org.geomajas.global.Api;
 
 /**
  * Representation of a tool.

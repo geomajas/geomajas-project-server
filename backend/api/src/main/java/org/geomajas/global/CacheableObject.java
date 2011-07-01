@@ -11,6 +11,8 @@
 
 package org.geomajas.global;
 
+import org.geomajas.annotations.Api;
+
 /**
  * Interface to implement for cache-context friendly objects.
  *

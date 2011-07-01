@@ -11,22 +11,6 @@
 
 package org.geomajas.servlet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.PathMatcher;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.ServletContextAware;
-import org.springframework.web.servlet.mvc.LastModified;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +22,23 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.ServletContextAware;
+import org.springframework.web.servlet.mvc.LastModified;
 
 /**
  * Resource controller for efficiently resolving and rendering static resources from within a JAR file. The cache

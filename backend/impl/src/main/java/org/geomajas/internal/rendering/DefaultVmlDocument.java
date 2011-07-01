@@ -11,6 +11,19 @@
 
 package org.geomajas.internal.rendering;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.internal.rendering.writer.vml.geometry.GeometryCollectionWriter;
+import org.geomajas.internal.rendering.writer.vml.geometry.LineStringWriter;
+import org.geomajas.internal.rendering.writer.vml.geometry.MultiLineStringWriter;
+import org.geomajas.internal.rendering.writer.vml.geometry.MultiPointWriter;
+import org.geomajas.internal.rendering.writer.vml.geometry.MultiPolygonWriter;
+import org.geomajas.internal.rendering.writer.vml.geometry.PointWriter;
+import org.geomajas.internal.rendering.writer.vml.geometry.PolygonWriter;
+import org.geomajas.rendering.RenderException;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
@@ -20,18 +33,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.internal.rendering.writer.vml.geometry.GeometryCollectionWriter;
-import org.geomajas.internal.rendering.writer.vml.geometry.LineStringWriter;
-import org.geomajas.internal.rendering.writer.vml.geometry.MultiLineStringWriter;
-import org.geomajas.internal.rendering.writer.vml.geometry.PolygonWriter;
-import org.geomajas.internal.rendering.writer.vml.geometry.MultiPointWriter;
-import org.geomajas.internal.rendering.writer.vml.geometry.MultiPolygonWriter;
-import org.geomajas.internal.rendering.writer.vml.geometry.PointWriter;
-import org.geomajas.rendering.RenderException;
-
-import java.io.IOException;
-import java.io.Writer;
 
 /**
  * <p>

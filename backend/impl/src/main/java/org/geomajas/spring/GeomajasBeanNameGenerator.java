@@ -11,8 +11,8 @@
 
 package org.geomajas.spring;
 
+import org.geomajas.annotations.ExpectAlternatives;
 import org.geomajas.command.Command;
-import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.service.BeanNameSimplifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

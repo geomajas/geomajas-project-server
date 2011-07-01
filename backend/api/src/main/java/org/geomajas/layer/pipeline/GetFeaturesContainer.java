@@ -11,11 +11,12 @@
 
 package org.geomajas.layer.pipeline;
 
-import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.Api;
+import java.util.List;
+
+import org.geomajas.annotations.Api;
 import org.geomajas.layer.feature.InternalFeature;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Container for result of getFeatures in {@link org.geomajas.layer.VectorLayerService}.

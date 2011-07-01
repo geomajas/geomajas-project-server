@@ -11,8 +11,8 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.UserImplemented;
 
 /**
  * Handle the mapping between an individual authentication store and policy store.

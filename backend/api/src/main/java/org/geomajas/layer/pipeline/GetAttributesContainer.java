@@ -11,10 +11,10 @@
 
 package org.geomajas.layer.pipeline;
 
-import org.geomajas.global.Api;
-import org.geomajas.layer.feature.Attribute;
-
 import java.util.List;
+
+import org.geomajas.annotations.Api;
+import org.geomajas.layer.feature.Attribute;
 
 /**
  * Container for result of getAttributes in {@link org.geomajas.layer.VectorLayerService}.

@@ -13,7 +13,6 @@ package org.geomajas.internal.rendering.writer.svg;
 
 import java.awt.geom.Rectangle2D;
 
-import com.vividsolutions.jts.geom.Point;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
@@ -28,10 +27,11 @@ import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import org.springframework.util.StringUtils;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Writer for tile labels.

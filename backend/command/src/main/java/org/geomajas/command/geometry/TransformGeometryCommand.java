@@ -10,12 +10,12 @@
  */
 package org.geomajas.command.geometry;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.global.Api;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.springframework.beans.factory.annotation.Autowired;

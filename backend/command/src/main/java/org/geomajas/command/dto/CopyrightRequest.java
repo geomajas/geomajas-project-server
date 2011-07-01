@@ -10,8 +10,8 @@
  */
 package org.geomajas.command.dto;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.EmptyCommandRequest;
-import org.geomajas.global.Api;
 
 /**
  * Command name (for consistency with other commands). You don't have to use this, just pass null as request object.

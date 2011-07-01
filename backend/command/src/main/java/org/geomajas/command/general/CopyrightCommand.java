@@ -10,21 +10,22 @@
  */
 package org.geomajas.command.general;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.dto.CopyrightResponse;
-import org.geomajas.global.Api;
 import org.geomajas.global.CopyrightInfo;
 import org.geomajas.global.PluginInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Command which allows fetching the copyright info for back-end and plug-ins.

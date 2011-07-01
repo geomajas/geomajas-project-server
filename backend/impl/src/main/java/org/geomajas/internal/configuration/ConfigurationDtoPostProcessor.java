@@ -135,6 +135,11 @@ public class ConfigurationDtoPostProcessor {
 							layer.getId());
 				}
 			}
+			// deduce named styles from sld
+			if (info.getSld() != null) {
+				// location takes precedence
+
+			}
 			// apply defaults to all styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {

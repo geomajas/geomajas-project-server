@@ -11,7 +11,7 @@
 
 package org.geomajas.command;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * Command request object which contains a list of layer ids. Should be extended when you need multiple layer ids as

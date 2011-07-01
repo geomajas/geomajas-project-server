@@ -11,6 +11,10 @@
 
 package org.geomajas.internal.service;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.configuration.LayerExtraInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
@@ -28,10 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Container class which contains runtime information about the parameters and other information for Geomajas. Values
