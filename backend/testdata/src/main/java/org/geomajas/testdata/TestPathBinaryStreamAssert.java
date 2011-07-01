@@ -27,7 +27,6 @@ import org.springframework.core.io.Resource;
  * </pre>
  * 
  * @author Jan De Moerloose
- * 
  */
 public abstract class TestPathBinaryStreamAssert extends BinaryStreamAssert {
 
@@ -37,7 +36,7 @@ public abstract class TestPathBinaryStreamAssert extends BinaryStreamAssert {
 	 * Create an assert for the specified class path directory.
 	 * 
 	 * @param classPath
-	 *            the classpath directory (no preceeding slash needed)
+	 *            the classpath directory (no preceding slash needed)
 	 */
 	public TestPathBinaryStreamAssert(String classPath) {
 		this.classPath = classPath;

@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.springframework.core.io.Resource;
 
 /**
- * Abstract class to check binary stream equality. Implementors should provide access to actual and expected data by
+ * Abstract class to check binary stream equality. Implementers should provide access to actual and expected data by
  * implementing the methods generateActual() and getExpected().
  * 
  * @author Jan De Moerloose
