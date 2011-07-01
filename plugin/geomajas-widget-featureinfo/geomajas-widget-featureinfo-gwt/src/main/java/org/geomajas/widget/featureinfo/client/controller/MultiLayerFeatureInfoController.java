@@ -127,7 +127,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			final SearchByPointRequest rasterLayerRequest = new SearchByPointRequest();
 			rasterLayerRequest.setLocation(point.getCoordinate());
 			rasterLayerRequest.setCrs(mapWidget.getMapModel().getCrs());
-			rasterLayerRequest.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
+			rasterLayerRequest.setSearchType(SearchByPointRequest.SEARCH_ALL_LAYERS);
 			rasterLayerRequest.setPixelTolerance(pixelTolerance);
 			rasterLayerRequest.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
 			rasterLayerRequest.setBbox(toBbox(mapWidget.getMapModel().getMapView().getBounds()));
