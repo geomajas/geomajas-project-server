@@ -197,7 +197,7 @@ public class VectorTile extends AbstractVectorTile {
 				});
 				break;
 			case LOADED:
-				if (cache.getLayer().isLabelsShowing() && !labelContent.isLoaded()) {
+				if (needsReload()) {
 					// Check if the labels need to be fetched as well:
 					fetch(filter, callback);
 				} else {
@@ -294,6 +294,15 @@ public class VectorTile extends AbstractVectorTile {
 
 		public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		}
+	}
+	
+	private boolean needsReload() {
+		boolean needsReload = false;
+		// missing label content
+		needsReload |= cache.getLayer().isLabelsShowing() && !labelContent.isLoaded();
+		// always re-render if not rendered
+		needsReload |= !rendered;
+		return needsReload;
 	}
 
 	// -------------------------------------------------------------------------
