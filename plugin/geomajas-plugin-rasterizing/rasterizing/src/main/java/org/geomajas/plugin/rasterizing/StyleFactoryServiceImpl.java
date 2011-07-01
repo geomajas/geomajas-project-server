@@ -234,7 +234,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				mark.setSize(styleBuilder.literalExpression((int) info.getRect().getW()));
 			} else if (info.getCircle() != null) {
 				mark = styleBuilder.createMark("circle");
-				mark.setSize(styleBuilder.literalExpression((int) info.getCircle().getR()));
+				mark.setSize(styleBuilder.literalExpression(2 * (int) info.getCircle().getR()));
 			}
 			mark.setFill(createFill(featureStyle));
 			mark.setStroke(createStroke(featureStyle));
