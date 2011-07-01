@@ -81,7 +81,7 @@ include "org.geomajas.documentation" "docbook-gettingstarted" "1.10.0-SNAPSHOT" 
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
-    "org.geomajas" "geomajas-command" "1.8.0"
+    "org.geomajas" "geomajas-command" "1.9.0"
 
 include "org.geomajas.documentation" "docbook-devuserguide" "1.10.0-SNAPSHOT" \
     "User guide for developers" \
@@ -104,6 +104,12 @@ include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-S
     "incubating, deprecated" "dojo_face.pdf" \
     "org.geomajas" "geomajas-dojo-server" "1.5.7"
 
+include "org.geomajas.documentation" "geomajas-face-rest-documentation" "1.1.0-SNAPSHOT" \
+    "REST face" \
+    "face for communication with the Geomajas back-end using REST and GeoJSON." \
+    "incubating" "master.pdf" \
+    "org.geomajas" "geomajas-face-rest" "1.0.0"
+
 # plug-ins
 
 include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.9.0-SNAPSHOT" \
@@ -112,23 +118,23 @@ include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.9.0-SNA
     "incubating" "Geotools_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-geotools" "1.8.0"
 
-include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.9.0-SNAPSHOT" \
     "Google layer" \
     "This is a layer which allows accessing Google images as raster layer." \
     "incubating" "Google_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-google" "1.7.1"
+    "org.geomajas.plugin" "geomajas-layer-google" "1.8.0"
 
-include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.9.0-SNAPSHOT" \
     "Hibernate layer" \
     "This is a layer which allows accessing data in a GIS database using Hibernate and Hibernate Spatial." \
     "incubating" "Hibernate_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.7.2"
+    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.8.0"
 
-include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10.0-SNAPSHOT" \
     "Openstreetmap layer" \
     "This is a layer which allows accessing Openstreetmap images as raster layer." \
     "incubating" "Openstreetmap_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-openstreetmap" "1.7.1"
+    "org.geomajas.plugin" "geomajas-layer-openstreetmap" "1.9.0"
 
 include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.8.0-SNAPSHOT" \
     "WMS layer" \
@@ -136,29 +142,29 @@ include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.8.0-SNAPSHOT
     "incubating" "WMS_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-wms" "1.7.1"
 
-include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.9.0-SNAPSHOT" \
     "Staticsecurity plug-in" \
     "Geomajas security plug-in which allows all users and policies to be defined as part of spring configuration." \
     "incubating" "staticsecurity.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.7.1"
+    "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.8.0"
 
-include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.1.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.2.0-SNAPSHOT" \
     "Printing plug-in" \
     "Geomajas extension for printing." \
     "incubating" "printing.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-printing" "2.0.0"
+    "org.geomajas.plugin" "geomajas-plugin-printing" "2.1.0"
 
-include "org.geomajas.plugin" "caching-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.plugin" "caching-documentation" "1.1.0-SNAPSHOT" \
     "Caching plug-in" \
     "Caching to allow data to be calculated only once and cached for later use." \
     "incubating" "caching.pdf" \
-    "" "" ""
+    "org.geomajas.plugin" "geomajas-plugin-caching" "1.0.0"
 
-include "org.geomajas.plugin" "geocoder-documentation" "1.1.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geocoder-documentation" "1.2.0-SNAPSHOT" \
     "Geocoder plug-in" \
     "Convert a location description to map coordinates." \
     "graduated" "geocoder.pdf" \
-    "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.0.0"
+    "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.1.0"
 
 include "org.geomajas.plugin" "rasterizing-documentation" "1.0.0-SNAPSHOT" \
     "Rasterizing plug-in" \
