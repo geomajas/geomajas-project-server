@@ -35,16 +35,16 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 
  * @author Kristof Heirwegh
  */
-@Controller("/fileDownload")
-public class FileDownloadController {
+@Controller("/csvDownload")
+public class CsvDownloadController {
 
-	private final Logger log = LoggerFactory.getLogger(FileDownloadController.class);
+	private final Logger log = LoggerFactory.getLogger(CsvDownloadController.class);
 
 	@Autowired
 	private FileDownloadService service;
 
-	@RequestMapping(value = "/fileDownload", method = RequestMethod.GET)
-	public void handleFileDownload(@RequestParam("id") String id, HttpServletResponse response) throws IOException {
+	@RequestMapping(value = "/csvDownload", method = RequestMethod.GET)
+	public void handleCsvDownload(@RequestParam("id") String id, HttpServletResponse response) throws IOException {
 		try {
 			Item item = service.getFile(id);
 			File f = item.getFile();
