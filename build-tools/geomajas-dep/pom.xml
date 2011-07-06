@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dep</artifactId>
-	<version>1.11.5-SNAPSHOT</version>
+	<version>1.11.26-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas dependencies</name>
 	<description>
@@ -175,61 +175,44 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geotools-all</artifactId>
 				<version>1.8.0</version>
-			</dependency>
-			<dependency>
-				<!-- from next version on, this should depend on "all" -->
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-google</artifactId>
-				<version>1.7.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-hibernate-all</artifactId>
-				<version>1.7.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-hibernate</artifactId>
-				<version>1.7.2</version>
-			</dependency>
-			<dependency>
-				<!-- from next version on, this should depend on "all" -->
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<artifactId>geomajas-plugin-google-all</artifactId>
 				<version>1.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-wms</artifactId>
-				<version>1.7.1</version>
+				<artifactId>geomajas-plugin-hibernate-all</artifactId>
+				<version>1.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
+				<version>1.9.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-wms-all</artifactId>
+				<version>1.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<dependency>
-				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing</artifactId>
-				<version>2.0.0</version>
-			</dependency>
-			<dependency>
-				<!-- from next version on, this should depend on "all" -->
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing</artifactId>
-				<classifier>sources</classifier>
-				<version>2.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing-gwt</artifactId>
-				<version>2.0.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing-gwt</artifactId>
-				<classifier>sources</classifier>
-				<version>2.0.0</version>
+				<artifactId>geomajas-plugin-printing-all</artifactId>
+				<version>2.1.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<dependency>
@@ -238,46 +221,34 @@
 				<version>1.6.0</version>
 			</dependency>
 			<dependency>
-				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity</artifactId>
-				<version>1.7.1</version>
+				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+				<version>1.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity</artifactId>
-				<version>1.7.1</version>
-				<classifier>sources</classifier>
+				<artifactId>geomajas-plugin-geocoder-all</artifactId>
+				<version>1.1.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
-				<version>1.7.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
-				<version>1.7.1</version>
-				<classifier>sources</classifier>
-			</dependency>
-			<dependency>
-				<!-- from next version on, this should depend on "all" -->
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder</artifactId>
+				<artifactId>geomajas-plugin-caching-all</artifactId>
 				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-rest-all</artifactId>
 				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
-				<version>1.0.0</version>
-				<classifier>sources</classifier>
-			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
