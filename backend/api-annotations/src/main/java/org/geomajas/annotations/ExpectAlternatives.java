@@ -11,6 +11,7 @@
 
 package org.geomajas.annotations;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -22,6 +23,8 @@ import java.lang.annotation.RetentionPolicy;
  * @since 1.10.0
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Api
 public @interface ExpectAlternatives {
 
 }

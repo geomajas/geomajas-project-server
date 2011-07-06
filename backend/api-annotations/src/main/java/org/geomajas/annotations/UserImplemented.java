@@ -27,5 +27,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Target({ ElementType.TYPE })
 @Documented
+@Api
 public @interface UserImplemented {
 }
