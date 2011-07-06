@@ -19,6 +19,7 @@ import java.lang.annotation.RetentionPolicy;
  * This is used by the bean name generator to determine the default bean name.
  *
  * @author Joachim Van der Auwera
+ * @since 1.10.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExpectAlternatives {

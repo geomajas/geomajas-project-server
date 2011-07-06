@@ -30,12 +30,12 @@ import java.lang.annotation.Target;
  * they need explicit annotation.
  *
  * @author Joachim Van der Auwera
+ * @since 1.10.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,
 		ElementType.ANNOTATION_TYPE })
 @Documented
-@Inherited
 @Api
 public @interface Api {
 
