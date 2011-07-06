@@ -33,6 +33,8 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.AutoFitWidthApproach;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
@@ -78,6 +80,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		tabset = new TabSet();
 		tabset.setWidth100();
 		tabset.setHeight100();
+		tabset.setOverflow(Overflow.HIDDEN);
 		tabset.addCloseClickHandler(new CloseClickHandler() {
 
 			public void onCloseClick(TabCloseClickEvent event) {
@@ -170,7 +173,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		}
 	}
 
-	private void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData, boolean showSingleResult) 
+	private void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData, boolean showSingleResult)
 	{
 		FeatureListGridTab t;
 		if (csvExportData instanceof Criterion) {
@@ -281,10 +284,11 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			this.handler = handler;
 		}
 
-		public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final ExportToCsvHandler handler) 
+		public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final ExportToCsvHandler handler)
 		{
 			super(layer.getLabel());
 			this.handler = handler;
+			setOverflow(Overflow.HIDDEN);
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth100();
 			focusButton = new ToolStripButton(messages.multiFeatureListGridButtonFocusSelection());
@@ -343,10 +347,16 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			});
 			featureListGrid.setLayer(layer);
 			featureListGrid.addSelectionChangedHandler(this);
+			featureListGrid.setAutoFitFieldWidths(true);
+			featureListGrid.setAutoFitWidthApproach(AutoFitWidthApproach.BOTH);
+			featureListGrid.setOverflow(Overflow.AUTO);
+			featureListGrid.setWidth100();
+			featureListGrid.setHeight100();
 
 			VLayout pane = new VLayout();
 			pane.setWidth100();
 			pane.setHeight100();
+			pane.setOverflow(Overflow.HIDDEN);
 			pane.addMember(toolStrip);
 			pane.addMember(featureListGrid);
 			setPane(pane);

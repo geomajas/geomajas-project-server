@@ -106,7 +106,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 						ExportToCsvResponse resp = (ExportToCsvResponse) response;
 						if (resp.getDocumentId() != null) {
 							UrlBuilder ub = new UrlBuilder();
-							ub.setPath("d/fileDownload");
+							ub.setPath("d/csvDownload");
 							ub.setParameter("id", resp.getDocumentId());
 							String link = ub.buildString().replaceFirst("http:///", GWT.getHostPageBaseURL());
 
