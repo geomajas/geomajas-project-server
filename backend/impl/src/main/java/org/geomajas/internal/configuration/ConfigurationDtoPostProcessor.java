@@ -10,6 +10,8 @@
  */
 package org.geomajas.internal.configuration;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,14 +42,22 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.GeodeticCalculator;
+import org.jibx.runtime.BindingDirectory;
+import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IUnmarshallingContext;
+import org.jibx.runtime.JiBXException;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -72,6 +82,9 @@ public class ConfigurationDtoPostProcessor {
 	@Autowired
 	private GeoService geoService;
 
+	@Autowired
+	private StyleConverterService styleConverterService;
+
 	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
 
@@ -86,6 +99,9 @@ public class ConfigurationDtoPostProcessor {
 
 	@Autowired(required = false)
 	protected Map<String, VectorLayer> vectorLayerMap = new LinkedHashMap<String, VectorLayer>();
+
+	@Autowired(required = true)
+	private ApplicationContext applicationContext;
 
 	public ConfigurationDtoPostProcessor() {
 
@@ -135,15 +151,39 @@ public class ConfigurationDtoPostProcessor {
 							layer.getId());
 				}
 			}
-			// deduce named styles from sld
-			if (info.getSld() != null) {
-				// location takes precedence
-
+			// apply defaults to all styles
+			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
+				// check sld location
+				if (namedStyle.getSldLocation() != null) {
+					Resource resource = applicationContext.getResource(namedStyle.getSldLocation());
+					IBindingFactory bindingFactory;
+					try {
+						bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+						IUnmarshallingContext unmarshallingContext = bindingFactory.createUnmarshallingContext();
+						StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) unmarshallingContext
+								.unmarshalDocument(new InputStreamReader(resource.getInputStream()));
+						namedStyle.setStyledLayerInfo(sld);
+					} catch (JiBXException e) {
+						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
+								layer.getId());
+					} catch (IOException e) {
+						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
+								layer.getId());
+					}
+					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getStyledLayerInfo(),
+							info.getFeatureInfo(), namedStyle.getSldLayerName(), namedStyle.getSldStyleName());
+					namedStyle.setFeatureStyles(sldStyle.getFeatureStyles());
+					namedStyle.setLabelStyle(sldStyle.getLabelStyle());
+				}
 			}
 			// apply defaults to all styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {
 					featureStyle.applyDefaults();
+				}
+				if (namedStyle.getLabelStyle().getLabelAttributeName() == null) {
+					AttributeInfo attributeInfo = info.getFeatureInfo().getAttributes().get(0);
+					namedStyle.getLabelStyle().setLabelAttributeName(attributeInfo.getName());
 				}
 				namedStyle.getLabelStyle().getBackgroundStyle().applyDefaults();
 				namedStyle.getLabelStyle().getFontStyle().applyDefaults();
@@ -271,11 +311,9 @@ public class ConfigurationDtoPostProcessor {
 
 	/**
 	 * Convert the scale in pixels per unit or relative values, which ever is missing.
-	 *
-	 * @param scaleInfo
-	 *            scaleInfo object which needs to be completed
-	 * @param mapUnitInPixels
-	 *            the number of pixels in a map unit
+	 * 
+	 * @param scaleInfo scaleInfo object which needs to be completed
+	 * @param mapUnitInPixels the number of pixels in a map unit
 	 */
 	public void completeScale(ScaleInfo scaleInfo, double mapUnitInPixels) {
 		if (0 == mapUnitInPixels) {
@@ -309,8 +347,8 @@ public class ConfigurationDtoPostProcessor {
 		for (ClientLayerInfo layer : node.getLayers()) {
 			if (!mapContains(map, layer)) {
 				throw new BeanInitializationException(
-						"A LayerTreeNodeInfo object can only reference layers which are part of the map, layer " +
-								layer.getId() + " is not part of map " + map.getId() + ".");
+						"A LayerTreeNodeInfo object can only reference layers which are part of the map, layer "
+								+ layer.getId() + " is not part of map " + map.getId() + ".");
 			}
 		}
 		for (ClientLayerTreeNodeInfo child : node.getTreeNodes()) {

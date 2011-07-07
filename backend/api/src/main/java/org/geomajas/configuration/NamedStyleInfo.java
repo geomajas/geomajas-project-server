@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotations.Api;
 import org.geomajas.global.CacheableObject;
+import org.geomajas.sld.StyledLayerDescriptorInfo;
 
 /**
  * A named layer style for vector layers. The layer style consists of a list of feature styles. Each style has a unique
@@ -38,6 +39,94 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 
 	@NotNull
 	private String name;
+	
+	private StyledLayerDescriptorInfo styledLayerInfo;
+	
+	private String sldLocation;
+	
+	private String sldLayerName;
+	
+	private String sldStyleName;
+
+	/**
+	 * Get the SLD info for this layer.
+	 *
+	 * @return SLD info
+	 * @since 1.10.0
+	 */
+	public StyledLayerDescriptorInfo getStyledLayerInfo() {
+		return styledLayerInfo;
+	}
+	
+	/**
+	 * Set SLD info, the style configuration for this layer.
+	 *
+	 * @param styledLayerInfo SLD info
+	 * @since 1.10.0
+	 */
+	public void setStyledLayerInfo(StyledLayerDescriptorInfo styledLayerInfo) {
+		this.styledLayerInfo = styledLayerInfo;
+	}
+
+	/**
+	 * Get the SLD file location (Spring resource format).
+	 * 
+	 * @return the location of the SLD file
+	 * @since 1.10.0
+	 */
+	public String getSldLocation() {
+		return sldLocation;
+	}
+
+	/**
+	 * Set the SLD file location (Spring resource format).
+	 * 
+	 * @param sldLocation the SLD location
+	 * @since 1.10.0
+	 */
+	public void setSldLocation(String sldLocation) {
+		this.sldLocation = sldLocation;
+	}
+	
+	/**
+	 * Get the name of the SLD NamedLayer that contains this style. If null the first NamedLayer should be chosen.
+	 * 
+	 * @return the name of the NamedLayer
+	 * @since 1.10.0
+	 */
+	public String getSldLayerName() {
+		return sldLayerName;
+	}
+
+	/**
+	 * Set the name of the SLD NamedLayer that contains this style.
+	 * 
+	 * @param sldLayerName the name of the NamedLayer
+	 * @since 1.10.0
+	 */
+	public void setSldLayerName(String sldLayerName) {
+		this.sldLayerName = sldLayerName;
+	}
+
+	/**
+	 * Get the name of the SLD UserStyle that corresponds to this style. If null the first UserStyle should be chosen.
+	 * 
+	 * @return the name of the UserStyle
+	 * @since 1.10.0
+	 */
+	public String getSldStyleName() {
+		return sldStyleName;
+	}
+
+	/**
+	 * Set the name of the SLD UserStyle that contains this style.
+	 * 
+	 * @param sldStyleName the name of the UserStyle
+	 * @since 1.10.0
+	 */
+	public void setSldStyleName(String sldStyleName) {
+		this.sldStyleName = sldStyleName;
+	}
 
 	/**
 	 * Get possible styles for features. These are traversed from the beginning, the first style for which the

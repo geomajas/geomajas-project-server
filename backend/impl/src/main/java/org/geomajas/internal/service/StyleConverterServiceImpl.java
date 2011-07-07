@@ -11,19 +11,35 @@
 package org.geomajas.internal.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
+import org.geomajas.configuration.CircleInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.configuration.ImageInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.global.GeomajasException;
+import org.geomajas.configuration.RectInfo;
+import org.geomajas.configuration.SymbolInfo;
+import org.geomajas.layer.LayerException;
 import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.CssParameterInfo;
+import org.geomajas.sld.ExternalGraphicInfo;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.FillInfo;
 import org.geomajas.sld.FontInfo;
+import org.geomajas.sld.GraphicInfo;
+import org.geomajas.sld.GraphicInfo.ChoiceInfo;
 import org.geomajas.sld.LineSymbolizerInfo;
+import org.geomajas.sld.MarkInfo;
 import org.geomajas.sld.NamedLayerInfo;
+import org.geomajas.sld.ParameterValueTypeInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
@@ -33,16 +49,64 @@ import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.TextSymbolizerInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.expression.ExpressionInfo;
+import org.geomajas.sld.expression.LiteralTypeInfo;
+import org.geomajas.sld.filter.AndInfo;
+import org.geomajas.sld.filter.BBOXTypeInfo;
+import org.geomajas.sld.filter.BeyondInfo;
 import org.geomajas.sld.filter.BinaryComparisonOpTypeInfo;
+import org.geomajas.sld.filter.BinaryLogicOpTypeInfo;
+import org.geomajas.sld.filter.BinarySpatialOpTypeInfo;
 import org.geomajas.sld.filter.ComparisonOpsTypeInfo;
+import org.geomajas.sld.filter.ContainsInfo;
+import org.geomajas.sld.filter.CrossesInfo;
+import org.geomajas.sld.filter.DWithinInfo;
+import org.geomajas.sld.filter.DisjointInfo;
+import org.geomajas.sld.filter.DistanceBufferTypeInfo;
+import org.geomajas.sld.filter.EqualsInfo;
+import org.geomajas.sld.filter.FeatureIdTypeInfo;
 import org.geomajas.sld.filter.FilterTypeInfo;
+import org.geomajas.sld.filter.IntersectsInfo;
+import org.geomajas.sld.filter.LogicOpsTypeInfo;
+import org.geomajas.sld.filter.OrInfo;
+import org.geomajas.sld.filter.OverlapsInfo;
+import org.geomajas.sld.filter.PropertyIsBetweenTypeInfo;
 import org.geomajas.sld.filter.PropertyIsEqualToInfo;
 import org.geomajas.sld.filter.PropertyIsGreaterThanInfo;
 import org.geomajas.sld.filter.PropertyIsGreaterThanOrEqualToInfo;
 import org.geomajas.sld.filter.PropertyIsLessThanInfo;
 import org.geomajas.sld.filter.PropertyIsLessThanOrEqualToInfo;
+import org.geomajas.sld.filter.PropertyIsLikeTypeInfo;
 import org.geomajas.sld.filter.PropertyIsNotEqualToInfo;
+import org.geomajas.sld.filter.PropertyIsNullTypeInfo;
+import org.geomajas.sld.filter.SpatialOpsTypeInfo;
+import org.geomajas.sld.filter.TouchesInfo;
+import org.geomajas.sld.filter.UnaryLogicOpTypeInfo;
+import org.geomajas.sld.filter.WithinInfo;
+import org.geomajas.sld.geometry.AbstractGeometryCollectionInfo;
+import org.geomajas.sld.geometry.AbstractGeometryInfo;
+import org.geomajas.sld.geometry.CoordTypeInfo;
+import org.geomajas.sld.geometry.CoordinatesTypeInfo;
+import org.geomajas.sld.geometry.GeometryMemberInfo;
+import org.geomajas.sld.geometry.InnerBoundaryIsInfo;
+import org.geomajas.sld.geometry.LineStringTypeInfo;
+import org.geomajas.sld.geometry.LinearRingTypeInfo;
+import org.geomajas.sld.geometry.MultiGeometryInfo;
+import org.geomajas.sld.geometry.MultiLineStringInfo;
+import org.geomajas.sld.geometry.MultiPointInfo;
+import org.geomajas.sld.geometry.MultiPolygonInfo;
+import org.geomajas.sld.geometry.OuterBoundaryIsInfo;
+import org.geomajas.sld.geometry.PointTypeInfo;
+import org.geomajas.sld.geometry.PolygonTypeInfo;
 import org.springframework.stereotype.Component;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * Default implementation of {@link StyleConverterService}. Supports named layers and user styles only.
@@ -53,13 +117,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class StyleConverterServiceImpl implements StyleConverterService {
 
-	public List<NamedStyleInfo> extractLayerStyle(StyledLayerDescriptorInfo styledLayerDescriptorInfo, String layerName)
-			throws GeomajasException {
+	public NamedStyleInfo convert(StyledLayerDescriptorInfo styledLayerDescriptorInfo, FeatureInfo featureInfo,
+			String layerName, String styleName) throws LayerException {
 		NamedLayerInfo namedLayerInfo = null;
 		List<NamedStyleInfo> namedStyleInfos = new ArrayList<NamedStyleInfo>();
 		// find first named layer or find by name
 		for (StyledLayerDescriptorInfo.ChoiceInfo choice : styledLayerDescriptorInfo.getChoiceList()) {
-			// we only support named layers
+			// we only support named layers, pick the right name or the first one
 			if (choice.ifNamedLayer()) {
 				if (layerName != null) {
 					if (choice.getNamedLayer().getName().getName().equals(layerName)) {
@@ -72,96 +136,442 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				}
 			}
 		}
+
+		NamedStyleInfo namedStyleInfo = null;
 		for (NamedLayerInfo.ChoiceInfo choice : namedLayerInfo.getChoiceList()) {
-			// we only support user styles
+			// we only support user styles, pick the right name or the first
 			if (choice.ifUserStyle()) {
-				UserStyleInfo userStyle = choice.getUserStyle();
-				NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
-				namedStyleInfo.setName(userStyle.getName().getName());
-				LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
-				List<FeatureStyleInfo> featureStyleInfos = new ArrayList<FeatureStyleInfo>();
-				for (FeatureTypeStyleInfo featureTypeStyleInfo : userStyle.getFeatureTypeStyleList()) {
-					for (RuleInfo ruleInfo : featureTypeStyleInfo.getRuleList()) {
-						FeatureStyleInfo featureStyleInfo = new FeatureStyleInfo();
-						if (ruleInfo.getChoice().ifFilter()) {
-							featureStyleInfo.setFormula(convertFormula(ruleInfo.getChoice().getFilter()));
-						}
-						for (SymbolizerTypeInfo symbolizerTypeInfo : ruleInfo.getSymbolizerList()) {
-							if (symbolizerTypeInfo instanceof PointSymbolizerInfo) {
-								PointSymbolizerInfo pointInfo = (PointSymbolizerInfo) symbolizerTypeInfo;
-							} else if (symbolizerTypeInfo instanceof LineSymbolizerInfo) {
-								LineSymbolizerInfo lineInfo = (LineSymbolizerInfo) symbolizerTypeInfo;
-								convertStroke(featureStyleInfo, lineInfo.getStroke());
-							} else if (symbolizerTypeInfo instanceof PolygonSymbolizerInfo) {
-								PolygonSymbolizerInfo polygonInfo = (PolygonSymbolizerInfo) symbolizerTypeInfo;
-								convertFill(featureStyleInfo, polygonInfo.getFill());
-								convertStroke(featureStyleInfo, polygonInfo.getStroke());
-							} else if (symbolizerTypeInfo instanceof TextSymbolizerInfo) {
-								TextSymbolizerInfo textInfo = (TextSymbolizerInfo) symbolizerTypeInfo;
-								labelStyleInfo.setFontStyle(convertFont(textInfo.getFont()));
-								for (ExpressionInfo expr : textInfo.getLabel().getExpressionList()) {
-									labelStyleInfo.setLabelAttributeName(expr.getValue());
-								}
-								FeatureStyleInfo background = new FeatureStyleInfo();
-								convertFill(background, textInfo.getHalo().getFill());
-								labelStyleInfo.setBackgroundStyle(background);
-							}
-						}
-						featureStyleInfos.add(featureStyleInfo);
+				if (styleName != null) {
+					if (choice.getUserStyle().getName().getName().equals(layerName)) {
+						namedStyleInfo = convert(choice.getUserStyle(), featureInfo);
+						break;
 					}
+				} else {
+					namedStyleInfo = convert(choice.getUserStyle(), featureInfo);
 				}
-				namedStyleInfo.setFeatureStyles(featureStyleInfos);
-				namedStyleInfo.setLabelStyle(labelStyleInfo);
-				namedStyleInfos.add(namedStyleInfo);
 			}
 		}
-		return namedStyleInfos;
+		return namedStyleInfo;
+	}
 
+	private NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
+		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
+		LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
+		List<FeatureStyleInfo> featureStyleInfos = new ArrayList<FeatureStyleInfo>();
+		for (FeatureTypeStyleInfo featureTypeStyleInfo : userStyle.getFeatureTypeStyleList()) {
+			int styleIndex = 0;
+			for (RuleInfo ruleInfo : featureTypeStyleInfo.getRuleList()) {
+				FeatureStyleInfo featureStyleInfo = new FeatureStyleInfo();
+				if (ruleInfo.getChoice() != null) {
+					if (ruleInfo.getChoice().ifFilter()) {
+						featureStyleInfo.setFormula(convertFormula(ruleInfo.getChoice().getFilter(), featureInfo));
+					}
+				}
+				for (SymbolizerTypeInfo symbolizerTypeInfo : ruleInfo.getSymbolizerList()) {
+					if (symbolizerTypeInfo instanceof PointSymbolizerInfo) {
+						PointSymbolizerInfo pointInfo = (PointSymbolizerInfo) symbolizerTypeInfo;
+						convertSymbol(featureStyleInfo, pointInfo);
+					} else if (symbolizerTypeInfo instanceof LineSymbolizerInfo) {
+						LineSymbolizerInfo lineInfo = (LineSymbolizerInfo) symbolizerTypeInfo;
+						convertStroke(featureStyleInfo, lineInfo.getStroke());
+					} else if (symbolizerTypeInfo instanceof PolygonSymbolizerInfo) {
+						PolygonSymbolizerInfo polygonInfo = (PolygonSymbolizerInfo) symbolizerTypeInfo;
+						convertFill(featureStyleInfo, polygonInfo.getFill());
+						convertStroke(featureStyleInfo, polygonInfo.getStroke());
+					} else if (symbolizerTypeInfo instanceof TextSymbolizerInfo) {
+						TextSymbolizerInfo textInfo = (TextSymbolizerInfo) symbolizerTypeInfo;
+						labelStyleInfo.setFontStyle(convertFont(textInfo.getFont()));
+						for (ExpressionInfo expr : textInfo.getLabel().getExpressionList()) {
+							labelStyleInfo.setLabelAttributeName(expr.getValue());
+						}
+						convertFontFill(labelStyleInfo.getFontStyle(), textInfo.getFill());
+						FeatureStyleInfo background = new FeatureStyleInfo();
+						if (textInfo.getHalo() != null) {
+							convertFill(background, textInfo.getHalo().getFill());
+						}
+						labelStyleInfo.setBackgroundStyle(background);
+					}
+				}
+				featureStyleInfo.setIndex(styleIndex++);
+				featureStyleInfo.setStyleId(namedStyleInfo.getName() + "-" + featureStyleInfo.getIndex());
+				featureStyleInfos.add(featureStyleInfo);
+			}
+		}
+		namedStyleInfo.setFeatureStyles(featureStyleInfos);
+		namedStyleInfo.setLabelStyle(labelStyleInfo);
+		return namedStyleInfo;
+	}
+
+	private void convertSymbol(FeatureStyleInfo featureStyleInfo, PointSymbolizerInfo pointInfo) {
+		GraphicInfo graphic = pointInfo.getGraphic();
+		SymbolInfo symbol = new SymbolInfo();
+
+		if (graphic.getChoiceList().size() > 0) {
+			ChoiceInfo choice = graphic.getChoiceList().get(0);
+			if (choice.ifExternalGraphic()) {
+				ExternalGraphicInfo externalGraphic = choice.getExternalGraphic();
+				String href = externalGraphic.getOnlineResource().getHref().getHref();
+				ImageInfo image = new ImageInfo();
+				image.setHref(href);
+				// SLD has no selection concept + no default: what to do ?
+				image.setSelectionHref(href);
+				image.setHeight((int) Float.parseFloat(getParameterValue(graphic.getSize())));
+				symbol.setImage(image);
+			} else if (choice.ifMark()) {
+				MarkInfo mark = choice.getMark();
+				String name = mark.getWellKnownName().getWellKnownName();
+				if (name.equalsIgnoreCase("square")) {
+					RectInfo rect = new RectInfo();
+					rect.setH(Float.parseFloat(getParameterValue(graphic.getSize())));
+					rect.setW(Float.parseFloat(getParameterValue(graphic.getSize())));
+					symbol.setRect(rect);
+				} else {
+					// should treat everything else as circle ?!
+					CircleInfo circle = new CircleInfo();
+					circle.setR(0.5F * Float.parseFloat(getParameterValue(graphic.getSize())));
+					symbol.setCircle(circle);
+				}
+			}
+		}
+		featureStyleInfo.setSymbol(symbol);
+	}
+
+	private void convertFontFill(FontStyleInfo fontStyle, FillInfo fill) {
+		if (fill != null) {
+			Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
+			fontStyle.setColor(cssMap.get("fill"));
+			if (cssMap.containsKey("fill-opacity")) {
+				fontStyle.setOpacity(Float.parseFloat(cssMap.get("fill-opacity")));
+			}
+		}
 	}
 
 	private FontStyleInfo convertFont(FontInfo font) {
-		// TODO Auto-generated method stub
-		return null;
+		FontStyleInfo fontStyle = new FontStyleInfo();
+		if (font == null) {
+			fontStyle.applyDefaults();
+		} else {
+			Map<String, String> cssMap = getLiteralMap(font.getCssParameterList());
+			fontStyle.setFamily(cssMap.get("font-family"));
+			if (cssMap.containsKey("font-size")) {
+				fontStyle.setSize(Integer.parseInt(cssMap.get("font-size")));
+			}
+			fontStyle.setStyle(cssMap.get("font-style"));
+			fontStyle.setWeight(cssMap.get("font-weight"));
+		}
+		return fontStyle;
 	}
 
 	private void convertFill(FeatureStyleInfo featureStyleInfo, FillInfo fill) {
-		// TODO Auto-generated method stub
-
+		Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
+		featureStyleInfo.setFillColor(cssMap.get("fill"));
+		if (cssMap.containsKey("fill-opacity")) {
+			featureStyleInfo.setFillOpacity(Float.parseFloat(cssMap.get("fill-opacity")));
+		}
 	}
 
 	private void convertStroke(FeatureStyleInfo featureStyleInfo, StrokeInfo stroke) {
-		// TODO Auto-generated method stub
-
+		if (stroke == null) {
+			// avoid default stroke by setting invisible
+			featureStyleInfo.setStrokeColor("black");
+			featureStyleInfo.setStrokeOpacity(0);
+			featureStyleInfo.setStrokeWidth(0);
+		} else {
+			Map<String, String> cssMap = getLiteralMap(stroke.getCssParameterList());
+			// not supported are "stroke-linejoin", "stroke-linecap", and "stroke-dashoffset"
+			featureStyleInfo.setStrokeColor(cssMap.get("stroke"));
+			if (cssMap.containsKey("stroke-opacity")) {
+				featureStyleInfo.setStrokeOpacity(Float.parseFloat(cssMap.get("stroke-opacity")));
+			}
+			if (cssMap.containsKey("stroke-width")) {
+				featureStyleInfo.setStrokeWidth((int) Float.parseFloat(cssMap.get("stroke-width")));
+			}
+			featureStyleInfo.setDashArray("stroke-dasharray");
+		}
 	}
 
-	private String convertFormula(FilterTypeInfo filter) {
+	private String convertFormula(FilterTypeInfo filter, FeatureInfo featureInfo) {
 		if (filter.ifComparisonOps()) {
-			ComparisonOpsTypeInfo coOps = filter.getComparisonOps();
-			if (coOps instanceof BinaryComparisonOpTypeInfo) {
-				BinaryComparisonOpTypeInfo binary = (BinaryComparisonOpTypeInfo) coOps;
-				String propertyName = binary.getExpressionList().get(0).getValue();
-				String propertyValue = binary.getExpressionList().get(1).getValue();
-				if (binary instanceof PropertyIsEqualToInfo) {
-					PropertyIsEqualToInfo eq = (PropertyIsEqualToInfo) coOps;
-					return propertyName + " = " + propertyValue;
-				} else if (binary instanceof PropertyIsGreaterThanInfo) {
+			toComparison(filter.getComparisonOps());
+		} else if (filter.ifFeatureIdList()) {
+			return toFeatureIds(filter.getFeatureIdList());
+		} else if (filter.ifLogicOps()) {
+			return toLogic(filter.getLogicOps());
+		} else if (filter.ifSpatialOps()) {
+			return toSpatial(filter.getSpatialOps());
+		}
+		return null;
+	}
 
-				} else if (binary instanceof PropertyIsGreaterThanOrEqualToInfo) {
+	private String toLogic(LogicOpsTypeInfo logicOps) {
+		if (logicOps instanceof UnaryLogicOpTypeInfo) {
+			UnaryLogicOpTypeInfo unary = (UnaryLogicOpTypeInfo) logicOps;
+			if (unary.ifComparisonOps()) {
+				return "NOT " + toComparison(unary.getComparisonOps());
+			} else if (unary.ifLogicOps()) {
+				return "NOT " + toLogic(unary.getLogicOps());
+			} else if (unary.ifSpatialOps()) {
+				return "NOT " + toSpatial(unary.getSpatialOps());
+			}
 
-				} else if (binary instanceof PropertyIsLessThanInfo) {
-
-				} else if (binary instanceof PropertyIsLessThanOrEqualToInfo) {
-
-				} else if (binary instanceof PropertyIsNotEqualToInfo) {
-
+		} else if (logicOps instanceof BinaryLogicOpTypeInfo) {
+			BinaryLogicOpTypeInfo binary = (BinaryLogicOpTypeInfo) logicOps;
+			String[] expressions = new String[2];
+			for (int i = 0; i < 2; i++) {
+				if (binary.getChoiceList().get(i).ifComparisonOps()) {
+					expressions[i] = toComparison(binary.getChoiceList().get(i).getComparisonOps());
+				} else if (binary.getChoiceList().get(i).ifLogicOps()) {
+					expressions[i] = toLogic(binary.getChoiceList().get(i).getLogicOps());
+				} else if (binary.getChoiceList().get(i).ifSpatialOps()) {
+					expressions[i] = toSpatial(binary.getChoiceList().get(i).getSpatialOps());
 				}
 			}
-		} else if (filter.ifFeatureIdList()) {
+			if (binary instanceof OrInfo) {
+				return "(" + expressions[0] + ") OR (" + expressions[1] + ")";
+			} else if (binary instanceof AndInfo) {
+				return "(" + expressions[0] + ") AND (" + expressions[1] + ")";
+			}
+		}
+		return null;
+	}
 
-		} else if (filter.ifLogicOps()) {
+	private String toSpatial(SpatialOpsTypeInfo spatialOps) {
+		if (spatialOps instanceof BBOXTypeInfo) {
+			BBOXTypeInfo bbox = (BBOXTypeInfo) spatialOps;
+			String propertyName = bbox.getPropertyName().getValue();
+			String coordinates = null;
+			if (bbox.getBox().ifCoordinates()) {
+				String cs = bbox.getBox().getCoordinates().getCs();
+				String ts = bbox.getBox().getCoordinates().getTs();
+				String ds = bbox.getBox().getCoordinates().getDecimal();
+				coordinates = bbox.getBox().getCoordinates().getString().trim().replace(ds, "ds").replace(ts, "ts")
+						.replace(cs, "cs").replace("ds", ".").replace("ts", ",").replace("cs", ",");
+			} else {
+				for (CoordTypeInfo coord : bbox.getBox().getCoordList()) {
+					coordinates += coord.getX() + "," + coord.getY() + (coordinates == null ? "," : "");
+				}
+			}
+			return "BBOX (" + propertyName + "," + coordinates + ")";
+		} else if (spatialOps instanceof BinarySpatialOpTypeInfo) {
+			BinarySpatialOpTypeInfo binary = (BinarySpatialOpTypeInfo) spatialOps;
+			String propertyName = binary.getPropertyName().getValue();
+			if (binary.ifGeometry()) {
+				Geometry geometry = null;
+				WKTWriter writer = new WKTWriter();
+				GeometryFactory factory = new GeometryFactory();
+				AbstractGeometryInfo geom = binary.getGeometry();
+				geometry = toGeometry(factory, geom);
+				String wkt = writer.write(geometry);
+				if (binary instanceof ContainsInfo) {
+					return "CONTAINS(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof CrossesInfo) {
+					return "CROSSES(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof DisjointInfo) {
+					return "DISJOINT(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof EqualsInfo) {
+					return "EQUALS(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof IntersectsInfo) {
+					return "INTERSECTS(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof OverlapsInfo) {
+					return "OVERLAPS(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof TouchesInfo) {
+					return "TOUCHES(" + propertyName + "," + wkt + ")";
+				} else if (binary instanceof WithinInfo) {
+					return "WITHIN(" + propertyName + "," + wkt + ")";
+				}
+			} else if (spatialOps instanceof DistanceBufferTypeInfo) {
+				DistanceBufferTypeInfo distanceBuffer = (DistanceBufferTypeInfo) spatialOps;
+				AbstractGeometryInfo geom = distanceBuffer.getGeometry();
+				GeometryFactory factory = new GeometryFactory();
+				Geometry geometry = toGeometry(factory, geom);
+				WKTWriter writer = new WKTWriter();
+				String wkt = writer.write(geometry);
+				String units = distanceBuffer.getDistance().getUnits();
+				String distance = distanceBuffer.getDistance().getValue();
+				if (distanceBuffer instanceof DWithinInfo) {
+					return "DWITHIN(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
+				} else if (distanceBuffer instanceof BeyondInfo) {
+					return "BEYOND(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
+				}
+			}
+		}
+		return null;
+	}
 
-		} else if (filter.ifSpatialOps()) {
+	private Geometry toGeometry(GeometryFactory factory, AbstractGeometryInfo geom) {
+		Geometry geometry = null;
+		if (geom instanceof AbstractGeometryCollectionInfo) {
+			AbstractGeometryCollectionInfo geomCollection = (AbstractGeometryCollectionInfo) geom;
+			List<GeometryMemberInfo> members = geomCollection.getGeometryMemberList();
+			if (geom instanceof MultiPointInfo) {
+				Point[] points = new Point[members.size()];
+				for (int i = 0; i < members.size(); i++) {
+					points[i] = (Point) toSimpleGeometry(factory, members.get(i).getGeometry());
+				}
+				geometry = factory.createMultiPoint(points);
+			} else if (geom instanceof MultiLineStringInfo) {
+				LineString[] lines = new LineString[members.size()];
+				for (int i = 0; i < members.size(); i++) {
+					lines[i] = (LineString) toSimpleGeometry(factory, members.get(i).getGeometry());
+				}
+				geometry = factory.createMultiLineString(lines);
+			} else if (geom instanceof MultiPolygonInfo) {
+				Polygon[] polygons = new Polygon[members.size()];
+				for (int i = 0; i < members.size(); i++) {
+					polygons[i] = (Polygon) toSimpleGeometry(factory, members.get(i).getGeometry());
+				}
+				geometry = factory.createMultiPolygon(polygons);
+			} else if (geom instanceof MultiGeometryInfo) {
+				Geometry[] geometries = new Geometry[members.size()];
+				for (int i = 0; i < members.size(); i++) {
+					geometries[i] = toSimpleGeometry(factory, members.get(i).getGeometry());
+				}
+				geometry = factory.createGeometryCollection(geometries);
+			}
+		} else {
+			geometry = toSimpleGeometry(factory, geom);
+		}
+		return geometry;
+	}
 
+	private Geometry toSimpleGeometry(GeometryFactory factory, AbstractGeometryInfo geom) {
+		Geometry geometry = null;
+		if (geom instanceof PointTypeInfo) {
+			PointTypeInfo point = (PointTypeInfo) geom;
+			if (point.ifCoord()) {
+				geometry = factory.createPoint(getCoordinates(Collections.singletonList(point.getCoord()))[0]);
+			} else if (point.ifCoordinates()) {
+				geometry = factory.createPoint(getCoordinates(point.getCoordinates())[0]);
+			}
+		} else if (geom instanceof LineStringTypeInfo) {
+			LineStringTypeInfo linestring = (LineStringTypeInfo) geom;
+			if (linestring.ifCoordList()) {
+				geometry = factory.createLineString(getCoordinates(linestring.getCoordList()));
+			} else if (linestring.ifCoordinates()) {
+				geometry = factory.createLineString(getCoordinates(linestring.getCoordinates()));
+			}
+		} else if (geom instanceof PolygonTypeInfo) {
+			PolygonTypeInfo polygon = (PolygonTypeInfo) geom;
+			OuterBoundaryIsInfo outer = polygon.getOuterBoundaryIs();
+			LinearRing shell = toLinearRing(factory, outer.getLinearRing());
+			LinearRing[] holes = new LinearRing[polygon.getInnerBoundaryIList().size()];
+			int i = 0;
+			for (InnerBoundaryIsInfo inner : polygon.getInnerBoundaryIList()) {
+				holes[i++] = toLinearRing(factory, inner.getLinearRing());
+			}
+			geometry = factory.createPolygon(shell, holes);
+		}
+		return geometry;
+	}
+
+	private LinearRing toLinearRing(GeometryFactory factory, LinearRingTypeInfo linearRing) {
+		LinearRing ring = null;
+		if (linearRing.ifCoordList()) {
+			ring = factory.createLinearRing(getCoordinates(linearRing.getCoordList()));
+		} else if (linearRing.ifCoordinates()) {
+			ring = factory.createLinearRing(getCoordinates(linearRing.getCoordinates()));
+		}
+		return ring;
+	}
+
+	private Coordinate[] getCoordinates(List<CoordTypeInfo> coords) {
+		Coordinate[] result = new Coordinate[coords.size()];
+		int i = 0;
+		for (CoordTypeInfo coordinate : coords) {
+			result[i++] = new Coordinate(coordinate.getX().doubleValue(), coordinate.getY().doubleValue());
+		}
+		return result;
+	}
+
+	private Coordinate[] getCoordinates(CoordinatesTypeInfo coords) {
+		String[] coordinates = coords.getString().split(
+				Pattern.quote(coords.getCs()) + "|" + Pattern.quote(coords.getTs()));
+		Coordinate[] result = new Coordinate[coordinates.length / 2];
+		for (int i = 0; i < coordinates.length; i += 2) {
+			double x = Double.parseDouble(coordinates[i].replace(coords.getDecimal(), "."));
+			double y = Double.parseDouble(coordinates[i + 1].replace(coords.getDecimal(), "."));
+			result[i / 2] = new Coordinate(x, y);
+		}
+		return result;
+	}
+
+	private String toFeatureIds(List<FeatureIdTypeInfo> featureIds) {
+		StringBuilder stringBuilder = new StringBuilder("IN (");
+		for (Iterator<FeatureIdTypeInfo> it = featureIds.iterator(); it.hasNext();) {
+			stringBuilder.append("'").append(it.next().getFid()).append("'");
+			stringBuilder.append(it.hasNext() ? "," : ")");
+		}
+		return stringBuilder.toString();
+	}
+
+	private String toComparison(ComparisonOpsTypeInfo coOps) {
+		if (coOps instanceof BinaryComparisonOpTypeInfo) {
+			BinaryComparisonOpTypeInfo binary = (BinaryComparisonOpTypeInfo) coOps;
+			String propertyName = binary.getExpressionList().get(0).getValue();
+			String propertyValue = binary.getExpressionList().get(1).getValue();
+			if (binary instanceof PropertyIsEqualToInfo) {
+				return propertyName + " = " + propertyValue;
+			} else if (binary instanceof PropertyIsGreaterThanInfo) {
+				return propertyName + " > " + propertyValue;
+			} else if (binary instanceof PropertyIsGreaterThanOrEqualToInfo) {
+				return propertyName + " >= " + propertyValue;
+			} else if (binary instanceof PropertyIsLessThanInfo) {
+				return propertyName + " < " + propertyValue;
+			} else if (binary instanceof PropertyIsLessThanOrEqualToInfo) {
+				return propertyName + " <= " + propertyValue;
+			} else if (binary instanceof PropertyIsNotEqualToInfo) {
+				return propertyName + " != " + propertyValue;
+			}
+		} else {
+			if (coOps instanceof PropertyIsBetweenTypeInfo) {
+				PropertyIsBetweenTypeInfo isBetween = (PropertyIsBetweenTypeInfo) coOps;
+				String lower = isBetween.getLowerBoundary().getExpression().getValue();
+				String upper = isBetween.getUpperBoundary().getExpression().getValue();
+				String propertyName = isBetween.getExpression().getValue();
+				return propertyName + " BETWEEN " + lower + " AND " + upper;
+			} else if (coOps instanceof PropertyIsLikeTypeInfo) {
+				PropertyIsLikeTypeInfo isLike = (PropertyIsLikeTypeInfo) coOps;
+				String propertyName = isLike.getPropertyName().getValue();
+				return propertyName + " LIKE '" + isLike.getLiteral().getValue() + "'";
+			} else if (coOps instanceof PropertyIsNullTypeInfo) {
+				PropertyIsNullTypeInfo isNull = (PropertyIsNullTypeInfo) coOps;
+				if (isNull.ifLiteral()) {
+					String literal = isNull.getLiteral().getValue();
+					return "'" + literal + "' IS NULL ";
+				} else {
+					String propertyName = isNull.getPropertyName().getValue();
+					return propertyName + " IS NULL ";
+				}
+			}
+		}
+		return null;
+	}
+
+	private Map<String, String> getLiteralMap(List<CssParameterInfo> css) {
+		HashMap<String, String> result = new HashMap<String, String>();
+		if (css != null) {
+			for (CssParameterInfo cssParameter : css) {
+				if (cssParameter.getValue() != null) {
+					result.put(cssParameter.getName(), cssParameter.getValue());
+				} else if (cssParameter.getExpressionList().size() > 0) {
+					ExpressionInfo expression = cssParameter.getExpressionList().get(0);
+					if (expression instanceof LiteralTypeInfo) {
+						result.put(cssParameter.getName(), expression.getValue());
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private String getParameterValue(ParameterValueTypeInfo parameter) {
+		if (parameter.getValue() != null) {
+			return parameter.getValue();
+		} else if (parameter.getExpressionList().size() > 0) {
+			ExpressionInfo expression = parameter.getExpressionList().get(0);
+			if (expression instanceof LiteralTypeInfo) {
+				return expression.getValue();
+			}
 		}
 		return null;
 	}

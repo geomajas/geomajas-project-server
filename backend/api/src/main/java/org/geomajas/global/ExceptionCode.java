@@ -150,4 +150,8 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int PARAMETER_INVALID_VALUE = 77;
+	/**
+	 * @since 1.9.0
+	 */
+	int INVALID_SLD = 78;
 }

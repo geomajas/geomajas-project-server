@@ -79,6 +79,8 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 		}
 		if (symbol == null) { // circle with radius 10 by default
 			symbol = new SymbolInfo();
+		}
+		if (symbol.getCircle() == null && symbol.getRect() == null && symbol.getImage() == null) {
 			symbol.setCircle(new CircleInfo());
 			symbol.getCircle().setR(10);
 		}

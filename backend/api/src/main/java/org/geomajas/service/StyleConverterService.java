@@ -11,14 +11,14 @@
 
 package org.geomajas.service;
 
-import java.util.List;
-
 import org.geomajas.annotations.Api;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 
 /**
+ * Service that converts SLD styles to {@link NamedStyleInfo} styles.
  * 
  * @author Jan De Moerloose
  * @since 1.10.0
@@ -28,13 +28,15 @@ import org.geomajas.sld.StyledLayerDescriptorInfo;
 public interface StyleConverterService {
 
 	/**
-	 * Converts SLD style info to named style info used by vector rendering.
+	 * Converts SLD (user) style info to named style info used by vector rendering.
 	 * 
 	 * @param styledLayerDescriptorInfo styled layer descriptor style
-	 * @param layerName optional layer name to pick from SLD
-	 * @return list of named styles
-	 * @throws GeomajasException oops
+	 * @param featureInfo feature information for the layer
+	 * @param layerName (optional) NamedLayer name to pick from SLD
+	 * @param styleName (optional) UserStyle name to pick from SLD
+	 * @return named style
+	 * @throws LayerException oops
 	 */
-	List<NamedStyleInfo> extractLayerStyle(StyledLayerDescriptorInfo styledLayerDescriptorInfo, String layerName)
-			throws GeomajasException;
+	NamedStyleInfo convert(StyledLayerDescriptorInfo styledLayerDescriptorInfo, FeatureInfo featureInfo,
+			String layerName, String styleName) throws LayerException;
 }
