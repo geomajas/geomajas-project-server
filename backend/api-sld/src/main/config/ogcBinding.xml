@@ -225,6 +225,8 @@
 		class="org.geomajas.sld.filter.DistanceTypeInfo">
 		<value style="attribute" name="units" get-method="getUnits"
 			set-method="setUnits" />
+		<value style="text" get-method="getValue"
+			set-method="setValue" />
 	</mapping>
 	<mapping abstract="true" type-name="ogc:BinaryLogicOpType"
 		class="org.geomajas.sld.filter.BinaryLogicOpTypeInfo">

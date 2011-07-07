@@ -143,6 +143,7 @@
     <value style="attribute" name="name" get-method="getName" set-method="setName"/>
   </mapping>
   <mapping abstract="true" type-name="sld:ParameterValueType" class="org.geomajas.sld.ParameterValueTypeInfo">
+    <value style="text" get-method="getValue" set-method="setValue"/>
     <collection item-type="org.geomajas.sld.expression.ExpressionInfo" get-method="getExpressionList" set-method="setExpressionList" usage="optional" create-type="java.util.ArrayList"/>
   </mapping>
   <mapping class="org.geomajas.sld.GraphicFillInfo" name="GraphicFill">

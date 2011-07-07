@@ -1,13 +1,5 @@
 <binding xmlns:xlink="http://www.w3.org/1999/xlink" trim-whitespace="true">
   <namespace uri="http://www.w3.org/1999/xlink" prefix="xlink"/>
-  <mapping abstract="true" type-name="xlink:show" class="org.geomajas.sld.xlink.ShowInfo">
-    <format type="org.geomajas.sld.xlink.ShowInfo$ShowInfoInner" enum-value-method="xmlValue"/>
-    <value style="text" get-method="getShow" set-method="setShow"/>
-  </mapping>
-  <mapping abstract="true" type-name="xlink:actuate" class="org.geomajas.sld.xlink.ActuateInfo">
-    <format type="org.geomajas.sld.xlink.ActuateInfo$ActuateInfoInner" enum-value-method="xmlValue"/>
-    <value style="text" get-method="getActuate" set-method="setActuate"/>
-  </mapping>
   <mapping abstract="true" type-name="xlink:simpleLink-AttributeGroup" class="org.geomajas.sld.xlink.SimpleLinkInfo">
     <value style="attribute" name="type" ns="http://www.w3.org/1999/xlink" get-method="getType" set-method="setType" usage="optional"/>
     <structure get-method="getHref" set-method="setHref" usage="optional">
@@ -22,8 +14,8 @@
     <structure get-method="getTitle" set-method="setTitle" usage="optional">
       <value style="attribute" name="title" ns="http://www.w3.org/1999/xlink" get-method="getTitle" set-method="setTitle" usage="optional"/>
     </structure>
-    <structure map-as="xlink:show" get-method="getShow" set-method="setShow" usage="optional"/>
-    <structure map-as="xlink:actuate" get-method="getActuate" set-method="setActuate" usage="optional"/>
+    <value style="attribute" name="show" ns="http://www.w3.org/1999/xlink" enum-value-method="xmlValue" get-method="getShow" set-method="setShow" usage="optional"/>
+    <value style="attribute" name="actuate" ns="http://www.w3.org/1999/xlink" enum-value-method="xmlValue" get-method="getActuate" set-method="setActuate" usage="optional"/>
   </mapping>
   <mapping abstract="true" type-name="xlink:extendedLink-AttributeGroup" class="org.geomajas.sld.xlink.ExtendedLinkInfo">
     <value style="attribute" name="type" ns="http://www.w3.org/1999/xlink" get-method="getType" set-method="setType" usage="optional"/>
@@ -55,8 +47,8 @@
     <structure get-method="getTitle" set-method="setTitle" usage="optional">
       <value style="attribute" name="title" ns="http://www.w3.org/1999/xlink" get-method="getTitle" set-method="setTitle" usage="optional"/>
     </structure>
-    <structure map-as="xlink:show" get-method="getShow" set-method="setShow" usage="optional"/>
-    <structure map-as="xlink:actuate" get-method="getActuate" set-method="setActuate" usage="optional"/>
+     <value style="attribute" name="show" ns="http://www.w3.org/1999/xlink" enum-value-method="xmlValue" get-method="getShow" set-method="setShow" usage="optional"/>
+     <value style="attribute" name="actuate" ns="http://www.w3.org/1999/xlink" enum-value-method="xmlValue" get-method="getActuate" set-method="setActuate" usage="optional"/>
     <structure get-method="getFrom" set-method="setFrom" usage="optional">
       <value style="attribute" name="from" ns="http://www.w3.org/1999/xlink" get-method="getFrom" set-method="setFrom" usage="optional"/>
     </structure>

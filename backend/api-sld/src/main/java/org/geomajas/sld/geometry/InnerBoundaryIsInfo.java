@@ -31,4 +31,17 @@ import org.geomajas.annotations.Api;
 public class InnerBoundaryIsInfo extends GeometryAssociationTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
+	
+	private LinearRingTypeInfo linearRing;
+
+	
+	public LinearRingTypeInfo getLinearRing() {
+		return linearRing;
+	}
+
+	
+	public void setLinearRing(LinearRingTypeInfo linearRing) {
+		this.linearRing = linearRing;
+	}
+
 }

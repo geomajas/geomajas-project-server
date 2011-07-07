@@ -45,6 +45,8 @@ public class ParameterValueTypeInfo implements Serializable {
 	private static final long serialVersionUID = 1100;
 
 	private List<ExpressionInfo> expressionList = new ArrayList<ExpressionInfo>();
+	
+	private String value;
 
 	/**
 	 * Get the list of 'expression' element items.
@@ -63,4 +65,16 @@ public class ParameterValueTypeInfo implements Serializable {
 	public void setExpressionList(List<ExpressionInfo> list) {
 		expressionList = list;
 	}
+
+	
+	public String getValue() {
+		return value;
+	}
+
+	
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	
 }

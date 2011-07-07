@@ -34,6 +34,8 @@ public class DistanceTypeInfo implements Serializable {
 	private static final long serialVersionUID = 1100;
 
 	private String units;
+	
+	private String value;
 
 	/**
 	 * Get the 'units' attribute value.
@@ -52,4 +54,16 @@ public class DistanceTypeInfo implements Serializable {
 	public void setUnits(String units) {
 		this.units = units;
 	}
+
+	
+	public String getValue() {
+		return value;
+	}
+
+	
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	
 }

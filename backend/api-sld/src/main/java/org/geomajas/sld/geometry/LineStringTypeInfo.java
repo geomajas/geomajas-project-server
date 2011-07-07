@@ -45,7 +45,7 @@ import org.geomajas.annotations.Api;
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public class LineStringTypeInfo implements Serializable {
+public class LineStringTypeInfo  extends AbstractGeometryInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 

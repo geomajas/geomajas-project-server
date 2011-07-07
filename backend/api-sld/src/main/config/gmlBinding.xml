@@ -17,21 +17,23 @@
     <structure map-as="gml:GeometryAssociationType"/>
   </mapping>
   <mapping class="org.geomajas.sld.geometry.OuterBoundaryIsInfo" name="outerBoundaryIs">
+    <structure type="org.geomajas.sld.geometry.LinearRingTypeInfo" get-method="getLinearRing" set-method="setLinearRing" usage="optional"/>
     <structure map-as="gml:GeometryAssociationType"/>
   </mapping>
   <mapping class="org.geomajas.sld.geometry.InnerBoundaryIsInfo" name="innerBoundaryIs">
+    <structure type="org.geomajas.sld.geometry.LinearRingTypeInfo" get-method="getLinearRing" set-method="setLinearRing" usage="optional"/>
     <structure map-as="gml:GeometryAssociationType"/>
   </mapping>
-  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryInfo" class="org.geomajas.sld.geometry.MultiGeometryInfo" name="MultiGeometry">
+  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryCollectionInfo" class="org.geomajas.sld.geometry.MultiGeometryInfo" name="MultiGeometry">
     <structure map-as="gml:GeometryCollectionType"/>
   </mapping>
-  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryInfo" class="org.geomajas.sld.geometry.MultiPointInfo" name="MultiPoint">
+  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryCollectionInfo" class="org.geomajas.sld.geometry.MultiPointInfo" name="MultiPoint">
     <structure map-as="gml:GeometryCollectionType"/>
   </mapping>
-  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryInfo" class="org.geomajas.sld.geometry.MultiLineStringInfo" name="MultiLineString">
+  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryCollectionInfo" class="org.geomajas.sld.geometry.MultiLineStringInfo" name="MultiLineString">
     <structure map-as="gml:GeometryCollectionType"/>
   </mapping>
-  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryInfo" class="org.geomajas.sld.geometry.MultiPolygonInfo" name="MultiPolygon">
+  <mapping extends="org.geomajas.sld.geometry.AbstractGeometryCollectionInfo" class="org.geomajas.sld.geometry.MultiPolygonInfo" name="MultiPolygon">
     <structure map-as="gml:GeometryCollectionType"/>
   </mapping>
   <mapping abstract="true" type-name="gml:AssociationAttributeGroup-AttributeGroup" class="org.geomajas.sld.geometry.AssociationAttributeGroupInfo">

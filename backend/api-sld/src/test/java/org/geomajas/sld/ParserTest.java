@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import junit.framework.Assert;
 
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
+import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
@@ -41,13 +42,34 @@ public class ParserTest {
 	}
 
 	@Test
+	public void testCrosses() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/polygon_crosses.xml"), null);
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
+		for (ChoiceInfo choice : sld.getChoiceList()) {
+			if (choice.ifNamedLayer()) {
+				NamedLayerInfo layer = choice.getNamedLayer();
+				for (org.geomajas.sld.NamedLayerInfo.ChoiceInfo choice2 : layer.getChoiceList()) {
+					if (choice2.ifUserStyle()) {
+						UserStyleInfo userStyle = choice2.getUserStyle();
+						FeatureTypeStyleInfo style = userStyle.getFeatureTypeStyleList().get(0);
+						RuleInfo rule = style.getRuleList().get(0);
+						FilterTypeInfo filter = rule.getChoice().getFilter();
+					}
+				}
+			}
+		}
+	}
+
+	@Test
 	public void testDtoToGeotools() throws JiBXException, IOException, SAXException, ParserConfigurationException,
 			InterruptedException {
 		// read dto
 		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
 		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
-		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) uctx.unmarshalDocument(
-				getClass().getResourceAsStream("samples/example-sld.xml"), null);
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) uctx.unmarshalDocument(getClass()
+				.getResourceAsStream("samples/example-sld.xml"), null);
 
 		// pipe to geotools parser
 		StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
@@ -76,7 +98,8 @@ public class ParserTest {
 
 		private StyledLayerDescriptorInfo sld;
 
-		public Marshaller(CountDownLatch countDown, IMarshallingContext marshallingContext, StyledLayerDescriptorInfo sld) {
+		public Marshaller(CountDownLatch countDown, IMarshallingContext marshallingContext,
+				StyledLayerDescriptorInfo sld) {
 			this.countDown = countDown;
 			this.marshallingContext = marshallingContext;
 			this.sld = sld;

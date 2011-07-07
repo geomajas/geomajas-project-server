@@ -39,68 +39,27 @@ import org.geomajas.annotations.Api;
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public class ShowInfo implements Serializable {
+public enum ShowInfo implements Serializable {
+	NEW("new"), REPLACE("replace"), EMBED("embed"), OTHER("other"), NONE("none");
 
 	private static final long serialVersionUID = 1100;
 
-	private ShowInfoInner show;
+	private final String value;
 
-	/**
-	 * Get the 'show' attribute value.
-	 * 
-	 * @return value
-	 */
-	public ShowInfoInner getShow() {
-		return show;
+	private ShowInfo(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Set the 'show' attribute value.
-	 * 
-	 * @param show
-	 */
-	public void setShow(ShowInfoInner show) {
-		this.show = show;
+	public String xmlValue() {
+		return value;
 	}
 
-	/**
-	 * Schema fragment(s) for this class:...
-	 * 
-	 * <pre>
-	 * &lt;xs:simpleType
- * xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	 *   &lt;xs:restriction base="xs:string">
-	 *     &lt;xs:enumeration value="new"/>
-	 *     &lt;xs:enumeration value="replace"/>
-	 *     &lt;xs:enumeration value="embed"/>
-	 *     &lt;xs:enumeration value="other"/>
-	 *     &lt;xs:enumeration value="none"/>
-	 *   &lt;/xs:restriction>
-	 * &lt;/xs:simpleType>
-	 * </pre>
-	 */
-	public static enum ShowInfoInner implements Serializable {
-		NEW("new"), REPLACE("replace"), EMBED("embed"), OTHER("other"), NONE("none");
-
-		private static final long serialVersionUID = 1100;
-
-		private final String value;
-
-		private ShowInfoInner(String value) {
-			this.value = value;
-		}
-
-		public String xmlValue() {
-			return value;
-		}
-
-		public static ShowInfoInner convert(String value) {
-			for (ShowInfoInner inst : values()) {
-				if (inst.xmlValue().equals(value)) {
-					return inst;
-				}
+	public static ShowInfo convert(String value) {
+		for (ShowInfo inst : values()) {
+			if (inst.xmlValue().equals(value)) {
+				return inst;
 			}
-			return null;
 		}
+		return null;
 	}
 }

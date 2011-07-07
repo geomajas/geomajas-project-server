@@ -33,72 +33,32 @@ import org.geomajas.annotations.Api;
  *   &lt;/xs:simpleType>
  * &lt;/xs:attribute>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public class ActuateInfo implements Serializable {
+public enum ActuateInfo implements Serializable {
+	ON_LOAD("onLoad"), ON_REQUEST("onRequest"), OTHER("other"), NONE("none");
 
 	private static final long serialVersionUID = 1100;
 
-	private ActuateInfoInner actuate;
+	private final String value;
 
-	/**
-	 * Get the 'actuate' attribute value.
-	 * 
-	 * @return value
-	 */
-	public ActuateInfoInner getActuate() {
-		return actuate;
+	private ActuateInfo(String value) {
+		this.value = value;
 	}
 
-	/**
-	 * Set the 'actuate' attribute value.
-	 * 
-	 * @param actuate
-	 */
-	public void setActuate(ActuateInfoInner actuate) {
-		this.actuate = actuate;
+	public String xmlValue() {
+		return value;
 	}
 
-	/**
-	 * Schema fragment(s) for this class:...
-	 * 
-	 * <pre>
-	 * &lt;xs:simpleType
- * xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	 *   &lt;xs:restriction base="xs:string">
-	 *     &lt;xs:enumeration value="onLoad"/>
-	 *     &lt;xs:enumeration value="onRequest"/>
-	 *     &lt;xs:enumeration value="other"/>
-	 *     &lt;xs:enumeration value="none"/>
-	 *   &lt;/xs:restriction>
-	 * &lt;/xs:simpleType>
-	 * </pre>
-	 */
-	public static enum ActuateInfoInner implements Serializable {
-		ON_LOAD("onLoad"), ON_REQUEST("onRequest"), OTHER("other"), NONE("none");
-
-		private static final long serialVersionUID = 1100;
-
-		private final String value;
-
-		private ActuateInfoInner(String value) {
-			this.value = value;
-		}
-
-		public String xmlValue() {
-			return value;
-		}
-
-		public static ActuateInfoInner convert(String value) {
-			for (ActuateInfoInner inst : values()) {
-				if (inst.xmlValue().equals(value)) {
-					return inst;
-				}
+	public static ActuateInfo convert(String value) {
+		for (ActuateInfo inst : values()) {
+			if (inst.xmlValue().equals(value)) {
+				return inst;
 			}
-			return null;
 		}
+		return null;
 	}
 }

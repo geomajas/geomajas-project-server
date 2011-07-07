@@ -28,7 +28,7 @@ import org.geomajas.annotations.Api;
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public class MultiPointInfo extends GeometryCollectionTypeInfo implements Serializable {
+public class MultiPointInfo extends AbstractGeometryCollectionInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 }
