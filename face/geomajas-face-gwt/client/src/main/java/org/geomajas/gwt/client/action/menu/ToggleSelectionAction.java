@@ -149,7 +149,7 @@ public class ToggleSelectionAction extends MenuAction {
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<CommandResponse>() {
 			public void execute(CommandResponse commandResponse) {
 				if (commandResponse instanceof SearchByLocationResponse) {
 					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
@@ -208,17 +208,31 @@ public class ToggleSelectionAction extends MenuAction {
 	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
 			String selectionId) {
 		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
 		for (VectorLayer vectorLayer : layers) {
-			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
-				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
-						orgFeature, vectorLayer);
-				vectorLayer.getFeatureStore().addFeature(feature);
-				if (vectorLayer.isFeatureSelected(feature.getId()) || feature.getId().equals(selectionId)) {
-					vectorLayer.deselectFeature(feature);
-				} else {
-					vectorLayer.selectFeature(feature);
+			if (isSelectionTargetLayer(vectorLayer, selectedLayer)) {
+				for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
+					org.geomajas.gwt.client.map.feature.Feature feature = new
+						org.geomajas.gwt.client.map.feature.Feature(orgFeature, vectorLayer);
+					vectorLayer.getFeatureStore().addFeature(feature);
+					if (vectorLayer.isFeatureSelected(feature.getId()) || feature.getId().equals(selectionId)) {
+						vectorLayer.deselectFeature(feature);
+					} else {
+						vectorLayer.selectFeature(feature);
+					}
 				}
 			}
+		}
+	}
+
+	private boolean isSelectionTargetLayer(VectorLayer targetLayer, Layer<?> selectedLayer) {
+		if (!targetLayer.isShowing()) {
+			return false;
+		} else {
+			if (priorityToSelectedLayer && selectedLayer != null) {
+				return (selectedLayer.equals(targetLayer));
+			}
+			return true;
 		}
 	}
 

@@ -226,9 +226,8 @@ public class SelectionController extends AbstractRectangleController {
 		request.setRatio(coverageRatio);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-		Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<CommandResponse>() {
 
 			public void execute(CommandResponse commandResponse) {
 				if (commandResponse instanceof SearchByLocationResponse) {
@@ -259,14 +258,26 @@ public class SelectionController extends AbstractRectangleController {
 
 	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures) {
 		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
 		for (VectorLayer vectorLayer : layers) {
-			if (vectorLayer.isShowing()) {
+			if (isSelectionTargetLayer(vectorLayer, selectedLayer)) {
 				for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 					Feature feature = new Feature(orgFeature, vectorLayer);
 					vectorLayer.getFeatureStore().addFeature(feature);
 					vectorLayer.selectFeature(feature);
 				}
 			}
+		}
+	}
+
+	private boolean isSelectionTargetLayer(VectorLayer targetLayer, Layer<?> selectedLayer) {
+		if (!targetLayer.isShowing()) {
+			return false;
+		} else {
+			if (priorityToSelectedLayer && selectedLayer != null) {
+				return (selectedLayer.equals(targetLayer));
+			}
+			return true;
 		}
 	}
 }
