@@ -39,7 +39,7 @@ import com.smartgwt.client.widgets.IButton;
  * 
  * @author Oliver May
  * @author Kristof Heirwegh
- *
+ * 
  */
 public abstract class AbstractThemeWidget extends Canvas implements MapViewChangedHandler, LayerChangedHandler {
 
@@ -50,7 +50,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	protected ThemesInfo themeInfo;
 
 	protected ViewConfigItem activeViewConfig;
-	
+
 	protected boolean themeChange;
 
 	protected List<ViewConfigItem> viewConfigItems = new ArrayList<AbstractThemeWidget.ViewConfigItem>();
@@ -83,19 +83,21 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 
 	protected RangeConfig getRangeConfigForCurrentScale(ViewConfig viewConfig, double scale) {
 		for (RangeConfig config : viewConfig.getRangeConfigs()) {
-			//FIXME: We convert pixelperunit, but this should be done elsewhere.
+			// FIXME: We convert pixelperunit, but this should be done
+			// elsewhere.
 			if (config.getMaximumScale().getPixelPerUnit() == 0) {
-				config.getMaximumScale().setPixelPerUnit(config.getMaximumScale().getNumerator() / 
-						(config.getMaximumScale().getDenominator() * mapWidget.getPixelPerUnit()));
+				config.getMaximumScale().setPixelPerUnit(
+						config.getMaximumScale().getNumerator()
+								/ (config.getMaximumScale().getDenominator() * mapWidget.getPixelPerUnit()));
 			}
 			if (config.getMinimumScale().getPixelPerUnit() == 0) {
-				config.getMinimumScale().setPixelPerUnit(config.getMinimumScale().getNumerator() / 
-						(config.getMinimumScale().getDenominator() * mapWidget.getPixelPerUnit()));
+				config.getMinimumScale().setPixelPerUnit(
+						config.getMinimumScale().getNumerator()
+								/ (config.getMinimumScale().getDenominator() * mapWidget.getPixelPerUnit()));
 			}
 			double scaleMax = config.getMaximumScale().getPixelPerUnit();
 			double scaleMin = config.getMinimumScale().getPixelPerUnit();
-			if (scale <= scaleMax &&
-					scale >= scaleMin) {
+			if (scale <= scaleMax && scale >= scaleMin) {
 				return config;
 			}
 		}
@@ -119,15 +121,18 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 
 	protected void renderViewConfig(ViewConfig viewConfig) {
 		themeChange = true;
-		RangeConfig config = getRangeConfigForCurrentScale(viewConfig, 
-				mapWidget.getMapModel().getMapView().getCurrentScale());
-		
+		RangeConfig config = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel().getMapView()
+				.getCurrentScale());
+
 		for (LayerConfig layerConfig : config.getLayerConfigs()) {
 			Layer<?> layer = mapWidget.getMapModel().getLayer(layerConfig.getLayer().getId());
-			
-			layer.setVisible(layerConfig.isVisible());
-			if (layer instanceof RasterLayer) {
-				((RasterLayer) layer).setOpacity(layerConfig.getTransparency());
+			if (layer != null) {
+				layer.setVisible(layerConfig.isVisible());
+				if (layer instanceof RasterLayer) {
+					((RasterLayer) layer).setOpacity(layerConfig.getTransparency());
+				}
+			} else {
+				GWT.log("ThemeWidget: could not find layer: " + layerConfig.getLayer().getId());
 			}
 		}
 		// LayerShownEvents are run async, we need to deactivate after these.
@@ -135,6 +140,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 			public void onSuccess() {
 				themeChange = false;
 			}
+
 			public void onFailure(Throwable reason) {
 			}
 		});
@@ -143,7 +149,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	// ----------------------------------------------------------
 	// -- MapViewChangedHandler --
 	// ----------------------------------------------------------
-	
+
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (null != activeViewConfig && !event.isSameScaleLevel()) {
 			renderViewConfig(activeViewConfig.getViewConfig());
@@ -153,7 +159,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	// ----------------------------------------------------------
 	// -- LayerChangedHandler --
 	// ----------------------------------------------------------
-	
+
 	public void onVisibleChange(LayerShownEvent event) {
 		if (!themeChange && getActiveViewConfig() != null && !event.isScaleChange()) {
 			activateViewConfig(null);
@@ -166,8 +172,9 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 
 	/**
 	 * Model for Viewconfig.
+	 * 
 	 * @author Oliver May
-	 *
+	 * 
 	 */
 	protected static class ViewConfigItem {
 		protected ViewConfig viewConfig;
