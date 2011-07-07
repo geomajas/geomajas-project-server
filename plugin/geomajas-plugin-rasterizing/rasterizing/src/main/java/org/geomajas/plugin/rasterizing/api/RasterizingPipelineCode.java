@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.rasterizing.api;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * Codes for the rasterizing pipeline.

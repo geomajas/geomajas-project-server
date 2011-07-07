@@ -12,8 +12,8 @@ package org.geomajas.plugin.rasterizing.api;
 
 import java.io.OutputStream;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 
 /**

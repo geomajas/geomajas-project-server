@@ -13,8 +13,12 @@ package org.geomajas.client;
 
 import org.geomajas.client.gui.SearchPanel;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
+import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
+import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -90,6 +94,22 @@ public class Application implements EntryPoint {
 				GetMapImageAction getMapImage = new GetMapImageAction(map);
 				toolbar.addSeparator();
 				toolbar.addActionButton(getMapImage);
+			}
+		});
+		
+		map.getMapModel().addLayerSelectionHandler(new LayerSelectionHandler() {
+
+			public void onSelectLayer(LayerSelectedEvent event) {
+				for (Layer layer : map.getMapModel().getLayers()) {
+					if(layer.isSelected()) {
+						layer.setVisible(true);
+					} else {
+						layer.setVisible(false);
+					}
+				}
+			}
+
+			public void onDeselectLayer(LayerDeselectedEvent event) {
 			}
 		});
 

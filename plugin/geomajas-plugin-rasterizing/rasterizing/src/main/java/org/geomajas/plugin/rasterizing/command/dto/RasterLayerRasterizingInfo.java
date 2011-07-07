@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.command.dto;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.global.Api;
 
 /**
  * Metadata DTO class that carries extra metadata information to render a raster layer.

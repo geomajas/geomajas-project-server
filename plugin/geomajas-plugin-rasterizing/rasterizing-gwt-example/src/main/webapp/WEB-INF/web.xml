@@ -24,6 +24,7 @@
 			classpath:org/geomajas/spring/geomajasContext.xml
 
 			<!-- application context -->
+		<!--
 			WEB-INF/applicationContext.xml
 			WEB-INF/mapMain.xml
 			WEB-INF/mapOverview.xml
@@ -31,19 +32,16 @@
 			WEB-INF/clientLayerCountries.xml
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
+ 		-->
    
 			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
-		<!--
+ 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml
 			WEB-INF/example/hibernate/layerRoads.xml
 			WEB-INF/example/hibernate/layerOsm.xml
 		-->
         
-		<!--
-			WEB-INF/example/geotools/applicationContext.xml
-			WEB-INF/example/geotools/layerRoads.xml
-			WEB-INF/example/geotools/layerOsm.xml
-		-->
+			WEB-INF/sld-cookbook/*.xml
 		</param-value>
 	</context-param>
 

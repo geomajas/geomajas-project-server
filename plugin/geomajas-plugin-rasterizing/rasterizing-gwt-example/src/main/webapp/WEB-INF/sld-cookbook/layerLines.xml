@@ -1,0 +1,147 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="layerLines" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerLinesInfo" />
+        <property name="url" value="classpath:org/geomajas/context/sld/shapes/sld_cookbook_line.shp"/>
+	</bean>
+
+	<bean name="layerLinesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTILINESTRING"/>
+		<property name="crs" value="EPSG:4326"/>
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180"/>
+				<property name="y" value="-90"/>
+				<property name="maxX" value="180"/>
+				<property name="maxY" value="90"/>
+			</bean>
+		</property>
+		<property name="featureInfo" ref="layerLinesFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="lineAttributeBasedStyleInfo" />
+				<ref bean="lineDashDotStyleInfo" />
+				<ref bean="lineDashedLineStyleInfo" />
+				<ref bean="lineDashSpaceStyleInfo" />
+				<ref bean="lineLabelFollowingLineStyleInfo" />
+				<ref bean="lineWithBorderStyleInfo" />
+				<ref bean="lineWithDefaultLabelStyleInfo" />
+				<ref bean="lineOptimizedLabelStyleInfo" />
+				<ref bean="lineOptimizedStyledLabelStyleInfo" />
+				<ref bean="lineRailRoadStyleInfo" />
+				<ref bean="lineSimpleLineStyleInfo" />
+				<ref bean="lineZoomBasedLineStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+    <bean class="org.geomajas.configuration.FeatureInfo" name="layerLinesFeatureInfo">
+        <property name="dataSourceName" value="sld_cookbook_line"/>
+        <property name="identifier">
+            <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                <property name="label" value="Gid"/>
+                <property name="name" value="gid"/>
+                <property name="type" value="LONG"/>
+            </bean>
+        </property>
+        <property name="geometryType">
+            <bean class="org.geomajas.configuration.GeometryAttributeInfo">
+                <property name="name" value="the_geom"/>
+                <property name="editable" value="false"/>
+            </bean>
+        </property>
+
+        <property name="attributes">
+            <list>
+                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                    <property name="label" value="Name"/>
+                    <property name="name" value="name"/>
+                    <property name="editable" value="true"/>
+                    <property name="identifying" value="true"/>
+                    <property name="type" value="STRING"/>
+                </bean>
+                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                    <property name="label" value="Gid"/>
+                    <property name="name" value="gid"/>
+                    <property name="editable" value="true"/>
+                    <property name="identifying" value="true"/>
+                    <property name="type" value="LONG"/>
+                </bean>
+                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                    <property name="label" value="Type"/>
+                    <property name="name" value="type"/>
+                    <property name="editable" value="true"/>
+                    <property name="identifying" value="true"/>
+                    <property name="type" value="STRING"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineAttributeBasedStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_attributebasedline.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineDashDotStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_dashdot.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineDashedLineStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_dashedline.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineDashSpaceStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_dashspace.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineLabelFollowingLineStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_labelfollowingline.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineWithBorderStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_linewithborder.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineWithDefaultLabelStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_linewithdefaultlabel.sld"/>
+ 	</bean>
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineOptimizedLabelStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_optimizedlabel.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineOptimizedStyledLabelStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_optimizedstyledlabel.sld"/>
+ 	</bean>
+ 	
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineRailRoadStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_railroad.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineSimpleLineStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_simpleline.sld"/>
+ 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="lineZoomBasedLineStyleInfo">
+		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/line_zoombasedline.sld"/>
+ 	</bean>
+
+</beans>

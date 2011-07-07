@@ -12,11 +12,11 @@ package org.geomajas.plugin.rasterizing.command.dto;
 
 import java.util.Map;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.global.Api;
 
 /**
  * Metadata DTO class that carries extra metadata information to render a vector layer.

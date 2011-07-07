@@ -13,7 +13,7 @@ package org.geomajas.plugin.rasterizing.api;
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 import org.geotools.map.MapContext;
 
 /**

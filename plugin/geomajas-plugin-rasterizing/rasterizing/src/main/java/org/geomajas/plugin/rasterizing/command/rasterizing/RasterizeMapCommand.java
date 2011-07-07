@@ -13,9 +13,9 @@ package org.geomajas.plugin.rasterizing.command.rasterizing;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.command.Command;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.rasterizing.api.ImageService;

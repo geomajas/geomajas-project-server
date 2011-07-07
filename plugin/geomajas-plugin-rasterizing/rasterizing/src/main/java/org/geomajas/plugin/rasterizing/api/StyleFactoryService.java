@@ -10,8 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.api;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;

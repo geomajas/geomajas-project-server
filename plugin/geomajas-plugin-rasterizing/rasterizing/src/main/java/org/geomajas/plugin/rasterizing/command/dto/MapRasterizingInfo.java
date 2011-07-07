@@ -13,10 +13,10 @@ package org.geomajas.plugin.rasterizing.command.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
 
 /**
  * Extension of client map to carry extra rendering information.

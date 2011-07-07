@@ -12,8 +12,8 @@ package org.geomajas.plugin.rasterizing.command.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.global.Api;
 
 /**
  * Metadata DTO class that carries sufficient information to render a complete legend.

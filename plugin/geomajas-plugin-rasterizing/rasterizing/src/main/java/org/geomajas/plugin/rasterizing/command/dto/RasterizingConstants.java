@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.command.dto;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotations.Api;
 
 /**
  * 

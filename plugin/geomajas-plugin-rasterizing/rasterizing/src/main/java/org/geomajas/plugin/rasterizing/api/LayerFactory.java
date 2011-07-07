@@ -11,11 +11,11 @@
 
 package org.geomajas.plugin.rasterizing.api;
 
+import org.geomajas.annotations.Api;
+import org.geomajas.annotations.ExpectAlternatives;
+import org.geomajas.annotations.UserImplemented;
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.global.Api;
-import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.UserImplemented;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 

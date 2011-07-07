@@ -20,21 +20,26 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.sld.RasterizingStyleVisitor;
 import org.geomajas.service.FilterService;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
+import org.geotools.styling.SLDParser;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.opengis.filter.Filter;
@@ -70,7 +75,42 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 
 	private StyleBuilder styleBuilder = new StyleBuilder();
 
+	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+
 	public Style createStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
+			throws GeomajasException {
+		// check for sld style
+		if (vectorLayerRasterizingInfo.getStyle().getSldLocation() != null) {
+			try {
+				return createSldStyle(layer, vectorLayerRasterizingInfo);
+			} catch (Exception e) {
+				throw new GeomajasException(e, ExceptionCode.INVALID_SLD, vectorLayerRasterizingInfo.getStyle()
+						.getSldLocation(), layer.getId());
+			}
+		} else {
+			return createNamedStyle(layer, vectorLayerRasterizingInfo);
+		}
+	}
+
+	private Style createSldStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
+			throws Exception {
+		Resource sld = applicationContext.getResource(vectorLayerRasterizingInfo.getStyle().getSldLocation());
+		SLDParser parser = new SLDParser(styleFactory);
+		// external graphics will be resolved with respect to the SLD URL !
+		parser.setInput(sld.getURL());
+		Style[] styles = parser.readXML();
+		for (Style style : styles) {
+			if (style.getName().equals(vectorLayerRasterizingInfo.getStyle().getSldStyleName())) {
+				return style;
+			}
+		}
+		// visit to draw/omit labels/geometries
+		RasterizingStyleVisitor visitor = new RasterizingStyleVisitor(vectorLayerRasterizingInfo);
+		visitor.visit(styles[0]);
+		return (Style) visitor.getCopy();
+	}
+
+	private Style createNamedStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
 			throws GeomajasException {
 		Style style = styleBuilder.createStyle();
 		String typeName = layer.getLayerInfo().getFeatureInfo().getDataSourceName();
@@ -119,7 +159,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		}
 		return style;
 	}
-	
+
 	public Style createStyle(LayerType type, FeatureStyleInfo featureStyleInfo) throws GeomajasException {
 		Style style = styleBuilder.createStyle();
 		Symbolizer symbolizer = createGeometrySymbolizer(type, featureStyleInfo);
@@ -127,7 +167,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		style.featureTypeStyles().add(fts);
 		return style;
 	}
-	
+
 	private List<Rule> createRules(LayerType layerType, Filter filter, FeatureInfo featureInfo,
 			FeatureStyleInfo featureStyle) {
 		String geomName = featureInfo.getGeometryType().getName();
@@ -201,7 +241,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 		}
 		return symbolizer;
 	}
-	
+
 	private TextSymbolizer createTextSymbolizer(LabelStyleInfo labelStyle, LayerType layerType) {
 		Fill fontFill = styleBuilder.createFill(styleBuilder.literalExpression(labelStyle.getFontStyle().getColor()),
 				styleBuilder.literalExpression(labelStyle.getFontStyle().getOpacity()));
@@ -218,13 +258,13 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				styleBuilder.literalExpression(labelStyle.getBackgroundStyle().getFillOpacity()));
 		symbolizer.setHalo(styleBuilder.createHalo(haloFill, 1));
 		// label placement : point at bottom-center of label (same as vectorized)
-		switch(layerType) {
+		switch (layerType) {
 			case MULTIPOINT:
 			case POINT:
 				symbolizer.setLabelPlacement(styleBuilder.createPointPlacement(0.5, 0, 0));
 				break;
 			default:
-				break;			
+				break;
 		}
 		return symbolizer;
 	}

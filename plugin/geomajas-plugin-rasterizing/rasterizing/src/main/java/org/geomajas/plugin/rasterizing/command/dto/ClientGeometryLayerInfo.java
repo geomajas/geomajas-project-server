@@ -13,10 +13,10 @@ package org.geomajas.plugin.rasterizing.command.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotations.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
 import org.geomajas.layer.LayerType;
 
 /**
