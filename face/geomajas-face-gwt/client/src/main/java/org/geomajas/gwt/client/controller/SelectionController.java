@@ -249,7 +249,9 @@ public class SelectionController extends AbstractRectangleController {
 			ids.add(layer.getServerLayerId());
 		} else {
 			for (VectorLayer v : mapWidget.getMapModel().getVectorLayers()) {
-				ids.add(v.getServerLayerId());
+				if (v.isShowing()) {
+					ids.add(v.getServerLayerId());
+				}
 			}
 		}
 		return ids.toArray(new String[0]);
@@ -258,10 +260,12 @@ public class SelectionController extends AbstractRectangleController {
 	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures) {
 		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
 		for (VectorLayer vectorLayer : layers) {
-			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
-				Feature feature = new Feature(orgFeature, vectorLayer);
-				vectorLayer.getFeatureStore().addFeature(feature);
-				vectorLayer.selectFeature(feature);
+			if (vectorLayer.isShowing()) {
+				for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
+					Feature feature = new Feature(orgFeature, vectorLayer);
+					vectorLayer.getFeatureStore().addFeature(feature);
+					vectorLayer.selectFeature(feature);
+				}
 			}
 		}
 	}
