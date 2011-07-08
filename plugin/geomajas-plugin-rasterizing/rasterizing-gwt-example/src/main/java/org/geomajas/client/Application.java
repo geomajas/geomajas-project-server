@@ -94,6 +94,10 @@ public class Application implements EntryPoint {
 				GetMapImageAction getMapImage = new GetMapImageAction(map);
 				toolbar.addSeparator();
 				toolbar.addActionButton(getMapImage);
+				// switch all labels on
+				for (Layer layer : map.getMapModel().getLayers()) {
+					layer.setLabeled(true);
+				}
 			}
 		});
 		
@@ -101,7 +105,7 @@ public class Application implements EntryPoint {
 
 			public void onSelectLayer(LayerSelectedEvent event) {
 				for (Layer layer : map.getMapModel().getLayers()) {
-					if(layer.isSelected()) {
+					if (layer.isSelected()) {
 						layer.setVisible(true);
 					} else {
 						layer.setVisible(false);
