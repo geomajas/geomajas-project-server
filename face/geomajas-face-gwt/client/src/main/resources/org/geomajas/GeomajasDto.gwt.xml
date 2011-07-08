@@ -53,5 +53,23 @@
 		<include name="CacheableObject.java"/>
 		<include name="ExceptionDto.java"/>
 	</source>
-
+	
+	<source path="sld">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="sld/expression">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="sld/filter">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="sld/geometry">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="sld/xlink">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="sld/marshaller">
+		<exclude name="*.java"/>
+	</source>
 </module>
