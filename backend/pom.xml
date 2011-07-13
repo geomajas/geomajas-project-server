@@ -39,8 +39,6 @@
 	</scm>
 
 	<modules>
-		<module>api-annotations</module>
-		<module>api-sld</module>
 		<module>api</module>
 		<module>api-experimental</module>
 		<module>impl</module>
@@ -67,26 +65,18 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-api-annotations</artifactId>
-				<version>${project.version}</version>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-api-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-api-annotations</artifactId>
-				<classifier>sources</classifier>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-api-sld</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-api-sld</artifactId>
-				<classifier>sources</classifier>
-				<version>${project.version}</version>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-sld-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>

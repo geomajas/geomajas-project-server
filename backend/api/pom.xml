@@ -24,22 +24,17 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-sld</artifactId>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-sld-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-sld</artifactId>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-sld-api</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-annotations</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-annotations</artifactId>
-			<classifier>sources</classifier>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-api-annotation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.vividsolutions</groupId>
