@@ -25,6 +25,7 @@
 	<description>Grouping of all Geomajas modules</description>
 
 	<modules>
+		<module>project</module>
 		<module>backend</module>
 		<module>face</module>
 		<module>plugin</module>
