@@ -25,6 +25,8 @@ import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.DOM;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -484,8 +486,7 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | 
-				Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -662,7 +663,8 @@ public class DomHelper {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id element id
+	 * @param id
+	 *            element id
 	 * @return the group object
 	 */
 	public Object getGroupById(String id) {
@@ -677,7 +679,8 @@ public class DomHelper {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id element id
+	 * @param id
+	 *            element id
 	 * @return the name of the element
 	 */
 	public String getNameById(String id) {
@@ -855,8 +858,10 @@ public class DomHelper {
 	/**
 	 * Apply the style.
 	 * 
-	 * @param element DOM element
-	 * @param style style
+	 * @param element
+	 *            DOM element
+	 * @param style
+	 *            style
 	 */
 	public void applyStyle(Element element, Style style) {
 		if (element != null && style != null) {
@@ -924,7 +929,13 @@ public class DomHelper {
 
 	private void applyHtmlStyle(Element element, PictureStyle style) {
 		if (SC.isIE()) {
-			DOM.setStyleAttribute(element, "filter", "alpha(opacity = " + (style.getOpacity() * 100) + ")");
+			com.google.gwt.dom.client.Style s = element.getStyle();
+			String src = DOM.getElementAttribute(element, "src");
+			int opacity = (int)(style.getOpacity()*100);
+			if (src != null && src.length() > 0 && opacity >= 0 && opacity < 100) {
+				s.setProperty("filter", "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src
+						+ "',sizingMethod='scale')  progid:DXImageTransform.Microsoft.Alpha(opacity=" + opacity + ");");
+			}
 		} else {
 			DOM.setStyleAttribute(element, "opacity", Double.toString(style.getOpacity()));
 		}
