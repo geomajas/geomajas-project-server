@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -71,6 +72,9 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 	@Autowired
 	private FilterService filterService;
 
+	// map of read-only styles
+	private ConcurrentHashMap<String, Style> styleMap = new ConcurrentHashMap<String, Style>();
+
 	private final Logger log = LoggerFactory.getLogger(StyleFactoryServiceImpl.class);
 
 	private StyleBuilder styleBuilder = new StyleBuilder();
@@ -94,19 +98,28 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 
 	private Style createSldStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
 			throws Exception {
-		Resource sld = applicationContext.getResource(vectorLayerRasterizingInfo.getStyle().getSldLocation());
-		SLDParser parser = new SLDParser(styleFactory);
-		// external graphics will be resolved with respect to the SLD URL !
-		parser.setInput(sld.getURL());
-		Style[] styles = parser.readXML();
-		for (Style style : styles) {
-			if (style.getName().equals(vectorLayerRasterizingInfo.getStyle().getSldStyleName())) {
-				return style;
+		String location = vectorLayerRasterizingInfo.getStyle().getSldLocation();
+		Style style = styleMap.get(location);
+		if (style == null) {
+			Resource sld = applicationContext.getResource(location);
+			SLDParser parser = new SLDParser(styleFactory);
+			// external graphics will be resolved with respect to the SLD URL !
+			parser.setInput(sld.getURL());
+			Style[] styles = parser.readXML();
+			for (Style s : styles) {
+				if (s.getName().equals(vectorLayerRasterizingInfo.getStyle().getSldStyleName())) {
+					style = s;
+					break;
+				}
 			}
+			if (style == null) {
+				style = styles[0];
+			}
+			styleMap.put(location, style);
 		}
 		// visit to draw/omit labels/geometries
 		RasterizingStyleVisitor visitor = new RasterizingStyleVisitor(vectorLayerRasterizingInfo);
-		visitor.visit(styles[0]);
+		visitor.visit(style);
 		return (Style) visitor.getCopy();
 	}
 
