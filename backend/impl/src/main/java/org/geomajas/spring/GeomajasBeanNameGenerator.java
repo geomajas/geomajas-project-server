@@ -127,7 +127,9 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 
 	private boolean useInterfaceForBeanName(Class interfaceClass) {
 		return !interfaceClass.equals(Command.class) &&
-				!interfaceClass.isAnnotationPresent(ExpectAlternatives.class);
+				!interfaceClass.isAnnotationPresent(ExpectAlternatives.class) &&
+				// backwards compatible !
+				!interfaceClass.isAnnotationPresent(org.geomajas.global.ExpectAlternatives.class);
 	}
 
 	private boolean isCobertura(Class interfaceClass) {

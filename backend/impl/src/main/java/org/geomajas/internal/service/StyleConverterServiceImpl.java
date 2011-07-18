@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -25,6 +26,8 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.ImageInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.LayerException;
@@ -120,13 +123,12 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	public NamedStyleInfo convert(StyledLayerDescriptorInfo styledLayerDescriptorInfo, FeatureInfo featureInfo,
 			String layerName, String styleName) throws LayerException {
 		NamedLayerInfo namedLayerInfo = null;
-		List<NamedStyleInfo> namedStyleInfos = new ArrayList<NamedStyleInfo>();
 		// find first named layer or find by name
 		for (StyledLayerDescriptorInfo.ChoiceInfo choice : styledLayerDescriptorInfo.getChoiceList()) {
 			// we only support named layers, pick the right name or the first one
 			if (choice.ifNamedLayer()) {
 				if (layerName != null) {
-					if (choice.getNamedLayer().getName().getName().equals(layerName)) {
+					if (choice.getNamedLayer().getName().equals(layerName)) {
 						namedLayerInfo = choice.getNamedLayer();
 						break;
 					}
@@ -142,7 +144,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			// we only support user styles, pick the right name or the first
 			if (choice.ifUserStyle()) {
 				if (styleName != null) {
-					if (choice.getUserStyle().getName().getName().equals(layerName)) {
+					if (choice.getUserStyle().getName().equals(layerName)) {
 						namedStyleInfo = convert(choice.getUserStyle(), featureInfo);
 						break;
 					}
@@ -150,6 +152,15 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 					namedStyleInfo = convert(choice.getUserStyle(), featureInfo);
 				}
 			}
+		}
+		if (namedStyleInfo.getName() != null) {
+			namedStyleInfo.setName(namedLayerInfo.getName());
+		}
+		for (FeatureStyleInfo featureStyleInfo : namedStyleInfo.getFeatureStyles()) {
+			if (featureStyleInfo.getName() == null) {
+				featureStyleInfo.setName(namedLayerInfo.getName());
+			}
+			featureStyleInfo.setStyleId(namedStyleInfo.getName() + featureStyleInfo.getIndex());
 		}
 		return namedStyleInfo;
 	}
@@ -192,10 +203,19 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 						labelStyleInfo.setBackgroundStyle(background);
 					}
 				}
+				if (featureStyleInfo.getStrokeColor() == null && featureStyleInfo.getFillColor() != null) {
+					// avoid default stroke by setting invisible
+					featureStyleInfo.setStrokeColor("black");
+					featureStyleInfo.setStrokeOpacity(0);
+					featureStyleInfo.setStrokeWidth(0);
+				}
 				featureStyleInfo.setIndex(styleIndex++);
-				featureStyleInfo.setStyleId(namedStyleInfo.getName() + "-" + featureStyleInfo.getIndex());
+				featureStyleInfo.setName(ruleInfo.getName());
 				featureStyleInfos.add(featureStyleInfo);
 			}
+		}
+		if (userStyle.getName() != null) {
+			namedStyleInfo.setName(userStyle.getName());
 		}
 		namedStyleInfo.setFeatureStyles(featureStyleInfos);
 		namedStyleInfo.setLabelStyle(labelStyleInfo);
@@ -231,6 +251,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 					circle.setR(0.5F * Float.parseFloat(getParameterValue(graphic.getSize())));
 					symbol.setCircle(circle);
 				}
+				convertFill(featureStyleInfo, mark.getFill());
+				convertStroke(featureStyleInfo, mark.getStroke());
 			}
 		}
 		featureStyleInfo.setSymbol(symbol);
@@ -263,20 +285,35 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	}
 
 	private void convertFill(FeatureStyleInfo featureStyleInfo, FillInfo fill) {
-		Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
-		featureStyleInfo.setFillColor(cssMap.get("fill"));
-		if (cssMap.containsKey("fill-opacity")) {
-			featureStyleInfo.setFillOpacity(Float.parseFloat(cssMap.get("fill-opacity")));
+		if (fill != null) {
+			Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
+			if (cssMap.containsKey("fill")) {
+				featureStyleInfo.setFillColor(cssMap.get("fill"));
+			}
+			if (cssMap.containsKey("fill-opacity")) {
+				featureStyleInfo.setFillOpacity(Float.parseFloat(cssMap.get("fill-opacity")));
+			}
+			if (fill.getGraphicFill() != null) {
+				GraphicInfo graphic = fill.getGraphicFill().getGraphic();
+				for (GraphicInfo.ChoiceInfo choice : graphic.getChoiceList()) {
+					if (choice.ifExternalGraphic()) {
+						// can't handle this
+					} else if (choice.ifMark()) {
+						MarkInfo mark = (MarkInfo) choice.getMark();
+						if (mark.getFill() != null) {
+							convertFill(featureStyleInfo, mark.getFill());
+						}
+						if (mark.getStroke() != null) {
+							convertStroke(featureStyleInfo, mark.getStroke());
+						}
+					}
+				}
+			}
 		}
 	}
 
 	private void convertStroke(FeatureStyleInfo featureStyleInfo, StrokeInfo stroke) {
-		if (stroke == null) {
-			// avoid default stroke by setting invisible
-			featureStyleInfo.setStrokeColor("black");
-			featureStyleInfo.setStrokeOpacity(0);
-			featureStyleInfo.setStrokeWidth(0);
-		} else {
+		if (stroke != null) {
 			Map<String, String> cssMap = getLiteralMap(stroke.getCssParameterList());
 			// not supported are "stroke-linejoin", "stroke-linecap", and "stroke-dashoffset"
 			featureStyleInfo.setStrokeColor(cssMap.get("stroke"));
@@ -286,30 +323,32 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			if (cssMap.containsKey("stroke-width")) {
 				featureStyleInfo.setStrokeWidth((int) Float.parseFloat(cssMap.get("stroke-width")));
 			}
-			featureStyleInfo.setDashArray("stroke-dasharray");
+			if (cssMap.containsKey("stroke-dasharray")) {
+				featureStyleInfo.setDashArray(cssMap.get("stroke-dasharray"));
+			}
 		}
 	}
 
 	private String convertFormula(FilterTypeInfo filter, FeatureInfo featureInfo) {
 		if (filter.ifComparisonOps()) {
-			toComparison(filter.getComparisonOps());
+			return toComparison(filter.getComparisonOps(), featureInfo);
 		} else if (filter.ifFeatureIdList()) {
 			return toFeatureIds(filter.getFeatureIdList());
 		} else if (filter.ifLogicOps()) {
-			return toLogic(filter.getLogicOps());
+			return toLogic(filter.getLogicOps(), featureInfo);
 		} else if (filter.ifSpatialOps()) {
 			return toSpatial(filter.getSpatialOps());
 		}
 		return null;
 	}
 
-	private String toLogic(LogicOpsTypeInfo logicOps) {
+	private String toLogic(LogicOpsTypeInfo logicOps, FeatureInfo featureInfo) {
 		if (logicOps instanceof UnaryLogicOpTypeInfo) {
 			UnaryLogicOpTypeInfo unary = (UnaryLogicOpTypeInfo) logicOps;
 			if (unary.ifComparisonOps()) {
-				return "NOT " + toComparison(unary.getComparisonOps());
+				return "NOT " + toComparison(unary.getComparisonOps(), featureInfo);
 			} else if (unary.ifLogicOps()) {
-				return "NOT " + toLogic(unary.getLogicOps());
+				return "NOT " + toLogic(unary.getLogicOps(), featureInfo);
 			} else if (unary.ifSpatialOps()) {
 				return "NOT " + toSpatial(unary.getSpatialOps());
 			}
@@ -319,9 +358,9 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			String[] expressions = new String[2];
 			for (int i = 0; i < 2; i++) {
 				if (binary.getChoiceList().get(i).ifComparisonOps()) {
-					expressions[i] = toComparison(binary.getChoiceList().get(i).getComparisonOps());
+					expressions[i] = toComparison(binary.getChoiceList().get(i).getComparisonOps(), featureInfo);
 				} else if (binary.getChoiceList().get(i).ifLogicOps()) {
-					expressions[i] = toLogic(binary.getChoiceList().get(i).getLogicOps());
+					expressions[i] = toLogic(binary.getChoiceList().get(i).getLogicOps(), featureInfo);
 				} else if (binary.getChoiceList().get(i).ifSpatialOps()) {
 					expressions[i] = toSpatial(binary.getChoiceList().get(i).getSpatialOps());
 				}
@@ -504,11 +543,31 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return stringBuilder.toString();
 	}
 
-	private String toComparison(ComparisonOpsTypeInfo coOps) {
+	private String toComparison(ComparisonOpsTypeInfo coOps, FeatureInfo featureInfo) {
 		if (coOps instanceof BinaryComparisonOpTypeInfo) {
 			BinaryComparisonOpTypeInfo binary = (BinaryComparisonOpTypeInfo) coOps;
 			String propertyName = binary.getExpressionList().get(0).getValue();
 			String propertyValue = binary.getExpressionList().get(1).getValue();
+			PrimitiveType type = PrimitiveType.STRING;
+			for (AttributeInfo attributeInfo : featureInfo.getAttributes()) {
+				if (attributeInfo.getName().equals(propertyName)) {
+					if (attributeInfo instanceof PrimitiveAttributeInfo) {
+						type = ((PrimitiveAttributeInfo) attributeInfo).getType();
+					}
+				}
+			}
+			switch (type) {
+				case BOOLEAN:
+					propertyValue = propertyValue.toUpperCase();
+					break;
+				case DATE:
+				case IMGURL:
+				case STRING:
+				case URL:
+					propertyValue = "'" + propertyValue + "'";
+					break;
+
+			}
 			if (binary instanceof PropertyIsEqualToInfo) {
 				return propertyName + " = " + propertyValue;
 			} else if (binary instanceof PropertyIsGreaterThanInfo) {

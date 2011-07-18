@@ -50,9 +50,14 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="namedStyleInfos">
 			<list>
 				<ref bean="layerBeansPointStyleInfo" />
+				<ref bean="layerBeansPointSldStyleInfo" />
 			</list>
 		</property>
 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerBeansPointSldStyleInfo">
+		<property name="sldLocation" value="classpath:org/geomajas/testdata/sld/point_zoom.sld"/>
+ 	</bean>
 
 	<bean class="org.geomajas.configuration.NamedStyleInfo" id="layerBeansPointStyleInfo">
 		<property name="featureStyles">

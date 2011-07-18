@@ -50,6 +50,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="namedStyleInfos">
 			<list>
 				<ref bean="layerBeansMultiPolygonStyleInfo" />
+				<ref bean="layerBeansMultiPolygonSldStyleInfo" />
 			</list>
 		</property>
 	</bean>
@@ -87,6 +88,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerBeansMultiPolygonSldStyleInfo">
+		<property name="sldLocation" value="classpath:org/geomajas/testdata/sld/polygon_hatchingfill.sld"/>
+ 	</bean>
 
 	<bean name="layerBeansMultiPolygon" class="org.geomajas.layer.bean.BeanLayer">
 		<property name="layerInfo" ref="layerBeansMultiPolygonInfo" />
