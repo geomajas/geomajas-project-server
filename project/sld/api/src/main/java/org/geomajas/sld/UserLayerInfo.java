@@ -48,7 +48,7 @@ public class UserLayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
-	private NameInfo name;
+	private String name;
 
 	private ChoiceInfo choice;
 
@@ -61,7 +61,7 @@ public class UserLayerInfo implements Serializable {
 	 * 
 	 * @return value
 	 */
-	public NameInfo getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -70,7 +70,7 @@ public class UserLayerInfo implements Serializable {
 	 * 
 	 * @param name
 	 */
-	public void setName(NameInfo name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

@@ -53,9 +53,9 @@ public class RuleInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
-	private NameInfo name;
+	private String name;
 
-	private TitleInfo title;
+	private String title;
 
 	private AbstractInfo aAbstract;
 
@@ -74,7 +74,7 @@ public class RuleInfo implements Serializable {
 	 * 
 	 * @return value
 	 */
-	public NameInfo getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -83,7 +83,7 @@ public class RuleInfo implements Serializable {
 	 * 
 	 * @param name
 	 */
-	public void setName(NameInfo name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -92,7 +92,7 @@ public class RuleInfo implements Serializable {
 	 * 
 	 * @return value
 	 */
-	public TitleInfo getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
@@ -101,7 +101,7 @@ public class RuleInfo implements Serializable {
 	 * 
 	 * @param title
 	 */
-	public void setTitle(TitleInfo title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 

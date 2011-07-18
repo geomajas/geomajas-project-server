@@ -34,7 +34,7 @@ public class SldGwtServiceImpl implements SldGwtService {
 		List<StyledLayerDescriptorInfo> slds = sldService.findAll();
 		List<String> result = new ArrayList<String>();
 		for (StyledLayerDescriptorInfo sld : slds) {
-			result.add(sld.getName().getName());
+			result.add(sld.getName());
 		}
 		return result;
 	}

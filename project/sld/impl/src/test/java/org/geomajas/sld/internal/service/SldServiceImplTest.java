@@ -1,19 +1,13 @@
 package org.geomajas.sld.internal.service;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.sld.NameInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geomajas.sld.service.SldException;
-import org.jibx.runtime.BindingDirectory;
-import org.jibx.runtime.IBindingFactory;
-import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.JiBXException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,8 +43,7 @@ public class SldServiceImplTest {
 	@Test
 	public void testSaveOrUpdate() throws SldException, JiBXException {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
-		sld.setName(new NameInfo());
-		sld.getName().setName("test");
+		sld.setName("test");
 		try {
 			sldService.saveOrUpdate(sld);
 			Assert.fail("invalid sld saved");

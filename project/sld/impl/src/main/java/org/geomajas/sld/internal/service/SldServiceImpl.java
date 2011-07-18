@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
-import org.geomajas.sld.NameInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.service.SldException;
 import org.geomajas.sld.service.SldService;
@@ -68,7 +67,7 @@ public class SldServiceImpl implements SldService {
 
 	public StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
 		validate(sld);
-		return allSlds.put(sld.getName().getName(), sld);
+		return allSlds.put(sld.getName(), sld);
 	}
 
 	public boolean remove(String name) throws SldException {
@@ -94,16 +93,11 @@ public class SldServiceImpl implements SldService {
 							Object object = uctx.unmarshalDocument(new FileReader(file));
 							StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
 							String fileName = StringUtils.stripFilenameExtension(file.getName());
-							if (sld.getName() != null) {
-								if (sld.getName().getName() == null) {
-									sld.getName().setName(fileName);
-								}
-							} else {
-								sld.setName(new NameInfo());
-								sld.getName().setName(fileName);
+							if (sld.getName() == null) {
+									sld.setName(fileName);
 							}
 							log.info("added sld " + fileName + " to service");
-							allSlds.put(sld.getName().getName(), sld);
+							allSlds.put(sld.getName(), sld);
 						}
 					}
 				}

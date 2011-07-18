@@ -1,8 +1,8 @@
 <binding xmlns:sld="http://www.opengis.net/sld" xmlns:xlink="http://www.w3.org/1999/xlink" trim-whitespace="true">
   <namespace uri="http://www.opengis.net/sld" default="elements" prefix="sld"/>
   <mapping class="org.geomajas.sld.StyledLayerDescriptorInfo" name="StyledLayerDescriptor">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName" usage="optional"/>
-    <structure type="org.geomajas.sld.TitleInfo" get-method="getTitle" set-method="setTitle" usage="optional"/>
+    <value name="Name" field="name" usage="optional"/>
+    <value name="Title" field="title"  usage="optional"/>
     <structure type="org.geomajas.sld.AbstractInfo" get-method="getAbstract" set-method="setAbstract" usage="optional"/>
     <collection get-method="getChoiceList" set-method="setChoiceList" usage="optional" create-type="java.util.ArrayList">
       <structure type="org.geomajas.sld.StyledLayerDescriptorInfo$ChoiceInfo" ordered="false" choice="true">
@@ -12,17 +12,11 @@
     </collection>
     <value style="attribute" name="version" get-method="getVersion" set-method="setVersion"/>
   </mapping>
-  <mapping class="org.geomajas.sld.NameInfo" name="Name">
-    <value style="text" get-method="getName" set-method="setName"/>
-  </mapping>
-  <mapping class="org.geomajas.sld.TitleInfo" name="Title">
-    <value style="text" get-method="getTitle" set-method="setTitle"/>
-  </mapping>
   <mapping class="org.geomajas.sld.AbstractInfo" name="Abstract">
     <value style="text" get-method="getAbstract" set-method="setAbstract"/>
   </mapping>
   <mapping class="org.geomajas.sld.NamedLayerInfo" name="NamedLayer">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName"/>
+    <value name="Name" field="name" usage="optional"/>
     <structure type="org.geomajas.sld.LayerFeatureConstraintsInfo" get-method="getLayerFeatureConstraints" set-method="setLayerFeatureConstraints" usage="optional"/>
     <collection get-method="getChoiceList" set-method="setChoiceList" usage="optional" create-type="java.util.ArrayList">
       <structure type="org.geomajas.sld.NamedLayerInfo$ChoiceInfo" ordered="false" choice="true">
@@ -32,10 +26,10 @@
     </collection>
   </mapping>
   <mapping class="org.geomajas.sld.NamedStyleInfo" name="NamedStyle">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName"/>
+    <value name="Name" field="name" usage="optional"/>
   </mapping>
   <mapping class="org.geomajas.sld.UserLayerInfo" name="UserLayer">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName" usage="optional"/>
+    <value name="Name" field="name" usage="optional"/>
     <structure get-method="getChoice" set-method="setChoice" usage="optional" ordered="false" choice="true">
       <structure type="org.geomajas.sld.InlineFeatureInfo" test-method="ifInlineFeature" get-method="getInlineFeature" set-method="setInlineFeature" usage="optional"/>
       <structure type="org.geomajas.sld.RemoteOWSInfo" test-method="ifRemoteOWS" get-method="getRemoteOWS" set-method="setRemoteOWS" usage="optional"/>
@@ -67,15 +61,17 @@
     <value style="text" get-method="getFeatureTypeName" set-method="setFeatureTypeName"/>
   </mapping>
   <mapping class="org.geomajas.sld.ExtentInfo" name="Extent">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName"/>
+    <structure name="Name">
+    	<value style="text" get-method="getName" set-method="setName" />
+    </structure>
     <structure type="org.geomajas.sld.ValueInfo" get-method="getValue" set-method="setValue"/>
   </mapping>
   <mapping class="org.geomajas.sld.ValueInfo" name="Value">
     <value style="text" get-method="getValue" set-method="setValue"/>
   </mapping>
   <mapping class="org.geomajas.sld.UserStyleInfo" name="UserStyle">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName" usage="optional"/>
-    <structure type="org.geomajas.sld.TitleInfo" get-method="getTitle" set-method="setTitle" usage="optional"/>
+    <value name="Name" field="name" usage="optional"/>
+    <value name="Title" field="title"  usage="optional"/>
     <structure type="org.geomajas.sld.AbstractInfo" get-method="getAbstract" set-method="setAbstract" usage="optional"/>
     <structure type="org.geomajas.sld.IsDefaultInfo" get-method="getIsDefault" set-method="setIsDefault" usage="optional"/>
     <collection item-type="org.geomajas.sld.FeatureTypeStyleInfo" get-method="getFeatureTypeStyleList" set-method="setFeatureTypeStyleList" create-type="java.util.ArrayList"/>
@@ -84,8 +80,8 @@
     <value style="text" get-method="isIsDefault" set-method="setIsDefault"/>
   </mapping>
   <mapping class="org.geomajas.sld.FeatureTypeStyleInfo" name="FeatureTypeStyle">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName" usage="optional"/>
-    <structure type="org.geomajas.sld.TitleInfo" get-method="getTitle" set-method="setTitle" usage="optional"/>
+    <value name="Name" field="name" usage="optional"/>
+    <value name="Title" field="title"  usage="optional"/>
     <structure type="org.geomajas.sld.AbstractInfo" get-method="getAbstract" set-method="setAbstract" usage="optional"/>
     <structure type="org.geomajas.sld.FeatureTypeNameInfo" get-method="getFeatureTypeName" set-method="setFeatureTypeName" usage="optional"/>
     <collection item-type="org.geomajas.sld.SemanticTypeIdentifierInfo" get-method="getSemanticTypeIdentifierList" set-method="setSemanticTypeIdentifierList" usage="optional" create-type="java.util.ArrayList"/>
@@ -95,8 +91,8 @@
     <value style="text" get-method="getSemanticTypeIdentifier" set-method="setSemanticTypeIdentifier"/>
   </mapping>
   <mapping class="org.geomajas.sld.RuleInfo" name="Rule">
-    <structure type="org.geomajas.sld.NameInfo" get-method="getName" set-method="setName" usage="optional"/>
-    <structure type="org.geomajas.sld.TitleInfo" get-method="getTitle" set-method="setTitle" usage="optional"/>
+    <value name="Name" field="name" usage="optional"/>
+    <value name="Title" field="title"  usage="optional"/>
     <structure type="org.geomajas.sld.AbstractInfo" get-method="getAbstract" set-method="setAbstract" usage="optional"/>
     <structure type="org.geomajas.sld.LegendGraphicInfo" get-method="getLegendGraphic" set-method="setLegendGraphic" usage="optional"/>
     <structure get-method="getChoice" set-method="setChoice" usage="optional" ordered="false" choice="true">

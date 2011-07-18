@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
@@ -36,9 +37,14 @@ public class ParserTest {
 		for (ChoiceInfo choice : sld.getChoiceList()) {
 			if (choice.ifNamedLayer()) {
 				NamedLayerInfo layer = choice.getNamedLayer();
-				Assert.assertEquals("OCEANSEA_1M:Foundation", layer.getName().getName());
+				Assert.assertEquals("OCEANSEA_1M:Foundation", layer.getName());
 			}
 		}
+		IMarshallingContext ctx = bfact.createMarshallingContext();
+		StringWriter sw = new StringWriter();
+		ctx.setOutput(sw);
+		ctx.marshalDocument(sld);
+		System.out.println(sw);
 	}
 
 	@Test
