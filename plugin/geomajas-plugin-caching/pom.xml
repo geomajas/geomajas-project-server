@@ -107,9 +107,10 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
 				<version>1.8.0</version>
-				<scope>test</scope>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 		</dependencies>
