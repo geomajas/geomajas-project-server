@@ -237,8 +237,10 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 *            the visible to set
 	 */
 	public void setVisible(boolean visible) {
-		this.visible = visible;
-		updateShowing(false);
-		handlerManager.fireEvent(new LayerShownEvent(this));
+		if(visible != this.visible) {
+			this.visible = visible;
+			updateShowing(false);
+			handlerManager.fireEvent(new LayerShownEvent(this));
+		}
 	}
 }
