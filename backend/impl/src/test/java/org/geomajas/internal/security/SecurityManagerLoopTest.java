@@ -19,6 +19,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -44,18 +45,21 @@ public class SecurityManagerLoopTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testLooping() {
 		Assert.assertTrue(securityManager.createSecurityContext("TEST"));
 		Assert.assertEquals(2, securityContext.getSecurityServiceResults().size());
 	}
 
 	@Test
+	@DirtiesContext
 	public void testNotAuthenticated() {
 		Assert.assertFalse(securityManager.createSecurityContext("false"));
 		Assert.assertEquals(0, securityContext.getSecurityServiceResults().size());
 	}
 
 	@Test
+	@DirtiesContext
 	public void testSecondOnly() {
 		Assert.assertTrue(securityManager.createSecurityContext("SECOND"));
 		Assert.assertEquals(1, securityContext.getSecurityServiceResults().size());
