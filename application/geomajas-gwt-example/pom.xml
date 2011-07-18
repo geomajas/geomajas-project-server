@@ -108,6 +108,24 @@
 				<scope>import</scope>
 			</dependency>
 			-->
+			<!-- TO BE REMOVED with new caching/rasterizing release (contains bad test dependency)  -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+				<version>1.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+			<!-- TO BE REMOVED with new caching/rasterizing release (contains bad test dependency)  -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-wms-all</artifactId>
+				<version>1.7.1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
