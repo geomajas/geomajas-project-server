@@ -222,7 +222,7 @@ public class ConfigurationDtoPostProcessor {
 				}
 				completeScale(scale, pixPerUnit);
 				// add the resolution for deprecated api support
-				if (map.isResolutionsRelative()) {
+				if (!map.isResolutionsRelative()) {
 					map.getResolutions().add(1. / scale.getPixelPerUnit());
 				} else {
 					map.getResolutions().add(scale.getDenominator() / scale.getNumerator());
