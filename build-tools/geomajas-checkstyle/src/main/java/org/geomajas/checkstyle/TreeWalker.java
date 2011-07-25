@@ -170,8 +170,7 @@ public final class TreeWalker extends AbstractFileSetCheck {
 					.toArray(new String[aLines.size()]));
 			final DetailAST rootAST = TreeWalker.parse(contents);
 			walk(rootAST, contents);
-		}
-		catch (final RecognitionException re) {
+		} catch (final RecognitionException re) {
 			Utils.getExceptionLogger()
 					.debug("RecognitionException occured.", re);
 			getMessageCollector().add(
@@ -183,8 +182,7 @@ public final class TreeWalker extends AbstractFileSetCheck {
 							new String[] {re.getMessage()},
 							getId(),
 							this.getClass(), null));
-		}
-		catch (final TokenStreamRecognitionException tre) {
+		} catch (final TokenStreamRecognitionException tre) {
 			Utils.getExceptionLogger()
 					.debug("TokenStreamRecognitionException occured.", tre);
 			final RecognitionException re = tre.recog;
@@ -209,8 +207,7 @@ public final class TreeWalker extends AbstractFileSetCheck {
 								getId(),
 								this.getClass(), null));
 			}
-		}
-		catch (final TokenStreamException te) {
+		} catch (final TokenStreamException te) {
 			Utils.getExceptionLogger()
 					.debug("TokenStreamException occured.", te);
 			getMessageCollector().add(
@@ -221,8 +218,7 @@ public final class TreeWalker extends AbstractFileSetCheck {
 							new String[] {te.getMessage()},
 							getId(),
 							this.getClass(), null));
-		}
-		catch (final Throwable err) {
+		} catch (final Throwable err) {
 			Utils.getExceptionLogger().debug("Throwable occured.", err);
 			getMessageCollector().add(
 					new LocalizedMessage(
@@ -258,8 +254,7 @@ public final class TreeWalker extends AbstractFileSetCheck {
 						registerCheck(token, aCheck);
 					}
 					// TODO: else log warning
-				}
-				catch (final IllegalArgumentException ex) {
+				} catch (final IllegalArgumentException ex) {
 					throw new CheckstyleException("illegal token \""
 							+ token + "\" in check " + aCheck, ex);
 				}

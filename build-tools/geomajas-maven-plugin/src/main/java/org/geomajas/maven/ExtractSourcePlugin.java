@@ -67,8 +67,7 @@ public class ExtractSourcePlugin extends AbstractMojo {
 			System.out.println("Extract source " + source.getAbsolutePath());
 			System.out.println("Extract dest   " + destination.getAbsolutePath());
 			scanDirectory(source, destination);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			throw new MojoExecutionException("problems while running extract source plugin\n" + ex.getMessage(), ex);
 		}
 	}
@@ -221,7 +220,7 @@ public class ExtractSourcePlugin extends AbstractMojo {
 	 */
 	public void createFile(String declaration, List<String> lines, File destinationDir, String language)
 			throws IOException {
-		if(!destinationDir.isDirectory()) {
+		if (!destinationDir.isDirectory()) {
 			destinationDir.mkdirs();
 		}
 		String filename = declaration;
@@ -234,9 +233,9 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		if (caption.endsWith("-->")) {
 			caption = caption.substring(0, caption.length() - 3).trim();
 		}
-		caption = caption.replace("&","&amp;");
-		caption = caption.replace("<","&lt;");
-		caption = caption.replace(">","&gt;");
+		caption = caption.replace("&", "&amp;");
+		caption = caption.replace("<", "&lt;");
+		caption = caption.replace(">", "&gt;");
 
 		File targetFile = new File(destinationDir, filename + ".xml");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile));

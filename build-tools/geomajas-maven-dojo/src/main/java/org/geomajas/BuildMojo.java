@@ -35,7 +35,7 @@ public class BuildMojo extends CollectMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		super.execute();
 		Artifact dojo = resolve("org.geomajas.dojo", "dojo", getDojoVersion(), "jar", null);
-		DojoBuildEnvironment env = new DojoBuildEnvironment(dojo, getLog(), getArchiverManager(),getLayerName());
+		DojoBuildEnvironment env = new DojoBuildEnvironment(dojo, getLog(), getArchiverManager(), getLayerName());
 		env.installAndClean();
 		resolveModules();
 		for (Module module : getModules()) {

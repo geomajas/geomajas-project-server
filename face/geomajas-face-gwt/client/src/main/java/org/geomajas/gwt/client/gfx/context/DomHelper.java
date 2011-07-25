@@ -25,8 +25,6 @@ import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.DOM;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -115,8 +113,6 @@ public class DomHelper {
 	/**
 	 * Create or update an element in the DOM. The id will be generated.
 	 * 
-	 * @param namespace
-	 *            the name space (HTML or SVG)
 	 * @param parent
 	 *            the parent group
 	 * @param name
@@ -178,6 +174,7 @@ public class DomHelper {
 	 *            group object
 	 * @param tagName
 	 *            the tag name
+	 * @return element for the group
 	 */
 	public Element drawGroup(Object parent, Object object, String tagName) {
 		switch (namespace) {
@@ -249,6 +246,7 @@ public class DomHelper {
 	 *            The original parent group of the element.
 	 * @param targetParent
 	 *            The target parent group for the element.
+	 * @return true when move was successful
 	 */
 	public boolean moveElement(String name, Object sourceParent, Object targetParent) {
 		Element sourceGroup = null;
@@ -486,7 +484,8 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller,
+				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -653,7 +652,7 @@ public class DomHelper {
 	/**
 	 * Returns the group that corresponds with this group object.
 	 * 
-	 * @param object
+	 * @param object group object
 	 * @return the group or null if it does not exist
 	 */
 	public Element getGroup(Object object) {
@@ -694,6 +693,8 @@ public class DomHelper {
 	 *            the name space (HTML, SVG or VML,...)
 	 * @param parent
 	 *            the parent group
+	 * @param group group
+	 * @param type type
 	 * @return the newly created group element or null if creation failed
 	 */
 	protected Element createGroup(String namespace, Object parent, Object group, String type) {
@@ -762,10 +763,10 @@ public class DomHelper {
 	 * @return the newly created element or null if creation failed or the name was null
 	 */
 	protected Element createElement(Object parent, String name, String type, Style style, boolean generateId) {
-		if (name == null) {
+		if (null == name) {
 			return null;
 		}
-		Element parentElement = null;
+		Element parentElement;
 		if (parent == null) {
 			parentElement = getRootElement();
 		} else {
@@ -806,11 +807,9 @@ public class DomHelper {
 					}
 			}
 			parentElement.appendChild(element);
-			if (name != null) {
-				String id = generateId ? DOM.assembleId(parentElement.getId(), name) : name;
-				elementToName.put(id, name);
-				DOM.setElementAttribute(element, "id", id);
-			}
+			String id = generateId ? DOM.assembleId(parentElement.getId(), name) : name;
+			elementToName.put(id, name);
+			DOM.setElementAttribute(element, "id", id);
 			return element;
 		}
 	}
@@ -870,26 +869,23 @@ public class DomHelper {
 					VmlStyleUtil.applyStyle(element, style);
 					break;
 				case SVG:
-					if (style != null) {
-						if (style instanceof ShapeStyle) {
-							applySvgStyle(element, (ShapeStyle) style);
-						} else if (style instanceof FontStyle) {
-							applySvgStyle(element, (FontStyle) style);
-						} else if (style instanceof PictureStyle) {
-							applySvgStyle(element, (PictureStyle) style);
-						}
+					if (style instanceof ShapeStyle) {
+						applySvgStyle(element, (ShapeStyle) style);
+					} else if (style instanceof FontStyle) {
+						applySvgStyle(element, (FontStyle) style);
+					} else if (style instanceof PictureStyle) {
+						applySvgStyle(element, (PictureStyle) style);
 					}
 					break;
 				case HTML:
-					if (style != null) {
-						if (style instanceof ShapeStyle) {
-							applyHtmlStyle(element, (ShapeStyle) style);
-						} else if (style instanceof FontStyle) {
-							applyHtmlStyle(element, (FontStyle) style);
-						} else if (style instanceof PictureStyle) {
-							applyHtmlStyle(element, (PictureStyle) style);
-						}
+					if (style instanceof ShapeStyle) {
+						applyHtmlStyle(element, (ShapeStyle) style);
+					} else if (style instanceof FontStyle) {
+						applyHtmlStyle(element, (FontStyle) style);
+					} else if (style instanceof PictureStyle) {
+						applyHtmlStyle(element, (PictureStyle) style);
 					}
+					break;
 			}
 		}
 	}
@@ -931,7 +927,7 @@ public class DomHelper {
 		if (SC.isIE()) {
 			com.google.gwt.dom.client.Style s = element.getStyle();
 			String src = DOM.getElementAttribute(element, "src");
-			int opacity = (int)(style.getOpacity()*100);
+			int opacity = (int) (style.getOpacity() * 100);
 			if (src != null && src.length() > 0 && opacity >= 0 && opacity < 100) {
 				s.setProperty("filter", "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src
 						+ "',sizingMethod='scale')  progid:DXImageTransform.Microsoft.Alpha(opacity=" + opacity + ");");

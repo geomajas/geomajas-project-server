@@ -25,7 +25,7 @@ public class CleanMojo extends DojoMojo {
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		Artifact dojo = resolve("org.geomajas.dojo", "dojo", getDojoVersion(), "jar", null);
-		DojoBuildEnvironment env = new DojoBuildEnvironment(dojo, getLog(), getArchiverManager(),getLayerName());
+		DojoBuildEnvironment env = new DojoBuildEnvironment(dojo, getLog(), getArchiverManager(), getLayerName());
 		getLog().info("Cleaning dojo build directory");
 		env.cleanAll();
 	}

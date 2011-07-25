@@ -48,7 +48,7 @@ public class CollectMojo extends DojoMojo {
 		try {
 			File layerDir = new File(resourceDir, getLayerName());
 			FileUtils.forceMkdir(layerDir);
-			File profile = new File(layerDir, getLayerName()+".js");
+			File profile = new File(layerDir, getLayerName() + ".js");
 			StringBuilder sb = new StringBuilder();
 			for (Module module : getModules()) {
 				String[] requires = module.getRequires().split(",");

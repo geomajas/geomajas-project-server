@@ -22,9 +22,10 @@ import java.io.Reader;
  * unexpected results! </strong> Checkstyle only works with one thread so
  * currently there is no need to introduce synchronization here.
  * </p>
- * @author <a href="mailto:lkuehne@users.sourceforge.net">Lars Kühne</a>
  *
- * This file was copied from checkstyle and is originally licensed as LGPL.
+ * @author <a href="mailto:lkuehne@users.sourceforge.net">Lars Kühne</a>
+ *         <p/>
+ *         This file was copied from checkstyle and is originally licensed as LGPL.
  */
 final class StringArrayReader extends Reader {
 
@@ -51,99 +52,92 @@ final class StringArrayReader extends Reader {
 	 *
 	 * @param aUnderlyingArray the underlying String array.
 	 */
-    StringArrayReader(String[] aUnderlyingArray)
-    {
-        final int length = aUnderlyingArray.length;
-        mUnderlyingArray = new String[length];
-        System.arraycopy(aUnderlyingArray, 0, mUnderlyingArray, 0, length);
+	StringArrayReader(String[] aUnderlyingArray) {
+		final int length = aUnderlyingArray.length;
+		mUnderlyingArray = new String[length];
+		System.arraycopy(aUnderlyingArray, 0, mUnderlyingArray, 0, length);
 
-        //additionally store the length of the strings
-        //for performance optimization
-        mLenghtArray = new int[length];
-        for (int i = 0; i < length; i++) {
-            mLenghtArray[i] = mUnderlyingArray[i].length();
-        }
-    }
+		//additionally store the length of the strings
+		//for performance optimization
+		mLenghtArray = new int[length];
+		for (int i = 0; i < length; i++) {
+			mLenghtArray[i] = mUnderlyingArray[i].length();
+		}
+	}
 
-    @Override
-    public void close()
-    {
-        mClosed = true;
-    }
+	@Override
+	public void close() {
+		mClosed = true;
+	}
 
-    /** @return whether data is available that has not yet been read. */
-    private boolean dataAvailable()
-    {
-        return (mUnderlyingArray.length > mArrayIdx);
-    }
+	/** @return whether data is available that has not yet been read. */
+	private boolean dataAvailable() {
+		return (mUnderlyingArray.length > mArrayIdx);
+	}
 
-    @Override
-    public int read(char[] aCbuf, int aOff, int aLen) throws IOException
-    {
-        ensureOpen();
+	@Override
+	public int read(char[] aCbuf, int aOff, int aLen) throws IOException {
+		ensureOpen();
 
-        int retVal = 0;
+		int retVal = 0;
 
-        if (!mUnreportedNewline && (mUnderlyingArray.length <= mArrayIdx)) {
-            return -1;
-        }
+		if (!mUnreportedNewline && (mUnderlyingArray.length <= mArrayIdx)) {
+			return -1;
+		}
 
-        while ((retVal < aLen) && (mUnreportedNewline || dataAvailable())) {
-            if (mUnreportedNewline) {
-                aCbuf[aOff + retVal] = '\n';
-                retVal++;
-                mUnreportedNewline = false;
-            }
+		while ((retVal < aLen) && (mUnreportedNewline || dataAvailable())) {
+			if (mUnreportedNewline) {
+				aCbuf[aOff + retVal] = '\n';
+				retVal++;
+				mUnreportedNewline = false;
+			}
 
-            if ((retVal < aLen) && dataAvailable()) {
-                final String currentStr = mUnderlyingArray[mArrayIdx];
-                final int currentLenth = mLenghtArray[mArrayIdx];
-                final int srcEnd = Math.min(currentLenth,
-                                            mStringIdx + aLen - retVal);
-                currentStr.getChars(mStringIdx, srcEnd, aCbuf, aOff + retVal);
-                retVal += srcEnd - mStringIdx;
-                mStringIdx = srcEnd;
+			if ((retVal < aLen) && dataAvailable()) {
+				final String currentStr = mUnderlyingArray[mArrayIdx];
+				final int currentLenth = mLenghtArray[mArrayIdx];
+				final int srcEnd = Math.min(currentLenth,
+						mStringIdx + aLen - retVal);
+				currentStr.getChars(mStringIdx, srcEnd, aCbuf, aOff + retVal);
+				retVal += srcEnd - mStringIdx;
+				mStringIdx = srcEnd;
 
-                if (mStringIdx >= currentLenth) {
-                    mArrayIdx++;
-                    mStringIdx = 0;
-                    mUnreportedNewline = true;
-                }
-            }
-        }
-        return retVal;
-    }
+				if (mStringIdx >= currentLenth) {
+					mArrayIdx++;
+					mStringIdx = 0;
+					mUnreportedNewline = true;
+				}
+			}
+		}
+		return retVal;
+	}
 
-    @Override
-    public int read() throws IOException
-    {
-        if (mUnreportedNewline) {
-            mUnreportedNewline = false;
-            return '\n';
-        }
+	@Override
+	public int read() throws IOException {
+		if (mUnreportedNewline) {
+			mUnreportedNewline = false;
+			return '\n';
+		}
 
-        if ((mArrayIdx < mUnderlyingArray.length)
-            && (mStringIdx < mLenghtArray[mArrayIdx]))
-        {
-            // this is the common case,
-            // avoid char[] creation in super.read for performance
-            ensureOpen();
-            return mUnderlyingArray[mArrayIdx].charAt(mStringIdx++);
-        }
-        // don't bother duplicating the new line handling above
-        // for the uncommon case
-        return super.read();
-    }
+		if ((mArrayIdx < mUnderlyingArray.length)
+				&& (mStringIdx < mLenghtArray[mArrayIdx])) {
+			// this is the common case,
+			// avoid char[] creation in super.read for performance
+			ensureOpen();
+			return mUnderlyingArray[mArrayIdx].charAt(mStringIdx++);
+		}
+		// don't bother duplicating the new line handling above
+		// for the uncommon case
+		return super.read();
+	}
 
-    /**
-     * Throws an IOException if the reader has already been closed.
-     *
-     * @throws IOException if the stream has been closed
-     */
-    private void ensureOpen() throws IOException
-    {
-        if (mClosed) {
-            throw new IOException("already closed");
-        }
-    }
+	/**
+	 * Throws an IOException if the reader has already been closed.
+	 *
+	 * @throws IOException if the stream has been closed
+	 */
+	private void ensureOpen() throws IOException {
+		if (mClosed) {
+			throw new IOException("already closed");
+		}
+	}
 }
