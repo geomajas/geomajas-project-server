@@ -196,6 +196,12 @@ include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1
     "incubating" "master.pdf" \
     "" "" ""
 
+include "org.geomajas.widget" "geomajas-widget-gwtutility-documentation" "1.0.0-SNAPSHOT" \
+    "Utility widgets for GWT" \
+    "Utility widgets for GWT" \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-widget-utility-smartgwt" "1.0.0-SNAPSHOT"
+
 
 # contributors guide
 
