@@ -142,52 +142,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</list>
 					</property>
 				</bean>
-				<bean class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
-					<property name="title" value="Information" />
-					<property name="columns">
-						<list>
-							<bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
-								<property name="tools">
-									<list>
-										<ref bean="MeasureDistanceMode" />
-									</list>
-								</property>
-							</bean>
-							<bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
-								<property name="tools">
-									<list>
-										<ref bean="FeatureInfoMode" />
-									</list>
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
-				<bean class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
-					<property name="title" value="Selection" />
-					<property name="columns">
-						<list>
-							<bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
-								<property name="tools">
-									<list>
-										<ref bean="SelectionMode" />
-									</list>
-								</property>
-							</bean>
-							<bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
-								<property name="tools">
-									<list>
-										<ref bean="ZoomToSelection" />
-									</list>
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
 			</list>
 		</property>
 	</bean>
