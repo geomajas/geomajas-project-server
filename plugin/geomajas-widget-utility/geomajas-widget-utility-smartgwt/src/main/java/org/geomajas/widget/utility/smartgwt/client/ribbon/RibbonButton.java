@@ -1,0 +1,237 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+package org.geomajas.widget.utility.smartgwt.client.ribbon;
+
+import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.widget.utility.client.action.ButtonAction;
+import org.geomajas.widget.utility.client.action.RadioAction;
+import org.geomajas.widget.utility.client.ribbon.RibbonColumn;
+
+import com.smartgwt.client.types.Cursor;
+import com.smartgwt.client.types.SelectionType;
+import com.smartgwt.client.widgets.StatefulCanvas;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+
+/**
+ * Implementation of the RibbonColumn interface that displays a single button. Instances of this class are initialized
+ * using a {@link ButtonAction} that determines the icon, title, tool-tip and click action.
+ * 
+ * @author Pieter De Graef
+ */
+public class RibbonButton extends StatefulCanvas implements RibbonColumn {
+
+	private boolean showTitles = true;
+
+	private TitleAlignment titleAlignment;
+
+	private int iconSize;
+
+	private ButtonAction buttonAction;
+
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Initialize this object using a {@link ButtonAction}. This button will use the icon, title, tool-tip and click
+	 * action that this {@link ButtonAction} provides. By default, an icon size of 24px will be used in combination with
+	 * a BOTTOM title alignment.
+	 * 
+	 * @param buttonAction
+	 *            The {@link ButtonAction} to use as template.
+	 */
+	public RibbonButton(final ButtonAction buttonAction) {
+		this(buttonAction, 24, TitleAlignment.BOTTOM);
+	}
+
+	/**
+	 * Initialize this object using a {@link ButtonAction}. This button will use the icon, title, tool-tip and click
+	 * action that this {@link ButtonAction} provides.
+	 * 
+	 * @param buttonAction
+	 *            The {@link ButtonAction} to use as template.
+	 * @param iconSize
+	 *            The size (width & height) for the icon - in pixels.
+	 * @param titleAlignment
+	 *            The alignment for the title (BOTTOM, RIGHT).
+	 */
+	public RibbonButton(final ButtonAction buttonAction, int iconSize, TitleAlignment titleAlignment) {
+		this.buttonAction = buttonAction;
+		this.iconSize = iconSize;
+		this.titleAlignment = titleAlignment;
+
+		setBaseStyle("ribbonButton");
+		setWidth(50);
+		setCursor(Cursor.HAND);
+
+		setCanHover(true);
+		setShowHover(true);
+		setHoverWrap(false);
+		setHoverWidth(1);
+		setTooltip(buttonAction.getTooltip());
+
+		setShowRollOver(true);
+		setShowDown(true);
+		setShowDisabled(true);
+
+		if (buttonAction instanceof RadioAction) {
+			final RadioAction radioAction = (RadioAction) buttonAction;
+			setActionType(SelectionType.CHECKBOX);
+			setRadioGroup(radioAction.getRadioGroup());
+			addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					radioAction.setSelected(isSelected());
+				}
+
+			});
+		} else {
+			addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent event) {
+					buttonAction.onClick(null);
+				}
+			});
+		}
+
+		updateGui();
+	}
+
+	// ------------------------------------------------------------------------
+	// RibbonColumn implementation:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Sets the base CSS class for this button.
+	 * 
+	 * @param The
+	 *            new base CSS class for this button.
+	 */
+	public void setButtonBaseStyle(String buttonBaseStyle) {
+		setBaseStyle(buttonBaseStyle);
+	}
+
+	/**
+	 * Determine whether or not to display the title on this button.
+	 * 
+	 * @param showTitles
+	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
+	 */
+	public void setShowTitles(boolean showTitles) {
+		this.showTitles = showTitles;
+		updateGui();
+	}
+
+	/**
+	 * See whether or not the title on this button is currently visible.
+	 * 
+	 * @return Return whether or not the title on this button is currently visible.
+	 */
+	public boolean isShowTitles() {
+		return showTitles;
+	}
+
+	/**
+	 * Determine the alignment (BOTTOM, RIGHT) for the title on this button.
+	 * 
+	 * @param titleAlignment
+	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
+	 */
+	public void setTitleAlignment(TitleAlignment titleAlignment) {
+		this.titleAlignment = titleAlignment;
+		updateGui();
+	}
+
+	/**
+	 * Get the current value for the title alignment (BOTTOM, RIGHT).
+	 * 
+	 * @return The current value for the title alignment (BOTTOM, RIGHT).
+	 */
+	public TitleAlignment getTitleAlignment() {
+		return titleAlignment;
+	}
+
+	/**
+	 * Add configuration key/value pair.
+	 * 
+	 * @param key
+	 *            parameter key
+	 * @param value
+	 *            parameter value
+	 */
+	public void configure(String key, String value) {
+		buttonAction.configure(key, value);
+	}
+
+	// ------------------------------------------------------------------------
+	// Class specific getters and setters:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the current icon size in pixels.
+	 * 
+	 * @return The current icon size in pixels.
+	 */
+	public int getIconSize() {
+		return iconSize;
+	}
+
+	/**
+	 * Set a new icon size in pixels.
+	 * 
+	 * @param iconSize
+	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
+	 */
+	public void setIconSize(int iconSize) {
+		this.iconSize = iconSize;
+		updateGui();
+	}
+
+	/**
+	 * Return the button action that is used as a template for this button.
+	 * 
+	 * @return The button action that is used as a template for this button.
+	 */
+	public ButtonAction getButtonAction() {
+		return buttonAction;
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	/** Update the GUI to reflect the settings. */
+	private void updateGui() {
+		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
+
+		if (titleAlignment.equals(TitleAlignment.BOTTOM)) {
+			String titleContent = "";
+			if (showTitles) {
+				titleContent = "<div style='text-align:center; margin-top: 10px;'>" + buttonAction.getTitle().trim()
+						+ "</div>";
+			}
+			setContents("<div style='text-align:center;'><img src='" + icon + "' width='" + iconSize + "' height='"
+					+ iconSize + "' /></div>" + titleContent);
+		} else {
+			setWidth100();
+			String titleContent = "";
+			if (showTitles) {
+				titleContent = "<td style='text-align:left; padding-left: 8px; font-size: 11px; white-space:nowrap;'>"
+						+ buttonAction.getTitle().trim() + "</td>";
+			}
+			setContents("<table style='border-spacing: 0px;' cellpadding='0px'><tr><td style='text-align:center;'>"
+					+ "<img src='" + icon + "' width='" + iconSize + "' height='" + iconSize + "' />" + "</td>"
+					+ titleContent + "</tr></table>");
+		}
+	}
+}
