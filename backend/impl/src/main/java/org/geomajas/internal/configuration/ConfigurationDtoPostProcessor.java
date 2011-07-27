@@ -170,8 +170,12 @@ public class ConfigurationDtoPostProcessor {
 						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
 								layer.getId());
 					}
+					String layerName = (namedStyle.getSldLayerName() != null ? namedStyle.getSldLayerName() : layer
+							.getId());
+					String styleName = (namedStyle.getSldStyleName() != null ? namedStyle.getSldStyleName() : layer
+							.getId());
 					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getStyledLayerInfo(),
-							info.getFeatureInfo(), namedStyle.getSldLayerName(), namedStyle.getSldStyleName());
+							info.getFeatureInfo(), layerName, styleName);
 					namedStyle.setFeatureStyles(sldStyle.getFeatureStyles());
 					namedStyle.setLabelStyle(sldStyle.getLabelStyle());
 				}

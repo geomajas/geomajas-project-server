@@ -30,6 +30,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.CssParameterInfo;
@@ -128,33 +129,42 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			// we only support named layers, pick the right name or the first one
 			if (choice.ifNamedLayer()) {
 				if (layerName != null) {
-					if (choice.getNamedLayer().getName().equals(layerName)) {
+					if (layerName.equals(choice.getNamedLayer().getName())) {
 						namedLayerInfo = choice.getNamedLayer();
 						break;
 					}
-				} else {
+				}
+				if (namedLayerInfo == null) {
 					namedLayerInfo = choice.getNamedLayer();
-					break;
 				}
 			}
 		}
+		if (namedLayerInfo == null) {
+			throw new LayerException(ExceptionCode.INVALID_SLD, styledLayerDescriptorInfo.getName(), layerName);
+		}
 
-		NamedStyleInfo namedStyleInfo = null;
+		UserStyleInfo userStyleInfo = null;
 		for (NamedLayerInfo.ChoiceInfo choice : namedLayerInfo.getChoiceList()) {
 			// we only support user styles, pick the right name or the first
 			if (choice.ifUserStyle()) {
 				if (styleName != null) {
-					if (choice.getUserStyle().getName().equals(layerName)) {
-						namedStyleInfo = convert(choice.getUserStyle(), featureInfo);
+					if (styleName.equals(choice.getUserStyle().getName())) {
+						userStyleInfo = choice.getUserStyle();
 						break;
 					}
-				} else {
-					namedStyleInfo = convert(choice.getUserStyle(), featureInfo);
+				}
+				if (userStyleInfo == null) {
+					userStyleInfo = choice.getUserStyle();
 				}
 			}
 		}
-		if (namedStyleInfo.getName() != null) {
-			namedStyleInfo.setName(namedLayerInfo.getName());
+		if (userStyleInfo == null) {
+			throw new LayerException(ExceptionCode.INVALID_SLD, styledLayerDescriptorInfo.getName(), layerName);
+		}
+
+		NamedStyleInfo namedStyleInfo = convert(userStyleInfo, featureInfo);
+		if (namedStyleInfo.getName() == null) {
+			namedStyleInfo.setName(styleName);
 		}
 		for (FeatureStyleInfo featureStyleInfo : namedStyleInfo.getFeatureStyles()) {
 			if (featureStyleInfo.getName() == null) {
