@@ -68,10 +68,18 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-gwt-utility</artifactId>
+				<artifactId>geomajas-widget-utility</artifactId>
 				<version>${geomajas-gwt-utility-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-widget-utility-gwt</artifactId>
+				<version>${geomajas-gwt-utility-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-widget-utility-smartgwt</artifactId>
+				<version>${geomajas-gwt-utility-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
