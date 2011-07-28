@@ -44,7 +44,6 @@ public class ParserTest {
 		StringWriter sw = new StringWriter();
 		ctx.setOutput(sw);
 		ctx.marshalDocument(sld);
-		System.out.println(sw);
 	}
 
 	@Test
