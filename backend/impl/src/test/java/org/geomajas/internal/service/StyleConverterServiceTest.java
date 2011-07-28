@@ -48,7 +48,7 @@ public class StyleConverterServiceTest {
 		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
 		NamedStyleInfo info = styleConverterService.convert(sld, featureInfo, "layer", "style");
 		Assert.assertNotNull(info);
-		Assert.assertEquals("style", info.getName());
+		Assert.assertEquals("Some title", info.getName());
 	}
 	
 	@Test

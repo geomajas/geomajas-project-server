@@ -220,13 +220,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 					featureStyleInfo.setStrokeWidth(0);
 				}
 				featureStyleInfo.setIndex(styleIndex++);
-				featureStyleInfo.setName(ruleInfo.getName());
+				featureStyleInfo.setName(ruleInfo.getTitle() != null ? ruleInfo.getTitle() : ruleInfo.getName());
 				featureStyleInfos.add(featureStyleInfo);
 			}
 		}
-		if (userStyle.getName() != null) {
-			namedStyleInfo.setName(userStyle.getName());
-		}
+		namedStyleInfo.setName(userStyle.getTitle() != null ? userStyle.getTitle() : userStyle.getName());
 		namedStyleInfo.setFeatureStyles(featureStyleInfos);
 		namedStyleInfo.setLabelStyle(labelStyleInfo);
 		return namedStyleInfo;
