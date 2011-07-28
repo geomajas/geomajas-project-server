@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.plugin.rasterizing.client.action.toolbar.GetLegendImageAction;
 import org.geomajas.plugin.rasterizing.client.action.toolbar.GetMapImageAction;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -94,6 +95,12 @@ public class Application implements EntryPoint {
 				GetMapImageAction getMapImage = new GetMapImageAction(map);
 				toolbar.addSeparator();
 				toolbar.addActionButton(getMapImage);
+				GetLegendImageAction getLegendImageAll = new GetLegendImageAction(map, true);
+				toolbar.addSeparator();
+				toolbar.addActionButton(getLegendImageAll);
+				GetLegendImageAction getLegendImage = new GetLegendImageAction(map, false);
+				toolbar.addSeparator();
+				toolbar.addActionButton(getLegendImage);
 				// switch all labels on
 				for (Layer layer : map.getMapModel().getLayers()) {
 					layer.setLabeled(true);

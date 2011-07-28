@@ -21,5 +21,9 @@ import com.google.gwt.i18n.client.Messages;
 public interface RasterizingMessages extends Messages {
 
 	String getMapImage();
+	
+	String getLegendImage();
+
+	String getLegendImageAll();
 
 }

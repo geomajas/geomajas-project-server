@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geotools.styling.Rule;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Builder class for legend.
@@ -42,7 +43,7 @@ public class LegendBuilder {
 	private JPanel legendPanel;
 
 	private TitledBorder border;
-	
+
 	private Dimension dimension;
 
 	public LegendBuilder() {
@@ -56,7 +57,7 @@ public class LegendBuilder {
 		pack();
 		return legendPanel;
 	}
-	
+
 	public void setSize(int width, int height) {
 		dimension = new Dimension(width, height);
 	}
@@ -66,18 +67,21 @@ public class LegendBuilder {
 		border.setTitleFont(font);
 	}
 
-	public void addVectorLayer(String title, Rule rule, Font font) {
+	public void addVectorLayer(SimpleFeatureType schema, String title, Rule rule, Font font) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		FeatureStyleInfo defaultStyle = new FeatureStyleInfo();
 		defaultStyle.applyDefaults();
-		SymbolizerIcon icon = new SymbolizerIcon(rule.getSymbolizers()[0], 15, 15);
-		icon.setBounds(5, 5, 15, 15);
+		int width = 16;
+		int height = 16;
+		int margin = 5;
+		RuleIcon icon = new RuleIcon(schema, rule, width, height);
+		icon.setBounds(margin, margin, margin + width, margin + height);
 		JPanel iconPanel = new JPanel();
 		iconPanel.setLayout(null);
-		iconPanel.setMinimumSize(new Dimension(25, 25));
-		iconPanel.setPreferredSize(new Dimension(25, 25));
-		iconPanel.setMaximumSize(new Dimension(25, 25));
+		iconPanel.setMinimumSize(new Dimension(2 * margin + width, 2 * margin + height));
+		iconPanel.setPreferredSize(new Dimension(2 * margin + width, 2 * margin + height));
+		iconPanel.setMaximumSize(new Dimension(2 * margin + width, 2 * margin + height));
 		iconPanel.add(icon, BorderLayout.CENTER);
 		panel.add(iconPanel);
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));

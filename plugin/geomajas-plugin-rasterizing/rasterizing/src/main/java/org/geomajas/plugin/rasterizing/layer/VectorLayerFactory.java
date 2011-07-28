@@ -13,9 +13,9 @@ package org.geomajas.plugin.rasterizing.layer;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +43,7 @@ import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -50,6 +51,9 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.lite.MetaBufferEstimator;
+import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleAttributeExtractor;
 import org.jboss.serial.io.JBossObjectOutputStream;
@@ -91,6 +95,9 @@ public class VectorLayerFactory implements LayerFactory {
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
+	/** Tolerance used to compare doubles for equality */
+	private static final double TOLERANCE = 1e-6;
+
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof ClientVectorLayerInfo;
 	}
@@ -119,8 +126,8 @@ public class VectorLayerFactory implements LayerFactory {
 		metaArea.expandBy(bufferInPixels / tileInpix.getWidth() * areaOfInterest.getWidth(),
 				bufferInPixels / tileInpix.getHeight() * areaOfInterest.getHeight());
 		// fetch features in meta area
-		Envelope layerBounds = geoService.transform(metaArea,
-				(Crs) areaOfInterest.getCoordinateReferenceSystem(), (Crs) layer.getCrs());
+		Envelope layerBounds = geoService.transform(metaArea, (Crs) areaOfInterest.getCoordinateReferenceSystem(),
+				(Crs) layer.getCrs());
 		Filter filter = filterService.createBboxFilter((Crs) layer.getCrs(), layerBounds, layer.getLayerInfo()
 				.getFeatureInfo().getGeometryType().getName());
 		if (extraInfo.getFilter() != null) {
@@ -129,22 +136,55 @@ public class VectorLayerFactory implements LayerFactory {
 		List<InternalFeature> features = vectorLayerService.getFeatures(vectorInfo.getServerLayerId(),
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
-		
+
 		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
 				mapContext.getCoordinateReferenceSystem(), style), style);
 		featureLayer.setTitle(vectorInfo.getLabel());
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
-		LinkedHashMap<String, FeatureStyleInfo> styles = new LinkedHashMap<String, FeatureStyleInfo>();
-		for (InternalFeature feature : features) {
-			FeatureStyleInfo info = feature.getStyleInfo();
-			styles.put(info.getName(), info);
+		List<Rule> rules = new ArrayList<Rule>();
+		double scaleDenominator = RendererUtilities.calculateOGCScale(mapContext.getAreaOfInterest(), (int) mapContext
+				.getViewport().getScreenArea().getWidth(), null);
+		// find the applicable rules
+		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+			for (Rule rule : fts.rules()) {
+				if (isWithInScale(rule, scaleDenominator)) {
+					FeatureIterator<SimpleFeature> it;
+					try {
+						it = featureLayer.getSimpleFeatureSource().getFeatures().features();
+						while (it.hasNext()) {
+							SimpleFeature feature = it.next();
+							if (rule.isElseFilter() || rule.getFilter() == null) {
+								rules.add(rule);
+								break;
+							} else if (rule.getFilter().evaluate(feature)) {
+								rules.add(rule);
+								break;
+							}
+						}
+					} catch (IOException e) {
+						// cannot happen !
+					}
+				}
+			}
 		}
-		featureLayer.getUserData().put(USERDATA_KEY_STYLES, styles);
+		featureLayer.getUserData().put(USERDATA_KEY_STYLE_RULES, rules);
 		return featureLayer;
 	}
 
+	/**
+	 * Should be the same as org.geotools.renderer.lite.StreamingRenderer !
+	 * 
+	 * @param r
+	 * @param scaleDenominator
+	 * @return true if within scale
+	 */
+	private boolean isWithInScale(Rule r, double scaleDenominator) {
+		return ((r.getMinScaleDenominator() - TOLERANCE) <= scaleDenominator)
+				&& ((r.getMaxScaleDenominator() + TOLERANCE) > scaleDenominator);
+	}
+
 	private FeatureCollection<SimpleFeatureType, SimpleFeature> createCollection(List<InternalFeature> features,
-			VectorLayer layer, CoordinateReferenceSystem mapCrs, Style style ) {
+			VectorLayer layer, CoordinateReferenceSystem mapCrs, Style style) {
 		SimpleFeatureType type = createFeatureType(layer, mapCrs);
 		ListFeatureCollection result = new ListFeatureCollection(type);
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
@@ -227,15 +267,15 @@ public class VectorLayerFactory implements LayerFactory {
 				}
 			}
 		}
-		// add the extra style index attribute 
+		// add the extra style index attribute
 		builder.add(STYLE_INDEX_ATTRIBUTE_NAME, Integer.class);
-		// add the geometry attribute 
+		// add the geometry attribute
 		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
 		builder.add(geom.getName(), dtoConverterService.toInternal(info.getLayerType()), mapCrs);
 		builder.setDefaultGeometry(geom.getName());
 		return builder.buildFeatureType();
 	}
-	
+
 	private VectorLayerRasterizingInfo cloneInfo(VectorLayerRasterizingInfo input) throws GeomajasException {
 		try {
 			JBossObjectOutputStream jbossSerializer = new JBossObjectOutputStream(null);

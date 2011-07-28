@@ -48,8 +48,11 @@ import com.google.gwt.core.client.GWT;
  */
 public class ImageUrlServiceImpl implements ImageUrlService {
 
-	public void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack) {
-		makeRasterizable(map);
+	@Override
+	public void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack, boolean makeRasterizable) {
+		if (makeRasterizable) {
+			makeRasterizable(map);
+		}
 		GwtCommand commandRequest = new GwtCommand("command.rasterizing.RasterizeMap");
 		RasterizeMapRequest request = new RasterizeMapRequest();
 		request.setClientMapInfo(map.getMapModel().getMapInfo());
@@ -67,6 +70,11 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 
 		});
 
+	}
+
+	@Override
+	public void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack) {
+		createImageUrl(map, imageCallBack, true);
 	}
 
 	public void makeRasterizable(MapWidget map) {
@@ -94,8 +102,8 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				vectorRasterizingInfo.setStyle(layerInfo.getNamedStyleInfo());
 				if (vectorLayer.getSelectedFeatures().size() > 0) {
 					Set<String> selectedFeatures = vectorLayer.getSelectedFeatures();
-					vectorRasterizingInfo.setSelectedFeatureIds(
-							selectedFeatures.toArray(new String[selectedFeatures.size()]));
+					vectorRasterizingInfo.setSelectedFeatureIds(selectedFeatures.toArray(new String[selectedFeatures
+							.size()]));
 					FeatureStyleInfo selectStyle = null;
 					switch (layerInfo.getLayerType()) {
 						case GEOMETRY:

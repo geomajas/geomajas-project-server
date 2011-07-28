@@ -38,7 +38,7 @@ public class MapRasterizingInfo implements ClientWidgetInfo, RasterizingConstant
 	private List<ClientLayerInfo> extraLayers = new ArrayList<ClientLayerInfo>();
 
 	private LegendRasterizingInfo legendRasterizingInfo;
-
+	
 	/**
 	 * Returns true if the underlying medium is transparent.
 	 * 

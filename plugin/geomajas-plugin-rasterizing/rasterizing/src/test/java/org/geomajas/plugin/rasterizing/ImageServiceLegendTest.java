@@ -2,6 +2,7 @@ package org.geomajas.plugin.rasterizing;
 
 import java.io.OutputStream;
 
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -170,6 +171,10 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		new LegendAssert(mapInfo).assertEqualImage("legend_dynamic.png", writeImages, DELTA);
+	}
+	
+	private FeatureStyleInfo getPointStyle() {
+		return layerBeansPointStyleInfo.getFeatureStyles().get(0);
 	}
 
 	class LegendAssert extends TestPathBinaryStreamAssert {

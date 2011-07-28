@@ -10,10 +10,9 @@
  */
 package org.geomajas.plugin.rasterizing.layer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
@@ -24,6 +23,8 @@ import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -57,9 +58,14 @@ public class GeometryLayerFactory implements LayerFactory {
 		}
 		layer.getUserData().put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
 		layer.setTitle(layerInfo.getLabel());
-		Map<String, FeatureStyleInfo> styles = new HashMap<String, FeatureStyleInfo>();
-		styles.put(layerInfo.getStyle().getName(), layerInfo.getStyle());
-		layer.getUserData().put(USERDATA_KEY_STYLES, styles);
+		List<Rule> rules = new ArrayList<Rule>();
+		// all rules are needed for map/legend
+		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+			for (Rule rule : fts.rules()) {
+				rules.add(rule);
+			}
+		}
+		layer.getUserData().put(USERDATA_KEY_STYLE_RULES, rules);
 		return layer;
 	}
 

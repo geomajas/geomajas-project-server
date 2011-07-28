@@ -39,7 +39,7 @@ public interface LayerFactory {
 	/**
 	 * user data for the layer styles (DTOs, should eventually become unnecessary as all info is in SLD).
 	 */
-	String USERDATA_KEY_STYLES = "geomajas.rasterizing.styles"; // Map<String,FeatureStyleInfo>
+	String USERDATA_KEY_STYLE_RULES = "geomajas.rasterizing.style.rules"; // Map<String,FeatureStyleInfo>
 
 	/**
 	 * user data to record if layer is showing (up to caller to decide what to do with this info).

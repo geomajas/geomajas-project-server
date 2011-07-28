@@ -23,18 +23,24 @@ public interface ImageUrlService {
 	/**
 	 * Create map and legend images for the specified map.
 	 * 
-	 * @param map
-	 *            the map
-	 * @param imageCallBack
-	 *            call back function
+	 * @param map the map
+	 * @param imageCallBack call back function
+	 * @param makeRasterizable should the service make the map rasterizable ?
+	 */
+	void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack, boolean makeRasterizable);
+
+	/**
+	 * Create map and legend images for the specified map. Preparing for rasterization is done by the service.
+	 * 
+	 * @param map the map
+	 * @param imageCallBack call back function
 	 */
 	void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack);
 
 	/**
 	 * Prepare the specified map for serverside rasterization.
 	 * 
-	 * @param map
-	 *            the map
+	 * @param map the map
 	 */
 	void makeRasterizable(MapWidget map);
 }

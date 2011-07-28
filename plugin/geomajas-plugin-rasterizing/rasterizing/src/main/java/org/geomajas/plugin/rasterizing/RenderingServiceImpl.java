@@ -22,7 +22,6 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.api.RenderingService;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
@@ -31,14 +30,18 @@ import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
 import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
 import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
 import org.geomajas.service.TextService;
+import org.geotools.data.FeatureSource;
 import org.geotools.factory.Hints;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.style.Symbolizer;
+import org.opengis.style.TextSymbolizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -71,23 +74,21 @@ public class RenderingServiceImpl implements RenderingService {
 				builder.addRasterLayer(rasterLayer.getTitle(), font);
 			} else if (layer instanceof FeatureLayer) {
 				FeatureLayer featureLayer = (FeatureLayer) layer;
-				FeatureTypeStyle normalStyle = featureLayer.getStyle().featureTypeStyles().get(0);
-				Map<String, FeatureStyleInfo> map = (Map<String, FeatureStyleInfo>) featureLayer.getUserData().get(
-						LayerFactory.USERDATA_KEY_STYLES);
-				for (Rule rule : normalStyle.rules()) {
-					// hackish solution for dynamic legend support
-					if (map.containsKey(rule.getDescription().getTitle().toString())) {
-						if (normalStyle.rules().size() == 1) {
-							builder.addVectorLayer(featureLayer.getTitle(), rule, font);
-						} else {
-							builder.addVectorLayer(rule.getDescription().getTitle().toString(), rule, font);
+				List<Rule> rules = (List<Rule>) featureLayer.getUserData().get(LayerFactory.USERDATA_KEY_STYLE_RULES);
+				for (Rule rule : rules) {
+					if (!isTextOnly(rule)) {
+						FeatureSource<?, ?> source = featureLayer.getFeatureSource();
+						FeatureType schema = source.getSchema();
+						if (schema instanceof SimpleFeatureType) {
+							builder.addVectorLayer((SimpleFeatureType) schema, rule.getDescription().getTitle()
+									.toString(), rule, font);
 						}
 					}
 				}
 			} else if (layer instanceof GeometryDirectLayer) {
 				GeometryDirectLayer geometryLayer = (GeometryDirectLayer) layer;
-				builder.addVectorLayer(geometryLayer.getTitle(), geometryLayer.getStyle().featureTypeStyles().get(0)
-						.rules().get(0), font);
+				builder.addVectorLayer(null, geometryLayer.getTitle(), geometryLayer.getStyle().featureTypeStyles()
+						.get(0).rules().get(0), font);
 			}
 		}
 		JComponent c = builder.buildComponent();
@@ -98,6 +99,15 @@ public class RenderingServiceImpl implements RenderingService {
 		graphics.setRenderingHints(renderingHints);
 		c.print(graphics);
 		return image;
+	}
+
+	private boolean isTextOnly(Rule rule) {
+		for (Symbolizer symbolizer : rule.symbolizers()) {
+			if (!(symbolizer instanceof TextSymbolizer)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void paintMap(MapContext context, Graphics2D graphics) {
@@ -184,7 +194,9 @@ public class RenderingServiceImpl implements RenderingService {
 			StreamingRenderer renderer = new StreamingRenderer();
 			renderer.setContext(mapContext);
 			Map<Object, Object> rendererParams = new HashMap<Object, Object>();
-			rendererParams.put("optimizedDataLoadingEnabled", true);
+			rendererParams.put(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY, true);
+			// we use OGC scale for predictable conversion between pix/m scale and relative scale
+			rendererParams.put(StreamingRenderer.SCALE_COMPUTATION_METHOD_KEY, StreamingRenderer.SCALE_OGC);
 			renderer.setRendererHints(rendererParams);
 			renderer.paint(graphics, mapContext.getViewport().getScreenArea(), mapContext.getViewport().getBounds());
 			mapContext.dispose();

@@ -20,9 +20,11 @@ import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
@@ -73,7 +75,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 	private FilterService filterService;
 
 	// map of read-only styles
-	private ConcurrentHashMap<String, Style> styleMap = new ConcurrentHashMap<String, Style>();
+	private ConcurrentHashMap<String, Style[]> styleMap = new ConcurrentHashMap<String, Style[]>();
 
 	private final Logger log = LoggerFactory.getLogger(StyleFactoryServiceImpl.class);
 
@@ -97,25 +99,50 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 	}
 
 	private Style createSldStyle(VectorLayer layer, VectorLayerRasterizingInfo vectorLayerRasterizingInfo)
-			throws Exception {
-		String location = vectorLayerRasterizingInfo.getStyle().getSldLocation();
-		Style style = styleMap.get(location);
-		if (style == null) {
+			throws LayerException {
+		NamedStyleInfo namedStyle = vectorLayerRasterizingInfo.getStyle();
+		String location = namedStyle.getSldLocation();
+		Style[] styles = styleMap.get(location);
+		if (styles == null) {
 			Resource sld = applicationContext.getResource(location);
 			SLDParser parser = new SLDParser(styleFactory);
 			// external graphics will be resolved with respect to the SLD URL !
-			parser.setInput(sld.getURL());
-			Style[] styles = parser.readXML();
-			for (Style s : styles) {
-				if (s.getName().equals(vectorLayerRasterizingInfo.getStyle().getSldStyleName())) {
-					style = s;
-					break;
+			try {
+				parser.setInput(sld.getURL());
+				styles = parser.readXML();
+				// apply missing titles (needed for legend)
+				String styleName = (namedStyle.getSldStyleName() != null ? 
+						namedStyle.getSldStyleName() : layer.getId());
+				for (Style style : styles) {
+					if (style.getDescription().getTitle() == null) {
+						style.getDescription().setTitle(styleName);
+					}
+					for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+						for (Rule rule : fts.rules()) {
+							if (rule.getDescription().getTitle() == null) {
+								rule.getDescription().setTitle(styleName);
+							}
+						}
+					}
 				}
+			} catch (Exception e) {
+				throw new LayerException(e, ExceptionCode.INVALID_SLD, location, layer.getId());
 			}
-			if (style == null) {
+			styleMap.put(location, styles);
+		}
+		Style style = null;
+		for (Style s : styles) {
+			if (s.getName().equals(vectorLayerRasterizingInfo.getStyle().getSldStyleName())) {
+				style = s;
+				break;
+			}
+		}
+		if (style == null) {
+			if (styles.length > 0) {
 				style = styles[0];
+			} else {
+				throw new LayerException(ExceptionCode.INVALID_SLD, location, layer.getId());
 			}
-			styleMap.put(location, style);
 		}
 		// visit to draw/omit labels/geometries
 		RasterizingStyleVisitor visitor = new RasterizingStyleVisitor(vectorLayerRasterizingInfo);
