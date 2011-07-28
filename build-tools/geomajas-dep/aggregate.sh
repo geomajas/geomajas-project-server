@@ -196,7 +196,7 @@ include "org.geomajas.widget" "geomajas-widget-searchandfilter-documentation" "1
     "incubating" "master.pdf" \
     "" "" ""
 
-include "org.geomajas.widget" "geomajas-widget-gwtutility-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNAPSHOT" \
     "Utility widgets for GWT" \
     "Utility widgets for GWT" \
     "incubating" "master.pdf" \
