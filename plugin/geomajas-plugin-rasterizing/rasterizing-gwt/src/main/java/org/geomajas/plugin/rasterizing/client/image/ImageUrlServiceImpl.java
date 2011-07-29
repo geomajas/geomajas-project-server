@@ -44,11 +44,9 @@ import com.google.gwt.core.client.GWT;
  * Default implementation of {@link ImageUrlService}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class ImageUrlServiceImpl implements ImageUrlService {
 
-	@Override
 	public void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack, boolean makeRasterizable) {
 		if (makeRasterizable) {
 			makeRasterizable(map);
@@ -72,7 +70,6 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 
 	}
 
-	@Override
 	public void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack) {
 		createImageUrl(map, imageCallBack, true);
 	}
