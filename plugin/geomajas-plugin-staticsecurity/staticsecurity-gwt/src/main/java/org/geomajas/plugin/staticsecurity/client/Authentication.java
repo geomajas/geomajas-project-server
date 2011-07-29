@@ -28,6 +28,7 @@ import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.BooleanCallback;
+import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
 
 /**
  * <p>
@@ -39,10 +40,6 @@ import com.smartgwt.client.util.BooleanCallback;
  */
 public final class Authentication {
 
-	private static final String DEFAULT_LOGIN_COMMAND = "command.staticsecurity.Login";
-
-	private static final String DEFAULT_LOGOUT_COMMAND = "command.staticsecurity.Logout";
-
 	private static Authentication LOGIN;
 
 	private HandlerManager manager;
@@ -51,9 +48,9 @@ public final class Authentication {
 
 	private String userId;
 
-	private String loginCommandName = DEFAULT_LOGIN_COMMAND;
+	private String loginCommandName = LoginRequest.COMMAND;
 
-	private String logoutCommandName = DEFAULT_LOGOUT_COMMAND;
+	private String logoutCommandName = LogoutRequest.COMMAND;
 
 	private Authentication() {
 		manager = new HandlerManager(this);
