@@ -53,7 +53,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 		if (makeRasterizable) {
 			makeRasterizable(map);
 		}
-		GwtCommand commandRequest = new GwtCommand("command.rasterizing.RasterizeMap");
+		GwtCommand commandRequest = new GwtCommand(RasterizeMapRequest.COMMAND);
 		RasterizeMapRequest request = new RasterizeMapRequest();
 		request.setClientMapInfo(map.getMapModel().getMapInfo());
 		commandRequest.setCommandRequest(request);
