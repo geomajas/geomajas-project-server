@@ -82,7 +82,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
-				throw new IllegalStateException("Could no parse geometry " + area, pe);
+				throw new IllegalStateException("Could not parse geometry " + area, pe);
 			}
 		}
 
@@ -101,7 +101,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
-				throw new IllegalStateException("Could no parse geometry " + area, pe);
+				throw new IllegalStateException("Could not parse geometry " + area, pe);
 			}
 		}
 
@@ -120,7 +120,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
-				throw new IllegalStateException("Could no parse geometry " + area, pe);
+				throw new IllegalStateException("Could not parse geometry " + area, pe);
 			}
 		}
 
@@ -139,7 +139,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
 				return wktReader.read(area);
 			} catch (ParseException pe) {
-				throw new IllegalStateException("Could no parse geometry " + area, pe);
+				throw new IllegalStateException("Could not parse geometry " + area, pe);
 			}
 		}
 

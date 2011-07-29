@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.staticsecurity.security;
 
+import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
+import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityService;
@@ -47,8 +49,8 @@ public class LoginAllowedSecurityService implements SecurityService {
 		}
 
 		public boolean isCommandAuthorized(String commandName) {
-			return "command.staticsecurity.Login".equals(commandName) ||
-					"command.staticsecurity.Logout".equals(commandName);
+			return LoginRequest.COMMAND.equals(commandName) ||
+					LogoutRequest.COMMAND.equals(commandName);
 		}
 
 		public boolean isLayerVisible(String layerId) {

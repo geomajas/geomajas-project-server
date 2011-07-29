@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.staticsecurity.security;
 
+import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
+import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.junit.Assert;
@@ -36,8 +38,8 @@ public class LoginAllowedSecurityServiceTest {
 		Assert.assertNotNull(auth);
 		Assert.assertEquals(1, auth.getAuthorizations().length);
 		BaseAuthorization authorization = auth.getAuthorizations()[0];
-		Assert.assertTrue(authorization.isCommandAuthorized("command.staticsecurity.Login"));
-		Assert.assertTrue(authorization.isCommandAuthorized("command.staticsecurity.Logout"));
+		Assert.assertTrue(authorization.isCommandAuthorized(LoginRequest.COMMAND));
+		Assert.assertTrue(authorization.isCommandAuthorized(LogoutRequest.COMMAND));
 		Assert.assertFalse(authorization.isCommandAuthorized("command.staticsecurity.Other"));
 	}
 }
