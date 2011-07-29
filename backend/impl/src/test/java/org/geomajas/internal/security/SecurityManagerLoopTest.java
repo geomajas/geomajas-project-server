@@ -45,21 +45,18 @@ public class SecurityManagerLoopTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void testLooping() {
 		Assert.assertTrue(securityManager.createSecurityContext("TEST"));
 		Assert.assertEquals(2, securityContext.getSecurityServiceResults().size());
 	}
 
 	@Test
-	@DirtiesContext
 	public void testNotAuthenticated() {
 		Assert.assertFalse(securityManager.createSecurityContext("false"));
 		Assert.assertEquals(0, securityContext.getSecurityServiceResults().size());
 	}
 
 	@Test
-	@DirtiesContext
 	public void testSecondOnly() {
 		Assert.assertTrue(securityManager.createSecurityContext("SECOND"));
 		Assert.assertEquals(1, securityContext.getSecurityServiceResults().size());
