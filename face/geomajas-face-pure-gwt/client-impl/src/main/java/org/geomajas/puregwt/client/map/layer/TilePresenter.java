@@ -202,7 +202,7 @@ public class TilePresenter {
 		request.setScale(renderer.getViewPort().getScale());
 		request.setStyleInfo(renderer.getLayer().getLayerInfo().getNamedStyleInfo());
 		request.setFeatureIncludes(0);
-		Command command = new Command("command.render.GetVectorTile");
+		Command command = new Command(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
 		return command;
 	}

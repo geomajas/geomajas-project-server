@@ -79,7 +79,7 @@ public class GetFeaturesSecurityTest {
 		LoginRequest request = new LoginRequest();
 		request.setLogin(name);
 		request.setPassword(name);
-		CommandResponse response = commandDispatcher.execute("command.staticsecurity.Login", request, null, "en");
+		CommandResponse response = commandDispatcher.execute(LoginRequest.COMMAND, request, null, "en");
 		Assert.assertFalse(response.isError());
 		Assert.assertTrue(response instanceof LoginResponse);
 		securityManager.createSecurityContext(((LoginResponse)response).getToken());

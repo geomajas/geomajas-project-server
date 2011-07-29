@@ -49,7 +49,7 @@ public class RefreshConfigurationAction extends ToolbarAction {
 						if (value != null) {
 							RefreshConfigurationRequest request = new RefreshConfigurationRequest();
 							request.setConfigLocations(value.trim().split("[ \\r\\t\\n,;]+"));
-							GwtCommand command = new GwtCommand("command.configuration.Refresh");
+							GwtCommand command = new GwtCommand(RefreshConfigurationRequest.COMMAND);
 							command.setCommandRequest(request);
 							GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 

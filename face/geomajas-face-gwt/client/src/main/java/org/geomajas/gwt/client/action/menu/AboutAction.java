@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.action.menu;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.command.dto.CopyrightRequest;
 import org.geomajas.command.dto.CopyrightResponse;
 import org.geomajas.global.CopyrightInfo;
 import org.geomajas.gwt.client.Geomajas;
@@ -53,7 +54,7 @@ public class AboutAction extends MenuAction {
 
 		final HTMLFlow copyrightWidget = new HTMLFlow("Copyright info");
 		layout.addMember(copyrightWidget);
-		GwtCommand commandRequest = new GwtCommand("command.general.Copyright");
+		GwtCommand commandRequest = new GwtCommand(CopyrightRequest.COMMAND);
 		commandRequest.setCommandRequest(new EmptyCommandRequest());
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
