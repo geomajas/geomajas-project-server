@@ -34,7 +34,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetLocationForStringCommandTest {
 
 	private static final double DELTA = 1e-20;
-	private static final String COMMAND = "command.geocoder.GetLocationForString";
 
 	@Autowired
 	private CommandDispatcher commandDispatcher;
@@ -45,7 +44,8 @@ public class GetLocationForStringCommandTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("booischot");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -70,7 +70,8 @@ public class GetLocationForStringCommandTest {
 		request.setCrs("EPSG:4326");
 		request.setLocation("Booischot");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -88,7 +89,8 @@ public class GetLocationForStringCommandTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("second");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -108,7 +110,8 @@ public class GetLocationForStringCommandTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("bbox");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -132,7 +135,8 @@ public class GetLocationForStringCommandTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("bla");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -155,7 +159,8 @@ public class GetLocationForStringCommandTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("other");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;

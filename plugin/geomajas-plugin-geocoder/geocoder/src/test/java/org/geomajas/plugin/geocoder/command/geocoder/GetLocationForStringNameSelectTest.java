@@ -34,7 +34,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetLocationForStringNameSelectTest {
 
 	private static final double DELTA = 1e-20;
-	private static final String COMMAND = "command.geocoder.GetLocationForString";
 
 	@Autowired
 	private CommandDispatcher commandDispatcher;
@@ -45,7 +44,8 @@ public class GetLocationForStringNameSelectTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("bla");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -66,7 +66,8 @@ public class GetLocationForStringNameSelectTest {
 		request.setLocation("bla");
 		request.setServicePattern("alt1");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -88,7 +89,8 @@ public class GetLocationForStringNameSelectTest {
 		request.setLocation("bla");
 		request.setServicePattern(".?.?.?2");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -110,7 +112,8 @@ public class GetLocationForStringNameSelectTest {
 		request.setLocation("bla");
 		request.setServicePattern("alt.?");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -131,7 +134,8 @@ public class GetLocationForStringNameSelectTest {
 		request.setLocation("bla");
 		request.setServicePattern("a");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;

@@ -28,6 +28,12 @@ public class GetLocationForStringRequest implements CommandRequest {
 	public static final int MAX_ALTERNATIVES_UNLIMITED = 0;
 	public static final int MAX_ALTERNATIVES_DEFAULT = 50;
 
+	/**
+	 * Command name for command.
+	 * @since 1.2.0
+	 */
+	public static final String COMMAND = "command.geocoder.GetLocationForString";
+
 	private String location;
 	private String crs;
 	private String servicePattern = ".*";

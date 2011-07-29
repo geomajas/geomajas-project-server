@@ -33,7 +33,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetLocationForStringCommandCombineTest {
 
 	private static final double DELTA = 1e-20;
-	private static final String COMMAND = "command.geocoder.GetLocationForString";
 
 	@Autowired
 	private CommandDispatcher commandDispatcher;
@@ -44,7 +43,8 @@ public class GetLocationForStringCommandCombineTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("one");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
@@ -67,7 +67,8 @@ public class GetLocationForStringCommandCombineTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("bla");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;

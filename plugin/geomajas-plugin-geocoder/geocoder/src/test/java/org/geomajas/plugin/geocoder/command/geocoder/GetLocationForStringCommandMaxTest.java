@@ -33,7 +33,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetLocationForStringCommandMaxTest {
 
 	private static final int COUNT = 10;
-	private static final String COMMAND = "command.geocoder.GetLocationForString";
 
 	@Autowired
 	private CommandDispatcher commandDispatcher;
@@ -45,7 +44,8 @@ public class GetLocationForStringCommandMaxTest {
 		request.setLocation("london");
 		request.setMaxAlternatives(COUNT);
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;

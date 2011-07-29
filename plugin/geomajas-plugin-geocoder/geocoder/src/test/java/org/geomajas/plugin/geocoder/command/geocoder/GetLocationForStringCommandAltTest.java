@@ -35,8 +35,6 @@ public class GetLocationForStringCommandAltTest {
 
 	private static final double DELTA = 1e-20;
 	// @extract-start UseCommandTest, Usage of the geocoder command
-	private static final String COMMAND = "command.geocoder.GetLocationForString";
-
 	@Autowired
 	private CommandDispatcher commandDispatcher;
 
@@ -46,7 +44,8 @@ public class GetLocationForStringCommandAltTest {
 		request.setCrs("EPSG:4326");
 		request.setLocation("booischot");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		// @extract-skip-start
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
@@ -69,7 +68,8 @@ public class GetLocationForStringCommandAltTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("booischot");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
@@ -89,7 +89,8 @@ public class GetLocationForStringCommandAltTest {
 		request.setCrs("EPSG:4326");
 		request.setLocation("London, GB");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
@@ -108,7 +109,8 @@ public class GetLocationForStringCommandAltTest {
 		request.setCrs("EPSG:900913");
 		request.setLocation("London, GB");
 
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		CommandResponse commandResponse = commandDispatcher.execute(GetLocationForStringRequest.COMMAND, request, null,
+				"en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;

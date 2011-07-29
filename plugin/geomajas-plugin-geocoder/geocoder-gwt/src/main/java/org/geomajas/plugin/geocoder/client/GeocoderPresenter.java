@@ -44,7 +44,6 @@ import java.util.List;
  */
 public class GeocoderPresenter implements SelectLocationHandler, SelectAlternativeHandler {
 
-	private static final String COMMAND = "command.geocoder.GetLocationForString";
 	private MapWidget map;
 	private GeocoderWidget geocoderWidget;
 	private Window altWindow;
@@ -74,7 +73,7 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	}
 
 	public void goToLocation(final String location) {
-		GwtCommand command = new GwtCommand(COMMAND);
+		GwtCommand command = new GwtCommand(GetLocationForStringRequest.COMMAND);
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
 		request.setCrs(map.getMapModel().getCrs());
 		request.setLocation(location);
