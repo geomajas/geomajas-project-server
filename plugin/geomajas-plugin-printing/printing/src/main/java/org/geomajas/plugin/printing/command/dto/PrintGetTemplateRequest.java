@@ -26,6 +26,12 @@ public class PrintGetTemplateRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Command name constant for request object.
+	 * @since 2.2.0
+	 */
+	public static final String COMMAND = "command.print.GetTemplate";
+
 	private PrintTemplateInfo template;
 
 	private String pageSize;
@@ -50,7 +56,7 @@ public class PrintGetTemplateRequest implements CommandRequest {
 	/**
 	 * Get size for the generated document (ISO).
 	 *
-	 * @return
+	 * @return get page size as ISO name (eg "A4")
 	 */
 	public String getPageSize() {
 		return pageSize;
@@ -59,7 +65,7 @@ public class PrintGetTemplateRequest implements CommandRequest {
 	/**
 	 * Set the size of the generated document.
 	 * 
-	 * @param pageSize
+	 * @param pageSize page size as ISO name (eg "A4")
 	 */
 	public void setPageSize(String pageSize) {
 		this.pageSize = pageSize;

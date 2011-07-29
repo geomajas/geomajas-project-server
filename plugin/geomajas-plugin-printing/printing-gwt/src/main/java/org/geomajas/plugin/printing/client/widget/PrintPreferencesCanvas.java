@@ -201,7 +201,7 @@ public class PrintPreferencesCanvas extends Canvas {
 		builder.setRasterDpi((Integer) rasterDpiSlider.getValue());
 		PrintTemplateInfo template = builder.buildTemplate();
 		request.setTemplate(template);
-		final GwtCommand command = new GwtCommand("command.print.GetTemplate");
+		final GwtCommand command = new GwtCommand(PrintGetTemplateRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
