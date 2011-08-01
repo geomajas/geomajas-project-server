@@ -651,7 +651,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * raster layer. This only makes sense if the WMS layer is based on some kind of feature store like a database.
 	 *
 	 * @param enableFeatureInfoSupport whether feature info support is enabled for this layer
+	 * @since 1.9.0
 	 */
+	@Api
 	public void setEnableFeatureInfoSupport(boolean enableFeatureInfoSupport) {
 		this.enableFeatureInfoSupport = enableFeatureInfoSupport;
 	}
