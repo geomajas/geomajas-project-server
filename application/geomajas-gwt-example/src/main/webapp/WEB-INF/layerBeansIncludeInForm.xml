@@ -106,7 +106,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="type" value="INTEGER" />
 
 					<!-- Do not include: -->
-					<property name="includedInForm" value="false" />
+					<property name="hidden" value="true" />
 
 				</bean>
 			</list>

@@ -186,7 +186,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * @return true if included, false otherwise
 	 */
 	protected boolean isIncluded(AttributeInfo info) {
-		return info.isIncludedInForm();
+		return !info.isHidden();
 	}
 
 	/**

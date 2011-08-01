@@ -32,7 +32,7 @@ public final class ToolbarRegistry {
 
 	static {
 		REGISTRY = new HashMap<String, ToolCreator>();
-		// Please keep registrations in aphabetical order
+		// Please keep registrations in alphabetical order
 		REGISTRY.put("EditMode", new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {

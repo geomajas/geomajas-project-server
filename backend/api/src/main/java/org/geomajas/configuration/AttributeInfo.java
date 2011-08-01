@@ -35,8 +35,6 @@ public class AttributeInfo extends AttributeBaseInfo {
 
 	private ValidatorInfo validator = new ValidatorInfo();
 
-	private boolean includedInForm = true;
-
 	private String formInputType;
 
 	/** Default constructor for GWT. */
@@ -117,19 +115,24 @@ public class AttributeInfo extends AttributeBaseInfo {
 	}
 
 	/**
-	 * Get whether the attribute should be hidden.
+	 * This value determines whether or not this attribute definition should be included in editing forms and other
+	 * widgets on the client. This is an optional value that only makes sense when the attribute in question is not
+	 * hidden.<br/>
+	 * The default value for this setting is 'false'.
 	 * 
-	 * @return true when hidden
+	 * @return true when hidden.
 	 */
 	public boolean isHidden() {
 		return hidden;
 	}
 
 	/**
-	 * Set whether the attribute should be hidden.
+	 * Determine whether or not this attribute definition should be included in editing forms and other widgets on the
+	 * client. This is an optional value that only makes sense when the attribute in question is not hidden.<br/>
+	 * The default value for this setting is 'false'.
 	 * 
 	 * @param hidden
-	 *            hidden status
+	 *            The new hidden status.
 	 */
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
@@ -152,31 +155,6 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 */
 	public void setValidator(ValidatorInfo validator) {
 		this.validator = validator;
-	}
-
-	/**
-	 * This value determines whether or not this attribute definition should be included in editing forms on the client.
-	 * This is an optional value that only makes sense when the attribute in question is not hidden.<br/>
-	 * The default value for this setting is 'true'.
-	 * 
-	 * @return Include in forms or not?
-	 * @since 1.9.0
-	 */
-	public boolean isIncludedInForm() {
-		return includedInForm;
-	}
-
-	/**
-	 * Determine whether or not this attribute definition should be included in editing forms on the client. This is an
-	 * optional value that only makes sense when the attribute in question is not hidden.<br/>
-	 * The default value for this setting is 'true'.
-	 * 
-	 * @param includedInForm
-	 *            The new value.
-	 * @since 1.9.0
-	 */
-	public void setIncludedInForm(boolean includedInForm) {
-		this.includedInForm = includedInForm;
 	}
 
 	/**

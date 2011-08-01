@@ -362,9 +362,9 @@
       <para>The <code>Geometry</code> implementations themselves do not have
       any setters methods. Instead the editing of geometries is done through a
       series of operations, all implementing the <code>
-          <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
-        </code> interface. This interface consists of only one method,
-      accepting a geometry, and returning the result as a new geometry.</para>
+      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+      </code> interface. This interface consists of only one method, accepting
+      a geometry, and returning the result as a new geometry.</para>
 
       <para>Geometries have no public constructors, so the creation of new
       geometries is done using a factory,
@@ -903,12 +903,11 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       requires your to specify an icon and a tool tip on creation.</para>
 
       <para><code>ToolbarAction</code> classes need to be registered in the
-      <code>
-          <code>ToolbarRegistry</code>
-        </code> class. This allows you to get an instance of the widget to put
-      in the tool bar. The tools which are part of the GWT face are statically
-      defined in the class. Other tools can be added (or overwritten) at
-      runtime before the map is initialised.</para>
+      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
+      get an instance of the widget to put in the tool bar. The tools which
+      are part of the GWT face are statically defined in the class. Other
+      tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable (XML
       configuration), it should implement the <code>ConfigurableAction</code>
@@ -934,12 +933,11 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       buttons.</para>
 
       <para><code>ToolbarModalAction</code> classes need to be registered in
-      the <code>
-          <code>ToolbarRegistry</code>
-        </code> class. This allows you to get an instance of the widget to put
-      in the tool bar. The tools which are always part of the GWT face are
-      statically defined in the class. Other tools can be added (or
-      overwritten) at runtime before the map is initialised.</para>
+      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
+      to get an instance of the widget to put in the tool bar. The tools which
+      are always part of the GWT face are statically defined in the class.
+      Other tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable, it should
       implement the <code>ConfigurableAction</code> interface. This contains a
@@ -1058,16 +1056,14 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
           <itemizedlist>
             <listitem>
-              <para><emphasis>
-                  <code>AbstractRectangleController</code>
-                </emphasis>: abstract controller that handles drawing a
+              <para><emphasis> <code>AbstractRectangleController</code>
+              </emphasis>: abstract controller that handles drawing a
               rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis>
-                  <code>AbstractSnappingController</code>
-                </emphasis>: abstract controller that allows snapping to be
+              <para><emphasis> <code>AbstractSnappingController</code>
+              </emphasis>: abstract controller that allows snapping to be
               enabled and disabled. When enabled, the returned points when
               asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
@@ -1078,9 +1074,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to disable the active controller, set a "null" value as
         controller:</para>
 
-        <para>
-          <programlisting>mapWidget.setController(null);</programlisting>
-        </para>
+        <para><programlisting>mapWidget.setController(null);</programlisting></para>
       </section>
 
       <section id="activeAndFallback">
@@ -1274,18 +1268,18 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <listitem>
         <para>The <code>createField(AttributeInfo)</code> and/or
         <code>createItem(AttributeInfo)</code> methods can be overridden to
-        customize form items or create your own</para>
+        customize form items or create your own.</para>
       </listitem>
 
       <listitem>
         <para>The <code>isIncluded(AttributeInfo)</code> method can be
-        overridden to omit certain attributes</para>
+        overridden to omit certain attributes.</para>
       </listitem>
 
       <listitem>
         <para>The <code>prepareForm(FormItemList, DataSource)</code> method
         can be overridden to set the layout properties of the form and add
-        additional items such as spacers or headers</para>
+        additional items such as spacers or headers.</para>
       </listitem>
     </itemizedlist>
 
@@ -1293,10 +1287,10 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     Therefore, an extra utility class has been added to create the individual
     form items that represent the feature's attributes. This utility class is
     the <code>AttributeFormFieldRegistry</code>. This registry keeps a
-    pre-defined set of form items definitions and data source fields (both are
-    necessary to successfully creates forms in SmartGWT) that map onto
+    pre-defined set of form item definitions and data source fields (both are
+    necessary to successfully create forms in SmartGWT) that map onto
     attribute types. For example, it will map a DateItem and
-    DataSourceDateField onto all attributes of type DATE. This registry can
+    DataSourceDateField onto all attributes of type "DATE". This registry can
     now be used to create the individual items within the form, or to register
     custom form items types to use in the forms.</para>
 
@@ -1338,7 +1332,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           to overwrite the default definitions, or a completely new type which
           can be configured in the attribute definitions with the
           <code>formInputType</code> field (see further in this section). This
-          key is a unique identifier.</para>
+          key is a unique identifier. In the example above: "myType".</para>
         </listitem>
 
         <listitem>
@@ -1355,23 +1349,23 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
 
         <listitem>
-          <para>A list of validators the can be attached to the underlying
+          <para>A list of validators that can be attached to the underlying
           <code>DataSourceField</code>. Any time the user changes values
-          within a FeatureForm, associated validators will be run. In the
-          example above no extra validators are attached to the
-          <code>DataSourceIntegerField</code>.</para>
+          within a FeatureForm, the associated validators will be executed. In
+          the example above no extra validators are attached to the
+          <code>DataSourceIntegerField (value null)</code>.</para>
         </listitem>
       </itemizedlist>
 
       <para>So the parameter explanation already told us how to overwrite the
       default attribute types: by registering a new type for an attribute type
       (i.e. <code>PrimitiveType.DATE.name()</code>). The other option, to
-      register completely new types, is done by using a new key. The only
-      thing left to do than is to associate attributes with this key. This can
-      be done within the vector layer XML configuration, where a field by the
-      name of "<code>formInputType</code>" can be added to an attribute
-      configuration. For more information on attribute configuration, visit
-      the <ulink
+      register completely new types, is done by using a new key
+      (i.e."myType"). The only thing left to do than is to associate
+      attributes with this key. This can be done within the vector layer XML
+      configuration, where a field by the name of "<code>formInputType</code>"
+      can be added to an attribute configuration. For more information on
+      attribute configuration, visit the configuration part in the <ulink
       url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#conf-vectorInfo">Geomajas
       developer guide</ulink>.</para>
     </section>
@@ -1391,7 +1385,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
   FormItem formItem = super.createItem(info); // call super to create the default item
   formItem.setWidth("*");
   if ("dateAttr".equals(info.getName())) {
-   // The data attribute will span all 4 columns:
+   // The date attribute will span all 4 columns:
    formItem.setColSpan(4);
   }
   return formItem;
@@ -1411,7 +1405,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 </programlisting></para>
 
       <para>The <code>createItem(AttributeInfo info)</code> method is
-      overridden to set the item width and make the data attribute span 4
+      overridden to set the item width and make the date attribute span 4
       columns. The <code>prepareForm(FormItemList formItems, DataSource
       source)</code> method is overridden to insert an extra spacer item
       before the string attribute and set the general column layout. The form

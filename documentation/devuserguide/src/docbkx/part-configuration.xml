@@ -530,7 +530,7 @@
 
         <note>
           <para>Since 1.9.0, it is possible to use the following 2 properties
-          in de attribute definitions:</para>
+          in the attribute definitions:</para>
 
           <itemizedlist>
             <listitem>
@@ -821,23 +821,23 @@
 
         <xi:include href="listing/ClientMapInfoPart2.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
-		
-		<para>It is possible to configure the pixels per tile that will
-		be used for rendering and retrieving tiles. These can be defined in two 
-		ways:</para>
-		
+
+        <para>It is possible to configure the pixels per tile that will be
+        used for rendering and retrieving tiles. These can be defined in two
+        ways:</para>
+
         <para><itemizedlist>
             <listitem>
-              <para>The MAP type will base the pixels per tile on the map dimensions.</para>
+              <para>The MAP type will base the pixels per tile on the map
+              dimensions.</para>
             </listitem>
 
             <listitem>
-              <para>The CONFIGURED type you configure the size of the tiles, this 
-              defaults to 256x256 pixels.</para>
+              <para>The CONFIGURED type you configure the size of the tiles,
+              this defaults to 256x256 pixels.</para>
             </listitem>
           </itemizedlist></para>
-		
-		
+
         <para>An other important aspect of the map is the scale configuration.
         The scale configuration allows to define a maximum scale beyond which
         the user is not allowed to zoom in. This is not needed for zooming out
