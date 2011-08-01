@@ -33,6 +33,8 @@ public class AttributeInfo extends AttributeBaseInfo {
 
 	private boolean hidden;
 
+	private boolean includeInForm;
+
 	private ValidatorInfo validator = new ValidatorInfo();
 
 	private String formInputType;
@@ -182,5 +184,26 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 */
 	public void setFormInputType(String formInputType) {
 		this.formInputType = formInputType;
+	}
+
+	/**
+	 * Do not use...
+	 * 
+	 * @param includeInForm
+	 * @deprecated Wrongfully added.
+	 * @since 1.9.0
+	 */
+	public void setIncludeInForm(boolean includeInForm) {
+		this.includeInForm = includeInForm;
+	}
+
+	/**
+	 * Do not use...
+	 * 
+	 * @deprecated Wrongfully added.
+	 * @since 1.9.0
+	 */
+	public boolean isIncludeInForm() {
+		return includeInForm;
 	}
 }
