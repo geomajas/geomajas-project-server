@@ -189,10 +189,12 @@ public class AttributeInfo extends AttributeBaseInfo {
 	/**
 	 * Do not use...
 	 * 
-	 * @param includeInForm
+	 * @param includedInForm
+	 *            new value.
 	 * @deprecated Wrongfully added.
 	 * @since 1.9.0
 	 */
+	@Deprecated
 	public void setIncludedInForm(boolean includedInForm) {
 		this.includedInForm = includedInForm;
 	}
@@ -200,9 +202,12 @@ public class AttributeInfo extends AttributeBaseInfo {
 	/**
 	 * Do not use...
 	 * 
+	 * @return Include in form value.
+	 * 
 	 * @deprecated Wrongfully added.
 	 * @since 1.9.0
 	 */
+	@Deprecated
 	public boolean isIncludedInForm() {
 		return includedInForm;
 	}
