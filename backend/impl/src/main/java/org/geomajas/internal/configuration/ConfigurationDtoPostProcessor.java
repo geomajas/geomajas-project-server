@@ -130,11 +130,11 @@ public class ConfigurationDtoPostProcessor {
 	private void postProcess(RasterLayer layer) throws LayerException {
 		RasterLayerInfo info = layer.getLayerInfo();
 		for (ScaleInfo scale : info.getZoomLevels()) {
-			// for raster layers we don't accept 1 : x notation !
+			// for raster layers we don't accept x:y notation !
 			if (scale.getDenominator() != 0) {
 				throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, "Raster layer " + layer.getId()
-						+ " has zoom level " + scale.getNumerator() + " : " + scale.getDenominator()
-						+ " in disallowed 1 : x notation");
+						+ " has zoom level " + scale.getNumerator() + ":" + scale.getDenominator()
+						+ " in disallowed x:y notation");
 			}
 			// add the resolution for deprecated api support
 			info.getResolutions().add(1. / scale.getPixelPerUnit());
