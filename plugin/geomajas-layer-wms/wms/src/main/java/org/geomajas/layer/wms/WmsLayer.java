@@ -152,7 +152,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * Get coordinate reference system for this layer.
 	 *
 	 * @return Coordinate reference system for this layer.
-	 * @deprecated use {@link org.geomajas.layer.LayerService#getCrs(Layer)}
+	 * @deprecated use {@link org.geomajas.layer.LayerService#getCrs(org.geomajas.layer.Layer)}
 	 */
 	@Deprecated
 	public CoordinateReferenceSystem getCrs() {
@@ -647,7 +647,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	/**
-	 * Set wheter the WMS layer should support feature info support. This allows to retrieve feature info from a
+	 * Set whether the WMS layer should support feature info support. This allows to retrieve feature info from a
 	 * raster layer. This only makes sense if the WMS layer is based on some kind of feature store like a database.
 	 *
 	 * @param enableFeatureInfoSupport whether feature info support is enabled for this layer
@@ -657,7 +657,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	/**
-	 * Get wheter the WMS layer should support feature info support.
+	 * Get whether the WMS layer should support feature info support.
 	 *
 	 * @return the enableFeatureInfoSupport true if feature info support is enabled
 	 */
