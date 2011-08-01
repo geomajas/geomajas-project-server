@@ -33,7 +33,7 @@ public class AttributeInfo extends AttributeBaseInfo {
 
 	private boolean hidden;
 
-	private boolean includeInForm;
+	private boolean includedInForm;
 
 	private ValidatorInfo validator = new ValidatorInfo();
 
@@ -193,8 +193,8 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * @deprecated Wrongfully added.
 	 * @since 1.9.0
 	 */
-	public void setIncludeInForm(boolean includeInForm) {
-		this.includeInForm = includeInForm;
+	public void setIncludedInForm(boolean includedInForm) {
+		this.includedInForm = includedInForm;
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * @deprecated Wrongfully added.
 	 * @since 1.9.0
 	 */
-	public boolean isIncludeInForm() {
-		return includeInForm;
+	public boolean isIncludedInForm() {
+		return includedInForm;
 	}
 }
