@@ -52,7 +52,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	/**
 	 * @param model
 	 * @param layer
-	 * @param search
+	 * @param searchRequest
 	 *            the search to use to retrieve features.
 	 */
 	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, CommandRequest searchRequest) {
@@ -96,8 +96,8 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 			GwtCommand command = new GwtCommand(ExportToCsvRequest.COMMAND);
 			command.setCommandRequest(exportRequest);
 			Deferred deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-				private static final String CONTENT_PRE = "<div style='margin-top: 20px; width: 200px; text-align: ce"
-						+ "nter'><b>";
+				private static final String CONTENT_PRE = "<div style='margin-top: 20px; width: 200px; text-align: "
+						+ "center'><b>";
 				private static final String CONTENT_POST = "</b><br />";
 				private static final String LINK_POST = "</div>";
 

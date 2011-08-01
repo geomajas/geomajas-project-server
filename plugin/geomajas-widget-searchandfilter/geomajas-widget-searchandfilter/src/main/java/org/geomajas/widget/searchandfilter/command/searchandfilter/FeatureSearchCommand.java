@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.command.Command;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -30,7 +31,6 @@ import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchRequest;
 import org.geomajas.widget.searchandfilter.command.dto.FeatureSearchResponse;
 import org.geomajas.widget.searchandfilter.service.DtoSearchConverterService;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +83,7 @@ public class FeatureSearchCommand implements Command<FeatureSearchRequest, Featu
 		}
 
 		String mapCrsCode = request.getMapCrs();
-		CoordinateReferenceSystem mapCrs = geoService.getCrs2(request.getMapCrs());
+		Crs mapCrs = geoService.getCrs2(request.getMapCrs());
 
 		Map<VectorLayer, Filter> filters = dtoSearchConverterService.dtoCriterionToFilters(request.getCriterion(),
 				mapCrs);

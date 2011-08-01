@@ -15,9 +15,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.command.dto.SearchByLocationRequest;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -28,7 +30,6 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 import org.geomajas.widget.searchandfilter.search.dto.GeometryCriterion;
 import org.geomajas.widget.searchandfilter.search.dto.OrCriterion;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,8 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 	@Autowired
 	private FilterService filterService;
 
+	@Autowired
+	private VectorLayerService vectorLayerService;
 	/**
 	 * 
 	 * @param criterion
@@ -69,7 +72,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 	 * @return
 	 * @throws GeomajasException
 	 */
-	public Map<VectorLayer, Filter> dtoCriterionToFilters(Criterion criterion, CoordinateReferenceSystem mapCrs)
+	public Map<VectorLayer, Filter> dtoCriterionToFilters(Criterion criterion, Crs mapCrs)
 			throws GeomajasException {
 		if (criterion != null) {
 			if (criterion instanceof AttributeCriterion) {
@@ -95,7 +98,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 	private Map<VectorLayer, Filter> dtoAttributeCriterionToFilters(AttributeCriterion criterion)
 			throws GeomajasException {
 		Map<VectorLayer, Filter> filters = new LinkedHashMap<VectorLayer, Filter>();
-		Filter f = null;
+		Filter f;
 		VectorLayer l = configurationService.getVectorLayer(criterion.getServerLayerId());
 		if (l == null) {
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, criterion.getServerLayerId());
@@ -116,8 +119,8 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 		return filters;
 	}
 
-	private Map<VectorLayer, Filter> dtoGeometryCriterionToFilters(GeometryCriterion criterion,
-			CoordinateReferenceSystem mapCrs) throws GeomajasException {
+	private Map<VectorLayer, Filter> dtoGeometryCriterionToFilters(GeometryCriterion criterion, Crs mapCrs)
+			throws GeomajasException {
 		if (mapCrs == null) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapCrs");
 		}
@@ -133,7 +136,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 			}
 
 			// Transform geometry to layer CRS:
-			Geometry layerGeometry = geoService.transform(mapGeom, mapCrs, vl.getCrs());
+			Geometry layerGeometry = geoService.transform(mapGeom, mapCrs, vectorLayerService.getCrs(vl));
 
 			switch (criterion.getOperator()) {
 				case SearchByLocationRequest.QUERY_INTERSECTS:
@@ -164,7 +167,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 		return filters;
 	}
 
-	private Map<VectorLayer, Filter> dtoAndCriterionToFilters(AndCriterion criterion, CoordinateReferenceSystem mapCrs)
+	private Map<VectorLayer, Filter> dtoAndCriterionToFilters(AndCriterion criterion, Crs mapCrs)
 			throws GeomajasException {
 		Map<VectorLayer, Filter> filters = new LinkedHashMap<VectorLayer, Filter>();
 		for (Criterion critter : criterion.getCriteria()) {
@@ -173,7 +176,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 		return filters;
 	}
 
-	private Map<VectorLayer, Filter> dtoOrCriterionToFilters(OrCriterion criterion, CoordinateReferenceSystem mapCrs)
+	private Map<VectorLayer, Filter> dtoOrCriterionToFilters(OrCriterion criterion, Crs mapCrs)
 			throws GeomajasException {
 		Map<VectorLayer, Filter> filters = new LinkedHashMap<VectorLayer, Filter>();
 		for (Criterion critter : criterion.getCriteria()) {
