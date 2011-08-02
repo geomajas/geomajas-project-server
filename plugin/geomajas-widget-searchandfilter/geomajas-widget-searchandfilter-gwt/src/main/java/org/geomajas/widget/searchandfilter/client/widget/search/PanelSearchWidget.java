@@ -8,37 +8,37 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.searchandfilter.client.widget.search;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
-import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
-import org.geomajas.widget.searchandfilter.search.dto.Criterion;
-import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.global.Api;
+import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
+import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A generic Searchwidget with common functionality.
+ * A generic {@link SearchWidget} implemented as a panel which can be embedded anywhere.
  * <p>
- * To build a Searchwidget combine this Searchwidget with a SearchPanel.
- * 
- * @see SearchWidgetRegistry.
+ * To build a search widget combine this search widget with a {@link SearchPanel}.
+ *
+ * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
-public class BasicSearchWidget extends DockableWindow implements SearchWidget {
+@Api
+public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	private static final String BTN_FAVOURITES_IMG = "[ISOMORPHIC]/geomajas/osgeo/bookmark_new.png";
 	private static final String BTN_SAVE_IMG = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
@@ -47,36 +47,28 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 	private static final String BTN_RESET_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 	private static final String BTN_PROCESSING = "[ISOMORPHIC]/geomajas/ajax-loader.gif";
 
-	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
-	private final List<SearchRequestHandler> searchHandlers = new ArrayList<SearchWidget.SearchRequestHandler>();
-	private final List<SaveRequestHandler> saveHandlers = new ArrayList<SearchWidget.SaveRequestHandler>();
-	private final List<FavouriteRequestHandler> favouriteHandlers = 
-		new ArrayList<SearchWidget.FavouriteRequestHandler>();
+	private final List<SearchRequestHandler> searchHandlers = new ArrayList<SearchRequestHandler>();
+	private final List<SaveRequestHandler> saveHandlers = new ArrayList<SaveRequestHandler>();
+	private final List<FavouriteRequestHandler> favouriteHandlers =
+		new ArrayList<FavouriteRequestHandler>();
 
-	private IButton favouritesSBtn;
-	private IButton favouritesRBtn;
 	private IButton searchBtn;
-	private IButton resetBtn;
-	private IButton saveBtn;
-	private IButton cancelBtn;
 	private HLayout searchButtonBar;
 	private HLayout saveButtonBar;
 	private SearchPanel searchPanel;
 	private String widgetId;
 	private String name;
 
-	private boolean hideAfterSearch;
-
 	/**
-	 * @param mapWidget
-	 * @param searchWidgetId
+	 * @param widgetId
 	 *            needed to find the widget in the SearchWidgetRegistry.
-	 * @param searchWidgetName
+	 * @param name
 	 *            name of the widget to show in window title and on buttons.
 	 * @param searchPanel
 	 *            your specific implementation of a search
 	 */
-	public BasicSearchWidget(String widgetId, String name, final SearchPanel searchPanel) {
+	public PanelSearchWidget(String widgetId, String name, final SearchPanel searchPanel) {
+		super(10);
 		if (widgetId == null || searchPanel == null) {
 			throw new IllegalArgumentException("All parameters are required");
 		}
@@ -84,20 +76,18 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 		this.searchPanel = searchPanel;
 		this.widgetId = widgetId;
 		this.name = name;
-		this.setTitle(name);
-		this.setAutoCenter(true);
-		this.setKeepInParentRect(true);
 
-		VLayout layout = new VLayout(10);
-		layout.setWidth100();
-		layout.setHeight100();
-		layout.setMargin(10);
+		setWidth100();
+		setHeight100();
+		setMargin(10);
 
 		searchButtonBar = new HLayout(10);
 		saveButtonBar = new HLayout(10);
 		saveButtonBar.setVisible(false);
 
-		favouritesSBtn = new IButton(messages.searchWidgetAddToFavourites());
+		SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
+
+		IButton favouritesSBtn = new IButton(messages.searchWidgetAddToFavourites());
 		favouritesSBtn.setIcon(BTN_FAVOURITES_IMG);
 		favouritesSBtn.setAutoFit(true);
 		favouritesSBtn.setShowDisabledIcon(false);
@@ -107,7 +97,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 				onAddToFavourites();
 			}
 		});
-		favouritesRBtn = new IButton(messages.searchWidgetAddToFavourites());
+		IButton favouritesRBtn = new IButton(messages.searchWidgetAddToFavourites());
 		favouritesRBtn.setIcon(BTN_FAVOURITES_IMG);
 		favouritesRBtn.setAutoFit(true);
 		favouritesRBtn.setShowDisabledIcon(false);
@@ -127,7 +117,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 				onSearch();
 			}
 		});
-		resetBtn = new IButton(messages.searchWidgetReset());
+		IButton resetBtn = new IButton(messages.searchWidgetReset());
 		resetBtn.setIcon(BTN_RESET_IMG);
 		resetBtn.setAutoFit(true);
 		resetBtn.setShowDisabledIcon(false);
@@ -137,7 +127,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 				searchPanel.reset();
 			}
 		});
-		saveBtn = new IButton(messages.searchWidgetSave());
+		IButton saveBtn = new IButton(messages.searchWidgetSave());
 		saveBtn.setIcon(BTN_SAVE_IMG);
 		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
@@ -147,7 +137,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 				onSave();
 			}
 		});
-		cancelBtn = new IButton(messages.searchWidgetCancel());
+		IButton cancelBtn = new IButton(messages.searchWidgetCancel());
 		cancelBtn.setIcon(BTN_CANCEL_IMG);
 		cancelBtn.setAutoFit(true);
 		cancelBtn.setShowDisabledIcon(false);
@@ -159,17 +149,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 			}
 		});
 
-		addCloseClickHandler(new CloseClickHandler() {
-
-			public void onCloseClick(CloseClientEvent event) {
-				hide();
-				destroy();
-			}
-		});
-
-		// ----------------------------------------------------------
-
-		layout.addMember(searchPanel);
+		addMember(searchPanel);
 		LayoutSpacer lss = new LayoutSpacer();
 		LayoutSpacer lsr = new LayoutSpacer();
 		lss.setWidth("*");
@@ -184,7 +164,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 		if (searchPanel.canBeReset()) {
 			searchButtonBar.addMember(resetBtn);
 		}
-		layout.addMember(searchButtonBar);
+		addMember(searchButtonBar);
 
 		saveButtonBar.setWidth(searchPanel.getWidthAsString());
 		if (searchPanel.canAddToFavourites()) {
@@ -193,10 +173,7 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 		saveButtonBar.addMember(lss);
 		saveButtonBar.addMember(saveBtn);
 		saveButtonBar.addMember(cancelBtn);
-		layout.addMember(saveButtonBar);
-
-		this.addItem(layout);
-		this.setAutoSize(true);
+		addMember(saveButtonBar);
 	}
 
 	// ----------------------------------------------------------
@@ -207,19 +184,6 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 
 	public String getName() {
 		return name;
-	}
-
-	public boolean isHideAfterSearch() {
-		return hideAfterSearch;
-	}
-
-	/**
-	 * Should the widget be hidden after a search or stay open for a new search?
-	 * 
-	 * @param hideAfterSearch
-	 */
-	public void setHideAfterSearch(boolean hideAfterSearch) {
-		this.hideAfterSearch = hideAfterSearch;
 	}
 
 	public void showForSearch() {
@@ -294,17 +258,13 @@ public class BasicSearchWidget extends DockableWindow implements SearchWidget {
 	// -- buttonActions --
 	// ----------------------------------------------------------
 
-	private void onSearch() {
+	void onSearch() {
 		if (searchPanel.validate()) {
 			setVectorLayerOnWhichSearchIsHappeningVisible();
 			Criterion critter = searchPanel.getFeatureSearchCriterion();
 			SearchRequestEvent sre = new SearchRequestEvent(this, critter);
 			for (SearchRequestHandler h : searchHandlers) {
 				h.onSearchRequested(sre);
-			}
-			if (hideAfterSearch) {
-				hide();
-				destroy();
 			}
 		}
 	}

@@ -38,6 +38,6 @@ public class CombinedSearchCreator implements SearchWidgetCreator {
 	public SearchWidget createInstance(MapWidget mapWidget) {
 		CombinedSearchPanel csp = new CombinedSearchPanel(mapWidget);
 		csp.initializeListUseAll();
-		return new BasicSearchWidget(IDENTIFIER, getSearchWidgetName(), csp);
+		return new DockableWindowSearchWidget(IDENTIFIER, getSearchWidgetName(), csp);
 	}
 }
