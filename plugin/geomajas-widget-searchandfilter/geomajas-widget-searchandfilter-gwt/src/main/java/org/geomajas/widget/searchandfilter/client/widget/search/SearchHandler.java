@@ -13,8 +13,8 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * @see geomajas.SearchHandler.
- * @see SearchWidgetRegistry.
+ * @see {@link org.geomajas.gwt.client.widget.event.SearchHandler}
+ * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  *
  */
@@ -23,7 +23,7 @@ public interface SearchHandler extends EventHandler {
 	/**
 	 * Called before search is started.
 	 * TODO might add some cancel possibilities
-	 * @param event
+	 * @param event event
 	 */
 	void onSearchStart(SearchEvent event);
 
@@ -38,7 +38,7 @@ public interface SearchHandler extends EventHandler {
 
 	/**
 	 * Called after onSearchDone, or in case of error.
-	 * @param event
+	 * @param event event
 	 */
 	void onSearchEnd(SearchEvent event);
 }

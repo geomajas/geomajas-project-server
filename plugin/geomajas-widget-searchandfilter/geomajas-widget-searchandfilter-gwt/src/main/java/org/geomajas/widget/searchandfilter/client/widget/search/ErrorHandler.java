@@ -13,7 +13,7 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 import org.geomajas.widget.searchandfilter.client.util.Callback;
 
 /**
- * @see SearchWidgetRegistry.
+ * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  */
 public interface ErrorHandler extends Callback {

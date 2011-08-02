@@ -190,7 +190,7 @@ public class CombinedSearchPanel extends SearchPanel {
 	 * Use this method if you do not use the SearchWidgetRegistry or want to
 	 * limit the number of widgets.
 	 *
-	 * @param searchWidgets
+	 * @param searchWidgets search widgets
 	 */
 	public void initializeList(Collection<SearchWidget> searchWidgets) {
 		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
@@ -203,10 +203,8 @@ public class CombinedSearchPanel extends SearchPanel {
 	/**
 	 * Which searches can you use to combine?
 	 * <p>
-	 * Use this method if you use the SearchWidgetRegistry and want to use all
-	 * searches in it (do not forget to add them to the registry first.
-	 *
-	 * @param searchWidgets
+	 * Use this method if you use the {@link SearchWidgetRegistry} and want to use all
+	 * searches in it (do not forget to add them to the registry first).
 	 */
 	public void initializeListUseAll() {
 		selectSearch.setValueMap(SearchWidgetRegistry.getSearchWidgetMapping());
@@ -233,16 +231,13 @@ public class CombinedSearchPanel extends SearchPanel {
 	}
 
 	public static boolean canHandle(Criterion criterion) {
-		if (criterion == null) {
-			return false;
-		}
-		return (criterion instanceof OrCriterion || criterion instanceof AndCriterion);
+		return criterion != null && (criterion instanceof OrCriterion || criterion instanceof AndCriterion);
 	}
 
 	// ----------------------------------------------------------
 
 	/**
-	 * Used by Grid.
+	 * Record representation for grid.
 	 */
 	private static class SearchListRecord extends ListGridRecord {
 

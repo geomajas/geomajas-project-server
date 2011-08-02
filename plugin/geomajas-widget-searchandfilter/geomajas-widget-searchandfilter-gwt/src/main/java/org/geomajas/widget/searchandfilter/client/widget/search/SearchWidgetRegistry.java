@@ -27,11 +27,11 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 
 /**
- * Registry of SearchWidgets.
+ * Registry of {@link SearchWidget}s.
  * <p>
  * TODO explain architecture.
  * <p>
- * Caveat: Please keep in mind that searchwidgets always work on a specific map.
+ * Caveat: Please keep in mind that search widgets always work on a specific map.
  * As there is only one SearchController, which also operates on a specific map, so
  * the search system can only work with one map.
  *
@@ -43,10 +43,10 @@ public final class SearchWidgetRegistry {
 
 	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 
-	private static SearchController SEARCHCONTROLLER;
-	private static FavouritesController FAVOURITESCONTROLLER;
+	private static SearchController SEARCH_CONTROLLER;
+	private static FavouritesController FAVOURITES_CONTROLLER;
 
-	private static MapWidget MAPWIDGET;
+	private static MapWidget MAP_WIDGET;
 
 	private SearchWidgetRegistry() {
 		// utility class, hide constructor
@@ -57,11 +57,11 @@ public final class SearchWidgetRegistry {
 	// ----------------------------------------------------------
 
 	public static void initialize(MapWidget mapWidget, SearchHandler searchResultGrid, boolean modalSearch) {
-		MAPWIDGET = mapWidget;
-		SEARCHCONTROLLER = new SearchController(mapWidget, modalSearch);
-		FAVOURITESCONTROLLER = new FavouritesController();
+		MAP_WIDGET = mapWidget;
+		SEARCH_CONTROLLER = new SearchController(mapWidget, modalSearch);
+		FAVOURITES_CONTROLLER = new FavouritesController();
 		if (searchResultGrid != null) {
-			SEARCHCONTROLLER.addSearchHandler(searchResultGrid);
+			SEARCH_CONTROLLER.addSearchHandler(searchResultGrid);
 		}
 	}
 
@@ -75,31 +75,31 @@ public final class SearchWidgetRegistry {
 
 	public static void addSearchHandler(SearchHandler handler) {
 		if (checkState()) {
-			SEARCHCONTROLLER.addSearchHandler(handler);
+			SEARCH_CONTROLLER.addSearchHandler(handler);
 		}
 	}
 
 	public static void removeSearchHandler(SearchHandler handler) {
 		if (checkState()) {
-			SEARCHCONTROLLER.removeSearchHandler(handler);
+			SEARCH_CONTROLLER.removeSearchHandler(handler);
 		}
 	}
 
 	public static void addFavouriteChangeHandler(FavouriteChangeHandler handler) {
 		if (checkState()) {
-			FAVOURITESCONTROLLER.addFavouriteChangeHandler(handler);
+			FAVOURITES_CONTROLLER.addFavouriteChangeHandler(handler);
 		}
 	}
 
 	public static void removeFavouriteChangeHandler(FavouriteChangeHandler handler) {
 		if (checkState()) {
-			FAVOURITESCONTROLLER.removeFavouriteChangeHandler(handler);
+			FAVOURITES_CONTROLLER.removeFavouriteChangeHandler(handler);
 		}
 	}
 
 	public static FavouritesController getFavouritesController() {
 		if (checkState()) {
-			return FAVOURITESCONTROLLER;
+			return FAVOURITES_CONTROLLER;
 		} else {
 			return null;
 		}
@@ -114,15 +114,16 @@ public final class SearchWidgetRegistry {
 	}
 
 	public static SearchWidget getSearchWidgetInstance(String searchWidgetId) {
-		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(MAPWIDGET);
-		sw.addSearchRequestHandler(SEARCHCONTROLLER);
-		sw.addFavouriteRequestHandler(FAVOURITESCONTROLLER);
+		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(MAP_WIDGET);
+		sw.addSearchRequestHandler(SEARCH_CONTROLLER);
+		sw.addFavouriteRequestHandler(FAVOURITES_CONTROLLER);
 		return sw;
 	}
 
 	/**
-	 * Get a list with all the ids + names of the searchwidgets in the repo.
-	 * @return
+	 * Get a list with all the ids + names of the search widgets in the registry.
+	 *
+	 * @return list of widget id/name pairs
 	 */
 	public static LinkedHashMap<String, String> getSearchWidgetMapping() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
@@ -133,7 +134,7 @@ public final class SearchWidgetRegistry {
 	}
 
 	public static boolean isInitialized() {
-		return (SEARCHCONTROLLER != null);
+		return (SEARCH_CONTROLLER != null);
 	}
 
 	private static boolean checkState() {

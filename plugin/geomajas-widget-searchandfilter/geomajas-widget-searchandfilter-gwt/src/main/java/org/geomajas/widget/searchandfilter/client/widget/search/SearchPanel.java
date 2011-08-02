@@ -18,7 +18,7 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 import com.smartgwt.client.widgets.Canvas;
 
 /**
- * @see SearchWidgetRegistry.
+ * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  */
 public abstract class SearchPanel extends Canvas {
@@ -45,7 +45,8 @@ public abstract class SearchPanel extends Canvas {
 
 	/**
 	 * Should the "Add To Favourites" button be shown?
-	 * @return
+	 *
+	 * @return true when "add to favourites" button is visible
 	 */
 	public boolean canAddToFavourites() {
 		return true;
@@ -53,7 +54,8 @@ public abstract class SearchPanel extends Canvas {
 
 	/**
 	 * Should the "Reset" button be shown?
-	 * @return
+	 *
+	 * @return true when reset button is visible
 	 */
 	public boolean canBeReset() {
 		return true;
@@ -78,10 +80,15 @@ public abstract class SearchPanel extends Canvas {
 	 * Called to restore the settings previously requested through
 	 * getSettings().
 	 *
-	 * @param settings
+	 * @param featureSearch settings
 	 */
 	public abstract void initialize(Criterion featureSearch);
 
+	/**
+	 * Get the map widget to which this search panel applies.
+	 *
+	 * @return map widget
+	 */
 	public MapWidget getMapWidget() {
 		return mapWidget;
 	}

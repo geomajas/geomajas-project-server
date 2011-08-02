@@ -14,9 +14,9 @@ import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesContro
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 /**
- * Interface with common methods needed to build a SearchWidget.
+ * Interface with common methods needed to build a search widget.
  *
- * @see SearchWidgetRegistry.
+ * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  */
 public interface SearchWidget {
@@ -24,19 +24,19 @@ public interface SearchWidget {
 	String getSearchWidgetId();
 
 	/**
-	 * Name of the searchwidget (generally I18N name).
+	 * Name of the search widget (generally I18N name).
 	 *
 	 * @return name of search (to be used on buttons and such).
 	 */
 	String getName();
 
 	/**
-	 * Show your widget for userinteraction, with a searchbutton.
+	 * Show your widget for user interaction, with a search button.
 	 */
 	void showForSearch();
 
 	/**
-	 * Show your widget for userinteraction, with a savebutton.
+	 * Show your widget for user interaction, with a save button.
 	 * @param handler A one-off callback to use when the user presses Save.
 	 */
 	void showForSave(SaveRequestHandler handler);
@@ -54,7 +54,7 @@ public interface SearchWidget {
 	void removeFavouriteRequestHandler(FavouriteRequestHandler handler);
 
 	/**
-	 * Conveniencemethod so you don't have to add an eventlistener to the searchsystem.
+	 * Convenience method so you don't have to add an event listener to the search system.
 	 * <p>
 	 * Called when search starts.
 	 * <p>
@@ -64,7 +64,7 @@ public interface SearchWidget {
 	void onSearchStart();
 
 	/**
-	 * Conveniencemethod so you don't have to add an eventlistener to the searchsystem.
+	 * Convenience method so you don't have to add an event listener to the search system.
 	 * <p>
 	 * Called when search finished and result was processed.
 	 * <p>
@@ -75,7 +75,7 @@ public interface SearchWidget {
 	/**
 	 * Configure the widget with previously saved settings.
 	 *
-	 * @param settings
+	 * @param settings settings
 	 */
 	void initialize(Criterion settings);
 
@@ -122,7 +122,7 @@ public interface SearchWidget {
 	}
 
 	/**
-	 * Event used in SearchWidgetHandlers.
+	 * Event used in {@link SearchWidget} handlers.
 	 * 
 	 * @author Kristof Heirwegh
 	 */
@@ -145,7 +145,7 @@ public interface SearchWidget {
 	}
 
 	/**
-	 * Event used in SearchWidgetHandlers.
+	 * Event used in {@link SearchWidget} handlers.
 	 * 
 	 * @author Kristof Heirwegh
 	 */
@@ -156,7 +156,7 @@ public interface SearchWidget {
 	}
 
 	/**
-	 * Event used in SearchWidgetHandlers.
+	 * Event used in {@link SearchWidget} handlers.
 	 * 
 	 * @author Kristof Heirwegh
 	 */

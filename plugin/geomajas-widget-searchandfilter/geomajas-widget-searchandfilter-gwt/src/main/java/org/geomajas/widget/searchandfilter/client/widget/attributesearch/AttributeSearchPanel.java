@@ -54,9 +54,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
 /**
- * Searchpanel using (non geometry) attributes.
+ * Search panel using (non geometry) attributes.
  *
- * @see SearchWidgetRegistry.
+ * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  */
 public class AttributeSearchPanel extends SearchPanel {
