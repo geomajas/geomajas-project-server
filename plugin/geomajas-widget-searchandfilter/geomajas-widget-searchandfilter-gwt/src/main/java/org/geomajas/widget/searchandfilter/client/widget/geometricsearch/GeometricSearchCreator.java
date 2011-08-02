@@ -12,7 +12,7 @@ package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.BasicSearchWidget;
+import org.geomajas.widget.searchandfilter.client.widget.search.DockableWindowSearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetCreator;
 
@@ -50,6 +50,6 @@ public class GeometricSearchCreator implements SearchWidgetCreator {
 	}
 
 	public SearchWidget createInstance(MapWidget mapWidget) {
-		return new BasicSearchWidget(IDENTIFIER, getSearchWidgetName(), creator.createInstance(mapWidget));
+		return new DockableWindowSearchWidget(IDENTIFIER, getSearchWidgetName(), creator.createInstance(mapWidget));
 	}
 }

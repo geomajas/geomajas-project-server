@@ -12,7 +12,7 @@ package org.geomajas.widget.searchandfilter.client.widget.searchfavourites;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.BasicSearchWidget;
+import org.geomajas.widget.searchandfilter.client.widget.search.DockableWindowSearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetCreator;
 
@@ -40,7 +40,7 @@ public class SearchFavouritesListCreator implements SearchWidgetCreator {
 
 	public SearchWidget createInstance(MapWidget mapWidget) {
 		SearchFavouritesListPanel csp = new SearchFavouritesListPanel(mapWidget);
-		BasicSearchWidget bsw = new BasicSearchWidget(IDENTIFIER, getSearchWidgetName(), csp);
+		DockableWindowSearchWidget bsw = new DockableWindowSearchWidget(IDENTIFIER, getSearchWidgetName(), csp);
 		csp.setSearchWidget(bsw);
 		return bsw;
 	}

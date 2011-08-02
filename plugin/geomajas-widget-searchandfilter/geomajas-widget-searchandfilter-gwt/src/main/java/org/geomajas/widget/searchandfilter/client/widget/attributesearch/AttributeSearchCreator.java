@@ -12,7 +12,7 @@ package org.geomajas.widget.searchandfilter.client.widget.attributesearch;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.BasicSearchWidget;
+import org.geomajas.widget.searchandfilter.client.widget.search.DockableWindowSearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetCreator;
 
@@ -39,6 +39,6 @@ public class AttributeSearchCreator implements SearchWidgetCreator {
 	}
 
 	public SearchWidget createInstance(MapWidget mapWidget) {
-		return new BasicSearchWidget(IDENTIFIER, getSearchWidgetName(), new AttributeSearchPanel(mapWidget));
+		return new DockableWindowSearchWidget(IDENTIFIER, getSearchWidgetName(), new AttributeSearchPanel(mapWidget));
 	}
 }
