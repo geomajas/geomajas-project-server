@@ -60,6 +60,8 @@ public class AttributeCriterionPane extends Canvas {
 	/**
 	 * Create a search criterion pane, for the given vector layer. The layer is required, as it's list of attribute
 	 * definitions are a vital part of the search criteria.
+	 *
+	 * @param layer layer to create criterion for
 	 */
 	public AttributeCriterionPane(VectorLayer layer) {
 		super();
@@ -72,7 +74,11 @@ public class AttributeCriterionPane extends Canvas {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/** Validate the value that the user filled in. If it is not valid, don't ask for the SearchCriterion. */
+	/**
+	 * Validate the value that the user filled in. If it is not valid, don't ask for the SearchCriterion.
+	 *
+	 * @return true when user entered invalid value
+	 */
 	public boolean hasErrors() {
 		return valueItem.getForm().hasErrors();
 	}
@@ -103,6 +109,8 @@ public class AttributeCriterionPane extends Canvas {
 
 	/**
 	 * Return the actual search criterion object, or null if not all fields have been properly filled.
+	 *
+	 * @return search criterion
 	 */
 	public AttributeCriterion getSearchCriterion() {
 		Object operator = operatorSelect.getValue();
@@ -176,30 +184,12 @@ public class AttributeCriterionPane extends Canvas {
 		if (attributeInfo != null && attributeInfo instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttributeInfo primitive = (PrimitiveAttributeInfo) attributeInfo;
 			switch (primitive.getType()) {
-				case BOOLEAN:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals() };
 				case SHORT:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case INTEGER:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case LONG:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case FLOAT:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case DOUBLE:
+				case CURRENCY:
 					return new String[] { I18nProvider.getSearch().operatorEquals(),
 							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
 							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
@@ -207,20 +197,15 @@ public class AttributeCriterionPane extends Canvas {
 				case DATE:
 					return new String[] { I18nProvider.getSearch().operatorEquals(),
 							I18nProvider.getSearch().operatorBefore(), I18nProvider.getSearch().operatorAfter() };
-				case CURRENCY:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case STRING:
-					return new String[] { I18nProvider.getSearch().operatorContains(),
-							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
 				case URL:
-					return new String[] { I18nProvider.getSearch().operatorContains(),
-							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
 				case IMGURL:
 					return new String[] { I18nProvider.getSearch().operatorContains(),
 							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
+				case BOOLEAN:
+				default:
+					return new String[] { I18nProvider.getSearch().operatorEquals(),
+							I18nProvider.getSearch().operatorNotEquals() };
 			}
 		}
 		return new String[] { I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
@@ -297,7 +282,7 @@ public class AttributeCriterionPane extends Canvas {
 		for (AttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
 			labels.add(attribute.getLabel());
 		}
-		attributeSelect.setValueMap(labels.toArray(new String[0]));
+		attributeSelect.setValueMap(labels.toArray(new String[labels.size()]));
 		attributeSelect.setHint(I18nProvider.getSearch().gridChooseAttribute());
 		attributeSelect.setShowHintInField(true);
 

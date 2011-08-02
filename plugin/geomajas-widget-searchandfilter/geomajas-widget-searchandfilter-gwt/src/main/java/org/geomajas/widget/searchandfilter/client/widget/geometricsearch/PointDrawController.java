@@ -32,7 +32,7 @@ import com.google.gwt.user.client.Event;
  * 
  * @author Bruce Palmkoeck
  */
-public class PointDrawController extends FreeDrawingController {
+public class PointDrawController extends AbstractFreeDrawingController {
 
 	protected TransactionGeomIndex index;
 
@@ -48,7 +48,7 @@ public class PointDrawController extends FreeDrawingController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public PointDrawController(MapWidget mapWidget, FreeDrawingController parent) {
+	public PointDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
 		super(mapWidget, parent);
 		factory = new GeometryFactory(mapWidget.getMapModel().getSrid(), mapWidget.getMapModel().getPrecision());
 		geometry = factory.createPoint(new Coordinate());

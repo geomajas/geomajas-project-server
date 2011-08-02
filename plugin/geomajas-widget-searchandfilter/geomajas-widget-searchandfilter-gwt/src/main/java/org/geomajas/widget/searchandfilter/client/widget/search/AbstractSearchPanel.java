@@ -21,12 +21,12 @@ import com.smartgwt.client.widgets.Canvas;
  * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  */
-public abstract class SearchPanel extends Canvas {
+public abstract class AbstractSearchPanel extends Canvas {
 
 	protected MapWidget mapWidget;
 	protected GeometryUpdateHandler handler;
 
-	public SearchPanel(MapWidget mapWidget) {
+	public AbstractSearchPanel(MapWidget mapWidget) {
 		super();
 		if (mapWidget == null) {
 			throw new IllegalArgumentException("Please provide a mapWidget.");

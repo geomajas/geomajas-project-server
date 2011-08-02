@@ -66,6 +66,9 @@ public final class SearchWidgetRegistry {
 	}
 
 	/**
+	 * Initialize search registry.
+	 *
+	 * @param mapWidget map widget for registry
 	 * @param searchResultGrid
 	 *            can be null, add your own handler to be notified then
 	 */
@@ -141,8 +144,10 @@ public final class SearchWidgetRegistry {
 		if (isInitialized()) {
 			return true;
 		} else {
-			SC.logWarn("SearchWidgetRegistry has not been initialized. call initialize from your entrypoint on program "
-					+ "startup.");
+			String msg = "SearchWidgetRegistry has not been initialized. " +
+					"Call initialize from your entry point on program startup.";
+			SC.logWarn(msg);
+			GWT.log(msg);
 			return false;
 		}
 	}

@@ -25,7 +25,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureSearch.LogicalOperator;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.SearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.AbstractSearchPanel;
 import org.geomajas.widget.searchandfilter.search.dto.AndCriterion;
 import org.geomajas.widget.searchandfilter.search.dto.AttributeCriterion;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
@@ -59,7 +59,7 @@ import com.smartgwt.client.widgets.layout.VStack;
  * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
  * @author Kristof Heirwegh
  */
-public class AttributeSearchPanel extends SearchPanel {
+public class AttributeSearchPanel extends AbstractSearchPanel {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 

@@ -47,7 +47,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * @author Kristof Heirwegh
  */
-public class CombinedSearchPanel extends SearchPanel {
+public class CombinedSearchPanel extends AbstractSearchPanel {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 

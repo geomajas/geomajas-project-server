@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * A generic {@link SearchWidget} implemented as a panel which can be embedded anywhere.
  * <p>
- * To build a search widget combine this search widget with a {@link SearchPanel}.
+ * To build a search widget combine this search widget with a {@link AbstractSearchPanel}.
  *
  * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
  * @author Kristof Heirwegh
@@ -55,7 +55,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	private IButton searchBtn;
 	private HLayout searchButtonBar;
 	private HLayout saveButtonBar;
-	private SearchPanel searchPanel;
+	private AbstractSearchPanel searchPanel;
 	private String widgetId;
 	private String name;
 
@@ -67,7 +67,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	 * @param searchPanel
 	 *            your specific implementation of a search
 	 */
-	public PanelSearchWidget(String widgetId, String name, final SearchPanel searchPanel) {
+	public PanelSearchWidget(String widgetId, String name, final AbstractSearchPanel searchPanel) {
 		super(10);
 		if (widgetId == null || searchPanel == null) {
 			throw new IllegalArgumentException("All parameters are required");

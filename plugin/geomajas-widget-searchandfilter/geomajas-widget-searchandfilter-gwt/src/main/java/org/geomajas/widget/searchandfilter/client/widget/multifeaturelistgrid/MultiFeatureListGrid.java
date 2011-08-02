@@ -145,7 +145,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	/**
 	 * @param layer
 	 * @param features
-	 * @param criterion
+	 * @param csvExportData
 	 *            will be used by CSV Export to retrieve features.
 	 */
 	public void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData) {
@@ -158,7 +158,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 
 	/**
 	 * @param result
-	 * @param criterion
+	 * @param csvExportData
 	 *            will be used by CSV Export to retrieve features.
 	 */
 	public void addFeatures(Map<VectorLayer, List<Feature>> result, Object csvExportData) {
@@ -251,7 +251,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			// Do not forget to update
 			t.setExportToCsvHandler(handler);
 		}
-		return (FeatureListGridTab) t;
+		return t;
 	}
 
 	private void showFeatureDetailWindow(final Feature feature) {
@@ -317,7 +317,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			showButton.addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					showFeatureDetail(mapWidget);
+					showFeatureDetail();
 				}
 			});
 			exportButton.addClickHandler(new ClickHandler() {
@@ -342,7 +342,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			featureListGrid = new FeatureListGrid(mapWidget.getMapModel(), new DoubleClickHandler() {
 
 				public void onDoubleClick(DoubleClickEvent event) {
-					showFeatureDetail(mapWidget);
+					showFeatureDetail();
 				}
 			});
 			featureListGrid.setLayer(layer);
@@ -440,7 +440,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			}
 		}
 
-		private void showFeatureDetail(final MapWidget mapWidget) {
+		private void showFeatureDetail() {
 			ListGridRecord selected = featureListGrid.getSelectedRecord();
 			if (selected != null) {
 				String featureId = selected.getAttribute("featureId");

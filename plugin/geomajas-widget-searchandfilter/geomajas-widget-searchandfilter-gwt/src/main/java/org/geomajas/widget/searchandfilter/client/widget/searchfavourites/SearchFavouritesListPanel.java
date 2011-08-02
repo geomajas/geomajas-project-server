@@ -24,7 +24,7 @@ import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchCr
 import org.geomajas.widget.searchandfilter.client.widget.search.CombinedSearchPanel;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteChangeHandler;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
-import org.geomajas.widget.searchandfilter.client.widget.search.SearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.AbstractSearchPanel;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestHandler;
@@ -65,7 +65,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  * @author Kristof Heirwegh
  */
-public class SearchFavouritesListPanel extends SearchPanel implements FavouriteChangeHandler {
+public class SearchFavouritesListPanel extends AbstractSearchPanel implements FavouriteChangeHandler {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 

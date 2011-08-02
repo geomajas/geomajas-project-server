@@ -265,7 +265,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		}
 	}
 
-	private void startDrawing(FreeDrawingController controller) {
+	private void startDrawing(AbstractFreeDrawingController controller) {
 		originalController = mapWidget.getController();
 		drawController.setController(controller);
 		mapWidget.setController(drawController);

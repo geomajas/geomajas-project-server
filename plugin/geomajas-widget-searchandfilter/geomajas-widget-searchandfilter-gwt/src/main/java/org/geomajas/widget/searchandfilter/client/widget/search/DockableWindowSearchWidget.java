@@ -20,7 +20,7 @@ import com.smartgwt.client.widgets.events.CloseClientEvent;
 /**
  * A generic {@link SearchWidget} implemented as dockable window.
  * <p>
- * To build a search widget combine this search widget with a {@link SearchPanel}.
+ * To build a search widget combine this search widget with a {@link AbstractSearchPanel}.
  * 
  * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
@@ -30,7 +30,7 @@ import com.smartgwt.client.widgets.events.CloseClientEvent;
 public class DockableWindowSearchWidget extends DockableWindow implements SearchWidget {
 
 	private PanelSearchWidget panelSearchWidget;
-	private SearchPanel searchPanel;
+	private AbstractSearchPanel searchPanel;
 	private String widgetId;
 	private String name;
 
@@ -44,7 +44,7 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 	 * @param searchPanel
 	 *            your specific implementation of a search
 	 */
-	public DockableWindowSearchWidget(String widgetId, String name, final SearchPanel searchPanel) {
+	public DockableWindowSearchWidget(String widgetId, String name, final AbstractSearchPanel searchPanel) {
 		if (widgetId == null || searchPanel == null) {
 			throw new IllegalArgumentException("All parameters are required");
 		}

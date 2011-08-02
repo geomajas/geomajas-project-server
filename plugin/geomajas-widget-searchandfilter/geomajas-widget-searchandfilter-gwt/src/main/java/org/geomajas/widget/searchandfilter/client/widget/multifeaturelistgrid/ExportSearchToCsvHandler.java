@@ -50,8 +50,8 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	/**
-	 * @param model
-	 * @param layer
+	 * @param model map model
+	 * @param layer layer
 	 * @param searchRequest
 	 *            the search to use to retrieve features.
 	 */
@@ -81,11 +81,11 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 		execute(vlayer, null);
 	}
 
-	public void execute(final VectorLayer vlayer, final Callback onFinished) {
-		if (this.layer.equals(vlayer)) {
+	public void execute(final VectorLayer vectorLayer, final Callback onFinished) {
+		if (this.layer.equals(vectorLayer)) {
 			ExportToCsvRequest exportRequest = new ExportToCsvRequest();
 			exportRequest.setSearchFeatureRequest(getSearchFeatureRequest());
-			exportRequest.setSearchByLocationRequest(getSearchByLocationRequest(vlayer));
+			exportRequest.setSearchByLocationRequest(getSearchByLocationRequest(vectorLayer));
 			exportRequest.setSearchByCriterionRequest(getSearchCriterionRequest());
 			exportRequest.setEncoding(messages.exportToCsvEncoding());
 			exportRequest.setLocale(messages.exportToCsvLocale());
@@ -139,7 +139,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	// ----------------------------------------------------------
 
 	protected SearchByLocationRequest getSearchByLocationRequest(VectorLayer layer) {
-		if (request != null && request instanceof SearchByLocationRequest) {
+		if (request instanceof SearchByLocationRequest) {
 			SearchByLocationRequest req = (SearchByLocationRequest) request;
 			SearchByLocationRequest clone = new SearchByLocationRequest();
 			clone.setBuffer(req.getBuffer());
@@ -160,7 +160,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	}
 
 	protected FeatureSearchRequest getSearchCriterionRequest() {
-		if (request != null && request instanceof FeatureSearchRequest) {
+		if (request instanceof FeatureSearchRequest) {
 			return (FeatureSearchRequest) request;
 		} else {
 			return null;
@@ -168,7 +168,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	}
 
 	protected SearchFeatureRequest getSearchFeatureRequest() {
-		if (request != null && request instanceof SearchFeatureRequest) {
+		if (request instanceof SearchFeatureRequest) {
 			return (SearchFeatureRequest) request;
 		} else {
 			return null;
@@ -180,9 +180,7 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	}
 
 	protected void setRequest(CommandRequest request) {
-		if (request == null) {
-			this.request = null;
-		} else if (request instanceof SearchFeatureRequest || request instanceof SearchByLocationRequest) {
+		if (request instanceof SearchFeatureRequest || request instanceof SearchByLocationRequest) {
 			this.request = request;
 		} else {
 			throw new IllegalArgumentException(

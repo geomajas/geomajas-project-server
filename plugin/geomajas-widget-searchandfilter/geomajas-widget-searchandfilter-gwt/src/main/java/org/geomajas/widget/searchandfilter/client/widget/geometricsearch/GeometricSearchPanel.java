@@ -21,7 +21,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
-import org.geomajas.widget.searchandfilter.client.widget.search.SearchPanel;
+import org.geomajas.widget.searchandfilter.client.widget.search.AbstractSearchPanel;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * 
  * @author Kristof Heirwegh
  */
-public class GeometricSearchPanel extends SearchPanel implements GeometryUpdateHandler {
+public class GeometricSearchPanel extends AbstractSearchPanel implements GeometryUpdateHandler {
 
 	private final ShapeStyle selectionStyle;
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);

@@ -14,7 +14,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
@@ -34,11 +33,7 @@ import com.google.gwt.user.client.Event;
  * 
  * @author Bruce Palmkoeck
  */
-public class PolygonDrawController extends FreeDrawingController {
-
-	protected TransactionGeomIndex index;
-
-	private String dragTargetId;
+public class PolygonDrawController extends AbstractFreeDrawingController {
 
 	private GfxGeometry tempLine1;
 
@@ -54,7 +49,7 @@ public class PolygonDrawController extends FreeDrawingController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public PolygonDrawController(MapWidget mapWidget, FreeDrawingController parent) {
+	public PolygonDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
 		super(mapWidget, parent);
 		factory = new GeometryFactory(mapWidget.getMapModel().getSrid(), mapWidget.getMapModel().getPrecision());
 		geometry = factory.createPolygon(null, null);
@@ -70,7 +65,7 @@ public class PolygonDrawController extends FreeDrawingController {
 
 	public boolean isBusy() {
 		// busy when inserting or dragging has started
-		return getEditMode() == EditMode.INSERT_MODE || (getEditMode() == EditMode.DRAG_MODE && dragTargetId != null);
+		return getEditMode() == EditMode.INSERT_MODE || getEditMode() == EditMode.DRAG_MODE;
 	}
 
 	// -------------------------------------------------------------------------
@@ -79,7 +74,7 @@ public class PolygonDrawController extends FreeDrawingController {
 
 	public void onMouseDown(MouseDownEvent event) {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
-			createTempLine(event);
+			createTempLine();
 		}
 	}
 
@@ -91,15 +86,12 @@ public class PolygonDrawController extends FreeDrawingController {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
 
 			Coordinate[] oldCoords = null;
-			Coordinate[] newCoords = null;
+			Coordinate[] newCoords;
 			int length = 0;
 
 			if (geometry.getCoordinates() != null) {
 				length = geometry.getCoordinates().length;
 				oldCoords = geometry.getCoordinates();
-			} else {
-
-				newCoords = new Coordinate[1];
 			}
 			newCoords = new Coordinate[length + 1];
 
@@ -107,7 +99,7 @@ public class PolygonDrawController extends FreeDrawingController {
 				System.arraycopy(oldCoords, 0, newCoords, 0, length);
 			}
 
-			LinearRing linearRing = null;
+			LinearRing linearRing;
 
 			if (newCoords.length < 2) {
 				newCoords[length] = getWorldPosition(event);
@@ -154,7 +146,7 @@ public class PolygonDrawController extends FreeDrawingController {
 
 	// Private methods:
 
-	private void createTempLine(MouseEvent<?> event) {
+	private void createTempLine() {
 		if (tempLine1 == null && geometry instanceof Polygon) {
 			tempLine1 = new GfxGeometry("LineStringEditController.updateLine1");
 			tempLine2 = new GfxGeometry("LineStringEditController.updateLine2");
@@ -172,7 +164,7 @@ public class PolygonDrawController extends FreeDrawingController {
 
 	private void updateTempLine(MouseEvent<?> event) {
 		if (tempLine1 == null) {
-			createTempLine(event);
+			createTempLine();
 		}
 
 		Polygon polygon = (Polygon) geometry;

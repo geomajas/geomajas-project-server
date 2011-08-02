@@ -27,10 +27,10 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * 
  * @author Bruce Palmkoeck
  */
-public class ParentDrawController extends FreeDrawingController {
+public class ParentDrawController extends AbstractFreeDrawingController {
 
 	/** The real controller responsible for drawing. */
-	private FreeDrawingController controller;
+	private AbstractFreeDrawingController controller;
 
 	protected ParentDrawController(MapWidget mapWidget) {
 		super(mapWidget, null);
@@ -106,7 +106,7 @@ public class ParentDrawController extends FreeDrawingController {
 		}
 	}
 
-	public FreeDrawingController getController() {
+	public AbstractFreeDrawingController getController() {
 		return controller;
 	}
 
@@ -119,7 +119,7 @@ public class ParentDrawController extends FreeDrawingController {
 	 *            parameter can also be <code>null</code>, when no child draw controller is required anymore. If this
 	 *            parameter is <code>null</code>, then this controller <code>onActivate</code> method is called.
 	 */
-	public void setController(FreeDrawingController controller) {
+	public void setController(AbstractFreeDrawingController controller) {
 		if (this.controller != null) {
 			this.controller.onDeactivate();
 		}

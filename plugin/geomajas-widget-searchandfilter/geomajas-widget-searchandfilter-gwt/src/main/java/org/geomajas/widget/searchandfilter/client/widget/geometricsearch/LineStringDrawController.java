@@ -15,7 +15,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -33,11 +32,7 @@ import com.google.gwt.user.client.Event;
  * 
  * @author Bruce Palmkoeck
  */
-public class LineStringDrawController extends FreeDrawingController {
-
-	protected TransactionGeomIndex index;
-
-	private String dragTargetId;
+public class LineStringDrawController extends AbstractFreeDrawingController {
 
 	private GfxGeometry tempLine;
 
@@ -49,7 +44,7 @@ public class LineStringDrawController extends FreeDrawingController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public LineStringDrawController(MapWidget mapWidget, FreeDrawingController parent) {
+	public LineStringDrawController(MapWidget mapWidget, AbstractFreeDrawingController parent) {
 		super(mapWidget, parent);
 		geometry = factory.createLineString(new Coordinate[0]);
 	}
@@ -64,7 +59,7 @@ public class LineStringDrawController extends FreeDrawingController {
 
 	public boolean isBusy() {
 		// busy when inserting or dragging has started
-		return getEditMode() == EditMode.INSERT_MODE || (getEditMode() == EditMode.DRAG_MODE && dragTargetId != null);
+		return getEditMode() == EditMode.INSERT_MODE || getEditMode() == EditMode.DRAG_MODE;
 	}
 
 	// -------------------------------------------------------------------------
@@ -73,7 +68,7 @@ public class LineStringDrawController extends FreeDrawingController {
 
 	public void onMouseDown(MouseDownEvent event) {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
-			createTempLine(geometry, event);
+			createTempLine(geometry);
 		}
 	}
 
@@ -84,7 +79,7 @@ public class LineStringDrawController extends FreeDrawingController {
 	public void onMouseUp(MouseUpEvent event) {
 		if (event.getNativeButton() != Event.BUTTON_RIGHT) {
 			Coordinate[] newCoords;
-			int length = 0;
+			int length;
 			length = geometry.getCoordinates().length;
 			Coordinate[] oldCoords = geometry.getCoordinates();
 			newCoords = new Coordinate[length + 1];
@@ -92,7 +87,7 @@ public class LineStringDrawController extends FreeDrawingController {
 
 			newCoords[length] = getWorldPosition(event);
 			geometry = factory.createLineString(newCoords);
-			createTempLine(geometry, event);
+			createTempLine(geometry);
 		}
 	}
 
@@ -107,7 +102,7 @@ public class LineStringDrawController extends FreeDrawingController {
 
 	// Private methods:
 
-	private void createTempLine(Geometry geometry, MouseEvent<?> event) {
+	private void createTempLine(Geometry geometry) {
 		if (tempLine == null) {
 			tempLine = new GfxGeometry("LineStringDrawController.updateLine");
 			tempLine.setStyle(drawStyle);
@@ -128,7 +123,7 @@ public class LineStringDrawController extends FreeDrawingController {
 
 	private void updateTempLine(Geometry geometry, MouseEvent<?> event) {
 		if (tempLine == null) {
-			createTempLine(geometry, event);
+			createTempLine(geometry);
 		}
 
 		Coordinate[] oldCoords = tempLine.getGeometry().getCoordinates();
