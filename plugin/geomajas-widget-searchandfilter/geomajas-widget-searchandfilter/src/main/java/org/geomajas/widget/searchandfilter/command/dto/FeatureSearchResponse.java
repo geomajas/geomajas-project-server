@@ -18,13 +18,13 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.layer.feature.Feature;
 
 /**
- * Response for FeatureSearchCommand.
+ * Response for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.FeatureSearchCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class FeatureSearchResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>();
 

@@ -22,7 +22,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
  */
 public class LayerConfig implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	/**
 	 * Is the layer visible.

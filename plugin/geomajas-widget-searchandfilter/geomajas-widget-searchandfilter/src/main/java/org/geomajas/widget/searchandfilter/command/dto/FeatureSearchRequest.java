@@ -18,13 +18,13 @@ import org.geomajas.global.GeomajasConstant;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 /**
- * Request for FeatureSearchCommand.
+ * Request for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.FeatureSearchCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class FeatureSearchRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND = "command.searchandfilter.FeatureSearch";
 

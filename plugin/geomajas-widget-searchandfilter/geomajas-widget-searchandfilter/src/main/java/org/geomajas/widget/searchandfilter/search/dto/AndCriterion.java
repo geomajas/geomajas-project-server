@@ -18,11 +18,10 @@ import java.util.Set;
  * Logic Criterion grouping criteria by AND.
  * 
  * @author Kristof Heirwegh
- * 
  */
 public class AndCriterion implements Criterion {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private List<Criterion> criteria;
 

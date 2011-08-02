@@ -13,13 +13,13 @@ package org.geomajas.widget.searchandfilter.command.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * Request for GeometryUtilsCommand.
+ * Request for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.GeometryUtilsCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class DeleteSearchFavouriteRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND = "command.searchandfilter.DeleteSearchFavourite";
 

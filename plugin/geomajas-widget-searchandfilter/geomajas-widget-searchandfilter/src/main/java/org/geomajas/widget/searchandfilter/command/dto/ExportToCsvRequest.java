@@ -15,13 +15,13 @@ import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchFeatureRequest;
 
 /**
- * Request for ExportToCsvCommand.
+ * Request for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.ExportToCsvCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class ExportToCsvRequest extends LayerIdCommandRequest implements CsvMetadata {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND = "command.searchandfilter.ExportToCsv";
 	

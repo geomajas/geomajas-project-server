@@ -18,7 +18,7 @@ import java.util.Date;
  */
 public class SearchFavourite implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 	private Criterion criterion;
 	private Long id;
 	private String name;
@@ -64,7 +64,7 @@ public class SearchFavourite implements Serializable, Cloneable {
 	/**
 	 * If shared is true, everybody can see this favourite.
 	 *
-	 * @return
+	 * @return true when everybody can see this favourite
 	 */
 	public boolean isShared() {
 		return shared;

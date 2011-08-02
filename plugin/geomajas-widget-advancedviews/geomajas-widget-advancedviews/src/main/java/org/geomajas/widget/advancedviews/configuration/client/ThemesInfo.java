@@ -26,7 +26,7 @@ public class ThemesInfo implements ClientWidgetInfo {
 	 */
 	public static final String IDENTIFIER = "ThemesInfo";
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 	private List<ViewConfig> themeConfigs;
 
 	/**

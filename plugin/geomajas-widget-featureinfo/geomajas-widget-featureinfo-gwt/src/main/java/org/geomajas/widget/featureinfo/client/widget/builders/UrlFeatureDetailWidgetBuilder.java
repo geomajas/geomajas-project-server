@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.Window;
  */
 public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String IDENTIFIER = "UrlFeatureDetailWidgetBuilder";
 	

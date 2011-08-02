@@ -18,11 +18,10 @@ import java.util.Set;
  * Logic Criterion grouping criteria by OR.
  * 
  * @author Kristof Heirwegh
- * 
  */
 public class OrCriterion implements Criterion {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private List<Criterion> criteria;
 

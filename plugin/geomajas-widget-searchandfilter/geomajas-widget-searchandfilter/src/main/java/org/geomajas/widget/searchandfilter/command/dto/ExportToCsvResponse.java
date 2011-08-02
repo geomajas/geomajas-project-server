@@ -13,13 +13,13 @@ package org.geomajas.widget.searchandfilter.command.dto;
 import org.geomajas.command.CommandResponse;
 
 /**
- * ExportToCsvResponse.
+ * Response object for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.ExportToCsvCommand}.
  *
  * @author Kristof Heirwegh
  */
 public class ExportToCsvResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private String documentId;
 

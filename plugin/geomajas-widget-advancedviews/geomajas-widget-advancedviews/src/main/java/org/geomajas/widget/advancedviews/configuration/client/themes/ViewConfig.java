@@ -18,11 +18,10 @@ import java.util.List;
  * Configuration of the global viewconfig of theming on a map, this allows definition of different scale ranges.
  *
  * @author Oliver May
- *
  */
 public class ViewConfig implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	/**
 	 * Icon that represents the global viewconfig (overridden by RangeConfig.icon)

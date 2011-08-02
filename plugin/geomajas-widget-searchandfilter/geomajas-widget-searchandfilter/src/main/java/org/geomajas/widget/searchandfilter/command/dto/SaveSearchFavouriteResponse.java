@@ -14,13 +14,13 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 
 /**
- * Response for SaveSearchFavouriteCommand.
+ * Response for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.SaveSearchFavouriteCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class SaveSearchFavouriteResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private SearchFavourite searchFavourite;
 

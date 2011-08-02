@@ -14,13 +14,13 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Geometry;
 
 /**
- * Response for GeometryUtilsCommand.
+ * Response for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.GeometryUtilsCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class GeometryUtilsResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private Geometry[] geometries;
 

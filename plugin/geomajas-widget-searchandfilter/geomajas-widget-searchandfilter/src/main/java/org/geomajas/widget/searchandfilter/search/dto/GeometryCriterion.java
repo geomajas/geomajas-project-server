@@ -21,11 +21,10 @@ import org.geomajas.geometry.Geometry;
  * Criterion with attribute criteria.
  *
  * @author Kristof Heirwegh
- *
  */
 public class GeometryCriterion implements Criterion {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	// TODO change to enums
 	public static final int INTERSECTS = SearchByLocationRequest.QUERY_INTERSECTS;

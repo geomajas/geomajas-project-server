@@ -19,13 +19,13 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 
 /**
- * Sample implementation of a FeatureDetailWidgetBuilder.
- * @author Kristof Heirwegh
+ * Sample implementation of {@link FeatureDetailWidgetBuilder}.
  *
+ * @author Kristof Heirwegh
  */
 public class CustomCountriesFeatureInfoCanvasBuilder implements FeatureDetailWidgetBuilder {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	public Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
 		Window w = new Window();

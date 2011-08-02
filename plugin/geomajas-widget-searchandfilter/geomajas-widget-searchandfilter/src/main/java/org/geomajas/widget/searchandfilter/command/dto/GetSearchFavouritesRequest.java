@@ -13,13 +13,13 @@ package org.geomajas.widget.searchandfilter.command.dto;
 import org.geomajas.command.EmptyCommandRequest;
 
 /**
- * Request for GetSearchFavouritesCommand.
+ * Request for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.GetSearchFavouritesCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class GetSearchFavouritesRequest extends EmptyCommandRequest {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND = "command.searchandfilter.GetSearchFavourites";
 

@@ -16,11 +16,10 @@ import java.util.Set;
  * Criterion with attribute criteria.
  * 
  * @author Kristof Heirwegh
- * 
  */
 public class AttributeCriterion implements Criterion {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private String serverLayerId;
 

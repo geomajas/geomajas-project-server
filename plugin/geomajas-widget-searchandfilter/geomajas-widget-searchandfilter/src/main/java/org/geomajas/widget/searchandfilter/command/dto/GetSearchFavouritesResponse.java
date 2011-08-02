@@ -16,13 +16,13 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
 
 /**
- * Response for etSearchFavouritesCommand.
+ * Response for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.GetSearchFavouritesCommand}.
  * 
  * @author Kristof Heirwegh
  */
 public class GetSearchFavouritesResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
 	private Collection<SearchFavourite> privateSearchFavourites;
 	private Collection<SearchFavourite> sharedSearchFavourites;
