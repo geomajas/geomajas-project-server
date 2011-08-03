@@ -92,11 +92,11 @@ include "org.geomajas.documentation" "docbook-devuserguide" "1.10.0-SNAPSHOT" \
 
 # faces
 
-include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.9.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.10.0-SNAPSHOT" \
     "GWT face" \
     "GWT face for building powerful AJAX web user interfaces in Java using SmartGWT." \
     "incubating" "gwt_face.pdf" \
-    "org.geomajas" "geomajas-gwt-client" "1.8.0"
+    "org.geomajas" "geomajas-gwt-client" "1.9.0"
 
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
