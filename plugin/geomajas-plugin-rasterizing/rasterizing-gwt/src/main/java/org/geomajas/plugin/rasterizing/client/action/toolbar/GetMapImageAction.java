@@ -24,13 +24,12 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * Action for getting a map image.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GetMapImageAction extends ToolbarAction {
 
 	private MapWidget mapWidget;
 
-	private static RasterizingMessages MESSAGES = GWT.create(RasterizingMessages.class);
+	private static final RasterizingMessages MESSAGES = GWT.create(RasterizingMessages.class);
 
 	private ImageUrlService imageUrlService = new ImageUrlServiceImpl();
 
