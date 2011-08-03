@@ -1,4 +1,3 @@
-// geomajas-face-gwt module API, 1.8.0
 org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getIsomorphicDir():1.6.0
@@ -82,8 +81,22 @@ org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createT
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static ToolbarBaseAction getToolbarAction(String, MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static void put(String, ToolCreator, ):1.6.0
+org.geomajas.gwt.client.command.AbstractCommandCallback::1.9.0
 org.geomajas.gwt.client.command.CommandCallback::1.6.0
 org.geomajas.gwt.client.command.CommandCallback:void execute(RESPONSE, ):1.6.0
+org.geomajas.gwt.client.command.CommandExceptionCallback::1.9.0
+org.geomajas.gwt.client.command.CommandExceptionCallback:void onCommandException(CommandResponse, ):1.9.0
+org.geomajas.gwt.client.command.CommunicationExceptionCallback::1.9.0
+org.geomajas.gwt.client.command.CommunicationExceptionCallback:void onCommunicationException(Throwable, ):1.9.0
+org.geomajas.gwt.client.command.Deferred::1.9.0
+org.geomajas.gwt.client.command.Deferred:Deferred():1.9.0
+org.geomajas.gwt.client.command.Deferred:List<CommandCallback> getCallbacks():1.9.0
+org.geomajas.gwt.client.command.Deferred:List<Function> getErrorCallbacks():1.9.0
+org.geomajas.gwt.client.command.Deferred:boolean isCancelled():1.9.0
+org.geomajas.gwt.client.command.Deferred:void addCallback(CommandCallback, ):1.9.0
+org.geomajas.gwt.client.command.Deferred:void addErrorCallback(Function, ):1.9.0
+org.geomajas.gwt.client.command.Deferred:void addSuccessCallback(CommandCallback, ):1.9.0
+org.geomajas.gwt.client.command.Deferred:void cancel():1.9.0
 org.geomajas.gwt.client.command.GwtCommand::1.6.0
 org.geomajas.gwt.client.command.GwtCommand:CommandRequest getCommandRequest():1.6.0
 org.geomajas.gwt.client.command.GwtCommand:GwtCommand():1.6.0
@@ -100,16 +113,20 @@ org.geomajas.gwt.client.command.GwtCommandDispatcher:Deferred execute(GwtCommand
 org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isBusy():1.6.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isShowError():1.9.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isUseLazyLoading():1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesAll():1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesDefault():1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesSelect():1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:static GwtCommandDispatcher getInstance():1.6.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommandException(CommandResponse, ):1.9.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommunicationException(Throwable, ):1.9.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void onFailure(Throwable, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void onSuccess(CommandResponse, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesAll(int, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesDefault(int, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesSelect(int, ):1.6.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setShowError(boolean, ):1.9.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUseLazyLoading(boolean, ):1.6.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUserToken(String, ):1.6.0
 org.geomajas.gwt.client.command.event.DispatchStartedEvent::1.6.0
@@ -266,6 +283,8 @@ org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers::1.6.0
 org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers:HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler, ):1.6.0
 org.geomajas.gwt.client.map.event.HasLayerChangedHandlers::1.6.0
 org.geomajas.gwt.client.map.event.HasLayerChangedHandlers:HandlerRegistration addLayerChangedHandler(LayerChangedHandler, ):1.6.0
+org.geomajas.gwt.client.map.event.HasLayerFilteredHandlers::1.9.0
+org.geomajas.gwt.client.map.event.HasLayerFilteredHandlers:HandlerRegistration addLayerFilteredHandler(LayerFilteredHandler, ):1.9.0
 org.geomajas.gwt.client.map.event.HasMapViewChangedHandlers::1.6.0
 org.geomajas.gwt.client.map.event.HasMapViewChangedHandlers:HandlerRegistration addMapViewChangedHandler(MapViewChangedHandler, ):1.6.0
 org.geomajas.gwt.client.map.event.LayerChangedHandler::1.6.0
@@ -276,6 +295,13 @@ org.geomajas.gwt.client.map.event.LayerDeselectedEvent::1.6.0
 org.geomajas.gwt.client.map.event.LayerDeselectedEvent:Layer<?> getLayer():1.6.0
 org.geomajas.gwt.client.map.event.LayerDeselectedEvent:LayerDeselectedEvent(Layer<?>, ):1.6.0
 org.geomajas.gwt.client.map.event.LayerDeselectedEvent:Type<LayerSelectionHandler> getAssociatedType():1.6.0
+org.geomajas.gwt.client.map.event.LayerFilteredEvent::1.9.0
+org.geomajas.gwt.client.map.event.LayerFilteredEvent:Layer<?> getLayer():1.9.0
+org.geomajas.gwt.client.map.event.LayerFilteredEvent:LayerFilteredEvent(Layer<?>, ):1.9.0
+org.geomajas.gwt.client.map.event.LayerFilteredEvent:Type<LayerFilteredHandler> getAssociatedType():1.9.0
+org.geomajas.gwt.client.map.event.LayerFilteredHandler::1.9.0
+org.geomajas.gwt.client.map.event.LayerFilteredHandler:Type<LayerFilteredHandler> TYPE:1.9.0
+org.geomajas.gwt.client.map.event.LayerFilteredHandler:void onFilterChange(LayerFilteredEvent, ):1.9.0
 org.geomajas.gwt.client.map.event.LayerLabeledEvent::1.6.0
 org.geomajas.gwt.client.map.event.LayerLabeledEvent:Layer<?> getLayer():1.6.0
 org.geomajas.gwt.client.map.event.LayerLabeledEvent:LayerLabeledEvent(Layer<?>, ):1.6.0
@@ -316,10 +342,21 @@ org.geomajas.gwt.client.map.layer.RasterLayer::1.6.0
 org.geomajas.gwt.client.map.layer.VectorLayer::1.6.0
 org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation::1.6.0
 org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation:Geometry execute(Geometry, ):1.6.0
+org.geomajas.gwt.client.util.EqualsUtil::1.9.0
+org.geomajas.gwt.client.util.EqualsUtil:static boolean isEqual(Object, Object, ):1.9.0
+org.geomajas.gwt.client.util.GeometryConverter::1.9.0
+org.geomajas.gwt.client.util.GeometryConverter:static . toGwt(Bbox, ):1.9.0
+org.geomajas.gwt.client.util.GeometryConverter:static . toGwt(Geometry, ):1.9.0
+org.geomajas.gwt.client.util.GeometryConverter:static Bbox toDto(., ):1.9.0
+org.geomajas.gwt.client.util.GeometryConverter:static Geometry toDto(., ):1.9.0
+org.geomajas.gwt.client.util.WindowUtil::1.9.0
+org.geomajas.gwt.client.util.WindowUtil:static void setLocation(String, ):1.9.0
+org.geomajas.gwt.client.widget.ApplyFeatureTransactionToWindow::1.6.0
 org.geomajas.gwt.client.widget.CancelButton::1.6.0
 org.geomajas.gwt.client.widget.EditButton::1.6.0
 org.geomajas.gwt.client.widget.FeatureAttributeWindow::1.6.0
 org.geomajas.gwt.client.widget.FeatureAttributeWindow:FeatureAttributeWindow(Feature, boolean, ):1.6.0
+org.geomajas.gwt.client.widget.FeatureAttributeWindow:FeatureAttributeWindow(Feature, boolean, FeatureFormFactory<?>, ):1.9.0
 org.geomajas.gwt.client.widget.LayerTree::1.6.0
 org.geomajas.gwt.client.widget.LayerTree:LayerTree(MapWidget, ):1.6.0
 org.geomajas.gwt.client.widget.LayerTree:void onDeselectLayer(LayerDeselectedEvent, ):1.6.0
@@ -334,10 +371,13 @@ org.geomajas.gwt.client.widget.MapWidget::1.6.0
 org.geomajas.gwt.client.widget.MapWidget:GraphicsContext getVectorContext():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:GraphicsController getController():1.8.0
 org.geomajas.gwt.client.widget.MapWidget:ImageContext getRasterContext():1.6.0
+org.geomajas.gwt.client.widget.MapWidget:Map<String,MapAddon> getMapAddons():1.9.0
+org.geomajas.gwt.client.widget.MapWidget:Map<String,WorldPaintable> getWorldPaintables():1.9.0
 org.geomajas.gwt.client.widget.MapWidget:MapModel getMapModel():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapWidget(String, String, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MenuContext getMenuContext():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:Set<Listener> getListeners():1.8.0
+org.geomajas.gwt.client.widget.MapWidget:WorldPaintable getWorldPaintable(String, ):1.9.0
 org.geomajas.gwt.client.widget.MapWidget:boolean addListener(Listener, ):1.8.0
 org.geomajas.gwt.client.widget.MapWidget:boolean removeListener(Listener, ):1.8.0
 org.geomajas.gwt.client.widget.MapWidget:double getPixelPerUnit():1.7.0
