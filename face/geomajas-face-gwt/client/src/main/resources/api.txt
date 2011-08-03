@@ -1,3 +1,4 @@
+// geomajas-face-gwt module API, 1.9.0
 org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getIsomorphicDir():1.6.0
