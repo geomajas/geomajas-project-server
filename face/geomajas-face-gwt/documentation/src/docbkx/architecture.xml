@@ -362,9 +362,9 @@
       <para>The <code>Geometry</code> implementations themselves do not have
       any setters methods. Instead the editing of geometries is done through a
       series of operations, all implementing the <code>
-      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
-      </code> interface. This interface consists of only one method, accepting
-      a geometry, and returning the result as a new geometry.</para>
+          <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+        </code> interface. This interface consists of only one method,
+      accepting a geometry, and returning the result as a new geometry.</para>
 
       <para>Geometries have no public constructors, so the creation of new
       geometries is done using a factory,
@@ -903,11 +903,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       requires your to specify an icon and a tool tip on creation.</para>
 
       <para><code>ToolbarAction</code> classes need to be registered in the
-      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
-      get an instance of the widget to put in the tool bar. The tools which
-      are part of the GWT face are statically defined in the class. Other
-      tools can be added (or overwritten) at runtime before the map is
-      initialised.</para>
+      <code>
+          <code>ToolbarRegistry</code>
+        </code> class. This allows you to get an instance of the widget to put
+      in the tool bar. The tools which are part of the GWT face are statically
+      defined in the class. Other tools can be added (or overwritten) at
+      runtime before the map is initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable (XML
       configuration), it should implement the <code>ConfigurableAction</code>
@@ -933,11 +934,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       buttons.</para>
 
       <para><code>ToolbarModalAction</code> classes need to be registered in
-      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
-      to get an instance of the widget to put in the tool bar. The tools which
-      are always part of the GWT face are statically defined in the class.
-      Other tools can be added (or overwritten) at runtime before the map is
-      initialised.</para>
+      the <code>
+          <code>ToolbarRegistry</code>
+        </code> class. This allows you to get an instance of the widget to put
+      in the tool bar. The tools which are always part of the GWT face are
+      statically defined in the class. Other tools can be added (or
+      overwritten) at runtime before the map is initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable, it should
       implement the <code>ConfigurableAction</code> interface. This contains a
@@ -1056,14 +1058,16 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
           <itemizedlist>
             <listitem>
-              <para><emphasis> <code>AbstractRectangleController</code>
-              </emphasis>: abstract controller that handles drawing a
+              <para><emphasis>
+                  <code>AbstractRectangleController</code>
+                </emphasis>: abstract controller that handles drawing a
               rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis> <code>AbstractSnappingController</code>
-              </emphasis>: abstract controller that allows snapping to be
+              <para><emphasis>
+                  <code>AbstractSnappingController</code>
+                </emphasis>: abstract controller that allows snapping to be
               enabled and disabled. When enabled, the returned points when
               asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
@@ -1074,7 +1078,9 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to disable the active controller, set a "null" value as
         controller:</para>
 
-        <para><programlisting>mapWidget.setController(null);</programlisting></para>
+        <para>
+          <programlisting>mapWidget.setController(null);</programlisting>
+        </para>
       </section>
 
       <section id="activeAndFallback">
@@ -1368,6 +1374,76 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       attribute configuration, visit the configuration part in the <ulink
       url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#conf-vectorInfo">Geomajas
       developer guide</ulink>.</para>
+    </section>
+
+    <section>
+      <title>Using custom form items for association attributes</title>
+
+      <para>Association attributes (one-to-many and many-to-one) require a
+      specific treatment because they are too complex to be mapped to a
+      single-valued form item. For these attributes, special interfaces have
+      been constructed that provide full control over the way association
+      value data travels between the feature and it's form
+      representation:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The <code>ManyToOneItem</code> interface defines the contract
+          for a custom form item that represents a many-to-one
+          assocation</para>
+        </listitem>
+
+        <listitem>
+          <para>he <code>OneToManyItem</code> interface defines the contract
+          for a custom form item that represents a one-to-many
+          assocation</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Both interfaces contain the following methods:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code><code>getItem</code>()</code>: this methods returns the
+          actual form item to be used in the form. This can either be an item
+          that holds the actual value or a button or link that opens a more
+          complex editor.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>fromItem(), toItem()</code> : these methods govern the
+          actual transfer of data between the form and the association value.
+          This may include transfer from and to a more complex editor.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>init(AssociationAttributeInfo attributeInfo,
+          AttributeProvider attributeProvider)</code>: this method provides a
+          way to initialize the custom form item and/or editor. It passes
+          information on the nested attributes of the association value and an
+          attribute provider interface. The provider interface allows to query
+          a list of possible attribute values in case the user has to select
+          the value from a predefined list.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>clearValue() </code>: this method allows custom
+          clearance of the form item and editor.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The default implementation of <code>ManyToOneItem</code> is a
+      simple combobox. </para>
+
+      <para>The default implementation of <code>OneToManyItem</code> is a
+      "<code>More...</code>" link that pops up a master-detail editor
+      configuration for editing a list of association values.</para>
+
+      <para>These are in line with our default interpretation of a many-to-one
+      attribute as being an association by reference to an externally managed
+      list and a one-to-many item as being a parent-child relationship. Custom
+      behavior can of course be implemented by registering a different
+      implementation of the interfaces.</para>
     </section>
 
     <section>
