@@ -74,6 +74,10 @@ import com.smartgwt.client.widgets.layout.VStack;
  */
 public class FeatureSearch extends Canvas {
 
+	public static final String STYLE_SEARCH_ROW = "searchRow";
+	public static final String STYLE_SEARCH_HEADER = "searchHeader";
+	public static final String STYLE_HEADER_BAR = "headerBar";
+
 	/**
 	 * The logical operator. This operator determines whether all the criteria have to be met in the search (AND), or
 	 * just one of them (OR).
@@ -157,6 +161,9 @@ public class FeatureSearch extends Canvas {
 	 * Hint: There is a <code>DefaultSearchHandler</code> that displays the resulting set of features in a
 	 * {@link FeatureListGrid} widget.
 	 * </p>
+	 *
+	 * @param handler search handler
+	 * @return handler registration
 	 */
 	public HandlerRegistration addSearchHandler(SearchHandler handler) {
 		return doAddHandler(handler, SearchEvent.TYPE);
@@ -170,7 +177,7 @@ public class FeatureSearch extends Canvas {
 	 *            Row number in the search grid, that indicates where to add/insert a new empty row.
 	 */
 	public void addEmptyRow(final int index) {
-		if (layer == null || !(layer instanceof VectorLayer)) {
+		if (layer == null) {
 			return;
 		}
 		searchButton.setDisabled(false);
@@ -181,14 +188,14 @@ public class FeatureSearch extends Canvas {
 		// Empty row:
 		AttributeCriterionPane newRow = new AttributeCriterionPane(layer);
 		newRow.setHeight(32);
-		newRow.setStyleName("searchRow");
+		newRow.setStyleName(STYLE_SEARCH_ROW);
 
 		HLayout btnLayout = new HLayout();
 		btnLayout.setHeight(32);
 		btnLayout.setMembersMargin(5);
 		btnLayout.setAlign(Alignment.CENTER);
 		btnLayout.setPadding(4);
-		btnLayout.setStyleName("searchRow");
+		btnLayout.setStyleName(STYLE_SEARCH_ROW);
 
 		IButton btnAddRow = new IButton();
 		btnAddRow.setWidth(26);
@@ -254,7 +261,7 @@ public class FeatureSearch extends Canvas {
 	/**
 	 * Get the full list of search criteria from the criterion grid.
 	 * 
-	 * @return
+	 * @return list of criteria
 	 */
 	public List<SearchCriterion> getSearchCriteria() {
 		List<SearchCriterion> criteria = new ArrayList<SearchCriterion>();
@@ -268,7 +275,7 @@ public class FeatureSearch extends Canvas {
 				criteria.add(criterion);
 			}
 		}
-		if (criteria == null || criteria.size() == 0) {
+		if (criteria.size() == 0) {
 			SC.warn(I18nProvider.getSearch().warningNoCriteria());
 		}
 		return criteria;
@@ -351,6 +358,8 @@ public class FeatureSearch extends Canvas {
 	/**
 	 * Set a new value for the logical operator. This operator determines whether all the criteria have to be met in the
 	 * search, or just one of them.
+	 *
+	 * @param operator logical operator
 	 */
 	public void setLogicalOperator(LogicalOperator operator) {
 		switch (operator) {
@@ -366,7 +375,7 @@ public class FeatureSearch extends Canvas {
 	 * Return the current value for the logical operator.This operator determines whether all the criteria have to be
 	 * met in the search, or just one of them.
 	 * 
-	 * @return
+	 * @return current logical operator
 	 */
 	public LogicalOperator getLogicalOperator() {
 		String value = (String) logicalOperatorRadio.getValue();
@@ -379,7 +388,7 @@ public class FeatureSearch extends Canvas {
 	/**
 	 * Return the layer onto which searching should happen. (the MapModel's selected layer)
 	 * 
-	 * @return
+	 * @return layer to search on
 	 */
 	public VectorLayer getLayer() {
 		return layer;
@@ -388,7 +397,7 @@ public class FeatureSearch extends Canvas {
 	/**
 	 * Set a new layer onto which searching should happen.
 	 * 
-	 * @param layer
+	 * @param layer layer to search on
 	 */
 	public void setLayer(VectorLayer layer) {
 		this.layer = layer;
@@ -401,6 +410,8 @@ public class FeatureSearch extends Canvas {
 
 	/**
 	 * Get the maximum number of allowed results. No more features will be retrieved then this number.
+	 *
+	 * @return maximum results
 	 */
 	public int getMaximumResultSize() {
 		return maximumResultSize;
@@ -544,18 +555,18 @@ public class FeatureSearch extends Canvas {
 		// Create a header for the criterionStack:
 		HLayout headerLayout = new HLayout();
 		headerLayout.setHeight(26);
-		headerLayout.setStyleName("headerBar");
+		headerLayout.setStyleName(STYLE_HEADER_BAR);
 		HTMLPane attrHeader = new HTMLPane();
-		attrHeader.setStyleName("searchHeader");
+		attrHeader.setStyleName(STYLE_SEARCH_HEADER);
 		attrHeader.setContents("Attribute");
 		attrHeader.setWidth(140);
 		HTMLPane operatorHeader = new HTMLPane();
 		operatorHeader.setContents("Operator");
 		operatorHeader.setWidth(140);
-		operatorHeader.setStyleName("searchHeader");
+		operatorHeader.setStyleName(STYLE_SEARCH_HEADER);
 		HTMLPane valueHeader = new HTMLPane();
 		valueHeader.setContents("Value");
-		valueHeader.setStyleName("searchHeader");
+		valueHeader.setStyleName(STYLE_SEARCH_HEADER);
 
 		criterionStack = new VStack();
 		criterionStack.setAlign(VerticalAlignment.TOP);
@@ -568,7 +579,7 @@ public class FeatureSearch extends Canvas {
 		buttonStack.setWidth(70);
 		buttonStack.setAlign(VerticalAlignment.TOP);
 		HTMLPane btnHeader = new HTMLPane();
-		btnHeader.setStyleName("headerBar");
+		btnHeader.setStyleName(STYLE_HEADER_BAR);
 		btnHeader.setWidth(70);
 		btnHeader.setHeight(26);
 		buttonStack.addMember(btnHeader);
