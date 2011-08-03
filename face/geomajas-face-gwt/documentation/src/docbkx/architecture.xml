@@ -362,9 +362,9 @@
       <para>The <code>Geometry</code> implementations themselves do not have
       any setters methods. Instead the editing of geometries is done through a
       series of operations, all implementing the <code>
-          <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
-        </code> interface. This interface consists of only one method,
-      accepting a geometry, and returning the result as a new geometry.</para>
+      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+      </code> interface. This interface consists of only one method, accepting
+      a geometry, and returning the result as a new geometry.</para>
 
       <para>Geometries have no public constructors, so the creation of new
       geometries is done using a factory,
@@ -903,12 +903,11 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       requires your to specify an icon and a tool tip on creation.</para>
 
       <para><code>ToolbarAction</code> classes need to be registered in the
-      <code>
-          <code>ToolbarRegistry</code>
-        </code> class. This allows you to get an instance of the widget to put
-      in the tool bar. The tools which are part of the GWT face are statically
-      defined in the class. Other tools can be added (or overwritten) at
-      runtime before the map is initialised.</para>
+      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
+      get an instance of the widget to put in the tool bar. The tools which
+      are part of the GWT face are statically defined in the class. Other
+      tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable (XML
       configuration), it should implement the <code>ConfigurableAction</code>
@@ -934,12 +933,11 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       buttons.</para>
 
       <para><code>ToolbarModalAction</code> classes need to be registered in
-      the <code>
-          <code>ToolbarRegistry</code>
-        </code> class. This allows you to get an instance of the widget to put
-      in the tool bar. The tools which are always part of the GWT face are
-      statically defined in the class. Other tools can be added (or
-      overwritten) at runtime before the map is initialised.</para>
+      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
+      to get an instance of the widget to put in the tool bar. The tools which
+      are always part of the GWT face are statically defined in the class.
+      Other tools can be added (or overwritten) at runtime before the map is
+      initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable, it should
       implement the <code>ConfigurableAction</code> interface. This contains a
@@ -1058,16 +1056,14 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
           <itemizedlist>
             <listitem>
-              <para><emphasis>
-                  <code>AbstractRectangleController</code>
-                </emphasis>: abstract controller that handles drawing a
+              <para><emphasis> <code>AbstractRectangleController</code>
+              </emphasis>: abstract controller that handles drawing a
               rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis>
-                  <code>AbstractSnappingController</code>
-                </emphasis>: abstract controller that allows snapping to be
+              <para><emphasis> <code>AbstractSnappingController</code>
+              </emphasis>: abstract controller that allows snapping to be
               enabled and disabled. When enabled, the returned points when
               asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
@@ -1078,9 +1074,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to disable the active controller, set a "null" value as
         controller:</para>
 
-        <para>
-          <programlisting>mapWidget.setController(null);</programlisting>
-        </para>
+        <para><programlisting>mapWidget.setController(null);</programlisting></para>
       </section>
 
       <section id="activeAndFallback">
@@ -1322,8 +1316,20 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <para>In any case, you will need to register a custom type with the
       AttributeFormFieldRegistry. Let us start with a coding example:</para>
 
-      <xi:include href="listing/CustomAttributeFormFieldRegistry.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <programlisting>// We define the custom type "myType" in the AttributeFormItemFactory:
+        AttributeFormFieldRegistry.registerCustomFormItem("myType", new DataSourceFieldFactory() {
+
+            public DataSourceField create() {
+                return new DataSourceIntegerField();
+            }
+        }, new FormItemFactory() {
+
+            public FormItem create() {
+                return new SliderItem();
+            }
+        }, null);
+
+</programlisting>
 
       <para>This short piece of code will register a "SliderItem" for all
       attributes of the type "myType". Let us first go over the code in more
@@ -1433,7 +1439,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       </itemizedlist>
 
       <para>The default implementation of <code>ManyToOneItem</code> is a
-      simple combobox. </para>
+      simple combobox.</para>
 
       <para>The default implementation of <code>OneToManyItem</code> is a
       "<code>More...</code>" link that pops up a master-detail editor
