@@ -65,9 +65,9 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  * a vector layer or the feature information of an association attribute. The implementation uses the
  * {@link AttributeFormFieldRegistry} to create the individual form items and fields. The
  * {@link #createField(AttributeInfo)} and {@link #createItem(AttributeInfo)} methods can be overridden to create custom
- * item and field implementations if necessary. The {@link #prepareForm(List, DataSource)} method can be overridden to
- * perform any additional actions on the form or form item list before the form is created. Attributes can be excluded
- * from the form by overriding the {@link #isIncluded(AttributeInfo)} method.
+ * item and field implementations if necessary. The {@link #prepareForm(FormItemList, DataSource)} method can be
+ * overridden to perform any additional actions on the form or form item list before the form is created. Attributes can
+ * be excluded from the form by overriding the {@link #isIncluded(AttributeInfo)} method.
  * </p>
  * <p>
  * This attribute form definition is used internally in the <code>FeatureAtributeEditor</code> widget. A code example on
@@ -93,6 +93,8 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 @FutureApi
 public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 
+	public static final String STYLE_FEATURE_FORM = "featureForm";
+
 	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
 
 	private DynamicForm formWidget;
@@ -115,7 +117,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * implementations of these factories may want different orders or layouts. They may even want to introduce extra
 	 * form items.. who knows.
 	 * 
-	 * @param layer The vector layer that should be presented in this form.
+	 * @param vectorLayer The vector layer that should be presented in this form.
 	 */
 	public DefaultFeatureForm(VectorLayer vectorLayer) {
 		this(vectorLayer.getLayerInfo().getFeatureInfo(), new DefaultAttributeProvider(vectorLayer.getLayerInfo()
@@ -129,6 +131,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * form items.. who knows.
 	 * 
 	 * @param featureInfo The feature information that should be presented in this form.
+	 * @param attributeProvider attribute provider
 	 */
 	public DefaultFeatureForm(FeatureInfo featureInfo, AttributeProvider attributeProvider) {
 		this.featureInfo = featureInfo;
@@ -143,9 +146,9 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 				dataSource.setDataProtocol(DSProtocol.CLIENTCUSTOM);
 				dataSource.setClientOnly(false);
 				super.setDataSource(dataSource);
-			};
+			}
 		};
-		formWidget.setStyleName("featureForm");
+		formWidget.setStyleName(STYLE_FEATURE_FORM);
 		DataSource source = new DataSource();
 		FormItemList formItems = new FormItemList();
 		for (AttributeInfo info : featureInfo.getAttributes()) {
@@ -194,7 +197,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * is created. The default implementation does nothing.
 	 * 
 	 * @param formItems list of items, with special insert operations
-	 * @param source datasource
+	 * @param source data source
 	 */
 	protected void prepareForm(FormItemList formItems, DataSource source) {
 	}
@@ -313,62 +316,69 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			return;
 		}
 		FormItem item = formWidget.getField(info.getName());
-		if (info instanceof PrimitiveAttributeInfo) {
-			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
-			if (attribute == null && item != null) {
-				item.setDisabled(true);
-			} else {
-				switch (primitive.getType()) {
-					case BOOLEAN:
-						setValue(info.getName(), (BooleanAttribute) primitive);
-						break;
-					case SHORT:
-						setValue(info.getName(), (ShortAttribute) primitive);
-						break;
-					case INTEGER:
-						setValue(info.getName(), (IntegerAttribute) primitive);
-						break;
-					case LONG:
-						setValue(info.getName(), (LongAttribute) primitive);
-						break;
-					case FLOAT:
-						setValue(info.getName(), (FloatAttribute) primitive);
-						break;
-					case DOUBLE:
-						setValue(info.getName(), (DoubleAttribute) primitive);
-						break;
-					case CURRENCY:
-						setValue(info.getName(), (CurrencyAttribute) primitive);
-						break;
-					case STRING:
-						setValue(info.getName(), (StringAttribute) primitive);
-						break;
-					case URL:
-						setValue(info.getName(), (UrlAttribute) primitive);
-						break;
-					case IMGURL:
-						setValue(info.getName(), (ImageUrlAttribute) primitive);
-						break;
-					case DATE:
-						setValue(info.getName(), (DateAttribute) primitive);
-						break;
+		if (item != null)
+		{
+			if (info instanceof PrimitiveAttributeInfo) {
+				PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
+				if (attribute == null) {
+					item.setDisabled(true);
+				} else {
+					switch (primitive.getType()) {
+						case BOOLEAN:
+							setValue(info.getName(), (BooleanAttribute) primitive); // NOSONAR valid cast
+							break;
+						case SHORT:
+							setValue(info.getName(), (ShortAttribute) primitive); // NOSONAR valid cast
+							break;
+						case INTEGER:
+							setValue(info.getName(), (IntegerAttribute) primitive); // NOSONAR valid cast
+							break;
+						case LONG:
+							setValue(info.getName(), (LongAttribute) primitive); // NOSONAR valid cast
+							break;
+						case FLOAT:
+							setValue(info.getName(), (FloatAttribute) primitive); // NOSONAR valid cast
+							break;
+						case DOUBLE:
+							setValue(info.getName(), (DoubleAttribute) primitive); // NOSONAR valid cast
+							break;
+						case CURRENCY:
+							setValue(info.getName(), (CurrencyAttribute) primitive); // NOSONAR valid cast
+							break;
+						case STRING:
+							setValue(info.getName(), (StringAttribute) primitive); // NOSONAR valid cast
+							break;
+						case URL:
+							setValue(info.getName(), (UrlAttribute) primitive); // NOSONAR valid cast
+							break;
+						case IMGURL:
+							setValue(info.getName(), (ImageUrlAttribute) primitive); // NOSONAR valid cast
+							break;
+						case DATE:
+							setValue(info.getName(), (DateAttribute) primitive); // NOSONAR valid cast
+							break;
+						default:
+							throw new IllegalStateException("Unhandled primitive attribute type " +
+									primitive.getType());
+					}
+				}
+			} else if (info instanceof AssociationAttributeInfo) {
+				Object associationItem = item.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
+				AssociationAttributeInfo associationInfo = (AssociationAttributeInfo) info;
+				if (associationItem != null) {
+					switch (associationInfo.getType()) {
+						case MANY_TO_ONE:
+							((ManyToOneItem<?>) associationItem).toItem((ManyToOneAttribute) attribute);  // NOSONAR
+							break;
+						case ONE_TO_MANY:
+							((OneToManyItem<?>) associationItem).toItem((OneToManyAttribute) attribute); // NOSONAR
+							break;
+						default:
+							throw new IllegalStateException("Unhandled association attribute type " +
+									associationInfo.getType());
+					}
 				}
 			}
-		} else if (info instanceof AssociationAttributeInfo) {
-			Object associationItem = item.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
-			AssociationAttributeInfo associationInfo = (AssociationAttributeInfo) info;
-			if (associationItem != null) {
-				switch (associationInfo.getType()) {
-					case MANY_TO_ONE:
-						((ManyToOneItem<?>) associationItem).toItem((ManyToOneAttribute) attribute);
-						break;
-					case ONE_TO_MANY:
-						((OneToManyItem<?>) associationItem).toItem((OneToManyAttribute) attribute);
-						break;
-				}
-			}
-		}
-		if (item != null) {
 			item.fireEvent(new ChangedEvent(item.getJsObj()));
 		}
 	}
@@ -388,38 +398,41 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
 			switch (primitive.getType()) {
 				case BOOLEAN:
-					getValue(name, (BooleanAttribute) primitive);
+					getValue(name, (BooleanAttribute) primitive); // NOSONAR valid cast
 					break;
 				case SHORT:
-					getValue(name, (ShortAttribute) primitive);
+					getValue(name, (ShortAttribute) primitive); // NOSONAR valid cast
 					break;
 				case INTEGER:
-					getValue(name, (IntegerAttribute) primitive);
+					getValue(name, (IntegerAttribute) primitive); // NOSONAR valid cast
 					break;
 				case LONG:
-					getValue(name, (LongAttribute) primitive);
+					getValue(name, (LongAttribute) primitive); // NOSONAR valid cast
 					break;
 				case FLOAT:
-					getValue(name, (FloatAttribute) primitive);
+					getValue(name, (FloatAttribute) primitive); // NOSONAR valid cast
 					break;
 				case DOUBLE:
-					getValue(name, (DoubleAttribute) primitive);
+					getValue(name, (DoubleAttribute) primitive); // NOSONAR valid cast
 					break;
 				case CURRENCY:
-					getValue(name, (CurrencyAttribute) primitive);
+					getValue(name, (CurrencyAttribute) primitive); // NOSONAR valid cast
 					break;
 				case STRING:
-					getValue(name, (StringAttribute) primitive);
+					getValue(name, (StringAttribute) primitive); // NOSONAR valid cast
 					break;
 				case URL:
-					getValue(name, (UrlAttribute) primitive);
+					getValue(name, (UrlAttribute) primitive); // NOSONAR valid cast
 					break;
 				case IMGURL:
-					getValue(name, (ImageUrlAttribute) primitive);
+					getValue(name, (ImageUrlAttribute) primitive); // NOSONAR valid cast
 					break;
 				case DATE:
-					getValue(name, (DateAttribute) primitive);
+					getValue(name, (DateAttribute) primitive); // NOSONAR valid cast
 					break;
+				default:
+					throw new IllegalStateException("Unhandled primitive attribute type " +
+							primitive.getType());
 			}
 		} else {
 			AssociationAttribute<?> association = (AssociationAttribute<?>) attribute;
@@ -427,11 +440,14 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			Object associationItem = item.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
 			switch (association.getType()) {
 				case MANY_TO_ONE:
-					((ManyToOneItem<?>) associationItem).fromItem((ManyToOneAttribute) attribute);
+					((ManyToOneItem<?>) associationItem).fromItem((ManyToOneAttribute) attribute); // NOSONAR valid cast
 					break;
 				case ONE_TO_MANY:
-					((OneToManyItem<?>) associationItem).fromItem((OneToManyAttribute) attribute);
+					((OneToManyItem<?>) associationItem).fromItem((OneToManyAttribute) attribute); // NOSONAR valid cast
 					break;
+				default:
+					throw new IllegalStateException("Unhandled association attribute type " +
+							associationInfo.getType());
 			}
 		}
 	}
@@ -443,7 +459,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 */
 	public void clear() {
 		formWidget.clearValues();
-		// the above does not call clearValue() on every item ?!!
+		// the above does not call clearValue() on every item ?!! so do it explicitly
 		for (AttributeInfo info : featureInfo.getAttributes()) {
 			FormItem formItem = formWidget.getItem(info.getName());
 			if (formItem != null) {
@@ -454,11 +470,14 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 					if (associationItem != null) {
 						switch (associationInfo.getType()) {
 							case MANY_TO_ONE:
-								((ManyToOneItem<?>) associationItem).clearValue();
+								((ManyToOneItem<?>) associationItem).clearValue(); // NOSONAR valid cast
 								break;
 							case ONE_TO_MANY:
-								((OneToManyItem<?>) associationItem).clearValue();
+								((OneToManyItem<?>) associationItem).clearValue(); // NOSONAR valid cast
 								break;
+							default:
+								throw new IllegalStateException("Unhandled association attribute type " +
+										associationInfo.getType());
 						}
 					}
 				} else {
@@ -473,7 +492,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	// Protected methods setting values on the form:
 	// -------------------------------------------------------------------------
 
-	/** Apply a boolean attribute value on the form, with the given name. */
+	/**
+	 * Apply a boolean attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, BooleanAttribute attribute) {
 		// formWidget.setValue(name, attribute.getValue());
 		FormItem item = formWidget.getField(name);
@@ -482,12 +506,22 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a short attribute value on the form, with the given name. */
+	/**
+	 * Apply a short attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, ShortAttribute attribute) {
 		formWidget.setValue(name, attribute.getValue());
 	}
 
-	/** Apply a integer attribute value on the form, with the given name. */
+	/**
+	 * Apply a integer attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, IntegerAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -495,7 +529,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a long attribute value on the form, with the given name. */
+	/**
+	 * Apply a long attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, LongAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -503,7 +542,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a float attribute value on the form, with the given name. */
+	/**
+	 * Apply a float attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, FloatAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -511,7 +555,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a double attribute value on the form, with the given name. */
+	/**
+	 * Apply a double attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, DoubleAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -519,7 +568,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a currency attribute value on the form, with the given name. */
+	/**
+	 * Apply a currency attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, CurrencyAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -527,7 +581,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a string attribute value on the form, with the given name. */
+	/**
+	 * Apply a string attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, StringAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -535,7 +594,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply an URL attribute value on the form, with the given name. */
+	/**
+	 * Apply an URL attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, UrlAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -543,7 +607,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply an image attribute value on the form, with the given name. */
+	/**
+	 * Apply an image attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, ImageUrlAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -551,7 +620,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/** Apply a date attribute value on the form, with the given name. */
+	/**
+	 * Apply a date attribute value on the form, with the given name.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute value
+	 */
 	protected void setValue(String name, DateAttribute attribute) {
 		FormItem item = formWidget.getField(name);
 		if (item != null) {
@@ -563,57 +637,109 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	// Protected methods getting values from the form:
 	// -------------------------------------------------------------------------
 
-	/** Get a boolean value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get a boolean value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, BooleanAttribute attribute) {
 		attribute.setValue(toBoolean(formWidget.getValue(name)));
 	}
 
-	/** Get a short value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get a short value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, ShortAttribute attribute) {
 		attribute.setValue(toShort(formWidget.getValue(name)));
 	}
 
-	/** Get a integer value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get a integer value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, IntegerAttribute attribute) {
 		attribute.setValue(toInteger(formWidget.getValue(name)));
 	}
 
-	/** Get a long value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get a long value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, LongAttribute attribute) {
 		attribute.setValue(toLong(formWidget.getValue(name)));
 	}
 
-	/** Get a float value from the form, and place it in <code>attribute</code>. */
+	/** Get a float value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, FloatAttribute attribute) {
 		attribute.setValue(toFloat(formWidget.getValue(name)));
 	}
 
-	/** Get a double value from the form, and place it in <code>attribute</code>. */
+	/** Get a double value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, DoubleAttribute attribute) {
 		attribute.setValue(toDouble(formWidget.getValue(name)));
 	}
 
-	/** Get a currency value from the form, and place it in <code>attribute</code>. */
+	/** Get a currency value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, CurrencyAttribute attribute) {
 		attribute.setValue((String) formWidget.getValue(name));
 	}
 
-	/** Get a string value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get a string value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, StringAttribute attribute) {
 		attribute.setValue((String) formWidget.getValue(name));
 	}
 
-	/** Get an URL value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get an URL value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, UrlAttribute attribute) {
 		attribute.setValue((String) formWidget.getItem(name).getValue());
 	}
 
-	/** Get an image value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get an image value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, ImageUrlAttribute attribute) {
 		attribute.setValue((String) formWidget.getValue(name));
 	}
 
-	/** Get a date value from the form, and place it in <code>attribute</code>. */
+	/**
+	 * Get a date value from the form, and place it in <code>attribute</code>.
+	 *
+	 * @param name attribute name
+	 * @param attribute attribute to put value
+	 */
 	protected void getValue(String name, DateAttribute attribute) {
 		attribute.setValue((Date) formWidget.getValue(name));
 	}
@@ -756,7 +882,6 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * A list wrapper that allows easy insertion of form items by name.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public class FormItemList implements Iterable<FormItem> {
 
@@ -845,7 +970,6 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * Class that represents multiple registrations as one.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class MultiHandlerRegistration implements HandlerRegistration {
 
