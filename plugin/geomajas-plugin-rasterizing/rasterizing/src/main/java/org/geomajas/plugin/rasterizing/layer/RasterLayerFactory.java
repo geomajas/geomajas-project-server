@@ -29,10 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * This factory creates a Geotools layer that is capable of rendering raster layers.
+ * This factory creates a GeoTools layer that is capable of rendering raster layers.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class RasterLayerFactory implements LayerFactory {
@@ -48,6 +47,10 @@ public class RasterLayerFactory implements LayerFactory {
 	}
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+		if (!(clientLayerInfo instanceof ClientRasterLayerInfo)) {
+			throw new IllegalStateException(
+					"RasterLayerFactory.createLayer() should only be called using ClientRasterLayerInfo");
+		}
 		ClientRasterLayerInfo rasterInfo = (ClientRasterLayerInfo) clientLayerInfo;
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);

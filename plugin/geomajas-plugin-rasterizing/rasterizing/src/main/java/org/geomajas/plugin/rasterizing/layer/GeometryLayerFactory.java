@@ -30,10 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * This factory creates a Geotools layer that is capable of writing geometries.
+ * This factory creates a GeoTools layer that is capable of writing geometries.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class GeometryLayerFactory implements LayerFactory {
@@ -49,6 +48,10 @@ public class GeometryLayerFactory implements LayerFactory {
 	}
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+		if (!(clientLayerInfo instanceof ClientGeometryLayerInfo)) {
+			throw new IllegalStateException(
+					"GeometryLayerFactory.createLayer() should only be called using ClientGeometryLayerInfo");
+		}
 		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;
 		LayerType layerType = layerInfo.getLayerType();
 		Style style = styleFactoryService.createStyle(layerType, layerInfo.getStyle());

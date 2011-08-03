@@ -102,6 +102,10 @@ public class VectorLayerFactory implements LayerFactory {
 	}
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
+		if (!(clientLayerInfo instanceof ClientVectorLayerInfo)) {
+			throw new IllegalStateException(
+					"VectorLayerFactory.createLayer() should only be called using ClientVectorLayerInfo");
+		}
 		ClientVectorLayerInfo vectorInfo = (ClientVectorLayerInfo) clientLayerInfo;
 		VectorLayerRasterizingInfo extraInfo = (VectorLayerRasterizingInfo) vectorInfo
 				.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY);
