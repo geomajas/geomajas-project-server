@@ -142,11 +142,11 @@ public class VectorTile extends AbstractVectorTile {
 							break;
 						case URL_CONTENT:
 							if (request.isPaintLabels()) {
-								if(tile.getLabelContent() == null){
+								if (tile.getLabelContent() == null) {
 									// feature content may also contain labels !
-									labelContent.setContent(tile.getFeatureContent());									
+									labelContent.setContent(tile.getFeatureContent());
 								} else {
-									labelContent.setContent(tile.getLabelContent());									
+									labelContent.setContent(tile.getLabelContent());
 								}
 							} else {
 								featureContent.setContent(tile.getFeatureContent());
