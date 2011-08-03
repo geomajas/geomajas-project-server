@@ -68,7 +68,7 @@ public class DojoBuilder {
 		for (String param : mainParams) {
 			commandArgs.add(param);
 		}
-		commandLine.addArguments(commandArgs.toArray(new String[0]));
+		commandLine.addArguments(commandArgs.toArray(new String[commandArgs.size()]));
 
 		try {
 			log.info("Executing " + commandLine.toString());

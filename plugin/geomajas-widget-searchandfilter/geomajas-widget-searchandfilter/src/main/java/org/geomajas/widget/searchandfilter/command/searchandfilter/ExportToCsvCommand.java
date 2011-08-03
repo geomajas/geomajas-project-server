@@ -87,7 +87,7 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 			} else {
 				List<Feature> res = result.getFeatureMap().get(request.getLayerId());
 				if (res != null) {
-					features = res.toArray(new Feature[0]);
+					features = res.toArray(new Feature[res.size()]);
 				} else {
 					features = new Feature[0];
 				}
@@ -102,7 +102,7 @@ public class ExportToCsvCommand implements Command<ExportToCsvRequest, ExportToC
 			} else {
 				List<Feature> res = result.getFeatureMap().get(request.getLayerId());
 				if (res != null) {
-					features = res.toArray(new Feature[0]);
+					features = res.toArray(new Feature[res.size()]);
 				} else {
 					features = new Feature[0];
 				}

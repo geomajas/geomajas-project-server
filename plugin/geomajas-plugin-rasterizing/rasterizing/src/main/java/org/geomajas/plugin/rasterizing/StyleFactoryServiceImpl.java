@@ -32,7 +32,6 @@ import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.sld.RasterizingStyleVisitor;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
@@ -162,7 +161,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			List<Rule> rules = new ArrayList<Rule>();
 			for (FeatureStyleInfo featureStyle : vectorLayerRasterizingInfo.getStyle().getFeatureStyles()) {
 				// create the filter
-				Filter styleFilter = null;
+				Filter styleFilter;
 				if (featureStyle.getFormula() != null && featureStyle.getFormula().length() > 0) {
 					styleFilter = filterService.parseFilter(featureStyle.getFormula());
 				} else {
@@ -172,7 +171,8 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				rules.addAll(createRules(layerType, styleFilter, featureInfo, featureStyle));
 			}
 			// create the style
-			FeatureTypeStyle normalStyle = styleBuilder.createFeatureTypeStyle(typeName, rules.toArray(new Rule[0]));
+			FeatureTypeStyle normalStyle = styleBuilder.createFeatureTypeStyle(typeName,
+					rules.toArray(new Rule[rules.size()]));
 			style.featureTypeStyles().add(normalStyle);
 			// apply the selection style
 			rules.clear();
@@ -184,7 +184,8 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 						vectorLayerRasterizingInfo.getSelectionStyle()));
 			}
 			// create the style
-			FeatureTypeStyle selectionStyle = styleBuilder.createFeatureTypeStyle(typeName, rules.toArray(new Rule[0]));
+			FeatureTypeStyle selectionStyle = styleBuilder.createFeatureTypeStyle(typeName,
+					rules.toArray(new Rule[rules.size()]));
 			style.featureTypeStyles().add(selectionStyle);
 		}
 		// apply the label style
@@ -312,10 +313,8 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 	private GraphicalSymbol createSymbol(FeatureStyleInfo featureStyle) {
 		SymbolInfo info = featureStyle.getSymbol();
 		if (info.getImage() != null) {
-			ExternalGraphic graphic = styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()),
+			return styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()),
 					getFormat(info.getImage().getHref()));
-			return graphic;
-
 		} else {
 			Mark mark = null;
 			if (info.getRect() != null) {

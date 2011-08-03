@@ -253,7 +253,7 @@ public class SelectionController extends AbstractRectangleController {
 				}
 			}
 		}
-		return ids.toArray(new String[0]);
+		return ids.toArray(new String[ids.size()]);
 	}
 
 	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures) {

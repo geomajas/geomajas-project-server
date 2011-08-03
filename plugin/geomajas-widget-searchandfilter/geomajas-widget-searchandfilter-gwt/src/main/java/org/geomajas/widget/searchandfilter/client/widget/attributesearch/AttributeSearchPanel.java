@@ -455,7 +455,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 					layers.add(vLayer.getLabel());
 				}
 			}
-			layerSelect.setValueMap(layers.toArray(new String[0]));
+			layerSelect.setValueMap(layers.toArray(new String[layers.size()]));
 		}
 
 		private void buildUI() {

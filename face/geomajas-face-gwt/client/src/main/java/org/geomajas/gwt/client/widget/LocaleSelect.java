@@ -58,7 +58,7 @@ public class LocaleSelect extends Canvas implements ChangedHandler {
 		// Build a small form with a select item for locales:
 		DynamicForm form = new DynamicForm();
 		ComboBoxItem localeItem = new ComboBoxItem();
-		localeItem.setValueMap(locales.values().toArray(new String[0]));
+		localeItem.setValueMap(locales.values().toArray(new String[locales.size()]));
 		localeItem.setTitle(I18nProvider.getGlobal().localeTitle());
 
 		// Show the current locale value in the select item:

@@ -126,7 +126,8 @@ public class RuleIcon extends JComponent {
 					coords.add(new Coordinate(0.75 * w, 0.25 * h));
 					coords.add(new Coordinate(0.25 * w, 0.75 * h));
 					coords.add(new Coordinate(w, h));
-					LineString linestring = geometryFactory.createLineString(coords.toArray(new Coordinate[0]));
+					LineString linestring = geometryFactory.createLineString(
+							coords.toArray(new Coordinate[coords.size()]));
 					line = new LiteShape2(linestring, null, null, false);
 				}
 				return line;
@@ -138,7 +139,7 @@ public class RuleIcon extends JComponent {
 					coords.add(new Coordinate(w, h));
 					coords.add(new Coordinate(0, h));
 					coords.add(new Coordinate(0, 0));
-					LinearRing ring = geometryFactory.createLinearRing(coords.toArray(new Coordinate[0]));
+					LinearRing ring = geometryFactory.createLinearRing(coords.toArray(new Coordinate[coords.size()]));
 					Polygon p = geometryFactory.createPolygon(ring, null);
 					polygon = new LiteShape2(p, null, null, false);
 				}

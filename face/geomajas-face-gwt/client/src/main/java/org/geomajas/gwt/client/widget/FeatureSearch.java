@@ -315,7 +315,7 @@ public class FeatureSearch extends Canvas {
 				} else {
 					request.setBooleanOperator("OR");
 				}
-				request.setCriteria(criteria.toArray(new SearchCriterion[0]));
+				request.setCriteria(criteria.toArray(new SearchCriterion[criteria.size()]));
 				request.setCrs(mapModel.getCrs());
 				request.setLayerId(layer.getServerLayerId());
 				request.setMax(maximumResultSize);
@@ -472,7 +472,7 @@ public class FeatureSearch extends Canvas {
 							layers.add(vLayer.getLabel());
 						}
 					}
-					layerSelect.setValueMap(layers.toArray(new String[0]));
+					layerSelect.setValueMap(layers.toArray(new String[layers.size()]));
 				}
 			});
 		} else {

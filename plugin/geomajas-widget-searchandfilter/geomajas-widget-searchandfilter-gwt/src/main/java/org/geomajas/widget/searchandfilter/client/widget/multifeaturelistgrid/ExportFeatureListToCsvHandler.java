@@ -56,6 +56,6 @@ public class ExportFeatureListToCsvHandler extends ExportSearchToCsvHandler {
 				critters.add(new SearchCriterion(idField, "=", feat.getId()));
 			}
 		}
-		return critters.toArray(new SearchCriterion[0]);
+		return critters.toArray(new SearchCriterion[critters.size()]);
 	}
 }

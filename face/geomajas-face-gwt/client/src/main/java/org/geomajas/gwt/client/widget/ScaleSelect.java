@@ -235,7 +235,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		}
 
 		GWT.log("Added " + availableScales.size() + " scale to the list.");
-		scaleItem.setValueMap(availableScales.toArray(new String[0]));
+		scaleItem.setValueMap(availableScales.toArray(new String[availableScales.size()]));
 	}
 
 	private void init() {
@@ -253,7 +253,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 			for (Double resolution : mapView.getResolutions()) {
 				scales.add(pixelLength / resolution);
 			}
-			setScales(scales.toArray(new Double[0]));
+			setScales(scales.toArray(new Double[scales.size()]));
 		}
 		mapView.addMapViewChangedHandler(this);
 	}
@@ -267,7 +267,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 				if (updatingScaleList) {
 					List<Double> newScales = new ArrayList<Double>(valueToScale.values());
 					newScales.add(scale);
-					setScales(newScales.toArray(new Double[0]));
+					setScales(newScales.toArray(new Double[newScales.size()]));
 				}
 			}
 			scaleItem.setValue(scaleToValue.get(scale));

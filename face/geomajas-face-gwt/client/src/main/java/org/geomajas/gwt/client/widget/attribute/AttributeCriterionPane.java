@@ -255,7 +255,7 @@ public class AttributeCriterionPane extends Canvas {
 		for (AttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
 			labels.add(attribute.getLabel());
 		}
-		attributeSelect.setValueMap(labels.toArray(new String[0]));
+		attributeSelect.setValueMap(labels.toArray(new String[labels.size()]));
 		attributeSelect.setHint(I18nProvider.getSearch().gridChooseAttribute());
 		attributeSelect.setShowHintInField(true);
 
