@@ -12,7 +12,9 @@
 package org.geomajas.gwt.client.map.cache.tile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
@@ -62,7 +64,7 @@ public class VectorTile extends AbstractVectorTile {
 	/** dependent tile codes */
 	private List<TileCode> codes = new ArrayList<TileCode>();
 
-	private boolean rendered;
+	private Set<GetVectorTileRequest> requestCache = new HashSet<GetVectorTileRequest>();
 
 	private Deferred deferred;
 
@@ -116,12 +118,14 @@ public class VectorTile extends AbstractVectorTile {
 	 *            When this node's data comes from the server, it will be handled by this callback function.
 	 */
 	public void fetch(final String filter, final TileFunction<VectorTile> callback) {
-		GwtCommand command = createCommand(filter);
+		final GetVectorTileRequest request = createRequest(filter);
+		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
+		command.setCommandRequest(request);
 		final VectorTile self = this;
-		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetVectorTileResponse>() {
 
-			public void execute(CommandResponse response) {
-				if (!(deferred != null && deferred.isCancelled()) && response instanceof GetVectorTileResponse) {
+			public void execute(GetVectorTileResponse response) {
+				if (!(deferred != null && deferred.isCancelled())) {
 					GetVectorTileResponse tileResponse = (GetVectorTileResponse) response;
 					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					for (TileCode relatedTile : tile.getCodes()) {
@@ -130,16 +134,32 @@ public class VectorTile extends AbstractVectorTile {
 					code = tile.getCode();
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
-					featureContent.setContent(tile.getFeatureContent());
-					labelContent.setContent(tile.getLabelContent());
 					contentType = tile.getContentType();
+					switch (contentType) {
+						case STRING_CONTENT:
+							featureContent.setContent(tile.getFeatureContent());
+							labelContent.setContent(tile.getLabelContent());
+							break;
+						case URL_CONTENT:
+							if (request.isPaintLabels()) {
+								if(tile.getLabelContent() == null){
+									// feature content may also contain labels !
+									labelContent.setContent(tile.getFeatureContent());									
+								} else {
+									labelContent.setContent(tile.getLabelContent());									
+								}
+							} else {
+								featureContent.setContent(tile.getFeatureContent());
+							}
+							break;
+
+					}
+					requestCache.add(request);
 					try {
 						callback.execute(self);
 					} catch (Throwable t) {
 						GWT.log("VectorTile: error calling the callback after a fetch.", t);
 					}
-					// raster should be re-rendered at all times
-					rendered = (contentType != VectorTileContentType.URL_CONTENT);
 				}
 				deferred = null;
 			}
@@ -197,7 +217,7 @@ public class VectorTile extends AbstractVectorTile {
 				});
 				break;
 			case LOADED:
-				if (needsReload()) {
+				if (needsReload(filter)) {
 					// Check if the labels need to be fetched as well:
 					fetch(filter, callback);
 				} else {
@@ -296,35 +316,29 @@ public class VectorTile extends AbstractVectorTile {
 		}
 	}
 	
-	private boolean needsReload() {
-		boolean needsReload = false;
-		// missing label content
-		needsReload |= cache.getLayer().isLabelsShowing() && !labelContent.isLoaded();
-		// always re-render if not rendered
-		needsReload |= !rendered;
-		return needsReload;
+	private boolean needsReload(String filter) {
+		GetVectorTileRequest request = createRequest(filter);
+		return !requestCache.contains(request);
 	}
 
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private GwtCommand createCommand(String filter) {
+	private GetVectorTileRequest createRequest(String filter) {
 		GetVectorTileRequest request = new GetVectorTileRequest();
 		request.setCode(code);
 		request.setCrs(cache.getLayer().getMapModel().getCrs());
 		request.setFilter(filter);
 		request.setLayerId(cache.getLayer().getServerLayerId());
-		// always paint geometries in first fetch
-		request.setPaintGeometries(!rendered);
+		// always paint geometries, except when we already have the svg/vml
+		request.setPaintGeometries(!(VectorTileContentType.STRING_CONTENT == contentType && featureContent.isLoaded()));
 		request.setPaintLabels(cache.getLayer().isLabeled());
 		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
 		request.setRenderer(SC.isIE() ? "VML" : "SVG");
 		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
 		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
-		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
-		command.setCommandRequest(request);
-		return command;
+		return request;
 	}
 
 }

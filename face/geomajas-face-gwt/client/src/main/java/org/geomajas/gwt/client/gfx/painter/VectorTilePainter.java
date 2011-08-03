@@ -56,27 +56,38 @@ public class VectorTilePainter implements Painter {
 	 */
 	public void paint(Paintable paintable, Object group, MapContext context) {
 		VectorTile tile = (VectorTile) paintable;
-
-		// Paint the feature content:
-		if (tile.getFeatureContent().isLoaded()) {
-			drawContent(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context);
-		}
-
-		// Paint the label content:
-		if (tile.getLabelContent().isLoaded()) {
-			drawContent(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context);
-		}
-	}
-
-	private void drawContent(PaintableGroup group, VectorTile tile, ContentHolder holder, MapContext context) {
+		boolean labeled = tile.getCache().getLayer().isLabelsShowing();
 		switch (tile.getContentType()) {
 			case STRING_CONTENT:
-				context.getVectorContext().drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
+				// Paint the feature content:
+				if (tile.getFeatureContent().isLoaded()) {
+					drawData(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context);
+				}
+				// Paint the label content:
+				if (tile.getLabelContent().isLoaded()) {
+					drawData(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context);
+				}
 				break;
 			case URL_CONTENT:
-				context.getRasterContext().drawImage(tile.getCache().getLayer(), tile.getCode().toString(),
-						holder.getContent(), getPanBounds(tile), OPAQUE_PICTURE_STYLE);
+				// paint the label url (includes features)
+				if (labeled && tile.getLabelContent().isLoaded()) {
+					drawImage(tile, tile.getLabelContent(), context);
+					// or Paint the feature url
+				} else if (tile.getFeatureContent().isLoaded()) {
+					drawImage(tile, tile.getFeatureContent(), context);
+				}
+				break;
 		}
+
+	}
+	
+	private void drawData(PaintableGroup group, VectorTile tile, ContentHolder holder, MapContext context) {
+		context.getVectorContext().drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
+	}
+
+	private void drawImage(VectorTile tile, ContentHolder holder, MapContext context) {
+		context.getRasterContext().drawImage(tile.getCache().getLayer(), tile.getCode().toString(),
+				holder.getContent(), getPanBounds(tile), OPAQUE_PICTURE_STYLE);
 	}
 
 	/**
