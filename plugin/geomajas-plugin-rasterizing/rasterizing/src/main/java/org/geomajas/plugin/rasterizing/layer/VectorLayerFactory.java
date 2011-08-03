@@ -67,10 +67,9 @@ import org.springframework.stereotype.Component;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * This factory creates a Geotools layer that is capable of writing vector layers.
+ * This factory creates a GeoTools layer that is capable of writing vector layers.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class VectorLayerFactory implements LayerFactory {
@@ -126,10 +125,11 @@ public class VectorLayerFactory implements LayerFactory {
 		metaArea.expandBy(bufferInPixels / tileInpix.getWidth() * areaOfInterest.getWidth(),
 				bufferInPixels / tileInpix.getHeight() * areaOfInterest.getHeight());
 		// fetch features in meta area
+		Crs layerCrs = vectorLayerService.getCrs(layer);
 		Envelope layerBounds = geoService.transform(metaArea, (Crs) areaOfInterest.getCoordinateReferenceSystem(),
-				(Crs) layer.getCrs());
-		Filter filter = filterService.createBboxFilter((Crs) layer.getCrs(), layerBounds, layer.getLayerInfo()
-				.getFeatureInfo().getGeometryType().getName());
+				layerCrs);
+		Filter filter = filterService.createBboxFilter(layerCrs, layerBounds,
+				layer.getLayerInfo().getFeatureInfo().getGeometryType().getName());
 		if (extraInfo.getFilter() != null) {
 			filter = filterService.createAndFilter(filter, filterService.parseFilter(extraInfo.getFilter()));
 		}
@@ -235,9 +235,6 @@ public class VectorLayerFactory implements LayerFactory {
 					case FLOAT:
 						builder.add(prim.getName(), Float.class);
 						break;
-					case IMGURL:
-						builder.add(prim.getName(), String.class);
-						break;
 					case INTEGER:
 						builder.add(prim.getName(), Integer.class);
 						break;
@@ -248,12 +245,12 @@ public class VectorLayerFactory implements LayerFactory {
 						builder.add(prim.getName(), Short.class);
 						break;
 					case STRING:
-						builder.add(prim.getName(), String.class);
-						break;
 					case URL:
+					case IMGURL:
 						builder.add(prim.getName(), String.class);
 						break;
-
+					default:
+						throw new IllegalStateException("Unknown primitive attribute type " + prim.getType());
 				}
 			} else if (attrInfo instanceof AssociationAttributeInfo) {
 				AssociationAttributeInfo ass = (AssociationAttributeInfo) attrInfo;
@@ -264,6 +261,8 @@ public class VectorLayerFactory implements LayerFactory {
 					case ONE_TO_MANY:
 						builder.add(ass.getName(), Collection.class);
 						break;
+					default:
+						throw new IllegalStateException("Unknown association attribute type " + ass.getType());
 				}
 			}
 		}
