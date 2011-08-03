@@ -33,7 +33,7 @@ public final class Geomajas {
 
 	/** Returns the current version of Geomajas as a string. */
 	public static String getVersion() {
-		return "1.9.0-SNAPSHOT";
+		return "1.9.0";
 	}
 
 	/**
