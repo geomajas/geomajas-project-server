@@ -23,6 +23,8 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
+import org.geomajas.gwt.client.map.event.FeatureTransactionEvent;
+import org.geomajas.gwt.client.map.event.FeatureTransactionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -77,6 +79,8 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
  */
 public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler, SelectionChangedHandler {
 
+	private static final String FEATURE_ID_FIELD_NAME = "featureId";
+	
 	private MapModel mapModel;
 
 	/**
@@ -145,6 +149,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			throw new IllegalArgumentException("The given MapModel should not be 'null'.");
 		}
 		this.mapModel = mapModel;
+		this.mapModel.addFeatureTransactionHandler(new ApplyFeatureTransactionToGrid());
 		setShowEmptyMessage(true);
 		setIdInTable(false);
 		setEditingEnabled(false);
@@ -191,8 +196,13 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 
 		// Feature checks out, add it to the grid:
 		ListGridRecord record = new ListGridRecord();
-		record.setAttribute("featureId", feature.getId());
-		
+		record.setAttribute(FEATURE_ID_FIELD_NAME, feature.getId());
+		copyToRecord(feature, record);
+		addData(record);
+		return true;
+	}
+
+	private void copyToRecord(Feature feature, ListGridRecord record) {
 		for (AttributeInfo attributeInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
 			Attribute<?> attr = feature.getAttributes().get(attributeInfo.getName());
 			if (attr.isPrimitive()) {
@@ -236,8 +246,6 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 				}
 			}
 		}
-		addData(record);
-		return true;
 	}
 
 	/**
@@ -396,7 +404,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		boolean selected = false;
 		ListGridRecord[] selections = getSelection();
 		for (ListGridRecord selection : selections) {
-			if (selection.getAttribute("featureId").equals(feature.getId())) {
+			if (selection.getAttribute(FEATURE_ID_FIELD_NAME).equals(feature.getId())) {
 				selected = true;
 				break;
 			}
@@ -406,7 +414,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		if (selected) {
 			ListGridRecord[] records = this.getRecords();
 			for (int i = 0; i < records.length; i++) {
-				if (records[i].getAttribute("featureId").equals(feature.getId())) {
+				if (records[i].getAttribute(FEATURE_ID_FIELD_NAME).equals(feature.getId())) {
 					deselectRecord(records[i]);
 					break;
 				}
@@ -425,7 +433,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		boolean selected = false;
 		ListGridRecord[] selections = getSelection();
 		for (ListGridRecord selection : selections) {
-			if (selection.getAttribute("featureId").equals(feature.getId())) {
+			if (selection.getAttribute(FEATURE_ID_FIELD_NAME).equals(feature.getId())) {
 				selected = true;
 				break;
 			}
@@ -435,7 +443,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		if (!selected) {
 			ListGridRecord[] records = this.getRecords();
 			for (int i = 0; i < records.length; i++) {
-				if (records[i].getAttribute("featureId").equals(feature.getId())) {
+				if (records[i].getAttribute(FEATURE_ID_FIELD_NAME).equals(feature.getId())) {
 					selectRecord(i);
 					break;
 				}
@@ -453,7 +461,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 */
 	public void onSelectionChanged(SelectionEvent event) {
 		Record record = event.getRecord();
-		String featureId = record.getAttribute("featureId");
+		String featureId = record.getAttribute(FEATURE_ID_FIELD_NAME);
 
 		// Check if selection and deselection are really necessary, to avoid useless events.
 		if (event.getState()) {
@@ -493,7 +501,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			// Create a header field for each attribute definition:
 			List<ListGridField> fields = new ArrayList<ListGridField>();
 			if (idInTable) {
-				ListGridField gridField = new ListGridField("featureId", "ID");
+				ListGridField gridField = new ListGridField(FEATURE_ID_FIELD_NAME, "ID");
 				gridField.setAlign(Alignment.LEFT);
 				gridField.setCanEdit(false);
 				fields.add(gridField);
@@ -599,7 +607,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		 */
 		public void onDoubleClick(DoubleClickEvent event) {
 			ListGridRecord selected = getSelectedRecord();
-			String featureId = selected.getAttribute("featureId");
+			String featureId = selected.getAttribute(FEATURE_ID_FIELD_NAME);
 			if (featureId != null && layer != null) {
 				layer.getFeatureStore().getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
 						new LazyLoadCallback() {
@@ -607,6 +615,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 							public void execute(List<Feature> response) {
 								FeatureAttributeWindow window = new FeatureAttributeWindow(response.get(0),
 										editingEnabled);
+								window.centerInPage();
 								window.draw();
 							}
 						});
@@ -692,4 +701,28 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		}
 
 	}
+	
+	/**
+	 * Applies the feature transaction to the grid.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class ApplyFeatureTransactionToGrid implements FeatureTransactionHandler {
+
+		public void onTransactionSuccess(FeatureTransactionEvent event) {
+			List<ListGridRecord> updates = new ArrayList<ListGridRecord>();
+			for (ListGridRecord record : getRecords()) {
+				String featureId = record.getAttribute(FEATURE_ID_FIELD_NAME);
+				Feature feature = layer.getFeatureStore().getPartialFeature(featureId);
+				if (feature != null && feature.isAttributesLoaded()) {
+					copyToRecord(feature, record);
+					updates.add(record);
+				}
+			}
+			setData(updates.toArray(new Record[0]));
+		}
+
+	}
+
 }

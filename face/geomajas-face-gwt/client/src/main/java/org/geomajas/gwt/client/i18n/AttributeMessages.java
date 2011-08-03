@@ -43,4 +43,20 @@ public interface AttributeMessages extends Messages {
 	String btnCancelTitle();
 
 	String btnCancelTooltip();
+	
+	String btnApplyTitle();
+
+	String btnApplyTooltip();
+	
+	String btnDeleteTitle();
+
+	String btnDeleteTooltip();
+	
+	String btnNewTitle();
+
+	String btnNewTooltip();
+
+	String one2ManyMoreTitle();
+	
+	String one2ManyMoreTooltip();
 }

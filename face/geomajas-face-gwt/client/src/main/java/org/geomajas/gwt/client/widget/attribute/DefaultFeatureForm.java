@@ -443,6 +443,30 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 */
 	public void clear() {
 		formWidget.clearValues();
+		// the above does not call clearValue() on every item ?!!
+		for (AttributeInfo info : featureInfo.getAttributes()) {
+			FormItem formItem = formWidget.getItem(info.getName());
+			if (formItem != null) {
+				if (info instanceof AssociationAttributeInfo) {
+					Object associationItem = formItem
+							.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
+					AssociationAttributeInfo associationInfo = (AssociationAttributeInfo) info;
+					if (associationItem != null) {
+						switch (associationInfo.getType()) {
+							case MANY_TO_ONE:
+								((ManyToOneItem<?>) associationItem).clearValue();
+								break;
+							case ONE_TO_MANY:
+								((OneToManyItem<?>) associationItem).clearValue();
+								break;
+						}
+					}
+				} else {
+					formItem.clearValue();
+
+				}
+			}
+		}
 	}
 
 	// -------------------------------------------------------------------------

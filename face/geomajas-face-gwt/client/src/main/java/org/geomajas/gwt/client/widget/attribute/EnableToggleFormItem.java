@@ -51,6 +51,13 @@ public class EnableToggleFormItem extends CanvasItem {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
+	@Override
+	public void clearValue() {
+		super.clearValue();
+		enabledForm.clearValues();
+		disabledForm.clearValues();
+	}
+
 	public void initialize(FormItem enabledItem, FormItem disabledItem) {
 		setWidth("*");
 		setHeight(1);
@@ -112,23 +119,14 @@ public class EnableToggleFormItem extends CanvasItem {
 
 	public void setDisabled(Boolean disabled) {
 		boolean realValue = disabled.booleanValue();
-		super.setDisabled(realValue);
 		enabledForm.setVisible(!realValue);
 		disabledForm.setVisible(realValue);
 	}
-	
-	
 
 	@Override
 	public Boolean validate() {
 		return enabledForm.validate();
 	}
 
-	public void disable() {
-		super.disable();
-	}
 
-	public void enable() {
-		super.enable();
-	}
 }

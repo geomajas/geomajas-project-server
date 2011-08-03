@@ -37,6 +37,8 @@ public class FeatureAttributeEditor extends VLayout {
 	private VectorLayer layer;
 
 	private FeatureForm<?> featureForm;
+	
+	private boolean disabled;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -97,14 +99,25 @@ public class FeatureAttributeEditor extends VLayout {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Overrides the normal setDisabled method, to not only disable or enable this widget, but to change the actual
-	 * attribute form that's being displayed. When disabled is set to true, a {@link SimpleAttributeForm} is used,
-	 * otherwise a {@link EditableAttributeForm}.
+	 * Overrides the normal setDisabled method and propagates the state to the form. In this way forms can implement
+	 * custom item enabling/disabling behavior if required.
+	 * 
+	 * @param disabled editable state of this editor
 	 */
 	public void setDisabled(boolean disabled) {
-		super.setDisabled(disabled);
+		this.disabled = disabled;
 		featureForm.setDisabled(disabled);
 	}
+	
+	/**
+	 * Overrides the normal isDisabled method.
+	 * 
+	 * @return true if in editable state.
+	 */
+	public Boolean isDisabled() {
+		return disabled;
+	}
+	
 
 	/**
 	 * Validate the form. This only makes sense when the widget is not disabled. Because only then is it possible for a

@@ -60,4 +60,9 @@ public interface ManyToOneItem<F extends FormItem> extends AssociationItem<F> {
 	 */
 	void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider);
 
+	/**
+	 * Clear this item's value.
+	 */
+	void clearValue();
+
 }

@@ -12,7 +12,9 @@
 package org.geomajas.gwt.client.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
@@ -68,14 +70,11 @@ public class AttributeListGrid extends ListGrid {
 	private boolean showImageAttributeOnHover;
 
 	/**
-	 * List of existing id's
+	 * List of values in the grid
 	 */
-	private List<String> oldIds = new ArrayList<String>();
-
-	/**
-	 * List of new id's.
-	 */
-	private List<String> newIds = new ArrayList<String>();
+	private Map<AssociationValue, String> idByValue = new HashMap<AssociationValue, String>();
+	
+	private int newRows;
 
 	private static final String NEW_PREFIX = "_new_";
 
@@ -100,42 +99,72 @@ public class AttributeListGrid extends ListGrid {
 	/**
 	 * Empty the grid, thereby removing all rows. It does not clear the header though.
 	 */
-	public void empty() {
+	public void clearValues() {
 		setData(new ListGridRecord[] {});
+		idByValue.clear();
+		newRows = 0;
 	}
 
 	/**
 	 * Adds a new value to the list.
 	 * 
 	 * @param value The value to be added to the list.
-	 * @return Returns true in case of success, and false if the value is already in the list or the value is null
+	 * @return Returns true in case of update, and false if the value is already in the list or the value is null
 	 */
-	public boolean addValue(AssociationValue associationValue) {
-
-		// Calculate id
-		Object idObject = associationValue.getId().getValue();
-		String id;
-		if (idObject != null) {
-			id = idObject.toString();
-			if (oldIds.contains(id)) {
-				return false;
-			} else {
-				oldIds.add(id.toString());
-			}
+	public boolean saveOrUpdateValue(AssociationValue associationValue) {
+		if (idByValue.containsKey(associationValue)) {
+			updateValue(associationValue);
+			setData(getRecords());
+			return true;
 		} else {
-			// fake id
-			id = NEW_PREFIX + "." + newIds.size();
-			newIds.add(id);
+			// Calculate id
+			Object idObject = associationValue.getId().getValue();
+			String id;
+			if (idObject != null) {
+				id = idObject.toString();
+			} else {
+				// fake id
+				id = NEW_PREFIX + "." + (newRows++);
+			}
+			// Feature checks out, add it to the grid:
+			ListGridRecord record = new ListGridRecord();
+			record.setAttribute(ID_NAME, id);
+			updateAttributes(associationValue, record);
+			idByValue.put(associationValue, id);
+			addData(record);
+			return false;
 		}
-
-		// Feature checks out, add it to the grid:
-		ListGridRecord record = new ListGridRecord();
-		record.setAttribute(ID_NAME, id);
-		updateAttributes(associationValue, record);
-		addData(record);
-		return true;
 	}
 
+	/**
+	 * Removes a value to the list.
+	 * 
+	 * @param value The value to be removed from the list.
+	 * @return Returns true in case of successful removal.
+	 */
+	public boolean deleteValue(AssociationValue associationValue) {
+		if (idByValue.containsKey(associationValue)) {
+			for (ListGridRecord record : getRecords()) {
+				if (record.getAttributeAsObject(VALUE_HOLDER_RECORD_ATTRIBUTE) == associationValue) {
+					removeData(record);
+					idByValue.remove(associationValue);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the specified value has been added to the list.
+	 * 
+	 * @param associationValue value to check
+	 * @return true if added, false otherwise.
+	 */
+	public boolean containsValue(AssociationValue associationValue) {
+		return idByValue.containsKey(associationValue);
+	}
+	
 	private void updateAttributes(AssociationValue associationValue, ListGridRecord record) {
 		for (AttributeInfo attributeInfo : featureInfo.getAttributes()) {
 			Attribute<?> attr = associationValue.getAllAttributes().get(attributeInfo.getName());
@@ -210,7 +239,6 @@ public class AttributeListGrid extends ListGrid {
 		for (ListGridRecord record : getRecords()) {
 			if (record.getAttributeAsObject(VALUE_HOLDER_RECORD_ATTRIBUTE) == value) {
 				updateAttributes(value, record);
-				updateData(record);
 			}
 		}
 	}

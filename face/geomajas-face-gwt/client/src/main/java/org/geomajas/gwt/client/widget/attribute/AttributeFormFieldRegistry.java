@@ -304,9 +304,9 @@ public final class AttributeFormFieldRegistry {
 		}, new FormItemFactory() {
 
 			public FormItem create() {
-				DefaultOneToManyItem manyToOneItem = new DefaultOneToManyItem();
-				manyToOneItem.getItem().setAttribute(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY, manyToOneItem);
-				return manyToOneItem.getItem();
+				DefaultOneToManyItem oneToMany = new DefaultOneToManyItem();
+				oneToMany.getItem().setAttribute(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY, oneToMany);
+				return oneToMany.getItem();
 			}
 		}, null);
 	}

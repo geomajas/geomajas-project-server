@@ -19,7 +19,9 @@ import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.AttributeListGrid;
+import org.geomajas.gwt.client.widget.attribute.DefaultOneToManyItem.OneToManyLink;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
@@ -43,7 +45,10 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.CanvasItem;
+import com.smartgwt.client.widgets.form.events.ItemChangedEvent;
+import com.smartgwt.client.widgets.form.events.ItemChangedHandler;
+import com.smartgwt.client.widgets.form.fields.LinkItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
@@ -58,11 +63,15 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  * 
  */
-public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
-
-	private IButton editButton;
+public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 
 	private AttributeListGrid masterGrid;
+
+	private IButton applyButton;
+
+	private IButton newButton;
+
+	private IButton deleteButton;
 
 	private FeatureForm<DynamicForm> detailForm;
 
@@ -70,40 +79,27 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 
 	private AssociationValue selectedValue;
 
-	private CanvasItem canvasItem;
-
 	private FeatureInfo featureInfo;
+
+	private OneToManyLink item;
 
 	/**
 	 * Return the actual form item.
 	 * 
 	 * @return the actual form item
 	 */
-	public CanvasItem getItem() {
-		return canvasItem;
+	public OneToManyLink getItem() {
+		return item;
 	}
 
 	public DefaultOneToManyItem() {
-		HLayout canvas = new HLayout();
-		canvas.setAutoHeight();
-		canvas.setAutoWidth();
-		editButton = new IButton("...");
-		editButton.setWidth(50);
-		canvas.addMember(editButton);
-		editButton.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				openEditor();
-			}
-		});
-		canvasItem = new CanvasItem();
-		canvasItem.setCanvas(canvas);
+		item = new OneToManyLink();
 	}
 
 	public void toItem(OneToManyAttribute attribute) {
 		// deep clone to allow separation of object and form state
 		for (AssociationValue value : attribute.getValue()) {
-			masterGrid.addValue((AssociationValue) value.clone());
+			masterGrid.saveOrUpdateValue((AssociationValue) value.clone());
 		}
 	}
 
@@ -114,6 +110,11 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 			values.add((AssociationValue) associationValue.clone());
 		}
 		attribute.setValue(values);
+	}
+
+	public void clearValue() {
+		detailForm.clear();
+		masterGrid.clearValues();
 	}
 
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
@@ -135,7 +136,8 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 		detailForm.getWidget().setGroupTitle("Edit");
 		layout.addMember(detailForm.getWidget());
 
-		IButton applyButton = new IButton("Apply");
+		applyButton = new IButton(I18nProvider.getAttribute().btnApplyTitle());
+		applyButton.setTooltip(I18nProvider.getAttribute().btnApplyTooltip());
 		applyButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -144,16 +146,16 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 						detailForm.fromForm(entry.getKey(), entry.getValue());
 						masterGrid.updateValue(selectedValue);
 					}
-					if (selectedValue.getId().getValue() == null) {
-						if (masterGrid.addValue(selectedValue)) {
-							masterGrid.selectValue(selectedValue);
-						}
-					}
+					masterGrid.saveOrUpdateValue(selectedValue);
+					masterGrid.selectValue(selectedValue);
+					item.fireEvent(new ChangedEvent(item.getJsObj()));
+					updateButtonState(false);
 				}
 			}
 		});
 
-		IButton newButton = new IButton("New");
+		newButton = new IButton(I18nProvider.getAttribute().btnNewTitle());
+		newButton.setTooltip(I18nProvider.getAttribute().btnNewTooltip());
 		newButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -162,12 +164,30 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 				for (AttributeInfo info : featureInfo.getAttributes()) {
 					detailForm.toForm(info.getName(), selectedValue.getAllAttributes().get(info.getName()));
 				}
+				updateButtonState(false);
+			}
+		});
+
+		deleteButton = new IButton(I18nProvider.getAttribute().btnDeleteTitle());
+		deleteButton.setTooltip(I18nProvider.getAttribute().btnDeleteTooltip());
+		deleteButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				if (selectedValue != null) {
+					if (masterGrid.deleteValue(selectedValue)) {
+						detailForm.clear();
+						selectedValue = null;
+						item.fireEvent(new ChangedEvent(item.getJsObj()));
+						updateButtonState(false);
+					}
+				}
 			}
 		});
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
 		buttonLayout.addMember(applyButton);
 		buttonLayout.addMember(newButton);
+		buttonLayout.addMember(deleteButton);
 		buttonLayout.setAlign(Alignment.CENTER);
 		layout.addMember(buttonLayout);
 
@@ -187,8 +207,17 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 				for (AttributeInfo info : featureInfo.getAttributes()) {
 					detailForm.toForm(info.getName(), selectedValue.getAllAttributes().get(info.getName()));
 				}
+				updateButtonState(false);
 			}
 		});
+
+		detailForm.addItemChangedHandler(new ItemChangedHandler() {
+
+			public void onItemChanged(ItemChangedEvent event) {
+				updateButtonState(true);
+			}
+		});
+
 	}
 
 	protected void openEditor() {
@@ -253,6 +282,51 @@ public class DefaultOneToManyItem implements OneToManyItem<CanvasItem> {
 				return new StringAttribute();
 
 		}
+	}
+
+	/**
+	 * {@link LinkItem} that opens the editable grid of one-to-many attributes.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class OneToManyLink extends LinkItem {
+
+		public OneToManyLink() {
+			setTitle(I18nProvider.getAttribute().one2ManyMoreTitle());
+			setLinkTitle(I18nProvider.getAttribute().one2ManyMoreTitle());
+			setTooltip(I18nProvider.getAttribute().one2ManyMoreTooltip());
+			addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+				public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+					openEditor();
+				}
+			});
+		}
+
+		@Override
+		public void setDisabled(Boolean disabled) {
+			// propagate to nested form and buttons, but don't disable ourselves or the grid !
+			detailForm.setDisabled(disabled);
+			if (disabled) {
+				applyButton.setDisabled(true);
+				newButton.setDisabled(true);
+				deleteButton.setDisabled(true);
+			} else {
+				updateButtonState(false);
+			}
+		}
+
+	}
+
+	private void updateButtonState(boolean canApply) {
+		if (canApply) {
+			applyButton.setDisabled(!(selectedValue != null && detailForm.validate()));
+		} else {
+			applyButton.setDisabled(true);
+		}
+		deleteButton.setDisabled(!(selectedValue != null && masterGrid.containsValue(selectedValue)));
+		newButton.setDisabled(false);
 	}
 
 }

@@ -54,10 +54,15 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 			}
 		}
 	}
+	
+	public void clearValue() {
+		selectItem.clearValue();
+	}
 
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		selectItem.setValueField(ManyToOneDataSource.ASSOCIATION_ITEM_VALUE_FIELD_NAME);
 		selectItem.setOptionDataSource(new ManyToOneDataSource(attributeInfo, attributeProvider));
 	}
+
 
 }

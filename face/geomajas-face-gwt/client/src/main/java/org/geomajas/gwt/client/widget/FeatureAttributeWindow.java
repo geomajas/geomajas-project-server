@@ -20,6 +20,8 @@ import org.geomajas.gwt.client.action.menu.SaveEditingAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
+import org.geomajas.gwt.client.map.event.FeatureTransactionEvent;
+import org.geomajas.gwt.client.map.event.FeatureTransactionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
@@ -111,11 +113,9 @@ public class FeatureAttributeWindow extends Window {
 	 * default this constructor will use a {@link DefaultFeatureFormFactory} to create the attribute form. If you want
 	 * to have some influence on how the feature attribute form should look, than use the other constructor.
 	 * 
-	 * @param feature
-	 *            The feature instance to display and/or edit.
-	 * @param editingAllowed
-	 *            This must be set before the widget is actually drawn, so it makes sense to set it at construction
-	 *            time.
+	 * @param feature The feature instance to display and/or edit.
+	 * @param editingAllowed This must be set before the widget is actually drawn, so it makes sense to set it at
+	 *        construction time.
 	 * @since 1.6.0
 	 */
 	@Api
@@ -126,13 +126,10 @@ public class FeatureAttributeWindow extends Window {
 	/**
 	 * Create an instance and immediately apply a feature onto it. Also specify whether or not editing is allowed.
 	 * 
-	 * @param feature
-	 *            The feature instance to display and/or edit.
-	 * @param editingAllowed
-	 *            This must be set before the widget is actually drawn, so it makes sense to set it at construction
-	 *            time.
-	 * @param factory
-	 *            A specific factory for creating the attribute forms within this widget.
+	 * @param feature The feature instance to display and/or edit.
+	 * @param editingAllowed This must be set before the widget is actually drawn, so it makes sense to set it at
+	 *        construction time.
+	 * @param factory A specific factory for creating the attribute forms within this widget.
 	 * @since 1.9.0
 	 */
 	@Api
@@ -146,6 +143,7 @@ public class FeatureAttributeWindow extends Window {
 		setEditingAllowed(editingAllowed);
 		if (feature != null) {
 			buildWidget(feature.getLayer());
+			mapModel.addFeatureTransactionHandler(new ApplyFeatureTransactionToWindow());
 			setFeature(feature);
 		}
 	}
@@ -184,8 +182,7 @@ public class FeatureAttributeWindow extends Window {
 	/**
 	 * Apply a new feature onto this widget, assuring the attributes are loaded.
 	 * 
-	 * @param feature
-	 *            feature
+	 * @param feature feature
 	 */
 	public void setFeature(Feature feature) {
 		List<Feature> features = new ArrayList<Feature>();
@@ -221,8 +218,7 @@ public class FeatureAttributeWindow extends Window {
 	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't have any
 	 * effect anymore.
 	 * 
-	 * @param editingAllowed
-	 *            editing allowed status
+	 * @param editingAllowed editing allowed status
 	 */
 	public void setEditingAllowed(boolean editingAllowed) {
 		this.editingAllowed = editingAllowed;
@@ -246,8 +242,7 @@ public class FeatureAttributeWindow extends Window {
 	 * buttons will disappear, and a simple attribute form is shown that displays the attribute values, but does not
 	 * allow for editing.
 	 * 
-	 * @param editingEnabled
-	 *            editing enabled status
+	 * @param editingEnabled editing enabled status
 	 */
 	public void setEditingEnabled(boolean editingEnabled) {
 		if (isEditingAllowed()) {
@@ -282,8 +277,7 @@ public class FeatureAttributeWindow extends Window {
 	/**
 	 * Build the entire widget.
 	 * 
-	 * @param layer
-	 *            layer
+	 * @param layer layer
 	 */
 	private void buildWidget(VectorLayer layer) {
 		mapModel = layer.getMapModel();
@@ -467,4 +461,24 @@ public class FeatureAttributeWindow extends Window {
 			editButton.setDisabled(false);
 		}
 	}
+
+	/**
+	 * Applies feature transaction changes to this window.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class ApplyFeatureTransactionToWindow implements FeatureTransactionHandler {
+
+		public void onTransactionSuccess(FeatureTransactionEvent event) {
+			Feature feature = attributeTable.getFeature();
+			if (feature != null) {
+				setFeature(feature);
+			} else {
+				setFeature(null);
+			}
+		}
+
+	}
+
 }
