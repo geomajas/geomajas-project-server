@@ -23,6 +23,8 @@ import org.geomajas.configuration.client.ClientMapInfo;
 @Api(allMethods = true)
 public class RasterizeMapRequest implements CommandRequest {
 
+	private static final long serialVersionUID = 100L;
+
 	/**
 	 * Command name to handle the request.
 	 */

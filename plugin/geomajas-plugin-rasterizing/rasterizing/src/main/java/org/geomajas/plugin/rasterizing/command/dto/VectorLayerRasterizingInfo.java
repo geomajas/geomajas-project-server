@@ -23,10 +23,11 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
- * 
  */
 @Api(allMethods = true)
 public class VectorLayerRasterizingInfo implements ClientWidgetInfo, RasterizingConstants {
+
+	private static final long serialVersionUID = 100L;
 
 	private NamedStyleInfo style;
 
@@ -116,7 +117,7 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	/**
 	 * Sets whether or not labels have to be painted.
 	 * 
-	 * @param paintGeometries
+	 * @param paintLabels
 	 *            true if labels have to be painted, false otherwise.
 	 */
 	public void setPaintLabels(boolean paintLabels) {
@@ -126,8 +127,7 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	/**
 	 * Sets whether or not geometries have to be painted.
 	 * 
-	 * @param paintGeometries
-	 *            true if geometries have to be painted, false otherwise.
+	 * @return true if geometries have to be painted, false otherwise.
 	 */
 	public boolean isPaintGeometries() {
 		return paintGeometries;

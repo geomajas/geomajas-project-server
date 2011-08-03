@@ -25,10 +25,11 @@ import org.geomajas.layer.LayerType;
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
- * 
  */
 @Api(allMethods = true)
 public class ClientGeometryLayerInfo extends ClientLayerInfo {
+
+	private static final long serialVersionUID = 100L;
 
 	private List<Geometry> geometries = new ArrayList<Geometry>();
 
@@ -113,6 +114,5 @@ public class ClientGeometryLayerInfo extends ClientLayerInfo {
 	public LayerType getLayerType() {
 		return layerType;
 	}
-	
 
 }

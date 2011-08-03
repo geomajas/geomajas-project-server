@@ -20,10 +20,11 @@ import org.geomajas.configuration.FontStyleInfo;
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
- * 
  */
 @Api(allMethods = true)
 public class LegendRasterizingInfo implements Serializable {
+
+	private static final long serialVersionUID = 100L;
 
 	private FontStyleInfo font;
 
@@ -64,7 +65,7 @@ public class LegendRasterizingInfo implements Serializable {
 	/**
 	 * Sets the title of this legend.
 	 * 
-	 * @param title
+	 * @param title legend title
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -84,7 +85,7 @@ public class LegendRasterizingInfo implements Serializable {
 	/**
 	 * Sets the width of this legend.
 	 * 
-	 * @param width
+	 * @param width legend width
 	 */
 	public void setWidth(int width) {
 		this.width = width;
@@ -104,12 +105,10 @@ public class LegendRasterizingInfo implements Serializable {
 	/**
 	 * Sets the height of this legend.
 	 * 
-	 * @param height
+	 * @param height legend height
 	 */
 	public void setHeight(int height) {
 		this.height = height;
 	}
 	
-	
-
 }

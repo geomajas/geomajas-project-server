@@ -18,10 +18,11 @@ import org.geomajas.configuration.client.ClientWidgetInfo;
  * 
  * @author Jan De Moerloose
  * @since 1.0.0
- * 
  */
 @Api(allMethods = true)
 public class RasterLayerRasterizingInfo implements ClientWidgetInfo, RasterizingConstants {
+
+	private static final long serialVersionUID = 100L;
 
 	private String cssStyle;
 
