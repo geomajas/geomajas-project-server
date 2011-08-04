@@ -45,11 +45,12 @@ public class CardLayout extends VLayout {
 	 * @param key key associated to the card that should be shown
 	 */
 	public void showCard(String key) {
-		if (cards.containsKey(key)) {
-			if (null != currentCard) {
+		Canvas newCurrent = cards.get(key);
+		if (null != newCurrent) {
+			if (newCurrent != currentCard) {
 				currentCard.hide();
 			}
-			currentCard = cards.get(key);
+			currentCard = newCurrent;
 			currentCard.show();
 		}
 	}
