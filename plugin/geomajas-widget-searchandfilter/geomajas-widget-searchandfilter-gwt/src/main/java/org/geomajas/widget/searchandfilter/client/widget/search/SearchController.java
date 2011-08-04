@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -38,7 +39,9 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * 
  * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public class SearchController implements SearchRequestHandler {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
@@ -48,6 +51,12 @@ public class SearchController implements SearchRequestHandler {
 	private boolean modalSearch;
 	private Window modalWindow;
 
+	/**
+	 * Construct search controller.
+	 *
+	 * @param mapWidget map widget
+	 * @param modalSearch should result be shown in a modal window
+	 */
 	public SearchController(MapWidget mapWidget, boolean modalSearch) {
 		this.mapWidget = mapWidget;
 		this.modalSearch = modalSearch;
@@ -80,7 +89,7 @@ public class SearchController implements SearchRequestHandler {
 	/**
 	 * For instance {@link org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid}.
 	 * 
-	 * @param handler
+	 * @param handler handler to process the search results
 	 */
 	public void addSearchHandler(SearchHandler handler) {
 		searchHandlers.add(handler);
