@@ -211,11 +211,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		searchPanel.reset();
 	}
 
-	public void hide() {
-		searchPanel.hide();
-		super.hide();
-	}
-
 	public void onSearchStart() {
 		searchBtn.setIcon(BTN_PROCESSING);
 		searchBtn.setDisabled(true);
