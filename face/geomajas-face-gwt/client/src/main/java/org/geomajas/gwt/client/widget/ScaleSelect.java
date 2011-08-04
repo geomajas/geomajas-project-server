@@ -23,7 +23,6 @@ import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -53,14 +52,9 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	private MapView mapView;
 
-	private DynamicForm form;
-
 	private ComboBoxItem scaleItem;
 
 	private static NumberFormat DENOMINATOR_FORMAT = NumberFormat.getFormat("###,###");
-
-	// needed for item
-	private List<String> valueList;
 
 	// bidirectional lookup
 	private LinkedHashMap<Double, String> scaleToValue;
@@ -116,15 +110,12 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		scaleList = Arrays.asList(scales);
 
 		// Create lookup maps (stores user friendly representation):
-		valueList = new ArrayList<String>();
 		scaleToValue = new LinkedHashMap<Double, String>();
 		valueToScale = new LinkedHashMap<String, Double>();
-		for (int i = 0; i < scales.length; i++) {
-			Double scale = scales[i];
-			// Eliminate doubles and null:
+		for (Double scale : scales) {
+			// Eliminate duplicates and null:
 			if (scale != null && !scaleToValue.containsKey(scale)) {
 				String value = scaleToString(scale);
-				valueList.add(value);
 				scaleToValue.put(scale, value);
 				valueToScale.put(value, scale);
 			}
@@ -134,13 +125,19 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		updateScaleList();
 	}
 
-	/** Return the MapView object to which this widget is connected. */
+	/**
+	 * Return the {@link MapView} object to which this widget is connected.
+	 *
+	 * @return {@link MapView} object which is connected to this widget
+	 */
 	public MapView getMapView() {
 		return mapView;
 	}
 
 	/**
 	 * When typing custom scale levels in the select item, should these new scale levels be added to the list or not?
+	 *
+	 * @return true when new (typed) scales should be added in list
 	 */
 	public boolean isUpdatingScaleList() {
 		return updatingScaleList;
@@ -234,12 +231,11 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 			}
 		}
 
-		GWT.log("Added " + availableScales.size() + " scale to the list.");
 		scaleItem.setValueMap(availableScales.toArray(new String[availableScales.size()]));
 	}
 
 	private void init() {
-		form = new DynamicForm();
+		DynamicForm form = new DynamicForm();
 		scaleItem = new ComboBoxItem();
 		scaleItem.setTitle(I18nProvider.getToolbar().scaleSelect());
 		scaleItem.setValidators(new ScaleValidator());
@@ -284,7 +280,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		protected boolean condition(Object value) {
 			try {
 				Double d = stringToScale((String) value);
-				return d.doubleValue() >= 0;
+				return d.doubleValue() >= 0.0;
 			} catch (Throwable t) {
 				return false;
 			}
