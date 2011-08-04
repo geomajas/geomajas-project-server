@@ -30,7 +30,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  * @author Jan De Moerloose
  * 
- * @param <DATA>
+ * @param <DATA> type of data to view
  */
 public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 

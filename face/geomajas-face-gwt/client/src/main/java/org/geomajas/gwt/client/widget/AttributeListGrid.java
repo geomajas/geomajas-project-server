@@ -42,7 +42,6 @@ import com.smartgwt.client.widgets.grid.events.CellOverEvent;
 import com.smartgwt.client.widgets.grid.events.CellOverHandler;
 
 /**
- * 
  * List grid that shows association attributes as records.
  * 
  * @author Jan De Moerloose
@@ -108,7 +107,7 @@ public class AttributeListGrid extends ListGrid {
 	/**
 	 * Adds a new value to the list.
 	 * 
-	 * @param value The value to be added to the list.
+	 * @param associationValue The value to be added to the list.
 	 * @return Returns true in case of update, and false if the value is already in the list or the value is null
 	 */
 	public boolean saveOrUpdateValue(AssociationValue associationValue) {
@@ -139,7 +138,7 @@ public class AttributeListGrid extends ListGrid {
 	/**
 	 * Removes a value to the list.
 	 * 
-	 * @param value The value to be removed from the list.
+	 * @param associationValue The value to be removed from the list.
 	 * @return Returns true in case of successful removal.
 	 */
 	public boolean deleteValue(AssociationValue associationValue) {
@@ -254,7 +253,7 @@ public class AttributeListGrid extends ListGrid {
 	/**
 	 * Is the grid currently displaying all attributes, instead of only the 'identifying' ones?
 	 * 
-	 * @return
+	 * @return are all attributes displayed
 	 */
 	public boolean isAllAttributesDisplayed() {
 		return allAttributesDisplayed;
@@ -264,7 +263,7 @@ public class AttributeListGrid extends ListGrid {
 	 * Determine if all attributes of a layer should be shown, or only the 'identifying' ones. Changing this value will
 	 * not change the layout of the grid. So set this value in advance.
 	 * 
-	 * @param allAttributesDisplayed
+	 * @param allAttributesDisplayed should all attributes be displayed
 	 */
 	public void setAllAttributesDisplayed(boolean allAttributesDisplayed) {
 		this.allAttributesDisplayed = allAttributesDisplayed;
@@ -274,7 +273,7 @@ public class AttributeListGrid extends ListGrid {
 	/**
 	 * Return whether or not the feature's ID's are currently drawn in the grid.
 	 * 
-	 * @return
+	 * @return is feature id displayed
 	 */
 	public boolean isIdInTable() {
 		return idInTable;
@@ -283,6 +282,8 @@ public class AttributeListGrid extends ListGrid {
 	/**
 	 * Determine whether or not the feature's ID should be displayed in the grid. This method will immediately update
 	 * the entire grid.
+	 *
+	 * @param idInTable should id be displayed
 	 */
 	public void setIdInTable(boolean idInTable) {
 		this.idInTable = idInTable;
