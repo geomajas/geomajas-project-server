@@ -316,8 +316,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 			return;
 		}
 		FormItem item = formWidget.getField(info.getName());
-		if (item != null)
-		{
+		if (item != null) {
 			if (info instanceof PrimitiveAttributeInfo) {
 				PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
 				if (attribute == null) {
