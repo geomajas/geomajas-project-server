@@ -258,8 +258,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			setVectorLayerOnWhichSearchIsHappeningVisible();
 			Criterion critter = searchPanel.getFeatureSearchCriterion();
 			SearchRequestEvent sre = new SearchRequestEvent(this, critter);
-			for (SearchRequestHandler h : searchHandlers) {
-				h.onSearchRequested(sre);
+			for (SearchRequestHandler handler : searchHandlers) {
+				handler.onSearchRequested(sre);
 			}
 		}
 	}
@@ -267,8 +267,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	private void onSave() {
 		if (searchPanel.validate()) {
 			Criterion critter = searchPanel.getFeatureSearchCriterion();
-			for (SaveRequestHandler h : saveHandlers) {
-				h.onSaveRequested(new SaveRequestEvent(this, critter));
+			for (SaveRequestHandler handler : saveHandlers) {
+				handler.onSaveRequested(new SaveRequestEvent(this, critter));
 			}
 			hide();
 			destroy();
@@ -279,8 +279,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		if (searchPanel.validate()) {
 			SearchFavourite fav = new SearchFavourite();
 			fav.setCriterion(searchPanel.getFeatureSearchCriterion());
-			for (FavouriteRequestHandler h : favouriteHandlers) {
-				h.onAddRequested(new FavouriteEvent(null, fav, this));
+			for (FavouriteRequestHandler handler : favouriteHandlers) {
+				handler.onAddRequested(new FavouriteEvent(null, fav, this));
 			}
 		}
 	}
