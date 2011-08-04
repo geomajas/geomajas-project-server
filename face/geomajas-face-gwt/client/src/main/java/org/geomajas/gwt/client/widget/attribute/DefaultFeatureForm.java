@@ -447,7 +447,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 					break;
 				default:
 					throw new IllegalStateException("Unhandled association attribute type " +
-							associationInfo.getType());
+							association.getType());
 			}
 		}
 	}
