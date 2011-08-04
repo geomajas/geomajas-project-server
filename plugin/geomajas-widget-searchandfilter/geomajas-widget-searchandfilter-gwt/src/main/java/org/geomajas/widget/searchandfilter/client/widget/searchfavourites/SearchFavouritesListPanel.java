@@ -61,7 +61,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * A simple system of searchFavourites. Favourites can be either private or
- * shared (with everybody)
+ * shared (with everybody).
  * 
  * @author Kristof Heirwegh
  */
@@ -150,7 +150,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 	@Override
 	public void initialize(Criterion featureSearch) {
-		GWT.log("You cannot reinitialize the Favourites searchpanel!");
+		GWT.log("You cannot reinitialize the favourites search panel!");
 	}
 
 	@Override
@@ -196,7 +196,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 	// ----------------------------------------------------------
 
 	/**
-	 * Custom ListGrid
+	 * Custom ListGrid.
 	 * 
 	 * @author Kristof Heirwegh
 	 */
@@ -428,6 +428,8 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 	/**
 	 * Used by Grid.
+	 *
+	 * @author Kristof Heirwegh
 	 */
 	private static class FavouriteListRecord extends ListGridRecord {
 
@@ -468,13 +470,13 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 	// ----------------------------------------------------------
 
 	public void onAdd(FavouriteEvent event) {
-		FavouriteListRecord flr = new FavouriteListRecord(event.getNewFav());
+		FavouriteListRecord flr = new FavouriteListRecord(event.getNewFavourite());
 		favouriteItems.addData(flr);
 	}
 
 	public void onDelete(FavouriteEvent event) {
 		FavouriteListRecord flr = (FavouriteListRecord) favouriteItems.getDataAsRecordList().find(
-				FavouriteListRecord.ID_FIELD, event.getOldFav().getId());
+				FavouriteListRecord.ID_FIELD, event.getOldFavourite().getId());
 		if (flr != null) {
 			favouriteItems.removeData(flr);
 		}
@@ -482,9 +484,9 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 	public void onChange(FavouriteEvent event) {
 		FavouriteListRecord flr = (FavouriteListRecord) favouriteItems.getDataAsRecordList().find(
-				FavouriteListRecord.ID_FIELD, event.getNewFav().getId());
+				FavouriteListRecord.ID_FIELD, event.getNewFavourite().getId());
 		if (flr != null) {
-			flr.setFavourite(event.getNewFav());
+			flr.setFavourite(event.getNewFavourite());
 			favouriteItems.collapseRecord(flr);
 			favouriteItems.expandRecord(flr);
 		}

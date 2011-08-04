@@ -39,9 +39,9 @@ import com.smartgwt.client.util.SC;
  */
 public final class SearchWidgetRegistry {
 
-	private static final Map<String, SearchWidgetCreator> REGISTRY = new LinkedHashMap<String, SearchWidgetCreator>();
-
 	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
+
+	private static final Map<String, SearchWidgetCreator> REGISTRY = new LinkedHashMap<String, SearchWidgetCreator>();
 
 	private static SearchController SEARCH_CONTROLLER;
 	private static FavouritesController FAVOURITES_CONTROLLER;
@@ -52,7 +52,7 @@ public final class SearchWidgetRegistry {
 		// utility class, hide constructor
 	}
 
-	// TODO favoritecontroller
+	// TODO favouriteController
 
 	// ----------------------------------------------------------
 

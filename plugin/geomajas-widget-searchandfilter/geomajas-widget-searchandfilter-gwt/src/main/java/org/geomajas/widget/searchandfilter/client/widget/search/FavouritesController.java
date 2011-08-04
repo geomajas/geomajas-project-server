@@ -52,7 +52,7 @@ public class FavouritesController implements FavouriteRequestHandler {
 	// ----------------------------------------------------------
 
 	public void onAddRequested(final FavouriteEvent event) {
-		final SearchFavourite fav = event.getNewFav();
+		final SearchFavourite fav = event.getNewFavourite();
 		final Window addWindow = new DockableWindow();
 		addWindow.setTitle(messages.favouritesControllerAddTitle());
 		addWindow.setWidth(310);
@@ -83,9 +83,9 @@ public class FavouritesController implements FavouriteRequestHandler {
 
 		// ----------------------------------------------------------
 
-		HLayout buttonlayout = new HLayout(10);
-		buttonlayout.setHeight(20);
-		buttonlayout.setWidth100();
+		HLayout buttonLayout = new HLayout(10);
+		buttonLayout.setHeight(20);
+		buttonLayout.setWidth100();
 		IButton addBtn = new IButton(messages.favouritesControllerAddAdd());
 		addBtn.setIcon(BTN_ADD_IMG);
 		addBtn.setAutoFit(true);
@@ -117,20 +117,20 @@ public class FavouritesController implements FavouriteRequestHandler {
 
 		// ----------------------------------------------------------
 
-		buttonlayout.addMember(lsr);
-		buttonlayout.addMember(addBtn);
-		buttonlayout.addMember(cancelBtn);
+		buttonLayout.addMember(lsr);
+		buttonLayout.addMember(addBtn);
+		buttonLayout.addMember(cancelBtn);
 		mainLayout.addMember(form);
-		mainLayout.addMember(buttonlayout);
+		mainLayout.addMember(buttonLayout);
 		addWindow.addItem(mainLayout);
 		addWindow.show();
 	}
 
 	public void onDeleteRequested(final FavouriteEvent event) {
-		FavouritesCommService.deleteSearchFavourite(event.getOldFav(), new DataCallback<Boolean>() {
+		FavouritesCommService.deleteSearchFavourite(event.getOldFavourite(), new DataCallback<Boolean>() {
 			public void execute(Boolean result) {
 				if (result) {
-					fireDeleteEvent(new FavouriteEvent(event.getOldFav(), null, FavouritesController.this));
+					fireDeleteEvent(new FavouriteEvent(event.getOldFavourite(), null, FavouritesController.this));
 				} else {
 					SC.say(messages.favouritesControllerAddCrudError());
 				}
@@ -139,10 +139,10 @@ public class FavouritesController implements FavouriteRequestHandler {
 	}
 
 	public void onChangeRequested(final FavouriteEvent event) {
-		FavouritesCommService.saveSearchFavourite(event.getNewFav(), new DataCallback<SearchFavourite>() {
+		FavouritesCommService.saveSearchFavourite(event.getNewFavourite(), new DataCallback<SearchFavourite>() {
 			public void execute(SearchFavourite result) {
 				if (result != null) {
-					fireChangeEvent(new FavouriteEvent(event.getOldFav(), result, FavouritesController.this));
+					fireChangeEvent(new FavouriteEvent(event.getOldFavourite(), result, FavouritesController.this));
 				} else {
 					SC.say(messages.favouritesControllerAddCrudError());
 				}
@@ -183,6 +183,8 @@ public class FavouritesController implements FavouriteRequestHandler {
 	// ----------------------------------------------------------
 
 	/**
+	 * Change handler for favourites.
+	 *
 	 * @author Kristof Heirwegh
 	 */
 	public interface FavouriteChangeHandler {
@@ -192,41 +194,31 @@ public class FavouritesController implements FavouriteRequestHandler {
 	}
 
 	/**
+	 * Event container for changes in favourites.
+	 *
 	 * @author Kristof Heirwegh
 	 */
 	public static class FavouriteEvent {
-		private SearchFavourite oldFav;
-		private SearchFavourite newFav;
+		private SearchFavourite oldFavourite;
+		private SearchFavourite newFavourite;
 		private Object source;
 
-		public FavouriteEvent(SearchFavourite oldFav, SearchFavourite newFav, Object source) {
-			this.oldFav = oldFav;
-			this.newFav = newFav;
+		public FavouriteEvent(SearchFavourite oldFavourite, SearchFavourite newFavourite, Object source) {
+			this.oldFavourite = oldFavourite;
+			this.newFavourite = newFavourite;
 			this.source = source;
 		}
 
-		public SearchFavourite getOldFav() {
-			return oldFav;
+		public SearchFavourite getOldFavourite() {
+			return oldFavourite;
 		}
 
-		public void setOldFav(SearchFavourite oldFav) {
-			this.oldFav = oldFav;
-		}
-
-		public SearchFavourite getNewFav() {
-			return newFav;
-		}
-
-		public void setNewFav(SearchFavourite newFav) {
-			this.newFav = newFav;
+		public SearchFavourite getNewFavourite() {
+			return newFavourite;
 		}
 
 		public Object getSource() {
 			return source;
-		}
-
-		public void setSource(Object source) {
-			this.source = source;
 		}
 	}
 }

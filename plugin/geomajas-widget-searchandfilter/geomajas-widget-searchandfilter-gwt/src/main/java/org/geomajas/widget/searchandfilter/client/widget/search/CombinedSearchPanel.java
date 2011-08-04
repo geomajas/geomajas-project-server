@@ -45,6 +45,9 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
+ * Panel for editing search criteria for a combined search. This handles the combination of the criteria. The actual
+ * criteria are handled by other {@link AbstractSearchPanel} implementations.
+ *
  * @author Kristof Heirwegh
  */
 public class CombinedSearchPanel extends AbstractSearchPanel {
@@ -57,6 +60,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	private RadioGroupItem type;
 	private ListGrid searchItems;
 	private SelectItem selectSearch;
+	private List<SearchWidget> searchWidgets = new ArrayList<SearchWidget>();
 
 	public CombinedSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
@@ -120,7 +124,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		selectSearch.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				if (event.getValue() != null) {
-					final SearchWidget sw = SearchWidgetRegistry.getSearchWidgetInstance((String) event.getValue());
+					final SearchWidget sw = getSearchWidget((String) event.getValue());
 					sw.showForSave(new SaveRequestHandler() {
 						public void onSaveRequested(SaveRequestEvent event) {
 							searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
@@ -143,6 +147,15 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		setWidth(350);
 		setHeight(250);
 		addChild(layout);
+	}
+
+	private SearchWidget getSearchWidget(String value) {
+		for (SearchWidget searchWidget : searchWidgets) {
+			if (value.equals(searchWidget.getSearchWidgetId())) {
+				return searchWidget;
+			}
+		}
+		return SearchWidgetRegistry.getSearchWidgetInstance(value);
 	}
 
 	@Override
@@ -198,6 +211,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 			values.put(searchWidget.getSearchWidgetId(), searchWidget.getName());
 		}
 		selectSearch.setValueMap(values);
+		this.searchWidgets.addAll(searchWidgets);
 	}
 
 	/**
