@@ -50,6 +50,9 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  */
 public class AttributeCriterionPane extends Canvas {
 
+	private static final String CQL_WILDCARD = "%";
+	private static final String CQL_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
 	private DynamicForm form;
 
 	private SelectItem attributeSelect;
@@ -69,6 +72,8 @@ public class AttributeCriterionPane extends Canvas {
 	/**
 	 * Create a search criterion pane, for the given vector layer. The layer is required, as it's list of attribute
 	 * definitions are a vital part of the search criteria.
+	 *
+	 * @param layer layer to create criterion for
 	 */
 	public AttributeCriterionPane(VectorLayer layer) {
 		super();
@@ -81,13 +86,19 @@ public class AttributeCriterionPane extends Canvas {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/** Validate the value that the user filled in. If it is not valid, don't ask for the SearchCriterion. */
+	/**
+	 * Validate the value that the user filled in. If it is not valid, don't ask for the SearchCriterion.
+	 *
+	 * @return true when user entered invalid value
+	 */
 	public boolean hasErrors() {
 		return valueItem.getForm().hasErrors();
 	}
 
 	/**
 	 * Return the actual search criterion object, or null if not all fields have been properly filled.
+	 *
+	 * @return search criterion
 	 */
 	public SearchCriterion getSearchCriterion() {
 		Object operator = operatorSelect.getValue();
@@ -103,7 +114,7 @@ public class AttributeCriterionPane extends Canvas {
 			// CQL does not recognize "contains", so change to "like":
 			if ("contains".equals(operatorString)) {
 				operatorString = "LIKE";
-				valueString = "%" + valueString + "%";
+				valueString = CQL_WILDCARD + valueString + CQL_WILDCARD;
 			}
 
 			// If value was null, and no "contains" operator, return null:
@@ -122,7 +133,7 @@ public class AttributeCriterionPane extends Canvas {
 				} else if (attr.getType().equals(PrimitiveType.DATE)) {
 					if (value instanceof Date) {
 						// In case of a date, parse correctly for CQL: 2006-11-30T01:30:00Z
-						DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+						DateTimeFormat format = DateTimeFormat.getFormat(CQL_TIME_FORMAT);
 
 						if ("=".equals(operatorString)) {
 							// Date equals not supported by CQL, so we use the DURING operator instead:
@@ -159,30 +170,12 @@ public class AttributeCriterionPane extends Canvas {
 		if (attributeInfo != null && attributeInfo instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttributeInfo primitive = (PrimitiveAttributeInfo) attributeInfo;
 			switch (primitive.getType()) {
-				case BOOLEAN:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals() };
 				case SHORT:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case INTEGER:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case LONG:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case FLOAT:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case DOUBLE:
+				case CURRENCY:
 					return new String[] { I18nProvider.getSearch().operatorEquals(),
 							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
 							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
@@ -190,20 +183,15 @@ public class AttributeCriterionPane extends Canvas {
 				case DATE:
 					return new String[] { I18nProvider.getSearch().operatorEquals(),
 							I18nProvider.getSearch().operatorBefore(), I18nProvider.getSearch().operatorAfter() };
-				case CURRENCY:
-					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
 				case STRING:
-					return new String[] { I18nProvider.getSearch().operatorContains(),
-							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
 				case URL:
-					return new String[] { I18nProvider.getSearch().operatorContains(),
-							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
 				case IMGURL:
 					return new String[] { I18nProvider.getSearch().operatorContains(),
 							I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
+				case BOOLEAN:
+				default:
+					return new String[] { I18nProvider.getSearch().operatorEquals(),
+							I18nProvider.getSearch().operatorNotEquals() };
 			}
 		}
 		return new String[] { I18nProvider.getSearch().operatorEquals(), I18nProvider.getSearch().operatorNotEquals() };
@@ -333,8 +321,6 @@ public class AttributeCriterionPane extends Canvas {
 	 */
 	private class AttributeFormItem extends CanvasItem {
 
-		//private AttributeFormItemFactory factory;
-
 		private DynamicForm form;
 
 		private FormItem formItem;
@@ -344,14 +330,13 @@ public class AttributeCriterionPane extends Canvas {
 		// -------------------------------------------------------------------------
 
 		/**
-		 * Create the form item with the given. An internal form will already be created, and in that form a
+		 * Create the form item with the given name. An internal form will already be created, and in that form a
 		 * <code>TextItem</code> will be shown.
-		 * 
-		 * @param name
+		 *
+		 * @param name form item name
 		 */
 		public AttributeFormItem(String name) {
 			super(name);
-			//factory = new DefaultAttributeFormItemFactory();
 
 			form = new DynamicForm();
 			form.setHeight(26);
