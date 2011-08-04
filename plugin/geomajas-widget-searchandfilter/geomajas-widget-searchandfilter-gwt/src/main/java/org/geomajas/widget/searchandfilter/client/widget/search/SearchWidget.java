@@ -86,7 +86,7 @@ public interface SearchWidget {
 	void startSearch();
 
 	/**
-	 * clean up the widget to its initial state.
+	 * Clean up the widget to its initial state.
 	 */
 	void reset();
 

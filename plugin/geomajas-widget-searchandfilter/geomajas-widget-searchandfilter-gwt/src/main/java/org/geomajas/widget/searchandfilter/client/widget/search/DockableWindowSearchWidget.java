@@ -65,16 +65,24 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		});
 
 		panelSearchWidget = new PanelSearchWidget(widgetId + "Item", name, searchPanel);
+		panelSearchWidget.setCloseAction(new Runnable() {
+			public void run() {
+				hide();
+				destroy();
+			}
+		});
 		this.addItem(panelSearchWidget);
 		this.setAutoSize(true);
 	}
 
 	// ----------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public String getSearchWidgetId() {
 		return widgetId;
 	}
 
+	/** {@inheritDoc} */
 	public String getName() {
 		return name;
 	}
@@ -92,63 +100,71 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		this.hideAfterSearch = hideAfterSearch;
 	}
 
+	/** {@inheritDoc} */
 	public void showForSearch() {
 		panelSearchWidget.showForSearch();
 		show();
 		bringToFront();
 	}
 
+	/** {@inheritDoc} */
 	public void showForSave(final SaveRequestHandler handler) {
 		panelSearchWidget.showForSave(handler);
 		show();
 		bringToFront();
 	}
 
+	/** {@inheritDoc} */
 	public void initialize(Criterion settings) {
 		searchPanel.initialize(settings);
 	}
 
+	/** {@inheritDoc} */
 	public void reset() {
 		searchPanel.reset();
 	}
 
-	public void hide() {
-		searchPanel.hide();
-		super.hide();
-	}
-
+	/** {@inheritDoc} */
 	public void onSearchStart() {
 		panelSearchWidget.onSearchStart();
 	}
 
+	/** {@inheritDoc} */
 	public void onSearchEnd() {
 		panelSearchWidget.onSearchEnd();
 	}
 
+	/** {@inheritDoc} */
 	public void addSearchRequestHandler(SearchRequestHandler handler) {
 		panelSearchWidget.addSearchRequestHandler(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void removeSearchRequestHandler(SearchRequestHandler handler) {
 		panelSearchWidget.removeSearchRequestHandler(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void addSaveRequestHandler(SaveRequestHandler handler) {
 		panelSearchWidget.addSaveRequestHandler(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void removeSaveRequestHandler(SaveRequestHandler handler) {
 		panelSearchWidget.removeSaveRequestHandler(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void addFavouriteRequestHandler(FavouriteRequestHandler handler) {
 		panelSearchWidget.addFavouriteRequestHandler(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void removeFavouriteRequestHandler(FavouriteRequestHandler handler) {
 		panelSearchWidget.removeFavouriteRequestHandler(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void startSearch() {
 		onSearch();
 	}

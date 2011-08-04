@@ -58,6 +58,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	private AbstractSearchPanel searchPanel;
 	private String widgetId;
 	private String name;
+	private Runnable closeAction;
 
 	/**
 	 * @param widgetId
@@ -144,8 +145,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		cancelBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				hide();
-				destroy();
+				close();
 			}
 		});
 
@@ -176,16 +176,41 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		addMember(saveButtonBar);
 	}
 
+	/**
+	 * Method which is called to close/end the panel (after cancel or save). It reset the panel and calls the close
+	 * action if present. If no close action is present, it hides the panel.
+	 */
+	protected void close() {
+		reset();
+		if (null == closeAction) {
+			hide();
+		} else {
+			closeAction.run();
+		}
+	}
+
+	/**
+	 * Set action to be called when pressing the cancel button.
+	 *
+	 * @param closeAction cancel action to call
+	 */
+	public void setCloseAction(Runnable closeAction) {
+		this.closeAction = closeAction;
+	}
+
 	// ----------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public String getSearchWidgetId() {
 		return widgetId;
 	}
 
+	/** {@inheritDoc} */
 	public String getName() {
 		return name;
 	}
 
+	/** {@inheritDoc} */
 	public void showForSearch() {
 		saveButtonBar.setVisible(false);
 		searchButtonBar.setVisible(true);
@@ -193,6 +218,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		bringToFront();
 	}
 
+	/** {@inheritDoc} */
 	public void showForSave(final SaveRequestHandler handler) {
 		if (handler != null) {
 			addSaveRequestHandler(new OneOffSaveRequestHandler(handler));
@@ -203,48 +229,59 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		bringToFront();
 	}
 
+	/** {@inheritDoc} */
 	public void initialize(Criterion settings) {
 		searchPanel.initialize(settings);
 	}
 
+	/** {@inheritDoc} */
 	public void reset() {
 		searchPanel.reset();
 	}
 
+	/** {@inheritDoc} */
 	public void onSearchStart() {
 		searchBtn.setIcon(BTN_PROCESSING);
 		searchBtn.setDisabled(true);
 	}
 
+	/** {@inheritDoc} */
 	public void onSearchEnd() {
 		searchBtn.setIcon(BTN_SEARCH_IMG);
 		searchBtn.setDisabled(false);
 	}
 
+	/** {@inheritDoc} */
 	public void addSearchRequestHandler(SearchRequestHandler handler) {
 		searchHandlers.add(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void removeSearchRequestHandler(SearchRequestHandler handler) {
 		searchHandlers.remove(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void addSaveRequestHandler(SaveRequestHandler handler) {
 		saveHandlers.add(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void removeSaveRequestHandler(SaveRequestHandler handler) {
 		saveHandlers.remove(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void addFavouriteRequestHandler(FavouriteRequestHandler handler) {
 		favouriteHandlers.add(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void removeFavouriteRequestHandler(FavouriteRequestHandler handler) {
 		favouriteHandlers.remove(handler);
 	}
 
+	/** {@inheritDoc} */
 	public void startSearch() {
 		onSearch();
 	}
@@ -270,8 +307,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			for (SaveRequestHandler handler : saveHandlers) {
 				handler.onSaveRequested(new SaveRequestEvent(this, critter));
 			}
-			hide();
-			destroy();
+			close();
 		}
 	}
 

@@ -69,11 +69,13 @@ public abstract class AbstractSearchPanel extends Canvas {
 	
 	
 	/**
+	 * Get the vector layer which is to be searched.
+	 *
 	 * @return the vector layer to search in.
-	 *       
 	 */
 	public abstract VectorLayer getFeatureSearchVectorLayer();
 
+	/** {@inheritDoc} */
 	public abstract void reset();
 
 	/**

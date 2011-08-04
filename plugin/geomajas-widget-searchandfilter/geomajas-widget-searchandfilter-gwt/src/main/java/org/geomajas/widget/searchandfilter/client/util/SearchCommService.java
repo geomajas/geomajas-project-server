@@ -48,7 +48,7 @@ import com.google.gwt.core.client.GWT;
 public final class SearchCommService {
 
 	/**
-	 * Utility class
+	 * Utility class, hide constructor.
 	 */
 	private SearchCommService() {
 	}
@@ -57,18 +57,18 @@ public final class SearchCommService {
 	 * The returned result will contain an unbuffered as well as buffered
 	 * result.
 	 * 
-	 * @param geoms
-	 * @param buffer
+	 * @param geometries geometries
+	 * @param buffer buffer size
 	 * @param onFinished
 	 *            callback contains two geometries, one unbuffered, one buffered
 	 */
-	public static void mergeAndBufferGeometries(List<Geometry> geoms, double buffer,
+	public static void mergeAndBufferGeometries(List<Geometry> geometries, double buffer,
 			final DataCallback<Geometry[]> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
 		request.setActionFlags(GeometryUtilsRequest.ACTION_BUFFER | GeometryUtilsRequest.ACTION_MERGE);
 		request.setIntermediateResults(true);
 		request.setBuffer(buffer);
-		request.setGeometries(toDtoGeometries(geoms));
+		request.setGeometries(toDtoGeometries(geometries));
 
 		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
@@ -88,14 +88,14 @@ public final class SearchCommService {
 	}
 
 	/**
-	 * @param geoms
+	 * @param geometries geometries
 	 * @param onFinished
 	 *            callback returns one geometry
 	 */
-	public static void mergeGeometries(List<Geometry> geoms, final DataCallback<Geometry> onFinished) {
+	public static void mergeGeometries(List<Geometry> geometries, final DataCallback<Geometry> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
 		request.setActionFlags(GeometryUtilsRequest.ACTION_MERGE);
-		request.setGeometries(toDtoGeometries(geoms));
+		request.setGeometries(toDtoGeometries(geometries));
 
 		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
 		command.setCommandRequest(request);
@@ -111,10 +111,10 @@ public final class SearchCommService {
 		});
 	}
 
-	public static void bufferGeometry(Geometry geom, double buffer, final DataCallback<Geometry> onFinished) {
-		List<Geometry> geoms = new ArrayList<Geometry>();
-		geoms.add(geom);
-		bufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
+	public static void bufferGeometry(Geometry geometry, double buffer, final DataCallback<Geometry> onFinished) {
+		List<Geometry> geometries = new ArrayList<Geometry>();
+		geometries.add(geometry);
+		bufferGeometries(geometries, buffer, new DataCallback<Geometry[]>() {
 			public void execute(Geometry[] result) {
 				if (result != null && result.length > 0) {
 					onFinished.execute(result[0]);
@@ -126,15 +126,15 @@ public final class SearchCommService {
 	}
 
 	/**
-	 * @param geoms
+	 * @param geometries geometries
 	 * @param onFinished
 	 *            callback returns buffered geometries
 	 */
-	public static void bufferGeometries(List<Geometry> geoms, double buffer, final DataCallback<Geometry[]> onFinished)
-	{
+	public static void bufferGeometries(List<Geometry> geometries, double buffer,
+			final DataCallback<Geometry[]> onFinished) {
 		GeometryUtilsRequest request = new GeometryUtilsRequest();
 		request.setActionFlags(GeometryUtilsRequest.ACTION_BUFFER);
-		request.setGeometries(toDtoGeometries(geoms));
+		request.setGeometries(toDtoGeometries(geometries));
 		request.setBuffer(buffer);
 
 		GwtCommand command = new GwtCommand(GeometryUtilsRequest.COMMAND);
@@ -144,23 +144,23 @@ public final class SearchCommService {
 				if (response instanceof GeometryUtilsResponse) {
 					GeometryUtilsResponse resp = (GeometryUtilsResponse) response;
 					if (onFinished != null) {
-						Geometry[] geoms = new Geometry[resp.getGeometries().length];
-						for (int i = 0; i < geoms.length; i++) {
-							geoms[i] = GeometryConverter.toGwt(resp.getGeometries()[i]);
+						Geometry[] geometriesArray = new Geometry[resp.getGeometries().length];
+						for (int i = 0; i < geometriesArray.length; i++) {
+							geometriesArray[i] = GeometryConverter.toGwt(resp.getGeometries()[i]);
 						}
-						onFinished.execute(geoms);
+						onFinished.execute(geometriesArray);
 					}
 				}
 			}
 		});
 	}
 
-	public static org.geomajas.geometry.Geometry[] toDtoGeometries(List<Geometry> geoms) {
-		org.geomajas.geometry.Geometry[] dtoGeoms = new org.geomajas.geometry.Geometry[geoms.size()];
-		for (int i = 0; i < geoms.size(); i++) {
-			dtoGeoms[i] = GeometryConverter.toDto(geoms.get(i));
+	public static org.geomajas.geometry.Geometry[] toDtoGeometries(List<Geometry> geometries) {
+		org.geomajas.geometry.Geometry[] dtoGeometries = new org.geomajas.geometry.Geometry[geometries.size()];
+		for (int i = 0; i < geometries.size(); i++) {
+			dtoGeometries[i] = GeometryConverter.toDto(geometries.get(i));
 		}
-		return dtoGeoms;
+		return dtoGeometries;
 	}
 
 	public static Criterion buildGeometryCriterion(final Geometry geometry, final MapWidget mapWidget) {
@@ -172,8 +172,8 @@ public final class SearchCommService {
 	 * We return the request object used for this search, this can then be
 	 * reused for the csv-export.
 	 * 
-	 * @param geometry
-	 * @param buffer
+	 * @param criterion
+	 * @param mapWidget
 	 * @param onFinished
 	 * @param onError
 	 *            callback to execute in case of error, optional use null if you
@@ -215,10 +215,10 @@ public final class SearchCommService {
 		Set<String> serverLayerIds = new HashSet<String>();
 		critter.serverLayerIdVisitor(serverLayerIds);
 
-		for (VectorLayer vlayer : mapModel.getVectorLayers()) {
-			if (serverLayerIds.contains(vlayer.getServerLayerId())) {
-				if (vlayer.getFilter() != null && !"".equals(vlayer.getFilter())) {
-					filters.put(vlayer.getServerLayerId(), vlayer.getFilter());
+		for (VectorLayer vectorLayer : mapModel.getVectorLayers()) {
+			if (serverLayerIds.contains(vectorLayer.getServerLayerId())) {
+				if (vectorLayer.getFilter() != null && !"".equals(vectorLayer.getFilter())) {
+					filters.put(vectorLayer.getServerLayerId(), vectorLayer.getFilter());
 				}
 			}
 		}
@@ -231,7 +231,7 @@ public final class SearchCommService {
 	 * This also adds the features to their respective layers, so no need to do
 	 * that anymore.
 	 * 
-	 * @param features
+	 * @param dtoFeatures
 	 * @param model
 	 * @return
 	 */
@@ -245,9 +245,8 @@ public final class SearchCommService {
 				if (layer != null) {
 					result.put(layer, convertedFeatures);
 				} else {
-					// TODO couldn't find layer clientside ?? maybe should throw
-					// an error here
-					GWT.log("Couldn't find layer clientside ?? " + entry.getKey());
+					// TODO couldn't find layer client-side ?? maybe should throw an error here
+					GWT.log("Couldn't find layer client-side ?? " + entry.getKey());
 				}
 			}
 		}

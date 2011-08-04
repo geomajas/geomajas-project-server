@@ -61,7 +61,11 @@ import com.smartgwt.client.widgets.layout.VStack;
  */
 public class AttributeSearchPanel extends AbstractSearchPanel {
 
-	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
+	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
+
+	private static final String STYLE_SEARCH_ROW = "searchRow";
+	private static final String STYLE_SEARCH_HEADER = "searchHeader";
+	private static final String STYLE_HEADER_BAR = "headerBar";
 
 	private FeatureSearch featureSearch;
 
@@ -75,27 +79,32 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		addChild(featureSearch);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean validate() {
 		Criterion cr = featureSearch.getSearchCriteria();
 		return (cr != null && cr.isValid());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Criterion getFeatureSearchCriterion() {
 		return featureSearch.getSearchCriteria();
 	}
-	
+
+	/** {@inheritDoc} */
 	@Override
 	public VectorLayer getFeatureSearchVectorLayer() {
 		return featureSearch.getLayer();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void reset() {
 		featureSearch.empty();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void initialize(Criterion criterion) {
 		featureSearch.setSearchCriteria(criterion);
@@ -203,21 +212,21 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		}
 
 		public void addEmptyRow(final int index, AttributeCriterion ac) {
-			if (layer == null || !(layer instanceof VectorLayer)) {
+			if (null == layer) {
 				return;
 			}
 
 			// Empty row:
 			AttributeCriterionPane newRow = new AttributeCriterionPane(layer);
 			newRow.setHeight(32);
-			newRow.setStyleName("searchRow");
+			newRow.setStyleName(STYLE_SEARCH_ROW);
 
 			HLayout btnLayout = new HLayout();
 			btnLayout.setHeight(32);
 			btnLayout.setMembersMargin(5);
 			btnLayout.setAlign(Alignment.CENTER);
 			btnLayout.setPadding(4);
-			btnLayout.setStyleName("searchRow");
+			btnLayout.setStyleName(STYLE_SEARCH_ROW);
 
 			IButton btnAddRow = new IButton();
 			btnAddRow.setWidth(26);
@@ -293,7 +302,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 					criteria = ((OrCriterion) criterion).getCriteria();
 					setLogicalOperator(LogicalOperator.OR);
 				} else {
-					SC.warn(messages.attributeSearchWidgetNoValidCriterionUnsupportedType());
+					SC.warn(MESSAGES.attributeSearchWidgetNoValidCriterionUnsupportedType());
 					return;
 				}
 
@@ -302,7 +311,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 					if (vl == null) {
 						List<VectorLayer> layers = mapModel.getVectorLayersByServerId(ac.getServerLayerId());
 						if (layers == null || layers.size() < 1) {
-							SC.warn(messages.attributeSearchWidgetNoValidCriterionNoLayer());
+							SC.warn(MESSAGES.attributeSearchWidgetNoValidCriterionNoLayer());
 							return;
 						}
 						vl = layers.get(0);
@@ -320,19 +329,19 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		/**
 		 * Get the full list of search criteria from the criterion grid.
 		 *
-		 * @return
+		 * @return entered search criteria
 		 */
 		public Criterion getSearchCriteria() {
 			if (layer != null) {
-				List<Criterion> crits;
-				Criterion critter;
+				List<Criterion> criteria;
+				Criterion criterion;
 				String value = (String) logicalOperatorRadio.getValue();
 				if (value.equals(I18nProvider.getSearch().radioOperatorAnd())) {
-					critter = new AndCriterion();
-					crits = ((AndCriterion) critter).getCriteria();
+					criterion = new AndCriterion();
+					criteria = ((AndCriterion) criterion).getCriteria();
 				} else {
-					critter = new OrCriterion();
-					crits = ((OrCriterion) critter).getCriteria();
+					criterion = new OrCriterion();
+					criteria = ((OrCriterion) criterion).getCriteria();
 				}
 
 				for (AttributeCriterionPane criterionPane : criterionPanes) {
@@ -342,16 +351,16 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 					}
 					AttributeCriterion ac = criterionPane.getSearchCriterion();
 					if (ac != null) {
-						crits.add(ac);
+						criteria.add(ac);
 					}
 				}
-				if (crits == null || crits.size() == 0) {
-					SC.warn(messages.attributeSearchWidgetNoValidCriterionNoCriteria());
+				if (criteria == null || criteria.size() == 0) {
+					SC.warn(MESSAGES.attributeSearchWidgetNoValidCriterionNoCriteria());
 					return null;
 				}
-				return critter;
+				return criterion;
 			} else {
-				SC.warn(messages.attributeSearchWidgetNoLayerSelected());
+				SC.warn(MESSAGES.attributeSearchWidgetNoLayerSelected());
 				return null;
 			}
 		}
@@ -363,6 +372,8 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		/**
 		 * Empty the grid, thereby removing all rows. When that is done, a new
 		 * empty row will be displayed.
+		 *
+		 * @param shouldAddEmptyRow should an empty row be added?
 		 */
 		public void empty(boolean shouldAddEmptyRow) {
 			for (AttributeCriterionPane criterionPane : criterionPanes) {
@@ -373,6 +384,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 				buttonStack.removeMember(criterionPane);
 			}
 			buttonPanes.clear();
+			/*
 			for (HandlerRegistration handlerRegistration : addHandlers) {
 				handlerRegistration.removeHandler();
 			}
@@ -381,6 +393,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 				handlerRegistration.removeHandler();
 			}
 			removeHandlers.clear();
+			*/
 			if (shouldAddEmptyRow) {
 				addEmptyRow(0);
 			}
@@ -394,6 +407,8 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		 * Set a new value for the logical operator. This operator determines
 		 * whether all the criteria have to be met in the search, or just one of
 		 * them.
+		 *
+		 * @param operator operator
 		 */
 		public void setLogicalOperator(LogicalOperator operator) {
 			switch (operator) {
@@ -410,7 +425,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		 * determines whether all the criteria have to be met in the search, or
 		 * just one of them.
 		 *
-		 * @return
+		 * @return logical operator
 		 */
 		public LogicalOperator getLogicalOperator() {
 			String value = (String) logicalOperatorRadio.getValue();
@@ -424,7 +439,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		 * Return the layer onto which searching should happen. (the MapModel's
 		 * selected layer)
 		 *
-		 * @return
+		 * @return layer to search
 		 */
 		public VectorLayer getLayer() {
 			return layer;
@@ -433,7 +448,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		/**
 		 * Set a new layer onto which searching should happen.
 		 *
-		 * @param layer
+		 * @param layer layer
 		 */
 		public void setLayer(VectorLayer layer) {
 			this.layer = layer;
@@ -545,18 +560,18 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			// Create a header for the criterionStack:
 			HLayout headerLayout = new HLayout();
 			headerLayout.setHeight(26);
-			headerLayout.setStyleName("headerBar");
+			headerLayout.setStyleName(STYLE_HEADER_BAR);
 			HTMLPane attrHeader = new HTMLPane();
-			attrHeader.setStyleName("searchHeader");
+			attrHeader.setStyleName(STYLE_SEARCH_HEADER);
 			attrHeader.setContents("Attribute");
 			attrHeader.setWidth(140);
 			HTMLPane operatorHeader = new HTMLPane();
 			operatorHeader.setContents("Operator");
 			operatorHeader.setWidth(140);
-			operatorHeader.setStyleName("searchHeader");
+			operatorHeader.setStyleName(STYLE_SEARCH_HEADER);
 			HTMLPane valueHeader = new HTMLPane();
 			valueHeader.setContents("Value");
-			valueHeader.setStyleName("searchHeader");
+			valueHeader.setStyleName(STYLE_SEARCH_HEADER);
 
 			criterionStack = new VStack();
 			criterionStack.setAlign(VerticalAlignment.TOP);
@@ -569,7 +584,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			buttonStack.setWidth(70);
 			buttonStack.setAlign(VerticalAlignment.TOP);
 			HTMLPane btnHeader = new HTMLPane();
-			btnHeader.setStyleName("headerBar");
+			btnHeader.setStyleName(STYLE_HEADER_BAR);
 			btnHeader.setWidth(70);
 			btnHeader.setHeight(26);
 			buttonStack.addMember(btnHeader);
