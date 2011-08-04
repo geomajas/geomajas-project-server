@@ -19,11 +19,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * Layout behaving like a deck of cards. Only one card visible at a time.
  * 
  * @author Jan De Moerloose
- * 
  */
+//@Api or should this move to plugin-widget-utility
 public class CardLayout extends VLayout {
 
-	private HashMap<Object, Canvas> cards = new HashMap<Object, Canvas>();
+	private HashMap<String, Canvas> cards = new HashMap<String, Canvas>();
 
 	private Canvas currentCard;
 
@@ -33,7 +33,7 @@ public class CardLayout extends VLayout {
 	 * @param key key associated to the card
 	 * @param card the card
 	 */
-	public void addCard(Object key, Canvas card) {
+	public void addCard(String key, Canvas card) {
 		addMember(card);
 		cards.put(key, card);
 		showCard(key);
@@ -44,15 +44,13 @@ public class CardLayout extends VLayout {
 	 * 
 	 * @param key key associated to the card that should be shown
 	 */
-	public void showCard(Object key) {
+	public void showCard(String key) {
 		if (cards.containsKey(key)) {
+			if (null != currentCard) {
+				currentCard.hide();
+			}
 			currentCard = cards.get(key);
 			currentCard.show();
-			for (Canvas card : cards.values()) {
-				if (card != currentCard) {
-					card.hide();
-				}
-			}
 		}
 	}
 
