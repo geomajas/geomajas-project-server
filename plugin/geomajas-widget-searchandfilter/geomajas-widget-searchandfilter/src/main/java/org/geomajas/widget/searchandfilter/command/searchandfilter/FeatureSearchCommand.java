@@ -35,11 +35,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Command to retrieve features using a FeatureSearch Criterion.
  * <p>
- * criteria are combined to one filter (per layer).
+ * Criteria are combined to one filter (per layer).
  * <p>
  * Please note that AND does not (automatically) work over layers, eg. there are
  * separate filters, one for every layer (geographic filters work on multiple
@@ -48,6 +49,7 @@ import org.springframework.stereotype.Component;
  * @author Kristof Heirwegh
  */
 @Component
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class FeatureSearchCommand implements Command<FeatureSearchRequest, FeatureSearchResponse> {
 
 	@SuppressWarnings("unused")
