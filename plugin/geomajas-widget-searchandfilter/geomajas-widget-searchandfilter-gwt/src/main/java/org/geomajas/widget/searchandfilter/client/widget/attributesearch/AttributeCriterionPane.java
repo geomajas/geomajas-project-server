@@ -41,6 +41,9 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  */
 public class AttributeCriterionPane extends Canvas {
 
+	private static final String CQL_WILDCARD = "*";
+	private static final String CQL_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
 	private DynamicForm form;
 
 	private SelectItem attributeSelect;
@@ -95,10 +98,10 @@ public class AttributeCriterionPane extends Canvas {
 	private String trimLikeValue(String value, String operator) {
 		if ("like".equalsIgnoreCase(operator) && value != null) {
 			String tmp = value;
-			if (tmp.startsWith("*")) {
+			if (tmp.startsWith(CQL_WILDCARD)) {
 				tmp = tmp.substring(1, tmp.length());
 			}
-			if (tmp.endsWith("*")) {
+			if (tmp.endsWith(CQL_WILDCARD)) {
 				tmp = tmp.substring(0, tmp.length() - 1);
 			}
 			return tmp;
@@ -126,7 +129,7 @@ public class AttributeCriterionPane extends Canvas {
 			// CQL does not recognize "contains", so change to "like":
 			if ("contains".equals(operatorString)) {
 				operatorString = "like";
-				valueString = "*" + valueString + "*";
+				valueString = CQL_WILDCARD + valueString + CQL_WILDCARD;
 			}
 
 			// If value was null, and no "contains" operator, return null:
@@ -146,7 +149,7 @@ public class AttributeCriterionPane extends Canvas {
 				if (attr.getType().equals(PrimitiveType.DATE)) {
 					if (value instanceof Date) {
 						// In case of a date, parse correctly for CQL: 2006-11-30T01:30:00Z
-						DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+						DateTimeFormat format = DateTimeFormat.getFormat(CQL_TIME_FORMAT);
 
 						if ("=".equals(operatorString)) {
 							// Date equals not supported by CQL, so we use the DURING operator instead:
@@ -374,8 +377,6 @@ public class AttributeCriterionPane extends Canvas {
 	 */
 	private class AttributeFormItem extends CanvasItem {
 
-		//private AttributeFormItemFactory factory;
-
 		private DynamicForm form;
 
 		private FormItem formItem;
@@ -385,14 +386,13 @@ public class AttributeCriterionPane extends Canvas {
 		// -------------------------------------------------------------------------
 
 		/**
-		 * Create the form item with the given. An internal form will already be created, and in that form a
+		 * Create the form item with the given name. An internal form will already be created, and in that form a
 		 * <code>TextItem</code> will be shown.
 		 *
-		 * @param name
+		 * @param name form item name
 		 */
 		public AttributeFormItem(String name) {
 			super(name);
-			//factory = new DefaultAttributeFormItemFactory();
 
 			form = new DynamicForm();
 			form.setHeight(26);
@@ -412,8 +412,7 @@ public class AttributeCriterionPane extends Canvas {
 		 * <code>FormItem</code> for the new type of attribute. In order to accomplish this, a
 		 * {@link AttributeFormFieldRegistry} is used.
 		 *
-		 * @param attributeInfo
-		 *            The new attribute definition for whom to display the correct <code>FormItem</code>.
+		 * @param attributeInfo The new attribute definition for whom to display the correct <code>FormItem</code>.
 		 */
 		public void setAttributeInfo(AttributeInfo attributeInfo) {
 			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, 

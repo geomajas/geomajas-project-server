@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -49,14 +50,16 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * criteria are handled by other {@link AbstractSearchPanel} implementations.
  *
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public class CombinedSearchPanel extends AbstractSearchPanel {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private static final String ADD_IMAGE = "[SKIN]/actions/add.png";
 
-	private DynamicForm form;
+	private DynamicForm operatorForm;
 	private RadioGroupItem type;
 	private ListGrid searchItems;
 	private SelectItem selectSearch;
@@ -68,19 +71,19 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// -- type --
-		form = new DynamicForm();
-		form.setWidth100();
-		form.setAlign(Alignment.LEFT);
+		// -- operator type --
+		operatorForm = new DynamicForm();
+		operatorForm.setWidth100();
+		operatorForm.setAlign(Alignment.LEFT);
 		type = new RadioGroupItem();
 		type.setTitle(messages.combinedSearchWidgetType());
 		type.setValueMap(messages.combinedSearchWidgetOr(), messages.combinedSearchWidgetAnd());
 		type.setValue(messages.combinedSearchWidgetAnd());
 		type.setVertical(false);
-		form.setFields(type);
-		layout.addMember(form);
+		operatorForm.setFields(type);
+		layout.addMember(operatorForm);
 
-		// -- grid --
+		// -- criteria grid --
 		VLayout wrapper = new VLayout(10);
 		searchItems = new ListGrid();
 		searchItems.setWidth100();
@@ -110,6 +113,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 			}
 		});
 		searchItems.setFields(nameField, removeField);
+		updateDisplay();
 
 		HLayout addBar = new HLayout(0);
 		addBar.setAlign(Alignment.LEFT);
@@ -128,6 +132,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 					sw.showForSave(new SaveRequestHandler() {
 						public void onSaveRequested(SaveRequestEvent event) {
 							searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
+							updateDisplay();
 						}
 					});
 				}
@@ -142,11 +147,21 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		wrapper.addMember(addBar);
 		layout.addMember(wrapper);
 
-		// ----------------------------------------------------------
-
-		setWidth(350);
-		setHeight(250);
 		addChild(layout);
+	}
+
+	public void updateDisplay() {
+		int recordCount = searchItems.getRecords().length;
+		if (recordCount >= 1) {
+			searchItems.show();
+		} else {
+			searchItems.hide();
+		}
+		if (recordCount >= 2) {
+			operatorForm.show();
+		} else {
+			operatorForm.hide();
+		}
 	}
 
 	private SearchWidget getSearchWidget(String value) {
@@ -193,8 +208,9 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 
 	@Override
 	public void reset() {
-		form.reset();
+		operatorForm.reset();
 		searchItems.getDataAsRecordList().removeList(searchItems.getRecords());
+		updateDisplay();
 	}
 
 	/**
@@ -240,6 +256,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		if (critters != null && critters.size() > 0) {
 			for (Criterion cr : critters) {
 				searchItems.addData(new SearchListRecord(SearchWidgetRegistry.getI18nTypeName(cr), cr));
+				updateDisplay();
 			}
 		}
 	}
