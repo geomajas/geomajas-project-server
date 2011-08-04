@@ -47,7 +47,7 @@ public class CardLayout extends VLayout {
 	public void showCard(String key) {
 		Canvas newCurrent = cards.get(key);
 		if (null != newCurrent) {
-			if (newCurrent != currentCard) {
+			if (newCurrent != currentCard && null != currentCard) {
 				currentCard.hide();
 			}
 			currentCard = newCurrent;
