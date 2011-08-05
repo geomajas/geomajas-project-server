@@ -70,7 +70,8 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  * be excluded from the form by overriding the {@link #isIncluded(AttributeInfo)} method.
  * </p>
  * <p>
- * This attribute form definition is used internally in the <code>FeatureAtributeEditor</code> widget. A code example on
+ * This attribute form definition is used internally in the
+ * {@link org.geomajas.gwt.client.widget.FeatureAttributeEditor} widget. A code example on
  * how to override the {@link #prepareForm(FormItemList, DataSource)} method is shown below:
  * </p>
  * <code>
@@ -173,10 +174,10 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	}
 
 	/**
-	 * Create a datasource field for a specific attribute.
+	 * Create a data source field for a specific attribute.
 	 * 
 	 * @param info the attribute information.
-	 * @return the datasource field
+	 * @return the data source field
 	 */
 	protected DataSourceField createField(AttributeInfo info) {
 		return AttributeFormFieldRegistry.createDataSourceField(info);

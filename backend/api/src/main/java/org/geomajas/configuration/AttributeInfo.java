@@ -191,7 +191,7 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * 
 	 * @param includedInForm
 	 *            new value.
-	 * @deprecated Wrongfully added.
+	 * @deprecated Wrongfully added, use {@link #setHidden(boolean)} instead
 	 * @since 1.9.0
 	 */
 	@Deprecated
@@ -204,7 +204,7 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * 
 	 * @return Include in form value.
 	 * 
-	 * @deprecated Wrongfully added.
+	 * @deprecated Wrongfully added, use {@link #isHidden()} instead
 	 * @since 1.9.0
 	 */
 	@Deprecated
