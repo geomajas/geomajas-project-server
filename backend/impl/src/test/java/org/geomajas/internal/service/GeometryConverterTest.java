@@ -115,6 +115,13 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	@Test
+	public void emptyToDto() throws GeomajasException {
+		// Test JTS Point to DTO:
+		Geometry empty = converter.toDto(createEmpty());
+		Assert.assertNull(empty);
+	}
+
+	@Test
 	public void jtsPointToDto() throws GeomajasException {
 		// Test JTS Point to DTO:
 		Geometry point = converter.toDto(createJtsPoint());
@@ -221,6 +228,10 @@ public class GeometryConverterTest {
 	// Private methods for creating JTS geometries:
 	// -------------------------------------------------------------------------
 
+	private Point createEmpty() {
+		return factory.createPoint((com.vividsolutions.jts.geom.Coordinate)null);
+	}
+
 	private Point createJtsPoint() {
 		return factory.createPoint(jtsC1);
 	}
@@ -267,7 +278,7 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 	// Private methods for creating DTO geometries:
 	// -------------------------------------------------------------------------
-
+	
 	private Geometry createDtoPoint() {
 		Geometry geometry = new Geometry(Geometry.POINT, SRID, -1);
 		geometry.setCoordinates(new Coordinate[] { dtoC1 });

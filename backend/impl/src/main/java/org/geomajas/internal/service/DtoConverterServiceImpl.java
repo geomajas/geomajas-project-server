@@ -394,7 +394,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @return Returns a DTO type geometry, that is serializable.
 	 */
 	public Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
-		if (geometry == null) {
+		if (geometry == null || geometry.isEmpty()) {
 			return null;
 		}
 		int srid = geometry.getSRID();
