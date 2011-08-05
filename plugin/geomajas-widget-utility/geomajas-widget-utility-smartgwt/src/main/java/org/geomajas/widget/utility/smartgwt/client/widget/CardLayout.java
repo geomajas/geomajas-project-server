@@ -14,16 +14,20 @@ import java.util.HashMap;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.annotations.Api;
 
 /**
  * Layout behaving like a deck of cards. Only one card visible at a time.
- * 
+ *
+ * @param <KEY_TYPE> type for the card key
+ *
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
-//@Api or should this move to plugin-widget-utility
-public class CardLayout extends VLayout {
+@Api
+public class CardLayout<KEY_TYPE> extends VLayout {
 
-	private HashMap<Object, Canvas> cards = new HashMap<Object, Canvas>();
+	private HashMap<KEY_TYPE, Canvas> cards = new HashMap<KEY_TYPE, Canvas>();
 
 	private Canvas currentCard;
 
@@ -32,8 +36,10 @@ public class CardLayout extends VLayout {
 	 * 
 	 * @param key key associated to the card
 	 * @param card the card
+	 * @since 1.0.0
 	 */
-	public void addCard(Object key, Canvas card) {
+	@Api
+	public void addCard(KEY_TYPE key, Canvas card) {
 		if (currentCard != null) {
 			currentCard.hide();
 		}
@@ -46,8 +52,10 @@ public class CardLayout extends VLayout {
 	 * Show the card associated with the specified key.
 	 * 
 	 * @param key key associated to the card that should be shown
+	 * @since 1.0.0
 	 */
-	public void showCard(Object key) {
+	@Api
+	public void showCard(KEY_TYPE key) {
 		Canvas newCurrent = cards.get(key);
 		if (null != newCurrent) {
 			if (newCurrent != currentCard && null != currentCard) {
@@ -62,7 +70,9 @@ public class CardLayout extends VLayout {
 	 * Returns the current card.
 	 * 
 	 * @return the current card.
+	 * @since 1.0.0
 	 */
+	@Api
 	public Canvas getCurrentCard() {
 		return currentCard;
 	}
