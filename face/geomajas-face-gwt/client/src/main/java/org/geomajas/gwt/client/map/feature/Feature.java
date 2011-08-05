@@ -105,7 +105,6 @@ public class Feature implements Paintable, Cloneable {
 
 	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
 		this.layer = layer;
-		this.attributes = new HashMap<String, Attribute>();
 		this.geometry = null;
 		this.styleId = null;
 		this.labelPosition = null;
@@ -119,12 +118,6 @@ public class Feature implements Paintable, Cloneable {
 			setUpdatable(dto.isUpdatable());
 			setDeletable(dto.isDeletable());
 		} else {
-			if (layer != null) {
-				// Create empty attributes:
-				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-					attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
-				}
-			}
 			setUpdatable(true);
 			setDeletable(true);
 		}
@@ -173,39 +166,39 @@ public class Feature implements Paintable, Cloneable {
 	}
 	
 	public void setBooleanAttribute(String name, Boolean value) {
-		((BooleanAttribute) getAttributes().get(name)).setValue(value);
+		((BooleanAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setCurrencyAttribute(String name, String value) {
-		((CurrencyAttribute) getAttributes().get(name)).setValue(value);
+		((CurrencyAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setDateAttribute(String name, Date value) {
-		((DateAttribute) getAttributes().get(name)).setValue(value);
+		((DateAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setDoubleAttribute(String name, Double value) {
-		((DoubleAttribute) getAttributes().get(name)).setValue(value);
+		((DoubleAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setFloatAttribute(String name, Float value) {
-		((FloatAttribute) getAttributes().get(name)).setValue(value);
+		((FloatAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setImageUrlAttribute(String name, String value) {
-		((ImageUrlAttribute) getAttributes().get(name)).setValue(value);
+		((ImageUrlAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setIntegerAttribute(String name, Integer value) {
-		((IntegerAttribute) getAttributes().get(name)).setValue(value);
+		((IntegerAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setLongAttribute(String name, Long value) {
-		((LongAttribute) getAttributes().get(name)).setValue(value);
+		((LongAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setShortAttribute(String name, Short value) {
-		((ShortAttribute) getAttributes().get(name)).setValue(value);
+		((ShortAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setStringAttribute(String name, String value) {
@@ -213,11 +206,11 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setUrlAttribute(String name, String value) {
-		((UrlAttribute) getAttributes().get(name)).setValue(value);
+		((UrlAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void setManyToOneAttribute(String name, AssociationValue value) {
-		((ManyToOneAttribute) getAttributes().get(name)).setValue(value);
+		((ManyToOneAttribute) getAndCreateAttributes().get(name)).setValue(value);
 	}
 
 	public void addOneToManyValue(String name, AssociationValue value) {
@@ -261,7 +254,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	/**
-	 * Get the attributes map, null when it needs to be lazy loaded.
+	 * Get the attributes map, throws exception when it needs to be lazy loaded.
 	 * 
 	 * @return attributes map
 	 * @throws IllegalStateException
@@ -270,6 +263,26 @@ public class Feature implements Paintable, Cloneable {
 	public Map<String, Attribute> getAttributes() throws IllegalStateException {
 		if (null == attributes) {
 			throw new IllegalStateException("Attributes not available, use LazyLoader.");
+		}
+		return attributes;
+	}
+
+	/**
+	 * Get the attributes map, create if it is not loaded yet.
+	 * 
+	 * @return attributes map
+	 * @throws IllegalStateException
+	 *             attributes not present because of lazy loading
+	 */
+	private Map<String, Attribute> getAndCreateAttributes()  {
+		if (null == attributes) {
+			attributes = new HashMap<String, Attribute>();
+		}
+		if (layer != null) {
+			// Create empty attributes:
+			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+				attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
+			}
 		}
 		return attributes;
 	}
@@ -294,7 +307,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	/**
-	 * Get the feature's geometry, , null when it needs to be lazy loaded.
+	 * Get the feature's geometry, throws exception when it needs to be lazy loaded.
 	 * 
 	 * @return geometry
 	 * @throws IllegalStateException
