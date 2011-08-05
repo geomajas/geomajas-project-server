@@ -73,7 +73,7 @@ public class ImageServiceMapTest {
 
 	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/map";
 
-	private static final double DELTA = 1E-6;
+	private static final double DELTA = 0.06;
 
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
