@@ -80,7 +80,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		log.debug("filter to apply : {}", filter);
 
 		List<InternalFeature> features = layerService.getFeatures(layerId, geoService.getCrs(request.getCrs()), filter,
-				null, request.getFeatureIncludes(), 0, request.getMax());
+				null, request.getFeatureIncludes(), request.getOffSet(), request.getMax());
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {

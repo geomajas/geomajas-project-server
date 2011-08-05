@@ -40,6 +40,8 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	public static final String ID_ATTRIBUTE = "$id";
 	
 	private int max = MAX_UNLIMITED;
+	
+	private int offSet;
 
 	private String booleanOperator = "AND";
 
@@ -72,6 +74,24 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	 */
 	public void setMax(int max) {
 		this.max = max;
+	}	
+
+	/**
+	 * Get the index of the first feature to be returned. This is useful for layers that support paging. 
+	 * 
+	 * @return the offset
+	 */
+	public int getOffSet() {
+		return offSet;
+	}
+
+	/**
+	 * Set the index of the first feature to be returned. This is useful for layers that support paging.
+	 * 
+	 * @param offSet the offset
+	 */
+	public void setOffSet(int offSet) {
+		this.offSet = offSet;
 	}
 
 	/**

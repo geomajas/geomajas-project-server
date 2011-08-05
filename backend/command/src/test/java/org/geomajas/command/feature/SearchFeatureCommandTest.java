@@ -85,6 +85,32 @@ public class SearchFeatureCommandTest {
 	}
 
 	@Test
+	public void testSearchOneCriterionOffset() throws Exception {
+		// prepare command
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setLayerId(LAYER_ID);
+		request.setCrs("EPSG:4326");
+		request.setMax(SearchFeatureRequest.MAX_UNLIMITED);
+		request.setOffSet(2);
+		SearchCriterion searchCriterion = new SearchCriterion();
+		searchCriterion.setAttributeName(REGION_ATTRIBUTE);
+		searchCriterion.setOperator("like");
+		searchCriterion.setValue("'%1'");
+		request.setCriteria(new SearchCriterion[] {searchCriterion});
+
+		// execute
+		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
+				SearchFeatureRequest.COMMAND, request, null, "en");
+
+		// test
+		Assert.assertFalse(response.isError());
+		Assert.assertEquals(LAYER_ID, response.getLayerId());
+		List<Feature> features = Arrays.asList(response.getFeatures());
+		Assert.assertNotNull(features);
+		Assert.assertEquals(0, features.size());
+	}
+
+	@Test
 	public void testSearchOneCriterionLimit() throws Exception {
 		// prepare command
 		SearchFeatureRequest request = new SearchFeatureRequest();
