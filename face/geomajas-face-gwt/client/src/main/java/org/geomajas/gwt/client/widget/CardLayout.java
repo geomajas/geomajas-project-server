@@ -34,9 +34,12 @@ public class CardLayout extends VLayout {
 	 * @param card the card
 	 */
 	public void addCard(String key, Canvas card) {
+		if (currentCard != null) {
+			currentCard.hide();
+		}
 		addMember(card);
+		currentCard = card;
 		cards.put(key, card);
-		showCard(key);
 	}
 
 	/**
