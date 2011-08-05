@@ -43,6 +43,53 @@
 		</developer>
 	</developers>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-widget-utility</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-widget-utility-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-widget-utility-smartgwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-widget-utility-smartgwt-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${geomajas-widget-utility-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-gwt-client</artifactId>
+				<version>${geomajas-widget-utility-gwtface-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<modules>
+		<module>geomajas-widget-utility</module>
+		<module>geomajas-widget-utility-gwt</module>
+		<module>geomajas-widget-utility-smartgwt</module>
+		<module>geomajas-widget-utility-smartgwt-example</module>
+	</modules>
+
 	<repositories>
 		<repository>
 			<id>Geomajas</id>
@@ -61,56 +108,7 @@
 	<properties>
 		<geomajas-widget-utility-backend-version>1.10.0-SNAPSHOT</geomajas-widget-utility-backend-version>
 		<geomajas-widget-utility-gwtface-version>1.9.0</geomajas-widget-utility-gwtface-version>
-		<geomajas-gwt-utility-version>1.0.0-SNAPSHOT</geomajas-gwt-utility-version>
-	</properties>	
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-widget-utility</artifactId>
-				<version>${geomajas-gwt-utility-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-widget-utility-gwt</artifactId>
-				<version>${geomajas-gwt-utility-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-widget-utility-smartgwt</artifactId>
-				<version>${geomajas-gwt-utility-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${geomajas-widget-utility-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-gwt-client</artifactId>
-				<version>${geomajas-widget-utility-gwtface-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.36</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
-	<modules>
-		<module>geomajas-widget-utility</module>
-		<module>geomajas-widget-utility-gwt</module>
-		<module>geomajas-widget-utility-smartgwt</module>
-		<module>geomajas-widget-utility-smartgwt-example</module>
-	</modules>
+	</properties>
 
 	<profiles>
 		<profile>

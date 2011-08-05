@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt.client.widget;
+package org.geomajas.widget.utility.smartgwt.client.widget;
 
 import java.util.HashMap;
 

@@ -8,12 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt.client.widget.wizard;
+package org.geomajas.widget.utility.smartgwt.client.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.gwt.client.widget.wizard.WizardButton.ButtonType;
+import org.geomajas.widget.utility.smartgwt.client.wizard.WizardButton.ButtonType;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Cursor;
