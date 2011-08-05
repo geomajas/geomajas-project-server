@@ -80,6 +80,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	 * Get the index of the first feature to be returned. This is useful for layers that support paging. 
 	 * 
 	 * @return the offset
+	 * @since 1.10.0
 	 */
 	public int getOffSet() {
 		return offSet;
@@ -89,6 +90,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	 * Set the index of the first feature to be returned. This is useful for layers that support paging.
 	 * 
 	 * @param offSet the offset
+	 * @since 1.10.0
 	 */
 	public void setOffSet(int offSet) {
 		this.offSet = offSet;
