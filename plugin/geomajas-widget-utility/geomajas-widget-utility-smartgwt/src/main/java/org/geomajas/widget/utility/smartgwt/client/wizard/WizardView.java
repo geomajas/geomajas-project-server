@@ -12,16 +12,16 @@ package org.geomajas.widget.utility.smartgwt.client.wizard;
 
 import java.util.List;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotations.FutureApi;
 
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * View part of the {@link Wizard}.
- * 
+ *
+ * @param <DATA> data type
+ *
  * @author Jan De Moerloose
- * 
- * @param <DATA>
  */
 @FutureApi
 public interface WizardView<DATA> {

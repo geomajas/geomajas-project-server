@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.utility.smartgwt.client.wizard;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotations.FutureApi;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,10 +24,10 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>clear() : clear the page (e.g. clearing the form on the page)</li>
  * <li>show() : prepare the page for showing (e.g. transfer wizard data to the form)</li>
  * </ul>
+ *
+ * @param <DATA> data type
  * 
  * @author Jan De Moerloose
- * 
- * @param <DATA>
  */
 @FutureApi
 public abstract class WizardPage<DATA> {

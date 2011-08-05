@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotations.FutureApi;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -59,9 +59,9 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * 	</pre>
  * </code>
  * 
+ * @param <DATA> data type
+ *
  * @author Jan De Moerloose
- * 
- * @param <DATA>
  */
 @FutureApi
 public abstract class Wizard<DATA> {
