@@ -65,17 +65,17 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 *            hidden status
 	 * @param identifying
 	 *            is attribute identifying?
-	 * @param label
-	 *            attribute label
 	 * @param name
 	 *            attribute name
+	 * @param label
+	 *            attribute label
 	 */
-	public AttributeInfo(boolean editable, boolean hidden, boolean identifying, String label, String name) {
+	public AttributeInfo(boolean editable, boolean hidden, boolean identifying, String name, String label) {
 		setEditable(editable);
 		setHidden(hidden);
 		setIdentifying(identifying);
-		setLabel(label);
 		setName(name);
+		setLabel(label);
 	}
 
 	/**
