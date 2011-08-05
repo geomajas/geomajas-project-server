@@ -36,7 +36,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.10.0-SNAPSHOT</version>
+				<version>${geomajas-widget-utility-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geomajas-widget-utility-gwtface-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
