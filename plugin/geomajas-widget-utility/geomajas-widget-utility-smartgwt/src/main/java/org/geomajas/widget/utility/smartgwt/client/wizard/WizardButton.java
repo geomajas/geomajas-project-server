@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.utility.smartgwt.client.wizard;
 
-import org.geomajas.annotations.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 

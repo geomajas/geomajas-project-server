@@ -13,8 +13,8 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Marker interface objects which can be added in layer configuration, using

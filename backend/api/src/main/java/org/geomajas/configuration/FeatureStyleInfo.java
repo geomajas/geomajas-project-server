@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Null;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.CacheableObject;
 
 /**

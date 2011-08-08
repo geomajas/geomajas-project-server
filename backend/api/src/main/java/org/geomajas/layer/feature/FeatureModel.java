@@ -12,8 +12,8 @@ package org.geomajas.layer.feature;
 
 import java.util.Map;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.LayerException;
 

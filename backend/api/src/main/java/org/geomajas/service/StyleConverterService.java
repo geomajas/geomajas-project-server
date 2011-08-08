@@ -11,7 +11,7 @@
 
 package org.geomajas.service;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.LayerException;

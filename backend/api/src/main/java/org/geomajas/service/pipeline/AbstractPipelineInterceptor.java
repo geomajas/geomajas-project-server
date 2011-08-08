@@ -13,7 +13,7 @@ package org.geomajas.service.pipeline;
 
 import javax.annotation.PostConstruct;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
 
 /**

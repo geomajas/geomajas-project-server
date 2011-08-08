@@ -13,7 +13,7 @@ package org.geomajas.security;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * This SavedAuthentication class is a placeholder for the {@link Authorization}s and the providing

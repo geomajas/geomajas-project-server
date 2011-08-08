@@ -14,7 +14,7 @@ package org.geomajas.layer.feature;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 
 /**

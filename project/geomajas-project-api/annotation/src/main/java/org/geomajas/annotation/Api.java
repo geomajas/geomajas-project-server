@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.annotations;
+package org.geomajas.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -18,14 +18,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation which indicates that a class and/or method are planned to be part of the supported Geomajas API.
+ * Annotation which indicates that a class and/or method are part of the supported Geomajas API.
  * <p/>
- * This is an annotation to indicate that this should be part of the API, but there is still some room for discussion
- * or validation before changing to {@link Api}.
+ * Only classes and methods with this annotation are guaranteed to be supported for increasing versions with the same
+ * major version number.
  * <p/>
- * The intention is that these annotations only remain for a short time, either removing the annotation or changing to
- * {@link Api}. In principle this should be checked before a release. It is recommended to add some comments to
- * indicate why it is not yet @Api and/or indicate when it should become {@link Api}.
+ * When the class is annotated, "allMethods" can be used to indicate that the annotation also applies to all public
+ * methods in the class (or interface). When this is not used, the class is guaranteed to exist, but the individual
+ * supported methods also need to be annotated. Note that the annotation explicitly does not apply for inner classes,
+ * they need explicit annotation.
  *
  * @author Joachim Van der Auwera
  * @since 1.10.0
@@ -35,7 +36,7 @@ import java.lang.annotation.Target;
 		ElementType.ANNOTATION_TYPE })
 @Documented
 @Api
-public @interface FutureApi {
+public @interface Api {
 
 	/**
 	 * For class level annotation, does it apply to all methods?

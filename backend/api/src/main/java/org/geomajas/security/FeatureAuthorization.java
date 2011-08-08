@@ -11,8 +11,8 @@
 
 package org.geomajas.security;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.layer.feature.InternalFeature;
 
 /**

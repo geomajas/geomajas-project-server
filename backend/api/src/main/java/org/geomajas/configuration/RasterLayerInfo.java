@@ -16,7 +16,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.layer.LayerType;
 

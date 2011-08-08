@@ -11,7 +11,7 @@
 
 package org.geomajas.widget.utility.client.action;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * <p>

@@ -13,7 +13,7 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Base information which is shared between all attributes.

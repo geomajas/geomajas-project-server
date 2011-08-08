@@ -14,7 +14,7 @@ package org.geomajas.service;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FontStyleInfo;
 
 /**

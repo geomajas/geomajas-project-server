@@ -13,7 +13,7 @@ package org.geomajas.service;
 
 import java.util.Date;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;

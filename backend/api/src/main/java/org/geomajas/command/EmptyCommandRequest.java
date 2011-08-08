@@ -11,7 +11,7 @@
 
 package org.geomajas.command;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.Json;
 
 

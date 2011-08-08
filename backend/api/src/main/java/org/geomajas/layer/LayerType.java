@@ -13,7 +13,7 @@ package org.geomajas.layer;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * <p>

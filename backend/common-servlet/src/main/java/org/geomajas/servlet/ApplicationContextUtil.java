@@ -13,7 +13,7 @@ package org.geomajas.servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 

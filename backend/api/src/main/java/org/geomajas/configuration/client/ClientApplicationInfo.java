@@ -18,7 +18,7 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Base application info entry point.

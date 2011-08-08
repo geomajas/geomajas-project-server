@@ -11,7 +11,7 @@
 
 package org.geomajas.command.dto;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.layer.tile.VectorTile;
 

@@ -13,7 +13,7 @@ package org.geomajas.global;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * A Data Transfer Object (DTO) that is used when exceptions that occurred on the server need to be send back to the

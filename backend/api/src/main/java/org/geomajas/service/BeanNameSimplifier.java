@@ -11,7 +11,7 @@
 
 package org.geomajas.service;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Simplifier to change fully qualified class names into Geomajas bean names.

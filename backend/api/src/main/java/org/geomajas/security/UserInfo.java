@@ -13,8 +13,8 @@ package org.geomajas.security;
 
 import java.util.Locale;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Information about the logged in user (all data is optional).

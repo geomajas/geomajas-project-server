@@ -12,7 +12,7 @@ package org.geomajas.configuration.validation;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * The value of the constrained number attribute must be lower or equal to the specified maximum.

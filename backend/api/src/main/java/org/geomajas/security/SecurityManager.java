@@ -11,7 +11,7 @@
 
 package org.geomajas.security;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * The security manager tries to find the authorization objects for an authentication token.

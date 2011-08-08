@@ -13,7 +13,7 @@ package org.geomajas.layer;
 
 import java.util.List;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;

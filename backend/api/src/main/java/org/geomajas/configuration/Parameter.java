@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Representation of a generic parameter for the configuration.

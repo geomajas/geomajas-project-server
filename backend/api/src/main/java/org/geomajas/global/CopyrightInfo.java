@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Copyright information for a plug-in and the dependencies.

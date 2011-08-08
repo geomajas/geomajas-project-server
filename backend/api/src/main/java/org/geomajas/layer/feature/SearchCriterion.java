@@ -12,7 +12,7 @@ package org.geomajas.layer.feature;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * A single criterion DTO that can be used to set up filters and search for features by their alpha numerical

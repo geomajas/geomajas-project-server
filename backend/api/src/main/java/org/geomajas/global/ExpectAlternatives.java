@@ -19,7 +19,7 @@ import java.lang.annotation.RetentionPolicy;
  * This is used by the bean name generator to determine the default bean name.
  *
  * @author Joachim Van der Auwera
- * @deprecated use {@link org.geomajas.annotations.ExpectAlternatives}
+ * @deprecated use {@link org.geomajas.annotation.ExpectAlternatives}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Deprecated

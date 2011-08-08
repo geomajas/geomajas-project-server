@@ -12,7 +12,7 @@ package org.geomajas.command.dto;
 
 import java.util.List;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.CopyrightInfo;
 

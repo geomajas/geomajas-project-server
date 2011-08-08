@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.api;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
 
 /**

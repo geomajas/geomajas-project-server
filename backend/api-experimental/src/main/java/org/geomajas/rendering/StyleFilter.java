@@ -10,7 +10,7 @@
  */
 package org.geomajas.rendering;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.opengis.filter.Filter;
 

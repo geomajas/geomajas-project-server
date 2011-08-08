@@ -13,7 +13,7 @@ package org.geomajas.plugin.rasterizing.command.rasterizing;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.caching.service.CacheCategory;

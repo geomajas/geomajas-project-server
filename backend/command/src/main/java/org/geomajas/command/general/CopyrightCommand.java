@@ -16,7 +16,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.dto.CopyrightResponse;

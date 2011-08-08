@@ -10,7 +10,7 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * List of possible primitive types.

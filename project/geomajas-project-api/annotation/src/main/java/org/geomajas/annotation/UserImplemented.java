@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.annotations;
+package org.geomajas.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

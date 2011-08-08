@@ -13,7 +13,7 @@ package org.geomajas.command.feature;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;

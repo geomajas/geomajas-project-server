@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * they need explicit annotation.
  * 
  * @author Joachim Van der Auwera
- * @deprecated use {@link org.geomajas.annotations.Api}
+ * @deprecated use {@link org.geomajas.annotation.Api}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,

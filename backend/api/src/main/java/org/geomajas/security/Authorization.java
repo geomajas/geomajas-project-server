@@ -11,7 +11,7 @@
 
 package org.geomajas.security;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Allows you to access the policies which are active.

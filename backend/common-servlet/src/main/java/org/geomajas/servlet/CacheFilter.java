@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

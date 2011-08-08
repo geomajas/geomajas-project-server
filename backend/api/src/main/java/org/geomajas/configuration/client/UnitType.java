@@ -10,7 +10,7 @@
  */
 package org.geomajas.configuration.client;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Unit type.

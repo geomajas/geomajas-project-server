@@ -13,7 +13,7 @@ package org.geomajas.service.impl;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.service.DispatcherUrlService;
 
 /**

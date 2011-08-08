@@ -12,7 +12,7 @@ package org.geomajas.layer.feature.attribute;
 
 import java.util.Date;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.PrimitiveType;
 
 /**

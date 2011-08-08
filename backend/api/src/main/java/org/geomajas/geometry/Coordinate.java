@@ -12,7 +12,7 @@ package org.geomajas.geometry;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * General coordinate class. It is based upon the Coordinate class from JTS4GWT (LGPL).

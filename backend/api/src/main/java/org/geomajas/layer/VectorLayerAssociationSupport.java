@@ -13,8 +13,8 @@ package org.geomajas.layer;
 
 import java.util.List;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.layer.feature.Attribute;
 import org.opengis.filter.Filter;
 

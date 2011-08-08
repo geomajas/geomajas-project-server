@@ -11,9 +11,9 @@
 
 package org.geomajas.service;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.ExpectAlternatives;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.ExpectAlternatives;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 

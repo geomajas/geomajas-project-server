@@ -12,7 +12,7 @@ package org.geomajas.command.dto;
 
 import java.util.Arrays;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.feature.SearchCriterion;

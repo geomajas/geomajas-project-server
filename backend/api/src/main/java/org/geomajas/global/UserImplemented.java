@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  * that no methods may be added to the interface without breaking API compatibility.
  *
  * @author Joachim Van der Auwera
- * @deprecated use {@link org.geomajas.annotations.UserImplemented}
+ * @deprecated use {@link org.geomajas.annotation.UserImplemented}
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target({ ElementType.TYPE })

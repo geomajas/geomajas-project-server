@@ -12,7 +12,7 @@ package org.geomajas.sld.expression;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Schema fragment(s) for this class:...

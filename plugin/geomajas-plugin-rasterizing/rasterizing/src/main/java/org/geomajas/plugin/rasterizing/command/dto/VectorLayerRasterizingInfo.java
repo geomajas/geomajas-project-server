@@ -12,7 +12,7 @@ package org.geomajas.plugin.rasterizing.command.dto;
 
 import java.util.Map;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;

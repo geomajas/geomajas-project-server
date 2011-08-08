@@ -13,7 +13,7 @@ package org.geomajas.layer.tile;
 import java.io.Serializable;
 import java.util.List;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 

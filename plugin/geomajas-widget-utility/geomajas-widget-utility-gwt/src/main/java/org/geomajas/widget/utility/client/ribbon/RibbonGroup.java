@@ -11,7 +11,7 @@
 
 package org.geomajas.widget.utility.client.ribbon;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.user.client.ui.Widget;
 

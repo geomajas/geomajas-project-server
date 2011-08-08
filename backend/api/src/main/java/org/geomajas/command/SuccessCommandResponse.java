@@ -10,7 +10,7 @@
  */
 package org.geomajas.command;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Response object for {@link Command} which indicates success.

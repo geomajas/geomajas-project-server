@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * indicate why it is not yet @Api and/or indicate when it should become {@link Api}.
  *
  * @author Joachim Van der Auwera
- * @deprecated use {@link org.geomajas.annotations.FutureApi}
+ * @deprecated use {@link org.geomajas.annotation.FutureApi}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,

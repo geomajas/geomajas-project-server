@@ -11,7 +11,7 @@
 
 package org.geomajas.layer.pipeline;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 import com.vividsolutions.jts.geom.Envelope;
 

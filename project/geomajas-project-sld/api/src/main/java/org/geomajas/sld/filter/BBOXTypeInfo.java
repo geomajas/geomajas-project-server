@@ -12,7 +12,7 @@ package org.geomajas.sld.filter;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.sld.expression.PropertyNameInfo;
 import org.geomajas.sld.geometry.BoxTypeInfo;
 

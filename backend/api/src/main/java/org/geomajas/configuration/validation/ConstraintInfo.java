@@ -12,7 +12,7 @@ package org.geomajas.configuration.validation;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Base class for validation constraints.

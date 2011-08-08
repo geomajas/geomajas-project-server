@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Json serializer which considers the @Json annotations.
+ * Json serializer which considers the @Json annotation.
  *
  * @author Jan De Moerloose
  */

@@ -10,7 +10,7 @@
  */
 package org.geomajas.layer.feature.attribute;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.layer.feature.Attribute;
 

@@ -13,7 +13,7 @@ package org.geomajas.sld.geometry;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * 

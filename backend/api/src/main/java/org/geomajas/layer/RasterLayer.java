@@ -12,8 +12,8 @@ package org.geomajas.layer;
 
 import java.util.List;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;

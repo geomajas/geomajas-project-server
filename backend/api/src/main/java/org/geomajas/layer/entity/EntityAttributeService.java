@@ -12,7 +12,7 @@ package org.geomajas.layer.entity;
 
 import java.util.Map;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;

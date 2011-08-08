@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Layout behaving like a deck of cards. Only one card visible at a time.

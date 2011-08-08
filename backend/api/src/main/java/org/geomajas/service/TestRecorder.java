@@ -11,7 +11,7 @@
 
 package org.geomajas.service;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Recorder to allow easier testing of internal workings.

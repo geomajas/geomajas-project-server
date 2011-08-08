@@ -13,7 +13,7 @@ package org.geomajas.security;
 
 import java.util.List;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Configuration for the security.

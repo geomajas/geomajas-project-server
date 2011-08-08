@@ -12,8 +12,8 @@ package org.geomajas.configuration.client;
 
 import java.io.Serializable;
 
-import org.geomajas.annotations.Api;
-import org.geomajas.annotations.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Marker interface for widget information which is contained in the map (or application)

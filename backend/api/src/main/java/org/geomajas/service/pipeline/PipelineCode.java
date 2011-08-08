@@ -11,7 +11,7 @@
 
 package org.geomajas.service.pipeline;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Constants for the pipelines. These include pipeline names and keys for data put in the context.

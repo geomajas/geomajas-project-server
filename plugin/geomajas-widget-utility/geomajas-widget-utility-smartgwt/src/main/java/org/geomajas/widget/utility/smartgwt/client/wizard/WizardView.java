@@ -12,7 +12,7 @@ package org.geomajas.widget.utility.smartgwt.client.wizard;
 
 import java.util.List;
 
-import org.geomajas.annotations.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 import com.google.gwt.user.client.ui.Widget;
 

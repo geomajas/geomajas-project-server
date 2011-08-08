@@ -13,7 +13,7 @@ package org.geomajas.global;
 
 import javax.validation.constraints.NotNull;
 
-import org.geomajas.annotations.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Version information for a plug-in. Used both to define the plug-in itself and for dependencies.
