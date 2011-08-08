@@ -13,7 +13,6 @@ package org.geomajas.layer.shapeinmem;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,7 +67,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	private CoordinateReferenceSystem crs;
 
-	private URL url;
+	private String url;
 
 	private String id;
 	
@@ -122,6 +121,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	@Api
 	public void setUrl(String url) throws LayerException {
 		try {
+			this.url = url;
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("url", url);
 			DataStore store = DataStoreFactory.create(params);
@@ -225,15 +225,15 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 				SimpleFeature feature = iterator.next();
 				String id = featureModel.getId(feature);
 				features.put(id, feature);
-				int intId = Integer.parseInt(id.substring(id.lastIndexOf(".") + 1));
+				int intId = Integer.parseInt(id.substring(id.lastIndexOf('.') + 1));
 				if (intId > nextId) {
 					nextId = intId;
 				}
 			}
-			col.close(iterator);
+			iterator.close();
 			((ShapeInMemFeatureModel) featureModel).setNextId(++nextId);
 		} catch (NumberFormatException nfe) {
-			throw new LayerException(nfe, ExceptionCode.FEATURE_MODEL_PROBLEM);
+			throw new LayerException(nfe, ExceptionCode.FEATURE_MODEL_PROBLEM, url);
 		} catch (MalformedURLException e) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		} catch (IOException ioe) {
