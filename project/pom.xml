@@ -31,8 +31,8 @@
 	</scm>
 
 	<modules>
-		<module>sld</module>
-		<module>api</module>
+		<module>geomajas-project-api</module>
+		<module>geomajas-project-sld</module>
 	</modules>
 
 	<repositories>
