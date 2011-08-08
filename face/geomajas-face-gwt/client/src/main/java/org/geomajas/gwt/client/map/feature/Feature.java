@@ -103,24 +103,16 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public Feature(VectorLayer layer) {
+		this((org.geomajas.layer.feature.Feature) null, layer);
+	}
+
+	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
 		this.layer = layer;
+		attributes = new HashMap<String, Attribute>();
 		this.geometry = null;
 		this.styleId = null;
 		this.labelPosition = null;
 		this.clipped = false;
-		attributes = new HashMap<String, Attribute>();
-		if (layer != null) {
-			// Create empty attributes:
-			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-				attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
-			}
-		}
-		setUpdatable(true);
-		setDeletable(true);
-	}
-
-	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
-		this(layer);
 		if (null != dto) {
 			attributes = dto.getAttributes();
 			attributesLoaded = true;
@@ -130,6 +122,15 @@ public class Feature implements Paintable, Cloneable {
 			crs = dto.getCrs();
 			setUpdatable(dto.isUpdatable());
 			setDeletable(dto.isDeletable());
+		} else {
+			if (layer != null) {
+				// Create empty attributes:
+				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+					attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
+				}
+			}
+			setUpdatable(true);
+			setDeletable(true);
 		}
 	}
 
