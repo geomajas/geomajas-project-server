@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Geotools feature model. Should be able to use any geotools data source.
+ * GeoTools feature model. Should be able to use any GeoTools data source.
  *
  * @author Jan De Moerloose
  * @author Pieter De Graef
