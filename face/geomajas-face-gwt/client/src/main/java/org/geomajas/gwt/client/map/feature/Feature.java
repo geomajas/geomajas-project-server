@@ -168,7 +168,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof BooleanAttribute)) {
 			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((BooleanAttribute) attribute).setValue(value);
 	}
@@ -177,7 +177,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof CurrencyAttribute)) {
 			throw new IllegalStateException("Cannot set currency value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((CurrencyAttribute) attribute).setValue(value);
 	}
@@ -186,7 +186,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof DateAttribute)) {
 			throw new IllegalStateException("Cannot set date value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((DateAttribute) attribute).setValue(value);
 	}
@@ -195,7 +195,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof DoubleAttribute)) {
 			throw new IllegalStateException("Cannot set double value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((DoubleAttribute) attribute).setValue(value);
 	}
@@ -204,7 +204,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof FloatAttribute)) {
 			throw new IllegalStateException("Cannot set float value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((FloatAttribute) attribute).setValue(value);
 	}
@@ -213,7 +213,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof ImageUrlAttribute)) {
 			throw new IllegalStateException("Cannot set imageUrl value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((ImageUrlAttribute) attribute).setValue(value);
 	}
@@ -222,7 +222,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof IntegerAttribute)) {
 			throw new IllegalStateException("Cannot set integer value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((IntegerAttribute) attribute).setValue(value);
 	}
@@ -231,7 +231,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof LongAttribute)) {
 			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((LongAttribute) attribute).setValue(value);
 	}
@@ -240,7 +240,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof ShortAttribute)) {
 			throw new IllegalStateException("Cannot set short value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((ShortAttribute) attribute).setValue(value);
 	}
@@ -249,7 +249,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof StringAttribute)) {
 			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((StringAttribute) attribute).setValue(value);
 	}
@@ -258,7 +258,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof UrlAttribute)) {
 			throw new IllegalStateException("Cannot set url value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((UrlAttribute) attribute).setValue(value);
 	}
@@ -267,7 +267,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof ManyToOneAttribute)) {
 			throw new IllegalStateException("Cannot set manyToOne value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		((ManyToOneAttribute) attribute).setValue(value);
 	}
@@ -276,7 +276,7 @@ public class Feature implements Paintable, Cloneable {
 		Attribute attribute = getAndCreateAttributes().get(name);
 		if (!(attribute instanceof OneToManyAttribute)) {
 			throw new IllegalStateException("Cannot set oneToMany value on attribute with different type, " +
-					attribute.getClass().getSimpleName() + " setting value " + value);
+					attribute.getClass().getName() + " setting value " + value);
 		}
 		OneToManyAttribute oneToMany = (OneToManyAttribute) attribute;
 		if (oneToMany.getValue() == null) {
