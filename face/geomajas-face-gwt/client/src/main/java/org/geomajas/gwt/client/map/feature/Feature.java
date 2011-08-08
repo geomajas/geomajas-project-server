@@ -64,6 +64,9 @@ public class Feature implements Paintable, Cloneable {
 	/** Map of this feature's attributes. */
 	private Map<String, Attribute> attributes;
 
+	/** Are the attributes lazy Loaded yet? */
+	private boolean attributesLoaded;
+	
 	/** This feature's geometry. */
 	private Geometry geometry;
 
@@ -105,6 +108,13 @@ public class Feature implements Paintable, Cloneable {
 		this.styleId = null;
 		this.labelPosition = null;
 		this.clipped = false;
+		attributes = new HashMap<String, Attribute>();
+		if (layer != null) {
+			// Create empty attributes:
+			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+				attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
+			}
+		}
 		setUpdatable(true);
 		setDeletable(true);
 	}
@@ -113,6 +123,7 @@ public class Feature implements Paintable, Cloneable {
 		this(layer);
 		if (null != dto) {
 			attributes = dto.getAttributes();
+			attributesLoaded = true;
 			id = dto.getId();
 			geometry = GeometryConverter.toGwt(dto.getGeometry());
 			styleId = dto.getStyleId();
@@ -153,6 +164,7 @@ public class Feature implements Paintable, Cloneable {
 		feature.crs = crs;
 		feature.deletable = deletable;
 		feature.updatable = updatable;
+		feature.attributesLoaded = attributesLoaded;
 		return feature;
 	}
 
@@ -165,7 +177,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 	
 	public void setBooleanAttribute(String name, Boolean value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof BooleanAttribute)) {
 			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -174,7 +186,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setCurrencyAttribute(String name, String value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof CurrencyAttribute)) {
 			throw new IllegalStateException("Cannot set currency value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -183,7 +195,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setDateAttribute(String name, Date value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof DateAttribute)) {
 			throw new IllegalStateException("Cannot set date value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -192,7 +204,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setDoubleAttribute(String name, Double value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof DoubleAttribute)) {
 			throw new IllegalStateException("Cannot set double value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -201,7 +213,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setFloatAttribute(String name, Float value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof FloatAttribute)) {
 			throw new IllegalStateException("Cannot set float value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -210,7 +222,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setImageUrlAttribute(String name, String value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof ImageUrlAttribute)) {
 			throw new IllegalStateException("Cannot set imageUrl value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -219,7 +231,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setIntegerAttribute(String name, Integer value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof IntegerAttribute)) {
 			throw new IllegalStateException("Cannot set integer value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -228,7 +240,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setLongAttribute(String name, Long value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof LongAttribute)) {
 			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -237,7 +249,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setShortAttribute(String name, Short value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof ShortAttribute)) {
 			throw new IllegalStateException("Cannot set short value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -246,7 +258,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setStringAttribute(String name, String value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof StringAttribute)) {
 			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -255,7 +267,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setUrlAttribute(String name, String value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof UrlAttribute)) {
 			throw new IllegalStateException("Cannot set url value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -264,7 +276,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void setManyToOneAttribute(String name, AssociationValue value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof ManyToOneAttribute)) {
 			throw new IllegalStateException("Cannot set manyToOne value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -273,7 +285,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public void addOneToManyValue(String name, AssociationValue value) {
-		Attribute attribute = getAndCreateAttributes().get(name);
+		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof OneToManyAttribute)) {
 			throw new IllegalStateException("Cannot set oneToMany value on attribute with different type, " +
 					attribute.getClass().getName() + " setting value " + value);
@@ -332,26 +344,6 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	/**
-	 * Get the attributes map, create if it is not loaded yet.
-	 * 
-	 * @return attributes map
-	 * @throws IllegalStateException
-	 *             attributes not present because of lazy loading
-	 */
-	private Map<String, Attribute> getAndCreateAttributes()  {
-		if (null == attributes) {
-			attributes = new HashMap<String, Attribute>();
-			if (layer != null) {
-				// Create empty attributes:
-				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-					attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
-				}
-			}
-		}
-		return attributes;
-	}
-
-	/**
 	 * Set the attributes map.
 	 * 
 	 * @param attributes
@@ -359,6 +351,7 @@ public class Feature implements Paintable, Cloneable {
 	 */
 	public void setAttributes(Map<String, Attribute> attributes) {
 		this.attributes = attributes;
+		this.attributesLoaded = true;
 	}
 
 	/**
@@ -367,7 +360,7 @@ public class Feature implements Paintable, Cloneable {
 	 * @return true when attributes are available
 	 */
 	public boolean isAttributesLoaded() {
-		return attributes != null;
+		return attributesLoaded;
 	}
 
 	/**
