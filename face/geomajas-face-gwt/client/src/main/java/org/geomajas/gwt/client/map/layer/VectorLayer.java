@@ -75,6 +75,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	 * 
 	 * @param mapModel
 	 *            The model of layers and features behind a map. This layer will be a part of this model.
+	 * @param layerInfo client layer descriptor
 	 */
 	public VectorLayer(MapModel mapModel, ClientVectorLayerInfo layerInfo) {
 		super(mapModel, layerInfo);
@@ -104,11 +105,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 				// When deleting a tile, delete selected features from the paint !
 				public void execute(final VectorTile tile) {
-					for (Feature feature : tile.getPartialFeatures()) {
-						if (feature != null && feature.isSelected()) {
-							visitor.remove(feature, group);
-						}
-					}
 					visitor.remove(tile, group);
 				}
 			};
@@ -193,7 +189,11 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		}
 	}
 
-	/** Returns a set of selected features in this layer by their ID's. */
+	/**
+	 * Returns a set of selected features in this layer by their ID's.
+	 *
+	 * @return selected features
+	 */
 	public Set<String> getSelectedFeatures() {
 		return selectedFeatures.keySet();
 	}

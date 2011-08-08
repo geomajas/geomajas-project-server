@@ -95,21 +95,23 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public Feature(String id, VectorLayer layer) {
-		this((org.geomajas.layer.feature.Feature) null, layer);
+		this(layer);
 		this.id = id;
 	}
 
 	public Feature(VectorLayer layer) {
-		this((org.geomajas.layer.feature.Feature) null, layer);
-	}
-
-	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
 		this.layer = layer;
 		this.geometry = null;
 		this.styleId = null;
 		this.labelPosition = null;
 		this.clipped = false;
-		if (dto != null) {
+		setUpdatable(true);
+		setDeletable(true);
+	}
+
+	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
+		this(layer);
+		if (null != dto) {
 			attributes = dto.getAttributes();
 			id = dto.getId();
 			geometry = GeometryConverter.toGwt(dto.getGeometry());
@@ -117,9 +119,6 @@ public class Feature implements Paintable, Cloneable {
 			crs = dto.getCrs();
 			setUpdatable(dto.isUpdatable());
 			setDeletable(dto.isDeletable());
-		} else {
-			setUpdatable(true);
-			setDeletable(true);
 		}
 	}
 
@@ -166,55 +165,120 @@ public class Feature implements Paintable, Cloneable {
 	}
 	
 	public void setBooleanAttribute(String name, Boolean value) {
-		((BooleanAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof BooleanAttribute)) {
+			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((BooleanAttribute) attribute).setValue(value);
 	}
 
 	public void setCurrencyAttribute(String name, String value) {
-		((CurrencyAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof CurrencyAttribute)) {
+			throw new IllegalStateException("Cannot set currency value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((CurrencyAttribute) attribute).setValue(value);
 	}
 
 	public void setDateAttribute(String name, Date value) {
-		((DateAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof DateAttribute)) {
+			throw new IllegalStateException("Cannot set date value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((DateAttribute) attribute).setValue(value);
 	}
 
 	public void setDoubleAttribute(String name, Double value) {
-		((DoubleAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof DoubleAttribute)) {
+			throw new IllegalStateException("Cannot set double value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((DoubleAttribute) attribute).setValue(value);
 	}
 
 	public void setFloatAttribute(String name, Float value) {
-		((FloatAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof FloatAttribute)) {
+			throw new IllegalStateException("Cannot set float value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((FloatAttribute) attribute).setValue(value);
 	}
 
 	public void setImageUrlAttribute(String name, String value) {
-		((ImageUrlAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof ImageUrlAttribute)) {
+			throw new IllegalStateException("Cannot set imageUrl value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((ImageUrlAttribute) attribute).setValue(value);
 	}
 
 	public void setIntegerAttribute(String name, Integer value) {
-		((IntegerAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof IntegerAttribute)) {
+			throw new IllegalStateException("Cannot set integer value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((IntegerAttribute) attribute).setValue(value);
 	}
 
 	public void setLongAttribute(String name, Long value) {
-		((LongAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof LongAttribute)) {
+			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((LongAttribute) attribute).setValue(value);
 	}
 
 	public void setShortAttribute(String name, Short value) {
-		((ShortAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof ShortAttribute)) {
+			throw new IllegalStateException("Cannot set short value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((ShortAttribute) attribute).setValue(value);
 	}
 
 	public void setStringAttribute(String name, String value) {
-		((StringAttribute) getAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof StringAttribute)) {
+			throw new IllegalStateException("Cannot set boolean value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((StringAttribute) attribute).setValue(value);
 	}
 
 	public void setUrlAttribute(String name, String value) {
-		((UrlAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof UrlAttribute)) {
+			throw new IllegalStateException("Cannot set url value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((UrlAttribute) attribute).setValue(value);
 	}
 
 	public void setManyToOneAttribute(String name, AssociationValue value) {
-		((ManyToOneAttribute) getAndCreateAttributes().get(name)).setValue(value);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof ManyToOneAttribute)) {
+			throw new IllegalStateException("Cannot set manyToOne value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		((ManyToOneAttribute) attribute).setValue(value);
 	}
 
 	public void addOneToManyValue(String name, AssociationValue value) {
-		OneToManyAttribute oneToMany = (OneToManyAttribute) getAttributes().get(name);
+		Attribute attribute = getAndCreateAttributes().get(name);
+		if (!(attribute instanceof OneToManyAttribute)) {
+			throw new IllegalStateException("Cannot set oneToMany value on attribute with different type, " +
+					attribute.getClass().getSimpleName() + " setting value " + value);
+		}
+		OneToManyAttribute oneToMany = (OneToManyAttribute) attribute;
 		if (oneToMany.getValue() == null) {
 			oneToMany.setValue(new ArrayList<AssociationValue>());
 		}
@@ -277,11 +341,11 @@ public class Feature implements Paintable, Cloneable {
 	private Map<String, Attribute> getAndCreateAttributes()  {
 		if (null == attributes) {
 			attributes = new HashMap<String, Attribute>();
-		}
-		if (layer != null) {
-			// Create empty attributes:
-			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-				attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
+			if (layer != null) {
+				// Create empty attributes:
+				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+					attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
+				}
 			}
 		}
 		return attributes;
