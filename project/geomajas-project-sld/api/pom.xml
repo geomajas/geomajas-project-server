@@ -1,0 +1,193 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas.project</groupId>
+		<artifactId>geomajas-project-sld-all</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas.project</groupId>
+	<artifactId>geomajas-project-sld-api</artifactId>
+	<packaging>jar</packaging>
+	<name>Geomajas SLD API</name>
+	<description>Geomajas SLD API</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-api-annotation</artifactId>
+		</dependency>
+
+		<!--  the following libraries should be added by dependent projects that use the jibx binding  -->
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-run</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-extras</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geotools.xsd</groupId>
+			<artifactId>gt-xsd-sld</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jibx</groupId>
+				<artifactId>maven-jibx-plugin</artifactId>
+				<version>1.2.3</version>
+				<executions>
+					<execution>
+						<id>bind</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>bind</goal>
+						</goals>
+					</execution>
+				</executions>
+				
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>core</artifactId>
+						<version>3.1.0</version>
+					</dependency>
+				</dependencies>
+				
+<!--  uncommented code generation part of pom because of eclipse dependencies-->
+<!-- 	
+			<dependencies>
+					<dependency>
+						<groupId>org.geomajas</groupId>
+						<artifactId>jibx-tools</artifactId>
+						<version>1.0.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.equinox</groupId>
+						<artifactId>preferences</artifactId>
+						<version>3.6.0</version>
+						<scope>system</scope>
+						<systemPath>${eclipse.home}/plugins/org.eclipse.equinox.preferences_3.3.0.v20100503.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.equinox</groupId>
+						<artifactId>common</artifactId>
+						<version>3.6.0</version>
+						<scope>system</scope>
+						<systemPath>${eclipse.home}/plugins/org.eclipse.equinox.common_3.6.0.v20100503.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.core</groupId>
+						<artifactId>contenttype</artifactId>
+						<version>3.4.1</version>
+						<scope>system</scope>
+						<systemPath>${eclipse.home}/plugins/org.eclipse.core.contenttype_3.4.100.v20100505-1235.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.core</groupId>
+						<artifactId>jobs</artifactId>
+						<version>3.5.1</version>
+						<scope>system</scope>
+						<systemPath>${eclipse.home}/plugins/org.eclipse.core.jobs_3.5.1.R36x_v20100824.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.core</groupId>
+						<artifactId>resources</artifactId>
+						<version>3.6.0</version>
+						<scope>system</scope>
+						<systemPath>${eclipse.home}/plugins/org.eclipse.core.resources_3.6.0.R36x_v20100825-0600.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.core</groupId>
+						<artifactId>runtime</artifactId>
+						<version>3.6.0</version>
+						<scope>system</scope>
+						<systemPath>${eclipse.home}/plugins/org.eclipse.core.runtime_3.6.0.v20100505.jar</systemPath>
+					</dependency>
+				</dependencies>
+ -->			</plugin>
+		</plugins>
+	</build>
+
+<!-- 	<properties>
+		<eclipse.home>C:\Program Files\Eclipse</eclipse.home>
+	</properties>
+	<profiles>
+		<profile>
+			<id>generate-classes</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jibx</groupId>
+						<artifactId>maven-jibx-plugin</artifactId>
+						<version>1.2.3</version>
+						<executions>
+							<execution>
+								<id>generate</id>
+								<goals>
+									<goal>schema-codegen</goal>
+								</goals>
+								<configuration>
+									<directory>src/main/jibx</directory>
+									<includes>
+										<include>StyledLayerDescriptor-geoserver.xsd</include>
+									</includes>
+									<customizations>
+										<customization>src/main/config/custom-sld.xml</customization>
+									</customizations>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	-->
+
+
+</project>
