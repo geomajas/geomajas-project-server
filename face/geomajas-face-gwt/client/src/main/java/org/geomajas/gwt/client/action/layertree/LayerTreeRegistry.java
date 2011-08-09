@@ -17,6 +17,7 @@ import java.util.Map;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.toolbar.ToolId;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
@@ -32,31 +33,25 @@ public final class LayerTreeRegistry {
 
 	static {
 		REGISTRY = new HashMap<String, ToolCreator>();
-		REGISTRY.put("LayerVisibleTool", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_LAYER_VISIBLE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new LayerVisibleModalAction();
 			}
 		});
-		REGISTRY.put("LayerSnappingTool", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_LAYER_SNAPPING, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return null;
 			}
 		});
-		REGISTRY.put("LayerLabeledTool", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_LAYER_LABELLED, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new LayerLabeledModalAction();
 			}
 		});
-		REGISTRY.put("ShowTableAction", new ToolCreator() {
-
-			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return null;
-			}
-		});
-		REGISTRY.put("LayerRefreshAction", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_LAYER_REFRESH, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new LayerRefreshAction(mapWidget);

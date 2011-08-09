@@ -22,6 +22,9 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public interface ToolId {
 
+	/** Tool id for toolbar separator */
+	String TOOL_SEPARATOR = "ToolbarSeparator";
+
 	/** Tool id for the edit mode toolbar button. */
 	String TOOL_EDIT = "EditMode";
 
@@ -66,5 +69,17 @@ public interface ToolId {
 
 	/** Tool id for the scale selection toolbar widget. */
 	String TOOL_SCALE_SELECT = "ScaleSelect";
+
+	/** Tool id for the layer tree xxx toolbar button. */
+	String TOOL_LAYER_VISIBLE = "LayerVisibleTool";
+
+	/** Tool id for the layer tree xxx toolbar button. */
+	String TOOL_LAYER_SNAPPING = "LayerSnappingTool";
+
+	/** Tool id for the layer tree xxx toolbar button. */
+	String TOOL_LAYER_LABELLED = "LayerLabeledTool";
+
+	/** Tool id for the layer tree xxx toolbar button. */
+	String TOOL_LAYER_REFRESH = "LayerRefreshAction";
 
 }

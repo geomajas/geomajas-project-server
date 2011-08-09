@@ -14,12 +14,17 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smartgwt.client.util.SC;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.ToolbarCanvas;
+import org.geomajas.gwt.client.action.ToolbarModalAction;
+import org.geomajas.gwt.client.action.ToolbarWidget;
 import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeRegistry;
@@ -56,6 +61,7 @@ import com.smartgwt.client.widgets.tree.events.FolderClickEvent;
 import com.smartgwt.client.widgets.tree.events.FolderClickHandler;
 import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
+import org.geomajas.gwt.client.util.Log;
 
 /**
  * The LayerTree shows a tree resembling the available layers for the map Several actions can be executed on the layers
@@ -68,7 +74,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 @Api
 public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHandler, LayerSelectionHandler {
 
-	protected static final int LAYERTREEBUTTON_SIZE = 24;
+	protected static final int LAYER_TREE_BUTTON_SIZE = 24;
 
 	private final HTMLFlow htmlSelectedLayer = new HTMLFlow(I18nProvider.getLayerTree().activeLayer(
 			I18nProvider.getLayerTree().none()));
@@ -234,12 +240,21 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		if (layerTreeInfo != null) {
 			for (ClientToolInfo tool : layerTreeInfo.getTools()) {
 				String id = tool.getId();
-				IButton button = null;
+				Canvas button = null;
 				ToolbarBaseAction action = LayerTreeRegistry.getToolbarAction(id, mapWidget);
-				if (action instanceof LayerTreeAction) {
+				if (action instanceof ToolbarWidget) {
+					toolStrip.addMember(((ToolbarWidget) action).getWidget());
+				} else if (action instanceof ToolbarCanvas) {
+					button = ((ToolbarCanvas) action).getCanvas();
+				} else if (action instanceof LayerTreeAction) {
 					button = new LayerTreeButton(this, (LayerTreeAction) action);
 				} else if (action instanceof LayerTreeModalAction) {
 					button = new LayerTreeModalButton(this, (LayerTreeModalAction) action);
+				} else {
+					String msg = "LayerTree tool with id " + id + " unknown.";
+					Log.logError(msg); // console log
+					GWT.log(msg); // server side GWT run/debug log (development mode only)
+					SC.warn(msg); // in your face
 				}
 				if (button != null) {
 					toolStrip.addMember(button);
@@ -396,9 +411,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		public LayerTreeButton(final LayerTree tree, final LayerTreeAction action) {
 			this.tree = tree;
 			this.action = action;
-			setWidth(LAYERTREEBUTTON_SIZE);
-			setHeight(LAYERTREEBUTTON_SIZE);
-			setIconSize(LAYERTREEBUTTON_SIZE - 8);
+			setWidth(LAYER_TREE_BUTTON_SIZE);
+			setHeight(LAYER_TREE_BUTTON_SIZE);
+			setIconSize(LAYER_TREE_BUTTON_SIZE - 8);
 			setIcon(action.getIcon());
 			setTooltip(action.getTooltip());
 			setActionType(SelectionType.BUTTON);
@@ -454,9 +469,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		public LayerTreeModalButton(final LayerTree tree, final LayerTreeModalAction modalAction) {
 			this.tree = tree;
 			this.modalAction = modalAction;
-			setWidth(LayerTree.LAYERTREEBUTTON_SIZE);
-			setHeight(LayerTree.LAYERTREEBUTTON_SIZE);
-			setIconSize(LayerTree.LAYERTREEBUTTON_SIZE - 8);
+			setWidth(LayerTree.LAYER_TREE_BUTTON_SIZE);
+			setHeight(LayerTree.LAYER_TREE_BUTTON_SIZE);
+			setIconSize(LayerTree.LAYER_TREE_BUTTON_SIZE - 8);
 			setIcon(modalAction.getDeselectedIcon());
 			setActionType(SelectionType.CHECKBOX);
 			setTooltip(modalAction.getDeselectedTooltip());

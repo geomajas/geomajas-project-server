@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.action.ToolbarWidget;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
+import org.geomajas.gwt.client.action.toolbar.ToolId;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
@@ -67,8 +68,6 @@ public class Toolbar extends ToolStrip {
 	 */
 	@Api
 	public static final int BUTTON_SIZE_BIG = 32;
-
-	public static final String TOOLBAR_SEPARATOR = "ToolbarSeparator";
 
 	private static final String CONTROLLER_RADIO_GROUP = "graphicsController";
 
@@ -117,7 +116,7 @@ public class Toolbar extends ToolStrip {
 			if (toolbarInfo != null) {
 				for (ClientToolInfo tool : toolbarInfo.getTools()) {
 					String id = tool.getId();
-					if (TOOLBAR_SEPARATOR.equals(id)) {
+					if (ToolId.TOOL_SEPARATOR.equals(id)) {
 						addToolbarSeparator();
 					} else {
 						ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
