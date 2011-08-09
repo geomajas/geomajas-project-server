@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-howto">
@@ -142,6 +141,33 @@
     context.</para>
   </section>
 
+  <section>
+    <title>How to declaratively put the geocoder widget in the toolbar</title>
+
+    <para>You can use the following tool configuration to add tools in the
+    toolbar.</para>
+
+    <example>
+      <title>Tool configuration</title>
+
+      <programlisting>&lt;bean name="Geocoder" class="org.geomajas.configuration.client.ClientToolInfo"&gt;
+  &lt;property name="parameters"&gt;
+    &lt;list&gt;
+      &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+        &lt;property name="name" value="name" /&gt;
+        &lt;property name="value" value="geocoder" /&gt;
+      &lt;/bean&gt;
+      &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+        &lt;property name="name" value="title" /&gt;
+        &lt;property name="value" value="Location" /&gt;
+      &lt;/bean&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>
+    </example>
+  </section>
+
   <section id="chawidget">
     <title>How to change behaviour of the GeocoderWidget</title>
 
@@ -153,8 +179,8 @@
     to the location which was found or selected. The default implementation is
     displayed in listing <xref linkend="DefaultSelectLocation" />.</para>
 
-	  <xi:include href="listing/DefaultSelectLocation.xml"
-				  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <xi:include href="listing/DefaultSelectLocation.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The SelectAlternativeHandler is used when the location was
     considered ambiguous and several alternatives are returned. The default
@@ -163,9 +189,7 @@
     GeocoderAlternativesGrid which lists the options and invokes the
     SelectLocationHandler on the geocoder when the user selects a line.</para>
 
-	  <xi:include href="listing/DefaultSelectAlternative.xml"
-				  xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-
+    <xi:include href="listing/DefaultSelectAlternative.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 </chapter>

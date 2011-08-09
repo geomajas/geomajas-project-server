@@ -16,4 +16,6 @@
 	<source path="client" />
 	<source path="command/dto" />
 
+	<entry-point class='org.geomajas.plugin.geocoder.client.GeocoderEntryPoint'/>
+
 </module>

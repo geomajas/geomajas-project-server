@@ -137,7 +137,7 @@
 	</profiles>
 
 	<properties>
-		<geocoder-backend-version>1.8.0</geocoder-backend-version>
-		<geocoder-gwt-version>1.8.0</geocoder-gwt-version>
+		<geocoder-backend-version>1.10.0-SNAPSHOT</geocoder-backend-version>
+		<geocoder-gwt-version>1.10.0-SNAPSHOT</geocoder-gwt-version>
 	</properties>
 </project>
