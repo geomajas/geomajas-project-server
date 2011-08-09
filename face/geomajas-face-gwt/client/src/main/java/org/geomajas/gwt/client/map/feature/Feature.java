@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -62,7 +62,7 @@ public class Feature implements Paintable, Cloneable {
 	private VectorLayer layer;
 
 	/** Map of this feature's attributes. */
-	private Map<String, Attribute> attributes;
+	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
 	/** Are the attributes lazy Loaded yet? */
 	private boolean attributesLoaded;
@@ -108,7 +108,6 @@ public class Feature implements Paintable, Cloneable {
 
 	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
 		this.layer = layer;
-		attributes = new HashMap<String, Attribute>();
 		this.geometry = null;
 		this.styleId = null;
 		this.labelPosition = null;
@@ -338,9 +337,6 @@ public class Feature implements Paintable, Cloneable {
 	 *             attributes not present because of lazy loading
 	 */
 	public Map<String, Attribute> getAttributes() throws IllegalStateException {
-		if (null == attributes) {
-			throw new IllegalStateException("Attributes not available, use LazyLoader.");
-		}
 		return attributes;
 	}
 
@@ -351,6 +347,9 @@ public class Feature implements Paintable, Cloneable {
 	 *            attributes map
 	 */
 	public void setAttributes(Map<String, Attribute> attributes) {
+		if (null == attributes) {
+			throw new IllegalArgumentException("Attributes should be not-null.");
+		}
 		this.attributes = attributes;
 		this.attributesLoaded = true;
 	}
