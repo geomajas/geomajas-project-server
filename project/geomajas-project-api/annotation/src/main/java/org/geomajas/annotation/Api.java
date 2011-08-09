@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,
-		ElementType.ANNOTATION_TYPE })
+		ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 @Documented
 @Api
 public @interface Api {
