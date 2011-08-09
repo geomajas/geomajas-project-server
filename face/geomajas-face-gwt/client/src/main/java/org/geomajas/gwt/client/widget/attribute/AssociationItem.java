@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 import com.smartgwt.client.widgets.form.fields.FormItem;
 

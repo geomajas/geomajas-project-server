@@ -13,7 +13,7 @@ package org.geomajas.gwt.client.util;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;

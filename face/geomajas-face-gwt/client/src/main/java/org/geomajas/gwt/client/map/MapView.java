@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;

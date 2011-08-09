@@ -11,8 +11,8 @@
 
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.global.FutureApi;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.google.gwt.user.client.ui.Widget;

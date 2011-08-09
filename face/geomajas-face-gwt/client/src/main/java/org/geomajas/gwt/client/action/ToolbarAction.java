@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.action;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import com.smartgwt.client.widgets.events.ClickHandler;
 

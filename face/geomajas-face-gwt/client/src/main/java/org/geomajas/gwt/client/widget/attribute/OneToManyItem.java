@@ -11,7 +11,7 @@
 package org.geomajas.gwt.client.widget.attribute;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 
 import com.smartgwt.client.widgets.form.fields.FormItem;

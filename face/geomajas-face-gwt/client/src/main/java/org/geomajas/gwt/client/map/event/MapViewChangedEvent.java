@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.spatial.Bbox;
 

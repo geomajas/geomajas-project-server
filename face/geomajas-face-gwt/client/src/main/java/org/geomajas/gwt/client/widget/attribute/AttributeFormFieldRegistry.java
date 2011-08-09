@@ -35,7 +35,7 @@ import org.geomajas.configuration.validation.PastConstraintInfo;
 import org.geomajas.configuration.validation.PatternConstraintInfo;
 import org.geomajas.configuration.validation.SizeConstraintInfo;
 import org.geomajas.configuration.validation.ValidatorInfo;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.smartgwt.client.data.DataSourceField;

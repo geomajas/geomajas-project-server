@@ -12,7 +12,7 @@
 package org.geomajas.gwt.client.command;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.GeomajasServiceAsync;

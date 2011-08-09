@@ -10,10 +10,10 @@
  */
 package org.geomajas.gwt.client.command.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.event.shared.EventHandler;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Interface for event handlers that catch {@link DispatchStartedEvent}s.

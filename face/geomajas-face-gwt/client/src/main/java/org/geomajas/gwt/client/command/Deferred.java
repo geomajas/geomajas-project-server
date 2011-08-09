@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.smartgwt.client.core.Function;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to

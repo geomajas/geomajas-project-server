@@ -20,7 +20,7 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;

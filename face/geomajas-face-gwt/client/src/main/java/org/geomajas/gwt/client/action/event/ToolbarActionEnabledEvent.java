@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.action.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 
 import com.google.gwt.event.shared.GwtEvent;

@@ -13,7 +13,7 @@ package org.geomajas.gwt.client.widget;
 
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.OverviewMapController;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;

@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.action.layertree;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.map.layer.Layer;
 

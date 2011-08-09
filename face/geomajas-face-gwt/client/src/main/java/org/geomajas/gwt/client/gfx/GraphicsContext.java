@@ -13,7 +13,7 @@ package org.geomajas.gwt.client.gfx;
 
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;

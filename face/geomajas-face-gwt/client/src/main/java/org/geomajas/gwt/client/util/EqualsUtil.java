@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt.client.util;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Utility for equality checking.

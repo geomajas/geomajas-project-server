@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.controller;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;

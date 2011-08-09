@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.gfx;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 
 /**

@@ -12,7 +12,7 @@
 package org.geomajas.gwt.client;
 
 import com.google.gwt.i18n.client.LocaleInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import java.util.HashMap;
 import java.util.Map;

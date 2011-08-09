@@ -12,7 +12,7 @@
 package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 
 import com.smartgwt.client.types.Alignment;

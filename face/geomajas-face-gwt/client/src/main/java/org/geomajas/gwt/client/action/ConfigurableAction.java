@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt.client.action;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Marker which indicates that a toolbar action is configurable, and process the configuration.

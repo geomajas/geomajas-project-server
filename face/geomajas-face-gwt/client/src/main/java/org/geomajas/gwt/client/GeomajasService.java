@@ -12,7 +12,7 @@
 package org.geomajas.gwt.client;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.GwtCommand;
 
 import com.google.gwt.user.client.rpc.RemoteService;

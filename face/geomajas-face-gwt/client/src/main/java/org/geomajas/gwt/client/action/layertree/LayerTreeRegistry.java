@@ -14,7 +14,7 @@ package org.geomajas.gwt.client.action.layertree;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.widget.MapWidget;

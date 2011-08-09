@@ -12,7 +12,7 @@
 package org.geomajas.gwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;

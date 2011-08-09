@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt.client.command.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.event.shared.GwtEvent;
 

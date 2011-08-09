@@ -14,7 +14,7 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.menu.SaveEditingAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;

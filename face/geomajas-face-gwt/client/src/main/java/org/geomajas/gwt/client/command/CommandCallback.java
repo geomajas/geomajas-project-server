@@ -11,8 +11,8 @@
 package org.geomajas.gwt.client.command;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.

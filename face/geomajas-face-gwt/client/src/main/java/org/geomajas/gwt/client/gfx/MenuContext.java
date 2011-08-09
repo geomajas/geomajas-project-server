@@ -12,7 +12,7 @@
 package org.geomajas.gwt.client.gfx;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Adds support for right-mouse context menu.

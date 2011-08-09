@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt.client.controller.listener;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * <p>

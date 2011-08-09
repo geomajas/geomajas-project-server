@@ -18,7 +18,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;

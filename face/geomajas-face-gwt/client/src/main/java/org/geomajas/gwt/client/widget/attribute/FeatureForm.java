@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 

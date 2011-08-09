@@ -14,7 +14,7 @@ package org.geomajas.gwt.client.widget;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 

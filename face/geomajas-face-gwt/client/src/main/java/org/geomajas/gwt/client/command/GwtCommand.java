@@ -14,7 +14,7 @@ package org.geomajas.gwt.client.command;
 import java.io.Serializable;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * <p>

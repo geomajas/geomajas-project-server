@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt.client.map.event;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.event.shared.HandlerRegistration;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Classes triggering the {@link LayerLabeledEvent} or the {@link LayerShownEvent} should implement this

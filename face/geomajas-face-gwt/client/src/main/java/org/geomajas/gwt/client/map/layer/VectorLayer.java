@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
