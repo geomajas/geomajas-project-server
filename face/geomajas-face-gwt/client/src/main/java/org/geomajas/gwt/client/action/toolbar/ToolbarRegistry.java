@@ -33,88 +33,94 @@ public final class ToolbarRegistry {
 	static {
 		REGISTRY = new HashMap<String, ToolCreator>();
 		// Please keep registrations in alphabetical order
-		REGISTRY.put("EditMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_EDIT, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new EditingModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("FeatureInfoMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_FEATURE_INFO, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new FeatureInfoModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("MeasureDistanceMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_MEASURE_DISTANCE_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new MeasureModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("PanMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_PAN_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new PanModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("PanToSelection", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_PAN_TO_SELECTION, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new PanToSelectionAction(mapWidget);
 			}
 		});
-		REGISTRY.put("SelectionMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_SELECTION_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new SelectionModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomIn", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_IN, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomInAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomInMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_IN_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomInModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomNext", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_NEXT, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomNextAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomOut", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_OUT, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomOutAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomOutMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_OUT_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomOutModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomPrevious", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_PREVIOUS, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomPreviousAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomToRectangleMode", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_TO_RECTANGLE_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomToRectangleModalAction(mapWidget);
 			}
 		});
-		REGISTRY.put("ZoomToSelection", new ToolCreator() {
+		REGISTRY.put(ToolId.TOOL_ZOOM_TO_SELECTION, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomToSelectionAction(mapWidget);
+			}
+		});
+		REGISTRY.put(ToolId.TOOL_SCALE_SELECT, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new ScaleSelectAction(mapWidget);
 			}
 		});
 	}
