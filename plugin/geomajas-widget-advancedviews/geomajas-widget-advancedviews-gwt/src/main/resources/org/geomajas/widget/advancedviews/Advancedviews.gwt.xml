@@ -17,7 +17,5 @@
 	<source path="component/dto" />
 	<source path="command/dto" />
 	
-	<extend-property name="locale" values="nl" />
-	
   	<entry-point class='org.geomajas.widget.advancedviews.client.Advancedview'/>
 </module>

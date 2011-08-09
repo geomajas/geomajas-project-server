@@ -13,11 +13,8 @@
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
 	<inherits name="org.geomajas.layer.wms.GeomajasWms"/>
 	
-	
 	<source path="client" />
 	<source path="configuration/client" />
 
-	<extend-property name="locale" values="nl" />
-	
   	<entry-point class='org.geomajas.widget.featureinfo.client.FeatureInfoEntryPoint'/>
 </module>

@@ -21,8 +21,6 @@
 	<source path="configuration/client" />
 	<source path="component/dto" />
 	-->
-	
-	<extend-property name="locale" values="nl" />
-	
+
   	<entry-point class='org.geomajas.widget.searchandfilter.client.SearchAndFilter'/>
 </module>
