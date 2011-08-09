@@ -11,18 +11,19 @@
 
 package org.geomajas.gwt.client.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.util.SC;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
-import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.ToolbarCanvas;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
+import org.geomajas.gwt.client.action.ToolbarWidget;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
@@ -30,7 +31,6 @@ import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -38,6 +38,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripSeparator;
+import org.geomajas.gwt.client.util.Log;
 
 /**
  * A toolbar that supports two types of buttons:
@@ -53,8 +54,18 @@ import com.smartgwt.client.widgets.toolbar.ToolStripSeparator;
 @Api
 public class Toolbar extends ToolStrip {
 
+	/**
+	 * Button size for small buttons.
+	 * @since 1.10.0
+	 */
+	@Api
 	public static final int BUTTON_SIZE_SMALL = 24;
 
+	/**
+	 * Button size for large buttons.
+	 * @since 1.10.0
+	 */
+	@Api
 	public static final int BUTTON_SIZE_BIG = 32;
 
 	public static final String TOOLBAR_SEPARATOR = "ToolbarSeparator";
@@ -65,17 +76,21 @@ public class Toolbar extends ToolStrip {
 
 	private int buttonSize;
 
-	private List<HandlerRegistration> toolbarActionHandlers;
-
 	private boolean initialized;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Create a toolbar for the given {@link MapWidget}.
+	 *
+	 * @param mapWidget map widget for toolbar
+	 * @since 1.10.0
+	 */
+	@Api
 	public Toolbar(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
-		toolbarActionHandlers = new ArrayList<HandlerRegistration>();
 		setButtonSize(BUTTON_SIZE_SMALL);
 		setPadding(2);
 		setWidth100();
@@ -94,7 +109,7 @@ public class Toolbar extends ToolStrip {
 	/**
 	 * Initialize this widget.
 	 * 
-	 * @param mapInfo
+	 * @param mapInfo map info
 	 */
 	public void initialize(ClientMapInfo mapInfo) {
 		if (!initialized) {
@@ -111,11 +126,19 @@ public class Toolbar extends ToolStrip {
 								((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
 							}
 						}
-						if (action instanceof ToolbarModalAction) {
+						if (action instanceof ToolbarWidget) {
+							addMember(((ToolbarWidget) action).getWidget());
+						} else if (action instanceof ToolbarCanvas) {
+							addMember(((ToolbarCanvas) action).getCanvas());
+						} else if (action instanceof ToolbarModalAction) {
 							addModalButton((ToolbarModalAction) action);
-						}
-						if (action instanceof ToolbarAction) {
+						} else if (action instanceof ToolbarAction) {
 							addActionButton((ToolbarAction) action);
+						} else {
+							String msg = "Tool with id " + id + " unknown.";
+							Log.logError(msg); // console log
+							GWT.log(msg); // server side GWT run/debug log (development mode only)
+							SC.warn(msg); // in your face
 						}
 					}
 				}
@@ -149,7 +172,7 @@ public class Toolbar extends ToolStrip {
 			spacer.setWidth(2);
 			addMember(spacer);
 		}
-		toolbarActionHandlers.add(action.addToolbarActionHandler(new ToolbarActionHandler() {
+		action.addToolbarActionHandler(new ToolbarActionHandler() {
 
 			public void onToolbarActionDisabled(ToolbarActionDisabledEvent event) {
 				button.setDisabled(true);
@@ -158,7 +181,7 @@ public class Toolbar extends ToolStrip {
 			public void onToolbarActionEnabled(ToolbarActionEnabledEvent event) {
 				button.setDisabled(false);
 			}
-		}));
+		});
 		addMember(button);
 	}
 
@@ -168,7 +191,7 @@ public class Toolbar extends ToolStrip {
 	 * given <code>ModalAction</code>.
 	 * 
 	 * @param modalAction
-	 *            The actual action that determines what should happend when the button is selected or deselected.
+	 *            The actual action that determines what should happen when the button is selected or deselected.
 	 */
 	public void addModalButton(final ToolbarModalAction modalAction) {
 		final IButton button = new IButton();
@@ -198,7 +221,7 @@ public class Toolbar extends ToolStrip {
 			spacer.setWidth(2);
 			addMember(spacer);
 		}
-		toolbarActionHandlers.add(modalAction.addToolbarActionHandler(new ToolbarActionHandler() {
+		modalAction.addToolbarActionHandler(new ToolbarActionHandler() {
 
 			public void onToolbarActionDisabled(ToolbarActionDisabledEvent event) {
 				button.setDisabled(true);
@@ -207,7 +230,7 @@ public class Toolbar extends ToolStrip {
 			public void onToolbarActionEnabled(ToolbarActionEnabledEvent event) {
 				button.setDisabled(false);
 			}
-		}));
+		});
 		addMember(button);
 	}
 
@@ -225,6 +248,8 @@ public class Toolbar extends ToolStrip {
 	/**
 	 * Get the size of the buttons. Set this before the toolbar is drawn, because afterwards, it can't be changed
 	 * anymore.
+	 *
+	 * @return button size
 	 */
 	public int getButtonSize() {
 		return buttonSize;

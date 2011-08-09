@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-gwt-widgets">
@@ -326,6 +325,11 @@
         <listitem>
           <para><emphasis>ZoomNext</emphasis>: go forward again, cancelling a
           click on <emphasis>ZoomPrevious</emphasis>.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>ScaleSelect</emphasis>: scale select drop-down
+          box.</para>
         </listitem>
       </itemizedlist></para>
 
