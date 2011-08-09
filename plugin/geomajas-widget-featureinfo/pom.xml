@@ -137,7 +137,7 @@
 
 	<properties>
 		<geomajas-widget-featureinfo-backend-version>1.9.0</geomajas-widget-featureinfo-backend-version>
-		<geomajas-widget-featureinfo-gwt-version>1.9.0-SNAPSHOT</geomajas-widget-featureinfo-gwt-version>
+		<geomajas-widget-featureinfo-gwt-version>1.9.0</geomajas-widget-featureinfo-gwt-version>
 		<geomajas-layer-wms-version>1.8.0</geomajas-layer-wms-version>
 	</properties>
 </project>
