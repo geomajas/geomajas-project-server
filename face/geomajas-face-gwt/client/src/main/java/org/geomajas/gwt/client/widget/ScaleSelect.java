@@ -17,9 +17,11 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 
@@ -90,6 +92,23 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		setWidth100();
 		setHeight100();
 		init();
+	}
+
+	/**
+	 * Constructs a ScaleSelect that acts on the specified map view.
+	 *
+	 * @param mapWidget map widget
+	 * @since 1.10.0
+	 */
+	@Api
+	public ScaleSelect(final MapWidget mapWidget) {
+		this(mapWidget.getMapModel().getMapView(), mapWidget.getPixelPerUnit());
+		mapWidget.getMapModel().addMapModelHandler(new MapModelHandler() {
+			public void onMapModelChange(MapModelEvent event) {
+				pixelLength = mapWidget.getPixelPerUnit();
+				updateResolutions();
+			}
+		});
 	}
 
 	// -------------------------------------------------------------------------
@@ -200,13 +219,13 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	protected String scaleToString(double scale) {
 		if (scale > 0 && scale < 1.0) {
-			int denom = (int) Math.round(1. / scale);
-			return "1 : " + DENOMINATOR_FORMAT.format(denom);
+			int denominator = (int) Math.round(1. / scale);
+			return "1 : " + DENOMINATOR_FORMAT.format(denominator);
 		} else if (scale >= 1.0) {
-			int denom = (int) Math.round(scale);
-			return DENOMINATOR_FORMAT.format(denom) + " : 1";
+			int denominator = (int) Math.round(scale);
+			return DENOMINATOR_FORMAT.format(denominator) + " : 1";
 		} else {
-			return "negative scale not allowed";
+			return "Negative or zero scale not allowed, did you use a correct pixel length?";
 		}
 	}
 
@@ -244,6 +263,11 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		scaleItem.addChangedHandler(this);
 		form.setFields(scaleItem);
 		addChild(form);
+		updateResolutions();
+		mapView.addMapViewChangedHandler(this);
+	}
+
+	private void updateResolutions() {
 		if (mapView.getResolutions() != null) {
 			List<Double> scales = new ArrayList<Double>();
 			for (Double resolution : mapView.getResolutions()) {
@@ -251,7 +275,6 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 			}
 			setScales(scales.toArray(new Double[scales.size()]));
 		}
-		mapView.addMapViewChangedHandler(this);
 	}
 
 	private void reorderValues() {
