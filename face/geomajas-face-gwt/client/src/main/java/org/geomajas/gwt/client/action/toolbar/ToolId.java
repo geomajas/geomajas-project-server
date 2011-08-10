@@ -22,7 +22,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public interface ToolId {
 
-	/** Tool id for toolbar separator */
+	/** Tool id for toolbar separator. */
 	String TOOL_SEPARATOR = "ToolbarSeparator";
 
 	/** Tool id for the edit mode toolbar button. */
