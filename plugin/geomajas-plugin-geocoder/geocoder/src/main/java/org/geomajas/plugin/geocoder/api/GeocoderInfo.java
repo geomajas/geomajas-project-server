@@ -11,9 +11,10 @@
 
 package org.geomajas.plugin.geocoder.api;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class GeocoderInfo {
+public class GeocoderInfo implements Serializable {
 
 	private static final long serialVersionUID = 100L;
 

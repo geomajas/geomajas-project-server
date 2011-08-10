@@ -12,11 +12,11 @@
 package org.geomajas.plugin.geocoder.command.geocoder;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Crs;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.geocoder.api.CombineResultService;
@@ -69,10 +69,12 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 	@Autowired
 	private GeoService geoService;
 
+	/** {@inheritDoc} */
 	public GetLocationForStringResponse getEmptyCommandResponse() {
 		return new GetLocationForStringResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GetLocationForStringRequest request, GetLocationForStringResponse response) throws Exception {
 		String location = request.getLocation();
 		if (null == location) {
@@ -80,7 +82,7 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		}
 		String crsString = request.getCrs();
 		if (null == crsString) {
-			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "location");
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		Locale locale = null;
 		if (null != request.getLocale()) {

@@ -11,9 +11,9 @@
 
 package org.geomajas.plugin.geocoder.api;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

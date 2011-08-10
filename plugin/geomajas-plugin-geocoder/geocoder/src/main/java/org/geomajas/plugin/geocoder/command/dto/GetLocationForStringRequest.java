@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.geocoder.command.dto;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.Api;
 
 /**
  * Request object for getting location information for a string.

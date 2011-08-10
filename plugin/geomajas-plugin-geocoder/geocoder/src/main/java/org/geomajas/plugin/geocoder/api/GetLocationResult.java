@@ -13,9 +13,10 @@ package org.geomajas.plugin.geocoder.api;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientUserDataInfo;
-import org.geomajas.global.Api;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**

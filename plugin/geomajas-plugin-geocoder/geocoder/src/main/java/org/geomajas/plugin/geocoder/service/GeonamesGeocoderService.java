@@ -12,7 +12,7 @@
 package org.geomajas.plugin.geocoder.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.geocoder.api.GeocoderService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;

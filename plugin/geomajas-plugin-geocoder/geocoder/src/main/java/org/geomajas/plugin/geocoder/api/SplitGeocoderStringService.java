@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.geocoder.api;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 import java.util.List;
 

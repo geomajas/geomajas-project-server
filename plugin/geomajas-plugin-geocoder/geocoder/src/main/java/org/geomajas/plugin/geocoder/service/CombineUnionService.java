@@ -12,7 +12,7 @@
 package org.geomajas.plugin.geocoder.service;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.geocoder.api.CombineResultService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
 import org.springframework.stereotype.Component;

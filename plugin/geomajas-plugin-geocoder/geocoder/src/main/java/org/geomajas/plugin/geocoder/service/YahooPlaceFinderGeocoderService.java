@@ -13,7 +13,8 @@ package org.geomajas.plugin.geocoder.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Crs;
 import org.geomajas.plugin.geocoder.api.GeocoderService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
 import org.geomajas.service.DtoConverterService;
@@ -61,7 +62,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	@Autowired
 	private SplitCommaReverseService splitCommaReverseService;
 
-	private CoordinateReferenceSystem crs;
+	private Crs crs;
 
 	private String name = "YahooPlaceFinder";
 
@@ -82,6 +83,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getName() {
 		return name;
 	}
@@ -129,10 +131,12 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		this.skipAppIdCheck = skipAppIdCheck;
 	}
 
+	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
+	 /** {@inheritDoc} */
 	public GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale locale) {
 		if (null == appId) {
 			return null;

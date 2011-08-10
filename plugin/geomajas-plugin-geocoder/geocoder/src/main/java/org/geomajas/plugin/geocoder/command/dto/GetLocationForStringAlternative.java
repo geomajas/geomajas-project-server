@@ -11,11 +11,11 @@
 
 package org.geomajas.plugin.geocoder.command.dto;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
 
 /**
  * Alternative location for a string when search was ambiguous.

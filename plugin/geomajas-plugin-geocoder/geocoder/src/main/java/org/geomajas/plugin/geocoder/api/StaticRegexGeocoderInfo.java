@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.geocoder.api;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.geocoder.service;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.geocoder.api.SplitGeocoderStringService;
 import org.springframework.stereotype.Component;
 
