@@ -46,7 +46,7 @@ public class SampleTree extends TreeGrid {
 		TreeGridField field = new TreeGridField();
 		field.setCanFilter(true);
 		field.setName("name");
-		field.setTitle("<b>" + I18nProvider.getSampleMessages().sampleTitle("1.8.0") + "</b>");
+		field.setTitle("<b>" + I18nProvider.getSampleMessages().sampleTitle("1.9.0") + "</b>");
 		setFields(field);
 
 		Tree tree = new Tree();

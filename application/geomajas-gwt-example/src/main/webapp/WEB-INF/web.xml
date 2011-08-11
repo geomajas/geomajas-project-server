@@ -30,7 +30,9 @@
 			<!-- security -->
 			WEB-INF/security.xml
 
+			<!--
 			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
+			-->
 			<!--
 			classpath:org/geomajas/spring/testRecorder.xml
 			-->
