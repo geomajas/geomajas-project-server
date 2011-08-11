@@ -14,10 +14,10 @@ package org.geomajas.plugin.geocoder.service;
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Crs;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.plugin.geocoder.api.GeocoderService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
-import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.xml.transform.Result;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -43,16 +42,12 @@ import java.util.Locale;
 @Api
 public class TypeCoordinateService implements GeocoderService {
 
+	private static final String CRS_PREFIX = "crs:";
+
 	private final Logger log = LoggerFactory.getLogger(TypeCoordinateService.class);
 
 	@Autowired
 	private GeoService geoService;
-
-	@Autowired
-	private DtoConverterService dtoConverterService;
-
-	@Autowired
-	private SplitCommaReverseService splitCommaReverseService;
 
 	private String defaultCrs = "EPSG:4326";
 	private Crs crs;
@@ -106,16 +101,30 @@ public class TypeCoordinateService implements GeocoderService {
 				try {
 					Double x = format.parse(parts[0]).doubleValue();
 					Double y = format.parse(parts[1]).doubleValue();
+					Coordinate coordinate = new Coordinate(x, y);
 
-					result.setCoordinate(new Coordinate(x, y));
+					String canonicalCrs = "";
+					if (parts.length > 2) {
+						String crsPart = parts[2];
+						if (crsPart.startsWith(CRS_PREFIX)) {
+							crsPart = crsPart.substring(CRS_PREFIX.length());
+							try {
+								coordinate = geoService.transform(coordinate, crsPart, defaultCrs);
+								canonicalCrs = " " + CRS_PREFIX + crsPart;
+							} catch (GeomajasException le) {
+								log.debug("Crs conversion from " + crsPart + " tot " + defaultCrs + " failed, " +
+										le.getMessage());
+							}
+						}
+					}
+					result.setCoordinate(coordinate);
 					List<String> canonical = new ArrayList<String>();
-					canonical.add(parts[0] + " " + parts[1]);
+					canonical.add(parts[0] + " " + parts[1] + canonicalCrs);
 					result.setCanonicalStrings(canonical);
 					return new GetLocationResult[] { result };
 				} catch (ParseException pe) {
 					log.debug("Could not parse " + location.get(0) + ", " + pe.getMessage());
 				}
-
 			}
 		}
 		return new GetLocationResult[0];

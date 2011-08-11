@@ -16,7 +16,6 @@ import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**

@@ -40,9 +40,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="pointDisplayHeight" value="100" />
 	</bean>
 
+	<!-- @extract-start TypeCoordinate, TypeCoordinateService configuration -->
 	<bean name="tcs" class="org.geomajas.plugin.geocoder.service.TypeCoordinateService">
 		<property name="defaultCrs" value="EPSG:900913" />
 	</bean>
+	<!-- @extract-end -->
 
 </beans>
 

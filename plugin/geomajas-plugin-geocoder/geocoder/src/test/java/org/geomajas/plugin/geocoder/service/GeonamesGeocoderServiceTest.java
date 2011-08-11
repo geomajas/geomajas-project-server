@@ -80,6 +80,6 @@ public class GeonamesGeocoderServiceTest {
 		list.add("blablabla");
 		result = geocoder.getLocation(list, 50, null);
 		Assert.assertNotNull("Geonames may be down", result);
-		Assert.assertTrue(null == result || 0 == result.length);
+		Assert.assertTrue(0 == result.length);
 	}
 }

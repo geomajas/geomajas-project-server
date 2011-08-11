@@ -256,9 +256,9 @@
     <title>Yahoo! PlaceFinder geocoder service configuration</title>
 
     <para>This uses the Yahoo! PlaceFinder service (<ulink
-    url="???">http://developer.yahoo.com/geo/placefinder/</ulink>). When using
-    this geocoder, you need a appid from Yahoo! and you have to make sure you
-    comply with their terms of use.</para>
+    url="http://developer.yahoo.com/geo/placefinder/">http://developer.yahoo.com/geo/placefinder/</ulink>).
+    When using this geocoder, you need a appid from Yahoo! and you have to
+    make sure you comply with their terms of use.</para>
 
     <para>To use the geocoder, just create the bean and set the appId.</para>
 
@@ -289,5 +289,22 @@
           (though obviously no results can be found).</para>
         </listitem>
       </itemizedlist></para>
+  </section>
+
+  <section>
+    <title>Type coordinate geocoder service configuration</title>
+
+    <para>This is a simplistic geocoder which allows the user to directly type
+    the coordinate. Configuration is very simply, you just have to supply the
+    default CRS used for the coordinates (if not specified, this defaults to
+    EPSG:4326.</para>
+
+    <xi:include href="listing/TypeCoordinate.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The service accepts input strings like "4.77397 51.05125" to jump to
+    a coordinate, using a space is used as separator between the ordinates.
+    This uses the defaultCrs as configured. You can also explicitly specify
+    the CRS by using a string like "4.77397 51.05125 crs:EPSG:4326".</para>
   </section>
 </chapter>

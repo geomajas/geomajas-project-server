@@ -55,4 +55,58 @@ public class TypeCoordinateServiceTest {
 		Assert.assertNull(result[0].getEnvelope());
 	}
 
+	@Test
+	public void testGeocoderSkipExtra() {
+		List<String> list = new ArrayList<String>();
+		GetLocationResult[] result;
+
+		list.clear();
+		list.add("4.77397  51.05125 bla ");
+		result = geocoder.getLocation(list, 50, null);
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1,result.length);
+		Assert.assertNotNull(result[0].getCoordinate());
+		Assert.assertEquals(4.77397, result[0].getCoordinate().x, DELTA);
+		Assert.assertEquals(51.05125, result[0].getCoordinate().y, DELTA);
+		Assert.assertEquals(1, result[0].getCanonicalStrings().size());
+		Assert.assertEquals("4.77397 51.05125", result[0].getCanonicalStrings().get(0));
+		Assert.assertNull(result[0].getEnvelope());
+	}
+
+	@Test
+	public void testGeocoderTransform() {
+		List<String> list = new ArrayList<String>();
+		GetLocationResult[] result;
+
+		list.clear();
+		list.add("4.77397 \t 51.05125  crs:EPSG:4326");
+		result = geocoder.getLocation(list, 50, null);
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1,result.length);
+		Assert.assertNotNull(result[0].getCoordinate());
+		Assert.assertEquals(531435.9094623642, result[0].getCoordinate().x, DELTA);
+		Assert.assertEquals(6630364.2661175905, result[0].getCoordinate().y, DELTA);
+		Assert.assertEquals(1, result[0].getCanonicalStrings().size());
+		Assert.assertEquals("4.77397 51.05125 crs:EPSG:4326", result[0].getCanonicalStrings().get(0));
+		Assert.assertNull(result[0].getEnvelope());
+	}
+
+	@Test
+	public void testGeocoderInvalidTransform() {
+		List<String> list = new ArrayList<String>();
+		GetLocationResult[] result;
+
+		list.clear();
+		list.add("4.77397  51.05125  crs:bla");
+		result = geocoder.getLocation(list, 50, null);
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1,result.length);
+		Assert.assertNotNull(result[0].getCoordinate());
+		Assert.assertEquals(4.77397, result[0].getCoordinate().x, DELTA);
+		Assert.assertEquals(51.05125, result[0].getCoordinate().y, DELTA);
+		Assert.assertEquals(1, result[0].getCanonicalStrings().size());
+		Assert.assertEquals("4.77397 51.05125", result[0].getCanonicalStrings().get(0));
+		Assert.assertNull(result[0].getEnvelope());
+	}
+
 }

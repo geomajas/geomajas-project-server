@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
@@ -55,13 +54,13 @@
     separator and removes whitespace between the parts.</para>
 
     <para>After that, each of the configured GeocoderServices is given a
-    chance to convert the strings into a locations. If the geocoder service
-    returns one location, it is considered <emphasis>matched</emphasis>. When
-    it returns multiple locations, the search term is considered ambiguous and
-    the locations are considered as alternatives. You can configure whether
-    all geocoders need to be given a chance to find the location or whether it
-    should stop as soon as one service has returned at least one
-    location.</para>
+    chance to convert the strings into a list of locations. If the geocoder
+    service returns one location, it is considered
+    <emphasis>matched</emphasis>. When it returns multiple locations, the
+    search term is considered ambiguous and the locations are considered as
+    alternatives. You can configure whether all geocoders need to be given a
+    chance to find the location or whether it should stop as soon as one
+    service has returned at least one location.</para>
 
     <para>The geocoder services can return either an area (bounding box) or a
     point. When they returned a point, this is extended to an area centered

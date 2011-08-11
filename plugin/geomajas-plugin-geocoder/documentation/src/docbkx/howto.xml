@@ -77,8 +77,8 @@
         <listitem>
           <para><emphasis>coordinate</emphasis>: the coordinate for the
           location. This field is only used when no envelope was given. The
-          coordinate will be converted to the requested CRS and an area with
-          will be built around this point (according to command
+          coordinate will be converted to the requested CRS and an area will
+          be built around this point (according to command
           configuration).</para>
         </listitem>
 
