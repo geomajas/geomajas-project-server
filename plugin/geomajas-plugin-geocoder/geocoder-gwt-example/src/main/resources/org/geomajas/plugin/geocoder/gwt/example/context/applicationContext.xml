@@ -41,6 +41,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="pointDisplayHeight" value="1000" />
 		<property name="geocoderServices">
 			<list>
+				<bean class="org.geomajas.plugin.geocoder.service.TypeCoordinateService" >
+					<property name="defaultCrs" value="EPSG:4326"/>
+				</bean>
 				<!-- @extract-skip-start -->
 				<bean name="ypf" class="org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService">
 					<property name="appIdProperty" value="YahooAppId" />

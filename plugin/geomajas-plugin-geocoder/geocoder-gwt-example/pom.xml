@@ -67,13 +67,6 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
-			<version>${project.version}</version>
-			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -112,7 +105,6 @@
 	</dependencies>
 
 	<build>
-		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -126,28 +118,28 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
-				<configuration>
-					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-					<warSourceDirectory>war</warSourceDirectory>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.1.0-1</version>
 				<configuration>
-					<inplace>true</inplace>
-					<module>org.geomajas.plugin.geocoder.gwt.example.GeomajasEntryPoint</module>
-					<runTarget>index.html</runTarget>
-					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<module>org.geomajas.plugin.geocoder.gwt.example.GeomajasEntryPoint</module>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>clean</goal>
+							<goal>compile</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
@@ -156,33 +148,15 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.20</version>
 				<configuration>
-         			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
 					<webAppConfig>
 						<contextPath>/</contextPath>
+						<baseResource implementation="org.mortbay.resource.ResourceCollection">
+							<!-- need both the webbapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+						</baseResource>
 					</webAppConfig>
 					<reload>manual</reload>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<id>remove-build-files</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/org.geomajas.plugin.geocoder.gwt.example.GeomajasEntryPoint" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
@@ -195,30 +169,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>defaultGWT</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>compile</phase>
-								<goals>
-									<goal>clean</goal>
-									<goal>compile</goal>
-									<goal>test</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
@@ -233,7 +183,16 @@
 					<artifactId>geomajas-jetty-runner</artifactId>
 					<version>1.0.0</version>
 				</dependency>
+				<dependency>
+					<groupId>com.google.gwt</groupId>
+					<artifactId>gwt-dev</artifactId>
+					<version>${gwt-version}</version>
+					<scope>provided</scope>
+				</dependency>
 			</dependencies>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 		<profile>
 			<id>skipGwt</id>
@@ -242,16 +201,92 @@
 					<name>skipGwt</name>
 				</property>
 			</activation>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>selenium-tests</id>
+			<activation>
+				<property>
+					<name>!skipSelenium</name>
+				</property>
+			</activation>
 			<build>
 				<plugins>
+					<!-- Run the application using "mvn jetty:run" -->
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
+						<version>6.1.20</version>
+						<configuration>
+							<webAppConfig>
+								<contextPath>/</contextPath>
+							</webAppConfig>
+							<reload>manual</reload>
+							<stopPort>9966</stopPort>
+							<stopKey>stop-jetty</stopKey>
+						</configuration>
 						<executions>
 							<execution>
+								<id>start-jetty</id>
+								<phase>pre-integration-test</phase>
 								<goals>
-									<goal>clean</goal>
+									<goal>run</goal>
 								</goals>
+								<configuration>
+									<daemon>true</daemon>
+									<scanIntervalSeconds>5</scanIntervalSeconds>
+									<connectors>
+										<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+											<port>9080</port>
+											<maxIdleTime>60000</maxIdleTime>
+										</connector>
+									</connectors>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-jetty</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.7.2</version>
+						<executions>
+							<execution>
+								<phase>integration-test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<includes>
+										<include>**/*TestInt.java</include>
+										<include>**/IntTest*.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>selenium-maven-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start-server</goal>
+								</goals>
+								<configuration>
+									<background>true</background>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

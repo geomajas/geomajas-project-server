@@ -15,6 +15,8 @@
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>
 	<inherits name="org.geomajas.plugin.geocoder.Geocoder"/>
+	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
+
 	<!-- @extract-skip-start -->
 
 	<!-- add required languages
