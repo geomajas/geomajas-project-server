@@ -10,6 +10,7 @@
  */
 package org.geomajas.gwt.client.map.layer;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.MapModel;
@@ -26,7 +27,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 /**
  * <p>
  * An abstract layer implements common behavior and data for all layers. Since we will want to paint layers on the map,
- * it must implement the <code>Paintable</code> interface.
+ * it must implement the {@link org.geomajas.gwt.client.gfx.Paintable} interface.
  * </p>
  * 
  * @param <T>
@@ -35,7 +36,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @author Frank Wynants
+ * @since 1.10.0
  */
+@Api
 public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<T>, HasLayerChangedHandlers {
 
 	private T layerInfo;
@@ -93,7 +96,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * Return the layer information.
 	 * 
 	 * @return the layer info
+	 * @since 1.10.0
 	 */
+	@Api
 	public T getLayerInfo() {
 		return layerInfo;
 	}
@@ -124,12 +129,8 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		double scale = mapModel.getMapView().getCurrentScale();
 		if (visible) {
 			boolean oldShowing = showing;
-			if (scale >= layerInfo.getMinimumScale().getPixelPerUnit()
-					&& scale <= layerInfo.getMaximumScale().getPixelPerUnit()) {
-				showing = true;
-			} else {
-				showing = false;
-			}
+			showing = scale >= layerInfo.getMinimumScale().getPixelPerUnit()
+					&& scale <= layerInfo.getMaximumScale().getPixelPerUnit();
 			if (oldShowing != showing && fireEvents) {
 				handlerManager.fireEvent(new LayerShownEvent(this, true));
 			}
@@ -146,7 +147,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * Return this layer's client ID as defined in the configuration.
 	 * 
 	 * @return id of the client layer
+	 * @since 1.10.0
 	 */
+	@Api
 	public String getId() {
 		return layerInfo.getId();
 	}
@@ -155,7 +158,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * Return this layer's server ID as defined in the configuration.
 	 * 
 	 * @return id of the server layer
+	 * @since 1.10.0
 	 */
+	@Api
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
 	}
@@ -173,6 +178,13 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		return mapModel;
 	}
 
+	/**
+	 * Get the layer label as defined in the configuration.
+	 *
+	 * @return layer label
+	 * @since 1.10.0
+	 */
+	@Api
 	public String getLabel() {
 		return layerInfo.getLabel();
 	}
@@ -182,7 +194,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * the labels are currently showing on the map!).
 	 * 
 	 * @return true when labels are enable
+	 * @since 1.10.0
 	 */
+	@Api
 	public boolean isLabelsVisible() {
 		return labeled;
 	}
@@ -191,7 +205,9 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 * Returns true if labels are currently showing (eg. isShowing == true && isLabelsVisible == true).
 	 *
 	 * @return true when labels are enabled and the layer is showing
+	 * @since 1.10.0
 	 */
+	@Api
 	public boolean isLabelsShowing() {
 		return isLabelsVisible() && isShowing();
 	}
@@ -226,16 +242,24 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	}
 
 	/**
-	 * @return the visible
+	 * Return whether the layer is visible.
+	 *
+	 * @return true when layer is visible
+	 * @since 1.10.0
 	 */
+	@Api
 	public boolean isVisible() {
 		return visible;
 	}
 
 	/**
+	 * Make the layer visible or invisible.
+	 *
 	 * @param visible
 	 *            the visible to set
+	 * @since 1.10.0
 	 */
+	@Api
 	public void setVisible(boolean visible) {
 		if (visible != this.visible) {
 			this.visible = visible;
