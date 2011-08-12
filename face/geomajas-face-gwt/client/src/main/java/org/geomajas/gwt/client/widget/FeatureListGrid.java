@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.global.GeomajasConstant;
@@ -204,46 +205,57 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 
 	private void copyToRecord(Feature feature, ListGridRecord record) {
 		for (AttributeInfo attributeInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+			String attributeName = attributeInfo.getName();
 			if (allAttributesDisplayed || attributeInfo.isIdentifying()) {
-				Attribute<?> attr = feature.getAttributes().get(attributeInfo.getName());
+				Attribute<?> attr = feature.getAttributes().get(attributeName);
 				if (attr.isPrimitive()) {
 					Object value = attr.getValue();
 					if (value != null) {
 						if (value instanceof Boolean) {
-							record.setAttribute(attributeInfo.getName(), (Boolean) value); // "false" != false
+							record.setAttribute(attributeName, (Boolean) value); // "false" != false
 						} else {
-							record.setAttribute(attributeInfo.getName(), value.toString());
+							record.setAttribute(attributeName, value.toString());
 						}
 					} else {
-						record.setAttribute(attributeInfo.getName(), "");
+						record.setAttribute(attributeName, "");
 					}
 				} else {
 					AssociationAttributeInfo associationAttributeInfo = (AssociationAttributeInfo) attributeInfo;
-					String displayName = associationAttributeInfo.getFeature().getDisplayAttributeName();
+					FeatureInfo featureInfo = associationAttributeInfo.getFeature();
+					String displayName = featureInfo.getDisplayAttributeName();
 					if (displayName == null) {
-						displayName = associationAttributeInfo.getFeature().getAttributes().get(0).getName();
+						displayName = featureInfo.getAttributes().get(0).getName();
 					}
 					switch (associationAttributeInfo.getType()) {
 						case MANY_TO_ONE:
 							ManyToOneAttribute manyToOneAttribute = (ManyToOneAttribute) attr;
-							Object value = manyToOneAttribute.getValue().getAllAttributes().get(displayName).getValue();
-							if (value != null) {
-								record.setAttribute(attributeInfo.getName(), value.toString());
-							} else {
-								record.setAttribute(attributeInfo.getName(), "");
+							AssociationValue attributeValue = manyToOneAttribute.getValue();
+							if (null != attributeValue) {
+								Object value = attributeValue.getAllAttributes().get(displayName).getValue();
+								if (value != null) {
+									record.setAttribute(attributeName, value.toString());
+								} else {
+									record.setAttribute(attributeName, "");
+								}
 							}
 							break;
 						case ONE_TO_MANY:
 							OneToManyAttribute oneToManyAttribute = (OneToManyAttribute) attr;
 							List<String> values = new ArrayList<String>();
-							for (AssociationValue assoc : oneToManyAttribute.getValue()) {
-								Object o = assoc.getAllAttributes().get(displayName).getValue();
-								if (o != null) {
-									values.add(o.toString());
+							List<AssociationValue> associationValues = oneToManyAttribute.getValue();
+							if (null != associationValues) {
+								for (AssociationValue assoc : associationValues) {
+									Object o = assoc.getAllAttributes().get(displayName).getValue();
+									if (o != null) {
+										values.add(o.toString());
+									}
 								}
+								record.setAttribute(attributeName, StringUtil.join(values, ","));
 							}
-							record.setAttribute(attributeInfo.getName(), StringUtil.join(values, ","));
 							break;
+						default:
+							throw new IllegalStateException("Unknown switch value " +
+									associationAttributeInfo.getType());
 					}
 				}
 			}
@@ -328,6 +340,8 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 * Determines whether or not editing the attributes is allowed. When double clicking a row in the table, a
 	 * {@link FeatureAttributeWindow} will appear, containing the feature of the row upon which was double clicked. This
 	 * setting determines if the window allows editing or not.
+	 *
+	 * @return true when editing attributes is allowed
 	 */
 	public boolean isEditingEnabled() {
 		return editingEnabled;
@@ -348,7 +362,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	/**
 	 * Is the grid currently displaying all attributes, instead of only the 'identifying' ones?
 	 * 
-	 * @return
+	 * @return true when all attributes are displayed
 	 */
 	public boolean isAllAttributesDisplayed() {
 		return allAttributesDisplayed;
@@ -358,7 +372,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 * Determine if all attributes of a layer should be shown, or only the 'identifying' ones. Changing this value will
 	 * not change the layout of the grid. So set this value in advance.
 	 * 
-	 * @param allAttributesDisplayed
+	 * @param allAttributesDisplayed should all attributes be displayed
 	 */
 	public void setAllAttributesDisplayed(boolean allAttributesDisplayed) {
 		this.allAttributesDisplayed = allAttributesDisplayed;
@@ -368,7 +382,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	/**
 	 * Return whether or not the feature's ID's are currently drawn in the grid.
 	 * 
-	 * @return
+	 * @return true when feature id included in table
 	 */
 	public boolean isIdInTable() {
 		return idInTable;
@@ -377,6 +391,8 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	/**
 	 * Determine whether or not the feature's ID should be displayed in the grid. This method will immediately update
 	 * the entire grid.
+	 *
+	 * @param idInTable should id be included in table
 	 */
 	public void setIdInTable(boolean idInTable) {
 		this.idInTable = idInTable;
@@ -415,9 +431,9 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		// If selected, find the correct row and deselect:
 		if (selected) {
 			ListGridRecord[] records = this.getRecords();
-			for (int i = 0; i < records.length; i++) {
-				if (records[i].getAttribute(FEATURE_ID_FIELD_NAME).equals(feature.getId())) {
-					deselectRecord(records[i]);
+			for (ListGridRecord record : records) {
+				if (record.getAttribute(FEATURE_ID_FIELD_NAME).equals(feature.getId())) {
+					deselectRecord(record);
 					break;
 				}
 			}
@@ -708,7 +724,6 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 * Applies the feature transaction to the grid.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	private class ApplyFeatureTransactionToGrid implements FeatureTransactionHandler {
 
@@ -722,7 +737,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 					updates.add(record);
 				}
 			}
-			setData(updates.toArray(new Record[0]));
+			setData(updates.toArray(new Record[updates.size()]));
 		}
 
 	}
