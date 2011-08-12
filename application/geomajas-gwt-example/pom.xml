@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-example</artifactId>
-	<version>1.9.0-SNAPSHOT</version>
+	<version>1.9.0</version>
 	<packaging>war</packaging>
 	<name>Geomajas gwt application example</name>
 	<description>Geomajas gwt application example</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-example</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-example</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/application/geomajas-gwt-example</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-example-1.9.0</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-example-1.9.0</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-gwt-example-1.9.0</url>
 	</scm>
 
 	<developers>
