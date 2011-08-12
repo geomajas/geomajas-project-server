@@ -87,7 +87,8 @@ public class SearchController implements SearchRequestHandler {
 	}
 
 	/**
-	 * For instance {@link org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid}.
+	 * Add a search handler, for example an instance of
+	 * {@link org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid}.
 	 * 
 	 * @param handler handler to process the search results
 	 */

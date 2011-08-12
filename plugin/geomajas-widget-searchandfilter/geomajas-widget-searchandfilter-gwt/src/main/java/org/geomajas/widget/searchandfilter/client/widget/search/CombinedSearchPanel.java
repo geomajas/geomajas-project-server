@@ -142,7 +142,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		searchForm.setFields(selectSearch);
 		addBar.addMember(searchForm);
 
-		wrapper.setOverflow(Overflow.AUTO);
+		wrapper.setOverflow(Overflow.VISIBLE);
 		wrapper.addMember(searchItems);
 		wrapper.addMember(addBar);
 		layout.addMember(wrapper);
@@ -202,8 +202,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	
 	@Override
 	public VectorLayer getFeatureSearchVectorLayer() {
-		// TODO Auto-generated method stub
-		return null;
+		return null; // not relevant for combined search
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.global.Api;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
@@ -236,6 +237,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	/** {@inheritDoc} */
 	public void reset() {
+		searchHandlers.clear(); // need to remove showForSearch() handler
+		saveHandlers.clear(); // need to remove showForSave() handler
 		searchPanel.reset();
 	}
 
@@ -322,9 +325,9 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	}
 
 	private void setVectorLayerOnWhichSearchIsHappeningVisible() {
-		if (searchPanel.getFeatureSearchVectorLayer() != null 
-				&& !searchPanel.getFeatureSearchVectorLayer().isVisible()) {
-			searchPanel.getFeatureSearchVectorLayer().setVisible(true);
+		VectorLayer vectorLayer = searchPanel.getFeatureSearchVectorLayer();
+		if (null != vectorLayer && !vectorLayer.isVisible()) {
+			vectorLayer.setVisible(true);
 		}
 	}
 
