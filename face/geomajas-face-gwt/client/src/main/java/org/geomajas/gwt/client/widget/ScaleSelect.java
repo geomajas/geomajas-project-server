@@ -55,10 +55,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	private ComboBoxItem scaleItem;
 
-	// bidirectional lookup
-	private LinkedHashMap<Double, String> scaleToValue;
-
-	private LinkedHashMap<String, Double> valueToScale;
+	private LinkedHashMap<String, Double> valueToScale = new LinkedHashMap<String, Double>();
 
 	// pixel length in map units
 	private double pixelLength;
@@ -129,18 +126,6 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		Arrays.sort(scales, Collections.reverseOrder());
 		scaleList = Arrays.asList(scales);
 
-		// Create lookup maps (stores user friendly representation):
-		scaleToValue = new LinkedHashMap<Double, String>();
-		valueToScale = new LinkedHashMap<String, Double>();
-		for (Double scale : scales) {
-			// Eliminate duplicates and null:
-			if (scale != null && !scaleToValue.containsKey(scale)) {
-				String value = ScaleConverter.scaleToString(scale, precision, significantDigits);
-				scaleToValue.put(scale, value);
-				valueToScale.put(value, scale);
-			}
-		}
-
 		// Apply the requested scales on the SelectItem. Make sure only available scales are added:
 		updateScaleList();
 	}
@@ -158,6 +143,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	@Api
 	public void setPrecision(int precision) {
 		this.precision = precision;
+		updateScaleList();
 	}
 
 	/**
@@ -174,6 +160,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	@Api
 	public void setSignificantDigits(int significantDigits) {
 		this.significantDigits = significantDigits;
+		updateScaleList();
 	}
 
 	/**
@@ -253,11 +240,21 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 * Given the full list of desirable resolutions, which ones are actually available? Update the widget accordingly.
 	 */
 	private void updateScaleList() {
+		// Update lookup map (stores user friendly representation):
+		valueToScale.clear();
+		for (Double scale : scaleList) {
+			// Eliminate duplicates and null:
+			if (scale != null) {
+				String value = ScaleConverter.scaleToString(scale, precision, significantDigits);
+				valueToScale.put(value, scale);
+			}
+		}
+
 		List<String> availableScales = new ArrayList<String>();
 
 		for (Double scale : scaleList) {
 			if (mapView.isResolutionAvailable(pixelLength / scale)) {
-				availableScales.add(scaleToValue.get(scale));
+				availableScales.add(ScaleConverter.scaleToString(scale, precision, significantDigits));
 			}
 		}
 
@@ -300,7 +297,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 					setScales(newScales.toArray(new Double[newScales.size()]));
 				}
 			}
-			scaleItem.setValue(scaleToValue.get(scale));
+			scaleItem.setValue(ScaleConverter.scaleToString(scale, precision, significantDigits));
 			mapView.setCurrentScale(scale / pixelLength, MapView.ZoomOption.LEVEL_CLOSEST);
 		}
 	}
