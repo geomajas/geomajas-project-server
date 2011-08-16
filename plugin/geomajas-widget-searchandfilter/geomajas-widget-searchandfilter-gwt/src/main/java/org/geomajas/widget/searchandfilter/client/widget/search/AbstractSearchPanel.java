@@ -25,6 +25,8 @@ public abstract class AbstractSearchPanel extends Canvas {
 
 	protected MapWidget mapWidget;
 	protected GeometryUpdateHandler handler;
+	private boolean canAddToFavourites = true;
+	private boolean canBeReset = true;
 
 	public AbstractSearchPanel(MapWidget mapWidget) {
 		super();
@@ -49,7 +51,16 @@ public abstract class AbstractSearchPanel extends Canvas {
 	 * @return true when "add to favourites" button is visible
 	 */
 	public boolean canAddToFavourites() {
-		return true;
+		return canAddToFavourites;
+	}
+
+	/**
+	 * Indicate whether add to favourites is possible or not.
+	 *
+	 * @param canAddToFavourites new value
+	 */
+	public void setCanAddToFavourites(boolean canAddToFavourites) {
+		this.canAddToFavourites = canAddToFavourites;
 	}
 
 	/**
@@ -58,7 +69,16 @@ public abstract class AbstractSearchPanel extends Canvas {
 	 * @return true when reset button is visible
 	 */
 	public boolean canBeReset() {
-		return true;
+		return canBeReset;
+	}
+
+	/**
+	 * Set whether the reset button can exist.
+	 *
+	 * @param canBeReset new value
+	 */
+	public void setCanBeReset(boolean canBeReset) {
+		this.canBeReset = canBeReset;
 	}
 
 	/**
