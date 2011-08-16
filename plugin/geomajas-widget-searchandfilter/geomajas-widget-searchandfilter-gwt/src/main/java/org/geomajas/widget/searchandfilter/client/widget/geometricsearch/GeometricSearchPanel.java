@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * Geometric Search Widget. Contains framework + search functionality. But does
  * not create the geometries itself.
  * <p>
- * You add specific searchmethods through addSearchMethod().
+ * You add specific search methods through addSearchMethod().
  * 
  * @author Kristof Heirwegh
  */
@@ -50,7 +50,7 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 	private GfxGeometry worldpaintable;
 
 	/**
-	 * @param mapWidget
+	 * @param mapWidget map widget
 	 */
 	public GeometricSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
@@ -60,8 +60,6 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		selectionStyle.setStrokeColor("#B45F04");
 		selectionStyle.setStrokeOpacity(0.9f);
 		selectionStyle.setStrokeWidth(2f);
-
-//		this.shapeStyleBuffer.setDashArray("2,1"); // not supported
 
 		this.mapWidget = mapWidget;
 		this.setTitle(messages.geometricSearchWidgetTitle());
@@ -87,9 +85,7 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 			throw new IllegalArgumentException("Please provide a searchMethod.");
 		}
 
-		if (searchMethods.contains(searchMethod)) {
-			return;
-		} else {
+		if (!searchMethods.contains(searchMethod)) {
 			searchMethods.add(searchMethod);
 			Tab tab = new Tab(searchMethod.getTitle());
 			tab.setPane(searchMethod.getSearchCanvas());
@@ -150,7 +146,7 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		// can't do that because we don't know which method created the
 		// geometry. Even more, it might be a merged geometry from several
 		// methods.
-		GWT.log("You cannot reinitialize the Geometric searchpanel!");
+		GWT.log("You cannot reinitialize the Geometric search panel!");
 	}
 
 	// ----------------------------------------------------------
