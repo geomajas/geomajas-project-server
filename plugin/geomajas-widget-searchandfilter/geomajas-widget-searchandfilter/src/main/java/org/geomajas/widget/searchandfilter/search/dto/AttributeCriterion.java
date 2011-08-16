@@ -25,7 +25,7 @@ public class AttributeCriterion implements Criterion {
 
 	private String attributeName;
 
-	public AttributeCriterion() {};
+	public AttributeCriterion() {}
 
 	public AttributeCriterion(String serverLayerId, String attributeName, String operator, String value) {
 		this.serverLayerId = serverLayerId;
@@ -34,7 +34,7 @@ public class AttributeCriterion implements Criterion {
 		this.value = value;
 	}
 
-	private static final String OPERATORS = "<,<=,=,<>,>,=>,LIKE,DURING,BEFORE,AFTER";
+	private static final String OPERATORS = ",<,<=,=,<>,>,=>,LIKE,DURING,BEFORE,AFTER,";
 	/**
 	 * <, <=, =, <>, >=, >, like, during, before, after.
 	 */
@@ -81,11 +81,8 @@ public class AttributeCriterion implements Criterion {
 	}
 
 	public boolean isValidOperator() {
-		if (operator != null) {
-			return (OPERATORS.contains(operator.toUpperCase()) && !",".equals(operator));
-		} else {
-			return false;
-		}
+		return operator != null &&
+				OPERATORS.contains("," + operator.toUpperCase() + ",") && operator.indexOf(',') < 0;
 	}
 
 	public void serverLayerIdVisitor(Set<String> layerIds) {
