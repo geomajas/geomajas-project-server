@@ -54,8 +54,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		new ArrayList<FavouriteRequestHandler>();
 
 	private IButton searchBtn;
-	private HLayout searchButtonBar;
-	private HLayout saveButtonBar;
+	private IButton saveBtn;
 	private AbstractSearchPanel searchPanel;
 	private String widgetId;
 	private String name;
@@ -79,31 +78,17 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		this.widgetId = widgetId;
 		this.name = name;
 
-		setWidth100();
-		setHeight100();
+		//setWidth100();
+		//setHeight100();
 		setMargin(10);
-
-		searchButtonBar = new HLayout(10);
-		saveButtonBar = new HLayout(10);
-		saveButtonBar.setVisible(false);
 
 		SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
-		IButton favouritesSBtn = new IButton(messages.searchWidgetAddToFavourites());
-		favouritesSBtn.setIcon(BTN_FAVOURITES_IMG);
-		favouritesSBtn.setAutoFit(true);
-		favouritesSBtn.setShowDisabledIcon(false);
-		favouritesSBtn.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				onAddToFavourites();
-			}
-		});
-		IButton favouritesRBtn = new IButton(messages.searchWidgetAddToFavourites());
-		favouritesRBtn.setIcon(BTN_FAVOURITES_IMG);
-		favouritesRBtn.setAutoFit(true);
-		favouritesRBtn.setShowDisabledIcon(false);
-		favouritesRBtn.addClickHandler(new ClickHandler() {
+		IButton favouritesBtn = new IButton(messages.searchWidgetAddToFavourites());
+		favouritesBtn.setIcon(BTN_FAVOURITES_IMG);
+		favouritesBtn.setAutoFit(true);
+		favouritesBtn.setShowDisabledIcon(false);
+		favouritesBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				onAddToFavourites();
@@ -129,7 +114,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 				searchPanel.reset();
 			}
 		});
-		IButton saveBtn = new IButton(messages.searchWidgetSave());
+		saveBtn = new IButton(messages.searchWidgetSave());
 		saveBtn.setIcon(BTN_SAVE_IMG);
 		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
@@ -139,6 +124,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 				onSave();
 			}
 		});
+		saveBtn.setVisible(false);
 		IButton cancelBtn = new IButton(messages.searchWidgetCancel());
 		cancelBtn.setIcon(BTN_CANCEL_IMG);
 		cancelBtn.setAutoFit(true);
@@ -151,30 +137,21 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		});
 
 		addMember(searchPanel);
-		LayoutSpacer lss = new LayoutSpacer();
-		LayoutSpacer lsr = new LayoutSpacer();
-		lss.setWidth("*");
-		lsr.setWidth("*");
+		LayoutSpacer ls = new LayoutSpacer();
+		ls.setWidth("*");
 
-		searchButtonBar.setWidth(searchPanel.getWidthAsString());
+		HLayout searchButtonBar = new HLayout(10);
+		searchButtonBar.setWidth100();
 		if (searchPanel.canAddToFavourites()) {
-			searchButtonBar.addMember(favouritesRBtn);
+			searchButtonBar.addMember(favouritesBtn);
 		}
-		searchButtonBar.addMember(lsr);
+		searchButtonBar.addMember(ls);
 		searchButtonBar.addMember(searchBtn);
+		searchButtonBar.addMember(saveBtn);
 		if (searchPanel.canBeReset()) {
 			searchButtonBar.addMember(resetBtn);
 		}
 		addMember(searchButtonBar);
-
-		saveButtonBar.setWidth(searchPanel.getWidthAsString());
-		if (searchPanel.canAddToFavourites()) {
-			saveButtonBar.addMember(favouritesSBtn);
-		}
-		saveButtonBar.addMember(lss);
-		saveButtonBar.addMember(saveBtn);
-		saveButtonBar.addMember(cancelBtn);
-		addMember(saveButtonBar);
 	}
 
 	/**
@@ -213,8 +190,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	/** {@inheritDoc} */
 	public void showForSearch() {
-		saveButtonBar.setVisible(false);
-		searchButtonBar.setVisible(true);
+		saveBtn.setVisible(false);
+		searchBtn.setVisible(true);
 		show();
 		bringToFront();
 	}
@@ -224,8 +201,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		if (handler != null) {
 			addSaveRequestHandler(new OneOffSaveRequestHandler(handler));
 		}
-		saveButtonBar.setVisible(true);
-		searchButtonBar.setVisible(false);
+		saveBtn.setVisible(true);
+		searchBtn.setVisible(false);
 		show();
 		bringToFront();
 	}
