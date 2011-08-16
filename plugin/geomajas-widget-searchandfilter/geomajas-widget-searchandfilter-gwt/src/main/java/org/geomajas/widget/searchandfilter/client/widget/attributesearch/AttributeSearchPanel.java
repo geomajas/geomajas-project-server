@@ -13,6 +13,7 @@ package org.geomajas.widget.searchandfilter.client.widget.attributesearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smartgwt.client.types.Overflow;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
@@ -69,9 +70,36 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 
 	private FeatureSearch featureSearch;
 
+	/**
+	 * Create an attribute search panel for manual layer selection.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public AttributeSearchPanel(final MapWidget mapWidget) {
+		this(mapWidget, true, null);
+	}
+
+	/**
+	 * Create attribute search panel with pre-selected layer.
+	 *
+	 * @param mapWidget map widget
+	 * @param layerId layer rid
+	 */
+	public AttributeSearchPanel(final MapWidget mapWidget, String layerId) {
+		this(mapWidget, true, layerId);
+	}
+
+	/**
+	 * Create an attribute search panel with manual layer selection and preselected layer. If the layer selection is
+	 * automatic then this will use the selected layer of no preselected layer is given.
+	 *
+	 * @param mapWidget map widget
+	 * @param manualLayerSelection allow user to select layer
+	 * @param layerId preselected layer
+	 */
+	public AttributeSearchPanel(final MapWidget mapWidget, boolean manualLayerSelection, String layerId) {
 		super(mapWidget);
-		featureSearch = new FeatureSearch(mapWidget.getMapModel(), true);
+		featureSearch = new FeatureSearch(mapWidget.getMapModel(), manualLayerSelection, layerId);
 		featureSearch.setWidth100();
 		featureSearch.setHeight100();
 		setWidth(550);
@@ -135,6 +163,8 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 
 	/**
 	 * Adapted from @see {@link FeatureSearch} by @author Pieter De Graef.
+	 *
+	 * @author Kristof Heirwegh
 	 */
 	public class FeatureSearch extends Canvas {
 
@@ -178,12 +208,13 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		 *            what layer to search in. The possible list of layers
 		 *            consists of all the vector layers that are present in the
 		 *            given MapModel. If false, this widget will react to the
-		 *            layer select events that come from the MapMdodel. In that
+		 *            layer select events that come from the MapModel. In that
 		 *            case searching happens in the selected layer (if it's a
 		 *            vector layer).<br/>
 		 *            This value cannot be altered anymore.
+		 * @param layerId fixed layerId, in combination with manualLayerSelection this allows the layer to be fixed
 		 */
-		public FeatureSearch(MapModel mapModel, boolean manualLayerSelection) {
+		public FeatureSearch(MapModel mapModel, boolean manualLayerSelection, final String layerId) {
 			super();
 			this.mapModel = mapModel;
 			this.manualLayerSelection = manualLayerSelection;
@@ -193,6 +224,17 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			removeHandlers = new ArrayList<HandlerRegistration>();
 			buildUI();
 			setLogicalOperator(LogicalOperator.AND);
+			if (null != layerId) {
+				if (mapModel.isInitialized()) {
+					setLayer(layerId);
+				} else {
+					mapModel.addMapModelHandler(new MapModelHandler() {
+						public void onMapModelChange(MapModelEvent event) {
+							setLayer(layerId);
+						}
+					});
+				}
+			}
 		}
 
 		// -------------------------------------------------------------------------
@@ -436,8 +478,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 		}
 
 		/**
-		 * Return the layer onto which searching should happen. (the MapModel's
-		 * selected layer)
+		 * Return the layer onto which searching should happen.
 		 *
 		 * @return layer to search
 		 */
@@ -459,6 +500,15 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			empty();
 		}
 
+		/**
+		 * Set a new layer onto which searching should happen.
+		 *
+		 * @param layerId layer id
+		 */
+		public void setLayer(String layerId) {
+			setLayer(mapModel.getVectorLayer(layerId));
+		}
+
 		// -------------------------------------------------------------------------
 		// Private methods:
 		// -------------------------------------------------------------------------
@@ -477,7 +527,8 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			// Create the layout:
 			VLayout layout = new VLayout();
 			layout.setWidth100();
-			layout.setHeight100();
+			layout.setHeight(1);
+			layout.setOverflow(Overflow.VISIBLE);
 
 			logicalOperatorRadio = new RadioGroupItem("logicalOperator");
 			logicalOperatorRadio.setValueMap(I18nProvider.getSearch().radioOperatorOr(), I18nProvider.getSearch()
@@ -579,6 +630,8 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			headerLayout.addMember(operatorHeader);
 			headerLayout.addMember(valueHeader);
 			criterionStack.addMember(headerLayout);
+			criterionStack.setHeight(1);
+			criterionStack.setOverflow(Overflow.VISIBLE);
 
 			buttonStack = new VStack();
 			buttonStack.setWidth(70);
@@ -587,12 +640,15 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			btnHeader.setStyleName(STYLE_HEADER_BAR);
 			btnHeader.setWidth(70);
 			btnHeader.setHeight(26);
+			btnHeader.setBackgroundColor("#00FF00");
 			buttonStack.addMember(btnHeader);
 
 			HLayout searchGrid = new HLayout();
 			searchGrid.addMember(criterionStack);
 			searchGrid.addMember(buttonStack);
 			searchGrid.setBorder("1px solid lightgrey");
+			searchGrid.setHeight(1);
+			searchGrid.setOverflow(Overflow.VISIBLE);
 
 			layout.addMember(optionLayout);
 			layout.addMember(searchGrid);
