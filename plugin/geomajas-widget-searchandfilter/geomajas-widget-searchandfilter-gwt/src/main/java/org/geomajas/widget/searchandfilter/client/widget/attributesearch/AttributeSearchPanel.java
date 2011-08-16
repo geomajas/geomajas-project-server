@@ -100,10 +100,6 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 	public AttributeSearchPanel(final MapWidget mapWidget, boolean manualLayerSelection, String layerId) {
 		super(mapWidget);
 		featureSearch = new FeatureSearch(mapWidget.getMapModel(), manualLayerSelection, layerId);
-		featureSearch.setWidth100();
-		featureSearch.setHeight100();
-		setWidth(550);
-		setHeight(350);
 		addChild(featureSearch);
 	}
 
@@ -459,6 +455,9 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 				break;
 			case OR:
 				logicalOperatorRadio.setValue(I18nProvider.getSearch().radioOperatorOr());
+				break;
+			default:
+				throw new IllegalStateException("Unhandled operator value " + operator);
 			}
 		}
 
@@ -527,8 +526,6 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			// Create the layout:
 			VLayout layout = new VLayout();
 			layout.setWidth100();
-			layout.setHeight(1);
-			layout.setOverflow(Overflow.VISIBLE);
 
 			logicalOperatorRadio = new RadioGroupItem("logicalOperator");
 			logicalOperatorRadio.setValueMap(I18nProvider.getSearch().radioOperatorOr(), I18nProvider.getSearch()
@@ -623,6 +620,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			HTMLPane valueHeader = new HTMLPane();
 			valueHeader.setContents("Value");
 			valueHeader.setStyleName(STYLE_SEARCH_HEADER);
+			valueHeader.setWidth(150);
 
 			criterionStack = new VStack();
 			criterionStack.setAlign(VerticalAlignment.TOP);
@@ -630,8 +628,6 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 			headerLayout.addMember(operatorHeader);
 			headerLayout.addMember(valueHeader);
 			criterionStack.addMember(headerLayout);
-			criterionStack.setHeight(1);
-			criterionStack.setOverflow(Overflow.VISIBLE);
 
 			buttonStack = new VStack();
 			buttonStack.setWidth(70);

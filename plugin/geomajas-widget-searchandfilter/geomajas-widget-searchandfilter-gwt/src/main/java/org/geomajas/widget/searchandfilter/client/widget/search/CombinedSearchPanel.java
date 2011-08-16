@@ -68,8 +68,6 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	public CombinedSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
 		VLayout layout = new VLayout(10);
-		layout.setWidth100();
-		layout.setHeight100();
 
 		// -- operator type --
 		operatorForm = new DynamicForm();

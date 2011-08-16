@@ -65,14 +65,11 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		this.setTitle(messages.geometricSearchWidgetTitle());
 		VLayout layout = new VLayout(0);
 		layout.setWidth100();
-		layout.setHeight100();
 		tabs = new TabSet();
 		tabs.setWidth100();
-		tabs.setHeight100();
+		tabs.setHeight(230);
 		layout.addMember(tabs);
 
-		setWidth(400);
-		setHeight(250);
 		addChild(layout);
 	}
 

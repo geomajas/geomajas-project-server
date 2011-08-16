@@ -44,8 +44,6 @@ public class AttributeCriterionPane extends Canvas {
 	private static final String CQL_WILDCARD = "*";
 	private static final String CQL_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-	private DynamicForm form;
-
 	private SelectItem attributeSelect;
 
 	private SelectItem operatorSelect;
@@ -182,6 +180,7 @@ public class AttributeCriterionPane extends Canvas {
 	 *
 	 * @param attributeInfo
 	 *            The attribute definition for which to return possible operators.
+	 * @return operator labels
 	 */
 	public static String[] getOperatorsForAttributeType(AttributeInfo attributeInfo) {
 		if (attributeInfo != null && attributeInfo instanceof PrimitiveAttributeInfo) {
@@ -218,8 +217,8 @@ public class AttributeCriterionPane extends Canvas {
 	 * Return the operator code from an operator label. The difference is this: an operator label is a string like
 	 * "is equal to", while it's code is "=".
 	 *
-	 * @param label
-	 *            The operator label.
+	 * @param label The operator label.
+	 * @return operator code
 	 */
 	public static String getOperatorCodeFromLabel(String label) {
 		if (label != null) {
@@ -317,10 +316,9 @@ public class AttributeCriterionPane extends Canvas {
 		});
 
 		// Finalize:
-		form = new DynamicForm();
+		DynamicForm form = new DynamicForm();
 		form.setNumCols(6);
 		form.setHeight(26);
-		form.setWidth100();
 		form.setFields(attributeSelect, operatorSelect, valueItem);
 		addChild(form);
 	}
@@ -337,7 +335,6 @@ public class AttributeCriterionPane extends Canvas {
 			// Adjust value form item and enable:
 			valueItem.setAttributeInfo(selectedAttribute);
 			valueItem.setDisabled(false);
-			valueItem.setWidth(form.getWidth() - 290);
 		}
 	}
 
@@ -345,7 +342,7 @@ public class AttributeCriterionPane extends Canvas {
 		Object value = attributeSelect.getValue();
 		if (value != null) {
 			for (AttributeInfo attributeInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-				if (attributeInfo.getLabel().equals((String) value)) {
+				if (attributeInfo.getLabel().equals(value)) {
 					return attributeInfo;
 				}
 			}
@@ -417,7 +414,6 @@ public class AttributeCriterionPane extends Canvas {
 		public void setAttributeInfo(AttributeInfo attributeInfo) {
 			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, 
 					new DefaultAttributeProvider(layer.getServerLayerId()));
-			//formItem = factory.createEditableFormItem(null, attributeInfo);
 			if (formItem != null) {
 				formItem.setDisabled(false);
 				formItem.setShowTitle(false);
