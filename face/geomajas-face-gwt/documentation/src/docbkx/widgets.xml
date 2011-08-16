@@ -330,6 +330,20 @@
         <listitem>
           <para><emphasis>ScaleSelect</emphasis>: scale select drop-down
           box.</para>
+
+          <para><itemizedlist>
+              <listitem>
+                <para>precision: precision of the scale. For example using
+                1000 as precision ensure the value "1:12,345" is displayed as
+                "1:12,000".</para>
+              </listitem>
+
+              <listitem>
+                <para>significantDigits: maximum number of significant digits
+                to display in the scale. For example using 3 as value ensures
+                that "1:1,234,567" is displayed as "1:1,230,000".</para>
+              </listitem>
+            </itemizedlist></para>
         </listitem>
       </itemizedlist></para>
 
@@ -611,6 +625,10 @@
 
     <para>Using the <code>setScales()</code> method, one can always override
     the list of scales in the widget.</para>
+
+    <para>The setPrecision() and setSignificantDigits() methods allow you to
+    configure the rounding which is applied on the displayed scale
+    values.</para>
 
     <figure>
       <title>ScaleSelect example</title>

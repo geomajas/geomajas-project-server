@@ -12,8 +12,10 @@
 package org.geomajas.gwt.client.action.toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
+import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.ToolbarCanvas;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.ScaleSelect;
 
@@ -22,7 +24,7 @@ import org.geomajas.gwt.client.widget.ScaleSelect;
  *
  * @author Joachim Van der Auwera
  */
-public class ScaleSelectAction extends ToolbarBaseAction implements ToolbarCanvas {
+public class ScaleSelectAction extends ToolbarBaseAction implements ToolbarCanvas, ConfigurableAction {
 
 	private ScaleSelect scaleSelect;
 
@@ -34,5 +36,19 @@ public class ScaleSelectAction extends ToolbarBaseAction implements ToolbarCanva
 	/** {@inheritDoc} */
 	public Canvas getCanvas() {
 		return scaleSelect;
+	}
+
+	public void configure(String key, String value) {
+		try {
+		if ("precision".equals(key)) {
+			scaleSelect.setPrecision(Integer.parseInt(value));
+		} else if ("significantDigits".equals(key)) {
+			scaleSelect.setSignificantDigits(Integer.parseInt(value));
+		} else {
+			Log.logError("Parameter " + key + " not recognized for ScaleSelectAction");
+		}
+		} catch (NumberFormatException nfe) {
+			Log.logError("Could not parse value " + value + "for key " + key + ", should be integer.");
+		}
 	}
 }

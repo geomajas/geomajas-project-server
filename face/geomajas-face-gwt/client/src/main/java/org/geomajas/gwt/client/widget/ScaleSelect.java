@@ -25,7 +25,6 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 
-import com.google.gwt.i18n.client.NumberFormat;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
@@ -56,8 +55,6 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	private ComboBoxItem scaleItem;
 
-	private static NumberFormat DENOMINATOR_FORMAT = NumberFormat.getFormat("###,###");
-
 	// bidirectional lookup
 	private LinkedHashMap<Double, String> scaleToValue;
 
@@ -69,8 +66,12 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	private boolean updatingScaleList;
 
 	// Full list of scales. These will not always be shown (depends on map size and maximum bounds), but they are
-	// stored here for when the map resizes, and these must all of a sudden become available.
+	// stored here for when the map resizes. At the point the visible set needs to be e-evaluated.
 	private List<Double> scaleList;
+
+	private int precision;
+
+	private int significantDigits;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -134,7 +135,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		for (Double scale : scales) {
 			// Eliminate duplicates and null:
 			if (scale != null && !scaleToValue.containsKey(scale)) {
-				String value = scaleToString(scale);
+				String value = ScaleConverter.scaleToString(scale, precision, significantDigits);
 				scaleToValue.put(scale, value);
 				valueToScale.put(value, scale);
 			}
@@ -142,6 +143,37 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 		// Apply the requested scales on the SelectItem. Make sure only available scales are added:
 		updateScaleList();
+	}
+
+	/**
+	 * Set the precision for displaying the scales.
+	 * <p/>
+	 * For example use 1000 to make sure a scale of 1:12345 is displayed as 1:12000.
+	 * <p/>
+	 * Use zero to leaves all scales untouched.
+	 *
+	 * @param precision precision for displaying scales
+	 * @since 1.10.0
+	 */
+	@Api
+	public void setPrecision(int precision) {
+		this.precision = precision;
+	}
+
+	/**
+	 * Set the maximum number of significant digits to be displayed.
+	 * <p/>
+	 * For example when there are two scales 1:2000 and 1:12345000 and using the setting 3 for significantDigits these
+	 * will be displayed as 1:2000 and 1:12300000.
+	 * <p/>
+	 * User zero for unlimited maximum,
+	 *
+	 * @param significantDigits number of significant digits to display in the scales
+	 * @since 1.10.0
+	 */
+	@Api
+	public void setSignificantDigits(int significantDigits) {
+		this.significantDigits = significantDigits;
 	}
 
 	/**
@@ -214,28 +246,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	// -------------------------------------------------------------------------
 
 	protected void setDisplayScale(double scale) {
-		scaleItem.setValue(scaleToString(scale));
-	}
-
-	protected String scaleToString(double scale) {
-		if (scale > 0 && scale < 1.0) {
-			int denominator = (int) Math.round(1. / scale);
-			return "1 : " + DENOMINATOR_FORMAT.format(denominator);
-		} else if (scale >= 1.0) {
-			int denominator = (int) Math.round(scale);
-			return DENOMINATOR_FORMAT.format(denominator) + " : 1";
-		} else {
-			return "Negative or zero scale not allowed, did you use a correct pixel length?";
-		}
-	}
-
-	protected Double stringToScale(String s) {
-		String[] scale2 = s.split(":");
-		if (scale2.length == 1) {
-			return 1.0 / DENOMINATOR_FORMAT.parse(scale2[0].trim());
-		} else {
-			return DENOMINATOR_FORMAT.parse(scale2[0].trim()) / DENOMINATOR_FORMAT.parse(scale2[1].trim());
-		}
+		scaleItem.setValue(ScaleConverter.scaleToString(scale, precision, significantDigits));
 	}
 
 	/**
@@ -282,7 +293,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		if (value != null) {
 			Double scale = valueToScale.get(value);
 			if (scale == null) {
-				scale = stringToScale(value);
+				scale = ScaleConverter.stringToScale(value);
 				if (updatingScaleList) {
 					List<Double> newScales = new ArrayList<Double>(valueToScale.values());
 					newScales.add(scale);
@@ -302,9 +313,8 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		@Override
 		protected boolean condition(Object value) {
 			try {
-				Double d = stringToScale((String) value);
-				return d.doubleValue() >= 0.0;
-			} catch (Throwable t) {
+				return ScaleConverter.stringToScale((String) value) >= 0.0;
+			} catch (NumberFormatException t) {
 				return false;
 			}
 		}
