@@ -33,6 +33,17 @@ public class ThemesInfo implements ClientWidgetInfo {
 	 * If true, hide available layers that are not in the configuration.
 	 */
 	private boolean hideOtherlayers; // false
+	
+	/**
+	 * If true show description next to the button (false == tooltip).
+	 */
+	private boolean showDescription; // false
+	
+	/**
+	 * Width of the label showing the description. 
+	 * Can be any css accepted width formulation (100px, 50%, 10em).
+	 */
+	private String descriptionWidth = "300px";
 
 	public boolean isHideOtherlayers() {
 		return hideOtherlayers;
@@ -54,5 +65,21 @@ public class ThemesInfo implements ClientWidgetInfo {
 	 */
 	public List<ViewConfig> getThemeConfigs() {
 		return themeConfigs;
+	}
+
+	public boolean isShowDescription() {
+		return showDescription;
+	}
+
+	public void setShowDescription(boolean showDescription) {
+		this.showDescription = showDescription;
+	}
+
+	public String getDescriptionWidth() {
+		return descriptionWidth;
+	}
+
+	public void setDescriptionWidth(String descriptionWidth) {
+		this.descriptionWidth = descriptionWidth;
 	}
 }
