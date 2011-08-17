@@ -102,9 +102,9 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>geomajas-widget-featureinfo</module>
-		<module>geomajas-widget-featureinfo-gwt</module>
-		<module>geomajas-widget-featureinfo-gwt-example</module>
+		<module>featureinfo</module>
+		<module>featureinfo-gwt</module>
+		<module>featureinfo-gwt-example</module>
   </modules>
 
 	<profiles>

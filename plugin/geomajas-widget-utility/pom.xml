@@ -90,10 +90,10 @@
 	</dependencyManagement>
 	
 	<modules>
-		<module>geomajas-widget-utility</module>
-		<module>geomajas-widget-utility-gwt</module>
-		<module>geomajas-widget-utility-smartgwt</module>
-		<module>geomajas-widget-utility-smartgwt-example</module>
+		<module>utility</module>
+		<module>utility-gwt</module>
+		<module>utility-smartgwt</module>
+		<module>utility-smartgwt-example</module>
 	</modules>
 
 	<repositories>

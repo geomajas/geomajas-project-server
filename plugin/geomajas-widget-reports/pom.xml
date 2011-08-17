@@ -94,9 +94,9 @@
 	</dependencyManagement>
 	
 	<modules>
-		<module>geomajas-widget-reports</module>
-		<module>geomajas-widget-reports-gwt</module>
-		<module>geomajas-widget-reports-gwt-example</module>
+		<module>reports</module>
+		<module>reports-gwt</module>
+		<module>reports-gwt-example</module>
   </modules>
 
 	<profiles>

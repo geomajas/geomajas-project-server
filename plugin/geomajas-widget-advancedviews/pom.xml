@@ -87,9 +87,9 @@
 	</dependencyManagement>
 	
 	<modules>
-		<module>geomajas-widget-advancedviews</module>
-		<module>geomajas-widget-advancedviews-gwt</module>
-		<module>geomajas-widget-advancedviews-gwt-example</module>
+		<module>advancedviews</module>
+		<module>advancedviews-gwt</module>
+		<module>advancedviews-gwt-example</module>
 	</modules>
 
 	<profiles>
