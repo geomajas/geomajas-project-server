@@ -27,7 +27,7 @@ public interface Geometry extends Serializable {
 	/**
 	 * Create a new identical geometry.
 	 *
-	 * @return
+	 * @return cloned object
 	 */
 	Object clone();
 
@@ -41,17 +41,21 @@ public interface Geometry extends Serializable {
 	/**
 	 * Return the precision used in this geometry as an integer.
 	 *
-	 * @return
+	 * @return precision
 	 */
 	int getPrecision();
 
 	/**
 	 * Return the {@link GeometryFactory} object that corresponds to this geometry.
+	 *
+	 * @return geometry factory
 	 */
 	GeometryFactory getGeometryFactory();
 
 	/**
 	 * Get an array of coordinates. Never returns null! Where there are no coordinates, an empty array is returned.
+	 *
+	 * @return coordinates
 	 */
 	Coordinate[] getCoordinates();
 
@@ -64,11 +68,15 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * Return the closest Bbox around the geometry.
+	 *
+	 * @return bounds
 	 */
 	Bbox getBounds();
 
 	/**
 	 * Return the number of coordinates.
+	 *
+	 * @return number of points
 	 */
 	int getNumPoints();
 
@@ -83,6 +91,8 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * Return the number of direct sub-geometries.
+	 *
+	 * @return number of geometries
 	 */
 	int getNumGeometries();
 
@@ -96,13 +106,15 @@ public interface Geometry extends Serializable {
 	 * <li>MULTILINESTRING</li>
 	 * <li>MULTIPOLYGON</li>
 	 * </ul>
+	 *
+	 * @return geometry type
 	 */
 	int getGeometryType();
 
 	/**
 	 * Return the layer type of the geometry.
 	 *
-	 * @return the layer type (vectorial).
+	 * @return the layer type (vector).
 	 */
 	LayerType getLayerType();
 
@@ -123,6 +135,8 @@ public interface Geometry extends Serializable {
 	/**
 	 * Is the geometry a valid one? Different rules apply to different geometry types. Each geometry class should
 	 * override this!
+	 *
+	 * @return true when this geometry is valid
 	 */
 	boolean isValid();
 
@@ -137,11 +151,15 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * Return the area of the geometry.
+	 *
+	 * @return area of geometry in CRS units
 	 */
 	double getArea();
 
 	/**
 	 * Return the length of the geometry.
+	 *
+	 * @return length of geometry in CRS units
 	 */
 	double getLength();
 
@@ -155,6 +173,7 @@ public interface Geometry extends Serializable {
 	/**
 	 * Return the minimal distance between this coordinate and any vertex of the geometry.
 	 *
+	 * @param coordinate coordinate to calculate distance of
 	 * @return Return the minimal distance
 	 */
 	double getDistance(Coordinate coordinate);
