@@ -68,6 +68,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	public CombinedSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
 		VLayout layout = new VLayout(10);
+		layout.setWidth100();
 
 		// -- operator type --
 		operatorForm = new DynamicForm();
@@ -82,7 +83,6 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		layout.addMember(operatorForm);
 
 		// -- criteria grid --
-		VLayout wrapper = new VLayout(10);
 		searchItems = new ListGrid();
 		searchItems.setWidth100();
 		searchItems.setHeight(1);
@@ -108,6 +108,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		removeField.addRecordClickHandler(new RecordClickHandler() {
 			public void onRecordClick(RecordClickEvent event) {
 				searchItems.removeData(event.getRecord());
+				updateDisplay();
 			}
 		});
 		searchItems.setFields(nameField, removeField);
@@ -140,10 +141,8 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		searchForm.setFields(selectSearch);
 		addBar.addMember(searchForm);
 
-		wrapper.setOverflow(Overflow.VISIBLE);
-		wrapper.addMember(searchItems);
-		wrapper.addMember(addBar);
-		layout.addMember(wrapper);
+		layout.addMember(searchItems);
+		layout.addMember(addBar);
 
 		addChild(layout);
 	}
@@ -281,7 +280,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 
 		public void setSearchWidget(String name, Criterion criterion) {
 			this.critter = criterion;
-			setAttribute(NAME_FIELD, name);
+			setAttribute(NAME_FIELD, name + ", " + criterion.toString());
 			setAttribute(REMOVE_FIELD, "[SKIN]/actions/remove.png");
 		}
 

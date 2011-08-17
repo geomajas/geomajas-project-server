@@ -85,12 +85,40 @@ public class GeometryCriterion implements Criterion {
 		this.operator = operator;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isValid() {
 		return (serverLayerIds != null && serverLayerIds.size() > 0 && geometry != null && operator > 0 && operator < 5)
 		;
 	}
 
+	/** {@inheritDoc} */
 	public void serverLayerIdVisitor(Set<String> layerIds) {
 		layerIds.addAll(serverLayerIds);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		switch (operator) {
+			case INTERSECTS:
+				sb.append("INTERSECTS");
+				break;
+			case TOUCHES:
+				sb.append("TOUCHES");
+				break;
+			case WITHIN:
+				sb.append("WITHIN");
+				break;
+			case CONTAINS:
+				sb.append("CONTAINS");
+				break;
+			default:
+				sb.append("??");
+				break;
+		}
+		sb.append(" ");
+		sb.append(geometry.getGeometryType());
+		return sb.toString();
+	}
+
 }

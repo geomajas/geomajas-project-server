@@ -34,7 +34,7 @@ import com.google.gwt.core.client.GWT;
  */
 public final class CriterionUtils {
 
-	private static final List<Criterion> ACTIVELAYERFILTERCRITERIONS = new ArrayList<Criterion>();
+	private static final List<Criterion> ACTIVE_LAYER_FILTER_CRITERIONS = new ArrayList<Criterion>();
 
 	/**
 	 * Utility class
@@ -48,7 +48,7 @@ public final class CriterionUtils {
 				layer.setFilter(null);
 			}
 		}
-		ACTIVELAYERFILTERCRITERIONS.clear();
+		ACTIVE_LAYER_FILTER_CRITERIONS.clear();
 	}
 
 	public static void setLayerFilter(final MapWidget mapWidget, final Criterion criterion) {
@@ -64,14 +64,14 @@ public final class CriterionUtils {
 				}
 			}
 		}
-		ACTIVELAYERFILTERCRITERIONS.add(criterion);
+		ACTIVE_LAYER_FILTER_CRITERIONS.add(criterion);
 	}
 
 	/**
 	 * This does the same as dtoConverterservice but uses strings for filters instead of (serverside) filter objects.
 	 * 
 	 * @param criterion
-	 * @param mapCrs
+	 * @param mapModel
 	 */
 	public static Map<String, String> criterionToFilters(Criterion criterion, MapModel mapModel) {
 		if (criterion != null) {
@@ -183,6 +183,6 @@ public final class CriterionUtils {
 	}
 
 	public static boolean isActiveLayerFilter(Criterion criterion) {
-		return ACTIVELAYERFILTERCRITERIONS.contains(criterion);
+		return ACTIVE_LAYER_FILTER_CRITERIONS.contains(criterion);
 	}
 }

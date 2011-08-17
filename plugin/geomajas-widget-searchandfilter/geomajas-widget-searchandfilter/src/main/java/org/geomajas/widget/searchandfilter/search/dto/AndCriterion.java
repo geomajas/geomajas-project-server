@@ -38,6 +38,7 @@ public class AndCriterion implements Criterion {
 		this.criteria = criteria;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isValid() {
 		if (criteria != null  && criteria.size() > 0) {
 			for (Criterion critter : criteria) {
@@ -51,9 +52,24 @@ public class AndCriterion implements Criterion {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void serverLayerIdVisitor(Set<String> layerIds) {
-		for (Criterion critter : criteria) {
-			critter.serverLayerIdVisitor(layerIds);
+		for (Criterion criterion : criteria) {
+			criterion.serverLayerIdVisitor(layerIds);
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (Criterion criterion : criteria) {
+			if (!first) {
+				sb.append(" AND ");
+			}
+			sb.append(criterion.toString());
+			first = false;
+		}
+		return sb.toString();
 	}
 }
