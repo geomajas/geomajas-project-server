@@ -35,6 +35,7 @@
 		<module>geomajas-plugin-caching</module>
 		<module>geomajas-plugin-geocoder</module>
 		<module>geomajas-plugin-rasterizing</module>
+		<module>geomajas-plugin-reporting</module>
 		<module>geomajas-widget-advancedviews</module>
 		<module>geomajas-widget-featureinfo</module>
 		<module>geomajas-widget-reports</module>

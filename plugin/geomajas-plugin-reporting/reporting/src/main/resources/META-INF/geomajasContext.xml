@@ -1,0 +1,53 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:util="http://www.springframework.org/schema/util"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
+		>
+
+	<bean class="org.geomajas.global.PluginInfo">
+		<property name="version">
+			<bean class="org.geomajas.global.PluginVersionInfo">
+				<property name="name" value="geomajas-plugin-reporting" />
+				<property name="version" value="${project.version}" />
+			</bean>
+		</property>
+		<property name="backendVersion" value="${reporting-backend-version}" />
+		<property name="dependencies">
+			<list>
+				<!--
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<property name="name" value="???" />
+					<property name="version" value="???" />
+				</bean>
+				-->
+			</list>
+		</property>
+		<property name="copyrightInfo">
+			<list>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Jasper Reports"/>
+					<property name="copyright" value="Copyright (C) 2001 - 2009 Jaspersoft Corporation"/>
+					<property name="licenseName" value="GNU LGPL v3"/>
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl.txt"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
+
