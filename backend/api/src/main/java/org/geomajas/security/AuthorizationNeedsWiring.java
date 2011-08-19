@@ -21,7 +21,6 @@ import org.springframework.context.ApplicationContext;
  * the entire context (which contains the authorizations) will need to change because of the refresh, this should not
  * be a problem.
  *
- *
  * @author Joachim Van der Auwera
  */
 public interface AuthorizationNeedsWiring {

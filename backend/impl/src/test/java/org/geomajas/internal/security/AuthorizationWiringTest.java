@@ -26,9 +26,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for security handling in {@link org.geomajas.command.CommandDispatcher}.
+ * Test for wiring of spring fields in security authentication objects.
  *
- * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
