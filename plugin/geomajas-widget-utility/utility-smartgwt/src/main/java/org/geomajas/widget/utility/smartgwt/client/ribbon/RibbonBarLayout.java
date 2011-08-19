@@ -37,6 +37,9 @@ import com.smartgwt.client.widgets.layout.HLayout;
  */
 public class RibbonBarLayout extends HLayout implements RibbonBar {
 
+	private static final String RIBBON_BAR_INFO_CLASS =
+			"org.geomajas.widget.utility.server.configuration.RibbonBarInfo";
+
 	private boolean showGroupTitles = true;
 
 	private List<RibbonGroup> groups = new ArrayList<RibbonGroup>();
@@ -79,7 +82,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 
 		GetClientUserDataRequest request = new GetClientUserDataRequest();
 		request.setIdentifier(beanId);
-		request.setClassName(RibbonBarInfo.class.getName());
+		request.setClassName(RIBBON_BAR_INFO_CLASS);
 		GwtCommand command = new GwtCommand(GetClientUserDataRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetClientUserDataResponse>() {

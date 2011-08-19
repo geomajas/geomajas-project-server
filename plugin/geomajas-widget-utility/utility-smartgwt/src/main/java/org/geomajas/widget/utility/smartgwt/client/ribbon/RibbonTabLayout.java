@@ -32,6 +32,8 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class RibbonTabLayout extends VLayout {
 
+	private static final String RIBBON_INFO_CLASS = "org.geomajas.widget.utility.server.configuration.RibbonInfo";
+
 	private TabSet tabs;
 
 	/**
@@ -50,7 +52,7 @@ public class RibbonTabLayout extends VLayout {
 
 		GetClientUserDataRequest request = new GetClientUserDataRequest();
 		request.setIdentifier(beanId);
-		request.setClassName(RibbonInfo.class.getName());
+		request.setClassName(RIBBON_INFO_CLASS);
 		GwtCommand command = new GwtCommand(GetClientUserDataRequest.COMMAND);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetClientUserDataResponse>() {
