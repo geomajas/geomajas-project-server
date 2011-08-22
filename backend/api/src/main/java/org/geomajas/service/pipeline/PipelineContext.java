@@ -88,6 +88,7 @@ public interface PipelineContext {
 	 * @param defaultValue default value to be returned in case the value is missing
 	 * @param <TYPE> type for the object which needs to be get
 	 * @return value for key or null
+	 * @since 1.10.0
 	 */
 	<TYPE> TYPE getOptional(String key, Class<TYPE> type, TYPE defaultValue);
 

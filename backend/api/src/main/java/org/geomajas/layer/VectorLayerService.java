@@ -108,6 +108,7 @@ public interface VectorLayerService extends LayerService, GeomajasConstant {
 	 *        results being returned than asked for because of subsequent security filtering.
 	 * @return reader of feature value objects
 	 * @throws GeomajasException oops
+	 * @since 1.10.0
 	 */
 	List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
 			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize, boolean forcePaging)
