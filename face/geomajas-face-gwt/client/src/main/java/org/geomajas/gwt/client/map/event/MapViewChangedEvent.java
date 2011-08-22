@@ -27,14 +27,8 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
-	/**
-	 * Handler type.
-	 */
-	private static Type<MapViewChangedHandler> TYPE;
+	private static Type<MapViewChangedHandler> type;
 
-	/**
-	 * The new bounding box that has been applied on the map.
-	 */
 	private Bbox bounds;
 
 	/**
@@ -52,16 +46,17 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	private boolean mapResized;
 
 	private ZoomOption zoomOption;
-	/**
-	 * 
-	 * @param bounds
-	 * @param scale
-	 * @param panning
-	 */
 
-	// -------------------------------------------------------------------------
-	// Constructor:
-	// -------------------------------------------------------------------------
+	/**
+	 * Create new event instance.
+	 *
+	 * @param bounds bounds
+	 * @param scale scale
+	 * @param sameScaleLevel same scale level?
+	 * @param panDragging dragging to pan?
+	 * @param mapResized is map resized?
+	 * @param zoomOption zoom option
+	 */
 	public MapViewChangedEvent(Bbox bounds, double scale, boolean sameScaleLevel, boolean panDragging,
 			boolean mapResized, ZoomOption zoomOption) {
 		this.bounds = bounds;
@@ -82,10 +77,10 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	 * @return returns the handler type
 	 */
 	public static Type<MapViewChangedHandler> getType() {
-		if (TYPE == null) {
-			TYPE = new Type<MapViewChangedHandler>();
+		if (type == null) {
+			type = new Type<MapViewChangedHandler>();
 		}
-		return TYPE;
+		return type;
 	}
 
 	protected void dispatch(MapViewChangedHandler handler) {
@@ -93,17 +88,27 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	}
 
 	public final Type<MapViewChangedHandler> getAssociatedType() {
-		return TYPE;
+		return type;
 	}
 
 	// -------------------------------------------------------------------------
 	// Getters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Get the new bounding box that has been applied on the map.
+	 *
+	 * @return new bounding box
+	 */
 	public Bbox getBounds() {
 		return bounds;
 	}
 
+	/**
+	 * Get the new map scale.
+	 *
+	 * @return map scale
+	 */
 	public double getScale() {
 		return scale;
 	}

@@ -44,7 +44,7 @@ import com.smartgwt.client.util.SC;
 @Api(allMethods = true)
 public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
-	private static GwtCommandDispatcher INSTANCE;
+	private static GwtCommandDispatcher instance;
 
 	private GeomajasServiceAsync service;
 
@@ -89,10 +89,10 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * @return singleton instance
 	 */
 	public static GwtCommandDispatcher getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new GwtCommandDispatcher();
+		if (instance == null) {
+			instance = new GwtCommandDispatcher();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	public HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler) {

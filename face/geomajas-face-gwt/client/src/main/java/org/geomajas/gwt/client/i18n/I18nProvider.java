@@ -31,11 +31,11 @@ public final class I18nProvider {
 
 	private static final GlobalMessages GLOBAL = GWT.create(GlobalMessages.class);
 
-	private static final LayerTreeMessages LAYERTREE = GWT.create(LayerTreeMessages.class);
+	private static final LayerTreeMessages LAYER_TREE = GWT.create(LayerTreeMessages.class);
 
 	private static final SearchMessages SEARCH = GWT.create(SearchMessages.class);
 
-	private static ConstantsWithLookup LOOKUP = new DefaultLookup();
+	private static ConstantsWithLookup lookup = new DefaultLookup();
 
 	private I18nProvider() {
 	}
@@ -57,7 +57,7 @@ public final class I18nProvider {
 	}
 
 	public static LayerTreeMessages getLayerTree() {
-		return LAYERTREE;
+		return LAYER_TREE;
 	}
 
 	public static SearchMessages getSearch() {
@@ -71,7 +71,7 @@ public final class I18nProvider {
 	 * @return the
 	 */
 	public static ConstantsWithLookup getLookUp() {
-		return LOOKUP;
+		return lookup;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public final class I18nProvider {
 	 *            the application specific lookup bundle
 	 */
 	public static void setLookUp(ConstantsWithLookup newLookUp) {
-		LOOKUP = newLookUp;
+		lookup = newLookUp;
 	}
 
 	/**
@@ -94,7 +94,7 @@ public final class I18nProvider {
 	public static String lookupParameter(String parameter) {
 		if (parameter.startsWith("i18n:")) {
 			String methodName = parameter.substring(5).replace('.', '_');
-			return LOOKUP.getString(methodName);
+			return lookup.getString(methodName);
 		} else {
 			return parameter;
 		}

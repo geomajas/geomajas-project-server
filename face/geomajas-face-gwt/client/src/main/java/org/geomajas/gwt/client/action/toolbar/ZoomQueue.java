@@ -28,7 +28,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
  */
 public final class ZoomQueue implements MapViewChangedHandler {
 
-	private static Map<String, ZoomQueue> QUEUES = new HashMap<String, ZoomQueue>();
+	private static Map<String, ZoomQueue> queues = new HashMap<String, ZoomQueue>();
 
 	private static final double DELTA = .0001;
 
@@ -47,10 +47,10 @@ public final class ZoomQueue implements MapViewChangedHandler {
 	private boolean active = true;
 
 	public static ZoomQueue getZoomQueue(MapWidget mapWidget) {
-		ZoomQueue queue = QUEUES.get(mapWidget.getID());
+		ZoomQueue queue = queues.get(mapWidget.getID());
 		if (null == queue) {
 			queue = new ZoomQueue(mapWidget.getMapModel().getMapView());
-			QUEUES.put(mapWidget.getID(), queue);
+			queues.put(mapWidget.getID(), queue);
 		}
 		return queue;
 	}

@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 
 	/** Handler type. */
-	private static Type<DispatchStoppedHandler> TYPE;
+	private static Type<DispatchStoppedHandler> type;
 
 	// -------------------------------------------------------------------------
 	// Event implementation:
@@ -36,10 +36,10 @@ public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 	 * @return returns the handler type
 	 */
 	public static Type<DispatchStoppedHandler> getType() {
-		if (TYPE == null) {
-			TYPE = new Type<DispatchStoppedHandler>();
+		if (type == null) {
+			type = new Type<DispatchStoppedHandler>();
 		}
-		return TYPE;
+		return type;
 	}
 
 	protected void dispatch(DispatchStoppedHandler handler) {
@@ -47,7 +47,7 @@ public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {
 	}
 
 	public final Type<DispatchStoppedHandler> getAssociatedType() {
-		return TYPE;
+		return type;
 	}
 
 }
