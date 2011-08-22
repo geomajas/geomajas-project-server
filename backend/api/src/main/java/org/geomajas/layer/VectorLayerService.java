@@ -94,8 +94,8 @@ public interface VectorLayerService extends LayerService, GeomajasConstant {
 	 * documentation to be certain.</b>
 	 * </p>
 	 * <p>
-	 * <b>SECURITY WARNING: if paging is forced at the layer level (forcePaging=true), callers are able to count the number of
-	 * invisible features, creating a possible security hazard !</b>
+	 * <b>SECURITY WARNING: if paging is forced at the layer level (forcePaging=true), callers are able to count the
+	 * number of invisible features, creating a possible security hazard !</b>
 	 * </p>
 	 * <p>
 	 * Retrieve all the features from the model that this filter accepts.
