@@ -79,6 +79,19 @@ public interface PipelineContext {
 	<TYPE> TYPE getOptional(String key, Class<TYPE> type);
 
 	/**
+	 * Get the value for a key.
+	 * <p/>
+	 * These values can be used to pass values between the pipeline steps.
+	 *
+	 * @param key key for which the value needs to be obtained.
+	 * @param type class which needs to be used for the parameter
+	 * @param defaultValue default value to be returned in case the value is missing
+	 * @param <TYPE> type for the object which needs to be get
+	 * @return value for key or null
+	 */
+	<TYPE> TYPE getOptional(String key, Class<TYPE> type, TYPE defaultValue);
+
+	/**
 	 * Put context value which may be accessed by later pipeline steps.
 	 * <p/>
 	 * The put needs to be ignored if the key is null.

@@ -56,6 +56,15 @@ public class PipelineContextTest {
 	}
 	
 	@Test
+	public void testOptional() throws Exception {
+		PipelineContext context = new PipelineContextImpl();
+		Assert.assertNull(context.getOptional("text"));
+		Assert.assertEquals("someDefault", context.getOptional("text", String.class, "someDefault"));
+		context.put("text", "SomeText");
+		Assert.assertEquals("SomeText", context.getOptional("text", String.class, "someDefault"));
+	}
+	
+	@Test
 	public void testcontainsKey() throws Exception {
 		PipelineContext context = new PipelineContextImpl();
 		context.put("text", "SomeText");
