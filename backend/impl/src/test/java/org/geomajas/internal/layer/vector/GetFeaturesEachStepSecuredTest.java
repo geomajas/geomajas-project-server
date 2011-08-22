@@ -67,6 +67,16 @@ public class GetFeaturesEachStepSecuredTest {
 	@Test
 	public void testSecurity() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE), result);
+
+		Assert.assertEquals(10, result.getFeatures().size());
+		Assert.assertEquals("2", result.getFeatures().get(0).getId());
+		Assert.assertEquals("20", result.getFeatures().get(9).getId());
+	}
+
+	@Test
+	public void testSecurityNoForcePaging() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE, false), result);
 
 		Assert.assertEquals(10, result.getFeatures().size());
@@ -76,6 +86,16 @@ public class GetFeaturesEachStepSecuredTest {
 
 	@Test
 	public void testSecurityAndOffsetAndLimit() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(5, 3), result);
+
+		Assert.assertEquals(3, result.getFeatures().size());
+		Assert.assertEquals("12", result.getFeatures().get(0).getId());
+		Assert.assertEquals("16", result.getFeatures().get(2).getId());
+	}
+
+	@Test
+	public void testSecurityAndOffsetAndLimitNoForcePaging() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(5, 3, false), result);
 
@@ -96,19 +116,23 @@ public class GetFeaturesEachStepSecuredTest {
 	}
 
 	// ----------------------------------------------------------
-
-	private PipelineContext getPipelineContext(int offset, int limit, boolean forcePaging) {
+	private PipelineContext getPipelineContext(int offset, int limit, Boolean forcePaging) {
 		PipelineContext pip = new PipelineContextImpl();
 		pip.put(PipelineCode.LAYER_KEY, testLayer);
 		pip.put(PipelineCode.OFFSET_KEY, offset);
 		pip.put(PipelineCode.MAX_RESULT_SIZE_KEY, limit);
-		pip.put(PipelineCode.FORCE_PAGING_KEY, forcePaging);
-
+		if(forcePaging != null) {
+			pip.put(PipelineCode.FORCE_PAGING_KEY, forcePaging);
+		}
 		pip.put(PipelineCode.FILTER_KEY, Filter.INCLUDE);
 		pip.put(PipelineCode.FEATURE_INCLUDES_KEY, 0);
 		pip.put(PipelineCode.LAYER_ID_KEY, testLayer.getId());
 		pip.put(PipelineCode.STYLE_KEY, new NamedStyleInfo());
 
 		return pip;
+	}
+	
+	private PipelineContext getPipelineContext(int offset, int limit) {
+		return getPipelineContext(offset, limit, null);
 	}
 }

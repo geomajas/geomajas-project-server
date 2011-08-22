@@ -66,6 +66,16 @@ public class GetFeaturesEachStepTest {
 	@Test
 	public void testNoSecurityNorOffsetNorLimit() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE), result);
+
+		Assert.assertEquals(20, result.getFeatures().size());
+		Assert.assertEquals("1", result.getFeatures().get(0).getId());
+		Assert.assertEquals("20", result.getFeatures().get(19).getId());
+	}
+
+	@Test
+	public void testNorOffsetNorLimitNorForcePaging() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE, false), result);
 
 		Assert.assertEquals(20, result.getFeatures().size());
@@ -75,6 +85,16 @@ public class GetFeaturesEachStepTest {
 
 	@Test
 	public void testOffset() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(5, Integer.MAX_VALUE), result);
+
+		Assert.assertEquals(15, result.getFeatures().size());
+		Assert.assertEquals("6", result.getFeatures().get(0).getId());
+		Assert.assertEquals("20", result.getFeatures().get(14).getId());
+	}
+
+	@Test
+	public void testOffsetAndNoForcePaging() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(5, Integer.MAX_VALUE, false), result);
 
@@ -86,6 +106,16 @@ public class GetFeaturesEachStepTest {
 	@Test
 	public void testLimit() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(0, 10), result);
+
+		Assert.assertEquals(10, result.getFeatures().size());
+		Assert.assertEquals("1", result.getFeatures().get(0).getId());
+		Assert.assertEquals("10", result.getFeatures().get(9).getId());
+	}
+
+	@Test
+	public void testLimitAndNoForcePaging() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(0, 10, false), result);
 
 		Assert.assertEquals(10, result.getFeatures().size());
@@ -95,6 +125,16 @@ public class GetFeaturesEachStepTest {
 
 	@Test
 	public void testOffsetAndLimit() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(5, 10), result);
+
+		Assert.assertEquals(10, result.getFeatures().size());
+		Assert.assertEquals("6", result.getFeatures().get(0).getId());
+		Assert.assertEquals("15", result.getFeatures().get(9).getId());
+	}
+
+	@Test
+	public void testOffsetAndLimitAndNoForcePaging() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(5, 10, false), result);
 
@@ -114,13 +154,15 @@ public class GetFeaturesEachStepTest {
 	}
 
 	// ----------------------------------------------------------
-
-	private PipelineContext getPipelineContext(int offset, int limit, boolean forcePaging) {
+	
+	private PipelineContext getPipelineContext(int offset, int limit, Boolean forcePaging) {
 		PipelineContext pip = new PipelineContextImpl();
 		pip.put(PipelineCode.LAYER_KEY, testLayer);
 		pip.put(PipelineCode.OFFSET_KEY, offset);
 		pip.put(PipelineCode.MAX_RESULT_SIZE_KEY, limit);
-		pip.put(PipelineCode.FORCE_PAGING_KEY, forcePaging);
+		if(forcePaging != null) {
+			pip.put(PipelineCode.FORCE_PAGING_KEY, forcePaging);
+		}
 
 		pip.put(PipelineCode.FILTER_KEY, Filter.INCLUDE);
 		pip.put(PipelineCode.FEATURE_INCLUDES_KEY, 0);
@@ -128,5 +170,9 @@ public class GetFeaturesEachStepTest {
 		pip.put(PipelineCode.STYLE_KEY, new NamedStyleInfo());
 
 		return pip;
+	}
+	
+	private PipelineContext getPipelineContext(int offset, int limit) {
+		return getPipelineContext(offset, limit, null);
 	}
 }
