@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
@@ -39,9 +40,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
-import org.geomajas.layer.LayerType;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
@@ -84,6 +83,8 @@ public class Legend extends Canvas {
 	/**
 	 * A legend needs to be instantiated with the MapModel that contains (or will contain) the list of layers that this
 	 * legend should listen to.
+	 *
+	 * @param mapModel map model
 	 */
 	public Legend(MapModel mapModel) {
 		super();
@@ -179,35 +180,52 @@ public class Legend extends Canvas {
 
 				// Go over every truly visible layer:
 				if (layer instanceof VectorLayer) {
-					VectorLayer vLayer = (VectorLayer) layer;
+					ClientVectorLayerInfo layerInfo = ((VectorLayer) layer).getLayerInfo();
 
 					// For vector layer; loop over the style definitions:
-					for (FeatureStyleInfo styleInfo : vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+					for (FeatureStyleInfo styleInfo : layerInfo.getNamedStyleInfo().getFeatureStyles()) {
 						ShapeStyle style = new ShapeStyle(styleInfo);
 						graphics.drawSymbolDefinition(null, styleInfo.getStyleId(), styleInfo.getSymbol(),
 								new ShapeStyle(styleInfo), null);
 						lineCount++;
 
-						if (vLayer.getLayerInfo().getLayerType() == LayerType.LINESTRING
-								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTILINESTRING) {
-							// Lines, draw a LineString;
-							Coordinate[] coordinates = new Coordinate[4];
-							coordinates[0] = new Coordinate(10, y);
-							coordinates[1] = new Coordinate(10 + 10, y + 5);
-							coordinates[2] = new Coordinate(10 + 5, y + 10);
-							coordinates[3] = new Coordinate(10 + 15, y + 15);
-							LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
-							graphics.drawLine(parentGroup, "style" + lineCount, line, style);
-						} else if (vLayer.getLayerInfo().getLayerType() == LayerType.POLYGON
-								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOLYGON) {
-							// Polygons: draw a rectangle:
-							Bbox rect = new Bbox(10, y, 16, 16);
-							graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
-						} else if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT
-								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOINT) {
-							// Points: draw a symbol:
-							graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 8), style,
-									styleInfo.getStyleId());
+						switch (layerInfo.getLayerType()) {
+							case LINESTRING:
+							case MULTILINESTRING:
+								// Lines, draw a LineString;
+								Coordinate[] coordinates = new Coordinate[4];
+								coordinates[0] = new Coordinate(10, y);
+								coordinates[1] = new Coordinate(10 + 10, y + 5);
+								coordinates[2] = new Coordinate(10 + 5, y + 10);
+								coordinates[3] = new Coordinate(10 + 15, y + 15);
+								LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
+								graphics.drawLine(parentGroup, "style" + lineCount, line, style);
+								break;
+							case POLYGON:
+							case MULTIPOLYGON:
+								// Polygons: draw a rectangle:
+								Bbox rect = new Bbox(10, y, 16, 16);
+								graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
+								break;
+							case POINT:
+							case MULTIPOINT:
+								// Points: draw a symbol:
+								graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 8), style,
+										styleInfo.getStyleId());
+								break;
+							case GEOMETRY:
+								// Lines + point
+								Coordinate[] linePoints = new Coordinate[3];
+								linePoints[0] = new Coordinate(10, y);
+								linePoints[1] = new Coordinate(10 + 10, y + 5);
+								linePoints[2] = new Coordinate(10 + 5, y + 10);
+								LineString geometryLine = mapModel.getGeometryFactory().createLineString(linePoints);
+								graphics.drawLine(parentGroup, "style" + lineCount, geometryLine, style);
+								graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 12), style,
+										styleInfo.getStyleId());
+								break;
+							default:
+								throw new IllegalStateException("Unhandled layer type " + layerInfo.getLayerType());
 						}
 
 						// After the style, draw the style's name:
@@ -240,7 +258,6 @@ public class Legend extends Canvas {
 				}
 
 				public void onVisibleChange(LayerShownEvent event) {
-					GWT.log("Legend: onVisibleChange()");
 					render();
 				}
 
@@ -248,7 +265,6 @@ public class Legend extends Canvas {
 			registrations.add(layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
 				public void onLayerStyleChange(LayerStyleChangeEvent event) {
-					GWT.log("Legend: onLayerStyleChange()");
 					render();
 				}
 			}));
@@ -261,7 +277,6 @@ public class Legend extends Canvas {
 				}
 			});
 		}
-		GWT.log("Legend.initialize");
 		render();
 	}
 
