@@ -53,12 +53,16 @@ public class PipelineContextImpl implements PipelineContext {
 		return res;
 	}
 
-	public <TYPE> TYPE getOptional(String key, Class<TYPE> type) {
+	public <TYPE> TYPE getOptional(String key, Class<TYPE> type, TYPE defaultValue) {
 		Object obj = map.get(key);
 		if (null != obj && type.isAssignableFrom(obj.getClass())) {
 			return (TYPE) obj;
 		}
-		return null;
+		return defaultValue;
+	}
+
+	public <TYPE> TYPE getOptional(String key, Class<TYPE> type) {
+		return getOptional(key, type, null);
 	}
 
 	public Object put(String key, Object value) {
