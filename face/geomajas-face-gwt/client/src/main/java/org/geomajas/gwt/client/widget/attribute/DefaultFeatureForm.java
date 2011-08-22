@@ -391,7 +391,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 */
 	public void fromForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = attributeInfoMap.get(name);
-		if (attribute == null || !isIncluded(info)) {
+		if (attribute == null || info == null || !isIncluded(info)) {
 			return;
 		}
 		if (info instanceof PrimitiveAttributeInfo) {
