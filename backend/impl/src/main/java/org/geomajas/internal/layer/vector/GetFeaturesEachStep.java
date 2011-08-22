@@ -80,6 +80,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 			int maxResultSize = context.get(PipelineCode.MAX_RESULT_SIZE_KEY, Integer.class);
 			int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
 			NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
+			boolean forcePaging = context.getOptional(PipelineCode.FORCE_PAGING_KEY, Boolean.class, false);
 			CrsTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
 			List<StyleFilter> styleFilters = context.getOptional(GetFeaturesStyleStep.STYLE_FILTERS_KEY, List.class);
 
@@ -87,7 +88,12 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 				log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
 			}
 			Envelope bounds = null;
-			Iterator<?> it = layer.getElements(filter, 0, 0); // do not limit result here, security needs to be applied
+			Iterator<?> it = null;
+			if (forcePaging) {
+				it = layer.getElements(filter, offset, maxResultSize);
+			} else {
+				it = layer.getElements(filter, 0, 0); // do not limit result here, security needs to be applied
+			}
 
 			int count = 0;
 			while (it.hasNext()) {
@@ -98,7 +104,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 						styleFilters, style.getLabelStyle(), featureIncludes);
 				if (null != feature) {
 					count++;
-					if (count > offset) {
+					if (count > offset || forcePaging) {
 						features.add(feature);
 
 						if (null != geometry) {

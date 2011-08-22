@@ -22,7 +22,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * Simple authorization class, allows everything.
+ * Simple authorization class, allows everything to features with even id and nothing to features with odd id.
  *
  * @author Kristof Heirwegh
  * @author Joachim Van der Auwera

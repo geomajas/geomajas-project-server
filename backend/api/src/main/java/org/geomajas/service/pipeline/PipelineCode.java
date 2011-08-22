@@ -52,4 +52,6 @@ public interface PipelineCode {
 	String TILE_METADATA_KEY = "tileMetadata"; // TileMetadata
 	/** @since 1.9.0 */
 	String CRS_BACK_TRANSFORM_KEY = "crsBackTransform"; // CrsTransform (layer -> request)
+	/** @since 1.10.0 */
+	String FORCE_PAGING_KEY = "forcePaging"; // Boolean (default false)
 }

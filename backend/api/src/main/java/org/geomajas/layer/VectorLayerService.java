@@ -89,6 +89,30 @@ public interface VectorLayerService extends LayerService, GeomajasConstant {
 			throws GeomajasException;
 
 	/**
+	 * <p>
+	 * <b>Note that not all vector layers may support the offset or maxResultSize parameters! Check the individual layer
+	 * documentation to be certain.</b>
+	 * </p>
+	 * <p>
+	 * Retrieve all the features from the model that this filter accepts.
+	 * </p>
+	 * 
+	 * @param layerId id of layer to get features from
+	 * @param crs which should be used for the geometries in the features
+	 * @param filter filter to be applied
+	 * @param style style to apply
+	 * @param featureIncludes indicate which data to include in the features
+	 * @param offset Skip the first 'offset' features in the result. This is meant for paging.
+	 * @param maxResultSize Limit the result to a maximum number of features. Can be used for paging.
+	 * @param forcePaging Forces paging at layer level. This optimizes performance at the expense of (possibly) fewer
+	 *        results being returned than asked for because of subsequent security filtering.
+	 * @return reader of feature value objects
+	 * @throws GeomajasException oops
+	 */
+	List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize, boolean forcePaging)
+			throws GeomajasException;
+	/**
 	 * Retrieve the bounds of the specified features.
 	 *
 	 * @param layerId id of layer to get bounds for

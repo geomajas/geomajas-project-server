@@ -67,7 +67,7 @@ public class GetFeaturesEachStepSecuredTest {
 	@Test
 	public void testSecurity() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
-		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE), result);
+		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE, false), result);
 
 		Assert.assertEquals(10, result.getFeatures().size());
 		Assert.assertEquals("2", result.getFeatures().get(0).getId());
@@ -77,20 +77,32 @@ public class GetFeaturesEachStepSecuredTest {
 	@Test
 	public void testSecurityAndOffsetAndLimit() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
-		gfes.execute(getPipelineContext(5, 3), result);
+		gfes.execute(getPipelineContext(5, 3, false), result);
 
 		Assert.assertEquals(3, result.getFeatures().size());
 		Assert.assertEquals("12", result.getFeatures().get(0).getId());
 		Assert.assertEquals("16", result.getFeatures().get(2).getId());
 	}
 
+	@Test
+	public void testSecurityAndOffsetAndLimitAndForcePaging() throws Exception {
+		GetFeaturesContainer result = new GetFeaturesContainer();
+		gfes.execute(getPipelineContext(5, 3, true), result);
+		// only 2 out of 3 are even
+		Assert.assertEquals(2, result.getFeatures().size());
+		// offset is now applied to all features, so starts with 5 (or id=6)
+		Assert.assertEquals("6", result.getFeatures().get(0).getId());
+		Assert.assertEquals("8", result.getFeatures().get(1).getId());
+	}
+
 	// ----------------------------------------------------------
 
-	private PipelineContext getPipelineContext(int offset, int limit) {
+	private PipelineContext getPipelineContext(int offset, int limit, boolean forcePaging) {
 		PipelineContext pip = new PipelineContextImpl();
 		pip.put(PipelineCode.LAYER_KEY, testLayer);
 		pip.put(PipelineCode.OFFSET_KEY, offset);
 		pip.put(PipelineCode.MAX_RESULT_SIZE_KEY, limit);
+		pip.put(PipelineCode.FORCE_PAGING_KEY, forcePaging);
 
 		pip.put(PipelineCode.FILTER_KEY, Filter.INCLUDE);
 		pip.put(PipelineCode.FEATURE_INCLUDES_KEY, 0);

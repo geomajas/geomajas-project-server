@@ -109,9 +109,14 @@ public class VectorLayerServiceImpl extends LayerServiceImpl implements VectorLa
 		log.debug("saveOrUpdate done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
 			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize) throws GeomajasException {
+		return getFeatures(layerId, crs, queryFilter, style, featureIncludes, offset, maxResultSize, false);
+	}
+	@SuppressWarnings("unchecked")
+	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
+			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize, boolean forcePaging)
+			throws GeomajasException {
 		log.debug("getFeatures start on layer {}", layerId);
 		long ts = System.currentTimeMillis();
 		VectorLayer layer = getVectorLayer(layerId);
@@ -130,6 +135,7 @@ public class VectorLayerServiceImpl extends LayerServiceImpl implements VectorLa
 		context.put(PipelineCode.FEATURE_INCLUDES_KEY, featureIncludes);
 		context.put(PipelineCode.OFFSET_KEY, offset);
 		context.put(PipelineCode.MAX_RESULT_SIZE_KEY, maxResultSize);
+		context.put(PipelineCode.FORCE_PAGING_KEY, forcePaging);
 		pipelineService.execute(PipelineCode.PIPELINE_GET_FEATURES, layerId, context, container);
 		log.debug("getFeatures done on layer {}, time {}s", layerId, (System.currentTimeMillis() - ts) / 1000.0);
 		return container.getFeatures();
