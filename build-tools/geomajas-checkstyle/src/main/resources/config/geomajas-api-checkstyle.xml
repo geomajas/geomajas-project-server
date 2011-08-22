@@ -120,9 +120,7 @@
 		<module name="MethodName"/>
 		<module name="PackageName"/>
 		<module name="ParameterName"/>
-		<module name="StaticVariableName">
-			<property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*)$"/>
-		</module>
+		<module name="StaticVariableName"/>
 		<module name="TypeName"/>
 
 		<!-- imports, see http://checkstyle.sourceforge.net/config_imports.html -->
