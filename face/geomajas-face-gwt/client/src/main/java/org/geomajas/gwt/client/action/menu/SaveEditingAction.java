@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.map.workflow.WorkflowProcessor;
 import org.geomajas.gwt.client.map.workflow.activity.Activity;
 import org.geomajas.gwt.client.map.workflow.activity.CommitActivity;
 import org.geomajas.gwt.client.map.workflow.activity.ValidationActivity;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -71,7 +72,7 @@ public class SaveEditingAction extends MenuAction {
 	 *            The <code>MapModel</code> on which editing is in progress.
 	 */
 	public SaveEditingAction(MapModel mapModel) {
-		super(I18nProvider.getMenu().saveEditing(), "[ISOMORPHIC]/geomajas/osgeo/save.png");
+		super(I18nProvider.getMenu().saveEditing(), WidgetLayout.iconDownload);
 		this.mapModel = mapModel;
 	}
 

@@ -60,6 +60,7 @@ import com.smartgwt.client.widgets.tree.events.FolderClickHandler;
 import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 import org.geomajas.gwt.client.util.Log;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * The LayerTree shows a tree resembling the available layers for the map Several actions can be executed on the layers
@@ -569,14 +570,14 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			if (getLayer().isShowing()) {
 				if (getLayer().isLabeled()) {
 					// show icon labeled and showing
-					setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png");
+					setIcon(WidgetLayout.iconLayerShowLabeled);
 				} else {
 					// show showing icon
-					setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png");
+					setIcon(WidgetLayout.iconLayerShow);
 				}
 			} else {
 				// show not showing
-				setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png");
+				setIcon(WidgetLayout.iconLayerHide);
 			}
 			tree.refreshIcons();
 		}

@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.action.layertree;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Action that switches visibility of a layer.
@@ -23,9 +24,7 @@ import org.geomajas.gwt.client.map.layer.Layer;
 public class LayerVisibleModalAction extends LayerTreeModalAction {
 
 	public LayerVisibleModalAction() {
-		super("[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png",
-				"[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png",
-				"[ISOMORPHIC]/geomajas/widget/layertree/layer-disabled.png",
+		super(WidgetLayout.iconLayerShow, WidgetLayout.iconLayerHide, WidgetLayout.iconLayerDisabled,
 				I18nProvider.getLayerTree().inVisibleAction(), I18nProvider.getLayerTree().visibleAction());
 	}
 

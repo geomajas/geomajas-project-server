@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.smartgwt.client.util.SC;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * An optional action for the LayerTree, that displays a help overview of how to use the LayerTree.
@@ -24,8 +25,8 @@ import com.smartgwt.client.util.SC;
 public class LayerTreeHelpAction extends LayerTreeAction {
 
 	public LayerTreeHelpAction() {
-		super("[ISOMORPHIC]/geomajas/osgeo/help-contents.png", I18nProvider.getLayerTree().layerTreeHelp(),
-				"[ISOMORPHIC]/geomajas/osgeo/help-contents.png");
+		super(WidgetLayout.iconHelpContents, I18nProvider.getLayerTree().layerTreeHelp(),
+				WidgetLayout.iconHelpContents);
 	}
 
 	public void onClick(Layer<?> layer) {

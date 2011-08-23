@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
@@ -28,8 +29,7 @@ public class LayerRefreshAction extends LayerTreeAction {
 	private MapWidget map;
 
 	public LayerRefreshAction(MapWidget map) {
-		super("[ISOMORPHIC]/geomajas/widget/layertree/refresh.png", I18nProvider.getLayerTree().layerRefresh(),
-				"[ISOMORPHIC]/geomajas/widget/layertree/refresh-disabled.png");
+		super(WidgetLayout.iconRefresh, I18nProvider.getLayerTree().layerRefresh(), WidgetLayout.iconRefreshDisabled);
 		this.map = map;
 	}
 

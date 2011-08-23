@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -42,7 +43,7 @@ public class CancelEditingAction extends MenuAction {
 	 *            The current parent editing controller active on the map.
 	 */
 	public CancelEditingAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().cancelEditing(), "[ISOMORPHIC]/geomajas/osgeo/quit.png");
+		super(I18nProvider.getMenu().cancelEditing(), WidgetLayout.iconQuit);
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 	}

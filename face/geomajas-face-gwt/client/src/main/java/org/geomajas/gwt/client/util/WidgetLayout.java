@@ -39,12 +39,46 @@ public final class WidgetLayout {
 	public static String iconEdit = "[ISOMORPHIC]/geomajas/osgeo/edit.png";
 	/** Save icon. */
 	public static String iconSave = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
+	/** Download icon. */
+	public static String iconDownload = "[ISOMORPHIC]/geomajas/osgeo/save.png";
 	/** Undo icon. */
 	public static String iconUndo = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 	/** Quit icon. */
 	public static String iconQuit = "[ISOMORPHIC]/geomajas/osgeo/quit.png";
+	/** Info icon. */
+	public static String iconInfo = "[ISOMORPHIC]/geomajas/osgeo/info.png";
+	/** Undo icon. */
+	public static String iconUndo = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
+	/** Table icon. */
+	public static String iconTable = "[ISOMORPHIC]/geomajas/osgeo/table.png";
 	/** Zoom to selection icon. */
 	public static String iconZoomSelect = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
+	/** Show labels icon. */
+	public static String iconLabelsShow = "[ISOMORPHIC]/geomajas/widget/layertree/labels-show.png";
+	/** Hide labels icon. */
+	public static String iconLabelsHide = "[ISOMORPHIC]/geomajas/widget/layertree/labels-hide.png";
+	/** Disabled labels icon. */
+	public static String iconLabelsDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/labels-disabled.png";
+	/** Show layer icon. */
+	public static String iconLayerShow = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png";
+	/** Show layer labelled icon. */
+	public static String iconLayerShowLabeled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png";
+	/** Hide layer icon. */
+	public static String iconLayerHide = "[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png";
+	/** Disabled layer icon. */
+	public static String iconLayerDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-disabled.png";
+	/** Hide layer icon. */
+	public static String iconRefresh = "[ISOMORPHIC]/geomajas/widget/layertree/refresh-hide.png";
+	/** Disabled layer icon. */
+	public static String iconRefreshDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/refresh-disabled.png";
+	/** Tips icon. */
+	public static String iconTips = "[ISOMORPHIC]/geomajas/osgeo/tips.png";
+	/** Help contents icon. */
+	public static String iconHelpContents = "[ISOMORPHIC]/geomajas/osgeo/help-contents.png";
+	/** Error icon. */
+	public static String iconError = "[ISOMORPHIC]/geomajas/widget/error.png";
+	/** icon. */
+	public static String icon = ;
 
 	/** Background colour for the legend widget. */
 	public static String legendBackgroundColor = "#FFFFFF";

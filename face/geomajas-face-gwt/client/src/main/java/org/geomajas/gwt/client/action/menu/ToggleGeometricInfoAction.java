@@ -16,6 +16,7 @@ import org.geomajas.gwt.client.controller.editing.EditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Toggle a label that shows geometric information about the geometry being edited.
@@ -31,7 +32,7 @@ public class ToggleGeometricInfoAction extends MenuAction {
 	 *            The edit controller currently active.
 	 */
 	public ToggleGeometricInfoAction(EditController editController) {
-		super(I18nProvider.getMenu().toggleGeometricInfo(), "[ISOMORPHIC]/geomajas/osgeo/info.png");
+		super(I18nProvider.getMenu().toggleGeometricInfo(), WidgetLayout.iconInfo);
 		this.editController = editController;
 	}
 

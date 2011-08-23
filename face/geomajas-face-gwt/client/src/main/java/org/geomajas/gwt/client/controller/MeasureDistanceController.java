@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperation;
 import org.geomajas.gwt.client.util.DistanceFormat;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -203,7 +204,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		private final MeasureDistanceController controller;
 
 		public CancelMeasuringAction(final MeasureDistanceController controller) {
-			super(I18nProvider.getMenu().cancelMeasuring(), "[ISOMORPHIC]/geomajas/osgeo/quit.png");
+			super(I18nProvider.getMenu().cancelMeasuring(), WidgetLayout.iconQuit);
 			this.controller = controller;
 			setEnableIfCondition(new MenuItemIfFunction() {
 

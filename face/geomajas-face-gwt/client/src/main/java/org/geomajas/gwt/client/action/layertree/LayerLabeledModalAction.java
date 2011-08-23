@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.action.layertree;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Action that switches the labels on a layer.
@@ -24,9 +25,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 public class LayerLabeledModalAction extends LayerTreeModalAction {
 
 	public LayerLabeledModalAction() {
-		super("[ISOMORPHIC]/geomajas/widget/layertree/labels-show.png",
-				"[ISOMORPHIC]/geomajas/widget/layertree/labels-hide.png",
-				"[ISOMORPHIC]/geomajas/widget/layertree/labels-disabled.png",
+		super(WidgetLayout.iconLabelsShow, WidgetLayout.iconLabelsHide, WidgetLayout.iconLabelsDisabled,
 				I18nProvider.getLayerTree().labelHideAction(), I18nProvider.getLayerTree().labelAction());
 	}
 

@@ -25,6 +25,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * <p>
@@ -73,7 +74,7 @@ public class ExceptionWindow extends Window {
 	/** Build the entire GUI for this widget. */
 	private void buildGui() {
 		setTitle(I18nProvider.getGlobal().commandError());
-		setHeaderIcon("[ISOMORPHIC]/geomajas/widget/error.png");
+		setHeaderIcon(WidgetLayout.iconError);
 		setIsModal(true);
 		setShowModalMask(true);
 		setModalMaskOpacity(50);
@@ -95,7 +96,7 @@ public class ExceptionWindow extends Window {
 
 		HLayout topLayout = new HLayout(20);
 		topLayout.setWidth100();
-		Img icon = new Img("[ISOMORPHIC]/geomajas/widget/error.png", 64, 64);
+		Img icon = new Img(WidgetLayout.iconError, 64, 64);
 		topLayout.addMember(icon);
 		HTMLFlow message = new HTMLFlow();
 		message.setWidth100();

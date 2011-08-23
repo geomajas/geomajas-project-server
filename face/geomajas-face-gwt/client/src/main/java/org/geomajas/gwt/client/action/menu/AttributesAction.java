@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -43,7 +44,7 @@ public class AttributesAction extends MenuAction {
 	 *            The map on which editing is going on.
 	 */
 	public AttributesAction(MapWidget mapWidget) {
-		super(I18nProvider.getMenu().editAttributes(), "[ISOMORPHIC]/geomajas/osgeo/table.png");
+		super(I18nProvider.getMenu().editAttributes(), WidgetLayout.iconTable);
 		this.mapWidget = mapWidget;
 	}
 

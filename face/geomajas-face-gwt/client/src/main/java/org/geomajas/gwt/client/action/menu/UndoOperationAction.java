@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.operation.AddCoordinateOp;
 import org.geomajas.gwt.client.map.feature.operation.FeatureOperation;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -45,7 +46,7 @@ public class UndoOperationAction extends MenuAction implements MenuItemIfFunctio
 	 *            The actual child edit controller, not the parent!
 	 */
 	public UndoOperationAction(MapWidget mapWidget, EditController controller) {
-		super(I18nProvider.getMenu().undoOperation(), "[ISOMORPHIC]/geomajas/osgeo/undo.png");
+		super(I18nProvider.getMenu().undoOperation(), WidgetLayout.iconUndo);
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

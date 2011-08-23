@@ -28,6 +28,7 @@ import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 import java.util.Collection;
 
@@ -39,7 +40,7 @@ import java.util.Collection;
 public class AboutAction extends MenuAction {
 
 	public AboutAction() {
-		super(I18nProvider.getGlobal().aboutMenuTitle(), "[ISOMORPHIC]/geomajas/osgeo/tips.png");
+		super(I18nProvider.getGlobal().aboutMenuTitle(), WidgetLayout.iconTips);
 	}
 
 	public void onClick(MenuItemClickEvent event) {
