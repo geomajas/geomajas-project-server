@@ -11,6 +11,13 @@
 
 package org.geomajas.widget.utility.smartgwt.client.wizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.widget.utility.smartgwt.client.wizard.WizardButton.ButtonType;
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -18,16 +25,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import org.geomajas.gwt.client.widget.wizard.Wizard;
-import org.geomajas.gwt.client.widget.wizard.WizardButton;
-import org.geomajas.gwt.client.widget.wizard.WizardButton.ButtonType;
-import org.geomajas.gwt.client.widget.wizard.WizardPage;
-import org.geomajas.gwt.client.widget.wizard.WizardView;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WizardTest {
 
