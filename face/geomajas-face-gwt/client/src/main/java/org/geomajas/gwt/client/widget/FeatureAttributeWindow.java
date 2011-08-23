@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smartgwt.client.types.Overflow;
 import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.menu.SaveEditingAction;
@@ -27,6 +28,7 @@ import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 import org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory;
 
@@ -57,7 +59,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * <p>
  * On top of that, this widget has a few options regarding the editing of a feature's attributes:
  * <ul>
- * <li><b>editingAllowed</b>: Is editing �berhaupt allowed? This must be set BEFORE the widget is actually drawn,
+ * <li><b>editingAllowed</b>: Is editing allowed? This must be set BEFORE the widget is actually drawn,
  * because afterwards it won't have any effect anymore.</li>
  * <li><b>editingEnabled</b>: Is editing currently enabled or not? This widget can toggle this value on the fly. When
  * editing is enabled, it will display an editable attribute form with save, cancel and reset buttons. When editing is
@@ -95,10 +97,6 @@ public class FeatureAttributeWindow extends Window {
 	private MapModel mapModel;
 
 	private IButton saveButton;
-
-	private IButton resetButton;
-
-	private IButton cancelButton;
 
 	private IButton editButton;
 
@@ -140,12 +138,38 @@ public class FeatureAttributeWindow extends Window {
 		} else {
 			this.factory = factory;
 		}
+
+		setAutoSize(true);
+		setWidth("*");
+		setHeight("*");
+		setKeepInParentRect(true);
+		setMaxWidth(com.google.gwt.user.client.Window.getClientWidth() - WidgetLayout.windowOffset * 2);
+		setMaxHeight(com.google.gwt.user.client.Window.getClientHeight() - WidgetLayout.windowOffset * 2);
+		if (WidgetLayout.featureAttributeWindowWidth > 0) {
+			setWidth(WidgetLayout.featureAttributeWindowWidth);
+			setAutoSize(false);
+		}
+		if (WidgetLayout.featureAttributeWindowHeight > 0) {
+			setHeight(WidgetLayout.featureAttributeWindowHeight);
+			setAutoSize(false);
+		}
+		setOverflow(Overflow.AUTO);
+
 		setEditingAllowed(editingAllowed);
 		if (feature != null) {
 			buildWidget(feature.getLayer());
 			mapModel.addFeatureTransactionHandler(new ApplyFeatureTransactionToWindow());
 			setFeature(feature);
 		}
+	}
+
+	@Override
+	public void draw() {
+		// try to force to be inside the screen
+		if (WidgetLayout.featureAttributeWindowKeepInScreen) {
+			WidgetLayout.keepWindowInScreen(this);
+		}
+		super.draw();
 	}
 
 	// -------------------------------------------------------------------------
@@ -156,13 +180,10 @@ public class FeatureAttributeWindow extends Window {
 	 * Validate the current attribute values on display. Returns true if all attribute values have been validated, false
 	 * otherwise.
 	 * 
-	 * @return
+	 * @return true if all attributes are valid
 	 */
 	public boolean validate() {
-		if (attributeTable != null) {
-			return attributeTable.validate();
-		}
-		return false;
+		return attributeTable != null && attributeTable.validate();
 	}
 
 	/**
@@ -170,7 +191,7 @@ public class FeatureAttributeWindow extends Window {
 	 * possible that this feature will hold values that have not been validated, so it is recommended to run the
 	 * <code>validate</code> method first.
 	 * 
-	 * @return
+	 * @return feature
 	 */
 	public Feature getFeature() {
 		if (attributeTable != null) {
@@ -230,7 +251,7 @@ public class FeatureAttributeWindow extends Window {
 	 * buttons will disappear, and a simple attribute form is shown that displays the attribute values, but does not
 	 * allow for editing.
 	 * 
-	 * @return
+	 * @return true if editing is enabled
 	 */
 	public boolean isEditingEnabled() {
 		return editingEnabled;
@@ -262,9 +283,9 @@ public class FeatureAttributeWindow extends Window {
 	}
 
 	/**
-	 * The toolstrip at the top which contains the zoom and save buttons.
+	 * The tool strip at the top which contains the zoom and save buttons.
 	 * 
-	 * @return
+	 * @return tool strip
 	 */
 	public ToolStrip getToolStrip() {
 		return toolStrip;
@@ -282,7 +303,6 @@ public class FeatureAttributeWindow extends Window {
 	private void buildWidget(VectorLayer layer) {
 		mapModel = layer.getMapModel();
 
-		setAutoSize(true);
 		setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
 		setCanDragReposition(true);
 		setCanDragResize(true);
@@ -304,8 +324,8 @@ public class FeatureAttributeWindow extends Window {
 
 		savePanel = new HLayout(10);
 		saveButton = new SaveButton();
-		resetButton = new ResetButton();
-		cancelButton = new CancelButton();
+		IButton resetButton = new ResetButton();
+		IButton cancelButton = new CancelButton();
 		savePanel.addMember(saveButton);
 		savePanel.addMember(resetButton);
 		savePanel.addMember(cancelButton);
@@ -314,15 +334,10 @@ public class FeatureAttributeWindow extends Window {
 		savePanel.setPadding(10);
 
 		VLayout layout = new VLayout();
-		layout.setWidth100();
 		layout.addMember(toolStrip);
 		layout.addMember(attributeTable);
 		layout.addMember(savePanel);
-
-		VLayout bottom = new VLayout();
-		bottom.setHeight100();
-		layout.addMember(bottom);
-		layout.setWidth(450);
+		layout.setWidth(WidgetLayout.featureAttributeWindowLayoutWidth);
 		addItem(layout);
 
 		// Set the save button as disabled at startup:
@@ -342,7 +357,7 @@ public class FeatureAttributeWindow extends Window {
 	private class EditButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public EditButton() {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/edit.png");
+			setIcon(WidgetLayout.iconEdit);
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnEditTitle());
 			setTooltip(I18nProvider.getAttribute().btnEditTooltip());
@@ -371,7 +386,7 @@ public class FeatureAttributeWindow extends Window {
 	private class ZoomButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public ZoomButton() {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png");
+			setIcon(WidgetLayout.iconZoomSelect);
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnZoomFeature());
 			setTooltip(I18nProvider.getAttribute().btnZoomTooltip());
@@ -393,7 +408,7 @@ public class FeatureAttributeWindow extends Window {
 	private class SaveButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public SaveButton() {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/save1.png");
+			setIcon(WidgetLayout.iconSave);
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnSaveTitle());
 			setTooltip(I18nProvider.getAttribute().btnSaveTooltip());
@@ -428,7 +443,7 @@ public class FeatureAttributeWindow extends Window {
 	private class ResetButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public ResetButton() {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/undo.png");
+			setIcon(WidgetLayout.iconUndo);
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnResetTitle());
 			setTooltip(I18nProvider.getAttribute().btnResetTooltip());
@@ -448,7 +463,7 @@ public class FeatureAttributeWindow extends Window {
 	private class CancelButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public CancelButton() {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/quit.png");
+			setIcon(WidgetLayout.iconQuit);
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnCancelTitle());
 			setTooltip(I18nProvider.getAttribute().btnCancelTooltip());
@@ -466,7 +481,6 @@ public class FeatureAttributeWindow extends Window {
 	 * Applies feature transaction changes to this window.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	private class ApplyFeatureTransactionToWindow implements FeatureTransactionHandler {
 
