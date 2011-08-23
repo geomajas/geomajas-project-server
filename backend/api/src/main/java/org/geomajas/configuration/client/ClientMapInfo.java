@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +23,16 @@ import org.geomajas.geometry.Bbox;
 
 /**
  * Map configuration.
+ * <p>
+ * Since version 1.10.0 this configuration object implements the <code>ClientWidgetInfo</code>, so that it can be easily
+ * retrieved like any other widget configuration object.
+ * </p>
  * 
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ClientMapInfo implements Serializable {
+public class ClientMapInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 151L;
 
@@ -78,7 +81,7 @@ public class ClientMapInfo implements Serializable {
 	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	private ClientUserDataInfo userData;
-	
+
 	private ClientPreferredPixelsPerTile preferredPixelsPerTile = new ClientPreferredPixelsPerTile();
 
 	/**
@@ -508,7 +511,7 @@ public class ClientMapInfo implements Serializable {
 
 	/**
 	 * Get configuration for (custom) map widgets.
-	 *
+	 * 
 	 * @return map keyed on widget id containing widget configurations
 	 * @since 1.8.0
 	 */
@@ -519,8 +522,9 @@ public class ClientMapInfo implements Serializable {
 
 	/**
 	 * Get configuration for a (custom) map widgets.
-	 *
-	 * @param widget widget key
+	 * 
+	 * @param widget
+	 *            widget key
 	 * @return widget configuration
 	 * @since 1.8.0
 	 */
@@ -531,8 +535,9 @@ public class ClientMapInfo implements Serializable {
 
 	/**
 	 * Set configuration for (custom) map widgets.
-	 *
-	 * @param widgetInfo map keyed on widget id containing widget configurations
+	 * 
+	 * @param widgetInfo
+	 *            map keyed on widget id containing widget configurations
 	 * @since 1.8.0
 	 */
 	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
@@ -562,9 +567,10 @@ public class ClientMapInfo implements Serializable {
 
 	/**
 	 * Set the preferred pixels per tile size you wish the client will fetch from the server. This allows some tweaks
-	 * for performance. The default is closest to 256x256 pixels. 
+	 * for performance. The default is closest to 256x256 pixels.
 	 * 
-	 * @param preferredPixelsPerTile the preferredPixelsPerTile to set
+	 * @param preferredPixelsPerTile
+	 *            the preferredPixelsPerTile to set
 	 * @since 1.9.0
 	 */
 	@Api
