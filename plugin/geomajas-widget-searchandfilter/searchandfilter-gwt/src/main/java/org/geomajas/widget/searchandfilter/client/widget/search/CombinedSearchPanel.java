@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -69,6 +69,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		super(mapWidget);
 		VLayout layout = new VLayout(10);
 		layout.setWidth100();
+		layout.setHeight(1);
 
 		// -- operator type --
 		operatorForm = new DynamicForm();
