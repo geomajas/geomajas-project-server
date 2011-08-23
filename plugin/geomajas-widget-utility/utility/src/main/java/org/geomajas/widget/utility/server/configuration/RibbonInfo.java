@@ -13,7 +13,7 @@ package org.geomajas.widget.utility.server.configuration;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientUserDataInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 
 /**
  * Ribbon configuration information object. This object represents a tabbed ribbon, not a single bar.
@@ -22,7 +22,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class RibbonInfo implements ClientUserDataInfo {
+public class RibbonInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 100L;
 

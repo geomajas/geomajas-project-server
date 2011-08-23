@@ -89,7 +89,7 @@ public class Showcase implements EntryPoint {
 		layout.setPadding(5);
 
 		MapWidget mapWidget = new MapWidget("mapOsm", "widget-utility");
-		final RibbonBarLayout ribbonBar = new RibbonBarLayout(mapWidget, "ribbon-bar-1");
+		final RibbonBarLayout ribbonBar = new RibbonBarLayout(mapWidget, "widget-utility", "ribbon-bar-1");
 		ribbonBar.setSize("100%", "94px");
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -113,7 +113,7 @@ public class Showcase implements EntryPoint {
 		layout.setPadding(5);
 
 		MapWidget mapWidget = new MapWidget("mapWmsCountries", "widget-utility");
-		final RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "ribbon-1");
+		final RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "widget-utility", "ribbon-1");
 		ribbon.setSize("100%", "120px");
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -137,7 +137,7 @@ public class Showcase implements EntryPoint {
 		layout.setPadding(5);
 
 		MapWidget mapWidget = new MapWidget("mapCountries", "widget-utility");
-		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "ribbon-bar-2");
+		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "widget-utility", "ribbon-bar-2");
 		ribbon.setSize("100%", "80px");
 
 		layout.addMember(ribbon);
@@ -150,7 +150,7 @@ public class Showcase implements EntryPoint {
 		layout.setPadding(5);
 
 		MapWidget mapWidget = new MapWidget("mapWms", "widget-utility");
-		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "ribbon-bar-3");
+		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "widget-utility", "ribbon-bar-3");
 		ribbon.setStyleName("myRibbon");
 		ribbon.setSize("100%", "94px");
 

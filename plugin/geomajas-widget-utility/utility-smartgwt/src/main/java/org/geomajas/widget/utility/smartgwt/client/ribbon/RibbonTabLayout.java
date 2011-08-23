@@ -11,11 +11,8 @@
 
 package org.geomajas.widget.utility.smartgwt.client.ribbon;
 
-import org.geomajas.command.dto.GetClientUserDataRequest;
-import org.geomajas.command.dto.GetClientUserDataResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.service.ConfigurationService;
+import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.client.ribbon.RibbonBar;
 import org.geomajas.widget.utility.server.configuration.RibbonBarInfo;
@@ -32,8 +29,6 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class RibbonTabLayout extends VLayout {
 
-	private static final String RIBBON_INFO_CLASS = "org.geomajas.widget.utility.server.configuration.RibbonInfo";
-
 	private TabSet tabs;
 
 	/**
@@ -41,33 +36,30 @@ public class RibbonTabLayout extends VLayout {
 	 * 
 	 * @param mapWidget
 	 *            The map widget onto which many actions in this ribbon apply.
+	 * @param application
+	 *            The name of the application wherein to search for the ribbon configuration.
 	 * @param beanId
 	 *            A unique spring bean identifier for a bean of class {@link RibbonInfo}. This configuration is then
 	 *            fetched and applied.
 	 */
-	public RibbonTabLayout(final MapWidget mapWidget, String beanId) {
+	public RibbonTabLayout(final MapWidget mapWidget, String application, String beanId) {
 		tabs = new TabSet();
 		tabs.setPaneMargin(0);
 		addMember(tabs);
 
-		GetClientUserDataRequest request = new GetClientUserDataRequest();
-		request.setIdentifier(beanId);
-		request.setClassName(RIBBON_INFO_CLASS);
-		GwtCommand command = new GwtCommand(GetClientUserDataRequest.COMMAND);
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetClientUserDataResponse>() {
+		ConfigurationService.getApplicationWidgetInfo(application, beanId,
+				new WidgetConfigurationCallback<RibbonInfo>() {
 
-			public void execute(GetClientUserDataResponse response) {
-				RibbonInfo info = (RibbonInfo) response.getInformation();
-				for (RibbonBarInfo tabInfo : info.getTabs()) {
-					RibbonBarLayout ribbon = new RibbonBarLayout(tabInfo, mapWidget);
-					ribbon.setBorder("0px");
-					Tab tab = new Tab(tabInfo.getTitle());
-					tab.setPane(ribbon);
-					tabs.addTab(tab);
-				}
-			}
-		});
+					public void execute(RibbonInfo ribbonInfo) {
+						for (RibbonBarInfo tabInfo : ribbonInfo.getTabs()) {
+							RibbonBarLayout ribbon = new RibbonBarLayout(tabInfo, mapWidget);
+							ribbon.setBorder("0px");
+							Tab tab = new Tab(tabInfo.getTitle());
+							tab.setPane(ribbon);
+							tabs.addTab(tab);
+						}
+					}
+				});
 	}
 
 	public RibbonBar getRibbonBar(int index) {

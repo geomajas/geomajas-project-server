@@ -13,7 +13,7 @@ package org.geomajas.widget.utility.server.configuration;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientUserDataInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 
 /**
  * Ribbon group configuration object. Determines the contents for a group within a ribbon bar.
@@ -22,7 +22,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class RibbonGroupInfo implements ClientUserDataInfo {
+public class RibbonGroupInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 100L;
 

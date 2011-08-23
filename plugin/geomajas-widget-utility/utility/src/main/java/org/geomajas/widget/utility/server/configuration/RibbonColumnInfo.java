@@ -15,7 +15,7 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.configuration.client.ClientUserDataInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 
 /**
  * Ribbon column configuration object. Determines the contents for a single column within a ribbon group.
@@ -24,7 +24,7 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class RibbonColumnInfo implements ClientUserDataInfo {
+public class RibbonColumnInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 100L;
 

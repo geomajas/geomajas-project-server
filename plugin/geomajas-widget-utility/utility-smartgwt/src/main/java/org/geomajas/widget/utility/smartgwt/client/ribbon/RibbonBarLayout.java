@@ -14,11 +14,8 @@ package org.geomajas.widget.utility.smartgwt.client.ribbon;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.command.dto.GetClientUserDataRequest;
-import org.geomajas.command.dto.GetClientUserDataResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.service.ConfigurationService;
+import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.client.ribbon.RibbonBar;
 import org.geomajas.widget.utility.client.ribbon.RibbonColumn;
@@ -36,9 +33,6 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * @author Pieter De Graef
  */
 public class RibbonBarLayout extends HLayout implements RibbonBar {
-
-	private static final String RIBBON_BAR_INFO_CLASS =
-			"org.geomajas.widget.utility.server.configuration.RibbonBarInfo";
 
 	private boolean showGroupTitles = true;
 
@@ -73,28 +67,22 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	 * 
 	 * @param mapWidget
 	 *            The map widget onto which many actions in this ribbon apply.
+	 * @param application
+	 *            The application wherein to search for the ribbon configuration.
 	 * @param beanId
 	 *            A unique spring bean identifier for a bean of class {@link RibbonBarInfo}. This configuration is then
 	 *            fetched and applied.
 	 */
-	public RibbonBarLayout(final MapWidget mapWidget, String beanId) {
+	public RibbonBarLayout(final MapWidget mapWidget, String application, String beanId) {
 		this();
 
-		GetClientUserDataRequest request = new GetClientUserDataRequest();
-		request.setIdentifier(beanId);
-		request.setClassName(RIBBON_BAR_INFO_CLASS);
-		GwtCommand command = new GwtCommand(GetClientUserDataRequest.COMMAND);
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetClientUserDataResponse>() {
+		ConfigurationService.getApplicationWidgetInfo(application, beanId,
+				new WidgetConfigurationCallback<RibbonBarInfo>() {
 
-			public void execute(GetClientUserDataResponse response) {
-				if (response.getInformation() instanceof RibbonBarInfo) {
-					buildGui((RibbonBarInfo) response.getInformation(), mapWidget);
-				} else {
-					// throw some exception??
-				}
-			}
-		});
+					public void execute(RibbonBarInfo ribbonBarInfo) {
+						buildGui(ribbonBarInfo, mapWidget);
+					}
+				});
 	}
 
 	// ------------------------------------------------------------------------

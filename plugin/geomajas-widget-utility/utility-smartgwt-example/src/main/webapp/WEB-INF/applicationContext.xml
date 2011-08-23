@@ -41,6 +41,22 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<ref bean="mapWms" />
 			</list>
 		</property>
+		<property name="widgetInfo">
+			<map>
+				<entry key="ribbon-1">
+					<ref bean="ribbon-1" />
+				</entry>
+				<entry key="ribbon-bar-1">
+					<ref bean="ribbon-bar-1" />
+				</entry>
+				<entry key="ribbon-bar-2">
+					<ref bean="ribbon-bar-2" />
+				</entry>
+				<entry key="ribbon-bar-3">
+					<ref bean="ribbon-bar-3" />
+				</entry>
+			</map>
+		</property>
 	</bean>
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo" />

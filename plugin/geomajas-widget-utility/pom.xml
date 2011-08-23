@@ -113,7 +113,7 @@
 
 	<properties>
 		<geomajas-widget-utility-backend-version>1.10.0-SNAPSHOT</geomajas-widget-utility-backend-version>
-		<geomajas-widget-utility-gwtface-version>1.9.0</geomajas-widget-utility-gwtface-version>
+		<geomajas-widget-utility-gwtface-version>1.10.0-SNAPSHOT</geomajas-widget-utility-gwtface-version>
 	</properties>
 
 	<profiles>
