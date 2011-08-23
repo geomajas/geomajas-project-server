@@ -164,9 +164,24 @@ public final class SearchCommService {
 		return dtoGeometries;
 	}
 
-	public static Criterion buildGeometryCriterion(final Geometry geometry, final MapWidget mapWidget) {
-		return new GeometryCriterion(getVisibleServerLayerIds(mapWidget.getMapModel()),
-				GeometryConverter.toDto(geometry));
+	/**
+	 * Build {@link GeometryCriterion} for the map widget, geometry and optional layer.
+	 *
+	 * @param geometry
+	 * @param mapWidget
+	 * @param layer
+	 * @return
+	 */
+	public static GeometryCriterion buildGeometryCriterion(final Geometry geometry, final MapWidget mapWidget,
+			VectorLayer layer) {
+		List<String> layers;
+		if (null == layer) {
+			layers = getVisibleServerLayerIds(mapWidget.getMapModel());
+		} else {
+			layers = new ArrayList<String>();
+			layers.add(layer.getServerLayerId());
+		}
+		return new GeometryCriterion(layers, GeometryConverter.toDto(geometry));
 	}
 
 	/**

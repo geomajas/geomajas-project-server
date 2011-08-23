@@ -15,6 +15,9 @@ import java.util.List;
 
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -46,8 +49,9 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 	private final List<Geometry> geometries = new ArrayList<Geometry>();
 
 	private TabSet tabs;
-	private Geometry searchGeom;
-	private GfxGeometry worldpaintable;
+	private Geometry searchGeometry;
+	private GfxGeometry worldPaintable;
+	private VectorLayer layer;
 
 	/**
 	 * @param mapWidget map widget
@@ -99,7 +103,7 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 
 	@Override
 	public boolean validate() {
-		if (searchGeom == null) {
+		if (searchGeometry == null) {
 			SC.say(messages.geometricSearchWidgetTitle(), messages.geometricSearchWidgetNoGeometry());
 			return false;
 		} else if (SearchCommService.getVisibleServerLayerIds(mapWidget.getMapModel()).size() < 1) {
@@ -112,20 +116,36 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 
 	@Override
 	public Criterion getFeatureSearchCriterion() {
-		return SearchCommService.buildGeometryCriterion(searchGeom, mapWidget);
+		return SearchCommService.buildGeometryCriterion(searchGeometry, mapWidget, layer);
 	}
 	
 	@Override
 	public VectorLayer getFeatureSearchVectorLayer() {
-		// TODO Auto-generated method stub
-		return null;
+		return layer;
+	}
+
+	public void setFeatureSearchVectorLayer(VectorLayer layer) {
+		this.layer = layer;
+	}
+
+	public void setFeatureSearchVectorLayer(final String layerId) {
+		final MapModel mapModel = mapWidget.getMapModel();
+		if (mapModel.isInitialized()) {
+			setFeatureSearchVectorLayer(mapModel.getVectorLayer(layerId));
+		} else {
+			mapModel.addMapModelHandler(new MapModelHandler() {
+				public void onMapModelChange(MapModelEvent event) {
+					setFeatureSearchVectorLayer(mapModel.getVectorLayer(layerId));
+				}
+			});
+		}
 	}
 
 	@Override
 	public void reset() {
 		geometries.clear();
-		searchGeom = null;
-		updateGeomOnMap();
+		searchGeometry = null;
+		updateGeometryOnMap();
 		for (GeometricSearchMethod m : searchMethods) {
 			m.reset();
 		}
@@ -157,34 +177,34 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		}
 
 		if (geometries.size() == 0) {
-			searchGeom = null;
-			updateGeomOnMap();
+			searchGeometry = null;
+			updateGeometryOnMap();
 
 		} else if (geometries.size() == 1) {
-			searchGeom = geometries.get(0);
-			updateGeomOnMap();
+			searchGeometry = geometries.get(0);
+			updateGeometryOnMap();
 
 		} else {
 			 SearchCommService.mergeGeometries(geometries, new DataCallback<Geometry>() {
 				public void execute(Geometry result) {
-					searchGeom = result;
-					updateGeomOnMap();
+					searchGeometry = result;
+					updateGeometryOnMap();
 				}
 			});
 		}
 	}
 
-	private void updateGeomOnMap() {
-		if (worldpaintable == null) {
-			worldpaintable = new GfxGeometry(GeometricSearchCreator.IDENTIFIER + "_SELECTION_GEOMETRY");
-			worldpaintable.setStyle(selectionStyle);
+	private void updateGeometryOnMap() {
+		if (worldPaintable == null) {
+			worldPaintable = new GfxGeometry(GeometricSearchCreator.IDENTIFIER + "_SELECTION_GEOMETRY");
+			worldPaintable.setStyle(selectionStyle);
 		} else {
-			mapWidget.unregisterWorldPaintable(worldpaintable);
+			mapWidget.unregisterWorldPaintable(worldPaintable);
 		}
 
-		if (searchGeom != null) {
-			worldpaintable.setGeometry(searchGeom);
-			mapWidget.registerWorldPaintable(worldpaintable);
+		if (searchGeometry != null) {
+			worldPaintable.setGeometry(searchGeometry);
+			mapWidget.registerWorldPaintable(worldPaintable);
 		}
 	}
 }

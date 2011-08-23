@@ -83,7 +83,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 	 * Create attribute search panel with pre-selected layer.
 	 *
 	 * @param mapWidget map widget
-	 * @param layerId layer rid
+	 * @param layerId layer id
 	 */
 	public AttributeSearchPanel(final MapWidget mapWidget, String layerId) {
 		this(mapWidget, true, layerId);
