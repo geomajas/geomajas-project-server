@@ -11,7 +11,7 @@
 package org.geomajas.widget.searchandfilter.client.util;
 
 /**
- * Use for async methods to be notified when they are done.
+ * Use for asynchronous methods to be notified when they are done.
  *
  * @param <T> the class of the result you would like to get returned
  *

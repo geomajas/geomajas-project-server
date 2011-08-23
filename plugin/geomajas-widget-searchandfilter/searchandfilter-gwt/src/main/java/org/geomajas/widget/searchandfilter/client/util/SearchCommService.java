@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -54,13 +55,12 @@ public final class SearchCommService {
 	}
 
 	/**
-	 * The returned result will contain an unbuffered as well as buffered
-	 * result.
+	 * The returned result will contain a merged-only and a merged and buffered result.
 	 * 
 	 * @param geometries geometries
 	 * @param buffer buffer size
 	 * @param onFinished
-	 *            callback contains two geometries, one unbuffered, one buffered
+	 *            callback contains two geometries, one just merged, one buffered
 	 */
 	public static void mergeAndBufferGeometries(List<Geometry> geometries, double buffer,
 			final DataCallback<Geometry[]> onFinished) {
@@ -127,6 +127,7 @@ public final class SearchCommService {
 
 	/**
 	 * @param geometries geometries
+	 * @param buffer buffer size
 	 * @param onFinished
 	 *            callback returns buffered geometries
 	 */
@@ -189,7 +190,7 @@ public final class SearchCommService {
 
 		GwtCommand commandRequest = new GwtCommand(FeatureSearchRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		Deferred def = GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback() {
 			public void execute(CommandResponse commandResponse) {
 				if (commandResponse instanceof FeatureSearchResponse) {
 					FeatureSearchResponse response = (FeatureSearchResponse) commandResponse;
@@ -197,10 +198,16 @@ public final class SearchCommService {
 							mapWidget.getMapModel()));
 				}
 			}
+
+			@Override
+			public void onCommunicationException(Throwable error) {
+				if (null != onError) {
+					onError.execute();
+				} else {
+					super.onCommunicationException(error);
+				}
+			}
 		});
-		if (onError != null) {
-			def.addErrorCallback(onError);
-		}
 	}
 
 	/**
