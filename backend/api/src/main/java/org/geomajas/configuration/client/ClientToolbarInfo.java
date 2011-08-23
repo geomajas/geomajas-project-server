@@ -10,7 +10,6 @@
  */
 package org.geomajas.configuration.client;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +19,16 @@ import org.geomajas.annotation.Api;
 
 /**
  * Representation of a configured toolbar.
+ * <p>
+ * Since version 1.10.0 this configuration object implements the <code>ClientWidgetInfo</code> interface, so that it can
+ * be easily retrieved like any other widget configuration object.
+ * </p>
  * 
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ClientToolbarInfo implements Serializable {
+public class ClientToolbarInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 151L;
 
