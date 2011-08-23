@@ -94,7 +94,7 @@ public class Legend extends Canvas {
 		this.mapModel = mapModel;
 
 		widget = new GraphicsWidget(SC.generateID());
-		widget.setBackgroundColor(WidgetLayout.getLegendBackgroundColor());
+		widget.setBackgroundColor(WidgetLayout.legendBackgroundColor);
 		// adding the graphics here causes problems when embedding in HTML !
 		// addChild(widget);
 
@@ -133,15 +133,15 @@ public class Legend extends Canvas {
 	 * Render the legend. This triggers a complete redraw.
 	 */
 	public void render() {
-		int y = WidgetLayout.getMarginSmall();
+		int y = WidgetLayout.marginSmall;
 		for (Layer<?> layer : mapModel.getLayers()) {
 			if (layer.isShowing()) {
 				if (layer instanceof VectorLayer) {
 					VectorLayer vLayer = (VectorLayer) layer;
-					y += WidgetLayout.getLegendVectorRowHeight() *
+					y += WidgetLayout.legendVectorRowHeight *
 							vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles().size();
 				} else if (layer instanceof RasterLayer) {
-					y += WidgetLayout.getLegendRasterRowHeight();
+					y += WidgetLayout.legendRasterRowHeight;
 				}
 			}
 		}
@@ -176,8 +176,8 @@ public class Legend extends Canvas {
 
 		// Then go over all layers, to draw styles:
 		int lineCount = 0;
-		int y = WidgetLayout.getMarginSmall();
-		int labelIndent = WidgetLayout.getMarginLarge() + WidgetLayout.getLegendLabelIndent();
+		int y = WidgetLayout.marginSmall;
+		int labelIndent = WidgetLayout.marginLarge + WidgetLayout.legendLabelIndent;
 		for (Layer<?> layer : mapModel.getLayers()) {
 			if (layer.isShowing()) {
 				// Go over every truly visible layer:
@@ -196,32 +196,32 @@ public class Legend extends Canvas {
 							case MULTILINESTRING:
 								// Lines, draw a LineString;
 								Coordinate[] coordinates = new Coordinate[4];
-								coordinates[0] = new Coordinate(WidgetLayout.getMarginLarge(), y);
-								coordinates[1] = new Coordinate(WidgetLayout.getMarginLarge() + 10, y + 5);
-								coordinates[2] = new Coordinate(WidgetLayout.getMarginLarge() + 5, y + 10);
-								coordinates[3] = new Coordinate(WidgetLayout.getMarginLarge() + 15, y + 15);
+								coordinates[0] = new Coordinate(WidgetLayout.marginLarge, y);
+								coordinates[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
+								coordinates[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
+								coordinates[3] = new Coordinate(WidgetLayout.marginLarge + 15, y + 15);
 								LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
 								graphics.drawLine(parentGroup, "style" + lineCount, line, style);
 								break;
 							case POLYGON:
 							case MULTIPOLYGON:
 								// Polygons: draw a rectangle:
-								Bbox rect = new Bbox(WidgetLayout.getMarginLarge(), y, 16, 16);
+								Bbox rect = new Bbox(WidgetLayout.marginLarge, y, 16, 16);
 								graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
 								break;
 							case POINT:
 							case MULTIPOINT:
 								// Points: draw a symbol:
 								graphics.drawSymbol(parentGroup, "style" + lineCount,
-										new Coordinate(WidgetLayout.getMarginLarge() + 8, y + 8), style,
+										new Coordinate(WidgetLayout.marginLarge + 8, y + 8), style,
 										styleInfo.getStyleId());
 								break;
 							case GEOMETRY:
 								// Lines + point
 								Coordinate[] linePoints = new Coordinate[3];
-								linePoints[0] = new Coordinate(WidgetLayout.getMarginLarge(), y);
-								linePoints[1] = new Coordinate(WidgetLayout.getMarginLarge() + 10, y + 5);
-								linePoints[2] = new Coordinate(WidgetLayout.getMarginLarge() + 5, y + 10);
+								linePoints[0] = new Coordinate(WidgetLayout.marginLarge, y);
+								linePoints[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
+								linePoints[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
 								LineString geometryLine = mapModel.getGeometryFactory().createLineString(linePoints);
 								graphics.drawLine(parentGroup, "style" + lineCount, geometryLine, style);
 								graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 12), style,
@@ -233,19 +233,19 @@ public class Legend extends Canvas {
 
 						// After the style, draw the style's name:
 						drawLabel(labelIndent, y, lineCount, styleInfo.getName());
-						y += WidgetLayout.getLegendVectorRowHeight();
+						y += WidgetLayout.legendVectorRowHeight;
 					}
 				} else if (layer instanceof RasterLayer) {
 					// For raster layers; show a nice symbol:
 					lineCount++;
 
 					graphics.drawImage(parentGroup, "style" + lineCount, Geomajas.getIsomorphicDir()
-							+ WidgetLayout.getLegendRasterIcon(),
-							new Bbox(WidgetLayout.getMarginLarge(), y, WidgetLayout.getLegendRasterIconWidth(),
-									WidgetLayout.getLegendRasterIconHeight()),
+							+ WidgetLayout.legendRasterIcon,
+							new Bbox(WidgetLayout.marginLarge, y, WidgetLayout.legendRasterIconWidth,
+									WidgetLayout.legendRasterIconHeight),
 							new PictureStyle(1));
 					drawLabel(labelIndent, y, lineCount, layer.getLabel());
-					y += WidgetLayout.getLegendRasterRowHeight();
+					y += WidgetLayout.legendRasterRowHeight;
 				}
 			}
 		}

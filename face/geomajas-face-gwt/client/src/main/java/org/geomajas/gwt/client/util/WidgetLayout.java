@@ -24,90 +24,28 @@ import org.geomajas.annotation.Api;
 @Api
 public final class WidgetLayout {
 
-	private static int marginSmall = 5;
-	private static int marginLarge = 10;
+	/** Small margin width. */
+	public static int marginSmall = 5;
+	/** Large margin width. */
+	public static int marginLarge = 10;
 
-	private static String legendBackgroundColor = "#FFFFFF";
-	private static int legendRasterRowHeight = 20;
-	private static int legendVectorRowHeight = 21;
-	private static String legendRasterIcon = "geomajas/osgeo/layer-raster.png";
-	private static int legendRasterIconWidth = 16;
-	private static int legendRasterIconHeight = 16;
-	private static int legendLabelIndent = 20;
+	/** Background colour for the legend widget. */
+	public static String legendBackgroundColor = "#FFFFFF";
+	/** Row height for raster legend info. */
+	public static int legendRasterRowHeight = 20;
+	/** Row height for vector legend info. */
+	public static int legendVectorRowHeight = 21;
+	/** Icon to use for raster legend image, relative to isomorphic dir. */
+	public static String legendRasterIcon = "geomajas/osgeo/layer-raster.png";
+	/** Icon width for raster legend image. */
+	public static int legendRasterIconWidth = 16;
+	/** Icon height for raster legend image. */
+	public static int legendRasterIconHeight = 16;
+	/** Indent for legend labels (relative to the margin used). */
+	public static int legendLabelIndent = 20;
 
 	private WidgetLayout() {
 		// do not allow instantiation.
 	}
 
-	public static int getMarginSmall() {
-		return marginSmall;
-	}
-
-	public static void setMarginSmall(int marginSmall) {
-		WidgetLayout.marginSmall = marginSmall;
-	}
-
-	public static int getMarginLarge() {
-		return marginLarge;
-	}
-
-	public static void setMarginLarge(int marginLarge) {
-		WidgetLayout.marginLarge = marginLarge;
-	}
-
-	public static String getLegendBackgroundColor() {
-		return legendBackgroundColor;
-	}
-
-	public static void setLegendBackgroundColor(String legendBackgroundColor) {
-		WidgetLayout.legendBackgroundColor = legendBackgroundColor;
-	}
-
-	public static int getLegendRasterRowHeight() {
-		return legendRasterRowHeight;
-	}
-
-	public static void setLegendRasterRowHeight(int legendRasterRowHeight) {
-		WidgetLayout.legendRasterRowHeight = legendRasterRowHeight;
-	}
-
-	public static int getLegendVectorRowHeight() {
-		return legendVectorRowHeight;
-	}
-
-	public static void setLegendVectorRowHeight(int legendVectorRowHeight) {
-		WidgetLayout.legendVectorRowHeight = legendVectorRowHeight;
-	}
-
-	public static String getLegendRasterIcon() {
-		return legendRasterIcon;
-	}
-
-	public static void setLegendRasterIcon(String legendRasterIcon) {
-		WidgetLayout.legendRasterIcon = legendRasterIcon;
-	}
-
-	public static int getLegendRasterIconWidth() {
-		return legendRasterIconWidth;
-	}
-
-	public static void setLegendRasterIconWidth(int legendRasterIconWidth) {
-		WidgetLayout.legendRasterIconWidth = legendRasterIconWidth;
-	}
-
-	public static int getLegendRasterIconHeight() {
-		return legendRasterIconHeight;
-	}
-
-	public static void setLegendRasterIconHeight(int legendRasterIconHeight) {
-		WidgetLayout.legendRasterIconHeight = legendRasterIconHeight;
-	}
-
-	public static int getLegendLabelIndent() {
-		return legendLabelIndent;
-	}
-
-	public static void setLegendLabelIndent(int legendLabelIndent) {
-		WidgetLayout.legendLabelIndent = legendLabelIndent;
-	}
 }
