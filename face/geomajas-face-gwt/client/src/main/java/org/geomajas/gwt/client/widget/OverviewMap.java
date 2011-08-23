@@ -11,9 +11,9 @@
 
 package org.geomajas.gwt.client.widget;
 
-import org.geomajas.command.dto.GetMapConfigurationResponse;
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.OverviewMapController;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
@@ -308,8 +308,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * Override the initialize method, to set a controller, and perhaps apply the target map's max extent.
 	 */
 	@Override
-	protected void initializationCallback(GetMapConfigurationResponse r) {
-		super.initializationCallback(r);
+	protected void initializationCallback(ClientMapInfo mapInfo) {
+		super.initializationCallback(mapInfo);
 		setController(new OverviewMapController(this));
 		updateMaxExtent();
 	}

@@ -18,16 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.GetMapConfigurationRequest;
-import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.action.menu.AboutAction;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.controller.listener.Listener;
@@ -84,6 +78,8 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.service.ConfigurationService;
+import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
@@ -323,17 +319,13 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void init() {
-		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
-		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		ConfigurationService.getApplicationWidgetInfo(applicationId, id, new
+				WidgetConfigurationCallback<ClientMapInfo>() {
 
-			public void execute(CommandResponse response) {
-				if (response instanceof GetMapConfigurationResponse) {
-					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
-					initializationCallback(r);
-				}
-			}
-		});
+					public void execute(ClientMapInfo widgetInfo) {
+						initializationCallback(widgetInfo);
+					}
+				});
 	}
 
 	// -------------------------------------------------------------------------
@@ -549,7 +541,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			worldPaintables.remove(worldPaintable.getId());
 		}
 	}
-	
+
 	/**
 	 * Returns the registered world paintable with the specified name.
 	 * @param name the name of the world paintable
@@ -1001,12 +993,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		init();
 	}
 
-	protected void initializationCallback(GetMapConfigurationResponse r) {
-		if (r.getMapInfo() != null && !mapModel.isInitialized()) {
+	protected void initializationCallback(ClientMapInfo info) {
+		if (info != null && !mapModel.isInitialized()) {
 			// must be called before anything else !
 			addChild(graphics);
 			render(mapModel, null, RenderStatus.ALL);
-			ClientMapInfo info = r.getMapInfo();
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();
 			graphics.setBackgroundColor(info.getBackgroundColor());
@@ -1028,7 +1019,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					}
 
 				});
-				
+
 				layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
 					public void onLayerStyleChange(LayerStyleChangeEvent event) {
