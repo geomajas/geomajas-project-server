@@ -69,10 +69,18 @@
 		<property name="message" value="Line has trailing spaces."/>
 	</module>
 
+	<module name="SuppressionCommentFilter">
+		<property name="offCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: OFF"/>
+		<property name="onCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: OFF"/>
+		<property name="checkFormat" value="VisibilityModifierCheck"/>
+	</module>
+
 	<module name="TreeWalker">
 
 		<property name="cacheFile" value="target/cachefile"/>
 		<property name="tabWidth" value="4"/>
+
+		<module name="FileContentsHolder"/>
 
 		<module name="MissingDeprecated"/>
 
@@ -93,11 +101,11 @@
 
 		<!-- Javadoc comments checks, see http://checkstyle.sourceforge.net/config_javadoc.html -->
 
-		<!-- @todo it would be better to enable this, but the code is not ready for this
 		<module name="JavadocMethod">
 			<property name="scope" value="public"/>
+			<!-- @todo it would be better to enable this, but the code is not ready for this -->
+			<property name="severity" value="info"/>
 		</module>
-		-->
 		<module name="JavadocType">
 			<property name="authorFormat" value="\S"/>
 		</module>

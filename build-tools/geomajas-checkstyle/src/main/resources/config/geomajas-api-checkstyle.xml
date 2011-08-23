@@ -71,11 +71,19 @@
 		<property name="message" value="Line has trailing spaces."/>
 	</module>
 
+	<module name="SuppressionCommentFilter">
+		<property name="offCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: OFF"/>
+		<property name="onCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: OFF"/>
+		<property name="checkFormat" value="VisibilityModifierCheck"/>
+	</module>
+
 	<module name="org.geomajas.checkstyle.TreeWalker">
 
 		<!-- cacheFile should not be used as this breaks the ApiCompatibilityCheck
 		<property name="cacheFile" value="${checkstyle.cache.file}"/> -->
 		<property name="tabWidth" value="4"/>
+
+		<module name="FileContentsHolder"/>
 
 		<module name="MissingDeprecated"/>
 
