@@ -38,18 +38,28 @@ public class GeometryCriterion implements Criterion {
 
 	private int operator = INTERSECTS;
 
-	public GeometryCriterion() {}
+	public GeometryCriterion() {
+		// no-args constructor as needed for GWT
+	}
 
 	/**
-	 * Uses INTERSECTS as operator.
-	 * @param serverLayerIds
-	 * @param geometry
+	 * Constructor using INTERSECTS as operator.
+	 *
+	 * @param serverLayerIds layer ids to search in
+	 * @param geometry geometry to use for search
 	 */
 	public GeometryCriterion(List<String> serverLayerIds, Geometry geometry) {
 		this.serverLayerIds = serverLayerIds;
 		this.geometry = geometry;
 	}
 
+	/**
+	 * Constructor using INTERSECTS as operator.
+	 *
+	 * @param serverLayerIds layer ids to search in
+	 * @param geometry geometry to use for search
+	 * @param operator operator to use for search
+	 */
 	public GeometryCriterion(List<String> serverLayerIds, Geometry geometry, int operator) {
 		this.serverLayerIds = serverLayerIds;
 		this.geometry = geometry;
