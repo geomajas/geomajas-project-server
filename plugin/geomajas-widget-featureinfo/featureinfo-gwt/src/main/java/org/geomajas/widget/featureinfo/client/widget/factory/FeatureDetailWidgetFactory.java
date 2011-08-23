@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo;
@@ -34,12 +35,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * 
  * @author Kristof Heirwegh
  * @author Oliver May
- * 
  */
 public final class FeatureDetailWidgetFactory {
-
-	public static final int DEFAULT_WINDOW_HEIGHT = 500;
-	public static final int DEFAULT_WINDOW_WIDTH = 500;
 
 	private static boolean SELECT_ON_ZOOM = true;
 
@@ -75,7 +72,7 @@ public final class FeatureDetailWidgetFactory {
 	/**
 	 * Should the feature be selected when zooming to it?.
 	 * 
-	 * @param selectOnZoom
+	 * @param selectOnZoom include select on zoom?
 	 */
 	public static void setSelectOnZoom(boolean selectOnZoom) {
 		FeatureDetailWidgetFactory.SELECT_ON_ZOOM = selectOnZoom;
@@ -98,13 +95,13 @@ public final class FeatureDetailWidgetFactory {
 							GWT.log("Builder is not of type FeatureDetailWidgetBuilder: " + lcfdii.getBuilderName());
 						}
 					} else {
-						GWT.log("ClientWidgetInfo is not of classtype LayerCustomFeatureDetailInfoInfo!! (layertype: "
+						GWT.log("ClientWidgetInfo is not of class type LayerCustomFeatureDetailInfoInfo!! (layer type: "
 								+ layer.getServerLayerId() + ")");
 					}
 				}
 			}
 		} catch (Exception e) {
-			GWT.log("Error getting custom detailwidget: " + e.getMessage());
+			GWT.log("Error getting custom detail widget: " + e.getMessage());
 		}
 		return b;
 	}
@@ -118,7 +115,7 @@ public final class FeatureDetailWidgetFactory {
 			Canvas editBtn = null;
 			// hackety hack
 			for (Canvas c : ts.getMembers()) {
-				if (c instanceof IButton && "[ISOMORPHIC]/geomajas/osgeo/edit.png".equals(((IButton) c).getIcon())) {
+				if (c instanceof IButton && WidgetLayout.iconEdit.equals(((IButton) c).getIcon())) {
 					editBtn = c;
 				}
 			}

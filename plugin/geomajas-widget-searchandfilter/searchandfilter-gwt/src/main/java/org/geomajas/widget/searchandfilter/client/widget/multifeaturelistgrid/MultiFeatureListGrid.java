@@ -21,6 +21,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
@@ -270,8 +271,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 */
 	private class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 
-		private static final String BTN_FOCUSSELECTION = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
-		private static final String BTN_SHOWDETAIL = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/info.gif";
+		private static final String BTN_SHOW_DETAIL = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/info.gif";
 		private static final String BTN_EXPORT = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/table_save.png";
 		private static final String PROCESSING = "[ISOMORPHIC]/geomajas/ajax-loader.gif";
 
@@ -297,8 +297,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			focusButton = new ToolStripButton(messages.multiFeatureListGridButtonFocusSelection());
 			showButton = new ToolStripButton(messages.multiFeatureListGridButtonShowDetail());
 			exportButton = new ToolStripButton(messages.multiFeatureListGridButtonExportToCSV());
-			focusButton.setIcon(BTN_FOCUSSELECTION);
-			showButton.setIcon(BTN_SHOWDETAIL);
+			focusButton.setIcon(WidgetLayout.iconZoomSelect);
+			showButton.setIcon(BTN_SHOW_DETAIL);
 			exportButton.setIcon(BTN_EXPORT);
 			focusButton.setTooltip(messages.multiFeatureListGridButtonFocusSelectionTooltip());
 			showButton.setTooltip(messages.multiFeatureListGridButtonShowDetailTooltip());
