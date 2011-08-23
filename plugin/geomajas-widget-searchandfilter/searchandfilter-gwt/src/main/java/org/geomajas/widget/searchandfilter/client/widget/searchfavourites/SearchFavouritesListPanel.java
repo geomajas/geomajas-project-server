@@ -15,7 +15,7 @@ import java.util.List;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.CriterionUtils;
+import org.geomajas.widget.searchandfilter.client.util.CriterionUtil;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.util.FavouritesCommService;
 import org.geomajas.widget.searchandfilter.client.widget.attributesearch.AttributeSearchCreator;
@@ -184,11 +184,11 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 	}
 
 	private void updateLayerFilters() {
-		CriterionUtils.clearLayerFilters(mapWidget);
+		CriterionUtil.clearLayerFilters(mapWidget);
 		for (ListGridRecord lgr : favouriteItems.getRecords()) {
 			FavouriteListRecord flr = (FavouriteListRecord) lgr;
 			if (flr.isFilterActivated()) {
-				CriterionUtils.setLayerFilter(mapWidget, flr.getFavourite().getCriterion());
+				CriterionUtil.setLayerFilter(mapWidget, flr.getFavourite().getCriterion());
 			}
 		}
 	}
@@ -447,7 +447,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 			this.favourite = fav;
 			setAttribute(ID_FIELD, fav.getId());
 			setAttribute(NAME_FIELD, fav.getName());
-			filterActivated = CriterionUtils.isActiveLayerFilter(fav.getCriterion());
+			filterActivated = CriterionUtil.isActiveLayerFilter(fav.getCriterion());
 		}
 
 		public SearchFavourite getFavourite() {

@@ -30,16 +30,18 @@ import org.geomajas.widget.searchandfilter.search.dto.OrCriterion;
 import com.google.gwt.core.client.GWT;
 
 /**
+ * Utility methods for working with criterions.
+ *
  * @author Kristof Heirwegh
  */
-public final class CriterionUtils {
+public final class CriterionUtil {
 
 	private static final List<Criterion> ACTIVE_LAYER_FILTER_CRITERIONS = new ArrayList<Criterion>();
 
 	/**
 	 * Utility class
 	 */
-	private CriterionUtils() {
+	private CriterionUtil() {
 	}
 
 	public static void clearLayerFilters(MapWidget mapWidget) {
