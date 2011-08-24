@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestEvent;
@@ -56,8 +57,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class CombinedSearchPanel extends AbstractSearchPanel {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
-
-	private static final String ADD_IMAGE = "[SKIN]/actions/add.png";
 
 	private DynamicForm operatorForm;
 	private RadioGroupItem type;
@@ -118,7 +117,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		HLayout addBar = new HLayout(0);
 		addBar.setAlign(Alignment.LEFT);
 		addBar.setHeight(20);
-		Img addImg = new Img(ADD_IMAGE, 16, 16);
+		Img addImg = new Img(WidgetLayout.iconAdd, 16, 16);
 		addImg.setTooltip(messages.combinedSearchWidgetAdd());
 		DynamicForm searchForm = new DynamicForm();
 		selectSearch = new SelectItem();
@@ -282,7 +281,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		public void setSearchWidget(String name, Criterion criterion) {
 			this.critter = criterion;
 			setAttribute(NAME_FIELD, name + ", " + criterion.toString());
-			setAttribute(REMOVE_FIELD, "[SKIN]/actions/remove.png");
+			setAttribute(REMOVE_FIELD, WidgetLayout.iconRemove);
 		}
 
 		public Criterion getCritter() {

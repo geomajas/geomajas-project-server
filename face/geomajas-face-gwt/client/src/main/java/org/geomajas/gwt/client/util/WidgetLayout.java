@@ -89,6 +89,8 @@ public final class WidgetLayout {
 	public static String iconLayerShowLabeled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png";
 	/** Hide layer icon. */
 	public static String iconLayerHide = "[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png";
+	/** Layer invisible icon. */
+	public static String iconLayerInvisible = "[ISOMORPHIC]/geomajas/widget/layertree/layer-invisible.png";
 	/** Disabled layer icon. */
 	public static String iconLayerDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-disabled.png";
 	/** Hide layer icon. */
@@ -104,7 +106,7 @@ public final class WidgetLayout {
 	/** Geomajas icon. */
 	public static String iconGeomajas = "[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png";
 	/** Remove icon. */
-	public static String iconRemove = "[ISOMORPHIC]/geomajas/silk/remove.png";
+	public static String iconRemove = "[ISOMORPHIC]/geomajas/silk/cancel.png";
 	/** Add icon. */
 	public static String iconAdd = "[ISOMORPHIC]/geomajas/silk/add.png";
 	/** Find icon. */
