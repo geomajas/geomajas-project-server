@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -34,7 +35,7 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 	private boolean maxBoundsDisplayed;
 
 	public EditingModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/edit.png", I18nProvider.getToolbar().editingSelect());
+		super(WidgetLayout.iconEdit, I18nProvider.getToolbar().editingSelect());
 		this.mapWidget = mapWidget;
 	}
 

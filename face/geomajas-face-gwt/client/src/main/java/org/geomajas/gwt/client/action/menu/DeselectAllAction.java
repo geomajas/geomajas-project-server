@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Clear the list of selected features.
@@ -26,7 +27,7 @@ public class DeselectAllAction extends MenuAction {
 	private MapModel mapModel;
 
 	public DeselectAllAction(MapModel mapModel) {
-		super(I18nProvider.getMenu().deselectAll(), "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png");
+		super(I18nProvider.getMenu().deselectAll(), WidgetLayout.iconSelectedDelete);
 		this.mapModel = mapModel;
 	}
 

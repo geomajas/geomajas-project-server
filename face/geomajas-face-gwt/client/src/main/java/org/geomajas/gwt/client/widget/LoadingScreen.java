@@ -31,6 +31,7 @@ import com.smartgwt.client.widgets.Progressbar;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * <p>
@@ -54,11 +55,11 @@ public class LoadingScreen extends VLayout {
 
 	private HandlerRegistration onLoadRegistration;
 
-	private HandlerRegistration onDispatchStoppenRegistration;
+	private HandlerRegistration onDispatchStopRegistration;
 
-	private int logoWidth = 300;
+	private int logoWidth = WidgetLayout.loadingScreenLogoWidth;
 
-	private String logo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
+	private String logo = WidgetLayout.loadingScreenLogo;
 
 	private Label label;
 
@@ -75,8 +76,8 @@ public class LoadingScreen extends VLayout {
 	/**
 	 * Create a loading screen given the main map's map model, and a title to be displayed.
 	 * 
-	 * @param mapModel
-	 *            The main map's model.
+	 * @param mapWidget
+	 *            The main map
 	 * @param applicationTitle
 	 *            The application's title. This will be displayed right under the logo image.
 	 */
@@ -101,7 +102,7 @@ public class LoadingScreen extends VLayout {
 		banner.setLayoutAlign(VerticalAlignment.CENTER);
 
 		LayoutSpacer spacerTop = new LayoutSpacer();
-		spacerTop.setHeight(40);
+		spacerTop.setHeight(WidgetLayout.loadingScreenTopSpacerHeight);
 		banner.addMember(spacerTop);
 
 		Img logoImg = new Img(logo);
@@ -112,7 +113,7 @@ public class LoadingScreen extends VLayout {
 
 		Label titleLabel = new Label(applicationTitle);
 		titleLabel.setWidth(logoWidth);
-		titleLabel.setHeight(24);
+		titleLabel.setHeight(WidgetLayout.loadingScreenTitleHeight);
 		titleLabel.setLayoutAlign(Alignment.CENTER);
 		titleLabel.setAlign(Alignment.CENTER);
 		banner.addMember(titleLabel);
@@ -121,21 +122,21 @@ public class LoadingScreen extends VLayout {
 		banner.addMember(spacer);
 
 		VLayout progressLayout = new VLayout();
-		progressLayout.setBackgroundColor("#000000");
-		progressLayout.setOpacity(30);
-		progressLayout.setHeight(80);
-		progressLayout.setPadding(15);
+		progressLayout.setBackgroundColor(WidgetLayout.loadingScreenProgressBackgroundColor);
+		progressLayout.setOpacity(WidgetLayout.loadingScreenProgressOpacity);
+		progressLayout.setHeight(WidgetLayout.loadingScreenProgressHeight);
+		progressLayout.setPadding(WidgetLayout.loadingScreenProgressPadding);
 
 		label = new Label(I18nProvider.getGlobal().loadScreenDownLoadText());
 		label.setLayoutAlign(Alignment.CENTER);
 		label.setWidth100();
-		label.setHeight(15);
+		label.setHeight(WidgetLayout.loadingScreenProgressLabelHeight);
 		label.setStyleName("loadingScreenLabel");
 		label.setOpacity(100);
 		progressLayout.addMember(label);
 
 		progressBar = new Progressbar();
-		progressBar.setHeight(30);
+		progressBar.setHeight(WidgetLayout.loadingScreenProgressBarHeight);
 		progressBar.setWidth100();
 		progressBar.setVertical(false);
 		progressBar.setLayoutAlign(Alignment.CENTER);
@@ -145,20 +146,20 @@ public class LoadingScreen extends VLayout {
 		banner.addMember(progressLayout);
 
 		HLayout inner = new HLayout();
-		inner.setBackgroundColor("#FFFFFF");
+		inner.setBackgroundColor(WidgetLayout.loadingScreenBackgroundColor);
 		inner.setShowEdges(true);
 		inner.setShowShadow(true);
-		inner.setShadowDepth(10);
+		inner.setShadowDepth(WidgetLayout.loadingScreenShadowDepth);
 		inner.setLayoutAlign(Alignment.CENTER);
 		inner.setLayoutAlign(VerticalAlignment.CENTER);
-		inner.setWidth(500);
-		inner.setHeight(300);
-		inner.setBackgroundImage("[ISOMORPHIC]/geomajas/widget/background.png");
-		inner.setEdgeOpacity(70);
+		inner.setWidth(WidgetLayout.loadingScreenWidth);
+		inner.setHeight(WidgetLayout.loadingScreenHeight);
+		inner.setBackgroundImage(WidgetLayout.loadingScreenBackgroundImage);
+		inner.setEdgeOpacity(WidgetLayout.loadingScreenEdgeOpacity);
 		inner.setAlign(Alignment.CENTER);
 		inner.addMember(banner);
 
-		setBackgroundColor("#FFFFFF");
+		setBackgroundColor(WidgetLayout.loadingScreenBackgroundColor);
 		setHeight100();
 		setWidth100();
 		setAlign(VerticalAlignment.CENTER);
@@ -171,13 +172,6 @@ public class LoadingScreen extends VLayout {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get the current logo image width.
-	 */
-	public int getLogoWidth() {
-		return logoWidth;
-	}
-
-	/**
 	 * Set a new image width for the logo. This should be done when a new logo image has been set.
 	 * 
 	 * @param logoWidth
@@ -188,17 +182,10 @@ public class LoadingScreen extends VLayout {
 	}
 
 	/**
-	 * Get the URL of the logo to be used in this loading screen.
-	 */
-	public String getLogo() {
-		return logo;
-	}
-
-	/**
 	 * Set a new URL to a new logo image to be used in this loading screen. After using this method, also set the
 	 * image's width.
 	 * 
-	 * @param logo
+	 * @param logo logo
 	 */
 	public void setLogo(String logo) {
 		this.logo = logo;
@@ -216,7 +203,7 @@ public class LoadingScreen extends VLayout {
 					onLoadRegistration.removeHandler();
 					label.setContents(I18nProvider.getGlobal().loadScreenLoadText());
 					if (GwtCommandDispatcher.getInstance().isBusy()) {
-						onDispatchStoppenRegistration = GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(
+						onDispatchStopRegistration = GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(
 								new DispatchStoppedHandler() {
 
 									public void onDispatchStopped(DispatchStoppedEvent event) {
@@ -250,8 +237,8 @@ public class LoadingScreen extends VLayout {
 		if (!fadingDone) {
 			// progressBar.setPercentDone(100);
 			label.setContents(I18nProvider.getGlobal().loadScreenReadyText());
-			if (onDispatchStoppenRegistration != null) {
-				onDispatchStoppenRegistration.removeHandler();
+			if (onDispatchStopRegistration != null) {
+				onDispatchStopRegistration.removeHandler();
 			}
 			setCursor(Cursor.DEFAULT);
 

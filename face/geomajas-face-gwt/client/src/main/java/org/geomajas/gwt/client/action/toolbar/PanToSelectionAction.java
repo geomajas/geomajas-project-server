@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -36,7 +37,7 @@ public class PanToSelectionAction extends ToolbarAction {
 	private MapWidget mapWidget;
 
 	public PanToSelectionAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/pan_to_selection.png", I18nProvider.getToolbar().panToSelection());
+		super(WidgetLayout.iconPanToSelection, I18nProvider.getToolbar().panToSelection());
 		this.mapWidget = mapWidget;
 	}
 

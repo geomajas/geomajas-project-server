@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.action.toolbar;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -29,7 +30,7 @@ public class PanModalAction extends ToolbarModalAction {
 	private PanController controller;
 
 	public PanModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/pan.png", I18nProvider.getToolbar().pan());
+		super(WidgetLayout.iconPan, I18nProvider.getToolbar().pan());
 		this.mapWidget = mapWidget;
 		controller = new PanController(mapWidget);
 	}

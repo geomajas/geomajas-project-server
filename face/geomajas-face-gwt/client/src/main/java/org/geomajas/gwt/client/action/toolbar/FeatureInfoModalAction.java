@@ -14,6 +14,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.FeatureInfoController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
@@ -33,7 +34,7 @@ public class FeatureInfoModalAction extends ToolbarModalAction {
 	// Constructor:
 
 	public FeatureInfoModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/info.png", I18nProvider.getToolbar().featureInfo());
+		super(WidgetLayout.iconInfo, I18nProvider.getToolbar().featureInfo());
 		this.mapWidget = mapWidget;
 		controller = new FeatureInfoController(mapWidget, pixelTolerance);
 	}

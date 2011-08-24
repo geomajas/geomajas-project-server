@@ -16,6 +16,7 @@ import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.util.BooleanCallback;
@@ -48,7 +49,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 	 *            The current parent editing controller active on the map.
 	 */
 	public DeleteFeatureAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().deleteFeature(), "[ISOMORPHIC]/geomajas/osgeo/vector-remove.png");
+		super(I18nProvider.getMenu().deleteFeature(), WidgetLayout.iconVectorRemove);
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

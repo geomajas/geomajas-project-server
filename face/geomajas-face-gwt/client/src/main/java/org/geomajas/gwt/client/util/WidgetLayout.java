@@ -41,8 +41,6 @@ public final class WidgetLayout {
 	public static String iconSave = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
 	/** Download icon. */
 	public static String iconDownload = "[ISOMORPHIC]/geomajas/osgeo/save.png";
-	/** Undo icon. */
-	public static String iconUndo = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 	/** Quit icon. */
 	public static String iconQuit = "[ISOMORPHIC]/geomajas/osgeo/quit.png";
 	/** Info icon. */
@@ -51,8 +49,30 @@ public final class WidgetLayout {
 	public static String iconUndo = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 	/** Table icon. */
 	public static String iconTable = "[ISOMORPHIC]/geomajas/osgeo/table.png";
+	/** Pan icon. */
+	public static String iconPan = "[ISOMORPHIC]/geomajas/osgeo/pan.png";
+	/** Pan to selection icon. */
+	public static String iconPanToSelection = "[ISOMORPHIC]/geomajas/osgeo/pan_to_selection.png";
+	/** Measure length icon. */
+	public static String iconMeasureLength = "[ISOMORPHIC]/geomajas/osgeo/length-measure.png";
 	/** Zoom to selection icon. */
 	public static String iconZoomSelect = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
+	/** Create vector icon. */
+	public static String iconVectorCreate = "[ISOMORPHIC]/geomajas/osgeo/vector-create.png";
+	/** Remove vector icon. */
+	public static String iconVectorRemove = "[ISOMORPHIC]/geomajas/osgeo/vector-remove.png";
+	/** Edit vector icon. */
+	public static String iconVectorEdit = "[ISOMORPHIC]/geomajas/osgeo/vector-edit.png";
+	/** Selected delete icon. */
+	public static String iconSelectedDelete = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";
+	/** Create vertex icon. */
+	public static String iconVertexCreate = "[ISOMORPHIC]/geomajas/osgeo/vertex-create.png";
+	/** Delete vertex icon. */
+	public static String iconVertexDelete = "[ISOMORPHIC]/geomajas/osgeo/vertex-delete.png";
+	/** Add ring icon. */
+	public static String iconRingAdd = "[ISOMORPHIC]/geomajas/osgeo/ring-add.png";
+	/** Delete ring icon. */
+	public static String iconRingDelete = "[ISOMORPHIC]/geomajas/osgeo/ring-delete.png";
 	/** Show labels icon. */
 	public static String iconLabelsShow = "[ISOMORPHIC]/geomajas/widget/layertree/labels-show.png";
 	/** Hide labels icon. */
@@ -78,7 +98,49 @@ public final class WidgetLayout {
 	/** Error icon. */
 	public static String iconError = "[ISOMORPHIC]/geomajas/widget/error.png";
 	/** icon. */
-	public static String icon = ;
+	public static String iconGeomajas = "[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png";
+
+
+	/** Loading screen logo. */
+	public static String loadingScreenLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
+	/** Loading screen logo width. */
+	public static int loadingScreenLogoWidth = 300;
+	/** Loading screen inner width. */
+	public static int loadingScreenWidth = 500;
+	/** Loading screen inner height. */
+	public static int loadingScreenHeight = 300;
+	/** Loading screen shadow depth. */
+	public static int loadingScreenShadowDepth = 10;
+	/** Loading screen background image. */
+	public static String loadingScreenBackgroundImage = "[ISOMORPHIC]/geomajas/widget/background.png";
+	/** Loading screen background colour. */
+	public static String loadingScreenBackgroundColor = "#FFFFFF";
+	/** Loading screen top spacer height. */
+	public static int loadingScreenTopSpacerHeight = 40;
+	/** Loading screen title height. */
+	public static int loadingScreenTitleHeight = 24;
+	/** Loading screen edge opacity. */
+	public static int loadingScreenEdgeOpacity = 70;
+	/** Loading screen progress height. */
+	public static int loadingScreenProgressHeight = 80;
+	/** Loading screen progress label height. */
+	public static int loadingScreenProgressLabelHeight = 15;
+	/** Loading screen progress bar height. */
+	public static int loadingScreenProgressBarHeight = 30;
+	/** Loading screen progress opacity. */
+	public static int loadingScreenProgressOpacity = 30;
+	/** Loading screen progress padding. */
+	public static int loadingScreenProgressPadding = 15;
+	/** Loading screen progress background colour. */
+	public static String loadingScreenProgressBackgroundColor = "#000000";
+
+
+	/** Geomajas logo. */
+	public static String aboutGeomajasLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
+	/** Geomajas logo width. */
+	public static int aboutGeomajasWidth = 400;
+	/** Geomajas logo height. */
+	public static int aboutGeomajasHeight = 300;
 
 	/** Background colour for the legend widget. */
 	public static String legendBackgroundColor = "#FFFFFF";

@@ -46,7 +46,7 @@ public class AboutAction extends MenuAction {
 	public void onClick(MenuItemClickEvent event) {
 		VLayout layout = new VLayout();
 		layout.setPadding(10);
-		Img logo = new Img("[ISOMORPHIC]/geomajas/geomajas_logo.png");
+		Img logo = new Img(WidgetLayout.aboutGeomajasLogo);
 		layout.addMember(logo);
 		HTMLFlow flow = new HTMLFlow("<h2>Geomajas " + Geomajas.getVersion() + "</h2>" + "<p>"
 				+ I18nProvider.getGlobal().aboutCopyRight() + "</p>" + "<p>" + I18nProvider.getGlobal().aboutVisit()
@@ -87,10 +87,10 @@ public class AboutAction extends MenuAction {
 
 
 		Window window = new Window();
-		window.setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png");
+		window.setHeaderIcon(WidgetLayout.iconGeomajas);
 		window.setTitle(I18nProvider.getGlobal().aboutMenuTitle());
-		window.setWidth(400);
-		window.setHeight(300);
+		window.setWidth(WidgetLayout.aboutGeomajasWidth);
+		window.setHeight(WidgetLayout.aboutGeomajasHeight);
 		window.setAutoCenter(true);
 		window.setPadding(10);
 		window.addItem(layout);

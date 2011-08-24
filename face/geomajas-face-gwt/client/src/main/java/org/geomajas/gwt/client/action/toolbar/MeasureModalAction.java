@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.action.toolbar;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.MeasureDistanceController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -28,7 +29,7 @@ public class MeasureModalAction extends ToolbarModalAction {
 	private MapWidget mapWidget;
 
 	public MeasureModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/length-measure.png", I18nProvider.getToolbar().measureSelect());
+		super(WidgetLayout.iconMeasureLength, I18nProvider.getToolbar().measureSelect());
 		this.mapWidget = mapWidget;
 	}
 
