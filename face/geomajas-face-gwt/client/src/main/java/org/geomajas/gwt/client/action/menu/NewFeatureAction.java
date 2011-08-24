@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.layer.LayerType;
 
@@ -51,7 +52,7 @@ public class NewFeatureAction extends MenuAction implements MenuItemIfFunction {
 	 *            The current parent editing controller active on the map.
 	 */
 	public NewFeatureAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().newFeature(), "[ISOMORPHIC]/geomajas/osgeo/vector-create.png");
+		super(I18nProvider.getMenu().newFeature(), WidgetLayout.iconVertexCreate);
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

@@ -37,10 +37,14 @@ public final class WidgetLayout {
 
 	/** Edit icon. */
 	public static String iconEdit = "[ISOMORPHIC]/geomajas/osgeo/edit.png";
-	/** Save icon. */
+	/** Save icon (disk). */
 	public static String iconSave = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
-	/** Download icon. */
-	public static String iconDownload = "[ISOMORPHIC]/geomajas/osgeo/save.png";
+	/** Alternate save icon. */
+	public static String iconSaveAlt = "[ISOMORPHIC]/geomajas/osgeo/save.png";
+	/** Open icon (folder). */
+	public static String iconOpen = "[ISOMORPHIC]/geomajas/osgeo/open1.png";
+	/** Alternate open icon. */
+	public static String iconOpenAlt = "[ISOMORPHIC]/geomajas/osgeo/open.png";
 	/** Quit icon. */
 	public static String iconQuit = "[ISOMORPHIC]/geomajas/osgeo/quit.png";
 	/** Info icon. */
@@ -97,8 +101,14 @@ public final class WidgetLayout {
 	public static String iconHelpContents = "[ISOMORPHIC]/geomajas/osgeo/help-contents.png";
 	/** Error icon. */
 	public static String iconError = "[ISOMORPHIC]/geomajas/widget/error.png";
-	/** icon. */
+	/** Geomajas icon. */
 	public static String iconGeomajas = "[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png";
+	/** Remove icon. */
+	public static String iconRemove = "[ISOMORPHIC]/geomajas/silk/remove.png";
+	/** Add icon. */
+	public static String iconAdd = "[ISOMORPHIC]/geomajas/silk/add.png";
+	/** Find icon. */
+	public static String iconFind = "[ISOMORPHIC]/geomajas/silk/find.png";
 
 
 	/** Loading screen logo. */

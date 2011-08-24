@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.attribute.AttributeCriterionPane;
 import org.geomajas.gwt.client.widget.event.SearchEvent;
 import org.geomajas.gwt.client.widget.event.SearchHandler;
@@ -199,7 +200,7 @@ public class FeatureSearch extends Canvas {
 
 		IButton btnAddRow = new IButton();
 		btnAddRow.setWidth(26);
-		btnAddRow.setIcon("[ISOMORPHIC]/geomajas/silk/add.png");
+		btnAddRow.setIcon(WidgetLayout.iconAdd);
 		HandlerRegistration addReg = btnAddRow.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -217,7 +218,7 @@ public class FeatureSearch extends Canvas {
 
 		IButton btnRemoveRow = new IButton();
 		btnRemoveRow.setWidth(26);
-		btnRemoveRow.setIcon("[ISOMORPHIC]/geomajas/silk/remove.png");
+		btnRemoveRow.setIcon(WidgetLayout.iconRemove);
 		HandlerRegistration removeReg = btnRemoveRow.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -526,7 +527,7 @@ public class FeatureSearch extends Canvas {
 		rightLayout.setMembersMargin(5);
 		rightLayout.setWidth(100);
 		searchButton = new IButton(I18nProvider.getSearch().btnSearch());
-		searchButton.setIcon("[ISOMORPHIC]/geomajas/silk/find.png");
+		searchButton.setIcon(WidgetLayout.iconFind);
 		searchButton.setWidth(100);
 		searchButton.setDisabled(true);
 		searchButton.addClickHandler(new ClickHandler() {
@@ -536,7 +537,7 @@ public class FeatureSearch extends Canvas {
 			}
 		});
 		resetButton = new IButton(I18nProvider.getSearch().btnReset());
-		resetButton.setIcon("[ISOMORPHIC]/geomajas/silk/undo.png");
+		resetButton.setIcon(WidgetLayout.iconUndo);
 		resetButton.setWidth(100);
 		resetButton.setDisabled(true);
 		resetButton.addClickHandler(new ClickHandler() {

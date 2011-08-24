@@ -23,6 +23,7 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureSearch.LogicalOperator;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -286,7 +287,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 
 			IButton btnRemoveRow = new IButton();
 			btnRemoveRow.setWidth(26);
-			btnRemoveRow.setIcon("[ISOMORPHIC]/geomajas/silk/remove.png");
+			btnRemoveRow.setIcon(WidgetLayout.iconRemove);
 			HandlerRegistration removeReg = btnRemoveRow.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					IButton sourceBtn = (IButton) event.getSource();

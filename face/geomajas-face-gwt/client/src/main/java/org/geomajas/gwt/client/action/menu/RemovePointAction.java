@@ -18,6 +18,7 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndexUtil;
 import org.geomajas.gwt.client.map.feature.operation.RemoveCoordinateOp;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -44,7 +45,7 @@ public class RemovePointAction extends MenuAction implements MenuItemIfFunction 
 	 *            The map on which editing is going on.
 	 */
 	public RemovePointAction(MapWidget mapWidget) {
-		super(I18nProvider.getMenu().removePoint(), "[ISOMORPHIC]/geomajas/osgeo/vertex-delete.png");
+		super(I18nProvider.getMenu().removePoint(), WidgetLayout.iconVertexDelete);
 		this.mapWidget = mapWidget;
 		setEnableIfCondition(this);
 	}

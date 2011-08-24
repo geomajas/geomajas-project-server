@@ -23,6 +23,7 @@ import org.geomajas.gwt.client.i18n.MenuMessages;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -59,7 +60,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 	 */
 	public EditFeatureAction(MapWidget mapWidget, ParentEditController controller) {
 		super(((MenuMessages) GWT.create(MenuMessages.class)).editFeature(),
-				"[ISOMORPHIC]/geomajas/osgeo/vector-edit.png");
+				WidgetLayout.iconVectorEdit);
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

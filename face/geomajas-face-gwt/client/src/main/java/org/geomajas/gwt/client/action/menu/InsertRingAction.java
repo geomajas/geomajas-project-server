@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.spatial.geometry.operation.AddRingOperation;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -60,7 +61,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 	 *            The current parent editing controller active on the map.
 	 */
 	public InsertRingAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().insertRing(), "[ISOMORPHIC]/geomajas/osgeo/ring-add.png");
+		super(I18nProvider.getMenu().insertRing(), WidgetLayout.iconRingAdd);
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

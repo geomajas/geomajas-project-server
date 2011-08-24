@@ -72,7 +72,7 @@ public class SaveEditingAction extends MenuAction {
 	 *            The <code>MapModel</code> on which editing is in progress.
 	 */
 	public SaveEditingAction(MapModel mapModel) {
-		super(I18nProvider.getMenu().saveEditing(), WidgetLayout.iconDownload);
+		super(I18nProvider.getMenu().saveEditing(), WidgetLayout.iconSaveAlt);
 		this.mapModel = mapModel;
 	}
 

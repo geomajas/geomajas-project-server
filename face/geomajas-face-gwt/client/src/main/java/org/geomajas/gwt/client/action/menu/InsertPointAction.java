@@ -19,6 +19,7 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndexUtil;
 import org.geomajas.gwt.client.map.feature.operation.InsertCoordinateOp;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -50,7 +51,7 @@ public class InsertPointAction extends MenuAction implements MenuItemIfFunction 
 	 *            The map on which editing is going on.
 	 */
 	public InsertPointAction(MapWidget mapWidget) {
-		super(I18nProvider.getMenu().insertPoint(), "[ISOMORPHIC]/geomajas/osgeo/vertex-create.png");
+		super(I18nProvider.getMenu().insertPoint(), WidgetLayout.iconVertexCreate);
 		this.mapWidget = mapWidget;
 		setEnableIfCondition(this);
 	}
