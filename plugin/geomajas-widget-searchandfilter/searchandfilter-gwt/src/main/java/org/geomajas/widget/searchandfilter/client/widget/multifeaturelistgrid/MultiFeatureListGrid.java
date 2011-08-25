@@ -418,6 +418,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		public void addButton(ToolStripButton button, int position) {
 			toolStrip.addButton(button, position);
 			extraButtons.add(button);
+			button.setDisabled(true);
 		}
 
 		public void addFeatures(List<Feature> features) {
