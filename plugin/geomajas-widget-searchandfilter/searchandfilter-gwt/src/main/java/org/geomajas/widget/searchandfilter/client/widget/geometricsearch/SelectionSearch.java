@@ -13,12 +13,15 @@ package org.geomajas.widget.searchandfilter.client.widget.geometricsearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smartgwt.client.widgets.layout.HStack;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
@@ -35,19 +38,22 @@ import com.smartgwt.client.widgets.form.fields.SpinnerItem;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
+ * Geometric search method based on a predefined geometry.
+ *
  * @author Kristof Heirwegh
  * @author Bruce Palmkoeck
+ * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@Api
 public class SelectionSearch extends AbstractGeometricSearchMethod {
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
-	private static final String BTN_ADD_IMG = "[ISOMORPHIC]/geomajas/osgeo/selected-add.png";
-	private static final String BTN_FOCUS_IMG =	"[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
-
 	private DynamicForm frmBuffer;
 	private SpinnerItem spiBuffer;
 	private Geometry geometry;
+	private List<IButton> selectButtons = new ArrayList<IButton>();
 
 	public String getTitle() {
 		return messages.geometricSearchWidgetSelectionSearchTitle();
@@ -70,23 +76,31 @@ public class SelectionSearch extends AbstractGeometricSearchMethod {
 		titleBar.setHeight(20);
 		titleBar.setPadding(5);
 
+		HStack actionStack = new HStack(WidgetLayout.marginSmall);
+		HStack selectStack = new HStack(WidgetLayout.marginSmall);
+
 		IButton btnZoom = new IButton(messages.geometricSearchWidgetSelectionSearchZoomToSelection());
-		btnZoom.setIcon(BTN_FOCUS_IMG);
+		btnZoom.setIcon(WidgetLayout.iconZoomSelection);
 		btnZoom.setAutoFit(true);
 		btnZoom.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onZoomClick();
 			}
 		});
+		actionStack.addMember(btnZoom);
 
 		IButton btnAdd = new IButton(messages.geometricSearchWidgetSelectionSearchAddSelection());
-		btnAdd.setIcon(BTN_ADD_IMG);
+		btnAdd.setIcon(WidgetLayout.iconSelectedAdd);
 		btnAdd.setAutoFit(true);
 		btnAdd.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				onAddClick();
 			}
 		});
+		selectStack.addMember(btnAdd);
+		for (IButton button : selectButtons) {
+			selectStack.addMember(button);
+		}
 
 		frmBuffer = new DynamicForm();
 		frmBuffer.setWidth100();
@@ -100,39 +114,59 @@ public class SelectionSearch extends AbstractGeometricSearchMethod {
 		// ----------------------------------------------------------
 
 		mainLayout.addMember(titleBar);
-		mainLayout.addMember(btnZoom);
+		mainLayout.addMember(actionStack);
 		mainLayout.addMember(frmBuffer);
-		mainLayout.addMember(btnAdd);
+		mainLayout.addMember(selectStack);
 
 		return mainLayout;
 	}
 
+	/**
+	 * Add select button.
+	 *
+	 * @param button button to add
+	 */
+	@Api
+	public void addSelectButton(IButton button) {
+		selectButtons.add(button);
+	}
+
 	private void onAddClick() {
-		List<Geometry> geoms = new ArrayList<Geometry>();
+		List<Geometry> geometries = new ArrayList<Geometry>();
 		for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
 			if (layer.isShowing()) {
 				VectorLayerStore store = layer.getFeatureStore();
 				for (String featureId : layer.getSelectedFeatures()) {
 					Feature f = store.getPartialFeature(featureId);
 					if (f.isSelected()) {
-						geoms.add(f.getGeometry());
+						geometries.add(f.getGeometry());
 					}
 				}
 			}
 		}
-		if (geoms.size() == 0) {
+		setGeometry(geometries);
+	}
+
+	/**
+	 * Set the current current geometry using the list of geometries which are merged and buffered if requested.
+	 *
+	 * @param geometries geometries to combine
+	 */
+	@Api
+	public void setGeometry(List<Geometry> geometries) {
+		if (geometries.size() == 0) {
 			SC.say(messages.geometricSearchWidgetSelectionSearchNothingSelected());
 		} else {
 			Integer buffer = (Integer) spiBuffer.getValue();
 			if (buffer != 0) {
-				SearchCommService.mergeAndBufferGeometries(geoms, buffer, new DataCallback<Geometry[]>() {
+				SearchCommService.mergeAndBufferGeometries(geometries, buffer, new DataCallback<Geometry[]>() {
 					public void execute(Geometry[] result) {
 						updateGeometry(geometry, result[1]);
 						geometry = result[1];
 					}
 				});
 			} else {
-				SearchCommService.mergeGeometries(geoms, new DataCallback<Geometry>() {
+				SearchCommService.mergeGeometries(geometries, new DataCallback<Geometry>() {
 					public void execute(Geometry result) {
 						updateGeometry(geometry, result);
 						geometry = result;

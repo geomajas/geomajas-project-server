@@ -10,10 +10,12 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
@@ -21,6 +23,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
@@ -57,7 +60,10 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * A collection of FeatureListGrids.
  * 
  * @author Kristof Heirwegh
+ * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@Api
 public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 
 	protected final MapWidget map;
@@ -71,6 +77,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	protected boolean showDetailsOnSingleResult;
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
+
+	private List<ExtraButton> extraButtons = new ArrayList<ExtraButton>();
 
 	public MultiFeatureListGrid(MapWidget map) {
 		super();
@@ -125,7 +133,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		for (Tab tab : tabset.getTabs()) {
 			tabset.removeTab(tab);
 		}
-		setEmpty(true);
+		setEmpty();
 	}
 
 	/**
@@ -198,6 +206,17 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		}
 	}
 
+	/**
+	 * Add a button in the tool strip at the requested position.
+	 *
+	 * @param layerId layer which needs the extra button
+	 * @param button button to add
+	 * @param position position
+	 */
+	public void addButton(String layerId, ToolStripButton button, int position) {
+		extraButtons.add(new ExtraButton(layerId, button, position));
+	}
+
 	// ----------------------------------------------------------
 	// -- SearchHandler --
 	// ----------------------------------------------------------
@@ -221,11 +240,15 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		empty.setVisible(state);
 	}
 
+	private void setEmpty() {
+		setEmpty((tabset.getTabs().length == 0));
+	}
+
 	private void removeTab(VectorLayer layer) {
 		String id = tabset.getID() + "_" + layer.getId();
 		if (tabset.getTab(id) != null) {
 			tabset.removeTab(id);
-			setEmpty((tabset.getTabs().length == 0));
+			setEmpty();
 		}
 	}
 
@@ -242,17 +265,23 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	}
 
 	private FeatureListGridTab getTab(VectorLayer layer, ExportToCsvHandler handler) {
-		String id = tabset.getID() + "_" + layer.getId();
+		String layerId = layer.getId();
+		String id = tabset.getID() + "_" + layerId;
 		FeatureListGridTab t = (FeatureListGridTab) tabset.getTab(id);
 		if (t == null) {
 			t = new FeatureListGridTab(map, layer, handler);
 			t.setID(id);
 			tabset.addTab(t);
+			for (ExtraButton button : extraButtons) {
+				if (layerId.equals(button.getLayerId())) {
+					t.addButton(button.getButton(), button.getPosition());
+				}
+			}
 		} else {
 			// Do not forget to update
 			t.setExportToCsvHandler(handler);
 		}
-		setEmpty((tabset.getTabs().length == 0));
+		setEmpty();
 		return t;
 	}
 
@@ -264,6 +293,21 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	}
 
 	/**
+	 * Get the selected records for the tab.
+	 *
+	 * @param layerId layer to get selected items for
+	 * @return selected records
+	 */
+	@Api
+	public ListGridRecord[] getSelection(String layerId) {
+		FeatureListGridTab tab = (FeatureListGridTab) tabset.getTab(layerId);
+		if (tab != null) {
+			return tab.getSelection();
+		}
+		return null;
+	}
+
+	/**
 	 * Wraps a FeatureListGrid in a Tab and adds some actions.
 	 * 
 	 * @author Kristof Heirwegh
@@ -272,12 +316,13 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 
 		private static final String BTN_SHOW_DETAIL = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/info.gif";
 		private static final String BTN_EXPORT = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/table_save.png";
-		private static final String PROCESSING = "[ISOMORPHIC]/geomajas/ajax-loader.gif";
 
 		private FeatureListGrid featureListGrid;
+		private ToolStrip toolStrip;
 		private ToolStripButton focusButton;
 		private ToolStripButton showButton;
 		private ToolStripButton exportButton;
+		private List<ToolStripButton> extraButtons = new ArrayList<ToolStripButton>();
 
 		private ExportToCsvHandler handler;
 
@@ -289,16 +334,13 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		{
 			super(layer.getLabel());
 			this.handler = handler;
-			setOverflow(Overflow.HIDDEN);
-			ToolStrip toolStrip = new ToolStrip();
+			toolStrip = new ToolStrip();
 			toolStrip.setWidth100();
 			toolStrip.setHeight(24);
 			focusButton = new ToolStripButton(messages.multiFeatureListGridButtonFocusSelection());
 			showButton = new ToolStripButton(messages.multiFeatureListGridButtonShowDetail());
 			exportButton = new ToolStripButton(messages.multiFeatureListGridButtonExportToCSV());
-			//FIXME: change to WidgetLayout.iconZoomSelect once plugin depends on gwt 1.10 
-			//focusButton.setIcon(WidgetLayout.iconZoomSelect);
-			focusButton.setIcon("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png");
+			focusButton.setIcon(WidgetLayout.iconZoomSelection);
 			showButton.setIcon(BTN_SHOW_DETAIL);
 			exportButton.setIcon(BTN_EXPORT);
 			focusButton.setTooltip(messages.multiFeatureListGridButtonFocusSelectionTooltip());
@@ -329,7 +371,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				public void onClick(ClickEvent event) {
 					if (handler != null) {
 						exportButton.setDisabled(true);
-						exportButton.setIcon(PROCESSING);
+						exportButton.setIcon(WidgetLayout.iconAjaxLoading);
 						handler.execute(layer, new Callback() {
 
 							public void execute() {
@@ -367,6 +409,17 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			setCanClose(true);
 		}
 
+		/**
+		 * Add a button in the tool strip at the requested position.
+		 *
+		 * @param button button to add
+		 * @param position position
+		 */
+		public void addButton(ToolStripButton button, int position) {
+			toolStrip.addButton(button, position);
+			extraButtons.add(button);
+		}
+
 		public void addFeatures(List<Feature> features) {
 			for (Feature feature : features) {
 				featureListGrid.addFeature(feature);
@@ -396,6 +449,18 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				focusButton.setDisabled(false);
 				showButton.setDisabled(true);
 			}
+			for (ToolStripButton button : extraButtons) {
+				button.setDisabled(count == 0);
+			}
+		}
+
+		/**
+		 * Get the selected records for the tab.
+		 *
+		 * @return selected records
+		 */
+		public ListGridRecord[] getSelection() {
+			return featureListGrid.getSelection();
 		}
 
 		// ----------------------------------------------------------
@@ -403,12 +468,14 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		// ----------------------------------------------------------
 
 		private void zoomToBounds() {
-			int count = featureListGrid.getSelection().length;
+			ListGridRecord[] selection = featureListGrid.getSelection();
+			int count = selection.length;
 			if (count > 0) {
 				LazyLoadCallback llc = new ZoomToBoundsFeatureLazyLoadCallback(count);
-				for (ListGridRecord lgr : featureListGrid.getSelection()) {
-					featureListGrid.getLayer().getFeatureStore()
-							.getFeature(lgr.getAttribute("featureId"), GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, llc);
+				for (ListGridRecord lgr : selection) {
+					featureListGrid.getLayer().getFeatureStore().getFeature(
+							lgr.getAttribute(FeatureListGrid.FIELD_NAME_FEATURE_ID),
+							GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, llc);
 				}
 			}
 		}
@@ -447,7 +514,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		private void showFeatureDetail() {
 			ListGridRecord selected = featureListGrid.getSelectedRecord();
 			if (selected != null) {
-				String featureId = selected.getAttribute("featureId");
+				String featureId = selected.getAttribute(FeatureListGrid.FIELD_NAME_FEATURE_ID);
 				if (featureId != null && featureListGrid.getLayer() != null) {
 					featureListGrid.getLayer().getFeatureStore()
 							.getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
@@ -458,6 +525,35 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 							});
 				}
 			}
+		}
+	}
+
+	/**
+	 * Container for keeping a button until attached to a tab.
+	 *
+	 * @author Joachim Van der Auwera
+	 */
+	private static class ExtraButton {
+		private String layerId;
+		private ToolStripButton button;
+		private int position;
+
+		public ExtraButton(String layerId, ToolStripButton button, int position) {
+			this.layerId = layerId;
+			this.button = button;
+			this.position = position;
+		}
+
+		public String getLayerId() {
+			return layerId;
+		}
+
+		public ToolStripButton getButton() {
+			return button;
+		}
+
+		public int getPosition() {
+			return position;
 		}
 	}
 }
