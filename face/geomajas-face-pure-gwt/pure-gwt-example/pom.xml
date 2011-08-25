@@ -43,7 +43,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.11.4</version>
+				<version>1.11.26</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -100,10 +100,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-google</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
 		</dependency>
 
@@ -151,15 +147,25 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.1.0-1</version>
+				<version>2.3.0-1</version>
 				<configuration>
 					<inplace>true</inplace>
-					<module>org.geomajas.puregwt.GeomajasEntryPoint</module>
+					<module>org.geomajas.puregwt.Showcase</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>clean</goal>
+							<goal>compile</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
