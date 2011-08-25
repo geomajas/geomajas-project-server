@@ -21,7 +21,6 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
@@ -297,7 +296,9 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			focusButton = new ToolStripButton(messages.multiFeatureListGridButtonFocusSelection());
 			showButton = new ToolStripButton(messages.multiFeatureListGridButtonShowDetail());
 			exportButton = new ToolStripButton(messages.multiFeatureListGridButtonExportToCSV());
-			focusButton.setIcon(WidgetLayout.iconZoomSelect);
+			//FIXME: change to WidgetLayout.iconZoomSelect once plugin depends on gwt 1.10 
+			//focusButton.setIcon(WidgetLayout.iconZoomSelect);
+			focusButton.setIcon("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png");
 			showButton.setIcon(BTN_SHOW_DETAIL);
 			exportButton.setIcon(BTN_EXPORT);
 			focusButton.setTooltip(messages.multiFeatureListGridButtonFocusSelectionTooltip());
