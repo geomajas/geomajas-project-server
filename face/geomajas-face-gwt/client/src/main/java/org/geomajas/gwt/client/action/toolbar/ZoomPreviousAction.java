@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.action.toolbar;
 
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -27,7 +28,7 @@ public class ZoomPreviousAction extends ToolbarAction {
 	private ZoomQueue zoomQueue;
 
 	public ZoomPreviousAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/zoom-last.png", I18nProvider.getToolbar().zoomPrevious());
+		super(WidgetLayout.iconZoomLast, I18nProvider.getToolbar().zoomPrevious());
 		zoomQueue = ZoomQueue.getZoomQueue(mapWidget);
 		zoomQueue.setZoomPreviousAction(this);
 	}

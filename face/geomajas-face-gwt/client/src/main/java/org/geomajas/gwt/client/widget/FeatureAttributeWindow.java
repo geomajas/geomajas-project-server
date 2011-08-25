@@ -386,7 +386,7 @@ public class FeatureAttributeWindow extends Window {
 	private class ZoomButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public ZoomButton() {
-			setIcon(WidgetLayout.iconZoomSelect);
+			setIcon(WidgetLayout.iconZoomSelection);
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnZoomFeature());
 			setTooltip(I18nProvider.getAttribute().btnZoomTooltip());

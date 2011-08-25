@@ -35,82 +35,188 @@ public final class WidgetLayout {
 	/** Default offset for displaying pop-up windows. Also used (doubled) to limit maximum size of pop-ups. */
 	public static int windowOffset = 20;
 
+	/** Add icon. */
+	public static String iconAdd = "[ISOMORPHIC]/geomajas/silk/add.png";
+	/** Add image icon. */
+	public static String iconAddImage = "[ISOMORPHIC]/geomajas/silk/image-add.png";
+	/** AJAX loading icon. */
+	public static String iconAjaxLoading = "[ISOMORPHIC]/geomajas/ajax-loader.gif";
+	/** Display attributes icon. */
+	public static String iconAttributesDisplay = "[ISOMORPHIC]/geomajas/osgeo/attributes-display.png";
+	/** Show attributes icon. */
+	public static String iconAttributesShow = "[ISOMORPHIC]/geomajas/osgeo/attributes-show.png";
+	/** Bookmark icon. */
+	public static String iconBookmark = "[ISOMORPHIC]/geomajas/osgeo/bookmark_new.png";
+	/** Cancel icon. */
+	public static String iconCancel = "[ISOMORPHIC]/geomajas/silk/cancel.png";
+	/** Copy icon. */
+	public static String iconCopy = "[ISOMORPHIC]/geomajas/osgeo/edit-copy.png";
+	/** Create icon. */
+	public static String iconCreate = "[ISOMORPHIC]/geomajas/osgeo/create.png";
+	/** Cut icon. */
+	public static String iconCut = "[ISOMORPHIC]/geomajas/osgeo/edit-cut.png";
 	/** Edit icon. */
 	public static String iconEdit = "[ISOMORPHIC]/geomajas/osgeo/edit.png";
-	/** Save icon (disk). */
-	public static String iconSave = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
-	/** Alternate save icon. */
-	public static String iconSaveAlt = "[ISOMORPHIC]/geomajas/osgeo/save.png";
-	/** Open icon (folder). */
-	public static String iconOpen = "[ISOMORPHIC]/geomajas/osgeo/open1.png";
-	/** Alternate open icon. */
-	public static String iconOpenAlt = "[ISOMORPHIC]/geomajas/osgeo/open.png";
-	/** Quit icon. */
-	public static String iconQuit = "[ISOMORPHIC]/geomajas/osgeo/quit.png";
+	/** Error icon. */
+	public static String iconError = "[ISOMORPHIC]/geomajas/widget/error.png";
+	/** Export image icon. */
+	public static String iconExportImage = "[ISOMORPHIC]/geomajas/osgeo/image-export.png";
+	/** Export layer icon. */
+	public static String iconExportLayer = "[ISOMORPHIC]/geomajas/osgeo/layer-export.png";
+	/** Export map icon. */
+	public static String iconExportMap = "[ISOMORPHIC]/geomajas/osgeo/layer-map.png";
+	/** Export PDF icon. */
+	public static String iconExportPdf = "[ISOMORPHIC]/geomajas/osgeo/pdf-export.png";
+	/** Export SVG icon. */
+	public static String iconExportSvg = "[ISOMORPHIC]/geomajas/osgeo/svg-export.png";
+	/** Find icon. */
+	public static String iconFind = "[ISOMORPHIC]/geomajas/silk/find.png";
+	/** Font icon. */
+	public static String iconFont = "[ISOMORPHIC]/geomajas/silk/font.png";
+	/** Geomajas icon. */
+	public static String iconGeomajas = "[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png";
+	/** Help contents icon. */
+	public static String iconHelpContents = "[ISOMORPHIC]/geomajas/osgeo/help-contents.png";
+	/** Hide icon. */
+	public static String iconHide = "[ISOMORPHIC]/geomajas/osgeo/hide.png";
 	/** Info icon. */
 	public static String iconInfo = "[ISOMORPHIC]/geomajas/osgeo/info.png";
-	/** Undo icon. */
-	public static String iconUndo = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
-	/** Table icon. */
-	public static String iconTable = "[ISOMORPHIC]/geomajas/osgeo/table.png";
-	/** Pan icon. */
-	public static String iconPan = "[ISOMORPHIC]/geomajas/osgeo/pan.png";
-	/** Pan to selection icon. */
-	public static String iconPanToSelection = "[ISOMORPHIC]/geomajas/osgeo/pan_to_selection.png";
-	/** Measure length icon. */
-	public static String iconMeasureLength = "[ISOMORPHIC]/geomajas/osgeo/length-measure.png";
-	/** Zoom to selection icon. */
-	public static String iconZoomSelect = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
-	/** Create vector icon. */
-	public static String iconVectorCreate = "[ISOMORPHIC]/geomajas/osgeo/vector-create.png";
-	/** Remove vector icon. */
-	public static String iconVectorRemove = "[ISOMORPHIC]/geomajas/osgeo/vector-remove.png";
-	/** Edit vector icon. */
-	public static String iconVectorEdit = "[ISOMORPHIC]/geomajas/osgeo/vector-edit.png";
-	/** Selected delete icon. */
-	public static String iconSelectedDelete = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";
-	/** Create vertex icon. */
-	public static String iconVertexCreate = "[ISOMORPHIC]/geomajas/osgeo/vertex-create.png";
-	/** Delete vertex icon. */
-	public static String iconVertexDelete = "[ISOMORPHIC]/geomajas/osgeo/vertex-delete.png";
-	/** Add ring icon. */
-	public static String iconRingAdd = "[ISOMORPHIC]/geomajas/osgeo/ring-add.png";
-	/** Delete ring icon. */
-	public static String iconRingDelete = "[ISOMORPHIC]/geomajas/osgeo/ring-delete.png";
-	/** Show labels icon. */
-	public static String iconLabelsShow = "[ISOMORPHIC]/geomajas/widget/layertree/labels-show.png";
-	/** Hide labels icon. */
-	public static String iconLabelsHide = "[ISOMORPHIC]/geomajas/widget/layertree/labels-hide.png";
 	/** Disabled labels icon. */
 	public static String iconLabelsDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/labels-disabled.png";
-	/** Show layer icon. */
-	public static String iconLayerShow = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png";
-	/** Show layer labelled icon. */
-	public static String iconLayerShowLabeled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png";
+	/** Hide labels icon. */
+	public static String iconLabelsHide = "[ISOMORPHIC]/geomajas/widget/layertree/labels-hide.png";
+	/** Show labels icon. */
+	public static String iconLabelsShow = "[ISOMORPHIC]/geomajas/widget/layertree/labels-show.png";
+	/** Disabled layer icon. */
+	public static String iconLayerDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-disabled.png";
 	/** Hide layer icon. */
 	public static String iconLayerHide = "[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png";
 	/** Layer invisible icon. */
 	public static String iconLayerInvisible = "[ISOMORPHIC]/geomajas/widget/layertree/layer-invisible.png";
-	/** Disabled layer icon. */
-	public static String iconLayerDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-disabled.png";
+	/** Show layer icon. */
+	public static String iconLayerShow = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png";
+	/** Show layer labelled icon. */
+	public static String iconLayerShowLabeled = "[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png";
+	/** Line icon. */
+	public static String iconLine = "[ISOMORPHIC]/geomajas/osgeo/line.png";
+	/** Create line icon. */
+	public static String iconLineCreate = "[ISOMORPHIC]/geomajas/osgeo/line-create.png";
+	/** Delete line icon. */
+	public static String iconLineDelete = "[ISOMORPHIC]/geomajas/osgeo/line-delete.png";
+	/** Edit line icon. */
+	public static String iconLineEdit = "[ISOMORPHIC]/geomajas/osgeo/line-edit.png";
+	/** Move line icon. */
+	public static String iconLineMove = "[ISOMORPHIC]/geomajas/osgeo/line-move.png";
+	/** Line polygon edit icon. */
+	public static String iconLinePolygonEdit = "[ISOMORPHIC]/geomajas/osgeo/line-polygon-edit.png";
+	/** Split line icon. */
+	public static String iconLineSplit = "[ISOMORPHIC]/geomajas/osgeo/line-split.png";
+	/** Measure area icon. */
+	public static String iconMeasureArea = "[ISOMORPHIC]/geomajas/osgeo/area-measure.png";
+	/** Measure length icon. */
+	public static String iconMeasureLength = "[ISOMORPHIC]/geomajas/osgeo/length-measure.png";
+	/** Mouse info icon. */
+	public static String iconMouseInfo = "[ISOMORPHIC]/geomajas/osgeo/mouse_info_tool.png";
+	/** Mouse tooltip icon. */
+	public static String iconMouseTooltip = "[ISOMORPHIC]/geomajas/osgeo/mouse-tooltip.png";
+	/** Open icon (folder). */
+	public static String iconOpen = "[ISOMORPHIC]/geomajas/osgeo/open1.png";
+	/** Alternate open icon. */
+	public static String iconOpenAlt = "[ISOMORPHIC]/geomajas/osgeo/open.png";
+	/** Pan icon. */
+	public static String iconPan = "[ISOMORPHIC]/geomajas/osgeo/pan.png";
+	/** Pan info icon. */
+	public static String iconPanInfo = "[ISOMORPHIC]/geomajas/osgeo/pan-info.png";
+	/** Pan to selection icon. */
+	public static String iconPanToSelection = "[ISOMORPHIC]/geomajas/osgeo/pan_to_selection.png";
+	/** Point icon. */
+	public static String iconPoint = "[ISOMORPHIC]/geomajas/osgeo/point.png";
+	/** Create point icon. */
+	public static String iconPointCreate = "[ISOMORPHIC]/geomajas/osgeo/point-create.png";
+	/** Pointer icon. */
+	public static String iconPointer = "[ISOMORPHIC]/geomajas/osgeo/pointer.png";
+	/** Plygon icon. */
+	public static String iconPolygon = "[ISOMORPHIC]/geomajas/osgeo/polygon.png";
+	/** Create polygon icon. */
+	public static String iconPolygonCreate = "[ISOMORPHIC]/geomajas/osgeo/polygon-create.png";
+	/** Print icon. */
+	public static String iconPrint = "[ISOMORPHIC]/geomajas/osgeo/print.png";
+	/** Quit icon. */
+	public static String iconQuit = "[ISOMORPHIC]/geomajas/osgeo/quit.png";
+	/** Redo icon. */
+	public static String iconRedo = "[ISOMORPHIC]/geomajas/osgeo/redo.png";
 	/** Hide layer icon. */
 	public static String iconRefresh = "[ISOMORPHIC]/geomajas/widget/layertree/refresh-hide.png";
 	/** Disabled layer icon. */
 	public static String iconRefreshDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/refresh-disabled.png";
-	/** Tips icon. */
-	public static String iconTips = "[ISOMORPHIC]/geomajas/osgeo/tips.png";
-	/** Help contents icon. */
-	public static String iconHelpContents = "[ISOMORPHIC]/geomajas/osgeo/help-contents.png";
-	/** Error icon. */
-	public static String iconError = "[ISOMORPHIC]/geomajas/widget/error.png";
-	/** Geomajas icon. */
-	public static String iconGeomajas = "[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png";
+	/** Rasterize icon. */
+	public static String iconRasterize = "[ISOMORPHIC]/geomajas/osgeo/rasterize.png";
+	/** Redraw icon. */
+	public static String iconRedraw = "[ISOMORPHIC]/geomajas/osgeo/redraw.png";
+	/** Region icon. */
+	public static String iconRegion = "[ISOMORPHIC]/geomajas/osgeo/region.png";
+	/** Reload icon. */
+	public static String iconReload = "[ISOMORPHIC]/geomajas/osgeo/reload.png";
 	/** Remove icon. */
 	public static String iconRemove = "[ISOMORPHIC]/geomajas/silk/cancel.png";
-	/** Add icon. */
-	public static String iconAdd = "[ISOMORPHIC]/geomajas/silk/add.png";
-	/** Find icon. */
-	public static String iconFind = "[ISOMORPHIC]/geomajas/silk/find.png";
+	/** Ring icon. */
+	public static String iconRing = "[ISOMORPHIC]/geomajas/osgeo/ring.png";
+	/** Add ring icon. */
+	public static String iconRingAdd = "[ISOMORPHIC]/geomajas/osgeo/ring-add.png";
+	/** Delete ring icon. */
+	public static String iconRingDelete = "[ISOMORPHIC]/geomajas/osgeo/ring-delete.png";
+	/** Save icon (disk). */
+	public static String iconSave = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
+	/** Alternate save icon. */
+	public static String iconSaveAlt = "[ISOMORPHIC]/geomajas/osgeo/save.png";
+	/** Save as icon (disk). */
+	public static String iconSaveAs = "[ISOMORPHIC]/geomajas/osgeo/save-as1.png";
+	/** Alternate save as icon. */
+	public static String iconSaveAsAlt = "[ISOMORPHIC]/geomajas/osgeo/save-as.png";
+	/** Selected icon. */
+	public static String iconSelect = "[ISOMORPHIC]/geomajas/osgeo/select.png";
+	/** Add selected icon. */
+	public static String iconSelectedAdd = "[ISOMORPHIC]/geomajas/osgeo/selected-add.png";
+	/** Delete selected icon. */
+	public static String iconSelectedDelete = "[ISOMORPHIC]/geomajas/osgeo/selected-delete.png";
+	/** Show icon. */
+	public static String iconShow = "[ISOMORPHIC]/geomajas/osgeo/show.png";
+	/** Table icon. */
+	public static String iconTable = "[ISOMORPHIC]/geomajas/osgeo/table.png";
+	/** Tips icon. */
+	public static String iconTips = "[ISOMORPHIC]/geomajas/osgeo/tips.png";
+	/** Tools icon. */
+	public static String iconTools = "[ISOMORPHIC]/geomajas/osgeo/tools.png";
+	/** Undo icon. */
+	public static String iconUndo = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
+	/** Edit vector icon. */
+	public static String iconVectorEdit = "[ISOMORPHIC]/geomajas/osgeo/vector-edit.png";
+	/** Create vector icon. */
+	public static String iconVectorCreate = "[ISOMORPHIC]/geomajas/osgeo/vector-create.png";
+	/** Remove vector icon. */
+	public static String iconVectorRemove = "[ISOMORPHIC]/geomajas/osgeo/vector-remove.png";
+	/** Create vertex icon. */
+	public static String iconVertexCreate = "[ISOMORPHIC]/geomajas/osgeo/vertex-create.png";
+	/** Delete vertex icon. */
+	public static String iconVertexDelete = "[ISOMORPHIC]/geomajas/osgeo/vertex-delete.png";
+	/** Zoom to extent icon. */
+	public static String iconZoomExtent = "[ISOMORPHIC]/geomajas/osgeo/zoom-extent.png";
+	/** Zoom in icon. */
+	public static String iconZoomIn = "[ISOMORPHIC]/geomajas/osgeo/zoom-in.png";
+	/** Zoom to last icon. */
+	public static String iconZoomLast = "[ISOMORPHIC]/geomajas/osgeo/zoom-last.png";
+	/** Zoom to layer icon. */
+	public static String iconZoomLayer = "[ISOMORPHIC]/geomajas/osgeo/zoom-layer.png";
+	/** Zoom more icon. */
+	public static String iconZoomMore = "[ISOMORPHIC]/geomajas/osgeo/zoom-more.png";
+	/** Zoom to next icon. */
+	public static String iconZoomNext = "[ISOMORPHIC]/geomajas/osgeo/zoom-next.png";
+	/** Zoom ou icon. */
+	public static String iconZoomOut = "[ISOMORPHIC]/geomajas/osgeo/zoom-out.png";
+	/** Zoom refresh icon. */
+	public static String iconZoomRefresh = "[ISOMORPHIC]/geomajas/osgeo/zoom-refresh.png";
+	/** Zoom to selection icon. */
+	public static String iconZoomSelection = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
 
 
 	/** Loading screen logo. */

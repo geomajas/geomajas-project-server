@@ -14,6 +14,7 @@ import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -30,7 +31,7 @@ public class ZoomInAction extends ToolbarAction implements ConfigurableAction {
 	private double zoomFactor = 2.0;
 
 	public ZoomInAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/zoom-in.png", I18nProvider.getToolbar().zoomIn());
+		super(WidgetLayout.iconZoomIn, I18nProvider.getToolbar().zoomIn());
 		this.mapWidget = mapWidget;
 	}
 

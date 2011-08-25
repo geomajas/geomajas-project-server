@@ -27,6 +27,7 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.util.ValueCallback;
 import com.smartgwt.client.widgets.Dialog;
 import com.smartgwt.client.widgets.events.ClickEvent;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Reloads the server Spring configuration.
@@ -36,7 +37,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public class RefreshConfigurationAction extends ToolbarAction {
 
 	public RefreshConfigurationAction() {
-		super("[ISOMORPHIC]/geomajas/osgeo/reload.png", I18nProvider.getToolbar().refreshConfiguration());
+		super(WidgetLayout.iconReload, I18nProvider.getToolbar().refreshConfiguration());
 	}
 
 	public void onClick(ClickEvent event) {

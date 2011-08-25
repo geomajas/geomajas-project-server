@@ -11,6 +11,7 @@
 package org.geomajas.plugin.rasterizing.client.action.toolbar;
 
 import org.geomajas.gwt.client.action.ToolbarAction;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.rasterizing.client.i18n.RasterizingMessages;
 import org.geomajas.plugin.rasterizing.client.image.ImageUrlCallback;
@@ -40,7 +41,7 @@ public class GetMapImageAction extends ToolbarAction {
 	 *            the map
 	 */
 	public GetMapImageAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/image-export.png", MESSAGES.getMapImage());
+		super(WidgetLayout.iconExportImage, MESSAGES.getMapImage());
 		this.mapWidget = mapWidget;
 	}
 

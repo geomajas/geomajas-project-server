@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.action.toolbar;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.ZoomToRectangleController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -30,7 +31,7 @@ public class ZoomToRectangleModalAction extends ToolbarModalAction {
 	private ZoomToRectangleController controller;
 
 	public ZoomToRectangleModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png", I18nProvider.getToolbar().zoomToRectangle());
+		super(WidgetLayout.iconZoomSelection, I18nProvider.getToolbar().zoomToRectangle());
 		this.mapWidget = mapWidget;
 		controller = new ZoomToRectangleController(mapWidget);
 	}

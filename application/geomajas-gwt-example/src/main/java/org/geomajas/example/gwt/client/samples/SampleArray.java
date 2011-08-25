@@ -66,6 +66,7 @@ import org.geomajas.example.gwt.client.samples.toolbar.ToolbarFeatureInfoSample;
 import org.geomajas.example.gwt.client.samples.toolbar.ToolbarMeasureSample;
 import org.geomajas.example.gwt.client.samples.toolbar.ToolbarNavigationSample;
 import org.geomajas.example.gwt.client.samples.toolbar.ToolbarSelectionSample;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * <p>
@@ -128,24 +129,24 @@ public final class SampleArray {
 
 				// Editing:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupEditing(),
-						"[ISOMORPHIC]/geomajas/osgeo/edit.png", "GeoGraphicEditing", "topLevel"),
+						WidgetLayout.iconEdit, "GeoGraphicEditing", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editPointLayerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditPointLayerSample.TITLE, "GeoGraphicEditing",
+						WidgetLayout.iconEdit, EditPointLayerSample.TITLE, "GeoGraphicEditing",
 						EditPointLayerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editLineLayerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditLineLayerSample.TITLE, "GeoGraphicEditing",
+						WidgetLayout.iconEdit, EditLineLayerSample.TITLE, "GeoGraphicEditing",
 						EditLineLayerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editPolygonLayerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditPolygonLayerSample.TITLE, "GeoGraphicEditing",
+						WidgetLayout.iconEdit, EditPolygonLayerSample.TITLE, "GeoGraphicEditing",
 						EditPolygonLayerSample.FACTORY),
 				// new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPointLayerTitle(),
 				// "[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPointLayerSample.TITLE, "GeoGraphicEditing",
 				// EditMultiPointLayerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiLineLayerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiLineLayerSample.TITLE, "GeoGraphicEditing",
+						WidgetLayout.iconEdit, EditMultiLineLayerSample.TITLE, "GeoGraphicEditing",
 						EditMultiLineLayerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPolygonLayerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPolygonLayerSample.TITLE, "GeoGraphicEditing",
+						WidgetLayout.iconEdit, EditMultiPolygonLayerSample.TITLE, "GeoGraphicEditing",
 						EditMultiPolygonLayerSample.FACTORY),
 
 				// LayerTree & Legend samples:
@@ -163,50 +164,50 @@ public final class SampleArray {
 
 				// Attribute samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupAttributes(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", "FeatureListGridGroup", "topLevel"),
+						WidgetLayout.iconTable, "FeatureListGridGroup", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", FeatureListGridSample.TITLE, "FeatureListGridGroup",
+						WidgetLayout.iconTable, FeatureListGridSample.TITLE, "FeatureListGridGroup",
 						FeatureListGridSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().searchTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", SearchSample.TITLE, "FeatureListGridGroup",
+						WidgetLayout.iconTable, SearchSample.TITLE, "FeatureListGridGroup",
 						SearchSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().search2Title(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeSearchSample.TITLE, "FeatureListGridGroup",
+						WidgetLayout.iconTable, AttributeSearchSample.TITLE, "FeatureListGridGroup",
 						AttributeSearchSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editableGridTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", EditableGridSample.TITLE, "FeatureListGridGroup",
+						WidgetLayout.iconTable, EditableGridSample.TITLE, "FeatureListGridGroup",
 						EditableGridSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editAttributeTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", EditAttributeSample.TITLE, "FeatureListGridGroup",
+						WidgetLayout.iconTable, EditAttributeSample.TITLE, "FeatureListGridGroup",
 						EditAttributeSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().attributeIncludeInFormTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeIncludeInFormSample.TITLE,
+						WidgetLayout.iconTable, AttributeIncludeInFormSample.TITLE,
 						"FeatureListGridGroup", AttributeIncludeInFormSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().attributeCustomTypeTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeCustomTypeSample.TITLE,
+						WidgetLayout.iconTable, AttributeCustomTypeSample.TITLE,
 						"FeatureListGridGroup", AttributeCustomTypeSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().attributeCustomFormTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/table.png", AttributeCustomFormSample.TITLE,
+						WidgetLayout.iconTable, AttributeCustomFormSample.TITLE,
 						"FeatureListGridGroup", AttributeCustomFormSample.FACTORY),
 
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", "MapController", "topLevel"),
+						WidgetLayout.iconTools, "MapController", "topLevel"),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().customControllerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", CustomControllerSample.TITLE, "MapController",
+						WidgetLayout.iconTools, CustomControllerSample.TITLE, "MapController",
 						CustomControllerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().controllerOnElementTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", ControllerOnElementSample.TITLE, "MapController",
+						WidgetLayout.iconTools, ControllerOnElementSample.TITLE, "MapController",
 						ControllerOnElementSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().rectangleControllerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", RectangleControllerSample.TITLE, "MapController",
+						WidgetLayout.iconTools, RectangleControllerSample.TITLE, "MapController",
 						RectangleControllerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().circleControllerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", CircleControllerSample.TITLE, "MapController",
+						WidgetLayout.iconTools, CircleControllerSample.TITLE, "MapController",
 						CircleControllerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().fallbackControllerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", FallbackControllerSample.TITLE, "MapController",
+						WidgetLayout.iconTools, FallbackControllerSample.TITLE, "MapController",
 						FallbackControllerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().mouseMoveListenerTitle(),
 						"[ISOMORPHIC]/geomajas/silk/monitor.png", MouseMoveListenerSample.TITLE, "MapController",
@@ -227,10 +228,10 @@ public final class SampleArray {
 
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),
-						"[ISOMORPHIC]/geomajas/osgeo/zoom-in.png", "ToolbarAndControllers", "topLevel"),
+						WidgetLayout.iconZoomIn, "ToolbarAndControllers", "topLevel"),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarNavigationTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/pan.png", ToolbarNavigationSample.TITLE, "ToolbarAndControllers",
+						WidgetLayout.iconPan, ToolbarNavigationSample.TITLE, "ToolbarAndControllers",
 						ToolbarNavigationSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarSelectionTitle(),
@@ -242,23 +243,23 @@ public final class SampleArray {
 						"ToolbarAndControllers", ToolbarMeasureSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarFeatureInfoTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/info.png", ToolbarFeatureInfoSample.TITLE,
+						WidgetLayout.iconInfo, ToolbarFeatureInfoSample.TITLE,
 						"ToolbarAndControllers", ToolbarFeatureInfoSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().scaleSelectDefaultTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", ScaleSelectDefaultSample.TITLE,
+						WidgetLayout.iconTools, ScaleSelectDefaultSample.TITLE,
 						"ToolbarAndControllers", ScaleSelectDefaultSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().scaleSelectCustomTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", ScaleSelectCustomSample.TITLE,
+						WidgetLayout.iconTools, ScaleSelectCustomSample.TITLE,
 						"ToolbarAndControllers", ScaleSelectCustomSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarToolsTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", CustomToolbarToolsSample.TITLE,
+						WidgetLayout.iconTools, CustomToolbarToolsSample.TITLE,
 						"ToolbarAndControllers", CustomToolbarToolsSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", CustomToolbarSample.TITLE, "ToolbarAndControllers",
+						WidgetLayout.iconTools, CustomToolbarSample.TITLE, "ToolbarAndControllers",
 						CustomToolbarSample.FACTORY),
 
 				// Security samples:

@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.SelectionController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -54,7 +55,7 @@ public class SelectionModalAction extends ToolbarModalAction implements Configur
 	private int pixelTolerance = 5;
 
 	public SelectionModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/select.png", I18nProvider.getToolbar().selectionSelect());
+		super(WidgetLayout.iconSelect, I18nProvider.getToolbar().selectionSelect());
 		this.map = mapWidget;
 	}
 

@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.FeatureSearch;
 import org.geomajas.gwt.client.widget.event.DefaultSearchHandler;
@@ -214,7 +215,7 @@ public class SearchPanel extends VLayout {
 
 		// The grid button opens the feature list grid:
 		gridButton = new IButton();
-		gridButton.setIcon("[ISOMORPHIC]/geomajas/osgeo/table.png");
+		gridButton.setIcon(WidgetLayout.iconTable);
 		gridButton.setSize(BTN_WIDTH + "px", BTN_WIDTH + "px");
 		gridButton.setRadioGroup("panels");
 		gridButton.addClickHandler(new ClickHandler() {

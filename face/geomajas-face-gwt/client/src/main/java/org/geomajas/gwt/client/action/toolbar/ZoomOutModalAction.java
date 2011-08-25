@@ -14,6 +14,7 @@ import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.ZoomOnClickController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -30,7 +31,7 @@ public class ZoomOutModalAction extends ToolbarModalAction implements Configurab
 	private ZoomOnClickController controller;
 
 	public ZoomOutModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/osgeo/zoom-out.png", I18nProvider.getToolbar().zoomOut());
+		super(WidgetLayout.iconZoomOut, I18nProvider.getToolbar().zoomOut());
 		this.mapWidget = mapWidget;
 		controller = new ZoomOnClickController(mapWidget, .5);
 	}
