@@ -54,7 +54,7 @@ public class TiledFeatureService {
 	/**
 	 * Helps determine when a feature is too big and must therefore be clipped.
 	 */
-	private static int MAXIMUM_TILE_COORDINATE = 10000;
+	private static final int MAXIMUM_TILE_COORDINATE = 10000;
 
 	private static final double ROUNDING_TOLERANCE = .0000000005;
 

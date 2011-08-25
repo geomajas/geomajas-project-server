@@ -44,9 +44,9 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 	 */
 	static class FeatureModelPropertyAccessor implements PropertyAccessor {
 
-		private static Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
+		private static final Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
 
-		protected static Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*(\\w+)");
+		static final Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*(\\w+)"); // package private for test
 
 		public boolean canHandle(Object object, String xpath, Class target) {
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);

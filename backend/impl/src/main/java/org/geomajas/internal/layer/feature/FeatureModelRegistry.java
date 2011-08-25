@@ -22,15 +22,15 @@ import org.geomajas.layer.feature.FeatureModel;
  */
 public class FeatureModelRegistry {
 
-	private static volatile FeatureModelRegistry INSTANCE; // volatile needed for multi-threaded correctness
+	private static volatile FeatureModelRegistry instance; // volatile needed for multi-threaded correctness
 
 	private List<FeatureModel> featureModels = new ArrayList<FeatureModel>();
 
 	public static FeatureModelRegistry getRegistry() {
-		if (INSTANCE == null) {
-			INSTANCE = new FeatureModelRegistry();
+		if (instance == null) {
+			instance = new FeatureModelRegistry();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	public FeatureModel lookup(Object feature) {

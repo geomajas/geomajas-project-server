@@ -18,7 +18,7 @@ package org.geomajas.spring;
  */
 public final class ThreadScopeContextHolder {
 
-	private static ThreadLocal<ThreadScopeContext> CONTEXT_HOLDER =
+	private static ThreadLocal<ThreadScopeContext> contextHolder =
 			new ThreadLocal<ThreadScopeContext>() {
 				protected ThreadScopeContext initialValue() {
 					return new ThreadScopeContext();
@@ -35,7 +35,7 @@ public final class ThreadScopeContextHolder {
 	 * @return thread scoped context
 	 */
 	public static ThreadScopeContext getContext() {
-		return CONTEXT_HOLDER.get();
+		return contextHolder.get();
 	}
 
 	/**
@@ -44,11 +44,11 @@ public final class ThreadScopeContextHolder {
 	 * @param context thread scoped context
 	 */
 	public static void setContext(ThreadScopeContext context) {
-		ThreadScopeContextHolder.CONTEXT_HOLDER.set(context);
+		ThreadScopeContextHolder.contextHolder.set(context);
 	}
 
 	public static void clear() {
-		CONTEXT_HOLDER =
+		contextHolder =
 			new ThreadLocal<ThreadScopeContext>() {
 				protected ThreadScopeContext initialValue() {
 					return new ThreadScopeContext();
