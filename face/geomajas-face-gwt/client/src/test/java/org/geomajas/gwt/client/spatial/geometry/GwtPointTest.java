@@ -155,8 +155,8 @@ public class GwtPointTest {
 		com.vividsolutions.jts.geom.Geometry result = reader.read(gwt.toWkt());
 		Assert.assertEquals(gwt.getX(), result.getCoordinate().x, DELTA);
 		Assert.assertEquals(gwt.getY(), result.getCoordinate().y, DELTA);
-
-		Assert.assertEquals("POINT(EMPTY)", empty.toWkt());
+		Assert.assertEquals("POINT (10 10)", result.toText());
+		Assert.assertEquals("POINT EMPTY", empty.toWkt());
 	}
 
 }

@@ -186,9 +186,9 @@ public class Point extends AbstractGeometry {
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "POINT(EMPTY)";
+			return "POINT EMPTY";
 		}
-		return "POINT(" + coordinate.getX() + " " + coordinate.getY() + ")";
+		return "POINT (" + coordinate.getX() + " " + coordinate.getY() + ")";
 	}
 
 	// -------------------------------------------------------------------------

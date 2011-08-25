@@ -170,6 +170,6 @@ public class GwtLineStringTest {
 		com.vividsolutions.jts.geom.Geometry result = reader.read(gwt.toWkt());
 		Assert.assertEquals(gwt.getCoordinate().getX(), result.getCoordinate().x, DELTA);
 		Assert.assertEquals(gwt.getCoordinate().getY(), result.getCoordinate().y, DELTA);
-		Assert.assertEquals("LINESTRING(EMPTY)", empty.toWkt());
+		Assert.assertEquals("LINESTRING EMPTY", empty.toWkt());
 	}
 }

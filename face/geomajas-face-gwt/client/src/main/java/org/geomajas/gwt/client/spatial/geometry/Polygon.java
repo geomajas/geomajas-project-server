@@ -309,15 +309,17 @@ public class Polygon extends AbstractGeometry {
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "POLYGON(EMPTY)";
+			return "POLYGON EMPTY";
 		}
-		String wkt = "POLYGON(";
+		String wkt = "POLYGON (";
 		String ringWkt = exteriorRing.toWkt();
 		wkt += ringWkt.substring(ringWkt.indexOf("("));
 
-		for (LinearRing interiorRing : interiorRings) {
-			ringWkt = interiorRing.toWkt();
-			wkt += "," + ringWkt.substring(ringWkt.indexOf("("));
+		if (interiorRings != null) {
+			for (LinearRing interiorRing : interiorRings) {
+				ringWkt = interiorRing.toWkt();
+				wkt += "," + ringWkt.substring(ringWkt.indexOf("("));
+			}
 		}
 		return wkt + ")";
 	}

@@ -13,6 +13,9 @@ package org.geomajas.gwt.client.spatial.geometry;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.junit.Assert;
@@ -23,7 +26,7 @@ import org.junit.Test;
  * The purpose of this class is to test the methods of the GWT {@link Polygon} class. We do this by comparing them to
  * JTS results.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class GwtPolygonTest {
@@ -40,6 +43,8 @@ public class GwtPolygonTest {
 
 	private Polygon gwt;
 
+	private Polygon noholes;
+
 	private com.vividsolutions.jts.geom.Polygon jts;
 
 	// -------------------------------------------------------------------------
@@ -51,11 +56,12 @@ public class GwtPolygonTest {
 	 */
 	public GwtPolygonTest() {
 		gwtFactory = new GeometryFactory(SRID, PRECISION);
-		LinearRing gwtShell = gwtFactory.createLinearRing(new Coordinate[] {new Coordinate(10.0, 10.0),
-				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0)});
-		LinearRing gwtHole = gwtFactory.createLinearRing(new Coordinate[] {new Coordinate(12.0, 12.0),
-				new Coordinate(18.0, 12.0), new Coordinate(18.0, 18.0), new Coordinate(12.0, 12.0)});
-		gwt = gwtFactory.createPolygon(gwtShell, new LinearRing[] {gwtHole});
+		LinearRing gwtShell = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
+				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });
+		LinearRing gwtHole = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(12.0, 12.0),
+				new Coordinate(18.0, 12.0), new Coordinate(18.0, 18.0), new Coordinate(12.0, 12.0) });
+		gwt = gwtFactory.createPolygon(gwtShell, new LinearRing[] { gwtHole });
+		noholes = gwtFactory.createPolygon(gwtShell, null);
 
 		jtsFactory = new com.vividsolutions.jts.geom.GeometryFactory(new PrecisionModel(), SRID);
 		com.vividsolutions.jts.geom.LinearRing jtsShell = jtsFactory
@@ -63,14 +69,14 @@ public class GwtPolygonTest {
 						new com.vividsolutions.jts.geom.Coordinate(10.0, 10.0),
 						new com.vividsolutions.jts.geom.Coordinate(20.0, 10.0),
 						new com.vividsolutions.jts.geom.Coordinate(20.0, 20.0),
-						new com.vividsolutions.jts.geom.Coordinate(10.0, 10.0)});
+						new com.vividsolutions.jts.geom.Coordinate(10.0, 10.0) });
 		com.vividsolutions.jts.geom.LinearRing jtsHole = jtsFactory
 				.createLinearRing(new com.vividsolutions.jts.geom.Coordinate[] {
 						new com.vividsolutions.jts.geom.Coordinate(12.0, 12.0),
 						new com.vividsolutions.jts.geom.Coordinate(18.0, 12.0),
 						new com.vividsolutions.jts.geom.Coordinate(18.0, 18.0),
-						new com.vividsolutions.jts.geom.Coordinate(12.0, 12.0)});
-		jts = jtsFactory.createPolygon(jtsShell, new com.vividsolutions.jts.geom.LinearRing[] {jtsHole});
+						new com.vividsolutions.jts.geom.Coordinate(12.0, 12.0) });
+		jts = jtsFactory.createPolygon(jtsShell, new com.vividsolutions.jts.geom.LinearRing[] { jtsHole });
 	}
 
 	// -------------------------------------------------------------------------
@@ -141,27 +147,27 @@ public class GwtPolygonTest {
 		com.vividsolutions.jts.geom.LineString jtsLine1 = jtsFactory
 				.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
 						new com.vividsolutions.jts.geom.Coordinate(0, 0),
-						new com.vividsolutions.jts.geom.Coordinate(15, 0)});
+						new com.vividsolutions.jts.geom.Coordinate(15, 0) });
 		com.vividsolutions.jts.geom.LineString jtsLine2 = jtsFactory
 				.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
 						new com.vividsolutions.jts.geom.Coordinate(15, 5),
-						new com.vividsolutions.jts.geom.Coordinate(15, 25)});
+						new com.vividsolutions.jts.geom.Coordinate(15, 25) });
 		com.vividsolutions.jts.geom.LineString jtsLine3 = jtsFactory
 				.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
 						new com.vividsolutions.jts.geom.Coordinate(0, 0),
-						new com.vividsolutions.jts.geom.Coordinate(15, 15)});
+						new com.vividsolutions.jts.geom.Coordinate(15, 15) });
 
-		LineString gwtLine1 = gwtFactory.createLineString(new Coordinate[] {new Coordinate(0, 0),
-				new Coordinate(15, 0)});
-		LineString gwtLine2 = gwtFactory.createLineString(new Coordinate[] {new Coordinate(15, 5),
-				new Coordinate(15, 25)});
-		LineString gwtLine3 = gwtFactory.createLineString(new Coordinate[] {new Coordinate(0, 0),
-				new Coordinate(15, 15)});
+		LineString gwtLine1 = gwtFactory.createLineString(new Coordinate[] { new Coordinate(0, 0),
+				new Coordinate(15, 0) });
+		LineString gwtLine2 = gwtFactory.createLineString(new Coordinate[] { new Coordinate(15, 5),
+				new Coordinate(15, 25) });
+		LineString gwtLine3 = gwtFactory.createLineString(new Coordinate[] { new Coordinate(0, 0),
+				new Coordinate(15, 15) });
 
 		// TODO: problem with JTS intersection calculation...
 		Assert.assertEquals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
-		//Assert.assertEquals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
-		//Assert.assertEquals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
+		// Assert.assertEquals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
+		// Assert.assertEquals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
 		Assert.assertEquals(true, gwt.intersects(gwtLine2)); // crosses LineSegment
 		Assert.assertEquals(true, gwt.intersects(gwtLine3)); // touches point
 	}
@@ -174,5 +180,12 @@ public class GwtPolygonTest {
 	@Test
 	public void getLength() {
 		Assert.assertEquals(jts.getLength(), gwt.getLength(), DELTA);
+	}
+
+	@Test
+	public void toWkt() throws ParseException {
+		WKTReader reader = new WKTReader();
+		com.vividsolutions.jts.geom.Geometry noholesPolygon = reader.read(noholes.toWkt());
+		Assert.assertEquals("POLYGON ((10 10, 20 10, 20 20, 10 10))", noholesPolygon.toText());
 	}
 }

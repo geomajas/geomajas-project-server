@@ -265,9 +265,9 @@ public class LineString extends AbstractGeometry {
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "LINESTRING(EMPTY)";
+			return "LINESTRING EMPTY";
 		}
-		String wkt = "LINESTRING(";
+		String wkt = "LINESTRING (";
 		for (int i = 0; i < coordinates.length; i++) {
 			if (i > 0) {
 				wkt += ", ";
