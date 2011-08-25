@@ -210,6 +210,7 @@ public class LineStringTest {
 		Assert.assertEquals(gwt.getCoordinate().getX(), result.getCoordinate().x, DELTA);
 		Assert.assertEquals(gwt.getCoordinate().getY(), result.getCoordinate().y, DELTA);
 
-		Assert.assertEquals("LINESTRING(EMPTY)", empty.toWkt());
+		com.vividsolutions.jts.geom.Geometry emptyPoint = reader.read(empty.toWkt());
+		Assert.assertTrue(emptyPoint.isEmpty());
 	}
 }

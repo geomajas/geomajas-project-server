@@ -21,6 +21,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * <p>
@@ -42,6 +44,8 @@ public class PolygonTest {
 
 	private Polygon gwt;
 
+	private Polygon noholes;
+	
 	private com.vividsolutions.jts.geom.Polygon jts;
 
 	// -------------------------------------------------------------------------
@@ -60,6 +64,7 @@ public class PolygonTest {
 		LinearRing gwtHole = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(12.0, 12.0),
 				new Coordinate(18.0, 12.0), new Coordinate(18.0, 18.0), new Coordinate(12.0, 12.0) });
 		gwt = gwtFactory.createPolygon(gwtShell, new LinearRing[] { gwtHole });
+		noholes = gwtFactory.createPolygon(gwtShell, null);
 
 		jtsFactory = new com.vividsolutions.jts.geom.GeometryFactory(new PrecisionModel(), SRID);
 		com.vividsolutions.jts.geom.LinearRing jtsShell = jtsFactory
@@ -171,4 +176,12 @@ public class PolygonTest {
 	public void getLength() {
 		Assert.assertTrue((jts.getLength() - gwt.getLength()) < DELTA);
 	}
+	
+	@Test
+	public void toWkt() throws ParseException {
+		WKTReader reader = new WKTReader();
+		com.vividsolutions.jts.geom.Geometry noholesPolygon = reader.read(noholes.toWkt());
+		Assert.assertEquals("POLYGON ((10 10, 20 10, 20 20, 10 10))", noholesPolygon.toText());
+	}
+
 }

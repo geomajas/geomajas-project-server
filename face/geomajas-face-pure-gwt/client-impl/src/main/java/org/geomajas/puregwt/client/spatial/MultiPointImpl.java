@@ -193,9 +193,9 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "MULTIPOINT(EMPTY)";
+			return "MULTIPOINT EMPTY";
 		}
-		String wkt = "MULTIPOINT(";
+		String wkt = "MULTIPOINT (";
 		for (int i = 0; i < points.length; i++) {
 			String lineWkt = points[i].toWkt();
 			if (i > 0) {

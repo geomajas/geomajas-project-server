@@ -225,9 +225,9 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "MULTILINESTRING(EMPTY)";
+			return "MULTILINESTRING EMPTY";
 		}
-		String wkt = "MULTILINESTRING(";
+		String wkt = "MULTILINESTRING (";
 		for (int i = 0; i < lineStrings.length; i++) {
 			String lineWkt = lineStrings[i].toWkt();
 			if (i > 0) {

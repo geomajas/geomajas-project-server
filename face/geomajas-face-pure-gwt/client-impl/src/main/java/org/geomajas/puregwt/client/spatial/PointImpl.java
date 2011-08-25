@@ -165,9 +165,9 @@ public class PointImpl extends AbstractGeometry implements Point {
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "POINT(EMPTY)";
+			return "POINT EMPTY";
 		}
-		return "POINT(" + coordinate.getX() + " " + coordinate.getY() + ")";
+		return "POINT (" + coordinate.getX() + " " + coordinate.getY() + ")";
 	}
 
 	// -------------------------------------------------------------------------

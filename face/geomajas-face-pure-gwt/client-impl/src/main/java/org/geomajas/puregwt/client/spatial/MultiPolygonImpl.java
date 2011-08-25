@@ -209,9 +209,9 @@ public class MultiPolygonImpl extends AbstractGeometry implements MultiPolygon {
 
 	public String toWkt() {
 		if (isEmpty()) {
-			return "MULTIPOLYGON(EMPTY)";
+			return "MULTIPOLYGON EMPTY";
 		}
-		String wkt = "MULTIPOLYGON(";
+		String wkt = "MULTIPOLYGON (";
 		for (int i = 0; i < polygons.length; i++) {
 			String lineWkt = polygons[i].toWkt();
 			if (i > 0) {
