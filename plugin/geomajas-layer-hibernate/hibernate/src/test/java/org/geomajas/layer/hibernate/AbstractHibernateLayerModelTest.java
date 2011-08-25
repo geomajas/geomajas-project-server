@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
 public abstract class AbstractHibernateLayerModelTest {
 
+	public static final String PARAM_ID_ATTR = "id";
 	public static final String PARAM_TEXT_ATTR = "textAttr";
 	public static final String PARAM_INT_ATTR = "intAttr";
 	public static final String PARAM_FLOAT_ATTR = "floatAttr";

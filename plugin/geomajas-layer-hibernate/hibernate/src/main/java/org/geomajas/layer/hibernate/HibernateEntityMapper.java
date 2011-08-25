@@ -30,7 +30,7 @@ import org.hibernate.type.ManyToOneType;
 import org.hibernate.type.Type;
 
 /**
- * Hibernate based implementation of {@link AbstractEntityMapper} for the {@link HibernateLayer}.
+ * Hibernate based implementation of {@link EntityMapper} for the {@link HibernateLayer}.
  * 
  * @author Jan De Moerloose
  * 
@@ -58,7 +58,6 @@ public class HibernateEntityMapper implements EntityMapper {
 	 * {@link Entity} that provides access to a Hibernate entity.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class HibernateEntity implements Entity {
 
@@ -125,6 +124,9 @@ public class HibernateEntityMapper implements EntityMapper {
 		}
 
 		public Object getAttribute(String name) throws LayerException {
+			if (metadata.getIdentifierPropertyName().equals(name)) {
+				return getId(name);
+			}
 			return object == null ? null : metadata.getPropertyValue(object, name, EntityMode.POJO);
 		}
 
@@ -134,7 +136,6 @@ public class HibernateEntityMapper implements EntityMapper {
 	 * {@link EntityCollection} that provides access to a Hibernate collection.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class HibernateEntityCollection implements EntityCollection {
 
@@ -171,6 +172,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			return entities.iterator();
 		}
 
+		@SuppressWarnings("unchecked")
 		public void addEntity(Entity entity) throws LayerException {
 			Object object = ((HibernateEntity) entity).getObject();
 			// assign parent to many-to-one

@@ -78,6 +78,11 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 	}
 
 	@Test
+	public void getIdAttributeLong() throws Exception {
+		Assert.assertEquals(1L, featureModel.getAttribute(feature1, PARAM_ID_ATTR).getValue());
+	}
+
+	@Test
 	public void getAttributeText() throws Exception {
 		Assert.assertEquals("default-name-1", featureModel.getAttribute(feature1, PARAM_TEXT_ATTR).getValue());
 	}
