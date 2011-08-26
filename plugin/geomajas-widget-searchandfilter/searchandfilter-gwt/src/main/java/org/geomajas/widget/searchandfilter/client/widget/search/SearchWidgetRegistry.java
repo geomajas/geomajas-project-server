@@ -43,10 +43,10 @@ public final class SearchWidgetRegistry {
 
 	private static final Map<String, SearchWidgetCreator> REGISTRY = new LinkedHashMap<String, SearchWidgetCreator>();
 
-	private static SearchController SEARCH_CONTROLLER;
-	private static FavouritesController FAVOURITES_CONTROLLER;
+	private static SearchController searchController;
+	private static FavouritesController favouritesController;
 
-	private static MapWidget MAP_WIDGET;
+	private static MapWidget mapWidget;
 
 	private SearchWidgetRegistry() {
 		// utility class, hide constructor
@@ -57,11 +57,11 @@ public final class SearchWidgetRegistry {
 	// ----------------------------------------------------------
 
 	public static void initialize(MapWidget mapWidget, SearchHandler searchResultGrid, boolean modalSearch) {
-		MAP_WIDGET = mapWidget;
-		SEARCH_CONTROLLER = new SearchController(mapWidget, modalSearch);
-		FAVOURITES_CONTROLLER = new FavouritesController();
+		SearchWidgetRegistry.mapWidget = mapWidget;
+		searchController = new SearchController(mapWidget, modalSearch);
+		favouritesController = new FavouritesController();
 		if (searchResultGrid != null) {
-			SEARCH_CONTROLLER.addSearchHandler(searchResultGrid);
+			searchController.addSearchHandler(searchResultGrid);
 		}
 	}
 
@@ -78,31 +78,31 @@ public final class SearchWidgetRegistry {
 
 	public static void addSearchHandler(SearchHandler handler) {
 		if (checkState()) {
-			SEARCH_CONTROLLER.addSearchHandler(handler);
+			searchController.addSearchHandler(handler);
 		}
 	}
 
 	public static void removeSearchHandler(SearchHandler handler) {
 		if (checkState()) {
-			SEARCH_CONTROLLER.removeSearchHandler(handler);
+			searchController.removeSearchHandler(handler);
 		}
 	}
 
 	public static void addFavouriteChangeHandler(FavouriteChangeHandler handler) {
 		if (checkState()) {
-			FAVOURITES_CONTROLLER.addFavouriteChangeHandler(handler);
+			favouritesController.addFavouriteChangeHandler(handler);
 		}
 	}
 
 	public static void removeFavouriteChangeHandler(FavouriteChangeHandler handler) {
 		if (checkState()) {
-			FAVOURITES_CONTROLLER.removeFavouriteChangeHandler(handler);
+			favouritesController.removeFavouriteChangeHandler(handler);
 		}
 	}
 
 	public static FavouritesController getFavouritesController() {
 		if (checkState()) {
-			return FAVOURITES_CONTROLLER;
+			return favouritesController;
 		} else {
 			return null;
 		}
@@ -117,9 +117,9 @@ public final class SearchWidgetRegistry {
 	}
 
 	public static SearchWidget getSearchWidgetInstance(String searchWidgetId) {
-		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(MAP_WIDGET);
-		sw.addSearchRequestHandler(SEARCH_CONTROLLER);
-		sw.addFavouriteRequestHandler(FAVOURITES_CONTROLLER);
+		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(mapWidget);
+		sw.addSearchRequestHandler(searchController);
+		sw.addFavouriteRequestHandler(favouritesController);
 		return sw;
 	}
 
@@ -137,7 +137,7 @@ public final class SearchWidgetRegistry {
 	}
 
 	public static boolean isInitialized() {
-		return (SEARCH_CONTROLLER != null);
+		return (searchController != null);
 	}
 
 	private static boolean checkState() {

@@ -300,7 +300,8 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 */
 	@Api
 	public ListGridRecord[] getSelection(String layerId) {
-		FeatureListGridTab tab = (FeatureListGridTab) tabset.getTab(layerId);
+		String id = tabset.getID() + "_" + layerId;
+		FeatureListGridTab tab = (FeatureListGridTab) tabset.getTab(id);
 		if (tab != null) {
 			return tab.getSelection();
 		}

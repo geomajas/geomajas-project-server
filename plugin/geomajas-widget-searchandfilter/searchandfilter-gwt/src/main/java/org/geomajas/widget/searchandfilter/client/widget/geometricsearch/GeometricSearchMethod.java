@@ -24,6 +24,7 @@ import com.smartgwt.client.widgets.Canvas;
  * Do not implement, extend {@link AbstractGeometricSearchMethod} instead.
  * 
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @ExpectAlternatives
