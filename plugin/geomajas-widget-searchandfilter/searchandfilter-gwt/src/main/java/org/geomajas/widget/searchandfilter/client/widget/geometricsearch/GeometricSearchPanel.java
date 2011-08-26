@@ -70,8 +70,8 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		VLayout layout = new VLayout(0);
 		layout.setWidth100();
 		tabs = new TabSet();
-		tabs.setWidth100();
-		tabs.setHeight(230);
+		tabs.setWidth(400);
+		tabs.setHeight(250);
 		layout.addMember(tabs);
 
 		addChild(layout);
