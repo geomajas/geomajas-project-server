@@ -97,7 +97,8 @@ public class ListenerController extends AbstractGraphicsController {
 	// -------------------------------------------------------------------------
 
 	private ListenerEvent getEvent(int eventBit, MouseEvent<?> event) {
-		return new ListenerEvent(eventBit, getScreenPosition(event), getTarget(event), getTransformer(),
-				event.isAltKeyDown(), event.isControlKeyDown(), event.isShiftKeyDown(), event.getNativeButton());
+		return new ListenerEvent(eventBit, getScreenPosition(event), getClientPosition(event), getTarget(event),
+				getTransformer(), event.isAltKeyDown(), event.isControlKeyDown(), event.isShiftKeyDown(),
+				event.getNativeButton());
 	}
 }

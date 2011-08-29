@@ -30,6 +30,8 @@ public class ListenerEvent {
 
 	private Coordinate screenPosition;
 
+	private Coordinate clientPosition;
+
 	private Element target;
 
 	private boolean altKeyDown;
@@ -53,6 +55,8 @@ public class ListenerEvent {
 	 *            The type of event. See <code>com.google.gwt.user.client.Event</code>.
 	 * @param screenPosition
 	 *            The position of the mouse, expressed in screen coordinates (pixels).
+	 * @param clientPosition
+	 *            The position of the mouse on the client area, expressed in screen coordinates (pixels).
 	 * @param target
 	 *            The target element (HTML/VML/SVG) over which the mouse was hovering.
 	 * @param transformer
@@ -68,10 +72,12 @@ public class ListenerEvent {
 	 *            {@link com.google.gwt.dom.client.NativeEvent#BUTTON_RIGHT},
 	 *            {@link com.google.gwt.dom.client.NativeEvent#BUTTON_MIDDLE}
 	 */
-	protected ListenerEvent(int event, Coordinate screenPosition, Element target, WorldViewTransformer transformer,
-			boolean altKeyDown, boolean controlKeyDown, boolean shiftKeyDown, int button) {
+	protected ListenerEvent(int event, Coordinate screenPosition, Coordinate clientPosition, Element target, 
+			WorldViewTransformer transformer, boolean altKeyDown, boolean controlKeyDown, boolean shiftKeyDown, 
+			int button) {
 		this.event = event;
 		this.screenPosition = screenPosition;
+		this.clientPosition = clientPosition;
 		this.target = target;
 		this.transformer = transformer;
 		this.altKeyDown = altKeyDown;
@@ -109,6 +115,15 @@ public class ListenerEvent {
 	 */
 	public Coordinate getScreenPosition() {
 		return screenPosition;
+	}
+
+	/**
+	 * Returns the position of the mouse on the client area, expressed in screen coordinates (pixels).
+	 * 
+	 * @return The coordinate representing the location.
+	 */
+	public Coordinate getClientPosition() {
+		return clientPosition;
 	}
 
 	/**
