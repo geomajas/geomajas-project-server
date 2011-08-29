@@ -29,4 +29,26 @@
 
     <programlisting>WindowUtil.setLocation("&lt;put your external url here&gt;");</programlisting>
   </section>
+
+  <section>
+    <title>How to set the size of feature attribute windows</title>
+
+    <para>By default, the size of the feature attribute windows are determined
+    automatically.</para>
+
+    <para>If your features have a lot of attributes this may not be ideal. You
+    can force the size of the feature attribute windows using the WidgetLayout
+    class. Add something like the following in your GWT entrypoint
+    class:</para>
+
+    <programlisting>public void onModuleLoad() {
+    // force a fixed height to feature attribute windows,
+    // preventing them from becoming too big
+    WidgetLayout.featureAttributeWindowHeight = 
+        Window.getClientHeight() - WidgetLayout.windowOffset * 4;
+    WidgetLayout.featureAttributeWindowWidth = 470;
+    ....
+}
+</programlisting>
+  </section>
 </chapter>

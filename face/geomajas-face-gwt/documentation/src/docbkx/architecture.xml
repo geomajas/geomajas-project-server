@@ -1196,6 +1196,26 @@ mapWidget.removeListener(myListener);</programlisting>
 setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/b&gt;:&lt;/div&gt;&lt;div style='margin-top:5px;'&gt;" + dist + "&lt;/div&gt;"); </programlisting>
   </section>
 
+  <section>
+    <title>Styling and skinning</title>
+
+    <para>The GWT face uses SmartGWT for the widgets, styling and skinning.
+    The skin for the application is defined in your gwt.xml file. This can for
+    example be done using something like:</para>
+
+    <programlisting>&lt;inherits name="com.smartclient.theme.simplicity.Simplicity" /&gt;</programlisting>
+
+    <para>Extra tuning can be done in CSS.</para>
+
+    <para>In some cases this is not sufficient. SmartGWT handles the flowing
+    of widgets itself based on CSS and size and position information which is
+    included in code. To alleviate this, there is a special class names
+    WidgetLayout which contains many of the fixed values which are used for
+    the sizing and styling used in the widgets. The fields in the class can be
+    set on the onLoad() method in your GWT entry point class to influence the
+    style of the widgets.</para>
+  </section>
+
   <section id="junit">
     <title>Unit testing GWT widgets</title>
 
