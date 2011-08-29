@@ -25,9 +25,9 @@ public class WritableSerializer {
 
 	private static final long serialVersionUID = 1L;	
 
-	private static Class[] SERIALIZABLE_CLASSES = new Class[] {Writable.class};
+	private static final Class[] SERIALIZABLE_CLASSES = new Class[] {Writable.class};
 
-	private static Class[] JSON_CLASSES = new Class[] {Writable.class};
+	private static final Class[] JSON_CLASSES = new Class[] {Writable.class};
 
 	public Class[] getSerializableClasses() {
 		return SERIALIZABLE_CLASSES;

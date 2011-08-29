@@ -28,9 +28,9 @@ public class RectangleSerializer extends AbstractSerializer {
 
 	private static final long serialVersionUID = -1265127912351766084L;
 
-	private static Class[] SERIALIZABLE_CLASSES = new Class[] {Rectangle.class};
+	private static final Class[] SERIALIZABLE_CLASSES = new Class[] {Rectangle.class};
 
-	private static Class[] JSON_CLASSES = new Class[] {JSONObject.class};
+	private static final Class[] JSON_CLASSES = new Class[] {JSONObject.class};
 
 	public Class[] getSerializableClasses() {
 		return SERIALIZABLE_CLASSES;

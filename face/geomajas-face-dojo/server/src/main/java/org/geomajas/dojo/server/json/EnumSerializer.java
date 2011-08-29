@@ -30,9 +30,9 @@ public class EnumSerializer extends AbstractSerializer {
 
 	private static final long serialVersionUID = 1;
 
-	private static Class[] SERIALIZABLE_CLASSES = new Class[] { Enum.class };
+	private static final Class[] SERIALIZABLE_CLASSES = new Class[] { Enum.class };
 
-	private static Class[] JSON_CLASSES = new Class[] { String.class };
+	private static final Class[] JSON_CLASSES = new Class[] { String.class };
 
 	public Class[] getSerializableClasses() {
 		return SERIALIZABLE_CLASSES;

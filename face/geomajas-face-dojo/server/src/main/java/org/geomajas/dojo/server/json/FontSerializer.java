@@ -32,9 +32,9 @@ public class FontSerializer extends AbstractSerializer {
 
 	private static final long serialVersionUID = -1265127912351766084L;
 
-	private static Class[] SERIALIZABLE_CLASSES = new Class[] {Font.class};
+	private static final Class[] SERIALIZABLE_CLASSES = new Class[] {Font.class};
 
-	private static Class[] JSON_CLASSES = new Class[] {String.class};
+	private static final Class[] JSON_CLASSES = new Class[] {String.class};
 
 	public Class[] getSerializableClasses() {
 		return SERIALIZABLE_CLASSES;

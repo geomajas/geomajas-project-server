@@ -13,9 +13,9 @@ package org.geomajas.dojo.server.json;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Centroid test.
@@ -30,7 +30,7 @@ public class CentroidTest {
 		LineString ls = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),
 				new Coordinate(0, 0)});
 		com.vividsolutions.jts.geom.Point p = ls.getCentroid();
-		assertTrue(Double.isNaN(p.getX()));
+		Assert.assertTrue(Double.isNaN(p.getX()));
 	}
 }
  
