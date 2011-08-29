@@ -34,7 +34,8 @@ public class FeatureInfoModalAction extends ToolbarModalAction {
 	// Constructor:
 
 	public FeatureInfoModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconInfo, I18nProvider.getToolbar().featureInfo());
+		super(WidgetLayout.iconInfo, I18nProvider.getToolbar().featureInfoTitle(), I18nProvider
+				.getToolbar().featureInfoTooltip());
 		this.mapWidget = mapWidget;
 		controller = new FeatureInfoController(mapWidget, pixelTolerance);
 	}

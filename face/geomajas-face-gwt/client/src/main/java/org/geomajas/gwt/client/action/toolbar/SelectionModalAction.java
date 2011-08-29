@@ -55,7 +55,8 @@ public class SelectionModalAction extends ToolbarModalAction implements Configur
 	private int pixelTolerance = 5;
 
 	public SelectionModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconSelect, I18nProvider.getToolbar().selectionSelect());
+		super(WidgetLayout.iconSelect, I18nProvider.getToolbar().selectionSelectTitle(), I18nProvider
+				.getToolbar().selectionSelectTooltip());
 		this.map = mapWidget;
 	}
 

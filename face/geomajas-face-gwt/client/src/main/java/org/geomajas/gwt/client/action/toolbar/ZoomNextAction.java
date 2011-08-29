@@ -28,7 +28,8 @@ public class ZoomNextAction extends ToolbarAction {
 	private ZoomQueue zoomQueue;
 
 	public ZoomNextAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomNext, I18nProvider.getToolbar().zoomNext());
+		super(WidgetLayout.iconZoomNext, I18nProvider.getToolbar().zoomNextTitle(), I18nProvider
+				.getToolbar().zoomNextTooltip());
 		zoomQueue = ZoomQueue.getZoomQueue(mapWidget);
 		zoomQueue.setZoomNextAction(this);
 		setDisabled(true);

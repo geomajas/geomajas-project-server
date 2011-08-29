@@ -30,7 +30,18 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 public abstract class ToolbarModalAction extends ToolbarBaseAction {
 
 	public ToolbarModalAction(String icon, String tooltip) {
-		super(icon, tooltip);
+		super(icon, tooltip, tooltip);
+	}
+
+	/**
+	 * Create a new ToolbarModalAction.
+	 * @param icon
+	 * @param title
+	 * @param tooltip
+	 * @since 1.10.0
+	 */
+	public ToolbarModalAction(String icon, String title, String tooltip) {
+		super(icon, title, tooltip);
 	}
 
 	// Class specific actions:

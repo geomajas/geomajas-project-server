@@ -25,17 +25,18 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * Toolbar modal action that enables or disables the general editing controller ({@link ParentEditingController}) on the
  * map.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class EditingModalAction extends ToolbarModalAction implements ConfigurableAction {
 
 	private MapWidget mapWidget;
-	
+
 	private boolean maxBoundsDisplayed;
 
 	public EditingModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconEdit, I18nProvider.getToolbar().editingSelect());
+		super(WidgetLayout.iconEdit, I18nProvider.getToolbar().editingSelectTitle(), I18nProvider
+				.getToolbar().editingSelectTooltip());
 		this.mapWidget = mapWidget;
 	}
 

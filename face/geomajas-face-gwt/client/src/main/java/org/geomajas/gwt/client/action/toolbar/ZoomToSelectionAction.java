@@ -38,7 +38,8 @@ public class ZoomToSelectionAction extends ToolbarAction {
 	private MapWidget mapWidget;
 
 	public ZoomToSelectionAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomSelection, I18nProvider.getToolbar().zoomToSelection());
+		super(WidgetLayout.iconZoomSelection, I18nProvider.getToolbar().zoomToSelectionTitle(),
+				I18nProvider.getToolbar().zoomToSelectionTooltip());
 		this.mapWidget = mapWidget;
 	}
 
@@ -66,8 +67,8 @@ public class ZoomToSelectionAction extends ToolbarAction {
 
 					// only zoom when their where really some items selected
 					if (success) {
-						mapWidget.getMapModel().getMapView().applyBounds(selectionBounds,
-								MapView.ZoomOption.LEVEL_CHANGE);
+						mapWidget.getMapModel().getMapView()
+								.applyBounds(selectionBounds, MapView.ZoomOption.LEVEL_CHANGE);
 					}
 				}
 			});

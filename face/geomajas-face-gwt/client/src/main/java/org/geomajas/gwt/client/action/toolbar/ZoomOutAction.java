@@ -31,7 +31,8 @@ public class ZoomOutAction extends ToolbarAction implements ConfigurableAction {
 	private double zoomFactor = 0.5;
 
 	public ZoomOutAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomOut, I18nProvider.getToolbar().zoomOut());
+		super(WidgetLayout.iconZoomOut, I18nProvider.getToolbar().zoomOutTitle(), I18nProvider
+				.getToolbar().zoomOutTooltip());
 		this.mapWidget = mapWidget;
 	}
 

@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
 import org.geomajas.command.dto.RefreshConfigurationResponse;
 import org.geomajas.gwt.client.action.ToolbarAction;
@@ -22,12 +21,12 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.util.ValueCallback;
 import com.smartgwt.client.widgets.Dialog;
 import com.smartgwt.client.widgets.events.ClickEvent;
-import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
  * Reloads the server Spring configuration.
@@ -37,7 +36,8 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 public class RefreshConfigurationAction extends ToolbarAction {
 
 	public RefreshConfigurationAction() {
-		super(WidgetLayout.iconReload, I18nProvider.getToolbar().refreshConfiguration());
+		super(WidgetLayout.iconReload, I18nProvider.getToolbar().refreshConfigurationTitle(),
+				I18nProvider.getToolbar().refreshConfigurationTooltip());
 	}
 
 	public void onClick(ClickEvent event) {
@@ -52,12 +52,12 @@ public class RefreshConfigurationAction extends ToolbarAction {
 							request.setConfigLocations(value.trim().split("[ \\r\\t\\n,;]+"));
 							GwtCommand command = new GwtCommand(RefreshConfigurationRequest.COMMAND);
 							command.setCommandRequest(request);
-							GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+							GwtCommandDispatcher.getInstance().execute(command, 
+									new CommandCallback<RefreshConfigurationResponse>() {
 
-								public void execute(CommandResponse response) {
-									RefreshConfigurationResponse r = (RefreshConfigurationResponse) response;
+								public void execute(RefreshConfigurationResponse response) {
 									String message = "Reloaded applications : ";
-									List<String> names = Arrays.asList(r.getApplicationNames());
+									List<String> names = Arrays.asList(response.getApplicationNames());
 									for (Iterator<String> it = names.iterator(); it.hasNext();) {
 										message += it.next();
 										if (it.hasNext()) {

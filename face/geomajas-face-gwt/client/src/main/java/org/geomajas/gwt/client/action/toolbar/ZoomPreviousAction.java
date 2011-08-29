@@ -28,7 +28,8 @@ public class ZoomPreviousAction extends ToolbarAction {
 	private ZoomQueue zoomQueue;
 
 	public ZoomPreviousAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomLast, I18nProvider.getToolbar().zoomPrevious());
+		super(WidgetLayout.iconZoomLast, I18nProvider.getToolbar().zoomPreviousTitle(), I18nProvider
+				.getToolbar().zoomPreviousTooltip());
 		zoomQueue = ZoomQueue.getZoomQueue(mapWidget);
 		zoomQueue.setZoomPreviousAction(this);
 	}

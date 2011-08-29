@@ -19,7 +19,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * This action opens the feature attribute editor.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class AttributesModelAction extends ToolbarModalAction {
@@ -27,7 +27,8 @@ public class AttributesModelAction extends ToolbarModalAction {
 	private MapWidget mapWidget;
 
 	public AttributesModelAction(MapWidget mapWidget) {
-		super("edit.png", I18nProvider.getToolbar().editingSelect());
+		super("edit.png", I18nProvider.getToolbar().editingSelectTitle(), I18nProvider.getToolbar()
+				.editingSelectTooltip());
 		this.mapWidget = mapWidget;
 	}
 
@@ -39,4 +40,3 @@ public class AttributesModelAction extends ToolbarModalAction {
 		mapWidget.setController(null);
 	}
 }
-

@@ -31,7 +31,8 @@ public class ZoomInAction extends ToolbarAction implements ConfigurableAction {
 	private double zoomFactor = 2.0;
 
 	public ZoomInAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomIn, I18nProvider.getToolbar().zoomIn());
+		super(WidgetLayout.iconZoomIn, I18nProvider.getToolbar().zoomInTitle(), I18nProvider
+				.getToolbar().zoomInTooltip());
 		this.mapWidget = mapWidget;
 	}
 

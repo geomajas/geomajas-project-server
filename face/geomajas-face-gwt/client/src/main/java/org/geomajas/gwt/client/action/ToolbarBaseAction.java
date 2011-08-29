@@ -33,13 +33,28 @@ public abstract class ToolbarBaseAction {
 
 	private String tooltip; // Text that appears when hovering over the tool bar button.
 
+	private String title; // Text that appears in the button under (or to the right of) the icon.
+
 	/** Is the button for this action disabled or not? */
 	private boolean disabled;
 
 	private HandlerManager handlerManager;
 
 	public ToolbarBaseAction(String icon, String tooltip) {
+		this(icon, tooltip, tooltip);
+	}
+
+	/**
+	 * Constructor for ToolbarBaseAction.
+	 * 
+	 * @param icon
+	 * @param title
+	 * @param tooltip
+	 * @since 1.10.0
+	 */
+	public ToolbarBaseAction(String icon, String title, String tooltip) {
 		this.icon = icon;
+		this.title = title;
 		this.tooltip = tooltip;
 		handlerManager = new HandlerManager(this);
 	}
@@ -48,10 +63,9 @@ public abstract class ToolbarBaseAction {
 		return handlerManager.addHandler(ToolbarActionHandler.TYPE, handler);
 	}
 
-
 	/**
 	 * Link to the image icon that should represent the action's button in the tool bar.
-	 *
+	 * 
 	 * @return icon link
 	 */
 	public String getIcon() {
@@ -70,7 +84,7 @@ public abstract class ToolbarBaseAction {
 
 	/**
 	 * Text that appears when hovering over the tool bar button.
-	 *
+	 * 
 	 * @return tool tip
 	 */
 	public String getTooltip() {
@@ -89,8 +103,8 @@ public abstract class ToolbarBaseAction {
 
 	/**
 	 * Is the button for this action disabled or not?
-	 *
-	 * @return true when disabled 
+	 * 
+	 * @return true when disabled
 	 */
 	public boolean isDisabled() {
 		return disabled;
@@ -109,6 +123,27 @@ public abstract class ToolbarBaseAction {
 		} else {
 			handlerManager.fireEvent(new ToolbarActionEnabledEvent());
 		}
+	}
+
+	/**
+	 * Text that appears in the button under (or to the right of) the icon.
+	 * 
+	 * @return title
+	 * @since 1.10.0
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * Text that appears in the button under (or to the right of) the icon.
+	 * 
+	 * @param title
+	 *            The new value
+	 * @since 1.10.0
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }
 // @extract-end

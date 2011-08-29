@@ -21,7 +21,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Tool which allows zooming out at a position on the map by clicking it.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class ZoomOutModalAction extends ToolbarModalAction implements ConfigurableAction {
@@ -31,7 +31,8 @@ public class ZoomOutModalAction extends ToolbarModalAction implements Configurab
 	private ZoomOnClickController controller;
 
 	public ZoomOutModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomOut, I18nProvider.getToolbar().zoomOut());
+		super(WidgetLayout.iconZoomOut, I18nProvider.getToolbar().zoomOutTitle(), I18nProvider
+				.getToolbar().zoomOutTooltip());
 		this.mapWidget = mapWidget;
 		controller = new ZoomOnClickController(mapWidget, .5);
 	}

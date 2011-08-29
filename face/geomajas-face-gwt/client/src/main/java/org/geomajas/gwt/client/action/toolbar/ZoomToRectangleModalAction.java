@@ -21,7 +21,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Allow zooming to the selected rectangle.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class ZoomToRectangleModalAction extends ToolbarModalAction {
@@ -31,7 +31,8 @@ public class ZoomToRectangleModalAction extends ToolbarModalAction {
 	private ZoomToRectangleController controller;
 
 	public ZoomToRectangleModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconZoomSelection, I18nProvider.getToolbar().zoomToRectangle());
+		super(WidgetLayout.iconZoomSelection, I18nProvider.getToolbar().zoomToRectangleTitle(),
+				I18nProvider.getToolbar().zoomToRectangleTooltip());
 		this.mapWidget = mapWidget;
 		controller = new ZoomToRectangleController(mapWidget);
 	}

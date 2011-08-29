@@ -21,7 +21,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Measure distance action.
- *
+ * 
  * @author Pieter De Graef
  */
 public class MeasureModalAction extends ToolbarModalAction {
@@ -29,7 +29,8 @@ public class MeasureModalAction extends ToolbarModalAction {
 	private MapWidget mapWidget;
 
 	public MeasureModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconMeasureLength, I18nProvider.getToolbar().measureSelect());
+		super(WidgetLayout.iconMeasureLength, I18nProvider.getToolbar().measureSelectTitle(),
+				I18nProvider.getToolbar().measureSelectTooltip());
 		this.mapWidget = mapWidget;
 	}
 

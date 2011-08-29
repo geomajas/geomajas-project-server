@@ -37,7 +37,8 @@ public class PanToSelectionAction extends ToolbarAction {
 	private MapWidget mapWidget;
 
 	public PanToSelectionAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconPanToSelection, I18nProvider.getToolbar().panToSelection());
+		super(WidgetLayout.iconPanToSelection, I18nProvider.getToolbar().panToSelectionTitle(),
+				I18nProvider.getToolbar().panToSelectionTooltip());
 		this.mapWidget = mapWidget;
 	}
 

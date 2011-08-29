@@ -20,7 +20,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Pan tool, allows dragging the map too pan/scroll, or selecting an area to zoom to (by pressing shift or control).
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class PanModalAction extends ToolbarModalAction {
@@ -30,7 +30,8 @@ public class PanModalAction extends ToolbarModalAction {
 	private PanController controller;
 
 	public PanModalAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconPan, I18nProvider.getToolbar().pan());
+		super(WidgetLayout.iconPan, I18nProvider.getToolbar().panTitle(), I18nProvider.getToolbar()
+				.panTooltip());
 		this.mapWidget = mapWidget;
 		controller = new PanController(mapWidget);
 	}
