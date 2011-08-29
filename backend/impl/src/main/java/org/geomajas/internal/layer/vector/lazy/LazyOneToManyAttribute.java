@@ -55,8 +55,11 @@ public class LazyOneToManyAttribute extends OneToManyAttribute implements LazyAt
 				Attribute<List<AssociationValue>> attribute = featureModel.getAttribute(pojo, name);
 				super.setValue(attribute.getValue());
 			} catch (LayerException le) {
-				Logger log = LoggerFactory.getLogger(LazyPrimitiveAttribute.class);
+				Logger log = LoggerFactory.getLogger(LazyOneToManyAttribute.class);
 				log.error("Could not lazily get attribute " + name, le);
+			} catch (ClassCastException cce) {
+				Logger log = LoggerFactory.getLogger(LazyOneToManyAttribute.class);
+				log.error("Could not lazily get attribute " + name, cce);
 			}
 		}
 		return super.getValue();

@@ -95,7 +95,8 @@ public class LazyPrimitiveAttribute<VALUE_TYPE> extends PrimitiveAttribute<VALUE
 				result = new ImageUrlAttribute((String) value);
 				break;
 			default:
-				throw new IllegalArgumentException("Cannot create primitive attribute of type " + getType());
+				throw new IllegalArgumentException("Cannot create primitive attribute " + name + " of type " +
+						getType());
 		}
 		return result;
 	}
