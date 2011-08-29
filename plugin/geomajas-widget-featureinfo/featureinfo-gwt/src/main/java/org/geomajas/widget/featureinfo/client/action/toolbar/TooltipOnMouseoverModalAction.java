@@ -14,7 +14,6 @@ package org.geomajas.widget.featureinfo.client.action.toolbar;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
-import org.geomajas.widget.featureinfo.client.controller.TooltipOnMouseoverController;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -31,25 +30,21 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction {
 
 	private MapWidget mapWidget;
 	private int pixelTolerance = 5; // same as FeatureInfoModalAction
-	private TooltipOnMouseoverController controller;
+	private TooltipOnMouseoverListener listener;
 
 	public TooltipOnMouseoverModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/mouse_tooltip.png", null);
 		this.mapWidget = mapWidget;
+		this.setTitle(messages.tooltipOnMouseoverActionTitle());
 		this.setTooltip(messages.tooltipOnMouseoverActionTooltip());
-		controller = new TooltipOnMouseoverController(mapWidget, pixelTolerance);
+		listener = new TooltipOnMouseoverListener(mapWidget, pixelTolerance);
 	}
 
 	public void onSelect(ClickEvent event) {
-		mapWidget.setController(controller);
+		mapWidget.addListener(listener);
 	}
 
 	public void onDeselect(ClickEvent event) {
-		mapWidget.setController(null);
+		mapWidget.removeListener(listener);
 	}
-
-	public TooltipOnMouseoverController getController() {
-		return controller;
-	}
-
 }

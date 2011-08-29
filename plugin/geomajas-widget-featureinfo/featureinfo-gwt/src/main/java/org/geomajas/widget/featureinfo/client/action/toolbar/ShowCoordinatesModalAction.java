@@ -38,6 +38,7 @@ public class ShowCoordinatesModalAction extends ToolbarModalAction implements Co
 	public ShowCoordinatesModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/mouse_info_tool.png", null);
 		this.mapWidget = mapWidget;
+		this.setTitle(messages.showCoordinatesActionTitle());
 		this.setTooltip(messages.showCoordinatesActionTooltip());
 	}
 

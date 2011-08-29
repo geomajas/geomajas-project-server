@@ -35,6 +35,7 @@ public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 
 	public CombinedFeatureInfoModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/pan_info.png", null);
+		setTitle(messages.combinedFeatureInfoActionTitle());
 		setTooltip(messages.combinedFeatureInfoActionTooltip());
 		this.mapWidget = mapWidget;
 		controller = new CombinedFeatureInfoController(mapWidget);

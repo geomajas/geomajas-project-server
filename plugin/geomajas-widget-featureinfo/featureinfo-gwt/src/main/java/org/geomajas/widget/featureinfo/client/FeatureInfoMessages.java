@@ -21,21 +21,25 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface FeatureInfoMessages extends Messages {
 
+	String nearbyFeaturesModalActionTitle();
 	String nearbyFeaturesModalActionTooltip();
 	String nearbyFeaturesWindowTitle();
 	String nearbyFeaturesListSectionTitle();
 	String nearbyFeaturesDetailsSectionTitle();
 	String nearbyFeaturesListTooltip();
 	
+	String showCoordinatesActionTitle();
 	String showCoordinatesActionTooltip();
 	String showCoordinatesViewX();
 	String showCoordinatesViewY();
 	String showCoordinatesWorldX();
 	String showCoordinatesWorldY();
 
+	String tooltipOnMouseoverActionTitle();
 	String tooltipOnMouseoverActionTooltip();
 	String tooltipOnMouseoverNoResult();
 	
+	String combinedFeatureInfoActionTitle();
 	String combinedFeatureInfoActionTooltip();
 	
 	String urlFeatureDetailWidgetBuilderNoValue();

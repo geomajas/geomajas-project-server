@@ -10,12 +10,9 @@
  */
 package org.geomajas.widget.featureinfo.client.controller;
 
-import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoModalAction;
-import org.geomajas.widget.featureinfo.client.action.toolbar.TooltipOnMouseoverModalAction;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -30,24 +27,17 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
  */
 public class CombinedFeatureInfoController extends AbstractGraphicsController {
 
-	private static final String TOOLTIP_KEY = "TooltipOnMouseOverMode";
-	private static final String MULTIFO_KEY = "MultilayerFeatureInfoMode";
-
+	private static final int PIXELTOLERANCE = 5;
+	
 	private PanController panC;
 	private TooltipOnMouseoverController tomC;
 	private MultiLayerFeatureInfoController mlfC;
 
 	public CombinedFeatureInfoController(MapWidget mapWidget) {
 		super(mapWidget);
-
-		// -- going roundabout to get configuration
-		TooltipOnMouseoverModalAction toolAction = (TooltipOnMouseoverModalAction) ToolbarRegistry.getToolbarAction(
-				TOOLTIP_KEY, mapWidget);
-		MultiLayerFeatureInfoModalAction multiAction = (MultiLayerFeatureInfoModalAction) ToolbarRegistry
-				.getToolbarAction(MULTIFO_KEY, mapWidget);
 		panC = new PanController(mapWidget);
-		tomC = toolAction.getController();
-		mlfC = multiAction.getController();
+		tomC = new TooltipOnMouseoverController(mapWidget, PIXELTOLERANCE);
+		mlfC = new MultiLayerFeatureInfoController(mapWidget, PIXELTOLERANCE);
 	}
 
 	@Override
