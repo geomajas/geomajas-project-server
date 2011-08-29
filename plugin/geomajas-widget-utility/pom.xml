@@ -10,18 +10,19 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.6-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.widget</groupId>
 	<artifactId>geomajas-widget-utility-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<modelVersion>4.0.0</modelVersion>
+	<name>geomajas-widget-utility plug-in parent</name>
+	<description>geomajas-widget-utility plug-in grouping module</description>
 
-	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.5</version>
-	</parent>
 
 	<name>Geomajas Utility widgets plugin - Maven Parent</name>
 	<description>Parent module for the utility widgets plugin.</description>

@@ -129,8 +129,7 @@ public class DojoBuildEnvironment {
 	}
 
 	public File getTargetJar() {
-		File target = new File(dojoDirectory, RELEASE_DIR + ".jar");
-		return target;
+		return new File(dojoDirectory, RELEASE_DIR + ".jar");
 	}
 
 	public void setLocaleList(String localeList) {
@@ -190,11 +189,20 @@ public class DojoBuildEnvironment {
 		sb.append("dependencies ={").append("\n");
 		sb.append("  layers:  [").append("\n");
 		sb.append("    {").append("\n");
-		sb.append("      name: '../" + layerName + "/" + layerName + ".js',").append("\n");
-		sb.append("      dependencies:" + getModulesRequiresArray()).append("\n");
+		sb.append("      name: '../");
+		sb.append(layerName);
+		sb.append("/");
+		sb.append(layerName);
+		sb.append(".js',");
+		sb.append("\n");
+		sb.append("      dependencies:");
+		sb.append(getModulesRequiresArray());
+		sb.append("\n");
 		sb.append("    }").append("\n");
 		sb.append("  ],").append("\n");
-		sb.append("  prefixes: " + getModulePrefixesArray()).append("\n");
+		sb.append("  prefixes: ");
+		sb.append(getModulePrefixesArray());
+		sb.append("\n");
 		sb.append("};").append("\n");
 		try {
 			log.info("Writing profile " + profile.getAbsolutePath());
@@ -210,9 +218,17 @@ public class DojoBuildEnvironment {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (String name : moduleNames) {
-			sb.append("['" + name + "','../" + name + "'],");
+			sb.append("['");
+			sb.append(name);
+			sb.append("','../");
+			sb.append(name);
+			sb.append("'],");
 		}
-		sb.append("['" + layerName + "','../" + layerName + "'],");
+		sb.append("['");
+		sb.append(layerName);
+		sb.append("','../");
+		sb.append(layerName);
+		sb.append("'],");
 		sb.setLength(sb.length() - 1);
 		sb.append("]");
 		return sb.toString();
@@ -222,7 +238,9 @@ public class DojoBuildEnvironment {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (String require : moduleRequires) {
-			sb.append("'" + require + "',");
+			sb.append("'");
+			sb.append(require);
+			sb.append("',");
 		}
 		// remove last comma
 		if (moduleRequires.size() > 0) {
@@ -258,11 +276,10 @@ public class DojoBuildEnvironment {
 	 * Filters out non-dojo folders.
 	 * 
 	 * @author Jan De Moerloose
-	 *
 	 */
 	private static class NonDojoFilter implements FilenameFilter {
 
-		private static Set<String> DOJO_NAMES = new HashSet<String>();
+		private static final Set<String> DOJO_NAMES = new HashSet<String>();
 
 		static {
 			DOJO_NAMES.add("dojo");
@@ -281,11 +298,10 @@ public class DojoBuildEnvironment {
 	 * Filters out dojo modules.
 	 * 
 	 * @author Jan De Moerloose
-	 *
 	 */
 	private static class ModuleFilter implements FilenameFilter {
 
-		private static Set<String> NON_MODULE_NAMES = new HashSet<String>();
+		private static final Set<String> NON_MODULE_NAMES = new HashSet<String>();
 
 		static {
 			NON_MODULE_NAMES.add("dojo");

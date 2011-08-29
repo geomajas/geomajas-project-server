@@ -49,15 +49,14 @@ import java.util.Random;
 public class AuthenticationTokenGeneratorService {
 
 	private static final Integer LOCK = 0; // lock to force sequential access
-	private static long TIME = System.currentTimeMillis(); // time part of high value
-	private static boolean INITIALISED; // true when id is initialised
-	private static byte[] VALUE =
-			new byte[14]; // array to build token in, normally contains high in fourth and following characters
-	private static int LOW; // next value for LOW
-	private static int LOW_LAST; // last value for LOW, when low==lowLast then a new high has to be
+	private long time = System.currentTimeMillis(); // time part of high value
+	private boolean initialised; // true when id is initialised
+	private byte[] value = new byte[14]; // array to build token, contains high in fourth and following characters
+	private int low; // next value for LOW
+	private int lowLast; // last value for LOW, when low==lowLast then a new high has to be
 	// regenerated (test on increment, increment after use)
 	private static final int LOW_MAX = 262144; // max value for LOW (==2^18)
-	private static byte[] BASE64 = {
+	private static final byte[] BASE64 = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
 			'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
@@ -73,44 +72,44 @@ public class AuthenticationTokenGeneratorService {
 	 */
 	public String get() {
 		synchronized (LOCK) {
-			if (!INITIALISED) {
+			if (!initialised) {
 				// generate the random number
 				Random rnd = new Random();	// @todo need a different seed, this is now time based and I
 				// would prefer something different, like an object address
 				// get the random number, instead of getting an integer and converting that to base64 later,
 				// we get a string and narrow that down to base64, use the top 6 bits of the characters
 				// as they are more random than the bottom ones...
-				rnd.nextBytes(VALUE);		// get some random characters
-				VALUE[3] = BASE64[((VALUE[3] >> 2) & 0x3f)];
-				VALUE[4] = BASE64[((VALUE[4] >> 2) & 0x3f)];
-				VALUE[5] = BASE64[((VALUE[5] >> 2) & 0x3f)];
-				VALUE[6] = BASE64[((VALUE[6] >> 2) & 0x3f)];
-				VALUE[7] = BASE64[((VALUE[7] >> 2) & 0x3f)];
+				rnd.nextBytes(value);		// get some random characters
+				value[3] = BASE64[((value[3] >> 2) & 0x3f)];
+				value[4] = BASE64[((value[4] >> 2) & 0x3f)];
+				value[5] = BASE64[((value[5] >> 2) & 0x3f)];
+				value[6] = BASE64[((value[6] >> 2) & 0x3f)];
+				value[7] = BASE64[((value[7] >> 2) & 0x3f)];
 
 				// complete the time part in the HIGH value of the token
 				// this also sets the initial low value
 				completeToken(rnd);
 
-				INITIALISED = true;
+				initialised = true;
 			}
 
 			// fill in LOW value in id
-			int l = LOW;
-			VALUE[0] = BASE64[(l & 0x3f)];
+			int l = low;
+			value[0] = BASE64[(l & 0x3f)];
 			l >>= 6;
-			VALUE[1] = BASE64[(l & 0x3f)];
+			value[1] = BASE64[(l & 0x3f)];
 			l >>= 6;
-			VALUE[2] = BASE64[(l & 0x3f)];
+			value[2] = BASE64[(l & 0x3f)];
 
-			String res = new String(VALUE);
+			String res = new String(value);
 
 			// increment LOW
-			LOW++;
-			if (LOW == LOW_MAX) {
-				LOW = 0;
+			low++;
+			if (low == LOW_MAX) {
+				low = 0;
 			}
-			if (LOW == LOW_LAST) {
-				TIME = System.currentTimeMillis();
+			if (low == lowLast) {
+				time = System.currentTimeMillis();
 				completeToken();
 			}
 
@@ -124,14 +123,14 @@ public class AuthenticationTokenGeneratorService {
 
 	private void completeToken(Random rnd) {
 		// fill in time part in token string
-		long t = TIME;
+		long t = time;
 		for (int i = 0; i < 6; i++) {
-			VALUE[8 + i] = BASE64[(((int) t) & 0x3f)];
+			value[8 + i] = BASE64[(((int) t) & 0x3f)];
 			t >>= 6;
 		}
 
 		// generate new LOW start value
-		LOW = rnd.nextInt(LOW_MAX);
-		LOW_LAST = LOW;
+		low = rnd.nextInt(LOW_MAX);
+		lowLast = low;
 	}
 }

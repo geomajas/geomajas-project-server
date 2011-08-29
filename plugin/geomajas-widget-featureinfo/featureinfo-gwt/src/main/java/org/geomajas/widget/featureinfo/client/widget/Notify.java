@@ -19,7 +19,7 @@ import com.smartgwt.client.util.SC;
  */
 public final class Notify {
 
-	private static Notify INSTANCE;
+	private static Notify instance;
 
 	private NotificationHandler handler;
 
@@ -28,10 +28,10 @@ public final class Notify {
 	}
 
 	public static Notify getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new Notify();
+		if (instance == null) {
+			instance = new Notify();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	public static void info(String message) {

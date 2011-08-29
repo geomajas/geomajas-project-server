@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  */
 public final class FeatureDetailWidgetFactory {
 
-	private static boolean SELECT_ON_ZOOM = true;
+	private static boolean selectOnZoom = true;
 
 	private FeatureDetailWidgetFactory() {
 		// utility class, hide constructor
@@ -66,7 +66,7 @@ public final class FeatureDetailWidgetFactory {
 	}
 
 	public static boolean isSelectOnZoom() {
-		return SELECT_ON_ZOOM;
+		return selectOnZoom;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public final class FeatureDetailWidgetFactory {
 	 * @param selectOnZoom include select on zoom?
 	 */
 	public static void setSelectOnZoom(boolean selectOnZoom) {
-		FeatureDetailWidgetFactory.SELECT_ON_ZOOM = selectOnZoom;
+		FeatureDetailWidgetFactory.selectOnZoom = selectOnZoom;
 	}
 
 	// ----------------------------------------------------------

@@ -31,10 +31,10 @@ import com.smartgwt.client.widgets.layout.HLayout;
  */
 public class DockableWindow extends Window {
 
-	private static Canvas DOCK;
-	private static int MINIMIZED_WIDTH = 225;
-	private static int MINIMIZED_HEIGHT = 34;
-	private static int CURRENTPOS = 5;
+	private static Canvas dock;
+	private static int minimizedWidth = 225;
+	private static int minimizedHeight = 34;
+	private static int currentPosition = 5;
 
 	public DockableWindow() {
 		mixin(this);
@@ -43,7 +43,7 @@ public class DockableWindow extends Window {
 	// ----------------------------------------------------------
 
 	public static Canvas getDock() {
-		return DOCK;
+		return dock;
 	}
 
 	/**
@@ -52,11 +52,11 @@ public class DockableWindow extends Window {
 	 *            windows should be moved to.
 	 */
 	public static void setDock(Canvas dock) {
-		DockableWindow.DOCK = dock;
+		DockableWindow.dock = dock;
 	}
 
 	public static int getMinimizedWidth() {
-		return MINIMIZED_WIDTH;
+		return minimizedWidth;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class DockableWindow extends Window {
 	 * @param minimizedWidth
 	 */
 	public static void setMinimizedWidth(int minimizedWidth) {
-		DockableWindow.MINIMIZED_WIDTH = minimizedWidth;
+		DockableWindow.minimizedWidth = minimizedWidth;
 	}
 
 	/**
@@ -130,10 +130,10 @@ public class DockableWindow extends Window {
 
 			GWT.runAsync(new RunAsyncCallback() {
 				public void onSuccess() {
-					window.animateRect(CURRENTPOS, Document.get().getBody().getClientHeight() - MINIMIZED_HEIGHT,
-							MINIMIZED_WIDTH, null, new AnimationCallback() {
+					window.animateRect(currentPosition, Document.get().getBody().getClientHeight() - minimizedHeight,
+							minimizedWidth, null, new AnimationCallback() {
 								public void execute(boolean earlyFinish) {
-									CURRENTPOS += window.getWidth(); // not
+									currentPosition += window.getWidth(); // not
 																		// necessarily
 																		// equal
 																		// to
@@ -150,7 +150,7 @@ public class DockableWindow extends Window {
 		// -- UnDock
 		public void onRestoreClick(RestoreClickEvent event) {
 			if (docked) {
-				CURRENTPOS -= window.getWidth();
+				currentPosition -= window.getWidth();
 				docked = false;
 				GWT.runAsync(new RunAsyncCallback() {
 					public void onSuccess() {

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public final class PrintConfiguration {
 
-	private static InMemoryPrintTemplateDao IN_MEM_DAO = new InMemoryPrintTemplateDao();
+	private static InMemoryPrintTemplateDao inMemDao = new InMemoryPrintTemplateDao();
 
 //	@Autowired
 //	private HibernateUtil hibernateUtil;
@@ -33,7 +33,7 @@ public final class PrintConfiguration {
 //		try {
 //			dao = new HibernatePrintTemplateDao(hibernateUtil.getCurrentSession());
 //		} catch (HibernateLayerException e) {
-		dao = IN_MEM_DAO;
+		dao = inMemDao;
 //		}
 		return dao;
 	}

@@ -62,9 +62,9 @@ public final class RibbonColumnRegistry {
 
 	private static final Map<String, RibbonColumnCreator> REGISTRY;
 
-	private static int BUTTON_ICON_SIZE = 24;
+	private static int buttonIconSize = 24;
 
-	private static int LIST_ICON_SIZE = 16;
+	private static int listIconSize = 16;
 
 	static {
 		REGISTRY = new HashMap<String, RibbonColumnCreator>();
@@ -75,7 +75,7 @@ public final class RibbonColumnRegistry {
 				if (tools != null && tools.size() > 0) {
 					ButtonAction action = getAction(tools.get(0), mapWidget);
 					if (action != null) {
-						return new RibbonButton(action, BUTTON_ICON_SIZE, TitleAlignment.BOTTOM);
+						return new RibbonButton(action, buttonIconSize, TitleAlignment.BOTTOM);
 					}
 				}
 				return null;
@@ -94,13 +94,13 @@ public final class RibbonColumnRegistry {
 						}
 					}
 					if (actions.size() > 0) {
-						return new ActionListRibbonColumn(actions, LIST_ICON_SIZE);
+						return new ActionListRibbonColumn(actions, listIconSize);
 					}
 				}
 				return null;
 			}
 		});
-	};
+	}
 
 	private RibbonColumnRegistry() {
 		// utility class, hide constructor
@@ -113,7 +113,7 @@ public final class RibbonColumnRegistry {
 	 *            The new icon size. Default is 24 pixels.
 	 */
 	public static void setButtonIconSize(int buttonIconSize) {
-		BUTTON_ICON_SIZE = buttonIconSize;
+		RibbonColumnRegistry.buttonIconSize = buttonIconSize;
 	}
 
 	/**
@@ -123,7 +123,7 @@ public final class RibbonColumnRegistry {
 	 *            The new icon size. Default is 16.
 	 */
 	public static void setListIconSize(int listIconSize) {
-		LIST_ICON_SIZE = listIconSize;
+		RibbonColumnRegistry.listIconSize = listIconSize;
 	}
 
 	/**

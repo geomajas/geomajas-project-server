@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.GwtEvent;
 public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 
 	/** Handler type. */
-	private static Type<DispatchStartedHandler> TYPE = new Type<DispatchStartedHandler>();
+	private static final Type<DispatchStartedHandler> TYPE = new Type<DispatchStartedHandler>();
 
 	// -------------------------------------------------------------------------
 	// Event implementation:

@@ -35,7 +35,7 @@ public class ContentPanelView extends Composite {
 	interface ContentWidgetViewUiBinder extends UiBinder<Widget, ContentPanelView> {
 	}
 
-	private static ContentWidgetViewUiBinder UIBINDER = GWT.create(ContentWidgetViewUiBinder.class);
+	private static final ContentWidgetViewUiBinder UI_BINDER = GWT.create(ContentWidgetViewUiBinder.class);
 
 	@UiField
 	protected Element titleElement;
@@ -47,7 +47,7 @@ public class ContentPanelView extends Composite {
 	protected SimplePanel contentWidget;
 
 	public ContentPanelView() {
-		initWidget(UIBINDER.createAndBindUi(this));
+		initWidget(UI_BINDER.createAndBindUi(this));
 
 		contentWidget.getElement().getStyle().setMarginLeft(10, Unit.PX);
 		contentWidget.getElement().getStyle().setMarginRight(10, Unit.PX);
