@@ -121,6 +121,7 @@ public class ListenerEvent {
 	 * Returns the position of the mouse on the client area, expressed in screen coordinates (pixels).
 	 * 
 	 * @return The coordinate representing the location.
+	 * @since 1.10.0
 	 */
 	public Coordinate getClientPosition() {
 		return clientPosition;
