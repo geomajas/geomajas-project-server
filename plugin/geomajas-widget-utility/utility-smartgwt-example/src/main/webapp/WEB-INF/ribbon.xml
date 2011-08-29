@@ -38,7 +38,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<list>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomIn" />
@@ -47,7 +47,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										</bean>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomOut" />
@@ -64,7 +64,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<list>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="MeasureDistanceMode" />
@@ -73,7 +73,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										</bean>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="FeatureInfoMode" />
@@ -90,7 +90,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<list>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomIn" />
@@ -99,7 +99,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										</bean>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionList" />
+											<property name="type" value="ToolbarActionList" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomIn" />
@@ -126,7 +126,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<list>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomIn" />
@@ -135,7 +135,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										</bean>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionButton" />
+											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomOut" />
@@ -144,7 +144,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										</bean>
 										<bean
 											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-											<property name="type" value="ActionList" />
+											<property name="type" value="ToolbarActionList" />
 											<property name="tools">
 												<list>
 													<ref bean="ZoomPrevious" />
@@ -173,7 +173,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<list>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomIn" />
@@ -182,7 +182,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomOut" />
@@ -191,7 +191,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionList" />
+								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomPrevious" />
@@ -218,7 +218,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<list>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomIn" />
@@ -227,7 +227,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomOut" />
@@ -236,7 +236,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionList" />
+								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomPrevious" />
@@ -290,7 +290,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<list>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomIn" />
@@ -299,7 +299,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomOut" />
@@ -308,7 +308,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionList" />
+								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
 										<ref bean="ZoomPrevious" />
@@ -326,7 +326,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<list>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="MeasureDistanceMode" />
@@ -335,7 +335,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</bean>
 							<bean
 								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
-								<property name="type" value="ActionButton" />
+								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
 										<ref bean="FeatureInfoMode" />

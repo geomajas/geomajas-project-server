@@ -14,6 +14,7 @@ package org.geomajas.widget.utility.smartgwt.client.ribbon;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.widget.utility.client.action.ButtonAction;
 import org.geomajas.widget.utility.client.action.RadioAction;
+import org.geomajas.widget.utility.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.client.ribbon.RibbonColumn;
 
 import com.smartgwt.client.types.Cursor;
@@ -30,7 +31,15 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  */
 public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 
+	public static final String PARAMETER_RADIOGROUP = "radioGroup";
+	public static final String PARAMETER_SELECTED = "selected";
+	public static final String PARAMETER_SHOWDISABLEDICON = "showDisabledIcon";
+
+	private static final String DISABLEDMARKER = "-disabled";
+
 	private boolean showTitles = true;
+
+	private boolean showDisabledIcon;
 
 	private TitleAlignment titleAlignment;
 
@@ -83,6 +92,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		setShowRollOver(true);
 		setShowDown(true);
 		setShowDisabled(true);
+		setShowDisabledIcon(false);
 
 		if (buttonAction instanceof RadioAction) {
 			final RadioAction radioAction = (RadioAction) buttonAction;
@@ -93,7 +103,6 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 				public void onClick(ClickEvent event) {
 					radioAction.setSelected(isSelected());
 				}
-
 			});
 		} else {
 			addClickHandler(new ClickHandler() {
@@ -104,12 +113,48 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 			});
 		}
 
+		if (buttonAction instanceof RibbonColumnAware) {
+			((RibbonColumnAware) buttonAction).setRibbonColumn(this);
+		}
+
 		updateGui();
 	}
 
 	// ------------------------------------------------------------------------
 	// RibbonColumn implementation:
 	// ------------------------------------------------------------------------
+
+	/**
+	 * The text title to display in this button. Set the title.
+	 * 
+	 * @param title
+	 *            new title.
+	 */
+	@Override
+	public void setTitle(String title) {
+		super.setTitle(title);
+		buttonAction.setTitle(title);
+		updateGui();
+	}
+
+	/**
+	 * Icon to be shown with the button title text.
+	 * 
+	 * @param icon
+	 *            URL of new icon. Default value is null
+	 */
+	@Override
+	public void setIcon(String icon) {
+		super.setIcon(icon);
+		buttonAction.setIcon(icon);
+		updateGui();
+	}
+
+	@Override
+	public void setDisabled(boolean disabled) {
+		super.setDisabled(disabled);
+		updateGui();
+	}
 
 	/**
 	 * Sets the base CSS class for this button.
@@ -170,7 +215,25 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 *            parameter value
 	 */
 	public void configure(String key, String value) {
-		buttonAction.configure(key, value);
+		if (PARAMETER_SELECTED.equalsIgnoreCase(key)) {
+			if (buttonAction instanceof RadioAction) {
+				boolean selected = Boolean.parseBoolean(value);
+				setSelected(selected);
+				RadioAction ra = (RadioAction) buttonAction;
+				ra.setSelected(selected);
+			}
+		} else if (PARAMETER_RADIOGROUP.equalsIgnoreCase(key)) {
+			if (buttonAction instanceof RadioAction) {
+				addToRadioGroup(value);
+				RadioAction ra = (RadioAction) buttonAction;
+				ra.setRadioGroup(value);
+			}
+		} else if (PARAMETER_SHOWDISABLEDICON.equalsIgnoreCase(key)) {
+			showDisabledIcon = Boolean.parseBoolean(value);
+			updateGui();
+		} else {
+			buttonAction.configure(key, value);
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -210,28 +273,54 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	/** Update the GUI to reflect the settings. */
+	/**
+	 * Update the GUI to reflect the settings.
+	 */
 	private void updateGui() {
-		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
+		String title = buttonAction.getTitle() == null ? buttonAction.getTooltip() : buttonAction.getTitle();
+		if (title == null) {
+			title = "??";
+		} else {
+			title = title.trim();
+		}
 
 		if (titleAlignment.equals(TitleAlignment.BOTTOM)) {
 			String titleContent = "";
 			if (showTitles) {
-				titleContent = "<div style='text-align:center; margin-top: 10px;'>" + buttonAction.getTitle().trim()
+				titleContent = "<div style='text-align:center; margin-top: 10px; " + getTitleTextStyle() + "'>" + title
 						+ "</div>";
 			}
-			setContents("<div style='text-align:center;'><img src='" + icon + "' width='" + iconSize + "' height='"
-					+ iconSize + "' /></div>" + titleContent);
+			setContents("<div style='text-align:center;'><img src='" + getIconUrl() + "' width='" + iconSize
+					+ "' height='" + iconSize + "' /></div>" + titleContent);
 		} else {
 			setWidth100();
 			String titleContent = "";
 			if (showTitles) {
-				titleContent = "<td style='text-align:left; padding-left: 8px; font-size: 11px; white-space:nowrap;'>"
-						+ buttonAction.getTitle().trim() + "</td>";
+				titleContent = "<td style='text-align:left; padding-left: 8px; font-size: 11px; white-space:nowrap; "
+						+ getTitleTextStyle() + "'>" + title + "</td>";
 			}
 			setContents("<table style='border-spacing: 0px;' cellpadding='0px'><tr><td style='text-align:center;'>"
-					+ "<img src='" + icon + "' width='" + iconSize + "' height='" + iconSize + "' />" + "</td>"
+					+ "<img src='" + getIconUrl() + "' width='" + iconSize + "' height='" + iconSize + "' />" + "</td>"
 					+ titleContent + "</tr></table>");
 		}
+	}
+
+	private String getTitleTextStyle() {
+		if (isDisabled()) {
+			return "color: #777777;";
+		} else {
+			return "";
+		}
+	}
+
+	private String getIconUrl() {
+		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
+		if (isDisabled() && showDisabledIcon) {
+			int dot = icon.lastIndexOf(".");
+			if (dot > -1) {
+				icon = icon.substring(0, dot) + DISABLEDMARKER + icon.substring(dot, icon.length());
+			}
+		}
+		return icon;
 	}
 }

@@ -25,8 +25,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
  */
 public class ToolbarButtonAction implements ButtonAction {
 
-	private String title;
-
 	protected ToolbarBaseAction toolbarAction;
 
 	// ------------------------------------------------------------------------
@@ -41,7 +39,7 @@ public class ToolbarButtonAction implements ButtonAction {
 	 */
 	public ToolbarButtonAction(ToolbarBaseAction toolbarAction) {
 		this.toolbarAction = toolbarAction;
-		setTitle(toolbarAction.getTooltip());
+		setTitle(toolbarAction.getTitle());
 	}
 
 	// ------------------------------------------------------------------------
@@ -80,11 +78,11 @@ public class ToolbarButtonAction implements ButtonAction {
 	}
 
 	public String getTitle() {
-		return title;
+		return toolbarAction.getTitle();
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		toolbarAction.setTitle(title);
 	}
 
 	public String getTooltip() {
@@ -93,5 +91,9 @@ public class ToolbarButtonAction implements ButtonAction {
 
 	public void setTooltip(String tooltip) {
 		toolbarAction.setTooltip(tooltip);
+	}
+
+	public ToolbarBaseAction getToolbarAction() {
+		return toolbarAction;
 	}
 }

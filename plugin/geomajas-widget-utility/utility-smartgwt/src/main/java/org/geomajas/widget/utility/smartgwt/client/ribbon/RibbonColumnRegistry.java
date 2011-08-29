@@ -29,6 +29,8 @@ import org.geomajas.widget.utility.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.smartgwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.smartgwt.client.action.ToolbarRadioAction;
 
+import com.smartgwt.client.util.SC;
+
 /**
  * Registry for all {@link RibbonColumn} types. By default only big buttons and vertical columns are known, but users
  * can add their own types. This registry also offers a few configuration settings, such as icon sizes for the default
@@ -67,7 +69,7 @@ public final class RibbonColumnRegistry {
 	static {
 		REGISTRY = new HashMap<String, RibbonColumnCreator>();
 
-		REGISTRY.put("ActionButton", new RibbonColumnCreator() {
+		REGISTRY.put("ToolbarActionButton", new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				if (tools != null && tools.size() > 0) {
@@ -79,7 +81,8 @@ public final class RibbonColumnRegistry {
 				return null;
 			}
 		});
-		REGISTRY.put("ActionList", new RibbonColumnCreator() {
+
+		REGISTRY.put("ToolbarActionList", new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				if (tools != null && tools.size() > 0) {
@@ -156,13 +159,18 @@ public final class RibbonColumnRegistry {
 	public static RibbonColumn getRibbonColumn(String key, List<ClientToolInfo> tools, List<Parameter> parameters,
 			MapWidget mapWidget) {
 		RibbonColumnCreator ribbonColumnCreator = REGISTRY.get(key);
-		RibbonColumn column = ribbonColumnCreator.create(tools, mapWidget);
-		if (parameters != null) {
-			for (Parameter parameter : parameters) {
-				column.configure(parameter.getName(), parameter.getValue());
+		if (ribbonColumnCreator == null) {
+			SC.logWarn("Could not find RibbonColumn with ID: " + key);
+			return null;
+		} else {
+			RibbonColumn column = ribbonColumnCreator.create(tools, mapWidget);
+			if (parameters != null) {
+				for (Parameter parameter : parameters) {
+					column.configure(parameter.getName(), parameter.getValue());
+				}
 			}
+			return column;
 		}
-		return column;
 	}
 
 	// ------------------------------------------------------------------------

@@ -79,7 +79,7 @@ public interface RibbonColumn {
 	 *            The button base CSS class.
 	 */
 	void setButtonBaseStyle(String buttonBaseStyle);
-	
+
 	/**
 	 * Add configuration key/value pair.
 	 * 
@@ -89,4 +89,19 @@ public interface RibbonColumn {
 	 *            parameter value
 	 */
 	void configure(String key, String value);
+
+	/**
+	 * Is the ribbonColumn disabled?
+	 * 
+	 * @return True if column is disabled
+	 */
+	Boolean isDisabled();
+
+	/**
+	 * Set the disabled state of the RibbonColumn.
+	 * 
+	 * @param disabled
+	 *            The disabled state
+	 */
+	void setDisabled(boolean disabled);
 }
