@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.featureinfo.configuration.client.WidgetBuilderInfo;
@@ -114,8 +115,7 @@ public final class FeatureDetailWidgetFactory {
 			Canvas editBtn = null;
 			// hackety hack
 			for (Canvas c : ts.getMembers()) {
-				//FIXME: replace "[ISOMORPHIC]/geomajas/osgeo/edit.png" bt WidgetLayout.iconEdit on gwt 1.10 dep.
-				if (c instanceof IButton && "[ISOMORPHIC]/geomajas/osgeo/edit.png".equals(((IButton) c).getIcon())) {
+				if (c instanceof IButton && WidgetLayout.iconEdit.equals(((IButton) c).getIcon())) {
 					editBtn = c;
 				}
 			}
