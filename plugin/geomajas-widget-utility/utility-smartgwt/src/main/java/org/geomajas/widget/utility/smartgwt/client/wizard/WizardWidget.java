@@ -50,6 +50,7 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 
 	public WizardWidget(String title, String helpText) {
 		this.title = title;
+		this.helpText = helpText;
 		buttons = new ArrayList<WizardButton<DATA>>();
 		setStyleName("wizardWidget");
 		setLayoutAlign(Alignment.CENTER);
@@ -170,7 +171,6 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 	 * Default implementation of page button.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class DefaultPageButton extends HTMLFlow implements WizardButton<DATA> {
 
@@ -211,7 +211,6 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 	 * Default implementation of classical wizard button.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class DefaultWizardButton extends IButton implements WizardButton<DATA> {
 
