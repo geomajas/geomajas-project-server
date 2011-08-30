@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt.client.util;
 
-import com.sun.xml.internal.ws.api.pipe.NextAction;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.annotation.Api;
@@ -52,7 +51,7 @@ public final class GeometryConverter {
 		int srid = geometry.getSrid();
 		int precision = geometry.getPrecision();
 
-		Geometry dto = null;
+		Geometry dto;
 		if (geometry instanceof Point) {
 			dto = new Geometry(Geometry.POINT, srid, precision);
 			dto.setCoordinates(geometry.getCoordinates());
@@ -104,7 +103,7 @@ public final class GeometryConverter {
 			return null;
 		}
 		GeometryFactory factory = new GeometryFactory(geometry.getSrid(), geometry.getPrecision());
-		org.geomajas.gwt.client.spatial.geometry.Geometry gwt = null;
+		org.geomajas.gwt.client.spatial.geometry.Geometry gwt;
 
 		String geometryType = geometry.getGeometryType();
 		if (Geometry.POINT.equals(geometryType)) {
