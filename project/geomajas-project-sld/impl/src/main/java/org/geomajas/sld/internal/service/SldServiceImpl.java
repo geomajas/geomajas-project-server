@@ -96,7 +96,7 @@ public class SldServiceImpl implements SldService {
 							if (sld.getName() == null) {
 									sld.setName(fileName);
 							}
-							log.info("added sld " + fileName + " to service");
+							log.info("added sld {} to service", fileName);
 							allSlds.put(sld.getName(), sld);
 						}
 					}

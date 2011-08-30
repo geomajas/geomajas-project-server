@@ -91,9 +91,7 @@ public class CsvExportService {
 			byte[] buffer = cb.getBuffer().toString().getBytes(encoding);
 			fos.write(buffer);
 			fos.flush();
-			log.info("Wrote a temporary downloadfile: " + f.getName() + " - size: " + buffer.length + " bytes.");
-		} catch (IOException e) {
-			throw e;
+			log.debug("Wrote a temporary downloadfile: " + f.getName() + " - size: " + buffer.length + " bytes.");
 		} finally {
 			if (fos != null) {
 				fos.close();

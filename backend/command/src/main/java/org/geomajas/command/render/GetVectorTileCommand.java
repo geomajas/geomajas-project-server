@@ -50,7 +50,7 @@ public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVe
 
 	public void execute(GetVectorTileRequest request, GetVectorTileResponse response) throws Exception {
 		String layerId = request.getLayerId();
-		log.info("request start layer {}, crs {}", layerId, request.getCrs());
+		log.debug("request start layer {}, crs {}", layerId, request.getCrs());
 		if (null == layerId) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layer");
 		}

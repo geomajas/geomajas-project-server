@@ -48,9 +48,9 @@ public class FileDownloadServiceImpl implements FileDownloadService {
 				if (f != null) {
 					try {
 						f.delete();
-						log.info("Deleted a temporary downloadfile: " + f.getName());
+						log.debug("Deleted a temporary download file: " + f.getName());
 					} catch (Exception e) {
-						log.warn("Failed to delete temporary downloadfile: " + e.getMessage());
+						log.warn("Failed to delete temporary download file: " + e.getMessage());
 					}
 				}
 			} else {

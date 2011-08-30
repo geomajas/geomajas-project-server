@@ -473,7 +473,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (now > lastInitFeaturesRetry + cooldownTimeBetweenInitializationRetries) {
 			lastInitFeaturesRetry = now;
 			try {
-				log.info("Retrying to initialize layer");
+				log.debug("Retrying to (re-)initialize layer {}", getId());
 				initFeatures();
 			} catch (Exception e) {
 				log.warn("Failed initializing layer: ", e.getMessage());

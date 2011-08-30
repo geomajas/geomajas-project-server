@@ -254,10 +254,10 @@ public final class GeoServiceImpl implements GeoService {
 					Envelope envelope = new Envelope(ogEnvelope.getLowerCorner().getCoordinate()[0], ogEnvelope
 							.getUpperCorner().getCoordinate()[0], ogEnvelope.getLowerCorner().getCoordinate()[1],
 							ogEnvelope.getUpperCorner().getCoordinate()[1]);
-					log.info("CRS " + targetCrs.getId() + " envelope " + envelope);
+					log.debug("CRS " + targetCrs.getId() + " envelope " + envelope);
 					ReferencedEnvelope refEnvelope = new ReferencedEnvelope(envelope, targetCrs);
 					transformableArea = refEnvelope.transform(sourceCrs, true);
-					log.info("transformable area for " + key + " is " + transformableArea);
+					log.debug("transformable area for " + key + " is " + transformableArea);
 				}
 			} catch (MismatchedDimensionException mde) {
 				log.warn("Cannot build transformableArea for CRS transformation between " + sourceCrs.getId() + " and "
