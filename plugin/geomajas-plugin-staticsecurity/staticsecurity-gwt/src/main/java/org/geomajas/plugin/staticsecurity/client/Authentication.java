@@ -40,7 +40,7 @@ import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
  */
 public final class Authentication {
 
-	private static Authentication LOGIN = new Authentication();
+	private static Authentication login = new Authentication();
 
 	private HandlerManager manager;
 
@@ -60,7 +60,7 @@ public final class Authentication {
 	 * @return Return the singleton instance that manages logging in and out.
 	 */
 	public static Authentication getInstance() {
-		return LOGIN;
+		return login;
 	}
 
 	/**

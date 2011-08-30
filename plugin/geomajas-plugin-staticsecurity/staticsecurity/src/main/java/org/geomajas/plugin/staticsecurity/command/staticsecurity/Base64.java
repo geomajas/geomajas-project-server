@@ -675,6 +675,7 @@ public final class Base64 {
 		 * buffered four at a time.
 		 *
 		 * @param theByte the byte to write
+		 * @throws java.io.IOException invalid data in stream
 		 * @since 1.3
 		 */
 		public void write(int theByte) throws java.io.IOException {
@@ -721,6 +722,7 @@ public final class Base64 {
 		 * @param theBytes array from which to read bytes
 		 * @param off offset for array
 		 * @param len max number of bytes to read into array
+		 * @throws java.io.IOException invalid data in stream
 		 * @since 1.3
 		 */
 		public void write(byte[] theBytes, int off, int len) throws java.io.IOException {
@@ -737,7 +739,11 @@ public final class Base64 {
 		}   // end write
 
 
-		/** Method added by PHIL. [Thanks, PHIL. -Rob] This pads the buffer without closing the stream. */
+		/**
+		 * Method added by PHIL. [Thanks, PHIL. -Rob] This pads the buffer without closing the stream.
+		 *
+		 * @throws java.io.IOException input not properly padded
+		 */
 		public void flushBase64() throws java.io.IOException {
 			if (position > 0) {
 				if (encode) {
@@ -754,6 +760,7 @@ public final class Base64 {
 		/**
 		 * Flushes and closes (I think, in the superclass) the stream.
 		 *
+		 * @throws java.io.IOException input not properly padded or cannot clos
 		 * @since 1.3
 		 */
 		public void close()
