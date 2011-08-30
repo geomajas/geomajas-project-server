@@ -56,15 +56,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
-		<property name="loopAllServices" value="false"/>
+		<property name="loopAllServices" value="false" />
 		<property name="securityServices">
 			<list>
-				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean name="app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
 				<bean name="mainMap" class="org.geomajas.configuration.client.ClientMapInfo">
