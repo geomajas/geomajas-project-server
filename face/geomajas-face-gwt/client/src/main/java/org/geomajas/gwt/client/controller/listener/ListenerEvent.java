@@ -72,8 +72,8 @@ public class ListenerEvent {
 	 *            {@link com.google.gwt.dom.client.NativeEvent#BUTTON_RIGHT},
 	 *            {@link com.google.gwt.dom.client.NativeEvent#BUTTON_MIDDLE}
 	 */
-	protected ListenerEvent(int event, Coordinate screenPosition, Coordinate clientPosition, Element target, 
-			WorldViewTransformer transformer, boolean altKeyDown, boolean controlKeyDown, boolean shiftKeyDown, 
+	protected ListenerEvent(int event, Coordinate screenPosition, Coordinate clientPosition, Element target,
+			WorldViewTransformer transformer, boolean altKeyDown, boolean controlKeyDown, boolean shiftKeyDown,
 			int button) {
 		this.event = event;
 		this.screenPosition = screenPosition;
@@ -119,6 +119,9 @@ public class ListenerEvent {
 
 	/**
 	 * Returns the position of the mouse on the client area, expressed in screen coordinates (pixels).
+	 * <p>
+	 * This is the absolute screen position in your browser window, for the relative map screen position use
+	 * <code>getScreenPosition()</code>.
 	 * 
 	 * @return The coordinate representing the location.
 	 * @since 1.10.0
