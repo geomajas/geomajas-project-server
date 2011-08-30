@@ -181,12 +181,10 @@
 			<groupId>org.geomajas.plugin</groupId> 
 			<artifactId>geomajas-plugin-caching</artifactId>
 		</dependency>
-		<!--
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId> 
 		</dependency>
-		-->
 		<!-- Extra Geomajas plugins -->
 		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
 		<dependency>
