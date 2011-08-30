@@ -52,17 +52,30 @@ public final class FeatureDetailWidgetFactory {
 				DockableWindow.mixin(w);
 			}
 			return w;
-		} else if (layer instanceof VectorLayer) {
+		} else {
+			return createDefaultFeatureDetailWindow(feature, layer, editingAllowed);
+		}
+	}
+
+	public static Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
+		return createFeatureDetailWindow(feature, feature.getLayer(), editingAllowed);
+	}
+
+	/**
+	 * Overrule configuration and create Geomajas default FeatureAttributeWindow
+	 * 
+	 * @param feature
+	 * @param editingAllowed
+	 * @return
+	 */
+	public static Window createDefaultFeatureDetailWindow(Feature feature, Layer layer, boolean editingAllowed) {
+		if (layer instanceof VectorLayer) {
 			FeatureAttributeWindow w = new FeatureAttributeWindow(feature, editingAllowed);
 			customize(w, feature);
 			return w;
 		} else {
 			return new RasterLayerAttributeWindow(feature, layer);
 		}
-	}
-
-	public static Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
-		return createFeatureDetailWindow(feature, feature.getLayer(), editingAllowed);
 	}
 
 	public static boolean isSelectOnZoom() {

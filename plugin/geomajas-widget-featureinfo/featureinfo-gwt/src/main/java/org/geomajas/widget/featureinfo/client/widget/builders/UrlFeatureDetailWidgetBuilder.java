@@ -14,6 +14,7 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetBuilder;
+import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
@@ -36,7 +37,7 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 	private static final long serialVersionUID = 100L;
 
 	public static final String IDENTIFIER = "UrlFeatureDetailWidgetBuilder";
-	
+
 	private static final String ATTRIBUTE_KEY = "${attributeValue}";
 	private static final String ATTRIBUTE_KEY_REGEX = "\\$\\{attributeValue\\}";
 
@@ -46,35 +47,34 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 	private String windowHeight = "75%";
 	private String urlPattern;
 	private String urlAttributeName;
+	private boolean showDefaultIfNull = true;
 
 	public Window createFeatureDetailWindow(Feature feature, boolean editingAllowed) {
-		Window w = new Window();
-		w.setWidth(windowWidth);
-		w.setHeight(windowHeight);
-		w.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feature.getLabel()));
-		w.setCanDragReposition(true);
-		w.setCanDragResize(true);
-		w.setAutoCenter(true);
-		w.setKeepInParentRect(true);
-
 		String url = buildUrl(feature);
 		if (url == null) {
-			Label l = new Label(messages.urlFeatureDetailWidgetBuilderNoValue());
-			l.setWidth100();
-			l.setHeight100();
-			l.setValign(VerticalAlignment.CENTER);
-			l.setAlign(Alignment.CENTER);
-			w.addItem(l);
-
+			if (showDefaultIfNull) {
+				return FeatureDetailWidgetFactory.createDefaultFeatureDetailWindow(feature, feature.getLayer(),
+						editingAllowed);
+			} else {
+				Label l = new Label(messages.urlFeatureDetailWidgetBuilderNoValue());
+				l.setWidth100();
+				l.setHeight100();
+				l.setValign(VerticalAlignment.CENTER);
+				l.setAlign(Alignment.CENTER);
+				Window w = createWindow(feature.getLabel());
+				w.addItem(l);
+				return w;
+			}
 		} else {
 			HTMLPane htmlPane = new HTMLPane();
 			htmlPane.setWidth100();
 			htmlPane.setHeight100();
 			htmlPane.setContentsURL(url);
 			htmlPane.setContentsType(ContentsType.PAGE);
+			Window w = createWindow(feature.getLabel());
 			w.addItem(htmlPane);
+			return w;
 		}
-		return w;
 	}
 
 	public Canvas createWidget() {
@@ -83,14 +83,16 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 
 	public void configure(String key, String value) {
 		try {
-			if ("windowWidth".equals(key)) {
+			if ("windowWidth".equalsIgnoreCase(key)) {
 				windowWidth = value;
-			} else if ("windowHeight".equals(key)) {
+			} else if ("windowHeight".equalsIgnoreCase(key)) {
 				windowHeight = value;
-			} else if ("urlPattern".equals(key)) {
+			} else if ("urlPattern".equalsIgnoreCase(key)) {
 				urlPattern = value;
-			} else if ("urlAttributeName".equals(key)) {
+			} else if ("urlAttributeName".equalsIgnoreCase(key)) {
 				urlAttributeName = value;
+			} else if ("showDefaultIfNull".equalsIgnoreCase(key)) {
+				showDefaultIfNull = Boolean.parseBoolean(value);
 			}
 		} catch (Exception e) {
 			SC.logWarn("Error parsing parameters for " + IDENTIFIER + " - " + e.getMessage());
@@ -99,9 +101,21 @@ public class UrlFeatureDetailWidgetBuilder implements FeatureDetailWidgetBuilder
 
 	// ----------------------------------------------------------
 
+	private Window createWindow(String subtitle) {
+		Window w = new Window();
+		w.setWidth(windowWidth);
+		w.setHeight(windowHeight);
+		w.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(subtitle));
+		w.setCanDragReposition(true);
+		w.setCanDragResize(true);
+		w.setAutoCenter(true);
+		w.setKeepInParentRect(true);
+		return w;
+	}
+
 	private String buildUrl(Feature feature) {
 		Object o = feature.getAttributeValue(urlAttributeName);
-		if (o == null || o.toString() == null || "".equals(o.toString())) {
+		if (o == null || o.toString() == null || "".equals(o.toString().trim())) {
 			return null;
 		} else {
 			String value = o.toString();
