@@ -184,7 +184,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 							}
 							for (org.geomajas.layer.feature.Feature feature : features) {
 								if (count < maxLabelCount) {
-									writeFeature(sb, feature.getLabel());
+									writeFeature(sb, getLabel(feature));
 									if (widest < feature.getLabel().length()) {
 										widest = feature.getLabel().length();
 									}
@@ -218,6 +218,17 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		} // else - mouse moved between request and data retrieval
 	}
 
+	/**
+	 * Return the text to add to the tooltip for the given feature.
+	 * <p>Default implementation returns <code>feature.getLabel()</code>
+	 * 
+	 * @param f
+	 * @return
+	 */
+	protected String getLabel(org.geomajas.layer.feature.Feature f) {
+		return f.getLabel();
+	}
+	
 	private void getData() {
 		Point point = mapWidget.getMapModel().getGeometryFactory().createPoint(worldPosition);
 		final Coordinate coordUsedForRetrieval = worldPosition;
