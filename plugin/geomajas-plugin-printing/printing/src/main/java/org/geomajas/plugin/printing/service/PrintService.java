@@ -22,7 +22,6 @@ import org.geomajas.plugin.printing.document.Document;
  * 
  * @author Jan De Moerloose
  * @since 2.0.0
- * 
  */
 @Api(allMethods = true)
 public interface PrintService {
@@ -49,19 +48,19 @@ public interface PrintService {
 	/**
 	 * Creates a new default template.
 	 * 
-	 * @param pagesize
+	 * @param pageSize
 	 *            the size of the page (A1,A2,A3,A4,..)
 	 * @param landscape
 	 *            true for landscape orientation
 	 * @return the template
-	 * @throws PrintingException
+	 * @throws PrintingException no template found
 	 */
-	PrintTemplate createDefaultTemplate(String pagesize, boolean landscape) throws PrintingException;
+	PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) throws PrintingException;
 
 	/**
 	 * Puts a new document in the service.
 	 * 
-	 * @param document
+	 * @param document document
 	 * @return key unique key to reference the document
 	 */
 	String putDocument(Document document);
@@ -73,7 +72,7 @@ public interface PrintService {
 	 *            unique key to reference the document
 	 * @return the document or null if no such document
 	 * 
-	 * @throws GeomajasException
+	 * @throws PrintingException
 	 *             if document does not exist
 	 */
 	Document removeDocument(String key) throws PrintingException;
