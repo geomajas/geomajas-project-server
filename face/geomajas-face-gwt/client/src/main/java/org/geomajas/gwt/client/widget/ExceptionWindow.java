@@ -11,7 +11,10 @@
 
 package org.geomajas.gwt.client.widget;
 
+import com.google.gwt.core.client.GWT;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.ExceptionDto;
+import org.geomajas.gwt.client.i18n.GlobalMessages;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 
 import com.smartgwt.client.types.Alignment;
@@ -36,9 +39,13 @@ import org.geomajas.gwt.client.util.WidgetLayout;
  * </p>
  * 
  * @author Pieter De Graef
- * @since 1.8.0
+ * @author Joachim Van der Auwera
+ * @since 1.10.0
  */
+@Api
 public class ExceptionWindow extends Window {
+
+	private static final GlobalMessages MESSAGES = GWT.create(GlobalMessages.class);
 
 	/** The list of exceptions this window should display. */
 	private ExceptionDto error;
@@ -56,9 +63,10 @@ public class ExceptionWindow extends Window {
 	/**
 	 * Create a new error messaging window displaying a single exception.
 	 * 
-	 * @param error
-	 *            The exception to display.
+	 * @param error The exception to display.
+	 * @since 1.10.0
 	 */
+	@Api
 	public ExceptionWindow(ExceptionDto error) {
 		super();
 		this.error = error;
@@ -77,9 +85,9 @@ public class ExceptionWindow extends Window {
 		setHeaderIcon(WidgetLayout.iconError);
 		setIsModal(true);
 		setShowModalMask(true);
-		setModalMaskOpacity(50);
-		setWidth(450);
-		setHeight(132);
+		setModalMaskOpacity(WidgetLayout.modalMaskOpacity);
+		setWidth(WidgetLayout.exceptionWindowWidth);
+		setHeight(WidgetLayout.exceptionWindowHeightNormal);
 		setCanDragResize(true);
 		centerInPage();
 		setAutoSize(true);
@@ -87,28 +95,34 @@ public class ExceptionWindow extends Window {
 		addItem(createErrorLayout(error));
 	}
 
-	/** Create the GUI for a single exception. */
+	/**
+	 * Create the GUI for a single exception.
+	 *
+	 * @param error error to report
+	 * @return layout
+	 */
 	private VLayout createErrorLayout(ExceptionDto error) {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		layout.setPadding(10);
+		layout.setPadding(WidgetLayout.marginLarge);
 
-		HLayout topLayout = new HLayout(20);
+		HLayout topLayout = new HLayout(WidgetLayout.marginLarge);
 		topLayout.setWidth100();
-		Img icon = new Img(WidgetLayout.iconError, 64, 64);
+		Img icon = new Img(WidgetLayout.iconError,
+				WidgetLayout.exceptionWindowIconSize, WidgetLayout.exceptionWindowIconSize);
 		topLayout.addMember(icon);
 		HTMLFlow message = new HTMLFlow();
 		message.setWidth100();
 		message.setHeight100();
 		message.setLayoutAlign(VerticalAlignment.TOP);
-		message.setContents("<div style='font-size:12px; font-weight:bold;'>" + error.getMessage() + "</div>");
+		message.setContents(WidgetLayout.divStyle(WidgetLayout.exceptionWindowMessageStyle, error.getMessage()));
 		topLayout.addMember(message);
 		layout.addMember(topLayout);
 
 		if (error.getStackTrace() != null && error.getStackTrace().length > 0) {
-			expandButton = new Button("View details");
-			expandButton.setWidth(100);
+			expandButton = new Button(MESSAGES.exceptionDetailsView());
+			expandButton.setWidth(WidgetLayout.exceptionWindowButtonWidth);
 			expandButton.setLayoutAlign(Alignment.RIGHT);
 			expandButton.addClickHandler(new ClickHandler() {
 
@@ -118,11 +132,7 @@ public class ExceptionWindow extends Window {
 			});
 			layout.addMember(expandButton);
 
-			String content = "<div><b>" + error.getClassName() + ":</b></div><div style='padding-left:10px;'>";
-			for (StackTraceElement el : error.getStackTrace()) {
-				content += el.toString() + "<br/>";
-			}
-			content += "</div>";
+			String content = getDetails(error);
 			HTMLPane detailPane = new HTMLPane();
 			detailPane.setContents(content);
 			detailPane.setWidth100();
@@ -131,22 +141,56 @@ public class ExceptionWindow extends Window {
 			detailsLayout.setWidth100();
 			detailsLayout.setHeight100();
 			detailsLayout.addMember(detailPane);
-			detailsLayout.setBorder("1px solid #A0A0A0;");
+			detailsLayout.setBorder(WidgetLayout.exceptionWindowDetailBorderStyle);
 			layout.addMember(detailsLayout);
 		}
 		return layout;
 	}
 
-	/** Toggle the visibility of the exception details */
+	/**
+	 * Build details message for an exception.
+	 *
+	 * @param error error to build message for
+	 * @return HTML string with details message
+	 */
+	private String getDetails(ExceptionDto error) {
+		if (null == error) {
+			return "";
+		}
+		StringBuilder content = new StringBuilder();
+		content.append(WidgetLayout.divStyle(WidgetLayout.exceptionWindowDetailHeaderStyle, error.getClassName()));
+		for (StackTraceElement el : error.getStackTrace()) {
+			String style =  WidgetLayout.exceptionWindowDetailTraceNormalStyle;
+			String line = el.toString();
+			if (line.startsWith("org.geomajas.") ||
+					line.startsWith("org.springframework.") ||
+					line.startsWith("org.hibernate.") ||
+					line.startsWith("org.hibernatespatial.") ||
+					line.startsWith("org.geotools.") ||
+					line.startsWith("com.vividsolutions.") ||
+					line.startsWith("com.google.")) {
+				style = WidgetLayout.exceptionWindowDetailTraceLessStyle;
+			}
+			content.append(WidgetLayout.divStyle(style, line));
+		}
+		content.append(getDetails(error.getCause()));
+		return content.toString();
+	}
+
+	/**
+	 * Toggle the visibility of the exception details.
+	 *
+	 * @param detailsVisible should details be visible
+	 */
 	private void setDetailsVisible(boolean detailsVisible) {
 		detailsLayout.setVisible(detailsVisible);
 		if (detailsVisible) {
 			setAutoSize(false);
-			expandButton.setTitle("Hide details");
-			setHeight(350);
+			expandButton.setTitle(MESSAGES.exceptionDetailsHide());
+			setHeight(WidgetLayout.exceptionWindowHeightDetails);
 		} else {
-			expandButton.setTitle("View details");
-			setHeight(132);
+			expandButton.setTitle(MESSAGES.exceptionDetailsView());
+			setHeight(WidgetLayout.exceptionWindowHeightNormal);
 		}
 	}
 }

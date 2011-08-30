@@ -33,6 +33,8 @@ public class ExceptionDto implements Serializable {
 
 	private StackTraceElement[] stackTrace;
 
+	private ExceptionDto cause;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -116,5 +118,25 @@ public class ExceptionDto implements Serializable {
 	 */
 	public void setStackTrace(StackTraceElement[] stackTrace) {
 		this.stackTrace = stackTrace;
+	}
+
+	/**
+	 * Set the cause exception to allow inclusion in the display.
+	 *
+	 * @return cause exception DTO
+	 * @since 1.10.0
+	 */
+	public ExceptionDto getCause() {
+		return cause;
+	}
+
+	/**
+	 * Get the cause exception to allow inclusion in the error display.
+	 *
+	 * @param cause cause exception DTO
+	 * @since 1.10.0
+	 */
+	public void setCause(ExceptionDto cause) {
+		this.cause = cause;
 	}
 }

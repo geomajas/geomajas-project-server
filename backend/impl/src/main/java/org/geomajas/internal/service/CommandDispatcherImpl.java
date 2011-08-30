@@ -40,6 +40,7 @@ import org.springframework.stereotype.Component;
 public final class CommandDispatcherImpl implements CommandDispatcher {
 
 	private static final long serialVersionUID = -1334372707950671271L;
+	private static final String MSG_START = " execute ";
 
 	private final Logger log = LoggerFactory.getLogger(CommandDispatcherImpl.class);
 
@@ -70,25 +71,23 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 	 *            which should be used for the error messages in the response
 	 * @return {@link CommandResponse} command response
 	 */
+	@SuppressWarnings("unchecked")
 	public CommandResponse execute(String commandName, CommandRequest request, String userToken, String locale) {
-		String id = Long.toString(++commandCount); // NOTE this is not thread safe
-		// safe or cluster aware
-		log.info("{} execute command {} for user token {} in locale {}, request {}", new Object[] { id, commandName,
-				userToken, locale, request });
+		String id = Long.toString(++commandCount); // NOTE indicative, this is not (fully) thread safe or cluster aware
+		log.info(id + MSG_START + commandName + " for user token " + userToken + " in locale " + locale);
+		if (log.isTraceEnabled()) {
+			log.trace(id + MSG_START + commandName + " request " + request);
+		}
 		long begin = System.currentTimeMillis();
 		CommandResponse response;
 
 		String previousToken = securityContext.getToken();
-		boolean tokenIdentical;
-		if (null == userToken) {
-			tokenIdentical = false; // always need to *try* as otherwise login would never be possible
-		} else {
-			tokenIdentical = userToken.equals(previousToken);
-		}
+		// for null token we always need to *try* as otherwise login would never be possible
+		boolean tokenIdentical = null != userToken && userToken.equals(previousToken);
 		try {
 			if (!tokenIdentical) {
 				// need to change security context
-				log.debug("login using token {}", userToken);
+				log.debug(id + MSG_START + commandName + ", login using token {}", userToken);
 				if (!securityManager.createSecurityContext(userToken)) {
 					// not authorized
 					response = new CommandResponse();
@@ -107,7 +106,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				try {
 					command = applicationContext.getBean(commandName, Command.class);
 				} catch (BeansException be) {
-					log.error("could not create command bean for {}", new Object[] { commandName }, be);
+					log.error(id + MSG_START + commandName + ", could not create command bean", be);
 				}
 				if (null != command) {
 					response = command.getEmptyCommandResponse();
@@ -115,7 +114,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					try {
 						command.execute(request, response);
 					} catch (Throwable throwable) { //NOPMD
-						log.error("Error executing command", throwable);
+						log.error(id + MSG_START + commandName + ", error executing command", throwable);
 						response.getErrors().add(throwable);
 					}
 				} else {
@@ -135,38 +134,29 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 
 			// Now process the errors for display on the client:
 			List<Throwable> errors = response.getErrors();
-			Locale localeObject = null;
 			if (null != errors && !errors.isEmpty()) {
-				log.warn("Command caused exceptions, to be passed on to caller:");
+				Locale localeObject = null;
+				if (null != locale) {
+					localeObject = new Locale(locale);
+				}
 				for (Throwable t : errors) {
-					String msg;
-					if (!(t instanceof GeomajasException)) {
-						msg = t.getMessage();
-						if (null == msg) {
-							msg = t.getClass().getName();
-						} else {
-							log.warn(msg, t);
-						}
-					} else {
-						if (log.isDebugEnabled()) {
-							log.debug("exception occurred {}, stack trace\n{}", t, t.getStackTrace());
-						}
-						if (null == localeObject && null != locale) {
-							localeObject = new Locale(locale);
-						}
-						msg = ((GeomajasException) t).getMessage(localeObject);
-						log.warn(msg);
+					String msg = getErrorMessage(t, localeObject);
+					if (log.isDebugEnabled()) {
+						log.debug(id + MSG_START + commandName + ", " + msg, t);
 					}
-					
 					// For each exception, make sure the entire exception is sent to the client:
 					response.getErrorMessages().add(msg);
-					response.getExceptions().add(new ExceptionDto(t.getClass().getName(), msg, t.getStackTrace()));
+					response.getExceptions().add(toDto(t, localeObject, msg));
 				}
 			}
 
-			response.setExecutionTime(System.currentTimeMillis() - begin);
+			long executionTime = System.currentTimeMillis() - begin;
+			response.setExecutionTime(executionTime);
+			if (log.isDebugEnabled()) {
+				log.debug(id + MSG_START + commandName + " done in " + executionTime + "ms");
+			}
 			if (log.isTraceEnabled()) {
-				log.trace("response:\n{}", response);
+				log.trace(id + MSG_START + commandName + " response " + response);
 			}
 			return response;
 		} finally {
@@ -175,5 +165,42 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				securityManager.clearSecurityContext();
 			}
 		}
+	}
+
+	private ExceptionDto toDto(final Throwable throwable, final Locale locale) {
+		return toDto(throwable, locale, null);
+	}
+
+	private ExceptionDto toDto(final Throwable throwable, final Locale locale, final String msg) {
+		if (null == throwable) {
+			return null;
+		}
+		String message = msg;
+		if (null == message) {
+			message = getErrorMessage(throwable, locale);
+		}
+		ExceptionDto dto = new ExceptionDto(throwable.getClass().getName(), message, throwable.getStackTrace());
+		dto.setCause(toDto(throwable.getCause(), locale));
+		return dto;
+	}
+
+	/**
+	 * Get localized error message for a {@link Throwable}.
+	 *
+	 * @param throwable throwable to get message for
+	 * @param locale locale to use for message
+	 * @return exception message
+	 */
+	private String getErrorMessage(final Throwable throwable, final Locale locale) {
+		String message;
+		if (!(throwable instanceof GeomajasException)) {
+			message = throwable.getMessage();
+		} else {
+			message = ((GeomajasException) throwable).getMessage(locale);
+		}
+		if (null == message || 0 == message.length()) {
+			message = throwable.getClass().getName();
+		}
+		return message;
 	}
 }

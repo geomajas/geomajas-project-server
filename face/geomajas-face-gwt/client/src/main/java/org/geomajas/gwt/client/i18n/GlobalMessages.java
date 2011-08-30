@@ -61,4 +61,12 @@ public interface GlobalMessages extends Messages {
 
 	String localeReload();
 
+	// ExceptionWindow
+
+	/** View details. */
+	String exceptionDetailsView();
+
+	/** Hide details. */
+	String exceptionDetailsHide();
+
 }

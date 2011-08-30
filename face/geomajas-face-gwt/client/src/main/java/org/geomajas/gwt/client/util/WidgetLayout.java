@@ -32,8 +32,16 @@ public final class WidgetLayout {
 	/** Large margin width. */
 	public static int marginLarge = 10;
 
+	/** Small spacer size. */
+	public static int spacerSmall = 10;
+	/** Large spacer size. */
+	public static int spacerLarge = 20;
+
 	/** Default offset for displaying pop-up windows. Also used (doubled) to limit maximum size of pop-ups. */
 	public static int windowOffset = 20;
+
+	/** Opacity for modal mask. */
+	public static int modalMaskOpacity = 50;
 
 	/** Add icon. */
 	public static String iconAdd = "[ISOMORPHIC]/geomajas/silk/add.png";
@@ -218,7 +226,6 @@ public final class WidgetLayout {
 	/** Zoom to selection icon. */
 	public static String iconZoomSelection = "[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png";
 
-
 	/** Loading screen logo. */
 	public static String loadingScreenLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 	/** Loading screen logo width. */
@@ -252,7 +259,6 @@ public final class WidgetLayout {
 	/** Loading screen progress background colour. */
 	public static String loadingScreenProgressBackgroundColor = "#000000";
 
-
 	/** Geomajas logo. */
 	public static String aboutGeomajasLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 	/** Geomajas logo width. */
@@ -284,6 +290,27 @@ public final class WidgetLayout {
 	/** Should feature attribute window try to stay within the browser window? */
 	public static boolean featureAttributeWindowKeepInScreen = true;
 
+	/** Width for the exception window. */
+	public static int exceptionWindowWidth = 450;
+	/** Height for the exception window in normal mode. */
+	public static int exceptionWindowHeightNormal = 132;
+	/** Height for the exception window when showing details. */
+	public static int exceptionWindowHeightDetails = 350;
+	/** View/hide details button width. */
+	public static int exceptionWindowButtonWidth = 100;
+	/** Error icon size. */
+	public static int exceptionWindowIconSize = 64;
+	/** Style for main message in exception window. */
+	public static String exceptionWindowMessageStyle = "font-size:12px; font-weight:bold;";
+	/** Style for detail header in exception window. */
+	public static String exceptionWindowDetailHeaderStyle = "font-size:12px; font-weight:bold;";
+	/** Style for normal detail stack trace line in exception window. */
+	public static String exceptionWindowDetailTraceNormalStyle = "font-size:12px; padding-left:10px;";
+	/** Style for likely less important (framework) detail stack trace line in exception window. */
+	public static String exceptionWindowDetailTraceLessStyle = "font-size:9px; padding-left:10px;";
+	/** Border style for details in exception window. */
+	public static String exceptionWindowDetailBorderStyle = "1px solid #A0A0A0;";
+
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	private WidgetLayout() {
@@ -308,6 +335,35 @@ public final class WidgetLayout {
 				window.setPageTop(WidgetLayout.windowOffset);
 			}
 		}
+	}
+
+	/**
+	 * Build a HTML DIV with given style for a string.
+	 *
+	 * @param style style for div (plain CSS)
+	 * @param content content string
+	 * @return HTML DIV element as string
+	 */
+	public static String divStyle(String style, String content) {
+		return "<div style='" + style + "'>" + htmlEncode(content) + "</div>";
+	}
+
+	/**
+	 * Build a HTML DIV with given CSS class for a string.
+	 *
+	 * @param clazz class for div element
+	 * @param content content string
+	 * @return HTML DIV element as string
+	 */
+	public static String divClass(String clazz, String content) {
+		return "<div class='" + clazz + "'>" + htmlEncode(content) + "</div>";
+	}
+
+	public static String htmlEncode(String content) {
+		if (null == content) {
+			return "";
+		}
+		return content.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 	}
 
 }
