@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.util;
 
+import com.sun.xml.internal.ws.api.pipe.NextAction;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.annotation.Api;
@@ -34,6 +35,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 public final class GeometryConverter {
 
 	private GeometryConverter() {
+		// hide constructor
 	}
 
 	/**
@@ -81,6 +83,10 @@ public final class GeometryConverter {
 		} else if (geometry instanceof MultiPolygon) {
 			dto = new Geometry(Geometry.MULTI_POLYGON, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
+		} else {
+			String msg = "GeometryConverter.toDto() unrecognized geometry type " + geometry.getClass().getSimpleName();
+			Log.logServer(Log.LEVEL_ERROR, msg);
+			throw new IllegalStateException(msg);
 		}
 
 		return dto;
@@ -123,6 +129,10 @@ public final class GeometryConverter {
 		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
 			Polygon[] polygons = new Polygon[geometry.getGeometries().length];
 			gwt = factory.createMultiPolygon((Polygon[]) convertGeometries(geometry, polygons));
+		} else {
+			String msg = "GeometryConverter.toGwt() unrecognized geometry type " + geometryType;
+			Log.logServer(Log.LEVEL_ERROR, msg);
+			throw new IllegalStateException(msg);
 		}
 
 		return gwt;
