@@ -39,8 +39,8 @@ public abstract class AbstractGeometry implements Geometry {
 
 	/**
 	 * Package visible constructor, used by the GeometryFactory.
-	 * @param srid
-	 * @param precision
+	 * @param srid srid
+	 * @param precision precision
 	 */
 	AbstractGeometry(int srid, int precision) {
 		this.srid = srid;
@@ -51,6 +51,8 @@ public abstract class AbstractGeometry implements Geometry {
 	// Partial Geometry implementation:
 	// -------------------------------------------------------------------------
 
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
+			justification = "needed for GWT")
 	public Object clone() {
 		return null;
 	}

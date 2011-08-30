@@ -123,8 +123,8 @@ public class PrintServiceImpl implements PrintService {
 		return allTemplates;
 	}
 
-	public PrintTemplate createDefaultTemplate(String pagesize, boolean landscape) throws PrintingException {
-		PrintTemplate template = createTemplate(pagesize, landscape);
+	public PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) throws PrintingException {
+		PrintTemplate template = createTemplate(pageSize, landscape);
 		// calculate the sizes (if not already calculated !)
 		SinglePageDocument document = new SinglePageDocument(template.getPage(), null);
 		try {

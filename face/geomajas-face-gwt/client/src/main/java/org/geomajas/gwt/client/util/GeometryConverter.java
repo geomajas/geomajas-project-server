@@ -83,7 +83,7 @@ public final class GeometryConverter {
 			dto = new Geometry(Geometry.MULTI_POLYGON, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
 		} else {
-			String msg = "GeometryConverter.toDto() unrecognized geometry type " + geometry.getClass().getSimpleName();
+			String msg = "GeometryConverter.toDto() unrecognized geometry type";
 			Log.logServer(Log.LEVEL_ERROR, msg);
 			throw new IllegalStateException(msg);
 		}
