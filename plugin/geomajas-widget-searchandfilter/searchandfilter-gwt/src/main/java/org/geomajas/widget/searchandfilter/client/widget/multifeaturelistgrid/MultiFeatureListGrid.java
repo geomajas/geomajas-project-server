@@ -213,6 +213,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 * @param button button to add
 	 * @param position position
 	 */
+	@Api
 	public void addButton(String layerId, ToolStripButton button, int position) {
 		extraButtons.add(new ExtraButton(layerId, button, position));
 	}
@@ -470,7 +471,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		// ----------------------------------------------------------
 
 		private void zoomToBounds() {
-			ListGridRecord[] selection = featureListGrid.getSelection();
+			ListGridRecord[] selection = getSelection();
 			int count = selection.length;
 			if (count > 0) {
 				LazyLoadCallback llc = new ZoomToBoundsFeatureLazyLoadCallback(count);
