@@ -62,7 +62,7 @@ public final class FeatureDetailWidgetFactory {
 	}
 
 	/**
-	 * Overrule configuration and create Geomajas default FeatureAttributeWindow
+	 * Overrule configuration and create Geomajas default FeatureAttributeWindow.
 	 * 
 	 * @param feature
 	 * @param editingAllowed
