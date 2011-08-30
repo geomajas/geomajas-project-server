@@ -184,7 +184,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 							}
 							for (org.geomajas.layer.feature.Feature feature : features) {
 								if (count < maxLabelCount) {
-									writeFeature(sb, getLabel(feature));
+									writeFeature(sb, getLabel(feature, layer));
 									if (widest < feature.getLabel().length()) {
 										widest = feature.getLabel().length();
 									}
@@ -225,7 +225,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	 * @param f
 	 * @return
 	 */
-	protected String getLabel(org.geomajas.layer.feature.Feature f) {
+	protected String getLabel(org.geomajas.layer.feature.Feature f, VectorLayer layer) {
 		return f.getLabel();
 	}
 	
