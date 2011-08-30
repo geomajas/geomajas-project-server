@@ -19,7 +19,6 @@ import org.geomajas.layer.feature.Attribute;
  * by calling the server, so a call back mechanism is needed.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface AttributeProvider {
 
@@ -30,13 +29,18 @@ public interface AttributeProvider {
 	 */
 	void getAttributes(CallBack callBack);
 
+	/**
+	 * Create an attribute provider for given attribute name.
+	 *
+	 * @param attributeName attribute name
+	 * @return attribute provider
+	 */
 	AttributeProvider createProvider(String attributeName);
 
 	/**
 	 * Interface to be implemented by call-back objects of this provider.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public interface CallBack {
 
@@ -50,7 +54,7 @@ public interface AttributeProvider {
 		/**
 		 * Called when an error occurred while trying to provide the attributes.
 		 * 
-		 * @param errorMessages
+		 * @param errorMessages error messages
 		 */
 		void onError(List<String> errorMessages);
 	}
