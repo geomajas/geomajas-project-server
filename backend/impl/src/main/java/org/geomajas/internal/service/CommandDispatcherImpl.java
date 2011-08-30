@@ -105,7 +105,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				try {
 					command = applicationContext.getBean(commandName, Command.class);
 				} catch (BeansException be) {
-					log.error(id + MSG_START + commandName + ", could not create command bean", be);
+					log.debug(id + MSG_START + commandName + ", could not create command bean", be);
 				}
 				if (null != command) {
 					response = command.getEmptyCommandResponse();
@@ -113,7 +113,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					try {
 						command.execute(request, response);
 					} catch (Throwable throwable) { //NOPMD
-						log.error(id + MSG_START + commandName + ", error executing command", throwable);
+						log.debug(id + MSG_START + commandName + ", error executing command", throwable);
 						response.getErrors().add(throwable);
 					}
 				} else {
