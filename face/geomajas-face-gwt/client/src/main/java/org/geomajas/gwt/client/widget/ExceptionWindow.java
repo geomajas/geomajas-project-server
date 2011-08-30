@@ -162,12 +162,16 @@ public class ExceptionWindow extends Window {
 		for (StackTraceElement el : error.getStackTrace()) {
 			String style =  WidgetLayout.exceptionWindowDetailTraceNormalStyle;
 			String line = el.toString();
-			if (line.startsWith("org.geomajas.") ||
+			if ((line.startsWith("org.geomajas.") && !line.startsWith("org.geomajas.example.")) ||
 					line.startsWith("org.springframework.") ||
 					line.startsWith("org.hibernate.") ||
 					line.startsWith("org.hibernatespatial.") ||
 					line.startsWith("org.geotools.") ||
 					line.startsWith("com.vividsolutions.") ||
+					line.startsWith("org.mortbay.jetty.") ||
+					line.startsWith("sun.") ||
+					line.startsWith("java.") ||
+					line.startsWith("javax.") ||
 					line.startsWith("com.google.")) {
 				style = WidgetLayout.exceptionWindowDetailTraceLessStyle;
 			}

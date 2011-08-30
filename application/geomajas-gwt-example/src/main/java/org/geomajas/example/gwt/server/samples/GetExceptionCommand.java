@@ -51,7 +51,7 @@ public class GetExceptionCommand implements Command<EmptyCommandRequest, Command
 		private static final long serialVersionUID = 180L;
 
 		public UnserializableException() {
-			super("Oops. I guess the server encountered some 'unexpected' exception.");
+			super("Oops. I guess the server encountered some 'unexpected' exception.", new NullPointerException());
 			GeometryFactory factory = new GeometryFactory();
 			geometry = factory.createLineString(new Coordinate[] { new Coordinate(0, 0), new Coordinate(10, 0) });
 		}
