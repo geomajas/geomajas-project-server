@@ -77,6 +77,8 @@ public class Legend extends Canvas {
 
 	private FontStyle fontStyle = new FontStyle("#000000", 14, "Arial", "normal", "normal");
 
+	private boolean staticLegend;
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -84,8 +86,24 @@ public class Legend extends Canvas {
 	/**
 	 * A legend needs to be instantiated with the MapModel that contains (or will contain) the list of layers that this
 	 * legend should listen to.
-	 *
-	 * @param mapModel map model
+	 * 
+	 * @param mapModel
+	 *            map model
+	 * @param staticLegend
+	 *			  should this Legend be statically rendered?
+	 * @since 1.10.0
+	 */
+	public Legend(MapModel mapModel, boolean staticLegend) {
+		this(mapModel);
+		this.staticLegend = staticLegend;
+	}
+
+	/**
+	 * A legend needs to be instantiated with the MapModel that contains (or will contain) the list of layers that this
+	 * legend should listen to.
+	 * 
+	 * @param mapModel
+	 *            map model
 	 */
 	public Legend(MapModel mapModel) {
 		super();
@@ -135,11 +153,11 @@ public class Legend extends Canvas {
 	public void render() {
 		int y = WidgetLayout.marginSmall;
 		for (Layer<?> layer : mapModel.getLayers()) {
-			if (layer.isShowing()) {
+			if (staticLegend || layer.isShowing()) {
 				if (layer instanceof VectorLayer) {
 					VectorLayer vLayer = (VectorLayer) layer;
-					y += WidgetLayout.legendVectorRowHeight *
-							vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles().size();
+					y += WidgetLayout.legendVectorRowHeight
+							* vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles().size();
 				} else if (layer instanceof RasterLayer) {
 					y += WidgetLayout.legendRasterRowHeight;
 				}
@@ -164,6 +182,26 @@ public class Legend extends Canvas {
 		this.fontStyle = fontStyle;
 	}
 
+	/**
+	 * If staticLegend is true all layers will always be shown, not just when they are visible.
+	 * 
+	 * @return if this is a static Legend
+	 * @since 1.10.0
+	 */
+	public boolean isStaticLegend() {
+		return staticLegend;
+	}
+
+	/**
+	 * Set if this legend should be static or dynamic.
+	 * 
+	 * @param staticLegend
+	 * @since 1.10.0
+	 */
+	public void setStaticLegend(boolean staticLegend) {
+		this.staticLegend = staticLegend;
+	}
+
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
@@ -179,7 +217,7 @@ public class Legend extends Canvas {
 		int y = WidgetLayout.marginSmall;
 		int labelIndent = WidgetLayout.marginLarge + WidgetLayout.legendLabelIndent;
 		for (Layer<?> layer : mapModel.getLayers()) {
-			if (layer.isShowing()) {
+			if (staticLegend || layer.isShowing()) {
 				// Go over every truly visible layer:
 				if (layer instanceof VectorLayer) {
 					ClientVectorLayerInfo layerInfo = ((VectorLayer) layer).getLayerInfo();
@@ -192,43 +230,42 @@ public class Legend extends Canvas {
 						lineCount++;
 
 						switch (layerInfo.getLayerType()) {
-							case LINESTRING:
-							case MULTILINESTRING:
-								// Lines, draw a LineString;
-								Coordinate[] coordinates = new Coordinate[4];
-								coordinates[0] = new Coordinate(WidgetLayout.marginLarge, y);
-								coordinates[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
-								coordinates[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
-								coordinates[3] = new Coordinate(WidgetLayout.marginLarge + 15, y + 15);
-								LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
-								graphics.drawLine(parentGroup, "style" + lineCount, line, style);
-								break;
-							case POLYGON:
-							case MULTIPOLYGON:
-								// Polygons: draw a rectangle:
-								Bbox rect = new Bbox(WidgetLayout.marginLarge, y, 16, 16);
-								graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
-								break;
-							case POINT:
-							case MULTIPOINT:
-								// Points: draw a symbol:
-								graphics.drawSymbol(parentGroup, "style" + lineCount,
-										new Coordinate(WidgetLayout.marginLarge + 8, y + 8), style,
-										styleInfo.getStyleId());
-								break;
-							case GEOMETRY:
-								// Lines + point
-								Coordinate[] linePoints = new Coordinate[3];
-								linePoints[0] = new Coordinate(WidgetLayout.marginLarge, y);
-								linePoints[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
-								linePoints[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
-								LineString geometryLine = mapModel.getGeometryFactory().createLineString(linePoints);
-								graphics.drawLine(parentGroup, "style" + lineCount, geometryLine, style);
-								graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 12), style,
-										styleInfo.getStyleId());
-								break;
-							default:
-								throw new IllegalStateException("Unhandled layer type " + layerInfo.getLayerType());
+						case LINESTRING:
+						case MULTILINESTRING:
+							// Lines, draw a LineString;
+							Coordinate[] coordinates = new Coordinate[4];
+							coordinates[0] = new Coordinate(WidgetLayout.marginLarge, y);
+							coordinates[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
+							coordinates[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
+							coordinates[3] = new Coordinate(WidgetLayout.marginLarge + 15, y + 15);
+							LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
+							graphics.drawLine(parentGroup, "style" + lineCount, line, style);
+							break;
+						case POLYGON:
+						case MULTIPOLYGON:
+							// Polygons: draw a rectangle:
+							Bbox rect = new Bbox(WidgetLayout.marginLarge, y, 16, 16);
+							graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
+							break;
+						case POINT:
+						case MULTIPOINT:
+							// Points: draw a symbol:
+							graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(
+									WidgetLayout.marginLarge + 8, y + 8), style, styleInfo.getStyleId());
+							break;
+						case GEOMETRY:
+							// Lines + point
+							Coordinate[] linePoints = new Coordinate[3];
+							linePoints[0] = new Coordinate(WidgetLayout.marginLarge, y);
+							linePoints[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
+							linePoints[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
+							LineString geometryLine = mapModel.getGeometryFactory().createLineString(linePoints);
+							graphics.drawLine(parentGroup, "style" + lineCount, geometryLine, style);
+							graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 12), style,
+									styleInfo.getStyleId());
+							break;
+						default:
+							throw new IllegalStateException("Unhandled layer type " + layerInfo.getLayerType());
 						}
 
 						// After the style, draw the style's name:
@@ -240,10 +277,9 @@ public class Legend extends Canvas {
 					lineCount++;
 
 					graphics.drawImage(parentGroup, "style" + lineCount, Geomajas.getIsomorphicDir()
-							+ WidgetLayout.legendRasterIcon,
-							new Bbox(WidgetLayout.marginLarge, y, WidgetLayout.legendRasterIconWidth,
-									WidgetLayout.legendRasterIconHeight),
-							new PictureStyle(1));
+							+ WidgetLayout.legendRasterIcon, new Bbox(WidgetLayout.marginLarge, y,
+							WidgetLayout.legendRasterIconWidth, WidgetLayout.legendRasterIconHeight), new PictureStyle(
+							1));
 					drawLabel(labelIndent, y, lineCount, layer.getLabel());
 					y += WidgetLayout.legendRasterRowHeight;
 				}
