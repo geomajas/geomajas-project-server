@@ -12,11 +12,12 @@
 package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.global.FutureApi;
-import org.geomajas.puregwt.client.map.ViewPort;
 
 /**
- * A container for drawing vector objects onto the map. This is the recommended way of quickly drawing vector objects.
- * As an extra, this interface also defines a way for such containers to delete themselves again from the map.
+ * A {@link VectorContainer} that also supports {@link WorldObject} objects. This is the recommended way of quickly
+ * drawing vector objects in world space. Objects that should be fully scaled to each zoom level can be added as normal
+ * vector objects using the {@link VectorContainer} methods. Objects that require custom or no scaling should implement
+ * the {@link WorldObject} interface and can be added/removed using the specific methods of this interface.
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
@@ -26,18 +27,56 @@ import org.geomajas.puregwt.client.map.ViewPort;
 public interface WorldContainer extends VectorContainer {
 
 	/**
-	 * Should children of this world container be resized when zooming in or out? Default is true.
+	 * Add the given WorldObject to this WorldContainer.
 	 * 
-	 * @param resizeChildren
-	 *            Determine if children should be resized when zooming in or out.
+	 * @param worldObject
+	 * @return
 	 */
-	void setResizeChildren(boolean resizeChildren);
+	WorldObject add(WorldObject worldObject);
 
 	/**
-	 * Transform all objects within this container to match the given view port.
+	 * Insert the given WorldObject before the specified index.
 	 * 
-	 * @param viewPort
-	 *            The view port for whom to transform this container.
+	 * If the WorldContainer already contains the WorldObject, it will be removed from the WorldContainer before
+	 * insertion.
+	 * 
+	 * @param vo WorldObject to be inserted
+	 * @param beforeIndex the index before which the WorldObject will be inserted.
+	 * @return inserted WorldObject
+	 * @throws IndexOutOfBoundsException if <code>beforeIndex</code> is out of range
 	 */
-	void transform(ViewPort viewPort);
+	WorldObject insert(WorldObject worldObject, int beforeIndex);
+
+	/**
+	 * Remove the given WorldObject from this WorldContainer.
+	 * 
+	 * @param vo WorldObject to be removed
+	 * 
+	 * @return removed WorldObject or null if the container doesn't contained the given WorldObject
+	 */
+	WorldObject remove(WorldObject worldObject);
+
+	/**
+	 * 
+	 * Brings the given WorldObject to front in this WorldContainer.
+	 * 
+	 * @param vo WorldObject to be brought to front
+	 * @return the popped WorldObject
+	 */
+	WorldObject bringToFront(WorldObject worldObject);
+
+	/**
+	 * Returns the WorldObject element at the specified position.
+	 * 
+	 * @param index index of element to return.
+	 * @return the WorldObject element at the specified position.
+	 */
+	WorldObject getWorldObject(int index);
+
+	/**
+	 * Returns the number of WorldObjects in this WorldContainer.
+	 * 
+	 * @return the number of WorldObjects in this WorldContainer.
+	 */
+	int getWorldObjectCount();
 }

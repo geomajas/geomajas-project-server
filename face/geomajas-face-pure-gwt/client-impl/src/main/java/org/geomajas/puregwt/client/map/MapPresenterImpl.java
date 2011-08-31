@@ -61,6 +61,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.LinearRing;
+import org.geomajas.puregwt.client.spatial.Matrix;
 import org.geomajas.puregwt.client.spatial.MultiLineString;
 import org.geomajas.puregwt.client.spatial.MultiPoint;
 import org.geomajas.puregwt.client.spatial.MultiPolygon;
@@ -241,7 +242,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	public WorldContainer addWorldContainer() {
 		WorldContainer worldContainer = display.getNewWorldContainer();
-		worldContainer.transform(viewPort);
+		worldContainer.transform(viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN));
 		return worldContainer;
 	}
 
@@ -405,22 +406,26 @@ public final class MapPresenterImpl implements MapPresenter {
 	 * @author Pieter De Graef
 	 */
 	private class WorldContainerRenderer implements ViewPortChangedHandler {
+		
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
+			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (WorldContainer worldContainer : display.getWorldContainers()) {
-				worldContainer.transform(viewPort);
+				worldContainer.transform(matrix);
 			}
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
+			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (WorldContainer worldContainer : display.getWorldContainers()) {
-				worldContainer.transform(viewPort);
+				worldContainer.transform(matrix);
 			}
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
+			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (WorldContainer worldContainer : display.getWorldContainers()) {
-				worldContainer.transform(viewPort);
+				worldContainer.transform(matrix);
 			}
 		}
 	}

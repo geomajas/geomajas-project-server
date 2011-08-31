@@ -16,6 +16,7 @@ import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.Group;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 /**
  * Implementation of the {@link VectorContainer} interface.
@@ -23,18 +24,22 @@ import com.google.gwt.user.client.DOM;
  * @author Pieter De Graef
  */
 public class VectorGroup extends Group implements VectorContainer {
+	
+	public void transform(Matrix matrix) {
+		transform(getElement(), matrix);
+	}
 
 	/**
 	 * Transform this vector container and all it's children according to the given matrix.
 	 */
-	public void transform(Matrix matrix) {
+	protected void transform(Element element, Matrix matrix) {
 		if (Geomajas.hasSvgSupport()) {
-			DOM.setElementAttribute(getElement(), "transform", parseSvg(matrix));
+			DOM.setElementAttribute(element, "transform", parseSvg(matrix));
 		} else {
 			// TODO Internet explorer: support scaling too...
-			DOM.setStyleAttribute(getElement(), "position", "absolute");
-			DOM.setStyleAttribute(getElement(), "left", (int) matrix.getDx() + "px");
-			DOM.setStyleAttribute(getElement(), "top", (int) matrix.getDy() + "px");
+			DOM.setStyleAttribute(element, "position", "absolute");
+			DOM.setStyleAttribute(element, "left", (int) matrix.getDx() + "px");
+			DOM.setStyleAttribute(element, "top", (int) matrix.getDy() + "px");
 		}
 	}
 
@@ -61,4 +66,5 @@ public class VectorGroup extends Group implements VectorContainer {
 		}
 		return transform;
 	}
+
 }
