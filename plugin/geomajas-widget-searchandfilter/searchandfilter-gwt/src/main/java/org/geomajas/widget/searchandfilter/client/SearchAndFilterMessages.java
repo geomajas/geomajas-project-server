@@ -75,6 +75,8 @@ public interface SearchAndFilterMessages extends Messages {
 	String searchWidgetSave();
 	String searchWidgetCancel();
 	String searchWidgetAddToFavourites();
+	String searchWidgetFilterLayer();
+	String searchWidgetRemoveFilter();
 
 	String combinedSearchWidgetTitle();
 	String combinedSearchWidgetType();

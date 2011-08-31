@@ -26,6 +26,7 @@ public abstract class AbstractSearchPanel extends Canvas {
 	protected MapWidget mapWidget;
 	protected GeometryUpdateHandler handler;
 	private boolean canAddToFavourites = true;
+	private boolean canFilterLayer = false;
 	private boolean canBeReset = true;
 
 	public AbstractSearchPanel(MapWidget mapWidget) {
@@ -40,14 +41,14 @@ public abstract class AbstractSearchPanel extends Canvas {
 	 * Called before getFeatureSearchCriterion().
 	 * <p>
 	 * Search will be cancelled if you return false.
-	 *
+	 * 
 	 * @return true if a criterion can be returned.
 	 */
 	public abstract boolean validate();
 
 	/**
 	 * Should the "Add To Favourites" button be shown?
-	 *
+	 * 
 	 * @return true when "add to favourites" button is visible
 	 */
 	public boolean canAddToFavourites() {
@@ -56,16 +57,36 @@ public abstract class AbstractSearchPanel extends Canvas {
 
 	/**
 	 * Indicate whether add to favourites is possible or not.
-	 *
-	 * @param canAddToFavourites new value
+	 * 
+	 * @param canAddToFavourites
+	 *            new value
 	 */
 	public void setCanAddToFavourites(boolean canAddToFavourites) {
 		this.canAddToFavourites = canAddToFavourites;
 	}
 
 	/**
+	 * Should the "Filter layer" button be shown?
+	 * 
+	 * @return true when "Filter layer" button is visible
+	 */
+	public boolean canFilterLayer() {
+		return canFilterLayer;
+	}
+
+	/**
+	 * Indicate whether filter layer is possible or not.
+	 * 
+	 * @param canFilterLayer
+	 *            new value
+	 */
+	public void setCanFilterLayer(boolean canFilterLayer) {
+		this.canFilterLayer = canFilterLayer;
+	}
+
+	/**
 	 * Should the "Reset" button be shown?
-	 *
+	 * 
 	 * @return true when reset button is visible
 	 */
 	public boolean canBeReset() {
@@ -74,23 +95,23 @@ public abstract class AbstractSearchPanel extends Canvas {
 
 	/**
 	 * Set whether the reset button can exist.
-	 *
-	 * @param canBeReset new value
+	 * 
+	 * @param canBeReset
+	 *            new value
 	 */
 	public void setCanBeReset(boolean canBeReset) {
 		this.canBeReset = canBeReset;
 	}
 
 	/**
-	 * @return an object with the settings of your search, allowing the
-	 *         specifics of the search to be stored (in favourites).
+	 * @return an object with the settings of your search, allowing the specifics of the search to be stored (in
+	 *         favourites).
 	 */
 	public abstract Criterion getFeatureSearchCriterion();
-	
-	
+
 	/**
 	 * Get the vector layer which is to be searched.
-	 *
+	 * 
 	 * @return the vector layer to search in.
 	 */
 	public abstract VectorLayer getFeatureSearchVectorLayer();
@@ -99,16 +120,16 @@ public abstract class AbstractSearchPanel extends Canvas {
 	public abstract void reset();
 
 	/**
-	 * Called to restore the settings previously requested through
-	 * getSettings().
-	 *
-	 * @param featureSearch settings
+	 * Called to restore the settings previously requested through getSettings().
+	 * 
+	 * @param featureSearch
+	 *            settings
 	 */
 	public abstract void initialize(Criterion featureSearch);
 
 	/**
 	 * Get the map widget to which this search panel applies.
-	 *
+	 * 
 	 * @return map widget
 	 */
 	public MapWidget getMapWidget() {

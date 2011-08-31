@@ -187,4 +187,11 @@ public final class CriterionUtil {
 	public static boolean isActiveLayerFilter(Criterion criterion) {
 		return ACTIVE_LAYER_FILTER_CRITERIONS.contains(criterion);
 	}
+	
+	/**
+	 * @return true if at least one layer is filtered by a criterion.
+	 */
+	public static boolean isFilterActive() {
+		return ACTIVE_LAYER_FILTER_CRITERIONS.size() > 0;
+	}
 }

@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 

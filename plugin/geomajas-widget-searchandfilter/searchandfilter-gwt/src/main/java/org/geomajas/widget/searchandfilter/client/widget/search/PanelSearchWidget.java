@@ -11,6 +11,18 @@
 
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.util.CriterionUtil;
+import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
+import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.smartgwt.client.widgets.IButton;
@@ -19,15 +31,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.global.Api;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
-import org.geomajas.widget.searchandfilter.search.dto.Criterion;
-import org.geomajas.widget.searchandfilter.search.dto.SearchFavourite;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A generic {@link SearchWidget} implemented as a panel which can be embedded anywhere.
@@ -47,7 +50,9 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	private static final String BTN_SEARCH_IMG = "[ISOMORPHIC]/geomajas/silk/find.png";
 	private static final String BTN_RESET_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 	private static final String BTN_PROCESSING = "[ISOMORPHIC]/geomajas/ajax-loader.gif";
-
+	private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
+	private static final String BTN_REMOVEFILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
+	
 	private final List<SearchRequestHandler> searchHandlers = new ArrayList<SearchRequestHandler>();
 	private final List<SaveRequestHandler> saveHandlers = new ArrayList<SaveRequestHandler>();
 	private final List<FavouriteRequestHandler> favouriteHandlers =
@@ -55,6 +60,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	private IButton searchBtn;
 	private IButton saveBtn;
+	private IButton removeFilterBtn;
+	
 	private AbstractSearchPanel searchPanel;
 	private String widgetId;
 	private String name;
@@ -136,6 +143,29 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 
+		IButton filterLayerBtn = new IButton(messages.searchWidgetFilterLayer());
+		filterLayerBtn.setIcon(BTN_FILTER_IMG);
+		filterLayerBtn.setAutoFit(true);
+		filterLayerBtn.setShowDisabledIcon(false);
+		filterLayerBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				onFilterLayer();
+			}
+		});
+
+		removeFilterBtn = new IButton(messages.searchWidgetRemoveFilter());
+		removeFilterBtn.setIcon(BTN_REMOVEFILTER_IMG);
+		removeFilterBtn.setAutoFit(true);
+		removeFilterBtn.setShowDisabledIcon(false);
+		removeFilterBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				onRemoveFilter();
+			}
+		});
+
+		
 		addMember(searchPanel);
 		LayoutSpacer ls = new LayoutSpacer();
 		ls.setWidth("*");
@@ -146,6 +176,10 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			searchButtonBar.addMember(favouritesBtn);
 		}
 		searchButtonBar.addMember(ls);
+		if (searchPanel.canFilterLayer()) {
+			searchButtonBar.addMember(removeFilterBtn);
+			searchButtonBar.addMember(filterLayerBtn);
+		}
 		searchButtonBar.addMember(searchBtn);
 		searchButtonBar.addMember(saveBtn);
 		if (searchPanel.canBeReset()) {
@@ -192,6 +226,10 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	public void showForSearch() {
 		saveBtn.setVisible(false);
 		searchBtn.setVisible(true);
+		if (searchPanel.canFilterLayer()) {
+			removeFilterBtn.setVisible(CriterionUtil.isFilterActive());
+			removeFilterBtn.setDisabled(!CriterionUtil.isFilterActive());
+		}
 		show();
 		bringToFront();
 	}
@@ -301,6 +339,23 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		}
 	}
 
+	void onFilterLayer() {
+		if (searchPanel.validate()) {
+			Criterion critter = searchPanel.getFeatureSearchCriterion();
+			MapWidget map = searchPanel.getMapWidget();
+			CriterionUtil.clearLayerFilters(map);
+			CriterionUtil.setLayerFilter(map, critter);
+			setVectorLayerOnWhichSearchIsHappeningVisible();
+			removeFilterBtn.setVisible(true);
+			removeFilterBtn.setDisabled(false);
+		}
+	}
+	
+	void onRemoveFilter() {
+		CriterionUtil.clearLayerFilters(searchPanel.getMapWidget());
+		removeFilterBtn.setDisabled(true);
+	}
+	
 	private void setVectorLayerOnWhichSearchIsHappeningVisible() {
 		VectorLayer vectorLayer = searchPanel.getFeatureSearchVectorLayer();
 		if (null != vectorLayer && !vectorLayer.isVisible()) {
