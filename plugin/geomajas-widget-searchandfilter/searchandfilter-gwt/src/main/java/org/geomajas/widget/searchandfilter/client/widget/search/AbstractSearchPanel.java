@@ -26,7 +26,7 @@ public abstract class AbstractSearchPanel extends Canvas {
 	protected MapWidget mapWidget;
 	protected GeometryUpdateHandler handler;
 	private boolean canAddToFavourites = true;
-	private boolean canFilterLayer = false;
+	private boolean canFilterLayer;
 	private boolean canBeReset = true;
 
 	public AbstractSearchPanel(MapWidget mapWidget) {
