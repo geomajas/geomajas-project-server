@@ -96,4 +96,43 @@ public class MatrixImpl implements Matrix {
 	public double getDy() {
 		return dy;
 	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MatrixImpl other = (MatrixImpl) obj;
+		if (Double.compare(dx, other.dx) != 0) {
+			return false;
+		}
+		if (Double.compare(dy, other.dy) != 0) {
+			return false;
+		}
+		if (Double.compare(xx, other.xx) != 0) {
+			return false;
+		}
+		if (Double.compare(xy, other.xy) != 0) {
+			return false;
+		}
+		if (Double.compare(yx, other.yx) != 0) {
+			return false;
+		}
+		if (Double.compare(yy, other.yy) != 0) {
+			return false;
+		}
+		return true;
+	}
+
 }

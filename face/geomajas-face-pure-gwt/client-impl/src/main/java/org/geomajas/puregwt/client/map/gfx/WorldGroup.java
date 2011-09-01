@@ -97,13 +97,16 @@ public class WorldGroup extends VectorGroup implements WorldContainer {
 	}
 
 	public void transform(Matrix transformMatrix) {
-		scale = new MatrixImpl(transformMatrix.getXx(), 0, 0, transformMatrix.getYy(), 0, 0);
+		Matrix newScale = new MatrixImpl(transformMatrix.getXx(), 0, 0, transformMatrix.getYy(), 0, 0);
 		translate = new MatrixImpl(1, 0, 0, 1, transformMatrix.getDx(), transformMatrix.getDy());
 		// translate
 		transform(getElement(), translate);
-		// and scale
-		for (WorldObject child : children) {
-			child.scaleToScreen(scale.getXx(), scale.getYy());
+		// and scale (if necessary)
+		if (!newScale.equals(scale)) {
+			scale = newScale;
+			for (WorldObject child : children) {
+				child.scaleToScreen(scale.getXx(), scale.getYy());
+			}
 		}
 	}
 

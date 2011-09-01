@@ -29,6 +29,11 @@ public class WorldImage implements WorldObject {
 	private int anchorX;
 
 	private int anchorY;
+	
+	private double scaleX = 1.0;
+	
+	private double scaleY = 1.0;
+
 
 	public WorldImage(double worldX, double worldY, int anchorX, int anchorY, int width, int height, String href) {
 		image = new Image(0, 0, width, height, href);
@@ -42,13 +47,19 @@ public class WorldImage implements WorldObject {
 	}
 
 	public void scaleToScreen(double scaleX, double scaleY) {
-
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
 		image.setX((int) (worldLocation.getX() * scaleX) - anchorX);
 		image.setY((int) (worldLocation.getY() * scaleY) - anchorY);
 	}
 
 	public Coordinate getWorldLocation() {
 		return worldLocation;
+	}
+	
+	public void setWorldLocation(Coordinate worldLocation) {
+		this.worldLocation = worldLocation;
+		scaleToScreen(scaleX, scaleY);
 	}
 
 	public Image getImage() {
