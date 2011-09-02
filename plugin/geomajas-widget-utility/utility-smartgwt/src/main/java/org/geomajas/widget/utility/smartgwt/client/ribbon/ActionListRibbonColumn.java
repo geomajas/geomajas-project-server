@@ -134,6 +134,25 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	}
 
 	/**
+	 * Is the ribbonColumn enabled?
+	 * 
+	 * @return true if column is enabled
+	 */
+	public boolean isEnabled() {
+		return !isDisabled();
+	}
+
+	/**
+	 * Set the enabled state of the RibbonColumn.
+	 * 
+	 * @param enabled
+	 *            The enabled state
+	 */
+	public void setEnabled(boolean enabled) {
+		setDisabled(!enabled);
+	}
+
+	/**
 	 * Add configuration key/value pair. This pair will be applied on all actions within this list.
 	 * 
 	 * @param key

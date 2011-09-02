@@ -17,6 +17,7 @@ import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.smartgwt.client.ribbon.RibbonBarLayout;
+import org.geomajas.widget.utility.smartgwt.client.ribbon.RibbonButton;
 import org.geomajas.widget.utility.smartgwt.client.ribbon.RibbonColumnRegistry;
 import org.geomajas.widget.utility.smartgwt.client.ribbon.RibbonColumnRegistry.RibbonColumnCreator;
 import org.geomajas.widget.utility.smartgwt.client.ribbon.RibbonTabLayout;
@@ -42,11 +43,27 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class Showcase implements EntryPoint {
 
 	public void onModuleLoad() {
-		// Add my custom ribbon column type to the registry:
+		// Add my custom ribbon columns type to the registry:
 		RibbonColumnRegistry.put("MyCustomColumn", new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				return new MyCustomRibbonColumn(mapWidget);
+			}
+		});
+
+		// TODO you can't do this if you need the mapWidget.
+		final RibbonButton theAnswer = new RibbonButton(new TheAnswerAction());
+		RibbonColumnRegistry.put(TheAnswerAction.IDENTIFIER, new RibbonColumnCreator() {
+			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
+				return theAnswer;
+			}
+		});
+
+		// TODO get from ribbon or registry by id once implemented.
+		RibbonColumnRegistry.put(ChangeStateAction.IDENTIFIER, new RibbonColumnCreator() {
+			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
+				RibbonColumn rc = new RibbonButton(new ChangeStateAction(theAnswer));
+				return rc;
 			}
 		});
 

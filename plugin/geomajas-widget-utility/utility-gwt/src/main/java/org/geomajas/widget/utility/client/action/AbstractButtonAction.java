@@ -20,7 +20,7 @@ import org.geomajas.widget.utility.client.ribbon.RibbonColumn;
  */
 public abstract class AbstractButtonAction implements ButtonAction, RibbonColumnAware {
 
-	public static final String PARAMETER_DISABLED = "disabled";
+	public static final String PARAMETER_ENABLED = "enabled";
 
 	private String title;
 	private String tooltip;
@@ -47,12 +47,12 @@ public abstract class AbstractButtonAction implements ButtonAction, RibbonColumn
 	}
 
 	public void configure(String key, String value) {
-		if (PARAMETER_DISABLED.equalsIgnoreCase(key)) {
+		if (PARAMETER_ENABLED.equalsIgnoreCase(key)) {
 			if (getRibbonColumn() != null) {
-				getRibbonColumn().setDisabled(Boolean.parseBoolean(value));
+				getRibbonColumn().setEnabled(Boolean.parseBoolean(value));
 			}
 		}
-		// override when needed
+		// override when needed, don't forget to call super.
 	}
 
 	public String getIcon() {

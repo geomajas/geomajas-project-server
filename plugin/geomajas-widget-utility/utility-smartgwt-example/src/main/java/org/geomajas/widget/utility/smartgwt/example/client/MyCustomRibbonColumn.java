@@ -132,4 +132,12 @@ public class MyCustomRibbonColumn extends VLayout implements RibbonColumn {
 		public void onMouseWheel(ListenerEvent event) {
 		}
 	}
+
+	public boolean isEnabled() {
+		return !getDisabled();
+	}
+
+	public void setEnabled(boolean enabled) {
+		setDisabled(!enabled);
+	}
 }

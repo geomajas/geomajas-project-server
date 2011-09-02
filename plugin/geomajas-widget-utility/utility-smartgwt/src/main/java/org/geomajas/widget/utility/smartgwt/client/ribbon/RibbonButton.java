@@ -207,6 +207,25 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	}
 
 	/**
+	 * Is the ribbonColumn enabled?
+	 * 
+	 * @return true if column is enabled
+	 */
+	public boolean isEnabled() {
+		return !isDisabled();
+	}
+
+	/**
+	 * Set the enabled state of the RibbonColumn.
+	 * 
+	 * @param enabled
+	 *            The enabled state
+	 */
+	public void setEnabled(boolean enabled) {
+		setDisabled(!enabled);
+	}
+
+	/**
 	 * Add configuration key/value pair.
 	 * 
 	 * @param key

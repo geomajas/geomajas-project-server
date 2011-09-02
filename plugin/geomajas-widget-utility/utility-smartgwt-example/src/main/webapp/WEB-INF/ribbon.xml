@@ -202,6 +202,34 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</list>
 					</property>
 				</bean>
+				<bean
+					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					<property name="title" value="Disabled" />
+					<property name="columns">
+						<list>
+							<bean
+								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								<property name="type" value="TheAnswerAction" />
+								<property name="parameters">
+									<list>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="enabled" />
+											<property name="value" value="false" />
+										</bean>
+										<bean class="org.geomajas.configuration.Parameter">
+											<property name="name" value="showDisabledIcon" />
+											<property name="value" value="true" />
+										</bean>
+									</list>
+								</property>
+							</bean>
+							<bean
+								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								<property name="type" value="ChangeStateAction" />
+							</bean>
+						</list>
+					</property>
+				</bean>				
 			</list>
 		</property>
 	</bean>

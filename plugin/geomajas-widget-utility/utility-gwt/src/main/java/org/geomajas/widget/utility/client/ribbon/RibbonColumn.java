@@ -91,17 +91,17 @@ public interface RibbonColumn {
 	void configure(String key, String value);
 
 	/**
-	 * Is the ribbonColumn disabled?
+	 * Is the ribbonColumn enabled?
 	 * 
-	 * @return True if column is disabled
+	 * @return true if column is enabled
 	 */
-	Boolean isDisabled();
+	boolean isEnabled();
 
 	/**
-	 * Set the disabled state of the RibbonColumn.
+	 * Set the enabled state of the RibbonColumn.
 	 * 
-	 * @param disabled
-	 *            The disabled state
+	 * @param enabled
+	 *            The enabled state
 	 */
-	void setDisabled(boolean disabled);
+	void setEnabled(boolean enabled);
 }
