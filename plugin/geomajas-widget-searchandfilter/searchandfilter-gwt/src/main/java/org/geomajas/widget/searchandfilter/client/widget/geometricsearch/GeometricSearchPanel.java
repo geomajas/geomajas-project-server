@@ -20,6 +20,7 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
@@ -165,6 +166,7 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		// geometry. Even more, it might be a merged geometry from several
 		// methods.
 		GWT.log("You cannot reinitialize the Geometric search panel!");
+		Log.logError("You cannot reinitialize the Geometric search panel!");
 	}
 
 	// ----------------------------------------------------------

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.smartgwt.client.types.Overflow;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
@@ -60,7 +61,9 @@ import com.smartgwt.client.widgets.layout.VStack;
  *
  * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public class AttributeSearchPanel extends AbstractSearchPanel {
 
 	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);

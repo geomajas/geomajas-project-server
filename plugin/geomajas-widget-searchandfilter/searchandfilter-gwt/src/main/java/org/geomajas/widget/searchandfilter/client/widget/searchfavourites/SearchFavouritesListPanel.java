@@ -12,7 +12,9 @@ package org.geomajas.widget.searchandfilter.client.widget.searchfavourites;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.CriterionUtil;
@@ -64,10 +66,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * shared (with everybody).
  * 
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public class SearchFavouritesListPanel extends AbstractSearchPanel implements FavouriteChangeHandler {
 
-	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
+	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 
 	private SearchWidget parent;
 	private ListGrid favouriteItems;
@@ -97,7 +101,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 			}
 		});
 		ListGridField nameField = new ListGridField(FavouriteListRecord.NAME_FIELD,
-				messages.searchFavouritesListWidgetFavourites());
+				MESSAGES.searchFavouritesListWidgetFavourites());
 		nameField.setType(ListGridFieldType.TEXT);
 
 		favouriteItems.setFields(nameField);
@@ -117,7 +121,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 		if (favouriteItems.getSelectedRecord() != null) {
 			return true;
 		} else {
-			SC.say(messages.searchFavouritesListWidgetNoSelection());
+			SC.say(MESSAGES.searchFavouritesListWidgetNoSelection());
 			return false;
 		}
 	}
@@ -202,11 +206,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 	 */
 	private class FavouritesListGrid extends ListGrid {
 
-		private static final String BTN_SAVE_IMG = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
-		private static final String BTN_CANCEL_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
-		private static final String BTN_EDIT_IMG = "[ISOMORPHIC]/geomajas/osgeo/edit.png";
 		private static final String BTN_DELETE_IMG = "[SKIN]/actions/remove.png";
-
 		private static final String BTN_SEARCH_IMG = "[ISOMORPHIC]/geomajas/silk/find.png";
 		private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
 
@@ -228,7 +228,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 				searchBtn.setShowRollOver(false);
 				searchBtn.setLayoutAlign(Alignment.CENTER);
 				searchBtn.setSrc(BTN_SEARCH_IMG);
-				searchBtn.setPrompt(messages.searchWidgetSearch());
+				searchBtn.setPrompt(MESSAGES.searchWidgetSearch());
 				searchBtn.setHeight(16);
 				searchBtn.setWidth(16);
 				searchBtn.addClickHandler(new ClickHandler() {
@@ -244,7 +244,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 				filterBtn.setShowRollOver(false);
 				filterBtn.setSrc(BTN_FILTER_IMG);
 				filterBtn.setLayoutAlign(Alignment.CENTER);
-				filterBtn.setPrompt(messages.searchFavouritesListWidgetFilter());
+				filterBtn.setPrompt(MESSAGES.searchFavouritesListWidgetFilter());
 				filterBtn.setHeight(16);
 				filterBtn.setWidth(16);
 				filterBtn.addClickHandler(new ClickHandler() {
@@ -275,25 +275,25 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 			group.setPadding(5);
 			group.setIsGroup(true);
 			group.setWidth100();
-			group.setGroupTitle(messages.favouritesControllerAddGroupTitle());
+			group.setGroupTitle(MESSAGES.favouritesControllerAddGroupTitle());
 
 			final DynamicForm form = new DynamicForm();
 			final TextItem nameItem = new TextItem();
 			nameItem.setWidth(190);
-			nameItem.setTitle(messages.favouritesControllerAddName());
-			nameItem.setTooltip(messages.favouritesControllerAddNameTooltip());
+			nameItem.setTitle(MESSAGES.favouritesControllerAddName());
+			nameItem.setTooltip(MESSAGES.favouritesControllerAddNameTooltip());
 			nameItem.setRequired(true);
 			final CheckboxItem sharedItem = new CheckboxItem();
-			sharedItem.setTitle(messages.favouritesControllerAddShared());
-			sharedItem.setTooltip(messages.favouritesControllerAddSharedTooltip());
+			sharedItem.setTitle(MESSAGES.favouritesControllerAddShared());
+			sharedItem.setTooltip(MESSAGES.favouritesControllerAddSharedTooltip());
 			final TextItem lastEditItem = new TextItem();
 			lastEditItem.setWidth(190);
 			lastEditItem.setDisabled(true);
-			lastEditItem.setTitle(messages.searchFavouritesListWidgetLastChangeBy());
+			lastEditItem.setTitle(MESSAGES.searchFavouritesListWidgetLastChangeBy());
 			final DateItem lastEditDateItem = new DateItem();
 			lastEditDateItem.setDisabled(true);
 			lastEditDateItem.setUseTextField(true);
-			lastEditDateItem.setTitle(messages.searchFavouritesListWidgetLastChange());
+			lastEditDateItem.setTitle(MESSAGES.searchFavouritesListWidgetLastChange());
 			form.setFields(nameItem, sharedItem, lastEditItem, lastEditDateItem);
 
 			HLayout buttonlayout = new HLayout(10);
@@ -303,8 +303,8 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 			frmButtonlayout.setHeight(20);
 			frmButtonlayout.setWidth100();
 
-			final IButton saveButton = new IButton(messages.searchFavouritesListWidgetSave());
-			saveButton.setIcon(BTN_SAVE_IMG);
+			final IButton saveButton = new IButton(MESSAGES.searchFavouritesListWidgetSave());
+			saveButton.setIcon(WidgetLayout.iconSave);
 			saveButton.setAutoFit(true);
 			saveButton.setShowDisabledIcon(false);
 			saveButton.setDisabled(true);
@@ -320,8 +320,8 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 				}
 			});
 
-			final IButton cancelButton = new IButton(messages.searchFavouritesListWidgetCancel());
-			cancelButton.setIcon(BTN_CANCEL_IMG);
+			final IButton cancelButton = new IButton(MESSAGES.searchFavouritesListWidgetCancel());
+			cancelButton.setIcon(WidgetLayout.iconCancel);
 			cancelButton.setAutoFit(true);
 			cancelButton.setDisabled(true);
 			cancelButton.setShowDisabledIcon(false);
@@ -341,11 +341,11 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 				}
 			});
 
-			IButton editCritButton = new IButton(messages.searchFavouritesListWidgetEditFilter());
-			editCritButton.setIcon(BTN_EDIT_IMG);
+			IButton editCritButton = new IButton(MESSAGES.searchFavouritesListWidgetEditFilter());
+			editCritButton.setIcon(WidgetLayout.iconEdit);
 			editCritButton.setAutoFit(true);
 			editCritButton.setShowDisabledIcon(false);
-			editCritButton.setTooltip(messages.searchFavouritesListWidgetEditFilterTooltip());
+			editCritButton.setTooltip(MESSAGES.searchFavouritesListWidgetEditFilterTooltip());
 			editCritButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					SearchWidget sw = null;
@@ -356,7 +356,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 						sw = SearchWidgetRegistry.getSearchWidgetInstance(CombinedSearchCreator.IDENTIFIER);
 					}
 					if (sw == null) {
-						SC.say(messages.searchFavouritesListWidgetSearchWindowNotFound());
+						SC.say(MESSAGES.searchFavouritesListWidgetSearchWindowNotFound());
 						return;
 					}
 
@@ -374,14 +374,14 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 				}
 			});
 
-			IButton deleteButton = new IButton(messages.searchFavouritesListWidgetDelete());
+			IButton deleteButton = new IButton(MESSAGES.searchFavouritesListWidgetDelete());
 			deleteButton.setIcon(BTN_DELETE_IMG);
 			deleteButton.setAutoFit(true);
 			deleteButton.setShowDisabledIcon(false);
 			deleteButton.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					SC.ask(messages.searchFavouritesListWidgetDelete(),
-							messages.searchFavouritesListWidgetDeleteMessage(), new BooleanCallback() {
+					SC.ask(MESSAGES.searchFavouritesListWidgetDelete(),
+							MESSAGES.searchFavouritesListWidgetDeleteMessage(), new BooleanCallback() {
 								public void execute(Boolean value) {
 									if (value) {
 										favouriteItems.collapseRecord(record);

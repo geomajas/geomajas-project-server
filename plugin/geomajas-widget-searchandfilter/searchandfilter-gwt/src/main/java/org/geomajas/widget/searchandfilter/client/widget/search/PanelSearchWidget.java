@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.CriterionUtil;
@@ -45,11 +46,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	private static final String BTN_FAVOURITES_IMG = "[ISOMORPHIC]/geomajas/osgeo/bookmark_new.png";
-	private static final String BTN_SAVE_IMG = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
-	private static final String BTN_CANCEL_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 	private static final String BTN_SEARCH_IMG = "[ISOMORPHIC]/geomajas/silk/find.png";
-	private static final String BTN_RESET_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
-	private static final String BTN_PROCESSING = "[ISOMORPHIC]/geomajas/ajax-loader.gif";
 	private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
 	private static final String BTN_REMOVEFILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
 	
@@ -112,7 +109,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 		IButton resetBtn = new IButton(messages.searchWidgetReset());
-		resetBtn.setIcon(BTN_RESET_IMG);
+		resetBtn.setIcon(WidgetLayout.iconCancel);
 		resetBtn.setAutoFit(true);
 		resetBtn.setShowDisabledIcon(false);
 		resetBtn.addClickHandler(new ClickHandler() {
@@ -122,7 +119,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 		saveBtn = new IButton(messages.searchWidgetSave());
-		saveBtn.setIcon(BTN_SAVE_IMG);
+		saveBtn.setIcon(WidgetLayout.iconSave);
 		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
 		saveBtn.addClickHandler(new ClickHandler() {
@@ -133,7 +130,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		});
 		saveBtn.setVisible(false);
 		IButton cancelBtn = new IButton(messages.searchWidgetCancel());
-		cancelBtn.setIcon(BTN_CANCEL_IMG);
+		cancelBtn.setIcon(WidgetLayout.iconCancel);
 		cancelBtn.setAutoFit(true);
 		cancelBtn.setShowDisabledIcon(false);
 		cancelBtn.addClickHandler(new ClickHandler() {
@@ -259,7 +256,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	/** {@inheritDoc} */
 	public void onSearchStart() {
-		searchBtn.setIcon(BTN_PROCESSING);
+		searchBtn.setIcon(WidgetLayout.iconAjaxLoading);
 		searchBtn.setDisabled(true);
 	}
 

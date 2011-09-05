@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
@@ -41,14 +42,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 
-	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
-
-	private static final String BTN_POINT_CREATE_IMG = "[ISOMORPHIC]/geomajas/osgeo/point-create.png";
-	private static final String BTN_LINE_CREATE_IMG = "[ISOMORPHIC]/geomajas/osgeo/line-create.png";
-	private static final String BTN_POLYGON_CREATE_IMG = "[ISOMORPHIC]/geomajas/osgeo/polygon-create.png";
-	private static final String BTN_ADD_IMG = "[ISOMORPHIC]/geomajas/osgeo/selected-add.png";
-	private static final String BTN_UNDO_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
-	private static final String BTN_REDO_IMG = "[ISOMORPHIC]/geomajas/osgeo/redo.png";
+	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
 
 	private DynamicForm frmBuffer;
 	private SpinnerItem spiBuffer;
@@ -75,7 +69,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 	}
 
 	public String getTitle() {
-		return messages.geometricSearchWidgetFreeDrawingSearchTitle();
+		return MESSAGES.geometricSearchWidgetFreeDrawingSearchTitle();
 	}
 
 	public void reset() {
@@ -92,7 +86,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(5);
 
-		Label titleBar = new Label(messages.geometricSearchWidgetFreeDrawingSearchTitle());
+		Label titleBar = new Label(MESSAGES.geometricSearchWidgetFreeDrawingSearchTitle());
 		titleBar.setBackgroundColor("#E0E9FF");
 		titleBar.setWidth100();
 		titleBar.setHeight(20);
@@ -107,8 +101,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		actionsButtonBar.setAutoHeight();
 		actionsButtonBar.setMembersMargin(10);
 
-		btnPoint = new IButton(messages.geometricSearchWidgetFreeDrawingPoint());
-		btnPoint.setIcon(BTN_POINT_CREATE_IMG);
+		btnPoint = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingPoint());
+		btnPoint.setIcon(WidgetLayout.iconPointCreate);
 		btnPoint.setAutoFit(true);
 		btnPoint.setActionType(SelectionType.RADIO);
 		btnPoint.setRadioGroup("drawType");
@@ -118,8 +112,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		btnLine = new IButton(messages.geometricSearchWidgetFreeDrawingLine());
-		btnLine.setIcon(BTN_LINE_CREATE_IMG);
+		btnLine = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingLine());
+		btnLine.setIcon(WidgetLayout.iconLineCreate);
 		btnLine.setAutoFit(true);
 		btnLine.setActionType(SelectionType.RADIO);
 		btnLine.setRadioGroup("drawType");
@@ -129,8 +123,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		btnPolygon = new IButton(messages.geometricSearchWidgetFreeDrawingPolygon());
-		btnPolygon.setIcon(BTN_POLYGON_CREATE_IMG);
+		btnPolygon = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingPolygon());
+		btnPolygon.setIcon(WidgetLayout.iconPolygonCreate);
 		btnPolygon.setAutoFit(true);
 		btnPolygon.setActionType(SelectionType.RADIO);
 		btnPolygon.setRadioGroup("drawType");
@@ -140,8 +134,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		IButton btnAdd = new IButton(messages.geometricSearchWidgetFreeDrawingAdd());
-		btnAdd.setIcon(BTN_ADD_IMG);
+		IButton btnAdd = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingAdd());
+		btnAdd.setIcon(WidgetLayout.iconSelectedAdd);
 		btnAdd.setAutoFit(true);
 		btnAdd.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -149,8 +143,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		btnUndo = new IButton(messages.geometricSearchWidgetFreeDrawingUndo());
-		btnUndo.setIcon(BTN_UNDO_IMG);
+		btnUndo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingUndo());
+		btnUndo.setIcon(WidgetLayout.iconUndo);
 		btnUndo.setAutoFit(true);
 		btnUndo.setDisabled(true);
 		btnUndo.setShowDisabledIcon(false);
@@ -160,8 +154,8 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 			}
 		});
 
-		btnRedo = new IButton(messages.geometricSearchWidgetFreeDrawingRedo());
-		btnRedo.setIcon(BTN_REDO_IMG);
+		btnRedo = new IButton(MESSAGES.geometricSearchWidgetFreeDrawingRedo());
+		btnRedo.setIcon(WidgetLayout.iconRedo);
 		btnRedo.setAutoFit(true);
 		btnRedo.setDisabled(true);
 		btnRedo.setShowDisabledIcon(false);
@@ -174,7 +168,7 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 		frmBuffer = new DynamicForm();
 		frmBuffer.setWidth100();
 		spiBuffer = new SpinnerItem();
-		spiBuffer.setTitle(messages.geometricSearchWidgetBufferLabel());
+		spiBuffer.setTitle(MESSAGES.geometricSearchWidgetBufferLabel());
 		spiBuffer.setDefaultValue(5);
 		spiBuffer.setMin(0);
 		spiBuffer.setWidth(60);
@@ -294,11 +288,11 @@ public class FreeDrawingSearch extends AbstractGeometricSearchMethod {
 				updateView();
 				removeFreeDrawingController();
 			} else {
-				SC.say(messages.geometricSearchWidgetFreeDrawingInvalidGeometry());
+				SC.say(MESSAGES.geometricSearchWidgetFreeDrawingInvalidGeometry());
 				removeFreeDrawingController();
 			}
 		} else {
-			SC.say(messages.geometricSearchWidgetFreeDrawingNothingDrawn());
+			SC.say(MESSAGES.geometricSearchWidgetFreeDrawingNothingDrawn());
 		}
 	}
 

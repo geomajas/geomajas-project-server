@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.widget.geometricsearch.GeometryUpdateHandler;
@@ -20,7 +21,9 @@ import com.smartgwt.client.widgets.Canvas;
 /**
  * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public abstract class AbstractSearchPanel extends Canvas {
 
 	protected MapWidget mapWidget;

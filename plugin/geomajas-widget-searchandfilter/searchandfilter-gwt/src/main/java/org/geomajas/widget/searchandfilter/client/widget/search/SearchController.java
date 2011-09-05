@@ -15,9 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -136,7 +137,7 @@ public class SearchController implements SearchRequestHandler {
 				HLayout layout = new HLayout();
 				layout.setHeight(20);
 				layout.setWidth100();
-				layout.addMember(new Img("[ISOMORPHIC]/geomajas/ajax-loader.gif", 18, 18));
+				layout.addMember(new Img(WidgetLayout.iconAjaxLoading, 18, 18));
 				layout.addMember(new Label(messages.searchControllerSearchingMessage()));
 				modalWindow = new DockableWindow();
 				modalWindow.setTitle(messages.searchControllerSearchingTitle());

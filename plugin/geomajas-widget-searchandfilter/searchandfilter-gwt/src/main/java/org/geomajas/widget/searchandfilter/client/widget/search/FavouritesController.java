@@ -13,6 +13,7 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
@@ -43,9 +44,7 @@ public class FavouritesController implements FavouriteRequestHandler {
 
 	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
-	// private static final String BTN_SAVE_IMG = "[ISOMORPHIC]/geomajas/osgeo/save1.png";
 	private static final String BTN_ADD_IMG = "[SKIN]/actions/add.png";
-	private static final String BTN_CANCEL_IMG = "[ISOMORPHIC]/geomajas/osgeo/undo.png";
 
 	private final Set<FavouriteChangeHandler> favouriteHandlers = new HashSet<FavouriteChangeHandler>();
 
@@ -105,7 +104,7 @@ public class FavouritesController implements FavouriteRequestHandler {
 			}
 		});
 		IButton cancelBtn = new IButton(messages.favouritesControllerAddCancel());
-		cancelBtn.setIcon(BTN_CANCEL_IMG);
+		cancelBtn.setIcon(WidgetLayout.iconCancel);
 		cancelBtn.setAutoFit(true);
 		cancelBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
