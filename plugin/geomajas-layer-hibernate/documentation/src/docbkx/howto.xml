@@ -358,4 +358,19 @@ public class ZoneDaoImpl implements ZoneDao {
 &lt;/dependency&gt;
 </programlisting>
   </section>
+
+  <section>
+    <title>Error "Operation on two geometries with different SRIDs"</title>
+
+    <para>This is an exception which can occur of your geometries are stored
+    in the database using a different SRID as the one configured in the
+    layer.</para>
+
+    <para>You have to make sure that the SRID mathes the declaration.</para>
+
+    <para>When converting a shapefile using shp2pqsql, you have to specify the
+    SRID to be set (as this defaults to -1). Use a command like:</para>
+
+    <programlisting>shp2pgsql -s 4326 shape-base-name</programlisting>
+  </section>
 </chapter>
