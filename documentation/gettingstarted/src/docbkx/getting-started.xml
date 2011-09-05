@@ -576,6 +576,31 @@
     for more details.</para>
   </section>
 
+  <section>
+    <title>Using a Hibernate layer</title>
+
+    <para>The template project can easily be modified to use a layer stored in
+    PostGIS. You should do the following;</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>In the pom.xml, uncomment block marked with "uncomment if you
+          want to use Hibernate with postgis, for another db you will need
+          similar dependencies".</para>
+        </listitem>
+
+        <listitem>
+          <para>In the web.xml file (src/main/webapp/WEB-INF/web.xml)
+          uncomment the block marked with "To use Roads layer stored in
+          PostGIS through hibernate layer, uncomment the following".</para>
+        </listitem>
+      </itemizedlist>To create the database, you can use the following command
+    which will create the database (named "app") with some sample data (just a
+    couple of roads):</para>
+
+    <para><programlisting>psql -d app &lt;src/main/webapp/WEB-INF/example/road.sql</programlisting></para>
+  </section>
+
   <section id="cont">
     <title>How to continue</title>
 

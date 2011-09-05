@@ -111,6 +111,11 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>0.7.1-rc3</version>
+		</dependency>
 		-->
 
 		<!-- Google dependencies -->

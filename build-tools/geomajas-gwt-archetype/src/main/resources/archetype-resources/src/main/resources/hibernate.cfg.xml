@@ -18,12 +18,14 @@
 
 <hibernate-configuration>
 	<session-factory>
+		
 		<property name="hibernate.dialect">org.hibernatespatial.postgis.PostgisDialect</property>
-
 		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">false</property>
+		
 		<mapping class="${package}.server.Road" />
+		
 	</session-factory>
 </hibernate-configuration>

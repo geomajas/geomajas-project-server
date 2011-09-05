@@ -23,23 +23,22 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerCountries">
-		<property name="serverLayerId" value="layerCountries" />
-		<property name="label" value="Countries" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerRoads">
+		<property name="serverLayerId" value="layerRoads" />
+		<property name="label" value="Roads (editable - linestring)" />
 		<property name="visible" value="true" />
-		<property name="maximumScale" value="1:1000" />
-		<property name="minimumScale" value="1:500000000" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="10" />
+		<property name="namedStyleInfo" ref="layerRoadsStyleInfo" />
 		<property name="snappingRules">
 			<list>
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
-					<property name="distance" value="10000" />
+					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="countriesLayer" />
+					<property name="layerId" value="roadsLayer" />
 				</bean>
 			</list>
 		</property>
-		<property name="namedStyleInfo" ref="layerCountriesStyleInfo" />
 	</bean>
 
 </beans>

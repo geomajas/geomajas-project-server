@@ -191,7 +191,8 @@ public class SearchPanel extends VLayout {
 	private void createButtonGui() {
 		// The search button opens the search widget:
 		searchButton = new IButton();
-		searchButton.setIcon(WidgetLayout.iconFind);
+		// for 1.10.0 use: searchButton.setIcon(WidgetLayout.iconFind);
+		searchButton.setIcon("[ISOMORPHIC]/geomajas/silk/find.png");
 		searchButton.setSize(BTN_WIDTH + "px", BTN_WIDTH + "px");
 		searchButton.setRadioGroup("panels");
 		searchButton.addClickHandler(new ClickHandler() {
@@ -207,7 +208,8 @@ public class SearchPanel extends VLayout {
 
 		// The grid button opens the feature list grid:
 		gridButton = new IButton();
-		gridButton.setIcon(WidgetLayout.iconTable);
+		// for 1.10.0 use: gridButton.setIcon(WidgetLayout.iconTable);
+		gridButton.setIcon("[ISOMORPHIC]/geomajas/osgeo/table.png");
 		gridButton.setSize(BTN_WIDTH + "px", BTN_WIDTH + "px");
 		gridButton.setRadioGroup("panels");
 		gridButton.addClickHandler(new ClickHandler() {

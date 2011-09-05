@@ -20,11 +20,7 @@
         </encoder>
     </appender>
 
-	<!--
-    <logger name="org.geomajas.gwt">
-        <level value="DEBUG"/>
-    </logger>
-    -->
+    <logger name="${package}" level="DEBUG"/>
 
     <root>
         <level value="INFO"/>

@@ -19,7 +19,7 @@
 				<include>**/*.xml</include>
 			</includes>
 		</fileSet>
-		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+		<fileSet filtered="false" packaged="true" encoding="UTF-8">
 			<directory>src/main/resources</directory>
 			<includes>
 				<include>**/*.xml</include>
@@ -27,6 +27,7 @@
 			</includes>
 			<excludes>
 				<exclude>hibernate-spatial.cfg.xml</exclude>
+				<exclude>hibernate.cfg.xml</exclude>
 				<exclude>logback.xml</exclude>
 			</excludes>
 		</fileSet>
@@ -34,6 +35,7 @@
 			<directory>src/main/resources</directory>
 			<includes>
 				<include>hibernate-spatial.cfg.xml</include>
+				<include>hibernate.cfg.xml</include>
 				<include>logback.xml</include>
 			</includes>
 		</fileSet>
@@ -59,11 +61,6 @@
 			<directory>src/main/webapp</directory>
 			<includes>
 				<include>**/*.html</include>
-			</includes>
-		</fileSet>
-		<fileSet filtered="true" encoding="UTF-8">
-			<directory>src/main/webapp/WEB-INF</directory>
-			<includes>
 				<include>**/*.xml</include>
 			</includes>
 		</fileSet>
@@ -77,13 +74,7 @@
 			<directory>src/main/webapp</directory>
 			<includes>
 				<include>**/*.ico</include>
-			</includes>
-		</fileSet>
-		<fileSet filtered="true" encoding="UTF-8">
-			<directory>.eclipse</directory>
-			<includes>
-				<include>**/*.launch</include>
-				<include>**/*.xsl</include>
+				<include>**/*.sql</include>
 			</includes>
 		</fileSet>
 	</fileSets>

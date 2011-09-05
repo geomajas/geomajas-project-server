@@ -74,16 +74,25 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-1000000"/>
-				<property name="y" value="5000000"/>
-				<property name="width" value="4000000"/>
-				<property name="height" value="2000000"/>
+				<property name="x" value="506356" />
+				<property name="y" value="6588779" />
+				<property name="width" value="330" />
+				<property name="height" value="260" />
+			</bean>
+		</property>
+		<property name="maxBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-20026376.393709917" />
+				<property name="y" value="-20026376.393709917" />
+				<property name="width" value="40052752.787419834" />
+				<property name="height" value="40052752.787419834" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
 				<ref bean="clientLayerOsm" />
 				<ref bean="clientLayerCountries" />
+				<ref bean="clientLayerRoads" />
 			</list>
 		</property>
 		<property name="toolbar">
@@ -120,6 +129,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 							<list>
 								<ref bean="clientLayerOsm" />
 								<ref bean="clientLayerCountries" />
+								<ref bean="clientLayerRoads" />
 							</list>
 						</property>
 						<property name="expanded" value="true" />
