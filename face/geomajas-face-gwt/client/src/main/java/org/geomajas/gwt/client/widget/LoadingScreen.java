@@ -57,7 +57,7 @@ public class LoadingScreen extends VLayout {
 
 	private HandlerRegistration onDispatchStopRegistration;
 
-	private int logoWidth = WidgetLayout.loadingScreenLogoWidth;
+	private String logoWidth = WidgetLayout.loadingScreenLogoWidth;
 
 	private String logo = WidgetLayout.loadingScreenLogo;
 
@@ -177,7 +177,7 @@ public class LoadingScreen extends VLayout {
 	 * @param logoWidth
 	 *            The width of the logo image to be used.
 	 */
-	public void setLogoWidth(int logoWidth) {
+	public void setLogoWidth(String logoWidth) {
 		this.logoWidth = logoWidth;
 	}
 

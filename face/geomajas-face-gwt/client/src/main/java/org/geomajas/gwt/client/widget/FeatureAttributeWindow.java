@@ -145,11 +145,11 @@ public class FeatureAttributeWindow extends Window {
 		setKeepInParentRect(true);
 		setMaxWidth(com.google.gwt.user.client.Window.getClientWidth() - WidgetLayout.windowOffset * 2);
 		setMaxHeight(com.google.gwt.user.client.Window.getClientHeight() - WidgetLayout.windowOffset * 2);
-		if (WidgetLayout.featureAttributeWindowWidth > 0) {
+		if (null != WidgetLayout.featureAttributeWindowWidth) {
 			setWidth(WidgetLayout.featureAttributeWindowWidth);
 			setAutoSize(false);
 		}
-		if (WidgetLayout.featureAttributeWindowHeight > 0) {
+		if (null != WidgetLayout.featureAttributeWindowHeight) {
 			setHeight(WidgetLayout.featureAttributeWindowHeight);
 			setAutoSize(false);
 		}

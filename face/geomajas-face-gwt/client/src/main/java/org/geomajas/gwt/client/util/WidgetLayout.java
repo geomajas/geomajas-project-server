@@ -233,11 +233,11 @@ public final class WidgetLayout {
 	/** Loading screen logo. */
 	public static String loadingScreenLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 	/** Loading screen logo width. */
-	public static int loadingScreenLogoWidth = 300;
+	public static String loadingScreenLogoWidth = "300";
 	/** Loading screen inner width. */
-	public static int loadingScreenWidth = 500;
+	public static String loadingScreenWidth = "500";
 	/** Loading screen inner height. */
-	public static int loadingScreenHeight = 300;
+	public static String loadingScreenHeight = "300";
 	/** Loading screen shadow depth. */
 	public static int loadingScreenShadowDepth = 10;
 	/** Loading screen background image. */
@@ -245,17 +245,17 @@ public final class WidgetLayout {
 	/** Loading screen background colour. */
 	public static String loadingScreenBackgroundColor = "#FFFFFF";
 	/** Loading screen top spacer height. */
-	public static int loadingScreenTopSpacerHeight = 40;
+	public static String loadingScreenTopSpacerHeight = "40";
 	/** Loading screen title height. */
-	public static int loadingScreenTitleHeight = 24;
+	public static String loadingScreenTitleHeight = "24";
 	/** Loading screen edge opacity. */
 	public static int loadingScreenEdgeOpacity = 70;
 	/** Loading screen progress height. */
-	public static int loadingScreenProgressHeight = 80;
+	public static String loadingScreenProgressHeight = "80";
 	/** Loading screen progress label height. */
-	public static int loadingScreenProgressLabelHeight = 15;
+	public static String loadingScreenProgressLabelHeight = "15";
 	/** Loading screen progress bar height. */
-	public static int loadingScreenProgressBarHeight = 30;
+	public static String loadingScreenProgressBarHeight = "30";
 	/** Loading screen progress opacity. */
 	public static int loadingScreenProgressOpacity = 30;
 	/** Loading screen progress padding. */
@@ -266,9 +266,9 @@ public final class WidgetLayout {
 	/** Geomajas logo. */
 	public static String aboutGeomajasLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 	/** Geomajas logo width. */
-	public static int aboutGeomajasWidth = 400;
+	public static String aboutGeomajasWidth = "400";
 	/** Geomajas logo height. */
-	public static int aboutGeomajasHeight = 300;
+	public static String aboutGeomajasHeight = "300";
 
 	/** Background colour for the legend widget. */
 	public static String legendBackgroundColor = "#FFFFFF";
@@ -285,23 +285,23 @@ public final class WidgetLayout {
 	/** Indent for legend labels (relative to the margin used). */
 	public static int legendLabelIndent = 20;
 
-	/** Fixed width for {@link org.geomajas.gwt.client.widget.FeatureAttributeWindow} or 0 for auto. */
-	public static int featureAttributeWindowWidth;
-	/** Fixed height for {@link org.geomajas.gwt.client.widget.FeatureAttributeWindow} or 0 for auto. */
-	public static int featureAttributeWindowHeight;
+	/** Fixed width for {@link org.geomajas.gwt.client.widget.FeatureAttributeWindow} or null for auto. */
+	public static String featureAttributeWindowWidth;
+	/** Fixed height for {@link org.geomajas.gwt.client.widget.FeatureAttributeWindow} or null for auto. */
+	public static String featureAttributeWindowHeight;
 	/** Width for the layout in the feature attribute window. */
-	public static int featureAttributeWindowLayoutWidth = 450;
+	public static String featureAttributeWindowLayoutWidth = "450";
 	/** Should feature attribute window try to stay within the browser window? */
 	public static boolean featureAttributeWindowKeepInScreen = true;
 
 	/** Width for the exception window. */
-	public static int exceptionWindowWidth = 450;
+	public static String exceptionWindowWidth = "450";
 	/** Height for the exception window in normal mode. */
-	public static int exceptionWindowHeightNormal = 132;
+	public static String exceptionWindowHeightNormal = "132";
 	/** Height for the exception window when showing details. */
-	public static int exceptionWindowHeightDetails = 350;
+	public static String exceptionWindowHeightDetails = "350";
 	/** View/hide details button width. */
-	public static int exceptionWindowButtonWidth = 100;
+	public static String exceptionWindowButtonWidth = "100";
 	/** Error icon size. */
 	public static int exceptionWindowIconSize = 64;
 	/** Style for main message in exception window. */
