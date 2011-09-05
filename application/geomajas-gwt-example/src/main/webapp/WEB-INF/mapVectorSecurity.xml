@@ -87,7 +87,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<list>
 						<ref bean="LayerVisibleTool" />
 						<ref bean="LayerLabeledTool" />
-						<ref bean="ShowTableAction" />
 						<ref bean="LayerRefreshAction" />
 					</list>
 				</property>

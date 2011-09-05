@@ -198,7 +198,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="LayerVisibleTool" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="LayerSnappingTool" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="LayerLabeledTool" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="ShowTableAction" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 </beans>

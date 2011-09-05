@@ -229,9 +229,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	  <tool id="LayerVisibleTool" />
 	  <tool id="LayerSnappingTool" />
 	  <tool id="LayerLabeledTool" />
-	  <tool id="ShowTableAction">
-		  <parameter name="tableID" value="mainTable"/>
-	  </tool>
 	  <!++ PDF GENERATION ACTIONS ++>
 	  <tool id="FetchPdf">
 		  <parameter name="downloadMethod" value="0"/>

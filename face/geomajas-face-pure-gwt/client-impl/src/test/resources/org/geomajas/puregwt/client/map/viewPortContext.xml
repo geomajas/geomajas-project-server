@@ -160,7 +160,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="LayerVisibleTool" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="LayerSnappingTool" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="LayerLabeledTool" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="ShowTableAction" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 </beans>
