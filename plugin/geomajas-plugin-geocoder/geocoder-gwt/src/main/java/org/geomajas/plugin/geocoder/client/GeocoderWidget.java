@@ -60,6 +60,7 @@ public class GeocoderWidget extends DynamicForm {
 	 * @param name widget name
 	 * @param title label which is displayed left of the widget
 	 * @param showTitle determines whether the label should be displayed or not
+	 * @since 1.2.0
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle) {
