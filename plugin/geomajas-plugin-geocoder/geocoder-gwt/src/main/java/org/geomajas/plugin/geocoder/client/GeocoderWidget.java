@@ -21,6 +21,7 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import org.geomajas.global.Api;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
@@ -49,11 +50,25 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
+		this(map, name, title, true);
+	}
+
+	/**
+	 * Create geocoder widget which allows searching a location from a string.
+	 *
+	 * @param map map to apply search results
+	 * @param name widget name
+	 * @param title label which is displayed left of the widget
+	 * @param showTitle determines whether the label should be displayed or not
+	 */
+	@Api
+	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle) {
 		super();
 		presenter = new GeocoderPresenter(map, this);
 		this.map = map;
 
 		textItem = new TextItem(name, title);
+		textItem.setShowTitle(showTitle);
 
 		textItem.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent keyPressEvent) {
@@ -63,8 +78,8 @@ public class GeocoderWidget extends DynamicForm {
 			}
 		});
 
-		final PickerIcon findIcon = new PickerIcon(PickerIcon.SEARCH);
-		final PickerIcon clearIcon = new PickerIcon(PickerIcon.CLEAR);
+		final PickerIcon findIcon = new PickerIcon(WidgetLayout.iconPickerSearch);
+		final PickerIcon clearIcon = new PickerIcon(WidgetLayout.iconPickerClear);
 		textItem.setIcons(findIcon, clearIcon);
 
 		textItem.addIconClickHandler(new IconClickHandler() {
