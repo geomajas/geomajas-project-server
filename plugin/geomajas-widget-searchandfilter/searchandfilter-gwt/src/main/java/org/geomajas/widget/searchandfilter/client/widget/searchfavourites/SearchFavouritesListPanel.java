@@ -163,7 +163,7 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 	}
 
 	@Override
-	public boolean canBeReset() {
+	public boolean canReset() {
 		return false;
 	}
 

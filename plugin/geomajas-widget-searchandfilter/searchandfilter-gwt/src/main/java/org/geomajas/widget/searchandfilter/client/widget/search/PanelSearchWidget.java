@@ -49,12 +49,15 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	private static final String BTN_SEARCH_IMG = "[ISOMORPHIC]/geomajas/silk/find.png";
 	private static final String BTN_FILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
 	private static final String BTN_REMOVEFILTER_IMG = "[ISOMORPHIC]/geomajas/smartgwt/filter.png";
-	
+
+	private static final SearchAndFilterMessages MESSAGES = GWT.create(SearchAndFilterMessages.class);
+
 	private final List<SearchRequestHandler> searchHandlers = new ArrayList<SearchRequestHandler>();
 	private final List<SaveRequestHandler> saveHandlers = new ArrayList<SaveRequestHandler>();
 	private final List<FavouriteRequestHandler> favouriteHandlers =
 		new ArrayList<FavouriteRequestHandler>();
 
+	private HLayout searchButtonBar;
 	private IButton searchBtn;
 	private IButton saveBtn;
 	private IButton removeFilterBtn;
@@ -73,7 +76,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	 *            your specific implementation of a search
 	 */
 	public PanelSearchWidget(String widgetId, String name, final AbstractSearchPanel searchPanel) {
-		super(10);
+		super(WidgetLayout.marginLarge);
 		if (widgetId == null || searchPanel == null) {
 			throw new IllegalArgumentException("All parameters are required");
 		}
@@ -82,13 +85,9 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		this.widgetId = widgetId;
 		this.name = name;
 
-		//setWidth100();
-		//setHeight100();
-		setMargin(10);
+		setMargin(WidgetLayout.marginLarge);
 
-		SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
-
-		IButton favouritesBtn = new IButton(messages.searchWidgetAddToFavourites());
+		IButton favouritesBtn = new IButton(MESSAGES.searchWidgetAddToFavourites());
 		favouritesBtn.setIcon(BTN_FAVOURITES_IMG);
 		favouritesBtn.setAutoFit(true);
 		favouritesBtn.setShowDisabledIcon(false);
@@ -98,7 +97,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 				onAddToFavourites();
 			}
 		});
-		searchBtn = new IButton(messages.searchWidgetSearch());
+		searchBtn = new IButton(MESSAGES.searchWidgetSearch());
 		searchBtn.setIcon(BTN_SEARCH_IMG);
 		searchBtn.setAutoFit(true);
 		searchBtn.setShowDisabledIcon(false);
@@ -108,7 +107,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 				onSearch();
 			}
 		});
-		IButton resetBtn = new IButton(messages.searchWidgetReset());
+		IButton resetBtn = new IButton(MESSAGES.searchWidgetReset());
 		resetBtn.setIcon(WidgetLayout.iconCancel);
 		resetBtn.setAutoFit(true);
 		resetBtn.setShowDisabledIcon(false);
@@ -118,7 +117,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 				searchPanel.reset();
 			}
 		});
-		saveBtn = new IButton(messages.searchWidgetSave());
+		saveBtn = new IButton(MESSAGES.searchWidgetSave());
 		saveBtn.setIcon(WidgetLayout.iconSave);
 		saveBtn.setAutoFit(true);
 		saveBtn.setShowDisabledIcon(false);
@@ -129,18 +128,19 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 		saveBtn.setVisible(false);
-		IButton cancelBtn = new IButton(messages.searchWidgetCancel());
+		IButton cancelBtn = new IButton(MESSAGES.searchWidgetCancel());
 		cancelBtn.setIcon(WidgetLayout.iconCancel);
 		cancelBtn.setAutoFit(true);
 		cancelBtn.setShowDisabledIcon(false);
 		cancelBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
+				save(null); // assure the combined panel is cleared if needed
 				close();
 			}
 		});
 
-		IButton filterLayerBtn = new IButton(messages.searchWidgetFilterLayer());
+		IButton filterLayerBtn = new IButton(MESSAGES.searchWidgetFilterLayer());
 		filterLayerBtn.setIcon(BTN_FILTER_IMG);
 		filterLayerBtn.setAutoFit(true);
 		filterLayerBtn.setShowDisabledIcon(false);
@@ -151,7 +151,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 
-		removeFilterBtn = new IButton(messages.searchWidgetRemoveFilter());
+		removeFilterBtn = new IButton(MESSAGES.searchWidgetRemoveFilter());
 		removeFilterBtn.setIcon(BTN_REMOVEFILTER_IMG);
 		removeFilterBtn.setAutoFit(true);
 		removeFilterBtn.setShowDisabledIcon(false);
@@ -167,7 +167,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		LayoutSpacer ls = new LayoutSpacer();
 		ls.setWidth("*");
 
-		HLayout searchButtonBar = new HLayout(10);
+		searchButtonBar = new HLayout(10);
 		searchButtonBar.setWidth100();
 		if (searchPanel.canAddToFavourites()) {
 			searchButtonBar.addMember(favouritesBtn);
@@ -179,8 +179,11 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		}
 		searchButtonBar.addMember(searchBtn);
 		searchButtonBar.addMember(saveBtn);
-		if (searchPanel.canBeReset()) {
+		if (searchPanel.canReset()) {
 			searchButtonBar.addMember(resetBtn);
+		}
+		if (searchPanel.canCancel()) {
+			searchButtonBar.addMember(cancelBtn);
 		}
 		addMember(searchButtonBar);
 	}
@@ -208,6 +211,16 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	}
 
 	// ----------------------------------------------------------
+
+	/** {@inheritDoc} */
+	public void hideSearchButtons() {
+		searchButtonBar.hide();
+	}
+
+	/** {@inheritDoc} */
+	public void showSearchButtons() {
+		searchButtonBar.show();
+	}
 
 	/** {@inheritDoc} */
 	public String getSearchWidgetId() {
@@ -318,11 +331,15 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 	private void onSave() {
 		if (searchPanel.validate()) {
-			Criterion critter = searchPanel.getFeatureSearchCriterion();
-			for (SaveRequestHandler handler : saveHandlers) {
-				handler.onSaveRequested(new SaveRequestEvent(this, critter));
-			}
+			save(searchPanel.getFeatureSearchCriterion());
 			close();
+		}
+	}
+
+	private void save(Criterion criterion) {
+		SaveRequestEvent event = new SaveRequestEvent(this, criterion);
+		for (SaveRequestHandler handler : saveHandlers) {
+			handler.onSaveRequested(event);
 		}
 	}
 

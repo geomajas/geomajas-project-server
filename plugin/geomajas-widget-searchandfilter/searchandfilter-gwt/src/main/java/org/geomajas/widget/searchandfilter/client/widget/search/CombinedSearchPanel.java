@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.smartgwt.client.widgets.Canvas;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.util.WidgetLayout;
@@ -64,6 +65,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	private SelectItem selectSearch;
 	private List<SearchWidget> searchWidgets = new ArrayList<SearchWidget>();
 	private boolean alwaysShowElements = true;
+	private boolean hideButtonsWhenAdding;
 
 	/**
 	 * Create a combined search panel for a specific map widget.
@@ -133,16 +135,34 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		selectSearch.setTooltip(messages.combinedSearchWidgetSelectSearch());
 		selectSearch.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				if (event.getValue() != null) {
+				if (null != event.getValue() && !"".equals(event.getValue())) {
+					if (hideButtonsWhenAdding) {
+						Canvas parent = getParentElement();
+						if (parent instanceof SearchWidget) {
+							((SearchWidget) parent).hideSearchButtons();
+						}
+					}
 					final SearchWidget sw = getSearchWidget((String) event.getValue());
 					sw.showForSave(new SaveRequestHandler() {
 						public void onSaveRequested(SaveRequestEvent event) {
-							searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
+							Criterion criterion = event.getCriterion();
+							if (null != criterion) {
+								searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
+							}
 							updateDisplay();
+							if (hideButtonsWhenAdding) {
+								Canvas parent = getParentElement();
+								if (parent instanceof SearchWidget) {
+									((SearchWidget) parent).showSearchButtons();
+								}
+								selectSearch.setValue("");
+							}
 						}
 					});
 				}
-				event.cancel();
+				if (!hideButtonsWhenAdding) {
+					event.cancel();
+				}
 			}
 		});
 		searchForm.setFields(selectSearch);
@@ -165,6 +185,18 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	 */
 	public void setAlwaysShowElements(boolean alwaysShowElements) {
 		this.alwaysShowElements = alwaysShowElements;
+		updateDisplay();
+	}
+
+	/**
+	 * Set whether the search and reset buttons should be hidden while adding a criterion.
+	 * <p/>
+	 * The default value is false.
+	 *
+	 * @param hideButtonsWhenAdding should buttons be hidden while adding?
+	 */
+	public void setHideButtonsWhenAdding(boolean hideButtonsWhenAdding) {
+		this.hideButtonsWhenAdding = hideButtonsWhenAdding;
 	}
 
 	@Override

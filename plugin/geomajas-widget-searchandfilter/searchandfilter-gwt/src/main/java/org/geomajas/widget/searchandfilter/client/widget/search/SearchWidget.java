@@ -10,6 +10,7 @@
  */
 package org.geomajas.widget.searchandfilter.client.widget.search;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.widget.searchandfilter.client.widget.search.FavouritesController.FavouriteEvent;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
@@ -18,7 +19,9 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
  *
  * @see {@link SearchWidgetRegistry}.
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface SearchWidget {
 
 	String getSearchWidgetId();
@@ -90,6 +93,16 @@ public interface SearchWidget {
 	 */
 	void reset();
 
+	/**
+	 * Hide the search buttons.
+	 */
+	void hideSearchButtons();
+
+	/**
+	 * Show the search buttons.
+	 */
+	void showSearchButtons();
+
 	// ----------------------------------------------------------
 
 	/**
@@ -130,15 +143,31 @@ public interface SearchWidget {
 		private final SearchWidget source;
 		private final Criterion criterion;
 
+		/**
+		 * Create a {@link SearchWidgetEvent}.
+		 *
+		 * @param source source widget
+		 * @param criterion criterion
+		 */
 		public SearchWidgetEvent(SearchWidget source, Criterion criterion) {
 			this.source = source;
 			this.criterion = criterion;
 		}
 
+		/**
+		 * Get the source widget.
+		 *
+		 * @return source widget.
+		 */
 		public SearchWidget getSource() {
 			return source;
 		}
 
+		/**
+		 * Get the criterion.
+		 *
+		 * @return criterion
+		 */
 		public Criterion getCriterion() {
 			return criterion;
 		}

@@ -78,6 +78,16 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 	// ----------------------------------------------------------
 
 	/** {@inheritDoc} */
+	public void hideSearchButtons() {
+		panelSearchWidget.hide();
+	}
+
+	/** {@inheritDoc} */
+	public void showSearchButtons() {
+		panelSearchWidget.hide();
+	}
+
+	/** {@inheritDoc} */
 	public String getSearchWidgetId() {
 		return widgetId;
 	}

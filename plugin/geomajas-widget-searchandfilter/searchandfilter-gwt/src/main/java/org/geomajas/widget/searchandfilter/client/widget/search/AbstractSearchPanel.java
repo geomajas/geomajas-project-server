@@ -23,14 +23,15 @@ import com.smartgwt.client.widgets.Canvas;
  * @author Kristof Heirwegh
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public abstract class AbstractSearchPanel extends Canvas {
 
 	protected MapWidget mapWidget;
 	protected GeometryUpdateHandler handler;
 	private boolean canAddToFavourites = true;
 	private boolean canFilterLayer;
-	private boolean canBeReset = true;
+	private boolean canReset = true;
+	private boolean canCancel = true;
 
 	public AbstractSearchPanel(MapWidget mapWidget) {
 		super();
@@ -92,18 +93,37 @@ public abstract class AbstractSearchPanel extends Canvas {
 	 * 
 	 * @return true when reset button is visible
 	 */
-	public boolean canBeReset() {
-		return canBeReset;
+	public boolean canReset() {
+		return canReset;
 	}
 
 	/**
 	 * Set whether the reset button can exist.
 	 * 
-	 * @param canBeReset
+	 * @param canReset
 	 *            new value
 	 */
-	public void setCanBeReset(boolean canBeReset) {
-		this.canBeReset = canBeReset;
+	public void setCanReset(boolean canReset) {
+		this.canReset = canReset;
+	}
+
+	/**
+	 * Should the "Cancel" button be shown?
+	 *
+	 * @return true when cancel button is visible
+	 */
+	public boolean canCancel() {
+		return canCancel;
+	}
+
+	/**
+	 * Set whether the cancel button can exist.
+	 *
+	 * @param canCancel
+	 *            new value
+	 */
+	public void setCanCancel(boolean canCancel) {
+		this.canCancel = canCancel;
 	}
 
 	/**
