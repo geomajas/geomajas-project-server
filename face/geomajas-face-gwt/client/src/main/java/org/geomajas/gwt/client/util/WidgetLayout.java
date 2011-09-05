@@ -137,6 +137,10 @@ public final class WidgetLayout {
 	public static String iconPanInfo = "[ISOMORPHIC]/geomajas/osgeo/pan-info.png";
 	/** Pan to selection icon. */
 	public static String iconPanToSelection = "[ISOMORPHIC]/geomajas/osgeo/pan_to_selection.png";
+	/** Clear picker icon. */
+	public static String iconPickerClear = "[SKIN]/pickers/clear_picker.png";
+	/** Search picker icon. */
+	public static String iconPickerSearch = "[SKIN]/pickers/search_picker.png";
 	/** Point icon. */
 	public static String iconPoint = "[ISOMORPHIC]/geomajas/osgeo/point.png";
 	/** Create point icon. */
