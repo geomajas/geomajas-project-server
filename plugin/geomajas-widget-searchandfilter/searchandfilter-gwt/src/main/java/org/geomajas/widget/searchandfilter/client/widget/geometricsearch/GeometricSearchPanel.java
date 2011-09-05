@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 import org.geomajas.widget.searchandfilter.client.util.SearchCommService;
 import org.geomajas.widget.searchandfilter.client.util.DataCallback;
 import org.geomajas.widget.searchandfilter.client.widget.search.AbstractSearchPanel;
@@ -70,8 +71,8 @@ public class GeometricSearchPanel extends AbstractSearchPanel implements Geometr
 		VLayout layout = new VLayout(0);
 		layout.setWidth100();
 		tabs = new TabSet();
-		tabs.setWidth(400);
-		tabs.setHeight(250);
+		tabs.setWidth(GsfLayout.geometricSearchPanelTabWidth);
+		tabs.setHeight(GsfLayout.geometricSearchPanelTabHeight);
 		layout.addMember(tabs);
 
 		addChild(layout);
