@@ -63,7 +63,14 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	private ListGrid searchItems;
 	private SelectItem selectSearch;
 	private List<SearchWidget> searchWidgets = new ArrayList<SearchWidget>();
+	private boolean alwaysShowElements = true;
 
+	/**
+	 * Create a combined search panel for a specific map widget.
+	 *
+	 * @param mapWidget map widget to search for
+	 */
+	@Api
 	public CombinedSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
 		VLayout layout = new VLayout(10);
@@ -147,14 +154,33 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 		addChild(layout);
 	}
 
+	/**
+	 * Set whether all elements should always be displayed or only when significant.
+	 * <p/>
+	 * This affects the and/or choice and the list of criteria.
+	 * <p/>
+	 * The default value is true.
+	 *
+	 * @param alwaysShowElements should all elements always be visible?
+	 */
+	public void setAlwaysShowElements(boolean alwaysShowElements) {
+		this.alwaysShowElements = alwaysShowElements;
+	}
+
+	@Override
+	public void show() {
+		updateDisplay();
+		super.show();
+	}
+
 	public void updateDisplay() {
 		int recordCount = searchItems.getRecords().length;
-		if (recordCount >= 1) {
+		if (alwaysShowElements || recordCount >= 1) {
 			searchItems.show();
 		} else {
 			searchItems.hide();
 		}
-		if (recordCount >= 2) {
+		if (alwaysShowElements || recordCount >= 2) {
 			operatorForm.show();
 		} else {
 			operatorForm.hide();
@@ -217,6 +243,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	 *
 	 * @param searchWidgets search widgets
 	 */
+	@Api
 	public void initializeList(Collection<SearchWidget> searchWidgets) {
 		LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
 		for (SearchWidget searchWidget : searchWidgets) {
