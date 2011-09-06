@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * <p>

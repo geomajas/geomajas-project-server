@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.command;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.puregwt.client.GeomajasService;
 import org.geomajas.puregwt.client.GeomajasServiceAsync;
 import org.geomajas.puregwt.client.command.event.DispatchStartedEvent;

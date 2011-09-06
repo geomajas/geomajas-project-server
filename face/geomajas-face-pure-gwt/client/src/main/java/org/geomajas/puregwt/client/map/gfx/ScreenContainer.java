@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * A container for drawing vector objects onto the map. This is the recommended way of quickly drawing vector objects.

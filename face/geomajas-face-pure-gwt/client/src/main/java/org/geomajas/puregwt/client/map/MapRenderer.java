@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;

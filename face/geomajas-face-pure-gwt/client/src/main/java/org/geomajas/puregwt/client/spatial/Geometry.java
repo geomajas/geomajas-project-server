@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.spatial;
 import java.io.Serializable;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * Gwt client-side Geometry representation.

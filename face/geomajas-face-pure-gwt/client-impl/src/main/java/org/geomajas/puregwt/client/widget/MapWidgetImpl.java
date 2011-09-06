@@ -41,6 +41,7 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -124,7 +125,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 				event.preventDefault();
 			}
 		});
-		
+
 		// We don't want scrolling on the page and zooming at the same time.
 		// TODO: make this optional. When no zoom on scroll is used, scrolling the page should be possible.
 		addMouseWheelHandler(new MouseWheelHandler() {
@@ -200,6 +201,14 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 			}
 		}
 		return worldContainers;
+	}
+
+	public void onResize() {
+		for (Widget child : getChildren()) {
+			if (child instanceof RequiresResize) {
+				((RequiresResize) child).onResize();
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

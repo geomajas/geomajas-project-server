@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to

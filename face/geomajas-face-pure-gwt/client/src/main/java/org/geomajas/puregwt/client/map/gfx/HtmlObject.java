@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;

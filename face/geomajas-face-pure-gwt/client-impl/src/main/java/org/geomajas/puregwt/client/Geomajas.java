@@ -21,9 +21,12 @@ public final class Geomajas {
 	private Geomajas() {
 		// Utility class: Hide constructor.
 	}
-	
+
 	public static boolean hasSvgSupport() {
-		return !getUserAgent().contains("microsoft");
+		if (getUserAgent().contains("msie 9")) {
+			return true;
+		}
+		return !getUserAgent().contains("msie");
 	}
 
 	/**
@@ -71,9 +74,20 @@ public final class Geomajas {
 		return getUserAgent().contains("webkit");
 	}
 
+	/**
+	 * Is the user currently using a mobile device? Checks for iPhone, windows mobile, FireFox mobile (Fennec), 
+	 * android, blackberry, symbian, webos and palm.
+	 * 
+	 * @return true or false - yes or no.
+	 */
+	public static boolean isMobile() {
+		String ua = getUserAgent();
+		return ua.contains("phone") || ua.contains("android") || ua.contains("mobi") || ua.contains("blackBerry")
+				|| ua.contains("symbian") || ua.contains("fennec") || ua.contains("webos") || ua.contains("palm");
+	}
+
 	private static native String getUserAgent()
 	/*-{
 	 return navigator.userAgent.toLowerCase();
 	}-*/;
-
 }

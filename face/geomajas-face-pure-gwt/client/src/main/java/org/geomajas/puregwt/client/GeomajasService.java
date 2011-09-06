@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.puregwt.client.command.Command;
 
 import com.google.gwt.user.client.rpc.RemoteService;

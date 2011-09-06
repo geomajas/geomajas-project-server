@@ -11,7 +11,7 @@
 package org.geomajas.puregwt.client.command;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.

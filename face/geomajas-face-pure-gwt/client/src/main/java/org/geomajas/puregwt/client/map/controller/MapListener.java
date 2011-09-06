@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.controller;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.global.UserImplemented;
 
 /**

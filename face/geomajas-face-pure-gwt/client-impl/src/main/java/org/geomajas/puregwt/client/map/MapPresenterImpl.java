@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
@@ -79,6 +80,7 @@ import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
@@ -95,7 +97,8 @@ public final class MapPresenterImpl implements MapPresenter {
 	 * @author Pieter De Graef
 	 */
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
-			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget {
+			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget,
+			RequiresResize {
 
 		HtmlContainer getMapHtmlContainer();
 
@@ -220,7 +223,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 
 			public void onFailure(Throwable error) {
-			}
+				}
 		});
 	}
 
@@ -341,6 +344,10 @@ public final class MapPresenterImpl implements MapPresenter {
 		return listeners.keySet();
 	}
 
+	public Set<MapGadget> getMapGadgets() {
+		return gadgets.keySet();
+	}
+
 	public void addMapGadget(MapGadget mapGadget) {
 		ScreenContainer container = addScreenContainer();
 		gadgets.put(mapGadget, container);
@@ -350,7 +357,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	public boolean removeMapGadget(MapGadget mapGadget) {
-		if (gadgets.containsValue(mapGadget)) {
+		if (gadgets.containsKey(mapGadget)) {
 			mapGadget.onDestroy();
 			display.removeVectorContainer(gadgets.get(mapGadget));
 			gadgets.remove(mapGadget);
@@ -406,7 +413,6 @@ public final class MapPresenterImpl implements MapPresenter {
 	 * @author Pieter De Graef
 	 */
 	private class WorldContainerRenderer implements ViewPortChangedHandler {
-		
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -462,17 +468,13 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 		}
 
-		public void onFeatureDeselected(FeatureDeselectedEvent event) {
-		}
+		public void onFeatureDeselected(FeatureDeselectedEvent event) {}
 
-		public void onShow(LayerShowEvent event) {
-		}
+		public void onShow(LayerShowEvent event) {}
 
-		public void onHide(LayerHideEvent event) {
-		}
+		public void onHide(LayerHideEvent event) {}
 
-		public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
-		}
+		public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {}
 
 		private void render(Feature f) {
 			Path path = gfxUtil.toPath(f.getGeometry());

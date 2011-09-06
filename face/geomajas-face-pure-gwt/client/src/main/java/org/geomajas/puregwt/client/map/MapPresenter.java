@@ -12,8 +12,9 @@
 package org.geomajas.puregwt.client.map;
 
 import java.util.Collection;
+import java.util.Set;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.event.EventBus;
@@ -42,7 +43,7 @@ public interface MapPresenter {
 	void initialize(String applicationId, String id);
 
 	EventBus getEventBus();
-	
+
 	Widget asWidget();
 
 	/**
@@ -120,6 +121,13 @@ public interface MapPresenter {
 	 * @return Returns the view port.
 	 */
 	ViewPort getViewPort();
+
+	/**
+	 * Get the full set of currently active map gadgets.
+	 * 
+	 * @return The full set of currently active map gadgets.
+	 */
+	Set<MapGadget> getMapGadgets();
 
 	/**
 	 * Add a new gadget to the map. These gadgets are autonomous entities that can draw themselves in screen space, and

@@ -108,4 +108,7 @@ public class MapWidgetTestImpl implements MapWidget {
 	public boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer) {
 		return false;
 	}
+
+	public void onResize() {
+	}
 }

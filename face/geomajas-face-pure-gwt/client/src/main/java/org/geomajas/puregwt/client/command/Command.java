@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.command;
 import java.io.Serializable;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * GWT implementation of an RPC request. On the server-side this request is transformed into a command object that is

@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map.feature;
 
 import java.util.Map;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.spatial.Geometry;
