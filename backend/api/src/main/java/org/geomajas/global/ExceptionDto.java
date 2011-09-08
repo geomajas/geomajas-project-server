@@ -31,6 +31,8 @@ public class ExceptionDto implements Serializable {
 
 	private String className;
 
+	private int exceptionCode;
+
 	private StackTraceElement[] stackTrace;
 
 	private ExceptionDto cause;
@@ -138,5 +140,25 @@ public class ExceptionDto implements Serializable {
 	 */
 	public void setCause(ExceptionDto cause) {
 		this.cause = cause;
+	}
+
+	/**
+	 * Get the exception code (when it is a {@link GeomajasException}).
+	 *
+	 * @return GeomajasException exception code
+	 * @since 1.10.0
+	 */
+	public int getExceptionCode() {
+		return exceptionCode;
+	}
+
+	/**
+	 * Set the exception code (when it is a {@link GeomajasException}.
+	 *
+	 * @param exceptionCode GeomajasException exception code
+	 * @since 1.10.0
+	 */
+	public void setExceptionCode(int exceptionCode) {
+		this.exceptionCode = exceptionCode;
 	}
 }

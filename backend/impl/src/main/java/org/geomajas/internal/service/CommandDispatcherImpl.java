@@ -179,6 +179,9 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 			message = getErrorMessage(throwable, locale);
 		}
 		ExceptionDto dto = new ExceptionDto(throwable.getClass().getName(), message, throwable.getStackTrace());
+		if (throwable instanceof GeomajasException) {
+			dto.setExceptionCode(((GeomajasException) throwable).getExceptionCode());
+		}
 		dto.setCause(toDto(throwable.getCause(), locale));
 		return dto;
 	}

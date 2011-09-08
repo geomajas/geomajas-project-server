@@ -13,6 +13,8 @@ package org.geomajas.gwt.client.command;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.annotation.Api;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.ExceptionDto;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.GeomajasServiceAsync;
@@ -22,6 +24,7 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
 import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.ExceptionWindow;
 
 import com.google.gwt.core.client.GWT;
@@ -33,17 +36,26 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.smartgwt.client.core.Function;
 import com.smartgwt.client.util.SC;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
  * function to execute an asynchronous command on the server.
+ * <p/>
+ * Set a {@link LoginHandler} to make sure the class automatically makes the user (re) login when needed.
  * 
  * @author Pieter De Graef
  * @author Oliver May
+ * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api(allMethods = true)
 public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
+	private static final String SECURITY_EXCEPTION_CLASS_NAME = "org.geomajas.security.GeomajasSecurityException";
 	private static GwtCommandDispatcher instance;
 
 	private GeomajasServiceAsync service;
@@ -65,6 +77,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	private int lazyFeatureIncludesAll;
 	
 	private boolean showError;
+
+	private LoginHandler loginHandler;
+
+	// map is not synchronized as this class runs in JavaScript which only has one execution thread
+	private Map<String, List<RetryCommand>> afterLoginCommands = new HashMap<String, List<RetryCommand>>();
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -114,16 +131,34 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *            handling.
 	 * @return deferred object which can be used to add extra callbacks
 	 */
-	public Deferred execute(GwtCommand command, final CommandCallback... callback) {
-		incrementDispatched();
-
+	public Deferred execute(final GwtCommand command, final CommandCallback... callback) {
 		final Deferred deferred = new Deferred();
 		for (CommandCallback successCallback : callback) {
 			deferred.addCallback(successCallback);
 		}
+		return execute(command, deferred);
+	}
 
+	/**
+	 * The execution function. Executes a server side command.
+	 *
+	 * @param command The command to be executed. This command is a wrapper around the actual request object.
+	 * @param deferred list of callbacks for the command
+	 * @return original deferred object as passed as parameter
+	 * @since 1.10.0
+	 */
+	public Deferred execute(final GwtCommand command, final Deferred deferred) {
 		command.setLocale(locale);
 		command.setUserToken(userToken);
+
+		// shortcut, no need to invoke the server if whe know the token has expired
+		if (null != userToken && userToken.length() > 0 && afterLoginCommands.containsKey(userToken)) {
+			afterLogin(command, deferred);
+			return deferred;
+		}
+
+		incrementDispatched();
+
 		service.execute(command, new AsyncCallback<CommandResponse>() {
 
 			public void onFailure(Throwable error) {
@@ -142,7 +177,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						onCommunicationException(error);
 					}
 				} catch (Throwable t) {
-					GWT.log("Command failed on error callback", t);
+					String msg = "Command failed on error callback";
+					GWT.log(msg, t);
+					Log.logError(msg, t);
 				} finally {
 					decrementDispatched();
 				}
@@ -151,16 +188,28 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 			public void onSuccess(CommandResponse response) {
 				try {
 					if (response.isError()) {
-						boolean errorHandled = false;
-						for (CommandCallback callback : deferred.getCallbacks()) {
-							if (callback instanceof CommandExceptionCallback) {
-								((CommandExceptionCallback) callback).onCommandException(response);
-								errorHandled = true;
-							}
+						// first check for authentication problems, these are handled separately
+						boolean authenticationFailed = false;
+						for (ExceptionDto exception : response.getExceptions()) {
+							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName()) &&
+									ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode();
 						}
-						// fallback to the default behaviour
-						if (!errorHandled) {
-							onCommandException(response);
+						if (authenticationFailed && null != loginHandler) {
+							handleLogin(command, deferred);
+						} else {
+	                        // normal error handling...
+
+							boolean errorHandled = false;
+							for (CommandCallback callback : deferred.getCallbacks()) {
+								if (callback instanceof CommandExceptionCallback) {
+									((CommandExceptionCallback) callback).onCommandException(response);
+									errorHandled = true;
+								}
+							}
+							// fallback to the default behaviour
+							if (!errorHandled) {
+								onCommandException(response);
+							}
 						}
 					} else {
 						if (!deferred.isCancelled()) {
@@ -170,7 +219,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 					}
 				} catch (Throwable t) {
-					GWT.log("Command failed on success callback", t);
+					String msg = "Command failed on success callback";
+					GWT.log(msg, t);
+					Log.logError(msg, t);
 				} finally {
 					decrementDispatched();
 				}
@@ -180,23 +231,76 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	}
 
 	/**
+	 * Add a command and it's callbacks to the list of commands to retry after login.
+	 *
+	 * @param command command to retry
+	 * @param deferred callbacks for the command
+	 */
+	private void afterLogin(GwtCommand command, Deferred deferred) {
+		String token = notNull(command.getUserToken());
+		if (!afterLoginCommands.containsKey(token)) {
+			afterLoginCommands.put(token, new ArrayList<RetryCommand>());
+		}
+		afterLoginCommands.get(token).add(new RetryCommand(command, deferred));
+	}
+
+	/**
+	 * Method which forces retry of a command after login.
+	 * <p/>
+	 * This method assumes the single threaded nature of JavaScript execution for correctness.
+	 *
+	 * @param command command which needs to be retried
+	 * @param deferred callbacks for the command
+	 */
+	private void handleLogin(GwtCommand command, Deferred deferred) {
+		final String oldToken = notNull(command.getUserToken());
+		if (!afterLoginCommands.containsKey(oldToken)) {
+			afterLoginCommands.put(oldToken, new ArrayList<RetryCommand>());
+			loginHandler.login(new LoginCallback() {
+				public void onLogin(String token) {
+					setUserToken(token);
+					List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
+					for (RetryCommand retryCommand : retryCommands) {
+						execute(retryCommand.getCommand(), retryCommand.getDeferred());
+					}
+				}
+			});
+		}
+		afterLogin(command, deferred);
+	}
+
+	/**
+	 * Assure that a string is not null, convert to empty string if it is.
+	 *
+	 * @param string string to convert
+	 * @return converted string
+	 */
+	private String notNull(String string) {
+		if (null == string) {
+			return "";
+		}
+		return string;
+	}
+
+	/**
 	 * Default behaviour for handling a communication exception. Shows a warning window to the user.
 	 *
-	 * @since 1.9.0
 	 * @param error error to report
+	 * @since 1.9.0
 	 */
 	public void onCommunicationException(Throwable error) {
 		if (isShowError()) {
-			GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-			SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+			String msg = I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage();
+			GWT.log(msg, null);
+			SC.warn(msg, null);
 		}
 	}
 
 	/**
 	 * Default behaviour for handling a command execution exception. Shows an exception report to the user.
 	 *
-	 * @since 1.9.0
 	 * @param response command response with error
+	 * @since 1.9.0
 	 */
 	public void onCommandException(CommandResponse response) {
 		if (isShowError()) {
@@ -232,6 +336,16 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 */
 	public void setUserToken(String userToken) {
 		this.userToken = userToken;
+	}
+
+	/**
+	 * Set the login handler which should be used to request aan authentication token.
+	 *
+	 * @param loginHandler login handler
+	 * @since 1.10.0
+	 */
+	public void setLoginHandler(LoginHandler loginHandler) {
+		this.loginHandler = loginHandler;
 	}
 
 	/**
@@ -365,4 +479,42 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		}
 	}
 
+	/**
+	 * Representation of a command which needs to be retried later.
+	 *
+	 * @author Joachim Van der Auwera
+	 */
+	private class RetryCommand {
+		private GwtCommand command;
+		private Deferred deferred;
+
+		/**
+		 * Create data to allow retying the command later.
+		 *
+		 * @param command command
+		 * @param deferred callbacks
+		 */
+		public RetryCommand(GwtCommand command, Deferred deferred) {
+			this.command = command;
+			this.deferred = deferred;
+		}
+
+		/**
+		 * Get the GwtCommand which needs to be retried.
+		 *
+		 * @return command
+		 */
+		public GwtCommand getCommand() {
+			return command;
+		}
+
+		/**
+		 * Get the callbacks for handling the retied command.
+		 *
+		 * @return callbacks
+		 */
+		public Deferred getDeferred() {
+			return deferred;
+		}
+	}
 }

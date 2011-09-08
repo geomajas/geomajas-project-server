@@ -158,7 +158,11 @@ public class ExceptionWindow extends Window {
 			return "";
 		}
 		StringBuilder content = new StringBuilder();
-		content.append(WidgetLayout.divStyle(WidgetLayout.exceptionWindowDetailHeaderStyle, error.getClassName()));
+		String header = error.getClassName();
+		if (error.getExceptionCode() != 0) {
+			header += " (" + error.getExceptionCode() + ")";
+		}
+		content.append(WidgetLayout.divStyle(WidgetLayout.exceptionWindowDetailHeaderStyle, header));
 		for (StackTraceElement el : error.getStackTrace()) {
 			String style =  WidgetLayout.exceptionWindowDetailTraceNormalStyle;
 			String line = el.toString();
@@ -172,7 +176,8 @@ public class ExceptionWindow extends Window {
 					line.startsWith("sun.") ||
 					line.startsWith("java.") ||
 					line.startsWith("javax.") ||
-					line.startsWith("com.google.")) {
+					line.startsWith("com.google.") ||
+					line.startsWith("$Proxy")) {
 				style = WidgetLayout.exceptionWindowDetailTraceLessStyle;
 			}
 			content.append(WidgetLayout.divStyle(style, line));
