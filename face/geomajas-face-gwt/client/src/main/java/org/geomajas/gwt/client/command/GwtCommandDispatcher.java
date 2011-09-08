@@ -197,7 +197,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						if (authenticationFailed && null != loginHandler) {
 							handleLogin(command, deferred);
 						} else {
-	                        // normal error handling...
+							// normal error handling...
 
 							boolean errorHandled = false;
 							for (CommandCallback callback : deferred.getCallbacks()) {
@@ -257,6 +257,12 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		if (!afterLoginCommands.containsKey(oldToken)) {
 			afterLoginCommands.put(oldToken, new ArrayList<RetryCommand>());
 			loginHandler.login(new LoginCallback() {
+				/**
+				 * Login handling. @todo since declaration should be removed, needed because of bug in api checks
+				 *
+				 * @param token authentication token
+				 * @since 1.10.0
+				 */
 				public void onLogin(String token) {
 					setUserToken(token);
 					List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
