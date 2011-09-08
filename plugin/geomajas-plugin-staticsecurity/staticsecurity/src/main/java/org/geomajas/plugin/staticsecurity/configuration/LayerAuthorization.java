@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.security.BaseAuthorization;
 
 import java.util.List;

@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Area authorization info for a specific layer.

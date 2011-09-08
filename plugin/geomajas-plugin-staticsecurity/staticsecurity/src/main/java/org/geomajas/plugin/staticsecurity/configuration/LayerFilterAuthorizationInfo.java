@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geotools.filter.text.cql2.CQL;

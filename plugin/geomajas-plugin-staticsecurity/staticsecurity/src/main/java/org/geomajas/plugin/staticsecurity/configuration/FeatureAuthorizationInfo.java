@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;

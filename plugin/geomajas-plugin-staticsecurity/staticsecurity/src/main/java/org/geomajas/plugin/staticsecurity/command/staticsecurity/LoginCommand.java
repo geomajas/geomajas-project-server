@@ -12,7 +12,7 @@
 package org.geomajas.plugin.staticsecurity.command.staticsecurity;
 
 import org.geomajas.command.Command;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;

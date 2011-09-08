@@ -12,7 +12,7 @@
 package org.geomajas.plugin.staticsecurity.command.dto;
 
 import org.geomajas.command.EmptyCommandRequest;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Request object for {@link org.geomajas.plugin.staticsecurity.command.staticsecurity.LogoutCommand}.
