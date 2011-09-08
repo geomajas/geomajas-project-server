@@ -15,6 +15,8 @@
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>
 	<inherits name="com.smartclient.theme.graphite.Graphite"/>
 
+	<inherits name="org.geomajas.plugin.staticsecurity.StaticSecurity"/>
+
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
 	-->

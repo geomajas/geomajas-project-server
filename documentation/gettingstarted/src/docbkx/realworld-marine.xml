@@ -15,9 +15,10 @@
   <title>Real world example: marine application</title>
 
   <warning>
-    <para>This chapter is out of date and uses an older, no longer supported
-    version of Geomajas. Paths have been modified to comply with current
-    conventions.</para>
+    <para>This chapter is out of date. It was originally written for an older,
+    no longer supported version of Geomajas. It was mostly updated to comply
+    with current conventions but is likely to be inaccurate or even wrong in
+    some places.</para>
   </warning>
 
   <section id="rw-marine">
@@ -666,10 +667,10 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       </listitem>
 
       <listitem>
-        <para>In your Java code you can now create a login window using the
-        class org.geomajas.plugin.staticsecurity.client.LoginWindow. Use the
-        <code>LoginHandler</code> to check if the login succeeded or
-        not.</para>
+        <para>To assure that a security token is obtained when needed, you
+        should register a token request handler in the
+        <code>GwtCommandDispatcher</code>. A good candidate is using the
+        <code>StaticSecurityTokenRequestHandler</code>.</para>
       </listitem>
     </orderedlist>
   </section>

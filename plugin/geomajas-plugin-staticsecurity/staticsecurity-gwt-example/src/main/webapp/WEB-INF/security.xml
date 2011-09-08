@@ -27,7 +27,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="securityServices">
 			<list>
 				<ref bean="SecurityService"/>
-				<bean class="org.geomajas.security.allowall.AllowAllSecurityService" />
 				<bean class="org.geomajas.plugin.staticsecurity.security.LoginAllowedSecurityService"/>
 			</list>
 		</property>
@@ -91,8 +90,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 								<property name="visibleLayersInclude">
 									<list>
-										<value>roads</value>
-										<value>rivers</value>
+										<value>layerOsm</value>
 									</list>
 								</property>
 							</bean>

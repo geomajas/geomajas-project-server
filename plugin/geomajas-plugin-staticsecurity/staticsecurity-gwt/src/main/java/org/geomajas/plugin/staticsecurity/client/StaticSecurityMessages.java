@@ -43,4 +43,31 @@ public interface StaticSecurityMessages extends Messages {
 	// Logout button messages:
 
 	String logoutBtnTitle();
+
+	// Token request window messages:
+
+	String tokenRequestWindowTitle();
+
+	String tokenRequestUserId();
+
+	String tokenRequestPassword();
+
+	String tokenRequestButtonLogin();
+
+	String tokenRequestButtonReset();
+
+	String tokenRequestNoUserName();
+
+	String tokenRequestNoPassword();
+
+	String tokenRequestFailure();
+
+	String tokenRequestRetry();
+
+	String tokenRequestRetryAgain(int attempt);
+
+	// Token release button messages:
+
+	String tokenReleaseButtonTitle();
+
 }

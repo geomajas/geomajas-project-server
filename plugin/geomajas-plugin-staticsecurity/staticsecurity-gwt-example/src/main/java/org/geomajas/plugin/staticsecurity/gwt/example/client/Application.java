@@ -11,9 +11,11 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.client;
 
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -27,6 +29,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandler;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
@@ -39,10 +42,10 @@ public class Application implements EntryPoint {
 
 	private Legend legend;
 
-	public Application() {
-	}
-
 	public void onModuleLoad() {
+		GwtCommandDispatcher.getInstance().setTokenRequestHandler(new StaticSecurityTokenRequestHandler(
+				"Possible users are 'luc', 'marino' and 'empty'. The password is the same as the login."));
+
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
@@ -51,8 +54,8 @@ public class Application implements EntryPoint {
 		HLayout layout = new HLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		layout.setMembersMargin(10);
-		layout.setMargin(10);
+		layout.setMembersMargin(WidgetLayout.marginLarge);
+		layout.setMargin(WidgetLayout.marginLarge);
 
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
@@ -137,7 +140,7 @@ public class Application implements EntryPoint {
 
 		// Install a loading screen.
 		// This only works if the application initially shows a map with at least 1 vector layer:
-		// LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas GWT application");
+		// LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas staticsecurity example application");
 		// loadScreen.draw();
 
 		// Then initialize:
