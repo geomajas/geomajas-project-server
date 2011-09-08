@@ -13,7 +13,7 @@ package org.geomajas.plugin.staticsecurity.client.event;
 import java.util.List;
 
 import com.google.gwt.event.shared.GwtEvent;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Event that reports when logging in has failed.

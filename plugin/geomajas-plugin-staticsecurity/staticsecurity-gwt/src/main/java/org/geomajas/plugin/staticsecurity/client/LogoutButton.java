@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.client;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
 import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
 import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
