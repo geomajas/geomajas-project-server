@@ -128,7 +128,7 @@ include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.9.0-SN
     "Hibernate layer" \
     "This is a layer which allows accessing data in a GIS database using Hibernate and Hibernate Spatial." \
     "incubating" "Hibernate_layer.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.8.0"
+    "org.geomajas.plugin" "geomajas-layer-hibernate" "1.8.1"
 
 include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.10.0-SNAPSHOT" \
     "Openstreetmap layer" \
