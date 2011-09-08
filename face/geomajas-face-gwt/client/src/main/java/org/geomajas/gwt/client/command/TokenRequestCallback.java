@@ -14,22 +14,19 @@ package org.geomajas.gwt.client.command;
 import org.geomajas.annotation.Api;
 
 /**
- * Handler which requests an authentication token.
- * <p/>
- * This is called automatically when a command gives a {@link org.geomajas.security.GeomajasSecurityException} with
- * exception code {@link org.geomajas.global.ExceptionCode#CREDENTIALS_MISSING_OR_INVALID}.
+ * Callback which is used when (new) authentication token is known.
  *
  * @author Joachim Van der Auwera
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public interface LoginHandler {
+public interface TokenRequestCallback {
 
 	/**
-	 * Get an authentication token.
+	 * Set the new authentication token.
 	 *
-	 * @param loginCallback callback which needs to be invoked when the token is known
+	 * @param token authentication token
 	 */
-	void login(LoginCallback loginCallback);
+	void onLogin(String token);
 
 }

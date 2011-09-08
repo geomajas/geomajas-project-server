@@ -45,7 +45,7 @@ import java.util.Map;
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
  * function to execute an asynchronous command on the server.
  * <p/>
- * Set a {@link LoginHandler} to make sure the class automatically makes the user (re) login when needed.
+ * Set a {@link TokenRequestHandler} to make sure the class automatically makes the user (re) login when needed.
  * 
  * @author Pieter De Graef
  * @author Oliver May
@@ -78,7 +78,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	
 	private boolean showError;
 
-	private LoginHandler loginHandler;
+	private TokenRequestHandler tokenRequestHandler;
 
 	// map is not synchronized as this class runs in JavaScript which only has one execution thread
 	private Map<String, List<RetryCommand>> afterLoginCommands = new HashMap<String, List<RetryCommand>>();
@@ -194,7 +194,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName()) &&
 									ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode();
 						}
-						if (authenticationFailed && null != loginHandler) {
+						if (authenticationFailed && null != tokenRequestHandler) {
 							handleLogin(command, deferred);
 						} else {
 							// normal error handling...
@@ -256,7 +256,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		final String oldToken = notNull(command.getUserToken());
 		if (!afterLoginCommands.containsKey(oldToken)) {
 			afterLoginCommands.put(oldToken, new ArrayList<RetryCommand>());
-			loginHandler.login(new LoginCallback() {
+			tokenRequestHandler.login(new TokenRequestCallback() {
 				/**
 				 * Login handling. @todo since declaration should be removed, needed because of bug in api checks
 				 *
@@ -347,11 +347,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	/**
 	 * Set the login handler which should be used to request aan authentication token.
 	 *
-	 * @param loginHandler login handler
+	 * @param tokenRequestHandler login handler
 	 * @since 1.10.0
 	 */
-	public void setLoginHandler(LoginHandler loginHandler) {
-		this.loginHandler = loginHandler;
+	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
+		this.tokenRequestHandler = tokenRequestHandler;
 	}
 
 	/**
