@@ -68,6 +68,7 @@
 	<modules>
 		<module>staticsecurity</module>
 		<module>staticsecurity-gwt</module>
+		<module>staticsecurity-gwt-example</module>
 	</modules>
 
 	<dependencyManagement>
