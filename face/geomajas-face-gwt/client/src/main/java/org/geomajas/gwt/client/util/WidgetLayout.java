@@ -314,6 +314,8 @@ public final class WidgetLayout {
 	public static String exceptionWindowDetailTraceLessStyle = "font-size:9px; padding-left:10px;";
 	/** Border style for details in exception window. */
 	public static String exceptionWindowDetailBorderStyle = "1px solid #A0A0A0;";
+	/** Should the window be confined to stay within the parent rectangle? */
+	public static boolean exceptionWindowKeepInScreen = true;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 

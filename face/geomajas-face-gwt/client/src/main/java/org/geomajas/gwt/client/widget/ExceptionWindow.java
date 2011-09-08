@@ -12,6 +12,8 @@
 package org.geomajas.gwt.client.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.CloseClientEvent;
 import org.geomajas.annotation.Api;
 import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.i18n.GlobalMessages;
@@ -43,7 +45,7 @@ import org.geomajas.gwt.client.util.WidgetLayout;
  * @since 1.10.0
  */
 @Api
-public class ExceptionWindow extends Window {
+public class ExceptionWindow extends Window implements CloseClickHandler {
 
 	private static final GlobalMessages MESSAGES = GWT.create(GlobalMessages.class);
 
@@ -75,6 +77,15 @@ public class ExceptionWindow extends Window {
 		setDetailsVisible(false);
 	}
 
+	@Override
+	public void draw() {
+		// try to force to be inside the screen
+		if (WidgetLayout.exceptionWindowKeepInScreen) {
+			WidgetLayout.keepWindowInScreen(this);
+		}
+		super.draw();
+	}
+
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
@@ -88,12 +99,24 @@ public class ExceptionWindow extends Window {
 		setModalMaskOpacity(WidgetLayout.modalMaskOpacity);
 		setWidth(WidgetLayout.exceptionWindowWidth);
 		setHeight(WidgetLayout.exceptionWindowHeightNormal);
+		setKeepInParentRect(WidgetLayout.exceptionWindowKeepInScreen);
 		setCanDragResize(true);
 		centerInPage();
 		setAutoSize(true);
+		addCloseClickHandler(this);
 
 		addItem(createErrorLayout(error));
 	}
+
+	/**
+	 * Method which is called when the window is closed.
+	 *
+	 * @param event close event
+	 */
+	public void onCloseClick(CloseClientEvent event) {
+		destroy();
+	}
+
 
 	/**
 	 * Create the GUI for a single exception.
