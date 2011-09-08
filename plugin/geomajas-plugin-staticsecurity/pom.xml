@@ -137,7 +137,7 @@
 	</profiles>
 
 	<properties>
-		<staticsecurity-backend-version>1.7.1</staticsecurity-backend-version>
-		<staticsecurity-gwt-version>1.7.1</staticsecurity-gwt-version>
+		<staticsecurity-backend-version>1.10.0-SNAPSHOT</staticsecurity-backend-version>
+		<staticsecurity-gwt-version>1.10.0-SNAPSHOT</staticsecurity-gwt-version>
 	</properties>
 </project>
