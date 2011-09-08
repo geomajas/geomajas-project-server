@@ -117,6 +117,17 @@
 			<version>0.7.1-rc3</version>
 		</dependency>
 		-->
+		<!-- uncomment if you want to use geotools with postgis, for another db you will need similar dependencies -->
+		<!--
+		<dependency>
+			<groupId>org.postgis</groupId>
+			<artifactId>postgis-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		-->
 
 		<!-- Google dependencies -->
 		<dependency>
