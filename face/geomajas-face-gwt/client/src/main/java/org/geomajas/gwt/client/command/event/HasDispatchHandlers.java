@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.command.event;
 import org.geomajas.annotation.Api;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Classes triggering the {@link DispatchStartedEvent} should implement this interface, thereby allowing handlers to be
@@ -22,6 +23,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @since 1.6.0
  */
 @Api
+@UserImplemented
 public interface HasDispatchHandlers {
 
 	/**
