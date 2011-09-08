@@ -23,6 +23,8 @@ import org.geomajas.gwt.client.command.event.DispatchStartedHandler;
 import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
 import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
+import org.geomajas.gwt.client.command.event.TokenChangedEvent;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.ExceptionWindow;
@@ -35,6 +37,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.smartgwt.client.core.Function;
 import com.smartgwt.client.util.SC;
+import org.geomajas.security.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -341,7 +344,31 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *            user token
 	 */
 	public void setUserToken(String userToken) {
+		setUserToken(userToken, null);
+	}
+
+	/**
+	 * Set the user token, so it can be sent in very command.
+	 *
+	 * @param userToken user token
+	 * @param userInfo user details
+	 * @since 1.10.0
+	 */
+	public void setUserToken(String userToken, UserInfo userInfo) {
 		this.userToken = userToken;
+		TokenChangedEvent event = new TokenChangedEvent(userToken, userInfo);
+		manager.fireEvent(event);
+	}
+
+	/**
+	 * Add handler which is notified when the user token changes.
+	 *
+	 * @param handler token changed handler
+	 * @return handler registration
+	 * @since 1.10.0
+	 */
+	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
+		return manager.addHandler(TokenChangedHandler.TYPE, handler);
 	}
 
 	/**
