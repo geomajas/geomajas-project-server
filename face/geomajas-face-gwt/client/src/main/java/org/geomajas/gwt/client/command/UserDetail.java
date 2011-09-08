@@ -9,24 +9,23 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.security;
+package org.geomajas.gwt.client.command;
 
 import org.geomajas.annotation.Api;
 
-import java.util.Locale;
-
 /**
- * Implementation of {@link UserInfo} which can be used for data transfer.
+ * Details about the current user (if any). This is mostly similar to the {@link org.geomajas.security.UserInfo}
+ * definition, except that it doesn't use {@link java.util.Locale} as this is not allowed by GWT.
  *
  * @author Joachim Van der Auwera
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public class UserInfoDto implements UserInfo {
+public class UserDetail {
 
 	private String userId;
 	private String userName;
-	private Locale userLocale;
+	private String userLocale;
 	private String userOrganization;
 	private String userDivision;
 
@@ -71,7 +70,7 @@ public class UserInfoDto implements UserInfo {
 	 *
 	 * @return locale for the user or null when not known
 	 */
-	public Locale getUserLocale() {
+	public String getUserLocale() {
 		return userLocale;
 	}
 
@@ -81,16 +80,7 @@ public class UserInfoDto implements UserInfo {
 	 * @param locale locale code as string
 	 */
 	public void setUserLocale(String locale) {
-		setUserLocale(new Locale(locale));
-	}
-
-	/**
-	 * Ser the user (default) locale.
-	 *
-	 * @param locale locale
-	 */
-	public void setUserLocale(Locale locale) {
-		this.userLocale = locale;
+		userLocale = locale;
 	}
 
 	/**
@@ -128,5 +118,4 @@ public class UserInfoDto implements UserInfo {
 	public void setUserDivision(String userDivision) {
 		this.userDivision = userDivision;
 	}
-
 }

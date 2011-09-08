@@ -37,7 +37,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.smartgwt.client.core.Function;
 import com.smartgwt.client.util.SC;
-import org.geomajas.security.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -351,12 +350,12 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Set the user token, so it can be sent in very command.
 	 *
 	 * @param userToken user token
-	 * @param userInfo user details
+	 * @param userDetail user details
 	 * @since 1.10.0
 	 */
-	public void setUserToken(String userToken, UserInfo userInfo) {
+	public void setUserToken(String userToken, UserDetail userDetail) {
 		this.userToken = userToken;
-		TokenChangedEvent event = new TokenChangedEvent(userToken, userInfo);
+		TokenChangedEvent event = new TokenChangedEvent(userToken, userDetail);
 		manager.fireEvent(event);
 	}
 

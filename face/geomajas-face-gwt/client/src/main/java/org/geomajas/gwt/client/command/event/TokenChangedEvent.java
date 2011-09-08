@@ -13,8 +13,7 @@ package org.geomajas.gwt.client.command.event;
 
 import com.google.gwt.event.shared.GwtEvent;
 import org.geomajas.annotation.Api;
-import org.geomajas.security.UserInfo;
-import org.geomajas.security.UserInfoDto;
+import org.geomajas.gwt.client.command.UserDetail;
 
 /**
  * Event that reports when logging in was successful.
@@ -26,7 +25,7 @@ import org.geomajas.security.UserInfoDto;
 public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 
 	private String token;
-	private UserInfo userInfo;
+	private UserDetail userDetail;
 
 	/**
 	 * Constructor for a token without user details.
@@ -41,13 +40,13 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 	 * Constructor containing both user token and user details.
 	 *
 	 * @param token user token
-	 * @param userInfo user details
+	 * @param userDetail user details
 	 */
-	public TokenChangedEvent(String token, UserInfo userInfo) {
+	public TokenChangedEvent(String token, UserDetail userDetail) {
 		this.token = token;
-		this.userInfo = userInfo;
-		if (null == userInfo) {
-			this.userInfo = new UserInfoDto();
+		this.userDetail = userDetail;
+		if (null == userDetail) {
+			this.userDetail = new UserDetail();
 		}
 	}
 
@@ -78,7 +77,7 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 	 *
 	 * @return user info object
 	 */
-	public UserInfo getUserInfo() {
-		return userInfo;
+	public UserDetail getUserDetail() {
+		return userDetail;
 	}
 }

@@ -52,6 +52,7 @@
 		<include name="CopyrightInfo.java"/>
 		<include name="CacheableObject.java"/>
 		<include name="ExceptionDto.java"/>
+		<include name="ExceptionCode.java"/>
 	</source>
 	
 	<source path="sld">
