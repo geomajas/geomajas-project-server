@@ -49,6 +49,7 @@
 				<include>**/*.png</include>
 				<include>**/*.jpg</include>
 				<include>**/*.gif</include>
+				<include>**/*.txt</include>
 			</includes>
 		</fileSet>
 		<fileSet filtered="true" encoding="UTF-8">
