@@ -25,20 +25,18 @@ import com.google.gwt.event.shared.HandlerRegistration;
 public interface HasDispatchHandlers {
 
 	/**
-	 * Add a new handler for {@link org.geomajas.gwt.client.widget.event.ActivityChangedEvent} events.
+	 * Add a new handler for {@link DispatchStartedEvent} events.
 	 *
 	 * @param handler The handler to be registered.
 	 * @return Returns the handlers registration object.
 	 */
-	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler
-			handler);
+	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
 
 	/**
-	 * Add a new handler for {@link org.geomajas.gwt.client.widget.event.ActivityChangedEvent} events.
+	 * Add a new handler for {@link DispatchStoppedEvent} events.
 	 *
 	 * @param handler The handler to be registered.
 	 * @return Returns the handlers registration object.
 	 */
-	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler
-			handler);
+	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
 }
