@@ -32,6 +32,8 @@ import org.hibernate.engine.SessionImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * <p>
@@ -41,6 +43,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
+@Scope("prototype")
+@Component()
 public class HibernateFeatureModel extends HibernateLayerUtil implements FeatureModel {
 
 	@Autowired

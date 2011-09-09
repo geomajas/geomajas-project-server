@@ -47,6 +47,7 @@ import org.hibernate.criterion.Order;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -86,6 +87,9 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired
+	private ApplicationContext applicationContext;
 
 	private CoordinateReferenceSystem crs;
 
@@ -159,8 +163,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 		srid = geoService.getSridFromCrs(crs);
 		filterService.registerFeatureModel(featureModel);
-		if (null != featureModel) {
-			HibernateFeatureModel hibernateFeatureModel = new HibernateFeatureModel();
+		if (null == featureModel) {
+			HibernateFeatureModel hibernateFeatureModel = applicationContext.getBean(HibernateFeatureModel.class);
 			hibernateFeatureModel.setSessionFactory(getSessionFactory());
 			hibernateFeatureModel.setLayerInfo(getLayerInfo());
 			featureModel = hibernateFeatureModel;
