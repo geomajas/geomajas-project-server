@@ -46,6 +46,8 @@ public class Feature implements Exportable {
 
 	private boolean selected;
 	
+	private String geometry;
+	
 	/**
 	 * Constructor for a Feature object.
 	 * 
@@ -65,6 +67,7 @@ public class Feature implements Exportable {
 		this.bounds = bounds;
 		this.layer = layer;
 		this.selected = selected;
+		this.geometry = geometry;
 	}
 	
 	/**
@@ -98,12 +101,21 @@ public class Feature implements Exportable {
 	}
 
 	/**
+	 * Get the feature's bounds.
+	 * 
+	 * @return bounds
+	 */
+	public Bbox getBounds() {
+		return bounds;
+	}
+	
+	/**
 	 * Get the feature's geometry, , null when it needs to be lazy loaded.
 	 * 
 	 * @return geometry
 	 */
-	public Bbox getBounds() {
-		return bounds;
+	public String getGeometry() {
+		return geometry;
 	}
 
 	/**

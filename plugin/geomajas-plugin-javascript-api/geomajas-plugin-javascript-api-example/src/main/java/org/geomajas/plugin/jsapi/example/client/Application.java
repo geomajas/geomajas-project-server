@@ -81,7 +81,8 @@ public class Application implements EntryPoint {
 		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
 		sectionStack.setCanReorderSections(true);
 		sectionStack.setCanResizeSections(false);
-		sectionStack.setSize("200px", "100%");
+		sectionStack.setWidth("200px");
+		sectionStack.setHeight100();
 
 		// LayerTree layout:
 		SectionStackSection section2 = new SectionStackSection("Layer tree");

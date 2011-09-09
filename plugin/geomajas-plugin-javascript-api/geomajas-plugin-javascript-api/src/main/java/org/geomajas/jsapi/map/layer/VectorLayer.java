@@ -10,8 +10,8 @@
  */
 package org.geomajas.jsapi.map.layer;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.jsapi.map.Feature;
 import org.geomajas.jsapi.spatial.geometry.Bbox;
 import org.timepedia.exporter.client.Export;
@@ -113,7 +113,7 @@ public interface VectorLayer extends Layer {
 	@Export
 	@ExportClosure
 	@Api(allMethods = true)
-	public interface FeatureCallback extends Exportable {
+	interface FeatureCallback extends Exportable {
 		void execute(Feature feature);
 	}
 
@@ -126,7 +126,7 @@ public interface VectorLayer extends Layer {
 	@Export
 	@ExportClosure
 	@Api(allMethods = true)
-	public interface FeaturesCallback extends Exportable {
+	interface FeaturesCallback extends Exportable {
 		void execute(String[] features);
 	}
 	

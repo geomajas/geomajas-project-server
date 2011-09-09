@@ -79,6 +79,7 @@ public class SearchPanel extends VLayout {
 	 *            The map's parent widget. We use this to attach the search layout to.
 	 */
 	public SearchPanel(final MapModel mapModel, final Canvas parent) {
+		super();
 		// Set some parameters:
 		setTop(TOP_OFFSET);
 		setLeft(parent.getWidth() - BTN_WIDTH - 8);
@@ -138,7 +139,7 @@ public class SearchPanel extends VLayout {
 	 *            The panel in question.
 	 * @return Returns true or false.
 	 */
-	public boolean isOpen(Canvas panel) {
+	public static boolean isOpen(Canvas panel) {
 		return panel.isVisible();
 	}
 
@@ -238,7 +239,8 @@ public class SearchPanel extends VLayout {
 	/** Create the layout for the search panel. Also connect it to the feature grid. */
 	private Canvas createSearchPanel(final MapModel mapModel) {
 		VLayout layout = new VLayout();
-		layout.setSize("100%", "100%");
+		layout.setWidth100();
+		layout.setHeight100();
 		layout.setVisible(false);
 		layout.setStyleName("search_panel_inner");
 
@@ -275,7 +277,8 @@ public class SearchPanel extends VLayout {
 	/** Create the panel containing the feature grid. This will display the search results. */
 	private Canvas createGridPanel(MapModel mapModel) {
 		VLayout layout = new VLayout();
-		layout.setSize("100%", "100%");
+		layout.setWidth100();
+		layout.setHeight100();
 		layout.setVisible(false);
 		layout.setStyleName("search_panel_inner");
 

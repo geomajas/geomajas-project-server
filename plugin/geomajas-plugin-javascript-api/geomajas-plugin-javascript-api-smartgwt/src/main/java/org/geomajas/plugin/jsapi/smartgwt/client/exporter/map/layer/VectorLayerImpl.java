@@ -58,7 +58,7 @@ public class VectorLayerImpl implements Exportable, VectorLayer {
 	}
 
 	public String[] getSelectedFeatures() {
-		return (String[]) layer.getSelectedFeatures().toArray(new String[getSelectedFeatures().length]);
+		return (String[]) layer.getSelectedFeatures().toArray(new String[layer.getSelectedFeatures().size()]);
 	}
 
 	public String getId() {
@@ -187,7 +187,7 @@ public class VectorLayerImpl implements Exportable, VectorLayer {
 							features.add(f.getId());
 						}
 					}
-					callBack.execute(features.toArray(new String[0]));
+					callBack.execute(features.toArray(new String[features.size()]));
 				}
 			}
 			

@@ -128,7 +128,8 @@ public class LayersModelImpl implements Exportable, LayersModel {
 	public String[] getSelectedFeaturesForLayer(String layerId) {
 		org.geomajas.gwt.client.map.layer.VectorLayer vectorLayer = mapModel.getVectorLayer(layerId);
 		if (null != vectorLayer) {
-			return (String[]) vectorLayer.getSelectedFeatures().toArray(new String[0]);
+			return (String[]) vectorLayer.getSelectedFeatures().toArray(
+					new String[vectorLayer.getSelectedFeatures().size()]);
 		}
 		return new String[0];
 	}
