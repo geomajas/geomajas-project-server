@@ -158,6 +158,14 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	protected void postConstruct() throws GeomajasException {
 		crs = geoService.getCrs2(getLayerInfo().getCrs());
 		srid = geoService.getSridFromCrs(crs);
+		filterService.registerFeatureModel(featureModel);
+		if (null != featureModel) {
+			HibernateFeatureModel hibernateFeatureModel = new HibernateFeatureModel();
+			hibernateFeatureModel.setSessionFactory(getSessionFactory());
+			hibernateFeatureModel.setLayerInfo(getLayerInfo());
+			featureModel = hibernateFeatureModel;
+		}
+
 	}
 
 	public boolean isCreateCapable() {
