@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.geomajas.layer.feature.FeatureModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Feature model registry.
@@ -21,6 +23,8 @@ import org.geomajas.layer.feature.FeatureModel;
  * @author Pieter De Graef
  */
 public final class FeatureModelRegistry {
+
+	private final Logger log = LoggerFactory.getLogger(FeatureModelRegistry.class);
 
 	private static FeatureModelRegistry instance = new FeatureModelRegistry();
 
@@ -36,8 +40,12 @@ public final class FeatureModelRegistry {
 
 	public FeatureModel lookup(Object feature) {
 		for (FeatureModel fm : featureModels) {
-			if (fm.canHandle(feature)) {
-				return fm;
+			try {
+				if (fm.canHandle(feature)) {
+					return fm;
+				}
+			} catch (Exception ex) { // NOSONAR
+				log.warn("Problem in feature model lookup, ignoring", ex);
 			}
 		}
 
