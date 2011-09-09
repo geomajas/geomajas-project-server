@@ -20,11 +20,15 @@ import org.geomajas.layer.feature.FeatureModel;
  *
  * @author Pieter De Graef
  */
-public class FeatureModelRegistry {
+public final class FeatureModelRegistry {
 
 	private static FeatureModelRegistry instance = new FeatureModelRegistry();
 
 	private List<FeatureModel> featureModels = new CopyOnWriteArrayList<FeatureModel>();
+
+	private FeatureModelRegistry() {
+		// hide constructor
+	}
 
 	public static FeatureModelRegistry getRegistry() {
 		return instance;
