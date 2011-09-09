@@ -298,7 +298,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 */
 	public void onCommunicationException(Throwable error) {
 		if (isShowError()) {
-			String msg = I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage();
+			String msg = I18nProvider.getGlobal().commandCommunicationError() + ":\n" + error.getMessage();
 			GWT.log(msg, null);
 			SC.warn(msg, null);
 		}

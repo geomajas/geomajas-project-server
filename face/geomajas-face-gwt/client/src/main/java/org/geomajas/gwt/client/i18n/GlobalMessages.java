@@ -21,6 +21,8 @@ public interface GlobalMessages extends Messages {
 
 	String commandError();
 
+	String commandCommunicationError();
+
 	String missingI18n();
 
 	String saveEditingAborted();
