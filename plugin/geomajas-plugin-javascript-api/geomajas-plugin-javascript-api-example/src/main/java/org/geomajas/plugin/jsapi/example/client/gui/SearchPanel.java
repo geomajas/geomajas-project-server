@@ -49,7 +49,7 @@ public class SearchPanel extends VLayout {
 	private VLayout panelLayout;
 
 	/** The layout containing the search widget. */
-	private Canvas searchPanel;
+	private Canvas searchPanelCanvas;
 
 	/** The layout containing the grid widget. */
 	private Canvas gridPanel;
@@ -100,8 +100,8 @@ public class SearchPanel extends VLayout {
 		panelLayout.setVisible(false);
 
 		gridPanel = createGridPanel(mapModel);
-		searchPanel = createSearchPanel(mapModel);
-		panelLayout.addChild(searchPanel);
+		searchPanelCanvas = createSearchPanel(mapModel);
+		panelLayout.addChild(searchPanelCanvas);
 		panelLayout.addChild(gridPanel);
 
 		parent.addChild(panelLayout);
@@ -123,8 +123,8 @@ public class SearchPanel extends VLayout {
 
 	/** Returns the panel that is currently open. If no panel is open, then null is returned. */
 	public Canvas getOpenPanel() {
-		if (searchPanel.isVisible()) {
-			return searchPanel;
+		if (searchPanelCanvas.isVisible()) {
+			return searchPanelCanvas;
 		} else if (gridPanel.isVisible()) {
 			return gridPanel;
 		}
@@ -164,12 +164,12 @@ public class SearchPanel extends VLayout {
 	 *            The search or the grid panel to show.
 	 */
 	public void showPanel(final Canvas panel) {
-		if (panel == searchPanel) {
+		if (panel.equals(searchPanelCanvas)) {
 			gridPanel.setVisible(false);
 			gridButton.setSelected(false);
 			searchButton.setSelected(true);
 		} else {
-			searchPanel.setVisible(false);
+			searchPanelCanvas.setVisible(false);
 			searchButton.setSelected(false);
 			gridButton.setSelected(true);
 		}
@@ -193,10 +193,10 @@ public class SearchPanel extends VLayout {
 		searchButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				if (isOpen(searchPanel)) {
+				if (isOpen(searchPanelCanvas)) {
 					hidePanel();
 				} else {
-					showPanel(searchPanel);
+					showPanel(searchPanelCanvas);
 				}
 			}
 		});

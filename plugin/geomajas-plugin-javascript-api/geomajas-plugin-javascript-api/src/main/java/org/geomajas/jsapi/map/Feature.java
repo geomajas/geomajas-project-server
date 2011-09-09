@@ -40,8 +40,6 @@ public class Feature implements Exportable {
 	
 	private String label;
 
-	private String geometry;
-	
 	private Bbox bounds;
 
 	private Layer layer;
@@ -64,7 +62,6 @@ public class Feature implements Exportable {
 		this.id = id;
 		this.attributes = attributes;
 		this.label = label;
-		this.geometry = geometry;
 		this.bounds = bounds;
 		this.layer = layer;
 		this.selected = selected;
@@ -134,7 +131,7 @@ public class Feature implements Exportable {
 	 * @return attribute keys
 	 */
 	public String[] getAttributes() {
-		return attributes.keySet().toArray(new String[0]);
+		return attributes.keySet().toArray(new String[attributes.size()]);
 	}
 
 	

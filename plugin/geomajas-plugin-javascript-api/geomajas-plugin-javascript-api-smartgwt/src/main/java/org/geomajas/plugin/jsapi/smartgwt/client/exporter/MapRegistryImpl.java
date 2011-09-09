@@ -12,7 +12,7 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter;
 
 import java.util.HashMap;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.jsapi.MapRegistry;
 import org.geomajas.jsapi.map.Map;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;

@@ -29,18 +29,18 @@ public class Coordinate implements Exportable {
 
 	private static final long serialVersionUID = 100;
 
-	private org.geomajas.geometry.Coordinate coordinate;
+	private org.geomajas.geometry.Coordinate originalCoordinate;
 
 	/**
 	 * TODO.
 	 * 
-	 * @param coordinate
+	 * @param originalCoordinate
 	 *            the original coordinate
 	 * @since 1.0.0
 	 */
 	@FutureApi
 	public Coordinate() {
-		this.coordinate = new org.geomajas.geometry.Coordinate();
+		this.originalCoordinate = new org.geomajas.geometry.Coordinate();
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class Coordinate implements Exportable {
 	 */
 	@FutureApi
 	public Coordinate(org.geomajas.geometry.Coordinate coordinate) {
-		this.coordinate = coordinate;
+		this.originalCoordinate = coordinate;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Coordinate implements Exportable {
 	 * @param y
 	 */
 	public Coordinate(double x, double y) {
-		this.coordinate = new org.geomajas.geometry.Coordinate(x, y);
+		this.originalCoordinate = new org.geomajas.geometry.Coordinate(x, y);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Coordinate implements Exportable {
 	@FutureApi
 	@NoExport
 	public org.geomajas.geometry.Coordinate getCoordinate() {
-		return coordinate;
+		return originalCoordinate;
 	}
 
 	/**
@@ -99,20 +99,20 @@ public class Coordinate implements Exportable {
 	 *         ordinates.
 	 */
 	public boolean equalsCoordinate(Coordinate other) {
-		return coordinate.equals(toGeomajasCoordinate(other));
+		return originalCoordinate.equals(toGeomajasCoordinate(other));
 	}
 
 	/**
 	 * Comparison using a tolerance for the equality check.
 	 * 
-	 * @param coordinate
+	 * @param originalCoordinate
 	 *            coordinate to compare with
 	 * @param delta
 	 *            maximum deviation (along one axis, the actual maximum distance is sqrt(2*delta^2))
 	 * @return true
 	 */
 	public boolean equalsDelta(Coordinate c, double delta) {
-		return coordinate.equalsDelta(toGeomajasCoordinate(c), delta);
+		return originalCoordinate.equalsDelta(toGeomajasCoordinate(c), delta);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class Coordinate implements Exportable {
 	 * @return the 2-dimensional Euclidean distance between the locations
 	 */
 	public double distance(Coordinate c) {
-		return coordinate.distance(toGeomajasCoordinate(c));
+		return originalCoordinate.distance(toGeomajasCoordinate(c));
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class Coordinate implements Exportable {
 	 * @return x
 	 */
 	public double getX() {
-		return coordinate.getX();
+		return originalCoordinate.getX();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class Coordinate implements Exportable {
 	 *            x
 	 */
 	public void setX(double x) {
-		coordinate.setX(x);
+		originalCoordinate.setX(x);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class Coordinate implements Exportable {
 	 * @return y
 	 */
 	public double getY() {
-		return coordinate.getY();
+		return originalCoordinate.getY();
 	}
 
 	/**
@@ -161,6 +161,6 @@ public class Coordinate implements Exportable {
 	 *            y
 	 */
 	public void setY(double y) {
-		coordinate.setY(y);
+		originalCoordinate.setY(y);
 	}
 }

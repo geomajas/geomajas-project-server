@@ -34,8 +34,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class Application implements EntryPoint {
 
-	private OverviewMap overviewMap;
-
 	private Legend legend;
 
 	// private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
@@ -60,7 +58,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		final MapWidget mapWidget = new MapWidget("mapMain", "app");
 		// Expose to javascript API!
-		Map map = new MapImpl(mapWidget);
+		new MapImpl(mapWidget);
 		
 		final Toolbar toolbar = new Toolbar(mapWidget);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_SMALL);

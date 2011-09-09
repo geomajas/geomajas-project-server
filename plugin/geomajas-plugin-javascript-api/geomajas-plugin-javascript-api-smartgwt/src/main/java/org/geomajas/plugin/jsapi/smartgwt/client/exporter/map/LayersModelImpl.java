@@ -13,7 +13,7 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.jsapi.map.LayersModel;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer.LayerImpl;
@@ -117,7 +117,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 		for (org.geomajas.gwt.client.map.layer.VectorLayer vl : mapModel.getVectorLayers()) {
 			features.addAll(vl.getSelectedFeatures());
 		}
-		return features.toArray(new String[0]);
+		return features.toArray(new String[features.size()]);
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 	public String[] getSelectedFeaturesForLayer(String layerId) {
 		org.geomajas.gwt.client.map.layer.VectorLayer vectorLayer = mapModel.getVectorLayer(layerId);
 		if (null != vectorLayer) {
-			return (String[]) vectorLayer.getSelectedFeatures().toArray();
+			return (String[]) vectorLayer.getSelectedFeatures().toArray(new String[0]);
 		}
 		return new String[0];
 	}

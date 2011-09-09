@@ -58,7 +58,7 @@ public class VectorLayerImpl implements Exportable, VectorLayer {
 	}
 
 	public String[] getSelectedFeatures() {
-		return (String[]) layer.getSelectedFeatures().toArray();
+		return (String[]) layer.getSelectedFeatures().toArray(new String[getSelectedFeatures().length]);
 	}
 
 	public String getId() {
@@ -140,7 +140,7 @@ public class VectorLayerImpl implements Exportable, VectorLayer {
 	}
 
 	public String[] getSelectedFeatureIds() {
-		return layer.getSelectedFeatures().toArray(new String[0]);
+		return layer.getSelectedFeatures().toArray(new String[layer.getSelectedFeatures().size()]);
 	}
 
 	public void getFeature(String featureId, final FeatureCallback callBack) {
@@ -207,10 +207,11 @@ public class VectorLayerImpl implements Exportable, VectorLayer {
 	public void setFetchType(int fetchType) {
 		// Make sure attributes are always fetched.
 		if (fetchType % 2 == 0) {
-			fetchType++;
+			this.fetchType = fetchType + 1;
+		} else {
+			this.fetchType = fetchType;
 		}
 
-		this.fetchType = fetchType;
 	}
 	
 	private Feature fromGwtFeature(org.geomajas.gwt.client.map.feature.Feature f) {
