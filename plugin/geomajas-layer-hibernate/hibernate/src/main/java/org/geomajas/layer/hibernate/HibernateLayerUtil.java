@@ -67,6 +67,9 @@ class HibernateLayerUtil {
 	 *             Hibernate Configuration is not correct.
 	 */
 	public ClassMetadata getEntityMetadata() throws HibernateLayerException {
+		if (null == entityMetadata) {
+			throw new HibernateLayerException(ExceptionCode.HIBERNATE_NO_META_DATA);
+		}
 		return entityMetadata;
 	}
 
