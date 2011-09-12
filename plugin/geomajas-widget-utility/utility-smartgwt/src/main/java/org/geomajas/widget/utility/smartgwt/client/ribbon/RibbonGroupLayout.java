@@ -47,17 +47,19 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Initialize this group by specifying it's title.
+	 * Initialize this group by specifying it's title and margin.
 	 * 
 	 * @param title
 	 *            The groups title.
+	 * @param margin
+	 * 			  The internal margin between components.
 	 */
-	public RibbonGroupLayout(final String title) {
+	public RibbonGroupLayout(final String title, final int margin) {
 		this.title = title;
 		setAutoWidth();
 		setHeight100();
 
-		memberLayout = new HLayout(10);
+		memberLayout = new HLayout(margin);
 		memberLayout.setStyleName("ribbonGroupBody");
 		memberLayout.setAutoWidth();
 		setHeight100();
@@ -72,6 +74,16 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		setStyleName("ribbonGroup");
 		addMember(memberLayout);
 		addMember(titleLabel);
+	}
+
+	/**
+	 * Initialize this group by specifying it's title.
+	 * 
+	 * @param title
+	 *            The groups title.
+	 */
+	public RibbonGroupLayout(final String title) {
+		this(title, 10);
 	}
 
 	// ------------------------------------------------------------------------

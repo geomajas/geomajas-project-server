@@ -153,8 +153,12 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	// ------------------------------------------------------------------------
 
 	private void buildGui(RibbonBarInfo barInfo, MapWidget mapWidget) {
+		setMembersMargin(barInfo.getInternalMargin());
 		for (RibbonGroupInfo groupInfo : barInfo.getGroups()) {
-			RibbonGroupLayout group = new RibbonGroupLayout(groupInfo.getTitle());
+			int margin = groupInfo.getInternalMargin() == -1 ? barInfo.getInternalRibbonGroupMargin() : 
+				groupInfo.getInternalMargin();
+			
+			RibbonGroupLayout group = new RibbonGroupLayout(groupInfo.getTitle(), margin);
 			for (RibbonColumnInfo columnInfo : groupInfo.getColumns()) {
 				RibbonColumn ribbonColumn = RibbonColumnRegistry.getRibbonColumn(columnInfo.getType(),
 						columnInfo.getTools(), columnInfo.getParameters(), mapWidget);
