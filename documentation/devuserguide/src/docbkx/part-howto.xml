@@ -55,8 +55,7 @@
     intermediate package (between "command" and the class name) and the class
     name itself. Some examples:</para>
 
-    <para>
-      <table>
+    <para><table>
         <title>Samples of command name resolution</title>
 
         <tgroup cols="2">
@@ -118,8 +117,7 @@
             </row>
           </tbody>
         </tgroup>
-      </table>
-    </para>
+      </table></para>
 
     <para>You have to include a line in your Spring configuration to scan
     class files for annotation to make the components available. For the case
@@ -165,7 +163,7 @@
     <xi:include href="listing/StaticSecurityDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para />
+    <para></para>
   </chapter>
 
   <chapter id="ch-howto-plugin">
@@ -260,7 +258,7 @@
     </section>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-howto-integrate-zk">
     <title>Integrating a Geomajas application in the ZK framework</title>
 
     <section>
@@ -569,7 +567,7 @@ public class GeomajasMapWrapper {
     </section>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-howto-logging">
     <title>Setting up logging to a file</title>
 
     <para>This is not really Geomajas specific, but as a simple guide, a
@@ -631,5 +629,71 @@ public class GeomajasMapWrapper {
           for the messages).</para>
         </listitem>
       </itemizedlist></para>
+  </chapter>
+
+  <chapter>
+    <title id="ch-howto-snapshots">Using snapshots</title>
+
+    <para>To be able to use snapshots, you have to include the snapshot
+    repository in your pom, in the repositories section:</para>
+
+    <example>
+      <title>Including the snapshot repository</title>
+
+      <programlisting>&lt;repository&gt;
+    &lt;id&gt;Geomajas-latest&lt;/id&gt;
+    &lt;name&gt;Geomajas snapshot repository&lt;/name&gt;
+    &lt;url&gt;http://apps.geomajas.org/nexus/content/groups/latest/&lt;/url&gt;
+    &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+&lt;/repository&gt;</programlisting>
+    </example>
+
+    <para>When using geomajas-dep to manage the version of the Geomajas parts
+    (which we recommend), you can now overwrite the version of Geomajas parts
+    by putting them in the dependencyManagement section
+    <emphasis>before</emphasis> the geomajas-dep dependency. For example, to
+    use the latest version of back-end, GWT face and staticsecurity, the
+    dependencyManagement would look like this (actual versions are from the
+    time of writing and may need updating):</para>
+
+    <example>
+      <title>Overwriting versions when using geomajas-dep</title>
+
+      <programlisting>&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-backend&lt;/artifactId&gt;
+            &lt;version&gt;1.10.0-SNAPSHOT&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-face-gwt&lt;/artifactId&gt;
+            &lt;version&gt;1.10.0-SNAPSHOT&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-plugin-staticsecurity-all&lt;/artifactId&gt;
+            &lt;version&gt;1.9.0-SNAPSHOT&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-dep&lt;/artifactId&gt;
+            &lt;version&gt;1.11.36&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;</programlisting>
+    </example>
   </chapter>
 </part>
