@@ -8,6 +8,7 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
@@ -20,34 +21,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="layer" class="org.geomajas.layer.hibernate.HibernateLayer">
 		<property name="layerInfo" ref="layerInfo" />
-		<property name="featureModel">
-			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
-				<property name="sessionFactory" ref="testSessionFactory" />
-			</bean>
-		</property>
-		<property name="sessionFactory" ref="testSessionFactory" />
-		<property name="dateFormat" ref="simpleDateFormat" />
-	</bean>
-
-	<bean name="scrollableResultSetLayer" class="org.geomajas.layer.hibernate.HibernateLayer">
-		<property name="layerInfo" ref="layerInfo" />
-		<property name="scrollableResultSet" value="true" />
-		<property name="featureModel">
-			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
-				<property name="sessionFactory" ref="testSessionFactory" />
-			</bean>
-		</property>
-		<property name="sessionFactory" ref="testSessionFactory" />
-		<property name="dateFormat" ref="simpleDateFormat" />
-	</bean>
-
-	<bean name="associationLayer" class="org.geomajas.layer.hibernate.HibernateLayer">
-		<property name="layerInfo" ref="layerInfo" />
-		<property name="featureModel">
-			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
-				<property name="sessionFactory" ref="testSessionFactory" />
-			</bean>
-		</property>
 		<property name="sessionFactory" ref="testSessionFactory" />
 		<property name="dateFormat" ref="simpleDateFormat" />
 	</bean>

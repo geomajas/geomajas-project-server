@@ -28,32 +28,69 @@
     a PostGIS database. Then you would need to include the following
     dependencies:</para>
 
-<example id="HibernateLayerDependency">
-	<title>Hibernate layer dependency</title>
-	<programlisting language="xml"><![CDATA[<dependency>
-    <groupId>org.geomajas.plugin</groupId>
-    <artifactId>geomajas-layer-hibernate</artifactId>
-    <version>${geomajas-layer-hibernate-version}</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernatespatial</groupId>
-    <artifactId>hibernate-spatial-postgis</artifactId>
-    <version>1.0</version>
-</dependency>
-<dependency>
-    <groupId>org.postgis</groupId>
-    <artifactId>postgis-jdbc</artifactId>
-    <version>1.1.6</version>
-</dependency>
-<dependency>
-    <groupId>postgresql</groupId>
-    <artifactId>postgresql</artifactId>
-    <version>8.1-407.jdbc3</version>
-</dependency>
-]]>
-	</programlisting>
-</example>
-</section>
+    <example id="HibernateLayerDependency">
+      <title>Hibernate layer dependency</title>
+
+      <programlisting language="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-hibernate&lt;/artifactId&gt;
+    &lt;version&gt;${geomajas-layer-hibernate-version}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernatespatial&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-spatial-postgis&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgis&lt;/groupId&gt;
+    &lt;artifactId&gt;postgis-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;1.1.6&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;version&gt;8.1-407.jdbc3&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you use the geomajas-dep artifact in your dependencyManagement
+    section, then the versions do not need to be included;</para>
+
+    <example>
+      <title>Hibernate layer dependency with geomajas-dep</title>
+
+      <programlisting>&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+            &lt;artifactId&gt;geomajas-dep&lt;/artifactId&gt;
+            &lt;version&gt;1.11.36&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+        &lt;artifactId&gt;geomajas-layer-hibernate&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.hibernatespatial&lt;/groupId&gt;
+        &lt;artifactId&gt;hibernate-spatial-postgis&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.postgis&lt;/groupId&gt;
+        &lt;artifactId&gt;postgis-jdbc&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;postgresql&lt;/groupId&gt;
+        &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</programlisting>
+    </example>
+  </section>
 
   <section id="basichib">
     <title>Basic Hibernate configuration</title>
@@ -394,11 +431,6 @@ public class AreaOfInterest {
 
 &lt;bean name="aoi" class="org.geomajas.layer.hibernate.HibernateLayer"&gt;
     &lt;property name="layerInfo" ref="aoiInfo" /&gt; &lt;!-- see previous section --&gt;
-    &lt;property name="featureModel"&gt;
-        &lt;bean class="org.geomajas.layer.hibernate.HibernateFeatureModel"&gt;
-            &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
     &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
 
     &lt;!-- Needed when the Hibernate pojo classes contain dates. --&gt;
@@ -406,23 +438,25 @@ public class AreaOfInterest {
 &lt;/bean&gt;</programlisting>
         </example>
 
+        <note>
+          <para>This configuration only works for 1.9.0 and higher. Earlier
+          versions also had to define the featureModel property as in this
+          example (shown without the date format
+          configuration).<programlisting>&lt;bean name="aoi" class="org.geomajas.layer.hibernate.HibernateLayer"&gt;
+    &lt;property name="layerInfo" ref="aoiInfo" /&gt;
+    &lt;property name="featureModel"&gt;
+        &lt;bean class="org.geomajas.layer.hibernate.HibernateFeatureModel"&gt;
+            &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
+&lt;/bean&gt;</programlisting></para>
+        </note>
+
         <para>Note that in the example above, some extra configuration was
         added to support the use of java.util.Date objects as fields within
         Java pojo classes. In the case of the AreaOfInterest layer there was
         no such date, so technically this addition was not necessary.</para>
-
-        <note>
-          <para>You have now successfully create a Geomajas VectorLayer
-          definition, using the Hibernate layer plug-in. All you have to do
-          now, is use it in your map configuration.</para>
-        </note>
-
-        <important>
-          <para>This tutorial only covered the most basic case of mapping a
-          single table onto a Java class. More complex mappings (many-to-one
-          and one-to-many) are also supported. See the "howto" section for
-          more information.</para>
-        </important>
 
         <para>The properties which may be defined on a HibernateLayer object
         are:</para>
@@ -457,6 +491,19 @@ public class AreaOfInterest {
             attributes in the feature are lazy loaded.</para>
           </listitem>
         </itemizedlist>
+
+        <note>
+          <para>You have now successfully created a Geomajas VectorLayer
+          definition, using the Hibernate layer plug-in. All you have to do
+          now, is use it in your map configuration.</para>
+        </note>
+
+        <important>
+          <para>This tutorial only covered the most basic case of mapping a
+          single table onto a Java class. More complex mappings (many-to-one
+          and one-to-many) are also supported. See the section <xref
+          linkend="chapter-howto" /> for more information.</para>
+        </important>
       </section>
     </section>
   </section>
