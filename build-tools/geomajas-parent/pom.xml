@@ -60,7 +60,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://apps.geomajas.org/hudson/</url>
+		<url>http://apps.geomajas.org/jenkins/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -263,7 +263,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.1</version>
+						<version>1.4</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
