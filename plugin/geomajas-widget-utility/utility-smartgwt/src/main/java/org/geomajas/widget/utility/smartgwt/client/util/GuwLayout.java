@@ -23,7 +23,7 @@ import org.geomajas.annotation.Api;
  * @since 1.0.0
  */
 @Api
-public class GuwLayout {
+public final class GuwLayout {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
