@@ -12,6 +12,7 @@
 package org.geomajas.plugin.staticsecurity.client.util;
 
 import com.smartgwt.client.util.BooleanCallback;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -21,14 +22,13 @@ import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
 
 /**
- * <p>
- * Singleton that takes care of logging in and out. Stores a user token that it gets from the server when a login
- * attempt was successful.
- * </p>
- * 
+ * Singleton that takes care of logging in and out.
+ *
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.9.0
  */
+@Api
 public final class SsecAccess {
 
 	private SsecAccess() {
