@@ -12,6 +12,7 @@
 package org.geomajas.gwt.client.command;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 
 /**
  * Handler which requests an authentication token.
@@ -28,8 +29,8 @@ public interface TokenRequestHandler {
 	/**
 	 * Get an authentication token.
 	 *
-	 * @param tokenRequestCallback callback which needs to be invoked when the token is known
+	 * @param tokenChangedHandler callback which needs to be invoked when the token is known
 	 */
-	void login(TokenRequestCallback tokenRequestCallback);
+	void login(TokenChangedHandler tokenChangedHandler);
 
 }

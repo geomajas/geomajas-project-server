@@ -70,6 +70,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private String userToken;
 
+	private UserDetail userDetail;
+
 	private boolean useLazyLoading;
 
 	private int lazyFeatureIncludesDefault;
@@ -258,15 +260,14 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		final String oldToken = notNull(command.getUserToken());
 		if (!afterLoginCommands.containsKey(oldToken)) {
 			afterLoginCommands.put(oldToken, new ArrayList<RetryCommand>());
-			tokenRequestHandler.login(new TokenRequestCallback() {
+			tokenRequestHandler.login(new TokenChangedHandler() {
 				/**
 				 * Login handling. @todo since declaration should be removed, needed because of bug in api checks
 				 *
-				 * @param token authentication token
+				 * @param event new token details
 				 * @since 1.10.0
 				 */
-				public void onLogin(String token) {
-					setUserToken(token);
+				public void onTokenChanged(TokenChangedEvent event) {
 					List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
 					for (RetryCommand retryCommand : retryCommands) {
 						execute(retryCommand.getCommand(), retryCommand.getDeferred());
@@ -355,8 +356,36 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 */
 	public void setUserToken(String userToken, UserDetail userDetail) {
 		this.userToken = userToken;
+		if (null == userDetail) {
+			userDetail = new UserDetail();
+		}
+		this.userDetail = userDetail;
 		TokenChangedEvent event = new TokenChangedEvent(userToken, userDetail);
 		manager.fireEvent(event);
+	}
+
+	/**
+	 * Get currently active user authentication token.
+	 *
+	 * @return authentication token
+	 * @since 1.10.0
+	 */
+	@Api
+	public String getUserToken() {
+		return userToken;
+	}
+
+	/**
+	 * Get details for the current user.
+	 * <p/>
+	 * Object is always not-null, but the entries mey be.
+	 *
+	 * @return user details object
+	 * @since 1.10.0
+	 */
+	@Api
+	public UserDetail getUserDetail() {
+		return userDetail;
 	}
 
 	/**
