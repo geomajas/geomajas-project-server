@@ -42,7 +42,7 @@ public class TokenReleaseButton extends IButton implements ClickHandler, TokenCh
 	 * Default constructor. Adds handlers to the login and logout events that set the disabled status of this button. It
 	 * makes sure that this logout button is only enabled when the user has been successfully logged in.
 	 *
-	 * @since 1.7.1
+	 * @since 1.9.0
 	 */
 	@Api
 	public TokenReleaseButton() {

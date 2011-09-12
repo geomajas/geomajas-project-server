@@ -32,38 +32,29 @@ public final class SsecLayout {
 	/** Icon for logout button. */
 	public static String iconLogout = "[ISOMORPHIC]/geomajas/staticsecurity/key_delete.png";
 
-	/** Width for the login window. */
-	public static String loginWindowWidth = "500";
-	/** Height for the login window. */
-	public static String loginWindowHeight = "300";
-	/** Field width for the login window. */
-	public static String loginWindowFieldWidth = "*";
-	/** Height of the slogan area in the login window. */
-	public static String loginWindowSloganHeight = "24";
-	/** Height of the error area in the login window. */
-	public static String loginWindowErrorHeight = "14";
+	/** Width for the token request window. */
+	public static String tokenRequestWindowWidth = "500";
+	/** Height for the token request window. */
+	public static String tokenRequestWindowHeight = "300";
+	/** Field width for the token request window. */
+	public static String tokenRequestWindowFieldWidth = "*";
+	/** Height of the slogan area in the token request window. */
+	public static String tokenRequestWindowSloganHeight = "24";
+	/** Height of the error area in the token request window. */
+	public static String tokenRequestWindowErrorHeight = "14";
 	/** View/hide details button width. */
-	public static String loginWindowButtonWidth = "80";
-	/** Style for main message in login window. */
-	public static String loginWindowMessageStyle = "font-size:12px; font-weight:bold;";
-	/** Style for detail header in login window. */
-	public static String loginWindowDetailHeaderStyle = "font-size:12px; font-weight:bold;";
-	/** Style for normal detail stack trace line in login window. */
-	public static String loginWindowDetailTraceNormalStyle = "font-size:12px; padding-left:10px;";
-	/** Style for likely less important (framework) detail stack trace line in login window. */
-	public static String loginWindowDetailTraceLessStyle = "font-size:9px; padding-left:10px;";
-	/** Border style for details in login window. */
-	public static String loginWindowDetailBorderStyle = "1px solid #A0A0A0;";
-	/** Logo to be displayed on the login window. */
-	public static String loginWindowLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
-	/** Width of the logo to be displayed on the login window. */
-	public static String loginWindowLogoWidth = "300";
-	/** Height of the logo to be displayed on the login window. */
-	public static String loginWindowLogoHeight = "80";
-	/** Background to be displayed on the login window. */
-	public static String loginWindowBackground = "[ISOMORPHIC]/geomajas/staticsecurity/login_background_grey.jpg";
+	public static String tokenRequestWindowButtonWidth = "80";
+	/** Logo to be displayed on the token request window. */
+	public static String tokenRequestWindowLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
+	/** Width of the logo to be displayed on the token request window. */
+	public static String tokenRequestWindowLogoWidth = "300";
+	/** Height of the logo to be displayed on the token request window. */
+	public static String tokenRequestWindowLogoHeight = "80";
+	/** Background to be displayed on the token request window. */
+	public static String tokenRequestWindowBackground =
+			"[ISOMORPHIC]/geomajas/staticsecurity/login_background_grey.jpg";
 	/** Should the window be confined to stay within the parent rectangle? */
-	public static boolean loginWindowKeepInScreen = true;
+	public static boolean tokenRequestWindowKeepInScreen = true;
 	
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON

@@ -11,8 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.client;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt.client.command.TokenRequestCallback;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.TokenRequestHandler;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
@@ -21,13 +20,17 @@ import org.geomajas.gwt.client.command.event.TokenChangedHandler;
  * {@link TokenRequestHandler} which uses the static security login window to obtain credentials.
  *
  * @author Joachim Van der Auwera
+ * @since 1.9.0
  */
+@Api
 public class StaticSecurityTokenRequestHandler implements TokenRequestHandler {
 
-	private static final StaticSecurityMessages MESSAGES = GWT.create(StaticSecurityMessages.class);
 	private String slogan;
 
-	/** Default constructor, use the standard login window. */
+	/**
+	 * Default constructor, use the standard login window.
+	 */
+	@Api
 	public StaticSecurityTokenRequestHandler() {
 	}
 
@@ -36,18 +39,20 @@ public class StaticSecurityTokenRequestHandler implements TokenRequestHandler {
 	 *
 	 * @param slogan slogan to display in login window
 	 */
+	@Api
 	public StaticSecurityTokenRequestHandler(String slogan) {
+		this();
 		this.slogan = slogan;
 	}
 
 	/** @{inheritDoc} */
-	public void login(final TokenRequestCallback tokenRequestCallback) {
+	public void login(final TokenChangedHandler tokenCHangedHandler) {
 		final TokenRequestWindow tokenRequestWindow = new TokenRequestWindow(new TokenChangedHandler() {
 			public void onTokenChanged(TokenChangedEvent event) {
-				tokenRequestCallback.onLogin(event.getToken());
+				tokenCHangedHandler.onTokenChanged(event);
 			}
 		});
 		tokenRequestWindow.setSlogan(slogan);
-		tokenRequestWindow.show();
+		tokenRequestWindow.draw();
 	}
 }

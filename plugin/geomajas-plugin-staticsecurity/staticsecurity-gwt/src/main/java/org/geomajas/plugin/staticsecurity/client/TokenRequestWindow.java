@@ -14,6 +14,7 @@ package org.geomajas.plugin.staticsecurity.client;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
@@ -29,26 +30,22 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
-import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
-import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
 import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 import org.geomajas.plugin.staticsecurity.client.util.SsecLayout;
 
 /**
  * <p>
  * Window used for logging in. Display a simple form for logging in, and 2 buttons. One buttons effectively logs you in,
- * while the other allows for resetting the data filled in the form. When logging in not all attempts are successful.
- * Sometimes people forget their password. To connect to the correct events, add a {@link LoginHandler} by giving it to
- * this widget's constructor. It will add the handler to the <code>Authentication</code> final class.
+ * while the other allows you to reset the form. When logging in not all attempts are successful. You can pass a
+ * {@link TokenChangedHandler} which is called when the login was successful (specific to this window).
  * </p>
  * <p>
- * This window by default displays a Geomajas logo. You can change this logo and you can add a general slogan to your
- * wishes. The logo (together with it's width) and slogan can be given through getters and setters or by calling the
- * correct constructor. Note that you have to set these before you call the draw. Also note that when setting a new
- * logo, you have to set it's width. This width may not be larger than 480 pixels.
+ * Note that the login window cannot be cancelled. You have to pass valid credentials for the window to disappear.
  * </p>
  *
  * @author Pieter De Graef
@@ -56,7 +53,7 @@ import org.geomajas.plugin.staticsecurity.client.util.SsecLayout;
  * @since 1.9.0
  */
 @Api
-public class TokenRequestWindow extends Window implements LoginHandler {
+public class TokenRequestWindow extends Window implements BooleanCallback {
 
 	private static final StaticSecurityMessages MESSAGES = GWT.create(StaticSecurityMessages.class);
 
@@ -81,10 +78,21 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 		super();
 		errorLabel = new Label();
 		loginForm = new DynamicForm();
+
+		setHeaderIcon(WidgetLayout.iconGeomajas, 16, 16);
+		setTitle(MESSAGES.tokenRequestWindowTitle());
+		setIsModal(true);
+		setShowModalMask(true);
+		setModalMaskOpacity(WidgetLayout.modalMaskOpacity);
+		setAutoCenter(true);
+		setAutoSize(true);
+		setShowCloseButton(false);
+		setShowMinimizeButton(false);
+		setShowMaximizeButton(false);
 	}
 
 	/**
-	 * Create the default login window with an extra <code>LoginHandler</code> added to catch login events. Shows the
+	 * Create the default login window with an extra {@link TokenChangedHandler} added to catch login events. Shows the
 	 * login window with a default layout.
 	 *
 	 * @param tokenChangedHandler callback for when the token was modified
@@ -95,35 +103,23 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 		finishLoginHandler = tokenChangedHandler;
 	}
 
-	/**
-	 * Called when a login attempt fails. This will display a login failure message.
-	 */
-	public void onLoginFailure(LoginFailureEvent event) {
-		String msg;
-		if (1 == ++loginAttempt) {
-			msg = MESSAGES.tokenRequestRetry();
+	public void execute(Boolean value) {
+		Log.logServer(Log.LEVEL_ERROR, "login " + value + "    - " + loginAttempt);
+		if (null != value && value) {
+			GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
+			TokenChangedEvent tokenChangedEvent =
+					new TokenChangedEvent(dispatcher.getUserToken(), dispatcher.getUserDetail());
+			finishLoginHandler.onTokenChanged(tokenChangedEvent);
+			destroy();
 		} else {
-			msg = MESSAGES.tokenRequestRetryAgain(loginAttempt);
+			String msg;
+			if (1 == ++loginAttempt) {
+				msg = MESSAGES.tokenRequestRetry();
+			} else {
+				msg = MESSAGES.tokenRequestRetryAgain(loginAttempt);
+			}
+			reportError(msg);
 		}
-		reportError(msg);
-	}
-
-	/**
-	 * Called when a login attempt is successful. This method will destroy this login window.
-	 */
-	public void onLoginSuccess(LoginSuccessEvent event) {
-		destroy();
-	}
-
-	// -------------------------------------------------------------------------
-	// Getters and setters:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * @return Get the general slogan.
-	 */
-	public String getSlogan() {
-		return slogan;
 	}
 
 	/**
@@ -131,6 +127,7 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 	 * 
 	 * @param slogan slogan
 	 */
+	@Api
 	public void setSlogan(String slogan) {
 		this.slogan = slogan;
 	}
@@ -139,7 +136,7 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 	public void draw() {
 		buildWidget();
 		// try to force to be inside the screen
-		if (SsecLayout.loginWindowKeepInScreen) {
+		if (SsecLayout.tokenRequestWindowKeepInScreen) {
 			WidgetLayout.keepWindowInScreen(this);
 		}
 		super.draw();
@@ -154,38 +151,28 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 	}
 
 	private void buildWidget() {
-		setHeaderIcon(WidgetLayout.iconGeomajas, 16, 16);
-		setTitle(MESSAGES.tokenRequestWindowTitle());
-		setWidth(SsecLayout.loginWindowWidth);
-		setHeight(SsecLayout.loginWindowHeight);
-		setIsModal(true);
-		setShowModalMask(true);
-		setModalMaskOpacity(WidgetLayout.modalMaskOpacity);
-		centerInPage();
-		setAutoSize(true);
-		setShowCloseButton(false);
-		setShowMinimizeButton(false);
-		setShowMaximizeButton(false);
 
 		VLayout layout = new VLayout();
-		if (null != SsecLayout.loginWindowBackground) {
-			layout.setBackgroundImage(SsecLayout.loginWindowBackground);
+		layout.setWidth(SsecLayout.tokenRequestWindowWidth);
+		layout.setHeight(SsecLayout.tokenRequestWindowHeight);
+		if (null != SsecLayout.tokenRequestWindowBackground) {
+			layout.setBackgroundImage(SsecLayout.tokenRequestWindowBackground);
 		}
 		layout.setLayoutAlign(Alignment.CENTER);
 		layout.setMembersMargin(WidgetLayout.marginLarge);
 		layout.setPadding(WidgetLayout.marginLarge);
 
-		Img logoImg = new Img(SsecLayout.loginWindowLogo);
-		logoImg.setWidth(SsecLayout.loginWindowLogoWidth);
-		logoImg.setHeight(SsecLayout.loginWindowLogoHeight);
+		Img logoImg = new Img(SsecLayout.tokenRequestWindowLogo);
+		logoImg.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
+		logoImg.setHeight(SsecLayout.tokenRequestWindowLogoHeight);
 		logoImg.setLayoutAlign(Alignment.CENTER);
 		logoImg.setLayoutAlign(VerticalAlignment.CENTER);
 		layout.addMember(logoImg);
 
 		if (slogan != null && slogan.length() > 0) {
 			Label titleLabel = new Label(slogan);
-			titleLabel.setWidth(SsecLayout.loginWindowLogoWidth);
-			titleLabel.setHeight(SsecLayout.loginWindowSloganHeight);
+			titleLabel.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
+			titleLabel.setHeight(SsecLayout.tokenRequestWindowSloganHeight);
 			titleLabel.setLayoutAlign(Alignment.CENTER);
 			titleLabel.setAlign(Alignment.CENTER);
 			layout.addMember(titleLabel);
@@ -193,21 +180,21 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 
 		// User name:
 		TextItem userNameItem = new TextItem(FIELD_USER_NAME);
-		userNameItem.setWidth(SsecLayout.loginWindowFieldWidth);
+		userNameItem.setWidth(SsecLayout.tokenRequestWindowFieldWidth);
 		userNameItem.setTitle(MESSAGES.tokenRequestUserId());
 		userNameItem.setSelectOnFocus(true);
 		userNameItem.setWrapTitle(false);
 
 		// Password:
 		PasswordItem passwordItem = new PasswordItem(FIELD_PASSWORD);
-		passwordItem.setWidth(SsecLayout.loginWindowFieldWidth);
+		passwordItem.setWidth(SsecLayout.tokenRequestWindowFieldWidth);
 		passwordItem.setTitle(MESSAGES.tokenRequestPassword());
 		passwordItem.setWrapTitle(false);
 
 		// Login form:
 		loginForm.setAutoFocus(true);
 		loginForm.setNumCols(2);
-		loginForm.setWidth(SsecLayout.loginWindowLogoWidth);
+		loginForm.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
 		loginForm.setLayoutAlign(Alignment.CENTER);
 		loginForm.setFields(userNameItem, passwordItem);
 		loginForm.setCanFocus(true);
@@ -223,21 +210,21 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 
 		// Login button:
 		IButton loginButton = new IButton(MESSAGES.tokenRequestButtonLogin());
-		loginButton.setWidth(SsecLayout.loginWindowButtonWidth);
+		loginButton.setWidth(SsecLayout.tokenRequestWindowButtonWidth);
 		loginButton.setIcon(SsecLayout.iconLogin);
 		loginButton.addClickHandler(new TokenRequestLoginClickHandler());
 		loginButton.setLayoutAlign(Alignment.RIGHT);
 
 		// Reset button:
 		IButton resetButton = new IButton(MESSAGES.tokenRequestButtonReset());
-		resetButton.setWidth(SsecLayout.loginWindowButtonWidth);
+		resetButton.setWidth(SsecLayout.tokenRequestWindowButtonWidth);
 		resetButton.setIcon(WidgetLayout.iconUndo);
 		resetButton.addClickHandler(new TokenRequestResetClickHandler());
 		resetButton.setLayoutAlign(Alignment.LEFT);
 
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setHeight(30);
-		buttonLayout.setWidth(SsecLayout.loginWindowLogoWidth);
+		buttonLayout.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
 		buttonLayout.setMembersMargin(WidgetLayout.marginSmall);
 		buttonLayout.setLayoutAlign(Alignment.CENTER);
 
@@ -255,8 +242,8 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 		layout.addMember(new LayoutSpacer());
 
 		// Error label:
-		errorLabel.setWidth100();
-		errorLabel.setHeight(SsecLayout.loginWindowErrorHeight);
+		errorLabel.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
+		errorLabel.setHeight(SsecLayout.tokenRequestWindowErrorHeight);
 		layout.addMember(errorLabel);
 
 		addItem(layout);
@@ -267,13 +254,12 @@ public class TokenRequestWindow extends Window implements LoginHandler {
 		String password = loginForm.getValueAsString(FIELD_PASSWORD);
 		if (userId == null || userId.length() == 0) {
 			reportError(MESSAGES.tokenRequestNoUserName());
-			return;
-		}
-		if (password == null || password.length() == 0) {
+		} else if (password == null || password.length() == 0) {
 			reportError(MESSAGES.tokenRequestNoPassword());
-			return;
+		} else {
+			reportError(MESSAGES.tokenLoggingIn());
+			SsecAccess.login(userId, password, this);
 		}
-		SsecAccess.login(userId, password, null);
 	}
 
 	/**

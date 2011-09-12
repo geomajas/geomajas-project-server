@@ -82,6 +82,20 @@
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
 
+		<!-- fix conflicts over xerces/xalan versions -->
+		<!--
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>xalan</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		-->
+
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>

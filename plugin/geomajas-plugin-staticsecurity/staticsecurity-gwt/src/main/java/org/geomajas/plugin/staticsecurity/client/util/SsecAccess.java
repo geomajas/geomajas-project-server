@@ -13,7 +13,6 @@ package org.geomajas.plugin.staticsecurity.client.util;
 
 import com.smartgwt.client.util.BooleanCallback;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.SuccessCommandResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -32,8 +31,6 @@ import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
  */
 public final class SsecAccess {
 
-	private static String userToken;
-
 	private SsecAccess() {
 		// static class, cannot be instantiated
 	}
@@ -50,51 +47,22 @@ public final class SsecAccess {
 	 *            A possible callback to be executed when the login has been done (successfully or not). Can be null.
 	 */
 	public static void login(final String userId, final String password, final BooleanCallback callback) {
-		if (userId == null) {
-			loginUser(userId, password, callback);
-		} else {
-			GwtCommand command = new GwtCommand(LogoutRequest.COMMAND);
-			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-
-				public void execute(CommandResponse response) {
-					if (response instanceof SuccessCommandResponse) {
-						SuccessCommandResponse successResponse = (SuccessCommandResponse) response;
-						if (successResponse.isSuccess()) {
-							userToken = null;
-							//manager.fireEvent(new LogoutSuccessEvent());
-							loginUser(userId, password, callback);
-						} else {
-							//manager.fireEvent(new LogoutFailureEvent());
-						}
-					}
-				}
-			});
+		if (userId != null) {
+			logout();
 		}
+		loginOnly(userId, password, callback);
 	}
 
 	/**
 	 * Logs the user out.
-	 * 
-	 * @param callback
-	 *            A possible callback to be executed when the logout has been done (successfully or not). Can be null.
 	 */
 	public static void logout() {
-		GwtCommand command = new GwtCommand(LogoutRequest.COMMAND);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-
-			public void execute(CommandResponse response) {
-				if (response instanceof SuccessCommandResponse) {
-					SuccessCommandResponse successResponse = (SuccessCommandResponse) response;
-					if (successResponse.isSuccess()) {
-						userToken = null;
-						GwtCommandDispatcher.getInstance().setUserToken(null);
-						//manager.fireEvent(new LogoutSuccessEvent());
-					} else {
-						//manager.fireEvent(new LogoutFailureEvent());
-					}
-				}
-			}
-		});
+		GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
+		if (null != dispatcher.getUserToken()) {
+			GwtCommand command = new GwtCommand(LogoutRequest.COMMAND);
+			dispatcher.setUserToken(null);
+			dispatcher.execute(command);
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -102,7 +70,7 @@ public final class SsecAccess {
 	// -------------------------------------------------------------------------
 
 	/* Effectively log in a certain user. */
-	private static void loginUser(final String userId, final String password, final BooleanCallback callback) {
+	private static void loginOnly(final String userId, final String password, final BooleanCallback callback) {
 		LoginRequest request = new LoginRequest();
 		request.setLogin(userId);
 		request.setPassword(password);
@@ -113,18 +81,9 @@ public final class SsecAccess {
 			public void execute(CommandResponse response) {
 				if (response instanceof LoginResponse) {
 					LoginResponse loginResponse = (LoginResponse) response;
-					if (loginResponse.getToken() == null) {
-						if (callback != null) {
-							callback.execute(false);
-						}
-						//manager.fireEvent(new LoginFailureEvent(loginResponse.getErrorMessages()));
-					} else {
-						userToken = loginResponse.getToken();
-						GwtCommandDispatcher.getInstance().setUserToken(userToken);
-						if (callback != null) {
-							callback.execute(true);
-						}
-						//manager.fireEvent(new LoginSuccessEvent(userToken));
+					GwtCommandDispatcher.getInstance().setUserToken(loginResponse.getToken());
+					if (callback != null) {
+						callback.execute(null != loginResponse.getToken());
 					}
 				}
 			}

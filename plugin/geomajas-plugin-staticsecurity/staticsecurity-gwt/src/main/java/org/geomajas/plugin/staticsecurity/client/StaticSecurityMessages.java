@@ -60,11 +60,11 @@ public interface StaticSecurityMessages extends Messages {
 
 	String tokenRequestNoPassword();
 
-	String tokenRequestFailure();
-
 	String tokenRequestRetry();
 
 	String tokenRequestRetryAgain(int attempt);
+
+	String tokenLoggingIn();
 
 	// Token release button messages:
 
