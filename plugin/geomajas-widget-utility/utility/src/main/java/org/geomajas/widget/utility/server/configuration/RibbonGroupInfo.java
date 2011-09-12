@@ -28,10 +28,8 @@ public class RibbonGroupInfo implements ClientWidgetInfo {
 
 	private String title;
 
-	private int internalMargin = -1;
-	
 	private List<RibbonColumnInfo> columns;
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -46,22 +44,5 @@ public class RibbonGroupInfo implements ClientWidgetInfo {
 
 	public void setColumns(List<RibbonColumnInfo> columns) {
 		this.columns = columns;
-	}
-
-	/**
-	 * Allows to set the internal margin between components in this ribbongroup. 
-	 * The default value is -1, meaning the size is determined by the parent RibbonBar.
-	 * 
-	 * @param internalMargin the internal margin to set
-	 */
-	public void setInternalMargin(int internalMargin) {
-		this.internalMargin = internalMargin;
-	}
-
-	/**
-	 * @return the internal margin between buttons.
-	 */
-	public int getInternalMargin() {
-		return internalMargin;
 	}
 }

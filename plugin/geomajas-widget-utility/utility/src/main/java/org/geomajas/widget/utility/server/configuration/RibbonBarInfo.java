@@ -27,10 +27,6 @@ public class RibbonBarInfo implements ClientWidgetInfo {
 
 	private static final long serialVersionUID = 100L;
 
-	private int internalMargin = 2;
-	
-	private int internalRibbonGroupMargin = 10;
-	
 	private String title;
 
 	private List<RibbonGroupInfo> groups;
@@ -49,38 +45,5 @@ public class RibbonBarInfo implements ClientWidgetInfo {
 
 	public void setGroups(List<RibbonGroupInfo> groups) {
 		this.groups = groups;
-	}
-
-	/**
-	 * Set the internal margin between ribbon groups. Defaults to 2.
-	 * 
-	 * @param internalMargin the internalMargin to set
-	 */
-	public void setInternalMargin(int internalMargin) {
-		this.internalMargin = internalMargin;
-	}
-
-	/**
-	 * @return the internalMargin
-	 */
-	public int getInternalMargin() {
-		return internalMargin;
-	}
-
-	/**
-	 * Set the internal margin between components within ribon groups. Defaults to 10. 
-	 * Note that this can be ovverridden by {@link RibbonGroupInfo}.setInternalMargin(int margin).
-	 * 
-	 * @param internalRibbonGroupMargin the internalRibbonGroupMargin to set
-	 */
-	public void setInternalRibbonGroupMargin(int internalRibbonGroupMargin) {
-		this.internalRibbonGroupMargin = internalRibbonGroupMargin;
-	}
-
-	/**
-	 * @return the internalRibbonGroupMargin
-	 */
-	public int getInternalRibbonGroupMargin() {
-		return internalRibbonGroupMargin;
 	}
 }

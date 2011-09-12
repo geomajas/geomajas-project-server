@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.geomajas.widget.utility.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.client.ribbon.RibbonGroup;
+import org.geomajas.widget.utility.smartgwt.client.util.GuwLayout;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Canvas;
@@ -47,19 +48,17 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Initialize this group by specifying it's title and margin.
+	 * Initialize this group by specifying it's title.
 	 * 
 	 * @param title
 	 *            The groups title.
-	 * @param margin
-	 * 			  The internal margin between components.
 	 */
-	public RibbonGroupLayout(final String title, final int margin) {
+	public RibbonGroupLayout(final String title) {
 		this.title = title;
 		setAutoWidth();
 		setHeight100();
 
-		memberLayout = new HLayout(margin);
+		memberLayout = new HLayout(GuwLayout.ribbonGroupInternalMargin);
 		memberLayout.setStyleName("ribbonGroupBody");
 		memberLayout.setAutoWidth();
 		setHeight100();
@@ -74,16 +73,6 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		setStyleName("ribbonGroup");
 		addMember(memberLayout);
 		addMember(titleLabel);
-	}
-
-	/**
-	 * Initialize this group by specifying it's title.
-	 * 
-	 * @param title
-	 *            The groups title.
-	 */
-	public RibbonGroupLayout(final String title) {
-		this(title, 10);
 	}
 
 	// ------------------------------------------------------------------------

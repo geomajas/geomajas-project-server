@@ -23,6 +23,7 @@ import org.geomajas.widget.utility.client.ribbon.RibbonGroup;
 import org.geomajas.widget.utility.server.configuration.RibbonBarInfo;
 import org.geomajas.widget.utility.server.configuration.RibbonColumnInfo;
 import org.geomajas.widget.utility.server.configuration.RibbonGroupInfo;
+import org.geomajas.widget.utility.smartgwt.client.util.GuwLayout;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -44,7 +45,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 
 	/** Initialize an empty ribbon bar widget. */
 	public RibbonBarLayout() {
-		setMembersMargin(2);
+		setMembersMargin(GuwLayout.ribbonBarInternalMargin);
 		setStyleName("ribbon");
 	}
 
@@ -153,12 +154,8 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	// ------------------------------------------------------------------------
 
 	private void buildGui(RibbonBarInfo barInfo, MapWidget mapWidget) {
-		setMembersMargin(barInfo.getInternalMargin());
 		for (RibbonGroupInfo groupInfo : barInfo.getGroups()) {
-			int margin = groupInfo.getInternalMargin() == -1 ? barInfo.getInternalRibbonGroupMargin() : 
-				groupInfo.getInternalMargin();
-			
-			RibbonGroupLayout group = new RibbonGroupLayout(groupInfo.getTitle(), margin);
+			RibbonGroupLayout group = new RibbonGroupLayout(groupInfo.getTitle());
 			for (RibbonColumnInfo columnInfo : groupInfo.getColumns()) {
 				RibbonColumn ribbonColumn = RibbonColumnRegistry.getRibbonColumn(columnInfo.getType(),
 						columnInfo.getTools(), columnInfo.getParameters(), mapWidget);
