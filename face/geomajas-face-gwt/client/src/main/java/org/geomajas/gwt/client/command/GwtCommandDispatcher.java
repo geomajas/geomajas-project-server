@@ -196,7 +196,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						boolean authenticationFailed = false;
 						for (ExceptionDto exception : response.getExceptions()) {
 							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName()) &&
-									ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode();
+									(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode() ||
+											null == userToken);
 						}
 						if (authenticationFailed && null != tokenRequestHandler) {
 							handleLogin(command, deferred);
