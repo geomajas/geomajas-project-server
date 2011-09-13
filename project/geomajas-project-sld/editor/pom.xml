@@ -39,7 +39,6 @@
 			<artifactId>gwt-user</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
@@ -50,7 +49,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
@@ -74,42 +72,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<encoding>utf8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<!-- adhere to Geomajas checkstyle configuration -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.5-DF</version>
-				<configuration>
-					<configLocation>config/geomajas-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.geomajas</groupId>
-						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.5</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -136,13 +98,21 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<module>org.geomajas.sld.editor.GeomajasSldEditor</module>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
+				<executions>
+					<execution>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>clean</goal>
+							<goal>compile</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
@@ -164,34 +134,15 @@
 
 	<profiles>
 		<profile>
-			<id>defaultGWT</id>
+			<id>skipGwt</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>skipGwt</name>
+				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>org.geomajas.sld.editor.GeomajasSldEditor</module>
-							<runTarget>index.html</runTarget>
-							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<copyWebapp>true</copyWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>clean</goal>
-									<goal>compile</goal>
-									<goal>test</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 		<profile>
 			<id>m2e</id>
