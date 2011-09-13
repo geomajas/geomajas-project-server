@@ -206,7 +206,7 @@
 	<properties>
 		<gwt-face-backend-version>1.10.0-SNAPSHOT</gwt-face-backend-version>
 		<gwt-version>2.4.0</gwt-version>
-		<smartgwt-version>2.4</smartgwt-version>
+		<smartgwt-version>2.5</smartgwt-version>
 	</properties>
 	
 </project>
