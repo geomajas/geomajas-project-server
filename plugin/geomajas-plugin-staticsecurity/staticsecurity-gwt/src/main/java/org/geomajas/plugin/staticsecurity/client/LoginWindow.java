@@ -50,8 +50,10 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  * @author Pieter De Graef
  * @since 1.7.1
+ * @deprecated use {@link TokenRequestWindow}
  */
 @Api
+@Deprecated
 public class LoginWindow extends Window implements LoginHandler {
 
 	private static final String FIELD_USER_NAME = "userName";

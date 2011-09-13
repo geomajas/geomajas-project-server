@@ -18,8 +18,10 @@ import org.geomajas.annotation.Api;
  * 
  * @author Pieter De Graef
  * @since 1.7.1
+ * @deprecated use {@link org.geomajas.gwt.client.command.event.TokenChangedEvent}
  */
 @Api
+@Deprecated
 public class LoginSuccessEvent extends GwtEvent<LoginHandler> {
 
 	private String token;

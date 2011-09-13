@@ -23,9 +23,11 @@ import org.geomajas.annotation.UserImplemented;
  * 
  * @author Pieter De Graef
  * @since 1.7.1
+ * @deprecated use {@link org.geomajas.gwt.client.command.event.TokenChangedHandler}
  */
 @Api(allMethods = true)
 @UserImplemented
+@Deprecated
 public interface LoginHandler extends EventHandler {
 
 	GwtEvent.Type<LoginHandler> TYPE = new GwtEvent.Type<LoginHandler>();

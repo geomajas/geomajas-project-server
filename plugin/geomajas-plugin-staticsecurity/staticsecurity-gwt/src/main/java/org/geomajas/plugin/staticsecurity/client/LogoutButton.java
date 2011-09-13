@@ -32,8 +32,10 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * 
  * @author Pieter De Graef
  * @since 1.7.1
+ * @deprecated use {@link TokenReleaseButton}
  */
 @Api
+@Deprecated
 public class LogoutButton extends IButton implements ClickHandler, LoginHandler, LogoutHandler {
 
 	private StaticSecurityMessages i18n;

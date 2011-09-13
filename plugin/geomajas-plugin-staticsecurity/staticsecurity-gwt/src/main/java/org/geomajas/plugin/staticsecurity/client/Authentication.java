@@ -37,7 +37,9 @@ import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
  * </p>
  * 
  * @author Pieter De Graef
+ * @deprecated use {@link org.geomajas.plugin.staticsecurity.client.util.SsecAccess}
  */
+@Deprecated
 public final class Authentication {
 
 	private static Authentication login = new Authentication();
