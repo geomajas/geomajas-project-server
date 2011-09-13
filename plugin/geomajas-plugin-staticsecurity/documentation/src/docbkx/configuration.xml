@@ -9,12 +9,60 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para>The configuration of staticsecurity involves the following
+  elements:</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para>configure the use of staticsecurity as security service.</para>
+      </listitem>
+
+      <listitem>
+        <para>configure the way to access the users.</para>
+      </listitem>
+
+      <listitem>
+        <para>configure the policies to use.</para>
+      </listitem>
+    </itemizedlist></para>
+
+  <section id="dependencies">
+    <title>Dependencies</title>
+
+    <para>Make sure you include the correct version of the plug-in in your
+    project. Use the following excerpt (with the correct version) in the
+    dependencyManagement section of your project:</para>
+
+    <informalexample>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-staticsecurity-all&lt;/artifactId&gt;
+    &lt;version&gt;1.9.0&lt;/version&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+    &lt;scope&gt;import&lt;/scope&gt;
+&lt;/dependency&gt;
+  </programlisting>
+    </informalexample>
+
+    <para>If you are using geomajas-dep, this includes the latest version of
+    the staticsecurity plug-in (at the time of publishing of that version). If
+    you want to overwrite the staticsecurity plug-in version, make sure to
+    include this excerpt <emphasis>before</emphasis> the geomajas-dep
+    dependency.</para>
+
+    <para>You can now include the actual dependency without explicit
+    version.</para>
+
+    <informalexample>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-rasterizing&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </informalexample>
+  </section>
 </chapter>

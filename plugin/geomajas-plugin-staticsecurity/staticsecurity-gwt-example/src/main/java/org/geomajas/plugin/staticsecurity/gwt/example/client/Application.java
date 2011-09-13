@@ -44,7 +44,7 @@ public class Application implements EntryPoint {
 
 	public void onModuleLoad() {
 		GwtCommandDispatcher.getInstance().setTokenRequestHandler(new StaticSecurityTokenRequestHandler(
-				"Possible users are 'luc', 'marino' and 'empty'. The password is the same as the login."));
+				"Possible users are 'luc' and 'marino'. The password is the same as the login."));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();

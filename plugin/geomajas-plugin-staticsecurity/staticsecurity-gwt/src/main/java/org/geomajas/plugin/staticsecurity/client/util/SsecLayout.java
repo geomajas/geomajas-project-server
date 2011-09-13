@@ -44,6 +44,8 @@ public final class SsecLayout {
 	public static String tokenRequestWindowErrorHeight = "14";
 	/** View/hide details button width. */
 	public static String tokenRequestWindowButtonWidth = "80";
+	/** View/hide details button layout width. */
+	public static String tokenRequestWindowButtonLayoutWidth = "50%";
 	/** Logo to be displayed on the token request window. */
 	public static String tokenRequestWindowLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 	/** Width of the logo to be displayed on the token request window. */
@@ -55,7 +57,8 @@ public final class SsecLayout {
 			"[ISOMORPHIC]/geomajas/staticsecurity/login_background_grey.jpg";
 	/** Should the window be confined to stay within the parent rectangle? */
 	public static boolean tokenRequestWindowKeepInScreen = true;
-	
+	/** Style used for the error display in the token request window. */
+	public static String tokenRequestWindowErrorStyle = "color:#FFAA00;";
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 

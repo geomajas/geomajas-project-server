@@ -15,6 +15,7 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
@@ -33,7 +34,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.plugin.staticsecurity.client.util.SsecAccess;
 import org.geomajas.plugin.staticsecurity.client.util.SsecLayout;
@@ -63,7 +63,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 	private TokenChangedHandler finishLoginHandler;
 	private DynamicForm loginForm;
 	private String slogan;
-	private Label errorLabel;
+	private HTMLFlow errorWidget;
 	private int loginAttempt;
 
 	// -------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 	@Api
 	public TokenRequestWindow() {
 		super();
-		errorLabel = new Label();
+		errorWidget = new HTMLFlow();
 		loginForm = new DynamicForm();
 
 		setHeaderIcon(WidgetLayout.iconGeomajas, 16, 16);
@@ -89,6 +89,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		setShowCloseButton(false);
 		setShowMinimizeButton(false);
 		setShowMaximizeButton(false);
+		setStyleName("tokenRequestWindow");
 	}
 
 	/**
@@ -104,7 +105,6 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 	}
 
 	public void execute(Boolean value) {
-		Log.logServer(Log.LEVEL_ERROR, "login " + value + "    - " + loginAttempt);
 		if (null != value && value) {
 			GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 			TokenChangedEvent tokenChangedEvent =
@@ -147,7 +147,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 	// -------------------------------------------------------------------------
 
 	protected void reportError(String error) {
-		errorLabel.setContents("<span style='color:#FFAA00;'>" + error + "</span>");
+		errorWidget.setContents(WidgetLayout.divStyle(SsecLayout.tokenRequestWindowErrorStyle, error));
 	}
 
 	private void buildWidget() {
@@ -229,12 +229,12 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		buttonLayout.setLayoutAlign(Alignment.CENTER);
 
 		VLayout loginBtnLayout = new VLayout();
-		loginBtnLayout.setWidth("50%");
+		loginBtnLayout.setWidth(SsecLayout.tokenRequestWindowButtonLayoutWidth);
 		loginBtnLayout.addMember(loginButton);
 		buttonLayout.addMember(loginBtnLayout);
 
 		VLayout resetBtnLayout = new VLayout();
-		resetBtnLayout.setWidth("50%");
+		resetBtnLayout.setWidth(SsecLayout.tokenRequestWindowButtonLayoutWidth);
 		resetBtnLayout.addMember(resetButton);
 		buttonLayout.addMember(resetBtnLayout);
 
@@ -242,9 +242,11 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		layout.addMember(new LayoutSpacer());
 
 		// Error label:
-		errorLabel.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
-		errorLabel.setHeight(SsecLayout.tokenRequestWindowErrorHeight);
-		layout.addMember(errorLabel);
+		errorWidget.setWidth(SsecLayout.tokenRequestWindowLogoWidth);
+		errorWidget.setHeight(SsecLayout.tokenRequestWindowErrorHeight);
+		errorWidget.setLayoutAlign(Alignment.CENTER);
+		errorWidget.setAlign(Alignment.CENTER);
+		layout.addMember(errorWidget);
 
 		addItem(layout);
 	}

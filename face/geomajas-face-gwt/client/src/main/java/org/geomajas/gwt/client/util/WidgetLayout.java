@@ -330,15 +330,30 @@ public final class WidgetLayout {
 	 */
 	public static void keepWindowInScreen(Window window) {
 		window.setKeepInParentRect(true);
-		int screenHeight = com.google.gwt.user.client.Window.getClientHeight();
-		int windowHeight = window.getHeight();
-		if (windowHeight + window.getAbsoluteTop() > screenHeight) {
-			int top = screenHeight - windowHeight;
-			if (top >= 0) {
-				window.setPageTop(top);
-			} else {
-				window.setHeight(screenHeight - WidgetLayout.windowOffset);
-				window.setPageTop(WidgetLayout.windowOffset);
+		if (null != window.getHeightAsString()) {
+			int screenHeight = com.google.gwt.user.client.Window.getClientHeight();
+			int windowHeight = window.getHeight();
+			if (windowHeight + window.getAbsoluteTop() > screenHeight) {
+				int top = screenHeight - windowHeight;
+				if (top >= 0) {
+					window.setPageTop(top);
+				} else {
+					window.setHeight(screenHeight - WidgetLayout.windowOffset);
+					window.setPageTop(WidgetLayout.windowOffset);
+				}
+			}
+		}
+		if (null != window.getWidthAsString()) {
+			int screenWidth = com.google.gwt.user.client.Window.getClientWidth();
+			int windowWidth = window.getWidth();
+			if (windowWidth + window.getAbsoluteLeft() > screenWidth) {
+				int left = screenWidth - windowWidth;
+				if (left >= 0) {
+					window.setPageLeft(left);
+				} else {
+					window.setWidth(screenWidth - WidgetLayout.windowOffset);
+					window.setPageLeft(WidgetLayout.windowOffset);
+				}
 			}
 		}
 	}
