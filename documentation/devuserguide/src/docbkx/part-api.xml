@@ -2247,7 +2247,7 @@ public interface Entity {
       <title>DtoConverterService</title>
 
       <para>This service allows conversion between objects which are used
-      internally (which may contain JTS or Geotools objects) and data transfer
+      internally (which may contain JTS or GeoTools objects) and data transfer
       objects which can be used for communication with the outside world
       (including the faces).</para>
 

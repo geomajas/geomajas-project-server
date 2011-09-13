@@ -216,14 +216,33 @@
     <section id="writsecs">
       <title>Writing your own security service</title>
 
-      <para>TODO.....</para>
+      <para>A security plug-in provides an implementation of the
+      <code>org.geomajas.security.SecurityService</code> interface. The work
+      is done in the <code>getAuthentication</code> method which returns an
+      <code>Authentication</code> object for a token string. The back-end does
+      not (need to) know how tokens are generated. This is the responsibility
+      of the client. In the case of the GWT face, this is done using the
+      <code>setTokenRequestHandler</code> method on
+      <code>GwtCommandDispatcher</code>.</para>
+
+      <para>The task of the security service is to read the policies and
+      convert these into an <code>Authorization</code> objects. These contain
+      methods to test whether certain operations are allowed or not. The
+      different <code>Authorization</code> objects are combined by the
+      <code>SecurityManager</code> into the <code>SecurityContext</code>,
+      which can be injected in the code.</para>
+
+      <para>The security service which is provided by the plug-in can then be
+      used in the security configuration (see <link
+      linkend="ch-secConf">chapter <xref
+      linkend="ch-secConf" /></link>).</para>
 
       <para>For the implementation of your Authorization class, it is
       important to assure that the instances are serializeable and can also be
       deserialized. This is important to allow the caching to be clustered.
-      While we don't require that the class implements Serializeable (thanks
-      to the use of JBoss Serialization), you should think of the following
-      points;</para>
+      While we don't require that the class implements
+      <code>Serializeable</code> (thanks to the use of JBoss Serialization),
+      you should think of the following points;</para>
 
       <itemizedlist>
         <listitem>
@@ -251,8 +270,8 @@
           <code>wire()</code> method which allows you to query the application
           context. Make sure you declare wired properties as transient. The
           <code>wire()</code> method is called when the authorization is
-          attached to the SecurityContext (both for freshly created and
-          deserialized instances).</para>
+          attached to the <code>SecurityContext</code> (both for freshly
+          created and deserialized instances).</para>
         </listitem>
       </itemizedlist>
     </section>
@@ -269,7 +288,7 @@
       framework is Java-based and has a built-in mechanism to synchronize
       presentation state between client and server based on Ajax requests.
       Geomajas on the other hand is a GIS application framework based on GWT.
-      GWT compiles java code to javascript and makes use of Ajax requests and
+      GWT compiles Java code to JavaScript and makes use of Ajax requests and
       a custom serialization mechanism to communicate with the server. There
       is no presentation state on the server and the client is functionally a
       thick client (as opposed to ZK).</para>
@@ -278,7 +297,7 @@
       components of the foreign framework in such a way that they become
       indistinguishable from native UI components. This technique is actually
       mandatory for frameworks that take complete control over the HTML
-      layout, like ZK. While there is not mcuh information available with
+      layout, like ZK. While there is not much information available with
       respect to GWT, we have successfully followed the same technique that
       was used in ZK for Google Maps and JQuery.</para>
     </section>
@@ -302,7 +321,7 @@
 
         <listitem>
           <para>The widget file (*.js): Client-side JavaScript widget object
-          (there is a one-to-one correspondance with the server
+          (there is a one-to-one correspondence with the server
           component)</para>
         </listitem>
 
@@ -323,7 +342,7 @@
       created around the GWT widget. Although both frameworks are Java-based,
       there is no communication possible between both as GWT is client-side
       while ZK is server-side. This means that any wrapping has to be done by
-      providing mutual hooks or callback functions in the javascript
+      providing mutual hooks or callback functions in the JavaScript
       files.</para>
 
       <para>We will now give a more detailed overview of each file and its
@@ -343,13 +362,13 @@
   &lt;widget-class&gt;com.xxx.GeomajasWidget&lt;/widget-class&gt; &lt;!-- this the 'javascript class' name --&gt;
  &lt;/component&gt;
 &lt;/language-addon&gt;</programlisting>The dsp file is optional and contains
-      some javascript code to write out the HTML representation of the widget.
+      some JavaScript code to write out the HTML representation of the widget.
       We refer to the general <ulink
       url="http://books.zkoss.org/wiki/ZK_Component_Development_Essentials">ZK
       component development documentation</ulink> for more information on this
       file.</para>
 
-      <para>The widget file defines a javascript class (or prototype) by
+      <para>The widget file defines a JavaScript class (or prototype) by
       extending the ZK widget class and is located in the classpath at
       web/js/com/xxx/GeomajasWidget.js. This file has the following
       content:</para>
@@ -373,17 +392,17 @@
   // a static map of (id, instance) pairs, accessible by GWT
   _refs : {}
 });</programlisting>The bind_() and unbind_() functions are called to after
-      the widget is attached/detached to the dom tree. It seems a good choice
+      the widget is attached/detached to the DOM tree. It seems a good choice
       to use the bind_() function as the initialization point of the wrapped
       GWT component. We would normally just create the GWT component at this
       point, but, because of a race condition between the ZK and GWT
-      javascript loads, the GWT part may not be loaded yet. For that reason,
+      JavaScript loads, the GWT part may not be loaded yet. For that reason,
       we register a reference to the component in a static map and let this
       reference be picked up and initialized later on by the GWT code. The
       redraw() function simply creates an empty div with the correct
       id.</para>
 
-      <para>The component file is a server side java class that extends the ZK
+      <para>The component file is a server side Java class that extends the ZK
       XulElement class. Its main purpose is to act as a relay to the client
       part:</para>
 
@@ -433,7 +452,7 @@ public class GeomajasComponent extends XulElement {
       on the client object. This makes sense for a light weight client object
       but is rather awkward from a GWT viewpoint. In this case, the
       setPanToFeature() function will be called on the GeomajasWidget
-      javascript object. We will now make sure that this function directly
+      JavaScript object. We will now make sure that this function directly
       calls an equivalent function on the GWT component:</para>
 
       <para><programlisting>
@@ -503,7 +522,7 @@ public class GeomajasMapWrapper {
       <title>Bidirectional communication between the two frameworks</title>
 
       <para>Communicating from GWT to ZK takes the following steps : GWT event
-      -&gt; JSNI call to ZK javascript -&gt; server command -&gt; ZK component
+      -&gt; JSNI call to ZK JavaScript -&gt; server command -&gt; ZK component
       -&gt; ZK event.</para>
 
       <para>The following code parts are required:</para>
@@ -518,7 +537,7 @@ public class GeomajasMapWrapper {
         </listitem>
 
         <listitem>
-          <para>add javascript function to ZK javascript to send the ZK
+          <para>add JavaScript function to ZK JavaScript to send the ZK
           command</para>
         </listitem>
 
