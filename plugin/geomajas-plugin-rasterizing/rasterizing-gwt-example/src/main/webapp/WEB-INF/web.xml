@@ -35,12 +35,7 @@
  		-->
    
 			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
- 		<!--
-			WEB-INF/example/hibernate/applicationContext.xml
-			WEB-INF/example/hibernate/layerRoads.xml
-			WEB-INF/example/hibernate/layerOsm.xml
-		-->
-        
+
 			WEB-INF/sld-cookbook/*.xml
 		</param-value>
 	</context-param>

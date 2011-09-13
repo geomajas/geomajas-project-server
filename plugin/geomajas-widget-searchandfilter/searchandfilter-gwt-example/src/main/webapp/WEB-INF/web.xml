@@ -34,18 +34,6 @@
 			WEB-INF/layerCountries.xml
 			WEB-INF/layerPopulatedPlaces110m.xml
 			WEB-INF/security.xml
-   
-		<!--
-			WEB-INF/example/hibernate/applicationContext.xml
-			WEB-INF/example/hibernate/layerRoads.xml
-			WEB-INF/example/hibernate/layerOsm.xml
-		-->
-        
-		<!--
-			WEB-INF/example/geotools/applicationContext.xml
-			WEB-INF/example/geotools/layerRoads.xml
-			WEB-INF/example/geotools/layerOsm.xml
-		-->
 		</param-value>
 	</context-param>
 
