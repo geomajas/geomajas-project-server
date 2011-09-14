@@ -10,6 +10,11 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  * 
  */
 public class Ellipse extends Shape {
+	
+	private double userRadiusX;
+	
+	private double userRadiusY;
+	
 
 	/**
 	 * Creates a new Ellipse with the given position and radius properties.
@@ -26,10 +31,27 @@ public class Ellipse extends Shape {
 	 *            the y-axis radius of the ellipse in pixels
 	 */
 	public Ellipse(int x, int y, int radiusX, int radiusY) {
-		setRadiusX(radiusX);
-		setRadiusY(radiusY);
-		setX(x);
-		setY(y);
+		this((double) x, (double) y, (double) radiusX, (double) radiusY);
+	}
+
+	/**
+	 * Creates a new Ellipse with the given position and radius properties.
+	 * 
+	 * @param userX
+	 *            the x-coordinate position of the center of the ellipse in
+	 *            pixels
+	 * @param userY
+	 *            the y-coordinate position of the center of the ellipse in
+	 *            pixels
+	 * @param userRadiusX
+	 *            the x-axis radius of the ellipse in pixels
+	 * @param userRadiusY
+	 *            the y-axis radius of the ellipse in pixels
+	 */
+	public Ellipse(double userX, double userY, double userRadiusX, double userRadiusY) {
+		super(userX, userY);
+		setUserRadiusX(userRadiusX);
+		setUserRadiusY(userRadiusY);
 	}
 
 	@Override
@@ -74,6 +96,33 @@ public class Ellipse extends Shape {
 	public void setRadiusY(int radiusY) {
 		getImpl().setEllipseRadiusY(getElement(), radiusY);
 	}
+	
+	protected double getUserRadiusX() {
+		return userRadiusX;
+	}
+
+	
+	protected void setUserRadiusX(double userRadiusX) {
+		this.userRadiusX = userRadiusX;
+		drawTransformed();
+	}
+
+	
+	protected double getUserRadiusY() {
+		return userRadiusY;
+	}
+
+	
+	protected void setUserRadiusY(double userRadiusY) {
+		this.userRadiusY = userRadiusY;
+		drawTransformed();
+	}
+
+	protected void drawTransformed() {
+		super.drawTransformed();
+		setRadiusX(scaleX(userRadiusX));
+		setRadiusY(scaleY(userRadiusY));
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -92,5 +141,6 @@ public class Ellipse extends Shape {
 			super.setPropertyDouble(property, value);
 		}
 	}
+
 
 }

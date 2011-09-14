@@ -11,6 +11,7 @@ import org.vaadin.gwtgraphics.client.shape.path.CurveTo;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 import org.vaadin.gwtgraphics.client.shape.path.PathStep;
+import org.vaadin.gwtgraphics.client.shape.path.ScaleHelper;
 
 /**
  * Path represents a path consisting of pen movement commands. Currently,
@@ -52,12 +53,46 @@ public class Path extends Shape {
 	 *            the y-coordinate position in pixels
 	 */
 	public Path(int x, int y) {
-		moveTo(x, y);
+		this((double) x, (double) y);
+	}
+
+	/**
+	 * Creates a new Path and sets its starting point at the given position.
+	 * 
+	 * @param userX
+	 *            the x-coordinate position
+	 * @param userY
+	 *            the y-coordinate position
+	 */
+	public Path(double userX, double userY) {
+		moveTo(userX, userY);
 	}
 
 	@Override
 	protected Class<? extends VectorObject> getType() {
 		return Path.class;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.gwtgraphics.client.Shape#setX(int)
+	 */
+	@Override
+	public void setUserX(double userX) {
+		steps.set(0, new MoveTo(false, userX, getUserY()));
+		drawTransformed();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.gwtgraphics.client.Shape#setY(int)
+	 */
+	@Override
+	public void setUserY(double userY) {
+		steps.set(0, new MoveTo(false, getUserX(), userY));
+		drawTransformed();
 	}
 
 	/*
@@ -78,7 +113,7 @@ public class Path extends Shape {
 	@Override
 	public void setX(int x) {
 		steps.set(0, new MoveTo(false, x, getY()));
-		drawPath();
+		drawTransformed();
 	}
 
 	/*
@@ -99,9 +134,8 @@ public class Path extends Shape {
 	@Override
 	public void setY(int y) {
 		steps.set(0, new MoveTo(false, getX(), y));
-		drawPath();
+		drawTransformed();
 	}
-
 	/**
 	 * Sets PathStep at the specified position.
 	 * 
@@ -120,7 +154,7 @@ public class Path extends Shape {
 					"The first step must be an absolute MoveTo step.");
 		} else {
 			steps.set(index, step);
-			drawPath();
+			drawTransformed();
 		}
 	}
 
@@ -133,7 +167,7 @@ public class Path extends Shape {
 	 */
 	public void removeStep(int index) {
 		steps.remove(index);
-		drawPath();
+		drawTransformed();
 	}
 
 	/**
@@ -166,7 +200,20 @@ public class Path extends Shape {
 	 */
 	public void moveTo(int x, int y) {
 		steps.add(new MoveTo(false, x, y));
-		drawPath();
+		drawTransformed();
+	}
+
+	/**
+	 * Start a new sub-path at the given absolute point.
+	 * 
+	 * @param x
+	 *            an absolute x-coordinate in pixels
+	 * @param y
+	 *            an absolute y-coordinate in pixels
+	 */
+	public void moveTo(double x, double y) {
+		steps.add(new MoveTo(false, x, y));
+		drawTransformed();
 	}
 
 	/**
@@ -179,7 +226,20 @@ public class Path extends Shape {
 	 */
 	public void moveRelativelyTo(int x, int y) {
 		steps.add(new MoveTo(true, x, y));
-		drawPath();
+		drawTransformed();
+	}
+
+	/**
+	 * Start a new sub-path at the given relative point.
+	 * 
+	 * @param x
+	 *            a relative x-coordinate in pixels
+	 * @param y
+	 *            a relative y-coordinate in pixels
+	 */
+	public void moveRelativelyTo(double x, double y) {
+		steps.add(new MoveTo(true, x, y));
+		drawTransformed();
 	}
 
 	/**
@@ -192,7 +252,20 @@ public class Path extends Shape {
 	 */
 	public void lineTo(int x, int y) {
 		steps.add(new LineTo(false, x, y));
-		drawPath();
+		drawTransformed();
+	}
+
+	/**
+	 * Draw a line from the current point to the given absolute point.
+	 * 
+	 * @param x
+	 *            an absolute x-coordinate in pixels
+	 * @param y
+	 *            an absolute y-coordinate in pixels
+	 */
+	public void lineTo(double x, double y) {
+		steps.add(new LineTo(false, x, y));
+		drawTransformed();
 	}
 
 	/**
@@ -205,7 +278,7 @@ public class Path extends Shape {
 	 */
 	public void lineRelativelyTo(int x, int y) {
 		steps.add(new LineTo(true, x, y));
-		drawPath();
+		drawTransformed();
 	}
 
 	/**
@@ -220,7 +293,22 @@ public class Path extends Shape {
 	 */
 	public void curveTo(int x1, int y1, int x2, int y2, int x, int y) {
 		steps.add(new CurveTo(false, x1, y1, x2, y2, x, y));
-		drawPath();
+		drawTransformed();
+	}
+
+	/**
+	 * Draws a cubic BŽzier curve.
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @param x
+	 * @param y
+	 */
+	public void curveTo(double x1, double y1, double x2, double y2, double x, double y) {
+		steps.add(new CurveTo(false, x1, y1, x2, y2, x, y));
+		drawTransformed();
 	}
 
 	/**
@@ -235,30 +323,70 @@ public class Path extends Shape {
 	 */
 	public void curveRelativelyTo(int x1, int y1, int x2, int y2, int x, int y) {
 		steps.add(new CurveTo(true, x1, y1, x2, y2, x, y));
-		drawPath();
+		drawTransformed();
+	}
+
+	/**
+	 * Draws a cubic BŽzier curve.
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @param x
+	 * @param y
+	 */
+	public void curveRelativelyTo(double x1, double y1, double x2, double y2, double x, double y) {
+		steps.add(new CurveTo(true, x1, y1, x2, y2, x, y));
+		drawTransformed();
 	}
 
 	public void arc(int rx, int ry, int xAxisRotation, boolean largeArc,
 			boolean sweep, int x, int y) {
 		steps.add(new Arc(false, rx, ry, xAxisRotation, largeArc, sweep, x, y));
-		drawPath();
+		drawTransformed();
+	}
+
+	public void arc(double rx, double ry, int xAxisRotation, boolean largeArc,
+			boolean sweep, int x, int y) {
+		steps.add(new Arc(false, rx, ry, xAxisRotation, largeArc, sweep, x, y));
+		drawTransformed();
 	}
 
 	public void arcRelatively(int rx, int ry, int xAxisRotation,
 			boolean largeArc, boolean sweep, int x, int y) {
 		steps.add(new Arc(true, rx, ry, xAxisRotation, largeArc, sweep, x, y));
-		drawPath();
+		drawTransformed();
 	}
 
+	public void arcRelatively(double rx, double ry, int xAxisRotation,
+			boolean largeArc, boolean sweep, int x, int y) {
+		steps.add(new Arc(true, rx, ry, xAxisRotation, largeArc, sweep, x, y));
+		drawTransformed();
+	}
 	/**
 	 * Close the path.
 	 */
 	public void close() {
 		steps.add(new ClosePath());
-		drawPath();
+		drawTransformed();
 	}
-
-	private void drawPath() {
+	
+	protected void drawTransformed(){
+		// apply translation
+		if (hasTranslation()) {
+			MoveTo moveTo = (MoveTo) steps.get(0);
+			setStep(0, new MoveTo(moveTo.isRelativeCoords(), moveTo.getUserX() + getDeltaX(), moveTo.getUserY()
+					+ getDeltaY()));
+		}
+		// apply scale
+		if (hasScale()) {
+			ScaleHelper scaleHelper = new ScaleHelper(getScaleX(), getScaleY());
+			for (PathStep step : steps) {
+				step.scale(scaleHelper);
+			}
+		}		
 		getImpl().drawPath(getElement(), steps);
 	}
+
 }

@@ -11,9 +11,13 @@ public class MoveTo extends ClosePath {
 
 	protected final boolean relativeCoords;
 
-	protected final int x;
+	protected int x;
 
-	protected final int y;
+	protected int y;
+
+	protected double userX;
+
+	protected double userY;
 
 	/**
 	 * Instantiates a new MoveTo step with given properties.
@@ -26,9 +30,25 @@ public class MoveTo extends ClosePath {
 	 *            the y-coordinate in pixels
 	 */
 	public MoveTo(boolean relativeCoords, int x, int y) {
+		this(relativeCoords, (double) x, (double) y);
+	}
+
+	/**
+	 * Instantiates a new MoveTo step with given properties.
+	 * 
+	 * @param relativeCoords
+	 *            true if given coordinates are relative
+	 * @param x
+	 *            the x-coordinate in pixels
+	 * @param y
+	 *            the y-coordinate in pixels
+	 */
+	public MoveTo(boolean relativeCoords, double userX, double userY) {
 		this.relativeCoords = relativeCoords;
-		this.x = x;
-		this.y = y;
+		this.userX = userX;
+		this.userY = userY;
+		this.x = (int) userX;
+		this.y = (int) userY;
 	}
 
 	/**
@@ -57,6 +77,33 @@ public class MoveTo extends ClosePath {
 	 */
 	public int getY() {
 		return y;
+	}
+	
+	
+	
+	@Override
+	public void scale(ScaleHelper scaleHelper) {
+		setX(scaleHelper.getScaledX(relativeCoords, userX));
+		setY(scaleHelper.getScaledY(relativeCoords, userY));
+		scaleHelper.moveTo(relativeCoords, userX, userY);
+	}
+
+	public double getUserX() {
+		return userX;
+	}
+
+	
+	public double getUserY() {
+		return userY;
+	}
+
+	protected void setX(int x) {
+		this.x = x;
+	}
+
+	
+	protected void setY(int y) {
+		this.y = y;
 	}
 
 	@Override

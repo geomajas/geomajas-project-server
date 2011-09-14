@@ -22,6 +22,8 @@ import org.vaadin.gwtgraphics.client.shape.path.PathStep;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 
@@ -50,8 +52,8 @@ public class VMLImpl extends SVGImpl {
 
 		container.getStyle().setProperty("position", "relative");
 		container.getStyle().setProperty("overflow", "hidden");
-		container.getStyle().setPropertyPx("width", width);
-		container.getStyle().setPropertyPx("height", height);
+		container.getStyle().setProperty("width", "100%");
+		container.getStyle().setProperty("height", "100%");
 		disableSelection(container);
 
 		Element container2 = Document.get().createDivElement();
@@ -61,10 +63,10 @@ public class VMLImpl extends SVGImpl {
 		container2.getStyle().setPropertyPx("height", height);
 		container.appendChild(container2);
 
-		Element root = VMLUtil.createVMLElement("group");
-		setDefaultSize(root);
-		container2.appendChild(root);
-		return root;
+//		Element root = VMLUtil.createVMLElement("group");
+//		setDefaultSize(root);
+//		container2.appendChild(root);
+		return container2;
 	}
 
 	private native void disableSelection(Element element) /*-{
@@ -327,6 +329,7 @@ public class VMLImpl extends SVGImpl {
 	}
 
 	private void setSize(Element element, int width, int height) {
+		element.getStyle().setPosition(Position.ABSOLUTE);
 		element.getStyle().setPropertyPx("width", width);
 		element.getStyle().setPropertyPx("height", height);
 		element.setPropertyString("coordorigin", "0 0");
@@ -569,6 +572,13 @@ public class VMLImpl extends SVGImpl {
 	public int getRotation(Element element) {
 		return NumberUtil.parseIntValue(element.getStyle().getProperty(
 				"rotation"), 0);
+	}
+
+	@Override
+	public void translateGroup(Element element, double dX, double dY, boolean attached) {
+		element.getStyle().setLeft(dX, Unit.PX);
+		element.getStyle().setTop(dY, Unit.PX);
+		element.getStyle().setPosition(Position.ABSOLUTE);
 	}
 
 	@Override

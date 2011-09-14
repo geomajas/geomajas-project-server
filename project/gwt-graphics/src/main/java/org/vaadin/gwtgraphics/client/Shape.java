@@ -16,6 +16,10 @@ import org.vaadin.gwtgraphics.client.animation.Animatable;
 public abstract class Shape extends VectorObject implements Strokeable,
 		Positionable, Animatable {
 
+	private double userX;
+	
+	private double userY;
+	
 	/**
 	 * This constructor defines initial fill and stroke properties, which are
 	 * common for all subclasses. These properties are:
@@ -35,6 +39,32 @@ public abstract class Shape extends VectorObject implements Strokeable,
 		setStrokeOpacity(1);
 		setStrokeWidth(1);
 	}
+	
+	/**
+	 * This constructor defines initial fill and stroke properties, which are
+	 * common for all subclasses. These properties are:
+	 * 
+	 * <pre>
+	 * setFillColor(&quot;white&quot;);
+	 * setFillOpacity(1);
+	 * setStrokeColor(&quot;black&quot;);
+	 * setStrokeOpacity(1);
+	 * setStrokeWidth(1);
+	 * </pre>
+	 * 
+	 * @param userX x-position of the shape in user space
+	 * @param userY y-position of the shape in user space
+	 */
+	public Shape(double userX, double userY) {
+		setFillColor("white");
+		setFillOpacity(1);
+		setStrokeColor("black");
+		setStrokeOpacity(1);
+		setStrokeWidth(1);
+		setUserX(userX);
+		setUserY(userY);
+		drawTransformed();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -53,6 +83,22 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	public void setX(int x) {
 		getImpl().setX(getElement(), x, isAttached());
 	}
+		
+	
+	/**
+	 * sub-types should override to apply custom scaling without displacement
+	 */
+	@Override
+	protected void drawTransformed() {
+		setX((int) Math.round(getUserX() * getScaleX() + getDeltaX()));
+		setY((int) Math.round(getUserY() * getScaleY() + getDeltaY()));
+	}
+
+	@Override
+	protected Class<? extends VectorObject> getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -65,6 +111,27 @@ public abstract class Shape extends VectorObject implements Strokeable,
 
 	public void setY(int y) {
 		getImpl().setY(getElement(), y, isAttached());
+	}
+		
+	public double getUserX() {
+		return userX;
+	}
+
+	
+	public void setUserX(double userX) {
+		this.userX = userX;
+		drawTransformed();
+	}
+
+	
+	public double getUserY() {
+		return userY;
+	}
+
+	
+	public void setUserY(double userY) {
+		this.userY = userY;
+		drawTransformed();
 	}
 
 	/**
@@ -198,4 +265,17 @@ public abstract class Shape extends VectorObject implements Strokeable,
 			setRotation((int) value);
 		}
 	}
+	
+	protected int scaleX(double userX){
+		return roundToInt(userX * getScaleX());
+	}
+	
+	protected int scaleY(double userY){
+		return roundToInt(userY * getScaleY());
+	}
+
+	protected int roundToInt(double d) {
+		return (int) Math.round(d);
+	}
+
 }

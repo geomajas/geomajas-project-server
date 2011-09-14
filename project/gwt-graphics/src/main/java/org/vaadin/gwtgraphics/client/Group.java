@@ -3,6 +3,8 @@ package org.vaadin.gwtgraphics.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * Group is a container, which can contain one or more VectorObjects.
  * 
@@ -32,6 +34,10 @@ public class Group extends VectorObject implements VectorObjectContainer {
 	 */
 	public VectorObject add(VectorObject vo) {
 		childrens.add(vo);
+		// only scale, translation already handled at group level
+		if (hasScale()) {
+			vo.setScale(getScaleX(), getScaleY());
+		}
 		getImpl().add(getElement(), vo.getElement(), vo.isAttached());
 		vo.setParent(this);
 		return vo;
@@ -55,6 +61,10 @@ public class Group extends VectorObject implements VectorObjectContainer {
 
 		childrens.add(beforeIndex, vo);
 		vo.setParent(this);
+		// only scale, translation already handled at group level
+		if (hasScale()) {
+			vo.setScale(getScaleX(), getScaleY());
+		}
 		getImpl().insert(getElement(), vo.getElement(), beforeIndex,
 				vo.isAttached());
 
@@ -148,6 +158,18 @@ public class Group extends VectorObject implements VectorObjectContainer {
 	protected void doDetachChildren() {
 		for (VectorObject vo : childrens) {
 			vo.onDetach();
+		}
+	}
+
+	public void drawTransformed() {
+		if(hasTranslation()){
+			getImpl().translateGroup(getElement(), getDeltaX(), getDeltaY(), isAttached());
+		}
+		// scale each child, gives more flexibility than coordinate transformations
+		if(hasScale()){
+			for (VectorObject vo : childrens) {
+				vo.setScale(getScaleX(), getScaleY());
+			}
 		}
 	}
 }

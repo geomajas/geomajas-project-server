@@ -9,6 +9,8 @@ package org.vaadin.gwtgraphics.client.shape.path;
 public abstract class PathStep {
 
 	public abstract String getSVGString();
+	
+	public abstract void scale(ScaleHelper scaleHelper);
 
 	@Override
 	public String toString() {

@@ -104,6 +104,7 @@ public class SVGImpl {
 	private void setXY(final Element element, boolean x, final int value,
 			final boolean attached) {
 		final int rotation = getRotation(element);
+		final double[] translation = getTranslation(element);
 		final String posAttr = getPosAttribute(element, x);
 		SVGUtil.setAttributeNS(element, posAttr, value);
 		if (rotation != 0) {
@@ -111,7 +112,7 @@ public class SVGImpl {
 				public void execute() {
 					SVGUtil.setAttributeNS(element, "transform", "");
 					SVGUtil.setAttributeNS(element, posAttr, value);
-					setRotateTransform(element, rotation, attached);
+					setTransform(element, rotation, translation, attached);
 				}
 			});
 		}
@@ -357,28 +358,43 @@ public class SVGImpl {
 	public void setRotation(final Element element, final int degree,
 			final boolean attached) {
 		element.setPropertyInt("_rotation", degree);
+		applyTransform(element, attached);
+	}
+	
+	private void applyTransform(final Element element, final boolean attached) {
+		final int degree = getRotation(element);
+		final double[] translation = getTranslation(element);
 		if (degree == 0) {
-			SVGUtil.setAttributeNS(element, "transform", "");
+			SVGUtil.setAttributeNS(element, "transform", "translate(" + translation[0] + "," + translation[1] + ")");
 			return;
 		}
 		DeferredCommand.addCommand(new Command() {
 			public void execute() {
-				setRotateTransform(element, degree, attached);
+				setTransform(element, degree, translation, attached);
 			}
 		});
 	}
 
-	private void setRotateTransform(Element element, int degree,
-			boolean attached) {
+	private void setTransform(Element element, int degree, double[] translation, boolean attached) {
 		SVGBBox box = SVGUtil.getBBBox(element, attached);
 		int x = box.getX() + box.getWidth() / 2;
 		int y = box.getY() + box.getHeight() / 2;
-		SVGUtil.setAttributeNS(element, "transform", "rotate(" + degree + " "
-				+ x + " " + y + ")");
+		SVGUtil.setAttributeNS(element, "transform", "rotate(" + degree + " " + x + " " + y + ") translate("
+				+ translation[0] + "," + translation[1] + ")");
 	}
 
 	public int getRotation(Element element) {
 		return element.getPropertyInt("_rotation");
+	}
+	
+	public void translateGroup(Element element, double dX, double dY, boolean attached) {
+		element.setPropertyDouble("_dX", dX);
+		element.setPropertyDouble("_dY", dY);
+		applyTransform(element, attached);
+	}
+
+	public double[] getTranslation(Element element) {
+		return new double[] { element.getPropertyDouble("_dX"), element.getPropertyDouble("_dY") };
 	}
 
 	public void onAttach(Element element, boolean attached) {

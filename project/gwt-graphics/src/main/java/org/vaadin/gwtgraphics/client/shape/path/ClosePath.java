@@ -18,4 +18,10 @@ public class ClosePath extends PathStep {
 	public String getSVGString() {
 		return "z";
 	}
+
+	@Override
+	public void scale(ScaleHelper scaleHelper) {
+		// nothing to do
+	}
+
 }

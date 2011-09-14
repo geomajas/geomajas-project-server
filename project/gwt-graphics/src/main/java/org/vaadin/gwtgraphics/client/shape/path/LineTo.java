@@ -23,6 +23,20 @@ public class LineTo extends MoveTo {
 		super(relativeCoords, x, y);
 	}
 
+	/**
+	 * Instantiates a new LineTo step with given properties.
+	 * 
+	 * @param relativeCoords
+	 *            true if given coordinates are relative
+	 * @param x
+	 *            the x-coordinate in pixels
+	 * @param y
+	 *            the y-coordinate in pixels
+	 */
+	public LineTo(boolean relativeCoords, double x, double y) {
+		super(relativeCoords, x, y);
+	}
+
 	@Override
 	public String getSVGString() {
 		return isRelativeCoords() ? "l" : "L" + getX() + " " + getY();

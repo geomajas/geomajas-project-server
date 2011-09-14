@@ -31,11 +31,19 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Henri Kerola / IT Mill Ltd
  */
 public abstract class VectorObject extends Widget implements HasClickHandlers,
-		HasAllMouseHandlers, HasDoubleClickHandlers {
+		HasAllMouseHandlers, HasDoubleClickHandlers, Transformable {
 
 	private Widget parent;
 
 	private static final SVGImpl impl = GWT.create(SVGImpl.class);
+	
+	private double deltaX;
+	
+	private double deltaY;
+	
+	private double scaleX = 1.0;
+	
+	private double scaleY = 1.0;
 
 	public VectorObject() {
 		setElement(impl.createElement(getType()));
@@ -98,6 +106,47 @@ public abstract class VectorObject extends Widget implements HasClickHandlers,
 	public void setWidth(String width) {
 		throw new UnsupportedOperationException(
 				"VectorObject doesn't support setWidth");
+	}
+
+	public void setTranslation(double deltaX, double deltaY) {
+		this.deltaX = deltaX;
+		this.deltaY = deltaY;
+		drawTransformed();
+	}
+
+	public void setScale(double scaleX, double scaleY) {
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+		drawTransformed();
+	}
+	
+	protected abstract void drawTransformed();
+	
+	public boolean hasScale(){
+		return scaleX != 1 || scaleY != 1;
+	}
+	
+	public boolean hasTranslation(){
+		return deltaX != 0 || deltaY != 0;
+	}
+
+	protected double getDeltaX() {
+		return deltaX;
+	}
+
+	
+	protected double getDeltaY() {
+		return deltaY;
+	}
+
+	
+	protected double getScaleX() {
+		return scaleX;
+	}
+
+	
+	protected double getScaleY() {
+		return scaleY;
 	}
 
 	/*

@@ -14,7 +14,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.vaadin.addons</groupId>
 	<artifactId>gwt-graphics</artifactId>
-	<version>0.9.8-SNAPSHOT</version>
+	<version>0.9.7.TX-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>GWT Graphics library for Geomajas</name>
 	<description>Geomajas extension to GWT Graphics library</description>

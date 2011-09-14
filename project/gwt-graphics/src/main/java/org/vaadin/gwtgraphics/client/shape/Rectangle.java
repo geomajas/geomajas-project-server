@@ -10,31 +10,59 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  * 
  */
 public class Rectangle extends Shape {
+	
+	private double userWidth;
+	
+	private double userHeight;
+
+	public Rectangle(int x, int y, int width, int height) {
+		this((double) x, (double) y, (double) width, (double) height);
+	}
 
 	/**
 	 * Creates a new Rectangle with the given position and size properties.
 	 * 
-	 * @param x
+	 * @param userX
 	 *            the x-coordinate position of the top-left corner of the
-	 *            rectangle in pixels
-	 * @param y
+	 *            rectangle
+	 * @param userY
 	 *            the y-coordinate position of the top-left corner of the
-	 *            rectangle in pixels
-	 * @param width
-	 *            the width of the Rectangle in pixels
-	 * @param height
-	 *            the height of the Rectangle in pixels
+	 *            rectangle
+	 * @param userWidth
+	 *            the width of the Rectangle
+	 * @param userHeight
+	 *            the height of the Rectangle
 	 */
-	public Rectangle(int x, int y, int width, int height) {
-		setX(x);
-		setY(y);
-		setWidth(width);
-		setHeight(height);
+	public Rectangle(double userX, double userY, double userWidth, double userHeight) {
+		super(userX, userY);
+		setUserWidth(userWidth);
+		setUserHeight(userHeight);
 	}
 
 	@Override
 	protected Class<? extends VectorObject> getType() {
 		return Rectangle.class;
+	}
+	
+	public double getUserWidth() {
+		return userWidth;
+	}
+
+	
+	public void setUserWidth(double userWidth) {
+		this.userWidth = userWidth;
+		drawTransformed();
+	}
+
+	
+	public double getUserHeight() {
+		return userHeight;
+	}
+
+	
+	public void setUserHeight(double userHeight) {
+		this.userHeight = userHeight;
+		drawTransformed();
 	}
 
 	/**
@@ -130,4 +158,13 @@ public class Rectangle extends Shape {
 			super.setPropertyDouble(property, value);
 		}
 	}
+
+	@Override
+	protected void drawTransformed() {
+		super.drawTransformed();
+		setWidth(scaleX(userWidth));
+		setHeight(scaleY(userHeight));		
+	}
+	
+	
 }

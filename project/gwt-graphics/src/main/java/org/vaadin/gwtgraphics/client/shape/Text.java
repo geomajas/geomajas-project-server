@@ -23,13 +23,27 @@ public class Text extends Shape {
 	 *            the text to be rendered
 	 */
 	public Text(int x, int y, String text) {
-		setX(x);
-		setY(y);
+		this((double) x, (double) y, text);
+	}
+	
+	/**
+	 * Creates a new instance of Text. Position and the text to be rendered are
+	 * given as paramaters. Font family is set to "Arial" and font size to 20px.
+	 * 
+	 * @param userX
+	 *            the x-coordinate position
+	 * @param userY
+	 *            the y-coordinate position
+	 * @param text
+	 *            the text to be rendered
+	 */
+	public Text(double userX, double userY, String text) {
+		super(userX, userY);
 		setText(text);
 		setFontFamily("Arial");
 		setFontSize(20);
 	}
-
+	
 	@Override
 	protected Class<? extends VectorObject> getType() {
 		return Text.class;
@@ -124,5 +138,11 @@ public class Text extends Shape {
 		} else {
 			super.setPropertyDouble(property, value);
 		}
+	}
+
+	@Override
+	protected void drawTransformed() {
+		super.drawTransformed();
+		// could scale font here ?
 	}
 }

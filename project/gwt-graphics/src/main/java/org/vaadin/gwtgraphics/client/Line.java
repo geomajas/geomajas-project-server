@@ -2,6 +2,8 @@ package org.vaadin.gwtgraphics.client;
 
 import org.vaadin.gwtgraphics.client.animation.Animatable;
 
+import com.google.gwt.benchmarks.client.Setup;
+
 /**
  * Line represents a straight line from one point to another. Line can be
  * stroked.
@@ -10,6 +12,14 @@ import org.vaadin.gwtgraphics.client.animation.Animatable;
  * 
  */
 public class Line extends VectorObject implements Strokeable, Animatable {
+
+	private double userX1;
+
+	private double userY1;
+
+	private double userX2;
+
+	private double userY2;
 
 	/**
 	 * Creates a new instance of Line. This is a line from one given point to
@@ -25,13 +35,31 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 *            the y-coordinate of the end point in pixels
 	 */
 	public Line(int x1, int y1, int x2, int y2) {
-		setX1(x1);
-		setY1(y1);
-		setX2(x2);
-		setY2(y2);
+		this((double) x1, (double) y1, (double) x2, (double) y2);
+	}
+
+	/**
+	 * Creates a new instance of Line. This is a line from one given point to
+	 * another. Default stroke width is 1px and stroke color is black.
+	 * 
+	 * @param userX1
+	 *            the x-coordinate of the starting point
+	 * @param userY1
+	 *            the y-coordinate of the starting point
+	 * @param userX2
+	 *            the x-coordinate of the end point
+	 * @param userY2
+	 *            the y-coordinate of the end point
+	 */
+	public Line(double userX1, double userY1, double userX2, double userY2) {
+		setUserX1(userX1);
+		setUserX2(userX2);
+		setUserY1(userY1);
+		setUserY2(userY2);
 		setStrokeWidth(1);
 		setStrokeOpacity(1);
 		setStrokeColor("black");
+		drawTransformed();
 	}
 
 	@Override
@@ -115,6 +143,50 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 		getImpl().setLineY2(getElement(), y2);
 	}
 
+	
+	public double getUserX1() {
+		return userX1;
+	}
+
+	
+	public void setUserX1(double userX1) {
+		this.userX1 = userX1;
+		drawTransformed();
+	}
+
+	
+	public double getUserY1() {
+		return userY1;
+	}
+
+	
+	public void setUserY1(double userY1) {
+		this.userY1 = userY1;
+		drawTransformed();
+	}
+
+	
+	public double getUserX2() {
+		return userX2;
+	}
+
+	
+	public void setUserX2(double userX2) {
+		this.userX2 = userX2;
+		drawTransformed();
+	}
+
+	
+	public double getUserY2() {
+		return userY2;
+	}
+
+	
+	public void setUserY2(double userY2) {
+		this.userY2 = userY2;
+		drawTransformed();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -195,4 +267,13 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 			setRotation((int) value);
 		}
 	}
+
+	@Override
+	protected void drawTransformed() {
+		getImpl().setX(getElement(), (int) Math.round(getUserX1() * getScaleX() + getDeltaX()), isAttached());
+		getImpl().setY(getElement(), (int) Math.round(getUserY1() * getScaleY() + getDeltaY()), isAttached());
+		getImpl().setLineX2(getElement(), (int) Math.round(getUserX2() * getScaleX() + getDeltaX()));
+		getImpl().setLineY2(getElement(), (int) Math.round(getUserY2() * getScaleY() + getDeltaY()));
+	}
+
 }
