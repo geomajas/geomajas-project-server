@@ -212,7 +212,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 */
 	public void onKeyPress(KeyPressEvent event) {
 		String name = event.getKeyName();
-		if (name.equalsIgnoreCase("enter")) {
+		if ("enter".equalsIgnoreCase(name)) {
 			reorderValues();
 		}
 	}
