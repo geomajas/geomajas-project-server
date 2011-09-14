@@ -290,7 +290,12 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	public VectorContainer addWorldContainer() {
-		return display.getNewWorldContainer();
+		VectorContainer container = display.getNewWorldContainer();
+		// set transform parameters once, after that all is handled by WorldContainerRenderer 
+		Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+		container.setScale(matrix.getXx(), matrix.getYy());
+		container.setTranslation(matrix.getDx(), matrix.getDy());
+		return container;
 	}
 
 	public VectorContainer addScreenContainer() {

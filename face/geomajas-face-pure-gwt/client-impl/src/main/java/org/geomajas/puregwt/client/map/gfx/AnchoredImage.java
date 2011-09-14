@@ -47,6 +47,9 @@ public class AnchoredImage extends Image {
 	protected void drawTransformed() {
 		getImpl().setX(getElement(), (int) Math.round(getUserX() * getScaleX() + getDeltaX()) - anchorX, isAttached());
 		getImpl().setY(getElement(), (int) Math.round(getUserY() * getScaleY() + getDeltaY()) - anchorY, isAttached());
+		// don't scale, but have to set width/height here !
+		setWidth((int) getUserWidth());
+		setHeight((int) getUserHeight());
 	}
 
 }
