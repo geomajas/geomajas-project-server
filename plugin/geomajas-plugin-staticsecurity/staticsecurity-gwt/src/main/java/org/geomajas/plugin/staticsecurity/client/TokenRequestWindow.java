@@ -55,8 +55,10 @@ import org.geomajas.plugin.staticsecurity.client.util.SsecLayout;
 @Api
 public class TokenRequestWindow extends Window implements BooleanCallback {
 
-	private static final StaticSecurityMessages MESSAGES = GWT.create(StaticSecurityMessages.class);
+	public static final String STYLE_NAME_WINDOW = "tokenRequestWindow";
+	public static final String STYLE_NAME_ERROR = "tokenRequestError";
 
+	private static final StaticSecurityMessages MESSAGES = GWT.create(StaticSecurityMessages.class);
 	private static final String FIELD_USER_NAME = "userName";
 	private static final String FIELD_PASSWORD = "password";
 
@@ -77,6 +79,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 	public TokenRequestWindow() {
 		super();
 		errorWidget = new HTMLFlow();
+		errorWidget.setStyleName(STYLE_NAME_ERROR);
 		loginForm = new DynamicForm();
 
 		setHeaderIcon(WidgetLayout.iconGeomajas, 16, 16);
@@ -89,7 +92,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		setShowCloseButton(false);
 		setShowMinimizeButton(false);
 		setShowMaximizeButton(false);
-		setStyleName("tokenRequestWindow");
+		setStyleName(STYLE_NAME_WINDOW);
 	}
 
 	/**
@@ -286,6 +289,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		public void onClick(ClickEvent event) {
 			loginForm.setValue(FIELD_USER_NAME, "");
 			loginForm.setValue(FIELD_PASSWORD, "");
+			reportError("");
 		}
 	}
 }

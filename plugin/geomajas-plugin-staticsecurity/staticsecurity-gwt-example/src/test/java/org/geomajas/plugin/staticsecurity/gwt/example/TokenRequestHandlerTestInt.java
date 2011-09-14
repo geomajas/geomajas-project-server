@@ -11,13 +11,16 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example;
 
+import org.geomajas.plugin.staticsecurity.client.TokenRequestWindow;
+import org.geomajas.plugin.staticsecurity.gwt.example.client.Application;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,7 +35,6 @@ public class TokenRequestHandlerTestInt {
 
 	@Before
 	public void setUp() {
-		// Create a new instance of the html unit driver
 		driver = new FirefoxDriver();
 	}
 
@@ -45,34 +47,67 @@ public class TokenRequestHandlerTestInt {
 	public void testTokenRequest() throws Exception {
 		driver.get("http://localhost:9080/");
 
-		/*
 		// the login window should appear
 		(new WebDriverWait(driver, 90)).until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
-				return null != d.findElement(By.className("tokenRequestWindow"));
+				return null != d.findElement(By.className(TokenRequestWindow.STYLE_NAME_WINDOW));
 			}
 		});
 
 		// login in using faulty user name/login combination
 		WebElement userName = driver.findElement(By.name("userName"));
 		WebElement password = driver.findElement(By.name("password"));
-		WebElement login = driver.findElement(By.partialLinkText("log in"));
+		WebElement login = driver.findElement(By.xpath("//*[@aria-label='Log in']"));
+		WebElement reset = driver.findElement(By.xpath("//*[@aria-label='Reset']"));
 		userName.sendKeys("blabla");
 		password.sendKeys("blabla");
 		login.click();
-		driver.findElement(By.xpath("//*[contains(.,'Login attempt failed')]"));
-		*/
-
-		// check that the correct error message is displayed
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return d.findElement(By.className(TokenRequestWindow.STYLE_NAME_ERROR)).getText().
+						contains("Login attempt has failed");
+			}
+		});
+		WebElement error = driver.findElement(By.className(TokenRequestWindow.STYLE_NAME_ERROR));
 
 		// press reset and verify that form is cleared
-
-		// no password -> error
+		reset.click();
+		Assert.assertEquals("", error.getText());
 
 		// no login -> error
+		reset.click();
+		userName.clear();
+		password.sendKeys("luc");
+		login.click();
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return null != d.findElement(By.xpath("//*[contains(.,'Please fill in a user name.')]"));
+			}
+		});
+
+		// no password -> error
+		reset.click();
+		userName.sendKeys("luc");
+		password.clear();
+		login.click();
+		(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return null != d.findElement(By.xpath("//*[contains(.,'Please fill in a password.')]"));
+			}
+		});
 
 		// login using correct credentials
-
-		// check that login window disappears and map appears
+		reset.click();
+		userName.sendKeys("luc");
+		password.sendKeys("luc");
+		login.click();
+		// map appears
+		(new WebDriverWait(driver, 90)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return null != d.findElement(By.className(Application.APPLICATION_TITLE_STYLE));
+			}
+		});
+		// login window should be gone
+		Assert.assertEquals(0, driver.findElements(By.className(TokenRequestWindow.STYLE_NAME_WINDOW)).size());
 	}
 }

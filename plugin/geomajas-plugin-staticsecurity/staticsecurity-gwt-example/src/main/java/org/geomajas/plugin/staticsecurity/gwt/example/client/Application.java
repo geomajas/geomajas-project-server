@@ -38,6 +38,9 @@ import org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandl
  */
 public class Application implements EntryPoint {
 
+	public static final String APPLICATION_LABEL = "Geomajas GWT: staticsecurity example";
+	public static final String APPLICATION_TITLE_STYLE = "appTitle";
+
 	private OverviewMap overviewMap;
 
 	private Legend legend;
@@ -70,9 +73,9 @@ public class Application implements EntryPoint {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				Label title = new Label("Geomajas GWT: hello world");
-				title.setStyleName("appTitle");
-				title.setWidth(260);
+				Label title = new Label(APPLICATION_LABEL);
+				title.setStyleName(APPLICATION_TITLE_STYLE);
+				title.setWidth("*");
 				toolbar.addFill();
 				toolbar.addMember(title);
 			}
