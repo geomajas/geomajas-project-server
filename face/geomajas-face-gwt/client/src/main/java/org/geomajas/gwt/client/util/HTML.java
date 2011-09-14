@@ -11,158 +11,148 @@
 
 package org.geomajas.gwt.client.util;
 
+import org.geomajas.annotation.Api;
+
 
 /**
  * Contains Strings of all used HTML tags and attributes.
  *
  * @author redlab_b
+ * @author Emiel Ackermann
  *
+ * @since 1.10.0
  */
-public final class HTML {
-
-	/**
-	 *
-	 */
-	private HTML() {
-	}
+@Api
+public interface Html {
 
 	/**
 	 *
 	 * All Tags used in HTML.
 	 *
 	 */
-	public final static class Tag {
+	public interface Tag {
 
-		private Tag() {
-		}
-
-		public static final String XML = "xml";
-		public static final String THEAD = "thead";
-		public static final String TBODY = "thead";
-		public static final String TFOOT = "tfoot";
-		public static final String OL = "ol";
-		public static final String UL = "ul";
-		public static final String CAPTION = "caption";
-		public static final String PRE = "pre";
-		public static final String P = "p";
-		public static final String DIV = "div";
-		public static final String H1 = "h1";
-		public static final String H2 = "h2";
-		public static final String H3 = "h3";
-		public static final String H4 = "h4";
-		public static final String H5 = "h5";
-		public static final String H6 = "h6";
-		public static final String TD = "td";
-		public static final String BR = "br";
-		public static final String LI = "li";
-		public static final String DD = "dd";
-		public static final String DT = "dt";
-		public static final String TH = "th";
-		public static final String HR = "hr";
-		public static final String BODY = "body";
-		public static final String HTML = "html";
-		public static final String TABLE = "table";
-		public static final String SCRIPT = "script";
-		public static final String HEAD = "head";
-		public static final String LINK = "link";
-		public static final String META = "meta";
-		public static final String STYLE = "style";
-		public static final String ADDRESS = "address";
-		public static final String ARTICLE = "article";
-		public static final String ASIDE = "aside";
-		public static final String AUDIO = "audio";
-		public static final String BLOCKQUOTE = "blockquote";
-		public static final String CANVAS = "canvas";
-		public static final String FIELDSET = "fieldset";
-		public static final String FIGCAPTION = "figcaption";
-		public static final String FIGURE = "figure";
-		public static final String FOOTER = "footer";
-		public static final String FORM = "form";
-		public static final String HEADER = "header";
-		public static final String HGROUP = "hgroup";
-		public static final String NOSCRIPT = "noscript";
-		public static final String OUTPUT = "output";
-		public static final String SECTION = "section";
-		public static final String VIDEO = "video";
-		public static final String BASE = "base";
-		public static final String COMMAND = "command";
-		public static final String TITLE = "title";
-		public static final String A = "a";
-		public static final String ABBR = "abbr";
-		public static final String B = "b";
-		public static final String BDO = "bdo";
-		public static final String BUTTON = "button";
-		public static final String DETAILS = "details";
-		public static final String CODE = "code";
-		public static final String DEL = "del";
-		public static final String DATALIST = "datalist";
-		public static final String DFN = "dfn";
-		public static final String EMBED = "embed";
-		public static final String CITE = "cite";
-		public static final String DL = "dl";
-		public static final String EM = "em";
-		public static final String I = "i";
-		public static final String IFRAME = "iframe";
-		public static final String INPUT = "input";
-		public static final String IMG = "img";
-		public static final String INS = "ins";
-		public static final String MAP = "map";
-		public static final String KEYGEN = "keygen";
-		public static final String METER = "meter";
-		public static final String MENU = "menu";
-		public static final String NAV = "nav";
-		public static final String KBD = "kbd";
-		public static final String MATH = "math";
-		public static final String MARK = "mark";
-		public static final String LABEL = "label";
-		public static final String Q = "q";
-		public static final String SAMP = "samp";
-		public static final String PROGRESS = "progress";
-		public static final String RUBY = "ruby";
-		public static final String OBJECT = "object";
-		public static final String SMALL = "small";
-		public static final String SUB = "sub";
-		public static final String SUP = "sup";
-		public static final String STRONG = "strong";
-		public static final String SELECT = "select";
-		public static final String SPAN = "span";
-		public static final String SVG = "svg";
-		public static final String WBR = "wbr";
-		public static final String TIME = "time";
-		public static final String TEXTAREA = "textarea";
-		public static final String VAR = "var";
-		public static final String TR = "tr";
-		public static final String BIG = "big";
-		public static final String S = "s";
-		public static final String STRIKE = "strike";
-		public static final String TT = "tt";
-		public static final String U = "u";
+		String XML = "xml";
+		String THEAD = "thead";
+		String TBODY = "thead";
+		String TFOOT = "tfoot";
+		String OL = "ol";
+		String UL = "ul";
+		String CAPTION = "caption";
+		String PRE = "pre";
+		String P = "p";
+		String DIV = "div";
+		String H1 = "h1";
+		String H2 = "h2";
+		String H3 = "h3";
+		String H4 = "h4";
+		String H5 = "h5";
+		String H6 = "h6";
+		String TD = "td";
+		String BR = "br";
+		String LI = "li";
+		String DD = "dd";
+		String DT = "dt";
+		String TH = "th";
+		String HR = "hr";
+		String BODY = "body";
+		String HTML = "html";
+		String TABLE = "table";
+		String SCRIPT = "script";
+		String HEAD = "head";
+		String LINK = "link";
+		String META = "meta";
+		String STYLE = "style";
+		String ADDRESS = "address";
+		String ARTICLE = "article";
+		String ASIDE = "aside";
+		String AUDIO = "audio";
+		String BLOCKQUOTE = "blockquote";
+		String CANVAS = "canvas";
+		String FIELDSET = "fieldset";
+		String FIGCAPTION = "figcaption";
+		String FIGURE = "figure";
+		String FOOTER = "footer";
+		String FORM = "form";
+		String HEADER = "header";
+		String HGROUP = "hgroup";
+		String NOSCRIPT = "noscript";
+		String OUTPUT = "output";
+		String SECTION = "section";
+		String VIDEO = "video";
+		String BASE = "base";
+		String COMMAND = "command";
+		String TITLE = "title";
+		String A = "a";
+		String ABBR = "abbr";
+		String B = "b";
+		String BDO = "bdo";
+		String BUTTON = "button";
+		String DETAILS = "details";
+		String CODE = "code";
+		String DEL = "del";
+		String DATALIST = "datalist";
+		String DFN = "dfn";
+		String EMBED = "embed";
+		String CITE = "cite";
+		String DL = "dl";
+		String EM = "em";
+		String I = "i";
+		String IFRAME = "iframe";
+		String INPUT = "input";
+		String IMG = "img";
+		String INS = "ins";
+		String MAP = "map";
+		String KEYGEN = "keygen";
+		String METER = "meter";
+		String MENU = "menu";
+		String NAV = "nav";
+		String KBD = "kbd";
+		String MATH = "math";
+		String MARK = "mark";
+		String LABEL = "label";
+		String Q = "q";
+		String SAMP = "samp";
+		String PROGRESS = "progress";
+		String RUBY = "ruby";
+		String OBJECT = "object";
+		String SMALL = "small";
+		String SUB = "sub";
+		String SUP = "sup";
+		String STRONG = "strong";
+		String SELECT = "select";
+		String SPAN = "span";
+		String SVG = "svg";
+		String WBR = "wbr";
+		String TIME = "time";
+		String TEXTAREA = "textarea";
+		String VAR = "var";
+		String TR = "tr";
+		String BIG = "big";
+		String S = "s";
+		String STRIKE = "strike";
+		String TT = "tt";
+		String U = "u";
 
 	}
 
 	/**
 	 * Attributes used in HTML tags.
 	 */
-	public final static class Attribute {
+	public interface Attribute {
 
-		/**
-		 *
-		 */
-		private Attribute() {
-		}
-
-		public static final String CELLPADDING = "cellpadding";
-		public static final String CELLSPACING = "cellspacing";
-		public static final String STYLE = "style";
-		public static final String CLASS = "class";
-		public static final String ID = "id";
-		public static final String HREF = "href";
-		public static final String NAME = "name";
-		public static final String SRC = "src";
-		public static final String WIDTH = "width";
-		public static final String HEIGHT = "height";
-		public static final String TYPE = "type";
-		public static final String COLSPAN = "colspan";
-		public static final String ROWSPAN = "rowspan";
+		String CELLPADDING = "cellpadding";
+		String CELLSPACING = "cellspacing";
+		String STYLE = "style";
+		String CLASS = "class";
+		String ID = "id";
+		String HREF = "href";
+		String NAME = "name";
+		String SRC = "src";
+		String WIDTH = "width";
+		String HEIGHT = "height";
+		String TYPE = "type";
+		String COLSPAN = "colspan";
+		String ROWSPAN = "rowspan";
 	}
 }
