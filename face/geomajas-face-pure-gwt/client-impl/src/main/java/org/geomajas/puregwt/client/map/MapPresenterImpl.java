@@ -55,9 +55,7 @@ import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.LineString;
@@ -100,22 +98,70 @@ public final class MapPresenterImpl implements MapPresenter {
 			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget,
 			RequiresResize {
 
+		/**
+		 * Returns the HTML container of the map. This is a normal HTML container that contains the images of rasterized
+		 * tiles (both vector and raster layers).
+		 * 
+		 * @return the container
+		 */
 		HtmlContainer getMapHtmlContainer();
 
+		/**
+		 * Returns the vector container that contains the vectorized tiles (SVG/VML) of vector layers.
+		 * 
+		 * @return the container
+		 */
 		VectorContainer getMapVectorContainer();
 
-		ScreenContainer getNewScreenContainer();
+		/**
+		 * Returns the holder container of user-defined world-space objects.
+		 * 
+		 * @return the container
+		 */
+		VectorContainer getWorldVectorContainer();
 
-		WorldContainer getNewWorldContainer();
+		/**
+		 * Returns a new user-defined container for screen space objects.
+		 * 
+		 * @return the container
+		 */
+		VectorContainer getNewScreenContainer();
 
-		List<WorldContainer> getWorldContainers();
+		/**
+		 * Returns a new user-defined container for world space objects.
+		 * 
+		 * @return the container
+		 */
+		VectorContainer getNewWorldContainer();
 
+		/**
+		 * Removes a user-defined container.
+		 * 
+		 * @param the container
+		 * @return true if removed, false if unknown
+		 */
 		boolean removeVectorContainer(VectorContainer container);
 
+		/**
+		 * Brings the user-defined container to the front (relative to its world-space or screen-space peers!).
+		 * @param container
+		 * @return true if successful
+		 */
 		boolean bringToFront(VectorContainer container);
 
+		/**
+		 * Returns a new user-defined container of map gadgets (screen space).
+		 * 
+		 * @return the container
+		 */
 		VectorContainer getMapGadgetContainer();
 
+		/**
+		 * Removes a user-defined container of map gadgets.
+		 * 
+		 * @param mapGadgetContainer
+		 * @return true if successful
+		 */
 		boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer);
 	}
 
@@ -137,7 +183,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private WorldContainerRenderer worldContainerRenderer;
 
-	private Map<MapGadget, ScreenContainer> gadgets;
+	private Map<MapGadget, VectorContainer> gadgets;
 
 	@Inject
 	private EventBus eventBus;
@@ -155,7 +201,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	private MapPresenterImpl() {
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
-		gadgets = new HashMap<MapGadget, ScreenContainer>();
+		gadgets = new HashMap<MapGadget, VectorContainer>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -206,7 +252,7 @@ public final class MapPresenterImpl implements MapPresenter {
 					viewPort.applyBounds(initialBounds);
 
 					// If there are already some MapGadgets registered, draw them now:
-					for (Entry<MapGadget, ScreenContainer> entry : gadgets.entrySet()) {
+					for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
 						entry.getKey().onDraw(viewPort, entry.getValue());
 					}
 
@@ -243,13 +289,11 @@ public final class MapPresenterImpl implements MapPresenter {
 		eventBus.fireEvent(new MapResizedEvent(width, height));
 	}
 
-	public WorldContainer addWorldContainer() {
-		WorldContainer worldContainer = display.getNewWorldContainer();
-		worldContainer.transform(viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN));
-		return worldContainer;
+	public VectorContainer addWorldContainer() {
+		return display.getNewWorldContainer();
 	}
 
-	public ScreenContainer addScreenContainer() {
+	public VectorContainer addScreenContainer() {
 		return display.getNewScreenContainer();
 	}
 
@@ -349,7 +393,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	public void addMapGadget(MapGadget mapGadget) {
-		ScreenContainer container = addScreenContainer();
+		VectorContainer container = addScreenContainer();
 		gadgets.put(mapGadget, container);
 		if (layersModel != null && viewPort != null) {
 			mapGadget.onDraw(viewPort, container);
@@ -416,23 +460,18 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			for (WorldContainer worldContainer : display.getWorldContainers()) {
-				worldContainer.transform(matrix);
-			}
+			display.getWorldVectorContainer().setScale(matrix.getXx(), matrix.getYy());
+			display.getWorldVectorContainer().setTranslation(matrix.getDx(), matrix.getDy());
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			for (WorldContainer worldContainer : display.getWorldContainers()) {
-				worldContainer.transform(matrix);
-			}
+			display.getWorldVectorContainer().setScale(matrix.getXx(), matrix.getYy());
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			for (WorldContainer worldContainer : display.getWorldContainers()) {
-				worldContainer.transform(matrix);
-			}
+			display.getWorldVectorContainer().setTranslation(matrix.getDx(), matrix.getDy());
 		}
 	}
 
@@ -443,7 +482,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	 */
 	private class FeatureSelectionRenderer implements FeatureSelectionHandler, LayerVisibilityHandler {
 
-		private WorldContainer container;
+		private VectorContainer container;
 
 		private FeatureStyleInfo pointStyle;
 

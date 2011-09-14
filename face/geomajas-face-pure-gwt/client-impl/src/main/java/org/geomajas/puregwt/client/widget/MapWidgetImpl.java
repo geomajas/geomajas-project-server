@@ -17,13 +17,10 @@ import java.util.List;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.HtmlGroup;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
-import org.geomajas.puregwt.client.map.gfx.ScreenGroup;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorGroup;
-import org.geomajas.puregwt.client.map.gfx.WorldContainer;
-import org.geomajas.puregwt.client.map.gfx.WorldGroup;
 import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.Group;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -72,8 +69,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// Container for vector layers (SVG/VML):
 	private VectorGroup layerVectorContainer;
 
-	// Container for normal screen and world containers:
-	private VectorGroup userVectorContainer;
+	// Container for user-defined world containers:
+	private VectorGroup worldVectorContainer;
+
+	// Container for user-defined screen containers:
+	private VectorGroup screenVectorContainer;
 
 	// Container for map gadgets:
 	private VectorGroup gadgetVectorContainer;
@@ -82,8 +82,10 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	private DrawingArea drawingArea;
 
 	// List of all screen containers and world containers:
-	private List<VectorContainer> vectorContainers = new ArrayList<VectorContainer>();
+	private List<VectorContainer> screenContainers = new ArrayList<VectorContainer>();
 
+	// List of all screen containers and world containers:
+	private List<VectorContainer> worldContainers = new ArrayList<VectorContainer>();
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -104,9 +106,13 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerVectorContainer = new VectorGroup();
 		drawingArea.add(layerVectorContainer);
 
-		// Second child within the vector drawing area is a group for screen and world containers:
-		userVectorContainer = new VectorGroup();
-		drawingArea.add(userVectorContainer);
+		// Second child within the vector drawing area is a group for user-defined world containers:
+		worldVectorContainer = new VectorGroup();
+		drawingArea.add(worldVectorContainer);
+
+		// Second child within the vector drawing area is a group for user-defined screen containers:
+		screenVectorContainer = new VectorGroup();
+		drawingArea.add(screenVectorContainer);
 
 		// Third child within the vector drawing area is a group for map gadget containers:
 		gadgetVectorContainer = new VectorGroup();
@@ -148,33 +154,48 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return layerVectorContainer;
 	}
 
-	public ScreenContainer getNewScreenContainer() {
-		ScreenGroup container = new ScreenGroup();
-		userVectorContainer.add(container);
-		vectorContainers.add(container);
+	public VectorContainer getWorldVectorContainer() {
+		return worldVectorContainer;
+	}
+
+	public VectorContainer getNewScreenContainer() {
+		VectorGroup container = new VectorGroup();
+		screenVectorContainer.add(container);
+		screenContainers.add(container);
 		return container;
 	}
 
-	public WorldContainer getNewWorldContainer() {
-		WorldGroup container = new WorldGroup();
-		userVectorContainer.add(container);
-		vectorContainers.add(container);
+	public VectorContainer getNewWorldContainer() {
+		VectorGroup container = new VectorGroup();
+		worldVectorContainer.add(container);
+		worldContainers.add(container);
 		return container;
 	}
 
 	public boolean removeVectorContainer(VectorContainer container) {
-		if (container instanceof VectorGroup && vectorContainers.contains(container)) {
-			userVectorContainer.remove((VectorGroup) container);
-			vectorContainers.remove(container);
-			return true;
+		if (container instanceof Group) {
+			if (worldContainers.contains(container)) {
+				worldVectorContainer.remove((Group) container);
+				worldContainers.remove(container);
+				return true;
+			} else if (screenContainers.contains(container)) {
+				screenVectorContainer.remove((Group) container);
+				screenContainers.remove(container);
+				return true;
+			}
 		}
 		return false;
 	}
 
 	public boolean bringToFront(VectorContainer container) {
-		if (container instanceof VectorGroup && vectorContainers.contains(container)) {
-			userVectorContainer.bringToFront((VectorGroup) container);
-			return true;
+		if (container instanceof Group) {
+			if (worldContainers.contains(container)) {
+				worldVectorContainer.bringToFront((Group) container);
+				return true;
+			} else if (screenContainers.contains(container)) {
+				screenVectorContainer.bringToFront((Group) container);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -186,21 +207,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	public boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer) {
-		if (mapGadgetContainer instanceof VectorGroup && vectorContainers.contains(mapGadgetContainer)) {
-			gadgetVectorContainer.remove((VectorGroup) mapGadgetContainer);
+		if (mapGadgetContainer instanceof Group) {
+			gadgetVectorContainer.remove((Group) mapGadgetContainer);
 			return true;
 		}
 		return false;
-	}
-
-	public List<WorldContainer> getWorldContainers() {
-		List<WorldContainer> worldContainers = new ArrayList<WorldContainer>();
-		for (VectorContainer container : vectorContainers) {
-			if (container instanceof WorldContainer) {
-				worldContainers.add((WorldContainer) container);
-			}
-		}
-		return worldContainers;
 	}
 
 	public void onResize() {
@@ -217,36 +228,26 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	public void setPixelSize(int width, int height) {
 		layerHtmlContainer.setPixelSize(width, height);
-		//layerVectorContainer.setPixelSize(width, height);
-		//userVectorContainer.setPixelSize(width, height);
-		//gadgetVectorContainer.setPixelSize(width, height);
-		drawingArea.setPixelSize(width, height);
+		drawingArea.setWidth(width);
+		drawingArea.setHeight(height);
 		super.setPixelSize(width, height);
 	}
 
 	public void setSize(String width, String height) {
 		layerHtmlContainer.setSize(width, height);
-		//layerVectorContainer.setSize(width, height);
-		//userVectorContainer.setSize(width, height);
-		//gadgetVectorContainer.setSize(width, height);
-		drawingArea.setSize(width, height);
+		drawingArea.setWidth(width);
+		drawingArea.setHeight(height);
 		super.setSize(width, height);
 	}
 
 	public void setWidth(String width) {
 		layerHtmlContainer.setWidth(width);
-		//layerVectorContainer.setWidth(width);
-		//userVectorContainer.setWidth(width);
-		//gadgetVectorContainer.setWidth(width);
 		drawingArea.setWidth(width);
 		super.setWidth(width);
 	}
 
 	public void setHeight(String height) {
 		layerHtmlContainer.setHeight(height);
-		//layerVectorContainer.setHeight(height);
-		//userVectorContainer.setHeight(height);
-		//gadgetVectorContainer.setHeight(height);
 		drawingArea.setHeight(height);
 		super.setHeight(height);
 	}

@@ -15,7 +15,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.UnitType;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
@@ -79,7 +79,7 @@ public class ScalebarGadget implements MapGadget {
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
-	public void onDraw(ViewPort viewPort, ScreenContainer container) {
+	public void onDraw(ViewPort viewPort, VectorContainer container) {
 		this.viewPort = viewPort;
 
 		backGround = new Rectangle(0, viewPort.getMapHeight() - 22, 1, 22);

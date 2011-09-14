@@ -56,7 +56,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 
 	private VectorContainer vectorContainer;
 
-	private Map<Layer<?>, VectorContainer> vectorLayerContainers;
+	private Map<Layer<?>, VectorGroup> vectorLayerContainers;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -66,7 +66,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
 		layerContainers = new HashMap<Layer<?>, HtmlContainer>();
-		vectorLayerContainers = new HashMap<Layer<?>, VectorContainer>();
+		vectorLayerContainers = new HashMap<Layer<?>, VectorGroup>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -152,7 +152,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		vectorContainer.transform(translation);
+		vectorContainer.setTranslation(dx, dy);
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -196,7 +196,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		vectorContainer.transform(translation);
+		vectorContainer.setTranslation(dx, dy);
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -219,7 +219,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		vectorContainer.transform(translation);
+		vectorContainer.setTranslation(dx, dy);
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
@@ -242,7 +242,7 @@ public class DelegatingMapRenderer implements MapRenderer {
 		int dy = (int) Math.round(translation.getDy());
 		htmlContainer.setTop(dy);
 		htmlContainer.setLeft(dx);
-		vectorContainer.transform(translation);
+		vectorContainer.setTranslation(dx, dy);
 
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);

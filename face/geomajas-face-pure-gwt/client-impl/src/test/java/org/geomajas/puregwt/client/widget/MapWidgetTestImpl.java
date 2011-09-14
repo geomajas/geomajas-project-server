@@ -15,9 +15,7 @@ import java.util.List;
 
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -81,15 +79,15 @@ public class MapWidgetTestImpl implements MapWidget {
 		return null;
 	}
 
-	public ScreenContainer getNewScreenContainer() {
+	public VectorContainer getWorldVectorContainer() {
 		return null;
 	}
 
-	public WorldContainer getNewWorldContainer() {
+	public VectorContainer getNewScreenContainer() {
 		return null;
 	}
 
-	public List<WorldContainer> getWorldContainers() {
+	public VectorContainer getNewWorldContainer() {
 		return null;
 	}
 

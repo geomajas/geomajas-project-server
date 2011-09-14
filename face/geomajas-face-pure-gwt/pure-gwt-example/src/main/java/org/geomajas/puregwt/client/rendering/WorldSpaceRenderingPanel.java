@@ -15,8 +15,9 @@ import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.gfx.WorldContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.shape.Circle;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -36,7 +37,7 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 
 	private MapPresenter mapPresenter;
 
-	private WorldContainer container;
+	private VectorContainer container;
 
 	public String getTitle() {
 		return "Drawing in world space";
@@ -68,6 +69,18 @@ public class WorldSpaceRenderingPanel extends ContentPanel {
 			}
 		});
 		leftLayout.add(circleBtn);
+
+		Button rectangleBtn = new Button("Draw rectangle");
+		rectangleBtn.setWidth("200");
+		rectangleBtn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Rectangle rectangle = new Rectangle(1000000, 1000000, 2000000, 1000000);
+				rectangle.setFillColor("#CC9900");
+				rectangle.setFillOpacity(0.4);
+				container.add(rectangle);
+			}
+		});
 
 		Button deleteBtn = new Button("Delete all drawings");
 		deleteBtn.setWidth("200");

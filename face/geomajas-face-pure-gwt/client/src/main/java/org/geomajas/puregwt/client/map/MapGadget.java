@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.global.UserImplemented;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 
 /**
  * Definition for an autonomous gadget which can be displayed on the map. These gadgets receive some events from the map
@@ -37,7 +37,7 @@ public interface MapGadget {
 	 * @param container
 	 *            A vector container in screen space into which this gadget can draw itself.
 	 */
-	void onDraw(ViewPort viewPort, ScreenContainer container);
+	void onDraw(ViewPort viewPort, VectorContainer container);
 
 	/** This method is automatically called when the map was translated (not panned). */
 	void onTranslate();

@@ -15,7 +15,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
@@ -50,7 +50,7 @@ import com.google.gwt.user.client.DOM;
  */
 public class NavigationGadget implements MapGadget {
 
-	private ScreenContainer container;
+	private VectorContainer container;
 
 	private ZoomToRectGroup zoomToRectangleGroup;
 
@@ -81,7 +81,7 @@ public class NavigationGadget implements MapGadget {
 	// MapGadget implementation:
 	// ------------------------------------------------------------------------
 
-	public void onDraw(final ViewPort viewPort, final ScreenContainer container) {
+	public void onDraw(final ViewPort viewPort, final VectorContainer container) {
 		this.container = container;
 
 		Image panBg = new Image(5, 5, 50, 50, panBackgroundImage);

@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map.gadget;
 
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
@@ -32,7 +32,7 @@ public class WatermarkGadget implements MapGadget {
 
 	private Image image;
 
-	public void onDraw(ViewPort viewPort, ScreenContainer container) {
+	public void onDraw(ViewPort viewPort, VectorContainer container) {
 		this.viewPort = viewPort;
 
 		background = new Rectangle(viewPort.getMapWidth() - 125, viewPort.getMapHeight() - 12, 125, 12);

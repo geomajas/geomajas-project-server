@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
@@ -24,14 +23,10 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  */
 @FutureApi
 public interface VectorContainer extends VectorObjectContainer {
-
-	/**
-	 * Transform this container and all it's children using the given matrix.
-	 * 
-	 * @param matrix
-	 *            The matrix that determines the container transformation.
-	 */
-	void transform(Matrix matrix);
+	
+	void setTranslation(double deltaX, double deltaY);
+	
+	void setScale(double scaleX, double scaleY);
 
 	/**
 	 * Determine container visibility.

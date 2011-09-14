@@ -159,7 +159,7 @@
 			<dependency>
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
-				<version>0.9.7</version>
+				<version>0.9.7.TX</version>
 			</dependency>
 
 			<dependency>

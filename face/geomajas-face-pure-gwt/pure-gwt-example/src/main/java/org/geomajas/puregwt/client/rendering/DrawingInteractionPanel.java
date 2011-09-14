@@ -15,7 +15,7 @@ import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
@@ -75,7 +75,7 @@ public class DrawingInteractionPanel extends ContentPanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			ScreenContainer container = mapPresenter.addScreenContainer();
+			VectorContainer container = mapPresenter.addScreenContainer();
 			rectangle = new Rectangle(60, 40, 200, 80);
 			rectangle.setFillColor("#CC9900");
 			rectangle.setFillOpacity(0.4);

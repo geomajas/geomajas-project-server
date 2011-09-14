@@ -18,9 +18,7 @@ import org.geomajas.annotation.FutureApi;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.gfx.WorldContainer;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -73,7 +71,7 @@ public interface MapPresenter {
 	 * 
 	 * @return Returns the world vector container.
 	 */
-	WorldContainer addWorldContainer();
+	VectorContainer addWorldContainer();
 
 	/**
 	 * Create a new container in screen space wherein one can render new vector objects and return it. Note that all
@@ -84,7 +82,7 @@ public interface MapPresenter {
 	 * 
 	 * @return Returns the screen vector container.
 	 */
-	ScreenContainer addScreenContainer();
+	VectorContainer addScreenContainer();
 
 	/**
 	 * Remove an existing vector container from the map. This can be either a world or a screen container.

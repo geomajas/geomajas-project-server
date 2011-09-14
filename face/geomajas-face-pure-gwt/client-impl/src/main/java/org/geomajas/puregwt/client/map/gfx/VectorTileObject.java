@@ -188,4 +188,12 @@ public class VectorTileObject extends VectorObject implements TileView {
 			  }
 		  }
 	 }-*/;
+
+	@Override
+	protected void drawTransformed() {
+		if (hasScale() || hasTranslation()) {
+			throw new UnsupportedOperationException("can't transform VectorTileObject");
+		}
+	}
+
 }

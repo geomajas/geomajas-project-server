@@ -17,7 +17,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -69,7 +69,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	protected boolean shift;
 
-	private ScreenContainer container;
+	private VectorContainer container;
 
 	@Inject
 	private GeometryFactory factory;
@@ -214,7 +214,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		rectangle.setHeight((int) height);
 	}
 
-	private ScreenContainer getContainer() {
+	private VectorContainer getContainer() {
 		if (container == null) {
 			container = mapPresenter.addScreenContainer();
 		}

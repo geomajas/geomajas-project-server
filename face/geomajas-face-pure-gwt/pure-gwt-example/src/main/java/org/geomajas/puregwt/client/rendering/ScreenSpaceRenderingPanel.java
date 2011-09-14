@@ -15,7 +15,7 @@ import org.geomajas.puregwt.client.ContentPanel;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.gfx.ScreenContainer;
+import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -39,7 +39,7 @@ public class ScreenSpaceRenderingPanel extends ContentPanel {
 
 	private MapPresenter mapPresenter;
 
-	private ScreenContainer container;
+	private VectorContainer container;
 
 	public String getTitle() {
 		return "Drawing in screen space";
