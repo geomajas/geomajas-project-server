@@ -12,6 +12,9 @@
 package org.geomajas.puregwt.client.map.gfx;
 
 import org.vaadin.gwtgraphics.client.Group;
+import org.vaadin.gwtgraphics.client.VectorObject;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Implementation of the {@link VectorContainer} interface.
@@ -19,5 +22,25 @@ import org.vaadin.gwtgraphics.client.Group;
  * @author Pieter De Graef
  */
 public class VectorGroup extends Group implements VectorContainer {
-	
+
+	@Override
+	public VectorObject add(VectorObject vo) {
+		if (vo instanceof Group) {
+			if (hasScale() || hasTranslation()) {
+				GWT.log("WARNING: nested groups with scaling/translation become invisible in IE !");
+			}
+		}
+		return super.add(vo);
+	}
+
+	@Override
+	public VectorObject insert(VectorObject vo, int beforeIndex) {
+		if (vo instanceof Group) {
+			if (hasScale() || hasTranslation()) {
+				GWT.log("WARNING: nested groups with scaling/translation become invisible in IE !");
+			}
+		}
+		return super.insert(vo, beforeIndex);
+	}
+
 }

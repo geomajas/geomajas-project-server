@@ -79,7 +79,7 @@ public class MapWidgetTestImpl implements MapWidget {
 		return null;
 	}
 
-	public VectorContainer getWorldVectorContainer() {
+	public List<VectorContainer> getWorldVectorContainers() {
 		return null;
 	}
 

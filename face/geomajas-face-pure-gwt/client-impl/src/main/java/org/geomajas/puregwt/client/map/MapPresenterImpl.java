@@ -114,11 +114,11 @@ public final class MapPresenterImpl implements MapPresenter {
 		VectorContainer getMapVectorContainer();
 
 		/**
-		 * Returns the holder container of user-defined world-space objects.
+		 * Returns the list of user-defined containers for world-space objects.
 		 * 
 		 * @return the container
 		 */
-		VectorContainer getWorldVectorContainer();
+		List<VectorContainer> getWorldVectorContainers();
 
 		/**
 		 * Returns a new user-defined container for screen space objects.
@@ -460,18 +460,24 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			display.getWorldVectorContainer().setScale(matrix.getXx(), matrix.getYy());
-			display.getWorldVectorContainer().setTranslation(matrix.getDx(), matrix.getDy());
+			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
+				vectorContainer.setScale(matrix.getXx(), matrix.getYy());
+				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
+			}
 		}
 
 		public void onViewPortScaled(ViewPortScaledEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			display.getWorldVectorContainer().setScale(matrix.getXx(), matrix.getYy());
+			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
+				vectorContainer.setScale(matrix.getXx(), matrix.getYy());
+			}
 		}
 
 		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			display.getWorldVectorContainer().setTranslation(matrix.getDx(), matrix.getDy());
+			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
+				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
+			}
 		}
 	}
 

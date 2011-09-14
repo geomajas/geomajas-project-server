@@ -69,12 +69,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// Container for vector layers (SVG/VML):
 	private VectorGroup layerVectorContainer;
 
-	// Container for user-defined world containers:
-	private VectorGroup worldVectorContainer;
-
-	// Container for user-defined screen containers:
-	private VectorGroup screenVectorContainer;
-
 	// Container for map gadgets:
 	private VectorGroup gadgetVectorContainer;
 
@@ -105,14 +99,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
 		drawingArea.add(layerVectorContainer);
-
-		// Second child within the vector drawing area is a group for user-defined world containers:
-		worldVectorContainer = new VectorGroup();
-		drawingArea.add(worldVectorContainer);
-
-		// Second child within the vector drawing area is a group for user-defined screen containers:
-		screenVectorContainer = new VectorGroup();
-		drawingArea.add(screenVectorContainer);
 
 		// Third child within the vector drawing area is a group for map gadget containers:
 		gadgetVectorContainer = new VectorGroup();
@@ -154,20 +140,20 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		return layerVectorContainer;
 	}
 
-	public VectorContainer getWorldVectorContainer() {
-		return worldVectorContainer;
+	public List<VectorContainer> getWorldVectorContainers() {
+		return worldContainers;
 	}
 
 	public VectorContainer getNewScreenContainer() {
 		VectorGroup container = new VectorGroup();
-		screenVectorContainer.add(container);
+		drawingArea.add(container);
 		screenContainers.add(container);
 		return container;
 	}
 
 	public VectorContainer getNewWorldContainer() {
 		VectorGroup container = new VectorGroup();
-		worldVectorContainer.add(container);
+		drawingArea.add(container);
 		worldContainers.add(container);
 		return container;
 	}
@@ -175,11 +161,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public boolean removeVectorContainer(VectorContainer container) {
 		if (container instanceof Group) {
 			if (worldContainers.contains(container)) {
-				worldVectorContainer.remove((Group) container);
+				drawingArea.remove((Group) container);
 				worldContainers.remove(container);
 				return true;
 			} else if (screenContainers.contains(container)) {
-				screenVectorContainer.remove((Group) container);
+				drawingArea.remove((Group) container);
 				screenContainers.remove(container);
 				return true;
 			}
@@ -190,10 +176,10 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public boolean bringToFront(VectorContainer container) {
 		if (container instanceof Group) {
 			if (worldContainers.contains(container)) {
-				worldVectorContainer.bringToFront((Group) container);
+				drawingArea.bringToFront((Group) container);
 				return true;
 			} else if (screenContainers.contains(container)) {
-				screenVectorContainer.bringToFront((Group) container);
+				drawingArea.bringToFront((Group) container);
 				return true;
 			}
 		}
