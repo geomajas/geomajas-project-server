@@ -69,6 +69,8 @@ public interface MapPresenter {
 	 * New containers are automatically drawn on top of all other containers - that includes both world and screen
 	 * containers.
 	 * 
+	 * WARNING: adding subgroups to the returned result does not work in IE !
+	 * 
 	 * @return Returns the world vector container.
 	 */
 	VectorContainer addWorldContainer();
