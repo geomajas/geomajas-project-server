@@ -10,8 +10,7 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -20,15 +19,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-plugin-archetype</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>maven-archetype</packaging>
 	<name>Geomajas plugin archetype</name>
 	<description>Geomajas plugin archetype</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-plugin-archetype</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-plugin-archetype</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-plugin-archetype</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-archetype-1.0.0</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-archetype-1.0.0</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/tags/geomajas-plugin-archetype-1.0.0</url>
 	</scm>
 
 	<developers>
