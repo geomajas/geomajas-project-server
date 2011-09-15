@@ -110,7 +110,6 @@ import org.geotools.styling.StyleFactory;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
-import org.jibx.runtime.JiBXException;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -219,13 +218,13 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			SLDParser parser = new SLDParser(styleFactory);
 			parser.setInput(new StringReader(sw.toString()));
 			Style[] styles = parser.readXML();
-			if(styles.length != 0){
+			if (styles.length != 0) {
 				return styles[0];
 			} else {
-				throw new LayerException(ExceptionCode.INVALID_USER_STYLE);
+				throw new LayerException(ExceptionCode.INVALID_USER_STYLE, userStyleInfo.getName());
 			}
-		} catch (JiBXException e) {
-			throw new LayerException(ExceptionCode.INVALID_USER_STYLE);
+		} catch (Exception e) {
+			throw new LayerException(ExceptionCode.INVALID_USER_STYLE, userStyleInfo.getName());
 		}
 	}
 

@@ -168,7 +168,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 			// unfortunately the data needs to be there for the security tests and can only be removed later
 			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
 				String labelAttr = labelStyle.getLabelAttributeName();
-				if(LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(labelAttr)){
+				if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(labelAttr)) {
 					res.setLabel(featureModel.getId(feature));
 				} else {
 					Attribute<?> attribute = featureModel.getAttribute(feature, labelAttr);

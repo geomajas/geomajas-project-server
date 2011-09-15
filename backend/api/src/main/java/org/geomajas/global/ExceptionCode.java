@@ -158,5 +158,9 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int INVALID_USER_STYLE = 79;
+	/**
+	 * @since 1.10.0
+	 */
+	int STYLE_NOT_FOUND = 79;
 
 }
