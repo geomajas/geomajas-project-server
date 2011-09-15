@@ -117,34 +117,47 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 				break;
 			case POINT:
 			case MULTIPOINT:
-				SymbolInfo symbol = styleInfo.getSymbol();
-				if (symbol.getImage() != null) {
-					try {
-						Image pointImage = Image.getInstance(symbol.getImage().getHref());
-						context.drawImage(pointImage, iconRect, iconRect);
-					} catch (Exception ex) {
-						log.error("Not able to create image for POINT Symbol", ex);
-					}
-				} else if (symbol.getRect() != null) {
-					context.fillRectangle(iconRect, fillColor);
-					context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
-				} else {
-					context.fillEllipse(iconRect, fillColor);
-					context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
-				}
+				drawPoint(context, iconRect, fillColor, strokeColor);
 				break;
 			case LINESTRING:
 			case MULTILINESTRING:
-				context.drawRelativePath(new float[] {0f, 0.75f, 0.25f, 1f},
-						new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
+				drawLine(context, iconRect, strokeColor, dashArray);
 				break;
 			case POLYGON:
 			case MULTIPOLYGON:
 				context.fillRectangle(iconRect, fillColor);
 				context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
 				break;
+			case GEOMETRY:
+				drawPoint(context, iconRect, fillColor, strokeColor);
+				drawLine(context, iconRect, strokeColor, dashArray);
 			default:
 				log.warn("Cannot draw unknown layerType " + layerType);
+		}
+	}
+
+	private void drawLine(PdfContext context, Rectangle iconRect, Color strokeColor, float[] dashArray) {
+		float baseWidth = iconRect.getWidth() / 10;
+		context.drawRelativePath(new float[] {0f, 0.75f, 0.25f, 1f},
+				new float[]{0f, 0.25f, 0.75f, 1f}, iconRect, strokeColor, baseWidth * 2, dashArray);
+	}
+
+	private void drawPoint(PdfContext context, Rectangle iconRect, Color fillColor, Color strokeColor) {
+		float baseWidth = iconRect.getWidth() / 10;
+		SymbolInfo symbol = styleInfo.getSymbol();
+		if (symbol.getImage() != null) {
+			try {
+				Image pointImage = Image.getInstance(symbol.getImage().getHref());
+				context.drawImage(pointImage, iconRect, iconRect);
+			} catch (Exception ex) {
+				log.error("Not able to create image for POINT Symbol", ex);
+			}
+		} else if (symbol.getRect() != null) {
+			context.fillRectangle(iconRect, fillColor);
+			context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
+		} else {
+			context.fillEllipse(iconRect, fillColor);
+			context.strokeEllipse(iconRect, strokeColor, baseWidth / 2);
 		}
 	}
 

@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.plugin.printing.client.util.PrintingLayout;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
@@ -106,7 +107,7 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
 				info.setStyleInfo(layerInfo.getNamedStyleInfo());
 				info.setFilter(vectorLayer.getFilter());
-				info.setLabelsVisible(vectorLayer.isLabeled());
+				info.setLabelsVisible(vectorLayer.isLabelsShowing());
 				info.setSelected(vectorLayer.isSelected());
 				Set<String> features = vectorLayer.getSelectedFeatures();
 				info.setSelectedFeatureIds(features.toArray(new String[features.size()]));
@@ -130,9 +131,9 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 			northarrow.setImagePath("/images/northarrow.gif");
 			northarrow.getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.RIGHT);
 			northarrow.getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
-			northarrow.getLayoutConstraint().setMarginX(20);
-			northarrow.getLayoutConstraint().setMarginY(20);
-			northarrow.getLayoutConstraint().setWidth(10);
+			northarrow.getLayoutConstraint().setMarginX((float) PrintingLayout.templateMarginX);
+			northarrow.getLayoutConstraint().setMarginY((float) PrintingLayout.templateMarginY);
+			northarrow.getLayoutConstraint().setWidth((float) PrintingLayout.templateNorthArrowWidth);
 			northarrow.setTag("arrow");
 			return northarrow;
 		} else {
@@ -144,9 +145,9 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 	protected LegendComponentInfo buildLegend() {
 		LegendComponentInfo legend = super.buildLegend();
 		FontStyleInfo style = new FontStyleInfo();
-		style.setFamily("Dialog");
-		style.setStyle("Italic");
-		style.setSize(14);
+		style.setFamily(PrintingLayout.templateLegendFontFamily);
+		style.setStyle(PrintingLayout.templateLegendFontStyle);
+		style.setSize((int) PrintingLayout.templateLegendFontSize);
 		legend.setFont(style);
 		legend.setMapId(mapModel.getMapInfo().getId());
 		legend.setTag("legend");
@@ -168,15 +169,8 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 					icon.setLabel(text);
 					icon.setStyleInfo(styleDefinition);
 					icon.setLayerType(layerInfo.getLayerType());
-					LabelComponentInfo legendLabel = new LabelComponentInfo();
-					legendLabel.setBackgroundColor("0xFFFFFF");
-					legendLabel.setBorderColor("0x000000");
-					legendLabel.setFontColor("0x000000");
-					legendLabel.setFont(legend.getFont());
-					legendLabel.setText(text);
-					legendLabel.setTextOnly(true);
 					item.addChild(icon);
-					item.addChild(legendLabel);
+					item.addChild(getLegendLabel(legend, text));
 					legend.addChild(item);
 				}
 			} else if (layer instanceof RasterLayer && layer.isShowing()) {
@@ -186,19 +180,23 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 				LegendIconComponentInfo icon = new LegendIconComponentInfo();
 				icon.setLabel(layerInfo.getLabel());
 				icon.setLayerType(layerInfo.getLayerType());
-				LabelComponentInfo legendLabel = new LabelComponentInfo();
-				legendLabel.setFont(legend.getFont());
-				legendLabel.setBackgroundColor("0xFFFFFF");
-				legendLabel.setBorderColor("0x000000");
-				legendLabel.setFontColor("0x000000");
-				legendLabel.setText(layerInfo.getLabel());
-				legendLabel.setTextOnly(true);
 				item.addChild(icon);
-				item.addChild(legendLabel);
+				item.addChild(getLegendLabel(legend, layerInfo.getLabel()));
 				legend.addChild(item);
 			}
 		}
 		return legend;
+	}
+
+	private LabelComponentInfo getLegendLabel(LegendComponentInfo legend, String text) {
+		LabelComponentInfo legendLabel = new LabelComponentInfo();
+		legendLabel.setBackgroundColor(PrintingLayout.templateLegendBackgroundColor);
+		legendLabel.setBorderColor(PrintingLayout.templateLegendBorderColor);
+		legendLabel.setFontColor(PrintingLayout.templateLegendColor);
+		legendLabel.setFont(legend.getFont());
+		legendLabel.setText(text);
+		legendLabel.setTextOnly(true);
+		return legendLabel;
 	}
 
 	@Override
