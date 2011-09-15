@@ -13,6 +13,7 @@ package org.geomajas.plugin.geocoder.client;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.smartgwt.client.types.KeyNames;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -20,7 +21,7 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
@@ -73,7 +74,7 @@ public class GeocoderWidget extends DynamicForm {
 
 		textItem.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent keyPressEvent) {
-				if ("enter".equalsIgnoreCase(keyPressEvent.getKeyName())) {
+				if (KeyNames.ENTER.equals(keyPressEvent.getKeyName())) {
 					presenter.goToLocation((String) textItem.getValue());
 				}
 			}

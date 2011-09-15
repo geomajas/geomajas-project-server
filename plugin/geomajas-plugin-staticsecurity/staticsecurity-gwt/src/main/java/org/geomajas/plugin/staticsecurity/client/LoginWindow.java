@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.staticsecurity.client;
 
+import com.smartgwt.client.types.KeyNames;
 import org.geomajas.annotation.Api;
 import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
 import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
@@ -285,7 +286,7 @@ public class LoginWindow extends Window implements LoginHandler {
 		loginForm.addItemKeyPressHandler(new ItemKeyPressHandler() {
 
 			public void onItemKeyPress(ItemKeyPressEvent event) {
-				if ("Enter".equals(event.getKeyName())) {
+				if (KeyNames.ENTER.equals(event.getKeyName())) {
 					login();
 				}
 			}

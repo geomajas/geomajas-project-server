@@ -13,6 +13,7 @@ package org.geomajas.plugin.staticsecurity.client;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.KeyNames;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.HTMLFlow;
@@ -204,7 +205,7 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 		loginForm.addItemKeyPressHandler(new ItemKeyPressHandler() {
 
 			public void onItemKeyPress(ItemKeyPressEvent event) {
-				if ("Enter".equals(event.getKeyName())) {
+				if (KeyNames.ENTER.equals(event.getKeyName())) {
 					login();
 				}
 			}

@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.smartgwt.client.types.KeyNames;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
@@ -212,7 +213,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 */
 	public void onKeyPress(KeyPressEvent event) {
 		String name = event.getKeyName();
-		if ("enter".equalsIgnoreCase(name)) {
+		if (KeyNames.ENTER.equals(name)) {
 			reorderValues();
 		}
 	}
@@ -264,7 +265,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	private void init() {
 		DynamicForm form = new DynamicForm();
 		scaleItem = new ComboBoxItem();
-		scaleItem.setTitle(I18nProvider.getToolbar().scaleSelect());
+		scaleItem.setTitle(I18nProvider.getToolbar().scaleSelectTitle());
 		scaleItem.setValidators(new ScaleValidator());
 		scaleItem.setValidateOnChange(true);
 		scaleItem.addKeyPressHandler(this);
