@@ -35,7 +35,8 @@
     <title>Dependencies</title>
 
     <para>Make sure you include the correct version of the plug-in in your
-    project. Use the following excerpt (with the correct version) in the
+    project. This can be done either by including a reference to geomajas-dep
+    or the following excerpt (with the correct version) in the
     dependencyManagement section of your project:</para>
 
     <informalexample>
@@ -55,14 +56,58 @@
     include this excerpt <emphasis>before</emphasis> the geomajas-dep
     dependency.</para>
 
-    <para>You can now include the actual dependency without explicit
-    version.</para>
+    <para>You can now include the actual dependency without explicit version.
+    You will probably need the dependency for the face you are using. In case
+    of the GWT face, this is:</para>
 
     <informalexample>
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-rasterizing&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-plugin-staticsecurity-gwt&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
     </informalexample>
+
+    <para>If there is no specific module for the face you are using, you
+    should include the core module:</para>
+
+    <informalexample>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-staticsecurity&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </informalexample>
+  </section>
+
+  <section>
+    <title>Use staticsecurity security service</title>
+
+    <para>To enable the use of the staticsecurity security service, you have
+    to replace the "security.securityInfo" bean with your own version. When
+    such a bean is not defined, nobody is allowed to do anything.</para>
+
+    <xi:include href="listing/UseStaticsecurity.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The configuration actually defines two services. The second
+    (LoginAllowedSecurityService) assures that everybody is allowed access to
+    the login command which is provided by the plug-in. </para>
+
+    <para>The actual staticsecurity security service requires you to define a
+    bean of the class
+    org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo to be
+    defined in your application context. All configuration is read from that
+    bean. Details are given in the following sections.</para>
+  </section>
+
+  <section>
+    <title>Configure users</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Configure policies</title>
+
+    <para></para>
   </section>
 </chapter>

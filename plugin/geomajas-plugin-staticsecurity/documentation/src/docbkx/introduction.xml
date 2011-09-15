@@ -9,11 +9,17 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The staticsecurity plug-in allows you to define the policies which
+  apply for certain people. The policies are statically defined in a XML file
+  (hence the name). These policies can be linked to users which are aither
+  also defined in the XML file or which are obtained through code (for example
+  linking to a user database or LDAP store).</para>
+
+  <para>This plug-in also includes an example which adds a custom policy and
+  makes that available in the SecurityContext.</para>
 </chapter>

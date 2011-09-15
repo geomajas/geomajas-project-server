@@ -46,8 +46,12 @@ public class Application implements EntryPoint {
 	private Legend legend;
 
 	public void onModuleLoad() {
-		GwtCommandDispatcher.getInstance().setTokenRequestHandler(new StaticSecurityTokenRequestHandler(
-				"Possible users are 'luc' and 'marino'. The password is the same as the login."));
+		// @extract-start TokenRequestHandler, Set the token request handler
+		GwtCommandDispatcher.getInstance().setTokenRequestHandler(
+				new StaticSecurityTokenRequestHandler(
+				"Possible users are 'luc' and 'marino'. " +
+						"The password is the same as the login."));
+		// @extract-end
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();

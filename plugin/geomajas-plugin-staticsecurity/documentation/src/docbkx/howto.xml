@@ -9,11 +9,16 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-howto">
   <title>How-to</title>
 
   <para></para>
+
+  <section>
+    <title>Add custom policies with a custom SecurityContext</title>
+
+    <para></para>
+  </section>
 </chapter>

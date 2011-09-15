@@ -15,7 +15,9 @@
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>
 	<inherits name="com.smartclient.theme.graphite.Graphite"/>
 
+	<!-- @extract-start GwtXml, Include the plug-in in your .gwt.xml file -->
 	<inherits name="org.geomajas.plugin.staticsecurity.StaticSecurity"/>
+	<!-- @extract-end -->
 
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
