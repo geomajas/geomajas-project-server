@@ -131,6 +131,7 @@ public class LegendIconComponentImpl extends AbstractPrintComponent<LegendIconCo
 			case GEOMETRY:
 				drawPoint(context, iconRect, fillColor, strokeColor);
 				drawLine(context, iconRect, strokeColor, dashArray);
+				break;
 			default:
 				log.warn("Cannot draw unknown layerType " + layerType);
 		}

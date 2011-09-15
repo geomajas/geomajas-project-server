@@ -114,19 +114,19 @@
 				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-hibernate</artifactId>
-				<version>1.7.2</version>
+				<version>1.8.1</version>
 			</dependency>
 			<dependency>
 				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>1.7.1</version>
+				<version>1.8.0</version>
 			</dependency>
 			<dependency>
 				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
-				<version>1.7.1</version>
+				<version>1.8.0</version>
 			</dependency>
 
 			<dependency>

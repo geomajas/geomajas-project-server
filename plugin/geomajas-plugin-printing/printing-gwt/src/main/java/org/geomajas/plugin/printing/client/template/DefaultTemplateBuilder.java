@@ -44,7 +44,7 @@ import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
  * 
  * @author Jan De Moerloose
  */
-public class DefaultTemplateBuilder extends TemplateBuilder {
+public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 	private double pageWidth;
 
@@ -145,9 +145,9 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 	protected LegendComponentInfo buildLegend() {
 		LegendComponentInfo legend = super.buildLegend();
 		FontStyleInfo style = new FontStyleInfo();
-		style.setFamily(PrintingLayout.templateLegendFontFamily);
-		style.setStyle(PrintingLayout.templateLegendFontStyle);
-		style.setSize((int) PrintingLayout.templateLegendFontSize);
+		style.setFamily(PrintingLayout.templateDefaultFontFamily);
+		style.setStyle(PrintingLayout.templateDefaultFontStyle);
+		style.setSize((int) PrintingLayout.templateDefaultFontSize);
 		legend.setFont(style);
 		legend.setMapId(mapModel.getMapInfo().getId());
 		legend.setTag("legend");
@@ -190,9 +190,9 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 
 	private LabelComponentInfo getLegendLabel(LegendComponentInfo legend, String text) {
 		LabelComponentInfo legendLabel = new LabelComponentInfo();
-		legendLabel.setBackgroundColor(PrintingLayout.templateLegendBackgroundColor);
-		legendLabel.setBorderColor(PrintingLayout.templateLegendBorderColor);
-		legendLabel.setFontColor(PrintingLayout.templateLegendColor);
+		legendLabel.setBackgroundColor(PrintingLayout.templateDefaultBackgroundColor);
+		legendLabel.setBorderColor(PrintingLayout.templateDefaultBorderColor);
+		legendLabel.setFontColor(PrintingLayout.templateDefaultColor);
 		legendLabel.setFont(legend.getFont());
 		legendLabel.setText(text);
 		legendLabel.setTextOnly(true);

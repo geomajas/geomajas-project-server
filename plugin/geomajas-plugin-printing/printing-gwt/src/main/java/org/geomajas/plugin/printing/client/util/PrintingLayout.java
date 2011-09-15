@@ -51,17 +51,17 @@ public final class PrintingLayout {
 	/** Width of the north arrow in the template. */
 	public static double templateNorthArrowWidth = 10;
 	/** Font family for the legend in the template. */
-	public static String templateLegendFontFamily = "Dialog";
+	public static String templateDefaultFontFamily = "Dialog";
 	/** Font style for the legend in the template. */
-	public static String templateLegendFontStyle = "Italic";
+	public static String templateDefaultFontStyle = "Italic";
 	/** Font size for the legend in the template. */
-	public static double templateLegendFontSize = 14;
+	public static double templateDefaultFontSize = 14;
 	/** Background colour for the legend in the template. */
-	public static String templateLegendBackgroundColor = "0xFFFFFF";
+	public static String templateDefaultBackgroundColor = "0xFFFFFF";
 	/** Border colour for the legend in the template. */
-	public static String templateLegendBorderColor = "0x000000";
+	public static String templateDefaultBorderColor = "0x000000";
 	/** Font colour for the legend in the template. */
-	public static String templateLegendColor = "0x000000";
+	public static String templateDefaultColor = "0x000000";
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
