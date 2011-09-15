@@ -30,6 +30,8 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+
+import org.geomajas.gwt.client.util.HtmlBuilder;
 import org.geomajas.gwt.client.util.WidgetLayout;
 
 /**
@@ -139,7 +141,7 @@ public class ExceptionWindow extends Window implements CloseClickHandler {
 		message.setWidth100();
 		message.setHeight100();
 		message.setLayoutAlign(VerticalAlignment.TOP);
-		message.setContents(WidgetLayout.divStyle(WidgetLayout.exceptionWindowMessageStyle, error.getMessage()));
+		message.setContents(HtmlBuilder.divStyle(WidgetLayout.exceptionWindowMessageStyle, error.getMessage()));
 		topLayout.addMember(message);
 		layout.addMember(topLayout);
 
@@ -185,7 +187,7 @@ public class ExceptionWindow extends Window implements CloseClickHandler {
 		if (error.getExceptionCode() != 0) {
 			header += " (" + error.getExceptionCode() + ")";
 		}
-		content.append(WidgetLayout.divStyle(WidgetLayout.exceptionWindowDetailHeaderStyle, header));
+		content.append(HtmlBuilder.divStyle(WidgetLayout.exceptionWindowDetailHeaderStyle, header));
 		for (StackTraceElement el : error.getStackTrace()) {
 			String style =  WidgetLayout.exceptionWindowDetailTraceNormalStyle;
 			String line = el.toString();
@@ -203,7 +205,7 @@ public class ExceptionWindow extends Window implements CloseClickHandler {
 					line.startsWith("$Proxy")) {
 				style = WidgetLayout.exceptionWindowDetailTraceLessStyle;
 			}
-			content.append(WidgetLayout.divStyle(style, line));
+			content.append(HtmlBuilder.divStyle(style, line));
 		}
 		content.append(getDetails(error.getCause()));
 		return content.toString();

@@ -331,94 +331,31 @@ public final class WidgetLayout {
 	 */
 	public static void keepWindowInScreen(Window window) {
 		window.setKeepInParentRect(true);
-		int screenHeight = com.google.gwt.user.client.Window.getClientHeight();
-		int windowHeight = window.getHeight();
-		if (windowHeight + window.getAbsoluteTop() > screenHeight) {
-			int top = screenHeight - windowHeight;
-			if (top >= 0) {
-				window.setPageTop(top);
-			} else {
-				window.setHeight(screenHeight - WidgetLayout.windowOffset);
-				window.setPageTop(WidgetLayout.windowOffset);
+		if (null != window.getHeightAsString()) {
+			int screenHeight = com.google.gwt.user.client.Window.getClientHeight();
+			int windowHeight = window.getHeight();
+			if (windowHeight + window.getAbsoluteTop() > screenHeight) {
+				int top = screenHeight - windowHeight;
+				if (top >= 0) {
+					window.setPageTop(top);
+				} else {
+					window.setHeight(screenHeight - WidgetLayout.windowOffset);
+					window.setPageTop(WidgetLayout.windowOffset);
+				}
+			}
+		}
+		if (null != window.getWidthAsString()) {
+			int screenWidth = com.google.gwt.user.client.Window.getClientWidth();
+			int windowWidth = window.getWidth();
+			if (windowWidth + window.getAbsoluteLeft() > screenWidth) {
+				int left = screenWidth - windowWidth;
+				if (left >= 0) {
+					window.setPageLeft(left);
+				} else {
+					window.setWidth(screenWidth - WidgetLayout.windowOffset);
+					window.setPageLeft(WidgetLayout.windowOffset);
+				}
 			}
 		}
 	}
-
-	/**
-	 * Build a HTML DIV with given style for a string.
-	 *
-	 * @param style style for div (plain CSS)
-	 * @param content content string
-	 * @return HTML DIV element as string
-	 */
-	public static String divStyle(String style, String content) {
-		return "<div style='" + style + "'>" + htmlEncode(content) + "</div>";
-	}
-	
-	/**
-	 * Build a String containing a HTML opening tag, content and closing tag with given CSS class and/or style.
-	 *
-	 * @param tag String name of HTML tag
-	 * @param clazz CSS class of the tag
-	 * @param style style for tag (plain CSS)
-	 * @param content content string
-	 * @return HTML tag element as string
-	 */
-	public static String getTagString(String tag, String clazz , String style, String content) {
-		return openTag(tag, clazz, style, content) + closeTag(tag);
-	}
-	
-	/**
-	 * Build a String containing a HTML opening tag with given CSS class and/or style and concats the given content. 
-	 * Content is prepared with {@link WidgetLayout#htmlEncode(String)}.
-	 *
-	 * @param tag String name of HTML tag
-	 * @param clazz CSS class of the tag
-	 * @param style style for tag (plain CSS)
-	 * @param content content string
-	 * @return HTML tag element as string
-	 */
-	public static String openTag(String tag, String clazz, String style, String content) {
-		String result = "<" + tag;
-		if (!"".equals(clazz)) {
-			result += " class='" + clazz + "'";
-		}
-		if (!"".equals(style)) {
-			result += " style='" + style + "'";
-		}
-		result += ">";
-		if (!"".equals(content)) {
-			result += htmlEncode(content);
-		}
-		return result;
-	}
-	
-	/**
-	 * Build a HTML closing tag for the given tag name string.
-	 *
-	 * @param tag String name of HTML tag
-	 * @return HTML tag element as string
-	 */
-	public static String closeTag(String tag) {
-		return "</" + tag + ">";
-	}
-
-	/**
-	 * Build a HTML DIV with given CSS class for a string.
-	 *
-	 * @param clazz class for div element
-	 * @param content content string
-	 * @return HTML DIV element as string
-	 */
-	public static String divClass(String clazz, String content) {
-		return "<div class='" + clazz + "'>" + htmlEncode(content) + "</div>";
-	}
-
-	public static String htmlEncode(String content) {
-		if (null == content) {
-			return "";
-		}
-		return content.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
-	}
-
 }
