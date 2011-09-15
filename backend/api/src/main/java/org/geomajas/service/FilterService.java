@@ -98,7 +98,7 @@ public interface FilterService {
 	 * Create a filter that checks that passes all features with the specified geometry type.
 	 * 
 	 * @param geomName
-	 *            name of geometry attribute
+	 *            name of geometry attribute, empty string will choose default geometry
 	 * @param geometryType
 	 *            the geometry type ('Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon' or
 	 *            'MultiPolygon', see {@link org.geotools.filter.function.FilterFunction_geometryType})

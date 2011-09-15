@@ -20,6 +20,8 @@ import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * <p>
  * Implementation of the normal GeoTools PropertyAccessorFactory factory. GeoTools can only handle the retrieval of
@@ -49,6 +51,7 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 		static final Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*(\\w+)"); // package private for test
 
 		public boolean canHandle(Object object, String xpath, Class target) {
+			// there is no need to check against the schema at this point, we will fail later
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
 			return (fm != null);
 		}
@@ -66,6 +69,8 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 					return fm.getId(object);
 				} else if (PROPERTY_PATTERN.matcher(xpath).matches()) {
 					return fm.getAttribute(object, xpath).getValue();
+				} else if ("".equals(xpath) && Geometry.class.isAssignableFrom(target)) {
+					return fm.getGeometry(object);
 				} else {
 					return null;
 				}

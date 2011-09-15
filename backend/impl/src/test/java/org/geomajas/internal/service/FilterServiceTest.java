@@ -182,6 +182,15 @@ public class FilterServiceTest {
 	}
 
 	@Test
+	public void testDefaultGeometryTypeFilter() throws GeomajasException, ParseException {
+		Polygon poly = (Polygon) wkt.read("POLYGON((0 0,1 0,1 1,0 1,0 0))");
+		Filter fid = filterService.createGeometryTypeFilter("", "Polygon");
+		TestFeature f = new TestFeature();
+		f.expectAndReturn("", poly);
+		Assert.assertTrue(fid.evaluate(f));
+	}
+
+	@Test
 	public void testLikeFilter() throws GeomajasException, ParseException {
 		Filter fid = filterService.createLikeFilter("a", "a*b");
 		TestFeature f = new TestFeature();
@@ -323,7 +332,7 @@ public class FilterServiceTest {
 		public Object get(String xpath, Class target) {
 			PathAndValue pav = expected.pop();
 			// fail if wrong property was accessed
-			Assert.assertEquals(xpath, pav.path);
+			Assert.assertEquals(pav.path, xpath);
 			return pav.value;
 		}
 
