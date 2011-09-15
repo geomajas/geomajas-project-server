@@ -19,11 +19,9 @@
 		<requiredProperty key="package">
 			<defaultValue>${groupId}</defaultValue>
 		</requiredProperty>
-		<!--
 		<requiredProperty key="artifactIdPrefix">
 			<defaultValue>geomajas-plugin-</defaultValue>
 		</requiredProperty>
-		-->
 	</requiredProperties>
 	<fileSets>
 		<fileSet filtered="true" encoding="UTF-8">

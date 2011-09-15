@@ -176,19 +176,187 @@
     <section id="pi-arch">
       <title>Using the plug-in archetype</title>
 
-      <para>TODO.....</para>
+      <para>You can easily create the skeleton of a plug-in using the Geomajas
+      plug-in archetype Archetype.</para>
+
+      <orderedlist>
+        <listitem>
+          <para><emphasis>Step1</emphasis>: Go to the folder where you want to
+          create the plug-in, and execute the following command:</para>
+
+          <example>
+            <title>Create project using GWT Maven archetype</title>
+
+            <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
+          </example>
+
+          <para>This will create the template project, using the latest stable
+          release. If you want to use the latest snapshot, use the following
+          command instead:</para>
+
+          <example>
+            <title>Create project using GWT Maven archetype</title>
+
+            <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting>
+          </example>
+
+          <para>Maven will now prompt the user for input.</para>
+
+          <note>
+            <para>If anything fails with these maven commands, you need to
+            check the output to check the problem. One typical problem is the
+            need to define a proxy to allow maven to access sites in the
+            outside world. See the <ulink
+            url="http://maven.apache.org/guides/mini/guide-proxies.html">http://maven.apache.org/guides/mini/guide-proxies.html</ulink>
+            for details.</para>
+          </note>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Step2</emphasis>: Maven will display the full list
+          of available archetypes. Make sure you select the correct one:
+          <emphasis role="bold">geomajas-plugin-archetype</emphasis>. When
+          using the archetypeCatalog mentioned above, this should be number 2.
+          When getting the archetype from central (and your maven uses the
+          latest maven-archetype-plugin) you can enter geomajas to filter the
+          list of archetypes.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Step3</emphasis>: Next maven asks for the <emphasis
+          role="bold">groupId</emphasis>. Often the package name is used. For
+          a generic plug-in which is included in trunk this should be
+          "org.geomajas.plugin", for a layer "org.geomajas.layer", for a
+          widget plug-in "org.geomajas.widget" but for a face "org.geomajas"
+          (this is not consistent because of historic reasons).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Step4</emphasis>: Next maven asks for the <emphasis
+          role="bold">artifactId</emphasis>. This represents the simple name
+          of your plug-in. In the example below this is "common-gwt". Note
+          that a prefix will be added to the artifactId by the archetype. This
+          is controlled later.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Step5</emphasis>: Next maven asks for the first
+          version for your application. This needs to be changed to
+          "1.0.0-SNAPSHOT" to comply with the versioning normally used in
+          Geomajas.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Step6</emphasis>: Next maven asks for the base
+          package wherein to place Java files. By default this is the same as
+          the groupId. For plug-ins included in the project this should be
+          groupId.artifactId.</para>
+        </listitem>
+
+        <listitem>
+          <para>Step7: Maven asks you to confirm the parameters. Revise these
+          and approve if everything is correct. Note that it also displayed
+          the value for artifactIdPrefix. Indicate no when this should not be
+          "geomajas-plugin-" (similar rules as above, it should be either
+          "geomajas-plugin-" or "geomajas-face-" or "geomajas-widget-" or
+          geomajas-layer-" for inclusion in the Geomajas project itself, note
+          the ending dash).</para>
+        </listitem>
+
+        <listitem>
+          <para>The project is now created.</para>
+        </listitem>
+      </orderedlist>
+
+      <tip>
+        <para>You have now create a Geomajas template project! It is best to
+        continue by testing if everything went well.</para>
+      </tip>
+
+      <para>Example of full output for building a plug-in. In this case, some
+      dummy data was first entered as the artifactIdPrefix needed to be
+      changed. </para>
+
+      <programlisting>joachim@joachim-E6320:~/temp$ mvn archetype:generate -DarchetypeCatalog=local
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] &gt;&gt;&gt; maven-archetype-plugin:2.0:generate (default-cli) @ standalone-pom &gt;&gt;&gt;
+[INFO] 
+[INFO] &lt;&lt;&lt; maven-archetype-plugin:2.0:generate (default-cli) @ standalone-pom &lt;&lt;&lt;
+[INFO] 
+[INFO] --- maven-archetype-plugin:2.0:generate (default-cli) @ standalone-pom ---
+[INFO] Generating project in Interactive mode
+[INFO] No archetype defined. Using maven-archetype-quickstart (org.apache.maven.archetypes:maven-archetype-quickstart:1.0)
+Choose archetype:
+1: local -&gt; geomajas-gwt-archetype (Geomajas GWT application archetype)
+2: local -&gt; geomajas-plugin-archetype (Geomajas plugin archetype)
+Choose a number: : 2
+Define value for property 'groupId': : gid
+Define value for property 'artifactId': : aid
+Define value for property 'version':  1.0-SNAPSHOT: : 
+Define value for property 'package':  gid: : 
+[INFO] Using property: artifactIdPrefix = geomajas-plugin-
+Confirm properties configuration:
+groupId: gid
+artifactId: aid
+version: 1.0-SNAPSHOT
+package: gid
+artifactIdPrefix: geomajas-plugin-
+ Y: : n
+Define value for property 'groupId': : org.geomajas
+Define value for property 'artifactId': : common-gwt
+Define value for property 'version':  1.0-SNAPSHOT: : 1.0.0-SNAPSHOT
+Define value for property 'package':  org.geomajas: : org.geomajas.gwt
+Define value for property 'artifactIdPrefix':  geomajas-plugin-: : geomajas-face
+Confirm properties configuration:
+groupId: org.geomajas
+artifactId: common-gwt
+version: 1.0.0-SNAPSHOT
+package: org.geomajas.gwt
+artifactIdPrefix: geomajas-face-
+ Y: : 
+[INFO] Parent element not overwritten in /home/joachim/temp/common-gwt/common-gwt/pom.xml
+[INFO] Parent element not overwritten in /home/joachim/temp/common-gwt/common-gwt-gwt/pom.xml
+[INFO] Parent element not overwritten in /home/joachim/temp/common-gwt/documentation/pom.xml
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 50.040s
+[INFO] Finished at: Thu Sep 15 13:29:46 CEST 2011
+[INFO] Final Memory: 7M/118M
+[INFO] ------------------------------------------------------------------------</programlisting>
     </section>
 
     <section id="pi-struct">
       <title>Plug-in structure</title>
 
-      <para>TODO.....</para>
+      <para>The created plug-in contains a documentation module, a core module
+      and a module for the GWT face. You can remove the "-gwt" module if that
+      does not make sense for your plug-in.</para>
     </section>
 
     <section id="pi-depdec">
       <title>Plug-in declaration and dependencies</title>
 
-      <para>TODO.....</para>
+      <para>As a reminder all dependencies should always be included in the
+      dependencyManagement section in the parent pom for your project (that is
+      -all module). You should also declare all the modules from the plug-in
+      itself there. This was the version information is maintained in one
+      place only. The child modules should not specify any versions (with the
+      possible exception of -example modules).</para>
+
+      <para>Note that the geomajas-dep dependency should only be used in
+      -example modules.</para>
+
+      <para>Please be careful about setting scopes in the dependencyManagement
+      section. The -all module is normally used to fix the relevant version of
+      plug-ins. Setting the scope in the -all module will trickle through and
+      may overwrite the scope from another dependency (this may notable be a
+      problem for test dependencies).</para>
     </section>
   </chapter>
 
@@ -200,8 +368,8 @@
 
     <para>For the existing layers, the details about configuring you map to
     include that layer are included in the <link
-    linkend="backend-ch-configuration">configuration</link> section
-    above.</para>
+    linkend="backend-ch-configuration">section <xref
+    linkend="backend-ch-configuration" /></link>.</para>
 
     <section id="writlay">
       <title>Writing your own layer</title>
