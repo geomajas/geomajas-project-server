@@ -161,6 +161,6 @@ public interface ExceptionCode {
 	/**
 	 * @since 1.10.0
 	 */
-	int STYLE_NOT_FOUND = 79;
+	int STYLE_NOT_FOUND = 80;
 
 }

@@ -10,8 +10,10 @@
  */
 package org.geomajas.internal.service;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.CircleInfo;
@@ -33,7 +37,10 @@ import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.LayerType;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.ExternalGraphicInfo;
@@ -104,13 +111,32 @@ import org.geomajas.sld.geometry.OuterBoundaryIsInfo;
 import org.geomajas.sld.geometry.PointTypeInfo;
 import org.geomajas.sld.geometry.PolygonTypeInfo;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Rule;
 import org.geotools.styling.SLDParser;
+import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.style.GraphicalSymbol;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -129,16 +155,35 @@ import com.vividsolutions.jts.io.WKTWriter;
  */
 @Component
 public class StyleConverterServiceImpl implements StyleConverterService {
-	
+
 	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
-	
+
+	private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+
+	private StyleBuilder styleBuilder;
+
+	private final Logger log = LoggerFactory.getLogger(StyleConverterServiceImpl.class);
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	@Autowired
+	private FilterService filterService;
+
 	public StyleFactory getStyleFactory() {
 		return styleFactory;
 	}
 
-	
 	public void setStyleFactory(StyleFactory styleFactory) {
 		this.styleFactory = styleFactory;
+	}
+
+	public FilterFactory getFilterFactory() {
+		return filterFactory;
+	}
+
+	public void setFilterFactory(FilterFactory filterFactory) {
+		this.filterFactory = filterFactory;
 	}
 
 	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
@@ -228,6 +273,44 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
+	public Rule convert(RuleInfo ruleInfo) throws LayerException {
+		UserStyleInfo styleInfo = new UserStyleInfo();
+		FeatureTypeStyleInfo fts = new FeatureTypeStyleInfo();
+		fts.getRuleList().add(ruleInfo);
+		styleInfo.getFeatureTypeStyleList().add(fts);
+		Style style = convert(styleInfo);
+		return style.featureTypeStyles().get(0).rules().get(0);
+	}
+
+	public Style convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException {
+		StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
+		Style style = styleBuilder.createStyle();
+
+		// list of rules
+		List<Rule> rules = new ArrayList<Rule>();
+		for (FeatureStyleInfo featureStyle : namedStyleInfo.getFeatureStyles()) {
+			// create the filter
+			Filter styleFilter = null;
+			if (featureStyle.getFormula() != null && featureStyle.getFormula().length() > 0) {
+				try {
+					styleFilter = filterService.parseFilter(featureStyle.getFormula());
+				} catch (GeomajasException e) {
+					throw new LayerException(ExceptionCode.FILTER_PARSE_PROBLEM, featureStyle.getFormula());
+				}
+			} else {
+				styleFilter = Filter.INCLUDE;
+			}
+			// create the rules
+			rules.addAll(createRules(layerType, styleFilter, featureStyle));
+			// create the label rule
+			TextSymbolizer textSymbolizer = createTextSymbolizer(namedStyleInfo.getLabelStyle(), layerType);
+			rules.add(styleBuilder.createRule(textSymbolizer));
+		}
+		// create the style
+		FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(null, rules.toArray(new Rule[rules.size()]));
+		style.featureTypeStyles().add(fts);
+		return style;
+	}
 
 	private void convertSymbol(FeatureStyleInfo featureStyleInfo, PointSymbolizerInfo pointInfo) {
 		GraphicInfo graphic = pointInfo.getGraphic();
@@ -641,5 +724,173 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 		return null;
 	}
+
+	private List<Rule> createRules(LayerType layerType, Filter filter, FeatureStyleInfo featureStyle) {
+		List<Rule> rules = new ArrayList<Rule>();
+		// for mixed geometries we add a filter to distinguish between geometry types
+		if (layerType == LayerType.GEOMETRY) {
+			// add the configured filter to a filter that selects point features only
+			Rule pointRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POINT, featureStyle));
+			Filter pointFilter = filterService.createGeometryTypeFilter("", "Point");
+			Filter multiPointFilter = filterService.createGeometryTypeFilter("", "MultiPoint");
+			Filter pointsFilter = filterService.createLogicFilter(pointFilter, "or", multiPointFilter);
+			pointRule.setFilter(filterService.createLogicFilter(pointsFilter, "and", filter));
+			pointRule.setTitle(featureStyle.getName() + "(Point)");
+
+			// add the configured filter to a filter that selects line features only
+			Rule lineRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.LINESTRING, featureStyle));
+			Filter lineFilter = filterService.createGeometryTypeFilter("", "LineString");
+			Filter multiLineFilter = filterService.createGeometryTypeFilter("", "MultiLineString");
+			Filter linesFilter = filterService.createLogicFilter(lineFilter, "or", multiLineFilter);
+			lineRule.setFilter(filterService.createLogicFilter(linesFilter, "and", filter));
+			lineRule.setTitle(featureStyle.getName() + "(Line)");
+
+			// add the configured filter to a filter that selects polygon features only
+			Rule polygonRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POLYGON, featureStyle));
+			Filter polygonFilter = filterService.createGeometryTypeFilter("", "Polygon");
+			Filter multiPolygonFilter = filterService.createGeometryTypeFilter("", "MultiPolygon");
+			Filter polygonsFilter = filterService.createLogicFilter(polygonFilter, "or", multiPolygonFilter);
+			polygonRule.setFilter(filterService.createLogicFilter(polygonsFilter, "and", filter));
+			polygonRule.setTitle(featureStyle.getName() + "(Polygon)");
+			rules.add(pointRule);
+			rules.add(lineRule);
+			rules.add(polygonRule);
+		} else {
+			Rule rule = styleBuilder.createRule(createGeometrySymbolizer(layerType, featureStyle));
+			if (filter.equals(Filter.INCLUDE)) {
+				rule.setElseFilter(true);
+			} else {
+				rule.setFilter(filter);
+			}
+			rule.setTitle(featureStyle.getName());
+			rules.add(rule);
+		}
+		return rules;
+	}
+
+	private Symbolizer createGeometrySymbolizer(LayerType layerType, FeatureStyleInfo featureStyle) {
+		Symbolizer symbolizer = null;
+		switch (layerType) {
+			case MULTIPOLYGON:
+			case POLYGON:
+				symbolizer = styleBuilder.createPolygonSymbolizer(createStroke(featureStyle), createFill(featureStyle));
+				break;
+			case MULTILINESTRING:
+			case LINESTRING:
+				symbolizer = styleBuilder.createLineSymbolizer(createStroke(featureStyle));
+				break;
+			case POINT:
+			case MULTIPOINT:
+				PointSymbolizer ps = styleBuilder.createPointSymbolizer();
+				GraphicalSymbol symbol = createSymbol(featureStyle);
+				if (symbol instanceof Mark) {
+					ps.getGraphic().setSize(((Mark) symbol).getSize());
+				} else {
+					Expression size = styleBuilder.literalExpression(featureStyle.getSymbol().getImage().getHeight());
+					ps.getGraphic().setSize(size);
+				}
+				ps.getGraphic().graphicalSymbols().clear();
+				ps.getGraphic().graphicalSymbols().add(createSymbol(featureStyle));
+				symbolizer = ps;
+				break;
+		}
+		return symbolizer;
+	}
+
+	private TextSymbolizer createTextSymbolizer(LabelStyleInfo labelStyle, LayerType layerType) {
+		Fill fontFill = styleBuilder.createFill(styleBuilder.literalExpression(labelStyle.getFontStyle().getColor()),
+				styleBuilder.literalExpression(labelStyle.getFontStyle().getOpacity()));
+		TextSymbolizer symbolizer = styleBuilder.createTextSymbolizer();
+		symbolizer.setFill(fontFill);
+		FontStyleInfo fontInfo = labelStyle.getFontStyle();
+		symbolizer.setFont(styleBuilder.createFont(styleBuilder.literalExpression(fontInfo.getFamily()),
+				styleBuilder.literalExpression(fontInfo.getStyle()),
+				styleBuilder.literalExpression(fontInfo.getWeight()),
+				styleBuilder.literalExpression(fontInfo.getSize())));
+		symbolizer.setLabel(styleBuilder.attributeExpression(labelStyle.getLabelAttributeName()));
+		Fill haloFill = styleBuilder.createFill(
+				styleBuilder.literalExpression(labelStyle.getBackgroundStyle().getFillColor()),
+				styleBuilder.literalExpression(labelStyle.getBackgroundStyle().getFillOpacity()));
+		symbolizer.setHalo(styleBuilder.createHalo(haloFill, 1));
+		// label placement : point at bottom-center of label (same as vectorized)
+		switch (layerType) {
+			case MULTIPOINT:
+			case POINT:
+				symbolizer.setLabelPlacement(styleBuilder.createPointPlacement(0.5, 0, 0));
+				break;
+			default:
+				break;
+		}
+		return symbolizer;
+	}
+
+	private GraphicalSymbol createSymbol(FeatureStyleInfo featureStyle) {
+		SymbolInfo info = featureStyle.getSymbol();
+		if (info.getImage() != null) {
+			return styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()), getFormat(info.getImage()
+					.getHref()));
+		} else {
+			Mark mark = null;
+			if (info.getRect() != null) {
+				// TODO: do rectangles by adding custom factory ?
+				mark = styleBuilder.createMark("square");
+				mark.setSize(styleBuilder.literalExpression((int) info.getRect().getW()));
+			} else if (info.getCircle() != null) {
+				mark = styleBuilder.createMark("circle");
+				mark.setSize(styleBuilder.literalExpression(2 * (int) info.getCircle().getR()));
+			}
+			mark.setFill(createFill(featureStyle));
+			mark.setStroke(createStroke(featureStyle));
+			return mark;
+		}
+	}
+
+	private Stroke createStroke(FeatureStyleInfo featureStyle) {
+		Stroke stroke = styleBuilder.createStroke(styleBuilder.literalExpression(featureStyle.getStrokeColor()),
+				styleBuilder.literalExpression(featureStyle.getStrokeWidth()),
+				styleBuilder.literalExpression(featureStyle.getStrokeOpacity()));
+		if (featureStyle.getDashArray() != null) {
+			String[] strs = featureStyle.getDashArray().split(",");
+			float[] nrs = new float[strs.length];
+			for (int i = 0; i < strs.length; i++) {
+				try {
+					nrs[i] = Float.parseFloat(strs[i]);
+				} catch (NumberFormatException e) {
+					log.warn("unparseable dash array " + featureStyle.getDashArray(), e);
+				}
+			}
+			stroke.setDashArray(nrs);
+		}
+		return stroke;
+	}
+
+	private Fill createFill(FeatureStyleInfo featureStyle) {
+		return styleBuilder.createFill(styleBuilder.literalExpression(featureStyle.getFillColor()),
+				styleBuilder.literalExpression(featureStyle.getFillOpacity()));
+	}
+
+	private URL getURL(String resourceLocation) {
+		Resource resource = applicationContext.getResource(resourceLocation);
+		if (resource.exists()) {
+			try {
+				return resource.getURL();
+			} catch (IOException e) {
+				log.warn("missing resource {}", resourceLocation);
+			}
+		} else {
+			log.warn("missing resource {}", resourceLocation);
+		}
+		return null;
+	}
+
+	private String getFormat(String href) {
+		return "image/" + StringUtils.getFilenameExtension(href);
+	}
+
+	@PostConstruct
+	private void postConstruct() {
+		styleBuilder = new StyleBuilder(styleFactory, filterFactory);
+	}
+
 
 }

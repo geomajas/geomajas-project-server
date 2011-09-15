@@ -405,7 +405,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		String geometryType = getGeometryType(geometry);
 		Geometry dto = new Geometry(geometryType, srid, precision);
-		if(geometry.isEmpty()) {
+		if (geometry.isEmpty()) {
 			// nothing to do
 		} else if (geometry instanceof Point) {
 			dto.setCoordinates(convertCoordinates(geometry));
@@ -457,7 +457,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		com.vividsolutions.jts.geom.Geometry jts;
 
 		String geometryType = geometry.getGeometryType();
-		if(geometry.isEmpty()){
+		if (geometry.isEmpty()) {
 			jts = createEmpty(factory, geometryType);
 		} else if (Geometry.POINT.equals(geometryType)) {
 			jts = factory.createPoint(convertCoordinates(geometry)[0]);
@@ -513,7 +513,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 	}
 	
-	private String getGeometryType(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException{
+	private String getGeometryType(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
 		if (geometry instanceof Point) {
 			return Geometry.POINT;
 		} else if (geometry instanceof LinearRing) {

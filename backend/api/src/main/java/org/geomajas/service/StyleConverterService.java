@@ -15,7 +15,10 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.LayerType;
+import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.UserStyleInfo;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 
 /**
@@ -37,7 +40,7 @@ public interface StyleConverterService {
 	 * @throws LayerException oops
 	 */
 	NamedStyleInfo convert(UserStyleInfo userStyleInfo, FeatureInfo featureInfo) throws LayerException;
-	
+
 	/**
 	 * Converts SLD (user) style info to GT style used by legend/raster rendering.
 	 * 
@@ -46,4 +49,23 @@ public interface StyleConverterService {
 	 * @throws LayerException oops
 	 */
 	Style convert(UserStyleInfo userStyleInfo) throws LayerException;
+
+	/**
+	 * Converts SLD rule info to GT rule used by legend/raster rendering.
+	 * 
+	 * @param ruleInfo the rule info
+	 * @return the GT rule
+	 * @throws LayerException oops
+	 */
+	Rule convert(RuleInfo ruleInfo) throws LayerException;
+
+	/**
+	 * Converts named style info to GT style used by legend/raster rendering.
+	 * 
+	 * @param namedStyleInfo the named style
+	 * @param layerType the type of the layer
+	 * @return the GT style
+	 * @throws LayerException oops
+	 */
+	Style convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException;
 }
