@@ -25,6 +25,14 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class LabelStyleInfo implements Serializable {
 
+	/**
+	 * A special constant to be passed to {@link #setLabelAttributeName(String)}, denoting that the id should be used as
+	 * the label text instead of a normal attribute value.
+	 * 
+	 * @since 1.10.0
+	 */
+	public static final String ATTRIBUTE_NAME_ID = "@id";
+
 	private static final long serialVersionUID = 151L;
 	@NotNull
 	private String labelAttributeName;

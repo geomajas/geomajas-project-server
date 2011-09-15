@@ -1,0 +1,57 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="beansInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTIPOLYGON" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-85.05112877980659" />
+				<property name="y" value="-85.05112877980659" />
+				<property name="width" value="170.102257" />
+				<property name="height" value="170.102257" />
+			</bean>
+		</property>
+		<property name="featureInfo" ref="beansFeatureInfo" />
+	</bean>
+
+	<bean class="org.geomajas.configuration.FeatureInfo" name="beansFeatureInfo">
+		<property name="dataSourceName" value="org.geomajas.layer.bean.FeatureBean" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="id" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="geometry" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+
+
+	<bean name="layerDefaultStyle" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="beansInfo" />
+	</bean>
+
+</beans>

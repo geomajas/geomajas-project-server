@@ -15,7 +15,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.LayerException;
-import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.UserStyleInfo;
+import org.geotools.styling.Style;
 
 /**
  * Service that converts SLD styles to {@link NamedStyleInfo} styles.
@@ -30,13 +31,19 @@ public interface StyleConverterService {
 	/**
 	 * Converts SLD (user) style info to named style info used by vector rendering.
 	 * 
-	 * @param styledLayerDescriptorInfo styled layer descriptor style
+	 * @param userStyleInfo SLD user style
 	 * @param featureInfo feature information for the layer
-	 * @param layerName (optional) NamedLayer name to pick from SLD
-	 * @param styleName (optional) UserStyle name to pick from SLD
 	 * @return named style
 	 * @throws LayerException oops
 	 */
-	NamedStyleInfo convert(StyledLayerDescriptorInfo styledLayerDescriptorInfo, FeatureInfo featureInfo,
-			String layerName, String styleName) throws LayerException;
+	NamedStyleInfo convert(UserStyleInfo userStyleInfo, FeatureInfo featureInfo) throws LayerException;
+	
+	/**
+	 * Converts SLD (user) style info to GT style used by legend/raster rendering.
+	 * 
+	 * @param userStyleInfo the user style
+	 * @return the GT style
+	 * @throws LayerException oops
+	 */
+	Style convert(UserStyleInfo userStyleInfo) throws LayerException;
 }

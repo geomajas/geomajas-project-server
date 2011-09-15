@@ -10,6 +10,8 @@
  */
 package org.geomajas.internal.service;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,6 +103,14 @@ import org.geomajas.sld.geometry.MultiPolygonInfo;
 import org.geomajas.sld.geometry.OuterBoundaryIsInfo;
 import org.geomajas.sld.geometry.PointTypeInfo;
 import org.geomajas.sld.geometry.PolygonTypeInfo;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.SLDParser;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
+import org.jibx.runtime.BindingDirectory;
+import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IMarshallingContext;
+import org.jibx.runtime.JiBXException;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -120,62 +130,19 @@ import com.vividsolutions.jts.io.WKTWriter;
  */
 @Component
 public class StyleConverterServiceImpl implements StyleConverterService {
-
-	public NamedStyleInfo convert(StyledLayerDescriptorInfo styledLayerDescriptorInfo, FeatureInfo featureInfo,
-			String layerName, String styleName) throws LayerException {
-		NamedLayerInfo namedLayerInfo = null;
-		// find first named layer or find by name
-		for (StyledLayerDescriptorInfo.ChoiceInfo choice : styledLayerDescriptorInfo.getChoiceList()) {
-			// we only support named layers, pick the right name or the first one
-			if (choice.ifNamedLayer()) {
-				if (layerName != null) {
-					if (layerName.equals(choice.getNamedLayer().getName())) {
-						namedLayerInfo = choice.getNamedLayer();
-						break;
-					}
-				}
-				if (namedLayerInfo == null) {
-					namedLayerInfo = choice.getNamedLayer();
-				}
-			}
-		}
-		if (namedLayerInfo == null) {
-			throw new LayerException(ExceptionCode.INVALID_SLD, styledLayerDescriptorInfo.getName(), layerName);
-		}
-
-		UserStyleInfo userStyleInfo = null;
-		for (NamedLayerInfo.ChoiceInfo choice : namedLayerInfo.getChoiceList()) {
-			// we only support user styles, pick the right name or the first
-			if (choice.ifUserStyle()) {
-				if (styleName != null) {
-					if (styleName.equals(choice.getUserStyle().getName())) {
-						userStyleInfo = choice.getUserStyle();
-						break;
-					}
-				}
-				if (userStyleInfo == null) {
-					userStyleInfo = choice.getUserStyle();
-				}
-			}
-		}
-		if (userStyleInfo == null) {
-			throw new LayerException(ExceptionCode.INVALID_SLD, styledLayerDescriptorInfo.getName(), layerName);
-		}
-
-		NamedStyleInfo namedStyleInfo = convert(userStyleInfo, featureInfo);
-		if (namedStyleInfo.getName() == null) {
-			namedStyleInfo.setName(styleName);
-		}
-		for (FeatureStyleInfo featureStyleInfo : namedStyleInfo.getFeatureStyles()) {
-			if (featureStyleInfo.getName() == null) {
-				featureStyleInfo.setName(namedLayerInfo.getName());
-			}
-			featureStyleInfo.setStyleId(namedStyleInfo.getName() + featureStyleInfo.getIndex());
-		}
-		return namedStyleInfo;
+	
+	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+	
+	public StyleFactory getStyleFactory() {
+		return styleFactory;
 	}
 
-	private NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
+	
+	public void setStyleFactory(StyleFactory styleFactory) {
+		this.styleFactory = styleFactory;
+	}
+
+	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
 		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
 		LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
 		List<FeatureStyleInfo> featureStyleInfos = new ArrayList<FeatureStyleInfo>();
@@ -229,6 +196,39 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		namedStyleInfo.setLabelStyle(labelStyleInfo);
 		return namedStyleInfo;
 	}
+
+	public Style convert(UserStyleInfo userStyleInfo) throws LayerException {
+		IBindingFactory bindingFactory;
+		try {
+			// create a dummy SLD root
+			StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
+			StyledLayerDescriptorInfo.ChoiceInfo choice = new StyledLayerDescriptorInfo.ChoiceInfo();
+			NamedLayerInfo namedLayerInfo = new NamedLayerInfo();
+			namedLayerInfo.setName("Dummy");
+			NamedLayerInfo.ChoiceInfo userChoice = new NamedLayerInfo.ChoiceInfo();
+			userChoice.setUserStyle(userStyleInfo);
+			namedLayerInfo.getChoiceList().add(userChoice);
+			choice.setNamedLayer(new NamedLayerInfo());
+			sld.getChoiceList().add(choice);
+			// force through Geotools parser
+			bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+			IMarshallingContext marshallingContext = bindingFactory.createMarshallingContext();
+			StringWriter sw = new StringWriter();
+			marshallingContext.setOutput(sw);
+			marshallingContext.marshalDocument(sld);
+			SLDParser parser = new SLDParser(styleFactory);
+			parser.setInput(new StringReader(sw.toString()));
+			Style[] styles = parser.readXML();
+			if(styles.length != 0){
+				return styles[0];
+			} else {
+				throw new LayerException(ExceptionCode.INVALID_USER_STYLE);
+			}
+		} catch (JiBXException e) {
+			throw new LayerException(ExceptionCode.INVALID_USER_STYLE);
+		}
+	}
+
 
 	private void convertSymbol(FeatureStyleInfo featureStyleInfo, PointSymbolizerInfo pointInfo) {
 		GraphicInfo graphic = pointInfo.getGraphic();

@@ -11,8 +11,13 @@
 
 package org.geomajas.internal.configuration;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
+import org.geomajas.configuration.LabelStyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.layer.VectorLayer;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -62,5 +67,22 @@ public class ConfigurationDtoPostProcessorLayerTreeTest {
 			Assert.assertTrue(bce.getCause().getCause().getMessage().contains(
 					"manyToOne.stringAttr"));
 		}
+	}
+	
+	@Test
+	public void testDefaultStyle() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+		context.setId("test");
+		context.setDisplayName("test");
+		context.setConfigLocation(
+				"/org/geomajas/spring/geomajasContext.xml "+
+				"/org/geomajas/internal/configuration/layerDefaultStyle.xml ");
+		context.refresh();
+		VectorLayer layerDefaultStyle = (VectorLayer)context.getBean("layerDefaultStyle");
+		List<NamedStyleInfo> styles = layerDefaultStyle.getLayerInfo().getNamedStyleInfos();
+		Assert.assertEquals(1, styles.size());
+		NamedStyleInfo defaultStyle = styles.get(0);
+		Assert.assertEquals(NamedStyleInfo.DEFAULT_NAME, defaultStyle.getName());
+		Assert.assertEquals(LabelStyleInfo.ATTRIBUTE_NAME_ID, defaultStyle.getLabelStyle().getLabelAttributeName());
 	}
 }

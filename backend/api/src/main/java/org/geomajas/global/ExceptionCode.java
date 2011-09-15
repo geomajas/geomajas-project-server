@@ -154,4 +154,9 @@ public interface ExceptionCode {
 	 * @since 1.9.0
 	 */
 	int INVALID_SLD = 78;
+	/**
+	 * @since 1.10.0
+	 */
+	int INVALID_USER_STYLE = 79;
+
 }

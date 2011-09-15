@@ -18,19 +18,25 @@ import javax.validation.constraints.NotNull;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.global.CacheableObject;
-import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.UserStyleInfo;
 
 /**
  * A named layer style for vector layers. The layer style consists of a list of feature styles. Each style has a unique
- * name. Should be equivalent to SLD.
+ * name. Can hold both SLD and simple {@link FeatureStyleInfo} configuration.
  * 
  * @author Jan De Moerloose
  * @since 1.6.0
  */
 @Api(allMethods = true)
 public class NamedStyleInfo implements Serializable, CacheableObject {
-
+	
 	private static final long serialVersionUID = 154L;
+
+	/**
+	 * Name of the default style. 
+	 * @since 1.10.0
+	 */
+	public static final String DEFAULT_NAME = "Default";
 
 	private List<FeatureStyleInfo> featureStyles = new ArrayList<FeatureStyleInfo>();
 	
@@ -40,7 +46,7 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	@NotNull
 	private String name;
 	
-	private StyledLayerDescriptorInfo styledLayerInfo;
+	private UserStyleInfo userStyle;
 	
 	private String sldLocation;
 	
@@ -49,23 +55,45 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	private String sldStyleName;
 
 	/**
-	 * Get the SLD info for this layer.
+	 * Applies default values to all properties that have not been set.
+	 * 
+	 * @since 1.10.0
+	 */
+	public void applyDefaults() {
+		if (getName() == null) {
+			setName(DEFAULT_NAME);
+		}
+		if (getFeatureStyles().size() == 0) {
+			getFeatureStyles().add(new FeatureStyleInfo());
+		}
+		for (FeatureStyleInfo featureStyle : getFeatureStyles()) {
+			featureStyle.applyDefaults();
+		}
+		if (getLabelStyle().getLabelAttributeName() == null) {
+			getLabelStyle().setLabelAttributeName(LabelStyleInfo.ATTRIBUTE_NAME_ID);
+		}
+		getLabelStyle().getBackgroundStyle().applyDefaults();
+		getLabelStyle().getFontStyle().applyDefaults();
+	}
+
+	/**
+	 * Get the SLD UserStyle info for this layer.
 	 *
 	 * @return SLD info
 	 * @since 1.10.0
 	 */
-	public StyledLayerDescriptorInfo getStyledLayerInfo() {
-		return styledLayerInfo;
+	public UserStyleInfo getUserStyle() {
+		return userStyle;
 	}
 	
 	/**
-	 * Set SLD info, the style configuration for this layer.
+	 * Set SLD UserStyle info, the style configuration for this layer.
 	 *
-	 * @param styledLayerInfo SLD info
+	 * @param userStyle SLD UserStyle info
 	 * @since 1.10.0
 	 */
-	public void setStyledLayerInfo(StyledLayerDescriptorInfo styledLayerInfo) {
-		this.styledLayerInfo = styledLayerInfo;
+	public void setUserStyle(UserStyleInfo userStyle) {
+		this.userStyle = userStyle;
 	}
 
 	/**
@@ -89,9 +117,10 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	}
 	
 	/**
-	 * Get the name of the SLD NamedLayer that contains this style. If null the first NamedLayer should be chosen.
+	 * Get the name of the SLD NamedLayer/UserLayer that contains this style. If null the first NamedLayer should be
+	 * chosen.
 	 * 
-	 * @return the name of the NamedLayer
+	 * @return the name of the NamedLayer/UserLayer
 	 * @since 1.10.0
 	 */
 	public String getSldLayerName() {
@@ -99,9 +128,9 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	}
 
 	/**
-	 * Set the name of the SLD NamedLayer that contains this style.
+	 * Set the name of the SLD NamedLayer/UserLayer that contains this style.
 	 * 
-	 * @param sldLayerName the name of the NamedLayer
+	 * @param sldLayerName the name of the NamedLayer/UserLayer
 	 * @since 1.10.0
 	 */
 	public void setSldLayerName(String sldLayerName) {

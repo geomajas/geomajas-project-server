@@ -35,7 +35,7 @@ public class StyleConverterServiceTest {
 
 	@Autowired
 	private StyleConverterService styleConverterService;
-	
+
 	@Autowired
 	@Qualifier("beansFeatureInfo")
 	private FeatureInfo featureInfo;
@@ -44,28 +44,13 @@ public class StyleConverterServiceTest {
 	public void testSingleStyle() throws JiBXException, LayerException {
 		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
 		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
-		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("/org/geomajas/testdata/sld/single_layer_no_stylename.sld"), null);
+		Object object = uctx.unmarshalDocument(
+				getClass().getResourceAsStream("/org/geomajas/testdata/sld/single_layer_no_stylename.sld"), null);
 		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
-		NamedStyleInfo info = styleConverterService.convert(sld, featureInfo, "layer", "style");
+		NamedStyleInfo info = styleConverterService.convert(sld.getChoiceList().get(0).getNamedLayer().getChoiceList()
+				.get(0).getUserStyle(), featureInfo);
 		Assert.assertNotNull(info);
 		Assert.assertEquals("Some title", info.getName());
 	}
-	
-	@Test
-	public void testPickStyle() throws JiBXException, LayerException {
-		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
-		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
-		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("/org/geomajas/testdata/sld/multiple_layer_stylename.sld"), null);
-		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
-		NamedStyleInfo info1 = styleConverterService.convert(sld, featureInfo, "Layer1", "Style1");
-		Assert.assertNotNull(info1);
-		Assert.assertEquals("Style1", info1.getName());
-		Assert.assertEquals(1, info1.getFeatureStyles().size());
-		
-		NamedStyleInfo info2 = styleConverterService.convert(sld, featureInfo, "Layer2", "Style2");
-		Assert.assertNotNull(info2);
-		Assert.assertEquals("Style2", info2.getName());
-		Assert.assertEquals(2, info2.getFeatureStyles().size());
-	}
-	
+
 }

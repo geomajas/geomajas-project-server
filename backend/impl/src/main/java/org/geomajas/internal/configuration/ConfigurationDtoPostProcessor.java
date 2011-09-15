@@ -43,7 +43,10 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.NamedLayerInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.UserLayerInfo;
+import org.geomajas.sld.UserStyleInfo;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.GeodeticCalculator;
 import org.jibx.runtime.BindingDirectory;
@@ -151,7 +154,7 @@ public class ConfigurationDtoPostProcessor {
 							layer.getId());
 				}
 			}
-			// apply defaults to all styles
+			// apply sld to styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				// check sld location
 				if (namedStyle.getSldLocation() != null) {
@@ -162,7 +165,11 @@ public class ConfigurationDtoPostProcessor {
 						IUnmarshallingContext unmarshallingContext = bindingFactory.createUnmarshallingContext();
 						StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) unmarshallingContext
 								.unmarshalDocument(new InputStreamReader(resource.getInputStream()));
-						namedStyle.setStyledLayerInfo(sld);
+						String layerName = (namedStyle.getSldLayerName() != null ? namedStyle.getSldLayerName() : layer
+								.getId());
+						String styleName = (namedStyle.getSldStyleName() != null ? namedStyle.getSldStyleName() : layer
+								.getId());
+						namedStyle.setUserStyle(extractStyle(sld, layerName, styleName));
 					} catch (JiBXException e) {
 						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
 								layer.getId());
@@ -170,29 +177,91 @@ public class ConfigurationDtoPostProcessor {
 						throw new LayerException(e, ExceptionCode.INVALID_SLD, namedStyle.getSldLocation(),
 								layer.getId());
 					}
-					String layerName = (namedStyle.getSldLayerName() != null ? namedStyle.getSldLayerName() : layer
-							.getId());
-					String styleName = (namedStyle.getSldStyleName() != null ? namedStyle.getSldStyleName() : layer
-							.getId());
-					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getStyledLayerInfo(),
-							info.getFeatureInfo(), layerName, styleName);
+					NamedStyleInfo sldStyle = styleConverterService.convert(namedStyle.getUserStyle(),
+							info.getFeatureInfo());
 					namedStyle.setFeatureStyles(sldStyle.getFeatureStyles());
 					namedStyle.setLabelStyle(sldStyle.getLabelStyle());
 				}
 			}
+			// check for at least 1 style
+			if (info.getNamedStyleInfos().size() == 0) {
+				info.getNamedStyleInfos().add(new NamedStyleInfo());
+			}
 			// apply defaults to all styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
-				for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {
-					featureStyle.applyDefaults();
-				}
-				if (namedStyle.getLabelStyle().getLabelAttributeName() == null) {
-					AttributeInfo attributeInfo = info.getFeatureInfo().getAttributes().get(0);
-					namedStyle.getLabelStyle().setLabelAttributeName(attributeInfo.getName());
-				}
-				namedStyle.getLabelStyle().getBackgroundStyle().applyDefaults();
-				namedStyle.getLabelStyle().getFontStyle().applyDefaults();
+				namedStyle.applyDefaults();
 			}
 		}
+	}
+
+	private UserStyleInfo extractStyle(StyledLayerDescriptorInfo sld, String sldLayerName, String sldStyleName)
+			throws LayerException {
+		NamedLayerInfo namedLayerInfo = null;
+		UserLayerInfo userLayerInfo = null;
+		// find first named layer or find by name
+		for (StyledLayerDescriptorInfo.ChoiceInfo choice : sld.getChoiceList()) {
+			// we only support named layers, pick the right name or the first one
+			if (choice.ifNamedLayer()) {
+				if (sldLayerName != null) {
+					if (sldLayerName.equals(choice.getNamedLayer().getName())) {
+						namedLayerInfo = choice.getNamedLayer();
+						break;
+					}
+				}
+				if (namedLayerInfo == null) {
+					namedLayerInfo = choice.getNamedLayer();
+				}
+			} else if (choice.ifUserLayer()) {
+				if (sldLayerName != null) {
+					if (sldLayerName.equals(choice.getUserLayer().getName())) {
+						userLayerInfo = choice.getUserLayer();
+						break;
+					}
+				}
+				if (namedLayerInfo == null) {
+					userLayerInfo = choice.getUserLayer();
+				}
+			}
+		}
+		if (namedLayerInfo == null && userLayerInfo == null) {
+			throw new LayerException(ExceptionCode.INVALID_SLD, sld.getName(), sldLayerName);
+		}
+
+		UserStyleInfo userStyleInfo = null;
+		if (namedLayerInfo != null) {
+			for (NamedLayerInfo.ChoiceInfo choice : namedLayerInfo.getChoiceList()) {
+				// we only support user styles, pick the right name or the first
+				if (choice.ifUserStyle()) {
+					if (sldStyleName != null) {
+						if (sldStyleName.equals(choice.getUserStyle().getName())) {
+							userStyleInfo = choice.getUserStyle();
+							break;
+						}
+					}
+					if (userStyleInfo == null) {
+						userStyleInfo = choice.getUserStyle();
+					}
+				}
+			}
+		} else if (userLayerInfo != null) {
+			for (UserStyleInfo userStyle : userLayerInfo.getUserStyleList()) {
+				if (sldStyleName != null) {
+					if (sldStyleName.equals(userStyle.getName())) {
+						userStyleInfo = userStyle;
+						break;
+					}
+				}
+				if (userStyleInfo == null) {
+					userStyleInfo = userStyle;
+				}
+			}
+		}
+		if (userStyleInfo == null) {
+			throw new LayerException(ExceptionCode.INVALID_SLD, sld.getName(), sldLayerName);
+		} else {
+			return userStyleInfo;
+		}
+
 	}
 
 	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws LayerException, BeansException {
