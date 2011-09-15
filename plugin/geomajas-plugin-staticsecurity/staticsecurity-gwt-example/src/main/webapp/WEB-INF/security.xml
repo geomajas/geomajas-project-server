@@ -22,15 +22,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="SecurityService" class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
 
+	<!-- @extract-start UseStaticsecurity, Enabling the use of staticsecurity-->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
 			<list>
-				<ref bean="SecurityService"/>
+				<bean class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
 				<bean class="org.geomajas.plugin.staticsecurity.security.LoginAllowedSecurityService"/>
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
 		<property name="users">

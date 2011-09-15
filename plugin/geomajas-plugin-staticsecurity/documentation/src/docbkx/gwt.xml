@@ -64,7 +64,13 @@
     <section>
       <title>TokenReleaseButton</title>
 
-      <para></para>
+      <para>The token release button allows the user to logout by pressing the
+      button. This will contact the server to immediately invalidate the
+      current token, thus logging the user out. When the application requires
+      you to login, new credentials will be asked the next time the server is
+      contacted. The button listens to the token changed events to control its
+      state, disabling it when no token is available and enabling it after
+      login.</para>
     </section>
   </section>
 </chapter>
