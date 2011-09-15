@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.6-SNAPSHOT</version>
+		<version>1.0.5</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
@@ -108,6 +108,6 @@
 	</profiles>
 
 	<properties>
-		<${rootArtifactId}-backend-version>1.7.1</${rootArtifactId}-backend-version>
+		<${rootArtifactId}-backend-version>1.9.0</${rootArtifactId}-backend-version>
 	</properties>	
 </project>
