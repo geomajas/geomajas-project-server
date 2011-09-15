@@ -190,4 +190,14 @@ public class Geometry implements Serializable {
 	public void setGeometries(Geometry[] geometries) {
 		this.geometries = geometries;
 	}
+	
+	/**
+	 * Returns whether the geometry is empty.
+	 * 
+	 * @return true if empty, false otherwise
+	 * @since 1.10.0
+	 */
+	public boolean isEmpty() {
+		return getCoordinates() == null && getGeometries() == null;
+	}
 }

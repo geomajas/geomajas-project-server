@@ -115,10 +115,28 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	@Test
-	public void emptyToDto() throws GeomajasException {
-		// Test JTS Point to DTO:
-		Geometry empty = converter.toDto(createEmpty());
-		Assert.assertNull(empty);
+	public void jtsEmptyToDto() throws GeomajasException {
+		Geometry p = converter.toDto(createJtsEmpty(Point.class));
+		Assert.assertEquals(Geometry.POINT, p.getGeometryType());
+		Assert.assertTrue(p.isEmpty());
+		Geometry ls = converter.toDto(createJtsEmpty(LineString.class));
+		Assert.assertEquals(Geometry.LINE_STRING, ls.getGeometryType());
+		Assert.assertTrue(ls.isEmpty());
+		Geometry lr = converter.toDto(createJtsEmpty(LinearRing.class));
+		Assert.assertEquals(Geometry.LINEAR_RING, lr.getGeometryType());
+		Assert.assertTrue(lr.isEmpty());
+		Geometry po = converter.toDto(createJtsEmpty(Polygon.class));
+		Assert.assertEquals(Geometry.POLYGON, po.getGeometryType());
+		Assert.assertTrue(po.isEmpty());
+		Geometry mp = converter.toDto(createJtsEmpty(MultiPoint.class));
+		Assert.assertEquals(Geometry.MULTI_POINT, mp.getGeometryType());
+		Assert.assertTrue(mp.isEmpty());
+		Geometry mpo = converter.toDto(createJtsEmpty(MultiPolygon.class));
+		Assert.assertEquals(Geometry.MULTI_POLYGON, mpo.getGeometryType());
+		Assert.assertTrue(mpo.isEmpty());
+		Geometry mls = converter.toDto(createJtsEmpty(MultiLineString.class));
+		Assert.assertEquals(Geometry.MULTI_LINE_STRING, mls.getGeometryType());
+		Assert.assertTrue(mls.isEmpty());
 	}
 
 	@Test
@@ -175,6 +193,25 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	@Test
+	public void dtoEmptyToJts() throws GeomajasException {
+		// Test DTO Point to JTS:
+		LineString ls = (LineString) converter.toInternal(createDtoEmpty(Geometry.LINE_STRING));
+		Assert.assertTrue(ls.isEmpty());
+		LinearRing lr = (LinearRing) converter.toInternal(createDtoEmpty(Geometry.LINEAR_RING));
+		Assert.assertTrue(lr.isEmpty());
+		MultiLineString mls = (MultiLineString) converter.toInternal(createDtoEmpty(Geometry.MULTI_LINE_STRING));
+		Assert.assertTrue(mls.isEmpty());
+		MultiPoint mp = (MultiPoint) converter.toInternal(createDtoEmpty(Geometry.MULTI_POINT));
+		Assert.assertTrue(mp.isEmpty());
+		MultiPolygon mpo = (MultiPolygon) converter.toInternal(createDtoEmpty(Geometry.MULTI_POLYGON));
+		Assert.assertTrue(mpo.isEmpty());
+		Point p = (Point) converter.toInternal(createDtoEmpty(Geometry.POINT));
+		Assert.assertTrue(p.isEmpty());
+		Polygon po = (Polygon) converter.toInternal(createDtoEmpty(Geometry.POLYGON));
+		Assert.assertTrue(po.isEmpty());
+	}
+
+	@Test
 	public void dtoPointToJts() throws GeomajasException {
 		// Test DTO Point to JTS:
 		Point point = (Point) converter.toInternal(createDtoPoint());
@@ -228,8 +265,24 @@ public class GeometryConverterTest {
 	// Private methods for creating JTS geometries:
 	// -------------------------------------------------------------------------
 
-	private Point createEmpty() {
-		return factory.createPoint((com.vividsolutions.jts.geom.Coordinate)null);
+	private com.vividsolutions.jts.geom.Geometry createJtsEmpty(Class clazz) {
+		if(Point.class.equals(clazz)){
+			return factory.createPoint((com.vividsolutions.jts.geom.Coordinate)null);
+		} else if(LineString.class.equals(clazz)){
+			return factory.createLineString((com.vividsolutions.jts.geom.Coordinate[])null);
+		} else if(LinearRing.class.equals(clazz)){
+			return factory.createLinearRing((com.vividsolutions.jts.geom.Coordinate[])null);
+		} else if(Polygon.class.equals(clazz)){
+			return factory.createPolygon(null, null);
+		} else if(MultiPoint.class.equals(clazz)){
+			return factory.createMultiPoint((Point[])null);
+		} else if(MultiLineString.class.equals(clazz)){
+			return factory.createMultiLineString((LineString[])null);
+		} else if(MultiPolygon.class.equals(clazz)){
+			return factory.createMultiPolygon((Polygon[])null);
+		} else {
+			return null;
+		}
 	}
 
 	private Point createJtsPoint() {
@@ -279,6 +332,11 @@ public class GeometryConverterTest {
 	// Private methods for creating DTO geometries:
 	// -------------------------------------------------------------------------
 	
+	private Geometry createDtoEmpty(String geometryType) {
+		Geometry geometry = new Geometry(geometryType, SRID, -1);
+		return geometry;
+	}
+
 	private Geometry createDtoPoint() {
 		Geometry geometry = new Geometry(Geometry.POINT, SRID, -1);
 		geometry.setCoordinates(new Coordinate[] { dtoC1 });
