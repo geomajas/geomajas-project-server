@@ -98,7 +98,9 @@ public class Deferred {
 	 * {@link CommunicationExceptionCallback} instance in {@link #getCallbacks()}.
 	 *
 	 * @return communication exception callback functions
+	 * @deprecated use {@link #getCallbacks()}
 	 */
+	@Deprecated
 	public List<Function> getErrorCallbacks() {
 		return onErrorCallbacks;
 	}
