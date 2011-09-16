@@ -430,7 +430,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setGeometries(convertGeometries(geometry));
 		} else if (geometry instanceof MultiPolygon) {
 			dto.setGeometries(convertGeometries(geometry));
-		} 
+		} else {
+			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getClass().getName());
+		}
 		return dto;
 	}
 
