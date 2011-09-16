@@ -1,0 +1,64 @@
+// initial api as copied from GWT face marked as 0.0.0
+org.geomajas.gwt.client.GeomajasService::1.0.0
+org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):1.0.0
+org.geomajas.gwt.client.GeomajasServiceAsync::1.0.0
+org.geomajas.gwt.client.GeomajasServiceAsync:void execute(GwtCommand, AsyncCallback<CommandResponse>, ):1.0.0
+org.geomajas.gwt.client.command.AbstractCommandCallback::0.0.0
+org.geomajas.gwt.client.command.CommandCallback::0.0.0
+org.geomajas.gwt.client.command.CommandCallback:void execute(RESPONSE, ):0.0.0
+org.geomajas.gwt.client.command.CommandExceptionCallback::0.0.0
+org.geomajas.gwt.client.command.CommandExceptionCallback:void onCommandException(CommandResponse, ):0.0.0
+org.geomajas.gwt.client.command.CommunicationExceptionCallback::0.0.0
+org.geomajas.gwt.client.command.CommunicationExceptionCallback:void onCommunicationException(Throwable, ):0.0.0
+org.geomajas.gwt.client.command.Deferred::0.0.0
+org.geomajas.gwt.client.command.Deferred:Deferred():0.0.0
+org.geomajas.gwt.client.command.Deferred:List<CommandCallback> getCallbacks():0.0.0
+org.geomajas.gwt.client.command.Deferred:List<Function> getErrorCallbacks():0.0.0
+org.geomajas.gwt.client.command.Deferred:boolean isCancelled():0.0.0
+org.geomajas.gwt.client.command.Deferred:void addCallback(CommandCallback, ):0.0.0
+org.geomajas.gwt.client.command.Deferred:void addErrorCallback(Function, ):0.0.0
+org.geomajas.gwt.client.command.Deferred:void addSuccessCallback(CommandCallback, ):0.0.0
+org.geomajas.gwt.client.command.Deferred:void cancel():0.0.0
+org.geomajas.gwt.client.command.GwtCommand::0.0.0
+org.geomajas.gwt.client.command.GwtCommand:CommandRequest getCommandRequest():0.0.0
+org.geomajas.gwt.client.command.GwtCommand:GwtCommand():0.0.0
+org.geomajas.gwt.client.command.GwtCommand:GwtCommand(String, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommand:String getCommandName():0.0.0
+org.geomajas.gwt.client.command.GwtCommand:String getLocale():0.0.0
+org.geomajas.gwt.client.command.GwtCommand:String getUserToken():0.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setCommandName(String, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setCommandRequest(CommandRequest, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setLocale(String, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setUserToken(String, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher::0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:Deferred execute(GwtCommand, CommandCallback, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isBusy():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isShowError():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isUseLazyLoading():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesAll():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesDefault():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesSelect():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:static GwtCommandDispatcher getInstance():0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommandException(CommandResponse, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommunicationException(Throwable, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onFailure(Throwable, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onSuccess(CommandResponse, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesAll(int, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesDefault(int, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesSelect(int, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setShowError(boolean, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUseLazyLoading(boolean, ):0.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUserToken(String, ):0.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent::0.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent:final Type<DispatchStartedHandler> getAssociatedType():0.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent:static Type<DispatchStartedHandler> getType():0.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedHandler::0.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedHandler:void onDispatchStarted(DispatchStartedEvent, ):0.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent::0.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent:final Type<DispatchStoppedHandler> getAssociatedType():0.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchStoppedHandler> getType():0.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedHandler::0.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):0.0.0
+org.geomajas.gwt.client.command.event.HasDispatchHandlers::0.0.0

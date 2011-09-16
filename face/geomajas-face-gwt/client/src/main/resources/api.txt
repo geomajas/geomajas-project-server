@@ -3,10 +3,6 @@ org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getIsomorphicDir():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getVersion():1.6.0
-org.geomajas.gwt.client.GeomajasService::1.6.0
-org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):1.6.0
-org.geomajas.gwt.client.GeomajasServiceAsync::1.6.0
-org.geomajas.gwt.client.GeomajasServiceAsync:void execute(GwtCommand, AsyncCallback<CommandResponse>, ):1.6.0
 org.geomajas.gwt.client.action.ConfigurableAction::1.6.0
 org.geomajas.gwt.client.action.ConfigurableAction:void configure(String, String, ):1.6.0
 org.geomajas.gwt.client.action.MenuAction::1.6.0
@@ -82,65 +78,6 @@ org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createT
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static ToolbarBaseAction getToolbarAction(String, MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static void put(String, ToolCreator, ):1.6.0
-org.geomajas.gwt.client.command.AbstractCommandCallback::1.9.0
-org.geomajas.gwt.client.command.CommandCallback::1.6.0
-org.geomajas.gwt.client.command.CommandCallback:void execute(RESPONSE, ):1.6.0
-org.geomajas.gwt.client.command.CommandExceptionCallback::1.9.0
-org.geomajas.gwt.client.command.CommandExceptionCallback:void onCommandException(CommandResponse, ):1.9.0
-org.geomajas.gwt.client.command.CommunicationExceptionCallback::1.9.0
-org.geomajas.gwt.client.command.CommunicationExceptionCallback:void onCommunicationException(Throwable, ):1.9.0
-org.geomajas.gwt.client.command.Deferred::1.9.0
-org.geomajas.gwt.client.command.Deferred:Deferred():1.9.0
-org.geomajas.gwt.client.command.Deferred:List<CommandCallback> getCallbacks():1.9.0
-org.geomajas.gwt.client.command.Deferred:List<Function> getErrorCallbacks():1.9.0
-org.geomajas.gwt.client.command.Deferred:boolean isCancelled():1.9.0
-org.geomajas.gwt.client.command.Deferred:void addCallback(CommandCallback, ):1.9.0
-org.geomajas.gwt.client.command.Deferred:void addErrorCallback(Function, ):1.9.0
-org.geomajas.gwt.client.command.Deferred:void addSuccessCallback(CommandCallback, ):1.9.0
-org.geomajas.gwt.client.command.Deferred:void cancel():1.9.0
-org.geomajas.gwt.client.command.GwtCommand::1.6.0
-org.geomajas.gwt.client.command.GwtCommand:CommandRequest getCommandRequest():1.6.0
-org.geomajas.gwt.client.command.GwtCommand:GwtCommand():1.6.0
-org.geomajas.gwt.client.command.GwtCommand:GwtCommand(String, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommand:String getCommandName():1.6.0
-org.geomajas.gwt.client.command.GwtCommand:String getLocale():1.6.0
-org.geomajas.gwt.client.command.GwtCommand:String getUserToken():1.6.0
-org.geomajas.gwt.client.command.GwtCommand:void setCommandName(String, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommand:void setCommandRequest(CommandRequest, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommand:void setLocale(String, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommand:void setUserToken(String, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher::1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:Deferred execute(GwtCommand, CommandCallback, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isBusy():1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isShowError():1.9.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isUseLazyLoading():1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesAll():1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesDefault():1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesSelect():1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:static GwtCommandDispatcher getInstance():1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommandException(CommandResponse, ):1.9.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommunicationException(Throwable, ):1.9.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void onFailure(Throwable, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void onSuccess(CommandResponse, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesAll(int, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesDefault(int, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesSelect(int, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void setShowError(boolean, ):1.9.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUseLazyLoading(boolean, ):1.6.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUserToken(String, ):1.6.0
-org.geomajas.gwt.client.command.event.DispatchStartedEvent::1.6.0
-org.geomajas.gwt.client.command.event.DispatchStartedEvent:final Type<DispatchStartedHandler> getAssociatedType():1.6.0
-org.geomajas.gwt.client.command.event.DispatchStartedEvent:static Type<DispatchStartedHandler> getType():1.6.0
-org.geomajas.gwt.client.command.event.DispatchStartedHandler::1.6.0
-org.geomajas.gwt.client.command.event.DispatchStartedHandler:void onDispatchStarted(DispatchStartedEvent, ):1.6.0
-org.geomajas.gwt.client.command.event.DispatchStoppedEvent::1.6.0
-org.geomajas.gwt.client.command.event.DispatchStoppedEvent:final Type<DispatchStoppedHandler> getAssociatedType():1.6.0
-org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchStoppedHandler> getType():1.6.0
-org.geomajas.gwt.client.command.event.DispatchStoppedHandler::1.6.0
-org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):1.8.0
-org.geomajas.gwt.client.command.event.HasDispatchHandlers::1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController::1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetX():1.8.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetY():1.8.0
