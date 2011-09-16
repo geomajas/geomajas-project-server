@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt;
+package org.geomajas.gwt.client;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;

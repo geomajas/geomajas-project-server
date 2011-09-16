@@ -12,7 +12,6 @@
 package org.geomajas.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import org.geomajas.gwt.GwtCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 
 /**
