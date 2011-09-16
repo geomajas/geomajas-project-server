@@ -8,10 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.annotation.Api;
+import org.geomajas.command.CommandResponse;
 
 /**
  * Convenience class that implements {@link CommandExceptionCallback} and {@link CommunicationExceptionCallback} with
@@ -19,7 +20,7 @@ import org.geomajas.annotation.Api;
  *
  * @param <RESPONSE> type of response object for the command
  * @author Oliver May
- * @since 1.9.0
+ * @since 1.0.0
  */
 @Api()
 public abstract class AbstractCommandCallback<RESPONSE extends CommandResponse>

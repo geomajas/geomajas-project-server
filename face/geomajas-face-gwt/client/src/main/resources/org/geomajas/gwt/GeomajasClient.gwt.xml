@@ -13,7 +13,7 @@
 	<!-- Internationalization requirements -->
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name="com.google.gwt.i18n.I18N"/>
-	<inherits name="org.geomajas.GeomajasDto"/>
+	<inherits name="org.geomajas.gwt.GeomajasCommonGwt"/>
 
 	<!-- Inherited modules: SmartGWT -->
 	<!--inherits name='com.smartgwt.SmartGwt'/-->
@@ -60,5 +60,7 @@
 	<source path="client/widget/wizard">
 		<exclude name="*Test*.java"/>
 	</source>
+
+	<entry-point class="org.geomajas.gwt.client.GeomajasEntryPoint"/>
 
 </module>

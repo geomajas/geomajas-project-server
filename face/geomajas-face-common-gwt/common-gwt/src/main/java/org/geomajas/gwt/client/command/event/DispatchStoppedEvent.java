@@ -8,17 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command.event;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.annotation.Api;
 
 /**
  * This event is thrown when the command dispatcher stops dispatching (no callbacks left).
  *
  * @author Jan De Moerloose
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class DispatchStoppedEvent extends GwtEvent<DispatchStoppedHandler> {

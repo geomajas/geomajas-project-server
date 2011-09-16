@@ -11,8 +11,15 @@
 
 package org.geomajas.gwt.client.command;
 
-import org.geomajas.command.CommandResponse;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.smartgwt.client.core.Function;
 import org.geomajas.annotation.Api;
+import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.ExceptionDto;
 import org.geomajas.global.GeomajasConstant;
@@ -25,18 +32,6 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
-import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.util.Log;
-import org.geomajas.gwt.client.widget.ExceptionWindow;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.smartgwt.client.core.Function;
-import com.smartgwt.client.util.SC;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,10 +47,11 @@ import java.util.Map;
  * @author Pieter De Graef
  * @author Oliver May
  * @author Joachim Van der Auwera
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
-public final class GwtCommandDispatcher implements HasDispatchHandlers {
+public final class GwtCommandDispatcher
+		implements HasDispatchHandlers, CommandExceptionCallback, CommunicationExceptionCallback {
 
 	private static final String SECURITY_EXCEPTION_CLASS_NAME = "org.geomajas.security.GeomajasSecurityException";
 	private static GwtCommandDispatcher instance;
@@ -83,6 +79,10 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	private boolean showError;
 
 	private TokenRequestHandler tokenRequestHandler;
+
+	private CommandExceptionCallback commandExceptionCallback;
+
+	private CommunicationExceptionCallback communicationExceptionCallback;
 
 	// map is not synchronized as this class runs in JavaScript which only has one execution thread
 	private Map<String, List<RetryCommand>> afterLoginCommands = new HashMap<String, List<RetryCommand>>();
@@ -149,7 +149,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * @param command The command to be executed. This command is a wrapper around the actual request object.
 	 * @param deferred list of callbacks for the command
 	 * @return original deferred object as passed as parameter
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	public Deferred execute(final GwtCommand command, final Deferred deferred) {
 		command.setLocale(locale);
@@ -183,7 +183,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 				} catch (Throwable t) {
 					String msg = "Command failed on error callback";
 					GWT.log(msg, t);
-					Log.logError(msg, t);
+					// @todo Log.logError(msg, t);
 				} finally {
 					decrementDispatched();
 				}
@@ -226,7 +226,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 				} catch (Throwable t) {
 					String msg = "Command failed on success callback";
 					GWT.log(msg, t);
-					Log.logError(msg, t);
+					// @todo Log.logError(msg, t);
 				} finally {
 					decrementDispatched();
 				}
@@ -266,7 +266,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 				 * Login handling. @todo since declaration should be removed, needed because of bug in api checks
 				 *
 				 * @param event new token details
-				 * @since 1.10.0
+				 * @since 1.0.0
 				 */
 				public void onTokenChanged(TokenChangedEvent event) {
 					List<RetryCommand> retryCommands = afterLoginCommands.remove(oldToken);
@@ -296,13 +296,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Default behaviour for handling a communication exception. Shows a warning window to the user.
 	 *
 	 * @param error error to report
-	 * @since 1.9.0
+	 * @since 1.0.0
 	 */
 	public void onCommunicationException(Throwable error) {
 		if (isShowError()) {
-			String msg = I18nProvider.getGlobal().commandCommunicationError() + ":\n" + error.getMessage();
-			GWT.log(msg, null);
-			SC.warn(msg, null);
+			communicationExceptionCallback.onCommunicationException(error);
 		}
 	}
 
@@ -310,22 +308,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Default behaviour for handling a command execution exception. Shows an exception report to the user.
 	 *
 	 * @param response command response with error
-	 * @since 1.9.0
+	 * @since 1.0.0
 	 */
 	public void onCommandException(CommandResponse response) {
 		if (isShowError()) {
-			String message = I18nProvider.getGlobal().commandError() + ":";
-			for (String error : response.getErrorMessages()) {
-				message += "\n" + error;
-			}
-			GWT.log(message, null);
-			if (response.getExceptions() == null || response.getExceptions().size() == 0) {
-				SC.warn(message, null);
-			} else {
-				// The error messaging window only supports 1 exception to display:
-				ExceptionWindow window = new ExceptionWindow(response.getExceptions().get(0));
-				window.show();
-			}
+			commandExceptionCallback.onCommandException(response);
 		}
 	}
 
@@ -353,7 +340,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *
 	 * @param userToken user token
 	 * @param userDetail user details
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	public void setUserToken(String userToken, UserDetail userDetail) {
 		this.userToken = userToken;
@@ -369,7 +356,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Get currently active user authentication token.
 	 *
 	 * @return authentication token
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	@Api
 	public String getUserToken() {
@@ -382,7 +369,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Object is always not-null, but the entries mey be.
 	 *
 	 * @return user details object
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	@Api
 	public UserDetail getUserDetail() {
@@ -394,7 +381,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *
 	 * @param handler token changed handler
 	 * @return handler registration
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	public HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler) {
 		return manager.addHandler(TokenChangedHandler.TYPE, handler);
@@ -404,10 +391,30 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Set the login handler which should be used to request aan authentication token.
 	 *
 	 * @param tokenRequestHandler login handler
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
 		this.tokenRequestHandler = tokenRequestHandler;
+	}
+
+	/**
+	 * Set default command exception callback.
+	 *
+	 * @param commandExceptionCallback command exception callback
+	 * @since 1.0.0
+	 */
+	public void setCommandExceptionCallback(CommandExceptionCallback commandExceptionCallback) {
+		this.commandExceptionCallback = commandExceptionCallback;
+	}
+
+	/**
+	 * Set default communication exception callback.
+	 *
+	 * @param communicationExceptionCallback communication exception callback
+	 * @since 1.0.0
+	 */
+	public void setCommunicationExceptionCallback(CommunicationExceptionCallback communicationExceptionCallback) {
+		this.communicationExceptionCallback = communicationExceptionCallback;
 	}
 
 	/**
@@ -505,7 +512,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Should the dispatcher show error messages ?
 	 * 
 	 * @return true if showing error messages, false otherwise
-	 * @since 1.9.0
+	 * @since 1.0.0
 	 */
 	public boolean isShowError() {
 		return showError;
@@ -515,7 +522,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 * Sets whether the dispatcher should show error messages.
 	 * 
 	 * @param showError true if showing error messages, false otherwise
-	 * @since 1.9.0
+	 * @since 1.0.0
 	 */
 	public void setShowError(boolean showError) {
 		this.showError = showError;

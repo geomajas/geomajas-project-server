@@ -11,24 +11,22 @@
 
 package org.geomajas.gwt.client.command;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.annotation.Api;
 
-
 /**
- * Execution function that can be passed on to the {@link GwtCommandDispatcher} to be executed when a command response
- * includes errors.
+ * Execution function that can be passed on to the {@link GwtCommandDispatcher} to be executed when a command fails
+ * because of a communication error.
  * 
  * @author Oliver May
- * @since 1.9.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface CommandExceptionCallback {
+public interface CommunicationExceptionCallback {
 
 	/**
-	 * Called when the CommandResponse includes exception details.
+	 * Called when a command invocation failed because of communication problems.
 	 *
-	 * @param response command response
+	 * @param error problem which occurred
 	 */
-	void onCommandException(CommandResponse response);
+	void onCommunicationException(Throwable error);
 }

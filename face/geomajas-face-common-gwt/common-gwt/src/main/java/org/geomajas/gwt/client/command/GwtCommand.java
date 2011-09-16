@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt.client.command;
 
-import java.io.Serializable;
-
-import org.geomajas.command.CommandRequest;
 import org.geomajas.annotation.Api;
+import org.geomajas.command.CommandRequest;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -23,7 +23,7 @@ import org.geomajas.annotation.Api;
  * </p>
  * 
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class GwtCommand implements Serializable {

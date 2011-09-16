@@ -21,7 +21,7 @@ import org.geomajas.gwt.client.command.event.TokenChangedHandler;
  * exception code {@link org.geomajas.global.ExceptionCode#CREDENTIALS_MISSING_OR_INVALID}.
  *
  * @author Joachim Van der Auwera
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface TokenRequestHandler {

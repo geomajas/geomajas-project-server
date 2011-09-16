@@ -147,30 +147,37 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-common-gwt-all</artifactId>
+				<version>${gwt-face-common-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${gwt-version}</version>
+				<version>${gwt-face-gwt-version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${gwt-version}</version>
+				<version>${gwt-face-gwt-version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${gwt-version}</version>
+				<version>${gwt-face-gwt-version}</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>com.smartgwt</groupId>
 				<artifactId>smartgwt</artifactId>
-				<version>${smartgwt-version}</version>
+				<version>${gwt-face-smartgwt-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -205,8 +212,9 @@
 
 	<properties>
 		<gwt-face-backend-version>1.10.0-SNAPSHOT</gwt-face-backend-version>
-		<gwt-version>2.4.0</gwt-version>
-		<smartgwt-version>2.5</smartgwt-version>
+		<gwt-face-gwt-version>2.4.0</gwt-face-gwt-version>
+		<gwt-face-common-gwt-version>1.0.0-SNAPSHOT</gwt-face-common-gwt-version>
+		<gwt-face-smartgwt-version>2.5</gwt-face-smartgwt-version>
 	</properties>
 	
 </project>

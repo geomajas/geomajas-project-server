@@ -25,8 +25,7 @@
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-common-gwt</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-common-gwt
-		</developerConnection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/face/geomajas-face-common-gwt</developerConnection>
 		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/face/geomajas-face-common-gwt</url>
 	</scm>
 
@@ -49,10 +48,29 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-common-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
 				<version>${common-gwt-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${common-gwt-gwt-version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${common-gwt-gwt-version}</version>
+				<scope>runtime</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -92,5 +110,6 @@
 
 	<properties>
 		<common-gwt-backend-version>1.10.0-SNAPSHOT</common-gwt-backend-version>
+		<common-gwt-gwt-version>2.4.0</common-gwt-gwt-version>
 	</properties>	
 </project>

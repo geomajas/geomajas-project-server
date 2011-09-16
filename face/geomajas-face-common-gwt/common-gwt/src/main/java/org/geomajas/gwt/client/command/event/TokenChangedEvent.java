@@ -19,7 +19,7 @@ import org.geomajas.gwt.client.command.UserDetail;
  * Event that reports when logging in was successful.
  * 
  * @author Joachim Van der Auwera
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Api
 public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
@@ -63,7 +63,7 @@ public class TokenChangedEvent extends GwtEvent<TokenChangedHandler> {
 	 * Get the new user token.
 	 *
 	 * @return user token
-	 * @since 1.10.0
+	 * @since 1.0.0
 	 */
 	@Api
 	public String getToken() {

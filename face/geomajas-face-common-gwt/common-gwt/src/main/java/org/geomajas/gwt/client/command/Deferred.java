@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt.client.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.smartgwt.client.core.Function;
 import org.geomajas.annotation.Api;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to
@@ -24,7 +24,7 @@ import org.geomajas.annotation.Api;
  * No need to send out an extra command to the server, just add a call-back here.
  * 
  * @author Pieter De Graef
- * @since 1.9.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class Deferred {
@@ -51,7 +51,7 @@ public class Deferred {
 	 * Add callbacks for the command.
 	 * 
 	 * @param callback, this can be either a simple {@link CommandCallback} or a version implementing
-	 * {@link CommandExceptionCallback} or {@link CommunicationExceptionCallback}.
+	 * {@link org.geomajas.gwt.client.command.CommandExceptionCallback} or {@link CommunicationExceptionCallback}.
 	 */
 	public void addCallback(CommandCallback callback) {
 		onSuccessCallbacks.add(callback);
@@ -59,11 +59,11 @@ public class Deferred {
 
 	/**
 	 * Add callbacks for the command. Despite the name, this can be for both success or error conditions, see
-	 * {@link #addCallback(CommandCallback)}.
+	 * {@link #addCallback(org.geomajas.gwt.client.command.CommandCallback)}.
 	 *
 	 * @param callback, despite the method name, this may also be a {@link CommandCallback} that implements
-	 * {@link CommandExceptionCallback} or {@link CommunicationExceptionCallback}.
-	 * @deprecated use {@link #addCallback(CommandCallback)}
+	 * {@link org.geomajas.gwt.client.command.CommandExceptionCallback} or {@link CommunicationExceptionCallback}.
+	 * @deprecated use {@link #addCallback(org.geomajas.gwt.client.command.CommandCallback)}
 	 */
 	@Deprecated
 	public void addSuccessCallback(CommandCallback callback) {
@@ -74,7 +74,7 @@ public class Deferred {
 	 * Add callback function which is only called on communication failure.
 	 *
 	 * @param onError function to call
-	 * @deprecated use {@link #addCallback(CommandCallback)}
+	 * @deprecated use {@link #addCallback(org.geomajas.gwt.client.command.CommandCallback)}
 	 */
 	@Deprecated
 	public void addErrorCallback(Function onError) {

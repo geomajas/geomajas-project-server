@@ -8,11 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command.event;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 /**
@@ -20,14 +20,14 @@ import org.geomajas.annotation.UserImplemented;
  * registered to catch these events.
  *
  * @author Jan De Moerloose
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api
 @UserImplemented
 public interface HasDispatchHandlers {
 
 	/**
-	 * Add a new handler for {@link DispatchStartedEvent} events.
+	 * Add a new handler for {@link org.geomajas.gwt.client.command.event.DispatchStartedEvent} events.
 	 *
 	 * @param handler The handler to be registered.
 	 * @return Returns the handlers registration object.
@@ -35,7 +35,7 @@ public interface HasDispatchHandlers {
 	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
 
 	/**
-	 * Add a new handler for {@link DispatchStoppedEvent} events.
+	 * Add a new handler for {@link org.geomajas.gwt.client.command.event.DispatchStoppedEvent} events.
 	 *
 	 * @param handler The handler to be registered.
 	 * @return Returns the handlers registration object.

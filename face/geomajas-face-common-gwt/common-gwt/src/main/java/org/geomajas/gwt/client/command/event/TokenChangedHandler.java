@@ -8,29 +8,30 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command.event;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 /**
- * Interface for event handlers that catch {@link org.geomajas.gwt.client.command.event.DispatchStoppedEvent}s.
- *
- * @author Jan De Moerloose
- * @since 1.6.0
+ * Handler to be notified when a new token is registered.
+ * 
+ * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface DispatchStoppedHandler extends EventHandler {
+public interface TokenChangedHandler extends EventHandler {
+
+	GwtEvent.Type<TokenChangedHandler> TYPE = new GwtEvent.Type<TokenChangedHandler>();
 
 	/**
-	 * The event catching method.
-	 *
-	 * @param event
-	 *            The actual {@link org.geomajas.gwt.client.command.event.DispatchStoppedEvent}.
-	 * @since 1.8.0
+	 * Called when the user token changes.
+	 * 
+	 * @param event event containing the token and possibly some user information
 	 */
-	void onDispatchStopped(DispatchStoppedEvent event);
+	void onTokenChanged(TokenChangedEvent event);
 }

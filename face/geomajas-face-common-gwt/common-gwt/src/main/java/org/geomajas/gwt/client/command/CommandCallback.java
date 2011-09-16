@@ -8,11 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.command;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
+import org.geomajas.command.CommandResponse;
 
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.
@@ -20,7 +21,7 @@ import org.geomajas.annotation.UserImplemented;
  * It is recommended to extend {@link AbstractCommandCallback} instead of implementing this.
  *
  * @param <RESPONSE> type of response object for the command
- * @since 1.6.0
+ * @since 1.0.0
  * @author Pieter De Graef
  */
 @Api(allMethods = true)
