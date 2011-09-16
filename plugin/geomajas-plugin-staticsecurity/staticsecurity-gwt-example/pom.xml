@@ -182,6 +182,9 @@
 				<configuration>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
+					<!--<logLevel>DEBUG</logLevel>-->
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 					<module>org.geomajas.plugin.staticsecurity.gwt.example.Application</module>
 					<runTarget>index.html</runTarget>
