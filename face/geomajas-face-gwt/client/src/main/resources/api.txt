@@ -349,7 +349,3 @@ org.geomajas.gwt.client.widget.Toolbar::1.6.0
 org.geomajas.gwt.client.widget.UpdatePointOfViewHandler::1.6.0
 org.geomajas.gwt.client.widget.ZoomButton::1.6.0
 org.geomajas.gwt.client.widget.ZoomOnScrollController::1.6.0
-org.geomajas.gwt.server.GeomajasServiceImpl::1.6.0
-org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):1.6.0
-org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):1.6.0
-org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):1.6.0

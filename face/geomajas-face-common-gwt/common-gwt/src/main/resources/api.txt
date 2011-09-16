@@ -62,3 +62,7 @@ org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchS
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler::0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):0.0.0
 org.geomajas.gwt.client.command.event.HasDispatchHandlers::0.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl::1.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):1.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):1.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):1.0.0
