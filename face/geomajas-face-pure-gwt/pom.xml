@@ -129,6 +129,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-common-gwt-all</artifactId>
+				<version>${gwt-pure-face-common-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -231,6 +238,7 @@
 
 	<properties>
 		<gwt-pure-face-backend-version>1.10.0-SNAPSHOT</gwt-pure-face-backend-version>
+		<gwt-pure-face-common-gwt-version>1.0.0-SNAPSHOT</gwt-pure-face-common-gwt-version>
 		<pure-gwt-gwt-version>2.4.0</pure-gwt-gwt-version>
 	</properties>
 	
