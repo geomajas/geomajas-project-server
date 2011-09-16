@@ -171,19 +171,19 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${gwt-version}</version>
+				<version>${pure-gwt-gwt-version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${gwt-version}</version>
+				<version>${pure-gwt-gwt-version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${gwt-version}</version>
+				<version>${pure-gwt-gwt-version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -191,13 +191,11 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.8.2</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
-				<version>1.8.0</version>
-				<scope>test</scope>
+				<version>1.9.0</version>
 			</dependency>
 
 		</dependencies>
@@ -233,7 +231,7 @@
 
 	<properties>
 		<gwt-pure-face-backend-version>1.10.0-SNAPSHOT</gwt-pure-face-backend-version>
-		<gwt-version>2.3.0</gwt-version>
+		<pure-gwt-gwt-version>2.4.0</pure-gwt-gwt-version>
 	</properties>
 	
 </project>
