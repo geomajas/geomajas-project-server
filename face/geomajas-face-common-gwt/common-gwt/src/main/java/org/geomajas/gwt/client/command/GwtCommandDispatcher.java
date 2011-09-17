@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
+import org.geomajas.gwt.client.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,9 +182,7 @@ public final class GwtCommandDispatcher
 						onCommunicationException(error);
 					}
 				} catch (Throwable t) {
-					String msg = "Command failed on error callback";
-					GWT.log(msg, t);
-					// @todo Log.logError(msg, t);
+					Log.logError("Command failed on error callback", t);
 				} finally {
 					decrementDispatched();
 				}
@@ -224,9 +223,7 @@ public final class GwtCommandDispatcher
 						}
 					}
 				} catch (Throwable t) {
-					String msg = "Command failed on success callback";
-					GWT.log(msg, t);
-					// @todo Log.logError(msg, t);
+					Log.logError("Command failed on success callback", t);
 				} finally {
 					decrementDispatched();
 				}

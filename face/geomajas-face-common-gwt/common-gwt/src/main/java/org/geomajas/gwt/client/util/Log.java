@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.util;
 
 import org.geomajas.annotation.Api;
@@ -15,15 +16,19 @@ import org.geomajas.command.dto.LogRequest;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 
+import java.util.logging.Logger;
+
 /**
  * SmartClient-based logger functionality.
  * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public final class Log {
+
+	private static final Logger LOG = Logger.getLogger("Log");
 
 	public static final int LEVEL_DEBUG = LogRequest.LEVEL_DEBUG;
 	public static final int LEVEL_INFO = LogRequest.LEVEL_INFO;
@@ -33,24 +38,26 @@ public final class Log {
 	private static final String SEP = ", ";
 
 	private Log() {
-		// hide constructor
+		// do not allow instantiation.
 	}
 
-	public static native void logDebug(String message) /*-{
-														$wnd.isc.Log.logDebug(message);
-														}-*/;
+	public static void logDebug(String message) {
+		LOG.fine(message);
+	}
 
-	public static native void logInfo(String message) /*-{
-														$wnd.isc.Log.logInfo(message);
-														}-*/;
+	public static void logInfo(String message) {
+		LOG.info(message);
+	}
 
-	public static native void logWarn(String message) /*-{
-														$wnd.isc.Log.logWarn(message);
-														}-*/;
+	public static void logWarn(String message) {
+		LOG.warning(message);
+		logServer(LEVEL_WARN, message, null);
+	}
 
-	public static native void logError(String message) /*-{
-														$wnd.isc.Log.logError(message);
-														}-*/;
+	public static void logError(String message) {
+		LOG.severe(message);
+		logServer(LEVEL_ERROR, message, null);
+	}
 
 	public static void logDebug(String message, Throwable t) {
 		logDebug(message + SEP + getMessage(t));
