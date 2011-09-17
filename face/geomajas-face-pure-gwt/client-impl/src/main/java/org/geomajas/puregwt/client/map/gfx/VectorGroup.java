@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
+import org.geomajas.gwt.client.util.Log;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -27,7 +28,7 @@ public class VectorGroup extends Group implements VectorContainer {
 	public VectorObject add(VectorObject vo) {
 		if (vo instanceof Group) {
 			if (hasScale() || hasTranslation()) {
-				GWT.log("WARNING: nested groups with scaling/translation become invisible in IE !");
+				Log.logWarn("WARNING: nested groups with scaling/translation become invisible in IE !");
 			}
 		}
 		return super.add(vo);
@@ -37,7 +38,7 @@ public class VectorGroup extends Group implements VectorContainer {
 	public VectorObject insert(VectorObject vo, int beforeIndex) {
 		if (vo instanceof Group) {
 			if (hasScale() || hasTranslation()) {
-				GWT.log("WARNING: nested groups with scaling/translation become invisible in IE !");
+				Log.logWarn("WARNING: nested groups with scaling/translation become invisible in IE !");
 			}
 		}
 		return super.insert(vo, beforeIndex);

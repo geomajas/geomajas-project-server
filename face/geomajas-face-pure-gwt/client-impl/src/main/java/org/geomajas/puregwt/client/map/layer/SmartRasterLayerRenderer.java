@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.map.MapRenderer;
@@ -312,7 +313,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		if (htmlContainer.getChildCount() > 1) {
 			htmlContainer.remove(getBottomContainer());
 		} else {
-			GWT.log("WARN: Trying to remove bottom container when there is no top container...");
+			Log.logWarn("WARN: Trying to remove bottom container when there is no top container...");
 		}
 	}
 
