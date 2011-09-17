@@ -47,7 +47,7 @@ import java.util.Map;
  * @author Pieter De Graef
  * @author Oliver May
  * @author Joachim Van der Auwera
- * @since 1.0.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 public final class GwtCommandDispatcher
@@ -296,7 +296,7 @@ public final class GwtCommandDispatcher
 	 * Default behaviour for handling a communication exception. Shows a warning window to the user.
 	 *
 	 * @param error error to report
-	 * @since 1.0.0
+	 * @since 0.0.0
 	 */
 	public void onCommunicationException(Throwable error) {
 		if (isShowError()) {
@@ -308,7 +308,7 @@ public final class GwtCommandDispatcher
 	 * Default behaviour for handling a command execution exception. Shows an exception report to the user.
 	 *
 	 * @param response command response with error
-	 * @since 1.0.0
+	 * @since 0.0.0
 	 */
 	public void onCommandException(CommandResponse response) {
 		if (isShowError()) {
@@ -512,7 +512,7 @@ public final class GwtCommandDispatcher
 	 * Should the dispatcher show error messages ?
 	 * 
 	 * @return true if showing error messages, false otherwise
-	 * @since 1.0.0
+	 * @since 0.0.0
 	 */
 	public boolean isShowError() {
 		return showError;
@@ -522,7 +522,7 @@ public final class GwtCommandDispatcher
 	 * Sets whether the dispatcher should show error messages.
 	 * 
 	 * @param showError true if showing error messages, false otherwise
-	 * @since 1.0.0
+	 * @since 0.0.0
 	 */
 	public void setShowError(boolean showError) {
 		this.showError = showError;

@@ -24,7 +24,7 @@ import java.util.List;
  * No need to send out an extra command to the server, just add a call-back here.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 public class Deferred {

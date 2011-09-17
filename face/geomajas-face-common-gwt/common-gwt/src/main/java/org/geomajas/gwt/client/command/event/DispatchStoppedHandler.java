@@ -19,7 +19,7 @@ import org.geomajas.annotation.UserImplemented;
  * Interface for event handlers that catch {@link DispatchStoppedEvent}s.
  *
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
@@ -30,7 +30,7 @@ public interface DispatchStoppedHandler extends EventHandler {
 	 *
 	 * @param event
 	 *            The actual {@link DispatchStoppedEvent}.
-	 * @since 1.0.0
+	 * @since 0.0.0
 	 */
 	void onDispatchStopped(DispatchStoppedEvent event);
 }

@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * definition, except that it doesn't use {@link java.util.Locale} as this is not allowed by GWT.
  *
  * @author Joachim Van der Auwera
- * @since 1.0.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 public class UserDetail {

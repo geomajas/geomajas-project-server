@@ -1,8 +1,8 @@
 // initial api as copied from GWT face marked as 0.0.0
-org.geomajas.gwt.client.GeomajasService::1.0.0
-org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):1.0.0
-org.geomajas.gwt.client.GeomajasServiceAsync::1.0.0
-org.geomajas.gwt.client.GeomajasServiceAsync:void execute(GwtCommand, AsyncCallback<CommandResponse>, ):1.0.0
+org.geomajas.gwt.client.GeomajasService::0.0.0
+org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):0.0.0
+org.geomajas.gwt.client.GeomajasServiceAsync::0.0.0
+org.geomajas.gwt.client.GeomajasServiceAsync:void execute(GwtCommand, AsyncCallback<CommandResponse>, ):0.0.0
 org.geomajas.gwt.client.command.AbstractCommandCallback::0.0.0
 org.geomajas.gwt.client.command.CommandCallback::0.0.0
 org.geomajas.gwt.client.command.CommandCallback:void execute(RESPONSE, ):0.0.0
@@ -62,7 +62,7 @@ org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchS
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler::0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):0.0.0
 org.geomajas.gwt.client.command.event.HasDispatchHandlers::0.0.0
-org.geomajas.gwt.server.GeomajasServiceImpl::1.0.0
-org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):1.0.0
-org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):1.0.0
-org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):1.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl::0.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):0.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):0.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):0.0.0

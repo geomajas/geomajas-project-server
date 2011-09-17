@@ -21,7 +21,7 @@ import org.geomajas.command.CommandResponse;
  * It is recommended to extend {@link AbstractCommandCallback} instead of implementing this.
  *
  * @param <RESPONSE> type of response object for the command
- * @since 1.0.0
+ * @since 0.0.0
  * @author Pieter De Graef
  */
 @Api(allMethods = true)

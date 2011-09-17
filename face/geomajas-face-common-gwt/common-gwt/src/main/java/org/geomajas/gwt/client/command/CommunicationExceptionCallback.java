@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * because of a communication error.
  * 
  * @author Oliver May
- * @since 1.0.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 public interface CommunicationExceptionCallback {

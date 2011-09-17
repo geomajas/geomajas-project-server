@@ -20,7 +20,7 @@ import org.geomajas.annotation.UserImplemented;
  * Handler to be notified when a new token is registered.
  * 
  * @author Joachim Van der Auwera
- * @since 1.0.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

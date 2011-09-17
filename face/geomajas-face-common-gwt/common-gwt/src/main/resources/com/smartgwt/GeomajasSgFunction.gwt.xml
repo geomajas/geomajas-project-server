@@ -10,10 +10,9 @@
   -->
 
 <module>
-	<inherits name="com.smartgwt.GeomajasSgFunction"/>
-	<inherits name="org.geomajas.GeomajasDto"/>
+	<!-- Link to dummy Function interface which is provided for API compatibility -->
 
-	<!-- make sure the default is there -->
-	<source path="client"/>
-
+	<source path="client/core">
+		<exclude name="*Test.java" />
+	</source>
 </module>
