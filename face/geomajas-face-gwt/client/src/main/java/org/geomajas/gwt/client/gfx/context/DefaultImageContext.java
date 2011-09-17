@@ -17,7 +17,7 @@ import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.gwt.client.util.DOM;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -46,14 +46,14 @@ public class DefaultImageContext implements ImageContext {
 	public DefaultImageContext(Widget parent) {
 		this.parent = parent;
 		// root node
-		Element rootNode = DOM.createElementNS(DOM.NS_HTML, "div");
-		id = DOM.createUniqueId();
+		Element rootNode = Dom.createElementNS(Dom.NS_HTML, "div");
+		id = Dom.createUniqueId();
 		rootNode.setId(id);
-		DOM.setStyleAttribute(rootNode, "position", "absolute");
-		DOM.setStyleAttribute(rootNode, "width", "100%");
-		DOM.setStyleAttribute(rootNode, "height", "100%");
+		Dom.setStyleAttribute(rootNode, "position", "absolute");
+		Dom.setStyleAttribute(rootNode, "width", "100%");
+		Dom.setStyleAttribute(rootNode, "height", "100%");
 		// prevents overflowing of images in IE
-		DOM.setStyleAttribute(rootNode, "overflow", "hidden");
+		Dom.setStyleAttribute(rootNode, "overflow", "hidden");
 		helper = new DomHelper(rootNode, Namespace.HTML);
 		// Append to parent:
 		parent.getElement().appendChild(rootNode);
@@ -172,7 +172,7 @@ public class DefaultImageContext implements ImageContext {
 			Element group = helper.getGroup(object);
 			if (group == null) {
 				group = helper.createOrUpdateGroup(parent, object, transformation, null);
-				DOM.setInnerHTML(group, data);
+				Dom.setInnerHTML(group, data);
 			}
 		}
 	}
@@ -185,38 +185,38 @@ public class DefaultImageContext implements ImageContext {
 				style.setDisplay("none");
 			}
 			final Element image = helper.createOrUpdateElement(parent, name, "img", style);
-			DOM.setStyleAttribute(image, "position", "absolute");
-			DOM.setStyleAttribute(image, "border", "0px");
-			DOM.setStyleAttribute(image, "padding", "0px");
-			DOM.setStyleAttribute(image, "margin", "0px");
-			DOM.setStyleAttribute(image, "position", "absolute");
-			DOM.setStyleAttribute(image, "left", (int) bounds.getX() + "px");
-			DOM.setStyleAttribute(image, "top", (int) bounds.getY() + "px");
-			DOM.setStyleAttribute(image, "width", (int) bounds.getWidth() + "px");
-			DOM.setStyleAttribute(image, "height", (int) bounds.getHeight() + "px");
-			String oldHref = DOM.getElementAttribute(image, "src");
+			Dom.setStyleAttribute(image, "position", "absolute");
+			Dom.setStyleAttribute(image, "border", "0px");
+			Dom.setStyleAttribute(image, "padding", "0px");
+			Dom.setStyleAttribute(image, "margin", "0px");
+			Dom.setStyleAttribute(image, "position", "absolute");
+			Dom.setStyleAttribute(image, "left", (int) bounds.getX() + "px");
+			Dom.setStyleAttribute(image, "top", (int) bounds.getY() + "px");
+			Dom.setStyleAttribute(image, "width", (int) bounds.getWidth() + "px");
+			Dom.setStyleAttribute(image, "height", (int) bounds.getHeight() + "px");
+			String oldHref = Dom.getElementAttribute(image, "src");
 			// if href has changed, attach a listener to show the image on load
 			if (href != null && !href.equals(oldHref)) {
-				DOM.sinkEvents(image, Event.ONLOAD | Event.ONERROR);
-				DOM.setEventListener(image, new EventListener() {
+				Dom.sinkEvents(image, Event.ONLOAD | Event.ONERROR);
+				Dom.setEventListener(image, new EventListener() {
 
 					private int retries = 5;
 
 					public void onBrowserEvent(Event event) {
-						switch (DOM.eventGetType(event)) {
+						switch (Dom.eventGetType(event)) {
 							case Event.ONLOAD:
-								DOM.setStyleAttribute(image, "display", "");
+								Dom.setStyleAttribute(image, "display", "");
 								break;
 							case Event.ONERROR:
 								retries--;
 								if (retries > 0) {
-									DOM.setElementAttribute(image, "src", href);
+									Dom.setElementAttribute(image, "src", href);
 								}
 								break;
 						}
 					}
 				});
-				DOM.setElementAttribute(image, "src", href);
+				Dom.setElementAttribute(image, "src", href);
 			}
 		}
 	}
@@ -242,7 +242,7 @@ public class DefaultImageContext implements ImageContext {
 		if (isAttached()) {
 			Element element = helper.getGroup(group);
 			if (element != null) {
-				DOM.setStyleAttribute(element, "visibility", "hidden");
+				Dom.setStyleAttribute(element, "visibility", "hidden");
 			}
 		}
 	}
@@ -257,7 +257,7 @@ public class DefaultImageContext implements ImageContext {
 		if (isAttached()) {
 			Element element = helper.getGroup(group);
 			if (element != null) {
-				DOM.setStyleAttribute(element, "visibility", "inherit");
+				Dom.setStyleAttribute(element, "visibility", "inherit");
 			}
 		}
 	}

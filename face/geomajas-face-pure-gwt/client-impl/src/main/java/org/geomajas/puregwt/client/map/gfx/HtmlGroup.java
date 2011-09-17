@@ -14,10 +14,8 @@ package org.geomajas.puregwt.client.map.gfx;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.puregwt.client.Geomajas;
-
 import com.google.gwt.dom.client.Node;
-import com.google.gwt.user.client.DOM;
+import org.geomajas.gwt.client.util.Dom;
 
 /**
  * <p>
@@ -187,17 +185,19 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * 
 	 * @param scale
 	 *            The zooming factor.
-	 * @param transformOrigin
-	 *            The origin to where we want this container to zoom.
+	 * @param x
+	 *            The x origin to where we want this container to zoom.
+	 * @param y
+	 *            The y origin to where we want this container to zoom.
 	 */
 	public void zoomToLocation(double scale, int x, int y) {
-		DOM.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
-		DOM.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
-		DOM.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
-		DOM.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
+		Dom.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
+		Dom.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
+		Dom.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");
+		Dom.setStyleAttribute(getElement(), "WebkitTransformOrigin", x + "px " + y + "px");
 
-		if (Geomajas.isIE()) {
-			DOM.setStyleAttribute(getElement(), "zoom", Double.toString(scale));
+		if (Dom.isIE()) {
+			Dom.setStyleAttribute(getElement(), "zoom", Double.toString(scale));
 		}
 		// Safari - if webkit stuff doesn't work, try: -o-transform: rotate(-90deg) translate(0px, -45px);
 	}

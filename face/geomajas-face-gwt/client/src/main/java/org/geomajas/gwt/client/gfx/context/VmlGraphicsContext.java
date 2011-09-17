@@ -28,7 +28,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-import org.geomajas.gwt.client.util.DOM;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -67,17 +67,17 @@ public class VmlGraphicsContext implements GraphicsContext {
 		this.parent = parent;
 
 		// Initialize the VML namespace:
-		DOM.initVMLNamespace();
+		Dom.initVMLNamespace();
 
 		// the root VML node
-		Element rootNode = DOM.createElementNS(DOM.NS_HTML, "div");
-		id = DOM.createUniqueId();
+		Element rootNode = Dom.createElementNS(Dom.NS_HTML, "div");
+		id = Dom.createUniqueId();
 		rootNode.setId(id);
-		DOM.setStyleAttribute(rootNode, "position", "absolute");
-		DOM.setStyleAttribute(rootNode, "width", "100%");
-		DOM.setStyleAttribute(rootNode, "height", "100%");
-		DOM.setStyleAttribute(rootNode, "clip", "rect(0 " + width + "px " + height + "px 0)");
-		DOM.setStyleAttribute(rootNode, "overflow", "hidden");
+		Dom.setStyleAttribute(rootNode, "position", "absolute");
+		Dom.setStyleAttribute(rootNode, "width", "100%");
+		Dom.setStyleAttribute(rootNode, "height", "100%");
+		Dom.setStyleAttribute(rootNode, "clip", "rect(0 " + width + "px " + height + "px 0)");
+		Dom.setStyleAttribute(rootNode, "overflow", "hidden");
 		helper = new DomHelper(rootNode, Namespace.VML);
 
 		// Append to parent: we need a top div or the vml is blocked by any peer div !!!
@@ -155,7 +155,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 			Element group = helper.getGroup(object);
 			if (group == null) {
 				group = helper.createOrUpdateGroup(parent, object, transformation, null);
-				DOM.setInnerHTML(group, data);
+				Dom.setInnerHTML(group, data);
 			}
 		}
 	}
@@ -267,7 +267,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 			Element image = helper.createOrUpdateElement(parent, name, "image", style);
 			applyAbsolutePosition(image, bounds.getOrigin());
 			applyElementSize(image, (int) bounds.getWidth(), (int) bounds.getHeight(), true);
-			DOM.setElementAttribute(image, "src", href);
+			Dom.setElementAttribute(image, "src", href);
 		}
 	}
 
@@ -288,8 +288,8 @@ public class VmlGraphicsContext implements GraphicsContext {
 		if (isAttached()) {
 			Element element = helper.createOrUpdateElement(parent, name, "shape", style);
 			if (line != null) {
-				DOM.setElementAttribute(element, "path", VmlPathDecoder.decode(line));
-				DOM.setStyleAttribute(element, "position", "absolute");
+				Dom.setElementAttribute(element, "path", VmlPathDecoder.decode(line));
+				Dom.setStyleAttribute(element, "position", "absolute");
 				applyElementSize(element, width, height, false);
 			}
 		}
@@ -311,9 +311,9 @@ public class VmlGraphicsContext implements GraphicsContext {
 		if (isAttached()) {
 			Element element = helper.createOrUpdateElement(parent, name, "shape", style);
 			if (polygon != null) {
-				DOM.setStyleAttribute(element, "position", "absolute");
-				DOM.setElementAttribute(element, "fill-rule", "evenodd");
-				DOM.setElementAttribute(element, "path", VmlPathDecoder.decode(polygon));
+				Dom.setStyleAttribute(element, "position", "absolute");
+				Dom.setElementAttribute(element, "fill-rule", "evenodd");
+				Dom.setElementAttribute(element, "path", VmlPathDecoder.decode(polygon));
 				applyElementSize(element, getWidth(), getHeight(), false);
 			}
 		}
@@ -423,7 +423,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 			} else if (symbol.getImage() != null) {
 				// Creating an image; ignoring style....
 				Element image = helper.createOrUpdateElement(parent, name, "image", null);
-				DOM.setElementAttribute(image, "src", symbol.getImage().getHref());
+				Dom.setElementAttribute(image, "src", symbol.getImage().getHref());
 				int width = symbol.getImage().getWidth();
 				int height = symbol.getImage().getHeight();
 				applyElementSize(image, width, height, false);
@@ -460,7 +460,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 				if (textWidth <= 0) {
 					textWidth = 10;
 				}
-				DOM.setStyleAttribute(element, "width", textWidth + "px");
+				Dom.setStyleAttribute(element, "width", textWidth + "px");
 				element.setInnerText(text);
 			}
 		}
@@ -538,7 +538,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 		if (isAttached()) {
 			Element element = helper.getGroup(group);
 			if (element != null) {
-				DOM.setStyleAttribute(element, "visibility", "hidden");
+				Dom.setStyleAttribute(element, "visibility", "hidden");
 			}
 		}
 	}
@@ -651,7 +651,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 
 		if (helper.getRootElement() != null) {
 			applyElementSize(helper.getRootElement(), newWidth, newHeight, false);
-			DOM.setStyleAttribute(helper.getRootElement(), "clip", "rect(0 " + newWidth + "px " + newHeight + "px 0)");
+			Dom.setStyleAttribute(helper.getRootElement(), "clip", "rect(0 " + newWidth + "px " + newHeight + "px 0)");
 		} else {
 			SC.logWarn("problems");
 		}
@@ -667,7 +667,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 		if (isAttached()) {
 			Element element = helper.getGroup(group);
 			if (element != null) {
-				DOM.setStyleAttribute(element, "visibility", "inherit");
+				Dom.setStyleAttribute(element, "visibility", "inherit");
 			}
 		}
 	}
@@ -700,9 +700,9 @@ public class VmlGraphicsContext implements GraphicsContext {
 	 *            The position as a Coordinate.
 	 */
 	private void applyAbsolutePosition(Element element, Coordinate position) {
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "left", (int) position.getX() + "px");
-		DOM.setStyleAttribute(element, "top", (int) position.getY() + "px");
+		Dom.setStyleAttribute(element, "position", "absolute");
+		Dom.setStyleAttribute(element, "left", (int) position.getX() + "px");
+		Dom.setStyleAttribute(element, "top", (int) position.getY() + "px");
 	}
 
 	/**
@@ -720,10 +720,10 @@ public class VmlGraphicsContext implements GraphicsContext {
 	private void applyElementSize(Element element, int width, int height, boolean addCoordSize) {
 		if (width >= 0 && height >= 0) {
 			if (addCoordSize) {
-				DOM.setElementAttribute(element, "coordsize", width + " " + height);
+				Dom.setElementAttribute(element, "coordsize", width + " " + height);
 			}
-			DOM.setStyleAttribute(element, "width", width + "px");
-			DOM.setStyleAttribute(element, "height", height + "px");
+			Dom.setStyleAttribute(element, "width", width + "px");
+			Dom.setStyleAttribute(element, "height", height + "px");
 		}
 	}
 

@@ -15,7 +15,7 @@ import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.gfx.style.Style;
-import org.geomajas.gwt.client.util.DOM;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
@@ -107,9 +107,9 @@ public final class VmlStyleUtil {
 		// First check the presence of the fill and stroke elements:
 		NodeList<Element> fills = element.getElementsByTagName("fill");
 		if (fills.getLength() == 0) {
-			Element stroke = DOM.createElementNS(DOM.NS_VML, "stroke");
+			Element stroke = Dom.createElementNS(Dom.NS_VML, "stroke");
 			element.appendChild(stroke);
-			Element fill = DOM.createElementNS(DOM.NS_VML, "fill");
+			Element fill = Dom.createElementNS(Dom.NS_VML, "fill");
 			element.appendChild(fill);
 			fills = element.getElementsByTagName("fill");
 		}

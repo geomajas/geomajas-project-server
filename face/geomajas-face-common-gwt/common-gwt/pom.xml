@@ -32,6 +32,10 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId> <!-- @todo this should be command-api only -->
+		</dependency>
 
 		<!-- GWT dependencies -->
 		<dependency>

@@ -17,7 +17,7 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
-import org.geomajas.gwt.client.util.DOM;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
@@ -244,7 +244,7 @@ public class LoadingScreen extends VLayout {
 
 			setAnimateTime(1000);
 
-			if (!DOM.isIE()) {
+			if (!Dom.isIE()) {
 				// TODO Why should IE have a different approach??
 				mapWidget.setResizedHandlerDisabled(true);
 			}

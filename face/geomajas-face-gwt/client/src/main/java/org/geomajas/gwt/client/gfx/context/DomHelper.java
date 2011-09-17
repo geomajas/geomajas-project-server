@@ -23,7 +23,7 @@ import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.gwt.client.util.DOM;
+import org.geomajas.gwt.client.util.Dom;
 
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -131,7 +131,7 @@ public class DomHelper {
 		// check existence
 		if (name != null) {
 			if (!generateId) {
-				element = DOM.getElementById(name);
+				element = Dom.getElementById(name);
 			} else {
 				element = getElement(parent, name);
 			}
@@ -179,12 +179,12 @@ public class DomHelper {
 	public Element drawGroup(Object parent, Object object, String tagName) {
 		switch (namespace) {
 			case SVG:
-				return createGroup(DOM.NS_SVG, parent, object, tagName);
+				return createGroup(Dom.NS_SVG, parent, object, tagName);
 			case VML:
-				return createGroup(DOM.NS_VML, parent, object, tagName);
+				return createGroup(Dom.NS_VML, parent, object, tagName);
 			case HTML:
 			default:
-				return createGroup(DOM.NS_HTML, parent, object, tagName);
+				return createGroup(Dom.NS_HTML, parent, object, tagName);
 		}
 	}
 
@@ -262,13 +262,13 @@ public class DomHelper {
 		if (sourceGroup == null || targetGroup == null) {
 			return false;
 		}
-		if (DOM.isOrHasChild(sourceGroup, element)) {
-			DOM.removeChild(sourceGroup, element);
-			String newId = DOM.assembleId(targetGroup.getId(), name);
+		if (Dom.isOrHasChild(sourceGroup, element)) {
+			Dom.removeChild(sourceGroup, element);
+			String newId = Dom.assembleId(targetGroup.getId(), name);
 			elementToName.remove(element.getId());
 			elementToName.put(newId, name);
-			DOM.setElementAttribute(element, "id", newId);
-			DOM.appendChild(targetGroup, element);
+			Dom.setElementAttribute(element, "id", newId);
+			Dom.appendChild(targetGroup, element);
 			return true;
 		}
 		return false;
@@ -320,11 +320,11 @@ public class DomHelper {
 		}
 		// create if necessary
 		if (group == null) {
-			group = createGroup(DOM.NS_SVG, parent, object, "g");
+			group = createGroup(Dom.NS_SVG, parent, object, "g");
 		}
 		// Apply transformation on the element:
 		if (transformation != null) {
-			DOM.setElementAttribute(group, "transform", parse(transformation));
+			Dom.setElementAttribute(group, "transform", parse(transformation));
 		}
 		// SVG style is just CSS, so ok for both
 		if (style != null) {
@@ -341,7 +341,7 @@ public class DomHelper {
 		}
 		// create if necessary
 		if (group == null) {
-			group = createGroup(DOM.NS_VML, parent, object, "group");
+			group = createGroup(Dom.NS_VML, parent, object, "group");
 		}
 
 		if (group != null) {
@@ -355,8 +355,8 @@ public class DomHelper {
 
 			// Inherit size from parent if not specified
 			if (parentElement != null) {
-				String width = DOM.getStyleAttribute(parentElement, "width");
-				String height = DOM.getStyleAttribute(parentElement, "height");
+				String width = Dom.getStyleAttribute(parentElement, "width");
+				String height = Dom.getStyleAttribute(parentElement, "height");
 				// sizes should be numbers + px
 				int w = Integer.parseInt(width.substring(0, width.indexOf('p')));
 				int h = Integer.parseInt(height.substring(0, height.indexOf('p')));
@@ -381,11 +381,11 @@ public class DomHelper {
 		}
 		// create if necessary
 		if (group == null) {
-			group = createGroup(DOM.NS_HTML, parent, object, "div");
+			group = createGroup(Dom.NS_HTML, parent, object, "div");
 		}
 		// Apply width, height default 100%
-		DOM.setStyleAttribute(group, "width", "100%");
-		DOM.setStyleAttribute(group, "height", "100%");
+		Dom.setStyleAttribute(group, "width", "100%");
+		Dom.setStyleAttribute(group, "height", "100%");
 		// Apply transformation on the element:
 		if (transformation != null) {
 			applyAbsolutePosition(group, new Coordinate(transformation.getDx(), transformation.getDy()));
@@ -408,9 +408,9 @@ public class DomHelper {
 	 *            The position as a Coordinate.
 	 */
 	private void applyAbsolutePosition(Element element, Coordinate position) {
-		DOM.setStyleAttribute(element, "position", "absolute");
-		DOM.setStyleAttribute(element, "left", (int) position.getX() + "px");
-		DOM.setStyleAttribute(element, "top", (int) position.getY() + "px");
+		Dom.setStyleAttribute(element, "position", "absolute");
+		Dom.setStyleAttribute(element, "left", (int) position.getX() + "px");
+		Dom.setStyleAttribute(element, "top", (int) position.getY() + "px");
 	}
 
 	/**
@@ -428,10 +428,10 @@ public class DomHelper {
 	private void applyElementSize(Element element, int width, int height, boolean addCoordSize) {
 		if (width >= 0 && height >= 0) {
 			if (addCoordSize) {
-				DOM.setElementAttribute(element, "coordsize", width + " " + height);
+				Dom.setElementAttribute(element, "coordsize", width + " " + height);
 			}
-			DOM.setStyleAttribute(element, "width", width + "px");
-			DOM.setStyleAttribute(element, "height", height + "px");
+			Dom.setStyleAttribute(element, "width", width + "px");
+			Dom.setStyleAttribute(element, "height", height + "px");
 		}
 	}
 
@@ -534,8 +534,8 @@ public class DomHelper {
 			int offsetY = element.getAbsoluteTop() - rootElement.getParentElement().getAbsoluteTop();
 			controller.setOffsetX(offsetX);
 			controller.setOffsetY(offsetY);
-			DOM.setEventListener(element, new EventListenerHelper(element, controller, eventMask));
-			DOM.sinkEvents(element, eventMask);
+			Dom.setEventListener(element, new EventListenerHelper(element, controller, eventMask));
+			Dom.sinkEvents(element, eventMask);
 		}
 	}
 
@@ -549,11 +549,11 @@ public class DomHelper {
 	 */
 	public void setCursor(Object object, String cursor) {
 		if (object == null) {
-			DOM.setStyleAttribute(getRootElement(), "cursor", cursor);
+			Dom.setStyleAttribute(getRootElement(), "cursor", cursor);
 		} else {
 			Element element = getGroup(object);
 			if (element != null) {
-				DOM.setStyleAttribute(element, "cursor", cursor);
+				Dom.setStyleAttribute(element, "cursor", cursor);
 			}
 		}
 	}
@@ -571,7 +571,7 @@ public class DomHelper {
 	public void setCursor(Object parent, String name, String cursor) {
 		Element element = getElement(parent, name);
 		if (element != null) {
-			DOM.setStyleAttribute(element, "cursor", cursor);
+			Dom.setStyleAttribute(element, "cursor", cursor);
 		}
 	}
 
@@ -617,7 +617,7 @@ public class DomHelper {
 		@SuppressWarnings("deprecation")
 		public void onBrowserEvent(Event event) {
 			// copied from Widget class to mimic behaviour of other widgets
-			switch (DOM.eventGetType(event)) {
+			switch (Dom.eventGetType(event)) {
 				case Event.ONMOUSEOVER:
 					// Only fire the mouse over event if it's coming from outside this
 					// widget.
@@ -656,7 +656,7 @@ public class DomHelper {
 	 * @return the group or null if it does not exist
 	 */
 	public Element getGroup(Object object) {
-		return DOM.getElementById(groupToId.get(object));
+		return Dom.getElementById(groupToId.get(object));
 	}
 
 	/**
@@ -669,7 +669,7 @@ public class DomHelper {
 	public Object getGroupById(String id) {
 		String name = elementToName.get(id);
 		if (name != null) {
-			return idToGroup.get(DOM.disAssembleId(id, name));
+			return idToGroup.get(Dom.disAssembleId(id, name));
 		} else {
 			return null;
 		}
@@ -708,19 +708,19 @@ public class DomHelper {
 			return null;
 		} else {
 			Element element;
-			if (DOM.NS_HTML.equals(namespace)) {
-				element = DOM.createElement("div");
+			if (Dom.NS_HTML.equals(namespace)) {
+				element = Dom.createElement("div");
 			} else {
-				element = DOM.createElementNS(namespace, type);
+				element = Dom.createElementNS(namespace, type);
 			}
 			parentElement.appendChild(element);
-			String id = DOM.createUniqueId();
+			String id = Dom.createUniqueId();
 			if (group instanceof PaintableGroup) {
-				id = DOM.assembleId(id, ((PaintableGroup) group).getGroupName());
+				id = Dom.assembleId(id, ((PaintableGroup) group).getGroupName());
 			}
 			groupToId.put(group, id);
 			idToGroup.put(id, group);
-			DOM.setElementAttribute(element, "id", id);
+			Dom.setElementAttribute(element, "id", id);
 			return element;
 		}
 	}
@@ -744,7 +744,7 @@ public class DomHelper {
 		} else {
 			id = groupToId.get(parent);
 		}
-		return DOM.getElementById(DOM.assembleId(id, name));
+		return Dom.getElementById(Dom.assembleId(id, name));
 	}
 
 	/**
@@ -778,16 +778,16 @@ public class DomHelper {
 			Element element;
 			switch (namespace) {
 				case SVG:
-					element = DOM.createElementNS(DOM.NS_SVG, type);
+					element = Dom.createElementNS(Dom.NS_SVG, type);
 					if (style != null) {
 						applyStyle(element, style);
 					}
 					break;
 				case VML:
-					element = DOM.createElementNS(DOM.NS_VML, type);
-					Element stroke = DOM.createElementNS(DOM.NS_VML, "stroke");
+					element = Dom.createElementNS(Dom.NS_VML, type);
+					Element stroke = Dom.createElementNS(Dom.NS_VML, "stroke");
 					element.appendChild(stroke);
-					Element fill = DOM.createElementNS(DOM.NS_VML, "fill");
+					Element fill = Dom.createElementNS(Dom.NS_VML, "fill");
 					element.appendChild(fill);
 					if ("shape".equals(name)) {
 						// Set the size .....if the parent has a coordsize defined, take it over:
@@ -796,20 +796,20 @@ public class DomHelper {
 							element.setAttribute("coordsize", coordsize);
 						}
 					}
-					DOM.setStyleAttribute(element, "position", "absolute");
+					Dom.setStyleAttribute(element, "position", "absolute");
 					VmlStyleUtil.applyStyle(element, style);
 					break;
 				case HTML:
 				default:
-					element = DOM.createElementNS(DOM.NS_HTML, type);
+					element = Dom.createElementNS(Dom.NS_HTML, type);
 					if (style != null) {
 						applyStyle(element, style);
 					}
 			}
 			parentElement.appendChild(element);
-			String id = generateId ? DOM.assembleId(parentElement.getId(), name) : name;
+			String id = generateId ? Dom.assembleId(parentElement.getId(), name) : name;
 			elementToName.put(id, name);
-			DOM.setElementAttribute(element, "id", id);
+			Dom.setElementAttribute(element, "id", id);
 			return element;
 		}
 	}
@@ -827,7 +827,7 @@ public class DomHelper {
 		if (element != null) {
 			Element group = (Element) element.getParentElement();
 			if (group != null) {
-				DOM.removeChild(group, element);
+				Dom.removeChild(group, element);
 				elementToName.remove(element.getId());
 			}
 		}
@@ -845,7 +845,7 @@ public class DomHelper {
 			Element parent = (Element) element.getParentElement();
 			if (parent != null) {
 				try {
-					DOM.removeChild(parent, element);
+					Dom.removeChild(parent, element);
 					groupToId.remove(object);
 				} catch (Exception e) {
 					// do something...
@@ -896,47 +896,47 @@ public class DomHelper {
 
 	private void applyHtmlStyle(Element element, ShapeStyle style) {
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
-			DOM.setStyleAttribute(element, "fillColor", style.getFillColor());
+			Dom.setStyleAttribute(element, "fillColor", style.getFillColor());
 		}
-		DOM.setStyleAttribute(element, "fillOpacity", Float.toString(style.getFillOpacity()));
+		Dom.setStyleAttribute(element, "fillOpacity", Float.toString(style.getFillOpacity()));
 		if (style.getStrokeColor() != null && !"".equals(style.getStrokeColor())) {
-			DOM.setStyleAttribute(element, "stroke", style.getStrokeColor());
+			Dom.setStyleAttribute(element, "stroke", style.getStrokeColor());
 		}
-		DOM.setStyleAttribute(element, "strokeOpacity", Float.toString(style.getStrokeOpacity()));
+		Dom.setStyleAttribute(element, "strokeOpacity", Float.toString(style.getStrokeOpacity()));
 		if (style.getStrokeWidth() >= 0) {
-			DOM.setStyleAttribute(element, "strokeWidth", Float.toString(style.getStrokeWidth()));
+			Dom.setStyleAttribute(element, "strokeWidth", Float.toString(style.getStrokeWidth()));
 		}
 	}
 
 	private void applyHtmlStyle(Element element, FontStyle style) {
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
-			DOM.setStyleAttribute(element, "color", style.getFillColor());
+			Dom.setStyleAttribute(element, "color", style.getFillColor());
 		}
 		if (style.getFontFamily() != null && !"".equals(style.getFontFamily())) {
-			DOM.setStyleAttribute(element, "fontFamily", style.getFontFamily());
+			Dom.setStyleAttribute(element, "fontFamily", style.getFontFamily());
 		}
 		if (style.getFontStyle() != null && !"".equals(style.getFontStyle())) {
-			DOM.setStyleAttribute(element, "fontStyle", style.getFontStyle());
+			Dom.setStyleAttribute(element, "fontStyle", style.getFontStyle());
 		}
 		if (style.getFontWeight() != null && !"".equals(style.getFontWeight())) {
-			DOM.setStyleAttribute(element, "fontWeight", style.getFontWeight());
+			Dom.setStyleAttribute(element, "fontWeight", style.getFontWeight());
 		}
 	}
 
 	private void applyHtmlStyle(Element element, PictureStyle style) {
 		if (SC.isIE()) {
 			com.google.gwt.dom.client.Style s = element.getStyle();
-			String src = DOM.getElementAttribute(element, "src");
+			String src = Dom.getElementAttribute(element, "src");
 			int opacity = (int) (style.getOpacity() * 100);
 			if (src != null && src.length() > 0 && opacity >= 0 && opacity < 100) {
 				s.setProperty("filter", "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src
 						+ "',sizingMethod='scale')  progid:DXImageTransform.Microsoft.Alpha(opacity=" + opacity + ");");
 			}
 		} else {
-			DOM.setStyleAttribute(element, "opacity", Double.toString(style.getOpacity()));
+			Dom.setStyleAttribute(element, "opacity", Double.toString(style.getOpacity()));
 		}
 		if (style.getDisplay() != null) {
-			DOM.setStyleAttribute(element, "display", style.getDisplay());
+			Dom.setStyleAttribute(element, "display", style.getDisplay());
 		}
 	}
 
@@ -963,7 +963,7 @@ public class DomHelper {
 			css.append(style.getStrokeWidth());
 			css.append(";");
 		}
-		DOM.setElementAttribute(element, "style", css.toString());
+		Dom.setElementAttribute(element, "style", css.toString());
 	}
 
 	private void applySvgStyle(Element element, FontStyle style) {
@@ -993,7 +993,7 @@ public class DomHelper {
 			css.append(style.getFontSize());
 			css.append(";");
 		}
-		DOM.setElementAttribute(element, "style", css.toString());
+		Dom.setElementAttribute(element, "style", css.toString());
 	}
 
 	private void applySvgStyle(Element element, PictureStyle style) {
@@ -1005,7 +1005,7 @@ public class DomHelper {
 			css.append("display:");
 			css.append(style.getDisplay());
 		}
-		DOM.setElementAttribute(element, "style", css.toString());
+		Dom.setElementAttribute(element, "style", css.toString());
 	}
 
 }

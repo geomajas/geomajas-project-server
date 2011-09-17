@@ -11,13 +11,12 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.puregwt.client.Geomajas;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.puregwt.client.map.layer.TilePresenter.TileView;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -30,26 +29,6 @@ import com.google.gwt.user.client.Element;
 public class VectorTileObject extends VectorObject implements TileView {
 
 	/**
-	 * XLINK name-space. Used in attributes, referencing other elements.
-	 */
-	public static final String NS_XLINK = "http://www.w3.org/1999/xlink";
-
-	/**
-	 * General SVG name-space.
-	 */
-	public static final String NS_SVG = "http://www.w3.org/2000/svg";
-
-	/**
-	 * General VML name-space.
-	 */
-	public static final String NS_VML = "vml";
-
-	/**
-	 * General HTML name-space.
-	 */
-	public static final String NS_HTML = "html";
-
-	/**
 	 * Set the actual tile contents. This string will probably come from the server which has the capability to create
 	 * SVG/VML string representing a tile.
 	 * 
@@ -57,7 +36,7 @@ public class VectorTileObject extends VectorObject implements TileView {
 	 *            The actual SVG or VML string to be parsed and applied in this tile. It contains the actual rendering.
 	 */
 	public void setContent(String content) {
-		if (Geomajas.isIE()) {
+		if (Dom.isIE()) {
 			throw new RuntimeException("VectorTileGroup - rendering VML tiles: Not implemented.");
 		} else {
 			setInnerSvg(getElement(), content);
@@ -79,11 +58,11 @@ public class VectorTileObject extends VectorObject implements TileView {
 	 *            The string of SVG to set on the element.
 	 */
 	public static void setInnerSvg(Element element, String svg) {
-		if (Geomajas.isFireFox()) {
+		if (Dom.isFireFox()) {
 			setFireFoxInnerHTML(element,
 					"<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">" + svg
 							+ "</g>");
-		} else if (Geomajas.isWebkit()) {
+		} else if (Dom.isWebkit()) {
 			setWebkitInnerHTML(element,
 					"<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">" + svg
 							+ "</g>");
@@ -128,7 +107,7 @@ public class VectorTileObject extends VectorObject implements TileView {
 		if ("#text".equals(source.getNodeName())) {
 			return Document.get().createTextNode(source.getNodeValue()).cast();
 		}
-		Element clone = createElementNS(NS_SVG, source.getNodeName());
+		Element clone = createElementNS(Dom.NS_SVG, source.getNodeName());
 		cloneAttributes(source, clone);
 		for (int i = 0; i < source.getChildCount(); i++) {
 			Element child = source.getChild(i).cast();
@@ -154,11 +133,11 @@ public class VectorTileObject extends VectorObject implements TileView {
 	 * @return Returns a newly created DOM element in the given name-space.
 	 */
 	public static Element createElementNS(String ns, String tag) {
-		if (ns.equals(NS_HTML)) {
-			return DOM.createElement(tag);
+		if (ns.equals(Dom.NS_HTML)) {
+			return Dom.createElement(tag);
 		} else {
-			if (Geomajas.isIE()) {
-				return DOM.createElement(ns + ":" + tag);
+			if (Dom.isIE()) {
+				return Dom.createElement(ns + ":" + tag);
 			} else {
 				return createNameSpaceElement(ns, tag);
 			}

@@ -21,10 +21,10 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
-import org.geomajas.puregwt.client.Geomajas;
 import org.geomajas.puregwt.client.map.gfx.RasterTileObject;
 import org.geomajas.puregwt.client.map.gfx.VectorTileObject;
 
@@ -192,7 +192,7 @@ public class TilePresenter {
 		request.setPaintLabels(false);
 		// request.setPaintLabels(renderer.getLayer().isLabeled());
 		request.setPanOrigin(renderer.getViewPort().getPanOrigin());
-		request.setRenderer(Geomajas.isIE() ? "VML" : "SVG");
+		request.setRenderer(Dom.isIE() ? "VML" : "SVG");
 		request.setScale(renderer.getViewPort().getScale());
 		request.setStyleInfo(renderer.getLayer().getLayerInfo().getNamedStyleInfo());
 		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);

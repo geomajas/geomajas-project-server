@@ -20,14 +20,14 @@ import com.google.gwt.user.client.Window;
  * 
  * @author Jan De Moerloose
  * @since 1.9.0
- *
  */
 @Api(allMethods = true)
 public final class WindowUtil {
 
 	private WindowUtil() {
-
+		// do not allow instantiation.
 	}
+
 	/**
 	 * Change the current window location to a new location.
 	 * @param location new location
