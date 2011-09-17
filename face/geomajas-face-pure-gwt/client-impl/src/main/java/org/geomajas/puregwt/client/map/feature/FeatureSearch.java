@@ -15,15 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.puregwt.client.command.Command;
-import org.geomajas.puregwt.client.command.CommandCallback;
-import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.spatial.Geometry;
@@ -84,10 +83,9 @@ public final class FeatureSearch {
 		public int getValue() {
 			return value;
 		}
-	};
+	}
 
-	@Inject
-	private CommandService commandService;
+	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
 	@Inject
 	private GeometryConverter geometryConverter;
@@ -119,24 +117,18 @@ public final class FeatureSearch {
 			request.setCrs(crs);
 			request.setFeatureIncludes(11);
 
-			Command command = new Command(SearchByLocationRequest.COMMAND);
+			GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 			command.setCommandRequest(request);
-			commandService.execute(command, new CommandCallback() {
+			dispatcher.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
-				public void onSuccess(CommandResponse response) {
-					if (response instanceof SearchByLocationResponse) {
-						SearchByLocationResponse sblr = (SearchByLocationResponse) response;
-						for (List<org.geomajas.layer.feature.Feature> dtos : sblr.getFeatureMap().values()) {
-							List<Feature> features = new ArrayList<Feature>(dtos.size());
-							for (org.geomajas.layer.feature.Feature feature : dtos) {
-								features.add(new FeatureImpl(feature, layer));
-							}
-							callback.execute(features);
+				public void execute(SearchByLocationResponse response) {
+					for (List<org.geomajas.layer.feature.Feature> dtos : response.getFeatureMap().values()) {
+						List<Feature> features = new ArrayList<Feature>(dtos.size());
+						for (org.geomajas.layer.feature.Feature feature : dtos) {
+							features.add(new FeatureImpl(feature, layer));
 						}
+						callback.execute(features);
 					}
-				}
-
-				public void onFailure(Throwable error) {
 				}
 			});
 		}
@@ -163,26 +155,20 @@ public final class FeatureSearch {
 		request.setCrs(crs);
 		request.setFeatureIncludes(11);
 
-		Command command = new Command(SearchByLocationRequest.COMMAND);
+		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		commandService.execute(command, new CommandCallback() {
+		dispatcher.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
-			public void onSuccess(CommandResponse response) {
-				if (response instanceof SearchByLocationResponse) {
-					SearchByLocationResponse sblr = (SearchByLocationResponse) response;
-					for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : sblr.getFeatureMap()
-							.entrySet()) {
-						Layer<?> layer = searchLayer(layers, entry.getKey());
-						List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
-						for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
-							features.add(new FeatureImpl(feature, layer));
-						}
-						callback.execute(features);
+			public void execute(SearchByLocationResponse response) {
+				for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : response.getFeatureMap()
+						.entrySet()) {
+					Layer<?> layer = searchLayer(layers, entry.getKey());
+					List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
+					for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
+						features.add(new FeatureImpl(feature, layer));
 					}
+					callback.execute(features);
 				}
-			}
-
-			public void onFailure(Throwable error) {
 			}
 		});
 	}
@@ -199,22 +185,16 @@ public final class FeatureSearch {
 			request.setFilter(fs.getFilter());
 			request.setFeatureIncludes(11);
 
-			Command command = new Command(SearchFeatureRequest.COMMAND);
+			GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 			command.setCommandRequest(request);
-			commandService.execute(command, new CommandCallback() {
+			dispatcher.execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
 
-				public void onSuccess(CommandResponse response) {
-					if (response instanceof SearchFeatureResponse) {
-						SearchFeatureResponse sfr = (SearchFeatureResponse) response;
-						List<Feature> features = new ArrayList<Feature>();
-						for (org.geomajas.layer.feature.Feature feature : sfr.getFeatures()) {
-							features.add(new FeatureImpl(feature, layer));
-						}
-						callback.execute(features);
+				public void execute(SearchFeatureResponse response) {
+					List<Feature> features = new ArrayList<Feature>();
+					for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
+						features.add(new FeatureImpl(feature, layer));
 					}
-				}
-
-				public void onFailure(Throwable error) {
+					callback.execute(features);
 				}
 			});
 		}

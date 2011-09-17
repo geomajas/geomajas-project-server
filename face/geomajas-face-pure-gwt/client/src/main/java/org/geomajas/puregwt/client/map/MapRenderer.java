@@ -39,7 +39,7 @@ public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHa
 	 * @param scale
 	 *            The scale factor to apply on the rendered map extent.
 	 */
-	void setMapExentScaleAtFetch(double scale);
+	void setMapExtentScaleAtFetch(double scale);
 
 	/** Clear all drawing content this renderer has created. */
 	void clear();

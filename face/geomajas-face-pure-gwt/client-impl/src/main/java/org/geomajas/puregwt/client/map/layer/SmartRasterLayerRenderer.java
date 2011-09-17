@@ -15,16 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.Deferred;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.puregwt.client.command.Command;
-import org.geomajas.puregwt.client.command.CommandCallback;
-import org.geomajas.puregwt.client.command.CommandService;
-import org.geomajas.puregwt.client.command.Deferred;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
@@ -66,7 +65,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	/** The container that should render all images. */
 	private HtmlContainer htmlContainer;
 
-	private double mapExentScaleAtFetch = 2;
+	private double mapExtentScaleAtFetch = 2;
 
 	private Map<TileCode, RasterTile> tiles = new HashMap<TileCode, RasterTile>();
 
@@ -74,7 +73,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 
 	private Bbox currentTileBounds;
 
-	private CommandService commandService = new CommandService();
+	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
 	// Set of parameters stored for zooming consecutively:
 
@@ -187,11 +186,11 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		}
 	}
 
-	public void setMapExentScaleAtFetch(double mapExentScaleAtFetch) {
+	public void setMapExtentScaleAtFetch(double mapExentScaleAtFetch) {
 		if (mapExentScaleAtFetch >= 1 && mapExentScaleAtFetch < 10) {
-			this.mapExentScaleAtFetch = mapExentScaleAtFetch;
+			this.mapExtentScaleAtFetch = mapExentScaleAtFetch;
 		} else {
-			throw new IllegalArgumentException("The 'setMapExentScaleAtFetch' method on the MapRender allows"
+			throw new IllegalArgumentException("The 'setMapExtentScaleAtFetch' method on the MapRender allows"
 					+ " only values between 1 and 10.");
 		}
 	}
@@ -220,7 +219,12 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	/** Fetch tiles and make sure they are rendered when the response returns. */
+	/**
+	 * Fetch tiles and make sure they are rendered when the response returns.
+	 *
+	 * @param bounds bounds to fetch tiles for
+	 * @param zooming is the user zooming?
+	 */
 	private void fetchTiles(final Bbox bounds, final boolean zooming) {
 		// Are we still busy loading a previous batch? Than clean that up and create a new temporary rendering.
 		if (busyRendering && zooming) {
@@ -230,11 +234,11 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 
 		// While we're waiting for the response to return and all images to load, fake zoom the current tiles:
 		if (zooming) {
-			fakeZoom(viewPort.getScale(), bounds);
+			fakeZoom(viewPort.getScale());
 		}
 
 		// Scale the bounds to fetch tiles for:
-		currentTileBounds = bounds.scale(mapExentScaleAtFetch);
+		currentTileBounds = bounds.scale(mapExtentScaleAtFetch);
 
 		// Create the command:
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
@@ -243,24 +247,23 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		request.setCrs(viewPort.getCrs());
 		request.setLayerId(rasterLayer.getServerLayerId());
 		request.setScale(viewPort.getScale());
-		Command command = new Command(GetRasterTilesRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetRasterTilesRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		// Execute the fetch, and render on success:
-		deferred = commandService.execute(command, new CommandCallback() {
+		deferred = dispatcher.execute(command, new AbstractCommandCallback<GetRasterTilesResponse>() {
 
-			public void onSuccess(CommandResponse response) {
-				if (response instanceof GetRasterTilesResponse) {
-					addTiles(((GetRasterTilesResponse) response).getRasterData(), zooming);
-				}
-			}
-
-			public void onFailure(Throwable error) {
+			public void execute(GetRasterTilesResponse response) {
+				addTiles(response.getRasterData(), zooming);
 			}
 		});
 	}
 
-	/** Add tiles to the list and render them on the map. */
+	/**
+	 * Add tiles to the list and render them on the map.
+	 *
+	 * @param rasterTiles tiles to add/render
+	 */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles, boolean zooming) {
 		// Go over all tiles we got back from the server:
 		nrLoadingTiles = 0;
@@ -313,7 +316,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		}
 	}
 
-	private void fakeZoom(double scale, Bbox bounds) {
+	private void fakeZoom(double scale) {
 		HtmlContainer container = getBottomContainer();
 		if (container == null || beginOrigin == null) {
 			getTopContainer();

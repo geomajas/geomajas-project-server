@@ -23,10 +23,7 @@ public final class Geomajas {
 	}
 
 	public static boolean hasSvgSupport() {
-		if (getUserAgent().contains("msie 9")) {
-			return true;
-		}
-		return !getUserAgent().contains("msie");
+		return getUserAgent().contains("msie 9") || !isIE();
 	}
 
 	/**

@@ -277,16 +277,16 @@ public class DelegatingMapRenderer implements MapRenderer {
 		}
 	}
 
-	public void setMapExentScaleAtFetch(double scale) {
+	public void setMapExtentScaleAtFetch(double scale) {
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer<?> layer = layersModel.getLayer(i);
 			if (layer instanceof RasterLayer) {
 				((RasterLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((RasterLayer) layer).getRenderer().setMapExentScaleAtFetch(scale);
+				((RasterLayer) layer).getRenderer().setMapExtentScaleAtFetch(scale);
 			} else if (layer instanceof VectorLayer) {
 				((VectorLayer) layer).getRenderer().setVectorContainer(getVectorContainer(layer));
 				((VectorLayer) layer).getRenderer().setHtmlContainer(getHtmlContainer(layer));
-				((VectorLayer) layer).getRenderer().setMapExentScaleAtFetch(scale);
+				((VectorLayer) layer).getRenderer().setMapExtentScaleAtFetch(scale);
 			}
 		}
 	}

@@ -14,6 +14,9 @@ package org.geomajas.plugin.geocoder.client;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;
@@ -22,8 +25,6 @@ import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 import org.geomajas.puregwt.client.GeomajasGinjector;
-import org.geomajas.puregwt.client.command.Command;
-import org.geomajas.puregwt.client.command.CommandCallback;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.spatial.Bbox;
 
@@ -56,7 +57,7 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	 * Create geocoder widget which allows searching a location from a string.
 	 *
 	 * @param mapPresenter map to apply search results
-	 * @param geocoderWidget geocoder widget
+	 * @param geocoderTextBox geocoder widget
 	 */
 	GeocoderPresenter(MapPresenter mapPresenter, GeocoderTextBox geocoderTextBox) {
 		this.mapPresenter = mapPresenter;
@@ -72,20 +73,16 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	}
 
 	public void goToLocation(final String location) {
-		Command command = new Command(GetLocationForStringRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetLocationForStringRequest.COMMAND);
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
 		request.setCrs(mapPresenter.getViewPort().getCrs());
 		request.setLocation(location);
 		request.setServicePattern(servicePattern);
 		command.setCommandRequest(request);
-		geomajasInjector.getCommandService().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback() {
 
-			public void onSuccess(CommandResponse response) {
+			public void execute(CommandResponse response) {
 				goToLocation(response, location);
-			}
-
-			public void onFailure(Throwable error) {
-				// Do something....
 			}
 		});
 	}

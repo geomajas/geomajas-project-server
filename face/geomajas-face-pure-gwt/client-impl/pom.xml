@@ -29,11 +29,6 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-pure-gwt-client</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
 
 		<!-- GWT dependencies -->
 		<dependency>

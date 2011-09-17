@@ -15,15 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.Deferred;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.puregwt.client.command.Command;
-import org.geomajas.puregwt.client.command.CommandCallback;
-import org.geomajas.puregwt.client.command.CommandService;
-import org.geomajas.puregwt.client.command.Deferred;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
@@ -60,7 +59,7 @@ public class RasterLayerRenderer implements MapRenderer {
 	/** The container that should render all images. */
 	private HtmlContainer htmlContainer;
 
-	private double mapExentScaleAtFetch = 2;
+	private double mapExtentScaleAtFetch = 2;
 
 	private Map<TileCode, RasterTile> tiles = new HashMap<TileCode, RasterTile>();
 
@@ -68,7 +67,7 @@ public class RasterLayerRenderer implements MapRenderer {
 
 	private Bbox currentTileBounds;
 
-	private CommandService commandService = new CommandService();
+	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -167,11 +166,11 @@ public class RasterLayerRenderer implements MapRenderer {
 		}
 	}
 
-	public void setMapExentScaleAtFetch(double mapExentScaleAtFetch) {
-		if (mapExentScaleAtFetch >= 1 && mapExentScaleAtFetch < 10) {
-			this.mapExentScaleAtFetch = mapExentScaleAtFetch;
+	public void setMapExtentScaleAtFetch(double mapExtentScaleAtFetch) {
+		if (mapExtentScaleAtFetch >= 1 && mapExtentScaleAtFetch < 10) {
+			this.mapExtentScaleAtFetch = mapExtentScaleAtFetch;
 		} else {
-			throw new IllegalArgumentException("The 'setMapExentScaleAtFetch' method on the MapRender allows"
+			throw new IllegalArgumentException("The 'setMapExtentScaleAtFetch' method on the MapRender allows"
 					+ " only values between 1 and 10.");
 		}
 	}
@@ -188,10 +187,14 @@ public class RasterLayerRenderer implements MapRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	/** Fetch tiles and make sure they are rendered when the response returns. */
+	/**
+	 * Fetch tiles and make sure they are rendered when the response returns.
+	 *
+	 * @param bounds bounds to fetch tiles for
+	 */
 	private void fetchTiles(final Bbox bounds) {
 		// Scale the bounds to fetch tiles for:
-		currentTileBounds = bounds.scale(mapExentScaleAtFetch);
+		currentTileBounds = bounds.scale(mapExtentScaleAtFetch);
 
 		// Create the command:
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
@@ -200,24 +203,23 @@ public class RasterLayerRenderer implements MapRenderer {
 		request.setCrs(viewPort.getCrs());
 		request.setLayerId(rasterLayer.getServerLayerId());
 		request.setScale(viewPort.getScale());
-		Command command = new Command(GetRasterTilesRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetRasterTilesRequest.COMMAND);
 		command.setCommandRequest(request);
 
 		// Execute the fetch, and render on success:
-		deferred = commandService.execute(command, new CommandCallback() {
+		deferred = dispatcher.execute(command, new AbstractCommandCallback<GetRasterTilesResponse>() {
 
-			public void onSuccess(CommandResponse response) {
-				if (response instanceof GetRasterTilesResponse) {
-					addTiles(((GetRasterTilesResponse) response).getRasterData());
-				}
-			}
-
-			public void onFailure(Throwable error) {
+			public void execute(GetRasterTilesResponse response) {
+				addTiles((response).getRasterData());
 			}
 		});
 	}
 
-	/** Add tiles to the list and render them on the map. */
+	/**
+	 * Add tiles to the list and render them on the map.
+	 *
+	 * @param rasterTiles tiles to add/render
+	 */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles) {
 		// Go over all tiles we got back from the server:
 		for (RasterTile tile : rasterTiles) {

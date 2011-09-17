@@ -48,7 +48,7 @@
 
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<servlet-class>org.geomajas.puregwt.server.GeomajasServiceImpl</servlet-class>
+		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet>

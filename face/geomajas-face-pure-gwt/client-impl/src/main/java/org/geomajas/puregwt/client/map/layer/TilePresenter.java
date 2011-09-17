@@ -14,18 +14,17 @@ package org.geomajas.puregwt.client.map.layer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.Deferred;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.puregwt.client.Geomajas;
-import org.geomajas.puregwt.client.command.Command;
-import org.geomajas.puregwt.client.command.CommandCallback;
-import org.geomajas.puregwt.client.command.CommandService;
-import org.geomajas.puregwt.client.command.Deferred;
 import org.geomajas.puregwt.client.map.gfx.RasterTileObject;
 import org.geomajas.puregwt.client.map.gfx.VectorTileObject;
 
@@ -66,7 +65,7 @@ public class TilePresenter {
 
 	private Deferred deferred;
 
-	private CommandService service;
+	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -76,7 +75,6 @@ public class TilePresenter {
 		this.renderer = renderer;
 		this.tileCode = tileCode;
 		siblings = new ArrayList<TileCode>();
-		service = new CommandService();
 	}
 
 	// -------------------------------------------------------------------------
@@ -154,13 +152,12 @@ public class TilePresenter {
 	// -------------------------------------------------------------------------
 
 	private void render(final boolean renderSiblings) {
-		Command command = createCommand();
-		deferred = service.execute(command, new CommandCallback() {
+		GwtCommand command = createCommand();
+		deferred = dispatcher.execute(command, new AbstractCommandCallback<GetVectorTileResponse>() {
 
-			public void onSuccess(CommandResponse response) {
-				if (!(deferred != null && deferred.isCancelled()) && response instanceof GetVectorTileResponse) {
-					GetVectorTileResponse tileResponse = (GetVectorTileResponse) response;
-					VectorTile tile = tileResponse.getTile();
+			public void execute(GetVectorTileResponse response) {
+				if (!(deferred != null && deferred.isCancelled())) {
+					VectorTile tile = response.getTile();
 					for (TileCode relatedTile : tile.getCodes()) {
 						siblings.add(relatedTile);
 					}
@@ -180,13 +177,10 @@ public class TilePresenter {
 					}
 				}
 			}
-
-			public void onFailure(Throwable error) {
-			}
 		});
 	}
 
-	private Command createCommand() {
+	private GwtCommand createCommand() {
 		GetVectorTileRequest request = new GetVectorTileRequest();
 		request.setCode(tileCode);
 		request.setCrs(renderer.getViewPort().getCrs());
@@ -201,8 +195,7 @@ public class TilePresenter {
 		request.setRenderer(Geomajas.isIE() ? "VML" : "SVG");
 		request.setScale(renderer.getViewPort().getScale());
 		request.setStyleInfo(renderer.getLayer().getLayerInfo().getNamedStyleInfo());
-		request.setFeatureIncludes(0);
-		Command command = new Command(GetVectorTileRequest.COMMAND);
+		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
 		return command;
 	}

@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.FeatureSearch;
 import org.geomajas.puregwt.client.map.feature.GeometryConverter;
@@ -29,8 +28,6 @@ import com.google.gwt.inject.client.Ginjector;
  */
 @GinModules(GeomajasGinModule.class)
 public interface GeomajasGinjector extends Ginjector {
-
-	CommandService getCommandService();
 
 	GeometryFactory getGeometryFactory();
 

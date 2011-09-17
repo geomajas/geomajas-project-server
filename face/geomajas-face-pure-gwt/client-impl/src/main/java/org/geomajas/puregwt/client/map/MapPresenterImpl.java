@@ -19,14 +19,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.puregwt.client.command.Command;
-import org.geomajas.puregwt.client.command.CommandCallback;
-import org.geomajas.puregwt.client.command.CommandService;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.puregwt.client.map.controller.ListenerController;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
@@ -137,14 +136,14 @@ public final class MapPresenterImpl implements MapPresenter {
 		/**
 		 * Removes a user-defined container.
 		 * 
-		 * @param the container
+		 * @param container container
 		 * @return true if removed, false if unknown
 		 */
 		boolean removeVectorContainer(VectorContainer container);
 
 		/**
 		 * Brings the user-defined container to the front (relative to its world-space or screen-space peers!).
-		 * @param container
+		 * @param container container
 		 * @return true if successful
 		 */
 		boolean bringToFront(VectorContainer container);
@@ -232,44 +231,39 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		setFallbackController(new NavigationController());
 
-		Command commandRequest = new Command(GetMapConfigurationRequest.COMMAND);
+		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
-		CommandService cmdService = new CommandService();
-		cmdService.execute(commandRequest, new CommandCallback() {
+		GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
+		dispatcher.execute(commandRequest, new AbstractCommandCallback<GetMapConfigurationResponse>() {
 
-			public void onSuccess(CommandResponse response) {
-				if (response instanceof GetMapConfigurationResponse) {
-					// Initialize the MapModel and ViewPort:
-					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
+			public void execute(GetMapConfigurationResponse response) {
+				// Initialize the MapModel and ViewPort:
+				GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
 
-					// Configure the ViewPort. This will immediately zoom to the initial bounds:
-					viewPort.setMapSize(display.asWidget().getOffsetWidth(), display.asWidget().getOffsetHeight());
-					layersModel.initialize(r.getMapInfo(), viewPort, eventBus);
-					viewPort.initialize(r.getMapInfo(), eventBus);
+				// Configure the ViewPort. This will immediately zoom to the initial bounds:
+				viewPort.setMapSize(display.asWidget().getOffsetWidth(), display.asWidget().getOffsetHeight());
+				layersModel.initialize(r.getMapInfo(), viewPort, eventBus);
+				viewPort.initialize(r.getMapInfo(), eventBus);
 
-					// Immediately zoom to the initial bounds as configured:
-					Bbox initialBounds = factory.createBbox(r.getMapInfo().getInitialBounds());
-					viewPort.applyBounds(initialBounds);
+				// Immediately zoom to the initial bounds as configured:
+				Bbox initialBounds = factory.createBbox(r.getMapInfo().getInitialBounds());
+				viewPort.applyBounds(initialBounds);
 
-					// If there are already some MapGadgets registered, draw them now:
-					for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
-						entry.getKey().onDraw(viewPort, entry.getValue());
-					}
-
-					// Initialize the FeatureSelecrtionRenderer:
-					selectionRenderer.initialize(r.getMapInfo());
-
-					addMapGadget(new ScalebarGadget(r.getMapInfo()));
-					addMapGadget(new WatermarkGadget());
-					addMapGadget(new NavigationGadget());
-
-					// Fire initialization event:
-					eventBus.fireEvent(new MapInitializationEvent());
+				// If there are already some MapGadgets registered, draw them now:
+				for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
+					entry.getKey().onDraw(viewPort, entry.getValue());
 				}
+
+				// Initialize the FeatureSelectionRenderer:
+				selectionRenderer.initialize(r.getMapInfo());
+
+				addMapGadget(new ScalebarGadget(r.getMapInfo()));
+				addMapGadget(new WatermarkGadget());
+				addMapGadget(new NavigationGadget());
+
+				// Fire initialization event:
+				eventBus.fireEvent(new MapInitializationEvent());
 			}
-
-			public void onFailure(Throwable error) {
-				}
 		});
 	}
 

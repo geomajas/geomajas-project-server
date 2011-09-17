@@ -194,7 +194,7 @@ public class VectorLayerRenderer implements MapRenderer {
 		// Do nothing
 	}
 
-	public void setMapExentScaleAtFetch(double scale) {
+	public void setMapExtentScaleAtFetch(double scale) {
 		// TODO Not implemented...
 	}
 

@@ -178,19 +178,19 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${pure-gwt-gwt-version}</version>
+				<version>${gwt-pure-face-gwt-version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${pure-gwt-gwt-version}</version>
+				<version>${gwt-pure-face-gwt-version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${pure-gwt-gwt-version}</version>
+				<version>${gwt-pure-face-gwt-version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -239,7 +239,7 @@
 	<properties>
 		<gwt-pure-face-backend-version>1.10.0-SNAPSHOT</gwt-pure-face-backend-version>
 		<gwt-pure-face-common-gwt-version>1.0.0-SNAPSHOT</gwt-pure-face-common-gwt-version>
-		<pure-gwt-gwt-version>2.4.0</pure-gwt-gwt-version>
+		<gwt-pure-face-gwt-version>2.4.0</gwt-pure-face-gwt-version>
 	</properties>
 	
 </project>

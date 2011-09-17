@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.command.CommandService;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -42,9 +41,6 @@ import com.google.inject.Singleton;
 public class GeomajasGinModule extends AbstractGinModule {
 
 	protected void configure() {
-		// Communication:
-		bind(CommandService.class).in(Singleton.class);
-
 		// Spatial services:
 		bind(MathService.class).to(MathServiceImpl.class).in(Singleton.class);
 		bind(GeometryFactory.class).to(GeometryFactoryImpl.class).in(Singleton.class);
