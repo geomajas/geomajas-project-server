@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * @author redlab_b
  * @author Emiel Ackermann
  *
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface Html {

@@ -16,7 +16,7 @@ import org.geomajas.annotation.Api;
  * Utility for equality checking.
  * 
  * @author Jan De Moerloose
- * @since 1.9.0
+ * @since 0.0.0
  */
 @Api(allMethods = true)
 public final class EqualsUtil {

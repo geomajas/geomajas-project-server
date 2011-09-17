@@ -280,15 +280,11 @@ org.geomajas.gwt.client.map.layer.RasterLayer::1.6.0
 org.geomajas.gwt.client.map.layer.VectorLayer::1.6.0
 org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation::1.6.0
 org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation:Geometry execute(Geometry, ):1.6.0
-org.geomajas.gwt.client.util.EqualsUtil::1.9.0
-org.geomajas.gwt.client.util.EqualsUtil:static boolean isEqual(Object, Object, ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter::1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static . toGwt(Bbox, ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static . toGwt(Geometry, ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static Bbox toDto(., ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static Geometry toDto(., ):1.9.0
-org.geomajas.gwt.client.util.WindowUtil::1.9.0
-org.geomajas.gwt.client.util.WindowUtil:static void setLocation(String, ):1.9.0
 org.geomajas.gwt.client.widget.ApplyFeatureTransactionToWindow::1.6.0
 org.geomajas.gwt.client.widget.CancelButton::1.6.0
 org.geomajas.gwt.client.widget.EditButton::1.6.0

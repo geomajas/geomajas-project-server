@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  *
  * @author Emiel Ackermann
  *
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public final class HtmlBuilder {
