@@ -29,16 +29,23 @@ import java.util.Map;
 public final class Geomajas {
 
 	private Geomajas() {
+		// do not allow instantiation.
 	}
 
-	/** Returns the current version of Geomajas as a string. */
+	/**
+	 * Returns the current version of Geomajas as a string.
+	 *
+	 * @return Geomajas version
+	 */
 	public static String getVersion() {
-		return "1.9.0";
+		return "1.10.0-SNAPSHOT";
 	}
 
 	/**
 	 * Returns a list of locales that can be used in this version of Geomajas. The default is english, and 'native'
 	 * means that your browsers locale should be used (if supported - default otherwise).
+	 *
+	 * @return supported locales
 	 */
 	public static Map<String, String> getSupportedLocales() {
 		Map<String, String> locales = new HashMap<String, String>();
@@ -52,7 +59,7 @@ public final class Geomajas {
 	/**
 	 * Return the base directory for the web application.
 	 * 
-	 * @return
+	 * @return base directory for application for SmartGWT
 	 */
 	public static native String getIsomorphicDir()
 	/*-{
