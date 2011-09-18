@@ -15,8 +15,6 @@ import org.geomajas.gwt.client.util.Log;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Implementation of the {@link VectorContainer} interface.
  * 

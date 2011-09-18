@@ -46,8 +46,6 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 import org.geomajas.puregwt.client.spatial.Bbox;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * <p>
  * MapRenderer implementation that specifically works on a single raster layer.
@@ -264,6 +262,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	 * Add tiles to the list and render them on the map.
 	 *
 	 * @param rasterTiles tiles to add/render
+	 * @param zooming are we zooming
 	 */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles, boolean zooming) {
 		// Go over all tiles we got back from the server:
