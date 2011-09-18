@@ -31,8 +31,6 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class GeocoderTextBox extends TextBox {
 
-	private MapPresenter mapPresenter;
-
 	private GeocoderPresenter geocoderPresenter;
 
 	public GeocoderTextBox(final MapPresenter mapPresenter) {
@@ -50,10 +48,6 @@ public class GeocoderTextBox extends TextBox {
 
 	public void goToLocation() {
 		geocoderPresenter.goToLocation(getValue());
-	}
-
-	public MapPresenter getMapPresenter() {
-		return mapPresenter;
 	}
 
 	/**
