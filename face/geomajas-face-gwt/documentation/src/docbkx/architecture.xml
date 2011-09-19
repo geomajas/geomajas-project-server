@@ -24,7 +24,7 @@
     class has one single method for instantiating such commands and handling
     the result: the <code>execute</code> method.</para>
 
-    <para>The command, required by the execute method
+    <para>The command object, required by the execute method
     (<code>GwtCommand</code>), is in fact a wrapper around a
     <code>CommandRequest</code> object (see <link
     linkend="architecture-command">architecture</link>), wherein the name of
@@ -35,14 +35,13 @@
     within the GWT client packages. As additional parameters for the execute
     method, <code>CommandCallback</code> objects can be passed. These can
     contain methods to call after successful or unsuccessful completion of the
-    command.</para>
+    command. It is recommended to extend AbstractCommandCallback for your
+    implementation.</para>
 
-    <para>The execution will immediately return a <code>Deferred</code>
-    object, that can be used to add more callback methods, both for successful
-    as for an erroneous result of the command's execution.</para>
-
-    <xi:include href="listing/GwtCommandExecution.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <para>The GwtCommandDispatcher is also the central access point for
+    security in the GWT face. You should register a TokenRequestHandler to
+    handle the login procedure if needed. You can read data about the current
+    user when logged in.</para>
   </section>
 
   <section id="mapsmodel">
