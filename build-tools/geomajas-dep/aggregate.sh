@@ -98,6 +98,20 @@ include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.10.0-S
     "incubating" "gwt_face.pdf" \
     "org.geomajas" "geomajas-gwt-client" "1.9.0"
 
+include "org.geomajas.documentation" "geomajas-face-pure-gwt-documentation" "1.0.0-SNAPSHOT" \
+    "PureGWT face" \
+    "GWT face for building powerful AJAX web user interfaces without depending on a widget library. Ideal for mobile." \
+    "incubating" "master.pdf" \
+    "" "" ""
+#    "org.geomajas" "geomajas-pure-gwt-client" "1.0.0"
+
+include "org.geomajas.documentation" "common-gwt-documentation" "1.0.0-SNAPSHOT" \
+    "Common-GWT " \
+    "Common module which is used by both the GWT and PureGWT faces." \
+    "incubating" "master.pdf" \
+    "" "" ""
+#    "org.geomajas" "geomajas-face-common-gwt" "1.0.0"
+
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
     "dojo face for building a web user interface in JavaScript using dojo toolkit." \
@@ -200,7 +214,8 @@ include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNA
     "Utility widgets for GWT" \
     "Utility widgets for GWT" \
     "incubating" "master.pdf" \
-    "org.geomajas.plugin" "geomajas-widget-utility-smartgwt" "1.0.0-SNAPSHOT"
+    "" "" ""
+#    "org.geomajas.plugin" "geomajas-widget-utility-smartgwt" "1.0.0-SNAPSHOT"
 
 
 # contributors guide
