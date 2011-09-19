@@ -26,6 +26,11 @@ import org.geomajas.annotation.UserImplemented;
 @UserImplemented
 public interface DispatchStoppedHandler extends EventHandler {
 
+	/**
+	 * Type for the events.
+	 *
+	 * @since 1.0.0
+	 */
 	GwtEvent.Type<DispatchStoppedHandler> TYPE = new GwtEvent.Type<DispatchStoppedHandler>();
 
 	/**
