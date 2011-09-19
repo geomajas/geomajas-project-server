@@ -64,29 +64,32 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	/**
 	 * Assemble an DOM id.
 	 * 
-	 * @param id
-	 * @param suffixes
+	 * @param id base id
+	 * @param suffixes suffixes to add
 	 * @return id
 	 */
 	public static String assembleId(String id, String... suffixes) {
+		StringBuilder sb = new StringBuilder(id);
 		for (String s : suffixes) {
-			id += Dom.ID_SEPARATOR + s;
+			sb.append(Dom.ID_SEPARATOR);
+			sb.append(s);
 		}
-		return id;
+		return sb.toString();
 	}
 
 	/**
-	 * Assemble an DOM id.
+	 * Disassemble an DOM id, removing suffixes.
 	 * 
-	 * @param id
-	 * @param suffixes
+	 * @param id base id
+	 * @param suffixes suffixes to remove
 	 * @return id
 	 */
 	public static String disAssembleId(String id, String... suffixes) {
+		int count = 0;
 		for (String s : suffixes) {
-			id = id.substring(0, id.length() - s.length() - Dom.ID_SEPARATOR.length());
+			count += s.length() + Dom.ID_SEPARATOR.length();
 		}
-		return id;
+		return id.substring(0, id.length() - count);
 	}
 
 	private static native void initVMLNamespaceForIE()
