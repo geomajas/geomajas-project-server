@@ -66,7 +66,7 @@ public final class AttributeUtil {
 	/**
 	 * Creates an empty attribute. An empty attribute is an attribute which has null as its value.
 	 * 
-	 * @param attrInfo
+	 * @param attrInfo attribute info
 	 * @return an empty attribute.
 	 */
 	public static Attribute<?> createEmptyAttribute(AttributeInfo attrInfo) {
@@ -81,11 +81,11 @@ public final class AttributeUtil {
 	/**
 	 * Creates an empty primitive attribute. An empty attribute is an attribute which has null as its value.
 	 * 
-	 * @param info
+	 * @param info attribute info
 	 * @return an empty primitive attribute of the right type.
 	 */
 	public static PrimitiveAttribute<?> createEmptyPrimitiveAttribute(PrimitiveAttributeInfo info) {
-		PrimitiveAttribute<?> attribute = null;
+		PrimitiveAttribute<?> attribute;
 		switch (info.getType()) {
 			case BOOLEAN:
 				attribute = new BooleanAttribute();
@@ -119,6 +119,11 @@ public final class AttributeUtil {
 				break;
 			case IMGURL:
 				attribute = new ImageUrlAttribute();
+				break;
+			default:
+				String msg = "Trying to build an unknown primitive attribute type " + info.getType();
+				Log.logError(msg);
+				throw new IllegalStateException(msg);
 		}
 		attribute.setEditable(info.isEditable());
 		return attribute;
@@ -127,17 +132,22 @@ public final class AttributeUtil {
 	/**
 	 * Creates an empty association attribute. An empty attribute is an attribute which has null as its value.
 	 * 
-	 * @param info
+	 * @param info attribute info
 	 * @return an empty association attribute of the right type.
 	 */
 	public static AssociationAttribute<?> createEmptyAssociationAttribute(AssociationAttributeInfo info) {
-		AssociationAttribute<?> association = null;
+		AssociationAttribute<?> association;
 		switch (info.getType()) {
 			case MANY_TO_ONE:
 				association = new ManyToOneAttribute();
 				break;
 			case ONE_TO_MANY:
 				association = new OneToManyAttribute();
+				break;
+			default:
+				String msg = "Trying to build an unknown association attribute type " + info.getType();
+				Log.logError(msg);
+				throw new IllegalStateException(msg);
 		}
 		association.setEditable(info.isEditable());
 		return association;
