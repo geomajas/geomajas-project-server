@@ -23,9 +23,6 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 
-	/** Handler type. */
-	private static Type<DispatchStartedHandler> type;
-
 	// -------------------------------------------------------------------------
 	// Event implementation:
 	// -------------------------------------------------------------------------
@@ -34,12 +31,11 @@ public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 	 * Get the type associated with this event.
 	 *
 	 * @return the handler type
+	 * @deprecated use {@link DispatchStartedHandler#TYPE}
 	 */
+	@Deprecated
 	public static Type<DispatchStartedHandler> getType() {
-		if (type == null) {
-			type = new Type<DispatchStartedHandler>();
-		}
-		return type;
+		return DispatchStartedHandler.TYPE;
 	}
 
 	protected void dispatch(DispatchStartedHandler handler) {
@@ -52,7 +48,7 @@ public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 	 * @return the handler type
 	 */
 	public final Type<DispatchStartedHandler> getAssociatedType() {
-		return type;
+		return DispatchStartedHandler.TYPE;
 	}
 
 }

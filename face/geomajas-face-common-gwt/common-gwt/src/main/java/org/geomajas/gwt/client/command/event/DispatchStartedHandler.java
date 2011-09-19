@@ -12,6 +12,7 @@
 package org.geomajas.gwt.client.command.event;
 
 import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
@@ -24,6 +25,8 @@ import org.geomajas.annotation.UserImplemented;
 @Api(allMethods = true)
 @UserImplemented
 public interface DispatchStartedHandler extends EventHandler {
+
+	GwtEvent.Type<DispatchStartedHandler> TYPE = new GwtEvent.Type<DispatchStartedHandler>();
 
 	/**
 	 * The event catching method.

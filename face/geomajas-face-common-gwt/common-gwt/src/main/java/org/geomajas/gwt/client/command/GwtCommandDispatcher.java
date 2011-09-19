@@ -55,7 +55,8 @@ public final class GwtCommandDispatcher
 		implements HasDispatchHandlers, CommandExceptionCallback, CommunicationExceptionCallback {
 
 	private static final String SECURITY_EXCEPTION_CLASS_NAME = "org.geomajas.security.GeomajasSecurityException";
-	private static GwtCommandDispatcher instance;
+
+	private static GwtCommandDispatcher instance = new GwtCommandDispatcher();
 
 	private GeomajasServiceAsync service;
 
@@ -111,18 +112,15 @@ public final class GwtCommandDispatcher
 	 * @return singleton instance
 	 */
 	public static GwtCommandDispatcher getInstance() {
-		if (instance == null) {
-			instance = new GwtCommandDispatcher();
-		}
 		return instance;
 	}
 
 	public HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler) {
-		return manager.addHandler(DispatchStartedEvent.getType(), handler);
+		return manager.addHandler(DispatchStartedHandler.TYPE, handler);
 	}
 
 	public HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler) {
-		return manager.addHandler(DispatchStoppedEvent.getType(), handler);
+		return manager.addHandler(DispatchStoppedHandler.TYPE, handler);
 	}
 
 	/**
