@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-common-gwt">
+  <title>Common GWT</title>
+
+  <para>The common GWT module is a module with common code for the two GWT
+  based faced, the GWT face which uses the SmartGWT widget library, and the
+  pure GWT face which is not tied to a widget library.</para>
+
+  <para>Some of the features include the command dispatcher, which includes
+  some important security hooks, and a string of utility classes which can
+  help you in your application.</para>
+
+  <para></para>
+
+  <section id="common-dispatcher">
+    <title>Command dispatcher</title>
+
+    <para>The command dispatcher allows you to communicate to the server using
+    the Geomajas command interface with the Geomajas built-in support for
+    security and localization. Using the GwtCommandDispatcher class, you can
+    simply send your request objects to the server and process the
+    response.</para>
+
+    <para>A simple invocation looks like this:</para>
+
+    <xi:include href="listing/GwtCommandExecution.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The security will be handled automatically by the command
+    dispatcher.</para>
+
+    <para>You can register a token request handler which is invoked when the
+    command returns with an invalid token exception (or any security exception
+    when the token is null). Once the new token is available, the command will
+    be retried.</para>
+
+    <para>There are events on the dispatcher for changes in token. You can
+    register a handler for them.</para>
+
+    <para>There are also events to indicate when a command is in process or
+    not.</para>
+
+    <para>The dispatcher includes methods to request details about the current
+    token and the logged i user.</para>
+  </section>
+
+  <section>
+    <title>Utility classes</title>
+
+    <para>Several utility classes have been provided.</para>
+
+    <section>
+      <title>Log</title>
+
+      <para>This is a simple utility class which allows you to log
+      data.</para>
+
+      <para>You can force logging to the server log or use the usual log
+      levels. The normal logging uses commons logging. You can configure in
+      your .gwt.xml file how this should be treated, see <ulink
+      url="http://code.google.com/webtoolkit/doc/latest/DevGuideLogging.html">http://code.google.com/webtoolkit/doc/latest/DevGuideLogging.html</ulink>.
+      The error and warn levels will also log to the server.</para>
+    </section>
+
+    <section>
+      <title>HTML building utilities</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>Dom: includes browser identification tests and constants and
+            helpers for various DOM related manipulations.</para>
+          </listitem>
+
+          <listitem>
+            <para>Html: constants for the various HTML tag and attribute
+            names.</para>
+          </listitem>
+
+          <listitem>
+            <para>HtmlBuilder: helper for building pieces of HTML. Usually
+            used in combination with the constants from Html.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section>
+      <title>General utilities</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>AttributeUtil: helper to build attribute objects.</para>
+          </listitem>
+
+          <listitem>
+            <para>EqualsUtil: helps to determine if two objects are equal in a
+            null-safe way.</para>
+          </listitem>
+
+          <listitem>
+            <para>StringUtil: some string handling methods.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+  </section>
+</chapter>

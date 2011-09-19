@@ -11,8 +11,8 @@
 
 package com.my.program.command.dto;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
 
 /**
  * Sample command response class.
@@ -20,6 +20,7 @@ import org.geomajas.global.Api;
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
 public class MySuperDoItResponse extends CommandResponse {
+
 }

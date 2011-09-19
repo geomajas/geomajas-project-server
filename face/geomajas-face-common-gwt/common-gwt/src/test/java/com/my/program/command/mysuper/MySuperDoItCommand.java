@@ -14,9 +14,10 @@ package com.my.program.command.mysuper;
 
 import com.my.program.command.dto.MySuperDoItRequest;
 import com.my.program.command.dto.MySuperDoItResponse;
+import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Joachim Van der Auwera
  */
+@Api
 @Component()
 public class MySuperDoItCommand implements Command<MySuperDoItRequest, MySuperDoItResponse> {
 
