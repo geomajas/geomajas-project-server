@@ -17,7 +17,7 @@ import org.geomajas.annotation.Api;
 /**
  * Contains Strings of all used HTML tags and attributes.
  *
- * @author redlab_b
+ * @author Balder Van Camp
  * @author Emiel Ackermann
  *
  * @since 1.0.0
@@ -26,11 +26,11 @@ import org.geomajas.annotation.Api;
 public interface Html {
 
 	/**
-	 *
 	 * All Tags used in HTML.
 	 *
+	 * @author Emiel Ackermann
 	 */
-	public interface Tag {
+	interface Tag {
 		/**
 		 * Name of the xml tag.
 		 */
@@ -439,8 +439,10 @@ public interface Html {
 
 	/**
 	 * Attributes used in HTML tags.
+	 *
+	 * @author Emiel Ackermann
 	 */
-	public interface Attribute {
+	interface Attribute {
 		/**
 		 * Name of the cellpadding attribute.
 		 */
