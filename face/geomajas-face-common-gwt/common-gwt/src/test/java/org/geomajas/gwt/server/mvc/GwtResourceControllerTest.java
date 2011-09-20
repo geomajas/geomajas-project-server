@@ -23,13 +23,13 @@ public class GwtResourceControllerTest {
 		// create mock context that loads from the classpath
 		MockServletContext context = new MockServletContext();
 		MockHttpServletRequest request = new MockHttpServletRequest(context);
-		request.setPathInfo("/org/geomajas/servlet/geomajas_logo.png");
+		request.setPathInfo("/org/geomajas/gwt/server/mvc/geomajas_logo.png");
 		request.setMethod("GET");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		GwtResourceController resourceController = new GwtResourceController();
 		resourceController.setServletContext(context);
 		resourceController.getResource(request, response);
-		Resource resource = new ClassPathResource("/org/geomajas/servlet/geomajas_logo.png");
+		Resource resource = new ClassPathResource("/org/geomajas/gwt/server/mvc/geomajas_logo.png");
 		Assert.assertArrayEquals(IOUtils.toByteArray(resource.getInputStream()), response.getContentAsByteArray());
 	}
 
@@ -39,13 +39,13 @@ public class GwtResourceControllerTest {
 		MockServletContext context = new MockServletContext();
 		MockHttpServletRequest request = new MockHttpServletRequest(context);
 		request.setServletPath("/org");
-		request.setPathInfo("/geomajas/servlet/geomajas_logo.png");
+		request.setPathInfo("/org/geomajas/gwt/server/mvc/geomajas_logo.png");
 		request.setMethod("GET");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		GwtResourceController resourceController = new GwtResourceController();
 		resourceController.setServletContext(context);
 		resourceController.getResource(request, response);
-		Resource resource = new ClassPathResource("/org/geomajas/servlet/geomajas_logo.png");
+		Resource resource = new ClassPathResource("/org/geomajas/gwt/server/mvc/geomajas_logo.png");
 		Assert.assertArrayEquals(IOUtils.toByteArray(resource.getInputStream()), response.getContentAsByteArray());
 	}
 
