@@ -12,9 +12,10 @@ package org.geomajas.command.dto;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.LayerIdsCommandRequest;
+import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasConstant;
 
@@ -23,10 +24,11 @@ import org.geomajas.global.GeomajasConstant;
  * 
  * @author Joachim Van der Auwera
  * @author Oliver May
+ * @author An Buyle
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class SearchByLocationRequest extends LayerIdsCommandRequest {
+public class SearchByLocationRequest implements CommandRequest  {
 
 	private static final long serialVersionUID = 151L;
 
@@ -87,8 +89,8 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	private int queryType = QUERY_INTERSECTS;
 
 	/**
-	 * This option can only be used in case of an intersects query. It accepts features whose geometry intersect with
-	 * the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
+	 * This option can only be used in case of an intersects query. It accepts features whose geometry intersect
+	 * with the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
 	 */
 	private float ratio = -1;
 
@@ -104,7 +106,7 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 
 	private String filter;
 	
-	private Map<String, String> filters = new HashMap<String, String>();
+	private Map<String, FilterSpec> filters = new HashMap<String, FilterSpec>();
 
 	/**
 	 * The optional buffer that should be added around the location before executing the search.
@@ -272,32 +274,95 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	}
 	
 	/**
+	 * Add a layer with an optional filter expression which should be applied on the given layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
+	 *
+	 * @param result tag to make the distinction in the response object between the features for the same
+	 * 				serverLayerId but a different filter
+	 * @param server layerId layer to set this filter on
+	 * @param filter filter expression (can be null, if no client layer specific filtering)
+	 * @since 1.10.0
+	 */
+	public void setLayerWithFilter(String resultTag, String serverLayerId, String filter) {
+		if (filters.containsKey(resultTag)) {
+			//TODO: log warning
+		}
+		filters.put(resultTag, new FilterSpec(serverLayerId, filter));
+	}
+	/**
 	 * Set the filter expression which should be applied on the given layer.
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 *
-	 * @param layerId layer to set this filter on
+	 * @param serverLayerId layer to set this filter on
 	 * @param filter filter expression
+	 *
+	 * @deprecated use {@link #setLayerWithFilter()}
 	 * @since 1.9.0
 	 */
-	public void setFilter(String layerId, String filter) {
-		filters.put(layerId, filter);
+	@Deprecated
+	public void setFilter(String serverLayerId, String filter) {
+		setLayerWithFilter(serverLayerId, serverLayerId, filter);
 	}
+	
+	
 	/**
 	 * Get the filter expression which should be applied on the layer.
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 *
-	 * @return filter expression
-	 * @param layerId for the filter
+	 * @return filter expression (can be null if no client layer specific filter needs to be applied)
+	 * @param resultTag result tag for the filter
 	 * @since 1.9.0
 	 */
-	public String getFilter(String layerId) {
-		return filters.get(layerId);
+	public String getFilter(String resultTag) {
+		return filters.get(resultTag).getFilter();
+	}
+	
+	/**
+	 * Get the server layer id for the specified client layer id as specified in the filters map.
+	 *
+	 * @return 
+	 * @param clientLayerId client layer id for the filter (filter can be null if 
+	 * 						no client layer specific filter needs to be applied)
+	 * @since 1.10.0
+	 */
+	public String getServerLayerId(String clientLayerId) {
+		return filters.get(clientLayerId).getServerLayerId();
 	}
 
 	/**
-	 * Set the filter expression which should be applied on the layer.
+	 * Get the client layer ids.
+	 *
+	 * @return client layer ids
+	 * @since 1.10.0
+	 */
+	public String[] getLayerIds() {
+		Set<String> layerIds = filters.keySet();
+		if (layerIds == null) {
+			return new String[0];
+		}
+		return (String []) (layerIds.toArray(new String[0]));
+	}
+
+	/**
+	 * Set the server layer ids.
+	 *
+	 * @param serverLayerIds server layer ids
+	 *
+	 * @deprecated use {@link #setLayerWithFilter()}
+	 * @since 1.9.0
+	 */
+	@Deprecated
+	public void setLayerIds(String[] serverLayerIds) {
+		for (String serverLayerId : serverLayerIds) {
+			setLayerWithFilter(serverLayerId, serverLayerId, null);
+		}
+	}
+
+	/**
+	 * Set the global filter expression which should be applied.
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
@@ -338,9 +403,12 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 				", ratio=" + ratio +
 				", searchType=" + searchType +
 				", crs='" + crs + '\'' +
-				", filter='" + filter + '\'' +
+				", global filter='" + filter + '\'' +
 				", buffer=" + buffer +
 				", featureIncludes=" + featureIncludes +
 				'}';
 	}
+
+	
+
 }

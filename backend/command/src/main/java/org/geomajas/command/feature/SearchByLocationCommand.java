@@ -65,12 +65,14 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author An Buyle
  * @since 1.6.0
  */
 @Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
+public class SearchByLocationCommand implements Command<SearchByLocationRequest, 
+												SearchByLocationResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SearchByLocationCommand.class);
 
@@ -102,7 +104,8 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	 * ratio is also checked. The resulting list of features is added to the command result so it can be send back to
 	 * the client.
 	 */
-	public void execute(SearchByLocationRequest request, SearchByLocationResponse response) throws Exception {
+	public void execute(SearchByLocationRequest request, SearchByLocationResponse response) 
+										throws Exception {
 		if (null == request.getLayerIds()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerIds");
 		}
@@ -110,7 +113,6 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		if (null == crsCode) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
-		String[] layerIds = request.getLayerIds();
 		Geometry location = converter.toInternal(request.getLocation());
 		int queryType = request.getQueryType();
 		double ratio = request.getRatio();
@@ -124,94 +126,98 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		}
 		log.debug("search by location " + geometry);
 
-		if (layerIds != null && layerIds.length > 0) {
-			for (String layerId : layerIds) {
-				if (securityContext.isLayerVisible(layerId)) {
-					VectorLayer vectorLayer = configurationService.getVectorLayer(layerId);
-					if (vectorLayer != null) {
-						String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
+		for (String clientLayerId : request.getLayerIds()) {
+			String serverLayerId = request.getServerLayerId(clientLayerId);
+			if (null == serverLayerId) {
+				throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, 
+								"serverLayerId for clientLayerId " + clientLayerId);
+			}
+			if (securityContext.isLayerVisible(serverLayerId)) {
+				VectorLayer vectorLayer = configurationService.getVectorLayer(serverLayerId);
+				if (vectorLayer != null) {
+					String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
-						// Transform geometry to layer CRS:
-						Geometry layerGeometry = geoService.transform(geometry, crs, vectorLayer.getCrs());
-						log.trace("on layer " + layerId + " use " + layerGeometry);
+					// Transform geometry to layer CRS:
+					Geometry layerGeometry = geoService.transform(geometry, crs, vectorLayer.getCrs());
+					log.trace("on layer " + serverLayerId + " use " + layerGeometry);
 
-						// Create the correct Filter object:
-						Filter f = null;
-						switch (queryType) {
-							case SearchByLocationRequest.QUERY_INTERSECTS:
-								f = filterCreator.createIntersectsFilter(layerGeometry, geomName);
-								break;
-							case SearchByLocationRequest.QUERY_CONTAINS:
-								f = filterCreator.createContainsFilter(layerGeometry, geomName);
-								break;
-							case SearchByLocationRequest.QUERY_TOUCHES:
-								f = filterCreator.createTouchesFilter(layerGeometry, geomName);
-								break;
-							case SearchByLocationRequest.QUERY_WITHIN:
-								f = filterCreator.createWithinFilter(layerGeometry, geomName);
-								break;
+					// Create the correct Filter object:
+					Filter f = null;
+					switch (queryType) {
+						case SearchByLocationRequest.QUERY_INTERSECTS:
+							f = filterCreator.createIntersectsFilter(layerGeometry, geomName);
+							break;
+						case SearchByLocationRequest.QUERY_CONTAINS:
+							f = filterCreator.createContainsFilter(layerGeometry, geomName);
+							break;
+						case SearchByLocationRequest.QUERY_TOUCHES:
+							f = filterCreator.createTouchesFilter(layerGeometry, geomName);
+							break;
+						case SearchByLocationRequest.QUERY_WITHIN:
+							f = filterCreator.createWithinFilter(layerGeometry, geomName);
+							break;
+					}
+					//Set the per layer filter
+					if (null != request.getFilter(clientLayerId)) {
+						if (null == f) {
+							f = filterCreator.parseFilter(request.getFilter(clientLayerId));
+						} else {
+							f = filterCreator.createAndFilter(
+									filterCreator.parseFilter(request.getFilter(clientLayerId)), f);
 						}
-						//Set the per layer filter
-						if (null != request.getFilter(layerId)) {
-							if (null == f) {
-								f = filterCreator.parseFilter(request.getFilter(layerId));
-							} else {
-								f = filterCreator.createAndFilter(
-										filterCreator.parseFilter(request.getFilter(layerId)), f);
-							}
+					}
+					//Set the global filter
+					if (null != request.getFilter()) {
+						if (null == f) {
+							f = filterCreator.parseFilter(request.getFilter());
+						} else {
+							f = filterCreator.createAndFilter(filterCreator.parseFilter(request.getFilter()), f);
 						}
-						//Set the global filter
-						if (null != request.getFilter()) {
-							if (null == f) {
-								f = filterCreator.parseFilter(request.getFilter());
-							} else {
-								f = filterCreator.createAndFilter(filterCreator.parseFilter(request.getFilter()), f);
-							}
-						}
+					}
 
-						// Get the features:
-						List<InternalFeature> temp = layerService.getFeatures(layerId, crs, f, null, request
-								.getFeatureIncludes());
-						if (temp.size() > 0) {
-							List<Feature> features = new ArrayList<Feature>();
+					// Get the features:
+					List<InternalFeature> temp = layerService.getFeatures(serverLayerId, crs, f, null, request
+							.getFeatureIncludes());
+					if (temp.size() > 0) {
+						List<Feature> features = new ArrayList<Feature>();
 
-							// Calculate overlap ratio in case of intersects:
-							if (queryType == SearchByLocationRequest.QUERY_INTERSECTS && ratio >= 0 && ratio < 1) {
-								for (InternalFeature feature : temp) {
-									double minimalOverlap = feature.getGeometry().getArea() * ratio;
-									Geometry overlap = location.intersection(feature.getGeometry());
-									double effectiveOverlap = overlap.getArea();
-									if (minimalOverlap <= effectiveOverlap) {
-										log.trace("found " + feature);
-										Feature dto = converter.toDto(feature);
-										dto.setCrs(crsCode);
-										features.add(dto);
-									}
-								}
-							} else {
-								for (InternalFeature feature : temp) {
+						// Calculate overlap ratio in case of intersects:
+						if (queryType == SearchByLocationRequest.QUERY_INTERSECTS && ratio >= 0 && ratio < 1) {
+							for (InternalFeature feature : temp) {
+								double minimalOverlap = feature.getGeometry().getArea() * ratio;
+								Geometry overlap = location.intersection(feature.getGeometry());
+								double effectiveOverlap = overlap.getArea();
+								if (minimalOverlap <= effectiveOverlap) {
 									log.trace("found " + feature);
 									Feature dto = converter.toDto(feature);
 									dto.setCrs(crsCode);
 									features.add(dto);
 								}
 							}
+						} else {
+							for (InternalFeature feature : temp) {
+								log.trace("found " + feature);
+								Feature dto = converter.toDto(feature);
+								dto.setCrs(crsCode);
+								features.add(dto);
+							}
+						}
 
-							// features.size can again be 0... so check:
-							if (features.size() > 0) {
-								// We have a response for this layer!
-								response.addLayer(layerId, features);
+						// features.size can again be 0... so check:
+						if (features.size() > 0) {
+							// We have a response for this layer!
+							response.addLayer(clientLayerId, features);
 
-								// If searchType == SEARCH_FIRST_LAYER, we should search no further:
-								if (searchType == SearchByLocationRequest.SEARCH_FIRST_LAYER) {
-									break;
-								}
+							// If searchType == SEARCH_FIRST_LAYER, we should search no further:
+							if (searchType == SearchByLocationRequest.SEARCH_FIRST_LAYER) {
+								break;
 							}
 						}
 					}
 				}
 			}
 		}
+		
 	}
 
 	public SearchByLocationResponse getEmptyCommandResponse() {
