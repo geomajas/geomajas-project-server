@@ -20,7 +20,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<bean name="SecurityService" class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
+	<!-- Replace security context by our implementation. -->
+	<!-- @extract-start ReplaceSecurityContext, Replace security context by version which includes custom policies -->
+	<bean name="security.SecurityManager"
+		  class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppSecurityManager" />
+	<bean name="security.SecurityContext"
+		  class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppSecurityContext" />
+	<!-- @extract-end -->
 
 	<!-- @extract-start UseStaticsecurity, Enabling the use of staticsecurity-->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
@@ -43,7 +49,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="userName" value="Luc Van Lierde"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+							<bean class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppAuthorizationInfo">
 								<property name="commandsInclude">
 									<list>
 										<value>.*</value>
@@ -74,6 +80,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										<value>.*</value>
 									</list>
 								</property>
+								<property name="blablaButtonAllowed" value="true" />
 							</bean>
 						</list>
 					</property>
@@ -84,7 +91,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+							<bean class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppAuthorizationInfo">
 								<property name="commandsInclude">
 									<list>
 										<value>.*</value>
@@ -95,6 +102,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										<value>layerOsm</value>
 									</list>
 								</property>
+								<property name="blablaButtonAllowed" value="false" />
 							</bean>
 						</list>
 					</property>

@@ -81,6 +81,11 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<scope>compile</scope> <!-- needed to overwrite the security manager and security context implementations -->
+		</dependency>
 
 		<!-- fix conflicts over xerces/xalan versions -->
 		<!--

@@ -32,7 +32,7 @@ public class LayerAuthorization implements BaseAuthorization {
 		// for deserialization
 	}
 
-	LayerAuthorization(LayerAuthorizationInfo info) {
+	public LayerAuthorization(LayerAuthorizationInfo info) {
 		this.info = info;
 	}
 

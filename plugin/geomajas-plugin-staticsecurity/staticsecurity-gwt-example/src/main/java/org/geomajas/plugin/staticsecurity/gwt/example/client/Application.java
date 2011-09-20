@@ -11,14 +11,20 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.client;
 
+import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.UserDetail;
+import org.geomajas.gwt.client.command.event.TokenChangedEvent;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
-import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
 
@@ -30,6 +36,8 @@ import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandler;
+import org.geomajas.plugin.staticsecurity.client.TokenReleaseButton;
+import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationResponse;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
@@ -67,7 +75,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		final MapWidget map = new MapWidget("mapMain", "app");
+		final MyMapWidget map = new MyMapWidget("mapMain", "app");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 		toolbar.setBackgroundColor("#647386");
@@ -97,10 +105,6 @@ public class Application implements EntryPoint {
 
 		layout.addMember(leftLayout);
 
-		// Add a search panel to the top-right of the map:
-		//SearchPanel searchPanel = new SearchPanel(map.getMapModel(), mapLayout);
-		//mapLayout.addChild(searchPanel);
-		
 		// ---------------------------------------------------------------------
 		// Create the right-side (overview map, layer-tree, legend):
 		// ---------------------------------------------------------------------
@@ -111,6 +115,52 @@ public class Application implements EntryPoint {
 		sectionStack.setCanReorderSections(true);
 		sectionStack.setCanResizeSections(false);
 		sectionStack.setSize("250px", "100%");
+
+		// Block with security related stuff
+		SectionStackSection sectionSecurity = new SectionStackSection("Security");
+		sectionSecurity.setExpanded(true);
+		final VLayout sectionSecurityLayout = new VLayout(WidgetLayout.marginSmall);
+		final Label whoAmI = new Label();
+		whoAmI.setHeight(16);
+		whoAmI.setWidth100();
+		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
+			public void onTokenChanged(TokenChangedEvent event) {
+				String user = "";
+				UserDetail userDetail = event.getUserDetail();
+				if (null != userDetail.getUserName()) {
+					user = userDetail.getUserName();
+				} else if (null != userDetail.getUserId()) {
+					user = userDetail.getUserId();
+				}
+				whoAmI.setContents("user: " + user);
+			}
+		});
+		sectionSecurityLayout.addMember(whoAmI);
+		TokenReleaseButton tokenReleaseButton = new TokenReleaseButton();
+		tokenReleaseButton.setWidth100();
+		sectionSecurityLayout.addMember(tokenReleaseButton);
+		sectionSecurityLayout.setHeight(1);
+		sectionSecurityLayout.setWidth100();
+		sectionSecurity.addItem(sectionSecurityLayout);
+		sectionStack.addSection(sectionSecurity);
+		final IButton blablaButton = new IButton("blabla");
+		blablaButton.setWidth100();
+		blablaButton.hide();
+		blablaButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent clickEvent) {
+				SC.say("You have the rights to click the blabla button<br/>May the force be with you.");
+			}
+		});
+		sectionSecurityLayout.addMember(blablaButton);
+		map.addMapCallback(new MyMapWidget.MapCallback() {
+			public void onResponse(AppConfigurationResponse response) {
+				if (response.isBlablaButtonAllowed()) {
+					blablaButton.show();
+				} else {
+					blablaButton.hide();
+				}
+			}
+		});
 
 		// Overview map layout:
 		SectionStackSection section1 = new SectionStackSection("Overview map");
