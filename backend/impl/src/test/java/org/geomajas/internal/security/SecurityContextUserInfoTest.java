@@ -38,7 +38,7 @@ public class SecurityContextUserInfoTest {
 
 	@Test
 	public void testSameUser() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		Authentication auth2 = getAuthentication();
@@ -56,7 +56,7 @@ public class SecurityContextUserInfoTest {
 
 	@Test
 	public void testDifferentUser() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		Authentication auth2 = getAuthentication();
@@ -77,7 +77,7 @@ public class SecurityContextUserInfoTest {
 
 	@Test
 	public void testDifferentUser2() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		auth1.setUserName(null);

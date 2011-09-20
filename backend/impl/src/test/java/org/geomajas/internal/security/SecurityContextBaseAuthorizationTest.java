@@ -34,7 +34,7 @@ public class SecurityContextBaseAuthorizationTest {
 
 	@Test
 	public void testAuthorizedOne() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication authentication;
 		authentication = new Authentication();
@@ -52,7 +52,7 @@ public class SecurityContextBaseAuthorizationTest {
 
 	@Test
 	public void testAuthorizedOther() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication authentication;
 		authentication = new Authentication();
@@ -70,7 +70,7 @@ public class SecurityContextBaseAuthorizationTest {
 
 	@Test
 	public void testAuthorizedTwoAuthentications() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication authentication;
 		authentication = new Authentication();
@@ -90,7 +90,7 @@ public class SecurityContextBaseAuthorizationTest {
 
 	@Test
 	public void testAuthorizedNeither() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		Assert.assertFalse(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertFalse(securityContext.isCommandAuthorized(COMMAND_NAME));
 		Assert.assertFalse(securityContext.isLayerVisible(LAYER_ID));
@@ -101,7 +101,7 @@ public class SecurityContextBaseAuthorizationTest {
 
 	@Test
 	public void testAuthorizedNone() {
-		SecurityContextImpl securityContext = new SecurityContextImpl();
+		DefaultSecurityContext securityContext = new DefaultSecurityContext();
 		Assert.assertFalse(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertFalse(securityContext.isCommandAuthorized(COMMAND_NAME));
 		Assert.assertFalse(securityContext.isLayerVisible(LAYER_ID));

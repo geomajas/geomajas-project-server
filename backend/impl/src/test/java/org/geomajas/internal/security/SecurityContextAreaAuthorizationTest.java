@@ -63,7 +63,7 @@ public class SecurityContextAreaAuthorizationTest {
 	@Test
 	@DirtiesContext // changing security context
 	public void testNotAuthenticatedVisibleArea() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		securityContext.setAuthentications(null, null);
 		Assert.assertFalse(securityContext.isLayerVisible(LAYER_ID));
 		Geometry geometry = securityContext.getVisibleArea(LAYER_ID);
@@ -73,7 +73,7 @@ public class SecurityContextAreaAuthorizationTest {
 
 	@Test
 	public void testDefaultVisibleArea() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getBaseAuthentication();
 		authentications.add(auth1);
@@ -107,7 +107,7 @@ public class SecurityContextAreaAuthorizationTest {
 
 	@Test
 	public void testDefaultVisibleAreaOne() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		Authentication auth2 = getAreaAuthentication(1);
@@ -136,7 +136,7 @@ public class SecurityContextAreaAuthorizationTest {
 
 	@Test
 	public void testDefaultVisibleAreaTwo() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAreaAuthentication(1);
 		Authentication auth2 = getAreaAuthentication(2);

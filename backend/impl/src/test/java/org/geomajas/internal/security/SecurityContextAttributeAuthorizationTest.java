@@ -55,7 +55,7 @@ public class SecurityContextAttributeAuthorizationTest {
 
 	@Test
 	public void testBaseAuthorization() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication(0); // allow nothing
 		Authentication auth2 = getAuthentication(1); // base, allow all
@@ -73,7 +73,7 @@ public class SecurityContextAttributeAuthorizationTest {
 
 	@Test
 	public void testAllAndFeatureAuthorization() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication(1); // base, allow all
 		Authentication auth2 = getAttributeAuthentication();
@@ -91,7 +91,7 @@ public class SecurityContextAttributeAuthorizationTest {
 
 	@Test
 	public void testAttributeAuthorization() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication(0); // allow nothing
 		Authentication auth2 = getAttributeAuthentication();
@@ -117,7 +117,7 @@ public class SecurityContextAttributeAuthorizationTest {
 
 	@Test
 	public void testFeatureAuthorization() throws Exception {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication(0); // allow nothing
 		Authentication auth2 = getFeatureAuthentication();

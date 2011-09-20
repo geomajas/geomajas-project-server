@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
@@ -57,12 +58,14 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * user.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.10.0
  */
+@Api
 @Component
 @Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SecurityContextImpl implements SecurityContext {
+public class DefaultSecurityContext implements SecurityContext {
 
-	private final Logger log = LoggerFactory.getLogger(SecurityContextImpl.class);
+	private final Logger log = LoggerFactory.getLogger(DefaultSecurityContext.class);
 
 	private List<Authentication> authentications = new ArrayList<Authentication>();
 
@@ -96,6 +99,15 @@ public class SecurityContextImpl implements SecurityContext {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	/**
+	 * Set the token and authentications for this security context.
+	 * <p/>
+	 * This method can be overwritten to handle custom policies.
+	 *
+	 * @param token current token
+	 * @param authentications authentications for token
+	 */
+	@Api
 	public void setAuthentications(String token, List<Authentication> authentications) {
 		this.token = token;
 		this.authentications.clear();
@@ -661,10 +673,17 @@ public class SecurityContextImpl implements SecurityContext {
 		return null != layer && layer.isDeleteCapable();
 	}
 
+	/** @inheritDoc */
 	public SavedAuthorization getSavedAuthorization() {
 		return new SavedAuthorizationImpl(this);
 	}
 
+	/**
+	 * Restore authentications from persisted state.
+	 *
+	 * @param savedAuthorization saved authorizations
+	 */
+	@Api
 	public void restoreSecurityContext(SavedAuthorization savedAuthorization) {
 		List<Authentication> auths = new ArrayList<Authentication>();
 		if (null != savedAuthorization) {

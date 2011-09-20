@@ -14,6 +14,7 @@ package org.geomajas.internal.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.SavedAuthorization;
 import org.geomajas.security.SecurityContext;
@@ -31,9 +32,11 @@ import org.springframework.stereotype.Component;
  * It can be used to create or clear the security context for the current thread.
  *
  * @author Joachim Van der Auwera
+ * @since 1.10.0
  */
+@Api
 @Component
-public class SecurityManagerImpl implements SecurityManager {
+public class DefaultSecurityManager implements SecurityManager {
 
 	@Autowired
 	private SecurityInfo securityInfo;
@@ -56,9 +59,22 @@ public class SecurityManagerImpl implements SecurityManager {
 				}
 			}
 		}
+		return setSecurityContext(authenticationToken, authentications);
+	}
+
+	/**
+	 * Method which sets the authorizations in the {@link SecurityContext}. To be overwritten when adding custom
+	 * policies.
+	 *
+	 * @param authenticationToken authentication token
+	 * @param authentications authorizations for this token
+	 * @return true when a valid context was created, false when the token is not authenticated
+	 */
+	@Api
+	public boolean setSecurityContext(String authenticationToken, List<Authentication> authentications) {
 		if (!authentications.isEmpty()) {
 			// build authorization and build thread local SecurityContext
-			((SecurityContextImpl) securityContext).setAuthentications(authenticationToken, authentications);
+			((DefaultSecurityContext) securityContext).setAuthentications(authenticationToken, authentications);
 			return true;
 		}
 		return false;
@@ -66,14 +82,15 @@ public class SecurityManagerImpl implements SecurityManager {
 
 	/** @inheritDoc */
 	public void clearSecurityContext() {
-		((SecurityContextImpl) securityContext).setAuthentications(null, null);
+		((DefaultSecurityContext) securityContext).setAuthentications(null, null);
 	}
 
+	/** @inheritDoc */
 	public void restoreSecurityContext(SavedAuthorization authorizations) {
 		if (null == authorizations) {
 			clearSecurityContext();
 		} else {
-			((SecurityContextImpl) securityContext).restoreSecurityContext(authorizations);
+			((DefaultSecurityContext) securityContext).restoreSecurityContext(authorizations);
 		}
 	}
 }

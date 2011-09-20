@@ -62,7 +62,7 @@ public class SecurityContextSaveRestoreTest {
 	@Test
 	@DirtiesContext
 	public void testSameUser() {
-		SecurityContextImpl context = new SecurityContextImpl();
+		DefaultSecurityContext context = new DefaultSecurityContext();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		Authentication auth2 = getAuthentication();

@@ -62,7 +62,7 @@ public class SecurityContextFeatureFilterTest {
 	@Test
 	@DirtiesContext // setting SecurityContext
 	public void testNoFilters() {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		Authentication auth2 = getAuthentication();
@@ -75,7 +75,7 @@ public class SecurityContextFeatureFilterTest {
 
 	@Test
 	public void testOneFilter() {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getAuthentication();
 		Authentication auth2 = getFilterAuthentication();
@@ -92,7 +92,7 @@ public class SecurityContextFeatureFilterTest {
 
 	@Test
 	public void testTwoFilters() {
-		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
+		DefaultSecurityContext securityContext = (DefaultSecurityContext)this.securityContext;
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		Authentication auth1 = getFilterAuthentication();
 		Authentication auth2 = getFilterAuthentication();
