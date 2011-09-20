@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -314,7 +315,12 @@ public class Feature implements Paintable, Cloneable {
 
 	public String getLabel() {
 		String attributeName = layer.getLayerInfo().getNamedStyleInfo().getLabelStyle().getLabelAttributeName();
-		Object attributeValue = getAttributeValue(attributeName);
+		Object attributeValue = null;
+		if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(attributeName)) {
+			attributeValue = getId();
+		} else {
+			attributeValue = getAttributeValue(attributeName);
+		}
 		return attributeValue == null ? "null" : attributeValue.toString();
 	}
 
