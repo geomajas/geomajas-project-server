@@ -109,10 +109,11 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 			request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 			request.setBuffer(calculateBufferFromPixelTolerance());
 			request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-			request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				if (layer.isShowing() && layer instanceof VectorLayer) {
-					request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+					request.setLayerWithFilter(layer.getId(), layer.getServerLayerId(),
+								((VectorLayer) layer).getFilter());
 				}
 			}
 
@@ -129,7 +130,8 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 			commandRequest.setCommandRequest(request);
 			// TODO: commands are now chained. Perhaps we should combine this
 			// into a single command?
-			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<SearchByLocationResponse>() {
+			GwtCommandDispatcher.getInstance().execute(commandRequest, 
+								new CommandCallback<SearchByLocationResponse>() {
 				public void execute(final SearchByLocationResponse vectorResponse) {
 					if (includeRasterLayers) {
 						GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);
@@ -163,12 +165,9 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
 			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
-				List<Layer<?>> layers = mapWidget.getMapModel().getLayersByServerId(
-						featureMap.keySet().iterator().next());
-				if (layers.size() > 0) {
-					// There can be more than one Client VectorLayer for the
-					// same serverLayerId
-					Layer<?> layer = layers.get(0);
+				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel().
+							getLayer(featureMap.keySet().iterator().next()));
+				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
 					Feature feature;
 					if (layer instanceof VectorLayer) {

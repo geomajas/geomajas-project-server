@@ -173,9 +173,10 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			sb.append(CSS);
 			int widest = 10;
 			int count = 0;
-			for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
-				if (featureMap.containsKey(layer.getServerLayerId())) {
-					List<org.geomajas.layer.feature.Feature> features = featureMap.get(layer.getServerLayerId());
+			
+			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
+				if (featureMap.containsKey(layer.getId())) {
+					List<org.geomajas.layer.feature.Feature> features = featureMap.get(layer.getId());
 					if (features.size() > 0) {
 						if (count < maxLabelCount) {
 							writeLayerStart(sb, layer.getLabel());
@@ -184,7 +185,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 							}
 							for (org.geomajas.layer.feature.Feature feature : features) {
 								if (count < maxLabelCount) {
-									writeFeature(sb, getLabel(feature, layer));
+									writeFeature(sb, getLabel(feature, (VectorLayer) layer));
 									if (widest < feature.getLabel().length()) {
 										widest = feature.getLabel().length();
 									}
@@ -196,8 +197,6 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 							count += features.size();
 						}
 					}
-					// remove in case there are multiple clientlayers for this serverlayer
-					featureMap.remove(layer.getServerLayerId());
 				}
 			}
 			if (count > maxLabelCount) {
@@ -240,16 +239,18 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		request.setSearchType(layersToSearch);
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-		request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+		
 		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 			if (layer.isShowing() && layer instanceof VectorLayer) {
-				request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+				request.setLayerWithFilter(layer.getId(), layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+		
 			}
 		}
-
+		
 		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<SearchByLocationResponse>() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest, 
+					new CommandCallback<SearchByLocationResponse>() {
 			public void execute(SearchByLocationResponse commandResponse) {
 				setTooltipData(coordUsedForRetrieval, commandResponse.getFeatureMap());
 			}

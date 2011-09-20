@@ -184,8 +184,19 @@ public class Application implements EntryPoint {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 			
 			public void onMapModelChange(MapModelEvent event) {
-				VectorLayer layer = map.getMapModel().getVectorLayer("clientLayerCountries");
-				layer.setFilter("NAME like '%e%'");
+				VectorLayer layerSmallPopul = (VectorLayer) map.getMapModel().getVectorLayer(
+									"clientLayerCountriesSmallPopul");
+				//layer.setFilter("NAME like '%e%'");
+				if (layerSmallPopul != null) { 
+					layerSmallPopul.setFilter("PEOPLE <= 50000000");
+				}
+				
+				VectorLayer layerLargePopul = (VectorLayer) map.getMapModel().getVectorLayer(
+									"clientLayerCountriesLargePopul");
+				//layer.setFilter("NAME like '%e%'");
+				if (layerLargePopul != null) { 
+					layerLargePopul.setFilter("PEOPLE > 50000000");
+				}
 			}
 		});
 		// Then initialize:

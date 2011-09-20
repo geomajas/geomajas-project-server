@@ -117,10 +117,11 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 			request.setBuffer(calculateBufferFromPixelTolerance());
 			request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-			request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+			//request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				if (layer.isShowing() && layer instanceof VectorLayer) {
-					request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+					request.setLayerWithFilter(layer.getId(), layer.getServerLayerId(),
+								((VectorLayer) layer).getFilter());
 				}
 			}
 
@@ -141,7 +142,8 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 
 				public void execute(CommandResponse commandResponse) {
 					if (commandResponse instanceof SearchByLocationResponse) {
-						final SearchByLocationResponse vectorResponse = (SearchByLocationResponse) commandResponse;
+						final SearchByLocationResponse vectorResponse = 
+									(SearchByLocationResponse) commandResponse;
 						if (includeRasterLayers) {
 
 							GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);

@@ -176,9 +176,10 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 			sb.append(CSS);
 			int widest = 10;
 			int count = 0;
+			
 			for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
-				if (featureMap.containsKey(layer.getServerLayerId())) {
-					List<org.geomajas.layer.feature.Feature> features = featureMap.get(layer.getServerLayerId());
+				if (featureMap.containsKey(layer.getId())) {
+					List<org.geomajas.layer.feature.Feature> features = featureMap.get(layer.getId());
 					if (features.size() > 0) {
 						if (count < maxLabelCount) {
 							writeLayerStart(sb, layer.getLabel());
@@ -199,10 +200,9 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 							count += features.size();
 						}
 					}
-					// remove in case there are multiple clientlayers for this serverlayer
-					featureMap.remove(layer.getServerLayerId());
 				}
-			}
+			} /* for */
+				
 			if (count > maxLabelCount) {
 				writeTooMany(sb, count - maxLabelCount);
 			} else if (count == 0) {
@@ -232,10 +232,11 @@ public class TooltipOnMouseoverController extends AbstractGraphicsController {
 		request.setSearchType(layersToSearch);
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-		request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+		
 		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 			if (layer.isShowing() && layer instanceof VectorLayer) {
-				request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+				request.setLayerWithFilter(layer.getId(), layer.getServerLayerId(), 
+								((VectorLayer) layer).getFilter());  
 			}
 		}
 
