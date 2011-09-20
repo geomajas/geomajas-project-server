@@ -28,7 +28,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api(allMethods = true)
+@Api()
 public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
 
 	private MapPresenter mapPresenter;
@@ -61,7 +61,6 @@ public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
 	 * Get alternatives.
 	 *
 	 * @return alternatives
-	 * @since 1.0.0
 	 */
 	@Api
 	public List<GetLocationForStringAlternative> getAlternatives() {
