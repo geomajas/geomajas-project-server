@@ -9,7 +9,7 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<configuration debug="true">
+<configuration debug="false">
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -18,13 +18,10 @@
     </appender>
 
 	<!--
-    <logger name="org.geomajas.gwt">
-        <level value="DEBUG"/>
-    </logger>
+    <logger name="org.geomajas.gwt" level="DEBUG" />
     -->
 
-    <root>
-        <level value="INFO"/>
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 

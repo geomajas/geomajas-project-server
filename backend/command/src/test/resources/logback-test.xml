@@ -11,9 +11,6 @@
 
 <configuration>
 
-
-	<root>
-		<level value="OFF"/>
-	</root>
+	<root level="OFF"/>
 
 </configuration>

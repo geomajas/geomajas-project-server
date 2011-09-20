@@ -21,8 +21,7 @@
 	<logger name="org.geomajas.internal.service.pipeline" level="DEBUG"/>
 	-->
 
-	<root>
-		<level value="OFF"/>
+	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
 	</root>
 

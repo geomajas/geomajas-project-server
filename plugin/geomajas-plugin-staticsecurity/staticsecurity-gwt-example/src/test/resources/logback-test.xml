@@ -18,13 +18,10 @@
     </appender>
 
 	<!--
-    <logger name="org.geomajas">
-        <level value="DEBUG"/>
-    </logger>
+    <logger name="org.geomajas" level="DEBUG"/>
 	-->
 	
-    <root>
-        <level value="INFO"/>
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
