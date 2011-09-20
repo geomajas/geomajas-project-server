@@ -33,6 +33,7 @@
 				<ref bean="securityInterceptor" />
 			</list>
 		</property>
+		<property name="order" value="0"></property>
 	</bean>
 
 	<bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"></bean>
