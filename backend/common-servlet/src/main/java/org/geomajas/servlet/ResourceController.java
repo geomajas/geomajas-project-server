@@ -60,6 +60,10 @@ public class ResourceController implements LastModified, ServletContextAware {
 	private static final String INIT_PARAM_LOCATION = "files-location";
 
 	private ServletContext servletContext;
+	
+	private boolean compressionAllowed = true;
+
+	private boolean includeServletPath;
 
 	private final Logger log = LoggerFactory.getLogger(ResourceController.class);
 	private static final String PROTECTED_PATH = "/?WEB-INF/.*";
@@ -101,9 +105,52 @@ public class ResourceController implements LastModified, ServletContextAware {
 			}
 		}
 	}
+	
+	/**
+	 * Returns whether the controller should allow compression of resources. Compression will only be applied if accept
+	 * headers are present, however.
+	 * 
+	 * @return true if compression allowed
+	 */
+	public boolean isCompressionAllowed() {
+		return compressionAllowed;
+	}
+	
+	/**
+	 * Determines whether the controller should allow compression to resources.
+	 * @param compressionAllowed true if allowed
+	 */
+	public void setCompressionAllowed(boolean compressionAllowed) {
+		this.compressionAllowed = compressionAllowed;
+	}
+	
+	/**
+	 * Returns whether the resource path should equal the full servlet path (servlet path + pathinfo). If set to true,
+	 * the resource path will include the url mapping part of the servlet. If false, only the pathinfo will be taken.
+	 * 
+	 * @return true if servlet path should be taken into account
+	 */
+	public boolean isIncludeServletPath() {
+		return includeServletPath;
+	}
 
-	private String getRawResourcePath(HttpServletRequest request) {
-		String rawResourcePath = request.getPathInfo();
+	/**
+	 * Sets whether the resource path should equal the full servlet path (servlet path + pathinfo). If set to true,
+	 * the resource path will include the url mapping part of the servlet. If false, only the pathinfo will be taken.
+	 * 
+	 * @param includeServletPath true if included
+	 */
+	public void setIncludeServletPath(boolean includeServletPath) {
+		this.includeServletPath = includeServletPath;
+	}
+
+	protected String getRawResourcePath(HttpServletRequest request) {
+		String rawResourcePath = null;
+		if (isIncludeServletPath()) {
+			rawResourcePath = request.getServletPath() + request.getPathInfo();
+		} else {
+			rawResourcePath = request.getPathInfo();
+		}
 		if (rawResourcePath.startsWith(RESOURCE_PREFIX)) {
 			rawResourcePath = rawResourcePath.substring(RESOURCE_PREFIX.length());
 		}
@@ -160,14 +207,14 @@ public class ResourceController implements LastModified, ServletContextAware {
 		String mimeType = response.getContentType();
 
 		if (StringUtils.hasText(acceptEncoding) && acceptEncoding.contains("gzip")
-				&& COMPRESSED_MIME_TYPES.contains(mimeType)) {
+				&& COMPRESSED_MIME_TYPES.contains(mimeType) && isCompressionAllowed()) {
 			log.debug("Enabling GZIP compression for the current response.");
 			return new GzipResponseStream(response);
 		} else {
 			if (log.isDebugEnabled()) {
 				log.debug("No compression for the current response.");
-				log.debug(StringUtils.hasText(acceptEncoding) + "&&" + acceptEncoding.contains("gzip") + "&&" +
-						mimeType);
+				log.debug("Accept-Encoding : " + acceptEncoding);
+				log.debug("Content-type : " + mimeType);
 			}
 
 			return response.getOutputStream();
@@ -258,10 +305,11 @@ public class ResourceController implements LastModified, ServletContextAware {
 		return lastModified;
 	}
 
-	private URL[] getRequestResourceUrls(String rawResourcePath, HttpServletRequest request)
+	protected URL[] getRequestResourceUrls(String rawResourcePath, HttpServletRequest request)
 			throws MalformedURLException {
 		String appendedPaths = request.getParameter("appended");
-		if (StringUtils.hasText(appendedPaths)) {
+		// don't allow multiple resources if compression is off
+		if (StringUtils.hasText(appendedPaths) && isCompressionAllowed()) {
 			rawResourcePath = rawResourcePath + "," + appendedPaths;
 		}
 		String[] localResourcePaths = StringUtils.delimitedListToStringArray(rawResourcePath, ",");

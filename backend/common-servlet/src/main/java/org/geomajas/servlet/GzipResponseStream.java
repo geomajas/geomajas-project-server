@@ -42,6 +42,10 @@ public class GzipResponseStream extends ServletOutputStream {
 		byteStream = new ByteArrayOutputStream();
 		gzipStream = new GZIPOutputStream(byteStream);
 	}
+	
+	public boolean isClosed() {
+		return closed;
+	}
 
 	public void close() throws IOException {
 		if (closed) {

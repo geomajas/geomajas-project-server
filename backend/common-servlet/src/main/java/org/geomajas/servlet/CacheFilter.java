@@ -277,14 +277,14 @@ public class CacheFilter implements Filter {
 
 		private final Logger log = LoggerFactory.getLogger(GzipServletResponseWrapper.class);
 
-		private ServletOutputStream stream;
+		private GzipResponseStream stream;
 
 		public GzipServletResponseWrapper(HttpServletResponse response) {
 			super(response);
 		}
 
 		public void finish() {
-			if (stream != null) {
+			if (stream != null && !stream.isClosed()) {
 				try {
 					stream.close();
 				} catch (IOException e) {

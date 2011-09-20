@@ -162,8 +162,8 @@ public class ResourceServlet extends HttpServlet {
 		} else {
 			if (log.isDebugEnabled()) {
 				log.debug("No compression for the current response.");
-				log.debug(StringUtils.hasText(acceptEncoding) + "&&" + acceptEncoding.contains("gzip") + "&&" +
-						mimeType);
+				log.debug("Accept-Encoding : " + acceptEncoding);
+				log.debug("Content-type : " + mimeType);
 			}
 
 			return response.getOutputStream();
