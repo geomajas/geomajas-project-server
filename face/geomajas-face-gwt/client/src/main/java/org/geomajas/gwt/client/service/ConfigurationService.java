@@ -19,7 +19,9 @@ import org.geomajas.annotation.FutureApi;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -155,13 +157,19 @@ public final class ConfigurationService {
 		}
 
 		// Corner case: check the layer trees:
-		if (name.equals(mapInfo.getLayerTree().getId())) {
-			return mapInfo.getLayerTree();
+		ClientLayerTreeInfo layerTree = mapInfo.getLayerTree();
+		if (layerTree != null) {
+			if (name.equals(layerTree.getId())) {
+				return mapInfo.getLayerTree();
+			}
 		}
 
 		// Corner case: check the tool-bar:
-		if (name.equals(mapInfo.getToolbar().getId())) {
-			return mapInfo.getToolbar();
+		ClientToolbarInfo toolBar = mapInfo.getToolbar();
+		if (toolBar != null) {
+			if (name.equals(toolBar.getId())) {
+				return mapInfo.getToolbar();
+			}
 		}
 
 		// Now search all widget info objects within the map:
