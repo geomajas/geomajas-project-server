@@ -21,7 +21,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public interface MapDragHandler {
+public interface MapDragHandler extends MapHandler {
 
 	void onDragStart(HumanInputEvent<?> event, Coordinate position);
 

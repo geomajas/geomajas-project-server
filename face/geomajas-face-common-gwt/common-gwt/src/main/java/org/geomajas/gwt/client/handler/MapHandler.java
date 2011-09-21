@@ -19,4 +19,6 @@ import com.google.gwt.event.shared.EventHandler;
  * @author Pieter De Graef
  */
 public interface MapHandler extends EventHandler {
+
+	MapEventParser getEventParser();
 }

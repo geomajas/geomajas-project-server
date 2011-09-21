@@ -18,7 +18,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public interface MapMoveHandler {
+public interface MapMoveHandler extends MapHandler {
 
 	void onMove(HumanInputEvent<?> event);
 }

@@ -18,7 +18,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public interface MapOutHandler {
+public interface MapOutHandler extends MapHandler {
 
 	void onOut(HumanInputEvent<?> event);
 }

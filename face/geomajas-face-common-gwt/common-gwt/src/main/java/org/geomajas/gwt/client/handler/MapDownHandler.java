@@ -18,7 +18,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public interface MapDownHandler {
+public interface MapDownHandler extends MapHandler {
 
 	void onDown(HumanInputEvent<?> event);
 }

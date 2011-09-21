@@ -18,7 +18,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public interface MapOverHandler {
+public interface MapOverHandler extends MapHandler {
 
 	void onOver(HumanInputEvent<?> event);
 }
