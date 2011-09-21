@@ -19,9 +19,9 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -31,8 +31,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Component("/geomajasService")
-public class GeomajasController extends RemoteServiceServlet implements Controller, GeomajasService {
+@Controller("/geomajasService")
+public class GeomajasController extends RemoteServiceServlet implements GeomajasService {
 
 	private static final long serialVersionUID = 100L;
 
@@ -52,6 +52,7 @@ public class GeomajasController extends RemoteServiceServlet implements Controll
 	 * @return a ModelAndView to render, or null if handled directly
 	 * @throws Exception in case of errors
 	 */
+	@RequestMapping("/geomajasService")
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		doPost(request, response);
 		return null;
