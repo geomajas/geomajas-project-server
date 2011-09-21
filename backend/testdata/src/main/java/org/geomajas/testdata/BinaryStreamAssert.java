@@ -160,6 +160,7 @@ public abstract class BinaryStreamAssert {
 	private void writeToFile(String resourceName) throws Exception {
 		File file;
 		file = getExpected(resourceName, true).getFile();
+		file.getParentFile().mkdirs();
 		FileOutputStream fos;
 		fos = new FileOutputStream(file);
 		try {
