@@ -39,7 +39,7 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 	@Autowired
 	private CommandDispatcher commandDispatcher;
 
-	@Autowired
+	@Autowired(required = false)
 	private ServletContext servletContext;
 
 	/**
@@ -71,6 +71,9 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 	}
 
 	public ServletContext getServletContext() {
+		if (servletContext == null) {
+			throw new RuntimeException("getServletContext() cannot be used outside web context");
+		}
 		return servletContext;
 	}
 
