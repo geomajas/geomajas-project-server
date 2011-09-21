@@ -18,11 +18,11 @@ import javax.imageio.ImageIO;
 import org.springframework.util.StringUtils;
 
 /**
- * Assertion for comparing {@link RenderedImage} images in the test source/classpath.
- * Use as follows: 
+ * Assertion for comparing {@link RenderedImage} images in the test source/classpath. Use as follows:
+ * 
  * <pre>
- *  new TestPathRenderedImageAssert("org/geomajas/myimages").
- *      assertEqual("test.png", myRenderedImage, 0.05, false);
+ * new TestPathRenderedImageAssert(&quot;org/geomajas/myimages&quot;).
+ *    assertEqual(&quot;test.png&quot;, myRenderedImage, 0.05, false);
  * </pre>
  * 
  * @author Jan De Moerloose
@@ -37,13 +37,14 @@ public class TestPathRenderedImageAssert {
 
 	public void assertEquals(final String fileName, final RenderedImage image, double percentageDelta, boolean rewrite)
 			throws Exception {
-		new TestPathBinaryStreamAssert(classPath) {
+		TestPathBinaryStreamAssert t = new TestPathBinaryStreamAssert(classPath) {
 
 			@Override
 			public void generateActual(OutputStream out) throws Exception {
 				ImageIO.write(image, StringUtils.getFilenameExtension(fileName), out);
 			}
-		}.assertEqualImage(fileName, rewrite, percentageDelta);
+		};
+		t.assertEqualImage(fileName, rewrite, percentageDelta);
 	}
 
 }
