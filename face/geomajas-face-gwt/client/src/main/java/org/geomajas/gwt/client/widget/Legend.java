@@ -16,13 +16,7 @@ import java.util.List;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.gfx.GraphicsContext;
-import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
-import org.geomajas.gwt.client.gfx.style.PictureStyle;
-import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
@@ -36,17 +30,19 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.spatial.geometry.LineString;
+import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
-import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.UserStyleInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
@@ -57,23 +53,13 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
  * @author Frank Wynants
  * @author Pieter De Graef
  */
-public class Legend extends Canvas {
+public class Legend extends VLayout {
 
 	private List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
 	private HandlerRegistration loadedRegistration;
 
-	private HandlerRegistration resizeRegistration;
-
-	private HandlerRegistration graphicsRegistration;
-
 	private MapModel mapModel;
-
-	private GraphicsWidget widget;
-
-	private GraphicsContext graphics;
-
-	private Composite parentGroup = new Composite("legend-group");
 
 	private FontStyle fontStyle = new FontStyle("#000000", 14, "Arial", "normal", "normal");
 
@@ -95,6 +81,7 @@ public class Legend extends Canvas {
 	 */
 	public Legend(MapModel mapModel, boolean staticLegend) {
 		this(mapModel);
+		setMargin(WidgetLayout.marginSmall);
 		this.staticLegend = staticLegend;
 	}
 
@@ -106,17 +93,8 @@ public class Legend extends Canvas {
 	 *            map model
 	 */
 	public Legend(MapModel mapModel) {
-		super();
-		setWidth100();
-		setHeight100();
+		setMembersMargin(WidgetLayout.marginSmall);
 		this.mapModel = mapModel;
-
-		widget = new GraphicsWidget(SC.generateID());
-		widget.setBackgroundColor(WidgetLayout.legendBackgroundColor);
-		// adding the graphics here causes problems when embedding in HTML !
-		// addChild(widget);
-
-		graphics = widget.getVectorContext();
 
 		loadedRegistration = mapModel.addMapModelHandler(new MapModelHandler() {
 
@@ -125,22 +103,6 @@ public class Legend extends Canvas {
 			}
 		});
 
-		resizeRegistration = addResizedHandler(new ResizedHandler() {
-
-			public void onResized(ResizedEvent event) {
-				// Triggered by the render method (setHeight):
-				widget.setSize(getWidthAsString(), getHeightAsString());
-				widget.resize();
-			}
-		});
-
-		graphicsRegistration = widget.addGraphicsReadyHandler(new GraphicsReadyHandler() {
-
-			public void onReady(GraphicsReadyEvent event) {
-				// Triggered by the resized handler (i.e. we're ready to render the legend):
-				renderWithoutResize();
-			}
-		});
 	}
 
 	// -------------------------------------------------------------------------
@@ -151,19 +113,26 @@ public class Legend extends Canvas {
 	 * Render the legend. This triggers a complete redraw.
 	 */
 	public void render() {
-		int y = WidgetLayout.marginSmall;
+		removeMembers(getMembers());
+		// Then go over all layers, to draw styles:
 		for (Layer<?> layer : mapModel.getLayers()) {
 			if (staticLegend || layer.isShowing()) {
+				// Go over every truly visible layer:
 				if (layer instanceof VectorLayer) {
-					VectorLayer vLayer = (VectorLayer) layer;
-					y += WidgetLayout.legendVectorRowHeight
-							* vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles().size();
+					ClientVectorLayerInfo layerInfo = ((VectorLayer) layer).getLayerInfo();
+
+					// For vector layer; loop over the style definitions:
+					UserStyleInfo userStyle = layerInfo.getNamedStyleInfo().getUserStyle();
+					FeatureTypeStyleInfo info = userStyle.getFeatureTypeStyleList().get(0);
+					int i = 0;
+					for (RuleInfo rule : info.getRuleList()) {
+						addVector((VectorLayer)layer, i++, rule.getTitle());
+					}
 				} else if (layer instanceof RasterLayer) {
-					y += WidgetLayout.legendRasterRowHeight;
+					addRaster((RasterLayer)layer);
 				}
 			}
 		}
-		setHeight(y);
 	}
 
 	// -------------------------------------------------------------------------
@@ -206,95 +175,44 @@ public class Legend extends Canvas {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	/** Render the legend, without actually resizing the widget. */
-	private void renderWithoutResize() {
-		graphics.deleteGroup(parentGroup);
-		parentGroup = new Composite("legend-group");
-		graphics.drawGroup(null, parentGroup);
 
-		// Then go over all layers, to draw styles:
-		int lineCount = 0;
-		int y = WidgetLayout.marginSmall;
-		int labelIndent = WidgetLayout.marginLarge + WidgetLayout.legendLabelIndent;
-		for (Layer<?> layer : mapModel.getLayers()) {
-			if (staticLegend || layer.isShowing()) {
-				// Go over every truly visible layer:
-				if (layer instanceof VectorLayer) {
-					ClientVectorLayerInfo layerInfo = ((VectorLayer) layer).getLayerInfo();
-
-					// For vector layer; loop over the style definitions:
-					for (FeatureStyleInfo styleInfo : layerInfo.getNamedStyleInfo().getFeatureStyles()) {
-						ShapeStyle style = new ShapeStyle(styleInfo);
-						graphics.drawSymbolDefinition(null, styleInfo.getStyleId(), styleInfo.getSymbol(),
-								new ShapeStyle(styleInfo), null);
-						lineCount++;
-
-						switch (layerInfo.getLayerType()) {
-						case LINESTRING:
-						case MULTILINESTRING:
-							// Lines, draw a LineString;
-							Coordinate[] coordinates = new Coordinate[4];
-							coordinates[0] = new Coordinate(WidgetLayout.marginLarge, y);
-							coordinates[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
-							coordinates[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
-							coordinates[3] = new Coordinate(WidgetLayout.marginLarge + 15, y + 15);
-							LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
-							graphics.drawLine(parentGroup, "style" + lineCount, line, style);
-							break;
-						case POLYGON:
-						case MULTIPOLYGON:
-							// Polygons: draw a rectangle:
-							Bbox rect = new Bbox(WidgetLayout.marginLarge, y, 16, 16);
-							graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
-							break;
-						case POINT:
-						case MULTIPOINT:
-							// Points: draw a symbol:
-							graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(
-									WidgetLayout.marginLarge + 8, y + 8), style, styleInfo.getStyleId());
-							break;
-						case GEOMETRY:
-							// Lines + point
-							Coordinate[] linePoints = new Coordinate[3];
-							linePoints[0] = new Coordinate(WidgetLayout.marginLarge, y);
-							linePoints[1] = new Coordinate(WidgetLayout.marginLarge + 10, y + 5);
-							linePoints[2] = new Coordinate(WidgetLayout.marginLarge + 5, y + 10);
-							LineString geometryLine = mapModel.getGeometryFactory().createLineString(linePoints);
-							graphics.drawLine(parentGroup, "style" + lineCount, geometryLine, style);
-							graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 12), style,
-									styleInfo.getStyleId());
-							break;
-						default:
-							throw new IllegalStateException("Unhandled layer type " + layerInfo.getLayerType());
-						}
-
-						// After the style, draw the style's name:
-						drawLabel(labelIndent, y, lineCount, styleInfo.getName());
-						y += WidgetLayout.legendVectorRowHeight;
-					}
-				} else if (layer instanceof RasterLayer) {
-					// For raster layers; show a nice symbol:
-					lineCount++;
-
-					graphics.drawImage(parentGroup, "style" + lineCount, Geomajas.getIsomorphicDir()
-							+ WidgetLayout.legendRasterIcon, new Bbox(WidgetLayout.marginLarge, y,
-							WidgetLayout.legendRasterIconWidth, WidgetLayout.legendRasterIconHeight), new PictureStyle(
-							1));
-					drawLabel(labelIndent, y, lineCount, layer.getLabel());
-					y += WidgetLayout.legendRasterRowHeight;
-				}
-			}
-		}
+	private void addVector(VectorLayer layer, int ruleIndex, String title) {
+		HLayout layout = new HLayout(WidgetLayout.marginSmall);
+		layout.setHeight(WidgetLayout.legendVectorRowHeight);
+		UrlBuilder urlBuilder = new UrlBuilder(GWT.getModuleBaseURL());
+		urlBuilder.addPath("legendgraphic");
+		urlBuilder.addPath(layer.getServerLayerId());
+		urlBuilder.addPath(layer.getLayerInfo().getNamedStyleInfo().getName());
+		urlBuilder.addPath(ruleIndex + ".png");
+		Img icon = new Img(urlBuilder.toString(), WidgetLayout.legendRasterIconWidth,
+				WidgetLayout.legendRasterIconHeight);
+		icon.setLayoutAlign(Alignment.LEFT);
+		layout.addMember(icon);
+		Label label = new Label(title);
+		label.setWrap(false);
+		label.setLayoutAlign(Alignment.LEFT);
+		layout.addMember(label);
+		addMember(layout);
 	}
 
-	private void drawLabel(int x, int y, int lineCount, String label) {
-		Coordinate textPosition = new Coordinate(x, y - 2);
-		graphics.drawText(parentGroup, "text" + lineCount, label, textPosition, fontStyle);
+	private void addRaster(RasterLayer layer) {
+		HLayout layout = new HLayout(WidgetLayout.marginSmall);
+		layout.setHeight(WidgetLayout.legendRasterRowHeight);
+		UrlBuilder urlBuilder = new UrlBuilder(GWT.getModuleBaseURL());
+		urlBuilder.addPath("legendgraphic");
+		urlBuilder.addPath(layer.getServerLayerId()+".png");
+		Img icon = new Img(urlBuilder.toString(), WidgetLayout.legendRasterIconWidth, WidgetLayout.legendRasterIconHeight);
+		icon.setLayoutAlign(Alignment.LEFT);
+		layout.addMember(icon);
+		Label label  = new Label(layer.getLabel());
+		label.setWrap(false);
+		label.setLayoutAlign(Alignment.LEFT);
+		layout.addMember(label);		
+		addMember(layout);
 	}
 
 	/** Called when the MapModel configuration has been loaded. */
 	private void initialize() {
-		addChild(widget);
 		for (Layer<?> layer : mapModel.getLayers()) {
 			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
 
@@ -332,8 +250,6 @@ public class Legend extends Canvas {
 			}
 		}
 		loadedRegistration.removeHandler();
-		resizeRegistration.removeHandler();
-		graphicsRegistration.removeHandler();
 		super.onUnload();
 	}
 }
