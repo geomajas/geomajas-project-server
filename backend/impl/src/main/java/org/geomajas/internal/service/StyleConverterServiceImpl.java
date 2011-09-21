@@ -111,21 +111,26 @@ import org.geomajas.sld.geometry.OuterBoundaryIsInfo;
 import org.geomajas.sld.geometry.PointTypeInfo;
 import org.geomajas.sld.geometry.PolygonTypeInfo;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLDParser;
+import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.UserLayer;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
+import org.jibx.runtime.IUnmarshallingContext;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -246,13 +251,14 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		try {
 			// create a dummy SLD root
 			StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
+			sld.setVersion("1.0.0");
 			StyledLayerDescriptorInfo.ChoiceInfo choice = new StyledLayerDescriptorInfo.ChoiceInfo();
 			NamedLayerInfo namedLayerInfo = new NamedLayerInfo();
 			namedLayerInfo.setName("Dummy");
 			NamedLayerInfo.ChoiceInfo userChoice = new NamedLayerInfo.ChoiceInfo();
 			userChoice.setUserStyle(userStyleInfo);
 			namedLayerInfo.getChoiceList().add(userChoice);
-			choice.setNamedLayer(new NamedLayerInfo());
+			choice.setNamedLayer(namedLayerInfo);
 			sld.getChoiceList().add(choice);
 			// force through Geotools parser
 			bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
@@ -269,7 +275,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				throw new LayerException(ExceptionCode.INVALID_USER_STYLE, userStyleInfo.getName());
 			}
 		} catch (Exception e) {
-			throw new LayerException(ExceptionCode.INVALID_USER_STYLE, userStyleInfo.getName());
+			throw new LayerException(e, ExceptionCode.INVALID_USER_STYLE, userStyleInfo.getName());
 		}
 	}
 
@@ -282,7 +288,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return style.featureTypeStyles().get(0).rules().get(0);
 	}
 
-	public Style convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException {
+	public UserStyleInfo convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException {
 		StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
 		Style style = styleBuilder.createStyle();
 
@@ -301,15 +307,36 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				styleFilter = Filter.INCLUDE;
 			}
 			// create the rules
-			rules.addAll(createRules(layerType, styleFilter, featureStyle));
-			// create the label rule
-			TextSymbolizer textSymbolizer = createTextSymbolizer(namedStyleInfo.getLabelStyle(), layerType);
-			rules.add(styleBuilder.createRule(textSymbolizer));
+			List<Rule> l = createRules(layerType, styleFilter, featureStyle);
+			// add the label symbolizer to each rule
+			for (Rule r : l) {
+				TextSymbolizer textSymbolizer = createTextSymbolizer(namedStyleInfo.getLabelStyle(), layerType);
+				r.symbolizers().add(textSymbolizer);
+			}
+			rules.addAll(l);
 		}
 		// create the style
 		FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(null, rules.toArray(new Rule[rules.size()]));
 		style.featureTypeStyles().add(fts);
-		return style;
+		// parse and to dto
+
+		try {
+			StyledLayerDescriptor styledLayerDescriptor = styleFactory.createStyledLayerDescriptor();
+			UserLayer layer = styleFactory.createUserLayer();
+			layer.setLayerFeatureConstraints(new FeatureTypeConstraint[] { null });
+			styledLayerDescriptor.addStyledLayer(layer);
+			layer.addUserStyle(style);
+
+			SLDTransformer styleTransform = new SLDTransformer();
+			String xml = styleTransform.transform(styledLayerDescriptor);
+			IBindingFactory bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+			IUnmarshallingContext unmarshallingContext = bindingFactory.createUnmarshallingContext();
+			StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) unmarshallingContext
+					.unmarshalDocument(new StringReader(xml));
+			return sld.getChoiceList().get(0).getUserLayer().getUserStyleList().get(0);
+		} catch (Exception e) {
+			throw new LayerException(e, ExceptionCode.INVALID_USER_STYLE, namedStyleInfo.getName());
+		}
 	}
 
 	private void convertSymbol(FeatureStyleInfo featureStyleInfo, PointSymbolizerInfo pointInfo) {
@@ -725,7 +752,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return null;
 	}
 
-	private List<Rule> createRules(LayerType layerType, Filter filter, FeatureStyleInfo featureStyle) {
+	private List<Rule> createRules(LayerType layerType, Filter filter, FeatureStyleInfo featureStyle)
+			throws LayerException {
 		List<Rule> rules = new ArrayList<Rule>();
 		// for mixed geometries we add a filter to distinguish between geometry types
 		if (layerType == LayerType.GEOMETRY) {
@@ -735,7 +763,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			Filter multiPointFilter = filterService.createGeometryTypeFilter("", "MultiPoint");
 			Filter pointsFilter = filterService.createLogicFilter(pointFilter, "or", multiPointFilter);
 			pointRule.setFilter(filterService.createLogicFilter(pointsFilter, "and", filter));
-			pointRule.setTitle(featureStyle.getName() + "(Point)");
+			pointRule.setName(featureStyle.getName());
+			pointRule.setTitle(featureStyle.getName());
 
 			// add the configured filter to a filter that selects line features only
 			Rule lineRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.LINESTRING, featureStyle));
@@ -743,7 +772,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			Filter multiLineFilter = filterService.createGeometryTypeFilter("", "MultiLineString");
 			Filter linesFilter = filterService.createLogicFilter(lineFilter, "or", multiLineFilter);
 			lineRule.setFilter(filterService.createLogicFilter(linesFilter, "and", filter));
-			lineRule.setTitle(featureStyle.getName() + "(Line)");
+			lineRule.setName(featureStyle.getName());
+			lineRule.setTitle(featureStyle.getName());
 
 			// add the configured filter to a filter that selects polygon features only
 			Rule polygonRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POLYGON, featureStyle));
@@ -751,7 +781,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			Filter multiPolygonFilter = filterService.createGeometryTypeFilter("", "MultiPolygon");
 			Filter polygonsFilter = filterService.createLogicFilter(polygonFilter, "or", multiPolygonFilter);
 			polygonRule.setFilter(filterService.createLogicFilter(polygonsFilter, "and", filter));
-			polygonRule.setTitle(featureStyle.getName() + "(Polygon)");
+			polygonRule.setName(featureStyle.getName());
+			polygonRule.setTitle(featureStyle.getName());
 			rules.add(pointRule);
 			rules.add(lineRule);
 			rules.add(polygonRule);
@@ -762,13 +793,15 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			} else {
 				rule.setFilter(filter);
 			}
+			rule.setName(featureStyle.getName());
 			rule.setTitle(featureStyle.getName());
 			rules.add(rule);
 		}
 		return rules;
 	}
 
-	private Symbolizer createGeometrySymbolizer(LayerType layerType, FeatureStyleInfo featureStyle) {
+	private Symbolizer createGeometrySymbolizer(LayerType layerType, FeatureStyleInfo featureStyle)
+			throws LayerException {
 		Symbolizer symbolizer = null;
 		switch (layerType) {
 			case MULTIPOLYGON:
@@ -824,7 +857,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return symbolizer;
 	}
 
-	private GraphicalSymbol createSymbol(FeatureStyleInfo featureStyle) {
+	private GraphicalSymbol createSymbol(FeatureStyleInfo featureStyle) throws LayerException {
 		SymbolInfo info = featureStyle.getSymbol();
 		if (info.getImage() != null) {
 			return styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()), getFormat(info.getImage()
@@ -869,18 +902,30 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				styleBuilder.literalExpression(featureStyle.getFillOpacity()));
 	}
 
-	private URL getURL(String resourceLocation) {
+	private URL getURL(String resourceLocation) throws LayerException {
 		Resource resource = applicationContext.getResource(resourceLocation);
 		if (resource.exists()) {
 			try {
 				return resource.getURL();
 			} catch (IOException e) {
 				log.warn("missing resource {}", resourceLocation);
+				throw new LayerException(ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
 			}
 		} else {
-			log.warn("missing resource {}", resourceLocation);
+			String gwtResource = "classpath:" + resourceLocation;
+			try {
+				Resource[] matching = applicationContext.getResources(gwtResource);
+				if (matching.length > 0) {
+					return matching[0].getURL();
+				} else {
+					log.warn("missing resource {}", gwtResource);
+					throw new LayerException(ExceptionCode.RESOURCE_NOT_FOUND, gwtResource);
+				}
+			} catch (IOException e) {
+				log.warn("missing resource {}", resourceLocation);
+				throw new LayerException(ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
+			}
 		}
-		return null;
 	}
 
 	private String getFormat(String href) {
@@ -891,6 +936,5 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private void postConstruct() {
 		styleBuilder = new StyleBuilder(styleFactory, filterFactory);
 	}
-
 
 }

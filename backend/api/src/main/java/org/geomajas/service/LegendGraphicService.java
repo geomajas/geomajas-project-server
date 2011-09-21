@@ -12,6 +12,7 @@ package org.geomajas.service;
 
 import java.awt.image.RenderedImage;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.legend.LegendGraphicMetadata;
 
@@ -20,8 +21,10 @@ import org.geomajas.service.legend.LegendGraphicMetadata;
  * GetLegendGraphicRequest parameters.
  * 
  * @author Jan De Moerloose
+ * @since 1.10.0
  * 
  */
+@Api(allMethods = true)
 public interface LegendGraphicService {
 
 	/**

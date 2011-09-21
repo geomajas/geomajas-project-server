@@ -67,5 +67,5 @@ public interface StyleConverterService {
 	 * @return the GT style
 	 * @throws LayerException oops
 	 */
-	Style convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException;
+	UserStyleInfo convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException;
 }

@@ -44,6 +44,7 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.NamedLayerInfo;
+import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.UserLayerInfo;
 import org.geomajas.sld.UserStyleInfo;
@@ -154,7 +155,7 @@ public class ConfigurationDtoPostProcessor {
 							layer.getId());
 				}
 			}
-			// apply sld to styles
+			// convert sld to old styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				// check sld location
 				if (namedStyle.getSldLocation() != null) {
@@ -190,6 +191,14 @@ public class ConfigurationDtoPostProcessor {
 			// apply defaults to all styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				namedStyle.applyDefaults();
+			}
+
+			// convert old styles to sld
+			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
+				if (namedStyle.getUserStyle() == null) {
+					UserStyleInfo userStyle = styleConverterService.convert(namedStyle, info.getLayerType());
+					namedStyle.setUserStyle(userStyle);
+				}
 			}
 		}
 	}
@@ -335,12 +344,16 @@ public class ConfigurationDtoPostProcessor {
 	}
 
 	private NamedStyleInfo postProcess(NamedStyleInfo client) {
-		// index styles
+		// index styles/rules
 		int i = 0;
 		for (FeatureStyleInfo style : client.getFeatureStyles()) {
 			style.setIndex(i++);
 			style.setStyleId(client.getName() + "-" + style.getIndex());
 		}
+		i = 0;
+		for (RuleInfo rule : client.getUserStyle().getFeatureTypeStyleList().get(0).getRuleList()) {
+			rule.setName(client.getName() + "-" + i++);
+		}		
 		return client;
 	}
 

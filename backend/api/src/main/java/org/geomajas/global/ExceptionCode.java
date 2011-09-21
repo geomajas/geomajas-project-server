@@ -162,5 +162,17 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int STYLE_NOT_FOUND = 80;
+	/**
+	 * @since 1.10.0
+	 */
+	int LEGEND_GRAPHIC_RENDERING_PROBLEM = 81;
+	/**
+	 * @since 1.10.0
+	 */
+	int RESOURCE_NOT_FOUND = 82;
+	/**
+	 * @since 1.10.0
+	 */
+	int RULE_NOT_FOUND = 83;
 
 }

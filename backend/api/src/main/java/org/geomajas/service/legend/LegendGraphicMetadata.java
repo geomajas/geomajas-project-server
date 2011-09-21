@@ -10,6 +10,7 @@
  */
 package org.geomajas.service.legend;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.sld.NamedStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.UserStyleInfo;
@@ -18,8 +19,10 @@ import org.geomajas.sld.UserStyleInfo;
  * Metadata for creating a legend graphic.
  * 
  * @author Jan De Moerloose
+ * @since 1.10.0
  * 
  */
+@Api(allMethods = true)
 public interface LegendGraphicMetadata {
 
 	/**
