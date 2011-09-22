@@ -365,7 +365,7 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 			}
 		} else {
 			// might be a relative class path
-			resource = applicationContext.getResource("classpath:"+resourceLocation);
+			resource = applicationContext.getResource("classpath:" + resourceLocation);
 			if (resource.exists()) {
 				try {
 					return resource.getURL();
