@@ -84,7 +84,7 @@ public class VectorLayerPainter implements Painter {
 		}
 
 		// Check label visibility:
-		if (layer.isLabeled()) {
+		if (layer.isLabelsShowing()) {
 			context.getVectorContext().unhide(layer.getLabelGroup());
 		} else {
 			context.getVectorContext().hide(layer.getLabelGroup());
@@ -104,7 +104,7 @@ public class VectorLayerPainter implements Painter {
 	 *            The object to be painted.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
