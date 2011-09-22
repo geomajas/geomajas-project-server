@@ -351,9 +351,11 @@ public class ConfigurationDtoPostProcessor {
 			style.setStyleId(client.getName() + "-" + style.getIndex());
 		}
 		i = 0;
-		for (RuleInfo rule : client.getUserStyle().getFeatureTypeStyleList().get(0).getRuleList()) {
-			rule.setName(client.getName() + "-" + i++);
-		}		
+		if (client.getUserStyle() != null) {
+			for (RuleInfo rule : client.getUserStyle().getFeatureTypeStyleList().get(0).getRuleList()) {
+				rule.setName(client.getName() + "-" + i++);
+			}
+		}
 		return client;
 	}
 
