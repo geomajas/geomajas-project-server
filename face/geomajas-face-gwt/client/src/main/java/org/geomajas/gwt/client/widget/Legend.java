@@ -128,7 +128,7 @@ public class Legend extends VLayout {
 						addVector((VectorLayer) layer, i++, rule.getTitle());
 					}
 				} else if (layer instanceof RasterLayer) {
-					addRaster((RasterLayer)layer);
+					addRaster((RasterLayer) layer);
 				}
 			}
 		}
