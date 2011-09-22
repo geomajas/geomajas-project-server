@@ -19,10 +19,10 @@ import java.util.Map;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.handler.MapEventParser;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -455,7 +455,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 
 		// TODO revisit this edge marker:
 		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapWidget, editingService,
-				controller.getEventParser());
+				controller);
 		controller.addMouseOutHandler(edgeMarkerHandler);
 		controller.addMouseMoveHandler(edgeMarkerHandler);
 		controller.addMapDownHandler(edgeMarkerHandler);

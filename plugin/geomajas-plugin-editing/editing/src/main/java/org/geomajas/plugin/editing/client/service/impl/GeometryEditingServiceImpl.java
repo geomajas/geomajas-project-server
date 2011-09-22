@@ -63,7 +63,7 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 
 	private List<GeometryIndex> selection = new ArrayList<GeometryIndex>();
 
-	private GeometryEditingState state;
+	private GeometryEditingState state = GeometryEditingState.IDLE;
 
 	private boolean started;
 

@@ -11,18 +11,22 @@
 
 package org.geomajas.plugin.editing.client.handler;
 
-import org.geomajas.gwt.client.handler.MapEventParser;
-import org.geomajas.gwt.client.handler.MapHandler;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.MapEventParser;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
+
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.shared.EventHandler;
 
 /**
  * ...
  * 
  * @author Pieter De Graef
  */
-public abstract class AbstractGeometryIndexMapHandler implements MapHandler {
+public abstract class AbstractGeometryIndexMapHandler implements MapEventParser, EventHandler {
 
 	protected GeometryEditingService service;
 
@@ -33,9 +37,9 @@ public abstract class AbstractGeometryIndexMapHandler implements MapHandler {
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
-
-	public MapEventParser getEventParser() {
-		return eventParser;
+	
+	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
+		return eventParser.getLocation(event, renderSpace);
 	}
 
 	public void setEventParser(MapEventParser eventParser) {

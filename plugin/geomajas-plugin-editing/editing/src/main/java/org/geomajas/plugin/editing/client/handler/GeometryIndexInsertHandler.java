@@ -42,7 +42,7 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 				}
 
 				// First insert the point into the geometry:
-				Coordinate location = getEventParser().getLocation(event, RenderSpace.WORLD);
+				Coordinate location = getLocation(event, RenderSpace.WORLD);
 				service.insert(indices, Collections.singletonList(Collections.singletonList(location)));
 
 				// Then change the selection to the newly inserted point:

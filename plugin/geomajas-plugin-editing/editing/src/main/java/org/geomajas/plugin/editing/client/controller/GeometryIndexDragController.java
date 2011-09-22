@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.AbstractController;
-import org.geomajas.gwt.client.handler.MapEventParser;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
@@ -44,12 +44,12 @@ public class GeometryIndexDragController extends AbstractController {
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
-		previous = getEventParser().getLocation(event, RenderSpace.WORLD);
+		previous = getLocation(event, RenderSpace.WORLD);
 	}
 
 	public void onDrag(HumanInputEvent<?> event) {
 		// First calculate moving delta:
-		Coordinate worldPos = getEventParser().getLocation(event, RenderSpace.WORLD);
+		Coordinate worldPos = getLocation(event, RenderSpace.WORLD);
 		double deltaX = worldPos.getX() - previous.getX();
 		double deltaY = worldPos.getY() - previous.getY();
 

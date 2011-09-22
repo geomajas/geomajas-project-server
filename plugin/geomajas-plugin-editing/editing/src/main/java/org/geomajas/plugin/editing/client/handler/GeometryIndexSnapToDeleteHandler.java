@@ -108,7 +108,6 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 						service.move(Collections.singletonList(selected),
 								Collections.singletonList(Collections.singletonList(location)));
 						event.stopPropagation();
-						event.preventDefault();
 					} catch (GeometryIndexNotFoundException e) {
 					}
 				}

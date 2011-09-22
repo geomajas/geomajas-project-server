@@ -50,7 +50,7 @@ public class GeometryEditor implements GeometryEditWorkflowHandler {
 		service = new GeometryEditingServiceImpl();
 		service.addGeometryEditWorkflowHandler(this);
 		baseController = new EditGeometryBaseController(mapWidget, service); // use factories?
-		renderer = new GeometryRenderer(mapWidget, service, baseController.getEventParser());
+		renderer = new GeometryRenderer(mapWidget, service, baseController);
 	}
 
 	// GeometryEditWorkflowHandler implementation:
@@ -59,6 +59,10 @@ public class GeometryEditor implements GeometryEditWorkflowHandler {
 		// Initialize controllers and painters:
 		previousController = mapWidget.getController();
 		mapWidget.setController(baseController);
+		
+		if (zoomOnStart) {
+			// TODO Zoom damnit...
+		}
 	}
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {

@@ -14,7 +14,6 @@ package org.geomajas.plugin.editing.client.controller;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.handler.MapHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
@@ -29,19 +28,13 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
  * 
  * @author Pieter De Graef
  */
-public class EditGeometryBaseController extends AbstractGraphicsController implements MapHandler {
-
-	// private boolean panningEnabled;
+public class EditGeometryBaseController extends AbstractGraphicsController {
 
 	private AbstractController idleController;
 
 	private AbstractController dragController;
 
-	// private MapDragHandler dragHandler;
-
 	private GeometryEditingService service;
-
-	// private GwtMapEventParser eventParser;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -51,10 +44,7 @@ public class EditGeometryBaseController extends AbstractGraphicsController imple
 		super(mapWidget);
 		this.service = service;
 		idleController = new PanController(mapWidget);
-		// panningEnabled = true;
-		// eventParser = new GwtMapEventParser(mapWidget, getOffsetX(), getOffsetY());
-		// dragHandler = new MoveGeometrySelectionHandler(mapWidget, service, eventParser);
-		dragController = new GeometryIndexDragController(service, getEventParser());
+		dragController = new GeometryIndexDragController(service, this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -62,12 +52,12 @@ public class EditGeometryBaseController extends AbstractGraphicsController imple
 	// ------------------------------------------------------------------------
 
 	public void onDown(HumanInputEvent<?> event) {
-		if (service.getEditingState() == GeometryEditingState.IDLE && !event.isShiftKeyDown()) {
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
 			// No shift key down, because we don't want to pan when deselecting vertices.
+			// TODO remove the shift check somehow...
 			idleController.onDown(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onDown(event);
-			// dragHandler.onDragStart(event, getScreenPosition(event));
 		}
 	}
 
@@ -111,13 +101,4 @@ public class EditGeometryBaseController extends AbstractGraphicsController imple
 			dragController.onUp(event);
 		}
 	}
-
-	// public void onMouseUp(MouseUpEvent event) {
-	// if (panningEnabled) {
-	// idleController.onMouseUp(event);
-	// }
-	// if (service.getEditingState() == GeometryEditingState.DRAGGING) {
-	// dragHandler.onDragEnd(event, getScreenPosition(event));
-	// }
-	// }
 }

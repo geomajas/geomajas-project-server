@@ -12,10 +12,10 @@
 package org.geomajas.plugin.editing.client.gfx;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.handler.MapDownHandler;
-import org.geomajas.gwt.client.handler.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
@@ -60,15 +60,11 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	}
 
 	// ------------------------------------------------------------------------
-	// MapHandler implementation:
+	// MapEventParser implementation:
 	// ------------------------------------------------------------------------
 
-	public MapEventParser getEventParser() {
-		return eventParser;
-	}
-
-	public void setEventParser(MapEventParser eventParser) {
-		this.eventParser = eventParser;
+	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
+		return eventParser.getLocation(event, renderSpace);
 	}
 
 	// ------------------------------------------------------------------------

@@ -74,7 +74,7 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 	public void addMapHandler(AbstractGeometryIndexMapHandler handler) {
 		handler.setIndex(index);
 		handler.setService(service);
-		handler.setEventParser(getEventParser());
+		handler.setEventParser(this);
 		if (handler instanceof MapDownHandler) {
 			downHandlers.add((MapDownHandler) handler);
 		}
