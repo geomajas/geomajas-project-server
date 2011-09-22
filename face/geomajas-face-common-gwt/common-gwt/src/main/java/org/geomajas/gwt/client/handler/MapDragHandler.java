@@ -11,6 +11,8 @@
 
 package org.geomajas.gwt.client.handler;
 
+import org.geomajas.gwt.client.controller.MapEventParser;
+
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
@@ -18,7 +20,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public interface MapDragHandler extends MapHandler {
+public interface MapDragHandler extends MapEventParser {
 
 	void onDrag(HumanInputEvent<?> event);
 }

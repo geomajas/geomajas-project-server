@@ -12,14 +12,17 @@
 package org.geomajas.gwt.client.controller;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.handler.MapDragHandler;
-import org.geomajas.gwt.client.handler.MapEventParser;
 import org.geomajas.gwt.client.handler.MapUpHandler;
+import org.geomajas.gwt.client.map.RenderSpace;
 
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -59,9 +62,9 @@ import com.google.gwt.event.dom.client.TouchStartEvent;
 @Api(allMethods = true)
 public abstract class AbstractController implements Controller, MapDownHandler, MapUpHandler, MapDragHandler {
 
-	private MapEventParser eventParser;
-
 	protected boolean dragging;
+
+	protected MapEventParser eventParser;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -72,8 +75,27 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	}
 
 	public AbstractController(MapEventParser eventParser, boolean dragging) {
-		this.eventParser = eventParser;
 		this.dragging = dragging;
+		this.eventParser = eventParser;
+	}
+
+	// ------------------------------------------------------------------------
+	// MapEventParser implementation:
+	// ------------------------------------------------------------------------
+
+	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
+		return eventParser.getLocation(event, renderSpace);
+	}
+
+	protected void setMapEventParser(MapEventParser eventParser) {
+		this.eventParser = eventParser;
+	}
+
+	public boolean isRightMouseButton(HumanInputEvent<?> event) {
+		if (event instanceof MouseEvent<?>) {
+			return ((MouseEvent<?>) event).getNativeButton() == NativeEvent.BUTTON_RIGHT;
+		}
+		return false;
 	}
 
 	// ------------------------------------------------------------------------
@@ -151,17 +173,5 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 		onUp(event);
 		event.stopPropagation();
 		event.preventDefault();
-	}
-
-	// ------------------------------------------------------------------------
-	// MapHandler implementation:
-	// ------------------------------------------------------------------------
-
-	public MapEventParser getEventParser() {
-		return eventParser;
-	}
-
-	public void setEventParser(MapEventParser eventParser) {
-		this.eventParser = eventParser;
 	}
 }

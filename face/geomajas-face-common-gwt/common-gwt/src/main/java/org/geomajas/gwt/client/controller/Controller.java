@@ -12,9 +12,9 @@
 package org.geomajas.gwt.client.controller;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.handler.MapHandler;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -38,5 +38,14 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 @Api(allMethods = true)
 public interface Controller extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
 		MouseOverHandler, MouseWheelHandler, DoubleClickHandler, TouchStartHandler, TouchEndHandler, TouchMoveHandler,
-		TouchCancelHandler, MapHandler {
+		TouchCancelHandler, MapEventParser {
+
+	/**
+	 * Is the given event the result of a mouse event coming from the right mouse button?
+	 * 
+	 * @param event
+	 *            The given event. May not even be a mouse event.
+	 * @return true or false.
+	 */
+	boolean isRightMouseButton(HumanInputEvent<?> event);
 }

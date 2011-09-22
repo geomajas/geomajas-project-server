@@ -8,14 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt.client.handler;
+package org.geomajas.gwt.client.controller;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
@@ -37,22 +35,4 @@ public interface MapEventParser {
 	 * @return Returns the location as a coordinate in the requested render space.
 	 */
 	Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace);
-
-	/**
-	 * Get the target DOM element of the (mouse/touch/...) event.
-	 * 
-	 * @param event
-	 *            The mouse event itself.
-	 * @return Returns the DOM element or null if something went wrong.
-	 */
-	Element getTarget(DomEvent<?> event);
-
-	/**
-	 * Return the ID of the DOM element of the (mouse/touch/...) event.
-	 * 
-	 * @param event
-	 *            The mouse event itself.
-	 * @return Returns the ID of the DOM element or null if something went wrong.
-	 */
-	String getTargetId(DomEvent<?> event);
 }
