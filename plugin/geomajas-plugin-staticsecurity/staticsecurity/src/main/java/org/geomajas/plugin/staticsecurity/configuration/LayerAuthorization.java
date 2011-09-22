@@ -32,34 +32,47 @@ public class LayerAuthorization implements BaseAuthorization {
 		// for deserialization
 	}
 
+	/**
+	 * Build authorization for the given configuration.
+	 *
+	 * @param info authorization info
+	 * @since 1.9.0
+	 */
 	public LayerAuthorization(LayerAuthorizationInfo info) {
 		this.info = info;
 	}
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return "LayerAuthorizationInfo." + Integer.toString(info.hashCode());
 	}
 
+	/** {@inheritDoc} */
 	public boolean isToolAuthorized(String toolId) {
 		return check(toolId, info.getToolsInclude(), info.getToolsExclude());
 	}
 
+	/** {@inheritDoc} */
 	public boolean isCommandAuthorized(String commandName) {
 		return check(commandName, info.getCommandsInclude(), info.getCommandsExclude());
 	}
 
+	/** {@inheritDoc} */
 	public boolean isLayerVisible(String layerId) {
 		return check(layerId, info.getVisibleLayersInclude(), info.getVisibleLayersExclude());
 	}
 
+	/** {@inheritDoc} */
 	public boolean isLayerUpdateAuthorized(String layerId) {
 		return check(layerId, info.getUpdateAuthorizedLayersInclude(), info.getUpdateAuthorizedLayersExclude());
 	}
 
+	/** {@inheritDoc} */
 	public boolean isLayerCreateAuthorized(String layerId) {
 		return check(layerId, info.getCreateAuthorizedLayersInclude(), info.getCreateAuthorizedLayersExclude());
 	}
 
+	/** {@inheritDoc} */
 	public boolean isLayerDeleteAuthorized(String layerId) {
 		return check(layerId, info.getDeleteAuthorizedLayersInclude(), info.getDeleteAuthorizedLayersExclude());
 	}
