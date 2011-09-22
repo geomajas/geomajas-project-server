@@ -1,6 +1,5 @@
 package org.geomajas.plugin.rasterizing;
 
-import java.awt.Font;
 import java.io.OutputStream;
 
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -64,7 +63,7 @@ public class ImageServiceLegendTest {
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	private static final double DELTA = 1E-6;
 
