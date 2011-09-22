@@ -30,6 +30,7 @@
 		<module>geomajas-layer-hibernate</module>
 		<module>geomajas-layer-openstreetmap</module>
 		<module>geomajas-layer-wms</module>
+		<module>geomajas-plugin-editing</module>
 		<module>geomajas-plugin-printing</module>
 		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-plugin-caching</module>
