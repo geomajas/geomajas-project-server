@@ -364,7 +364,15 @@ public class StyleFactoryServiceImpl implements StyleFactoryService {
 				log.warn("missing resource {}", resourceLocation);
 			}
 		} else {
-			log.warn("missing resource {}", resourceLocation);
+			// might be a relative class path
+			resource = applicationContext.getResource("classpath:"+resourceLocation);
+			if (resource.exists()) {
+				try {
+					return resource.getURL();
+				} catch (IOException e) {
+					log.warn("missing resource {}", resourceLocation);
+				}
+			}
 		}
 		return null;
 	}
