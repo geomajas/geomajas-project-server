@@ -59,7 +59,7 @@ public class UrlBuilder {
 	public UrlBuilder addPath(String path) {
 		if (path.startsWith("/") && baseUrl.endsWith("/")) {
 			baseUrl = baseUrl + path.substring(1);
-		} else if(baseUrl.endsWith("/")){
+		} else if (baseUrl.endsWith("/")) {
 			baseUrl = baseUrl + path;
 		} else {
 			baseUrl = baseUrl + "/" + path;
