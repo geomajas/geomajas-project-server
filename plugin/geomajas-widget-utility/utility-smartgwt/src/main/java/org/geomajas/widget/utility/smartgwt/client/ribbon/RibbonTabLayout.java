@@ -11,7 +11,7 @@
 
 package org.geomajas.widget.utility.smartgwt.client.ribbon;
 
-import org.geomajas.gwt.client.service.ConfigurationService;
+import org.geomajas.gwt.client.service.ClientConfigurationService;
 import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.client.ribbon.RibbonBar;
@@ -47,7 +47,7 @@ public class RibbonTabLayout extends VLayout {
 		tabs.setPaneMargin(0);
 		addMember(tabs);
 
-		ConfigurationService.getApplicationWidgetInfo(application, beanId,
+		ClientConfigurationService.getApplicationWidgetInfo(application, beanId,
 				new WidgetConfigurationCallback<RibbonInfo>() {
 
 					public void execute(RibbonInfo ribbonInfo) {

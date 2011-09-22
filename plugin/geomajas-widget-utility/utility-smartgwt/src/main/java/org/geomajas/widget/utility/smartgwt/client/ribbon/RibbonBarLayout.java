@@ -14,7 +14,7 @@ package org.geomajas.widget.utility.smartgwt.client.ribbon;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.gwt.client.service.ConfigurationService;
+import org.geomajas.gwt.client.service.ClientConfigurationService;
 import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.client.ribbon.RibbonBar;
@@ -77,7 +77,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	public RibbonBarLayout(final MapWidget mapWidget, String application, String beanId) {
 		this();
 
-		ConfigurationService.getApplicationWidgetInfo(application, beanId,
+		ClientConfigurationService.getApplicationWidgetInfo(application, beanId,
 				new WidgetConfigurationCallback<RibbonBarInfo>() {
 
 					public void execute(RibbonBarInfo ribbonBarInfo) {
