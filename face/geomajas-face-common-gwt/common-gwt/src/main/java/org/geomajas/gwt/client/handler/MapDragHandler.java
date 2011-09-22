@@ -11,21 +11,14 @@
 
 package org.geomajas.gwt.client.handler;
 
-import org.geomajas.geometry.Coordinate;
-
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
- * Handler for dragging on a map.<br>
- * TODO Is this really needed??
+ * Handler for either MouseMoveEvents (while dragging) or single TouchMoveEvents.
  * 
  * @author Pieter De Graef
  */
 public interface MapDragHandler extends MapHandler {
 
-	void onDragStart(HumanInputEvent<?> event, Coordinate position);
-
-	void onDragMove(HumanInputEvent<?> event, Coordinate position);
-
-	void onDragEnd(HumanInputEvent<?> event, Coordinate position);
+	void onDrag(HumanInputEvent<?> event);
 }
