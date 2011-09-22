@@ -11,14 +11,14 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto;
 
-import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.command.dto.GetConfigurationResponse;
 
 /**
  * Response object for {@link org.geomajas.plugin.staticsecurity.gwt.example.server.command.AppConfigurationCommand}.
  *
  * @author Joachim Van der Auwera
  */
-public class AppConfigurationResponse extends GetMapConfigurationResponse {
+public class AppConfigurationResponse extends GetConfigurationResponse {
 
 	private static final long serialVersionUID = 100L;
 

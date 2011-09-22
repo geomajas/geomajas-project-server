@@ -13,8 +13,8 @@ package org.geomajas.plugin.staticsecurity.gwt.example.server.command;
 
 import org.geomajas.command.Command;
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.command.dto.GetMapConfigurationRequest;
-import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.command.dto.GetConfigurationRequest;
+import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationRequest;
 import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationResponse;
 import org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppSecurityContext;
@@ -40,9 +40,9 @@ public class AppConfigurationCommand implements Command<AppConfigurationRequest,
 	}
 
 	public void execute(AppConfigurationRequest request, AppConfigurationResponse response) throws Exception {
-		GetMapConfigurationResponse original = (GetMapConfigurationResponse) commandDispatcher.execute(
-				GetMapConfigurationRequest.COMMAND, request, securityContext.getToken(), null);
-		response.setMapInfo(original.getMapInfo());
+		GetConfigurationResponse original = (GetConfigurationResponse) commandDispatcher.execute(
+				GetConfigurationRequest.COMMAND, request, securityContext.getToken(), null);
+		response.setApplication(original.getApplication());
 
 		// Add app specific configuration
 		response.setBlablaButtonAllowed(securityContext.isBlablaButtonAllowed());

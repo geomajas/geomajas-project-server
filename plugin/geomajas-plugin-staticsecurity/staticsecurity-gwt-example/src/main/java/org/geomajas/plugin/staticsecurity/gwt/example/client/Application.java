@@ -11,43 +11,53 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.SectionStack;
+import com.smartgwt.client.widgets.layout.SectionStackSection;
+import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.command.UserDetail;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.service.ClientConfigurationLoader;
+import org.geomajas.gwt.client.service.ClientConfigurationService;
+import org.geomajas.gwt.client.service.ClientConfigurationSetter;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.smartgwt.client.types.VisibilityMode;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.SectionStack;
-import com.smartgwt.client.widgets.layout.SectionStackSection;
-import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.plugin.staticsecurity.client.StaticSecurityTokenRequestHandler;
 import org.geomajas.plugin.staticsecurity.client.TokenReleaseButton;
+import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationRequest;
 import org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto.AppConfigurationResponse;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
- * 
+ *
  * @author geomajas-gwt-archetype
  */
 public class Application implements EntryPoint {
 
 	public static final String APPLICATION_LABEL = "Geomajas GWT: staticsecurity example";
 	public static final String APPLICATION_TITLE_STYLE = "appTitle";
+	public static final String APPLICATION_USER_STYLE = "appUser";
+	public static final String APPLICATION_SECURITY_STYLE = "appSecurity";
 
 	private OverviewMap overviewMap;
 
@@ -57,8 +67,24 @@ public class Application implements EntryPoint {
 		// @extract-start TokenRequestHandler, Set the token request handler
 		GwtCommandDispatcher.getInstance().setTokenRequestHandler(
 				new StaticSecurityTokenRequestHandler(
-				"Possible users are 'luc' and 'marino'. " +
-						"The password is the same as the login."));
+				"Possible users are 'luc' and 'marino'. The password is the same as the login."));
+		// @extract-end
+
+		// @extract-start ClientConfigurationLoader, Replace the client configuration loader
+		ClientConfigurationService.setConfigurationLoader(new ClientConfigurationLoader() {
+			public void loadClientApplicationInfo(final String applicationId, final ClientConfigurationSetter setter) {
+				GwtCommand commandRequest = new GwtCommand(AppConfigurationRequest.COMMAND);
+				commandRequest.setCommandRequest(new AppConfigurationRequest(applicationId));
+				GwtCommandDispatcher.getInstance().execute(commandRequest,
+						new AbstractCommandCallback<AppConfigurationResponse>() {
+							public void execute(AppConfigurationResponse response) {
+								ClientSecurityContext.setBlablaButtonAllowed(response.isBlablaButtonAllowed());
+								ClientSecurityContext.setBlablaButtonAllowed(response.isBlablaButtonAllowed());
+								setter.set(applicationId, response.getApplication());
+							}
+						});
+			}
+		});
 		// @extract-end
 
 		VLayout mainLayout = new VLayout();
@@ -75,23 +101,18 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		final MyMapWidget map = new MyMapWidget("mapMain", "app");
+		final MapWidget map = new MapWidget("mapMain", "app");
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 		toolbar.setBackgroundColor("#647386");
 		toolbar.setBackgroundImage("");
 		toolbar.setBorder("0px");
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-
-			public void onMapModelChange(MapModelEvent event) {
-				Label title = new Label(APPLICATION_LABEL);
-				title.setStyleName(APPLICATION_TITLE_STYLE);
-				title.setWidth("*");
-				toolbar.addFill();
-				toolbar.addMember(title);
-			}
-		});
+		Label title = new Label(APPLICATION_LABEL);
+		title.setStyleName(APPLICATION_TITLE_STYLE);
+		title.setWidth("*");
+		toolbar.addFill();
+		toolbar.addMember(title);
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.addMember(toolbar);
@@ -120,7 +141,9 @@ public class Application implements EntryPoint {
 		SectionStackSection sectionSecurity = new SectionStackSection("Security");
 		sectionSecurity.setExpanded(true);
 		final VLayout sectionSecurityLayout = new VLayout(WidgetLayout.marginSmall);
+		sectionSecurityLayout.setStyleName(APPLICATION_SECURITY_STYLE);
 		final Label whoAmI = new Label();
+		whoAmI.setStyleName(APPLICATION_USER_STYLE);
 		whoAmI.setHeight(16);
 		whoAmI.setWidth100();
 		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
@@ -152,9 +175,9 @@ public class Application implements EntryPoint {
 			}
 		});
 		sectionSecurityLayout.addMember(blablaButton);
-		map.addMapCallback(new MyMapWidget.MapCallback() {
-			public void onResponse(AppConfigurationResponse response) {
-				if (response.isBlablaButtonAllowed()) {
+		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
+			public void onMapModelChanged(MapModelChangedEvent event) {
+				if (ClientSecurityContext.isBlablaButtonAllowed()) {
 					blablaButton.show();
 				} else {
 					blablaButton.hide();

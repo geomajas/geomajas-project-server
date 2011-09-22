@@ -11,21 +11,22 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.server.command.dto;
 
-import org.geomajas.command.dto.GetMapConfigurationRequest;
+import org.geomajas.command.dto.GetConfigurationRequest;
 
 /**
  * Request object for {@link org.geomajas.plugin.staticsecurity.gwt.example.server.command.AppConfigurationCommand}.
  *
  * @author Joachim Van der Auwera
  */
-public class AppConfigurationRequest extends GetMapConfigurationRequest {
+public class AppConfigurationRequest extends GetConfigurationRequest {
 
 	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND = "command.AppConfiguration";
 
-	public AppConfigurationRequest(String mapId, String applicationId) {
-		super(mapId, applicationId);
+	public AppConfigurationRequest(String applicationId) {
+		super();
+		setApplicationId(applicationId);
 	}
 
 	public AppConfigurationRequest() {

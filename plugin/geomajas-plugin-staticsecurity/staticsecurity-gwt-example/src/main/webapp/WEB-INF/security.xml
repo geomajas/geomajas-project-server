@@ -24,8 +24,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- @extract-start ReplaceSecurityContext, Replace security context by version which includes custom policies -->
 	<bean name="security.SecurityManager"
 		  class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppSecurityManager" />
-	<bean name="security.SecurityContext"
-		  class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppSecurityContext" />
+	<bean name="security.SecurityContext" scope="thread"
+		  class="org.geomajas.plugin.staticsecurity.gwt.example.server.security.AppSecurityContext">
+		<aop:scoped-proxy/>
+  	</bean>
 	<!-- @extract-end -->
 
 	<!-- @extract-start UseStaticsecurity, Enabling the use of staticsecurity-->
@@ -95,6 +97,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								<property name="commandsInclude">
 									<list>
 										<value>.*</value>
+									</list>
+								</property>
+								<property name="toolsInclude">
+									<list>
+										<value>ZoomToRectangleMode</value>
 									</list>
 								</property>
 								<property name="visibleLayersInclude">
