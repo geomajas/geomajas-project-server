@@ -318,6 +318,17 @@ public final class WidgetLayout {
 	/** Should the window be confined to stay within the parent rectangle? */
 	public static boolean exceptionWindowKeepInScreen = true;
 
+	/** Padding for the buttons in the toolbar. */
+	public static int toolbarPadding = 2;
+	/** Button size for the small buttons in the toolbar. */
+	public static int toolbarSmallButtonSize = 24;
+	/** Button size for the large buttons in the toolbar. */
+	public static int toolbarLargeButtonSize = 32;
+	/** Height of the strip which is part of the toolbar. */
+	public static int toolbarStripHeight = 8;
+
+
+
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	private WidgetLayout() {

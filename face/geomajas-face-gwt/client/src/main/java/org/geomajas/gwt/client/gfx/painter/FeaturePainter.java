@@ -45,6 +45,9 @@ public class FeaturePainter implements Painter {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
+	public FeaturePainter() {
+	}
+
 	public FeaturePainter(ShapeStyle pointSelectStyle, ShapeStyle lineSelectStyle, ShapeStyle polygonSelectStyle) {
 		this.pointSelectStyle = pointSelectStyle;
 		this.lineSelectStyle = lineSelectStyle;

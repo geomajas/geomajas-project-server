@@ -164,12 +164,12 @@ public class FeatureAttributeWindow extends Window {
 	}
 
 	@Override
-	public void draw() {
+	public void onDraw() {
 		// try to force to be inside the screen
 		if (WidgetLayout.featureAttributeWindowKeepInScreen) {
 			WidgetLayout.keepWindowInScreen(this);
 		}
-		super.draw();
+		super.onDraw();
 	}
 
 	// -------------------------------------------------------------------------

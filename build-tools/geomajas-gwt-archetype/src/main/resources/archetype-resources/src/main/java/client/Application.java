@@ -18,6 +18,7 @@ import ${package}.client.gui.SearchPanel;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -65,7 +66,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		final MapWidget map = new MapWidget("mapMain", "app");
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarSmallButtonSize);
 		toolbar.setBackgroundColor("#647386");
 		toolbar.setBackgroundImage("");
 		toolbar.setBorder("0px");

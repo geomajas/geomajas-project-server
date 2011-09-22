@@ -21,8 +21,8 @@ import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapView;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -108,8 +108,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		setZoomOnScrollEnabled(false);
 		// handle max extent when both maps are loaded
 		MaxExtentHandler meh = new MaxExtentHandler();
-		getMapModel().addMapModelHandler(meh);
-		targetMap.getMapModel().addMapModelHandler(meh);
+		getMapModel().addMapModelChangedHandler(meh);
+		targetMap.getMapModel().addMapModelChangedHandler(meh);
 		// handle max extent on resize
 		addResizedHandler(new ResizedHandler() {
 
@@ -117,6 +117,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 				updateMaxExtent();
 			}
 		});
+		setController(new OverviewMapController(this));
 	}
 
 	/**
@@ -305,12 +306,11 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Override the initialize method, to set a controller, and perhaps apply the target map's max extent.
+	 * Override the refresh method, to perhaps apply the target map's max extent.
 	 */
 	@Override
-	protected void initializationCallback(ClientMapInfo mapInfo) {
-		super.initializationCallback(mapInfo);
-		setController(new OverviewMapController(this));
+	public void refreshCallback(ClientMapInfo info) {
+		super.refreshCallback(info);
 		updateMaxExtent();
 	}
 
@@ -427,15 +427,14 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * Updates the max extent when both maps are ready to go.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
-	private class MaxExtentHandler implements MapModelHandler {
+	private class MaxExtentHandler implements MapModelChangedHandler {
 
 		private boolean targetMapDone;
 
 		private boolean overviewMapDone;
 
-		public void onMapModelChange(MapModelEvent event) {
+		public void onMapModelChanged(MapModelChangedEvent event) {
 			if (event.getSource() == getMapModel()) {
 				overviewMapDone = true;
 			} else if (event.getSource() == targetMap.getMapModel()) {

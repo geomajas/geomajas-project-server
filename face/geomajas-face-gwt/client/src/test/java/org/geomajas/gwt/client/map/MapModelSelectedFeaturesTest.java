@@ -37,7 +37,7 @@ public class MapModelSelectedFeaturesTest {
 
 	@Before
 	public void setUp() {
-		mapModel = new MapModel("test");
+		mapModel = new MapModel("test", "bla");
 
 		VectorLayerInfo serverLayerInfo1 = new VectorLayerInfo();
 		ClientVectorLayerInfo layerInfo1 = new ClientVectorLayerInfo();

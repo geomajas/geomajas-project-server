@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -29,8 +30,8 @@ import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
 import org.geomajas.gwt.client.action.toolbar.ToolId;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.IButton;
@@ -40,6 +41,10 @@ import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripSeparator;
 import org.geomajas.gwt.client.util.Log;
+import org.geomajas.gwt.client.util.WidgetLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A toolbar that supports two types of buttons:
@@ -55,18 +60,20 @@ import org.geomajas.gwt.client.util.Log;
 @Api
 public class Toolbar extends ToolStrip {
 
+	private List<Canvas> extraCanvasMembers = new ArrayList<Canvas>();
+
 	/**
 	 * Button size for small buttons.
-	 * @since 1.10.0
+	 * @deprecated use {@link WidgetLayout#toolbarSmallButtonSize}
 	 */
-	@Api
+	@Deprecated
 	public static final int BUTTON_SIZE_SMALL = 24;
 
 	/**
 	 * Button size for large buttons.
-	 * @since 1.10.0
+	 * @deprecated use {@link WidgetLayout#toolbarLargeButtonSize}
 	 */
-	@Api
+	@Deprecated
 	public static final int BUTTON_SIZE_BIG = 32;
 
 	private static final String CONTROLLER_RADIO_GROUP = "graphicsController";
@@ -74,8 +81,6 @@ public class Toolbar extends ToolStrip {
 	private MapWidget mapWidget;
 
 	private int buttonSize;
-
-	private boolean initialized;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -90,20 +95,28 @@ public class Toolbar extends ToolStrip {
 	@Api
 	public Toolbar(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
-		setButtonSize(BUTTON_SIZE_SMALL);
-		setPadding(2);
+		setButtonSize(WidgetLayout.toolbarSmallButtonSize);
+		setPadding(WidgetLayout.toolbarPadding);
 		setWidth100();
-		mapWidget.getMapModel().addMapModelHandler(new MapModelHandler() {
+		mapWidget.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				initialize(Toolbar.this.mapWidget.getMapModel().getMapInfo());
 			}
 		});
 	}
 
-	// -------------------------------------------------------------------------
-	// Public methods:
-	// -------------------------------------------------------------------------
+	@Override
+	public void addMember(Canvas component) {
+		extraCanvasMembers.add(component);
+		super.addMember(component);
+	}
+
+	@Override
+	public void removeMember(Canvas canvas) {
+		extraCanvasMembers.remove(canvas);
+		super.removeMember(canvas);
+	}
 
 	/**
 	 * Initialize this widget.
@@ -111,38 +124,44 @@ public class Toolbar extends ToolStrip {
 	 * @param mapInfo map info
 	 */
 	public void initialize(ClientMapInfo mapInfo) {
-		if (!initialized) {
-			ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
-			if (toolbarInfo != null) {
-				for (ClientToolInfo tool : toolbarInfo.getTools()) {
-					String id = tool.getId();
-					if (ToolId.TOOL_SEPARATOR.equals(id)) {
-						addToolbarSeparator();
+		// remove previous members
+		super.removeMembers(getMembers());
+
+		// add new members
+		ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
+		if (toolbarInfo != null) {
+			for (ClientToolInfo tool : toolbarInfo.getTools()) {
+				String id = tool.getId();
+				if (ToolId.TOOL_SEPARATOR.equals(id)) {
+					addToolbarSeparator();
+				} else {
+					ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
+					if (action instanceof ConfigurableAction) {
+						for (Parameter parameter : tool.getParameters()) {
+							((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+						}
+					}
+					if (action instanceof ToolbarWidget) {
+						super.addMember(((ToolbarWidget) action).getWidget());
+					} else if (action instanceof ToolbarCanvas) {
+						super.addMember(((ToolbarCanvas) action).getCanvas());
+					} else if (action instanceof ToolbarModalAction) {
+						addModalButton((ToolbarModalAction) action);
+					} else if (action instanceof ToolbarAction) {
+						addActionButton((ToolbarAction) action);
 					} else {
-						ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
-						if (action instanceof ConfigurableAction) {
-							for (Parameter parameter : tool.getParameters()) {
-								((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
-							}
-						}
-						if (action instanceof ToolbarWidget) {
-							addMember(((ToolbarWidget) action).getWidget());
-						} else if (action instanceof ToolbarCanvas) {
-							addMember(((ToolbarCanvas) action).getCanvas());
-						} else if (action instanceof ToolbarModalAction) {
-							addModalButton((ToolbarModalAction) action);
-						} else if (action instanceof ToolbarAction) {
-							addActionButton((ToolbarAction) action);
-						} else {
-							String msg = "Tool with id " + id + " unknown.";
-							Log.logError(msg); // console log
-							GWT.log(msg); // server side GWT run/debug log (development mode only)
-							SC.warn(msg); // in your face
-						}
+						String msg = "Tool with id " + id + " unknown.";
+						Log.logError(msg); // console log
+						GWT.log(msg); // server side GWT run/debug log (development mode only)
+						SC.warn(msg); // in your face
 					}
 				}
 			}
-			initialized = true;
+		}
+
+		// add extra members
+		for (Canvas extra : extraCanvasMembers) {
+			super.addMember(extra);
 		}
 	}
 
@@ -157,7 +176,7 @@ public class Toolbar extends ToolStrip {
 		final IButton button = new IButton();
 		button.setWidth(buttonSize);
 		button.setHeight(buttonSize);
-		button.setIconSize(buttonSize - 8);
+		button.setIconSize(buttonSize - WidgetLayout.toolbarStripHeight);
 		button.setIcon(action.getIcon());
 		button.setActionType(SelectionType.BUTTON);
 		button.addClickHandler(action);
@@ -169,7 +188,7 @@ public class Toolbar extends ToolStrip {
 		if (getMembers() != null && getMembers().length > 0) {
 			LayoutSpacer spacer = new LayoutSpacer();
 			spacer.setWidth(2);
-			addMember(spacer);
+			super.addMember(spacer);
 		}
 		action.addToolbarActionHandler(new ToolbarActionHandler() {
 
@@ -181,7 +200,7 @@ public class Toolbar extends ToolStrip {
 				button.setDisabled(false);
 			}
 		});
-		addMember(button);
+		super.addMember(button);
 	}
 
 	/**
@@ -196,7 +215,7 @@ public class Toolbar extends ToolStrip {
 		final IButton button = new IButton();
 		button.setWidth(buttonSize);
 		button.setHeight(buttonSize);
-		button.setIconSize(buttonSize - 8);
+		button.setIconSize(buttonSize - WidgetLayout.toolbarStripHeight);
 		button.setIcon(modalAction.getIcon());
 		button.setActionType(SelectionType.CHECKBOX);
 		button.setRadioGroup(CONTROLLER_RADIO_GROUP);
@@ -217,8 +236,8 @@ public class Toolbar extends ToolStrip {
 
 		if (getMembers() != null && getMembers().length > 0) {
 			LayoutSpacer spacer = new LayoutSpacer();
-			spacer.setWidth(2);
-			addMember(spacer);
+			spacer.setWidth(WidgetLayout.toolbarPadding);
+			super.addMember(spacer);
 		}
 		modalAction.addToolbarActionHandler(new ToolbarActionHandler() {
 
@@ -230,14 +249,14 @@ public class Toolbar extends ToolStrip {
 				button.setDisabled(false);
 			}
 		});
-		addMember(button);
+		super.addMember(button);
 	}
 
 	/** Add a vertical line to the toolbar. */
 	public void addToolbarSeparator() {
 		ToolStripSeparator stripSeparator = new ToolStripSeparator();
-		stripSeparator.setHeight(8);
-		addMember(stripSeparator);
+		stripSeparator.setHeight(WidgetLayout.toolbarStripHeight);
+		super.addMember(stripSeparator);
 	}
 
 	// -------------------------------------------------------------------------

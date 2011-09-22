@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
@@ -24,8 +23,8 @@ import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -60,8 +59,6 @@ public class Legend extends VLayout {
 
 	private MapModel mapModel;
 
-	private FontStyle fontStyle = new FontStyle("#000000", 14, "Arial", "normal", "normal");
-
 	private boolean staticLegend;
 
 	// -------------------------------------------------------------------------
@@ -95,9 +92,9 @@ public class Legend extends VLayout {
 		setMembersMargin(WidgetLayout.marginSmall);
 		this.mapModel = mapModel;
 
-		loadedRegistration = mapModel.addMapModelHandler(new MapModelHandler() {
+		loadedRegistration = mapModel.addMapModelChangedHandler(new MapModelChangedHandler() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				initialize();
 			}
 		});
@@ -142,14 +139,6 @@ public class Legend extends VLayout {
 		return mapModel;
 	}
 
-	public FontStyle getFontStyle() {
-		return fontStyle;
-	}
-
-	public void setFontStyle(FontStyle fontStyle) {
-		this.fontStyle = fontStyle;
-	}
-
 	/**
 	 * If staticLegend is true all layers will always be shown, not just when they are visible.
 	 * 
@@ -163,7 +152,7 @@ public class Legend extends VLayout {
 	/**
 	 * Set if this legend should be static or dynamic.
 	 * 
-	 * @param staticLegend
+	 * @param staticLegend should legend be static?
 	 * @since 1.10.0
 	 */
 	public void setStaticLegend(boolean staticLegend) {
@@ -213,6 +202,7 @@ public class Legend extends VLayout {
 
 	/** Called when the MapModel configuration has been loaded. */
 	private void initialize() {
+		registrations.clear();
 		for (Layer<?> layer : mapModel.getLayers()) {
 			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
 

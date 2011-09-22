@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -69,8 +70,8 @@ import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -78,8 +79,6 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.service.ClientConfigurationService;
-import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
@@ -109,10 +108,11 @@ import com.smartgwt.client.widgets.menu.Menu;
  * 
  * @author Pieter De Graef
  * @author Oliver May
+ * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api
-public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelHandler {
+public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelChangedHandler {
 
 	// Private fields regarding internal workings:
 
@@ -156,6 +156,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private Map<String, WorldPaintable> worldPaintables = new LinkedHashMap<String, WorldPaintable>();
 
 	private Map<String, MapAddon> addons = new LinkedHashMap<String, MapAddon>();
+
+	private FeaturePainter featurePainter;
+
+	private List<Layer<?>> previousLayers = new ArrayList<Layer<?>>(); // to be able to delete them on refresh
 
 	/**
 	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
@@ -240,18 +244,18 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * controller that reacts on mouse wheel events.
 	 * </p>
 	 * 
-	 * @param id
+	 * @param mapId
 	 *            The map's unique identifier, retrievable in the XML configuration.
 	 * @param applicationId
 	 *            The identifier of the application to which this map belongs.
 	 * @since 1.6.0
 	 */
 	@Api
-	public MapWidget(String id, String applicationId) {
-		setID(id);
+	public MapWidget(String mapId, String applicationId) {
+		setID(mapId);
 		this.applicationId = applicationId;
-		mapModel = new MapModel(getID() + "Graphics");
-		mapModel.addMapModelHandler(this);
+		mapModel = new MapModel(mapId, applicationId);
+		mapModel.addMapModelChangedHandler(this);
 		mapModel.getMapView().addMapViewChangedHandler(this);
 		graphics = new GraphicsWidget(getID() + "Graphics");
 		painterVisitor = new PainterVisitor(graphics);
@@ -270,6 +274,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		painterVisitor.registerPainter(new VectorLayerPainter(this));
 		painterVisitor.registerPainter(new VectorTilePainter(this.getMapModel().getMapView()));
 		painterVisitor.registerPainter(new FeatureTransactionPainter(this));
+		featurePainter = new FeaturePainter();
+		painterVisitor.registerPainter(featurePainter);
 
 		// Install a default menu:
 		defaultMenu = new Menu();
@@ -316,16 +322,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * </p>
 	 * 
 	 * @since 1.6.0
+	 * @deprecated not needed any more
 	 */
 	@Api
+	@Deprecated
 	public void init() {
-		ClientConfigurationService.getApplicationWidgetInfo(applicationId, id, new
-				WidgetConfigurationCallback<ClientMapInfo>() {
-
-					public void execute(ClientMapInfo widgetInfo) {
-						initializationCallback(widgetInfo);
-					}
-				});
+		// nothing to do, only provided for backward compatibility
 	}
 
 	// -------------------------------------------------------------------------
@@ -351,6 +353,16 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			default:
 				return screenGroup;
 		}
+	}
+
+	/**
+	 * Render the entire map.
+	 *
+	 * @since 1.10.0
+	 */
+	@Api
+	public void renderAll() {
+		render(mapModel, null, RenderStatus.ALL);
 	}
 
 	/**
@@ -946,7 +958,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			if (event != null && event.isPanDragging()) {
 				render(mapModel, null, RenderStatus.UPDATE);
 			} else {
-				render(mapModel, null, RenderStatus.ALL);
+				renderAll();
 			}
 		}
 	}
@@ -956,17 +968,22 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	/** When the initialization of the map's model is done: render it. */
-	public void onMapModelChange(MapModelEvent event) {
-		if (mapModel.isInitialized()) {
-			for (Layer<?> layer : mapModel.getLayers()) {
-				if (layer instanceof VectorLayer) {
-					render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
-				} else if (layer instanceof RasterLayer) {
-					render(layer, RenderGroup.RASTER, RenderStatus.DELETE);
-				}
+	public void onMapModelChanged(MapModelChangedEvent event) {
+		refreshCallback(event.getMapModel().getMapInfo());
+
+		// remove previous layers
+		for (Layer<?> layer : previousLayers) {
+			if (layer instanceof VectorLayer) {
+				render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
+			} else if (layer instanceof RasterLayer) {
+				render(layer, RenderGroup.RASTER, RenderStatus.DELETE);
 			}
 		}
-		render(mapModel, null, RenderStatus.ALL);
+		previousLayers.clear();
+		previousLayers.addAll(mapModel.getLayers());
+
+		// render all
+		renderAll();
 	}
 
 	// -------------------------------------------------------------------------
@@ -985,27 +1002,41 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	protected void onDraw() {
 		super.onDraw();
+
 		// must be called before anything else !
-		render(mapModel, null, RenderStatus.ALL);
 		final int width = getWidth();
 		final int height = getHeight();
 		mapModel.getMapView().setSize(width, height);
-		init();
+
+		// must be called before anything else !
+		addChild(graphics);
+		renderAll();
+
+		// Register the watermark MapAddon:
+		Watermark watermark = new Watermark(id + "-watermark", this);
+		watermark.setAlignment(Alignment.RIGHT);
+		watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
+		registerMapAddon(watermark);
 	}
 
-	protected void initializationCallback(ClientMapInfo info) {
-		if (info != null && !mapModel.isInitialized()) {
+	/**
+	 * Callback used on refresh of the map widget.
+	 * <p/>
+	 * Can be extended to customize the map. Do not call directly.
+	 *
+	 * @param info map configuration
+	 */
+	public void refreshCallback(ClientMapInfo info) {
+		if (info != null) {
 			// must be called before anything else !
-			addChild(graphics);
-			render(mapModel, null, RenderStatus.ALL);
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();
 			graphics.setBackgroundColor(info.getBackgroundColor());
-			mapModel.initialize(info);
 			setNavigationAddonEnabled(info.isPanButtonsEnabled());
 			setScalebarEnabled(info.isScaleBarEnabled());
-			painterVisitor.registerPainter(new FeaturePainter(new ShapeStyle(info.getPointSelectStyle()),
-					new ShapeStyle(info.getLineSelectStyle()), new ShapeStyle(info.getPolygonSelectStyle())));
+			featurePainter.setPointSelectStyle(new ShapeStyle(info.getPointSelectStyle()));
+			featurePainter.setLineSelectStyle(new ShapeStyle(info.getLineSelectStyle()));
+			featurePainter.setPolygonSelectStyle(new ShapeStyle(info.getPolygonSelectStyle()));
 
 			for (final Layer<?> layer : mapModel.getLayers()) {
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
@@ -1035,12 +1066,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					}
 				});
 			}
-
-			// Register the watermark MapAddon:
-			Watermark watermark = new Watermark(id + "-watermark", this);
-			watermark.setAlignment(Alignment.RIGHT);
-			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
-			registerMapAddon(watermark);
+			renderAll();
 		}
 	}
 
@@ -1057,7 +1083,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			try {
 				final int width = getWidth();
 				final int height = getHeight();
-				render(mapModel, null, RenderStatus.ALL);
+				renderAll();
 				if (SC.isIE()) {
 					// Vector layers in IE loose their style (because the removeChild, addChild)
 					for (Layer<?> layer : mapModel.getLayers()) {

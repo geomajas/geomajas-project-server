@@ -15,12 +15,17 @@ import org.geomajas.annotation.Api;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports <code>MapModel</code> changes.
+ * Event that reports {@link org.geomajas.gwt.client.map.MapModel} changes.
+ * <p/>
+ * Note that this only report the first intialization of the map model. For all changes, use
+ * {@link MapModelChangedEvent}.
  * 
  * @author Jan De Moerloose
  * @since 1.6.0
+ * @deprecated use {@link MapModelChangedEvent}
  */
 @Api(allMethods = true)
+@Deprecated
 public class MapModelEvent extends GwtEvent<MapModelHandler> {
 
 	public static final Type<MapModelHandler> TYPE = new Type<MapModelHandler>();

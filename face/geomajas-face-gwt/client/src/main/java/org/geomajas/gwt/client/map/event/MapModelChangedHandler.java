@@ -8,32 +8,33 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt.client.map.event;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 /**
- * Interface for handling map model events.
- * <p/>
- * This is only called on the first initialization of the map model. For all changes, use
- * {@link MapModelChangedHandler}.
+ * Interface for handling all map model changes..
  *
- * @author Pieter De Graef
- * @since 1.6.0
- * @deprecated use {@link MapModelChangedHandler}
+ * @author Joachim Van der Auwera
+ * @since 1.10.0
  */
 @Api(allMethods = true)
 @UserImplemented
-@Deprecated
-public interface MapModelHandler extends EventHandler {
+public interface MapModelChangedHandler extends EventHandler {
 
 	/**
-	 * Called when the map model changes.
-	 * 
-	 * @param event change event
+	 * Event type.
 	 */
-	void onMapModelChange(MapModelEvent event);
+	GwtEvent.Type<MapModelChangedHandler> TYPE = new GwtEvent.Type<MapModelChangedHandler>();
+
+	/**
+	 * Called when the map model has changed.
+	 * 
+	 * @param event changed event
+	 */
+	void onMapModelChanged(MapModelChangedEvent event);
 }

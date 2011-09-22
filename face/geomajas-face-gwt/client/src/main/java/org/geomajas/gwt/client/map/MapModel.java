@@ -21,6 +21,9 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.event.TokenChangedEvent;
+import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
@@ -32,6 +35,8 @@ import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
@@ -42,11 +47,14 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.service.ClientConfigurationService;
+import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.geomajas.gwt.client.util.Log;
 
 /**
  * <p>
@@ -65,6 +73,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * object needs a unique identifier.
 	 */
 	private String id;
+
+	private String applicationId;
 
 	/** The map's coordinate system as an EPSG code. (i.e. lonlat = 'epsg:4326' => srid = 4326) */
 	private int srid;
@@ -87,6 +97,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	private GeometryFactory geometryFactory;
 
 	private boolean initialized;
+	private boolean mapModelEventFired; // assures MapModelEvent is only fired once
 
 	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
 	
@@ -96,18 +107,41 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Initialize map model, coordinate system has to be filled in later (from configuration).
-	 * 
-	 * @param id
-	 *            map id
+	 *
+	 * @param mapId map id
 	 * @since 1.6.0
+	 * @deprecated use {@link #MapModel(String, String)}, this assume "app" as applicationId
 	 */
 	@Api
-	public MapModel(String id) {
-		this.id = id;
+	@Deprecated
+	public MapModel(String mapId) {
+		this(mapId, "app");
+		Log.logWarn("Using deprecated MapModel constructor, assuming application id is 'app'");
+	}
+	/**
+	 * Initialize map model, coordinate system has to be filled in later (from configuration).
+	 * 
+	 * @param mapId map id
+	 * @param applicationId application id
+	 * @since 1.10.0
+	 */
+	@Api
+	public MapModel(String mapId, String applicationId) {
+		this.id = mapId;
+		this.applicationId = applicationId;
 		featureEditor = new FeatureEditor(this);
 		handlerManager = new HandlerManager(this);
 		mapView = new MapView();
 		mapView.addMapViewChangedHandler(this);
+
+		// refresh the map when the token changes
+		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
+			public void onTokenChanged(TokenChangedEvent event) {
+				refresh();
+			}
+		});
+
+		refreshFromConfiguration();
 	}
 
 	// -------------------------------------------------------------------------
@@ -128,10 +162,45 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
+	 * Remove map model handler.
+	 *
+	 * @param handler handler to be removed
+	 * @since 1.6.0
+	 */
+	@Api
+	public void removeMapModelHandler(final MapModelHandler handler) {
+		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
+	}
+
+	/**
+	 * Add a handler which listens to all changes in the map model.
+	 *
+	 * @param handler handler
+	 * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove the handler
+	 * @since 1.10.0
+	 */
+	@Api
+	public final HandlerRegistration addMapModelChangedHandler(final MapModelChangedHandler handler) {
+		return handlerManager.addHandler(MapModelChangedHandler.TYPE, handler);
+	}
+
+	/**
+	 * Remove map model changed handler.
+	 *
+	 * @param handler handler to be removed
+	 * @since 1.10.0
+	 */
+	@Api
+	public void removeMapModelChangedHandler(final MapModelChangedHandler handler) {
+		handlerManager.removeHandler(MapModelChangedHandler.TYPE, handler);
+	}
+
+	/**
+	 * Add feature selection handler.
 	 * 
 	 * @param handler
 	 *            The handler to be registered.
-	 * @return
+	 * @return handler registration
 	 * @since 1.6.0
 	 */
 	@Api
@@ -140,7 +209,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
-	 * 
+	 * Add layer selection handler.
+	 *
 	 * @param handler
 	 *            the handler to be registered
 	 * @return handler registration
@@ -152,21 +222,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
-	 * 
-	 * @param handler
-	 * @since 1.6.0
-	 */
-	@Api
-	public void removeMapModelHandler(final MapModelHandler handler) {
-		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
-	}
-
-	/**
 	 * Add a new handler for {@link FeatureTransactionEvent}s.
 	 * 
 	 * @param handler
 	 *            the handler to be registered
-	 * @return
+	 * @return handler registration
 	 * @since 1.7.0
 	 */
 	@Api
@@ -241,42 +301,111 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Initialize the MapModel object, using a configuration object acquired from the server. This will automatically
+	 * Refresh the map model. This will re-read the configuration and update the map model, toolbar etc.
+	 * <p/>
+	 * This should be called if you want the map to redraw itself. it is automatically called when the token changes.
+	 *
+	 * @since 1.10.0
+	 */
+	@Api
+	public void refresh() {
+		if (isInitialized()) {
+			ClientConfigurationService.clear(); // refresh because configuration changed, clear cache
+			refreshFromConfiguration();
+		}
+	}
+
+	private void refreshFromConfiguration() {
+		ClientConfigurationService.getApplicationWidgetInfo(applicationId, id, new
+				WidgetConfigurationCallback<ClientMapInfo>() {
+
+					public void execute(ClientMapInfo mapInfo) {
+						if (null == mapInfo) {
+							Log.logError("Cannot find map with id " + id);
+						} else {
+							refresh(mapInfo);
+						}
+					}
+				});
+	}
+
+	/**
+	 * Refresh the MapModel object, using a configuration object acquired from the server. This will automatically
 	 * build the list of layers.
-	 * 
+	 *
 	 * @param mapInfo
 	 *            The configuration object.
 	 */
-	public void initialize(final ClientMapInfo mapInfo) {
-		if (!initialized) {
-			this.mapInfo = mapInfo;
-			srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
-			ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
-			List<Double> realResolutions = new ArrayList<Double>();
-			for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
-				realResolutions.add(1. / scale.getPixelPerUnit());
-			}
-			mapView.setResolutions(realResolutions);
-			mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getPixelPerUnit());
-			// replace layers by new layers
-			removeAllLayers();
-			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-				addLayer(layerInfo);
-			}
-			Bbox maxBounds = new Bbox(mapInfo.getMaxBounds());
+	private void refresh(final ClientMapInfo mapInfo) {
+		boolean firstRefresh = !initialized;
+		actualRefresh(mapInfo);
+		if (firstRefresh) {
+			// only change the initial bounds the first time around
 			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds());
-			// if the max bounds was not configured, take the union of initial and layer bounds
-			if (maxBounds.isAll()) {
-				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					maxBounds = (Bbox) initialBounds.clone();
-					maxBounds = maxBounds.union(new Bbox(layerInfo.getMaxExtent()));
-				}
-			}
-			mapView.setMaxBounds(maxBounds);
 			mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
+			initialized = true;
 		}
-		initialized = true;
-		handlerManager.fireEvent(new MapModelEvent());
+		fireRefreshEvents();
+	}
+
+	private void fireRefreshEvents() {
+		if (!mapModelEventFired) {
+			handlerManager.fireEvent(new MapModelEvent());
+		}
+		mapModelEventFired = true;
+		handlerManager.fireEvent(new MapModelChangedEvent(this));
+	}
+
+	/**
+	 * Refresh the MapModel object, using a configuration object acquired from the server. This will automatically
+	 * build the list of layers.
+	 *
+	 * @param mapInfo
+	 *            The configuration object.
+	 */
+	private void actualRefresh(final ClientMapInfo mapInfo) {
+		if (null == mapInfo) {
+			Log.logError("Cannot find map with id " + id);
+			return;
+		}
+		this.mapInfo = mapInfo;
+		srid = 0;
+		try {
+			int pos = mapInfo.getCrs().indexOf(":");
+			if (pos >= 0) {
+				srid = Integer.parseInt(mapInfo.getCrs().substring(pos + 1));
+			}
+		} catch (NumberFormatException nfe) {
+			// warning logged below
+		}
+		if (0 == srid) {
+			Log.logWarn("Cannot parse CRS for map " + id + ", CRS=" + mapInfo.getCrs());
+		}
+
+		ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
+		List<Double> realResolutions = new ArrayList<Double>();
+		for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
+			realResolutions.add(1. / scale.getPixelPerUnit());
+		}
+		mapView.setResolutions(realResolutions);
+		mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getPixelPerUnit());
+
+		// replace layers by new layers
+		removeAllLayers();
+		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+			addLayer(layerInfo);
+		}
+
+		Bbox maxBounds = new Bbox(mapInfo.getMaxBounds());
+		Bbox initialBounds = new Bbox(mapInfo.getInitialBounds());
+		// if the max bounds was not configured, take the union of initial and layer bounds
+		if (maxBounds.isAll()) {
+			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+				maxBounds = (Bbox) initialBounds.clone();
+				maxBounds = maxBounds.union(new Bbox(layerInfo.getMaxExtent()));
+			}
+		}
+		mapView.setMaxBounds(maxBounds);
 	}
 
 	/**
@@ -388,7 +517,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	/** Return a list containing all vector layers within this model. */
+	/**
+	 * Return a list containing all vector layers within this model.
+	 *
+	 * @return vector layers
+	 */
 	public List<VectorLayer> getVectorLayers() {
 		ArrayList<VectorLayer> list = new ArrayList<VectorLayer>();
 		for (Layer<?> layer : layers) {
@@ -406,7 +539,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	/** Return the total number of selected features in all vector layers. */
+	/**
+	 * Return the total number of selected features in all vector layers.
+	 *
+	 * @return number of selected features
+	 */
 	public int getNrSelectedFeatures() {
 		int count = 0;
 		for (VectorLayer layer : getVectorLayers()) {
@@ -604,10 +741,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	public boolean moveVectorLayerUp(VectorLayer layer) {
 		int position = getLayerPosition(layer);
-		if (position < 0) {
-			return false;
-		}
-		return moveVectorLayer(layer, position + 1);
+		return position >= 0 && moveVectorLayer(layer, position + 1);
 	}
 
 	/**
@@ -622,10 +756,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	public boolean moveVectorLayerDown(VectorLayer layer) {
 		int position = getLayerPosition(layer);
-		if (position < 0) {
-			return false;
-		}
-		return moveVectorLayer(layer, position - 1);
+		return position >= 0 && moveVectorLayer(layer, position - 1);
 	}
 
 	/**
@@ -640,10 +771,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	public boolean moveRasterLayerUp(RasterLayer layer) {
 		int position = getLayerPosition(layer);
-		if (position < 0) {
-			return false;
-		}
-		return moveRasterLayer(layer, position + 1);
+		return position >= 0 && moveRasterLayer(layer, position + 1);
 	}
 
 	/**
@@ -658,10 +786,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	public boolean moveRasterLayerDown(RasterLayer layer) {
 		int position = getLayerPosition(layer);
-		if (position < 0) {
-			return false;
-		}
-		return moveRasterLayer(layer, position - 1);
+		return position >= 0 && moveRasterLayer(layer, position - 1);
 	}
 
 	/**
@@ -736,6 +861,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/**
 	 * Return a factory for geometries that is suited perfectly for geometries within this model. The SRID and precision
 	 * will for the factory will be correct.
+	 *
+	 * @return geometry factory
 	 */
 	public GeometryFactory getGeometryFactory() {
 		if (null == geometryFactory) {
@@ -782,7 +909,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	/** Count the total number of raster layers in this model. */
+	/**
+	 * Count the total number of raster layers in this model.
+	 *
+	 * @return number of raster layers
+	 */
 	private int rasterLayerCount() {
 		int rasterLayerCount = 0;
 		for (int index = 0; index < mapInfo.getLayers().size(); index++) {

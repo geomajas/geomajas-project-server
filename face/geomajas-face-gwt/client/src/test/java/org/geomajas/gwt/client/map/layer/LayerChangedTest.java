@@ -32,8 +32,6 @@ import org.junit.Test;
  */
 public class LayerChangedTest {
 
-	private MapModel mapModel;
-	private ClientVectorLayerInfo vLayerInfo;
 	private int visibleCount;
 	private int labelCount;
 	private int filterCount;
@@ -41,8 +39,8 @@ public class LayerChangedTest {
 
 	@Before
 	public void setUp() {
-		mapModel = new MapModel("test");
-		vLayerInfo = new ClientVectorLayerInfo();
+		MapModel mapModel = new MapModel("test", "bla");
+		ClientVectorLayerInfo vLayerInfo = new ClientVectorLayerInfo();
 		VectorLayerInfo serverInfo = new VectorLayerInfo();
 		serverInfo.setLayerType(LayerType.POLYGON);
 		vLayerInfo.setLayerInfo(serverInfo);

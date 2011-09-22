@@ -80,12 +80,12 @@ public class ExceptionWindow extends Window implements CloseClickHandler {
 	}
 
 	@Override
-	public void draw() {
+	public void onDraw() {
 		// try to force to be inside the screen
 		if (WidgetLayout.exceptionWindowKeepInScreen) {
 			WidgetLayout.keepWindowInScreen(this);
 		}
-		super.draw();
+		super.onDraw();
 	}
 
 	// ------------------------------------------------------------------------

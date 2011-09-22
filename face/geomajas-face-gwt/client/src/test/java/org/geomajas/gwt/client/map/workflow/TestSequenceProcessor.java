@@ -41,7 +41,7 @@ public class TestSequenceProcessor {
 	private MapModel mapModel;
 
 	public TestSequenceProcessor() {
-		mapModel = new MapModel("foobar");
+		mapModel = new MapModel("foobar", "bla");
 		ClientMapInfo info = new ClientMapInfo();
 		info.setCrs("EPSG:4326");
 		info.setInitialBounds(new Bbox(0, 0, 180, 180));
@@ -57,7 +57,7 @@ public class TestSequenceProcessor {
 		layers.add(layerInfo);
 		info.setLayers(layers);
 
-		mapModel.initialize(info);
+		//mapModel.initialize("bla", info);
 		mapModel.selectLayer(mapModel.getLayer("testLayer"));
 
 		Feature feature = new Feature();
