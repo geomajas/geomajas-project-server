@@ -13,14 +13,6 @@ package org.geomajas.gwt.client.controller;
 
 import org.geomajas.annotation.Api;
 
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
-
 // @extract-start GraphicsController, GraphicsController
 /**
  * <p>
@@ -38,8 +30,8 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public interface GraphicsController extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
-		MouseOverHandler, MouseWheelHandler, DoubleClickHandler {
+public interface GraphicsController extends /*MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
+		MouseOverHandler, MouseWheelHandler, DoubleClickHandler*/Controller {
 
 	/**
 	 * Function executed when the controller instance is applied on the map.

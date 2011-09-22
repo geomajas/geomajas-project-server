@@ -11,21 +11,14 @@
 
 package org.geomajas.gwt.client.controller;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
 
 /**
  * <p>
@@ -42,7 +35,7 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public abstract class AbstractGraphicsController implements GraphicsController {
+public abstract class AbstractGraphicsController extends AbstractController implements GraphicsController {
 
 	private int offsetX;
 
@@ -51,32 +44,9 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 	protected MapWidget mapWidget;
 
 	protected AbstractGraphicsController(MapWidget mapWidget) {
+		super(false);
 		this.mapWidget = mapWidget;
-	}
-
-	// -------------------------------------------------------------------------
-	// Empty implementations of all the event handler functions:
-	// -------------------------------------------------------------------------
-
-	public void onMouseDown(MouseDownEvent event) {
-	}
-
-	public void onMouseUp(MouseUpEvent event) {
-	}
-
-	public void onMouseMove(MouseMoveEvent event) {
-	}
-
-	public void onMouseOut(MouseOutEvent event) {
-	}
-
-	public void onMouseOver(MouseOverEvent event) {
-	}
-
-	public void onMouseWheel(MouseWheelEvent event) {
-	}
-
-	public void onDoubleClick(DoubleClickEvent event) {
+		setEventParser(new GwtMapEventParser(mapWidget, offsetX, offsetY));
 	}
 
 	// -------------------------------------------------------------------------
@@ -118,6 +88,7 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 	 */
 	public void setOffsetX(int offsetX) {
 		this.offsetX = offsetX;
+		((GwtMapEventParser) getEventParser()).setOffsetX(offsetX);
 	}
 
 	/**
@@ -144,6 +115,7 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 	 */
 	public void setOffsetY(int offsetY) {
 		this.offsetY = offsetY;
+		((GwtMapEventParser) getEventParser()).setOffsetY(offsetY);
 	}
 
 	// -------------------------------------------------------------------------
