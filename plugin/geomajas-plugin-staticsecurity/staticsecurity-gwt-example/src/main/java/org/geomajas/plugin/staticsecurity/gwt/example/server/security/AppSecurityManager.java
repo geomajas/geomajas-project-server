@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.server.security;
 
-import org.geomajas.internal.security.DefaultSecurityContext;
 import org.geomajas.internal.security.DefaultSecurityManager;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.SavedAuthorization;

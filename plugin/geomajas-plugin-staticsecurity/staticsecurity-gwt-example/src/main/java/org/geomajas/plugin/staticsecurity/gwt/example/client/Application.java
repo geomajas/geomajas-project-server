@@ -31,8 +31,6 @@ import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.service.ClientConfigurationLoader;
 import org.geomajas.gwt.client.service.ClientConfigurationService;
 import org.geomajas.gwt.client.service.ClientConfigurationSetter;

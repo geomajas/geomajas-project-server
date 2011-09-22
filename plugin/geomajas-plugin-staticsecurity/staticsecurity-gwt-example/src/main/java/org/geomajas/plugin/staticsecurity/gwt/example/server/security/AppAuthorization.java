@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.server.security;
 
-import org.geomajas.security.Authorization;
 import org.geomajas.security.BaseAuthorization;
 
 /**

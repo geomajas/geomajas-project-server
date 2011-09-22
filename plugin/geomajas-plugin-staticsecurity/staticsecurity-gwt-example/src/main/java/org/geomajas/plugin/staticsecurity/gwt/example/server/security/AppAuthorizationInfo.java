@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.staticsecurity.gwt.example.server.security;
 
-import org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization;
 import org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo;
 import org.geomajas.security.BaseAuthorization;
 
