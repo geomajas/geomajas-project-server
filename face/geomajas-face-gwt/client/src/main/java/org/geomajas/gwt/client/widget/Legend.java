@@ -14,7 +14,6 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.map.MapModel;
@@ -126,7 +125,7 @@ public class Legend extends VLayout {
 					FeatureTypeStyleInfo info = userStyle.getFeatureTypeStyleList().get(0);
 					int i = 0;
 					for (RuleInfo rule : info.getRuleList()) {
-						addVector((VectorLayer)layer, i++, rule.getTitle());
+						addVector((VectorLayer) layer, i++, rule.getTitle());
 					}
 				} else if (layer instanceof RasterLayer) {
 					addRaster((RasterLayer)layer);
@@ -200,8 +199,9 @@ public class Legend extends VLayout {
 		layout.setHeight(WidgetLayout.legendRasterRowHeight);
 		UrlBuilder urlBuilder = new UrlBuilder(GWT.getModuleBaseURL());
 		urlBuilder.addPath("legendgraphic");
-		urlBuilder.addPath(layer.getServerLayerId()+".png");
-		Img icon = new Img(urlBuilder.toString(), WidgetLayout.legendRasterIconWidth, WidgetLayout.legendRasterIconHeight);
+		urlBuilder.addPath(layer.getServerLayerId() + ".png");
+		Img icon =
+				new Img(urlBuilder.toString(), WidgetLayout.legendRasterIconWidth, WidgetLayout.legendRasterIconHeight);
 		icon.setLayoutAlign(Alignment.LEFT);
 		layout.addMember(icon);
 		Label label  = new Label(layer.getLabel());
