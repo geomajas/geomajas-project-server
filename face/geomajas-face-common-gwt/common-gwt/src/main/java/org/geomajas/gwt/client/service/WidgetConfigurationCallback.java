@@ -11,20 +11,21 @@
 
 package org.geomajas.gwt.client.service;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 
 /**
  * Call-back interface for widget configuration retrieval.
  * 
- * @param <WIDGETINFO> Type of widget configuration object.
+ * @param <WIDGET_INFO> Type of widget configuration object.
+ *
  * @author Pieter De Graef
- * @since 1.10.0
+ * @since 1.0.0
  */
-@FutureApi
+@Api
 @UserImplemented
-public interface WidgetConfigurationCallback<WIDGETINFO extends ClientWidgetInfo> {
+public interface WidgetConfigurationCallback<WIDGET_INFO extends ClientWidgetInfo> {
 
 	/**
 	 * This method is executed upon retrieval of the application configuration.
@@ -32,5 +33,6 @@ public interface WidgetConfigurationCallback<WIDGETINFO extends ClientWidgetInfo
 	 * @param widgetInfo
 	 *            The widget configuration object that was requested.
 	 */
-	void execute(WIDGETINFO widgetInfo);
-};
+	void execute(WIDGET_INFO widgetInfo);
+
+}

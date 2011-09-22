@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
+import org.geomajas.gwt.client.util.EqualsUtil;
 import org.geomajas.gwt.client.util.Log;
 
 import java.util.ArrayList;
@@ -321,7 +322,7 @@ public final class GwtCommandDispatcher
 	}
 
 	/**
-	 * Set the user token, so it can be sent in very command.
+	 * Set the user token, so it can be included in every command.
 	 * 
 	 * @param userToken
 	 *            user token
@@ -338,13 +339,16 @@ public final class GwtCommandDispatcher
 	 * @since 1.0.0
 	 */
 	public void setUserToken(String userToken, UserDetail userDetail) {
+		boolean changed = !EqualsUtil.isEqual(this.userToken, userToken);
 		this.userToken = userToken;
 		if (null == userDetail) {
 			userDetail = new UserDetail();
 		}
 		this.userDetail = userDetail;
-		TokenChangedEvent event = new TokenChangedEvent(userToken, userDetail);
-		manager.fireEvent(event);
+		if (changed) {
+			TokenChangedEvent event = new TokenChangedEvent(userToken, userDetail);
+			manager.fireEvent(event);
+		}
 	}
 
 	/**

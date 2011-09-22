@@ -57,6 +57,22 @@
   </section>
 
   <section>
+    <title>Getting configuration</title>
+
+    <para>There is a special service for getting the client configuration from
+    the server. This is the ClientConfigurationService class. It serves as a
+    central access point for your application configuration and limits the
+    number of request for configuration information to the server.</para>
+
+    <para>It is specifically built to be extensible. You con define how the
+    application configuration is obtained from the server. This allows you to
+    replace the invocation of the GetConfiguration command by something which
+    also contains application specific information. Have a look at the
+    staticsecurity example application for an example how this can be
+    used.</para>
+  </section>
+
+  <section>
     <title>Utility classes</title>
 
     <para>Several utility classes have been provided.</para>
