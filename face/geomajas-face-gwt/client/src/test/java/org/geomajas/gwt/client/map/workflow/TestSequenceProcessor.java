@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.map.workflow;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.junit.GWTMockUtilities;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -28,6 +29,7 @@ import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.layer.LayerType;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,10 +43,10 @@ public class TestSequenceProcessor {
 	private MapModel mapModel;
 
 	public TestSequenceProcessor() {
-		mapModel = new MapModel("foobar", "bla");
 		ClientMapInfo info = new ClientMapInfo();
 		info.setCrs("EPSG:4326");
 		info.setInitialBounds(new Bbox(0, 0, 180, 180));
+		mapModel = new MapModel(info);
 
 		ClientVectorLayerInfo layerInfo = new ClientVectorLayerInfo();
 		VectorLayerInfo serverInfo = new VectorLayerInfo();

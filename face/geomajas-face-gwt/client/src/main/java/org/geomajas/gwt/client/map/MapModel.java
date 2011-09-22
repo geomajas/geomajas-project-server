@@ -144,6 +144,19 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		refreshFromConfiguration();
 	}
 
+	// constructor for testing
+	public MapModel(ClientMapInfo info) {
+		this.id = info.getId();
+		this.applicationId = "bla";
+
+		featureEditor = new FeatureEditor(this);
+		handlerManager = new HandlerManager(this);
+		mapView = new MapView();
+		mapView.addMapViewChangedHandler(this);
+
+		refresh(info);
+	}
+
 	// -------------------------------------------------------------------------
 	// MapModel event handling:
 	// -------------------------------------------------------------------------

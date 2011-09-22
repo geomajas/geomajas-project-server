@@ -11,6 +11,8 @@
 
 package org.geomajas.gwt.client.map;
 
+import com.google.gwt.junit.GWTMockUtilities;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
@@ -19,6 +21,7 @@ import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +40,10 @@ public class MapModelSelectedFeaturesTest {
 
 	@Before
 	public void setUp() {
-		mapModel = new MapModel("test", "bla");
+		ClientMapInfo info = new ClientMapInfo();
+		info.setCrs("EPSG:4326");
+		info.setInitialBounds(new Bbox(0, 0, 180, 180));
+		mapModel = new MapModel(info);
 
 		VectorLayerInfo serverLayerInfo1 = new VectorLayerInfo();
 		ClientVectorLayerInfo layerInfo1 = new ClientVectorLayerInfo();

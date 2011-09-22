@@ -57,8 +57,6 @@ public class Application implements EntryPoint {
 
 	private Legend legend;
 
-	// private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
-
 	public Application() {
 	}
 

@@ -11,7 +11,9 @@
 
 package org.geomajas.gwt.client.map.layer;
 
+import com.google.gwt.junit.GWTMockUtilities;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.MapModel;
@@ -21,6 +23,7 @@ import org.geomajas.gwt.client.map.event.LayerFilteredHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.layer.LayerType;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +42,10 @@ public class LayerChangedTest {
 
 	@Before
 	public void setUp() {
-		MapModel mapModel = new MapModel("test", "bla");
+		ClientMapInfo info = new ClientMapInfo();
+		info.setCrs("EPSG:4326");
+		info.setInitialBounds(new Bbox(0, 0, 180, 180));
+		MapModel mapModel = new MapModel(info);
 		ClientVectorLayerInfo vLayerInfo = new ClientVectorLayerInfo();
 		VectorLayerInfo serverInfo = new VectorLayerInfo();
 		serverInfo.setLayerType(LayerType.POLYGON);
