@@ -4,6 +4,11 @@ package org.geomajas.gwt.client.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Test for {@link HtmlBuilder}.
+ *
+ * @author Emiel Ackermann
+ */
 public class HtmlBuilderTest {
 
 	@Test
