@@ -1,5 +1,6 @@
 package org.geomajas.plugin.rasterizing;
 
+import java.awt.Font;
 import java.io.OutputStream;
 
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -63,7 +64,7 @@ public class ImageServiceLegendTest {
 	private SecurityManager securityManager;
 
 	// changing this to true and running the test from the base directory will generate the images !
-	private boolean writeImages = false;
+	private boolean writeImages = true;
 
 	private static final double DELTA = 1E-6;
 
@@ -82,6 +83,7 @@ public class ImageServiceLegendTest {
 
 	@Test
 	public void testLegend() throws Exception {
+		System.setProperty("com.sun.media.jai.disableMediaLib", "true");
 		ClientMapInfo mapInfo = new ClientMapInfo();
 		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
 		mapRasterizingInfo.setBounds(new Bbox(-180, -90, 360, 180));
@@ -120,7 +122,7 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.setFont(new FontStyleInfo());
 		legendRasterizingInfo.getFont().applyDefaults();
 		legendRasterizingInfo.getFont().setSize(12);
-		legendRasterizingInfo.getFont().setFamily("courier");
+		legendRasterizingInfo.getFont().setFamily("arial");
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		new LegendAssert(mapInfo).assertEqualImage("legend.png", writeImages, DELTA);
@@ -167,7 +169,7 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.setFont(new FontStyleInfo());
 		legendRasterizingInfo.getFont().applyDefaults();
 		legendRasterizingInfo.getFont().setSize(12);
-		legendRasterizingInfo.getFont().setFamily("courier");
+		legendRasterizingInfo.getFont().setFamily("arial");
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		new LegendAssert(mapInfo).assertEqualImage("legend_dynamic.png", writeImages, DELTA);
