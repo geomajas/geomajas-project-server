@@ -20,7 +20,7 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * Easily get a ClientInfo object (if configured).
- * FIXME: replace use by {@link org.geomajas.gwt.client.service.ConfigurationService}.
+ * FIXME: replace use by {@link org.geomajas.gwt.client.service.service.ConfigurationService}.
  *
  * @author Kristof Heirwegh
  */
