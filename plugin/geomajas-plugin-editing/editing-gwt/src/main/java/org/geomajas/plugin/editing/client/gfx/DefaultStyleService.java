@@ -22,11 +22,11 @@ public class DefaultStyleService implements StyleService {
 
 	private ShapeStyle vertexStyle = new ShapeStyle("#FFFFFF", 1, "#CC6600", 1, 1);
 
-	private ShapeStyle vertexHoverStyle = new ShapeStyle("#777777", 1, "#CC6600", 1, 1);
+	private ShapeStyle vertexHoverStyle = new ShapeStyle("#888888", 1, "#CC6600", 1, 1);
 
 	private ShapeStyle vertexSelectStyle = new ShapeStyle("#666666", 1, "#FFFF33", 1, 1);
 
-	private ShapeStyle vertexSelectHoverStyle = new ShapeStyle("#777777", 1, "#FFFF33", 1, 1);
+	private ShapeStyle vertexSelectHoverStyle = new ShapeStyle("#888888", 1, "#FFFF33", 1, 1);
 
 	private ShapeStyle vertexMarkForDeletionStyle = new ShapeStyle("#FF0000", 1, "#990000", 1, 2);
 

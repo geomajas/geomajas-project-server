@@ -16,82 +16,82 @@ import java.util.List;
 
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.handler.MapDownHandler;
-import org.geomajas.gwt.client.handler.MapEventParser;
-import org.geomajas.gwt.client.handler.MapHandler;
-import org.geomajas.gwt.client.handler.MapMoveHandler;
-import org.geomajas.gwt.client.handler.MapOutHandler;
-import org.geomajas.gwt.client.handler.MapOverHandler;
+import org.geomajas.gwt.client.handler.MapDragHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.handler.GeometryIndexMapHandler;
-import org.geomajas.plugin.editing.client.handler.GwtMapEventParser;
+import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 
 /**
  * ...
  * 
  * @author Pieter De Graef
  */
-public class CompositeGeometryIndexController extends AbstractGraphicsController implements MapHandler {
+public class CompositeGeometryIndexController extends AbstractGraphicsController {
 
 	private List<MapDownHandler> downHandlers = new ArrayList<MapDownHandler>();
 
 	private List<MapUpHandler> upHandlers = new ArrayList<MapUpHandler>();
 
-	private List<MapMoveHandler> moveHandlers = new ArrayList<MapMoveHandler>();
+	private List<MapDragHandler> dragHandlers = new ArrayList<MapDragHandler>();
 
-	private List<MapOverHandler> overHandlers = new ArrayList<MapOverHandler>();
+	private List<MouseMoveHandler> moveHandlers = new ArrayList<MouseMoveHandler>();
 
-	private List<MapOutHandler> outHandlers = new ArrayList<MapOutHandler>();
+	private List<MouseOverHandler> overHandlers = new ArrayList<MouseOverHandler>();
+
+	private List<MouseOutHandler> outHandlers = new ArrayList<MouseOutHandler>();
 
 	private List<DoubleClickHandler> doubleClickHandlers = new ArrayList<DoubleClickHandler>();
 
 	private GeometryEditingService service;
 
 	private GeometryIndex index;
-	
-	private GwtMapEventParser eventParser;
 
-	public CompositeGeometryIndexController(MapWidget map, GeometryEditingService service, GeometryIndex index) {
+	public CompositeGeometryIndexController(MapWidget map, GeometryEditingService service, GeometryIndex index,
+			boolean dragging) {
 		super(map);
 		this.service = service;
 		this.index = index;
-		
-		eventParser = new GwtMapEventParser(map, getOffsetX(), getOffsetY());
-	}
-	
-	public MapEventParser getEventParser() {
-		return eventParser;
+		this.dragging = dragging;
 	}
 
-	public void addMapHandler(GeometryIndexMapHandler handler) {
+	// ------------------------------------------------------------------------
+	// Adding handlers:
+	// ------------------------------------------------------------------------
+
+	public void addMapHandler(AbstractGeometryIndexMapHandler handler) {
 		handler.setIndex(index);
 		handler.setService(service);
-		handler.setMapWidget(mapWidget);
-		handler.setEventParser(eventParser);
+		handler.setEventParser(getEventParser());
 		if (handler instanceof MapDownHandler) {
 			downHandlers.add((MapDownHandler) handler);
 		}
 		if (handler instanceof MapUpHandler) {
 			upHandlers.add((MapUpHandler) handler);
 		}
-		if (handler instanceof MapMoveHandler) {
-			moveHandlers.add((MapMoveHandler) handler);
+		if (handler instanceof MapDragHandler) {
+			dragHandlers.add((MapDragHandler) handler);
 		}
-		if (handler instanceof MapOverHandler) {
-			overHandlers.add((MapOverHandler) handler);
+		if (handler instanceof MouseOverHandler) {
+			overHandlers.add((MouseOverHandler) handler);
 		}
-		if (handler instanceof MapOutHandler) {
-			outHandlers.add((MapOutHandler) handler);
+		if (handler instanceof MouseOutHandler) {
+			outHandlers.add((MouseOutHandler) handler);
+		}
+		if (handler instanceof MouseMoveHandler) {
+			moveHandlers.add((MouseMoveHandler) handler);
 		}
 	}
 
@@ -103,45 +103,64 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 		upHandlers.add((MapUpHandler) handler);
 	}
 
-	public void addMapMoveHandler(MapMoveHandler handler) {
-		moveHandlers.add((MapMoveHandler) handler);
+	public void addMapDragHandler(MapDragHandler handler) {
+		dragHandlers.add((MapDragHandler) handler);
 	}
 
-	public void addMapOverHandler(MapOverHandler handler) {
-		overHandlers.add((MapOverHandler) handler);
+	public void addMouseMoveHandler(MouseMoveHandler handler) {
+		moveHandlers.add(handler);
 	}
 
-	public void addMapOutHandler(MapOutHandler handler) {
-		outHandlers.add((MapOutHandler) handler);
+	public void addMouseOverHandler(MouseOverHandler handler) {
+		overHandlers.add((MouseOverHandler) handler);
 	}
 
-	public void onMouseDown(MouseDownEvent event) {
+	public void addMouseOutHandler(MouseOutHandler handler) {
+		outHandlers.add((MouseOutHandler) handler);
+	}
+
+	// ------------------------------------------------------------------------
+	// Handler implementation methods:
+	// ------------------------------------------------------------------------
+
+	public void onDown(HumanInputEvent<?> event) {
 		for (MapDownHandler handler : downHandlers) {
 			handler.onDown(event);
 		}
 	}
 
+	public void onUp(HumanInputEvent<?> event) {
+		for (MapUpHandler handler : upHandlers) {
+			handler.onUp(event);
+		}
+	}
+
+	public void onDrag(HumanInputEvent<?> event) {
+		for (MapDragHandler handler : dragHandlers) {
+			handler.onDrag(event);
+		}
+	}
+
 	public void onMouseMove(MouseMoveEvent event) {
-		for (MapMoveHandler handler : moveHandlers) {
-			handler.onMove(event);
+		if (dragging) {
+			GWT.log("yeeyyyyy!!");
+			onDrag(event);
+		}
+		// super.onMouseMove(event); // Make sure we don't forget dragging.
+		for (MouseMoveHandler handler : moveHandlers) {
+			handler.onMouseMove(event);
 		}
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
-		for (MapOutHandler handler : outHandlers) {
-			handler.onOut(event);
+		for (MouseOutHandler handler : outHandlers) {
+			handler.onMouseOut(event);
 		}
 	}
 
 	public void onMouseOver(MouseOverEvent event) {
-		for (MapOverHandler handler : overHandlers) {
-			handler.onOver(event);
-		}
-	}
-
-	public void onMouseUp(MouseUpEvent event) {
-		for (MapUpHandler handler : upHandlers) {
-			handler.onUp(event);
+		for (MouseOverHandler handler : overHandlers) {
+			handler.onMouseOver(event);
 		}
 	}
 
@@ -149,21 +168,5 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 		for (DoubleClickHandler handler : doubleClickHandlers) {
 			handler.onDoubleClick(event);
 		}
-	}
-
-	public void onDeactivate() {
-		// Clean up handlers???
-	}
-	
-	@Override
-	public void setOffsetX(int offsetX) {
-		super.setOffsetX(offsetX);
-		eventParser.setOffsetX(offsetX);
-	}
-	
-	@Override
-	public void setOffsetY(int offsetY) {
-		super.setOffsetY(offsetY);
-		eventParser.setOffsetY(offsetY);
 	}
 }

@@ -11,21 +11,18 @@
 
 package org.geomajas.plugin.editing.client.controller;
 
+import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.handler.MapDragHandler;
-import org.geomajas.gwt.client.handler.MapEventParser;
 import org.geomajas.gwt.client.handler.MapHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.handler.GwtMapEventParser;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
  * ...
@@ -34,15 +31,17 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
  */
 public class EditGeometryBaseController extends AbstractGraphicsController implements MapHandler {
 
-	private PanController panController;
+	// private boolean panningEnabled;
 
-	private boolean panningEnabled;
+	private AbstractController idleController;
 
-	private MapDragHandler dragHandler;
+	private AbstractController dragController;
+
+	// private MapDragHandler dragHandler;
 
 	private GeometryEditingService service;
 
-	private GwtMapEventParser eventParser;
+	// private GwtMapEventParser eventParser;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -51,90 +50,74 @@ public class EditGeometryBaseController extends AbstractGraphicsController imple
 	public EditGeometryBaseController(MapWidget mapWidget, GeometryEditingService service) {
 		super(mapWidget);
 		this.service = service;
-		panController = new PanController(mapWidget);
-		panningEnabled = true;
-		eventParser = new GwtMapEventParser(mapWidget, getOffsetX(), getOffsetY());
-		dragHandler = new MoveGeometrySelectionHandler(mapWidget, service, eventParser);
-	}
-
-	// ------------------------------------------------------------------------
-	// MapHandler implementation:
-	// ------------------------------------------------------------------------
-
-	public MapEventParser getEventParser() {
-		return eventParser;
+		idleController = new PanController(mapWidget);
+		// panningEnabled = true;
+		// eventParser = new GwtMapEventParser(mapWidget, getOffsetX(), getOffsetY());
+		// dragHandler = new MoveGeometrySelectionHandler(mapWidget, service, eventParser);
+		dragController = new GeometryIndexDragController(service, getEventParser());
 	}
 
 	// ------------------------------------------------------------------------
 	// GraphicsController implementation:
 	// ------------------------------------------------------------------------
 
-	public void onMouseDown(MouseDownEvent event) {
-		if (panningEnabled && service.getEditingState() == GeometryEditingState.IDLE && !event.isShiftKeyDown()) {
+	public void onDown(HumanInputEvent<?> event) {
+		if (service.getEditingState() == GeometryEditingState.IDLE && !event.isShiftKeyDown()) {
 			// No shift key down, because we don't want to pan when deselecting vertices.
-			panController.onMouseDown(event);
+			idleController.onDown(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
-			dragHandler.onDragStart(event, getScreenPosition(event));
+			dragController.onDown(event);
+			// dragHandler.onDragStart(event, getScreenPosition(event));
+		}
+	}
+
+	public void onDrag(HumanInputEvent<?> event) {
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			idleController.onDrag(event);
+		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
+			dragController.onDrag(event);
 		}
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
-		if (panningEnabled && service.getEditingState() == GeometryEditingState.IDLE) {
-			panController.onMouseMove(event);
+		super.onMouseMove(event);
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			idleController.onMouseMove(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
-			dragHandler.onDragMove(event, getScreenPosition(event));
+			dragController.onMouseMove(event);
 		}
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
-		if (panningEnabled) {
-			panController.onMouseOut(event);
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			idleController.onMouseOut(event);
+		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
+			dragController.onMouseOut(event);
 		}
 	}
 
 	public void onMouseOver(MouseOverEvent event) {
-		if (panningEnabled) {
-			panController.onMouseOver(event);
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			idleController.onMouseOver(event);
+		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
+			dragController.onMouseOver(event);
 		}
 	}
 
-	public void onMouseUp(MouseUpEvent event) {
-		if (panningEnabled) {
-			panController.onMouseUp(event);
+	public void onUp(HumanInputEvent<?> event) {
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			idleController.onUp(event);
+		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
+			dragController.onUp(event);
 		}
-		if (service.getEditingState() == GeometryEditingState.DRAGGING) {
-			dragHandler.onDragEnd(event, getScreenPosition(event));
-		}
 	}
 
-	public void onActivate() {
-	}
-
-	public void onDeactivate() {
-	}
-
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
-
-	public boolean isPanningEnabled() {
-		return panningEnabled;
-	}
-
-	public void setPanningEnabled(boolean panningEnabled) {
-		this.panningEnabled = panningEnabled;
-	}
-
-	@Override
-	public void setOffsetX(int offsetX) {
-		super.setOffsetX(offsetX);
-		eventParser.setOffsetX(offsetX);
-	}
-
-	@Override
-	public void setOffsetY(int offsetY) {
-		super.setOffsetY(offsetY);
-		eventParser.setOffsetY(offsetY);
-	}
-
+	// public void onMouseUp(MouseUpEvent event) {
+	// if (panningEnabled) {
+	// idleController.onMouseUp(event);
+	// }
+	// if (service.getEditingState() == GeometryEditingState.DRAGGING) {
+	// dragHandler.onDragEnd(event, getScreenPosition(event));
+	// }
+	// }
 }

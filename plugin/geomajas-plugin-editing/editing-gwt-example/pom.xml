@@ -20,7 +20,7 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-editing-gwt-example</artifactId>
 	<packaging>war</packaging>
-	<name>Geomajas Plugin Editing GWT application</name>
+	<name>Geomajas Editing plugin GWT application</name>
 	<description>Geomajas GWT application for the Editing plugin.</description>
 	<url>http://www.geomajas.org/</url>
 

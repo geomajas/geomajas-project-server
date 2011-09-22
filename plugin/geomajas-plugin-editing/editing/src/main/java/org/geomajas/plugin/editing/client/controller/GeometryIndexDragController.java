@@ -16,12 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.handler.MapEventParser;
-import org.geomajas.gwt.client.handler.MapDragHandler;
-import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -30,40 +27,28 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
- * ...
+ * Default controller to be used when in dragging mode during editing. It will allow the user to drag the selected
+ * indices about.
  * 
  * @author Pieter De Graef
  */
-@Deprecated
-public class MoveGeometrySelectionHandler implements MapDownHandler, MapUpHandler, MapDragHandler {
+public class GeometryIndexDragController extends AbstractController {
 
 	private GeometryEditingService service;
 
-	private MapWidget mapWidget;
-
 	private Coordinate previous;
 
-	private MapEventParser eventParser;
-
-	public MoveGeometrySelectionHandler(MapWidget mapWidget, GeometryEditingService service,
-			MapEventParser mapEventParser) {
-		this.mapWidget = mapWidget;
+	public GeometryIndexDragController(GeometryEditingService service, MapEventParser mapEventParser) {
+		super(mapEventParser, service.getEditingState() == GeometryEditingState.DRAGGING);
 		this.service = service;
-		eventParser = mapEventParser;
 	}
 
-	public MapEventParser getEventParser() {
-		return eventParser;
-	}
-
-	public void onDown(HumanInputEvent<?> event/*, Coordinate position*/) {
-		//previous = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToWorld(position);
+	public void onDown(HumanInputEvent<?> event) {
 		previous = getEventParser().getLocation(event, RenderSpace.WORLD);
 	}
 
-	public void onDrag(HumanInputEvent<?> event/*, Coordinate position*/) {
+	public void onDrag(HumanInputEvent<?> event) {
 		// First calculate moving delta:
-		//Coordinate worldPos = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToWorld(position);
 		Coordinate worldPos = getEventParser().getLocation(event, RenderSpace.WORLD);
 		double deltaX = worldPos.getX() - previous.getX();
 		double deltaY = worldPos.getY() - previous.getY();
@@ -93,7 +78,7 @@ public class MoveGeometrySelectionHandler implements MapDownHandler, MapUpHandle
 		previous = worldPos;
 	}
 
-	public void onUp(HumanInputEvent<?> event/*, Coordinate position*/) {
+	public void onUp(HumanInputEvent<?> event) {
 		previous = null;
 		service.setEditingState(GeometryEditingState.IDLE);
 	}

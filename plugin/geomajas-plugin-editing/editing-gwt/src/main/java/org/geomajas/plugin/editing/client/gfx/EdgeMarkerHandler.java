@@ -16,8 +16,6 @@ import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.handler.MapEventParser;
-import org.geomajas.gwt.client.handler.MapMoveHandler;
-import org.geomajas.gwt.client.handler.MapOutHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
@@ -27,13 +25,17 @@ import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 
 /**
  * ...
  * 
  * @author Pieter De Graef
  */
-public class EdgeMarkerHandler implements MapOutHandler, MapMoveHandler, MapDownHandler {
+public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, MapDownHandler {
 
 	private static final int MARKER_SIZE = 6;
 
@@ -74,14 +76,14 @@ public class EdgeMarkerHandler implements MapOutHandler, MapMoveHandler, MapDown
 	// ------------------------------------------------------------------------
 
 	public void onDown(HumanInputEvent<?> event) {
-		onOut(event);
-	}
-
-	public void onOut(HumanInputEvent<?> event) {
 		mapWidget.getVectorContext().deleteGroup(edgeMarkerGroup);
 	}
 
-	public void onMove(HumanInputEvent<?> event) {
+	public void onMouseOut(MouseOutEvent event) {
+		onDown(event);
+	}
+
+	public void onMouseMove(MouseMoveEvent event) {
 		drawEdgeHighlightMarker(eventParser.getLocation(event, RenderSpace.SCREEN));
 	}
 

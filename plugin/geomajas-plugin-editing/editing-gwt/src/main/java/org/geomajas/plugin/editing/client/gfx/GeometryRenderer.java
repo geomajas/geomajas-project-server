@@ -56,10 +56,12 @@ import org.geomajas.plugin.editing.client.handler.GeometryIndexInsertHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexSelectHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexSnapToDeleteHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
+import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Cursor;
 
 /**
@@ -81,10 +83,11 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 
 	private String baseName = "editing";
 
+	private HandlerRegistration mapViewRegistration;
+
 	public GeometryRenderer(MapWidget mapWidget, GeometryEditingService editingService, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
-		mapWidget.getMapModel().getMapView().addMapViewChangedHandler(this);
 		editingService.addGeometryEditWorkflowHandler(this);
 		editingService.addGeometryEditHighlightHandler(this);
 		editingService.addGeometryEditMarkForDeletionHandler(this);
@@ -109,12 +112,19 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 	// ------------------------------------------------------------------------
 
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
+		// Also look at the map for changes in the MapView:
+		mapViewRegistration = mapWidget.getMapModel().getMapView().addMapViewChangedHandler(this);
+
 		// Render the geometry on the map:
 		groups.clear();
 		draw(event.getGeometry());
 	}
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
+		// Remove the handler that follows changes in the map view:
+		mapViewRegistration.removeHandler();
+		mapViewRegistration = null;
+
 		// Cleanup the geometry from the map:
 		groups.clear();
 		mapWidget.getVectorContext().deleteGroup(event.getGeometry());
@@ -428,7 +438,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 
 	private GraphicsController createVertexController(GeometryIndex index) {
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(mapWidget, editingService,
-				index);
+				index, editingService.getEditingState() == GeometryEditingState.DRAGGING);
 		controller.addMapHandler(new GeometryIndexHighlightHandler());
 		controller.addMapHandler(new GeometryIndexSelectHandler());
 		controller.addMapHandler(new GeometryIndexDragSelectionHandler());
@@ -438,7 +448,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 
 	private GraphicsController createEdgeController(GeometryIndex index) {
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(mapWidget, editingService,
-				index);
+				index, editingService.getEditingState() == GeometryEditingState.DRAGGING);
 		controller.addMapHandler(new GeometryIndexHighlightHandler());
 		controller.addMapHandler(new GeometryIndexInsertHandler());
 		controller.addMapHandler(new GeometryIndexSnapToDeleteHandler());
@@ -446,8 +456,8 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 		// TODO revisit this edge marker:
 		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapWidget, editingService,
 				controller.getEventParser());
-		controller.addMapOutHandler(edgeMarkerHandler);
-		controller.addMapMoveHandler(edgeMarkerHandler);
+		controller.addMouseOutHandler(edgeMarkerHandler);
+		controller.addMouseMoveHandler(edgeMarkerHandler);
 		controller.addMapDownHandler(edgeMarkerHandler);
 		return controller;
 	}

@@ -64,7 +64,7 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 	private List<GeometryIndex> selection = new ArrayList<GeometryIndex>();
 
 	private GeometryEditingState state;
-	
+
 	private boolean started;
 
 	// ------------------------------------------------------------------------
@@ -122,6 +122,21 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 
 	public Geometry stop() {
 		started = false;
+		setEditingState(GeometryEditingState.IDLE);
+		deselectAll();
+
+		if (highlights.size() > 0) {
+			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(highlights);
+			highlights.clear();
+			eventBus.fireEvent(new GeometryEditHighlightEndEvent(geometry, clone));
+		}
+
+		if (markedForDeletion.size() > 0) {
+			List<GeometryIndex> clone2 = new ArrayList<GeometryIndex>(markedForDeletion);
+			markedForDeletion.clear();
+			eventBus.fireEvent(new GeometryEditMarkForDeletionEndEvent(geometry, clone2));
+		}
+
 		eventBus.fireEvent(new GeometryEditStopEvent(geometry));
 		return geometry;
 	}
@@ -195,9 +210,11 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 	}
 
 	public void deselectAll() {
-		List<GeometryIndex> clone = new ArrayList<GeometryIndex>(selection);
-		selection.clear();
-		eventBus.fireEvent(new GeometryEditDeselectedEvent(geometry, clone));
+		if (selection.size() > 0) {
+			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(selection);
+			selection.clear();
+			eventBus.fireEvent(new GeometryEditDeselectedEvent(geometry, clone));
+		}
 	}
 
 	public boolean isSelected(GeometryIndex index) {
