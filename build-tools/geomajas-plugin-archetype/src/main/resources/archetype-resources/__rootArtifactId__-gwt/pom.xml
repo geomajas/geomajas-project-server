@@ -41,8 +41,12 @@
 		</dependency>
 		<dependency>
 			<groupId>${groupId}</groupId>
-			<artifactId>${rootArtifactId}</artifactId>
-			<version>${project.version}</version>
+			<artifactId>$!{artifactIdPrefix}${rootArtifactId}</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${groupId}</groupId>
+			<artifactId>$!{artifactIdPrefix}${rootArtifactId}</artifactId>
+			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
