@@ -276,6 +276,13 @@
       </listitem>
     </itemizedlist>
 
+    <note>
+      <para>In case your project is building very often (e.g. after every save
+      or before a run), open <emphasis>Properties -&gt; Maven -&gt; Lifecycle
+      Mapping</emphasis> of your project and uncheck the <emphasis>Skip Maven
+      compiler plugin when processing resources. </emphasis></para>
+    </note>
+
     <section>
       <title>Running/debugging with the Google Plug-in for Eclipse (embedded
       Jetty option)</title>
