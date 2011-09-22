@@ -78,7 +78,7 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.service.ConfigurationService;
+import org.geomajas.gwt.client.service.ClientConfigurationService;
 import org.geomajas.gwt.client.service.WidgetConfigurationCallback;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
@@ -319,7 +319,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void init() {
-		ConfigurationService.getApplicationWidgetInfo(applicationId, id, new
+		ClientConfigurationService.getApplicationWidgetInfo(applicationId, id, new
 				WidgetConfigurationCallback<ClientMapInfo>() {
 
 					public void execute(ClientMapInfo widgetInfo) {
