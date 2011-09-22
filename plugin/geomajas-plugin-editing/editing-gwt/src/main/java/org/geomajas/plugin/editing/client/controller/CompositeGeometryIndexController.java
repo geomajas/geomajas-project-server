@@ -93,18 +93,21 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 		if (handler instanceof MouseMoveHandler) {
 			moveHandlers.add((MouseMoveHandler) handler);
 		}
+		if (handler instanceof DoubleClickHandler) {
+			doubleClickHandlers.add((DoubleClickHandler) handler);
+		}
 	}
 
 	public void addMapDownHandler(MapDownHandler handler) {
-		downHandlers.add((MapDownHandler) handler);
+		downHandlers.add(handler);
 	}
 
 	public void addMapUpHandler(MapUpHandler handler) {
-		upHandlers.add((MapUpHandler) handler);
+		upHandlers.add(handler);
 	}
 
 	public void addMapDragHandler(MapDragHandler handler) {
-		dragHandlers.add((MapDragHandler) handler);
+		dragHandlers.add(handler);
 	}
 
 	public void addMouseMoveHandler(MouseMoveHandler handler) {
@@ -112,11 +115,15 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 	}
 
 	public void addMouseOverHandler(MouseOverHandler handler) {
-		overHandlers.add((MouseOverHandler) handler);
+		overHandlers.add(handler);
 	}
 
 	public void addMouseOutHandler(MouseOutHandler handler) {
-		outHandlers.add((MouseOutHandler) handler);
+		outHandlers.add(handler);
+	}
+
+	public void addDoubleClickHandler(DoubleClickHandler handler) {
+		doubleClickHandlers.add(handler);
 	}
 
 	// ------------------------------------------------------------------------
