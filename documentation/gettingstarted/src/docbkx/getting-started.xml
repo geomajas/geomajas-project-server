@@ -277,10 +277,10 @@
     </itemizedlist>
 
     <note>
-      <para>In case your project is building very often (e.g. after every save
-      or before a run), open <emphasis>Properties -&gt; Maven -&gt; Lifecycle
-      Mapping</emphasis> of your project and uncheck the <emphasis>Skip Maven
-      compiler plugin when processing resources. </emphasis></para>
+      <para>If you have an Android SDK environmental variable declared on your
+      OS, remove this variable from your PATH variable to avoid conflicts in
+      Eclipse (like continuous Maven Project Builder invocations or failing
+      JettyRunner run/debug attempts).</para>
     </note>
 
     <section>
