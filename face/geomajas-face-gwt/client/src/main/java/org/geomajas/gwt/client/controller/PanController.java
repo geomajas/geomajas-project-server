@@ -12,16 +12,13 @@ package org.geomajas.gwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.types.Cursor;
 
 /**
@@ -35,7 +32,7 @@ public class PanController extends AbstractGraphicsController {
 
 	private boolean zooming;
 
-	private boolean dragging;
+	private boolean panning;
 
 	private boolean moving;
 
@@ -74,36 +71,36 @@ public class PanController extends AbstractGraphicsController {
 	}
 
 	@Override
-	public void onMouseDown(MouseDownEvent event) {
+	public void onDown(HumanInputEvent<?> event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
 			zooming = true;
-			zoomToRectangleController.onMouseDown(event);
-		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
-			dragging = true;
+			zoomToRectangleController.onDown(event);
+		} else if (!isRightMouseButton(event)) {
+			panning = true;
 			mapWidget.getMapModel().getMapView().setPanDragging(true);
-			begin = getScreenPosition(event);
+			begin = getLocation(event, RenderSpace.SCREEN);
 			if (!isShowCursorOnMove()) {
 				mapWidget.setCursor(Cursor.MOVE);
 			}
 		}
-		lastClickPosition = getWorldPosition(event);
+		lastClickPosition = getLocation(event, RenderSpace.WORLD);
 	}
 
 	@Override
-	public void onMouseUp(MouseUpEvent event) {
+	public void onUp(HumanInputEvent<?> event) {
 		if (zooming) {
-			zoomToRectangleController.onMouseUp(event);
+			zoomToRectangleController.onUp(event);
 			zooming = false;
-		} else if (dragging) {
+		} else if (panning) {
 			stopPanning(event);
 		}
 	}
 
 	@Override
-	public void onMouseMove(MouseMoveEvent event) {
+	public void onDrag(HumanInputEvent<?> event) {
 		if (zooming) {
-			zoomToRectangleController.onMouseMove(event);
-		} else if (dragging) {
+			zoomToRectangleController.onDrag(event);
+		} else if (panning) {
 			if (!moving && isShowCursorOnMove()) {
 				mapWidget.setCursor(Cursor.MOVE);
 			}
@@ -139,9 +136,9 @@ public class PanController extends AbstractGraphicsController {
 
 	// Private methods:
 
-	private void stopPanning(MouseUpEvent event) {
+	private void stopPanning(HumanInputEvent<?> event) {
 		mapWidget.getMapModel().getMapView().setPanDragging(false);
-		dragging = false;
+		panning = false;
 		moving = false;
 		mapWidget.setCursor(Cursor.DEFAULT);
 		if (null != event) {
@@ -149,12 +146,12 @@ public class PanController extends AbstractGraphicsController {
 		}
 	}
 
-	private void updateView(MouseEvent<?> event) {
-		Coordinate end = getScreenPosition(event);
+	private void updateView(HumanInputEvent<?> event) {
+		Coordinate end = getLocation(event, RenderSpace.SCREEN);
 		Coordinate beginWorld = getTransformer().viewToWorld(begin);
 		Coordinate endWorld = getTransformer().viewToWorld(end);
-		mapWidget.getMapModel().getMapView().translate(beginWorld.getX() - endWorld.getX(),
-				beginWorld.getY() - endWorld.getY());
+		mapWidget.getMapModel().getMapView()
+				.translate(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
 		begin = end;
 	}
 

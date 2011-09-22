@@ -13,12 +13,16 @@ package org.geomajas.gwt.client.controller;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Touch;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.TouchEvent;
 
 /**
  * <p>
@@ -46,7 +50,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	protected AbstractGraphicsController(MapWidget mapWidget) {
 		super(false);
 		this.mapWidget = mapWidget;
-		setEventParser(new GwtMapEventParser(mapWidget, offsetX, offsetY));
+		setMapEventParser(new GwtMapEventParser());
 	}
 
 	// -------------------------------------------------------------------------
@@ -88,7 +92,6 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 */
 	public void setOffsetX(int offsetX) {
 		this.offsetX = offsetX;
-		((GwtMapEventParser) getEventParser()).setOffsetX(offsetX);
 	}
 
 	/**
@@ -115,7 +118,6 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 */
 	public void setOffsetY(int offsetY) {
 		this.offsetY = offsetY;
-		((GwtMapEventParser) getEventParser()).setOffsetY(offsetY);
 	}
 
 	// -------------------------------------------------------------------------
@@ -127,6 +129,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	}
 
 	// @extract-start AbstractGraphicsController, Extract from AbstractGraphicsController
+
 	protected Coordinate getScreenPosition(MouseEvent<?> event) {
 		return GwtEventUtil.getPosition(event, offsetX, offsetY);
 	}
@@ -150,6 +153,31 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	protected String getTargetId(MouseEvent<?> event) {
 		return GwtEventUtil.getTargetId(event);
 	}
+
 	// @extract-end
 
+	/**
+	 * Specific implementation of the MapEventParser interface for this face.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class GwtMapEventParser implements MapEventParser {
+
+		public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
+			switch (renderSpace) {
+				case WORLD:
+					Coordinate screen = getLocation(event, RenderSpace.SCREEN);
+					return mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToWorld(screen);
+				case SCREEN:
+				default:
+					if (event instanceof MouseEvent<?>) {
+						return GwtEventUtil.getPosition((MouseEvent<?>) event, offsetX, offsetY);
+					} else if (event instanceof TouchEvent<?>) {
+						Touch touch = ((TouchEvent<?>) event).getTouches().get(0);
+						return new Coordinate(touch.getClientX(), touch.getClientY());
+					}
+					return new Coordinate(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
+			}
+		}
+	}
 }

@@ -16,18 +16,15 @@ import java.util.Date;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.widgets.menu.Menu;
 
 /**
@@ -74,17 +71,17 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 	 *            event
 	 */
 	@Override
-	public void onMouseDown(MouseDownEvent event) {
+	public void onDown(HumanInputEvent<?> event) {
 		if (dragging && leftWidget) {
 			// mouse was moved outside of widget
 			doSelect(event);
 
-		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
+		} else if (!isRightMouseButton(event)) {
 			// no point trying to select when there is no active layer
 			dragging = true;
 			leftWidget = false;
 			timestamp = new Date().getTime();
-			begin = getScreenPosition(event);
+			begin = getLocation(event, RenderSpace.SCREEN);
 			bounds = new Bbox(begin.getX(), begin.getY(), 0.0, 0.0);
 			shift = event.isShiftKeyDown();
 			rectangle = new Rectangle("selectionRectangle");
@@ -101,14 +98,14 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 	 *            event
 	 */
 	@Override
-	public void onMouseUp(MouseUpEvent event) {
+	public void onUp(HumanInputEvent<?> event) {
 		// assure dragging or clicking started inside this widget
 		if (dragging) {
 			doSelect(event);
 		}
 	}
 
-	private void doSelect(MouseEvent<?> event) {
+	private void doSelect(HumanInputEvent<?> event) {
 		dragging = false;
 		shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
 		updateRectangle(event);
@@ -129,7 +126,7 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 	protected abstract void selectRectangle(Bbox worldBounds);
 
 	@Override
-	public void onMouseMove(MouseMoveEvent event) {
+	public void onDrag(HumanInputEvent<?> event) {
 		if (dragging) {
 			updateRectangle(event);
 			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
@@ -139,7 +136,6 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		leftWidget = true;
-		 // stopDragging();
 	}
 
 	protected void stopDragging() {
@@ -149,8 +145,8 @@ public abstract class AbstractRectangleController extends AbstractGraphicsContro
 		}
 	}
 
-	private void updateRectangle(MouseEvent<?> event) {
-		Coordinate pos = getScreenPosition(event);
+	private void updateRectangle(HumanInputEvent<?> event) {
+		Coordinate pos = getLocation(event, RenderSpace.SCREEN);
 		double x = begin.getX();
 		double y = begin.getY();
 		double width = pos.getX() - x;
