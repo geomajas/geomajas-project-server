@@ -75,6 +75,14 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geomajas-widget-reports-gwt-face-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-reports</artifactId>
 				<version>${project.version}</version>
@@ -89,6 +97,17 @@
 				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-reports-gwt</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${geomajas-widget-reports-gwt-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${geomajas-widget-reports-gwt-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -128,6 +147,8 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-reports-backend-version>1.8.0</geomajas-widget-reports-backend-version>
-	</properties>	
+		<geomajas-widget-reports-backend-version>1.10.0-SNAPSHOT</geomajas-widget-reports-backend-version>
+		<geomajas-widget-reports-gwt-face-version>1.10.0-SNAPSHOT</geomajas-widget-reports-gwt-face-version>
+		<geomajas-widget-reports-gwt-version>2.4.0</geomajas-widget-reports-gwt-version>
+	</properties>
 </project>

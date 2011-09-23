@@ -56,7 +56,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${reporting-face-gwt-version}</version>
+				<version>${reporting-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -67,6 +67,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-reporting</artifactId>
@@ -88,6 +89,28 @@
 				<artifactId>geomajas-plugin-reporting-gwt</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>3.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${reporting-gwt-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${reporting-gwt-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -128,8 +151,9 @@
 	</profiles>
 
 	<properties>
-		<reporting-backend-version>1.9.0</reporting-backend-version>
-		<reporting-face-gwt-version>1.9.0</reporting-face-gwt-version>
+		<reporting-backend-version>1.10.0-SNAPSHOT</reporting-backend-version>
+		<reporting-gwt-face-version>1.10.0-SNAPSHOT</reporting-gwt-face-version>
 		<reporting-rasterizing-version>1.0.0-SNAPSHOT</reporting-rasterizing-version>
+		<reporting-gwt-version>2.4.0</reporting-gwt-version>
 	</properties>	
 </project>
