@@ -43,6 +43,13 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geomajas-widget-utility-gwtface-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-utility</artifactId>
 				<version>${project.version}</version>
@@ -73,13 +80,6 @@
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
 				<version>${geomajas-widget-utility-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-widget-utility-gwtface-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
