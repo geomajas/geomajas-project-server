@@ -95,8 +95,6 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 	
 	private String rasterImagePath = DEFAULT_RASTER_IMAGE_PATH;
 
-	private WKTReader wktReader = new WKTReader();
-
 	private final Logger log = LoggerFactory.getLogger(LegendGraphicServiceImpl.class);
 
 	public int getDefaultWidth() {
@@ -140,7 +138,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 				styleName = legendMetadata.getNamedStyle().getName();
 			}
 			if (vectorLayer != null) {
-				NamedStyleInfo namedStyle = null;
+				NamedStyleInfo namedStyle;
 				if (styleName != null) {
 					namedStyle = vectorLayer.getLayerInfo().getNamedStyleInfo(styleName);
 					if (namedStyle == null) {
@@ -213,7 +211,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 		} catch (SchemaException e) {
 			throw new RuntimeException(e);
 		}
-		return SimpleFeatureBuilder.template((SimpleFeatureType) type, null);
+		return SimpleFeatureBuilder.template(type, null);
 	}
 
 	private LiteShape2 getSampleShape(Symbolizer symbolizer, int width, int height) {
@@ -226,6 +224,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 		MathTransform transform = new AffineTransform2D(width - margin, 0, 0, height - margin, 0.5 * margin,
 				0.5 * margin);
 		try {
+			WKTReader wktReader = new WKTReader();
 			if (symbolizer instanceof LineSymbolizer) {
 				return new LiteShape2(wktReader.read("LINESTRING (0 0, 0.66 0.33, 0.33 0.66, 1 1)"), transform, null,
 						false);
