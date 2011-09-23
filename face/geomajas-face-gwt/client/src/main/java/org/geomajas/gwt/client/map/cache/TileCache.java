@@ -26,6 +26,7 @@ import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.TileCode;
 
 import com.google.gwt.core.client.GWT;
@@ -342,7 +343,7 @@ public class TileCache implements SpatialCache {
 		Bbox clippedBounds = bounds.intersection(layerBounds);
 		if (clippedBounds == null) {
 			// TODO throw error? If this is null, then the server configuration is incorrect.
-			GWT.log("Map bounds outside of layer extents, check the server configuration");
+			Log.logWarn("Map bounds outside of layer extents, check the server configuration");
 			return codes;
 		}
 		double relativeBoundX = Math.abs(clippedBounds.getX() - layerBounds.getX());

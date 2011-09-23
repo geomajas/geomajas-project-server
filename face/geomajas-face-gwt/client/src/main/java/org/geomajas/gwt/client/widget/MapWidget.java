@@ -79,6 +79,7 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
@@ -1099,7 +1100,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 				}
 			} catch (Exception e) {
-				GWT.log("OnResized exception", e);
+				Log.logError("OnResized exception", e);
 			}
 		}
 	}

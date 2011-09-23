@@ -17,6 +17,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.CommandExceptionCallback;
 import org.geomajas.gwt.client.command.CommunicationExceptionCallback;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.ExceptionWindow;
 
 /**
@@ -33,7 +34,7 @@ public class GwtCommandCallback implements CommandExceptionCallback, Communicati
 	 */
 	public void onCommunicationException(Throwable error) {
 		String msg = I18nProvider.getGlobal().commandCommunicationError() + ":\n" + error.getMessage();
-		GWT.log(msg, null);
+		Log.logWarn(msg);
 		SC.warn(msg, null);
 	}
 
@@ -47,7 +48,7 @@ public class GwtCommandCallback implements CommandExceptionCallback, Communicati
 		for (String error : response.getErrorMessages()) {
 			message += "\n" + error;
 		}
-		GWT.log(message, null);
+		Log.logWarn(message);
 		if (response.getExceptions() == null || response.getExceptions().size() == 0) {
 			SC.warn(message, null);
 		} else {

@@ -308,7 +308,6 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				}
 
 				public void onVisibleChange(LayerShownEvent event) {
-					GWT.log("Legend: onVisibleChange() - " + event.getLayer().getLabel());
 					for (TreeNode node : tree.getAllNodes()) {
 						if (node.getName().equals(event.getLayer().getLabel())) {
 							if (node instanceof LayerTreeTreeNode) {
@@ -424,7 +423,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 						action.onClick(tree.getSelectedLayerTreeNode().getLayer());
 						update();
 					} catch (Throwable t) {
-						GWT.log("LayerTreeButton onClick error", t);
+						Log.logError("LayerTreeButton onClick error", t);
 					}
 				}
 			});
@@ -438,7 +437,6 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				setTooltip(action.getTooltip());
 			} else {
 				setDisabled(true);
-				GWT.log("LayerTreeButton" + action.getDisabledIcon());
 				setIcon(action.getDisabledIcon());
 				setTooltip("");
 			}
@@ -498,7 +496,6 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			} else {
 				setSelected(false);
 				setDisabled(true);
-				GWT.log("LayerTreeModalButton" + modalAction.getDisabledIcon());
 				setIcon(modalAction.getDisabledIcon());
 				setTooltip("");
 			}

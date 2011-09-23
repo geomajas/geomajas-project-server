@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 
@@ -158,7 +159,7 @@ public class VectorTile extends AbstractVectorTile {
 					try {
 						callback.execute(self);
 					} catch (Throwable t) {
-						GWT.log("VectorTile: error calling the callback after a fetch.", t);
+						Log.logError("VectorTile: error calling the callback after a fetch.", t);
 					}
 				}
 				deferred = null;
