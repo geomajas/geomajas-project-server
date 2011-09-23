@@ -362,11 +362,12 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	private void fireRefreshEvents() {
+		// fire first for backwards compatibility (make sure old event listeners have been called)
+		handlerManager.fireEvent(new MapModelChangedEvent(this));
 		if (!mapModelEventFired) {
 			handlerManager.fireEvent(new MapModelEvent());
 		}
 		mapModelEventFired = true;
-		handlerManager.fireEvent(new MapModelChangedEvent(this));
 	}
 
 	/**
