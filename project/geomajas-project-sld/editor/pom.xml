@@ -37,11 +37,13 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
+			<version>${gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -93,11 +95,23 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.1.0-1</version>
+				<version>2.3.0-1</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt-version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwt-version}</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 					<module>org.geomajas.sld.editor.GeomajasSldEditor</module>
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
@@ -105,11 +119,17 @@
 				</configuration>
 				<executions>
 					<execution>
+						<id>compile</id>
 						<phase>test-compile</phase>
 						<goals>
-							<goal>clean</goal>
 							<goal>compile</goal>
-							<goal>test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -169,4 +189,9 @@
 			</properties>
 		</profile>
 	</profiles>
+
+	<properties>
+		<gwt-version>2.4.0</gwt-version>
+	</properties>
+
 </project>

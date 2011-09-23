@@ -381,11 +381,17 @@
 				</configuration>
 				<executions>
 					<execution>
+						<id>compile</id>
 						<phase>test-compile</phase>
 						<goals>
-							<goal>clean</goal>
 							<goal>compile</goal>
-							<goal>test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
 						</goals>
 					</execution>
 				</executions>

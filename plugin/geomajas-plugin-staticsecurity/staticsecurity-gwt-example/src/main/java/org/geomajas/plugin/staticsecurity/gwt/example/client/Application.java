@@ -184,6 +184,7 @@ public class Application implements EntryPoint {
 		});
 
 		// Overview map layout:
+		/*
 		SectionStackSection section1 = new SectionStackSection("Overview map");
 		section1.setExpanded(true);
 		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
@@ -191,6 +192,7 @@ public class Application implements EntryPoint {
 		overviewMap.setRectangleStyle(new ShapeStyle("#6699FF", 0.3f, "#6699CC", 1f, 2));
 		section1.addItem(overviewMap);
 		sectionStack.addSection(section1);
+		*/
 
 		// LayerTree layout:
 		SectionStackSection section2 = new SectionStackSection("Layer tree");
@@ -227,6 +229,6 @@ public class Application implements EntryPoint {
 
 	private void initialize() {
 		legend.setHeight(200);
-		overviewMap.setHeight(200);
+		//overviewMap.setHeight(200);
 	}
 }
