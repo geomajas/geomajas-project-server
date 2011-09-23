@@ -66,8 +66,17 @@ public class ImageServiceLegendTest {
 	private boolean writeImages = false;
 
 	private static final double DELTA = 1E-6;
+	
+	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
+	
+	static {
+		if(OsCheck.isWindows()){
+			IMAGE_CLASS_PATH += "windows/legend";
+		} else {
+			IMAGE_CLASS_PATH += "linux/legend";
+		}
+	}
 
-	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/legend";
 
 	@Before
 	public void login() {
@@ -82,7 +91,6 @@ public class ImageServiceLegendTest {
 
 	@Test
 	public void testLegend() throws Exception {
-		System.setProperty("com.sun.media.jai.disableMediaLib", "true");
 		ClientMapInfo mapInfo = new ClientMapInfo();
 		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
 		mapRasterizingInfo.setBounds(new Bbox(-180, -90, 360, 180));

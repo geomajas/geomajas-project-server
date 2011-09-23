@@ -2,12 +2,12 @@ package org.geomajas.plugin.rasterizing.sld;
 
 import java.io.OutputStream;
 
-import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.plugin.rasterizing.OsCheck;
 import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
@@ -37,7 +37,15 @@ public class ImageServiceSldTest {
 
 	private static final double DELTA = 1E-6;
 
-	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/sld";
+	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
+	
+	static {
+		if(OsCheck.isWindows()){
+			IMAGE_CLASS_PATH += "windows/sld";
+		} else {
+			IMAGE_CLASS_PATH += "linux/sld";
+		}
+	}
 
 	@Autowired
 	private ImageService imageService;

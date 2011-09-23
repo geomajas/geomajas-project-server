@@ -71,7 +71,15 @@ public class ImageServiceMapTest {
 	@Autowired
 	private SecurityManager securityManager;
 
-	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/map";
+	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
+	
+	static {
+		if(OsCheck.isWindows()){
+			IMAGE_CLASS_PATH += "windows/map";
+		} else {
+			IMAGE_CLASS_PATH += "linux/map";
+		}
+	}
 
 	private static final double DELTA = 0.07;
 

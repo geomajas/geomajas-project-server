@@ -94,7 +94,15 @@ public class ImageServiceVectorTileTest {
 
 	private static final double DELTA = 1E-6;
 
-	private static final String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/vectortile";
+	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
+	
+	static {
+		if(OsCheck.isWindows()){
+			IMAGE_CLASS_PATH += "windows/vectortile";
+		} else {
+			IMAGE_CLASS_PATH += "linux/vectortile";
+		}
+	}
 
 	@Before
 	public void login() {
