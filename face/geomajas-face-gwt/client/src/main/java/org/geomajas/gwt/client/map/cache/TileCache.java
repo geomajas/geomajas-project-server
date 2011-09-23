@@ -29,8 +29,6 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.TileCode;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Cache for tiles and contained features.
  * 

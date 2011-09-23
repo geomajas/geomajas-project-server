@@ -83,7 +83,6 @@ import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;

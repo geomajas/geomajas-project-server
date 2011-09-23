@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt.client;
 
-import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.CommandExceptionCallback;
