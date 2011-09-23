@@ -92,7 +92,7 @@ public class ImageServiceVectorTileTest {
 
 	private final Logger log = LoggerFactory.getLogger(ImageServiceVectorTileTest.class);
 
-	private static final double DELTA = 1E-6;
+	private static final double DELTA = 0.01;
 
 	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
 	
@@ -356,7 +356,7 @@ public class ImageServiceVectorTileTest {
 		info.setHeight(height);
 		// width is not important
 		info.setWidth(height);
-		info.setHref("org/geomajas/plugin/rasterizing/images/imageservice/vectortile/point.png");
+		info.setHref(IMAGE_CLASS_PATH+"/point.png");
 		return info;
 	}
 
