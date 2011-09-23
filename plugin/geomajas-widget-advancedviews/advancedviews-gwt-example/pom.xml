@@ -160,13 +160,13 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt-version}</version>
+			<version>${geomajas-widget-advancedviews-gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt-version}</version>
+			<version>${geomajas-widget-advancedviews-gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -252,12 +252,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-widget-advancedviews-gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-widget-advancedviews-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -382,9 +382,5 @@
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<properties>
-		<gwt-version>2.4.0</gwt-version>
-	</properties>
 
 </project>
