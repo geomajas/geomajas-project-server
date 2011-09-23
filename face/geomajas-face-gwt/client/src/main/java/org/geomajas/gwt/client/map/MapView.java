@@ -124,7 +124,11 @@ public class MapView {
 	// Retrieval of transformation matrices:
 	// -------------------------------------------------------------------------
 
-	/** Return the world-to-view space transformation matrix. */
+	/**
+	 * Return the world-to-view space transformation matrix.
+	 *
+	 * @return transformation matrix
+	 */
 	public Matrix getWorldToViewTransformation() {
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getX() * viewState.getScale()) + width / 2;
@@ -134,7 +138,11 @@ public class MapView {
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
-	/** Return the world-to-view space translation matrix. */
+	/**
+	 * Return the world-to-view space translation matrix.
+	 *
+	 * @return transformation matrix
+	 */
 	public Matrix getWorldToViewTranslation() {
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getX() * viewState.getScale()) + width / 2;
@@ -144,7 +152,11 @@ public class MapView {
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
-	/** Return the world-to-pan space translation matrix. */
+	/**
+	 * Return the world-to-pan space translation matrix.
+	 *
+	 * @return transformation matrix
+	 */
 	public Matrix getWorldToPanTransformation() {
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getPanX() * viewState.getScale());
@@ -156,6 +168,8 @@ public class MapView {
 
 	/**
 	 * Return the translation of coordinates relative to the pan origin to view coordinates.
+	 *
+	 * @return transformation matrix
 	 */
 	public Matrix getPanToViewTranslation() {
 		if (viewState.getScale() > 0) {
@@ -168,6 +182,8 @@ public class MapView {
 
 	/**
 	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.
+	 *
+	 * @return transformation matrix
 	 */
 	public Matrix getWorldToPanTranslation() {
 		if (viewState.getScale() > 0) {
@@ -178,7 +194,11 @@ public class MapView {
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
-	/** Return the world-to-view space translation matrix. */
+	/**
+	 * Return the world-to-view space translation matrix.
+	 *
+	 * @return transformation matrix
+	 */
 	public Matrix getWorldToViewScaling() {
 		if (viewState.getScale() > 0) {
 			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), 0, 0);
@@ -276,20 +296,18 @@ public class MapView {
 	 */
 	public void setSize(int newWidth, int newHeight) {
 		saveState();
-		Bbox oldbbox = getBounds();
+		Bbox oldBbox = getBounds();
 		this.width = newWidth;
 		this.height = newHeight;
 		if (viewState.getScale() < getMinimumScale()) {
 			// The new scale is too low, re-apply old values:
-			double scale = getBestScale(oldbbox);
+			double scale = getBestScale(oldBbox);
 			doSetScale(snapToResolution(scale, ZoomOption.LEVEL_FIT), ZoomOption.LEVEL_FIT);
-			doSetOrigin(oldbbox.getCenterPoint());
-			fireEvent(true, null);
-		} else {
-			// Use the same center point for the new bounds, but don't zoom in or out.
-			doSetOrigin(oldbbox.getCenterPoint());
-			fireEvent(true, null);
+			doSetOrigin(oldBbox.getCenterPoint());
 		}
+		// Use the same center point for the new bounds
+		doSetOrigin(oldBbox.getCenterPoint());
+		fireEvent(true, null);
 	}
 
 	/**
@@ -309,8 +327,8 @@ public class MapView {
 	/**
 	 * Adjust the current scale on the map by a new factor.
 	 * 
-	 * @param delta
-	 *            Adjust the scale by factor "delta".
+	 * @param delta Adjust the scale by factor "delta".
+	 * @param option zoom option
 	 */
 	public void scale(double delta, ZoomOption option) {
 		setCurrentScale(viewState.getScale() * delta, option);
@@ -319,11 +337,9 @@ public class MapView {
 	/**
 	 * Adjust the current scale on the map by a new factor, keeping a coordinate in place.
 	 * 
-	 * @param delta
-	 *            Adjust the scale by factor "delta".
-	 * @param center
-	 *            Keep this coordinate on the same position as before.
-	 * 
+	 * @param delta Adjust the scale by factor "delta".
+	 * @param option zoom option
+	 * @param center Keep this coordinate on the same position as before.
 	 */
 	public void scale(double delta, ZoomOption option, Coordinate center) {
 		setCurrentScale(viewState.getScale() * delta, option, center);
@@ -333,7 +349,11 @@ public class MapView {
 	// Getters:
 	// -------------------------------------------------------------------------
 
-	/** Return the current scale. */
+	/**
+	 * Return the current scale.
+	 *
+	 * @return current scale
+	 */
 	public double getCurrentScale() {
 		return viewState.getScale();
 	}
@@ -366,6 +386,8 @@ public class MapView {
 
 	/**
 	 * Get the list of predefined map resolutions (resolution = inverse of scale).
+	 *
+	 * @return list of resolutions
 	 */
 	public List<Double> getResolutions() {
 		return resolutions;
@@ -386,14 +408,13 @@ public class MapView {
 			max = 1.0 / getMinimumScale();
 		}
 		double min = 1.0 / maximumScale;
-		if (resolution >= min && resolution <= max) {
-			return true;
-		}
-		return false;
+		return resolution >= min && resolution <= max;
 	}
 
 	/**
 	 * Return the transformer that is used to transform coordinate and geometries between world and screen space.
+	 *
+	 * @return world view transformer
 	 */
 	public WorldViewTransformer getWorldViewTransformer() {
 		if (null == worldViewTransformer) {
@@ -556,15 +577,18 @@ public class MapView {
 	}
 
 	/**
-	 * keeps a copy of the previous pan data so we can detect if we are panning.
-	 * 
-	 * @see #isPanning()
+	 * Keeps a copy of the previous pan data so we can detect if we are panning.
 	 */
 	private void saveState() {
 		this.lastViewState = viewState;
 	}
 
-	/** Fire an event. */
+	/**
+	 * Fire an event.
+	 *
+	 * @param resized resized or not
+	 * @param option zoom option
+	 */
 	private void fireEvent(boolean resized, ZoomOption option) {
 		// keep old semantics of sameScaleLevel for api compatibility !
 		boolean sameScale = lastViewState != null && viewState.isPannableFrom(lastViewState);
@@ -637,8 +661,8 @@ public class MapView {
 	 * Adjusts the center point of the map, to an allowed center point. This method tries to make sure the whole map
 	 * extent is inside the maximum allowed bounds.
 	 * 
-	 * @param worldCenter
-	 * @return
+	 * @param worldCenter world center
+	 * @return new center
 	 */
 	private Coordinate calcCenterFromPoint(final Coordinate worldCenter) {
 		double xCenter = worldCenter.getX();

@@ -132,7 +132,7 @@ public interface ImageContext {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id
+	 * @param id id
 	 * @return the name of the element
 	 */
 	String getNameById(String id);
@@ -140,7 +140,7 @@ public interface ImageContext {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id
+	 * @param id id
 	 * @return the group object
 	 */
 	Object getGroupById(String id);

@@ -58,7 +58,7 @@ public class Watermark extends MapAddon {
 		// Draw a dummy at 0,0 so that Internet Explorer knows where coordinate 0,0 is. If this is not drawn, the text
 		// will disappear, because the parent group will have coordinate 0,0 at the upper left corner of the union of
 		// all the rectangles that are drawn here.
-		map.getVectorContext().drawRectangle(this, dummy.getId(), dummy.getBounds(), (ShapeStyle) dummy.getStyle());
+		map.getVectorContext().drawRectangle(this, dummy.getId(), dummy.getBounds(), dummy.getStyle());
 
 		image.getBounds().setX(getUpperLeftCorner().getX());
 		image.getBounds().setY(getUpperLeftCorner().getY());

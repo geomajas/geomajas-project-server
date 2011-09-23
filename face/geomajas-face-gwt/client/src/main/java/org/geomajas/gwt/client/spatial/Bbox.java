@@ -222,8 +222,8 @@ public class Bbox {
 	/**
 	 * Calculates the union of 2 bounding boxes.
 	 * 
-	 * @param other
-	 *            The other Bbox. Can be a bounding box with width and height equal to 0.
+	 * @param other The other Bbox. Can be a bounding box with width and height equal to 0.
+	 * @return new bbox which is the union of the parameters
 	 */
 	public Bbox union(Bbox other) {
 		if (other.getWidth() == 0 && other.getHeight() == 0 && other.getX() == 0 && other.getY() == 0) {
@@ -245,9 +245,8 @@ public class Bbox {
 	/**
 	 * Return a new bounding box that has increased in size by adding a range to this bounding box.
 	 * 
-	 * @param range
-	 *            Must be a positive number, otherwise null will be returned.
-	 * @return
+	 * @param range Must be a positive number, otherwise null will be returned.
+	 * @return new buffered bounding box
 	 */
 	public Bbox buffer(double range) {
 		if (range > 0) {
@@ -262,7 +261,7 @@ public class Bbox {
 	 * 
 	 * @param factor
 	 *            The scale factor (must be > 0).
-	 * @return
+	 * @return bbox
 	 */
 	public Bbox scale(double factor) {
 		if (factor > 0) {
@@ -278,9 +277,10 @@ public class Bbox {
 	
 	/**
 	 * Creates a bbox that fits exactly in this box but has a different width/height ratio.
-	 * @param ratioWidth
-	 * @param ratioHeight
-	 * @return
+	 *
+	 * @param ratioWidth width dor ratio
+	 * @param ratioHeight height for ratio
+	 * @return bbox
 	 */
 	public Bbox createFittingBox(double ratioWidth, double ratioHeight) {
 		if (ratioWidth > 0 && ratioHeight > 0) {
@@ -401,12 +401,13 @@ public class Bbox {
 
 	/**
 	 * Is this bbox equal to the specified bbox ?
+	 *
 	 * @param other another bbox
 	 * @param delta precision
 	 * @return true if equal within the precision, false otherwise
 	 */
 	public boolean equals(Bbox other, double delta) {
-		return equals(this.x, other.x, delta) && equals(this.y, other.y, delta)
+		return null != other && equals(this.x, other.x, delta) && equals(this.y, other.y, delta)
 				&& equals(this.width, other.width, delta) && equals(this.height, other.height, delta);
 	}
 	
