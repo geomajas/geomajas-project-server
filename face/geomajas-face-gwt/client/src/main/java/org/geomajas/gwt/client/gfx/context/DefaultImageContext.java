@@ -35,8 +35,6 @@ public class DefaultImageContext implements ImageContext {
 
 	private Widget parent;
 
-	private String id;
-
 	/**
 	 * Constructs an image context. The context will be appended to the specified parent widget.
 	 * 
@@ -47,7 +45,7 @@ public class DefaultImageContext implements ImageContext {
 		this.parent = parent;
 		// root node
 		Element rootNode = Dom.createElementNS(Dom.NS_HTML, "div");
-		id = Dom.createUniqueId();
+		String id = Dom.createUniqueId();
 		rootNode.setId(id);
 		Dom.setStyleAttribute(rootNode, "position", "absolute");
 		Dom.setStyleAttribute(rootNode, "width", "100%");
