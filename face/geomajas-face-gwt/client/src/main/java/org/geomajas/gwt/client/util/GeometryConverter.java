@@ -107,7 +107,11 @@ public final class GeometryConverter {
 
 		String geometryType = geometry.getGeometryType();
 		if (Geometry.POINT.equals(geometryType)) {
-			gwt = factory.createPoint(geometry.getCoordinates()[0]);
+			if (geometry.getCoordinates() != null) {
+				gwt = factory.createPoint(geometry.getCoordinates()[0]);
+			} else {
+				gwt = factory.createPoint(null);
+			}
 		} else if (Geometry.LINEAR_RING.equals(geometryType)) {
 			gwt = factory.createLinearRing(geometry.getCoordinates());
 		} else if (Geometry.LINE_STRING.equals(geometryType)) {
