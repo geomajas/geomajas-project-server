@@ -10,7 +10,9 @@
  */
 package org.geomajas.gwt.server.mvc;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +23,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.ServletConfigAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -32,7 +35,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @since 1.0.0
  */
 @Controller("/geomajasService")
-public class GeomajasController extends RemoteServiceServlet implements GeomajasService {
+public class GeomajasController extends RemoteServiceServlet implements GeomajasService, ServletConfigAware {
 
 	private static final long serialVersionUID = 100L;
 
@@ -77,4 +80,11 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 		return servletContext;
 	}
 
+	public void setServletConfig(ServletConfig servletConfig) {
+		try {
+			super.init(servletConfig);
+		} catch (ServletException e) {
+		}
+
+	}
 }
