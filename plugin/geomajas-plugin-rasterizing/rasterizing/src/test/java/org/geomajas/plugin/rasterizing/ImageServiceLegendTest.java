@@ -121,7 +121,7 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.setFont(new FontStyleInfo());
 		legendRasterizingInfo.getFont().applyDefaults();
 		legendRasterizingInfo.getFont().setSize(12);
-		legendRasterizingInfo.getFont().setFamily("arial");
+		legendRasterizingInfo.getFont().setFamily("Arial");
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		new LegendAssert(mapInfo).assertEqualImage("legend.png", writeImages, DELTA);
@@ -168,7 +168,7 @@ public class ImageServiceLegendTest {
 		legendRasterizingInfo.setFont(new FontStyleInfo());
 		legendRasterizingInfo.getFont().applyDefaults();
 		legendRasterizingInfo.getFont().setSize(12);
-		legendRasterizingInfo.getFont().setFamily("arial");
+		legendRasterizingInfo.getFont().setFamily("Arial");
 		legendRasterizingInfo.setTitle("legend");
 		mapRasterizingInfo.setLegendRasterizingInfo(legendRasterizingInfo);
 		new LegendAssert(mapInfo).assertEqualImage("legend_dynamic.png", writeImages, DELTA);
