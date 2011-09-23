@@ -84,6 +84,7 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 		try {
 			super.init(servletConfig);
 		} catch (ServletException e) {
+			throw new RuntimeException("init(servletConfig) failed", e);
 		}
 
 	}
