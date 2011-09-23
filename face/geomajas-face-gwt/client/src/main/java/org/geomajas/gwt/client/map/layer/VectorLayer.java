@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.map.layer;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -192,10 +193,19 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	/**
 	 * Returns a set of selected features in this layer by their ID's.
 	 *
-	 * @return selected features
+	 * @return set of selected feature IDs
 	 */
 	public Set<String> getSelectedFeatures() {
 		return selectedFeatures.keySet();
+	}
+	
+	/**
+	 * Returns the collection of selected features (the objects) in this layer.
+	 *
+	 * @return selected features
+	 */
+	public Collection<Feature> getSelectedFeatureValues() {
+		return selectedFeatures.values();
 	}
 
 	// -------------------------------------------------------------------------
