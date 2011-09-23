@@ -305,8 +305,8 @@
 
       <itemizedlist>
         <listitem>
-          <para>Run the GWT plugin with the no-server option (this can be done
-          straight from the project since GWT 2.1</para>
+          <para>Run the GWT plug-in with the no-server option (this can be
+          done straight from the project since GWT 2.1</para>
         </listitem>
 
         <listitem>
@@ -419,9 +419,9 @@
         </listitem>
 
         <listitem>
-          <para>Now, run the GWT plugin in no-server mode by by right-clicking
-          on the project and selecting Debug As -&gt; Web Application (running
-          on an external server):</para>
+          <para>Now, run the GWT plug-in in no-server mode by by
+          right-clicking on the project and selecting Debug As -&gt; Web
+          Application (running on an external server):</para>
 
           <figure>
             <title>Running the GWT application</title>
@@ -449,7 +449,7 @@
           classpath (reported GWT issue):</para>
 
           <figure>
-            <title>classpath of GWT plugin (no-server mode)</title>
+            <title>Classpath of GWT plug-in (no-server mode)</title>
 
             <mediaobject>
               <imageobject>
@@ -478,10 +478,10 @@
       <para>This solves most of the classpath problems but does not cure the
       problem of having multiple artifact versions in the classpath! This is
       usually only a problem when you have several Geomajas projects opened in
-      your workspace. If this is the case, run the GWT plugin with an embedded
-      Jetty server as explained in the previous chapter and you should be
-      fine. Note that this should be the first listener in your web.xm files,
-      before the spring listeners.</para>
+      your workspace. If this is the case, run the GWT plug-in with an
+      embedded Jetty server as explained in the previous chapter and you
+      should be fine. Note that this should be the first listener in your
+      web.xm files, before the spring listeners.</para>
 
       <para>The following steps are needed to run GPE directly:</para>
 
@@ -572,6 +572,13 @@
     <para>After this, you should be able to run the project. Any changes in
     the source code will be automatically detected, and debugging is
     possible.</para>
+
+    <note>
+      <para>When creating GWT run configurations, it is recommended to
+      increase the amount of memory given to the process. You can do this by
+      entering a higher -Xmx value in the VM parameters field, for example
+      "-Xmx768m".</para>
+    </note>
   </section>
 
   <section id="netbeans">
