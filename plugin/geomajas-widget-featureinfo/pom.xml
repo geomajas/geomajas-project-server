@@ -77,10 +77,19 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-widget-featureinfo-gwt-version}</version>
+				<version>${geomajas-widget-featureinfo-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-wms-all</artifactId>
+				<version>${geomajas-layer-wms-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-featureinfo</artifactId>
@@ -91,12 +100,16 @@
 				<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
 			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wms-all</artifactId>
-				<version>${geomajas-layer-wms-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${geomajas-widget-featureinfo-gwt-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${geomajas-widget-featureinfo-gwt-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -137,7 +150,8 @@
 
 	<properties>
 		<geomajas-widget-featureinfo-backend-version>1.10.0-SNAPSHOT</geomajas-widget-featureinfo-backend-version>
-		<geomajas-widget-featureinfo-gwt-version>1.10.0-SNAPSHOT</geomajas-widget-featureinfo-gwt-version>
+		<geomajas-widget-featureinfo-gwt-face-version>1.10.0-SNAPSHOT</geomajas-widget-featureinfo-gwt-face-version>
+		<geomajas-widget-featureinfo-gwt-version>2.4.0</geomajas-widget-featureinfo-gwt-version>
 		<geomajas-layer-wms-version>1.8.0</geomajas-layer-wms-version>
 	</properties>
 </project>

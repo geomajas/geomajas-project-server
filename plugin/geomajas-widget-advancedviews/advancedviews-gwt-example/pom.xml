@@ -45,7 +45,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
-				<version>${geomajas-widget-advancedviews-gwt-version}</version>
+				<version>${geomajas-widget-advancedviews-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
