@@ -26,6 +26,8 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	private static final long serialVersionUID = 6683108902428366910L;
 
 	private static final double EQUALS_DELTA = 1e-12;
+	private static final int HASH_BASE = 17;
+	private static final int HASH_FACTOR = 37;
 
 	/**
 	 * The x-coordinate.
@@ -184,10 +186,10 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * @return a hashcode for this coordinate
 	 */
 	public int hashCode() {
-		// Algorithm from Effective Java by Joshua Bloch [Jon Aquino]
-		int result = 17;
-		result = 37 * result + hashCode(x);
-		result = 37 * result + hashCode(y);
+		// Algorithm from Effective Java by tJoshua Bloch [Jon Aquino]
+		int result = HASH_BASE;
+		result = HASH_FACTOR * result + hashCode(x);
+		result = HASH_FACTOR * result + hashCode(y);
 		return result;
 	}
 
@@ -198,9 +200,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * @return a hashcode for the double value
 	 */
 	private int hashCode(double d) {
-		// long f = Double.doubleToRawLongBits(x);
-		long f = (long) d;
-		return (int) (f ^ (f >>> 32));
+		return ((Double) d).hashCode();
 	}
 
 	// Getters and setters:
