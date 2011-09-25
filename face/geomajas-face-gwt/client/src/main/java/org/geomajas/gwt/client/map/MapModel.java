@@ -37,6 +37,8 @@ import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
+import org.geomajas.gwt.client.map.event.MapModelClearEvent;
+import org.geomajas.gwt.client.map.event.MapModelClearHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
@@ -137,6 +139,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		// refresh the map when the token changes
 		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
 			public void onTokenChanged(TokenChangedEvent event) {
+				if (null == event.getToken()) {
+					clear();
+				}
 				refresh();
 			}
 		});
@@ -206,6 +211,29 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	@Api
 	public void removeMapModelChangedHandler(final MapModelChangedHandler handler) {
 		handlerManager.removeHandler(MapModelChangedHandler.TYPE, handler);
+	}
+
+	/**
+	 * Add a handler which listens to clearing the map model.
+	 *
+	 * @param handler handler
+	 * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove the handler
+	 * @since 1.10.0
+	 */
+	@Api
+	public final HandlerRegistration addMapModelClearHandler(final MapModelClearHandler handler) {
+		return handlerManager.addHandler(MapModelClearHandler.TYPE, handler);
+	}
+
+	/**
+	 * Remove map model clear handler.
+	 *
+	 * @param handler handler to be removed
+	 * @since 1.10.0
+	 */
+	@Api
+	public void removeMapModelClearHandler(final MapModelClearHandler handler) {
+		handlerManager.removeHandler(MapModelClearHandler.TYPE, handler);
 	}
 
 	/**
@@ -322,10 +350,21 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	@Api
 	public void refresh() {
-		if (isInitialized()) {
+		if (isInitialized()) { // to prevent double refresh on logout/login
+			clear();
 			ClientConfigurationService.clear(); // refresh because configuration changed, clear cache
 			refreshFromConfiguration();
 		}
+	}
+
+	/**
+	 * Clear the map model. Removes all layers and tools.
+	 */
+	@Api
+	public void clear() {
+		initialized = false;
+		handlerManager.fireEvent(new MapModelClearEvent(this));
+		layers.clear();
 	}
 
 	private void refreshFromConfiguration() {
@@ -346,8 +385,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * Refresh the MapModel object, using a configuration object acquired from the server. This will automatically
 	 * build the list of layers.
 	 *
-	 * @param mapInfo
-	 *            The configuration object.
+	 * @param mapInfo The configuration object.
 	 */
 	private void refresh(final ClientMapInfo mapInfo) {
 		boolean firstRefresh = !initialized;
@@ -679,7 +717,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		} catch (Exception e) {
 			return false;
 		}
-		handlerManager.fireEvent(new MapModelEvent());
+		handlerManager.fireEvent(new MapModelChangedEvent(this));
 		return true;
 	}
 
@@ -739,7 +777,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		} catch (Exception e) {
 			return false;
 		}
-		handlerManager.fireEvent(new MapModelEvent());
+		handlerManager.fireEvent(new MapModelChangedEvent(this));
 		return true;
 	}
 

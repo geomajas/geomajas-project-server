@@ -16,22 +16,22 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.MapModel;
 
 /**
- * Event that reports that the {@link org.geomajas.gwt.client.map.MapModel} has changed.
+ * Event that reports when a {@link org.geomajas.gwt.client.map.MapModel} will be cleared.
  *
  * @author Joachim Van der Auwera
  * @since 1.10.0
  */
 @Api(allMethods = true)
-public class MapModelChangedEvent extends GwtEvent<MapModelChangedHandler> {
+public class MapModelClearEvent extends GwtEvent<MapModelClearHandler> {
 
 	private MapModel mapModel;
 
-	public MapModelChangedEvent(MapModel mapModel) {
+	public MapModelClearEvent(MapModel mapModel) {
 		this.mapModel = mapModel;
 	}
 
 	/**
-	 * Get the {@link MapModel} which has changed.
+	 * Get the {@link org.geomajas.gwt.client.map.MapModel} will be cleared.
 	 *
 	 * @return map model
 	 */
@@ -40,12 +40,12 @@ public class MapModelChangedEvent extends GwtEvent<MapModelChangedHandler> {
 	}
 
 	@Override
-	public Type<MapModelChangedHandler> getAssociatedType() {
-		return MapModelChangedHandler.TYPE;
+	public Type<MapModelClearHandler> getAssociatedType() {
+		return MapModelClearHandler.TYPE;
 	}
 
 	@Override
-	protected void dispatch(MapModelChangedHandler mapModelChangedHandler) {
-		mapModelChangedHandler.onMapModelChanged(this);
+	protected void dispatch(MapModelClearHandler mapModelClearHandler) {
+		mapModelClearHandler.onMapModelClear(this);
 	}
 }

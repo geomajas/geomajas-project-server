@@ -17,24 +17,24 @@ import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 /**
- * Interface for handling when the map model has changed.
+ * Interface for handling when the map model will be cleared.
  *
  * @author Joachim Van der Auwera
  * @since 1.10.0
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface MapModelChangedHandler extends EventHandler {
+public interface MapModelClearHandler extends EventHandler {
 
 	/**
 	 * Event type.
 	 */
-	GwtEvent.Type<MapModelChangedHandler> TYPE = new GwtEvent.Type<MapModelChangedHandler>();
+	GwtEvent.Type<MapModelClearHandler> TYPE = new GwtEvent.Type<MapModelClearHandler>();
 
 	/**
-	 * Called when the map model has changed.
+	 * Called when the map model will be cleared.
 	 * 
 	 * @param event changed event
 	 */
-	void onMapModelChanged(MapModelChangedEvent event);
+	void onMapModelClear(MapModelClearEvent event);
 }
