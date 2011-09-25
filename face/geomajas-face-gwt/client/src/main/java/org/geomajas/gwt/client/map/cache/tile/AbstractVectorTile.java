@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.map.cache.tile;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -32,7 +33,7 @@ import org.geomajas.layer.tile.TileCode;
 public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 
 	/**
-	 * Possible statusses.
+	 * Possible statuses.
 	 */
 	static enum STATUS {
 
@@ -44,7 +45,7 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 	 */
 	protected TileCode code;
 
-	/** Reference to the <code>SpatialCache</code>. */
+	/** Reference to the {@link SpatialCache}. */
 	protected SpatialCache cache;
 
 	/**
@@ -75,6 +76,7 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 		if (recursive) {
 			getFeatures(GeomajasConstant.FEATURE_INCLUDE_NONE, new LazyLoadCallback() {
 				public void execute(List<Feature> response) {
+					GWT.log("          draw vector tile " + code);
 					for (Feature feature : response) {
 						if (feature != null && feature.isSelected()) {
 							feature.accept(visitor, group, bounds, recursive);

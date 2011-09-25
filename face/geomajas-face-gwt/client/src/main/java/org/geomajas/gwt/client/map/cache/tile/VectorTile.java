@@ -25,16 +25,18 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.feature.LazyLoader;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
-
-import com.smartgwt.client.util.SC;
 
 /**
  * Representation of a vector tile in the GWT client.
@@ -124,9 +126,8 @@ public class VectorTile extends AbstractVectorTile {
 		final VectorTile self = this;
 		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetVectorTileResponse>() {
 
-			public void execute(GetVectorTileResponse response) {
-				if (!(deferred != null && deferred.isCancelled())) {
-					GetVectorTileResponse tileResponse = (GetVectorTileResponse) response;
+			public void execute(GetVectorTileResponse tileResponse) {
+				if (null == deferred || !deferred.isCancelled()) {
 					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					for (TileCode relatedTile : tile.getCodes()) {
 						codes.add(relatedTile);
@@ -327,17 +328,22 @@ public class VectorTile extends AbstractVectorTile {
 
 	private GetVectorTileRequest createRequest(String filter) {
 		GetVectorTileRequest request = new GetVectorTileRequest();
+		VectorLayer layer = cache.getLayer();
+		MapModel mapModel = layer.getMapModel();
+		MapView mapView = mapModel.getMapView();
 		request.setCode(code);
-		request.setCrs(cache.getLayer().getMapModel().getCrs());
+		request.setCrs(mapModel.getCrs());
 		request.setFilter(filter);
-		request.setLayerId(cache.getLayer().getServerLayerId());
-		// always paint geometries, except when we already have the svg/vml
-		request.setPaintGeometries(!(VectorTileContentType.STRING_CONTENT == contentType && featureContent.isLoaded()));
-		request.setPaintLabels(cache.getLayer().isLabeled());
-		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
-		request.setRenderer(SC.isIE() ? "VML" : "SVG");
-		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
-		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
+		request.setLayerId(layer.getServerLayerId());
+		// split requests for geometries and labels for when rasterizing, geometries first, then needsReload
+		boolean isLabelsShowing = layer.isLabelsShowing();
+		boolean needGeometries = !isLabelsShowing || null == labelContent;
+		request.setPaintGeometries(needGeometries);
+		request.setPaintLabels(isLabelsShowing && !needGeometries);
+		request.setPanOrigin(mapView.getPanOrigin());
+		request.setRenderer(Dom.isIE() ? "VML" : "SVG");
+		request.setScale(mapView.getCurrentScale());
+		request.setStyleInfo(layer.getLayerInfo().getNamedStyleInfo());
 		return request;
 	}
 

@@ -228,7 +228,7 @@ public class TileCache implements SpatialCache {
 		// Only fetch when inside the layer bounds:
 		if (bbox.intersects(layerBounds)) {
 			// Check tile level:
-			int bestLevel = calculateTileLevel(bbox);
+			int bestLevel = calculateTileLevel();
 			if (bestLevel != currentTileLevel) {
 				currentTileLevel = bestLevel;
 			}
@@ -279,11 +279,9 @@ public class TileCache implements SpatialCache {
 	/**
 	 * Calculate the best tile level to use for a certain view-bounds.
 	 * 
-	 * @param bounds
-	 *            view bounds
 	 * @return best tile level for view bounds
 	 */
-	protected int calculateTileLevel(Bbox bounds) {
+	private int calculateTileLevel() {
 		double baseX = layerBounds.getWidth();
 		double baseY = layerBounds.getHeight();
 		// choose the tile level so the area is between minimumTileSize and the next level (minimumTileSize * 4)
@@ -340,8 +338,7 @@ public class TileCache implements SpatialCache {
 		// Calculate bounds relative to extents:
 		Bbox clippedBounds = bounds.intersection(layerBounds);
 		if (clippedBounds == null) {
-			// TODO throw error? If this is null, then the server configuration is incorrect.
-			Log.logWarn("Map bounds outside of layer extents, check the server configuration");
+			Log.logError("Map bounds outside of layer extents, check the server configuration, it is incorrect.");
 			return codes;
 		}
 		double relativeBoundX = Math.abs(clippedBounds.getX() - layerBounds.getX());
@@ -362,8 +359,8 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * Set the preferred tile size in pixels.
-	 * @param width the preferred tile width
-	 * @param height the preferred tile height
+	 *
+	 * @param ppt preferred pixels per tile configuration
 	 */
 	protected void setPreferredPixelsPerTile(ClientPreferredPixelsPerTile ppt) {
 		switch (ppt.getPreferredPixelsPerTileType()) {
