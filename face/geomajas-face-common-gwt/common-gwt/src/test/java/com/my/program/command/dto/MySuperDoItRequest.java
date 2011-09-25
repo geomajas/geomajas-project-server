@@ -18,7 +18,7 @@ import org.geomajas.command.CommandRequest;
  * Sample command request class.
  *
  * @author Joachim Van der Auwera
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class MySuperDoItRequest implements CommandRequest {
