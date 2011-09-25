@@ -40,7 +40,7 @@ public class PainterVisitor {
 	 * This class should always be initialized with a <code>GraphicsContext</code> object, since all painter registered
 	 * here will apply their painting skills on it.
 	 * 
-	 * @param graphics
+	 * @param context
 	 *            Implementation of the MapContext interface.
 	 */
 	public PainterVisitor(MapContext context) {
@@ -86,14 +86,15 @@ public class PainterVisitor {
 	/**
 	 * The visitors visit function.
 	 * 
-	 * @param paintable
+	 * @param paintable object to draw
+	 * @param group group to draw
 	 */
 	public void visit(Paintable paintable, Object group) {
-		String className = paintable.getClass().getName();
-		if (painters.containsKey(className)) {
-			List<Painter> list = painters.get(className);
-			for (Painter painter : list) {
-				if (context.isReady()) {
+		if (context.isReady()) {
+			String className = paintable.getClass().getName();
+			if (painters.containsKey(className)) {
+				List<Painter> list = painters.get(className);
+				for (Painter painter : list) {
 					painter.paint(paintable, group, context);
 				}
 			}
@@ -103,7 +104,8 @@ public class PainterVisitor {
 	/**
 	 * Remove a paintable object from the graphics.
 	 * 
-	 * @param paintable
+	 * @param paintable paintable object
+	 * @param group group to draw
 	 */
 	public void remove(Paintable paintable, Object group) {
 		String className = paintable.getClass().getName();
