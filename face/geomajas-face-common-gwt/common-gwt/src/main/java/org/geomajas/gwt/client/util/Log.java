@@ -30,6 +30,9 @@ public final class Log {
 
 	private static final Logger LOG = Logger.getLogger("Log");
 
+	private static final int STACK_TRACE_LINE_LIMIT = 500; // max # of lines in a stack trace, to prevent OOME
+	private static final int STACK_TRACE_CAUSE_LIMIT = 12; // max # of causes in a stack trace, to prevent OOME
+
 	public static final int LEVEL_DEBUG = LogRequest.LEVEL_DEBUG;
 	public static final int LEVEL_INFO = LogRequest.LEVEL_INFO;
 	public static final int LEVEL_WARN = LogRequest.LEVEL_WARN;
@@ -80,7 +83,8 @@ public final class Log {
 		if (null != throwable) {
 			addMessageAndStackTrace(sb, throwable);
 			Throwable cause = throwable.getCause();
-			while (null != cause) {
+			int count = 0;
+			while (null != cause && ++count <= STACK_TRACE_CAUSE_LIMIT) {
 				sb.append("\ncaused by ");
 				addMessageAndStackTrace(sb, cause);
 			}
@@ -92,9 +96,13 @@ public final class Log {
 		sb.append(throwable.getClass().getName());
 		sb.append(": ");
 		sb.append(throwable.getMessage());
+		int line = 0;
 		for (StackTraceElement ste : throwable.getStackTrace()) {
 			sb.append("\n   ");
 			sb.append(ste.toString());
+			if (++line > STACK_TRACE_LINE_LIMIT) {
+				break;
+			}
 		}
 	}
 
