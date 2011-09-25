@@ -249,16 +249,36 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) { return true; }
-		if (!(o instanceof NamedStyleInfo)) { return false; }
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof NamedStyleInfo)) {
+			return false;
+		}
 
 		NamedStyleInfo that = (NamedStyleInfo) o;
 
 		if (featureStyles != null ? !featureStyles.equals(that.featureStyles) : that.featureStyles != null) {
 			return false;
 		}
-		if (labelStyle != null ? !labelStyle.equals(that.labelStyle) : that.labelStyle != null) { return false; }
-		if (name != null ? !name.equals(that.name) : that.name != null) { return false; }
+		if (labelStyle != null ? !labelStyle.equals(that.labelStyle) : that.labelStyle != null) {
+			return false;
+		}
+		if (name != null ? !name.equals(that.name) : that.name != null) {
+			return false;
+		}
+		if (sldLayerName != null ? !sldLayerName.equals(that.sldLayerName) : that.sldLayerName != null) {
+			return false;
+		}
+		if (sldLocation != null ? !sldLocation.equals(that.sldLocation) : that.sldLocation != null) {
+			return false;
+		}
+		if (sldStyleName != null ? !sldStyleName.equals(that.sldStyleName) : that.sldStyleName != null) {
+			return false;
+		}
+		if (userStyle != null ? !userStyle.equals(that.userStyle) : that.userStyle != null) {
+			return false;
+		}
 
 		return true;
 	}
@@ -274,6 +294,10 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 		int result = featureStyles != null ? featureStyles.hashCode() : 0;
 		result = 31 * result + (labelStyle != null ? labelStyle.hashCode() : 0);
 		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (userStyle != null ? userStyle.hashCode() : 0);
+		result = 31 * result + (sldLocation != null ? sldLocation.hashCode() : 0);
+		result = 31 * result + (sldLayerName != null ? sldLayerName.hashCode() : 0);
+		result = 31 * result + (sldStyleName != null ? sldStyleName.hashCode() : 0);
 		return result;
 	}
 }
