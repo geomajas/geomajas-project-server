@@ -31,6 +31,7 @@ import org.geomajas.layer.tile.TileMetadata;
 public class GetVectorTileRequest extends LayerIdCommandRequest implements TileMetadata, CacheableObject {
 
 	private static final long serialVersionUID = 190L;
+	private static final int HASH_FACTOR = 31;
 
 	/**
 	 * Command name for this request.
@@ -235,14 +236,14 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		long temp;
 		result = code != null ? code.hashCode() : 0;
 		temp = scale != +0.0d ? Double.valueOf(scale).hashCode() : 0L;
-		result = 31 * result + (int) (temp ^ (temp >>> 32));
-		result = 31 * result + (panOrigin != null ? panOrigin.hashCode() : 0);
-		result = 31 * result + (filter != null ? filter.hashCode() : 0);
-		result = 31 * result + (crs != null ? crs.hashCode() : 0);
-		result = 31 * result + (renderer != null ? renderer.hashCode() : 0);
-		result = 31 * result + (styleInfo != null ? styleInfo.hashCode() : 0);
-		result = 31 * result + (paintGeometries ? 1 : 0);
-		result = 31 * result + (paintLabels ? 1 : 0);
+		result = HASH_FACTOR * result + (int) (temp ^ (temp >>> 32));
+		result = HASH_FACTOR * result + (panOrigin != null ? panOrigin.hashCode() : 0);
+		result = HASH_FACTOR * result + (filter != null ? filter.hashCode() : 0);
+		result = HASH_FACTOR * result + (crs != null ? crs.hashCode() : 0);
+		result = HASH_FACTOR * result + (renderer != null ? renderer.hashCode() : 0);
+		result = HASH_FACTOR * result + (styleInfo != null ? styleInfo.hashCode() : 0);
+		result = HASH_FACTOR * result + (paintGeometries ? 1 : 0);
+		result = HASH_FACTOR * result + (paintLabels ? 1 : 0);
 		return result;
 	}
 }
