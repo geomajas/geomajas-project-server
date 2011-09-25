@@ -31,6 +31,8 @@ import org.geomajas.sld.UserStyleInfo;
 public class NamedStyleInfo implements Serializable, CacheableObject {
 	
 	private static final long serialVersionUID = 154L;
+	private static final int HASH_FACTOR = 31;
+
 
 	/**
 	 * Name of the default style. 
@@ -292,12 +294,12 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	@Override
 	public int hashCode() {
 		int result = featureStyles != null ? featureStyles.hashCode() : 0;
-		result = 31 * result + (labelStyle != null ? labelStyle.hashCode() : 0);
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		result = 31 * result + (userStyle != null ? userStyle.hashCode() : 0);
-		result = 31 * result + (sldLocation != null ? sldLocation.hashCode() : 0);
-		result = 31 * result + (sldLayerName != null ? sldLayerName.hashCode() : 0);
-		result = 31 * result + (sldStyleName != null ? sldStyleName.hashCode() : 0);
+		result = HASH_FACTOR * result + (labelStyle != null ? labelStyle.hashCode() : 0);
+		result = HASH_FACTOR * result + (name != null ? name.hashCode() : 0);
+		result = HASH_FACTOR * result + (userStyle != null ? userStyle.hashCode() : 0);
+		result = HASH_FACTOR * result + (sldLocation != null ? sldLocation.hashCode() : 0);
+		result = HASH_FACTOR * result + (sldLayerName != null ? sldLayerName.hashCode() : 0);
+		result = HASH_FACTOR * result + (sldStyleName != null ? sldStyleName.hashCode() : 0);
 		return result;
 	}
 }
