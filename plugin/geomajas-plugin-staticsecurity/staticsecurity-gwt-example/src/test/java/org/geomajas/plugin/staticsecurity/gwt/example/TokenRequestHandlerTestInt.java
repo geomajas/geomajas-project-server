@@ -13,25 +13,35 @@ package org.geomajas.plugin.staticsecurity.gwt.example;
 
 import org.geomajas.plugin.staticsecurity.client.TokenRequestWindow;
 import org.geomajas.plugin.staticsecurity.gwt.example.client.Application;
+import org.geomajas.testdata.CommandCountAssert;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Verify that the application loads properly, that the token request window is displayed and behaves properly.
  *
  * @author Joachim Van der Auwera
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/org/geomajas/testdata/commandCount9080Context.xml"})
 public class TokenRequestHandlerTestInt {
 
 	private WebDriver driver;
+
+	@Autowired
+	private CommandCountAssert commandCountAssert;
 
 	@Before
 	public void setUp() {
@@ -45,6 +55,8 @@ public class TokenRequestHandlerTestInt {
 
 	@Test
 	public void testTokenRequest() throws Exception {
+		commandCountAssert.init();
+
 		driver.get("http://localhost:9080/");
 
 		// the login window should appear
@@ -53,6 +65,7 @@ public class TokenRequestHandlerTestInt {
 				return null != d.findElement(By.className(TokenRequestWindow.STYLE_NAME_WINDOW));
 			}
 		});
+		commandCountAssert.assertEquals(1);
 
 		// login in using faulty user name/login combination
 		WebElement userName = driver.findElement(By.name("userName"));
@@ -69,6 +82,7 @@ public class TokenRequestHandlerTestInt {
 			}
 		});
 		WebElement error = driver.findElement(By.className(TokenRequestWindow.STYLE_NAME_ERROR));
+		commandCountAssert.assertEquals(1);
 
 		// press reset and verify that form is cleared
 		reset.click();
@@ -84,6 +98,7 @@ public class TokenRequestHandlerTestInt {
 				return null != d.findElement(By.xpath("//*[contains(.,'Please fill in a user name.')]"));
 			}
 		});
+		commandCountAssert.assertEquals(0);
 
 		// no password -> error
 		reset.click();
@@ -95,6 +110,7 @@ public class TokenRequestHandlerTestInt {
 				return null != d.findElement(By.xpath("//*[contains(.,'Please fill in a password.')]"));
 			}
 		});
+		commandCountAssert.assertEquals(0);
 
 		// login using correct credentials
 		reset.click();
@@ -107,7 +123,16 @@ public class TokenRequestHandlerTestInt {
 				return null != d.findElement(By.className(Application.APPLICATION_TITLE_STYLE));
 			}
 		});
+		(new WebDriverWait(driver, 90)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return null != d.findElement(By.id("gwt-uid-10-clientLayerCountries"));
+			}
+		});
 		// login window should be gone
 		Assert.assertEquals(0, driver.findElements(By.className(TokenRequestWindow.STYLE_NAME_WINDOW)).size());
+		// expecting approx 30 command invocations
+		commandCountAssert.assertBetween(20, 40);
+
 	}
+
 }
