@@ -21,7 +21,7 @@ import org.geomajas.annotation.Api;
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
-@Api(allMethods = true)
+@Api
 public interface CommandDispatcher extends Serializable {
 
 	/**
@@ -33,5 +33,14 @@ public interface CommandDispatcher extends Serializable {
 	 * @param locale which should be used for the error messages in the response
 	 * @return {@link CommandResponse} command response
 	 */
+	@Api
 	CommandResponse execute(String commandName, CommandRequest commandRequest, String userToken, String locale);
+
+	/**
+	 * Get the current command count value. Can be used for testing the number of executed commands.
+	 *
+	 * @return current command count value
+	 */
+	long getCommandCount();
+
 }

@@ -166,6 +166,11 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 		}
 	}
 
+	/** {@inheritDoc} */
+	public long getCommandCount() {
+		return commandCount;
+	}
+
 	private ExceptionDto toDto(final Throwable throwable, final Locale locale) {
 		return toDto(throwable, locale, null);
 	}
