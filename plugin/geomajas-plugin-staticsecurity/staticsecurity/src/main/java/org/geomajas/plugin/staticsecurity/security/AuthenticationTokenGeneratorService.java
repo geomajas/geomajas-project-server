@@ -48,7 +48,7 @@ import java.util.Random;
 @Component
 public class AuthenticationTokenGeneratorService {
 
-	private static final Integer LOCK = 0; // lock to force sequential access
+	private static final Object LOCK = new Object(); // lock to force sequential access
 	private long time = System.currentTimeMillis(); // time part of high value
 	private boolean initialised; // true when id is initialised
 	private byte[] value = new byte[14]; // array to build token, contains high in fourth and following characters
