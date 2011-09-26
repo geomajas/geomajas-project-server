@@ -39,33 +39,33 @@ public class CommandCountAssert {
 	 */
 	public void assertEquals(long count) {
 		long newValue = commandCountService.getCount();
-		Assert.assertEquals("Expected " + count + " command invocations, was " + (newValue - lastCount )+ ".",
+		Assert.assertEquals("Expected " + count + " command invocations, was " + (newValue - lastCount) + ".",
 				lastCount + count, newValue);
 		lastCount = newValue;
 	}
 
 	/**
 	 * Verify exactly that less than a number of command invocations have been done.
-	 *
+	 * 
 	 * @param maximum maximum number of expected command invocations
 	 */
 	public void assertMaximum(long maximum) {
 		long newValue = commandCountService.getCount();
-		Assert.assertTrue("Expected maximum " + maximum + " command invocations, was " + (newValue - lastCount )+ ".",
+		Assert.assertTrue("Expected maximum " + maximum + " command invocations, was " + (newValue - lastCount) + ".",
 				lastCount + maximum >= newValue);
 		lastCount = newValue;
 	}
 
 	/**
-	 * Verify that hte number of command invocations is in a certain range.
-	 *
+	 * Verify that the number of command invocations is in a certain range.
+	 * 
 	 * @param minimum minimum number of expected command invocations
 	 * @param maximum maximum number of expected command invocations
 	 */
 	public void assertBetween(long minimum, long maximum) {
 		long newValue = commandCountService.getCount();
-		Assert.assertTrue("Expected between " + minimum + " and " + maximum + " command invocations, was " +
-				(newValue - lastCount )+ ".", lastCount + minimum <= newValue && lastCount + maximum >= newValue);
+		Assert.assertTrue("Expected between " + minimum + " and " + maximum + " command invocations, was "
+				+ (newValue - lastCount) + ".", lastCount + minimum <= newValue && lastCount + maximum >= newValue);
 		lastCount = newValue;
 	}
 

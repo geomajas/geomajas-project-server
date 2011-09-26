@@ -1,5 +1,6 @@
 package org.geomajas.internal.service;
 
+import org.geomajas.layer.RasterLayer;
 import org.geomajas.service.LegendGraphicService;
 import org.geomajas.service.legend.LegendGraphicMetadata;
 import org.geomajas.sld.FeatureTypeStyleInfo;
@@ -19,17 +20,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/internal/service/legend/rasterLayerContext.xml" })
 public class LegendGraphicServiceTest {
 
 	@Autowired
 	private LegendGraphicService service;
-	
-	private TestPathRenderedImageAssert imageAssert = new TestPathRenderedImageAssert("org/geomajas/internal/service/legend");
+
+	private TestPathRenderedImageAssert imageAssert = new TestPathRenderedImageAssert(
+			"org/geomajas/internal/service/legend");
+
+	@Autowired
+	private RasterLayer blueMarble;
 
 	private boolean writeImages = false;
+
 	@Test
 	public void testSimpleRules18() throws Exception {
 		LegendGraphicMetadata p = new SimpleRulesData("point:1", 18, 18);
@@ -60,6 +66,12 @@ public class LegendGraphicServiceTest {
 		imageAssert.assertEquals("polygon3-19x19.png", service.getLegendGraphic(po3), 0.01, writeImages);
 		LegendGraphicMetadata po4 = new SimpleRulesData("polygon:4", 19, 19);
 		imageAssert.assertEquals("polygon4-19x19.png", service.getLegendGraphic(po4), 0.01, writeImages);
+	}
+
+	@Test
+	public void testRasterLayer() throws Exception {
+		LegendGraphicMetadata rasterMetadata = new RasterData(blueMarble.getId());
+		imageAssert.assertEquals("layer-raster.png", service.getLegendGraphic(rasterMetadata), 0.01, writeImages);
 	}
 
 	public class SimpleRulesData implements LegendGraphicMetadata {
@@ -114,6 +126,44 @@ public class LegendGraphicServiceTest {
 
 		public int getHeight() {
 			return height;
+		}
+
+	}
+
+	public class RasterData implements LegendGraphicMetadata {
+
+		private String layerId;
+
+		public RasterData(String layerId) {
+			this.layerId = layerId;
+		}
+
+		public String getLayerId() {
+			return layerId;
+		}
+
+		public UserStyleInfo getUserStyle() {
+			return null;
+		}
+
+		public NamedStyleInfo getNamedStyle() {
+			return null;
+		}
+
+		public RuleInfo getRule() {
+			return null;
+		}
+
+		public double getScale() {
+			return 0;
+		}
+
+		public int getWidth() {
+			return 0;
+		}
+
+		public int getHeight() {
+			return 0;
 		}
 
 	}
