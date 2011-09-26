@@ -36,6 +36,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userId" value="luc"/>
 					<property name="password" value="b7NMSP1pZN3Hi6nJGVe9JA"/> <!-- "luc" -->
 					<property name="userName" value="Luc Van Lierde"/>	
+					<property name="userOrganization" value="triathlon"/>
+					<property name="userDivision" value="all distances"/>
+					<property name="userLocale" value="nl_BE"/>
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">

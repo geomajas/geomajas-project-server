@@ -48,6 +48,11 @@ public class LoginCommandTest {
 		LoginResponse response = loginCommand.getEmptyCommandResponse();
 		loginCommand.execute(request, response);
 		String token = response.getToken();
+		Assert.assertEquals("luc", response.getUserId());
+		Assert.assertEquals("Luc Van Lierde", response.getUserName());
+		Assert.assertEquals("triathlon", response.getUserOrganization());
+		Assert.assertEquals("all distances", response.getUserDivision());
+		Assert.assertEquals("nl_BE", response.getUserLocale());
 		Assert.assertNotNull(token);
 
 		Authentication auth = tokenService.getAuthentication(token);

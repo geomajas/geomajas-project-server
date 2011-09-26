@@ -87,6 +87,13 @@ public class LoginCommand implements Command<LoginRequest, LoginResponse> {
 				authentication.setUserDivision(user.getUserDivision());
 				authentication.setAuthorizations(getAuthorizations(user));
 				response.setToken(tokenService.login(authentication));
+				response.setUserId(login);
+				response.setUserName(user.getUserName());
+				response.setUserOrganization(user.getUserOrganization());
+				response.setUserDivision(user.getUserDivision());
+				if (null != user.getUserLocale()) {
+					response.setUserLocale(user.getUserLocale().toString());
+				}
 			}
 		}
 	}

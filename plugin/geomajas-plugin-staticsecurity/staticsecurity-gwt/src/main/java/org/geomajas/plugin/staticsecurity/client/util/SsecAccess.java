@@ -13,10 +13,10 @@ package org.geomajas.plugin.staticsecurity.client.util;
 
 import com.smartgwt.client.util.BooleanCallback;
 import org.geomajas.annotation.Api;
-import org.geomajas.command.CommandResponse;
-import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.UserDetail;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest;
@@ -76,15 +76,18 @@ public final class SsecAccess {
 		request.setPassword(password);
 		GwtCommand command = new GwtCommand(LoginRequest.COMMAND);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<LoginResponse>() {
 
-			public void execute(CommandResponse response) {
-				if (response instanceof LoginResponse) {
-					LoginResponse loginResponse = (LoginResponse) response;
-					GwtCommandDispatcher.getInstance().setUserToken(loginResponse.getToken());
-					if (callback != null) {
-						callback.execute(null != loginResponse.getToken());
-					}
+			public void execute(LoginResponse response) {
+				UserDetail userDetail = new UserDetail();
+				userDetail.setUserId(response.getUserId());
+				userDetail.setUserName(response.getUserName());
+				userDetail.setUserOrganization(response.getUserOrganization());
+				userDetail.setUserDivision(response.getUserDivision());
+				userDetail.setUserLocale(response.getUserLocale());
+				GwtCommandDispatcher.getInstance().setUserToken(response.getToken(), userDetail);
+				if (callback != null) {
+					callback.execute(null != response.getToken());
 				}
 			}
 		});
