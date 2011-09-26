@@ -359,6 +359,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Clear the map model. Removes all layers and tools.
+	 *
+	 * @since 1.10.0
 	 */
 	@Api
 	public void clear() {
