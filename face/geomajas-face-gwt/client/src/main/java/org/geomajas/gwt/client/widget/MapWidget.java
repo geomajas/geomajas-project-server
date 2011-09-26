@@ -72,6 +72,8 @@ import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
+import org.geomajas.gwt.client.map.event.MapModelClearEvent;
+import org.geomajas.gwt.client.map.event.MapModelClearHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -112,7 +114,7 @@ import com.smartgwt.client.widgets.menu.Menu;
  * @since 1.6.0
  */
 @Api
-public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelChangedHandler {
+public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelClearHandler, MapModelChangedHandler {
 
 	// Private fields regarding internal workings:
 
@@ -378,12 +380,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
+		if (!graphics.isReady()) {
+			return;
+		}
 		PaintableGroup group = null;
 		if (renderGroup != null) {
 			group = getGroup(renderGroup);
-		}
-		if (!graphics.isReady()) {
-			return;
 		}
 		if (paintable == null) {
 			paintable = this.mapModel;
@@ -967,10 +969,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// MapModelHandler implementation:
 	// -------------------------------------------------------------------------
 
-	/** When the initialization of the map's model is done: render it. */
-	public void onMapModelChanged(MapModelChangedEvent event) {
-		refreshCallback(event.getMapModel().getMapInfo());
-
+	public void onMapModelClear(MapModelClearEvent event) {
 		// remove previous layers
 		for (Layer<?> layer : previousLayers) {
 			if (layer instanceof VectorLayer) {
@@ -980,7 +979,18 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		}
 		previousLayers.clear();
+	}
+
+	/**
+	 * When the initialization of the map's model is done: render it.
+	 *
+	 * @param event event
+	 */
+	public void onMapModelChanged(MapModelChangedEvent event) {
+		previousLayers.clear(); // just to be safe
 		previousLayers.addAll(mapModel.getLayers());
+
+		refreshCallback(event.getMapModel().getMapInfo());
 
 		// render all
 		renderAll();
@@ -1006,11 +1016,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		// must be called before anything else !
 		final int width = getWidth();
 		final int height = getHeight();
-		mapModel.getMapView().setSize(width, height);
+		mapModel.getMapView().setSize(width, height); // causes renderAll if size changed
 
 		// must be called before anything else !
 		addChild(graphics);
-		renderAll();
 
 		// Register the watermark MapAddon:
 		Watermark watermark = new Watermark(id + "-watermark", this);
@@ -1032,11 +1041,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();
 			graphics.setBackgroundColor(info.getBackgroundColor());
-			setNavigationAddonEnabled(info.isPanButtonsEnabled());
-			setScalebarEnabled(info.isScaleBarEnabled());
 			featurePainter.setPointSelectStyle(new ShapeStyle(info.getPointSelectStyle()));
 			featurePainter.setLineSelectStyle(new ShapeStyle(info.getLineSelectStyle()));
 			featurePainter.setPolygonSelectStyle(new ShapeStyle(info.getPolygonSelectStyle()));
+			setAddons();
 
 			for (final Layer<?> layer : mapModel.getLayers()) {
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
@@ -1066,8 +1074,13 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					}
 				});
 			}
-			renderAll();
 		}
+	}
+
+	private void setAddons() {
+		ClientMapInfo info = getMapModel().getMapInfo();
+		setNavigationAddonEnabled(info.isPanButtonsEnabled());
+		setScalebarEnabled(info.isScaleBarEnabled());
 	}
 
 	// -------------------------------------------------------------------------
@@ -1075,7 +1088,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Handles map view and scalebar on resize
+	 * Handles map view and scale bar on resize.
 	 */
 	private class RenderMapOnResizeHandler implements GraphicsReadyHandler {
 
