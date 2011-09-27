@@ -125,7 +125,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	 * @since 1.10.0
 	 */
 	@Api
-	public boolean isLabelsShowing();
+	boolean isLabelsShowing();
 
 
 	/**
