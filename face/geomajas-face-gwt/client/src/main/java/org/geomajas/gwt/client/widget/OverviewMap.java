@@ -93,7 +93,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	@Api
 	public OverviewMap(String id, String applicationId, MapWidget targetMap, boolean useTargetMaxExtent,
 			boolean drawTargetMaxExtent) {
-		super(id, applicationId);
+		super(id, applicationId, false);
 		if (null == targetMap) {
 			throw new IllegalArgumentException("Please provide a targetmap");
 		}
@@ -120,6 +120,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			}
 		});
 		setController(new OverviewMapController(this));
+		getMapModel().init();
 	}
 
 	/**

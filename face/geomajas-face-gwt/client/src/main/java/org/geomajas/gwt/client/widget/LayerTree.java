@@ -38,7 +38,6 @@ import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
@@ -250,7 +249,6 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				} else {
 					String msg = "LayerTree tool with id " + id + " unknown.";
 					Log.logError(msg); // console log
-					GWT.log(msg); // server side GWT run/debug log (development mode only)
 					SC.warn(msg); // in your face
 				}
 				if (button != null) {

@@ -137,17 +137,16 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 	private EventWidget eventWidget;
 
 	private Timer resizeTimer;
+	private int previousWidth, previousHeight;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create and initialise a graphics widget. It will instantiate the correct delegate <code>GraphicsContext</code>
+	 * Create and initialise a graphics widget. It will instantiate the correct delegate {@link GraphicsContext}
 	 * and build the initial DOM elements.
 	 * 
-	 * @param parent
-	 *            The canvas to which this widget will be added as a child.
 	 * @param graphicsId
 	 *            The ID from which to start building the rendering DOM tree.
 	 */
@@ -350,7 +349,6 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 	 * Menu context that captures raster and vector context events.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public class MapMenuContext implements MenuContext {
 
@@ -377,12 +375,8 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		}
 	}
 
-	public void markForResize() {
-		// remove child while browser is resizing + schedule redraw in 0.1 sec
-		if (contains(eventWidget)) {
-			removeChild(eventWidget);
-			eventWidget.setVisible(false);
-		}
+	private void markForResize() {
+		// schedule redraw in 0.1 sec, child is removed/re-added then if size changed
 		if (resizeTimer == null) {
 			resizeTimer = new Timer() {
 
@@ -396,21 +390,28 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		resizeTimer.schedule(100);
 	}
 
-	public void resize() {
-		// child was removed in markForResize(), add it again
-		if (!contains(eventWidget)) {
+	private void resize() {
+		if (null != resizeTimer) {
+			resizeTimer.cancel();
+		}
+		int width = getWidth();
+		int height = getHeight();
+		if (previousWidth != width || previousHeight != height) {
+			previousWidth = width;
+			previousHeight = height;
+
+			// remove and re-add child to avoid resize problems?
+			if (contains(eventWidget)) {
+				removeChild(eventWidget);
+				eventWidget.setVisible(false);
+			}
+			eventWidget.setSize(Integer.toString(width), Integer.toString(height)); // Set size of the event widget:
 			addChild(eventWidget);
 			eventWidget.setVisible(true);
-		}
-		// Set size of the event widget:
-		eventWidget.setSize(getWidthAsString(), getHeightAsString());
 
-		// xhtml needs this, or <div> won't show !
-		eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");
+			// set the size and notify graphics users so they can redraw
+			vectorContext.setSize(width, height);
 
-		// set the size and notify graphics users so they can redraw
-		vectorContext.setSize(getWidth(), getHeight());
-		if (isReady()) {
 			fireEvent(new GraphicsReadyEvent());
 		}
 	}
@@ -453,7 +454,6 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 	 * explicitly setting the size of the FocusWidget.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	private static class EventWidget extends WidgetCanvas {
 
@@ -470,9 +470,9 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 			this(new StyledFocusWidget(Document.get().createDivElement()));
 		}
 
-		public void setInnerSize(String width, String height) {
-			// setSize(width, height);
-			widget.setSize(width, height);
+		public void setSize(String width, String height) {
+			super.setSize(width, height);
+			widget.setSize(width + "px", height + "px");
 		}
 
 		public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
@@ -511,7 +511,6 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		 * Xhtml does not like divs without size.
 		 * 
 		 * @author Jan De Moerloose
-		 * 
 		 */
 		private static final class StyledFocusWidget extends FocusWidget {
 

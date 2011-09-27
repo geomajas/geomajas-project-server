@@ -11,10 +11,12 @@
 
 package org.geomajas.gwt.client.util;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.LogRequest;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geotools.util.DefaultProgressListener;
 
 import java.util.logging.Logger;
 
@@ -53,11 +55,13 @@ public final class Log {
 	}
 
 	public static void logWarn(String message) {
+		GWT.log("WARNING: " + message);
 		LOG.warning(message);
 		logServer(LEVEL_WARN, message, null);
 	}
 
 	public static void logError(String message) {
+		GWT.log("ERROR: " + message);
 		LOG.severe(message);
 		logServer(LEVEL_ERROR, message, null);
 	}

@@ -296,18 +296,19 @@ public class MapView {
 	 */
 	public void setSize(int newWidth, int newHeight) {
 		saveState();
-		Bbox oldBbox = getBounds();
-		this.width = newWidth;
-		this.height = newHeight;
-		if (viewState.getScale() < getMinimumScale()) {
-			// The new scale is too low, re-apply old values:
-			double scale = getBestScale(oldBbox);
-			doSetScale(snapToResolution(scale, ZoomOption.LEVEL_FIT), ZoomOption.LEVEL_FIT);
-			doSetOrigin(oldBbox.getCenterPoint());
+		Bbox bbox = getBounds();
+		if (width != newWidth || height != newHeight) {
+			this.width = newWidth;
+			this.height = newHeight;
+			if (viewState.getScale() < getMinimumScale()) {
+				// The new scale is too low, re-apply old values:
+				double scale = getBestScale(bbox);
+				doSetScale(snapToResolution(scale, ZoomOption.LEVEL_FIT));
+			}
+			// Use the same center point for the new bounds
+			doSetOrigin(bbox.getCenterPoint());
+			fireEvent(true, null);
 		}
-		// Use the same center point for the new bounds
-		doSetOrigin(oldBbox.getCenterPoint());
-		fireEvent(true, null);
 	}
 
 	/**
@@ -466,7 +467,7 @@ public class MapView {
 	// Private functions:
 	// -------------------------------------------------------------------------
 
-	private boolean doSetScale(double scale, ZoomOption option) {
+	private boolean doSetScale(double scale) {
 		boolean res = Math.abs(viewState.getScale() - scale) > .0000001;
 		viewState = viewState.copyAndSetScale(scale);
 		return res;
@@ -488,7 +489,7 @@ public class MapView {
 				// snap and limit
 				scale = snapToResolution(scale, option);
 				// set scale
-				/* scaleChanged = */doSetScale(scale, option);
+				doSetScale(scale);
 			}
 			// now translate, taking maximum bounds into account
 			doSetOrigin(bounds.getCenterPoint());
@@ -590,10 +591,12 @@ public class MapView {
 	 * @param option zoom option
 	 */
 	private void fireEvent(boolean resized, ZoomOption option) {
-		// keep old semantics of sameScaleLevel for api compatibility !
-		boolean sameScale = lastViewState != null && viewState.isPannableFrom(lastViewState);
-		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), sameScale, viewState
-				.isPanDragging(), resized, option));
+		if (width > 0) {
+			// keep old semantics of sameScaleLevel for api compatibility !
+			boolean sameScale = lastViewState != null && viewState.isPannableFrom(lastViewState);
+			handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), sameScale, viewState
+					.isPanDragging(), resized, option));
+		}
 	}
 
 	/**

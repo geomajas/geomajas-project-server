@@ -81,6 +81,8 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
@@ -91,7 +93,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.menu.Menu;
 
@@ -162,6 +163,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private FeaturePainter featurePainter;
 
 	private List<Layer<?>> previousLayers = new ArrayList<Layer<?>>(); // to be able to delete them on refresh
+
+	private long previousRedraw; // previous redraw timestamp to avoid double redraw
+	private Bbox previousRedrawBbox; // previous redraw bbox to avoid double redraw
+	private static final long REDRAW_GRACE = 2500; // 2.5s min between redraw of same bbox
+	private static final double DELTA = 1e-10; // delta for comparing bboxes
+	private int previousRenderAllWidth;
+	private int previousRenderAllHeight;
+	private boolean viewPortKnown; // can't draw before the view port is known
+	private boolean readyToDraw;
 
 	/**
 	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
@@ -254,6 +264,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public MapWidget(String mapId, String applicationId) {
+		this(mapId, applicationId, true);
+	}
+
+	protected MapWidget(String mapId, String applicationId, boolean initMapModel) {
 		setID(mapId);
 		this.applicationId = applicationId;
 		mapModel = new MapModel(mapId, applicationId);
@@ -325,12 +339,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * </p>
 	 * 
 	 * @since 1.6.0
-	 * @deprecated not needed any more
 	 */
 	@Api
-	@Deprecated
 	public void init() {
-		// nothing to do, only provided for backward compatibility
+		mapModel.init();
 	}
 
 	// -------------------------------------------------------------------------
@@ -365,7 +377,18 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void renderAll() {
-		render(mapModel, null, RenderStatus.ALL);
+		long now = System.currentTimeMillis();
+		int width = getWidth();
+		int height = getHeight();
+		if (now > previousRedraw + REDRAW_GRACE ||
+				!getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA) ||
+				previousRenderAllWidth != width || previousRenderAllHeight != height ) {
+			previousRenderAllWidth = width;
+			previousRenderAllHeight = height;
+			previousRedraw = now;
+			previousRedrawBbox = (Bbox) getMapModel().getMapView().getBounds().clone();
+			render(mapModel, null, RenderStatus.ALL);
+		}
 	}
 
 	/**
@@ -381,7 +404,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
-		if (!graphics.isReady()) {
+		if (!graphics.isReady() || !viewPortKnown || !readyToDraw) {
 			return;
 		}
 		PaintableGroup group = null;
@@ -950,6 +973,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/** If the map view changes, redraw the map model and the scale bar. */
 	public void onMapViewChanged(MapViewChangedEvent event) {
+		viewPortKnown = true;
 		if (graphics.isReady()) {
 			if (scaleBarEnabled) {
 				ScaleBar scalebar = (ScaleBar) addons.get("scalebar");
@@ -961,7 +985,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			if (event != null && event.isPanDragging()) {
 				render(mapModel, null, RenderStatus.UPDATE);
 			} else {
-				renderAll();
+				if (readyToDraw) {
+					renderAll();
+				}
 			}
 		}
 	}
@@ -971,6 +997,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	public void onMapModelClear(MapModelClearEvent event) {
+		readyToDraw = false;
 		// remove previous layers
 		for (Layer<?> layer : previousLayers) {
 			if (layer instanceof VectorLayer) {
@@ -991,6 +1018,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		previousLayers.clear(); // just to be safe
 		previousLayers.addAll(mapModel.getLayers());
 
+		readyToDraw = true;
 		refreshCallback(event.getMapModel().getMapInfo());
 
 		// render all
@@ -1022,6 +1050,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		// must be called before anything else !
 		addChild(graphics);
 
+		init();
+
 		// Register the watermark MapAddon:
 		Watermark watermark = new Watermark(id + "-watermark", this);
 		watermark.setAlignment(Alignment.RIGHT);
@@ -1045,7 +1075,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			featurePainter.setPointSelectStyle(new ShapeStyle(info.getPointSelectStyle()));
 			featurePainter.setLineSelectStyle(new ShapeStyle(info.getLineSelectStyle()));
 			featurePainter.setPolygonSelectStyle(new ShapeStyle(info.getPolygonSelectStyle()));
-			setAddons();
+			if (graphics.isReady()) {
+				setAddons();
+			}
 
 			for (final Layer<?> layer : mapModel.getLayers()) {
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
@@ -1079,9 +1111,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	private void setAddons() {
-		ClientMapInfo info = getMapModel().getMapInfo();
-		setNavigationAddonEnabled(info.isPanButtonsEnabled());
-		setScalebarEnabled(info.isScaleBarEnabled());
+		if (getMapModel().isInitialized()) {
+			ClientMapInfo info = getMapModel().getMapInfo();
+			setNavigationAddonEnabled(info.isPanButtonsEnabled());
+			setScalebarEnabled(info.isScaleBarEnabled());
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -1092,25 +1126,33 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * Handles map view and scale bar on resize.
 	 */
 	private class RenderMapOnResizeHandler implements GraphicsReadyHandler {
+		private int previousWidth, previousHeight;
 
 		public void onReady(GraphicsReadyEvent event) {
 			try {
+				mapModel.accept(painterVisitor, null, mapModel.getMapView().getBounds(), false); // render base groups
+
 				final int width = getWidth();
 				final int height = getHeight();
-				renderAll();
-				if (SC.isIE()) {
-					// Vector layers in IE loose their style (because the removeChild, addChild)
-					for (Layer<?> layer : mapModel.getLayers()) {
-						if (layer instanceof VectorLayer) {
-							render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
+				if (previousWidth != width || previousHeight != height) {
+					previousWidth = width;
+					previousHeight = height;
+
+					if (Dom.isIE()) {
+						// Vector layers in IE loose their style (because the removeChild, addChild)
+						for (Layer<?> layer : mapModel.getLayers()) {
+							if (layer instanceof VectorLayer) {
+								render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
+							}
 						}
 					}
-				}
-				mapModel.getMapView().setSize(width, height);
-				for (String addonId : addons.keySet()) {
-					MapAddon addon = addons.get(addonId);
-					addon.setMapSize(width, height);
-					render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
+					mapModel.getMapView().setSize(width, height);
+					setAddons();
+					for (String addonId : addons.keySet()) {
+						MapAddon addon = addons.get(addonId);
+						addon.setMapSize(width, height);
+						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
+					}
 				}
 			} catch (Exception e) {
 				Log.logError("OnResized exception", e);

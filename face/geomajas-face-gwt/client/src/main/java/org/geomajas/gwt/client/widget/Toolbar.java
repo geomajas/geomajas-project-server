@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt.client.widget;
 
-import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import org.geomajas.annotation.Api;
@@ -152,7 +151,6 @@ public class Toolbar extends ToolStrip {
 					} else {
 						String msg = "Tool with id " + id + " unknown.";
 						Log.logError(msg); // console log
-						GWT.log(msg); // server side GWT run/debug log (development mode only)
 						SC.warn(msg); // in your face
 					}
 				}
