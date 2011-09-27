@@ -125,7 +125,7 @@
             &lt;property name="columns"&gt;
                &lt;list&gt;
                   &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo"&gt;
-                     &lt;property name="type" value="ActionButton" /&gt;
+                     &lt;property name="type" value="ToolbarActionButton" /&gt;
                      &lt;property name="tools"&gt;
                         &lt;list&gt;
                            &lt;ref bean="ZoomIn" /&gt;
@@ -133,7 +133,7 @@
                      &lt;/property&gt;
                   &lt;/bean&gt;
                   &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo"&gt;
-                     &lt;property name="type" value="ActionButton" /&gt;
+                     &lt;property name="type" value="ToolbarActionButton" /&gt;
                      &lt;property name="tools"&gt;
                         &lt;list&gt;
                            &lt;ref bean="ZoomOut" /&gt;
@@ -141,7 +141,7 @@
                      &lt;/property&gt;
                   &lt;/bean&gt;
                   &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo"&gt;
-                     &lt;property name="type" value="ActionList" /&gt;
+                     &lt;property name="type" value="ToolbarActionList" /&gt;
                      &lt;property name="tools"&gt;
                         &lt;list&gt;
                            &lt;ref bean="ZoomPrevious" /&gt;
