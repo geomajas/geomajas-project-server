@@ -61,11 +61,11 @@ public class VectorTilePainter implements Painter {
 			case STRING_CONTENT:
 				// Paint the feature content:
 				if (tile.getFeatureContent().isLoaded()) {
-					drawData(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context);
+					drawData(tile.getCache().getLayer().getFeatureGroup(), tile.getFeatureContent(), context);
 				}
 				// Paint the label content:
 				if (tile.getLabelContent().isLoaded()) {
-					drawData(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context);
+					drawData(tile.getCache().getLayer().getLabelGroup(), tile.getLabelContent(), context);
 				}
 				break;
 			case URL_CONTENT:
@@ -81,7 +81,7 @@ public class VectorTilePainter implements Painter {
 
 	}
 	
-	private void drawData(PaintableGroup group, VectorTile tile, ContentHolder holder, MapContext context) {
+	private void drawData(PaintableGroup group, ContentHolder holder, MapContext context) {
 		context.getVectorContext().drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
 	}
 
@@ -91,7 +91,7 @@ public class VectorTilePainter implements Painter {
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing
 	 * will be done.
 	 * 
 	 * @param paintable
