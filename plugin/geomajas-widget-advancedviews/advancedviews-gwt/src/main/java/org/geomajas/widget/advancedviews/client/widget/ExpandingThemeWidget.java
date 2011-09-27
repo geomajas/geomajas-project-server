@@ -42,7 +42,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 	private static final int IMAGE_SIZE = 48;
 
-	private static final int BUTTON_SIZE = IMAGE_SIZE + 8;
+	private static final int BUTTON_SIZE = IMAGE_SIZE + 0;
 
 	private static final String NOTHEME_ICON = "[ISOMORPHIC]/geomajas/widget/themewidget/nothemeselected.png";
 	private static final String BACKGROUND_IMG = "[ISOMORPHIC]/geomajas/widget/themewidget/background.png";
@@ -71,6 +71,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			}
 		});
 
+
 		for (ViewConfig viewConfig : themeInfo.getThemeConfigs()) {
 			RangeConfig rangeConfig = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel().getMapView()
 					.getCurrentScale());
@@ -96,7 +97,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			viewConfigItems.add(item);
 		}
 
-		masterBtn = createButton(disabledBtn.getIcon(), disabledBtn.getTooltip(), new ClickHandler() {
+		masterBtn = createButton(disabledBtn.getIcon(), messages.expandingThemeWidgetTooltip(), new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if (panel != null && panel.isVisible()) {
 					hidePanel();
@@ -106,6 +107,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			}
 		});
 		masterBtn.setShowShadow(true);
+		setMasterButton(disabledBtn);
 		addChild(masterBtn);
 		markForRedraw();
 	}
@@ -181,17 +183,18 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 		return button;
 	}
 
-	private void setButton(IButton button) {
+	private void setMasterButton(IButton button) {
 		masterBtn.setIcon(button.getIcon());
-		masterBtn.setTooltip(button.getTooltip());
+		/*masterBtn.setTooltip(button.getTooltip()); */ 
+		masterBtn.setTooltip(messages.expandingThemeWidgetTooltip());
 	}
 
 	protected void activateViewConfig(ViewConfigItem viewConfig) {
 		super.activateViewConfig(viewConfig);
 		if (null != viewConfig && null != viewConfig.getViewConfig()) {
-			setButton(viewConfig.getButton());
+			setMasterButton(viewConfig.getButton());
 		} else {
-			setButton(disabledBtn);
+			setMasterButton(disabledBtn);
 		}
 		hidePanel();
 	}
@@ -216,7 +219,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 		}
 
 		if (activeViewConfig != null) {
-			setButton(activeViewConfig.getButton());
+			setMasterButton(activeViewConfig.getButton());
 		}
 	}
 
@@ -231,6 +234,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 		private ClickHandler ch;
 
 		public DescriptionIButton(String label) {
+			super("Selecteer achtergrondlagen");
 			this.label = label;
 		}
 
