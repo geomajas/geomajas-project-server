@@ -139,10 +139,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		// refresh the map when the token changes
 		GwtCommandDispatcher.getInstance().addTokenChangedHandler(new TokenChangedHandler() {
 			public void onTokenChanged(TokenChangedEvent event) {
-				if (null == event.getToken()) {
-					clear();
-				}
-				refresh();
+				refresh(); // clearing is done in the refresh
 			}
 		});
 

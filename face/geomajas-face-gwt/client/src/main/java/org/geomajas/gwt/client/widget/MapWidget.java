@@ -258,6 +258,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		this.applicationId = applicationId;
 		mapModel = new MapModel(mapId, applicationId);
 		mapModel.addMapModelChangedHandler(this);
+		mapModel.addMapModelClearHandler(this);
 		mapModel.getMapView().addMapViewChangedHandler(this);
 		graphics = new GraphicsWidget(getID() + "Graphics");
 		painterVisitor = new PainterVisitor(graphics);
