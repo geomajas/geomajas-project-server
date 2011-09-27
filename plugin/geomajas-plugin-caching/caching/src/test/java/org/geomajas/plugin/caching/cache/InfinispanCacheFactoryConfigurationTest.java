@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -54,6 +55,14 @@ public class InfinispanCacheFactoryConfigurationTest {
 		ThreadScopeContextHolder.clear();
 	}
 
+	@DirtiesContext
+	@Test
+	/**
+	 * A dummy method to force the reload of the context. By forcing a reload we are sure that the TestRecorder
+	 * has not been cleared by other tests after the postconfiguration phase (application contexts are cached). 
+	 */
+	public void reloadContext() {
+	}
 
 	/**
 	 * Verify that the configured Infinispan configuration is used when requested.
