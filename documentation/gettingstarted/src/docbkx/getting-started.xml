@@ -276,13 +276,6 @@
       </listitem>
     </itemizedlist>
 
-    <note>
-      <para>If you have an Android SDK environmental variable declared on your
-      OS, remove this variable from your PATH variable to avoid conflicts in
-      Eclipse (like continuous Maven Project Builder invocations or failing
-      JettyRunner run/debug attempts).</para>
-    </note>
-
     <section>
       <title>Running/debugging with the Google Plug-in for Eclipse (embedded
       Jetty option)</title>
