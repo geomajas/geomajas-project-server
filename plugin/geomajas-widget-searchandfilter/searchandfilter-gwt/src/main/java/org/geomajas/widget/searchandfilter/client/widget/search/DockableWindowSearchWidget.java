@@ -59,6 +59,7 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		addCloseClickHandler(new CloseClickHandler() {
 
 			public void onCloseClick(CloseClientEvent event) {
+				searchPanel.hide();
 				hide();
 				destroy();
 			}
