@@ -23,7 +23,6 @@ import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandle
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -149,11 +148,7 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
-		if (dragging) {
-			GWT.log("yeeyyyyy!!");
-			onDrag(event);
-		}
-		// super.onMouseMove(event); // Make sure we don't forget dragging.
+		super.onMouseMove(event); // Make sure we don't forget dragging.
 		for (MouseMoveHandler handler : moveHandlers) {
 			handler.onMouseMove(event);
 		}

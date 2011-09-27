@@ -16,6 +16,9 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.widget.LoadingScreen;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.GeometryEditor;
+import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.smartgwt.client.widgets.Img;
@@ -86,7 +89,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		});
 		toolStrip.addButton(stopBtn);
 
-		ToolStripButton btn1 = new ToolStripButton("new point");
+		ToolStripButton btn1 = new ToolStripButton("edit point");
 		btn1.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -97,7 +100,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		});
 		toolStrip.addButton(btn1);
 
-		ToolStripButton btn2 = new ToolStripButton("new line");
+		ToolStripButton btn2 = new ToolStripButton("edit line");
 		btn2.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -118,6 +121,67 @@ public class GeomajasEntryPoint implements EntryPoint {
 			}
 		});
 		toolStrip.addButton(btn2);
+
+		ToolStripButton btn3 = new ToolStripButton("edit polygon");
+		btn3.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Geometry polgon = new Geometry(Geometry.POLYGON, 0, 0);
+
+				Coordinate origin = map.getMapModel().getMapView().getBounds().getOrigin();
+				Coordinate center = map.getMapModel().getMapView().getBounds().getCenterPoint();
+				double deltaX = center.getX() - origin.getX();
+				double deltaY = center.getY() - origin.getY();
+
+				Coordinate c1 = new Coordinate(center.getX() - deltaX / 2, center.getY() - deltaY / 2);
+				Coordinate c2 = new Coordinate(center.getX() + deltaX / 2, center.getY() - deltaY / 2);
+				Coordinate c3 = new Coordinate(center.getX() + deltaX / 2, center.getY() + deltaY / 2);
+				Coordinate c4 = new Coordinate(center.getX() - deltaX / 2, center.getY() + deltaY / 2);
+				Coordinate c5 = new Coordinate(center.getX() - deltaX / 2, center.getY() - deltaY / 2);
+				Geometry shell = new Geometry(Geometry.LINEAR_RING, 0, 0);
+				shell.setCoordinates(new Coordinate[] { c1, c2, c3, c4, c5 });
+
+				Coordinate c11 = new Coordinate(center.getX() - deltaX / 4, center.getY() - deltaY / 4);
+				Coordinate c12 = new Coordinate(center.getX() + deltaX / 4, center.getY() - deltaY / 4);
+				Coordinate c13 = new Coordinate(center.getX() + deltaX / 4, center.getY() + deltaY / 4);
+				Coordinate c14 = new Coordinate(center.getX() - deltaX / 4, center.getY() + deltaY / 4);
+				Coordinate c15 = new Coordinate(center.getX() - deltaX / 4, center.getY() - deltaY / 4);
+				Geometry hole = new Geometry(Geometry.LINEAR_RING, 0, 0);
+				hole.setCoordinates(new Coordinate[] { c11, c12, c13, c14, c15 });
+
+				polgon.setGeometries(new Geometry[] { shell, hole });
+				editor.getService().start(polgon);
+			}
+		});
+		toolStrip.addButton(btn3);
+
+		ToolStripButton btn4 = new ToolStripButton("new point");
+		btn4.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Geometry point = new Geometry(Geometry.POINT, 0, 0);
+				GeometryIndex index = editor.getService().getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+
+				editor.getService().start(point);
+				editor.getService().setInsertIndex(index);
+				editor.getService().setEditingState(GeometryEditingState.INSERTING);
+			}
+		});
+		toolStrip.addButton(btn4);
+
+		ToolStripButton btn5 = new ToolStripButton("new line");
+		btn5.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Geometry line = new Geometry(Geometry.LINE_STRING, 0, 0);
+				GeometryIndex index = editor.getService().getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+
+				editor.getService().start(line);
+				editor.getService().setInsertIndex(index);
+				editor.getService().setEditingState(GeometryEditingState.INSERTING);
+			}
+		});
+		toolStrip.addButton(btn5);
 
 		mapLayout.addMember(toolStrip);
 		mapLayout.addMember(map);

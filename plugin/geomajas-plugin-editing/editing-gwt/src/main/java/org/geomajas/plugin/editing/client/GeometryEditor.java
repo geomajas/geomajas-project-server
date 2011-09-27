@@ -50,7 +50,15 @@ public class GeometryEditor implements GeometryEditWorkflowHandler {
 		service = new GeometryEditingServiceImpl();
 		service.addGeometryEditWorkflowHandler(this);
 		baseController = new EditGeometryBaseController(mapWidget, service); // use factories?
+
 		renderer = new GeometryRenderer(mapWidget, service, baseController);
+		service.addGeometryEditWorkflowHandler(renderer);
+		service.addGeometryEditHighlightHandler(renderer);
+		service.addGeometryEditMarkForDeletionHandler(renderer);
+		service.addGeometryEditSelectionHandler(renderer);
+		service.addGeometryEditOperationHandler(renderer);
+		service.addGeometryEditChangeStateHandler(renderer);
+		service.addGeometryEditInsertMoveHandler(renderer);
 	}
 
 	// GeometryEditWorkflowHandler implementation:

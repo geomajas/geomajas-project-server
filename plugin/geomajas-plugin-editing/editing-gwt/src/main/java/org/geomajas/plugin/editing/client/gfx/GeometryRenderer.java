@@ -27,7 +27,9 @@ import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
+import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Point;
+import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
@@ -40,6 +42,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditHighlightBeginEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditHighlightEndEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditHighlightHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditInsertMoveEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditInsertMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionBeginEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionEndEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionHandler;
@@ -71,7 +75,7 @@ import com.smartgwt.client.types.Cursor;
  */
 public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEditHighlightHandler,
 		GeometryEditOperationHandler, GeometryEditChangeStateHandler, GeometryEditSelectionHandler,
-		GeometryEditMarkForDeletionHandler, MapViewChangedHandler {
+		GeometryEditMarkForDeletionHandler, GeometryEditInsertMoveHandler, MapViewChangedHandler {
 
 	private StyleService styleService = new DefaultStyleService();
 
@@ -83,17 +87,13 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 
 	private String baseName = "editing";
 
+	private String insertMoveEdgeId = "insert-move-edge";
+
 	private HandlerRegistration mapViewRegistration;
 
 	public GeometryRenderer(MapWidget mapWidget, GeometryEditingService editingService, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
-		editingService.addGeometryEditWorkflowHandler(this);
-		editingService.addGeometryEditHighlightHandler(this);
-		editingService.addGeometryEditMarkForDeletionHandler(this);
-		editingService.addGeometryEditSelectionHandler(this);
-		editingService.addGeometryEditOperationHandler(this);
-		editingService.addGeometryEditChangeStateHandler(this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -190,7 +190,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 				toRedraw.add(index);
 				try {
 					List<GeometryIndex> neighbors = null;
-					switch (index.getType()) {
+					switch (editingService.getIndexService().getType(index)) {
 						case TYPE_VERTEX:
 							neighbors = editingService.getIndexService().getAdjacentEdges(event.getGeometry(), index);
 							break;
@@ -205,6 +205,19 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 						toRedraw.addAll(neighbors);
 					}
 				} catch (GeometryIndexNotFoundException e) {
+				}
+			}
+
+			// Check if we need to draw the background (nice, but slows down):
+			if (styleService.getBackgroundStyle() != null && styleService.getBackgroundStyle().getFillOpacity() > 0) {
+				if (event.getGeometry().getGeometryType().equals(Geometry.POLYGON)) {
+					org.geomajas.gwt.client.spatial.geometry.Geometry transformed = mapWidget.getMapModel()
+							.getMapView().getWorldViewTransformer()
+							.worldToPan(GeometryConverter.toGwt(event.getGeometry()));
+					mapWidget.getVectorContext().drawPolygon(groups.get(baseName + ".background"), "background",
+							(Polygon) transformed, styleService.getBackgroundStyle());
+				} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)) {
+					// ....
 				}
 			}
 		}
@@ -244,12 +257,38 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 	}
 
 	// ------------------------------------------------------------------------
+	// GeometryEditInsertMoveHandler:
+	// ------------------------------------------------------------------------
+
+	public void onInsertMove(GeometryEditInsertMoveEvent event) {
+		// Drag an edge from the last vertex to the given location:
+		GeometryIndex last = editingService.getIndexService().getPreviousVertex(editingService.getInsertIndex());
+
+		if (last.getValue() >= 0) {
+			String identifier = baseName + "." + editingService.getIndexService().format(last);
+			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
+
+			try {
+				Coordinate temp1 = editingService.getIndexService().getVertex(editingService.getGeometry(), last);
+				Coordinate temp2 = editingService.getInsertMoveLocation();
+				Coordinate c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp1);
+				Coordinate c2 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToPan(temp2);
+				LineString edge = mapWidget.getMapModel().getGeometryFactory()
+						.createLineString(new Coordinate[] { c1, c2 });
+				mapWidget.getVectorContext().drawLine(parentGroup, insertMoveEdgeId, edge,
+						styleService.getEdgeInsertMoveStyle());
+			} catch (GeometryIndexNotFoundException e) {
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------------
 	// Geometry rendering methods:
 	// ------------------------------------------------------------------------
 
 	private void redraw(Geometry geometry, GeometryIndex index) {
 		try {
-			switch (index.getType()) {
+			switch (editingService.getIndexService().getType(index)) {
 				case TYPE_VERTEX:
 					redrawVertex(geometry, index);
 					break;
@@ -360,10 +399,75 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 		GraphicsContext graphics = mapWidget.getVectorContext();
 		graphics.drawGroup(mapWidget.getGroup(RenderGroup.VECTOR), geometry);
 
-		if (transformed instanceof LineString) {
+		if (transformed instanceof Polygon) {
+			draw(geometry, null, (Polygon) transformed, graphics);
+		} else if (transformed instanceof LineString) {
 			draw(geometry, null, (LineString) transformed, graphics);
 		} else if (transformed instanceof Point) {
 			draw(geometry, null, (Point) transformed, graphics);
+		}
+	}
+
+	private void draw(Object parentGroup, GeometryIndex parentIndex, Polygon polygon, GraphicsContext graphics) {
+		String groupName = baseName;
+		if (parentIndex != null) {
+			groupName += "." + editingService.getIndexService().format(parentIndex);
+		}
+
+		Composite bgGroup = getOrCreateGroup(parentGroup, groupName + ".background");
+		getOrCreateGroup(parentGroup, groupName + ".geometries-selection");
+		Composite geometryGroup = getOrCreateGroup(parentGroup, groupName + ".geometries");
+
+		// Check if we need to draw the background (nice, but slows down):
+		if (styleService.getBackgroundStyle() != null && styleService.getBackgroundStyle().getFillOpacity() > 0) {
+			graphics.drawPolygon(bgGroup, "background", polygon, styleService.getBackgroundStyle());
+		}
+
+		// Draw the exterior ring:
+		GeometryIndex shellIndex = editingService.getIndexService().addChildren(parentIndex,
+				GeometryIndexType.TYPE_GEOMETRY, 0);
+		draw(geometryGroup, shellIndex, polygon.getExteriorRing(), graphics);
+
+		// Draw the interior rings:
+		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
+			GeometryIndex holeIndex = editingService.getIndexService().addChildren(parentIndex,
+					GeometryIndexType.TYPE_GEOMETRY, i + 1);
+			draw(geometryGroup, holeIndex, polygon.getInteriorRingN(i), graphics);
+		}
+	}
+
+	private void draw(Object parentGroup, GeometryIndex parentIndex, LinearRing linearRing, GraphicsContext graphics) {
+		String groupName = baseName;
+		if (parentIndex != null) {
+			groupName += "." + editingService.getIndexService().format(parentIndex);
+		}
+		getOrCreateGroup(parentGroup, groupName + ".edges-selection");
+		Composite edgeGroup = getOrCreateGroup(parentGroup, groupName + ".edges");
+		getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
+		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
+
+		// Draw individual edges:
+		Coordinate[] coordinates = linearRing.getCoordinates();
+		for (int i = 1; i < coordinates.length; i++) {
+			GeometryIndex edgeIndex = editingService.getIndexService().addChildren(parentIndex,
+					GeometryIndexType.TYPE_EDGE, i - 1);
+			String identifier = baseName + "." + editingService.getIndexService().format(edgeIndex);
+
+			LineString edge = linearRing.getGeometryFactory().createLineString(
+					new Coordinate[] { coordinates[i - 1], coordinates[i] });
+			graphics.drawLine(edgeGroup, identifier, edge, styleService.getEdgeStyle());
+			graphics.setController(edgeGroup, identifier, createEdgeController(edgeIndex));
+		}
+
+		// Draw individual vertices:
+		for (int i = 0; i < coordinates.length - 1; i++) {
+			GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
+					GeometryIndexType.TYPE_VERTEX, i);
+			String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
+
+			Bbox rectangle = new Bbox(coordinates[i].getX() - 6, coordinates[i].getY() - 6, 12, 12);
+			graphics.drawRectangle(vertexGroup, identifier, rectangle, styleService.getVertexStyle());
+			graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 		}
 	}
 
@@ -454,8 +558,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 		controller.addMapHandler(new GeometryIndexSnapToDeleteHandler());
 
 		// TODO revisit this edge marker:
-		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapWidget, editingService,
-				controller);
+		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapWidget, editingService, controller);
 		controller.addMouseOutHandler(edgeMarkerHandler);
 		controller.addMouseMoveHandler(edgeMarkerHandler);
 		controller.addMapDownHandler(edgeMarkerHandler);

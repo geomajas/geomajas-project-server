@@ -61,12 +61,19 @@ public class GeometryIndexImpl implements GeometryIndex {
 		}
 		return type == index.getType() && value == index.getValue() && hasChild() == index.hasChild();
 	}
-	
+
 	public int hashCode() {
 		if (hasChild()) {
 			return (getChild().hashCode() + value) * type.hashCode();
 		}
 		return (37 + value) * type.hashCode();
+	}
+
+	public String toString() {
+		if (child != null) {
+			return type.toString() + "-" + value + " / " + child.toString();
+		}
+		return type.toString() + "-" + value;
 	}
 
 	/*

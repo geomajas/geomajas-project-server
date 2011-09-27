@@ -17,6 +17,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditHighlightHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditInsertMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditOperationHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditSelectionHandler;
@@ -114,6 +115,17 @@ public interface GeometryEditingService {
 	 * @return The registration of the handler.
 	 */
 	HandlerRegistration addGeometryEditChangeStateHandler(GeometryEditChangeStateHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditInsertMoveHandler} to listen to mouse move events while inserting. These move
+	 * events portray the state of the geometry should a point be inserted at the given location. This event exists
+	 * mainly for renderers to display this temporary state.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryEditInsertMoveHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditInsertMoveHandler(GeometryEditInsertMoveHandler handler);
 
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:
@@ -291,8 +303,20 @@ public interface GeometryEditingService {
 	boolean isMarkedForDeletion(GeometryIndex index);
 
 	// ------------------------------------------------------------------------
+	// Methods regarding the insert move events:
+	// ------------------------------------------------------------------------
+	
+	void setInsertMoveLocation(Coordinate location);
+	
+	Coordinate getInsertMoveLocation();
+
+	// ------------------------------------------------------------------------
 	// Getters:
 	// ------------------------------------------------------------------------
+
+	GeometryIndex getInsertIndex();
+
+	void setInsertIndex(GeometryIndex insertIndex);
 
 	/**
 	 * Get the current geometry. This geometry may change shape during the editing process.

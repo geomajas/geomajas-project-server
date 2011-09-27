@@ -32,19 +32,21 @@ public class DefaultStyleService implements StyleService {
 
 	private ShapeStyle edgeStyle = new ShapeStyle("#FFFFFF", 0, "#FFAA00", 1, 4);
 
-	private ShapeStyle edgeHoverStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 4);
+	private ShapeStyle edgeHoverStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 6);
 
-	private ShapeStyle edgeSelectStyle = new ShapeStyle("#FFFFFF", 0, "#CC8800", 1, 5);
+	private ShapeStyle edgeSelectStyle = new ShapeStyle("#FFFFFF", 0, "#CC8800", 1, 6);
 
-	private ShapeStyle edgeSelectHoverStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 5);
+	private ShapeStyle edgeSelectHoverStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 6);
 
-	private ShapeStyle edgeMarkForDeletionStyle = new ShapeStyle("#FF0000", 0, "#990000", 1, 5);
+	private ShapeStyle edgeMarkForDeletionStyle = new ShapeStyle("#FF0000", 0, "#990000", 1, 6);
+
+	private ShapeStyle edgeInsertMoveStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 2);
 
 	private ShapeStyle lineStringStyle = new ShapeStyle("#FFFFFF", 0, "#FFFFFF", 0, 0);
 
 	private ShapeStyle linearRingStyle = new ShapeStyle("#FFEE00", 0, "#FFAA00", 1, 3);
 
-	private ShapeStyle backgroundStyle = new ShapeStyle("#FFCC00", 0.5f, "#FFAA00", 0, 0);
+	private ShapeStyle backgroundStyle = new ShapeStyle("#FFCC00", 0.35f, "#FFAA00", 0, 0);
 
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
@@ -148,5 +150,13 @@ public class DefaultStyleService implements StyleService {
 
 	public void setBackgroundStyle(ShapeStyle backgroundStyle) {
 		this.backgroundStyle = backgroundStyle;
+	}
+
+	public ShapeStyle getEdgeInsertMoveStyle() {
+		return edgeInsertMoveStyle;
+	}
+
+	public void setEdgeInsertMoveStyle(ShapeStyle edgeInsertMoveStyle) {
+		this.edgeInsertMoveStyle = edgeInsertMoveStyle;
 	}
 }

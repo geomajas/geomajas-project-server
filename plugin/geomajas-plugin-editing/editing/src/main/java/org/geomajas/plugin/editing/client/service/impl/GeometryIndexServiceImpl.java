@@ -197,9 +197,17 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 		}
 	}
 
+	public GeometryIndex getPreviousVertex(GeometryIndex index) {
+		if (index.hasChild()) {
+			return new GeometryIndexImpl(index.getType(), index.getValue(), getNextVertex(index.getChild()));
+		} else {
+			return new GeometryIndexImpl(GeometryIndexType.TYPE_VERTEX, index.getValue() - 1, null);
+		}
+	}
+
 	public int getSiblingCount(Geometry geometry, GeometryIndex index) {
-		if (index.hasChild() && geometry.getGeometries() != null 
-				&& geometry.getGeometries().length > index.getValue()) {
+		if (index.hasChild() && geometry.getGeometries() != null && geometry.getGeometries().length > 
+				index.getValue()) {
 			return getSiblingCount(geometry.getGeometries()[index.getValue()], index.getChild());
 		}
 		switch (index.getType()) {
@@ -222,12 +230,11 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 		}
 	}
 
-	public String getGeometryType(Geometry geometry, GeometryIndex index) {
-		if (index.hasChild() && index.getChild().getType() == GeometryIndexType.TYPE_GEOMETRY
-				&& geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
-			return getGeometryType(geometry.getGeometries()[index.getValue()], index.getChild());
+	public String getGeometryType(Geometry geom, GeometryIndex index) {
+		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
+			return getGeometryType(geom.getGeometries()[index.getValue()], index.getChild());
 		}
-		return geometry.getGeometryType();
+		return geom.getGeometryType();
 	}
 
 	public boolean isVertex(GeometryIndex index) {
@@ -269,6 +276,10 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 		} else if (index.getType() == GeometryIndexType.TYPE_VERTEX && geom.getCoordinates() != null
 				&& geom.getCoordinates().length > index.getValue()) {
 			geom.getCoordinates()[index.getValue()] = coordinate;
+			if (index.getValue() == 0 && geom.getGeometryType().equals(Geometry.LINEAR_RING)) {
+				// In case of closed ring, keep last coordinate equal to the first:
+				geom.getCoordinates()[geom.getCoordinates().length - 1] = new Coordinate(coordinate);
+			}
 		} else {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
 		}
@@ -280,7 +291,7 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 			insert(geom.getGeometries()[index.getValue()], index.getChild(), coordinates);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE && geom.getCoordinates() != null
 				&& geom.getCoordinates().length > index.getValue()) {
-			// We insert after the given index:
+			// Inserting on edges allows only to insert on existing edges. No adding at the end:
 			Coordinate[] result = new Coordinate[geom.getCoordinates().length + coordinates.size()];
 			int count = 0;
 			for (int i = 0; i < geom.getCoordinates().length; i++) {
@@ -290,6 +301,36 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 					}
 				}
 				result[i + count] = geom.getCoordinates()[i];
+			}
+			geom.setCoordinates(result);
+		} else if (index.getType() == GeometryIndexType.TYPE_VERTEX) {
+			// TODO check if we need to close a ring....
+			// When inserting between vertices, this should also support adding at the end.
+			Coordinate[] result = null;
+			if (geom.getCoordinates() == null) {
+				result = new Coordinate[] { coordinates.get(0) };
+			} else {
+				result = new Coordinate[geom.getCoordinates().length + coordinates.size()];
+				int count1 = 0, count2 = 0;
+				for (int i = 0; i < result.length; i++) {
+					if (i < index.getValue()) {
+						result[i] = geom.getCoordinates()[i];
+						count1++;
+					} else if (i == index.getValue()) {
+						if (index.getValue() < result.length - 1) {
+							result[i] = geom.getCoordinates()[i];
+							count1++;
+						} else {
+							result[i] = coordinates.get(count2);
+							count2++;
+						}
+					} else if (i < index.getValue() + geom.getCoordinates().length) {
+						result[i] = coordinates.get(count2);
+						count2++;
+					} else {
+						result[i] = geom.getCoordinates()[i - count1];
+					}
+				}
 			}
 			geom.setCoordinates(result);
 		} else {
@@ -310,6 +351,9 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 					result[count] = geom.getCoordinates()[i];
 					count++;
 				}
+			}
+			if (Geometry.LINEAR_RING.equals(geom.getGeometryType())) {
+				result[result.length - 1] = new Coordinate(result[0]);
 			}
 			geom.setCoordinates(result);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE && geom.getCoordinates() != null

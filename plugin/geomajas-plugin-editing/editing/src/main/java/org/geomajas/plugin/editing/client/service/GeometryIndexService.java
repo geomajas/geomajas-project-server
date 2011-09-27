@@ -225,6 +225,16 @@ public interface GeometryIndexService {
 	GeometryIndex getNextVertex(GeometryIndex index);
 
 	/**
+	 * Given a certain index, find the previous vertex in line.
+	 * 
+	 * @param index
+	 *            The index to start out from. Must point to either a vertex or and edge.
+	 * @return Returns the previous vertex index. Note that no geometry is given, and so no actual checking is done. It
+	 *         just returns the theoretical answer.
+	 */
+	GeometryIndex getPreviousVertex(GeometryIndex index);
+
+	/**
 	 * Given a certain index, how many indices of the same type can be found within the given geometry. This count
 	 * includes the given index.<br>
 	 * For example, if the index points to a vertex on a LinearRing within a polygon, then this will return the amount

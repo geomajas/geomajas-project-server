@@ -32,6 +32,7 @@ public class GeometryIndexSelectHandler extends AbstractGeometryIndexMapHandler 
 			} else {
 				service.select(Collections.singletonList(index));
 			}
+			event.stopPropagation();
 		} else {
 			// Deselect all and select only this index:
 			service.deselectAll();

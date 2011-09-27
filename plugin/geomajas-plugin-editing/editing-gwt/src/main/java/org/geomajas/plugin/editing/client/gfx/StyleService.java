@@ -39,6 +39,8 @@ public interface StyleService {
 	ShapeStyle getEdgeSelectHoverStyle();
 	
 	ShapeStyle getEdgeMarkForDeletionStyle();
+	
+	ShapeStyle getEdgeInsertMoveStyle();
 
 	ShapeStyle getLineStringStyle();
 

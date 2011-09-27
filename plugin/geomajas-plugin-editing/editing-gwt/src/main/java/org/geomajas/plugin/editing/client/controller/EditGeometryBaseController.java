@@ -34,6 +34,8 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 
 	private AbstractController dragController;
 
+	private AbstractController insertController;
+
 	private GeometryEditingService service;
 
 	// ------------------------------------------------------------------------
@@ -45,6 +47,7 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 		this.service = service;
 		idleController = new PanController(mapWidget);
 		dragController = new GeometryIndexDragController(service, this);
+		insertController = new GeometryIndexInsertController(service, this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -54,10 +57,12 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditingState.IDLE) {
 			// No shift key down, because we don't want to pan when deselecting vertices.
-			// TODO remove the shift check somehow...
+			// TODO remove the shift check somehow... (now replaced with a event.stopPropagation in selection handler)
 			idleController.onDown(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onDown(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onDown(event);
 		}
 	}
 
@@ -66,6 +71,8 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			idleController.onDrag(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onDrag(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onDrag(event);
 		}
 	}
 
@@ -75,6 +82,8 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			idleController.onMouseMove(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onMouseMove(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onMouseMove(event);
 		}
 	}
 
@@ -83,6 +92,8 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			idleController.onMouseOut(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onMouseOut(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onMouseOut(event);
 		}
 	}
 
@@ -91,6 +102,8 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			idleController.onMouseOver(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onMouseOver(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onMouseOver(event);
 		}
 	}
 
@@ -99,6 +112,36 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			idleController.onUp(event);
 		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
 			dragController.onUp(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onUp(event);
 		}
+	}
+
+	// ------------------------------------------------------------------------
+	// Getters and setters:
+	// ------------------------------------------------------------------------
+
+	public AbstractController getIdleController() {
+		return idleController;
+	}
+
+	public void setIdleController(AbstractController idleController) {
+		this.idleController = idleController;
+	}
+
+	public AbstractController getDragController() {
+		return dragController;
+	}
+
+	public void setDragController(AbstractController dragController) {
+		this.dragController = dragController;
+	}
+
+	public AbstractController getInsertController() {
+		return insertController;
+	}
+
+	public void setInsertController(AbstractController insertController) {
+		this.insertController = insertController;
 	}
 }

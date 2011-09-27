@@ -35,7 +35,9 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  * stop any further propagation of the events, to make sure the base controllers can't mess up. As a results it is
  * recommended to install this snapping handler as the latest vertex handler.
  * </p>
- * <p>At this moment only vertex snapping is supported, but later on, this may be applied to edges as well.</p>
+ * <p>
+ * At this moment only vertex snapping is supported, but later on, this may be applied to edges as well.
+ * </p>
  * 
  * @author Pieter De Graef
  */
@@ -77,9 +79,9 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 			GeometryIndex selected = service.getSelection().get(0);
 
 			// Check: is the selected index of the same type, and is it a neighbor?
-			if (selected.getType() == index.getType()
+			if (service.getIndexService().getType(index) == service.getIndexService().getType(selected)
 					&& service.getIndexService().isAdjacent(service.getGeometry(), index, selected)) {
-				
+
 				// Neighbor detected. Now see if there are enough vertices left to delete one:
 				int siblingCount = service.getIndexService().getSiblingCount(service.getGeometry(), index);
 				String geometryType = service.getIndexService().getGeometryType(service.getGeometry(), index);
@@ -102,7 +104,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 				}
 
 				// Than snap the selected vertex/edge to this one:
-				if (index.getType() == GeometryIndexType.TYPE_VERTEX) {
+				if (service.getIndexService().getType(index) == GeometryIndexType.TYPE_VERTEX) {
 					try {
 						Coordinate location = service.getIndexService().getVertex(service.getGeometry(), index);
 						service.move(Collections.singletonList(selected),

@@ -57,7 +57,7 @@ public class GeometryIndexDragController extends AbstractController {
 			// Go over all selected indices and find their new positions:
 			List<List<Coordinate>> coordinateList = new ArrayList<List<Coordinate>>();
 			for (GeometryIndex selected : service.getSelection()) {
-				switch (selected.getType()) {
+				switch (service.getIndexService().getType(selected)) {
 					case TYPE_VERTEX:
 						Coordinate from = service.getIndexService().getVertex(service.getGeometry(), selected);
 						Coordinate to = new Coordinate(from.getX() + deltaX, from.getY() + deltaY);

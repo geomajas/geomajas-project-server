@@ -24,6 +24,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditHighlightBeginEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditHighlightEndEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditHighlightHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditInsertMoveEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditInsertMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionBeginEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionEndEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionHandler;
@@ -65,6 +67,10 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 
 	private GeometryEditingState state = GeometryEditingState.IDLE;
 
+	private GeometryIndex insertIndex;
+
+	private Coordinate insertMoveLocation;
+
 	private boolean started;
 
 	// ------------------------------------------------------------------------
@@ -102,6 +108,10 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 
 	public HandlerRegistration addGeometryEditChangeStateHandler(GeometryEditChangeStateHandler handler) {
 		return eventBus.addHandler(GeometryEditChangeStateHandler.TYPE, handler);
+	}
+
+	public HandlerRegistration addGeometryEditInsertMoveHandler(GeometryEditInsertMoveHandler handler) {
+		return eventBus.addHandler(GeometryEditInsertMoveHandler.TYPE, handler);
 	}
 
 	// ------------------------------------------------------------------------
@@ -152,7 +162,7 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 			for (int i = 0; i < indices.size(); i++) {
 				GeometryIndex index = indices.get(i);
 				List<Coordinate> coords = coordinates.get(i);
-				switch (index.getType()) {
+				switch (indexService.getType(index)) {
 					case TYPE_VERTEX:
 						indexService.setVertex(geometry, index, coords.get(0));
 						break;
@@ -299,6 +309,19 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 	}
 
 	// ------------------------------------------------------------------------
+	// Methods regarding the insert move events:
+	// ------------------------------------------------------------------------
+
+	public Coordinate getInsertMoveLocation() {
+		return insertMoveLocation;
+	}
+
+	public void setInsertMoveLocation(Coordinate insertMoveLocation) {
+		this.insertMoveLocation = insertMoveLocation;
+		eventBus.fireEvent(new GeometryEditInsertMoveEvent());
+	}
+
+	// ------------------------------------------------------------------------
 	// Getters:
 	// ------------------------------------------------------------------------
 
@@ -308,5 +331,13 @@ public class GeometryEditingServiceImpl implements GeometryEditingService {
 
 	public GeometryIndexService getIndexService() {
 		return indexService;
+	}
+
+	public GeometryIndex getInsertIndex() {
+		return insertIndex;
+	}
+
+	public void setInsertIndex(GeometryIndex insertIndex) {
+		this.insertIndex = insertIndex;
 	}
 }
