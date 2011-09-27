@@ -101,21 +101,13 @@ public class TileCache implements SpatialCache {
 	 *            A {@link TileCode} instance.
 	 */
 	public VectorTile addTile(TileCode tileCode) {
-		VectorTile tile = tiles.get(tileCode.toString());
+		String code = tileCode.toString();
+		VectorTile tile = tiles.get(code);
 		if (tile == null) {
 			tile = new VectorTile(tileCode, calcBoundsForTileCode(tileCode), this);
-			tiles.put(tileCode.toString(), tile);
+			tiles.put(code, tile);
 		}
 		return tile;
-	}
-
-	public void getFeaturesByCode(TileCode code, int featureIncludes, LazyLoadCallback callback) {
-		if (code != null) {
-			VectorTile tile = tiles.get(code.toString());
-			if (tile != null) {
-				tile.getFeatures(featureIncludes, callback);
-			}
-		}
 	}
 
 	public VectorLayer getLayer() {
@@ -235,16 +227,13 @@ public class TileCache implements SpatialCache {
 
 			// Find needed tile codes:
 			List<TileCode> tileCodes = calcCodesForBounds(bbox);
-
-			// Make a clone, as we are going to modify the actual node map:
-			Map<String, VectorTile> currentNodes = new HashMap<String, VectorTile>(tiles);
+			Map<String, VectorTile> updatedTiles = new HashMap<String, VectorTile>(); // processed tiles
 			for (TileCode tileCode : tileCodes) {
-				VectorTile tile = currentNodes.get(tileCode.toString());
+				VectorTile tile = updatedTiles.get(tileCode.toString());
 				if (null == tile) {
 					tile = addTile(tileCode); // Add the node
+					tile.applyConnectedOnce(filter, onUpdate, updatedTiles);
 				}
-				tile.apply(filter, onUpdate);
-				tile.applyConnected(filter, onUpdate);
 			}
 		}
 	}

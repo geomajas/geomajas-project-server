@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.map.cache.tile;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
@@ -28,9 +29,6 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
-import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
-import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.util.Dom;
@@ -57,12 +55,6 @@ public class VectorTile extends AbstractVectorTile {
 
 	private VectorTileContentType contentType;
 
-	/** width in screen units */
-	private double screenWidth;
-
-	/** height in screen units */
-	private double screenHeight;
-
 	/** dependent tile codes */
 	private List<TileCode> codes = new ArrayList<TileCode>();
 
@@ -83,33 +75,6 @@ public class VectorTile extends AbstractVectorTile {
 	// -------------------------------------------------------------------------
 	// Spatial node functions:
 	// -------------------------------------------------------------------------
-
-	/**
-	 * Return all features in this tile. Warning : this will not return the features from other tiles that intersect
-	 * with this tile ! If you want to interact with all features, use the query() method.
-	 * 
-	 * @param featureIncludes
-	 *            what data should be available in the features
-	 * @param callback
-	 *            callback which gets the features
-	 * @deprecated features are no longer included in the tile
-	 */
-	@Deprecated
-	public void getFeatures(int featureIncludes, LazyLoadCallback callback) {
-		List<Feature> list = new ArrayList<Feature>();
-		LazyLoader.lazyLoad(list, featureIncludes, callback);
-	}
-
-	/**
-	 * Return all partial features in this tile. Warning : this will return possibly incomplete features !
-	 * 
-	 * @return a list of all features in this tile
-	 * @deprecated features are no longer included in the tile
-	 */
-	@Deprecated
-	public List<Feature> getPartialFeatures() {
-		return new ArrayList<Feature>();
-	}
 
 	/**
 	 * Fetch all data related to this tile.
@@ -133,8 +98,6 @@ public class VectorTile extends AbstractVectorTile {
 						codes.add(relatedTile);
 					}
 					code = tile.getCode();
-					screenWidth = tile.getScreenWidth();
-					screenHeight = tile.getScreenHeight();
 					contentType = tile.getContentType();
 					switch (contentType) {
 						case STRING_CONTENT:
@@ -168,24 +131,27 @@ public class VectorTile extends AbstractVectorTile {
 	}
 
 	/**
-	 * Execute a <code>TileFunction</code> in this tile and all connected tiles. If these connected tiles are not yet
-	 * part of the cache, then they will be fetched before applying the <code>TileFunction</code> on them.
-	 * 
-	 * @param filter
-	 *            A possible filter that needs to be used in case connected tile need to be fetched.
-	 * @param callback
-	 *            The actual <code>TileFunction</code> to be executed on the connected tiles.
+	 * Execute a {@link TileFunction} in this tile and all connected tiles. Only tiles which are not yet included in
+	 * updatedTiles are processed. Tiles are added in updatedTiles when processed.
+	 * If these connected tiles are not yet part of the cache, then they will be fetched before applying the
+	 * {@link TileFunction} on them.
+	 *
+	 * @param filter A filter that needs to be used in case connected tile need to be fetched.
+	 * @param callback The {@link TileFunction} to execute on the connected tiles.
+	 * @param updatedTiles list of already processed tiles to assure tiles are only processed once
 	 */
-	public void applyConnected(final String filter, final TileFunction<VectorTile> callback) {
+	public void applyConnectedOnce(final String filter, final TileFunction<VectorTile> callback,
+			final Map<String, VectorTile> updatedTiles) {
 		apply(filter, new TileFunction<VectorTile>() {
 
 			public void execute(VectorTile tile) {
+				updatedTiles.put(tile.getCode().toString(), tile);
+				callback.execute(tile);
 				List<TileCode> tileCodes = tile.getCodes();
 				for (TileCode tileCode : tileCodes) {
-					VectorTile temp = tile.cache.addTile(tileCode);
-					if (temp.getStatus() == STATUS.EMPTY) {
-						temp.fetch(filter, callback);
-					} else {
+					if (!updatedTiles.containsKey(tileCode.toString())) {
+						VectorTile temp = tile.cache.addTile(tileCode);
+						updatedTiles.put(tileCode.toString(), temp);
 						temp.apply(filter, callback);
 					}
 				}
@@ -249,6 +215,7 @@ public class VectorTile extends AbstractVectorTile {
 	 * Cancel the fetching of this tile. No callback will be executed anymore.
 	 */
 	public void cancel() {
+		super.cancel();
 		if (deferred != null) {
 			deferred.cancel();
 		}
@@ -260,14 +227,6 @@ public class VectorTile extends AbstractVectorTile {
 
 	public List<TileCode> getCodes() {
 		return codes;
-	}
-
-	public double getScreenWidth() {
-		return screenWidth;
-	}
-
-	public double getScreenHeight() {
-		return screenHeight;
 	}
 
 	public ContentHolder getFeatureContent() {
@@ -347,4 +306,7 @@ public class VectorTile extends AbstractVectorTile {
 		return request;
 	}
 
+	public String toString() {
+		return super.toString();
+	}
 }

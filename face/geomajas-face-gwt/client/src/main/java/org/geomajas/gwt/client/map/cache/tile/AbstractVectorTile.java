@@ -11,15 +11,9 @@
 
 package org.geomajas.gwt.client.map.cache.tile;
 
-import java.util.List;
-
-import com.google.gwt.core.client.GWT;
-import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
-import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 
@@ -31,6 +25,8 @@ import org.geomajas.layer.tile.TileCode;
  * @author Pieter De Graef
  */
 public abstract class AbstractVectorTile implements Tile, PaintableGroup {
+
+	private boolean cancelled;
 
 	/**
 	 * Possible statuses.
@@ -64,26 +60,22 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 		this.cache = cache;
 	}
 
+	/**
+	 * Cancel the fetching of this tile. No callback will be executed anymore.
+	 */
+	public void cancel() {
+		cancelled = true;
+	}
+
+
 	// -------------------------------------------------------------------------
 	// PainterVisitable implementation:
 	// -------------------------------------------------------------------------
 
 	public void accept(final PainterVisitor visitor, final Object group, final Bbox bounds, final boolean recursive) {
-		// Draw the tile and therefore all it's features:
-		visitor.visit(this, group);
-
-		// Draw all selected features:
-		if (recursive) {
-			getFeatures(GeomajasConstant.FEATURE_INCLUDE_NONE, new LazyLoadCallback() {
-				public void execute(List<Feature> response) {
-					GWT.log("          draw vector tile " + code);
-					for (Feature feature : response) {
-						if (feature != null && feature.isSelected()) {
-							feature.accept(visitor, group, bounds, recursive);
-						}
-					}
-				}
-			});
+		if (!cancelled) {
+			// Draw the tile and therefore all it's features:
+			visitor.visit(this, group);
 		}
 	}
 
@@ -101,14 +93,6 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 	public String getGroupName() {
 		return code.toString();
 	}
-
-	/**
-	 * Return all features in this node.
-	 *
-	 * @param featureIncludes what data should be available in the features
-	 * @param callback callback which gets the features
-	 */
-	public abstract void getFeatures(int featureIncludes, LazyLoadCallback callback);
 
 	public STATUS getStatus() {
 		return STATUS.EMPTY;

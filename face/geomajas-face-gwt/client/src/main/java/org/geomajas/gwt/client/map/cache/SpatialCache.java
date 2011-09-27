@@ -12,7 +12,6 @@
 package org.geomajas.gwt.client.map.cache;
 
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -37,18 +36,6 @@ public interface SpatialCache extends VectorLayerStore {
 	 * @return the previous tile with same code from the cache if any
 	 */
 	VectorTile addTile(TileCode tileCode);
-
-	/**
-	 * Return an array of all features in a certain {@link org.geomajas.gwt.client.map.cache.tile.AbstractVectorTile}.
-	 * This node is selected through it's unique {@link TileCode}.
-	 *
-	 * @param code
-	 *            A {@link TileCode} instance. If the node with this code is not present, an empty array will be
-	 *            returned.
-	 * @param featureIncludes what data should be available in the features
-	 * @param callback callback which gets the features
-	 */
-	void getFeaturesByCode(TileCode code, int featureIncludes, LazyLoadCallback callback);
 
 	/**
 	 * Return the <code>VectorLayer</code> for this cache.
