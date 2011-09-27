@@ -34,8 +34,8 @@ import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.core.client.GWT;
@@ -72,8 +72,6 @@ import org.geomajas.gwt.client.util.WidgetLayout;
  */
 @Api
 public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHandler, LayerSelectionHandler {
-
-	protected static final int LAYER_TREE_BUTTON_SIZE = 24;
 
 	private final HTMLFlow htmlSelectedLayer = new HTMLFlow(I18nProvider.getLayerTree().activeLayer(
 			I18nProvider.getLayerTree().none()));
@@ -112,9 +110,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		htmlSelectedLayer.setWidth100();
 
 		// Wait for the MapModel to be loaded
-		mapModel.addMapModelHandler(new MapModelHandler() {
+		mapModel.addMapModelChangedHandler(new MapModelChangedHandler() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				if (!initialized) {
 					buildTree(mapModel);
 					toolStrip = buildToolstrip(mapWidget);
@@ -123,15 +121,15 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 					VLayout vLayout = new VLayout();
 					vLayout.setSize("100%", "100%");
 					vLayout.addMember(toolStrip);
-					htmlSelectedLayer.setBackgroundColor("#cccccc");
+					htmlSelectedLayer.setBackgroundColor(WidgetLayout.layerTreeBackground);
 					htmlSelectedLayer.setAlign(Alignment.CENTER);
 					vLayout.addMember(htmlSelectedLayer);
 					vLayout.addMember(treeGrid);
-					treeGrid.markForRedraw();
 					LayerTree.this.addChild(vLayout);
-					LayerTree.this.markForRedraw();
 				}
 				initialized = true;
+				treeGrid.markForRedraw();
+				LayerTree.this.markForRedraw();
 			}
 		});
 		mapModel.addLayerSelectionHandler(this);
@@ -258,7 +256,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				if (button != null) {
 					toolStrip.addMember(button);
 					LayoutSpacer spacer = new LayoutSpacer();
-					spacer.setWidth(2);
+					spacer.setWidth(WidgetLayout.layerTreePadding);
 					toolStrip.addMember(spacer);
 				}
 			}
@@ -359,8 +357,8 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			}
 
 			// treeNodes
-			List<ClientLayerTreeNodeInfo> childs = treeNode.getTreeNodes();
-			for (ClientLayerTreeNodeInfo newNode : childs) {
+			List<ClientLayerTreeNodeInfo> children = treeNode.getTreeNodes();
+			for (ClientLayerTreeNodeInfo newNode : children) {
 				processNode(newNode, node, tree, mapModel, refresh);
 			}
 
@@ -409,9 +407,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		public LayerTreeButton(final LayerTree tree, final LayerTreeAction action) {
 			this.tree = tree;
 			this.action = action;
-			setWidth(LAYER_TREE_BUTTON_SIZE);
-			setHeight(LAYER_TREE_BUTTON_SIZE);
-			setIconSize(LAYER_TREE_BUTTON_SIZE - 8);
+			setWidth(WidgetLayout.layerTreeButtonSize);
+			setHeight(WidgetLayout.layerTreeButtonSize);
+			setIconSize(WidgetLayout.layerTreeButtonSize - WidgetLayout.layerTreeStripHeight);
 			setIcon(action.getIcon());
 			setTooltip(action.getTooltip());
 			setActionType(SelectionType.BUTTON);
@@ -466,9 +464,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		public LayerTreeModalButton(final LayerTree tree, final LayerTreeModalAction modalAction) {
 			this.tree = tree;
 			this.modalAction = modalAction;
-			setWidth(LayerTree.LAYER_TREE_BUTTON_SIZE);
-			setHeight(LayerTree.LAYER_TREE_BUTTON_SIZE);
-			setIconSize(LayerTree.LAYER_TREE_BUTTON_SIZE - 8);
+			setWidth(WidgetLayout.layerTreeButtonSize);
+			setHeight(WidgetLayout.layerTreeButtonSize);
+			setIconSize(WidgetLayout.layerTreeButtonSize - WidgetLayout.layerTreeStripHeight);
 			setIcon(modalAction.getDeselectedIcon());
 			setActionType(SelectionType.CHECKBOX);
 			setTooltip(modalAction.getDeselectedTooltip());
@@ -560,12 +558,12 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		}
 
 		/**
-		 * Causes the node to check its status (visible, showing labels, ...) and to update its icon to match its
+		 * Causes the node to check its status (visible, showing labels,...) and to update its icon to match its
 		 * status.
 		 */
 		public void updateIcon() {
 			if (getLayer().isShowing()) {
-				if (getLayer().isLabeled()) {
+				if (getLayer().isLabelsShowing()) {
 					// show icon labeled and showing
 					setIcon(WidgetLayout.iconLayerShowLabeled);
 				} else {

@@ -327,7 +327,14 @@ public final class WidgetLayout {
 	/** Height of the strip which is part of the toolbar. */
 	public static int toolbarStripHeight = 8;
 
-
+	/** Padding for the buttons in the layer tree. */
+	public static int layerTreePadding = 2;
+	/** Button size for the small buttons in the layer tree. */
+	public static int layerTreeButtonSize = 24;
+	/** Height of the strip which is part of the layer tree. */
+	public static int layerTreeStripHeight = 8;
+	/** Background in the  the layer tree. */
+	public static String layerTreeBackground = "#cccccc";
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
