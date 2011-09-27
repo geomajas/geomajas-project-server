@@ -65,6 +65,7 @@ import org.geomajas.gwt.client.util.Log;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api
@@ -99,6 +100,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	private GeometryFactory geometryFactory;
 
 	private boolean initialized;
+	private boolean initCalled;
 	private boolean mapModelEventFired; // assures MapModelEvent is only fired once
 
 	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
@@ -142,8 +144,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 				refresh(); // clearing is done in the refresh
 			}
 		});
-
-		refreshFromConfiguration();
 	}
 
 	// constructor for testing
@@ -350,6 +350,23 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		if (isInitialized()) { // to prevent double refresh on logout/login
 			clear();
 			ClientConfigurationService.clear(); // refresh because configuration changed, clear cache
+			refreshFromConfiguration();
+		}
+	}
+
+	/**
+	 * Initialize the map model. This will read the configuration.
+	 * <p/>
+	 * Make sure the handler are registered before initializing the map model or you may miss events.
+	 * <p/>
+	 * Only works the first time, use {@link #refresh()} later on.
+	 *
+	 * @since 1.10.0
+	 */
+	@Api
+	public void init() {
+		if (!initCalled) {
+			initCalled = true;
 			refreshFromConfiguration();
 		}
 	}
