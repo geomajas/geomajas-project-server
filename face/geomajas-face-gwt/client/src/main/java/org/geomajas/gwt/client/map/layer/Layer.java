@@ -23,7 +23,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 /**
  * <p>
  * The most basic interface for a layer on the client. Since we will want to
- * paint layers on the map, it implements the <code>Paintable</code> interface.
+ * paint layers on the map, it implements the {@link PaintableGroup} interface.
  * </p>
  * 
  * @param <T>
@@ -62,7 +62,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	 * that the ID is used behind the screens, while the label is the visible
 	 * name to the user.
 	 * 
-	 * @return
+	 * @return label
 	 */
 	String getLabel();
 
@@ -95,7 +95,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Set the selected status of the layer.
 	 * 
-	 * @param selected
+	 * @param selected selected status
 	 */
 	void setSelected(boolean selected);
 
@@ -110,13 +110,23 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Get the labeled status for this layer.
 	 * 
-	 * @deprecated Use isLabelsShowing() instead
+	 * @deprecated Use {#isLabelsShowing()} instead
 	 * 
 	 * @return True if labels are showing, false otherwise ; note that if the
 	 *         layer is not visible the labels are automatically invisible
 	 */
 	@Deprecated
 	boolean isLabeled();
+
+	/**
+	 * Returns true if labels are currently showing (eg. isShowing == true && isLabelsVisible == true).
+	 *
+	 * @return true when labels are enabled and the layer is showing
+	 * @since 1.10.0
+	 */
+	@Api
+	public boolean isLabelsShowing();
+
 
 	/**
 	 * Get the showing status of this layer.
@@ -138,7 +148,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	 * Add handlers for {@link LayerChangedHandler}s. These events occur when
 	 * the layer changes it's visible or labeled values.
 	 * 
-	 * @param handler
+	 * @param handler handler to register
 	 * @return Returns the handler registration object.
 	 */
 	HandlerRegistration addLayerChangedHandler(LayerChangedHandler handler);
@@ -147,7 +157,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	 * Add handlers for {@link LayerStyleChangedHandler}s. These events occur
 	 * when the layer style changes.
 	 * 
-	 * @param handler
+	 * @param handler handler to register
 	 * @return Returns the handler registration object.
 	 * @since 1.8.0
 	 */

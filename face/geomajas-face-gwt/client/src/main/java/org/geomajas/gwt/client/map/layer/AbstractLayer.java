@@ -123,6 +123,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	}
 
 	/**
+	 * Update showing state.
 	 * 
 	 * @param fireEvents Should events be fired if state changes?
 	 */
