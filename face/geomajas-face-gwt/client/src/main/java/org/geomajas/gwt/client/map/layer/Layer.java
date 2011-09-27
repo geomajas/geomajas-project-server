@@ -127,7 +127,6 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	@Api
 	boolean isLabelsShowing();
 
-
 	/**
 	 * Get the showing status of this layer.
 	 * 
