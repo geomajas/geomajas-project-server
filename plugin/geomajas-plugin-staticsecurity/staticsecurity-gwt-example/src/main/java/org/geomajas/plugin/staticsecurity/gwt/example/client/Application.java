@@ -184,7 +184,6 @@ public class Application implements EntryPoint {
 		});
 
 		// Overview map layout:
-		/*
 		SectionStackSection section1 = new SectionStackSection("Overview map");
 		section1.setExpanded(true);
 		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
@@ -192,7 +191,6 @@ public class Application implements EntryPoint {
 		overviewMap.setRectangleStyle(new ShapeStyle("#6699FF", 0.3f, "#6699CC", 1f, 2));
 		section1.addItem(overviewMap);
 		sectionStack.addSection(section1);
-		*/
 
 		// LayerTree layout:
 		SectionStackSection section2 = new SectionStackSection("Layer tree");
@@ -218,17 +216,12 @@ public class Application implements EntryPoint {
 		mainLayout.addMember(layout);
 		mainLayout.draw();
 
-		// Install a loading screen.
-		// This only works if the application initially shows a map with at least 1 vector layer:
-		// LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas staticsecurity example application");
-		// loadScreen.draw();
-
-		// Then initialize:
+		// Initialize:
 		initialize();
 	}
 
 	private void initialize() {
 		legend.setHeight(200);
-		//overviewMap.setHeight(200);
+		overviewMap.setHeight(200);
 	}
 }
