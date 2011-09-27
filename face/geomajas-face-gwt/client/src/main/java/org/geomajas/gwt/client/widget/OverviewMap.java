@@ -114,7 +114,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		addResizedHandler(new ResizedHandler() {
 
 			public void onResized(ResizedEvent event) {
-				updateMaxExtent();
+				if (getMapModel().isInitialized()) {
+					updateMaxExtent();
+				}
 			}
 		});
 		setController(new OverviewMapController(this));
@@ -151,10 +153,20 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the linked map for this overview map.
+	 *
+	 * @return linked map
+	 */
 	public MapWidget getTargetMap() {
 		return targetMap;
 	}
 
+	/**
+	 * Does the overview map zoom in/out according to targetMap?
+	 *
+	 * @return true when overview map zooms in and out with linked map
+	 */
 	public boolean isDynamicOverview() {
 		return dynamicOverview;
 	}
