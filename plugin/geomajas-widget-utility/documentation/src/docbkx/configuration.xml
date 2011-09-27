@@ -99,7 +99,25 @@
       <example>
         <title>Example Ribbon configuration</title>
 
-        <para><programlisting>&lt;bean <emphasis role="bold">name="ribbon-bar-1"</emphasis> class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo"&gt;
+        <para><programlisting>&lt;!-- application configuration --&gt;
+&lt;bean name="app" class="org.geomajas.configuration.client.ClientApplicationInfo"&gt;
+   &lt;property name="maps"&gt;
+      &lt;list&gt;
+         &lt;ref bean="mainMap" /&gt;
+         &lt;ref bean="overviewMap" /&gt;
+      &lt;/list&gt;
+   &lt;/property&gt;
+   &lt;property name="widgetInfo"&gt;
+      &lt;map&gt;
+         &lt;entry key="<emphasis role="bold">ribbon-bar-1</emphasis>"&gt;
+            &lt;ref bean="<emphasis role="bold">ribbon-bar-1</emphasis>" /&gt;
+         &lt;/entry&gt;
+      &lt;/map&gt;
+   &lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;!-- ribbon configuration --&gt;
+&lt;bean <emphasis role="bold">name="ribbon-bar-1"</emphasis> class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo"&gt;
    &lt;property name="groups"&gt;
       &lt;list&gt;
          &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo"&gt;
@@ -162,7 +180,7 @@
       create a Ribbon widget using the above configuration, use the following
       Java code on the client:</para>
 
-      <programlisting>RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "ribbon-bar-1");</programlisting>
+      <programlisting>RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "app", "ribbon-bar-1");</programlisting>
 
       <para>The Ribbon bar widget with the above configuration will look like
       this:</para>
@@ -214,7 +232,7 @@
       client widgets can use this configuration part. The following Java code
       will create a tabbed Ribbon using the above configuration:</para>
 
-      <programlisting>RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "tabbed-ribbon-1");</programlisting>
+      <programlisting>RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "app", "tabbed-ribbon-1");</programlisting>
 
       <para>Note that a different type of widget is used (RibbonTabLayout
       instead of RibbonBarLayout)!</para>
