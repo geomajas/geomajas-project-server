@@ -64,6 +64,6 @@ public class TextPainter implements Painter {
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		Text text = (Text) paintable;
-		context.getVectorContext().deleteElement(null, text.getId());
+		context.getVectorContext().deleteElement(group, text.getId());
 	}
 }
