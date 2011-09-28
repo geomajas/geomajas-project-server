@@ -58,6 +58,9 @@ public class Point extends AbstractGeometry {
 	}
 
 	public Coordinate[] getCoordinates() {
+		if (coordinate == null) {
+			return null;
+		}
 		return new Coordinate[] {coordinate};
 	}
 
@@ -65,7 +68,7 @@ public class Point extends AbstractGeometry {
 	 * Return the number of coordinates.
 	 */
 	public int getNumPoints() {
-		return 1;
+		return coordinate == null ? 0 : 1;
 	}
 
 	/**

@@ -11,9 +11,9 @@
 
 package org.geomajas.gwt.client.util;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
@@ -26,7 +26,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 /**
  * Converter for geometric objects. This class supports converting between GWT and DTO geometries. The GWT geometries
  * are used client-side in the GWT face, while the DTO geometries are the ones sent to the server (hence the name...).
- *
+ * 
  * @author Pieter De Graef
  * @since 1.9.0
  */
@@ -39,7 +39,7 @@ public final class GeometryConverter {
 
 	/**
 	 * Takes in a GWT geometry, and creates a new DTO geometry from it.
-	 *
+	 * 
 	 * @param geometry
 	 *            The geometry to convert into a DTO geometry.
 	 * @return Returns a DTO type geometry, that is serializable.
@@ -64,15 +64,17 @@ public final class GeometryConverter {
 		} else if (geometry instanceof Polygon) {
 			dto = new Geometry(Geometry.POLYGON, srid, precision);
 			Polygon polygon = (Polygon) geometry;
-			Geometry[] geometries = new Geometry[polygon.getNumInteriorRing() + 1];
-			for (int i = 0; i < geometries.length; i++) {
-				if (i == 0) {
-					geometries[i] = toDto(polygon.getExteriorRing());
-				} else {
-					geometries[i] = toDto(polygon.getInteriorRingN(i - 1));
+			if (!polygon.isEmpty()) {
+				Geometry[] geometries = new Geometry[polygon.getNumInteriorRing() + 1];
+				for (int i = 0; i < geometries.length; i++) {
+					if (i == 0) {
+						geometries[i] = toDto(polygon.getExteriorRing());
+					} else {
+						geometries[i] = toDto(polygon.getInteriorRingN(i - 1));
+					}
 				}
+				dto.setGeometries(geometries);
 			}
-			dto.setGeometries(geometries);
 		} else if (geometry instanceof MultiPoint) {
 			dto = new Geometry(Geometry.MULTI_POINT, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
@@ -93,7 +95,7 @@ public final class GeometryConverter {
 
 	/**
 	 * Takes in a DTO geometry, and converts it into a GWT geometry.
-	 *
+	 * 
 	 * @param geometry
 	 *            The DTO geometry to convert into a GWT geometry.
 	 * @return Returns a GWT geometry.
@@ -117,21 +119,37 @@ public final class GeometryConverter {
 		} else if (Geometry.LINE_STRING.equals(geometryType)) {
 			gwt = factory.createLineString(geometry.getCoordinates());
 		} else if (Geometry.POLYGON.equals(geometryType)) {
-			LinearRing exteriorRing = (LinearRing) toGwt(geometry.getGeometries()[0]);
-			LinearRing[] interiorRings = new LinearRing[geometry.getGeometries().length - 1];
-			for (int i = 0; i < interiorRings.length; i++) {
-				interiorRings[i] = (LinearRing) toGwt(geometry.getGeometries()[i + 1]);
+			if (geometry.getGeometries() == null) {
+				gwt = factory.createPolygon(null, null);
+			} else {
+				LinearRing exteriorRing = (LinearRing) toGwt(geometry.getGeometries()[0]);
+				LinearRing[] interiorRings = new LinearRing[geometry.getGeometries().length - 1];
+				for (int i = 0; i < interiorRings.length; i++) {
+					interiorRings[i] = (LinearRing) toGwt(geometry.getGeometries()[i + 1]);
+				}
+				gwt = factory.createPolygon(exteriorRing, interiorRings);
 			}
-			gwt = factory.createPolygon(exteriorRing, interiorRings);
 		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
-			Point[] points = new Point[geometry.getGeometries().length];
-			gwt = factory.createMultiPoint((Point[]) convertGeometries(geometry, points));
+			if (geometry.getGeometries() == null) {
+				gwt = factory.createMultiPoint(null);
+			} else {
+				Point[] points = new Point[geometry.getGeometries().length];
+				gwt = factory.createMultiPoint((Point[]) convertGeometries(geometry, points));
+			}
 		} else if (Geometry.MULTI_LINE_STRING.equals(geometryType)) {
-			LineString[] lineStrings = new LineString[geometry.getGeometries().length];
-			gwt = factory.createMultiLineString((LineString[]) convertGeometries(geometry, lineStrings));
+			if (geometry.getGeometries() == null) {
+				gwt = factory.createMultiLineString(null);
+			} else {
+				LineString[] lineStrings = new LineString[geometry.getGeometries().length];
+				gwt = factory.createMultiLineString((LineString[]) convertGeometries(geometry, lineStrings));
+			}
 		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
-			Polygon[] polygons = new Polygon[geometry.getGeometries().length];
-			gwt = factory.createMultiPolygon((Polygon[]) convertGeometries(geometry, polygons));
+			if (geometry.getGeometries() == null) {
+				gwt = factory.createMultiPolygon(null);
+			} else {
+				Polygon[] polygons = new Polygon[geometry.getGeometries().length];
+				gwt = factory.createMultiPolygon((Polygon[]) convertGeometries(geometry, polygons));
+			}
 		} else {
 			String msg = "GeometryConverter.toGwt() unrecognized geometry type " + geometryType;
 			Log.logServer(Log.LEVEL_ERROR, msg);
@@ -143,7 +161,7 @@ public final class GeometryConverter {
 
 	/**
 	 * Takes in a GWT bbox, and creates a new DTO bbox from it.
-	 *
+	 * 
 	 * @param bbox
 	 *            The bbox to convert into a DTO bbox.
 	 * @return Returns a DTO type bbox, that is serializable.
@@ -151,10 +169,10 @@ public final class GeometryConverter {
 	public static Bbox toDto(org.geomajas.gwt.client.spatial.Bbox bbox) {
 		return new Bbox(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 	}
-	
+
 	/**
 	 * Takes in a DTO bbox, and creates a new GWT bbox from it.
-	 *
+	 * 
 	 * @param bbox
 	 *            The bbox to convert into a GWT bbox.
 	 * @return Returns a GWT type bbox, that has functionality.
@@ -168,6 +186,9 @@ public final class GeometryConverter {
 	// -------------------------------------------------------------------------
 
 	private static Geometry[] convertGeometries(org.geomajas.gwt.client.spatial.geometry.Geometry geometry) {
+		if (geometry.isEmpty()) {
+			return null;
+		}
 		Geometry[] geometries = new Geometry[geometry.getNumGeometries()];
 		for (int i = 0; i < geometries.length; i++) {
 			geometries[i] = toDto(geometry.getGeometryN(i));
