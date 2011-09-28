@@ -13,7 +13,6 @@ package org.geomajas.testdata;
 import java.lang.reflect.Method;
 
 import org.geomajas.testdata.ReloadContext.ClassMode;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
