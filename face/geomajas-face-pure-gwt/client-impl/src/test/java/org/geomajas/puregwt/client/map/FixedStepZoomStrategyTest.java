@@ -39,7 +39,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
 		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
-@DirtiesContext
 public class FixedStepZoomStrategyTest {
 
 	private static final double[] SCALES = new double[] { 8.0, 4.0, 2.0, 1.0 };
@@ -148,6 +147,7 @@ public class FixedStepZoomStrategyTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testFaultyConfiguration() {
 		GeometryFactory factory = new GeometryFactoryImpl();
 		Bbox maxBounds = factory.createBbox(mapInfo.getMaxBounds());
