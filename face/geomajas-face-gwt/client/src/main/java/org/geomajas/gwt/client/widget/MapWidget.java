@@ -997,7 +997,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	public void onMapModelClear(MapModelClearEvent event) {
-		readyToDraw = false;
 		// remove previous layers
 		for (Layer<?> layer : previousLayers) {
 			if (layer instanceof VectorLayer) {
@@ -1007,6 +1006,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		}
 		previousLayers.clear();
+		readyToDraw = false;
 	}
 
 	/**
