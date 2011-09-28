@@ -16,7 +16,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.LogRequest;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geotools.util.DefaultProgressListener;
 
 import java.util.logging.Logger;
 
