@@ -17,6 +17,7 @@ import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
+import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -54,22 +55,32 @@ public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		InternalTile tile = response.getTile();
 		tile.setContentType(VectorTile.VectorTileContentType.URL_CONTENT);
+		String featuresKey = context.getOptional(RasterizingPipelineCode.IMAGE_ID_KEY, String.class);
+		if (featuresKey != null) {
+			tile.setFeatureContent(buildUrl(context, featuresKey));
+		}
+		String labelsKey = context.getOptional(RasterizingPipelineCode.IMAGE_ID_LABEL_KEY, String.class);
+		if (labelsKey != null) {
+			tile.setLabelContent(buildUrl(context, labelsKey));
+		}
+	}
+	
+	private String buildUrl(PipelineContext context, String key) throws GeomajasException {
 		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
-		String cacheKey = context.get(RasterizingPipelineCode.IMAGE_ID_KEY, String.class);
 		StringBuilder url = new StringBuilder(200);
 		url.append(dispatcherUrlService.getDispatcherUrl());
-		url.append("/rasterizing/layer/");
+		url.append(RasterizingController.LAYER_MAPPING);
 		url.append(layerId);
 		url.append("/");
-		url.append(cacheKey);
+		url.append(key);
 		url.append(".png");
 		// must add a random parameter to force reload in some browsers like FF
 		// better solution would be to use a cache version id ?
 		url.append("?q=");
 		url.append(randomString(8));
-		tile.setFeatureContent(url.toString());
+		return url.toString();
 	}
-	
+
 	private String randomString(int length) {
 		char[] buf = new char[length];
 		for (int i = 0; i < buf.length; i++) {

@@ -69,14 +69,30 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		TileMetadata tileMetadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		// put the image in a raster container
 		RasterizingContainer rasterizingContainer = new RasterizingContainer();
-		NamedStyleInfo style = tileMetadata.getStyleInfo();
-		if (style == null) {
-			// no style specified, take the first
-			style = layer.getLayerInfo().getNamedStyleInfos().get(0);
-		} else if (style.getFeatureStyles().isEmpty()) {
-			// only name specified, find it
-			style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
+		// determine the style
+		NamedStyleInfo style = findStyle(layer, tileMetadata);
+		// prepare the map configuration
+		ClientMapInfo mapInfo = prepareMap(tileContainer, tileMetadata, style);
+		byte[] image = renderMap(mapInfo);
+		rasterizingContainer.setImage(image);
+		context.put(RasterizingPipelineCode.CONTAINER_KEY, rasterizingContainer);
+	}
+
+	private byte[] renderMap(ClientMapInfo mapInfo) {
+		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(1024 * 10);
+		try {
+			imageService.writeMap(imageStream, mapInfo);
+			recorder.record(CacheCategory.RASTER, "Rasterization success");
+		} catch (Exception ex) {
+			recorder.record(CacheCategory.RASTER, "Rasterization failed");
+			log.error("Problem while rasterizing tile, image will be zero-length.", ex);
 		}
+
+		byte[] image = imageStream.toByteArray();
+		return image;
+	}
+
+	private ClientMapInfo prepareMap(GetTileContainer tileContainer, TileMetadata tileMetadata, NamedStyleInfo style) {
 		ClientMapInfo mapInfo = new ClientMapInfo();
 		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
 		mapRasterizingInfo.setBounds(converterService.toDto(tileContainer.getTile().getBounds()));
@@ -94,19 +110,18 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		vectorLayerRasterizingInfo.setStyle(style);
 		clientVectorLayerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorLayerRasterizingInfo);
 		mapInfo.getLayers().add(clientVectorLayerInfo);
+		return mapInfo;
+	}
 
-		ByteArrayOutputStream imageStream = new ByteArrayOutputStream(1024 * 10);
-		try {
-			imageService.writeMap(imageStream, mapInfo);
-			// rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tileContainer.getTile());
-			recorder.record(CacheCategory.RASTER, "Rasterization success");
-		} catch (Exception ex) {
-			recorder.record(CacheCategory.RASTER, "Rasterization failed");
-			log.error("Problem while rasterizing tile, image will be zero-length.", ex);
+	private NamedStyleInfo findStyle(VectorLayer layer, TileMetadata tileMetadata) {
+		NamedStyleInfo style = tileMetadata.getStyleInfo();
+		if (style == null) {
+			// no style specified, take the first
+			style = layer.getLayerInfo().getNamedStyleInfos().get(0);
+		} else if (style.getFeatureStyles().isEmpty()) {
+			// only name specified, find it
+			style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
 		}
-
-		byte[] image = imageStream.toByteArray();
-		rasterizingContainer.setImage(image);
-		context.put(RasterizingPipelineCode.CONTAINER_KEY, rasterizingContainer);
+		return style;
 	}
 }

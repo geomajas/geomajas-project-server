@@ -48,10 +48,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * 
  * @author Joachim Van der Auwera
  */
-@Controller("/rasterizing/**")
+@Controller(RasterizingController.MAPPING + "**")
 public class RasterizingController {
 
 	private final Logger log = LoggerFactory.getLogger(RasterizingController.class);
+
+	public static final String MAPPING = "/rasterizing/";
+
+	public static final String LAYER_MAPPING = MAPPING + "layer/";
 
 	@Autowired
 	private PipelineService<GetTileContainer> pipelineService;
@@ -74,7 +78,7 @@ public class RasterizingController {
 	@Autowired
 	private CachingSupportServiceSecurityContextAdder securityContextAdder;
 
-	@RequestMapping(value = "/rasterizing/layer/{layerId}/{key}.png", method = RequestMethod.GET)
+	@RequestMapping(value = LAYER_MAPPING + "{layerId}/{key}.png", method = RequestMethod.GET)
 	public void getImage(@PathVariable String layerId, @PathVariable String key, HttpServletResponse response)
 			throws Exception {
 
@@ -91,8 +95,8 @@ public class RasterizingController {
 				context.put(PipelineCode.LAYER_KEY, layer);
 
 				// get data from rebuild cache
-				RebuildCacheContainer rebuildCacheContainer = cacheManagerService.get(layer, CacheCategory.REBUILD, key,
-						RebuildCacheContainer.class);
+				RebuildCacheContainer rebuildCacheContainer = cacheManagerService.get(layer, CacheCategory.REBUILD,
+						key, RebuildCacheContainer.class);
 				if (null == rebuildCacheContainer) {
 					log.error("Data to rebuild the raster image is no longer available for key " + key);
 					response.sendError(HttpServletResponse.SC_NO_CONTENT);
@@ -129,7 +133,7 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = "/rasterizing/image/{key}.png", method = RequestMethod.GET)
+	@RequestMapping(value = LAYER_MAPPING + "image/{key}.png", method = RequestMethod.GET)
 	public void getMap(@PathVariable String key, HttpServletResponse response) throws Exception {
 		try {
 			RasterizingContainer rasterizeContainer = (RasterizingContainer) cacheManagerService.get(null,

@@ -11,10 +11,12 @@
 
 package org.geomajas.plugin.rasterizing.step;
 
+import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.caching.service.CachingSupportService;
 import org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
@@ -26,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Put the tile context in the rebuild cache to allow building the image later.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class RebuildCachePutStep implements PipelineStep<GetTileContainer> {
@@ -41,6 +43,9 @@ public class RebuildCachePutStep implements PipelineStep<GetTileContainer> {
 	@Autowired
 	private CachingSupportServiceSecurityContextAdder securityContextAdder;
 
+	@Autowired
+	private CacheManagerService cacheManagerService;
+
 	public String getId() {
 		return id;
 	}
@@ -54,11 +59,33 @@ public class RebuildCachePutStep implements PipelineStep<GetTileContainer> {
 
 	public void execute(PipelineContext context, GetTileContainer container) throws GeomajasException {
 		recorder.record(CacheCategory.REBUILD, "Put item in cache");
-		RebuildCacheContainer rcc = new RebuildCacheContainer();
 		TileMetadata tileMetadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-		rcc.setMetadata(tileMetadata);
-		cachingSupportService.putContainer(context, securityContextAdder, CacheCategory.REBUILD, KEYS,
-				RasterizingPipelineCode.IMAGE_ID_KEY, RasterizingPipelineCode.IMAGE_ID_CONTEXT, rcc,
-				container.getTile().getBounds());
+		if (tileMetadata.isPaintGeometries()) {
+			// create a geometry-only image and context key
+			RebuildCacheContainer rcc = new RebuildCacheContainer();
+			TileMetadata metadata = cloneMetadata(tileMetadata, false);
+			rcc.setMetadata(metadata);
+			context.put(PipelineCode.TILE_METADATA_KEY, metadata);
+			cachingSupportService.putContainer(context, securityContextAdder, CacheCategory.REBUILD, KEYS,
+					RasterizingPipelineCode.IMAGE_ID_KEY, RasterizingPipelineCode.IMAGE_ID_CONTEXT, rcc, container
+							.getTile().getBounds());
+		}
+		if (tileMetadata.isPaintLabels()) {
+			// create a labels-only image and context key
+			RebuildCacheContainer rcc = new RebuildCacheContainer();
+			TileMetadata metadata = cloneMetadata(tileMetadata, true);
+			rcc.setMetadata(metadata);
+			context.put(PipelineCode.TILE_METADATA_KEY, metadata);
+			cachingSupportService.putContainer(context, securityContextAdder, CacheCategory.REBUILD, KEYS,
+					RasterizingPipelineCode.IMAGE_ID_LABEL_KEY, RasterizingPipelineCode.IMAGE_ID_LABEL_CONTEXT, rcc,
+					container.getTile().getBounds());
+		}
+	}
+
+	private TileMetadata cloneMetadata(TileMetadata tileMetadata, boolean paintLabels) {
+		TileMetadata metadata = new GetVectorTileRequest(tileMetadata);
+		metadata.setPaintLabels(paintLabels);
+		metadata.setPaintGeometries(!paintLabels);
+		return metadata;
 	}
 }

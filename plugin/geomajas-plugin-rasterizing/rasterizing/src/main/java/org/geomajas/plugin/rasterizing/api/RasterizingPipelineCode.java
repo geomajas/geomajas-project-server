@@ -38,14 +38,24 @@ public interface RasterizingPipelineCode {
 	String PIPELINE_GET_VECTOR_TILE_RASTERIZING = "rasterizing.getVectorTile";
 
 	/**
-	 * Pipeline context key for image id (=rebuild and raster image cache id).
+	 * Pipeline context key for geometry image id (=rebuild and raster image cache id).
 	 */
-	String IMAGE_ID_KEY = "rasterizing.imageId"; // String
+	String IMAGE_ID_KEY = "rasterizing.geometry.imageId"; // String
 
 	/**
-	 * Pipeline context key for image id context (=rebuild and raster image cache id).
+	 * Pipeline context key for geometry image id context (=rebuild and raster image cache id).
 	 */
-	String IMAGE_ID_CONTEXT = "rasterizing.imageId"; // CacheContext
+	String IMAGE_ID_CONTEXT = "rasterizing.geometry.imageId"; // CacheContext
+
+	/**
+	 * Pipeline context key for label image id (=rebuild and raster image cache id).
+	 */
+	String IMAGE_ID_LABEL_KEY = "rasterizing.label.imageId"; // String
+
+	/**
+	 * Pipeline context key for label image id context (=rebuild and raster image cache id).
+	 */
+	String IMAGE_ID_LABEL_CONTEXT = "rasterizing.label.imageId"; // CacheContext
 
 	/**
 	 * Pipeline context key for storing the image container.
