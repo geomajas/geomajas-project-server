@@ -212,4 +212,16 @@ public class HtmlBuilderTest {
 		String table = HtmlBuilder.tableClassHtmlContent("testClass", tr);
 		Assert.assertTrue(("<table class='testClass'>" + tr + "</table>").equals(table));
 	}
+	
+	@Test
+	public void tdTrTableTest2() {
+		String td = HtmlBuilder.tdStyle("testStyle", "blabla");
+		Assert.assertTrue("<td style='testStyle'>blabla</td>".equals(td));
+		String tr = HtmlBuilder.trHtmlContent(td);
+		Assert.assertTrue(("<tr>" + td + "</tr>").equals(tr));
+		String[] rows = new String[2];
+		rows[0] = tr;
+		String table = HtmlBuilder.tableClassHtmlContent("testClass", rows);
+		Assert.assertTrue(("<table class='testClass'>" + tr + "null</table>").equals(table));
+	}
 }

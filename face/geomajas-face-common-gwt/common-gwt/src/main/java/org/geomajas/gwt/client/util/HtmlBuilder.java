@@ -15,7 +15,9 @@ import org.geomajas.annotation.Api;
 
 /**
  * Class containing convenience methods for building Strings,
- * containing HTML opening tags with CSS, content and closing tags.
+ * containing HTML opening tags with CSS, content and closing tags.<br /><br />
+ * Example: HtmlBuilder.divStyle("color: #AA0000", "Provide a geometry using one of the 3 methods.")<br />
+ * Result: &lt;div style='color:#AA0000'&gt;Provide a geometry using one of the 3 methods.&lt;/div&gt;.
  *
  * @author Emiel Ackermann
  *
