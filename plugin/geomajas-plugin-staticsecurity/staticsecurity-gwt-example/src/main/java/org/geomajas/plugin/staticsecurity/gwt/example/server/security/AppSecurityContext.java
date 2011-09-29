@@ -22,6 +22,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppSecurityContext, Custom security context, combine the authorizations
 @Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AppSecurityContext extends DefaultSecurityContext implements AppAuthorization {
 
@@ -40,3 +41,4 @@ public class AppSecurityContext extends DefaultSecurityContext implements AppAut
 	}
 
 }
+// @extract-end

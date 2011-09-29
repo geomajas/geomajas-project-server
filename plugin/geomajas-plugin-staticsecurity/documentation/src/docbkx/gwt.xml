@@ -58,7 +58,24 @@
     <section>
       <title>TokenRequestWindow</title>
 
-      <para></para>
+      <para>The token request window allows your users to login to the
+      application. There are two fields to enter the login and password and a
+      login and reset button. When the users enters his or her credentials,
+      the user is logged in. When a problem occurs, this is displayed.</para>
+
+      <para>The window can display a custom message. This can be passed in the
+      constructor. The SsecLayout class can be used to customize the layout
+      and look (for example the logo).</para>
+
+      <figure>
+        <title>Token request window</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/tokenRequestWindow.png" width="70%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
 
     <section>

@@ -19,6 +19,138 @@
   <section>
     <title>Add custom policies with a custom SecurityContext</title>
 
+    <para>To add custom policies in the security context, you need the
+    following steps:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Define your custom policy.</para>
+      </listitem>
+
+      <listitem>
+        <para>Provide an implementation for your custom policy.</para>
+      </listitem>
+
+      <listitem>
+        <para>Build a security context which can combine different
+        authorizations which contain the new policy.</para>
+      </listitem>
+
+      <listitem>
+        <para>Build a security manager which uses the new security
+        context.</para>
+      </listitem>
+
+      <listitem>
+        <para>Wire it all together.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Let's go over this using a practical example. In our example
+    application, we want a "blabla" button which should not be visible to all
+    users.</para>
+
+    <para>The way it is handled here allows you to query the new policy using
+    your autowired security context.</para>
+
+    <informalexample>
+      <programlisting>@Autowired
+private AppSecurityContext securityContext</programlisting>
+    </informalexample>
+
+    <section>
+      <title>Define your policy</title>
+
+      <para>You always have to define your policy in as an interface which
+      extends BaseAuthorization. This is the base interface for all types of
+      authorization objects. As you extend BaseAuthorization, you will always
+      have to include handling of basic security on layers.</para>
+
+      <para>We just want to add a method to determine if using the "blabla"
+      button is allowed.</para>
+
+      <xi:include href="listing/AppAuthorization.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Implement your policy</title>
+
+      <para>To be able to implement our new authorization object we also need
+      to provide a way to configure the value for specific users or roles. For
+      this example, we build on the layer configuration object which is
+      provided by the staticsecurity plug-in.</para>
+
+      <para>Apart from the methods which are used to get and set the extra
+      values in the configuration, there is also a getAuthorizaton() method
+      which is overwritten. This is used by the staticsecurity security
+      service to build the actual authorization objects from the
+      configuration.</para>
+
+      <xi:include href="listing/AppAuthorizationInfo.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>The actual implementation is quite easy on our case. Just use the
+      configuration object to return the correct value for the new
+      policy.</para>
+
+      <para>It is important to have a no-args constructor in this class as it
+      is needed to deserialize the authorization when needed (which is for
+      example used in rasterizing).</para>
+
+      <xi:include href="listing/AppAuthorizationImpl.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Build your security context</title>
+
+      <para>We need to build a new security context implementation which also
+      handles our additional policy. We do this by extending the default
+      implementation. Note that you need to add geomajas-impl as a project
+      dependency to compile this (but rest assured, being able to extend
+      DefaultSecurityContext is assured by the API contract).</para>
+
+      <xi:include href="listing/AppSecurityContext.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Build your security manager</title>
+
+      <para>The security context is created and set by the security manager,
+      so you also have to replace the security manager to make sure it uses
+      your security context.</para>
+
+      <xi:include href="listing/AppSecurityManager.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Wire it together</title>
+
+      <para>You have to make sure that spring known about your new security
+      manager and context. You can do this by including the following excerpt
+      in your application context. It is very important to include the scope
+      and scoped-proxy bits in the security context declaration. That
+      annotations which are included on the class are not used when using the
+      bean style declaration, so you have to add them explicitly. If you
+      forget this, you will get spurious errors using the wrong
+      context.</para>
+
+      <xi:include href="listing/ReplaceSecurityContext.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can create a configuration which uses your new policy.</para>
+
+      <xi:include href="listing/CustomPolicyUse.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+  </section>
+
+  <section>
+    <title>Using a custom policy client-side</title>
+
     <para></para>
   </section>
 </chapter>

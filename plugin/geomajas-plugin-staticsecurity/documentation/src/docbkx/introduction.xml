@@ -15,8 +15,8 @@
   <title>Introduction</title>
 
   <para>The staticsecurity plug-in allows you to define the policies which
-  apply for certain people. The policies are statically defined in a XML file
-  (hence the name). These policies can be linked to users which are aither
+  apply for certain users. The policies are statically defined in a XML file
+  (hence the name). These policies can be linked to users which are either
   also defined in the XML file or which are obtained through code (for example
   linking to a user database or LDAP store).</para>
 

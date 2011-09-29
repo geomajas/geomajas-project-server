@@ -25,6 +25,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppSecurityManager, Security manager for new security context
 public class AppSecurityManager extends DefaultSecurityManager {
 
 	@Autowired
@@ -55,3 +56,4 @@ public class AppSecurityManager extends DefaultSecurityManager {
 	}
 
 }
+// @extract-end

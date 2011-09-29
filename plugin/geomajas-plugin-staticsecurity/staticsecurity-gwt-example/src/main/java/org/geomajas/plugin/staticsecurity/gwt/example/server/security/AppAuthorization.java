@@ -18,6 +18,7 @@ import org.geomajas.security.BaseAuthorization;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppAuthorization, Define a BaseAuthorization for your policy
 public interface AppAuthorization extends BaseAuthorization {
 
 	/**
@@ -28,3 +29,4 @@ public interface AppAuthorization extends BaseAuthorization {
 	boolean isBlablaButtonAllowed();
 
 }
+// @extract-end

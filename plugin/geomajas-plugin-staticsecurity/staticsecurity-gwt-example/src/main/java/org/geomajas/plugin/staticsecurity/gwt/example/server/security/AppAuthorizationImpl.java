@@ -18,6 +18,7 @@ import org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppAuthorizationImpl, Implementation for your authorization
 public class AppAuthorizationImpl extends LayerAuthorization implements AppAuthorization {
 
 	private AppAuthorizationInfo appAuthorizationInfo;
@@ -35,3 +36,4 @@ public class AppAuthorizationImpl extends LayerAuthorization implements AppAutho
 		return appAuthorizationInfo.isBlablaButtonAllowed();
 	}
 }
+// @extract-end

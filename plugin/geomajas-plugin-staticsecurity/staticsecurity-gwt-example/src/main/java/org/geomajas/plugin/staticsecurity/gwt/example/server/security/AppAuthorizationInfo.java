@@ -19,6 +19,7 @@ import org.geomajas.security.BaseAuthorization;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppAuthorizationInfo, Configuration for your authorization
 public class AppAuthorizationInfo extends LayerAuthorizationInfo {
 
 	private boolean blablaButtonAllowed;
@@ -46,3 +47,4 @@ public class AppAuthorizationInfo extends LayerAuthorizationInfo {
 		return new AppAuthorizationImpl(this);
 	}
 }
+// @extract-end

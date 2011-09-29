@@ -42,6 +42,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 	<!-- @extract-end -->
 
+	<!-- @extract-start CustomPolicyUse, A configuration using the custom policy -->
 	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
 		<property name="users">
 			<list>
@@ -87,6 +88,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</list>
 					</property>
 				</bean>
+				<!-- @extract-skip-start -->
 				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
 					<property name="userId" value="marino"/>
 					<property name="password" value="kMSqVf2EMWilIKhZyV3dKA"/> <!-- "marino" -->
@@ -130,8 +132,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</list>
 					</property>
 				</bean>
+				<!-- @extract-skip-end -->
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 </beans>
