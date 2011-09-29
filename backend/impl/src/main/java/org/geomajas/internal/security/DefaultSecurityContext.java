@@ -100,6 +100,16 @@ public class DefaultSecurityContext implements SecurityContext {
 	private ApplicationContext applicationContext;
 
 	/**
+	 * Default constructor.
+	 *
+	 * @since 1.10.0
+	 */
+	@Api
+	public DefaultSecurityContext() {
+		// method provided to be able to put @Api annotation on it
+	}
+
+	/**
 	 * Set the token and authentications for this security context.
 	 * <p/>
 	 * This method can be overwritten to handle custom policies.
