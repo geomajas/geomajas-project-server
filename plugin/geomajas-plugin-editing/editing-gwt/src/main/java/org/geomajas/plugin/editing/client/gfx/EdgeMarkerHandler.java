@@ -88,7 +88,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	// ------------------------------------------------------------------------
 
 	private void drawEdgeHighlightMarker(Coordinate location) {
-		if (service.getEditingState() != GeometryEditingState.DRAGGING) {
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
 			Coordinate tl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() + MARKER_SIZE);
 			Coordinate tr = new Coordinate(location.getX() + MARKER_SIZE, location.getY() + MARKER_SIZE);
 			Coordinate bl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() - MARKER_SIZE);

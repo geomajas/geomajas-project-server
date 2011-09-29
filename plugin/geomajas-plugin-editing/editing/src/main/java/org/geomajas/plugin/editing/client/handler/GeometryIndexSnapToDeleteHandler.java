@@ -62,8 +62,8 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 			try {
 				List<GeometryIndex> toDelete = Collections.singletonList(index);
 				service.markForDeletionEnd(toDelete);
-				service.delete(toDelete);
 				service.deselectAll();
+				service.delete(toDelete);
 			} catch (GeometryIndexNotFoundException e) {
 			}
 		}

@@ -22,6 +22,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 
@@ -37,6 +38,12 @@ public class GeometryIndexInsertController extends AbstractController {
 	public GeometryIndexInsertController(GeometryEditingService service, MapEventParser mapEventParser) {
 		super(mapEventParser, service.getEditingState() == GeometryEditingState.DRAGGING);
 		this.service = service;
+	}
+
+	public void onDown(HumanInputEvent<?> event) {
+		if (service.getEditingState() == GeometryEditingState.INSERTING && isRightMouseButton(event)) {
+			service.setEditingState(GeometryEditingState.IDLE);
+		}
 	}
 
 	public void onUp(HumanInputEvent<?> event) {
@@ -64,6 +71,12 @@ public class GeometryIndexInsertController extends AbstractController {
 	public void onMouseMove(MouseMoveEvent event) {
 		if (service.getEditingState() == GeometryEditingState.INSERTING) {
 			service.setInsertMoveLocation(getLocation(event, RenderSpace.SCREEN));
+		}
+	}
+
+	public void onDoubleClick(DoubleClickEvent event) {
+		if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			service.setEditingState(GeometryEditingState.IDLE);
 		}
 	}
 }

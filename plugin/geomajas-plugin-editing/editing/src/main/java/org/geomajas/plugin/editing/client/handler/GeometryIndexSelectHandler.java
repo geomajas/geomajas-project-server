@@ -14,6 +14,7 @@ package org.geomajas.plugin.editing.client.handler;
 import java.util.Collections;
 
 import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
@@ -25,18 +26,20 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
 public class GeometryIndexSelectHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler {
 
 	public void onDown(HumanInputEvent<?> event) {
-		if (event.isShiftKeyDown()) {
-			// Add to or remove from selection:
-			if (service.isSelected(index)) {
-				service.deselect(Collections.singletonList(index));
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			if (event.isShiftKeyDown()) {
+				// Add to or remove from selection:
+				if (service.isSelected(index)) {
+					service.deselect(Collections.singletonList(index));
+					event.stopPropagation();
+				} else {
+					service.select(Collections.singletonList(index));
+				}
 			} else {
+				// Deselect all and select only this index:
+				service.deselectAll();
 				service.select(Collections.singletonList(index));
 			}
-			event.stopPropagation();
-		} else {
-			// Deselect all and select only this index:
-			service.deselectAll();
-			service.select(Collections.singletonList(index));
 		}
 	}
 }

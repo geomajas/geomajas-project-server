@@ -18,6 +18,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -114,6 +115,16 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			dragController.onUp(event);
 		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
 			insertController.onUp(event);
+		}
+	}
+	
+	public void onDoubleClick(DoubleClickEvent event) {
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
+			idleController.onDoubleClick(event);
+		} else if (service.getEditingState() == GeometryEditingState.DRAGGING) {
+			dragController.onDoubleClick(event);
+		} else if (service.getEditingState() == GeometryEditingState.INSERTING) {
+			insertController.onDoubleClick(event);
 		}
 	}
 

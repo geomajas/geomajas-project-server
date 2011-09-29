@@ -33,8 +33,8 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 
 	public void onDown(HumanInputEvent<?> event) {
 		// This handler should only have been applied onto edges. Can't hurt to check again:
-		//if (index.getType() == GeometryIndexType.TYPE_EDGE) {
-		if (service.getIndexService().getType(index) == GeometryIndexType.TYPE_EDGE) {
+		if (service.getEditingState() == GeometryEditingState.IDLE
+				&& service.getIndexService().getType(index) == GeometryIndexType.TYPE_EDGE) {
 			List<GeometryIndex> indices = Collections.singletonList(index);
 			try {
 				// If this edge is highlighted, end it:

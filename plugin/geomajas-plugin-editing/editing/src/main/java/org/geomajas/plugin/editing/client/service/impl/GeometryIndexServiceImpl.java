@@ -100,7 +100,7 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
 		}
 		if (index.getType() == GeometryIndexType.TYPE_VERTEX && geometry.getCoordinates() != null
-				&& geometry.getCoordinates().length > index.getValue()) {
+				&& geometry.getCoordinates().length > index.getValue() && index.getValue() >= 0) {
 			return geometry.getCoordinates()[index.getValue()];
 		}
 		throw new GeometryIndexNotFoundException("Could not match index with given geometry");
@@ -205,28 +205,27 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 		}
 	}
 
-	public int getSiblingCount(Geometry geometry, GeometryIndex index) {
-		if (index.hasChild() && geometry.getGeometries() != null && geometry.getGeometries().length > 
-				index.getValue()) {
-			return getSiblingCount(geometry.getGeometries()[index.getValue()], index.getChild());
+	public int getSiblingCount(Geometry geom, GeometryIndex index) {
+		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
+			return getSiblingCount(geom.getGeometries()[index.getValue()], index.getChild());
 		}
 		switch (index.getType()) {
 			case TYPE_VERTEX:
-				return geometry.getCoordinates() != null ? geometry.getCoordinates().length : 0;
+				return geom.getCoordinates() != null ? geom.getCoordinates().length : 0;
 			case TYPE_EDGE:
-				if (geometry.getGeometryType() == Geometry.LINE_STRING) {
-					int count = geometry.getCoordinates() != null ? geometry.getCoordinates().length - 1 : 0;
+				if (geom.getGeometryType() == Geometry.LINE_STRING) {
+					int count = geom.getCoordinates() != null ? geom.getCoordinates().length - 1 : 0;
 					if (count < 0) {
 						count = 0;
 					}
 					return count;
-				} else if (geometry.getGeometryType() == Geometry.LINEAR_RING) {
-					return geometry.getCoordinates() != null ? geometry.getCoordinates().length : 0;
+				} else if (geom.getGeometryType() == Geometry.LINEAR_RING) {
+					return geom.getCoordinates() != null ? geom.getCoordinates().length : 0;
 				}
 				return 0;
 			case TYPE_GEOMETRY:
 			default:
-				return geometry.getGeometries() != null ? geometry.getGeometries().length : 0;
+				return geom.getGeometries() != null ? geom.getGeometries().length : 0;
 		}
 	}
 
@@ -332,8 +331,16 @@ public class GeometryIndexServiceImpl implements GeometryIndexService {
 					}
 				}
 			}
-			geom.setCoordinates(result);
+			if (Geometry.POINT.equals(geom.getGeometryType()) || Geometry.LINE_STRING.equals(geom.getGeometryType())
+					|| Geometry.LINEAR_RING.equals(geom.getGeometryType())) {
+				geom.setCoordinates(result);
+			} else {
+				throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+			}
 		} else {
+			if (index.hasChild()) {
+				// We need to go deeper, but the necessary geometries don't exist yet...so we create them.
+			}
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
 		}
 	}

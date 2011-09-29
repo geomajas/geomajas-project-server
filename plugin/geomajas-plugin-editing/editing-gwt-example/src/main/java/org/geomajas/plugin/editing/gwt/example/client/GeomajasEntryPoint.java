@@ -13,7 +13,6 @@ package org.geomajas.plugin.editing.gwt.example.client;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.widget.LoadingScreen;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.GeometryEditor;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
@@ -183,6 +182,20 @@ public class GeomajasEntryPoint implements EntryPoint {
 		});
 		toolStrip.addButton(btn5);
 
+		ToolStripButton btn6 = new ToolStripButton("new polygon");
+		btn6.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Geometry line = new Geometry(Geometry.POLYGON, 0, 0);
+				GeometryIndex index = editor.getService().getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0, 0);
+
+				editor.getService().start(line);
+				editor.getService().setInsertIndex(index);
+				editor.getService().setEditingState(GeometryEditingState.INSERTING);
+			}
+		});
+		toolStrip.addButton(btn6);
+
 		mapLayout.addMember(toolStrip);
 		mapLayout.addMember(map);
 		mapLayout.setHeight("100%");
@@ -194,10 +207,5 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		mainLayout.addMember(layout);
 		mainLayout.draw();
-
-		// Install a loading screen
-		// This only works if the application initially shows a map with at least 1 vector layer:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas, printing GWT widget example");
-		loadScreen.draw();
 	}
 }

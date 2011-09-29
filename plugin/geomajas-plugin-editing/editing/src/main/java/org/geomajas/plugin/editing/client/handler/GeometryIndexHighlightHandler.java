@@ -29,7 +29,7 @@ public class GeometryIndexHighlightHandler extends AbstractGeometryIndexMapHandl
 		MouseOutHandler {
 
 	public void onMouseOver(MouseOverEvent event) {
-		if (service.getEditingState() != GeometryEditingState.DRAGGING) {
+		if (service.getEditingState() == GeometryEditingState.IDLE) {
 			service.highlightBegin(Collections.singletonList(index));
 		}
 	}

@@ -59,6 +59,7 @@ import org.geomajas.plugin.editing.client.handler.GeometryIndexHighlightHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexInsertHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexSelectHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexSnapToDeleteHandler;
+import org.geomajas.plugin.editing.client.handler.GeometryIndexStopInsertingHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -253,6 +254,14 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 				break;
 			default:
 				mapWidget.setCursor(Cursor.DEFAULT);
+
+				// Remove the temporary insert move line:
+				if (editingService.getInsertIndex() != null) {
+					String id = baseName + "."
+							+ editingService.getIndexService().format(editingService.getInsertIndex());
+					Object parentGroup = groups.get(id.substring(0, id.lastIndexOf('.')) + ".edges");
+					mapWidget.getVectorContext().deleteElement(parentGroup, insertMoveEdgeId);
+				}
 		}
 	}
 
@@ -266,7 +275,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 
 		if (last.getValue() >= 0) {
 			String identifier = baseName + "." + editingService.getIndexService().format(last);
-			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
+			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
 
 			try {
 				Coordinate temp1 = editingService.getIndexService().getVertex(editingService.getGeometry(), last);
@@ -426,7 +435,9 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 		// Draw the exterior ring:
 		GeometryIndex shellIndex = editingService.getIndexService().addChildren(parentIndex,
 				GeometryIndexType.TYPE_GEOMETRY, 0);
-		draw(geometryGroup, shellIndex, polygon.getExteriorRing(), graphics);
+		if (!polygon.isEmpty()) {
+			draw(geometryGroup, shellIndex, polygon.getExteriorRing(), graphics);
+		}
 
 		// Draw the interior rings:
 		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
@@ -547,6 +558,7 @@ public class GeometryRenderer implements GeometryEditWorkflowHandler, GeometryEd
 		controller.addMapHandler(new GeometryIndexSelectHandler());
 		controller.addMapHandler(new GeometryIndexDragSelectionHandler());
 		controller.addMapHandler(new GeometryIndexSnapToDeleteHandler());
+		controller.addMapHandler(new GeometryIndexStopInsertingHandler());
 		return controller;
 	}
 

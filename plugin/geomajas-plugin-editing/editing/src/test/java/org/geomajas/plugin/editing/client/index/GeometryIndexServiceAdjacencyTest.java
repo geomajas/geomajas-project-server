@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.client.index;
+package org.geomajas.plugin.editing.client.service;
 
 import java.util.List;
 
