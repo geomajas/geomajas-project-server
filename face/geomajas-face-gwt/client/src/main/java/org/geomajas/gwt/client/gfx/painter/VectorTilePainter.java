@@ -69,12 +69,14 @@ public class VectorTilePainter implements Painter {
 				}
 				break;
 			case URL_CONTENT:
-				// paint the label url (includes features)
+				// paint the features url				
+				if (tile.getFeatureContent().isLoaded()) {
+					drawImage(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context);
+				}
+				// paint the label url
 				if (labeled && tile.getLabelContent().isLoaded()) {
-					drawImage(tile, tile.getLabelContent(), context);
+					drawImage(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context);
 					// or Paint the feature url
-				} else if (tile.getFeatureContent().isLoaded()) {
-					drawImage(tile, tile.getFeatureContent(), context);
 				}
 				break;
 		}
@@ -85,8 +87,8 @@ public class VectorTilePainter implements Painter {
 		context.getVectorContext().drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
 	}
 
-	private void drawImage(VectorTile tile, ContentHolder holder, MapContext context) {
-		context.getRasterContext().drawImage(tile.getCache().getLayer(), tile.getCode().toString(),
+	private void drawImage(PaintableGroup group, VectorTile tile, ContentHolder holder, MapContext context) {
+		context.getRasterContext().drawImage(group, tile.getCode().toString(),
 				holder.getContent(), getPanBounds(tile), OPAQUE_PICTURE_STYLE);
 	}
 
@@ -105,7 +107,8 @@ public class VectorTilePainter implements Painter {
 		VectorTile tile = (VectorTile) paintable;
 		context.getVectorContext().deleteGroup(tile.getFeatureContent());
 		context.getVectorContext().deleteGroup(tile.getLabelContent());
-		context.getRasterContext().deleteElement(tile.getCache().getLayer(), tile.getCode().toString());
+		context.getRasterContext().deleteGroup(tile.getFeatureContent());
+		context.getRasterContext().deleteGroup(tile.getLabelContent());
 	}
 
 	private Bbox getPanBounds(VectorTile tile) {

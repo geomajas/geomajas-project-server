@@ -12,10 +12,8 @@
 package org.geomajas.gwt.client.map.cache.tile;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetVectorTileRequest;
@@ -58,9 +56,9 @@ public class VectorTile extends AbstractVectorTile {
 	/** dependent tile codes */
 	private List<TileCode> codes = new ArrayList<TileCode>();
 
-	private Set<GetVectorTileRequest> requestCache = new HashSet<GetVectorTileRequest>();
-
 	private Deferred deferred;
+	
+	private GetVectorTileRequest lastRequest;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -99,26 +97,9 @@ public class VectorTile extends AbstractVectorTile {
 					}
 					code = tile.getCode();
 					contentType = tile.getContentType();
-					switch (contentType) {
-						case STRING_CONTENT:
-							featureContent.setContent(tile.getFeatureContent());
-							labelContent.setContent(tile.getLabelContent());
-							break;
-						case URL_CONTENT:
-							if (request.isPaintLabels()) {
-								if (tile.getLabelContent() == null) {
-									// feature content may also contain labels !
-									labelContent.setContent(tile.getFeatureContent());
-								} else {
-									labelContent.setContent(tile.getLabelContent());
-								}
-							} else {
-								featureContent.setContent(tile.getFeatureContent());
-							}
-							break;
-
-					}
-					requestCache.add(request);
+					featureContent.setContent(tile.getFeatureContent());
+					labelContent.setContent(tile.getLabelContent());
+					lastRequest = request;
 					try {
 						callback.execute(self);
 					} catch (Throwable t) {
@@ -278,7 +259,7 @@ public class VectorTile extends AbstractVectorTile {
 	
 	private boolean needsReload(String filter) {
 		GetVectorTileRequest request = createRequest(filter);
-		return !requestCache.contains(request);
+		return lastRequest == null || !request.isPartOf(lastRequest);
 	}
 
 	// -------------------------------------------------------------------------
@@ -294,11 +275,8 @@ public class VectorTile extends AbstractVectorTile {
 		request.setCrs(mapModel.getCrs());
 		request.setFilter(filter);
 		request.setLayerId(layer.getServerLayerId());
-		// split requests for geometries and labels for when rasterizing, geometries first, then needsReload
-		boolean isLabelsShowing = layer.isLabelsShowing();
-		boolean needGeometries = !isLabelsShowing || null == labelContent;
-		request.setPaintGeometries(needGeometries);
-		request.setPaintLabels(isLabelsShowing && !needGeometries);
+		request.setPaintGeometries(!featureContent.isLoaded());
+		request.setPaintLabels(layer.isLabelsShowing() && !labelContent.isLoaded());
 		request.setPanOrigin(mapView.getPanOrigin());
 		request.setRenderer(Dom.isIE() ? "VML" : "SVG");
 		request.setScale(mapView.getCurrentScale());
