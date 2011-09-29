@@ -28,9 +28,9 @@ public class GetVectorTileRequestTest {
 	@Test
 	public void testEquals() {
 		GetVectorTileRequest left = new GetVectorTileRequest();
-		set(left);
+		set(left, true, false);
 		GetVectorTileRequest right = new GetVectorTileRequest();
-		set(right);
+		set(right, true, false);
 		Assert.assertTrue(left.equals(left));
 		Assert.assertTrue(left.equals(right));
 		Assert.assertTrue(right.equals(left));
@@ -38,14 +38,46 @@ public class GetVectorTileRequestTest {
 		Assert.assertFalse(left.equals(null));
 	}
 
-	private void set(GetVectorTileRequest obj) {
+	@Test
+	public void testIsPartOf() {
+		GetVectorTileRequest labels = new GetVectorTileRequest();
+		GetVectorTileRequest geometries = new GetVectorTileRequest();
+		GetVectorTileRequest labelsAndGeometries = new GetVectorTileRequest();
+		GetVectorTileRequest nothing = new GetVectorTileRequest();
+		set(labels, false, true);
+		set(geometries, true, false);
+		set(labelsAndGeometries, true, true);
+		set(nothing, false, false);
+		
+		Assert.assertTrue(nothing.isPartOf(labels));
+		Assert.assertTrue(nothing.isPartOf(geometries));
+		Assert.assertTrue(nothing.isPartOf(labelsAndGeometries));
+		
+		Assert.assertTrue(labels.isPartOf(labels));
+		Assert.assertFalse(labels.isPartOf(geometries));
+		Assert.assertTrue(labels.isPartOf(labelsAndGeometries));
+		
+		Assert.assertFalse(geometries.isPartOf(labels));
+		Assert.assertTrue(geometries.isPartOf(geometries));
+		Assert.assertTrue(geometries.isPartOf(labelsAndGeometries));
+
+		Assert.assertFalse(labelsAndGeometries.isPartOf(labels));
+		Assert.assertFalse(labelsAndGeometries.isPartOf(geometries));
+		Assert.assertTrue(labelsAndGeometries.isPartOf(labelsAndGeometries));
+		
+		labels.setFilter("foo");
+		Assert.assertFalse(labels.isPartOf(labelsAndGeometries));
+		
+}
+
+	private void set(GetVectorTileRequest obj, boolean paintGeometries, boolean paintLabels) {
 		obj.setCode(new TileCode(1, 0, 0));
 		obj.setCrs("EPSG:900913");
 		obj.setFeatureIncludes(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
 		obj.setFilter("bla");
 		obj.setLayerId("beans");
-		obj.setPaintGeometries(true);
-		obj.setPaintLabels(false);
+		obj.setPaintGeometries(paintGeometries);
+		obj.setPaintLabels(paintLabels);
 		obj.setPanOrigin(new Coordinate(10, 20));
 		obj.setRenderer("SVG");
 		obj.setScale(2.5);

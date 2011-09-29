@@ -59,6 +59,34 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	private boolean paintGeometries = true;
 
 	private boolean paintLabels;
+	
+	/**
+	 * Constructs an empty request (GWT).
+	 * @since 1.10.0
+	 */
+	public GetVectorTileRequest(){
+		
+	}
+
+	/**
+	 * Constructs a request with the specified {@link TileMetadata}. Clones all properties, except for the style
+	 * information.
+	 * 
+	 * @param tileMetadata the metadata
+	 * @since 1.10.0
+	 */
+	public GetVectorTileRequest(TileMetadata tileMetadata) {
+		setLayerId(tileMetadata.getLayerId());
+		setCrs(tileMetadata.getCrs());
+		setCode(tileMetadata.getCode().clone());
+		setScale(tileMetadata.getScale());
+		setPanOrigin((Coordinate) tileMetadata.getPanOrigin().clone());
+		setRenderer(tileMetadata.getRenderer());
+		setFilter(tileMetadata.getFilter());
+		setStyleInfo(tileMetadata.getStyleInfo());
+		setPaintGeometries(tileMetadata.isPaintGeometries());
+		setPaintLabels(tileMetadata.isPaintLabels());
+	}
 
 	public TileCode getCode() {
 		return code;
@@ -221,6 +249,27 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		if (renderer != null ? !renderer.equals(that.renderer) : that.renderer != null) { return false; }
 		if (styleInfo != null ? !styleInfo.equals(that.styleInfo) : that.styleInfo != null) { return false; }
 
+		return true;
+	}
+
+	/**
+	 * Check if this request is part of the specified request. This is the case if both requests have equal properties
+	 * and the specified request is asking for the same or more paint operations than this one.
+	 * 
+	 * @param request another request
+	 * @return true if the current request is contained in the specified request
+	 * @since 1.10.0
+	 */
+	public boolean isPartOf(GetVectorTileRequest request) {
+		if (Math.abs(request.scale - scale) > EQUALS_DELTA) { return false; }
+		if (code != null ? !code.equals(request.code) : request.code != null) { return false; }
+		if (crs != null ? !crs.equals(request.crs) : request.crs != null) { return false; }
+		if (filter != null ? !filter.equals(request.filter) : request.filter != null) { return false; }
+		if (panOrigin != null ? !panOrigin.equals(request.panOrigin) : request.panOrigin != null) { return false; }
+		if (renderer != null ? !renderer.equals(request.renderer) : request.renderer != null) { return false; }
+		if (styleInfo != null ? !styleInfo.equals(request.styleInfo) : request.styleInfo != null) { return false; }
+		if (paintGeometries && !request.paintGeometries) { return false; }
+		if (paintLabels && !request.paintLabels) { return false; }
 		return true;
 	}
 
