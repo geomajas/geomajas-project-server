@@ -120,9 +120,15 @@ public class Legend extends VLayout {
 					// For vector layer; loop over the style definitions:
 					UserStyleInfo userStyle = layerInfo.getNamedStyleInfo().getUserStyle();
 					FeatureTypeStyleInfo info = userStyle.getFeatureTypeStyleList().get(0);
-					int i = 0;
-					for (RuleInfo rule : info.getRuleList()) {
-						addVector((VectorLayer) layer, i++, rule.getTitle());
+					for (int i = 0; i < info.getRuleList().size(); i++) {
+						RuleInfo rule = info.getRuleList().get(i);
+						// use title if present, name if not
+						String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
+						// fall back to style name
+						if(title == null) {
+							title = layerInfo.getNamedStyleInfo().getName();
+						}
+						addVector((VectorLayer) layer, i++, title);
 					}
 				} else if (layer instanceof RasterLayer) {
 					addRaster((RasterLayer) layer);
