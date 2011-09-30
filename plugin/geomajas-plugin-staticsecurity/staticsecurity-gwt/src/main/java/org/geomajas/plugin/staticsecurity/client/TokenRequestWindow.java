@@ -138,13 +138,13 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 	}
 
 	@Override
-	public void draw() {
+	public void onDraw() {
 		buildWidget();
 		// try to force to be inside the screen
 		if (SsecLayout.tokenRequestWindowKeepInScreen) {
 			WidgetLayout.keepWindowInScreen(this);
 		}
-		super.draw();
+		super.onDraw();
 	}
 
 	// -------------------------------------------------------------------------
