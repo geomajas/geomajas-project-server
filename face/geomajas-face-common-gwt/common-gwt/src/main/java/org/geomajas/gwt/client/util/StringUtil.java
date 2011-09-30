@@ -44,4 +44,18 @@ public final class StringUtil {
 		}
 		return builder.toString();
 	}
+
+	/**
+	 * Extract the extension part of a file name (e.g. 'some.txt' -> 'txt')
+	 * @param fileName the file name
+	 * @return the extension (without '.')
+	 */
+	public static String getExtension(String fileName) {
+		int index = fileName.lastIndexOf(".");
+		if (index >= 0) {
+			return fileName.substring(index + 1);
+		} else {
+			return null;
+		}
+	}
 }
