@@ -44,9 +44,15 @@ public abstract class AbstractTemplateBuilder {
 
 	protected MapComponentInfo buildMap() {
 		MapComponentInfo map = new MapComponentInfo();
-		map.addChild(buildScaleBar());
-		map.addChild(buildLegend());
-		map.addChild(buildArrow());
+		if (PrintingLayout.templateIncludeScaleBar) {
+			map.addChild(buildScaleBar());
+		}
+		if (PrintingLayout.templateIncludeLegend) {
+			map.addChild(buildLegend());
+		}
+		if (PrintingLayout.templateIncludeNorthArrow) {
+			map.addChild(buildArrow());
+		}
 		return map;
 	}
 

@@ -14,7 +14,7 @@ import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.printing.client.action.toolbar.PrintAction;
+import org.geomajas.plugin.printing.client.action.toolbar.PrintingAction;
 
 import com.google.gwt.core.client.EntryPoint;
 
@@ -32,7 +32,7 @@ public class Printing implements EntryPoint {
 		ToolbarRegistry.put(SHOW_DEFAULT_PRINT_KEY, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new PrintAction(mapWidget);
+				return new PrintingAction(mapWidget);
 			}
 		});
 	}

@@ -62,6 +62,12 @@ public final class PrintingLayout {
 	public static String templateDefaultBorderColor = "0x000000";
 	/** Font colour for the legend in the template. */
 	public static String templateDefaultColor = "0x000000";
+	/** Should the default template include a scale bar? */
+	public static boolean templateIncludeScaleBar = true;
+	/** Should the default template include a legend? */
+	public static boolean templateIncludeLegend = true;
+	/** Should the default template include a north arrow? */
+	public static boolean templateIncludeNorthArrow = true;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
