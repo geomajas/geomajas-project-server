@@ -85,10 +85,6 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 
 	private StyledShapePainter shapePainter = new StyledShapePainter();
 
-	private static final int DEFAULT_ICON_SIZE = 18;
-
-	private static final String DEFAULT_RASTER_IMAGE_PATH = "org/geomajas/internal/image/layer-raster.png";
-
 	private int defaultWidth = DEFAULT_ICON_SIZE;
 
 	private int defaultHeight = DEFAULT_ICON_SIZE;
