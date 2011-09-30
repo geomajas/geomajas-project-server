@@ -23,17 +23,5 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
- 
-	<!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers -->
-
-	<bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
-		<!-- need security  -->
-		<property name="interceptors">
-			<list>
-				<ref bean="securityInterceptor" />
-			</list>
-		</property>
-		<property name="order" value="0"></property>
-	</bean>
 
 </beans>
