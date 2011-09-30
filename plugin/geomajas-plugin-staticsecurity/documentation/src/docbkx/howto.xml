@@ -16,7 +16,7 @@
 
   <para></para>
 
-  <section>
+  <section id="howto-custom-policies">
     <title>Add custom policies with a custom SecurityContext</title>
 
     <para>To add custom policies in the security context, you need the
@@ -58,7 +58,7 @@
 private AppSecurityContext securityContext</programlisting>
     </informalexample>
 
-    <section>
+    <section id="howto-cp-define">
       <title>Define your policy</title>
 
       <para>You always have to define your policy in as an interface which
@@ -73,7 +73,7 @@ private AppSecurityContext securityContext</programlisting>
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="howto-cp-impl">
       <title>Implement your policy</title>
 
       <para>To be able to implement our new authorization object we also need
@@ -102,7 +102,7 @@ private AppSecurityContext securityContext</programlisting>
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="howto-cp-context">
       <title>Build your security context</title>
 
       <para>We need to build a new security context implementation which also
@@ -115,7 +115,7 @@ private AppSecurityContext securityContext</programlisting>
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="howto-cp-manager">
       <title>Build your security manager</title>
 
       <para>The security context is created and set by the security manager,
@@ -126,7 +126,7 @@ private AppSecurityContext securityContext</programlisting>
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="howto-cp-wire">
       <title>Wire it together</title>
 
       <para>You have to make sure that spring known about your new security
@@ -148,7 +148,7 @@ private AppSecurityContext securityContext</programlisting>
     </section>
   </section>
 
-  <section>
+  <section id="howto-custom-policy-client">
     <title>Using a custom policy client-side</title>
 
     <para></para>
