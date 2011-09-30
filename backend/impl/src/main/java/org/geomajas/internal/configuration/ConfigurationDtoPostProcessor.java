@@ -44,7 +44,6 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.NamedLayerInfo;
-import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.UserLayerInfo;
 import org.geomajas.sld.UserStyleInfo;
@@ -349,12 +348,6 @@ public class ConfigurationDtoPostProcessor {
 		for (FeatureStyleInfo style : client.getFeatureStyles()) {
 			style.setIndex(i++);
 			style.setStyleId(client.getName() + "-" + style.getIndex());
-		}
-		i = 0;
-		if (client.getUserStyle() != null) {
-			for (RuleInfo rule : client.getUserStyle().getFeatureTypeStyleList().get(0).getRuleList()) {
-				rule.setName(client.getName() + "-" + i++);
-			}
 		}
 		return client;
 	}

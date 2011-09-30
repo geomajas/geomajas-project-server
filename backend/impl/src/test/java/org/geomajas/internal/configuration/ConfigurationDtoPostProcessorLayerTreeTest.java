@@ -18,6 +18,8 @@ import junit.framework.Assert;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.UserStyleInfo;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -84,5 +86,24 @@ public class ConfigurationDtoPostProcessorLayerTreeTest {
 		NamedStyleInfo defaultStyle = styles.get(0);
 		Assert.assertEquals(NamedStyleInfo.DEFAULT_NAME, defaultStyle.getName());
 		Assert.assertEquals(LabelStyleInfo.ATTRIBUTE_NAME_ID, defaultStyle.getLabelStyle().getLabelAttributeName());
+	}
+
+	@Test
+	public void testUserStyle() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+		context.setId("test");
+		context.setDisplayName("test");
+		context.setConfigLocation(
+				"/org/geomajas/spring/geomajasContext.xml "+
+				"/org/geomajas/internal/configuration/layerDefaultStyle.xml ");
+		context.refresh();
+		VectorLayer layerDefaultStyle = (VectorLayer)context.getBean("layerDefaultStyle");
+		List<NamedStyleInfo> styles = layerDefaultStyle.getLayerInfo().getNamedStyleInfos();
+		Assert.assertEquals(1, styles.size());
+		NamedStyleInfo defaultStyle = styles.get(0);
+		UserStyleInfo userStyle = defaultStyle.getUserStyle();
+		List<RuleInfo> rules = userStyle.getFeatureTypeStyleList().get(0).getRuleList();
+		Assert.assertEquals(1, rules.size());
+		Assert.assertEquals(null, rules.get(0).getName());
 	}
 }
