@@ -1,5 +1,3 @@
-package org.geomajas.gwt.client.util;
-
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -10,6 +8,8 @@ package org.geomajas.gwt.client.util;
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.gwt.client.util;
+
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.LayerType;
@@ -41,7 +41,7 @@ import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
 public final class StyleUtil {
 
 	private static final String WKN_RECT = "rect";
-	
+
 	private static final String WKN_CIRCLE = "circle";
 
 	private StyleUtil() {
@@ -61,8 +61,8 @@ public final class StyleUtil {
 		userStyleInfo.getFeatureTypeStyleList().add(fts);
 		return userStyleInfo;
 	}
-	
-	public static RuleInfo createRule(LayerType type, FeatureStyleInfo featureStyle){
+
+	public static RuleInfo createRule(LayerType type, FeatureStyleInfo featureStyle) {
 		SymbolInfo symbol = featureStyle.getSymbol();
 		RuleInfo rule = null;
 		StrokeInfo stroke = StyleUtil.createStroke(featureStyle.getStrokeColor(), (int) featureStyle.getStrokeWidth(),
@@ -79,15 +79,15 @@ public final class StyleUtil {
 			case MULTIPOINT:
 			case POINT:
 				GraphicInfo graphic = null;
-				if(symbol.getCircle() != null) {
+				if (symbol.getCircle() != null) {
 					MarkInfo circle = StyleUtil.createMark(WKN_CIRCLE, fill, stroke);
-					graphic = StyleUtil.createGraphic(circle, (int)(2 * symbol.getCircle().getR()));
-				} else if(symbol.getRect() != null){
+					graphic = StyleUtil.createGraphic(circle, (int) (2 * symbol.getCircle().getR()));
+				} else if (symbol.getRect() != null) {
 					MarkInfo rect = StyleUtil.createMark(WKN_RECT, fill, stroke);
-					graphic = StyleUtil.createGraphic(rect, (int)symbol.getRect().getH());
+					graphic = StyleUtil.createGraphic(rect, (int) symbol.getRect().getH());
 				} else {
 					ExternalGraphicInfo image = StyleUtil.createExternalGraphic(symbol.getImage().getHref());
-					graphic = StyleUtil.createGraphic(image,symbol.getImage().getHeight());
+					graphic = StyleUtil.createGraphic(image, symbol.getImage().getHeight());
 				}
 				PointSymbolizerInfo point = StyleUtil.createPointSymbolizer(graphic);
 				rule = StyleUtil.createRule(featureStyle.getName(), featureStyle.getName(), point);
@@ -101,7 +101,7 @@ public final class StyleUtil {
 		}
 		return rule;
 	}
-	 
+
 	/**
 	 * Create a non-filtered rule with the specified title, name and symbolizer.
 	 * 
@@ -235,16 +235,17 @@ public final class StyleUtil {
 		mark.setStroke(stroke);
 		return mark;
 	}
-	
+
 	/**
 	 * Creates an external graphic for the specified href.
+	 * 
 	 * @param href the href
 	 * @return the graphic
 	 */
 	public static ExternalGraphicInfo createExternalGraphic(String href) {
 		ExternalGraphicInfo externalGraphic = new ExternalGraphicInfo();
 		FormatInfo format = new FormatInfo();
-		format.setFormat("image/"+StringUtil.getExtension(href));
+		format.setFormat("image/" + StringUtil.getExtension(href));
 		externalGraphic.setFormat(format);
 		OnlineResourceInfo onlineResource = new OnlineResourceInfo();
 		onlineResource.setType("simple");
