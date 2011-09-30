@@ -47,15 +47,15 @@ public class StyleFilterImpl implements StyleFilter {
 	 */
 	public StyleFilterImpl() {
 		this.filter = Filter.INCLUDE;
-		FeatureStyleInfo style = new FeatureStyleInfo();
-		style.setFillColor("#FFFFFF");
-		style.setFillOpacity(0);
-		style.setStrokeColor("#FFFFFF");
-		style.setStrokeOpacity(0);
-		style.setIndex(FeatureStyleInfo.DEFAULT_STYLE_INDEX);
-		style.setName("invisible-style");
-		style.setFormula("");
-		style.setStyleId("default??");
+		definition = new FeatureStyleInfo();
+		definition.setFillColor("#FFFFFF");
+		definition.setFillOpacity(0);
+		definition.setStrokeColor("#FFFFFF");
+		definition.setStrokeOpacity(0);
+		definition.setIndex(FeatureStyleInfo.DEFAULT_STYLE_INDEX);
+		definition.setName("invisible-style");
+		definition.setFormula("");
+		definition.setStyleId("default??");
 	}
 
 	/**
