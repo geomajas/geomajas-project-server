@@ -125,10 +125,10 @@ public class Legend extends VLayout {
 						// use title if present, name if not
 						String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
 						// fall back to style name
-						if(title == null) {
+						if (title == null) {
 							title = layerInfo.getNamedStyleInfo().getName();
 						}
-						addVector((VectorLayer) layer, i++, title);
+						addVector((VectorLayer) layer, i, title);
 					}
 				} else if (layer instanceof RasterLayer) {
 					addRaster((RasterLayer) layer);
