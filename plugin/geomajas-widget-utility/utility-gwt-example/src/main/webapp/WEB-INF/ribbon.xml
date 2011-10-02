@@ -22,22 +22,22 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 	<bean name="ribbon-1"
-		class="org.geomajas.widget.utility.server.configuration.RibbonInfo">
+		class="org.geomajas.widget.utility.configuration.RibbonInfo">
 		<property name="id" value="ribbon1-id" />
 		<property name="tabs">
 			<list>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
 					<property name="title" value="TAB Nr 1" />
 					<property name="groups">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 								<property name="title" value="Group Nr 1" />
 								<property name="columns">
 									<list>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -46,7 +46,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											</property>
 										</bean>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -58,12 +58,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 								<property name="title" value="Information" />
 								<property name="columns">
 									<list>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -72,7 +72,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											</property>
 										</bean>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -84,12 +84,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 								<property name="title" value="Group Nr 2" />
 								<property name="columns">
 									<list>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -98,7 +98,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											</property>
 										</bean>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionList" />
 											<property name="tools">
 												<list>
@@ -115,17 +115,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 				</bean>
 				<bean name="ribbon-bar-1"
-					class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
 					<property name="title" value="TAB Nr 2" />
 					<property name="groups">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 								<property name="title" value="Navigation" />
 								<property name="columns">
 									<list>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -134,7 +134,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											</property>
 										</bean>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionButton" />
 											<property name="tools">
 												<list>
@@ -143,7 +143,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											</property>
 										</bean>
 										<bean
-											class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 											<property name="type" value="ToolbarActionList" />
 											<property name="tools">
 												<list>
@@ -163,16 +163,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="ribbon-bar-1"
-		class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo">
+		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
 		<property name="groups">
 			<list>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 					<property name="title" value="Navigation" />
 					<property name="columns">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -181,7 +181,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -190,7 +190,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
@@ -203,12 +203,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 				</bean>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 					<property name="title" value="Disabled" />
 					<property name="columns">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="TheAnswerAction" />
 								<property name="parameters">
 									<list>
@@ -224,7 +224,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ChangeStateAction" />
 							</bean>
 						</list>
@@ -236,16 +236,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 	<bean name="ribbon-bar-2"
-		class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo">
+		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
 		<property name="groups">
 			<list>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 					<property name="title" value="Navigation" />
 					<property name="columns">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -254,7 +254,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -263,7 +263,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
@@ -276,12 +276,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 				</bean>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 					<property name="title" value="Custom Widgets" />
 					<property name="columns">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="MyCustomColumn" />
 								<property name="tools">
 									<list>
@@ -308,16 +308,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="ribbon-bar-3"
-		class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo">
+		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
 		<property name="groups">
 			<list>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 					<property name="title" value="Navigation" />
 					<property name="columns">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -326,7 +326,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -335,7 +335,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionList" />
 								<property name="tools">
 									<list>
@@ -348,12 +348,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 				</bean>
 				<bean
-					class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo">
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
 					<property name="title" value="Information" />
 					<property name="columns">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>
@@ -362,7 +362,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo">
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
 								<property name="type" value="ToolbarActionButton" />
 								<property name="tools">
 									<list>

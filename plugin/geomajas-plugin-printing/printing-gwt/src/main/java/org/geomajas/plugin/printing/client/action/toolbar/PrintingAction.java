@@ -20,7 +20,7 @@ import org.geomajas.plugin.printing.client.widget.PrintPreferencesCanvas;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
-import org.geomajas.widget.utility.smartgwt.client.widget.InScreenWindow;
+import org.geomajas.widget.utility.gwt.client.widget.InScreenWindow;
 
 /**
  * Action to create a default PDF print of the map.

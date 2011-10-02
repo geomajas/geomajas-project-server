@@ -27,7 +27,7 @@
 
       <programlisting language="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.widget&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-widget-utility-smartgwt&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-widget-utility-gwt&lt;/artifactId&gt;
     &lt;version&gt;1.0&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
@@ -59,15 +59,15 @@
     <example>
       <title>Loading the GWT modules</title>
 
-      <programlisting>&lt;!-- Plugin module: --&gt;
-&lt;inherits name="org.geomajas.widget.utility.smartgwt.SmartGwtUtilityWidgets" /&gt;
+      <programlisting><![CDATA[&lt;!-- Plugin module: --&gt;
+&lt;inherits name="org.geomajas.widget.utility.gwt.SmartGwtUtilityWidgets" /&gt;
 
 &lt;!-- Plugin Enterprise theme: --&gt;
 &lt;inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources"/&gt;
 
 &lt;!-- Inherited SmartGWT themes: --&gt;
 &lt;inherits name="com.smartclient.theme.enterprise.Enterprise"/&gt;
-&lt;inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/&gt;</programlisting>
+&lt;inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/&gt;]]></programlisting>
     </example>
   </section>
 
@@ -117,14 +117,14 @@
 &lt;/bean&gt;
 
 &lt;!-- ribbon configuration --&gt;
-&lt;bean <emphasis role="bold">name="ribbon-bar-1"</emphasis> class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo"&gt;
+&lt;bean <emphasis role="bold">name="ribbon-bar-1"</emphasis> class="org.geomajas.widget.utility.configuration.RibbonBarInfo"&gt;
    &lt;property name="groups"&gt;
       &lt;list&gt;
-         &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonGroupInfo"&gt;
+         &lt;bean class="org.geomajas.widget.utility.configuration.RibbonGroupInfo"&gt;
             &lt;property name="title" value="Navigation" /&gt;
             &lt;property name="columns"&gt;
                &lt;list&gt;
-                  &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo"&gt;
+                  &lt;bean class="org.geomajas.widget.utility.configuration.RibbonColumnInfo"&gt;
                      &lt;property name="type" value="ToolbarActionButton" /&gt;
                      &lt;property name="tools"&gt;
                         &lt;list&gt;
@@ -132,7 +132,7 @@
                         &lt;/list&gt;
                      &lt;/property&gt;
                   &lt;/bean&gt;
-                  &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo"&gt;
+                  &lt;bean class="org.geomajas.widget.utility.configuration.RibbonColumnInfo"&gt;
                      &lt;property name="type" value="ToolbarActionButton" /&gt;
                      &lt;property name="tools"&gt;
                         &lt;list&gt;
@@ -140,7 +140,7 @@
                         &lt;/list&gt;
                      &lt;/property&gt;
                   &lt;/bean&gt;
-                  &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonColumnInfo"&gt;
+                  &lt;bean class="org.geomajas.widget.utility.configuration.RibbonColumnInfo"&gt;
                      &lt;property name="type" value="ToolbarActionList" /&gt;
                      &lt;property name="tools"&gt;
                         &lt;list&gt;
@@ -204,18 +204,18 @@
       <example>
         <title>Example Ribbon configuration</title>
 
-        <para><programlisting>&lt;bean name="<emphasis role="bold">tabbed-ribbon-1</emphasis>" class="org.geomajas.widget.utility.server.configuration.RibbonInfo"&gt;
+        <para><programlisting>&lt;bean name="<emphasis role="bold">tabbed-ribbon-1</emphasis>" class="org.geomajas.widget.utility.configuration.RibbonInfo"&gt;
    &lt;property name="tabs"&gt;
       &lt;list&gt;
-         &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo"&gt;
+         &lt;bean class="org.geomajas.widget.utility.configuration.RibbonBarInfo"&gt;
             &lt;property name="title" value="TAB Nr 1" /&gt;
             ....
          &lt;/bean&gt;
-         &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo"&gt;
+         &lt;bean class="org.geomajas.widget.utility.configuration.RibbonBarInfo"&gt;
             &lt;property name="title" value="TAB Nr 2" /&gt;
             ....
          &lt;/bean&gt;
-         &lt;bean class="org.geomajas.widget.utility.server.configuration.RibbonBarInfo"&gt;
+         &lt;bean class="org.geomajas.widget.utility.configuration.RibbonBarInfo"&gt;
             &lt;property name="title" value="TAB Nr 3" /&gt;
             ....
          &lt;/bean&gt;

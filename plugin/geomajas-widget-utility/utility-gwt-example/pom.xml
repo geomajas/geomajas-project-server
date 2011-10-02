@@ -77,6 +77,10 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
+		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -176,7 +180,7 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
 						<configuration>
-							<module>org.geomajas.widget.utility.smartgwt.example.Showcase</module>
+							<module>org.geomajas.widget.utility.gwt.example.Showcase</module>
 							<runTarget>index.html</runTarget>
 							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 							<copyWebapp>true</copyWebapp>

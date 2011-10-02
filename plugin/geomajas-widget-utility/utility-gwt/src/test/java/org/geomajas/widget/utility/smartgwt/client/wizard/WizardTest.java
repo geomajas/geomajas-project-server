@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.widget.utility.smartgwt.client.wizard;
+package org.geomajas.widget.utility.gwt.client.wizard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.widget.utility.smartgwt.client.wizard.WizardButton.ButtonType;
+import org.geomajas.widget.utility.gwt.client.wizard.WizardButton.ButtonType;
 import org.junit.Assert;
 import org.junit.Test;
 
