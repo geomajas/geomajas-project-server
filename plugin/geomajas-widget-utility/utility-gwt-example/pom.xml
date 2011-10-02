@@ -143,7 +143,11 @@
 				<configuration>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<module>org.geomajas.widget.utility.gwt.example.Showcase</module>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -157,6 +161,22 @@
 						<version>${geomajas-widget-utility-gwt-version}</version>
 					</dependency>
 				</dependencies>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -169,36 +189,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>defaultGWT</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>org.geomajas.widget.utility.gwt.example.Showcase</module>
-							<runTarget>index.html</runTarget>
-							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<copyWebapp>true</copyWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>clean</goal>
-									<goal>compile</goal>
-									<goal>test</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
@@ -213,7 +203,16 @@
 					<artifactId>geomajas-jetty-runner</artifactId>
 					<version>1.0.0</version>
 				</dependency>
+				<dependency>
+					<groupId>com.google.gwt</groupId>
+					<artifactId>gwt-dev</artifactId>
+					<version>${gwt.version}</version>
+					<scope>provided</scope>
+				</dependency>
 			</dependencies>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 		<profile>
 			<id>skipGwt</id>
@@ -222,21 +221,9 @@
 					<name>skipGwt</name>
 				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 	</profiles>
 
@@ -246,18 +233,6 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</repository>
-
-		<!-- uncomment if you want to use Geomajas snapshots, comment for faster 
-			builds -->
-		<!-- -->
-		<repository>
-			<id>Geomajas snapshots</id>
-			<name>Geomajas snapshot repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
-			<snapshots>
-			</snapshots>
-		</repository>
-		<!-- -->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
