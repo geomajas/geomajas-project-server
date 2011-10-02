@@ -88,7 +88,7 @@
 	
 	<modules>
 		<module>utility</module>
-		<module>utility-gwt</module>
+		<module>utility-common-gwt</module>
 		<module>utility-smartgwt</module>
 		<module>utility-smartgwt-example</module>
 	</modules>
