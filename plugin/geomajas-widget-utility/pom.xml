@@ -62,17 +62,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-utility-common-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-utility-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
-				<artifactId>geomajas-widget-utility-smartgwt</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.widget</groupId>
-				<artifactId>geomajas-widget-utility-smartgwt-example</artifactId>
+				<artifactId>geomajas-widget-utility-gwt-example</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
