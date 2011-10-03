@@ -44,6 +44,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<!-- @extract-start CustomPolicyUse, A configuration using the custom policy -->
 	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
+		<property name="tokenLifetime" value="600" /> <!-- ten minutes -->
 		<property name="users">
 			<list>
 				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">

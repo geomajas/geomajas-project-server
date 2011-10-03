@@ -24,6 +24,7 @@ import java.util.List;
 @Api(allMethods = true)
 public class SecurityServiceInfo {
 
+	private int tokenLifetime = 4 * 60 * 60; // 4 hours
 	private List<UserInfo> users;
 
 	/**
@@ -42,5 +43,25 @@ public class SecurityServiceInfo {
 	 */
 	public void setUsers(List<UserInfo> users) {
 		this.users = users;
+	}
+
+	/**
+	 * Get how long a token remains valid (in seconds). Default is 4 hours.
+	 *
+	 * @return lifetime for a token
+	 * @since 1.9.0
+	 */
+	public int getTokenLifetime() {
+		return tokenLifetime;
+	}
+
+	/**
+	 * Set how a long a token can remain valid (in seconds).
+	 *
+	 * @param tokenLifetime lifetime for a token
+	 * @since 1.9.0
+	 */
+	public void setTokenLifetime(int tokenLifetime) {
+		this.tokenLifetime = tokenLifetime;
 	}
 }
