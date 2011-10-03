@@ -30,6 +30,7 @@ import java.util.HashSet;
  * probably should not allow access to everybody!
  *
  * @author Joachim Van der Auwera
+ * @since 1.9.0
  */
 @Api
 @Component
