@@ -12,7 +12,7 @@
 <module>
 
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
-	<inherits name="org.geomajas.widget.utility.smartgwt.SmartGwtUtilityWidgets" />
+	<inherits name="org.geomajas.widget.utility.gwt.GwtUtilityWidgets" />
 
 	<source path="client" />
 	<source path="component/dto" />
