@@ -90,7 +90,7 @@
 
     <para>The configuration actually defines two services. The second
     (LoginAllowedSecurityService) assures that everybody is allowed access to
-    the login command which is provided by the plug-in. </para>
+    the login command which is provided by the plug-in.</para>
 
     <para>The actual staticsecurity security service requires you to define a
     bean of the class
@@ -109,5 +109,23 @@
     <title>Configure policies</title>
 
     <para></para>
+  </section>
+
+  <section>
+    <title>Configure token validity</title>
+
+    <para>Tokens have a default lifespan of four hours. You can change this
+    using the tokenLifetime property in SecurityServiceInfo. When a token is
+    used after it has expired, it will be removed from the list of available
+    tokens and the token is invalid. By default the list of available tokens
+    is not automatically purged. However, this can easyli be done using a
+    little bit of Spring configuration by adding the following
+    configuration.</para>
+
+    <xi:include href="listing/AutoSchedule.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>When this is enabled, the list of available tokens are purged every
+    minute.</para>
   </section>
 </chapter>
