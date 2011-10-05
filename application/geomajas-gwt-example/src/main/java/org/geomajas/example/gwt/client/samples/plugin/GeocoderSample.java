@@ -24,6 +24,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.plugin.geocoder.client.GeocoderWidget;
@@ -58,7 +59,7 @@ public class GeocoderSample extends SamplePanel {
 		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 		final GeocoderWidget geocoderWidget = new GeocoderWidget(map, "description", "Geocoder");
 		toolbar.addMember(geocoderWidget);
 
