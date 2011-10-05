@@ -16,6 +16,7 @@ import javax.validation.constraints.Null;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.global.CacheableObject;
+import org.geomajas.layer.LayerType;
 
 /**
  * Style configuration information.
@@ -24,7 +25,7 @@ import org.geomajas.global.CacheableObject;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FeatureStyleInfo implements Serializable, CacheableObject {
+public class FeatureStyleInfo implements Serializable, CacheableObject, Cloneable {
 
 	/**
 	 * Default value for style index, should be the last in sort order.
@@ -55,6 +56,35 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	@Null
 	private String styleId;
+	
+	private LayerType layerType;
+	
+	/**
+	 * No args constructor for GWT.
+	 * @since 1.10.0
+	 */
+	public FeatureStyleInfo() {
+		
+	}
+	
+	/**
+	 * Copy constructor. Creates a deep copy of the specified {@link FeatureStyleInfo} object.
+	 * 
+	 * @param other the feature style to copy
+	 * @since 1.10.0
+	 */
+	public FeatureStyleInfo(FeatureStyleInfo other) {
+		setDashArray(other.getDashArray());
+		setFillColor(other.getFillColor());
+		setFillOpacity(other.getFillOpacity());
+		setFormula(other.getFormula());
+		setLayerType(other.getLayerType());
+		setName(other.getName());
+		setStrokeColor(other.getStrokeColor());
+		setStrokeOpacity(other.getStrokeOpacity());
+		setStrokeWidth(other.getStrokeWidth());
+		setSymbol(new SymbolInfo(other.getSymbol()));
+	}
 
 	/**
 	 * Applies default values to all properties that have not been set.
@@ -296,6 +326,34 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	 */
 	public void setStyleId(String styleId) {
 		this.styleId = styleId;
+	}
+	
+	/**
+	 * Returns the geometry type for which this style is applicable. Used to distinguish between geometry types for a
+	 * mixed geometry layer when establishing a one-to-one relationship with SLD rules. Defaults to the layer type of
+	 * the layer or {@link LayerType#POLYGON} for mixed geometry layers.
+	 * 
+	 * @return the geometry type for this style (should be one of {@link LayerType#POINT}, {@link LayerType#MULTIPOINT},
+	 *         {@link LayerType#LINESTRING}, {@link LayerType#MULTILINESTRING}, {@link LayerType#POLYGON}, or
+	 *         {@link LayerType#MULTIPOLYGON}
+	 * @since 1.10.0
+	 */
+	public LayerType getLayerType() {
+		return layerType;
+	}
+	
+	/**
+	 * Specifies the geometry type for which this style is applicable. Used to distinguish between geometry types for a
+	 * mixed geometry layer when establishing a one-to-one relationship with SLD rules. Defaults to the layer type of
+	 * the layer or {@link LayerType#POLYGON} for mixed geometry layers.
+	 * 
+	 * @param layerType the geometry type for this style (should be one of {@link LayerType#POINT},
+	 *        {@link LayerType#MULTIPOINT}, {@link LayerType#LINESTRING}, {@link LayerType#MULTILINESTRING},
+	 *        {@link LayerType#POLYGON}, or {@link LayerType#MULTIPOLYGON}
+	 * @since 1.10.0
+	 */
+	public void setLayerType(LayerType layerType) {
+		this.layerType = layerType;
 	}
 
 	/**

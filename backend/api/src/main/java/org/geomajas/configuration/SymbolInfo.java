@@ -31,6 +31,39 @@ public class SymbolInfo implements Serializable, CacheableObject {
 	private RectInfo rect;
 
 	private ImageInfo image;
+	
+	
+	/**
+	 * No args constructor for GWT.
+	 * @since 1.10.0
+	 */
+	public SymbolInfo() {
+	}
+	
+	/**
+	 * Copy constructor. Creates a deep copy of the specified {@link SymbolInfo} object.
+	 * 
+	 * @param other the symbol to copy
+	 * @since 1.10.0
+	 */
+	public SymbolInfo(SymbolInfo other) {
+		if (other.getCircle() != null) {
+			setCircle(new CircleInfo());
+			getCircle().setR(other.getCircle().getR());
+		}
+		if (other.getRect() != null) {
+			setRect(new RectInfo());
+			getRect().setH(other.getRect().getH());
+			getRect().setW(other.getRect().getW());
+		}
+		if (other.getImage() != null) {
+			setImage(new ImageInfo());
+			getImage().setHeight(other.getImage().getHeight());
+			getImage().setWidth(other.getImage().getWidth());
+			getImage().setHref(other.getImage().getHref());
+			getImage().setSelectionHref(other.getImage().getSelectionHref());
+		}
+	}
 
 	/**
 	 * Get the circle for the symbol.
