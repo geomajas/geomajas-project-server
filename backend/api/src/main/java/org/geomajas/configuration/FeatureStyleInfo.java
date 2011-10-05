@@ -25,7 +25,7 @@ import org.geomajas.layer.LayerType;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FeatureStyleInfo implements Serializable, CacheableObject, Cloneable {
+public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Default value for style index, should be the last in sort order.

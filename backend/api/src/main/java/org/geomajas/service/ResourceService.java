@@ -12,6 +12,7 @@ package org.geomajas.service;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.global.GeomajasException;
 import org.springframework.core.io.Resource;
 
@@ -22,6 +23,7 @@ import org.springframework.core.io.Resource;
  * @since 1.10.0
  * 
  */
+@Api(allMethods = true)
 public interface ResourceService {
 
 	/**
