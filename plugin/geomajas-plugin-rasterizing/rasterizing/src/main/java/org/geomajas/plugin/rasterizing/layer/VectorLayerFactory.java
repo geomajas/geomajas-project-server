@@ -198,6 +198,9 @@ public class VectorLayerFactory implements LayerFactory {
 		
 		// create the final  list
 		List<RuleInfo> ruleInfos = extractIndices(allRules, ruleIndices);
+		if (selectionrule != null) {
+			ruleInfos.add(selectionrule);
+		}
 		featureLayer.getUserData().put(USERDATA_KEY_STYLE_RULES, ruleInfos);
 		return featureLayer;
 	}
