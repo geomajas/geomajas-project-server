@@ -205,7 +205,9 @@ public class VectorLayerFactory implements LayerFactory {
 	private List<RuleInfo> extractIndices(List<RuleInfo> allRules, TreeSet<Integer> ruleIndices) {
 		List<RuleInfo> ruleInfos = new ArrayList<RuleInfo>();
 		for (Integer index : ruleIndices) {
-			ruleInfos.add(allRules.get(index));
+			if (index < allRules.size()) {
+				ruleInfos.add(allRules.get(index));
+			}
 		}
 		return ruleInfos;
 	}
