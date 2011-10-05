@@ -46,6 +46,12 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class StrokeInfo implements Serializable {
 
+	private static final String STROKE_OPACITY = "stroke-opacity";
+
+	private static final String STROKE = "stroke";
+
+	private static final String STROKE_WIDTH = "stroke-width";
+
 	private static final long serialVersionUID = 1100;
 
 	private ChoiceInfo choice;
@@ -76,6 +82,9 @@ public class StrokeInfo implements Serializable {
 	 * @return list
 	 */
 	public List<CssParameterInfo> getCssParameterList() {
+		if (cssParameterList == null) {
+			cssParameterList = new ArrayList<CssParameterInfo>();
+		}
 		return cssParameterList;
 	}
 
@@ -184,5 +193,35 @@ public class StrokeInfo implements Serializable {
 			setChoiceSelect(GRAPHIC_STROKE_CHOICE);
 			this.graphicStroke = graphicStroke;
 		}
+	}
+
+	public void setStrokeWidth(int i) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(STROKE_WIDTH)) {
+				param.setValue(Integer.toString(i));
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(STROKE_WIDTH, Integer.toString(i)));
+	}
+
+	public void setStrokeColor(String strokeColor) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(STROKE)) {
+				param.setValue(strokeColor);
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(STROKE, strokeColor));
+	}
+
+	public void setStrokeOpacity(float f) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(STROKE_OPACITY)) {
+				param.setValue(Float.toString(f));
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(STROKE_OPACITY, Float.toString(f)));
 	}
 }

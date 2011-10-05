@@ -40,4 +40,12 @@ public class LiteralTypeInfo extends ExpressionInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
+	public LiteralTypeInfo() {
+		
+	}
+	
+	public LiteralTypeInfo(String name) {
+		setValue(name);
+	}
+
 }

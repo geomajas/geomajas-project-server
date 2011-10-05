@@ -42,6 +42,14 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class FontInfo implements Serializable {
 
+	private static final String FONT_SIZE = "font-size";
+
+	private static final String FONT_FAMILY = "font-family";
+
+	private static final String FONT_WEIGHT = "font-weight";
+
+	private static final String FONT_STYLE = "font-style";
+
 	private static final long serialVersionUID = 1100;
 
 	private List<CssParameterInfo> cssParameterList = new ArrayList<CssParameterInfo>();
@@ -62,5 +70,45 @@ public class FontInfo implements Serializable {
 	 */
 	public void setCssParameterList(List<CssParameterInfo> list) {
 		cssParameterList = list;
+	}
+
+	public void setFamily(String fontFamily) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(FONT_FAMILY)) {
+				param.setValue(fontFamily);
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(FONT_FAMILY, fontFamily));
+	}
+
+	public void setSize(int fontSize) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(FONT_SIZE)) {
+				param.setValue(Integer.toString(fontSize));
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(FONT_SIZE, Integer.toString(fontSize)));
+	}
+
+	public void setStyle(String fontStyle) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(FONT_STYLE)) {
+				param.setValue(fontStyle);
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(FONT_STYLE, fontStyle));
+	}
+
+	public void setWeight(String fontWeight) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(FONT_WEIGHT)) {
+				param.setValue(fontWeight);
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(FONT_WEIGHT, fontWeight));
 	}
 }

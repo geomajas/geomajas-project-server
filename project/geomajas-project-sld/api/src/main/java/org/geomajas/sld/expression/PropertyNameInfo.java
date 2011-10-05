@@ -31,4 +31,12 @@ import org.geomajas.annotation.Api;
 public class PropertyNameInfo extends ExpressionInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
+	
+	public PropertyNameInfo() {
+		
+	}
+	
+	public PropertyNameInfo(String name) {
+		setValue(name);
+	}
 }

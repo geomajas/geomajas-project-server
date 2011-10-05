@@ -43,6 +43,10 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class FillInfo implements Serializable {
 
+	private static final String FILL_OPACITY = "fill-opacity";
+
+	private static final String FILL = "fill";
+
 	private static final long serialVersionUID = 1100;
 
 	private GraphicFillInfo graphicFill;
@@ -83,5 +87,25 @@ public class FillInfo implements Serializable {
 	 */
 	public void setCssParameterList(List<CssParameterInfo> list) {
 		cssParameterList = list;
+	}
+
+	public void setFillColor(String fillColor) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(FILL)) {
+				param.setValue(fillColor);
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(FILL, fillColor));
+	}
+
+	public void setFillOpacity(float f) {
+		for (CssParameterInfo param : getCssParameterList()) {
+			if (param.getName().equals(FILL_OPACITY)) {
+				param.setValue(Float.toString(f));
+				return;
+			}
+		}
+		getCssParameterList().add(new CssParameterInfo(FILL_OPACITY, Float.toString(f)));
 	}
 }

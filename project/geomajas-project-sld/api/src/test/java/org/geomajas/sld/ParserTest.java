@@ -14,16 +14,24 @@ import junit.framework.Assert;
 
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
 import org.geomajas.sld.filter.FilterTypeInfo;
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.styling.NamedLayer;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.xml.sax.SAXException;
 
 public class ParserTest {
@@ -93,6 +101,39 @@ public class ParserTest {
 		countDown.await();
 
 		Assert.assertEquals("GEOSYM", styles.get(0).getName());
+	}
+	
+	@Test
+	public void testXmlParser() throws IOException, SAXException, ParserConfigurationException, SchemaException {
+		org.geotools.xml.Configuration configuration = new org.geotools.sld.SLDConfiguration();
+	    org.geotools.xml.Parser parser = new org.geotools.xml.Parser(configuration);
+	    
+	    
+	    // parse
+	    StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(getClass()
+				.getResourceAsStream("samples/point_attribute.sld"));
+	    
+	    NamedLayer layer = (NamedLayer)sld.getStyledLayers()[0];
+	    Filter filter = layer.getStyles()[0].featureTypeStyles().get(0).rules().get(0).getFilter();
+	    SimpleFeatureType t = DataUtilities.createType("MyType",
+                        "name:String," + // <- a String attribute
+                        "pop:Integer" // a number attribute
+        );
+	    SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(t);
+	    SimpleFeature sf = featureBuilder.buildFeature("1", new Object[]{"Test", 50000});
+
+
+	    filter.evaluate(sf);
+	    //sld.layers().get(0)
+
+	}
+
+	@Test
+	public void testTwoFeatureStyles() {
+		StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+		SLDParser parser = new SLDParser(factory, getClass().getResourceAsStream("samples/two-feature-styles-sld.xml"));
+		Style[] style = parser.readXML();
+		Assert.assertEquals(2, style[0].featureTypeStyles().size());
 	}
 
 	public class Marshaller implements Runnable {
