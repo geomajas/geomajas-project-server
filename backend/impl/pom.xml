@@ -193,6 +193,15 @@
 				</includes>
 			</resource>
 		</resources>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<excludes>**/ResourceAwareSLDParser.java</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
