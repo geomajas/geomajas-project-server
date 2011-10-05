@@ -13,7 +13,6 @@ package org.geomajas.plugin.rasterizing.sld;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PointSymbolizer;
@@ -26,19 +25,17 @@ import org.opengis.filter.Filter;
 import org.opengis.style.Description;
 
 /**
- * Implementation of {@link org.geotools.styling.StyleVisitor} that duplicates an SLD style while relying on
- * {@link VectorLayerRasterizingInfo} configuration to decide on whether labels and/or geometries should be drawn.
+ * Implementation of {@link org.geotools.styling.StyleVisitor} that duplicates an SLD style while filtering out text
+ * and/or geometry symbolizers.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class RasterizingStyleVisitor extends DuplicatingStyleVisitor {
-
-	private VectorLayerRasterizingInfo vectorLayerRasterizingInfo;
-
-	public RasterizingStyleVisitor(VectorLayerRasterizingInfo vectorLayerRasterizingInfo) {
-		this.vectorLayerRasterizingInfo = vectorLayerRasterizingInfo;
-	}
+public class SymbolizerFilterVisitor extends DuplicatingStyleVisitor {
+	
+	private boolean includeText;
+	
+	private boolean includeGeometry;
 
 	/**
 	 * Overridden to skip some symbolizers.
@@ -84,26 +81,44 @@ public class RasterizingStyleVisitor extends DuplicatingStyleVisitor {
 		}
 		pages.push(copy);
 	}
+	
+	public boolean isIncludeText() {
+		return includeText;
+	}
+	
+	public void setIncludeText(boolean includeText) {
+		this.includeText = includeText;
+	}
+	
+	public boolean isIncludeGeometry() {
+		return includeGeometry;
+	}
+	
+	public void setIncludeGeometry(boolean includeGeometry) {
+		this.includeGeometry = includeGeometry;
+	}
 
 	protected boolean skipSymbolizer(Symbolizer symbolizer) {
 		if (symbolizer instanceof TextSymbolizer) {
-			if (!vectorLayerRasterizingInfo.isPaintLabels()) {
+			if (!isIncludeText()) {
 				return true;
 			}
 		} else if (symbolizer instanceof LineSymbolizer) {
-			if (!vectorLayerRasterizingInfo.isPaintGeometries()) {
+			if (!isIncludeGeometry()) {
 				return true;
 			}
 		} else if (symbolizer instanceof PointSymbolizer) {
-			if (!vectorLayerRasterizingInfo.isPaintGeometries()) {
+			if (!isIncludeGeometry()) {
 				return true;
 			}
 		} else if (symbolizer instanceof PolygonSymbolizer) {
-			if (!vectorLayerRasterizingInfo.isPaintGeometries()) {
+			if (!isIncludeGeometry()) {
 				return true;
 			}
 		}
 		return false;
 	}
+	
+	
 
 }

@@ -17,16 +17,15 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
 
-public class RasterizingStyleVisitorTest {
+public class SymbolizerFilterVisitorTest {
 
 	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
 	@Test
 	public void testLabels() throws IOException {
-		VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();
-		vectorLayerRasterizingInfo.setPaintGeometries(false);
-		vectorLayerRasterizingInfo.setPaintLabels(true);
-		RasterizingStyleVisitor visitor = new RasterizingStyleVisitor(vectorLayerRasterizingInfo);
+		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
+		visitor.setIncludeGeometry(false);
+		visitor.setIncludeText(true);
 		SLDParser parser = new SLDParser(styleFactory);
 		parser.setInput(getClass().getResource("point_pointwithdefaultlabel.sld"));
 		Style[] styles = parser.readXML();
@@ -42,10 +41,9 @@ public class RasterizingStyleVisitorTest {
 
 	@Test
 	public void testGeometries() throws IOException{
-		VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();
-		vectorLayerRasterizingInfo.setPaintGeometries(true);
-		vectorLayerRasterizingInfo.setPaintLabels(false);
-		RasterizingStyleVisitor visitor = new RasterizingStyleVisitor(vectorLayerRasterizingInfo);
+		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
+		visitor.setIncludeGeometry(true);
+		visitor.setIncludeText(false);
 		SLDParser parser = new SLDParser(styleFactory);
 		parser.setInput(getClass().getResource("point_pointwithdefaultlabel.sld"));
 		Style[] styles = parser.readXML();
@@ -61,10 +59,9 @@ public class RasterizingStyleVisitorTest {
 
 	@Test
 	public void testLabelsAndGeometries() throws IOException{
-		VectorLayerRasterizingInfo vectorLayerRasterizingInfo = new VectorLayerRasterizingInfo();
-		vectorLayerRasterizingInfo.setPaintGeometries(true);
-		vectorLayerRasterizingInfo.setPaintLabels(true);
-		RasterizingStyleVisitor visitor = new RasterizingStyleVisitor(vectorLayerRasterizingInfo);
+		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
+		visitor.setIncludeGeometry(true);
+		visitor.setIncludeText(true);
 		SLDParser parser = new SLDParser(styleFactory);
 		parser.setInput(getClass().getResource("point_pointwithdefaultlabel.sld"));
 		Style[] styles = parser.readXML();

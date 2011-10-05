@@ -17,7 +17,9 @@ import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.service.StyleConverterService;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.After;
@@ -71,10 +73,13 @@ public class ImageServiceMapTest {
 	@Autowired
 	private SecurityManager securityManager;
 
+	@Autowired
+	private StyleConverterService styleConverterService;
+
 	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
-	
+
 	static {
-		if(OsCheck.isWindows()){
+		if (OsCheck.isWindows()) {
 			IMAGE_CLASS_PATH += "windows/map";
 		} else {
 			IMAGE_CLASS_PATH += "linux/map";
@@ -155,7 +160,7 @@ public class ImageServiceMapTest {
 		Geometry point = new Geometry(Geometry.POINT, 4326, 5);
 		point.setCoordinates(new Coordinate[] { new Coordinate(20, 50) });
 		geo.getGeometries().add(point);
-		geo.setStyle(layerBeansPointStyleInfo.getFeatureStyles().get(0));
+		geo.setStyle(styleConverterService.convert(layerBeansPointStyleInfo, GeometryDirectLayer.DEFAULT_GEOMETRY_NAME));
 		geo.setLayerType(LayerType.POINT);
 		mapInfo.getLayers().add(geo);
 		new MapAssert(mapInfo).assertEqualImage("geometry.png", writeImages, DELTA);

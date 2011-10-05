@@ -32,6 +32,11 @@ import org.geotools.map.MapContext;
 public interface LayerFactory {
 
 	/**
+	 * user data to record the layer id (up to caller to decide what to do with this info).
+	 */
+	String USERDATA_KEY_LAYER_ID = "geomajas.rasterizing.layer"; // String
+
+	/**
 	 * user data to record if layer is showing (up to caller to decide what to do with this info).
 	 */
 	String USERDATA_KEY_SHOWING = "geomajas.rasterizing.showing"; // boolean
@@ -39,7 +44,7 @@ public interface LayerFactory {
 	/**
 	 * user data for the layer styles (DTOs, should eventually become unnecessary as all info is in SLD).
 	 */
-	String USERDATA_KEY_STYLE_RULES = "geomajas.rasterizing.style.rules"; // Map<String,FeatureStyleInfo>
+	String USERDATA_KEY_STYLE_RULES = "geomajas.rasterizing.style.rules"; // List<RuleInfo>
 
 	/**
 	 * user data to record if layer is showing (up to caller to decide what to do with this info).

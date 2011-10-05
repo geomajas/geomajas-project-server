@@ -40,6 +40,11 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  */
 public class GeometryDirectLayer extends DirectLayer {
+	
+	/**
+	 * Name of geometry attribute.
+	 */
+	public static final String DEFAULT_GEOMETRY_NAME = "the_geom";
 
 	private List<Geometry> geometries = new ArrayList<Geometry>();
 

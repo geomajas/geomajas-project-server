@@ -14,15 +14,17 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -35,12 +37,20 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
-import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.sld.SymbolizerFilterVisitor;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.UserStyleInfo;
+import org.geomajas.sld.expression.ExpressionInfo;
+import org.geomajas.sld.expression.LiteralTypeInfo;
+import org.geomajas.sld.expression.PropertyNameInfo;
+import org.geomajas.sld.filter.FilterTypeInfo;
+import org.geomajas.sld.filter.PropertyIsEqualToInfo;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -74,7 +84,8 @@ import com.vividsolutions.jts.geom.Envelope;
 @Component
 public class VectorLayerFactory implements LayerFactory {
 
-	private static final String STYLE_INDEX_ATTRIBUTE_NAME = "geomajas_style";
+	private static final String NORMAL_RULE_ATTRIBUTE_NAME = "geomajas_normal_rule_index";
+	private static final String SELECTED_RULE_ATTRIBUTE_NAME = "geomajas_selected_rule_index";
 
 	@Autowired
 	private VectorLayerService vectorLayerService;
@@ -86,7 +97,7 @@ public class VectorLayerFactory implements LayerFactory {
 	private FilterService filterService;
 
 	@Autowired
-	private StyleFactoryService styleFactoryService;
+	private StyleConverterService styleConverterService;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -112,22 +123,45 @@ public class VectorLayerFactory implements LayerFactory {
 		ReferencedEnvelope areaOfInterest = mapContext.getAreaOfInterest();
 		VectorLayer layer = configurationService.getVectorLayer(vectorInfo.getServerLayerId());
 		// need to clone the extra info object before changing it !
-		VectorLayerRasterizingInfo copy = cloneInfo(extraInfo);
-		// we now replace the style filters by simple filters on an artificial extra style attribute
-		for (FeatureStyleInfo style : copy.getStyle().getFeatureStyles()) {
-			style.setFormula(STYLE_INDEX_ATTRIBUTE_NAME + " = " + style.getIndex());
+		VectorLayerRasterizingInfo rasterizingInfo = cloneInfo(extraInfo);
+		
+		// get the style dto
+		UserStyleInfo userStyleInfo = rasterizingInfo.getStyle().getUserStyle();
+		
+		// create the style (original filters)
+		Style originalStyle = styleConverterService.convert(userStyleInfo);
+
+		// add the selection rule and replace filters by index filters
+		List<RuleInfo> allRules = userStyleInfo.getFeatureTypeStyleList().get(0).getRuleList();
+		for (int ruleIndex = 0; ruleIndex < allRules.size(); ruleIndex++) {
+			setRuleFilter(allRules.get(ruleIndex), NORMAL_RULE_ATTRIBUTE_NAME, Integer.toString(ruleIndex));
 		}
-		// create the style
-		Style style = styleFactoryService.createStyle(layer, copy);
+		RuleInfo selectionrule = extraInfo.getSelectionRule();
+		if (selectionrule != null) {
+			allRules.add(selectionrule);
+			setRuleFilter(selectionrule, SELECTED_RULE_ATTRIBUTE_NAME, "true");			
+		}
+		// create the style (index filters)
+		Style indexedStyle = styleConverterService.convert(userStyleInfo);
+		
+		// remove 
+		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
+		visitor.setIncludeGeometry(rasterizingInfo.isPaintGeometries());
+		visitor.setIncludeText(rasterizingInfo.isPaintLabels());
+		visitor.visit(indexedStyle);
+		indexedStyle = (Style) visitor.getCopy();
+		
 		// estimate the buffer
 		MetaBufferEstimator estimator = new MetaBufferEstimator();
-		estimator.visit(style);
+		estimator.visit(originalStyle);
 		int bufferInPixels = estimator.getBuffer();
+		
 		// expand area to include buffer
 		Rectangle tileInpix = mapContext.getViewport().getScreenArea();
 		ReferencedEnvelope metaArea = new ReferencedEnvelope(areaOfInterest);
 		metaArea.expandBy(bufferInPixels / tileInpix.getWidth() * areaOfInterest.getWidth(),
 				bufferInPixels / tileInpix.getHeight() * areaOfInterest.getHeight());
+		
 		// fetch features in meta area
 		Crs layerCrs = vectorLayerService.getCrs(layer);
 		Envelope layerBounds = geoService.transform(metaArea, (Crs) areaOfInterest.getCoordinateReferenceSystem(),
@@ -141,38 +175,81 @@ public class VectorLayerFactory implements LayerFactory {
 				mapContext.getCoordinateReferenceSystem(), filter, extraInfo.getStyle(),
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 
-		FeatureLayer featureLayer = new FeatureLayer(createCollection(features, layer,
-				mapContext.getCoordinateReferenceSystem(), style), style);
+		// find the selected ids
+		Set<String> selectedIds = new HashSet<String>();
+		if (selectionrule != null) {
+			selectedIds.addAll(Arrays.asList(rasterizingInfo.getSelectedFeatureIds()));
+		}
+
+		// must convert to geotools features because StreamingRenderer does not work on objects
+		FeatureCollection<SimpleFeatureType, SimpleFeature> gtFeatures = createCollection(features, layer, selectedIds,
+				mapContext.getCoordinateReferenceSystem(), originalStyle);
+				
+		// create the layer
+		FeatureLayer featureLayer = new FeatureLayer(gtFeatures, indexedStyle);
 		featureLayer.setTitle(vectorInfo.getLabel());
 		featureLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
-		List<Rule> rules = new ArrayList<Rule>();
+		featureLayer.getUserData().put(USERDATA_KEY_LAYER_ID, layer.getId());
+		
+		// find the applicable rules		
+		TreeSet<Integer> ruleIndices = new TreeSet<Integer>();
+		findRules(featureLayer, ruleIndices);
+		removeOutOfScale(mapContext, indexedStyle, ruleIndices);
+		
+		// create the final  list
+		List<RuleInfo> ruleInfos = extractIndices(allRules, ruleIndices);
+		featureLayer.getUserData().put(USERDATA_KEY_STYLE_RULES, ruleInfos);
+		return featureLayer;
+	}
+
+	private List<RuleInfo> extractIndices(List<RuleInfo> allRules, TreeSet<Integer> ruleIndices) {
+		List<RuleInfo> ruleInfos = new ArrayList<RuleInfo>();
+		for (Integer index : ruleIndices) {
+			ruleInfos.add(allRules.get(index));
+		}
+		return ruleInfos;
+	}
+
+	private void removeOutOfScale(MapContext mapContext, Style indexedStyle, TreeSet<Integer> ruleIndices) {
 		double scaleDenominator = RendererUtilities.calculateOGCScale(mapContext.getAreaOfInterest(), (int) mapContext
 				.getViewport().getScreenArea().getWidth(), null);
-		// find the applicable rules
-		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+		int ruleIndex = 0;
+		for (FeatureTypeStyle fts : indexedStyle.featureTypeStyles()) {
 			for (Rule rule : fts.rules()) {
-				if (isWithInScale(rule, scaleDenominator)) {
-					FeatureIterator<SimpleFeature> it;
-					try {
-						it = featureLayer.getSimpleFeatureSource().getFeatures().features();
-						while (it.hasNext()) {
-							SimpleFeature feature = it.next();
-							if (rule.isElseFilter() || rule.getFilter() == null) {
-								rules.add(rule);
-								break;
-							} else if (rule.getFilter().evaluate(feature)) {
-								rules.add(rule);
-								break;
-							}
-						}
-					} catch (IOException e) {
-						// cannot happen !
-					}
+				if (!isWithInScale(rule, scaleDenominator)) {
+					ruleIndices.remove(ruleIndex);
 				}
+				ruleIndex++;
 			}
 		}
-		featureLayer.getUserData().put(USERDATA_KEY_STYLE_RULES, rules);
-		return featureLayer;
+	}
+
+	private void findRules(FeatureLayer featureLayer, TreeSet<Integer> ruleIndices) {
+		FeatureIterator<SimpleFeature> it2;
+		try {
+			it2 = featureLayer.getSimpleFeatureSource().getFeatures().features();
+			while (it2.hasNext()) {
+				SimpleFeature feature = it2.next();
+				int index = (Integer) feature.getAttribute(NORMAL_RULE_ATTRIBUTE_NAME);
+				if (index != -1) {
+					ruleIndices.add(index);
+				}
+			}
+		} catch (IOException e) {
+			// cannot happen !
+		}
+	}
+
+	private void setRuleFilter(RuleInfo ruleInfo, String attributeName, String value) {
+		PropertyIsEqualToInfo prop = new PropertyIsEqualToInfo();
+		List<ExpressionInfo> nameValue = new ArrayList<ExpressionInfo>();
+		nameValue.add(new PropertyNameInfo(attributeName));
+		nameValue.add(new LiteralTypeInfo(value));
+		prop.setExpressionList(nameValue);
+		ruleInfo.setChoice(new RuleInfo.ChoiceInfo());
+		FilterTypeInfo filter = new FilterTypeInfo();
+		filter.setComparisonOps(prop);
+		ruleInfo.getChoice().setFilter(filter);		
 	}
 
 	/**
@@ -188,7 +265,7 @@ public class VectorLayerFactory implements LayerFactory {
 	}
 
 	private FeatureCollection<SimpleFeatureType, SimpleFeature> createCollection(List<InternalFeature> features,
-			VectorLayer layer, CoordinateReferenceSystem mapCrs, Style style) {
+			VectorLayer layer, Set<String> selectedIds, CoordinateReferenceSystem mapCrs, Style style) {
 		SimpleFeatureType type = createFeatureType(layer, mapCrs);
 		ListFeatureCollection result = new ListFeatureCollection(type);
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
@@ -197,8 +274,8 @@ public class VectorLayerFactory implements LayerFactory {
 		Set<String> styleAttributeNames = extractor.getAttributeNameSet();
 		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
 		for (InternalFeature internalFeature : features) {
-			// 2 more attributes : geometry + style attribute
-			Object[] values = new Object[internalFeature.getAttributes().size() + 2];
+			// 3 more attributes : normal style rule index, selected style rule index, geometry index
+			Object[] values = new Object[internalFeature.getAttributes().size() + 3];
 			int i = 0;
 			for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
 				String name = attrInfo.getName();
@@ -208,7 +285,15 @@ public class VectorLayerFactory implements LayerFactory {
 					values[i++] = null;
 				}
 			}
+			// normal style rule index attribute (TODO deprecate the whole idea of coupling styles to features)
 			values[i++] = internalFeature.getStyleInfo().getIndex();
+			// selected style rule index attribute
+			if (selectedIds.contains(internalFeature.getId())) {
+				values[i++] = true;
+			} else {
+				values[i++] = false;
+			}
+			// geometry attribute
 			values[i++] = internalFeature.getGeometry();
 			result.add(builder.buildFeature(internalFeature.getId(), values));
 		}
@@ -270,8 +355,9 @@ public class VectorLayerFactory implements LayerFactory {
 				}
 			}
 		}
-		// add the extra style index attribute
-		builder.add(STYLE_INDEX_ATTRIBUTE_NAME, Integer.class);
+		// add the extra rule index attributes
+		builder.add(NORMAL_RULE_ATTRIBUTE_NAME, Integer.class);
+		builder.add(SELECTED_RULE_ATTRIBUTE_NAME, Boolean.class);
 		// add the geometry attribute
 		GeometryAttributeInfo geom = info.getFeatureInfo().getGeometryType();
 		builder.add(geom.getName(), dtoConverterService.toInternal(info.getLayerType()), mapCrs);

@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.LayerType;
+import org.geomajas.sld.UserStyleInfo;
 
 /**
  * Metadata DTO class that represents a client layer with arbitrary geometries in world space. This layer has no
@@ -33,7 +33,7 @@ public class ClientGeometryLayerInfo extends ClientLayerInfo {
 
 	private List<Geometry> geometries = new ArrayList<Geometry>();
 
-	private FeatureStyleInfo style;
+	private UserStyleInfo style;
 
 	// default showing
 	private boolean showing = true;
@@ -45,7 +45,7 @@ public class ClientGeometryLayerInfo extends ClientLayerInfo {
 	 * 
 	 * @return the feature style
 	 */
-	public FeatureStyleInfo getStyle() {
+	public UserStyleInfo getStyle() {
 		return style;
 	}
 
@@ -55,7 +55,7 @@ public class ClientGeometryLayerInfo extends ClientLayerInfo {
 	 * @param style
 	 *            the new feature style to apply.
 	 */
-	public void setStyle(FeatureStyleInfo style) {
+	public void setStyle(UserStyleInfo style) {
 		this.style = style;
 	}
 

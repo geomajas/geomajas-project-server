@@ -18,13 +18,13 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
-import org.geomajas.plugin.rasterizing.api.StyleFactoryService;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 public class GeometryLayerFactory implements LayerFactory {
 
 	@Autowired
-	private StyleFactoryService styleFactoryService;
+	private StyleConverterService styleConverterService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -54,21 +54,21 @@ public class GeometryLayerFactory implements LayerFactory {
 		}
 		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;
 		LayerType layerType = layerInfo.getLayerType();
-		Style style = styleFactoryService.createStyle(layerType, layerInfo.getStyle());
+		Style style = styleConverterService.convert(layerInfo.getStyle());
 		GeometryDirectLayer layer = new GeometryDirectLayer(style, converterService.toInternal(layerType));
 		for (Geometry geom : layerInfo.getGeometries()) {
 			layer.getGeometries().add(converterService.toInternal(geom));
 		}
 		layer.getUserData().put(USERDATA_KEY_SHOWING, layerInfo.isShowing());
 		layer.setTitle(layerInfo.getLabel());
-		List<Rule> rules = new ArrayList<Rule>();
+		List<RuleInfo> ruleInfos = new ArrayList<RuleInfo>();
 		// all rules are needed for map/legend
-		for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-			for (Rule rule : fts.rules()) {
-				rules.add(rule);
+		for (FeatureTypeStyleInfo fts : layerInfo.getStyle().getFeatureTypeStyleList()) {
+			for (RuleInfo rule : fts.getRuleList()) {
+				ruleInfos.add(rule);
 			}
 		}
-		layer.getUserData().put(USERDATA_KEY_STYLE_RULES, rules);
+		layer.getUserData().put(USERDATA_KEY_STYLE_RULES, ruleInfos);
 		return layer;
 	}
 

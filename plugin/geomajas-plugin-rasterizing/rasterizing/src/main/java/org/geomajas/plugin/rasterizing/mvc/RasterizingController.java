@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Controller which serves the actual rasterized images.
  * 
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
 @Controller(RasterizingController.MAPPING + "**")
 public class RasterizingController {
@@ -57,6 +58,8 @@ public class RasterizingController {
 
 	public static final String LAYER_MAPPING = MAPPING + "layer/";
 
+	public static final String IMAGE_MAPPING = MAPPING + "image/";
+	
 	@Autowired
 	private PipelineService<GetTileContainer> pipelineService;
 
@@ -133,7 +136,7 @@ public class RasterizingController {
 		}
 	}
 
-	@RequestMapping(value = LAYER_MAPPING + "image/{key}.png", method = RequestMethod.GET)
+	@RequestMapping(value = IMAGE_MAPPING + "{key}.png", method = RequestMethod.GET)
 	public void getMap(@PathVariable String key, HttpServletResponse response) throws Exception {
 		try {
 			RasterizingContainer rasterizeContainer = (RasterizingContainer) cacheManagerService.get(null,

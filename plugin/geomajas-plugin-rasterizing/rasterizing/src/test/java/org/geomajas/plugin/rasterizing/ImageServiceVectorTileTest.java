@@ -16,6 +16,17 @@ import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.sld.ExternalGraphicInfo;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.GraphicInfo;
+import org.geomajas.sld.LineSymbolizerInfo;
+import org.geomajas.sld.MarkInfo;
+import org.geomajas.sld.PointSymbolizerInfo;
+import org.geomajas.sld.PolygonSymbolizerInfo;
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.TextSymbolizerInfo;
+import org.geomajas.sld.UserStyleInfo;
+import org.geomajas.sld.WellKnownNameInfo;
 import org.geomajas.spring.ThreadScopeContextHolder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.After;
@@ -26,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.style.StylerUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -118,17 +130,17 @@ public class ImageServiceVectorTileTest {
 	@Test
 	public void testMultiLineStyle() throws Exception {
 		// width
-//		getMultiLineStyle().setStrokeWidth(3);
-//		checkMultiLine("multiline_black_3.png", false, true);
-//		getMultiLineStyle().setStrokeWidth(1);
-//		// color
-//		getMultiLineStyle().setStrokeColor("#FF6347");
-//		checkMultiLine("multiline_tomato_1.png", false, true);
-//		getMultiLineStyle().setStrokeColor("#000000");
-//		// opacity
-		getMultiLineStyle().setStrokeOpacity(0.5f);
+		getMultiLineStyle().getStroke().setStrokeWidth(3);
+		checkMultiLine("multiline_black_3.png", false, true);
+		getMultiLineStyle().getStroke().setStrokeWidth(1);
+		// color
+		getMultiLineStyle().getStroke().setStrokeColor("#FF6347");
+		checkMultiLine("multiline_tomato_1.png", false, true);
+		getMultiLineStyle().getStroke().setStrokeColor("#000000");
+		// opacity
+		getMultiLineStyle().getStroke().setStrokeOpacity(0.5f);
 		checkMultiLine("multiline_black_1_semitransparent.png", false, true);
-		getMultiLineStyle().setStrokeOpacity(1f);
+		getMultiLineStyle().getStroke().setStrokeOpacity(1f);
 		// association
 		checkMultiLineAssociation("multiline_association.png", false, true);
 		
@@ -146,29 +158,29 @@ public class ImageServiceVectorTileTest {
 		checkMultiLine("multiline_black_1_labeled.png", true, true);
 		log.info("stop");
 		// color
-		getMultiLineLabelStyle().getFontStyle().setColor("#DA70D6");
+		getMultiLineLabelStyle().getFill().setFillColor("#DA70D6");
 		checkMultiLine("multiline_black_1_labeled_font_orchid.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setColor("#000000");
+		getMultiLineLabelStyle().getFill().setFillColor("#000000");
 		// // family
-		getMultiLineLabelStyle().getFontStyle().setFamily("Courier New");
+		getMultiLineLabelStyle().getFont().setFamily("Courier New");
 		checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
+		getMultiLineLabelStyle().getFont().setFamily("Verdana");
 		// opacity
-		getMultiLineLabelStyle().getFontStyle().setOpacity(0.5f);
+		getMultiLineLabelStyle().getFill().setFillOpacity(0.5f);
 		checkMultiLine("multiline_black_1_labeled_font_semitransparent.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setOpacity(1f);
+		getMultiLineLabelStyle().getFill().setFillOpacity(1f);
 		// size
-		getMultiLineLabelStyle().getFontStyle().setSize(10);
+		getMultiLineLabelStyle().getFont().setSize(10);
 		checkMultiLine("multiline_black_1_labeled_font_size_10.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setSize(8);
+		getMultiLineLabelStyle().getFont().setSize(8);
 		// italic
-		getMultiLineLabelStyle().getFontStyle().setStyle("italic");
+		getMultiLineLabelStyle().getFont().setStyle("italic");
 		checkMultiLine("multiline_black_1_labeled_font_italic.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setStyle("normal");
+		getMultiLineLabelStyle().getFont().setStyle("normal");
 		// weight
-		getMultiLineLabelStyle().getFontStyle().setWeight("bold");
+		getMultiLineLabelStyle().getFont().setWeight("bold");
 		checkMultiLine("multiline_black_1_labeled_font_bold.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setWeight("normal");
+		getMultiLineLabelStyle().getFont().setWeight("normal");
 	}
 
 	@Test
@@ -176,22 +188,24 @@ public class ImageServiceVectorTileTest {
 		// default
 		checkPoint("point_default.png", false, true);
 		// save circle state
-		CircleInfo tmp = getPointStyle().getSymbol().getCircle();
-		getPointStyle().getSymbol().setCircle(null);
+		GraphicInfo.ChoiceInfo choice = getPointStyle().getGraphic().getChoiceList().get(0);
+		MarkInfo circle = choice.getMark();
+		getPointStyle().getGraphic().getChoiceList().clear();
 		// symbol rect
-		getPointStyle().getSymbol().setRect(createRect());
+		MarkInfo mark = StyleUtil.createMark(StyleUtil.WKN_SQUARE,
+				StyleUtil.createFill(circle.getFill().getCssParameterList()),
+				StyleUtil.createStroke(circle.getStroke().getCssParameterList()));
+		getPointStyle().setGraphic(StyleUtil.createGraphic(mark, 20));
 		checkPoint("point_rect.png", false, true);
-		getPointStyle().getSymbol().setRect(null);
 		// symbol image
-		getPointStyle().getSymbol().setImage(createImage(32));
+		ExternalGraphicInfo point = StyleUtil.createExternalGraphic("/"+IMAGE_CLASS_PATH+"/point.png");
+		getPointStyle().setGraphic(StyleUtil.createGraphic(point, 32));
 		checkPoint("point_image.png", false, true);
-		getPointStyle().getSymbol().setImage(null);
 		// symbol image
-		getPointStyle().getSymbol().setImage(createImage(64));
+		getPointStyle().setGraphic(StyleUtil.createGraphic(point, 64));
 		checkPoint("point_image_big.png", false, true);
-		getPointStyle().getSymbol().setImage(null);
 		// set circle state back
-		getPointStyle().getSymbol().setCircle(tmp);
+		getPointStyle().setGraphic(StyleUtil.createGraphic(circle, 20));
 	}
 
 	@Test
@@ -199,29 +213,29 @@ public class ImageServiceVectorTileTest {
 		// label on/off
 		checkPoint("point_black_1_labeled.png", true, true);
 		// color
-		getPointLabelStyle().getFontStyle().setColor("#DA70D6");
+		getPointLabelStyle().getFill().setFillColor("#DA70D6");
 		checkPoint("point_black_1_labeled_font_orchid.png", true, true);
-		getPointLabelStyle().getFontStyle().setColor("#000000");
+		getPointLabelStyle().getFill().setFillColor("#000000");
 		// // family
-		getPointLabelStyle().getFontStyle().setFamily("Courier New");
+		getPointLabelStyle().getFont().setFamily("Courier New");
 		checkPoint("point_black_1_labeled_font_courier.png", true, true);
-		getPointLabelStyle().getFontStyle().setFamily("Verdana");
+		getPointLabelStyle().getFont().setFamily("Verdana");
 		// opacity
-		getPointLabelStyle().getFontStyle().setOpacity(0.5f);
+		getPointLabelStyle().getFill().setFillOpacity(0.5f);
 		checkPoint("point_black_1_labeled_font_semitransparent.png", true, true);
-		getPointLabelStyle().getFontStyle().setOpacity(1f);
+		getPointLabelStyle().getFill().setFillOpacity(1f);
 		// size
-		getPointLabelStyle().getFontStyle().setSize(10);
+		getPointLabelStyle().getFont().setSize(10);
 		checkPoint("point_black_1_labeled_font_size_10.png", true, true);
-		getPointLabelStyle().getFontStyle().setSize(8);
+		getPointLabelStyle().getFont().setSize(8);
 		// italic
-		getPointLabelStyle().getFontStyle().setStyle("italic");
+		getPointLabelStyle().getFont().setStyle("italic");
 		checkPoint("point_black_1_labeled_font_italic.png", true, true);
-		getPointLabelStyle().getFontStyle().setStyle("normal");
+		getPointLabelStyle().getFont().setStyle("normal");
 		// weight
-		getPointLabelStyle().getFontStyle().setWeight("bold");
+		getPointLabelStyle().getFont().setWeight("bold");
 		checkPoint("point_black_1_labeled_font_bold.png", true, true);
-		getPointLabelStyle().getFontStyle().setWeight("normal");
+		getPointLabelStyle().getFont().setWeight("normal");
 		// point just outside tile border
 		checkPoint("point_black_1_border.png", true, true, new Bbox(0.001, 0.001, 100, 100));
 	}
@@ -231,19 +245,19 @@ public class ImageServiceVectorTileTest {
 		// default
 		checkMultiPolygon("multipolygon_default.png", false, true);
 		// fill color
-		getMultiPolygonStyle().setFillColor("#D2691E");
-		getMultiPolygonStyle().setStrokeColor("#A52A2A");
+		getMultiPolygonStyle().getFill().setFillColor("#D2691E");
+		getMultiPolygonStyle().getStroke().setStrokeColor("#A52A2A");
 		checkMultiPolygon("multipolygon_chocolate_brown_1.png", false, true);
-		getMultiPolygonStyle().setFillColor("#FFFFFF");
-		getMultiPolygonStyle().setStrokeColor("#000000");
+		getMultiPolygonStyle().getFill().setFillColor("#FFFFFF");
+		getMultiPolygonStyle().getStroke().setStrokeColor("#000000");
 		// fill opacity
-		getMultiPolygonStyle().setFillColor("#D2691E");
-		getMultiPolygonStyle().setStrokeColor("#A52A2A");
-		getMultiPolygonStyle().setFillOpacity(0.5f);
+		getMultiPolygonStyle().getFill().setFillColor("#D2691E");
+		getMultiPolygonStyle().getStroke().setStrokeColor("#A52A2A");
+		getMultiPolygonStyle().getFill().setFillOpacity(0.5f);
 		checkMultiPolygon("multipolygon_chocolate_brown_1_semitransparent.png", false, true);
-		getMultiPolygonStyle().setFillColor("#FFFFFF");
-		getMultiPolygonStyle().setStrokeColor("#000000");
-		getMultiPolygonStyle().setFillOpacity(1f);
+		getMultiPolygonStyle().getFill().setFillColor("#FFFFFF");
+		getMultiPolygonStyle().getStroke().setStrokeColor("#000000");
+		getMultiPolygonStyle().getFill().setFillOpacity(1f);
 	}
 
 	@Test
@@ -251,55 +265,66 @@ public class ImageServiceVectorTileTest {
 		// label on/off
 		checkMultiPolygon("multipolygon_black_1_labeled.png", true, true);
 		// color
-		getMultiPolygonLabelStyle().getFontStyle().setColor("#DA70D6");
+		getMultiPolygonLabelStyle().getFill().setFillColor("#DA70D6");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_orchid.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setColor("#000000");
+		getMultiPolygonLabelStyle().getFill().setFillColor("#000000");
 		// family
-		getMultiPolygonLabelStyle().getFontStyle().setFamily("Courier New");
+		getMultiPolygonLabelStyle().getFont().setFamily("Courier New");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
+		getMultiPolygonLabelStyle().getFont().setFamily("Verdana");
 		// opacity
-		getMultiPolygonLabelStyle().getFontStyle().setOpacity(0.5f);
+		getMultiPolygonLabelStyle().getFill().setFillOpacity(0.5f);
 		checkMultiPolygon("multipolygon_black_1_labeled_font_semitransparent.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setOpacity(1f);
+		getMultiPolygonLabelStyle().getFill().setFillOpacity(1f);
 		// size
-		getMultiPolygonLabelStyle().getFontStyle().setSize(10);
+		getMultiPolygonLabelStyle().getFont().setSize(10);
 		checkMultiPolygon("multipolygon_black_1_labeled_font_size_10.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setSize(8);
+		getMultiPolygonLabelStyle().getFont().setSize(8);
 		// italic
-		getMultiPolygonLabelStyle().getFontStyle().setStyle("italic");
+		getMultiPolygonLabelStyle().getFont().setStyle("italic");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_italic.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setStyle("normal");
+		getMultiPolygonLabelStyle().getFont().setStyle("normal");
 		// weight
-		getMultiPolygonLabelStyle().getFontStyle().setWeight("bold");
+		getMultiPolygonLabelStyle().getFont().setWeight("bold");
 		checkMultiPolygon("multipolygon_black_1_labeled_font_bold.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setWeight("normal");
+		getMultiPolygonLabelStyle().getFont().setWeight("normal");
+	}
+	
+	private RuleInfo getFirstRule(UserStyleInfo userStyle){
+		FeatureTypeStyleInfo fts = userStyle.getFeatureTypeStyleList().get(0);
+		return fts.getRuleList().get(0);
 	}
 
-	private FeatureStyleInfo getMultiLineStyle() {
-		return layerBeansMultiLineStyleInfo.getFeatureStyles().get(0);
+	private LineSymbolizerInfo getMultiLineStyle() {
+		RuleInfo rule = getFirstRule(layerBeansMultiLineStyleInfo.getUserStyle());
+		return (LineSymbolizerInfo) rule.getSymbolizerList().get(0);
 	}
 
-	private LabelStyleInfo getMultiLineLabelStyle() {
-		return layerBeansMultiLineStyleInfo.getLabelStyle();
+	private TextSymbolizerInfo getMultiLineLabelStyle() {
+		RuleInfo rule = getFirstRule(layerBeansMultiLineStyleInfo.getUserStyle());
+		return (TextSymbolizerInfo) rule.getSymbolizerList().get(1);
 	}
 
-	private FeatureStyleInfo getMultiPolygonStyle() {
-		return layerBeansMultiPolygonStyleInfo.getFeatureStyles().get(0);
+	private PolygonSymbolizerInfo getMultiPolygonStyle() {
+		RuleInfo rule = getFirstRule(layerBeansMultiPolygonStyleInfo.getUserStyle());
+		return (PolygonSymbolizerInfo) rule.getSymbolizerList().get(0);
 	}
 
-	private LabelStyleInfo getMultiPolygonLabelStyle() {
-		return layerBeansMultiPolygonStyleInfo.getLabelStyle();
+	private TextSymbolizerInfo getMultiPolygonLabelStyle() {
+		RuleInfo rule = getFirstRule(layerBeansMultiPolygonStyleInfo.getUserStyle());
+		return (TextSymbolizerInfo) rule.getSymbolizerList().get(1);
 	}
 
-	private FeatureStyleInfo getPointStyle() {
-		return layerBeansPointStyleInfo.getFeatureStyles().get(0);
+	private PointSymbolizerInfo getPointStyle() {
+		RuleInfo rule = getFirstRule(layerBeansPointStyleInfo.getUserStyle());
+		return (PointSymbolizerInfo) rule.getSymbolizerList().get(0);
 	}
 
-	private LabelStyleInfo getPointLabelStyle() {
-		return layerBeansPointStyleInfo.getLabelStyle();
+	private TextSymbolizerInfo getPointLabelStyle() {
+		RuleInfo rule = getFirstRule(layerBeansPointStyleInfo.getUserStyle());
+		return (TextSymbolizerInfo) rule.getSymbolizerList().get(1);
 	}
-
+	
 	private void checkPoint(String fileName, boolean paintLabels, boolean paintGeometries, Bbox box) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansPoint, layerBeansPointStyleInfo, box);
 	}

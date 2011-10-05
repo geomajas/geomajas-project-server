@@ -40,11 +40,11 @@ public class RenderedImageIcon implements Icon {
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g;
-		AffineTransform scale = AffineTransform.getScaleInstance((double) width / renderedImage.getWidth(),
-				(double) height / renderedImage.getHeight());
+		AffineTransform scale = AffineTransform.getScaleInstance((double) (width) / renderedImage.getWidth(),
+				(double) (height) / renderedImage.getHeight());
 		AffineTransform translate = AffineTransform.getTranslateInstance(x, y);
-		scale.concatenate(translate);
-		g2d.drawRenderedImage(renderedImage, scale);
+		translate.concatenate(scale);
+		g2d.drawRenderedImage(renderedImage, translate);
 	}
 
 	public int getIconWidth() {

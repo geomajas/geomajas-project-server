@@ -7,15 +7,19 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
@@ -43,6 +47,8 @@ public class GeometryDirectLayerTest {
 	@Autowired
 	private GeoService geoService;
 
+	@Autowired
+	private StyleConverterService styleConverterService;
 	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
@@ -77,14 +83,18 @@ public class GeometryDirectLayerTest {
 		new DirectLayerAssert(layer, mapContext).assertEqualImage("polygon.png", writeImages, DELTA);
 	}
 
-	private FeatureStyleInfo createPolygonStyle() {
+	private UserStyleInfo createPolygonStyle() throws LayerException {
 		FeatureStyleInfo style = new FeatureStyleInfo();
 		style.setFillColor("#D2691E");
 		style.setFillOpacity(0.5f);
 		style.setStrokeColor("#D2691E");
 		style.setStrokeOpacity(1f);
 		style.setStrokeWidth(3);
-		return style;
+		style.setLayerType(LayerType.POLYGON);
+		NamedStyleInfo ns = new NamedStyleInfo();
+		ns.getFeatureStyles().add(style);
+		ns.applyDefaults();
+		return styleConverterService.convert(ns, GeometryDirectLayer.DEFAULT_GEOMETRY_NAME);
 	}
 
 	private Geometry createPolygon() throws GeomajasException, ParseException {

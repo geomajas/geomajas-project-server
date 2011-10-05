@@ -13,10 +13,10 @@ package org.geomajas.plugin.rasterizing.command.dto;
 import java.util.Map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
+import org.geomajas.sld.RuleInfo;
 
 /**
  * Metadata DTO class that carries extra metadata information to render a vector layer.
@@ -31,7 +31,7 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 
 	private NamedStyleInfo style;
 
-	private FeatureStyleInfo selectionStyle;
+	private RuleInfo selectionRule;
 
 	private String[] selectedFeatureIds;
 
@@ -144,22 +144,22 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	}
 
 	/**
-	 * returns the selection style. This style has to be merged with the actual style.
+	 * returns the selection style rule. This rule has to be merged with the actual style.
 	 * 
-	 * @return the selection style
+	 * @return the selection style rule
 	 */
-	public FeatureStyleInfo getSelectionStyle() {
-		return selectionStyle;
+	public RuleInfo getSelectionRule() {
+		return selectionRule;
 	}
 
 	/**
-	 * Sets the selection style for this layer. This style has to be merged with the actual style.
+	 * Sets the selection style rule for this layer. This rule has to be merged with the actual style.
 	 * 
-	 * @param selectionStyle
-	 *            the selection style
+	 * @param selectionRule
+	 *            the selection style rule
 	 */
-	public void setSelectionStyle(FeatureStyleInfo selectionStyle) {
-		this.selectionStyle = selectionStyle;
+	public void setSelectionRule(RuleInfo selectionRule) {
+		this.selectionRule = selectionRule;
 	}
 
 	/**
