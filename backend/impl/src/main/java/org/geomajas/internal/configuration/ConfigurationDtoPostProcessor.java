@@ -12,7 +12,9 @@ package org.geomajas.internal.configuration;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +40,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.DtoConverterService;
@@ -191,16 +194,85 @@ public class ConfigurationDtoPostProcessor {
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				namedStyle.applyDefaults();
 			}
-
+			
+			// check for mixed geometry styles (old school styles without layer type will be converted to 3 styles)
+			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
+				List<FeatureStyleInfo> convertedStyles = new ArrayList<FeatureStyleInfo>();
+				for (FeatureStyleInfo style : namedStyle.getFeatureStyles()) {
+					if (style.getLayerType() == LayerType.RASTER || style.getLayerType() == LayerType.GEOMETRY) {
+						throw new LayerException(ExceptionCode.INVALID_FEATURE_STYLE_LAYER_TYPE, style.getLayerType());
+					} else if (style.getLayerType() == null) {
+						if (layer.getLayerInfo().getLayerType() != LayerType.GEOMETRY) {
+							style.setLayerType(layer.getLayerInfo().getLayerType());
+							convertedStyles.add(style);
+						} else {
+							String geometryName = info.getFeatureInfo().getGeometryType().getName();
+							// we have to convert to 3 styles here !
+							convertedStyles.add(createPointStyle(style, geometryName));
+							convertedStyles.add(createLineStyle(style, geometryName));
+							convertedStyles.add(createPolygonStyle(style, geometryName));
+						}
+					} else {
+						convertedStyles.add(style);
+					}
+				}
+				namedStyle.setFeatureStyles(convertedStyles);
+			}
+			
+			// index styles
+			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
+				int i = 0;
+				for (FeatureStyleInfo style : namedStyle.getFeatureStyles()) {
+					style.setIndex(i++);
+					style.setStyleId(namedStyle.getName() + "-" + style.getIndex());
+				}
+			}
+			
 			// convert old styles to sld
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				if (namedStyle.getUserStyle() == null) {
-					UserStyleInfo userStyle = styleConverterService.convert(namedStyle, info.getLayerType());
+					UserStyleInfo userStyle = styleConverterService.convert(namedStyle, info.getFeatureInfo()
+							.getGeometryType().getName());
 					namedStyle.setUserStyle(userStyle);
 				}
 			}
 		}
 	}
+	
+	private FeatureStyleInfo createPointStyle(FeatureStyleInfo style, String geometryName) {
+		FeatureStyleInfo copy = new FeatureStyleInfo(style);
+		copy.setLayerType(LayerType.POINT);
+		copy.setFormula("(geometryType(" + geometryName + ") = 'Point') OR (geometryType(" + geometryName
+				+ ") = 'MultiPoint')");
+		return copy;
+	}
+
+	private FeatureStyleInfo createLineStyle(FeatureStyleInfo style, String geometryName) {
+		FeatureStyleInfo copy = new FeatureStyleInfo(style);
+		copy.setLayerType(LayerType.LINESTRING);
+		copy.setFormula("(geometryType(" + geometryName + ") = 'LineString') OR (geometryType(" + geometryName
+				+ ") = 'MultiLineString')");
+		return copy;
+	}
+
+	private FeatureStyleInfo createPolygonStyle(FeatureStyleInfo style, String geometryName) {
+		FeatureStyleInfo copy = new FeatureStyleInfo(style);
+		copy.setLayerType(LayerType.POLYGON);
+		copy.setFormula("(geometryType(" + geometryName + ") = 'Polygon') OR (geometryType(" + geometryName
+				+ ") = 'MultiPolygon')");
+		return copy;
+	}
+
+	private NamedStyleInfo postProcess(NamedStyleInfo client) {
+		// index styles/rules
+		int i = 0;
+		for (FeatureStyleInfo style : client.getFeatureStyles()) {
+			style.setIndex(i++);
+			style.setStyleId(client.getName() + "-" + style.getIndex());
+		}
+		return client;
+	}
+
 
 	private UserStyleInfo extractStyle(StyledLayerDescriptorInfo sld, String sldLayerName, String sldStyleName)
 			throws LayerException {
@@ -340,16 +412,6 @@ public class ConfigurationDtoPostProcessor {
 		}
 
 		return layer;
-	}
-
-	private NamedStyleInfo postProcess(NamedStyleInfo client) {
-		// index styles/rules
-		int i = 0;
-		for (FeatureStyleInfo style : client.getFeatureStyles()) {
-			style.setIndex(i++);
-			style.setStyleId(client.getName() + "-" + style.getIndex());
-		}
-		return client;
 	}
 
 	private double getUnitLength(String mapCrsKey, Bbox mapBounds) throws LayerException {

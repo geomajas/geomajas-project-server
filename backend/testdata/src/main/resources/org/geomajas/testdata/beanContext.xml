@@ -93,5 +93,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="namedStyleInfo" ref="beansStyleInfo" />
 	</bean>
 
+	<bean class="org.geomajas.internal.service.ResourceServiceImpl" id="service.ResourceService">
+		<property name="rootPaths">
+			<list>
+				<value>classpath:org/geomajas/testdata/sld</value>
+			</list>
+		</property>
+	</bean>
+
 </beans>
 

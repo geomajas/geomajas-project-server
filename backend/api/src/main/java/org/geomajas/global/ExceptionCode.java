@@ -174,5 +174,9 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int RULE_NOT_FOUND = 83;
+	/**
+	 * @since 1.10.0
+	 */
+	int INVALID_FEATURE_STYLE_LAYER_TYPE = 84;
 
 }

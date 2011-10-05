@@ -38,9 +38,11 @@ import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.service.sld.ResourceAwareSLDParser;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.ResourceService;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.ExternalGraphicInfo;
@@ -117,7 +119,6 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -174,6 +175,9 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 
 	@Autowired
 	private FilterService filterService;
+
+	@Autowired
+	private ResourceService resourceService;
 
 	public StyleFactory getStyleFactory() {
 		return styleFactory;
@@ -260,15 +264,25 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			namedLayerInfo.getChoiceList().add(userChoice);
 			choice.setNamedLayer(namedLayerInfo);
 			sld.getChoiceList().add(choice);
+
 			// force through Geotools parser
 			bindingFactory = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
 			IMarshallingContext marshallingContext = bindingFactory.createMarshallingContext();
 			StringWriter sw = new StringWriter();
 			marshallingContext.setOutput(sw);
 			marshallingContext.marshalDocument(sld);
-			SLDParser parser = new SLDParser(styleFactory);
+
+			ResourceAwareSLDParser parser = new ResourceAwareSLDParser(styleFactory, resourceService);
 			parser.setInput(new StringReader(sw.toString()));
+
 			Style[] styles = parser.readXML();
+
+			// SLDConfiguration configuration = sldFactory.createConfiguration();
+			// Parser parser = new Parser(configuration);
+			// StyledLayerDescriptor styledLayerDescriptor = (StyledLayerDescriptor) parser.parse(new StringReader(sw
+			// .toString()));
+			// NamedLayer namedLayer = (NamedLayer) styledLayerDescriptor.getStyledLayers()[0];
+			// Style[] styles = namedLayer.getStyles();
 			if (styles.length != 0) {
 				return styles[0];
 			} else {
@@ -288,7 +302,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return style.featureTypeStyles().get(0).rules().get(0);
 	}
 
-	public UserStyleInfo convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException {
+	public UserStyleInfo convert(NamedStyleInfo namedStyleInfo, String geometryName) throws LayerException {
 		StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
 		Style style = styleBuilder.createStyle();
 
@@ -306,14 +320,12 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			} else {
 				styleFilter = Filter.INCLUDE;
 			}
-			// create the rules
-			List<Rule> l = createRules(layerType, styleFilter, featureStyle);
-			// add the label symbolizer to each rule
-			for (Rule r : l) {
-				TextSymbolizer textSymbolizer = createTextSymbolizer(namedStyleInfo.getLabelStyle(), layerType);
-				r.symbolizers().add(textSymbolizer);
-			}
-			rules.addAll(l);
+			Rule rule = createRule(styleFilter, featureStyle, geometryName);
+			// add the label symbolizer to the rule
+			TextSymbolizer textSymbolizer = createTextSymbolizer(namedStyleInfo.getLabelStyle(),
+					featureStyle.getLayerType());
+			rule.symbolizers().add(textSymbolizer);
+			rules.add(rule);
 		}
 		// create the style
 		FeatureTypeStyle fts = styleBuilder.createFeatureTypeStyle(null, rules.toArray(new Rule[rules.size()]));
@@ -752,58 +764,23 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return null;
 	}
 
-	private List<Rule> createRules(LayerType layerType, Filter filter, FeatureStyleInfo featureStyle)
-			throws LayerException {
+	private Rule createRule(Filter filter, FeatureStyleInfo featureStyle, String geometryName) throws LayerException {
 		List<Rule> rules = new ArrayList<Rule>();
-		// for mixed geometries we add a filter to distinguish between geometry types
-		if (layerType == LayerType.GEOMETRY) {
-			// add the configured filter to a filter that selects point features only
-			Rule pointRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POINT, featureStyle));
-			Filter pointFilter = filterService.createGeometryTypeFilter("", "Point");
-			Filter multiPointFilter = filterService.createGeometryTypeFilter("", "MultiPoint");
-			Filter pointsFilter = filterService.createLogicFilter(pointFilter, "or", multiPointFilter);
-			pointRule.setFilter(filterService.createLogicFilter(pointsFilter, "and", filter));
-			pointRule.setName(featureStyle.getName());
-			pointRule.setTitle(featureStyle.getName());
-
-			// add the configured filter to a filter that selects line features only
-			Rule lineRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.LINESTRING, featureStyle));
-			Filter lineFilter = filterService.createGeometryTypeFilter("", "LineString");
-			Filter multiLineFilter = filterService.createGeometryTypeFilter("", "MultiLineString");
-			Filter linesFilter = filterService.createLogicFilter(lineFilter, "or", multiLineFilter);
-			lineRule.setFilter(filterService.createLogicFilter(linesFilter, "and", filter));
-			lineRule.setName(featureStyle.getName());
-			lineRule.setTitle(featureStyle.getName());
-
-			// add the configured filter to a filter that selects polygon features only
-			Rule polygonRule = styleBuilder.createRule(createGeometrySymbolizer(LayerType.POLYGON, featureStyle));
-			Filter polygonFilter = filterService.createGeometryTypeFilter("", "Polygon");
-			Filter multiPolygonFilter = filterService.createGeometryTypeFilter("", "MultiPolygon");
-			Filter polygonsFilter = filterService.createLogicFilter(polygonFilter, "or", multiPolygonFilter);
-			polygonRule.setFilter(filterService.createLogicFilter(polygonsFilter, "and", filter));
-			polygonRule.setName(featureStyle.getName());
-			polygonRule.setTitle(featureStyle.getName());
-			rules.add(pointRule);
-			rules.add(lineRule);
-			rules.add(polygonRule);
+		Rule rule = styleBuilder.createRule(createGeometrySymbolizer(featureStyle));
+		if (filter.equals(Filter.INCLUDE)) {
+			rule.setElseFilter(true);
 		} else {
-			Rule rule = styleBuilder.createRule(createGeometrySymbolizer(layerType, featureStyle));
-			if (filter.equals(Filter.INCLUDE)) {
-				rule.setElseFilter(true);
-			} else {
-				rule.setFilter(filter);
-			}
-			rule.setName(featureStyle.getName());
-			rule.setTitle(featureStyle.getName());
-			rules.add(rule);
+			rule.setFilter(filter);
 		}
-		return rules;
+		rule.setName(featureStyle.getName());
+		rule.setTitle(featureStyle.getName());
+		rules.add(rule);
+		return rule;
 	}
 
-	private Symbolizer createGeometrySymbolizer(LayerType layerType, FeatureStyleInfo featureStyle)
-			throws LayerException {
+	private Symbolizer createGeometrySymbolizer(FeatureStyleInfo featureStyle) throws LayerException {
 		Symbolizer symbolizer = null;
-		switch (layerType) {
+		switch (featureStyle.getLayerType()) {
 			case MULTIPOLYGON:
 			case POLYGON:
 				symbolizer = styleBuilder.createPolygonSymbolizer(createStroke(featureStyle), createFill(featureStyle));
@@ -860,6 +837,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private GraphicalSymbol createSymbol(FeatureStyleInfo featureStyle) throws LayerException {
 		SymbolInfo info = featureStyle.getSymbol();
 		if (info.getImage() != null) {
+
 			return styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()), getFormat(info.getImage()
 					.getHref()));
 		} else {

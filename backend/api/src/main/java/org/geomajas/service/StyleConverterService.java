@@ -15,7 +15,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.LayerType;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geotools.styling.Rule;
@@ -63,9 +62,9 @@ public interface StyleConverterService {
 	 * Converts named style info to GT style used by legend/raster rendering.
 	 * 
 	 * @param namedStyleInfo the named style
-	 * @param layerType the type of the layer
+	 * @param geometryName the name of the default geometry attribute
 	 * @return the GT style
 	 * @throws LayerException oops
 	 */
-	UserStyleInfo convert(NamedStyleInfo namedStyleInfo, LayerType layerType) throws LayerException;
+	UserStyleInfo convert(NamedStyleInfo namedStyleInfo, String geometryName) throws LayerException;
 }

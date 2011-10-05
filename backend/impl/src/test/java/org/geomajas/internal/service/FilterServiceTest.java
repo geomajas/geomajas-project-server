@@ -184,10 +184,13 @@ public class FilterServiceTest {
 	@Test
 	public void testDefaultGeometryTypeFilter() throws GeomajasException, ParseException {
 		Polygon poly = (Polygon) wkt.read("POLYGON((0 0,1 0,1 1,0 1,0 0))");
-		Filter fid = filterService.createGeometryTypeFilter("", "Polygon");
+		Filter isPoly = filterService.createGeometryTypeFilter("", "Polygon");
 		TestFeature f = new TestFeature();
 		f.expectAndReturn("", poly);
-		Assert.assertTrue(fid.evaluate(f));
+		Assert.assertTrue(isPoly.evaluate(f));
+		Filter isPoint = filterService.createGeometryTypeFilter("", "Point");
+		f.expectAndReturn("", poly);
+		Assert.assertFalse(isPoint.evaluate(f));
 	}
 
 	@Test

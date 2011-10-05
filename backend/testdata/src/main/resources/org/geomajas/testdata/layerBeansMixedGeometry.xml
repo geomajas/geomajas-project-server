@@ -60,6 +60,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
                    <property name="name" value="pointStyle"/>
                     <property name="formula" value="geometryType(geometry) = 'Point'"/>
+                    <property name="layerType" value="POINT"/>
 					<property name="fillColor" value="#663333" />
 					<property name="fillOpacity" value=".75" />
 					<property name="strokeColor" value="#333333" />
@@ -78,6 +79,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</bean>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
                    <property name="formula" value="geometryType(geometry) = 'MultiLineString'"/>
+                   <property name="layerType" value="MULTILINESTRING"/>
 					<property name="name" value="lineStyle" />
 					<property name="fillColor" value="#FFFFFF" />
 					<property name="fillOpacity" value="0" />
@@ -87,6 +89,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</bean>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
                   <property name="formula" value="geometryType(geometry) = 'MultiPolygon'"/>
+                  <property name="layerType" value="MULTIPOLYGON"/>
 					<property name="name" value="polygonStyle" />
 					<property name="fillColor" value="#FF00FF" />
 					<property name="fillOpacity" value="0.5" />

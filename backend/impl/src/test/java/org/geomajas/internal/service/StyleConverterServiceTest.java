@@ -1,16 +1,20 @@
 package org.geomajas.internal.service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.StyleConverterService;
+import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geomajas.sld.UserStyleInfo;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IUnmarshallingContext;
@@ -30,7 +34,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Jan De Moerloose
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/testdata/layerBeans.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMixedGeometry.xml" })
 public class StyleConverterServiceTest {
 
 	@Autowired
@@ -39,6 +44,10 @@ public class StyleConverterServiceTest {
 	@Autowired
 	@Qualifier("beansFeatureInfo")
 	private FeatureInfo featureInfo;
+
+	@Autowired
+	@Qualifier("layerBeansMixedGeometryStyleInfo")
+	private NamedStyleInfo layerBeansMixedGeometryStyleInfo;
 
 	@Test
 	public void testSingleStyle() throws JiBXException, LayerException {
@@ -53,4 +62,11 @@ public class StyleConverterServiceTest {
 		Assert.assertEquals("Some title", info.getName());
 	}
 
+	@Test
+	public void testMixedGeometryStyle() throws LayerException {
+		UserStyleInfo style = styleConverterService.convert(layerBeansMixedGeometryStyleInfo, "geometry");
+		List<RuleInfo> rules = style.getFeatureTypeStyleList().get(0).getRuleList();
+		Assert.assertEquals(3, rules.size());
+	}
+	
 }
