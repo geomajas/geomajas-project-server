@@ -160,12 +160,11 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 		fs.setStrokeColor(shapeStyle.getStrokeColor());
 		fs.setFillOpacity(shapeStyle.getFillOpacity());
 		fs.setStrokeOpacity(shapeStyle.getStrokeOpacity());
-		fs.setStrokeWidth((int)shapeStyle.getStrokeWidth());
+		fs.setStrokeWidth((int) shapeStyle.getStrokeWidth());
 		fs.setSymbol(symbol);
 		fs.setName(geometry.getId());
 		return StyleUtil.createRule(geometry.getGeometry().getLayerType(), fs);
 	}
-
 
 	private String toUrl(String key) {
 		String url = GWT.getHostPageBaseURL();
