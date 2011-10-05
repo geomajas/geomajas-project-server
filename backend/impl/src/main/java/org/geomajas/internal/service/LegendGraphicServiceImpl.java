@@ -49,6 +49,7 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.visitor.RescaleStyleVisitor;
 import org.geotools.util.NumberRange;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -157,6 +158,16 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 		int height = legendMetadata.getHeight() > 0 ? legendMetadata.getHeight() : defaultHeight;
 		if (rule != null) {
 			SimpleFeature sampleFeature = createSampleFeature(vectorLayer);
+			
+			MetaBufferEstimator estimator = new MetaBufferEstimator();
+			estimator.visit(rule);
+			double buffer = (double) estimator.getBuffer();
+			double scale = Math.min(width / (buffer + 1), height / (buffer + 1));
+			if (scale < 1) {
+				RescaleStyleVisitor rescaler = new RescaleStyleVisitor(scale);
+				rescaler.visit(rule);
+				rule = (Rule) rescaler.getCopy();
+			}
 
 			Symbolizer[] symbolizers = rule.getSymbolizers();
 
