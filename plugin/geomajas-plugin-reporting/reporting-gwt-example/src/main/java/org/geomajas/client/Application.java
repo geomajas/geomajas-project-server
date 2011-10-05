@@ -81,7 +81,7 @@ public class Application implements EntryPoint {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				Label title = new Label("Geomajas GWT: hello world");
+				Label title = new Label("Geomajas GWT: reporting demo");
 				title.setStyleName("appTitle");
 				title.setWidth(260);
 				toolbar.addFill();
