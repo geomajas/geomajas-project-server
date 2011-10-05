@@ -15,6 +15,7 @@ import java.util.Set;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -23,12 +24,14 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.util.GeometryConverter;
+import org.geomajas.gwt.client.util.StyleUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.rasterizing.command.dto.ClientGeometryLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
@@ -37,6 +40,7 @@ import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.sld.RuleInfo;
 
 import com.google.gwt.core.client.GWT;
 
@@ -104,6 +108,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 					FeatureStyleInfo selectStyle = null;
 					switch (layerInfo.getLayerType()) {
 						case GEOMETRY:
+							selectStyle = mapInfo.getLineSelectStyle();
 							break;
 						case LINESTRING:
 						case MULTILINESTRING:
@@ -119,7 +124,8 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 							break;
 					}
 					selectStyle.applyDefaults();
-					vectorRasterizingInfo.setSelectionStyle(selectStyle);
+					RuleInfo selectionRule = StyleUtil.createRule(layerInfo.getLayerType(), selectStyle);
+					vectorRasterizingInfo.setSelectionRule(selectionRule);
 				}
 				layerInfo.getWidgetInfo().put(VectorLayerRasterizingInfo.WIDGET_KEY, vectorRasterizingInfo);
 			} else if (layer instanceof RasterLayer) {
@@ -136,14 +142,8 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				ClientGeometryLayerInfo layer = new ClientGeometryLayerInfo();
 				GfxGeometry geometry = (GfxGeometry) worldPaintable;
 				layer.getGeometries().add(GeometryConverter.toDto((Geometry) geometry.getOriginalLocation()));
-				FeatureStyleInfo style = new FeatureStyleInfo();
-				style.setFillColor(geometry.getStyle().getFillColor());
-				style.setFillOpacity(geometry.getStyle().getFillOpacity());
-				style.setStrokeColor(geometry.getStyle().getStrokeColor());
-				style.setStrokeOpacity(geometry.getStyle().getStrokeOpacity());
-				style.setStrokeWidth((int) geometry.getStyle().getStrokeWidth());
-				style.applyDefaults();
-				layer.setStyle(style);
+				RuleInfo rule = createRule(geometry);
+				layer.setStyle(StyleUtil.createStyle(rule));
 				layer.setLayerType(geometry.getGeometry().getLayerType());
 				layer.setLabel(geometry.getId());
 				layer.setId(geometry.getId());
@@ -151,6 +151,21 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 			}
 		}
 	}
+
+	private RuleInfo createRule(GfxGeometry geometry) {
+		ShapeStyle shapeStyle = geometry.getStyle();
+		SymbolInfo symbol = geometry.getSymbolInfo();
+		FeatureStyleInfo fs = new FeatureStyleInfo();
+		fs.setFillColor(shapeStyle.getFillColor());
+		fs.setStrokeColor(shapeStyle.getStrokeColor());
+		fs.setFillOpacity(shapeStyle.getFillOpacity());
+		fs.setStrokeOpacity(shapeStyle.getStrokeOpacity());
+		fs.setStrokeWidth((int)shapeStyle.getStrokeWidth());
+		fs.setSymbol(symbol);
+		fs.setName(geometry.getId());
+		return StyleUtil.createRule(geometry.getGeometry().getLayerType(), fs);
+	}
+
 
 	private String toUrl(String key) {
 		String url = GWT.getHostPageBaseURL();
