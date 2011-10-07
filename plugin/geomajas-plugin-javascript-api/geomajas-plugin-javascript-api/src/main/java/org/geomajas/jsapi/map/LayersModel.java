@@ -10,25 +10,19 @@
  */
 package org.geomajas.jsapi.map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.jsapi.map.layer.Layer;
-import org.geomajas.jsapi.map.layer.VectorLayer;
+import org.timepedia.exporter.client.Exportable;
 
 /**
  * Javascript exportable facade for a map's LayersModel.
  * 
  * @author Oliver May
- * 
+ * @author Pieter De Graef
+ * @since 1.0.0
  */
-public interface LayersModel {
-
-	/**
-	 * Get a single VectorLayer by its identifier.
-	 * 
-	 * @param id
-	 *            The layers unique identifier within this map.
-	 * @return Returns the layer, or null if it could not be found.
-	 */
-	VectorLayer getVectorLayer(String layerId);
+@Api(allMethods = true)
+public interface LayersModel extends Exportable {
 
 	/**
 	 * Get a single layer by its identifier.
@@ -40,16 +34,18 @@ public interface LayersModel {
 	Layer getLayer(String layerId);
 
 	/**
-	 * Get the list of all VectorLayers.
+	 * Return the layer at a certain index. If the index can't be found, null is returned.
 	 * 
-	 * @return a list of vector layers.
+	 * @param index
+	 *            The specified index.
+	 * @return Returns the layer, or null if the index can't be found.
 	 */
-	String[] getVectorLayerIds();
+	Layer getLayerAt(int index);
 
 	/**
-	 * Get the list of all Layers.
+	 * Return the total number of layers within this map.
 	 * 
-	 * @return a list of layers.
+	 * @return The layer count.
 	 */
-	String[] getLayerIds();
+	int getLayerCount();
 }

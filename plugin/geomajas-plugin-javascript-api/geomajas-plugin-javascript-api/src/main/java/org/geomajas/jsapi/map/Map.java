@@ -10,31 +10,21 @@
  */
 package org.geomajas.jsapi.map;
 
-import org.geomajas.global.FutureApi;
-
+import org.geomajas.annotation.Api;
+import org.timepedia.exporter.client.Exportable;
 
 /**
- * Javascript exportable facade of the Map presentation.
- * See the specific implementation for details how to initialize.
+ * Javascript exportable facade of the Map presentation. See the specific implementation for details how to initialize.
  * 
- * The implementation should make sure the newly created Map is registered in a 
- * {@link org.geomajas.jsapi.MapRegistry}! This way created maps are guaranteed available trough Javascript.
+ * The implementation should make sure the newly created Map is registered in a
+ * {@link org.geomajas.jsapi.GeomajasService}! This way created maps are guaranteed available trough Javascript.
  * 
  * @author Oliver May
+ * @author Pieter De Graef
+ * @since 1.0.0
  */
-
-@FutureApi(allMethods = true)
-public interface Map {
-
-	/**
-	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
-	 * on return.
-	 * 
-	 * 
-	 * @param applicationId the application id.
-	 * @param mapId the map id.
-	 */
-	void initialize(String application, String mapId);
+@Api(allMethods = true)
+public interface Map extends Exportable {
 
 	/**
 	 * Returns the layers model for this presenter. This model is the central layer handler for the map, with methods
@@ -43,7 +33,7 @@ public interface Map {
 	 * @return The layers model.
 	 */
 	LayersModel getLayersModel();
-	
+
 	/**
 	 * Returns the {@link ViewPort} associated with this map. The view port regulates zooming and panning around the
 	 * map, but also presents transformation methods for transforming vector objects between the different render
@@ -51,11 +41,13 @@ public interface Map {
 	 * 
 	 * @return Returns the view port.
 	 */
-//	ViewPort getViewPort();
+	ViewPort getViewPort();
 
 	/**
 	 * Couples this map to an existing HTML element (div or span).
-	 * @param id id of the element
+	 * 
+	 * @param id
+	 *            id of the element
 	 */
 	void setHtmlElementId(String id);
 
@@ -68,5 +60,4 @@ public interface Map {
 	 *            The new pixel height for the map.
 	 */
 	void setSize(int width, int height);
-
 }

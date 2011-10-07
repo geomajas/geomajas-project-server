@@ -10,18 +10,19 @@
  */
 package org.geomajas.jsapi.map.layer;
 
-import org.geomajas.global.FutureApi;
-
+import org.geomajas.annotation.Api;
+import org.timepedia.exporter.client.Exportable;
 
 /**
  * Javascript exportable facade for a Layer.
  * 
  * @author Oliver May
+ * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
-public interface Layer {
-	
+@Api(allMethods = true)
+public interface Layer extends Exportable {
+
 	/**
 	 * Return this layer's client ID.
 	 * 
@@ -30,7 +31,8 @@ public interface Layer {
 	String getId();
 
 	/**
-	 * Return this layer's server ID.
+	 * Return this layer's server ID. Multiple client side layer (connected with a map) can point to a single data
+	 * source on the back-end. This returns the actual layer name as used on the server.
 	 * 
 	 * @return id of the server layer
 	 */
@@ -86,6 +88,4 @@ public interface Layer {
 	 * @return true or false.
 	 */
 	boolean isShowing();
-	
-	
 }

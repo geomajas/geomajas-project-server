@@ -10,19 +10,21 @@
  */
 package org.geomajas.jsapi.map;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.jsapi.spatial.geometry.Bbox;
 import org.geomajas.jsapi.spatial.geometry.Coordinate;
+import org.timepedia.exporter.client.Exportable;
 
 /**
  * Javascript exportable facade for a map's ViewPort. The Central view port definition that determines and influences
  * the position and current view of the map.
  * 
  * @author Oliver May
+ * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
-public interface ViewPort {
+@Api(allMethods = true)
+public interface ViewPort extends Exportable {
 
 	/**
 	 * Get the current center position expressed in world space.
@@ -50,7 +52,7 @@ public interface ViewPort {
 	 *            the new center position
 	 */
 	void applyPosition(Coordinate coordinate);
-	
+
 	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
@@ -73,7 +75,7 @@ public interface ViewPort {
 	 *            double clicking on the map without it moving away.
 	 */
 	void applyScale(double scale, Coordinate rescalePoint);
-	
+
 	/**
 	 * <p>
 	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
@@ -87,8 +89,8 @@ public interface ViewPort {
 	 * @param bounds
 	 *            A bounding box in world coordinates that determines the view from now on.
 	 */
-//	void applyBounds(Bbox bounds);
-	
+	void applyBounds(Bbox bounds);
+
 	/**
 	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
 	 * configuration.
@@ -96,5 +98,4 @@ public interface ViewPort {
 	 * @return The maximum zooming extent that is allowed on this view port.
 	 */
 	Bbox getMaximumBounds();
-	
 }
