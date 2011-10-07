@@ -106,7 +106,7 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	}
 
 	/**
-	 * returns true if feature labels have to be painted.
+	 * Returns true if feature labels have to be painted.
 	 * 
 	 * @return true if labels have to be painted, false otherwise.
 	 */
