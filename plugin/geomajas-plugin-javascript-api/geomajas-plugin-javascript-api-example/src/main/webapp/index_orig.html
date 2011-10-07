@@ -11,63 +11,46 @@
 		  ~ details, see LICENSE.txt in the project root.
 		  -->
 <head>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
-	<title>Geomajas Javascript API - JS only test</title>
-	<link type="text/css" rel="stylesheet" href="geomajas.css">
+<!--meta name="gwt:property" content="locale=en" /-->
+<link type="text/css" rel="stylesheet" href="geomajas.css">
+<title>GWT web application using Geomajas</title>
 
-	<script type="text/javascript" language="javascript">var isomorphicDir = "complexApp/sc/";</script>
-	<script type="text/javascript" language="javascript" src="complexApp/complexApp.nocache.js"></script>
-		
-	<script type="text/javascript">
-		var map;
+<!-- Name defined in the module xml (=geomajas). -->
+<script type="text/javascript" language="javascript">
+	var isomorphicDir = "org.geomajas.plugin.jsapi.example.Application/sc/";
+</script>
+<script type="text/javascript" language="javascript"
+	src="org.geomajas.plugin.jsapi.example.Application/org.geomajas.plugin.jsapi.example.Application.nocache.js"></script>
+<style type="text/css">
+h1, h2 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+} 
 
-		function initialize() {
-			var d = document.getElementById('log');
-			d.innerHTML += "Initializing the map...";
-			map = Geomajas().createMap("app", "mapMain", "js-map-element");
-			d.innerHTML += "done.<br>";
+h3, h4, h5 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+} 
+
+</style>	
+
+						
+	<script type="text/javascript" language="javascript">
+		function getMap() {
+			var widgetRegistry = new org.geomajas.jsapi.GeomajasRegistryImpl();
+			var mapRegistry = widgetRegistry.getMapRegistry();
+			var map = mapRegistry.getMap("mapMain", "app");
+			return map;
 		}
-		
-		function log(text) {
-			var element = document.getElementById('log');
-			if (element != null) {
-				element.innerHTML = text + "<br>" + element.innerHTML;
-			}
-		}
+	
 	</script>
-	<script type="text/javascript" language="javascript" src="geomajas-event-test.js"></script>
 </head>
 
-<body>
-	<div class="titleBar">
-		<div class="title">Geomajas JavaScript API test</div>
-		<div class="subtitle">This example uses an complex GWT application - JavaScript is here to listen</div>
-	</div>
-	<div>
-		<table CELLSPACING="5" CELLPADDING="0">
-			<tr>
-				<td style="width:800px;">
-					<div id="gwt-app-element" style="width:800px; height:600px; border: 1px solid #337428;">
-						<!-- on load, the map is attached here -->
-					</div>
-					<div style="border: 1px solid #337428; margin-top:5px; padding:3px 5px;">
-						<h2>Buttons ftw \o/</h2>
-					</div>
-				</td>
-				<td valign="top" style="width: 100%; border: 1px solid #337428;">
-					<div id="log" style="padding: 3px 5px;">
-						<h2>Log window:</h3>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
-</body>
 
 
-<!--
 <body>
 <h2>Embedded map initialized from GWT entrypoint</h2>
 <div id="map" style="width: 600px; height: 450px; float: right; border: 1px solid black; margin: 5px; "></div>
@@ -344,8 +327,9 @@ function geomajasOnLoad() {
 	</script>
 
 
+	<!-- OPTIONAL: include this if you want history support -->
 	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
 		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
 </body>
- -->
+
 </html>

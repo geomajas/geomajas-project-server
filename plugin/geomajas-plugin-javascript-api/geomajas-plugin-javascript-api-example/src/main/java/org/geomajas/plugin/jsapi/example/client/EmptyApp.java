@@ -9,19 +9,17 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.jsapi.example.client.i18n;
+package org.geomajas.plugin.jsapi.example.client;
 
-import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.core.client.EntryPoint;
 
 /**
- * <p>
- * Localization messages for the GWT test samples.
- * </p>
- *
- * @author geomajas-gwt-archetype
+ * Entry point and main class for GWT application. This empty application is used in the JavaScript only example.
+ * 
+ * @author Pieter De Graef
  */
-public interface ApplicationMessages extends Messages {
+public class EmptyApp implements EntryPoint {
 
-	String applicationTitle(String version);
-
+	public void onModuleLoad() {
+	}
 }

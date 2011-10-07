@@ -17,8 +17,8 @@
 	<title>Geomajas Javascript API - JS only test</title>
 	<link type="text/css" rel="stylesheet" href="geomajas.css">
 
-	<script type="text/javascript" language="javascript">var isomorphicDir = "complexApp/sc/";</script>
-	<script type="text/javascript" language="javascript" src="complexApp/complexApp.nocache.js"></script>
+	<script type="text/javascript" language="javascript">var isomorphicDir = "emptyApp/sc/";</script>
+	<script type="text/javascript" language="javascript" src="emptyApp/emptyApp.nocache.js"></script>
 		
 	<script type="text/javascript">
 		var map;
@@ -29,37 +29,68 @@
 			map = Geomajas().createMap("app", "mapMain", "js-map-element");
 			d.innerHTML += "done.<br>";
 		}
+
+		function listMethods(myObject) {
+			var element = document.getElementById('log');
+			element.innerHTML += "Properties for " + myObject;
+			for ( var property in myObject) {
+				element.innerHTML += "<br>Property: "+ property;
+			}
+		}
 		
 		function log(text) {
 			var element = document.getElementById('log');
-			if (element != null) {
-				element.innerHTML = text + "<br>" + element.innerHTML;
-			}
+			element.innerHTML += "<br>" + text;
 		}
 	</script>
-	<script type="text/javascript" language="javascript" src="geomajas-event-test.js"></script>
+	<script type="text/javascript" language="javascript" src="geomajas-api-test.js"></script>
 </head>
 
-<body>
+<body _onLoad="initialize()">
 	<div class="titleBar">
 		<div class="title">Geomajas JavaScript API test</div>
-		<div class="subtitle">This example uses an complex GWT application - JavaScript is here to listen</div>
+		<div class="subtitle">This example uses an empty GWT application - JavaScript only</div>
+		<button onclick="initialize()">INIT</button>
 	</div>
 	<div>
-		<table CELLSPACING="5" CELLPADDING="0">
+		<table CELLSPACING="0" CELLPADDING="5">
 			<tr>
-				<td style="width:800px;">
-					<div id="gwt-app-element" style="width:800px; height:600px; border: 1px solid #337428;">
+				<td style="width:640px;">
+					<div id="js-map-element" style="width:640px; height:480px; border: 1px solid #337428;">
 						<!-- on load, the map is attached here -->
 					</div>
-					<div style="border: 1px solid #337428; margin-top:5px; padding:3px 5px;">
-						<h2>Buttons ftw \o/</h2>
+					<div id="log" style="border: 1px solid #337428; margin-top:5px; padding:3px 5px;">
+						<h3>Log window:</h3>
 					</div>
 				</td>
-				<td valign="top" style="width: 100%; border: 1px solid #337428;">
-					<div id="log" style="padding: 3px 5px;">
-						<h2>Log window:</h3>
-					</div>
+				<td valign="top">
+					<h2>Navigation</h2>
+					<h4>Translating</h4>
+					<button onclick="translate(-1, 0)">LEFT</button>
+					<button onclick="translate(1, 0)">RIGHT</button>
+					<button onclick="translate(0, -1)">DOWN</button>
+					<button onclick="translate(0, 1)">UP</button>
+					Move distance: <input type="text" id="translateDistance" value="100000" /> <i>(Map units, meters)</i>
+
+					<h4>Scaling (a.k.a zooming)</h4>
+					<button onclick="zoomIn()">Zoom in</button>
+					<button onclick="zoomOut()">Zoom out</button>
+					Factor: <input type="text" id="zoomFactor" value="2" />
+
+					<h4>By bounds</h4>
+					<button onclick="displayBounds()">Get bounds</button>&nbsp;<button onclick="applyBounds()">Apply bounds</button><br />
+					Xmin: <input type="text" id="boundsXmin" />
+					Xmax: <input type="text" id="boundsXmax" /><br/>
+					Ymin: <input type="text" id="boundsYmin" />
+					Ymax: <input type="text" id="boundsYmax" />
+					
+					<h2>Map & Layers</h2>
+					<h4>Layers</h4>
+					<button onclick="getLayers()">Get layers</button>
+					<textarea rows="5" cols="50" id="layersList"></textarea>
+
+					<h4>Visibility second layer</h4>
+					<button onclick="toggleVisibility()">Toggle visibility</button>
 				</td>
 			</tr>
 		</table>
@@ -67,97 +98,10 @@
 </body>
 
 
-<!--
+<!-- 
 <body>
 <h2>Embedded map initialized from GWT entrypoint</h2>
 <div id="map" style="width: 600px; height: 450px; float: right; border: 1px solid black; margin: 5px; "></div>
-
-					<h3>Javascript interaction</h2>
-					<h4>Map view</h4>
-						<h5>Navigation</h5>
-						<button onclick="navigate(-1, 0)">Left</button>
-						<button onclick="navigate(0, 1)">Up</button>
-						<button onclick="navigate(0, -1)">Down</button>
-						<button onclick="navigate(1, 0)">Right</button>
-						Move distance: <input type="text" id="navigateDistance" value="100000" /> <i>(Map units, meters)</i>
-	<script type="text/javascript">
-		function navigate(x, y) {
-			var map = getMap();
-			var distance = document.getElementById("navigateDistance").value;
-			map.getViewPort().translate(x * distance, y * distance);
-		} 
-	</script>
-						<h5>Zoom</h5>
-						<button onclick="zoomIn()">Zoom in</button>
-						<button onclick="zoomOut()">Zoom out</button>
-						Factor: <input type="text" id="zoomFactor" value="2" />
-
-	<script type="text/javascript">
-		function zoomIn() {
-			var map = getMap();
-			var factor = document.getElementById("zoomFactor").value;
-			map.getViewPort().scale(1* parseFloat(factor));			
-		}		
-		
-		function zoomOut() {
-			var map = getMap();
-			var factor = document.getElementById("zoomFactor").value;
-			map.getViewPort().scale(1/ parseFloat(factor));			
-		}		
-
-	</script>
-
-						<h5>Bounds</h5>
-						<button onclick="getBounds()">Get bounds</button>&nbsp;<button onclick="applyBounds()">Apply bounds</button><br />
-						Xmin: <input type="text" id="boundsXmin" />
-						Xmax: <input type="text" id="boundsXmax" /><br/>
-						Ymin: <input type="text" id="boundsYmin" />
-						Ymax: <input type="text" id="boundsYmax" />
-
-	<script type="text/javascript">
-		function getBounds() {
-			var map = getMap();
-			var bbox = map.getViewPort().getBounds();
-			var bbox2 = bbox;
-			document.getElementById("boundsXmin").value = bbox.getX();
-			document.getElementById("boundsYmin").value = bbox.getY();
-			document.getElementById("boundsXmax").value = bbox.getMaxX();
-			document.getElementById("boundsYmax").value = bbox.getMaxY();
-		}
-		
-		function applyBounds() {
-			var map = getMap();
-
-			var xmin = parseFloat(document.getElementById("boundsXmin").value);
-			var ymin = parseFloat(document.getElementById("boundsYmin").value);
-			var xmax = parseFloat(document.getElementById("boundsXmax").value);
-			var ymax = parseFloat(document.getElementById("boundsYmax").value);
-			
-			var bbox = new org.geomajas.jsapi.spatial.geometry.Bbox(xmin, ymin, xmax - xmin, ymax - ymin);
-			map.getViewPort().applyBounds(bbox);
-		}
-	</script>	
-
-
-					<h4>Map model</h4>
-					
-						
-						<h5>Layers</h5>
-						<button onclick="getLayers()">Get layers</button>
-						<textarea rows="5" cols="50" id="layersList"></textarea>
-	<script type="text/javascript">
-		function getLayers() {
-			var map = getMap();
-			var layers = map.getLayersModel().getLayerIds();
-			var layersString = "";
-			
-			for (var i = 0; i < layers.length; i++) {
-				layersString += layers[i] + "\n";
-			}
-			
-			document.getElementById("layersList").value = layersString;
-		}
-	</script>				
 
 					
 						<h5>Selection</h5>

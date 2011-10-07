@@ -8,17 +8,20 @@
   ~ General Public License. All contributions in this program are covered
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
-  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <artifactId>geomajas-plugin-javascript-api-all</artifactId>
-    <groupId>org.geomajas.plugin</groupId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
+		<artifactId>geomajas-plugin-javascript-api-all</artifactId>
+		<groupId>org.geomajas.plugin</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-javascript-api-example</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
+
 	<name>Geomajas GWT application</name>
 	<description>Geomajas GWT application</description>
 	<url>http://www.geomajas.org/</url>
@@ -39,6 +42,11 @@
 		</license>
 	</licenses>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<gwt-version>2.4.0</gwt-version>
+	</properties>
+
 	<!-- @todo you probably want to set the developers, otherwise it inherits from the parent if any
 	<developers>
 		<developer>
@@ -54,6 +62,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-dev</artifactId>
+				<version>${gwt-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
@@ -71,20 +84,20 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.11.26</version>
+				<version>1.11.36</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 		</dependency>
 
-		<!-- Geomajas dependencies -->
-		
+		<!-- Geomajas dependencies -->		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-javascript-api-smartgwt</artifactId>
@@ -114,27 +127,6 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
-
-		<!-- Hibernate layer can be removed if not needed, but the "Road" class needs the Hibernate stuff -->
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-hibernate</artifactId>
-		</dependency>
-		<!-- uncomment if you want to use Hibernate with postgis, for another db you will need similar dependencies -->
-		<!--
-		<dependency>
-			<groupId>org.hibernatespatial</groupId>
-			<artifactId>hibernate-spatial-postgis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.postgis</groupId>
-			<artifactId>postgis-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
-		-->
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -217,10 +209,6 @@
 				<configuration>
 					<webAppConfig>
 						<contextPath>/</contextPath>
-						<baseResource implementation="org.mortbay.resource.ResourceCollection">
-							<!-- need both the webbapp dir and location where GWT puts stuff -->
-							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
-						</baseResource>
 					</webAppConfig>
 					<reload>manual</reload>
 				</configuration>
@@ -231,23 +219,44 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.3.0-1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-user</artifactId>
-                        <version>${gwt-version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-dev</artifactId>
-                        <version>${gwt-version}</version>
-                    </dependency>
-                </dependencies>				
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt-version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwt-version}</version>
+					</dependency>
+				</dependencies>
 				<configuration>
+					<inplace>true</inplace>
+					<modules>
+						<module>org.geomajas.plugin.jsapi.example.ComplexApp</module>
+						<module>org.geomajas.plugin.jsapi.example.EmptyApp</module>
+					</modules>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 				</configuration>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -259,57 +268,31 @@
 			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.4.1</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>src/main/webapp/Application</directory>
-						</fileset>
-					</filesets>
-				</configuration>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>remove-build-files</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+								<delete dir="src/main/webapp/WEB-INF/lib" />
+								<delete dir="src/main/webapp/WEB-INF/deploy" />
+								<delete dir="src/main/webapp/complexApp" />
+								<delete dir="src/main/webapp/emptyApp" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>defaultGWT</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>org.geomajas.plugin.jsapi.example.Application</module>
-							<runTarget>index.html</runTarget>
-							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<copyWebapp>true</copyWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<id>compile</id>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>compile</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>clean</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+	
+		<profiles>
 		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
@@ -323,11 +306,6 @@
 					<groupId>org.geomajas</groupId>
 					<artifactId>geomajas-jetty-runner</artifactId>
 					<version>1.0.0</version>
-				</dependency>
-				<dependency>
-					<groupId>com.google.gwt</groupId>
-					<artifactId>gwt-dev</artifactId>
-					<scope>provided</scope>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -388,10 +366,5 @@
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwt-version>2.4.0</gwt-version>
-	</properties>
 
 </project>
