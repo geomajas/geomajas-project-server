@@ -10,128 +10,64 @@
  */
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.annotation.FutureApi;
-import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.jsapi.map.LayersModel;
+import org.geomajas.jsapi.map.layer.Layer;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer.LayerImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer.VectorLayerImpl;
+import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer.VectorLayer;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
-
 /**
- * Exportable facade for {@link org.geomajas.gwt.client.map.MapModel}.
- * 
+ * Exportable facade for {@link LayersModel}. This implementation uses the {@link MapModel} to delegate to.
  * 
  * @author Oliver May
+ * @author Pieter De Graef
  */
 @Export
 @ExportPackage("org.geomajas.jsapi.map")
 public class LayersModelImpl implements Exportable, LayersModel {
-	
-	private org.geomajas.gwt.client.map.MapModel mapModel;
-	
+
+	private MapModel mapModel;
+
+	public LayersModelImpl() {
+	}
+
 	/**
 	 * Construct the wrapper based on the given mapModel.
 	 * 
-	 * @param mapModel the mapModel to wrap.
+	 * @param mapModel
+	 *            the mapModel to wrap.
 	 * @since 1.0.0
 	 */
-	@FutureApi
-	public LayersModelImpl(org.geomajas.gwt.client.map.MapModel mapModel) {
+	@Api
+	public LayersModelImpl(MapModel mapModel) {
 		this.mapModel = mapModel;
 	}
-	
-	/**
-	 * Is the map model initialized yet ?
-	 *  
-	 * @return true if initialized
-	 */
-	public boolean isInitialized() {
-		return mapModel.isInitialized();
-	}
-	
-	
-	/**
-	 * Search a vector layer by it's id.
-	 * 
-	 * @param layerId
-	 *            The layer's client ID.
-	 * @return Returns either a Layer, or null.
-	 */
-	public VectorLayerImpl getVectorLayer(String layerId) {
-		org.geomajas.gwt.client.map.layer.VectorLayer layer = mapModel.getVectorLayer(layerId);
-		if (null == layer) {
-			return null;
+
+	// ------------------------------------------------------------------------
+	// LayersModel implementation:
+	// ------------------------------------------------------------------------
+
+	public Layer getLayer(String layerId) {
+		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayer(layerId);
+		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
+			return new VectorLayer((org.geomajas.gwt.client.map.layer.VectorLayer) layer);
 		}
-		return new VectorLayerImpl(layer);
-	}
-	
-	public LayerImpl getLayer(String layerId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	/**
-	 * Return all available layers on the map. The layer ID is the client layer id.
-	 * 
-	 * @return an array of layer id's
-	 */
-	public String[] getLayerIds() {
-		List<Layer<?>> layers = mapModel.getLayers();
-		String[] layerIds = new String[layers.size()];
-		
-		for (int i = 0; i < layers.size() ; i++) {
-			layerIds[i] = layers.get(i).getId();
-		}
-		return layerIds;
-	}
-	
-	/**
-	 * Return all available vectorlayers on the map. The layer ID is the client layer id.
-	 * 
-	 * @return an array of layer id's
-	 */
-	public String[] getVectorLayerIds() {
-		List<org.geomajas.gwt.client.map.layer.VectorLayer> layers = mapModel.getVectorLayers();
-		String[] layerIds = new String[layers.size()];
-		
-		for (int i = 0; i < layers.size() ; i++) {
-			layerIds[i] = layers.get(i).getId();
-		}
-		return layerIds;
-	}
-	
-	/**
-	 * Return all selected features of all available layers.
-	 * 
-	 * @return an array of feature id's
-	 */
-	public String[] getSelectedFeatures() {
-		ArrayList<String> features = new ArrayList<String>();
-		for (org.geomajas.gwt.client.map.layer.VectorLayer vl : mapModel.getVectorLayers()) {
-			features.addAll(vl.getSelectedFeatures());
-		}
-		return features.toArray(new String[features.size()]);
-	}
-	
-	/**
-	 * Return all selected features of the given vectorlayer.
-	 * 
-	 * @return an array of feature id's
-	 */
-	public String[] getSelectedFeaturesForLayer(String layerId) {
-		org.geomajas.gwt.client.map.layer.VectorLayer vectorLayer = mapModel.getVectorLayer(layerId);
-		if (null != vectorLayer) {
-			return (String[]) vectorLayer.getSelectedFeatures().toArray(
-					new String[vectorLayer.getSelectedFeatures().size()]);
-		}
-		return new String[0];
+		return new LayerImpl(layer);
 	}
 
+	public org.geomajas.jsapi.map.layer.Layer getLayerAt(int index) {
+		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayers().get(index);
+		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
+			return new VectorLayer((org.geomajas.gwt.client.map.layer.VectorLayer) layer);
+		}
+		return new LayerImpl(layer);
+	}
+
+	public int getLayerCount() {
+		return mapModel.getLayers().size();
+	}
 }

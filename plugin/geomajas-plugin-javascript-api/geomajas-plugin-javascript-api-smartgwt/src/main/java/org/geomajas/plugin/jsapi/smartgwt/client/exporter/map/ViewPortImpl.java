@@ -10,8 +10,10 @@
  */
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
+import org.geomajas.jsapi.map.ViewPort;
 import org.geomajas.jsapi.spatial.geometry.Bbox;
 import org.geomajas.jsapi.spatial.geometry.Coordinate;
 import org.timepedia.exporter.client.Export;
@@ -19,19 +21,22 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Exportable wrapper around {@link org.geomajas.gwt.client.map.MapView}.
- * 
+ * Exportable wrapper around {@link MapView}.
  * 
  * @author Oliver May
+ * @author Pieter De Graef
  * @since 1.0.0
  */
 @Export
 @ExportPackage("org.geomajas.jsapi.map")
-public class ViewPortImpl implements Exportable {
+public class ViewPortImpl implements ViewPort, Exportable {
 
-	private org.geomajas.gwt.client.map.MapView mapView;
+	private MapView mapView;
 
 	private ZoomOption zoomOption = ZoomOption.LEVEL_CLOSEST;
+
+	public ViewPortImpl() {
+	}
 
 	/**
 	 * TODO.
@@ -39,37 +44,9 @@ public class ViewPortImpl implements Exportable {
 	 * @param mapView
 	 * @since 1.0.0
 	 */
-	@FutureApi
-	public ViewPortImpl(org.geomajas.gwt.client.map.MapView mapView) {
+	@Api
+	public ViewPortImpl(MapView mapView) {
 		this.mapView = mapView;
-	}
-
-	/**
-	 * Adjust the current scale on the map by a new factor.
-	 * 
-	 * @param delta
-	 *            Adjust the scale by factor "delta".
-	 */
-	public void scale(final double delta) {
-		applyScale(getScale() * delta);
-	}
-
-	/**
-	 * Move the view on the map. This happens by translating the camera in turn.
-	 * 
-	 * @param x
-	 *            Translation factor along the X-axis in world space.
-	 * @param y
-	 *            Translation factor along the Y-axis in world space.
-	 * @since 1.0.0
-	 */
-	@FutureApi
-	public void translate(double x, double y) {
-		Coordinate center = getPosition();
-		center.setX(center.getX() + x);
-		center.setY(center.getY() + y);
-
-		applyPosition(center);
 	}
 
 	public void applyPosition(Coordinate coordinate) {

@@ -10,25 +10,19 @@
  */
 package org.geomajas.plugin.jsapi.smartgwt.client;
 
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.GeomajasRegistryImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.MapRegistryImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.ViewPortImpl;
+import org.timepedia.exporter.client.ExporterUtil;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 
 /**
+ * GWT entry point for the Javascript api for the GWT face.
+ * 
  * @author Oliver May
- *
+ * @author Pieter De Graef
  */
 public class JavascriptApiEntryPoint implements EntryPoint {
 
 	public void onModuleLoad() {
-		GWT.create(GeomajasRegistryImpl.class);
-		GWT.create(MapRegistryImpl.class);
-		GWT.create(MapImpl.class);
-		GWT.create(ViewPortImpl.class);
+		ExporterUtil.exportAll();
 	}
-
 }
