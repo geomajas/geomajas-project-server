@@ -105,6 +105,12 @@ public final class ToolbarRegistry {
 				return new ZoomPreviousAction(mapWidget);
 			}
 		});
+		REGISTRY.put(ToolId.TOOL_ZOOM_TO_RECTANGLE, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new ZoomToRectangleAction(mapWidget);
+			}
+		});
 		REGISTRY.put(ToolId.TOOL_ZOOM_TO_RECTANGLE_MODE, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {

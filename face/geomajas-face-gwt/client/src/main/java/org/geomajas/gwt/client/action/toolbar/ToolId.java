@@ -61,6 +61,9 @@ public interface ToolId {
 	/** Tool id for the previous zoom level toolbar button. */
 	String TOOL_ZOOM_PREVIOUS = "ZoomPrevious";
 
+	/** Tool id for the zoom to rectangle action toolbar button. */
+	String TOOL_ZOOM_TO_RECTANGLE = "ZoomToRectangle";
+	
 	/** Tool id for the zoom to rectangle mode toolbar button. */
 	String TOOL_ZOOM_TO_RECTANGLE_MODE = "ZoomToRectangleMode";
 
