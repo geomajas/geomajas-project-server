@@ -144,7 +144,7 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	}
 
 	/**
-	 * returns the selection style rule. This rule has to be merged with the actual style.
+	 * Returns the selection style rule. This rule has to be merged with the actual style.
 	 * 
 	 * @return the selection style rule
 	 */
