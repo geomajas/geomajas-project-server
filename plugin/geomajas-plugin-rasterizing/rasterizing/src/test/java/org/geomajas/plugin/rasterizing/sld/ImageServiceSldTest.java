@@ -33,7 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/org/geomajas/testdata/layerBeansMixedGeometry.xml" })
 public class ImageServiceSldTest {
 	
-	private boolean writeImages = true;
+	private boolean writeImages = false;
 
 	private static final double DELTA = 1E-6;
 
