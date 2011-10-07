@@ -165,13 +165,22 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private List<Layer<?>> previousLayers = new ArrayList<Layer<?>>(); // to be able to delete them on refresh
 
 	private long previousRedraw; // previous redraw timestamp to avoid double redraw
+
 	private Bbox previousRedrawBbox; // previous redraw bbox to avoid double redraw
+
 	private static final long REDRAW_GRACE = 2500; // 2.5s min between redraw of same bbox
+
 	private static final double DELTA = 1e-10; // delta for comparing bboxes
+
 	private int previousRenderAllWidth;
+
 	private int previousRenderAllHeight;
+
 	private boolean viewPortKnown; // can't draw before the view port is known
+
 	private boolean readyToDraw;
+
+	private String cursor = Cursor.DEFAULT.getValue();
 
 	/**
 	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
@@ -372,7 +381,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Render the entire map.
-	 *
+	 * 
 	 * @since 1.10.0
 	 */
 	@Api
@@ -380,9 +389,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		long now = System.currentTimeMillis();
 		int width = getWidth();
 		int height = getHeight();
-		if (now > previousRedraw + REDRAW_GRACE ||
-				!getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA) ||
-				previousRenderAllWidth != width || previousRenderAllHeight != height ) {
+		if (now > previousRedraw + REDRAW_GRACE
+				|| !getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA)
+				|| previousRenderAllWidth != width || previousRenderAllHeight != height) {
 			previousRenderAllWidth = width;
 			previousRenderAllHeight = height;
 			previousRedraw = now;
@@ -453,9 +462,43 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            The new cursor to be used when the mouse hovers over the map.
 	 */
 	public void setCursor(Cursor cursor) {
-		super.setCursor(cursor);
 		graphics.getRasterContext().setCursor(null, cursor.getValue());
 		graphics.getVectorContext().setCursor(null, cursor.getValue());
+		this.cursor = cursor.getValue(); 
+	}
+
+	/**
+	 * Apply a new cursor on the map.
+	 * 
+	 * @param cursor
+	 *            The new cursor to be used when the mouse hovers over the map.
+	 * @since 1.10.0
+	 */
+	@Api
+	public void setCursorString(String cursor) {
+		try {
+			Cursor c = Cursor.valueOf(cursor.toUpperCase());
+			setCursor(c);
+		} catch (Exception e) {
+			// Let us assume the cursor points to an image:
+			this.cursor = cursor;
+			if (cursor.indexOf("url") < 0) {
+				this.cursor = "url('" + cursor + "'),auto";
+			}
+			graphics.getRasterContext().setCursor(null, this.cursor);
+			graphics.getVectorContext().setCursor(null, this.cursor);
+		}
+	}
+
+	/**
+	 * Returns the cursor as a string. Could be something like "url('blop.img'),auto"
+	 * 
+	 * @return The cursor as a string.
+	 * @since 1.10.0
+	 */
+	@Api
+	public String getCursorString() {
+		return this.cursor;
 	}
 
 	/**
@@ -582,7 +625,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Returns the registered world paintable with the specified name.
-	 * @param name the name of the world paintable
+	 * 
+	 * @param name
+	 *            the name of the world paintable
 	 * @return the world paintable
 	 * @since 1.9.0
 	 */
@@ -1011,8 +1056,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * When the initialization of the map's model is done: render it.
-	 *
-	 * @param event event
+	 * 
+	 * @param event
+	 *            event
 	 */
 	public void onMapModelChanged(MapModelChangedEvent event) {
 		previousLayers.clear(); // just to be safe
@@ -1063,8 +1109,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * Callback used on refresh of the map widget.
 	 * <p/>
 	 * Can be extended to customize the map. Do not call directly.
-	 *
-	 * @param info map configuration
+	 * 
+	 * @param info
+	 *            map configuration
 	 */
 	public void refreshCallback(ClientMapInfo info) {
 		if (info != null) {
@@ -1126,6 +1173,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * Handles map view and scale bar on resize.
 	 */
 	private class RenderMapOnResizeHandler implements GraphicsReadyHandler {
+
 		private int previousWidth, previousHeight;
 
 		public void onReady(GraphicsReadyEvent event) {

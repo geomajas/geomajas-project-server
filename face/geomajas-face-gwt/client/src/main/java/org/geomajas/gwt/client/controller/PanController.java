@@ -45,7 +45,7 @@ public class PanController extends AbstractGraphicsController {
 
 	private Coordinate lastClickPosition;
 
-	private Cursor originalCursor;
+	private String originalCursor;
 
 	// Constructors:
 
@@ -83,7 +83,7 @@ public class PanController extends AbstractGraphicsController {
 			mapWidget.getMapModel().getMapView().setPanDragging(true);
 			begin = getLocation(event, RenderSpace.SCREEN);
 			if (!isShowCursorOnMove()) {
-				originalCursor = mapWidget.getCursor();
+				originalCursor = mapWidget.getCursorString();
 				mapWidget.setCursor(Cursor.MOVE);
 			}
 		}
@@ -91,7 +91,7 @@ public class PanController extends AbstractGraphicsController {
 	}
 
 	public void onMouseOver(MouseOverEvent event) {
-		originalCursor = mapWidget.getCursor();
+		originalCursor = mapWidget.getCursorString();
 	}
 	
 	@Override
@@ -149,7 +149,7 @@ public class PanController extends AbstractGraphicsController {
 		panning = false;
 		moving = false;
 		if (originalCursor != null) {
-			mapWidget.setCursor(originalCursor);
+			mapWidget.setCursorString(originalCursor);
 		} else {
 			mapWidget.setCursor(Cursor.DEFAULT);
 		}

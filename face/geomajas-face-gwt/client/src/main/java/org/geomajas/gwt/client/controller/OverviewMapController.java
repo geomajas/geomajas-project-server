@@ -31,6 +31,8 @@ public class OverviewMapController extends AbstractGraphicsController {
 
 	private Coordinate oldPosition;
 	private Coordinate previous;
+	
+	private String originalCursor;
 
 	public OverviewMapController(OverviewMap mapWidget) {
 		super(mapWidget);
@@ -42,6 +44,7 @@ public class OverviewMapController extends AbstractGraphicsController {
 			dragging = true;
 			oldPosition = getWorldPosition(event);
 			previous = getScreenPosition(event);
+			originalCursor = mapWidget.getCursorString();
 			mapWidget.setCursor(Cursor.POINTER);
 		}
 	}
@@ -65,7 +68,7 @@ public class OverviewMapController extends AbstractGraphicsController {
 			getOverviewMap()
 					.panTargetMap(newPosition.getX() - oldPosition.getX(), newPosition.getY() - oldPosition.getY());
 			dragging = false;
-			mapWidget.setCursor(Cursor.DEFAULT);
+			mapWidget.setCursorString(originalCursor);
 		}
 	}
 
