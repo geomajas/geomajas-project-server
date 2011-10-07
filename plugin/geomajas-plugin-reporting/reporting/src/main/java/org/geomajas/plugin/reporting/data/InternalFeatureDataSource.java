@@ -14,19 +14,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JRRewindableDataSource;
 
+import org.geomajas.configuration.LabelStyleInfo;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 
 /**
  * Jasper Reports data source for a collection of internal features. Report fields should have the attribute names as
  * their name.
- * 
+ *
  * @author Jan De Moerloose
- * 
+ * @author Joachim Van der Auwera
  */
 public class InternalFeatureDataSource implements JRRewindableDataSource {
 
@@ -54,10 +57,19 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 
 	public Object getFieldValue(JRField field) throws JRException {
 		if (currentFeature != null) {
-			return currentFeature.getAttributes().get(field.getName()).getValue();
-		} else {
-			return null;
+			String fieldName = field.getName();
+			if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equals(fieldName)) {
+				return currentFeature.getId();
+			}
+			Map<String, Attribute> attributes = currentFeature.getAttributes();
+			if (null != attributes) {
+				Attribute attribute = attributes.get(field.getName());
+				if (null != attribute) {
+					return attribute.getValue();
+				}
+			}
 		}
+		return null;
 	}
 
 	/**
@@ -67,14 +79,6 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 	public void moveFirst() {
 		iterator = features.iterator();
 		currentFeature = null;
-	}
-
-	public InternalFeatureDataSource copy() {
-		return new InternalFeatureDataSource(features);
-	}
-
-	public InternalFeature getCurrentFeature() {
-		return currentFeature;
 	}
 
 }
