@@ -45,7 +45,7 @@ import org.geomajas.sld.RuleInfo;
 import com.google.gwt.core.client.GWT;
 
 /**
- * Default implementation of {@link ImageUrlService}.
+ * Implementation for {@link ImageUrlService}.
  * 
  * @author Jan De Moerloose
  */
@@ -97,7 +97,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 				VectorLayer vectorLayer = (VectorLayer) layer;
 				VectorLayerRasterizingInfo vectorRasterizingInfo = new VectorLayerRasterizingInfo();
 				vectorRasterizingInfo.setPaintGeometries(true);
-				vectorRasterizingInfo.setPaintLabels(layer.isLabeled());
+				vectorRasterizingInfo.setPaintLabels(layer.isLabelsShowing());
 				vectorRasterizingInfo.setShowing(layer.isShowing());
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
 				vectorRasterizingInfo.setStyle(layerInfo.getNamedStyleInfo());
@@ -105,11 +105,9 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 					Set<String> selectedFeatures = vectorLayer.getSelectedFeatures();
 					vectorRasterizingInfo.setSelectedFeatureIds(selectedFeatures.toArray(new String[selectedFeatures
 							.size()]));
-					FeatureStyleInfo selectStyle = null;
+					FeatureStyleInfo selectStyle;
 					switch (layerInfo.getLayerType()) {
 						case GEOMETRY:
-							selectStyle = mapInfo.getLineSelectStyle();
-							break;
 						case LINESTRING:
 						case MULTILINESTRING:
 							selectStyle = mapInfo.getLineSelectStyle();
@@ -122,6 +120,8 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 						case POLYGON:
 							selectStyle = mapInfo.getPolygonSelectStyle();
 							break;
+						default:
+							throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());
 					}
 					selectStyle.applyDefaults();
 					RuleInfo selectionRule = StyleUtil.createRule(layerInfo.getLayerType(), selectStyle);
@@ -167,9 +167,7 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 	}
 
 	private String toUrl(String key) {
-		String url = GWT.getHostPageBaseURL();
-		url += "d/rasterizing/image/" + key + ".png";
-		return url;
+		return GWT.getHostPageBaseURL() + "d/rasterizing/image/" + key + ".png";
 	}
 
 }

@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Step which does the actual legend rendering.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RenderLegendStep extends AbstractRasterizingStep {
 

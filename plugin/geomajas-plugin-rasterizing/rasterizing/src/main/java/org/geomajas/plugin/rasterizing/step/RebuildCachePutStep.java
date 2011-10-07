@@ -16,7 +16,6 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.caching.service.CachingSupportService;
 import org.geomajas.plugin.caching.service.CachingSupportServiceSecurityContextAdder;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
@@ -42,9 +41,6 @@ public class RebuildCachePutStep implements PipelineStep<GetTileContainer> {
 
 	@Autowired
 	private CachingSupportServiceSecurityContextAdder securityContextAdder;
-
-	@Autowired
-	private CacheManagerService cacheManagerService;
 
 	public String getId() {
 		return id;

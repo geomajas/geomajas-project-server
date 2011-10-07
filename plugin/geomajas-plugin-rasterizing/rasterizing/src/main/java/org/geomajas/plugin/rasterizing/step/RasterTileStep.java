@@ -88,8 +88,7 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 			log.error("Problem while rasterizing tile, image will be zero-length.", ex);
 		}
 
-		byte[] image = imageStream.toByteArray();
-		return image;
+		return imageStream.toByteArray();
 	}
 
 	private ClientMapInfo prepareMap(GetTileContainer tileContainer, TileMetadata tileMetadata, NamedStyleInfo style) {

@@ -78,20 +78,22 @@ public class RasterDirectLayer extends DirectLayer {
 	protected static final long DOWNLOAD_TIMEOUT_ONE_TILE = 100; // millis
 
 	private static final String BUNDLE_NAME = "org/geomajas/plugin/rasterizing/rasterizing"; //$NON-NLS-1$
+	private static final String MISSING_TILE_IN_MOSAIC = "missing tile in mosaic ";
+	private static final String OPACITY = "opacity:";
 
-	private List<RasterTile> tiles = new ArrayList<RasterTile>();
+	private final List<RasterTile> tiles;
 
 	private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	private HttpClient httpClient;
+	private final HttpClient httpClient;
 
 	private final Logger log = LoggerFactory.getLogger(RasterDirectLayer.class);
 
-	private int tileWidth;
+	private final int tileWidth;
 
-	private int tileHeight;
+	private final int tileHeight;
 
-	private String style;
+	private final String style;
 
 	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
 		this.tiles = tiles;
@@ -130,7 +132,7 @@ public class RasterDirectLayer extends DirectLayer {
 							result = future.get();
 							// create a rendered image
 							RenderedImage image = JAI.create("stream", new ByteArraySeekableStream(result.getImage()));
-							// convert to common direct colormodel (some images have their own indexed color model)
+							// convert to common direct color model (some images have their own indexed color model)
 							RenderedImage colored = toDirectColorModel(image);
 
 							// translate to the correct position in the tile grid
@@ -152,11 +154,11 @@ public class RasterDirectLayer extends DirectLayer {
 						} catch (ExecutionException e) {
 							addLoadError(graphics, (ImageException) (e.getCause()), viewport);
 						} catch (InterruptedException e) {
-							log.warn("missing tile in mosaic " + e.getMessage());
+							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
 						} catch (MalformedURLException e) {
-							log.warn("missing tile in mosaic " + e.getMessage());
+							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
 						} catch (IOException e) {
-							log.warn("missing tile in mosaic " + e.getMessage());
+							log.warn(MISSING_TILE_IN_MOSAIC + e.getMessage());
 						}
 					}
 				}
@@ -228,8 +230,8 @@ public class RasterDirectLayer extends DirectLayer {
 	private float getOpacity() {
 		String match = style;
 		// could be 'opacity:0.5;' or simply '0.5'
-		if (style.contains("opacity:")) {
-			match = style.substring(style.indexOf("opacity:") + 8);
+		if (style.contains(OPACITY)) {
+			match = style.substring(style.indexOf(OPACITY) + OPACITY.length());
 		}
 		int semiColonPosition = match.indexOf(';');
 		if (semiColonPosition >= 0) {
@@ -251,7 +253,7 @@ public class RasterDirectLayer extends DirectLayer {
 		double height = imageBounds.getHeight();
 		// subtract screen position of lower-left corner
 		double x = imageBounds.getX() - rasterScale * viewBounds.getMinX();
-		// shift y to lowerleft corner, flip y to user space and subtract
+		// shift y to lower left corner, flip y to user space and subtract
 		// screen position of lower-left
 		// corner
 		double y = -imageBounds.getY() - imageBounds.getHeight() - rasterScale * viewBounds.getMinY();
@@ -326,6 +328,23 @@ public class RasterDirectLayer extends DirectLayer {
 		}
 	}
 
+
+	/**
+	 * Converts an image to a RGBA direct color model using a workaround via buffered image
+	 * directly calling the ColorConvert operation fails for unknown reasons ?!
+	 *
+	 * @param img image to convert
+	 * @return converted image
+	 */
+	public PlanarImage toDirectColorModel(RenderedImage img) {
+		BufferedImage dest = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage source = new BufferedImage(img.getColorModel(), (WritableRaster) img.getData(), img
+				.getColorModel().isAlphaPremultiplied(), null);
+		ColorConvertOp op = new ColorConvertOp(null);
+		op.filter(source, dest);
+		return PlanarImage.wrapRenderedImage(dest);
+	}
+
 	/**
 	 * Image result.
 	 *
@@ -335,7 +354,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 		private byte[] image;
 
-		private RasterTile rasterImage;
+		private final RasterTile rasterImage;
 
 		public ImageResult(RasterTile rasterImage) {
 			this.rasterImage = rasterImage;
@@ -363,7 +382,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 		private static final long serialVersionUID = 151L;
 
-		private RasterTile rasterImage;
+		private final RasterTile rasterImage;
 
 		public ImageException(RasterTile rasterImage) {
 			this.rasterImage = rasterImage;
@@ -375,20 +394,22 @@ public class RasterDirectLayer extends DirectLayer {
 	}
 
 	/**
-	 * ???
+	 * Download image with a couple of retries.
+	 *
+	 * @author Jan De Moerloose
 	 */
 	private class RasterImageDownloadCallable implements Callable<ImageResult> {
 
-		private ImageResult result;
+		private final ImageResult result;
 
-		private int retries;
+		private final int retries;
 
 		public RasterImageDownloadCallable(int retries, RasterTile rasterImage) {
 			this.result = new ImageResult(rasterImage);
 			this.retries = retries;
 		}
 
-		public ImageResult call() throws Exception {
+		public ImageResult call() throws ImageException {
 			log.debug("Fetching image: {}", result.getRasterImage().getUrl());
 			int triesLeft = retries;
 			while (true) {
@@ -413,17 +434,6 @@ public class RasterDirectLayer extends DirectLayer {
 			}
 		}
 
-	}
-
-	// converts an image to a RGBA direct color model using a workaround via buffered image
-	// directly calling the ColorConvert operation fails for unknown reasons ?!
-	public PlanarImage toDirectColorModel(RenderedImage img) {
-		BufferedImage dest = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		BufferedImage source = new BufferedImage(img.getColorModel(), (WritableRaster) img.getData(), img
-				.getColorModel().isAlphaPremultiplied(), null);
-		ColorConvertOp op = new ColorConvertOp(null);
-		op.filter(source, dest);
-		return PlanarImage.wrapRenderedImage(dest);
 	}
 
 }

@@ -31,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Step which does the actual map rendering.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RenderMapStep extends AbstractRasterizingStep {
 

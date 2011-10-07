@@ -26,7 +26,6 @@ import org.geomajas.service.pipeline.PipelineContext;
  * Step which writes the in-memory image to the required format. Currently, only png is supported.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class WriteImageStep extends AbstractRasterizingStep {
 
