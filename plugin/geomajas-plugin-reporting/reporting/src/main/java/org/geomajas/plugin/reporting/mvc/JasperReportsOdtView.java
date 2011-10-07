@@ -13,15 +13,17 @@ package org.geomajas.plugin.reporting.mvc;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 
+import org.geomajas.annotation.Api;
 import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsSingleFormatView;
 
 /**
- * Implementation of <code>AbstractJasperReportsSingleFormatView</code> that renders report results in ODT format
+ * Implementation of {@link AbstractJasperReportsSingleFormatView} that renders report results in ODT format
  * (OpenOffice Writer).
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.0.0
  */
+@Api // @todo allow template itself to be determined at runtime?
 public class JasperReportsOdtView extends AbstractJasperReportsSingleFormatView {
 
 	public JasperReportsOdtView() {
