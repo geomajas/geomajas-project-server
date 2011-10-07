@@ -94,7 +94,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 /**
- * A modification of the Geotools parser to make external graphics Spring resource aware.
+ * A modification of the GeoTools parser to make external graphics Spring resource aware.
  * TODO: move to geotools
  * 
  * @author Jan De Moerloose
@@ -570,7 +570,7 @@ public class ResourceAwareSLDParser {
 
 	/**
 	 * 
-	 * @param child
+	 * @param root
 	 * @param layer
 	 */
 	private void parseInlineFeature(Node root, UserLayer layer) {
