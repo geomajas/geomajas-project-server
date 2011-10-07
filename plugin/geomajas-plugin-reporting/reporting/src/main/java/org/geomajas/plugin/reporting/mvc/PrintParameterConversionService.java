@@ -17,7 +17,6 @@ import org.springframework.core.convert.support.GenericConversionService;
  * Custom conversion service for printing controller parameters.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class PrintParameterConversionService extends GenericConversionService {
 

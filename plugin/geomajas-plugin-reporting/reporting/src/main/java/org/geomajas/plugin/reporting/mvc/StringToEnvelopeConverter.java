@@ -19,7 +19,6 @@ import com.vividsolutions.jts.geom.Envelope;
  * Converts a comma-separated string to an envelope.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class StringToEnvelopeConverter implements Converter<String, Envelope> {

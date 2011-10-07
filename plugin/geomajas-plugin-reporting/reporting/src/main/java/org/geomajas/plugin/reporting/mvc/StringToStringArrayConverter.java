@@ -16,7 +16,6 @@ import org.springframework.core.convert.converter.Converter;
  * Converts a comma-separated string to an array of strings.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class StringToStringArrayConverter implements Converter<String, String[]> {
 
