@@ -17,9 +17,11 @@
         </encoder>
     </appender>
 
+	<!--
     <logger name="org.springframework.web">
         <level value="DEBUG"/>
     </logger>
+    -->
 
     <root>
         <level value="INFO"/>
