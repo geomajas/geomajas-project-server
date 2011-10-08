@@ -22,7 +22,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="layerPolygons" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="layerPolygonsInfo" />
-        <property name="url" value="classpath:org/geomajas/context/sld/shapes/sld_cookbook_polygon.shp"/>
+        <property name="url" value="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/sld/shapes/sld_cookbook_polygon.shp"/>
 	</bean>
 
 	<bean name="layerPolygonsInfo" class="org.geomajas.configuration.VectorLayerInfo">

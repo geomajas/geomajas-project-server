@@ -9,9 +9,8 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.client;
+package org.geomajas.plugin.rasterizing.gwt.example.client;
 
-import org.geomajas.client.gui.SearchPanel;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
@@ -19,6 +18,7 @@ import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -77,7 +77,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		final MapWidget map = new MapWidget("mapMain", "app");
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 		toolbar.setBackgroundColor("#647386");
 		toolbar.setBackgroundImage("");
 		toolbar.setBorder("0px");
@@ -133,10 +133,6 @@ public class Application implements EntryPoint {
 		leftLayout.addMember(mapLayout);
 
 		layout.addMember(leftLayout);
-
-		// Add a search panel to the top-right of the map:
-		SearchPanel searchPanel = new SearchPanel(map.getMapModel(), mapLayout);
-		mapLayout.addChild(searchPanel);
 
 		// ---------------------------------------------------------------------
 		// Create the right-side (overview map, layer-tree, legend):

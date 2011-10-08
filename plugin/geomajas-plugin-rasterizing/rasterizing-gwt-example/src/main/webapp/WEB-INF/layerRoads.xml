@@ -22,7 +22,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 
 	<bean name="layerRoads" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="layerRoadsInfo" />
-        <property name="url" value="classpath:org/geomajas/context/shapes/roads.shp"/>
+        <property name="url" value="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/shapes/roads.shp"/>
 	</bean>
 
 	<bean name="layerRoadsInfo" class="org.geomajas.configuration.VectorLayerInfo">

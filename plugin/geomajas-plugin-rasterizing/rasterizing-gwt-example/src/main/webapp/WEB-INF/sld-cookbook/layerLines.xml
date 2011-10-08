@@ -21,7 +21,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="layerLines" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="layerLinesInfo" />
-        <property name="url" value="classpath:org/geomajas/context/sld/shapes/sld_cookbook_line.shp"/>
+        <property name="url" value="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/sld/shapes/sld_cookbook_line.shp"/>
 	</bean>
 
 	<bean name="layerLinesInfo" class="org.geomajas.configuration.VectorLayerInfo">

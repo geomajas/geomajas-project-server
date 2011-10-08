@@ -22,7 +22,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="layerPoints" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="layerPointsInfo" />
-        <property name="url" value="classpath:org/geomajas/context/sld/shapes/sld_cookbook_point.shp"/>
+        <property name="url" value="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/sld/shapes/sld_cookbook_point.shp"/>
 	</bean>
 
 	<bean name="layerPointsInfo" class="org.geomajas.configuration.VectorLayerInfo">
