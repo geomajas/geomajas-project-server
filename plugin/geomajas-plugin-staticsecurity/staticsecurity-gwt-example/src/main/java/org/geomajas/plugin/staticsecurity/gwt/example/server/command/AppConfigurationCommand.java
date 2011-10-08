@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppConfigurationCommand, Replacement command to read the configuration
 @Component
 public class AppConfigurationCommand implements Command<AppConfigurationRequest, AppConfigurationResponse> {
 
@@ -49,3 +50,4 @@ public class AppConfigurationCommand implements Command<AppConfigurationRequest,
 	}
 
 }
+// @extract-end

@@ -16,6 +16,7 @@ package org.geomajas.plugin.staticsecurity.gwt.example.client;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start ClientSecurityContext, Example of a client security context
 public final class ClientSecurityContext {
 
 	private static boolean blablaButtonAllowed;
@@ -42,3 +43,4 @@ public final class ClientSecurityContext {
 		ClientSecurityContext.blablaButtonAllowed = blablaButtonAllowed;
 	}
 }
+// @extract-end

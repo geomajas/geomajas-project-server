@@ -18,6 +18,7 @@ import org.geomajas.command.dto.GetConfigurationResponse;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppConfigurationResponse, Response object for replacement command
 public class AppConfigurationResponse extends GetConfigurationResponse {
 
 	private static final long serialVersionUID = 100L;
@@ -32,3 +33,4 @@ public class AppConfigurationResponse extends GetConfigurationResponse {
 		this.blablaButtonAllowed = blablaButtonAllowed;
 	}
 }
+// @extract-end

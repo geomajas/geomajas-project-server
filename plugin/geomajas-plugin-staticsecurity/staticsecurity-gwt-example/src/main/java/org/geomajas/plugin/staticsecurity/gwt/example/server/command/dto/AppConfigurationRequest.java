@@ -18,6 +18,7 @@ import org.geomajas.command.dto.GetConfigurationRequest;
  *
  * @author Joachim Van der Auwera
  */
+// @extract-start AppConfigurationRequest, Request object for replacement command
 public class AppConfigurationRequest extends GetConfigurationRequest {
 
 	private static final long serialVersionUID = 100L;
@@ -32,3 +33,4 @@ public class AppConfigurationRequest extends GetConfigurationRequest {
 	public AppConfigurationRequest() {
 	}
 }
+// @extract-end

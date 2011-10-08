@@ -151,6 +151,49 @@ private AppSecurityContext securityContext</programlisting>
   <section id="howto-custom-policy-client">
     <title>Using a custom policy client-side</title>
 
-    <para></para>
+    <para>If you want to have access to some of your custom policies on the
+    client side, then you have to get these from the server on startup.</para>
+
+    <para>The best way to handle this is to replace the command to get the
+    initial configuration with a version which also includes your policy. Then
+    on the response you can set the policy in a class to allow you to access
+    the information.</para>
+
+    <para>For starters, let's create the client security context class. This
+    is a static class which just contains accessors for the
+    blablaButtonAllowed property.</para>
+
+    <xi:include href="listing/ClientSecurityContext.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The value will be set when the configuration is read. This is
+    automatically re-read when the security token changes. The advantage of
+    combining this with the get configuration command is that only one command
+    needs to be called. Use code like the following in your entry point class
+    before the map widget is created.</para>
+
+    <xi:include href="listing/ClientConfigurationLoader.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>This snippet uses a custom command which extends the standard
+    GetConfigurationCommand. The code is shown below.</para>
+
+    <xi:include href="listing/AppConfigurationCommand.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The request and response objects also need to be redefined for this
+    command. For the request object this is almost trivial. The most important
+    change is to overwrite the COMMAND field.</para>
+
+    <xi:include href="listing/AppConfigurationRequest.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The response object needs some extra extensions to ensure that the
+    custom policy information is included.</para>
+
+    <xi:include href="listing/AppConfigurationResponse.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>You can see this in action in the example application.</para>
   </section>
 </chapter>
