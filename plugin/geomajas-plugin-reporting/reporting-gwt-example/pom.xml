@@ -180,7 +180,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>src/main/webapp/org.geomajas.Application</directory>
+							<directory>src/main/webapp/Reporting</directory>
 						</fileset>
 					</filesets>
 				</configuration>

@@ -51,7 +51,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${rasterizing-gwt-version}</version>
+				<version>${rasterizing-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -144,8 +144,8 @@
 
 	<properties>
 		<rasterizing-backend-version>1.10.0-SNAPSHOT</rasterizing-backend-version>
-		<rasterizing-gwt-version>1.10.0-SNAPSHOT</rasterizing-gwt-version>
+		<rasterizing-gwt-face-version>1.10.0-SNAPSHOT</rasterizing-gwt-face-version>
 		<rasterizing-caching-version>1.0.0</rasterizing-caching-version>
-		<gwt-version>2.4.0</gwt-version>
+		<rasterizing-gwt-version>2.4.0</rasterizing-gwt-version>
 	</properties>
 </project>
