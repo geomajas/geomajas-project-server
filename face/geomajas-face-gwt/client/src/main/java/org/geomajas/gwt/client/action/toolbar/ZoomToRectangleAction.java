@@ -39,31 +39,9 @@ public class ZoomToRectangleAction extends ToolbarAction {
 	}
 
 	public void onClick(ClickEvent event) {
-		map.setController(new ActivateRectangleController(map));
+		map.setController(new ZoomToRectangleOnceController(map));
 	}
 
-	/**
-	 * Controller that activates the ZoomToRectangleController to be used once.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class ActivateRectangleController extends AbstractGraphicsController {
-
-		protected ActivateRectangleController(MapWidget mapWidget) {
-			super(mapWidget);
-		}
-
-		public void onMouseUp(MouseUpEvent event) {
-			mapWidget.setController(new ZoomToRectangleOnceController(map));
-			event.stopPropagation();
-		}
-
-		public void onMouseDown(MouseDownEvent event) {
-			// Don't propagate to the active controller on the map:
-			event.stopPropagation();
-		}
-	}
-	
 	/**
 	 * Controller the zooms to a rectangle drawn by the user, and then deactivates itself again.
 	 * 
