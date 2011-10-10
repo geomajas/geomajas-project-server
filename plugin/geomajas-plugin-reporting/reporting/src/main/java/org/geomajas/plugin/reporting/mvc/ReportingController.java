@@ -94,11 +94,11 @@ public class ReportingController {
 			features = vectorLayerService.getFeatures(layerId, geoService.getCrs2(crs), filterObject, null,
 					VectorLayerService.FEATURE_INCLUDE_ALL);
 			model.addAttribute(DATA_SOURCE, new InternalFeatureDataSource(features));
-			model.addAttribute(JasperReportsMultiFormatView.DEFAULT_FORMAT_KEY, format);
 		} catch (GeomajasException ge) {
 			log.error(REPORT_DATA_PROBLEM, ge);
 			model.addAttribute(DATA_SOURCE, new InternalFeatureDataSource(new ArrayList<InternalFeature>()));
 		}
+		model.addAttribute(JasperReportsMultiFormatView.DEFAULT_FORMAT_KEY, format);
 		return getView(reportName);
 	}
 

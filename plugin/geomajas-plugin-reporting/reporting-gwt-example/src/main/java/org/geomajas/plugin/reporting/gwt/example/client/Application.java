@@ -12,6 +12,7 @@
 package org.geomajas.plugin.reporting.gwt.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -20,6 +21,8 @@ import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
+import com.smartgwt.client.widgets.menu.events.ClickHandler;
+import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.toolbar.ToolStripMenuButton;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
@@ -128,11 +131,24 @@ public class Application implements EntryPoint {
 		Menu menu = new Menu();
 		menu.setShowShadow(true);
 		menu.setShadowDepth(3);
+
+		// simple report without images, using direct controller link
+		MenuItem simpleItem = new MenuItem("Simple report", "[ISOMORPHIC]/images/report.png");
+		simpleItem.addClickHandler(new ClickHandler() {
+			public void onClick(MenuItemClickEvent menuItemClickEvent) {
+				String url = GWT.getHostPageBaseURL();
+				url += "d/reporting/f/" + "layerCountries" + "/" + "features" + "." + "pdf" + "?filter=";
+				com.google.gwt.user.client.Window.open(url, "_blank", null);
+			}
+		});
+
+		// reports with image, using caching of report data
 		MenuItem pdfItem = new MenuItem("PDF", "[ISOMORPHIC]/images/pdf.png");
-		pdfItem.addClickHandler(new ReportingClickHandler(map, "features", "clientLayerCountries", "pdf"));
+		pdfItem.addClickHandler(new ReportingClickHandler(map, "featuresWithMap", "clientLayerCountries", "pdf"));
 		MenuItem ooItem = new MenuItem("OpenOffice", "[ISOMORPHIC]/images/LibreOfficeWriter.png");
-		ooItem.addClickHandler(new ReportingClickHandler(map, "features", "clientLayerCountries", "odt"));
-		menu.setItems(pdfItem, ooItem);
+		ooItem.addClickHandler(new ReportingClickHandler(map, "featuresWithMap", "clientLayerCountries", "odt"));
+
+		menu.setItems(simpleItem, pdfItem, ooItem);
 		ToolStripMenuButton menuButton = new ToolStripMenuButton("Report", menu);
 		menuButton.setIcon("[ISOMORPHIC]/images/report.png");
 		menuButton.setWidth(100);

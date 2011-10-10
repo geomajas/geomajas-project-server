@@ -52,6 +52,8 @@ import java.util.UUID;
 //@Api don't know about api, all this caching stuff causes problems cfr lazy loading etc
 public class PrepareReportingCommand implements Command<PrepareReportingRequest, PrepareReportingResponse> {
 
+	private static final int MAP_BUFFER_SIZE = 1024 * 10;
+
 	@Autowired
 	private ImageService imageService;
 
@@ -88,7 +90,7 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) clientMapInfo
 				.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream(1024 * 10);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream(MAP_BUFFER_SIZE);
 		ReportingCacheContainer container = new ReportingCacheContainer();
 		// change font for dpi
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {

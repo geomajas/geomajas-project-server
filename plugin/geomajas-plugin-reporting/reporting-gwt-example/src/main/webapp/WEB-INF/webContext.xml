@@ -51,5 +51,26 @@
 			</map>
 		</property>
 	</bean>
+	<bean id="featuresWithMapView" class="org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView">
+		<property name="url" value="WEB-INF/reports/featuresWithMap.jrxml" />
+		<property name="reportDataKey" value="datasource" />
+		<property name="formatKey" value="format" />
+		<property name="formatMappings">
+			<map>
+				<entry key="csv"
+					value="org.springframework.web.servlet.view.jasperreports.JasperReportsCsvView" />
+				<entry key="html"
+					value="org.springframework.web.servlet.view.jasperreports.JasperReportsHtmlView" />
+				<entry key="pdf"
+					value="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView" />
+				<entry key="xls"
+					value="org.springframework.web.servlet.view.jasperreports.JasperReportsXlsView" />
+				<entry key="odt"
+					value="org.geomajas.plugin.reporting.mvc.JasperReportsOdtView" />
+				<entry key="docx"
+					value="org.geomajas.plugin.reporting.mvc.JasperReportsDocxView" />
+			</map>
+		</property>
+	</bean>
 
 </beans>
