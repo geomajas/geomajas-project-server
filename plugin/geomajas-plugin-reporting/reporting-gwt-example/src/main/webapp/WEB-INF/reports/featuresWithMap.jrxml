@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="192"/>
 	<parameter name="map" class="net.sf.jasperreports.engine.JRRenderable" isForPrompting="false"/>
 	<parameter name="legend" class="net.sf.jasperreports.engine.JRRenderable" isForPrompting="false"/>
 	<field name="NAME" class="java.lang.String"/>
@@ -21,11 +21,11 @@
 			</staticText>
 			<image scaleImage="RetainShape" hAlign="Right">
 				<reportElement x="111" y="0" width="300" height="300"/>
-				<imageExpression class="net.sf.jasperreports.engine.JRRenderable">$P{map}</imageExpression>
+				<imageExpression><![CDATA[$P{map}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="424" y="0" width="131" height="300"/>
-				<imageExpression class="net.sf.jasperreports.engine.JRRenderable">$P{legend}</imageExpression>
+				<imageExpression><![CDATA[$P{legend}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -41,7 +41,7 @@
 			</staticText>
 			<staticText>
 				<reportElement x="276" y="0" width="100" height="20"/>
-				<textElement/>
+				<textElement textAlignment="Right"/>
 				<text><![CDATA[PEOPLE]]></text>
 			</staticText>
 		</band>
@@ -56,10 +56,10 @@
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0">
 				<reportElement x="276" y="0" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{PEOPLE}]]></textFieldExpression>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{PEOPLE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
