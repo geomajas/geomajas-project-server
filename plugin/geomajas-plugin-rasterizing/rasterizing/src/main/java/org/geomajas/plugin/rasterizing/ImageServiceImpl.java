@@ -35,7 +35,6 @@ import org.springframework.stereotype.Component;
  * Default implementation of {@link ImageService}. Uses a pipeline to render the images.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class ImageServiceImpl implements ImageService {
@@ -49,29 +48,17 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	private PipelineService<RasterizingContainer> pipelineService;
 
+	/** {@inheritDoc} */
 	public void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
-		PipelineContext context = pipelineService.createContext();
-		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
-		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
-		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
-				mapContext.getCoordinateReferenceSystem()));
-		RenderingHints renderingHints = new Hints();
-		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		RasterizingContainer response = new RasterizingContainer();
-		context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
-		context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
-		context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
-		pipelineService.execute(RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE, null, context, response);
-		mapContext.dispose();
-		try {
-			stream.write(response.getImage());
-		} catch (IOException e) {
-			throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
-		}
+		callPipeline(stream, clientMapInfo, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
 	}
 
+	/** {@inheritDoc} */
 	public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
+		callPipeline(stream, clientMapInfo, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
+	}
+
+	private void callPipeline(OutputStream stream, ClientMapInfo clientMapInfo, String pipelineKey) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		DefaultMapContext mapContext = new DefaultMapContext();
 		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
@@ -84,14 +71,13 @@ public class ImageServiceImpl implements ImageService {
 		context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
 		context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
 		context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
-		pipelineService.execute(RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_LEGEND_IMAGE, null, context, response);
+		pipelineService.execute(pipelineKey, null, context, response);
 		mapContext.dispose();
 		try {
 			stream.write(response.getImage());
 		} catch (IOException e) {
 			throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
 		}
-
 	}
 
 }
