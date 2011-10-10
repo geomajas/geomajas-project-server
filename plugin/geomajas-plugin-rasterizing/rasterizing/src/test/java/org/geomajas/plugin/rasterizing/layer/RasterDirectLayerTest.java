@@ -74,6 +74,7 @@ public class RasterDirectLayerTest {
 		mapContext.getViewport().setBounds(new ReferencedEnvelope(-180, 180, -90, 90, layerBluemarble.getCrs()));
 		RasterDirectLayer layer = (RasterDirectLayer) layerFactory.createLayer(mapContext, cl1);
 		new DirectLayerAssert(layer, mapContext).assertEqualImage("wms.png", writeImages, DELTA);
+		mapContext.dispose();
 	}
 
 	class DirectLayerAssert extends TestPathBinaryStreamAssert {

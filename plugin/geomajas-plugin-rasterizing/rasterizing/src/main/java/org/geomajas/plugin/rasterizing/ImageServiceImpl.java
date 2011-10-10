@@ -61,22 +61,24 @@ public class ImageServiceImpl implements ImageService {
 	private void callPipeline(OutputStream stream, ClientMapInfo clientMapInfo, String pipelineKey) throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		DefaultMapContext mapContext = new DefaultMapContext();
-		mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
-		MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
-		mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
-				mapContext.getCoordinateReferenceSystem()));
-		RenderingHints renderingHints = new Hints();
-		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		RasterizingContainer response = new RasterizingContainer();
-		context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
-		context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
-		context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
-		pipelineService.execute(pipelineKey, null, context, response);
-		mapContext.dispose();
 		try {
+			mapContext.setCoordinateReferenceSystem(geoService.getCrs2(clientMapInfo.getCrs()));
+			MapRasterizingInfo mapInfo = (MapRasterizingInfo) clientMapInfo.getWidgetInfo(
+					MapRasterizingInfo.WIDGET_KEY);
+			mapContext.setAreaOfInterest(new ReferencedEnvelope(dtoConverterService.toInternal(mapInfo.getBounds()),
+					mapContext.getCoordinateReferenceSystem()));
+			RenderingHints renderingHints = new Hints();
+			renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			RasterizingContainer response = new RasterizingContainer();
+			context.put(RasterizingPipelineCode.CLIENT_MAP_INFO_KEY, clientMapInfo);
+			context.put(RasterizingPipelineCode.RENDERING_HINTS, renderingHints);
+			context.put(RasterizingPipelineCode.MAP_CONTEXT_KEY, mapContext);
+			pipelineService.execute(pipelineKey, null, context, response);
 			stream.write(response.getImage());
 		} catch (IOException e) {
 			throw new RasterException(RasterException.IMAGE_WRITING_FAILED, e);
+		} finally {
+			mapContext.dispose();
 		}
 	}
 

@@ -81,6 +81,7 @@ public class GeometryDirectLayerTest {
 		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
 		layer.draw(image.createGraphics(), mapContext, mapContext.getViewport());
 		new DirectLayerAssert(layer, mapContext).assertEqualImage("polygon.png", writeImages, DELTA);
+		mapContext.dispose();
 	}
 
 	private UserStyleInfo createPolygonStyle() throws LayerException {
