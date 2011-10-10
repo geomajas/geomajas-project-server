@@ -28,13 +28,13 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.geotools.map.MapViewport;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Step which adds all the layers to the map context and prepares the context for rendering.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class AddLayersStep extends AbstractRasterizingStep {
 
@@ -58,9 +58,10 @@ public class AddLayersStep extends AbstractRasterizingStep {
 				converterService.toInternal(mapRasterizingInfo.getBounds()), mapCrs);
 		Rectangle paintArea = new Rectangle((int) (mapRasterizingInfo.getScale() * mapArea.getWidth()),
 				(int) (mapRasterizingInfo.getScale() * mapArea.getHeight()));
-		mapContext.getViewport().setBounds(mapArea);
-		mapContext.getViewport().setCoordinateReferenceSystem(mapCrs);
-		mapContext.getViewport().setScreenArea(paintArea);
+		MapViewport viewPort = mapContext.getViewport();
+		viewPort.setBounds(mapArea);
+		viewPort.setCoordinateReferenceSystem(mapCrs);
+		viewPort.setScreenArea(paintArea);
 		// add the configured layers
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {
 			clientLayerInfo.getWidgetInfo(RasterizingConstants.WIDGET_KEY);
@@ -79,6 +80,5 @@ public class AddLayersStep extends AbstractRasterizingStep {
 			}
 		}
 	}
-
 
 }

@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -205,7 +206,7 @@ public class VectorLayerFactory implements LayerFactory {
 		return featureLayer;
 	}
 
-	private List<RuleInfo> extractIndices(List<RuleInfo> allRules, TreeSet<Integer> ruleIndices) {
+	private List<RuleInfo> extractIndices(List<RuleInfo> allRules, NavigableSet<Integer> ruleIndices) {
 		List<RuleInfo> ruleInfos = new ArrayList<RuleInfo>();
 		for (Integer index : ruleIndices) {
 			if (index < allRules.size()) {
@@ -215,7 +216,7 @@ public class VectorLayerFactory implements LayerFactory {
 		return ruleInfos;
 	}
 
-	private void removeOutOfScale(MapContext mapContext, Style indexedStyle, TreeSet<Integer> ruleIndices) {
+	private void removeOutOfScale(MapContext mapContext, Style indexedStyle, NavigableSet<Integer> ruleIndices) {
 		double scaleDenominator = RendererUtilities.calculateOGCScale(mapContext.getAreaOfInterest(), (int) mapContext
 				.getViewport().getScreenArea().getWidth(), null);
 		int ruleIndex = 0;
@@ -229,7 +230,7 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 	}
 
-	private void findRules(FeatureLayer featureLayer, TreeSet<Integer> ruleIndices) {
+	private void findRules(FeatureLayer featureLayer, NavigableSet<Integer> ruleIndices) {
 		FeatureIterator<SimpleFeature> it2;
 		try {
 			it2 = featureLayer.getSimpleFeatureSource().getFeatures().features();
@@ -293,13 +294,9 @@ public class VectorLayerFactory implements LayerFactory {
 			// normal style rule index attribute (TODO deprecate the whole idea of coupling styles to features)
 			values[i++] = internalFeature.getStyleInfo().getIndex();
 			// selected style rule index attribute
-			if (selectedIds.contains(internalFeature.getId())) {
-				values[i++] = true;
-			} else {
-				values[i++] = false;
-			}
+			values[i++] = selectedIds.contains(internalFeature.getId());
 			// geometry attribute
-			values[i++] = internalFeature.getGeometry();
+			values[i] = internalFeature.getGeometry();
 			result.add(builder.buildFeature(internalFeature.getId(), values));
 		}
 		return result;

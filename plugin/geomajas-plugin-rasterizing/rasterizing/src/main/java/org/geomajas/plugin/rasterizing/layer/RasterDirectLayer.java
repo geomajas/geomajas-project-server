@@ -73,13 +73,16 @@ public class RasterDirectLayer extends DirectLayer {
 
 	protected static final int DOWNLOAD_MAX_THREADS = 5;
 
-	protected static final long DOWNLOAD_TIMEOUT = 120000; // millis
+	protected static final long DOWNLOAD_TIMEOUT = 120000; // milliseconds
 
-	protected static final long DOWNLOAD_TIMEOUT_ONE_TILE = 100; // millis
+	protected static final long DOWNLOAD_TIMEOUT_ONE_TILE = 100; // milliseconds
+
+	protected static final int RETRY_WAIT = 100; // milliseconds
 
 	private static final String BUNDLE_NAME = "org/geomajas/plugin/rasterizing/rasterizing"; //$NON-NLS-1$
 	private static final String MISSING_TILE_IN_MOSAIC = "missing tile in mosaic ";
 	private static final String OPACITY = "opacity:";
+	private static final int DEFAULT_IMAGE_BUFFER_SIZE = 1024;
 
 	private final List<RasterTile> tiles;
 
@@ -380,11 +383,12 @@ public class RasterDirectLayer extends DirectLayer {
 	 */
 	private static class ImageException extends Exception {
 
-		private static final long serialVersionUID = 151L;
+		private static final long serialVersionUID = 100L;
 
 		private final RasterTile rasterImage;
 
-		public ImageException(RasterTile rasterImage) {
+		public ImageException(RasterTile rasterImage, Throwable cause) {
+			super(cause);
 			this.rasterImage = rasterImage;
 		}
 
@@ -416,7 +420,7 @@ public class RasterDirectLayer extends DirectLayer {
 				try {
 					HttpGet get = new HttpGet(result.getRasterImage().getUrl());
 					HttpResponse response = httpClient.execute(get);
-					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(DEFAULT_IMAGE_BUFFER_SIZE);
 					response.getEntity().writeTo(outputStream);
 					result.setImage(outputStream.toByteArray());
 					return result;
@@ -426,9 +430,14 @@ public class RasterDirectLayer extends DirectLayer {
 					}
 					triesLeft--;
 					if (triesLeft == 0) {
-						throw new ImageException(result.getRasterImage());
+						throw new ImageException(result.getRasterImage(), e);
 					} else {
 						log.debug("Fetching image: retrying ", result.getRasterImage().getUrl());
+						try {
+							Thread.sleep(RETRY_WAIT); // give server some time to recover
+						} catch (InterruptedException ie) {
+							// NOSONAR just ignore
+						}
 					}
 				}
 			}

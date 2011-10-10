@@ -31,7 +31,6 @@ import org.geomajas.plugin.rasterizing.layer.GeometryDirectLayer;
 import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
 import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
 import org.geomajas.service.LegendGraphicService;
-import org.geomajas.service.StyleConverterService;
 import org.geomajas.service.TextService;
 import org.geomajas.servlet.mvc.legend.LegendGraphicMetadataImpl;
 import org.geomajas.sld.RuleInfo;
@@ -42,6 +41,7 @@ import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
+import org.geotools.map.MapViewport;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,6 @@ import org.springframework.stereotype.Component;
  * Rendering service based on StreamingRenderer. To be refactored when StreamingRenderer supports DirectLayer.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class RenderingServiceImpl implements RenderingService {
@@ -62,9 +61,6 @@ public class RenderingServiceImpl implements RenderingService {
 
 	@Autowired
 	private LegendGraphicService legendGraphicService;
-
-	@Autowired
-	private StyleConverterService styleConverterService;
 
 	private final Logger log = LoggerFactory.getLogger(RenderingServiceImpl.class);
 
@@ -146,8 +142,7 @@ public class RenderingServiceImpl implements RenderingService {
 	private LegendRasterizingInfo getLegendInfo(MapContext mapContext) {
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapContext.getUserData().get(
 				LayerFactory.USERDATA_RASTERIZING_INFO);
-		LegendRasterizingInfo legendRasterizingInfo = mapRasterizingInfo.getLegendRasterizingInfo();
-		return legendRasterizingInfo;
+		return mapRasterizingInfo.getLegendRasterizingInfo();
 	}
 
 	private boolean isTextOnly(RuleInfo rule) {
@@ -200,11 +195,11 @@ public class RenderingServiceImpl implements RenderingService {
 	 */
 	public static class DirectRenderRequest implements RenderRequest {
 
-		private Graphics2D graphics;
+		private final Graphics2D graphics;
 
-		private MapContext mapContext;
+		private final MapContext mapContext;
 
-		private DirectLayer layer;
+		private final DirectLayer layer;
 
 		public DirectRenderRequest(Graphics2D graphics, MapContext mapContext, DirectLayer layer) {
 			super();
@@ -226,17 +221,17 @@ public class RenderingServiceImpl implements RenderingService {
 	 */
 	public static class VectorRenderRequest implements RenderRequest {
 
-		private Graphics2D graphics;
+		private final Graphics2D graphics;
 
-		private MapContext mapContext = new MapContext();
+		private final MapContext mapContext = new MapContext();
 
 		public VectorRenderRequest(Graphics2D graphics, MapContext context) {
 			this.graphics = graphics;
 			this.mapContext.setAreaOfInterest(context.getAreaOfInterest());
-			this.mapContext.getViewport().setBounds(context.getViewport().getBounds());
-			this.mapContext.getViewport().setScreenArea(context.getViewport().getScreenArea());
-			this.mapContext.getViewport().setCoordinateReferenceSystem(
-					context.getViewport().getCoordianteReferenceSystem());
+			MapViewport viewPort = this.mapContext.getViewport();
+			viewPort.setBounds(context.getViewport().getBounds());
+			viewPort.setScreenArea(context.getViewport().getScreenArea());
+			viewPort.setCoordinateReferenceSystem(context.getViewport().getCoordianteReferenceSystem());
 		}
 
 		public void execute() {
@@ -253,10 +248,6 @@ public class RenderingServiceImpl implements RenderingService {
 
 		public MapContext getMapContext() {
 			return mapContext;
-		}
-
-		public void setMapContext(MapContext mapContext) {
-			this.mapContext = mapContext;
 		}
 
 	}

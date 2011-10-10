@@ -37,6 +37,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class RasterizeMapCommand implements Command<RasterizeMapRequest, RasterizeMapResponse> {
 
+	private static final int MAP_BUFFER_SIZE = 1024 * 10;
+	private static final int MAP_LEGEND_SIZE = 1024;
+
 	@Autowired
 	private ImageService imageService;
 
@@ -49,10 +52,10 @@ public class RasterizeMapCommand implements Command<RasterizeMapRequest, Rasteri
 	public void execute(RasterizeMapRequest request, RasterizeMapResponse response) throws Exception {
 		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) request.getClientMapInfo().getWidgetInfo(
 				MapRasterizingInfo.WIDGET_KEY);
-		ByteArrayOutputStream mapStream = new ByteArrayOutputStream(1024 * 10);
+		ByteArrayOutputStream mapStream = new ByteArrayOutputStream(MAP_BUFFER_SIZE);
 		imageService.writeMap(mapStream, request.getClientMapInfo());
 		String mapKey = putInCache(mapStream.toByteArray(), mapRasterizingInfo.getBounds());
-		ByteArrayOutputStream legendStream = new ByteArrayOutputStream(1024);
+		ByteArrayOutputStream legendStream = new ByteArrayOutputStream(MAP_LEGEND_SIZE);
 		imageService.writeLegend(legendStream, request.getClientMapInfo());
 		String legendKey = putInCache(legendStream.toByteArray(), mapRasterizingInfo.getBounds());
 		response.setMapKey(mapKey);
