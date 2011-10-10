@@ -12,15 +12,12 @@
 package org.geomajas.gwt.client.action.toolbar;
 
 import org.geomajas.gwt.client.action.ToolbarAction;
-import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.ZoomToRectangleController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
