@@ -369,6 +369,9 @@ public final class FilterServiceImpl implements FilterService {
 
 	/** @inheritDoc */
 	public Filter parseFilter(String filter) throws GeomajasException {
+		if (null == filter || filter.length() == 0) {
+			return createTrueFilter();
+		}
 		try {
 			return ECQL.toFilter(filter, FF);
 		} catch (CQLException e) {
