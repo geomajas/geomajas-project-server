@@ -47,12 +47,10 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-client</artifactId>
-			<version>${geomajas-face-dojo-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-example-client</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	

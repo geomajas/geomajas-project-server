@@ -100,31 +100,28 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dojo-server</artifactId>
-				<version>${geomajas-face-dojo-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>${geomajas-layer-geotools-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-openstreetmap</artifactId>
-				<version>${geomajas-layer-openstreetmap-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-wms</artifactId>
-				<version>${geomajas-layer-wms-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.32</version>
+				<version>1.11.36</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dojo-example-client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dojo-example-modules</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dojo-example-modules-shrinksafe</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -171,9 +168,6 @@
 
 	<properties>
 		<geomajas-face-dojo-version>1.5.8-SNAPSHOT</geomajas-face-dojo-version>
-		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
-		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
-		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
