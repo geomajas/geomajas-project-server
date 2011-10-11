@@ -22,6 +22,8 @@ import java.util.Set;
  */
 public class GetUsersResponse extends CommandResponse {
 
+	private static final long serialVersionUID = 190L;
+
 	private Set<String> users;
 
 	/**
