@@ -22,9 +22,9 @@ import org.timepedia.exporter.client.Exportable;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
 @Export
 @ExportClosure
+@Api(allMethods = true)
 public interface ExportableFunction extends Exportable {
 
 	/** Execute a closure method. */

@@ -24,9 +24,9 @@ import com.google.gwt.event.dom.client.DoubleClickEvent;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
 @Export
 @ExportClosure
+@Api(allMethods = true)
 public interface DoubleClickHandler extends Exportable {
 
 	/**

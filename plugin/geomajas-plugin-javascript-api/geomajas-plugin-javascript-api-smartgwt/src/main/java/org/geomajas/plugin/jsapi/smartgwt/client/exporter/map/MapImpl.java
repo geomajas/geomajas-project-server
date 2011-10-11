@@ -14,6 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.jsapi.event.JsEventBus;
 import org.geomajas.jsapi.map.ExportableFunction;
 import org.geomajas.jsapi.map.LayersModel;
 import org.geomajas.jsapi.map.Map;
@@ -40,6 +41,8 @@ import com.google.gwt.user.client.DOM;
 @Export
 @ExportPackage("org.geomajas.jsapi.map")
 public class MapImpl implements Exportable, Map {
+
+	private JsEventBus eventBus = new JsEventBus();
 
 	private MapWidget mapWidget;
 
@@ -118,6 +121,10 @@ public class MapImpl implements Exportable, Map {
 
 	public String getHtmlElementId() {
 		return htmlElementId;
+	}
+
+	public JsEventBus getEventBus() {
+		return eventBus;
 	}
 
 	// ------------------------------------------------------------------------

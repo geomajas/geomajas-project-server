@@ -24,9 +24,9 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
 @Export
 @ExportClosure
+@Api(allMethods = true)
 public interface MouseMoveHandler extends Exportable {
 	
 	/**

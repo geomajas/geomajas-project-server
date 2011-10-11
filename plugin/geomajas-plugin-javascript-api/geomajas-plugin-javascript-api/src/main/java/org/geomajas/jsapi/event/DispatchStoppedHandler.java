@@ -9,17 +9,16 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.jsapi.map.controller;
+package org.geomajas.jsapi.event;
 
 import org.geomajas.annotation.Api;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportClosure;
 import org.timepedia.exporter.client.Exportable;
 
-import com.google.gwt.event.dom.client.HumanInputEvent;
-
 /**
- * JavaScript exportable handler for catching drag events (move while first mouse button is down, or touch move).
+ * JavaScript exportable handler for catching events thrown when the command dispatcher stops issuing commands to the
+ * server - when the response has returned.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -27,13 +26,13 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
 @Export
 @ExportClosure
 @Api(allMethods = true)
-public interface DragHandler extends Exportable {
+public interface DispatchStoppedHandler extends JsHandler, Exportable {
 
 	/**
-	 * Executed when a drag event occurred.
+	 * Executed when the command dispatch has stopped dispatching commands to the server.
 	 * 
 	 * @param event
-	 *            The drag event.
+	 *            The dispatch stop event.
 	 */
-	void onDrag(HumanInputEvent<?> event);
+	void onDispatchStopped(DispatchStoppedEvent event);
 }

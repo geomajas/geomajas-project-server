@@ -9,31 +9,32 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.jsapi.map.controller;
+package org.geomajas.jsapi.event;
 
 import org.geomajas.annotation.Api;
 import org.timepedia.exporter.client.Export;
-import org.timepedia.exporter.client.ExportClosure;
+import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
-import com.google.gwt.event.dom.client.HumanInputEvent;
-
 /**
- * JavaScript exportable handler for catching drag events (move while first mouse button is down, or touch move).
+ * This event is thrown when the command dispatcher starts dispatching.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Export
-@ExportClosure
 @Api(allMethods = true)
-public interface DragHandler extends Exportable {
+@Export
+@ExportPackage("org.geomajas.jsapi.event")
+public class DispatchStartedEvent extends JsEvent<DispatchStartedHandler> implements Exportable {
 
-	/**
-	 * Executed when a drag event occurred.
-	 * 
-	 * @param event
-	 *            The drag event.
-	 */
-	void onDrag(HumanInputEvent<?> event);
+	public DispatchStartedEvent() {
+	}
+
+	public Class<DispatchStartedHandler> getType() {
+		return DispatchStartedHandler.class;
+	}
+
+	protected void dispatch(DispatchStartedHandler handler) {
+		handler.onDispatchStarted(this);
+	}
 }

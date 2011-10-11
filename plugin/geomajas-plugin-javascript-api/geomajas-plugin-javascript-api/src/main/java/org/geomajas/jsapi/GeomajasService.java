@@ -10,6 +10,10 @@
  */
 package org.geomajas.jsapi;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.jsapi.event.DispatchStartedHandler;
+import org.geomajas.jsapi.event.DispatchStoppedHandler;
+import org.geomajas.jsapi.event.JsHandlerRegistration;
 import org.geomajas.jsapi.map.Map;
 import org.geomajas.jsapi.map.controller.MapController;
 import org.timepedia.exporter.client.Exportable;
@@ -20,7 +24,9 @@ import org.timepedia.exporter.client.Exportable;
  * 
  * @author Oliver May
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public interface GeomajasService extends Exportable {
 
 	/**
@@ -57,6 +63,34 @@ public interface GeomajasService extends Exportable {
 	 * @return the map.
 	 */
 	Map getMap(String applicationId, String mapId);
-	
+
+	/**
+	 * Create a known controller for the map. Different implementations may 'know' different controllers, so it's best
+	 * to check with the implementing class.
+	 * 
+	 * @param map
+	 *            The onto which the controller should be applied.
+	 * @param id
+	 *            The unique ID for the map controller (implementation specific).
+	 * @return The map controller, or null if it could not be found.
+	 */
 	MapController createMapController(Map map, String id);
+
+	/**
+	 * Add a handler that is called whenever the client starts communicating with the back-end.
+	 * 
+	 * @param handler
+	 *            The actual handler (closure).
+	 * @return The registration for the handler. Using this object the handler can be removed again.
+	 */
+	JsHandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
+
+	/**
+	 * Add a handler that is called whenever the client stops communicating with the back-end.
+	 * 
+	 * @param handler
+	 *            The actual handler (closure).
+	 * @return The registration for the handler. Using this object the handler can be removed again.
+	 */
+	JsHandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
 }

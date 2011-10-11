@@ -11,6 +11,7 @@
 package org.geomajas.jsapi.map;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.jsapi.event.JsEventBus;
 import org.geomajas.jsapi.map.controller.MapController;
 import org.timepedia.exporter.client.Exportable;
 
@@ -43,7 +44,7 @@ public interface Map extends Exportable {
 	 * @return Returns the view port.
 	 */
 	ViewPort getViewPort();
-	
+
 	/**
 	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for
 	 * the map. Only one controller can be set at any given time. When a controller is active on the map, using this
@@ -89,4 +90,11 @@ public interface Map extends Exportable {
 	 *            The new cursor to apply.
 	 */
 	void setCursor(String cursor);
+
+	/**
+	 * Get the event bus that handles all event handlers and event firing for this map.
+	 * 
+	 * @return The event bus that manages all event related to this map.
+	 */
+	JsEventBus getEventBus();
 }

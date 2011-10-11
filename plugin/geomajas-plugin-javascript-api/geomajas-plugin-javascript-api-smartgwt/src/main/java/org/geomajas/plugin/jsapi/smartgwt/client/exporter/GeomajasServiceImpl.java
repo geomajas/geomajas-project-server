@@ -13,6 +13,9 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter;
 import java.util.HashMap;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.event.DispatchStartedEvent;
+import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
 import org.geomajas.gwt.client.controller.FeatureInfoController;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.MeasureDistanceController;
@@ -21,6 +24,9 @@ import org.geomajas.gwt.client.controller.SelectionController;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.jsapi.GeomajasService;
+import org.geomajas.jsapi.event.DispatchStartedHandler;
+import org.geomajas.jsapi.event.DispatchStoppedHandler;
+import org.geomajas.jsapi.event.JsHandlerRegistration;
 import org.geomajas.jsapi.map.ExportableFunction;
 import org.geomajas.jsapi.map.Map;
 import org.geomajas.jsapi.map.controller.MapController;
@@ -30,6 +36,7 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -45,6 +52,8 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 	private static final GeomajasServiceImpl INSTANCE = new GeomajasServiceImpl();
 
 	private HashMap<String, HashMap<String, Map>> maps = new HashMap<String, HashMap<String, Map>>();
+
+	// private SimpleEventBus eventBus = new SimpleEventBus();
 
 	private GeomajasServiceImpl() {
 	}
@@ -102,6 +111,30 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 			return null;
 		}
 		return application.get(mapId);
+	}
+
+	@Export
+	public JsHandlerRegistration addDispatchStartedHandler(final DispatchStartedHandler handler) {
+		HandlerRegistration registration = GwtCommandDispatcher.getInstance().addDispatchStartedHandler(
+				new org.geomajas.gwt.client.command.event.DispatchStartedHandler() {
+
+					public void onDispatchStarted(DispatchStartedEvent event) {
+						handler.onDispatchStarted(new org.geomajas.jsapi.event.DispatchStartedEvent());
+					}
+				});
+		return new JsHandlerRegistration(registration);
+	}
+
+	@Export
+	public JsHandlerRegistration addDispatchStoppedHandler(final DispatchStoppedHandler handler) {
+		HandlerRegistration registration = GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(
+				new org.geomajas.gwt.client.command.event.DispatchStoppedHandler() {
+
+					public void onDispatchStopped(DispatchStoppedEvent event) {
+						handler.onDispatchStopped(new org.geomajas.jsapi.event.DispatchStoppedEvent());
+					}
+				});
+		return new JsHandlerRegistration(registration);
 	}
 
 	@Export
