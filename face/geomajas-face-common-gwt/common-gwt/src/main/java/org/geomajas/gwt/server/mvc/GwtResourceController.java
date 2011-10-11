@@ -26,23 +26,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * A resource controller that searches both classpath and web context. This is a fallback controller for resources that
  * that are located in the GWT module. It allows direct fetching of those resources or getting them from the classpath.
  * This allows the configuration of GWT accessible images by their classpath location: 
- * <p>
+ * <p/>
  * <code>
- * 	String href = GWT.getModuleBaseURL() + "<configured classpath location>";<p>
+ * 	String href = GWT.getModuleBaseURL() + "&lt;configured classpath location&gt;";<p>
  * 	Image.setUrl(href);
  * </code>
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GwtResourceController extends ResourceController {
-	
 	
 	public GwtResourceController() {
 		setCompressionAllowed(false);
 	}
 	
-
 	@RequestMapping(value = "/**/*", method = RequestMethod.GET)
 	public void getResource(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 			IOException {
