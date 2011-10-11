@@ -65,12 +65,24 @@ public class CacheFilter implements Filter {
 	public static final String ZIP_SUFFIXES = "zipSuffixes";
 	public static final String SKIP_PREFIXES = "skipPrefixes";
 	public static final String PARAMETER_SPLIT_REGEX = "[\\s,]+";
+	public static final String LOCALHOST_NAME = "localhost";
+	public static final String LOCALHOST_IP_V4 = "127.0.0.1";
+	public static final String LOCALHOST_IP_V6 = "::1";
 
-	private long cacheDurationInSeconds = 60 * 60 * 24 * 365; // One year
+	private static final long MS_IN_S = 1000;
+	private static final long S_IN_M = 60;
+	private static final long M_IN_H = 60;
+	private static final long H_IN_DAY = 24;
+	private static final long DAYS_IN_YEAR = 365;
 
-	private long cacheDurationInMilliSeconds = cacheDurationInSeconds * 1000;
+	private long cacheDurationInSeconds = S_IN_M * M_IN_H * H_IN_DAY * DAYS_IN_YEAR; // One year
+
+	private long cacheDurationInMilliSeconds = cacheDurationInSeconds * MS_IN_S;
 
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
+
+	private static final String HTTP_ACCEPT_ENCODING_HEADER = "Accept-Encoding";
+	private static final String HTTP_ACCEPT_ENCODING_GZIP = "gzip";
 
 	private static final String HTTP_EXPIRES_HEADER = "Expires";
 	private static final String HTTP_EXPIRES_HEADER_NOCACHE_VALUE = "Wed, 11 Jan 1984 05:00:00:GMT";
@@ -81,6 +93,7 @@ public class CacheFilter implements Filter {
 
 	private static final String HTTP_CACHE_PRAGMA = "Pragma";
 	private static final String HTTP_CACHE_PRAGMA_VALUE = "no-cache";
+	private static final String HTTP_CACHE_MAX_AGE_PREFIX = "max-age=";
 
 	private String[] cacheIdentifiers = new String[] {".cache."};
 	private String[] cacheSuffixes = new String[] {".js", ".png", ".jpg", ".jpeg", ".gif", ".css", ".html"};
@@ -134,7 +147,7 @@ public class CacheFilter implements Filter {
 		if (null != param) {
 			try {
 				cacheDurationInSeconds = Integer.parseInt(param);
-				cacheDurationInMilliSeconds = cacheDurationInSeconds * 1000;
+				cacheDurationInMilliSeconds = cacheDurationInSeconds * MS_IN_S;
 			} catch (NumberFormatException nfe) {
 				throw new ServletException("Cannot parse " + CACHE_DURATION_IN_SECONDS + " value " + param +
 						", should be parable to integer", nfe);
@@ -144,7 +157,7 @@ public class CacheFilter implements Filter {
 	}
 
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "AvoidUsingHardCodedIP",
-			justification = "double-safe check on localhost")
+			justification = "double-safe check on localhost, ease configuration for development")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException,
 			ServletException {
 		boolean chainCalled = false;
@@ -156,7 +169,8 @@ public class CacheFilter implements Filter {
 
 			if (!checkPrefixes(requestUri, skipPrefixes)) {
 				String serverName = httpRequest.getServerName();
-				boolean isLocalhost = "localhost".equals(serverName) || "127.0.0.1".equals(serverName);
+				boolean isLocalhost = LOCALHOST_NAME.equals(serverName) ||
+						LOCALHOST_IP_V4.equals(serverName) || LOCALHOST_IP_V6.equals(serverName);
 
 				if (!isLocalhost) {
 					if (shouldNotCache(requestUri)) {
@@ -167,8 +181,8 @@ public class CacheFilter implements Filter {
 				}
 
 				if (shouldCompress(requestUri)) {
-					String encodings = httpRequest.getHeader("Accept-Encoding");
-					if (encodings != null && encodings.indexOf("gzip") != -1) {
+					String encodings = httpRequest.getHeader(HTTP_ACCEPT_ENCODING_HEADER);
+					if (encodings != null && encodings.contains(HTTP_ACCEPT_ENCODING_GZIP)) {
 						GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
 						try {
 							filterChain.doFilter(request, responseWrapper);
@@ -261,7 +275,7 @@ public class CacheFilter implements Filter {
 		response.setDateHeader(HTTP_EXPIRES_HEADER, now + cacheDurationInMilliSeconds);
 
 		// HTTP 1.1 header
-		response.setHeader(HTTP_CACHE_CONTROL_HEADER, "max-age=" + cacheDurationInSeconds);
+		response.setHeader(HTTP_CACHE_CONTROL_HEADER, HTTP_CACHE_MAX_AGE_PREFIX + cacheDurationInSeconds);
 	}
 
 	// ------------------------------------------------------------------------
