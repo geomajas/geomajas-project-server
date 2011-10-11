@@ -41,7 +41,7 @@
 
 	<filter-mapping>
 		<filter-name>CacheFilter</filter-name>
-		<servlet-name>GeomajasServiceServlet</servlet-name>
+		<url-pattern>/Reporting/*</url-pattern>
 	</filter-mapping>
 
 	<!-- only needed for direct GWT -->
