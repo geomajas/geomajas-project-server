@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <!--
 		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
@@ -12,14 +11,14 @@
 		  -->
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
 	<title>Geomajas Javascript API - JS only test</title>
-	<link type="text/css" rel="stylesheet" href="geomajas.css">
+	<link type="text/css" rel="stylesheet" href="geomajas.css" />
 
 	<script type="text/javascript" language="javascript">var isomorphicDir = "emptyApp/sc/";</script>
 	<script type="text/javascript" language="javascript" src="emptyApp/emptyApp.nocache.js"></script>
-		
+
 	<script type="text/javascript">
 		var map;
 
@@ -37,7 +36,7 @@
 				element.innerHTML += "<br>Property: "+ property;
 			}
 		}
-		
+
 		function log(text) {
 			var element = document.getElementById('log');
 			element.innerHTML += "<br>" + text;
@@ -53,7 +52,7 @@
 		<button onclick="initialize()">INIT</button>
 	</div>
 	<div>
-		<table CELLSPACING="0" CELLPADDING="5">
+		<table cellspacing="0" cellpadding="5">
 			<tr>
 				<td style="width:640px;">
 					<div id="js-map-element" style="width:640px; height:480px; border: 1px solid #337428;">
@@ -83,7 +82,7 @@
 					Xmax: <input type="text" id="boundsXmax" /><br/>
 					Ymin: <input type="text" id="boundsYmin" />
 					Ymax: <input type="text" id="boundsYmax" />
-					
+
 					<h2>Map & Layers</h2>
 					<h4>Layers</h4>
 					<button onclick="getLayers()">Get layers</button>
@@ -91,6 +90,11 @@
 
 					<h4>Visibility second layer</h4>
 					<button onclick="toggleVisibility()">Toggle visibility</button>
+
+					<h4>Change the cursor on the map</h4>
+					<button onclick="map.setCursor('default')">Default</button>
+					<button onclick="map.setCursor('crosshair')">Crosshair</button>
+					<button onclick="map.setCursor('images/metal-cursor.cur')">Image</button>
 				</td>
 			</tr>
 		</table>

@@ -11,6 +11,7 @@
 package org.geomajas.jsapi.map;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.jsapi.map.controller.MapController;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -42,6 +43,24 @@ public interface Map extends Exportable {
 	 * @return Returns the view port.
 	 */
 	ViewPort getViewPort();
+	
+	/**
+	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for
+	 * the map. Only one controller can be set at any given time. When a controller is active on the map, using this
+	 * method, any fall-back controller is automatically disabled.
+	 * 
+	 * @param controller
+	 *            The new {@link MapController} object. If null is passed, then the active controller is again disabled.
+	 *            At that time the fall-back controller is again activated.
+	 */
+	void setMapController(MapController controller);
+
+	/**
+	 * Return the currently active controller on the map.
+	 * 
+	 * @return The currently active controller.
+	 */
+	MapController getMapController();
 
 	/**
 	 * Couples this map to an existing HTML element (div or span).
@@ -50,6 +69,8 @@ public interface Map extends Exportable {
 	 *            id of the element
 	 */
 	void setHtmlElementId(String id);
+
+	String getHtmlElementId();
 
 	/**
 	 * Apply a new width and height on the map. Both parameters are expressed in pixels.
@@ -60,4 +81,12 @@ public interface Map extends Exportable {
 	 *            The new pixel height for the map.
 	 */
 	void setSize(int width, int height);
+
+	/**
+	 * Apply a new mouse cursor when hovering above the map.
+	 * 
+	 * @param cursor
+	 *            The new cursor to apply.
+	 */
+	void setCursor(String cursor);
 }

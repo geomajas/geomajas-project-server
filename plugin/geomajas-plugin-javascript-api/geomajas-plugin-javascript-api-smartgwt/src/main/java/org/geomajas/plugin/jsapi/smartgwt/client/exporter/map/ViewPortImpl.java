@@ -84,4 +84,20 @@ public class ViewPortImpl implements ViewPort, Exportable {
 	public void applyScale(double scale, Coordinate rescalePoint) {
 		mapView.setCurrentScale(scale, zoomOption, Coordinate.toGeomajasCoordinate(rescalePoint));
 	}
+
+	public Coordinate transform(Coordinate coordinate, String from, String to) {
+		if (from.equalsIgnoreCase(to)) {
+			return coordinate;
+		}
+
+		org.geomajas.geometry.Coordinate transformed;
+		if (from.equalsIgnoreCase("screen") && to.equalsIgnoreCase("world")) {
+			transformed = mapView.getWorldViewTransformer().viewToWorld(coordinate.getCoordinate());
+			return new Coordinate(transformed.getX(), transformed.getY());
+		} else if (from.equalsIgnoreCase("world") && to.equalsIgnoreCase("screen")) {
+			transformed = mapView.getWorldViewTransformer().worldToView(coordinate.getCoordinate());
+			return new Coordinate(transformed.getX(), transformed.getY());
+		}
+		return coordinate;
+	}
 }

@@ -163,4 +163,8 @@ public class Coordinate implements Exportable {
 	public void setY(double y) {
 		originalCoordinate.setY(y);
 	}
+
+	public String toString() {
+		return "[" + getX() + ", " + getY() + "]";
+	}
 }

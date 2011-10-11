@@ -15,7 +15,7 @@ import org.geomajas.jsapi.map.layer.Layer;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Javascript exportable facade for a map's LayersModel.
+ * Javascript exportable facade for the model of layers that form a map.
  * 
  * @author Oliver May
  * @author Pieter De Graef

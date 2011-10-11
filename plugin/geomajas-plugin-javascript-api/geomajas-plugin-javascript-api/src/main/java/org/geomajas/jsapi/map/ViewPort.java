@@ -26,6 +26,10 @@ import org.timepedia.exporter.client.Exportable;
 @Api(allMethods = true)
 public interface ViewPort extends Exportable {
 
+	String RENDER_SPACE_WORLD = "world";
+
+	String RENDER_SPACE_SCREEN = "screen";
+
 	/**
 	 * Get the current center position expressed in world space.
 	 * 
@@ -98,4 +102,22 @@ public interface ViewPort extends Exportable {
 	 * @return The maximum zooming extent that is allowed on this view port.
 	 */
 	Bbox getMaximumBounds();
+
+	// ------------------------------------------------------------------------
+	// ViewPort transformation methods:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Transform the given coordinate from a certain rendering space to another.
+	 * 
+	 * @param coordinate
+	 *            The coordinate to transform. The X and Y ordinates are expected to be expressed in the 'from'
+	 *            rendering space.
+	 * @param from
+	 *            The rendering space that expresses the X and Y ordinates of the given coordinate.
+	 * @param to
+	 *            The rendering space where to the coordinate should be transformed.
+	 * @return The transformed coordinate.
+	 */
+	Coordinate transform(Coordinate coordinate, String from, String to);
 }
