@@ -55,10 +55,11 @@ public class ImageServiceImpl implements ImageService {
 
 	/** {@inheritDoc} */
 	public void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException {
-		callPipeline(stream, clientMapInfo, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_MAP_IMAGE);
+		callPipeline(stream, clientMapInfo, RasterizingPipelineCode.PIPELINE_RASTERIZING_GET_LEGEND_IMAGE);
 	}
 
-	private void callPipeline(OutputStream stream, ClientMapInfo clientMapInfo, String pipelineKey) throws GeomajasException {
+	private void callPipeline(OutputStream stream, ClientMapInfo clientMapInfo, String pipelineKey)
+			throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		DefaultMapContext mapContext = new DefaultMapContext();
 		try {
