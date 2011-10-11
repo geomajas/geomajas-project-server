@@ -22,7 +22,7 @@
 	<script type="text/javascript">
 		var map;
 
-		function initialize() {
+		function onGeomajasLoad() {
 			var d = document.getElementById('log');
 			d.innerHTML += "Initializing the map...";
 			map = Geomajas().createMap("app", "mapMain", "js-map-element");
@@ -45,11 +45,10 @@
 	<script type="text/javascript" language="javascript" src="geomajas-api-test.js"></script>
 </head>
 
-<body _onLoad="initialize()">
+<body>
 	<div class="titleBar">
 		<div class="title">Geomajas JavaScript API test</div>
 		<div class="subtitle">This example uses an empty GWT application - JavaScript only</div>
-		<button onclick="initialize()">INIT</button>
 	</div>
 	<div>
 		<table cellspacing="0" cellpadding="5">

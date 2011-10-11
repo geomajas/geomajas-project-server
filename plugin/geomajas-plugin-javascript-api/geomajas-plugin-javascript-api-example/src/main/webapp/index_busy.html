@@ -24,7 +24,7 @@
 		var handlerRegistration1;
 		var handlerRegistration2;
 
-		function onLoad() {
+		function onGeomajasLoad() {
 			// Display the map:
 			map = Geomajas().createMap("app", "mapMain", "js-map-element");
 
@@ -48,7 +48,6 @@
 
 		function removeBusyHandlers() {
 			// Only cleanup if they exist. Also make them null so they can't get cleaned up twice.
-			listMethods(handlerRegistration1);
 			if (handlerRegistration1 != null) {
 				handlerRegistration1.removeHandler();
 				handlerRegistration1 = null;

@@ -21,11 +21,5 @@ import com.google.gwt.core.client.EntryPoint;
 public class EmptyApp implements EntryPoint {
 
 	public void onModuleLoad() {
-		onLoad();
 	}
-
-	private native void onLoad() /*-{
-		if ($wnd.onLoad && typeof $wnd.onLoad == 'function')
-			$wnd.onLoad();
-	}-*/;
 }

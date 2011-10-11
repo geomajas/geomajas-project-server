@@ -24,5 +24,13 @@ public class JavascriptApiEntryPoint implements EntryPoint {
 
 	public void onModuleLoad() {
 		ExporterUtil.exportAll();
+		onLoad();
 	}
+
+	private native void onLoad()
+	/*-{
+		if ($wnd.onGeomajasLoad && typeof $wnd.onGeomajasLoad == 'function') {
+			$wnd.onGeomajasLoad();
+		}
+	}-*/;
 }
