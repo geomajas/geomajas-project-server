@@ -11,6 +11,7 @@
 package org.geomajas.jsapi;
 
 import org.geomajas.jsapi.map.Map;
+import org.geomajas.jsapi.map.controller.MapController;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -56,4 +57,6 @@ public interface GeomajasService extends Exportable {
 	 * @return the map.
 	 */
 	Map getMap(String applicationId, String mapId);
+	
+	MapController createMapController(Map map, String id);
 }

@@ -13,8 +13,17 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter;
 import java.util.HashMap;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.controller.FeatureInfoController;
+import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.controller.MeasureDistanceController;
+import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.controller.SelectionController;
+import org.geomajas.gwt.client.controller.editing.ParentEditController;
+import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.jsapi.GeomajasService;
+import org.geomajas.jsapi.map.ExportableFunction;
 import org.geomajas.jsapi.map.Map;
+import org.geomajas.jsapi.map.controller.MapController;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -56,7 +65,8 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 	public Map createMap(String applicationId, String mapId, String elementId) {
 		Map map = getMap(applicationId, mapId);
 		if (map == null) {
-			map = new MapImpl(applicationId, mapId);
+			MapWidget mapWidget = new MapWidget(mapId, applicationId);
+			map = new MapImpl(mapWidget);
 			Element element = DOM.getElementById(elementId);
 			if (element != null) {
 				int width = element.getClientWidth();
@@ -92,5 +102,40 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 			return null;
 		}
 		return application.get(mapId);
+	}
+
+	@Export
+	public MapController createMapController(Map map, String id) {
+		MapWidget mapWidget = ((MapImpl) map).getMapWidget();
+		if (id.equalsIgnoreCase("PanMode")) {
+			return createMapController(map, new PanController(mapWidget));
+		} else if (id.equalsIgnoreCase("MeasureDistanceMode")) {
+			return createMapController(map, new MeasureDistanceController(mapWidget));
+		} else if (id.equalsIgnoreCase("FeatureInfoMode")) {
+			return createMapController(map, new FeatureInfoController(mapWidget, 3));
+		} else if (id.equalsIgnoreCase("SelectionMode")) {
+			return createMapController(map, new SelectionController(mapWidget, 500, 0.5f, false, 3));
+		} else if (id.equalsIgnoreCase("EditMode")) {
+			return createMapController(map, new ParentEditController(mapWidget));
+		}
+		return null;
+	}
+
+	private MapController createMapController(Map map, final GraphicsController controller) {
+		MapController mapController = new MapController(map, controller);
+
+		mapController.setActivationHandler(new ExportableFunction() {
+
+			public void execute() {
+				controller.onActivate();
+			}
+		});
+		mapController.setDeactivationHandler(new ExportableFunction() {
+
+			public void execute() {
+				controller.onDeactivate();
+			}
+		});
+		return mapController;
 	}
 }
