@@ -30,13 +30,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class AuthenticationTokenService {
 
+	private static final long MS_IN_S = 1000;
+
 	@Autowired
 	private AuthenticationTokenGeneratorService generatorService;
 
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
 
-	private Map<String, TokenContainer> tokens = new ConcurrentHashMap<String, TokenContainer>();
+	private final Map<String, TokenContainer> tokens = new ConcurrentHashMap<String, TokenContainer>();
 
 	/**
 	 * Get the authentication for a specific token.
@@ -114,8 +116,8 @@ public class AuthenticationTokenService {
 	 * @author Joachim Van der Auwera
 	 */
 	private class TokenContainer {
-		private long validUntil;
-		private Authentication authentication;
+		private final long validUntil;
+		private final Authentication authentication;
 
 		/**
 		 * Create a token container.
@@ -123,7 +125,7 @@ public class AuthenticationTokenService {
 		 * @param authentication authentication object
 		 */
 		public TokenContainer(Authentication authentication) {
-			validUntil = System.currentTimeMillis() + 1000L * securityServiceInfo.getTokenLifetime();
+			validUntil = System.currentTimeMillis() + MS_IN_S * securityServiceInfo.getTokenLifetime();
 			this.authentication = authentication;
 		}
 

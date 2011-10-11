@@ -58,7 +58,7 @@ public class AttributeAuthorizationInfo extends LayerAuthorizationInfo {
 	 */
 	public static final class LocalAuthorization extends LayerAuthorization implements AttributeAuthorization {
 
-		private AttributeAuthorizationInfo info;
+		private AttributeAuthorizationInfo info; // NOSONAR
 
 		protected LocalAuthorization() {
 			super(); // for deserialization

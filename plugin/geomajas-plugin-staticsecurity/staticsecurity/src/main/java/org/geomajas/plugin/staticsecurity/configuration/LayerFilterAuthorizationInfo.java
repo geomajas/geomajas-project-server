@@ -53,7 +53,7 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 	public static final class FilterAuthorization extends LayerAuthorization
 			implements VectorLayerSelectFilterAuthorization {
 
-		private LayerFilterAuthorizationInfo info;
+		private LayerFilterAuthorizationInfo info; // NOSONAR
 
 		private FilterAuthorization() {
 			super(); // for deserialization

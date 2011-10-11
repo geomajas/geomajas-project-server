@@ -24,7 +24,7 @@ import org.geomajas.annotation.Api;
 @Deprecated
 public class LoginSuccessEvent extends GwtEvent<LoginHandler> {
 
-	private String token;
+	private final String token;
 
 	public LoginSuccessEvent(String token) {
 		this.token = token;

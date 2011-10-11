@@ -44,7 +44,7 @@ public final class Authentication {
 
 	private static Authentication login = new Authentication();
 
-	private HandlerManager manager;
+	private final HandlerManager manager;
 
 	private String userToken;
 

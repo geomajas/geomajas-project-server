@@ -24,7 +24,7 @@ import java.util.List;
 @Api(allMethods = true)
 public class SecurityServiceInfo {
 
-	private int tokenLifetime = 4 * 60 * 60; // 4 hours
+	private int tokenLifetime = 4 * 60 * 60; // 4 hours // NOSONAR
 	private List<UserInfo> users;
 
 	/**

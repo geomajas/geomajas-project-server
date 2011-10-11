@@ -26,7 +26,7 @@ import org.geomajas.annotation.Api;
 @Deprecated
 public class LoginFailureEvent extends GwtEvent<LoginHandler> {
 
-	private List<String> messages;
+	private final List<String> messages;
 
 	public LoginFailureEvent(List<String> messages) {
 		this.messages = messages;

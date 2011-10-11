@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 @Api(allMethods = true)
 public class LayerAuthorization implements BaseAuthorization {
 
-	private LayerAuthorizationInfo info;
+	private LayerAuthorizationInfo info; // NOSONAR
 
 	protected LayerAuthorization() {
 		// for deserialization
