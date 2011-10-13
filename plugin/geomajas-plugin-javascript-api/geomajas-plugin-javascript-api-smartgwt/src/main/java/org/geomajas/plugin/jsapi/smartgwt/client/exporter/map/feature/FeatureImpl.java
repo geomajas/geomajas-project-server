@@ -13,6 +13,7 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.jsapi.map.feature.Feature;
@@ -21,7 +22,6 @@ import org.geomajas.layer.feature.Attribute;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
-import org.timepedia.exporter.client.NoExport;
 
 /**
  * Javascript exportable facade for a feature.<br/>
@@ -40,7 +40,7 @@ public class FeatureImpl implements Exportable, Feature {
 
 	@SuppressWarnings("rawtypes")
 	private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
-	
+
 	private String label;
 
 	private Bbox bounds;
@@ -48,32 +48,20 @@ public class FeatureImpl implements Exportable, Feature {
 	private FeaturesSupported layer;
 
 	private boolean selected;
-	
+
 	private String geometry;
-	
-	/**
-	 * Constructor for a Feature object.
-	 * 
-	 * @param id the id of the feature
-	 * @param attributes the attributes
-	 * @param label the label
-	 * @param geometry the geometry
-	 * @param bounds the bounds of the geometry
-	 * @param layer the layer
-	 * @param selected if the feature is selected
-	 */
-	@SuppressWarnings("rawtypes")
-	public FeatureImpl(String id, Map<String, Attribute> attributes, String label, String geometry, Bbox bounds, 
-			FeaturesSupported layer, boolean selected) {
-		this.id = id;
-		this.attributes = attributes;
-		this.label = label;
-		this.bounds = bounds;
-		this.layer = layer;
-		this.selected = selected;
-		this.geometry = geometry;
+
+	public FeatureImpl() {
 	}
-	
+
+	@Api
+	public FeatureImpl(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
+		this.layer = layer;
+		id = feature.getId();
+		label = feature.getLabel();
+		attributes = feature.getAttributes();
+	}
+
 	/**
 	 * Return the features unique identifier.
 	 * 
@@ -112,7 +100,7 @@ public class FeatureImpl implements Exportable, Feature {
 	public Bbox getBounds() {
 		return bounds;
 	}
-	
+
 	/**
 	 * Get the feature's geometry, , null when it needs to be lazy loaded.
 	 * 
@@ -136,7 +124,6 @@ public class FeatureImpl implements Exportable, Feature {
 	 * 
 	 * @return Returns the layer. This value can never be null.
 	 */
-	@NoExport
 	public FeaturesSupported getLayer() {
 		return layer;
 	}

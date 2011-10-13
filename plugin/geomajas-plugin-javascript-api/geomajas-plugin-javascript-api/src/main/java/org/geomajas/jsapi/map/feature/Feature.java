@@ -11,6 +11,7 @@
 package org.geomajas.jsapi.map.feature;
 
 import org.geomajas.annotation.FutureApi;
+import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -35,6 +36,13 @@ public interface Feature extends Exportable {
 	String getId();
 
 	/**
+	 * Return the layer instance associated with this feature. Every feature can belong to only one layer.
+	 * 
+	 * @return Returns the layer. This value can never be null.
+	 */
+	FeaturesSupported getLayer();
+
+	/**
 	 * Get the value of a certain attribute.
 	 * 
 	 * @param attributeName
@@ -50,7 +58,7 @@ public interface Feature extends Exportable {
 	 * @return Returns a readable label.
 	 */
 	String getLabel();
-	
+
 	/**
 	 * Get the feature's geometry, , null when it needs to be lazy loaded.
 	 * 
