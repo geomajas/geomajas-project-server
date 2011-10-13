@@ -11,11 +11,11 @@
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.jsapi.map.ViewPort;
-import org.geomajas.jsapi.spatial.geometry.Bbox;
-import org.geomajas.jsapi.spatial.geometry.Coordinate;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -50,7 +50,7 @@ public class ViewPortImpl implements ViewPort, Exportable {
 	}
 
 	public void applyPosition(Coordinate coordinate) {
-		mapView.setCenterPosition(coordinate.getCoordinate());
+		mapView.setCenterPosition(coordinate);
 	}
 
 	public void applyScale(final double newScale) {
@@ -82,7 +82,7 @@ public class ViewPortImpl implements ViewPort, Exportable {
 	}
 
 	public void applyScale(double scale, Coordinate rescalePoint) {
-		mapView.setCurrentScale(scale, zoomOption, Coordinate.toGeomajasCoordinate(rescalePoint));
+		mapView.setCurrentScale(scale, zoomOption, rescalePoint);
 	}
 
 	public Coordinate transform(Coordinate coordinate, String from, String to) {
@@ -92,10 +92,10 @@ public class ViewPortImpl implements ViewPort, Exportable {
 
 		org.geomajas.geometry.Coordinate transformed;
 		if (from.equalsIgnoreCase("screen") && to.equalsIgnoreCase("world")) {
-			transformed = mapView.getWorldViewTransformer().viewToWorld(coordinate.getCoordinate());
+			transformed = mapView.getWorldViewTransformer().viewToWorld(coordinate);
 			return new Coordinate(transformed.getX(), transformed.getY());
 		} else if (from.equalsIgnoreCase("world") && to.equalsIgnoreCase("screen")) {
-			transformed = mapView.getWorldViewTransformer().worldToView(coordinate.getCoordinate());
+			transformed = mapView.getWorldViewTransformer().worldToView(coordinate);
 			return new Coordinate(transformed.getX(), transformed.getY());
 		}
 		return coordinate;

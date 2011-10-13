@@ -19,6 +19,7 @@ import org.geomajas.plugin.jsapi.smartgwt.client.exporter.GeomajasServiceImpl;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -67,9 +68,12 @@ public class ComplexApp implements EntryPoint {
 		// Finally add to html and draw everything:
 		// ---------------------------------------------------------------------
 
-		layout.setHtmlElement(DOM.getElementById("gwt-app-element"));
-		layout.setWidth(DOM.getElementById("gwt-app-element").getStyle().getWidth());
-		layout.setHeight(DOM.getElementById("gwt-app-element").getStyle().getHeight());
-		layout.draw();
+		Element element = DOM.getElementById("gwt-app-element");
+		if (element != null) {
+			layout.setHtmlElement(DOM.getElementById("gwt-app-element"));
+			layout.setWidth(DOM.getElementById("gwt-app-element").getStyle().getWidth());
+			layout.setHeight(DOM.getElementById("gwt-app-element").getStyle().getHeight());
+			layout.draw();
+		}
 	}
 }

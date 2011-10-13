@@ -11,8 +11,8 @@
 package org.geomajas.jsapi.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.jsapi.spatial.geometry.Bbox;
-import org.geomajas.jsapi.spatial.geometry.Coordinate;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.timepedia.exporter.client.Exportable;
 
 /**

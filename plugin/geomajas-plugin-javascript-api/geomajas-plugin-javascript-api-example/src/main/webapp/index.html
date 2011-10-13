@@ -16,43 +16,23 @@
 
 	<title>Geomajas Javascript API - JS only test</title>
 	<link type="text/css" rel="stylesheet" href="geomajas.css">
-
-	<script type="text/javascript" language="javascript">var isomorphicDir = "complexApp/sc/";</script>
-	<script type="text/javascript" language="javascript" src="complexApp/complexApp.nocache.js"></script>
-		
-	<script type="text/javascript">
-		var map;
-		
-		function log(text) {
-			var element = document.getElementById('log');
-			if (element != null) {
-				element.innerHTML = text + "<br>" + element.innerHTML;
-			}
-		}
-	</script>
-	<script type="text/javascript" language="javascript" src="geomajas-event-test.js"></script>
 </head>
 
 <body>
 	<div class="titleBar">
 		<div class="title">Geomajas JavaScript API test</div>
-		<div class="subtitle">This example uses an complex GWT application - JavaScript is here to listen</div>
+		<div class="subtitle">Main page for the Geomajas JavaScript API demo</div>
 	</div>
 	<div>
 		<table CELLSPACING="5" CELLPADDING="0">
 			<tr>
-				<td style="width:800px;">
-					<div id="gwt-app-element" style="width:800px; height:600px; border: 1px solid #337428;">
-						<!-- on load, the map is attached here -->
-					</div>
-					<div style="border: 1px solid #337428; margin-top:5px; padding:3px 5px;">
-						<h2>Buttons ftw \o/</h2>
-					</div>
+				<td valign="top">
+					<a href="index_gwt.html?gwt.codesvr=127.0.0.1:9997">Example with a rich GWT application.</a>
+					<a href="index2.html?gwt.codesvr=127.0.0.1:9997">Map navigation.</a>
 				</td>
-				<td valign="top" style="width: 100%; border: 1px solid #337428;">
-					<div id="log" style="padding: 3px 5px;">
-						<h2>Log window:</h3>
-					</div>
+				<td valign="top">
+					<a href="index_controller.html?gwt.codesvr=127.0.0.1:9997">Map Controllers</a>
+					<a href="index_busy.html?gwt.codesvr=127.0.0.1:9997">Map Busy state</a>
 				</td>
 			</tr>
 		</table>

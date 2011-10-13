@@ -21,7 +21,7 @@ function translate(directionX, directionY) {
 	var position = map.getViewPort().getPosition();
 	var newX = position.getX() + directionX * distance;
 	var newY = position.getY() + directionY * distance;
-	map.getViewPort().applyPosition(new org.geomajas.jsapi.spatial.geometry.Coordinate(newX, newY));
+	map.getViewPort().applyPosition(new org.geomajas.jsapi.spatial.Coordinate(newX, newY));
 }
 
 function zoomIn() {
@@ -50,7 +50,7 @@ function applyBounds() {
 	var xmax = parseFloat(document.getElementById("boundsXmax").value);
 	var ymax = parseFloat(document.getElementById("boundsYmax").value);
 
-	var bbox = new org.geomajas.jsapi.spatial.geometry.Bbox(xmin, ymin, xmax - xmin, ymax - ymin);
+	var bbox = new org.geomajas.jsapi.spatial.Bbox(xmin, ymin, xmax - xmin, ymax - ymin);
 	map.getViewPort().applyBounds(bbox);
 }
 

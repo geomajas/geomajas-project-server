@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.annotation.FutureApi;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.jsapi.map.feature.Feature;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
-import org.geomajas.jsapi.spatial.geometry.Bbox;
 import org.geomajas.layer.feature.Attribute;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;

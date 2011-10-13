@@ -11,10 +11,10 @@
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
 
 import org.geomajas.annotation.FutureApi;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.jsapi.map.feature.Feature;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.geomajas.jsapi.map.layer.Layer;
-import org.geomajas.jsapi.spatial.geometry.Bbox;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;

@@ -16,7 +16,7 @@ import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.Controller;
 import org.geomajas.jsapi.map.ExportableFunction;
 import org.geomajas.jsapi.map.Map;
-import org.geomajas.jsapi.spatial.geometry.Coordinate;
+import org.geomajas.geometry.Coordinate;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -70,7 +70,7 @@ public class MapController implements Exportable {
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
-	
+
 	public MapController(Map map) {
 		this.map = map;
 	}
