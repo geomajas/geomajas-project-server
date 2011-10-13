@@ -36,6 +36,7 @@ import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -50,9 +51,10 @@ import java.util.UUID;
  */
 @Component
 //@Api don't know about api, all this caching stuff causes problems cfr lazy loading etc
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class PrepareReportingCommand implements Command<PrepareReportingRequest, PrepareReportingResponse> {
 
-	private static final int MAP_BUFFER_SIZE = 1024 * 10;
+	private static final int MAP_BUFFER_SIZE = 1024 * 10; // 10 kB buffer // NOSONAR
 
 	@Autowired
 	private ImageService imageService;
