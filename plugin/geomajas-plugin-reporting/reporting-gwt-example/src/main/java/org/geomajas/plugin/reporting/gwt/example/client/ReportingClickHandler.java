@@ -34,16 +34,16 @@ import org.geomajas.plugin.reporting.command.dto.PrepareReportingResponse;
  */
 public class ReportingClickHandler implements ClickHandler {
 
-	private String reportName;
+	private final String reportName;
 
-	private String clientLayerId;
+	private final String clientLayerId;
 	private String serverLayerId;
 
-	private String format;
+	private final String format;
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
-	private ImageUrlService imageUrlService = new ImageUrlServiceImpl();
+	private final ImageUrlService imageUrlService = new ImageUrlServiceImpl();
 
 	/**
 	 * Creates a handler for the specified map and format.
