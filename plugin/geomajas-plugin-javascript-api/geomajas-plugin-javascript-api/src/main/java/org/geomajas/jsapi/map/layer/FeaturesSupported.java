@@ -24,7 +24,7 @@ import org.timepedia.exporter.client.Exportable;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface FeaturesSupported extends Exportable {
+public interface FeaturesSupported extends Layer, Exportable {
 
 	/**
 	 * Apply a filter on the layer. Such a filter specifies which features are to be shown on the map, and which aren't.

@@ -11,11 +11,9 @@
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
 
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.jsapi.map.feature.Feature;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.geomajas.jsapi.map.layer.Layer;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -77,12 +75,6 @@ public class VectorLayer extends LayerImpl implements Exportable, Layer, Feature
 
 	private org.geomajas.gwt.client.map.layer.VectorLayer getLayer() {
 		return (org.geomajas.gwt.client.map.layer.VectorLayer) layer;
-	}
-
-	private Feature toJs(org.geomajas.gwt.client.map.feature.Feature f) {
-		org.geomajas.gwt.client.spatial.Bbox fBox = f.getGeometry().getBounds();
-		return new FeatureImpl(f.getId(), f.getAttributes(), f.getLabel(), f.getGeometry().toWkt(), new Bbox(
-				fBox.getX(), fBox.getY(), fBox.getWidth(), fBox.getHeight()), this, f.isSelected());
 	}
 
 	private org.geomajas.gwt.client.map.feature.Feature toGwt(Feature feature) {

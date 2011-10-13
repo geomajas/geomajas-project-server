@@ -13,6 +13,7 @@ package org.geomajas.jsapi.map;
 import org.geomajas.annotation.Api;
 import org.geomajas.jsapi.event.JsEventBus;
 import org.geomajas.jsapi.map.controller.MapController;
+import org.geomajas.jsapi.map.feature.FeatureSearchService;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -97,4 +98,11 @@ public interface Map extends Exportable {
 	 * @return The event bus that manages all event related to this map.
 	 */
 	JsEventBus getEventBus();
+
+	/**
+	 * Return a service that can search for features.
+	 * 
+	 * @return A service that can search for features.
+	 */
+	FeatureSearchService getFeatureSearchService();
 }

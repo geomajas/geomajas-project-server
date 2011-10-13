@@ -16,9 +16,8 @@ import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportClosure;
 import org.timepedia.exporter.client.Exportable;
 
-
 /**
- * Callback object for async methods that deal with a feature.
+ * Call-back object for asynchronous methods that deal with a feature.
  * 
  * @author Oliver May
  * @since 1.0.0

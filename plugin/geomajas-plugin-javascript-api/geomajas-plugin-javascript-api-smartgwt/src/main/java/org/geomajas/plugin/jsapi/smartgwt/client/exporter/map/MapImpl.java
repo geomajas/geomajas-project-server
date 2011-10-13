@@ -20,6 +20,8 @@ import org.geomajas.jsapi.map.LayersModel;
 import org.geomajas.jsapi.map.Map;
 import org.geomajas.jsapi.map.ViewPort;
 import org.geomajas.jsapi.map.controller.MapController;
+import org.geomajas.jsapi.map.feature.FeatureSearchService;
+import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureSearchServiceImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -49,6 +51,8 @@ public class MapImpl implements Exportable, Map {
 	private ViewPort viewPort;
 
 	private LayersModel layersModel;
+	
+	private FeatureSearchService featureSearchService;
 
 	private String htmlElementId;
 
@@ -68,6 +72,7 @@ public class MapImpl implements Exportable, Map {
 		this.mapWidget = mapWidget;
 		viewPort = new ViewPortImpl(mapWidget.getMapModel().getMapView());
 		layersModel = new LayersModelImpl(mapWidget.getMapModel());
+		featureSearchService = new FeatureSearchServiceImpl(this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -125,6 +130,10 @@ public class MapImpl implements Exportable, Map {
 
 	public JsEventBus getEventBus() {
 		return eventBus;
+	}
+
+	public FeatureSearchService getFeatureSearchService() {
+		return featureSearchService;
 	}
 
 	// ------------------------------------------------------------------------
