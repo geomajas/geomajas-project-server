@@ -96,9 +96,7 @@ public final class GwtCommandDispatcher
 			locale = null;
 		}
 		service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
-		ServiceDefTarget endpoint = (ServiceDefTarget) service;
-		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
-		endpoint.setServiceEntryPoint(moduleRelativeURL);
+		setServiceEndPointUrl(GWT.getModuleBaseURL() + "geomajasService");
 		setUseLazyLoading(true);
 		setShowError(true);
 	}
@@ -319,6 +317,20 @@ public final class GwtCommandDispatcher
 	 */
 	public boolean isBusy() {
 		return nrOfDispatchedCommands != 0;
+	}
+	
+	/**
+	 * Set the service end point URL to a different value. If pointing to a different context, make sure the
+	 * GeomajasController of that context supports this.
+	 * 
+	 * @see org.geomajas.gwt.server.mvc.GeomajasController
+	 * 
+	 * @param url the new URL
+	 * @since 1.0.0
+	 */
+	public void setServiceEndPointUrl(String url) {
+		ServiceDefTarget endpoint = (ServiceDefTarget) service;
+		endpoint.setServiceEntryPoint(url);
 	}
 
 	/**
