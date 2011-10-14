@@ -15,7 +15,7 @@ import java.util.Map;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.jsapi.map.feature.Feature;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.geomajas.layer.feature.Attribute;
@@ -24,8 +24,7 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Javascript exportable facade for a feature.<br/>
- * TODO remove bounds? That's a geometry method, not a feature method.
+ * Definition of a feature within a layer.
  * 
  * @author Oliver May
  * @author Pieter De Graef
@@ -43,13 +42,9 @@ public class FeatureImpl implements Exportable, Feature {
 
 	private String label;
 
-	private Bbox bounds;
-
 	private FeaturesSupported layer;
 
-	private boolean selected;
-
-	private String geometry;
+	private Geometry geometry;
 
 	public FeatureImpl() {
 	}
@@ -60,6 +55,7 @@ public class FeatureImpl implements Exportable, Feature {
 		id = feature.getId();
 		label = feature.getLabel();
 		attributes = feature.getAttributes();
+		geometry = feature.getGeometry();
 	}
 
 	/**
@@ -93,20 +89,11 @@ public class FeatureImpl implements Exportable, Feature {
 	}
 
 	/**
-	 * Get the feature's bounds.
-	 * 
-	 * @return bounds
-	 */
-	public Bbox getBounds() {
-		return bounds;
-	}
-
-	/**
 	 * Get the feature's geometry, , null when it needs to be lazy loaded.
 	 * 
 	 * @return geometry
 	 */
-	public String getGeometry() {
+	public Geometry getGeometry() {
 		return geometry;
 	}
 
@@ -116,7 +103,7 @@ public class FeatureImpl implements Exportable, Feature {
 	 * @return Returns true or false.
 	 */
 	public boolean isSelected() {
-		return selected;
+		return layer.isFeatureSelected(id);
 	}
 
 	/**

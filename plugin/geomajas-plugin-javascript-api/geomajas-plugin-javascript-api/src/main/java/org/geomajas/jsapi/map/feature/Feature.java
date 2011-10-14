@@ -11,6 +11,7 @@
 package org.geomajas.jsapi.map.feature;
 
 import org.geomajas.annotation.FutureApi;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -60,9 +61,9 @@ public interface Feature extends Exportable {
 	String getLabel();
 
 	/**
-	 * Get the feature's geometry, , null when it needs to be lazy loaded.
+	 * Get the feature's geometry.
 	 * 
 	 * @return geometry
 	 */
-	String getGeometry();
+	Geometry getGeometry();
 }

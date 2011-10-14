@@ -10,9 +10,15 @@
  */
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.jsapi.map.feature.Feature;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
+import org.geomajas.layer.feature.Attribute;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -78,10 +84,17 @@ public class VectorLayer extends LayerImpl implements Exportable, FeaturesSuppor
 		return (org.geomajas.gwt.client.map.layer.VectorLayer) layer;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private org.geomajas.gwt.client.map.feature.Feature toGwt(Feature feature) {
 		org.geomajas.gwt.client.map.feature.Feature gwt;
 		gwt = new org.geomajas.gwt.client.map.feature.Feature(feature.getId(), getLayer());
-		// gwt.setAttributes(feature.getAttributeValue(attributeName));
+		gwt.setGeometry(GeometryConverter.toGwt(feature.getGeometry()));
+		
+		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
+		for (AttributeInfo info : getLayer().getLayerInfo().getFeatureInfo().getAttributes()) {
+			// TODO transform attributes....
+		}
+		gwt.setAttributes(attributes);
 		return gwt;
 	}
 }
