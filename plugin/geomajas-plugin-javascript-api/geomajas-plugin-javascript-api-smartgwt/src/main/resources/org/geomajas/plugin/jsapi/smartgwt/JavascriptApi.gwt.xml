@@ -11,27 +11,10 @@
   -->
 
 <module rename-to="javascriptapi">
-	<!--inherits name="com.smartgwt.tools.SmartGwtTools"/-->
     <inherits name="org.geomajas.gwt.GeomajasClient"/>
   	<inherits name="org.timepedia.exporter.Exporter"/>
   	<inherits name="org.geomajas.JavascriptApi"/>
 
   	<set-property name="export" value="yes"/>
-<!-- 
-	<replace-with class='org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl'>
-		<when-type-is class='org.geomajas.jsapi.map.Map'/>
-	</replace-with>
- -->
-
-	<!-- add required languages
-	<extend-property name="locale" values="nl"/>
-	-->
-
-	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
-	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 --><!--
-	<set-property name="locale" value="default" />
-	<set-property name="user.agent" value="gecko1_8" />
-
-    -->
     <entry-point class="org.geomajas.plugin.jsapi.smartgwt.client.JavascriptApiEntryPoint"/>
 </module>

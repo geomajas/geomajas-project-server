@@ -44,5 +44,7 @@ public final class Examples {
 				+ "within a JavaScript environment.", "examples/gwt_app.html"));
 		EXAMPLES.add(new Example("Cursors", "Demonstrates how change the cursor on the map. This sample includes a "
 				+ "custom cursor.", "examples/cursors.html"));
+		EXAMPLES.add(new Example("Feature Selection", "Demonstrates the selection of features in a vector layer.", 
+				"examples/feature_selection.html"));
 	};
 }
