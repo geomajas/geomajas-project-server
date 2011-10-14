@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.GeomajasService;
@@ -27,6 +28,7 @@ import org.springframework.web.context.ServletConfigAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.gwt.user.server.rpc.SerializationPolicy;
 
 /**
  * Geomajas GWT controller, implements communication between GWT face and back-end.
@@ -35,6 +37,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @since 1.0.0
  */
 @Controller("/geomajasService")
+@Api
 public class GeomajasController extends RemoteServiceServlet implements GeomajasService, ServletConfigAware {
 
 	private static final long serialVersionUID = 100L;
@@ -44,6 +47,8 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 
 	@Autowired(required = false)
 	private ServletContext servletContext;
+	
+	private SerializationPolicyLocator serializationPolicyLocator;
 
 	/**
 	 * Implements Spring Controller interface method.
@@ -60,6 +65,48 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 		doPost(request, response);
 		return null;
 	}
+	
+	/**
+	 * Returns this controller's GWT-RPC serialization policy loader. May be null in case the built-in policy loading
+	 * strategy is used.
+	 * 
+	 * @return the policy loader
+	 */
+	@Api
+	public SerializationPolicyLocator getSerializationPolicyLocator() {
+		return serializationPolicyLocator;
+	}
+	
+	/**
+	 * Sets a custom GWT-RPC serialization policy loader. If null, the built-in policy loading strategy is used.
+	 * 
+	 * @param serializationPolicyLocator the new policy loader
+	 */
+	@Api
+	public void setSerializationPolicyLocator(SerializationPolicyLocator serializationPolicyLocator) {
+		this.serializationPolicyLocator = serializationPolicyLocator;
+	}
+
+	/**
+	 * Gets the {@link SerializationPolicy} for given module base URL and strong name if there is one.
+	 * 
+	 * Use {@link #setSerializationPolicyLocator(SerializationPolicyLocator)} to provide an alternative approach.
+	 * 
+	 * @param request the HTTP request being serviced
+	 * @param moduleBaseURL as specified in the incoming payload
+	 * @param strongName a strong name that uniquely identifies a serialization policy file
+	 * @return a {@link SerializationPolicy} for the given module base URL and strong name, or <code>null</code> if
+	 *         there is none
+	 */
+	protected SerializationPolicy doGetSerializationPolicy(HttpServletRequest request, String moduleBaseURL,
+			String strongName) {
+		if (getSerializationPolicyLocator() == null) {
+			return super.doGetSerializationPolicy(request, moduleBaseURL, strongName);
+		} else {
+			return getSerializationPolicyLocator().loadPolicy(request, moduleBaseURL, strongName);
+		}
+	}
+
 
 	/**
 	 * Execute a GWT RPC command request, and return the response. These request come from the client, and the response
