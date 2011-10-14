@@ -94,7 +94,11 @@ public class MapImpl implements Exportable, Map {
 	}
 
 	public void setMapController(MapController mapController) {
-		mapWidget.setController(new JsController(mapWidget, mapController));
+		if (mapController != null) {
+			mapWidget.setController(new JsController(mapWidget, mapController));
+		} else {
+			mapWidget.setController(null);
+		}
 	}
 
 	public MapController getMapController() {

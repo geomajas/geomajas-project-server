@@ -236,10 +236,12 @@
 					<modules>
 						<module>org.geomajas.plugin.jsapi.example.ComplexApp</module>
 						<module>org.geomajas.plugin.jsapi.example.EmptyApp</module>
+						<module>org.geomajas.plugin.jsapi.example.Showcase</module>
 					</modules>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<style>DETAILED</style>
 				</configuration>
 				<executions>
 					<execution>

@@ -45,6 +45,14 @@ h3, h4, h5 {
 			var map = mapRegistry.getMap("mapMain", "app");
 			return map;
 		}
+
+		function listMethods(myObject) {
+			var element = document.getElementById('log');
+			element.innerHTML += "Properties for " + myObject;
+			for ( var property in myObject) {
+				element.innerHTML += "<br>Property: "+ property;
+			}
+		}
 	
 	</script>
 </head>

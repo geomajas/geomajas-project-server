@@ -92,6 +92,16 @@
 		<url-pattern>/emptyApp/geomajasService</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>GeomajasServiceServlet3</servlet-name>
+		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GeomajasServiceServlet3</servlet-name>
+		<url-pattern>/showcase/geomajasService</url-pattern>
+	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
