@@ -23,7 +23,7 @@ import org.timepedia.exporter.client.Exportable;
  * @author Oliver May
  * 
  */
-@Export
+@Export("LayerImpl")
 @ExportPackage("org.geomajas.jsapi.map.layer")
 public class LayerImpl implements Layer, Exportable {
 

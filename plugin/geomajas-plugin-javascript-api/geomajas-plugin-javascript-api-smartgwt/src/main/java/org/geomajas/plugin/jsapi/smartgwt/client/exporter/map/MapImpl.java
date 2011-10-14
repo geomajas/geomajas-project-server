@@ -51,7 +51,7 @@ public class MapImpl implements Exportable, Map {
 	private ViewPort viewPort;
 
 	private LayersModel layersModel;
-	
+
 	private FeatureSearchService featureSearchService;
 
 	private String htmlElementId;
@@ -95,6 +95,7 @@ public class MapImpl implements Exportable, Map {
 
 	public void setMapController(MapController mapController) {
 		if (mapController != null) {
+			mapController.setMap(this);
 			mapWidget.setController(new JsController(mapWidget, mapController));
 		} else {
 			mapWidget.setController(null);

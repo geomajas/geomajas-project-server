@@ -12,14 +12,15 @@
 package org.geomajas.jsapi.map.controller;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.Controller;
 import org.geomajas.jsapi.map.ExportableFunction;
 import org.geomajas.jsapi.map.Map;
-import org.geomajas.geometry.Coordinate;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.NoExport;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -71,8 +72,7 @@ public class MapController implements Exportable {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public MapController(Map map) {
-		this.map = map;
+	public MapController() {
 	}
 
 	public MapController(Map map, final Controller controller) {
@@ -232,5 +232,15 @@ public class MapController implements Exportable {
 
 	public ExportableFunction getDeactivationHandler() {
 		return deactivationHandler;
+	}
+
+	@NoExport
+	public Map getMap() {
+		return map;
+	}
+
+	@NoExport
+	public void setMap(Map map) {
+		this.map = map;
 	}
 }
