@@ -115,7 +115,7 @@ include "org.geomajas.documentation" "common-gwt-documentation" "1.0.0-SNAPSHOT"
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
     "dojo face for building a web user interface in JavaScript using dojo toolkit." \
-    "incubating, deprecated" "dojo_face.pdf" \
+    "retired" "dojo_face.pdf" \
     "org.geomajas" "geomajas-dojo-server" "1.5.7"
 
 include "org.geomajas.documentation" "geomajas-face-rest-documentation" "1.1.0-SNAPSHOT" \
