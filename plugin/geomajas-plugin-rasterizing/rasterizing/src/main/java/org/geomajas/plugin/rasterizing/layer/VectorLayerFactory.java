@@ -159,9 +159,17 @@ public class VectorLayerFactory implements LayerFactory {
 		
 		// expand area to include buffer
 		Rectangle tileInpix = mapContext.getViewport().getScreenArea();
+		double tileWidth = tileInpix.getWidth();
+		if (tileWidth < 1.0) {
+			tileWidth = 1.0;
+		}
+		double tileHeight = tileInpix.getHeight();
+		if (tileHeight < 1.0) {
+			tileHeight = 1.0;
+		}
 		ReferencedEnvelope metaArea = new ReferencedEnvelope(areaOfInterest);
-		metaArea.expandBy(bufferInPixels / tileInpix.getWidth() * areaOfInterest.getWidth(),
-				bufferInPixels / tileInpix.getHeight() * areaOfInterest.getHeight());
+		metaArea.expandBy(bufferInPixels / tileWidth * areaOfInterest.getWidth(),
+				bufferInPixels / tileHeight * areaOfInterest.getHeight());
 		
 		// fetch features in meta area
 		Crs layerCrs = vectorLayerService.getCrs(layer);

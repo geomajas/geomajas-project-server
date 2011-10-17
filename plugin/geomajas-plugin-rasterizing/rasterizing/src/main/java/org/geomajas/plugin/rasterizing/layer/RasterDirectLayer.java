@@ -100,7 +100,13 @@ public class RasterDirectLayer extends DirectLayer {
 
 	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
 		this.tiles = tiles;
+		if (tileWidth < 1) {
+			tileWidth = 1;
+		}
 		this.tileWidth = tileWidth;
+		if (tileHeight < 1) {
+			tileHeight = 1;
+		}
 		this.tileHeight = tileHeight;
 		this.style = style;
 		ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager();
