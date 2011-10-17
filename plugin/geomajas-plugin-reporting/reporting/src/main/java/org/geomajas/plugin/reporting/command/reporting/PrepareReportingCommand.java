@@ -20,6 +20,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
@@ -106,6 +107,7 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 		}
 		// write features and calculate bounds
 		Envelope bounds = new Envelope();
+		List<Feature> containerFeatures = container.getFeatures();
 		for (ClientLayerInfo clientLayerInfo : clientMapInfo.getLayers()) {
 			if (layerId.equals(clientLayerInfo.getServerLayerId())) {
 				List<InternalFeature> features = vectorLayerService.getFeatures(layerId,
@@ -113,9 +115,7 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 						getFilter(request.getFilter(), request.getFeatureIds()), null,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 				for (InternalFeature internalFeature : features) {
-					container.getFeatures().add(dtoConverterService.toDto(internalFeature));
-				}
-				for (InternalFeature internalFeature : features) {
+					containerFeatures.add(dtoConverterService.toDto(internalFeature));
 					bounds.expandToInclude(internalFeature.getBounds());
 				}
 			}
