@@ -128,6 +128,14 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 				}
 			}
 		}
+		// assure bounds have a minimum size
+		double minGeometrySize = request.getMinimumGeometrySize();
+		if (minGeometrySize > 0) {
+			if (bounds.getWidth() < minGeometrySize || bounds.getHeight() < minGeometrySize) {
+				bounds.expandBy(Math.max(0, (minGeometrySize - bounds.getWidth()) / 2),
+						Math.max(0, (minGeometrySize - bounds.getHeight()) / 2));
+			}
+		}
 		// finalize bounds and scale
 		double imageWidthPx = (double) request.getImageWidth();
 		double imageHeightPx = (double) request.getImageHeight();

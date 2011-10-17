@@ -31,6 +31,7 @@ public class PrepareReportingRequest extends LayerIdCommandRequest {
 	private int imageHeight;
 	private int legendWidth = -1;
 	private int legendHeight = -1;
+	private double minimumGeometrySize = 1e-7;
 	private int margin;
 	private ClientMapInfo clientMapInfo;
 	private int dpi = 96;
@@ -69,10 +70,44 @@ public class PrepareReportingRequest extends LayerIdCommandRequest {
 		this.legendHeight = legendHeight;
 	}
 
+	/**
+	 * Minimum size in layer CRS for the geometry. This is used to assure that points and very small features have a
+	 * real width and height and that they are not zoomed in too far.
+	 * <p/>
+	 * This is applied before the margins.
+	 *
+	 * @return minimum size for the geometry
+	 */
+	public double getMinimumGeometrySize() {
+		return minimumGeometrySize;
+	}
+
+	/**
+	 * Minimum size in layer CRS for the geometry. This is used to assure that points and very small features have a
+	 * real width and height and that they are not zoomed in too far.
+	 * <p/>
+	 * This is applied before the margins.
+	 *
+	 * @param minimumGeometrySize minimum size for the geometry
+	 */
+	public void setMinimumGeometrySize(double minimumGeometrySize) {
+		this.minimumGeometrySize = minimumGeometrySize;
+	}
+
+	/**
+	 * Margin to add, in pixels.
+	 *
+	 * @return margin in pixels
+	 */
 	public int getMargin() {
 		return margin;
 	}
 
+	/**
+	 * Margin to add, in pixels.
+	 *
+	 * @param margin margin in pixels
+	 */
 	public void setMargin(int margin) {
 		this.margin = margin;
 	}
