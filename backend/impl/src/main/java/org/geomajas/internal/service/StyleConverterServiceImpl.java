@@ -157,7 +157,6 @@ import com.vividsolutions.jts.io.WKTWriter;
  * Default implementation of {@link StyleConverterService}. Supports named layers and user styles only.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class StyleConverterServiceImpl implements StyleConverterService {
@@ -310,7 +309,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		List<Rule> rules = new ArrayList<Rule>();
 		for (FeatureStyleInfo featureStyle : namedStyleInfo.getFeatureStyles()) {
 			// create the filter
-			Filter styleFilter = null;
+			Filter styleFilter;
 			if (featureStyle.getFormula() != null && featureStyle.getFormula().length() > 0) {
 				try {
 					styleFilter = filterService.parseFilter(featureStyle.getFormula());
@@ -320,7 +319,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			} else {
 				styleFilter = Filter.INCLUDE;
 			}
-			Rule rule = createRule(styleFilter, featureStyle, geometryName);
+			Rule rule = createRule(styleFilter, featureStyle);
 			// add the label symbolizer to the rule
 			TextSymbolizer textSymbolizer = createTextSymbolizer(namedStyleInfo.getLabelStyle(),
 					featureStyle.getLayerType());
@@ -428,7 +427,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 					if (choice.ifExternalGraphic()) {
 						// can't handle this
 					} else if (choice.ifMark()) {
-						MarkInfo mark = (MarkInfo) choice.getMark();
+						MarkInfo mark = choice.getMark();
 						if (mark.getFill() != null) {
 							convertFill(featureStyleInfo, mark.getFill());
 						}
@@ -524,11 +523,10 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			BinarySpatialOpTypeInfo binary = (BinarySpatialOpTypeInfo) spatialOps;
 			String propertyName = binary.getPropertyName().getValue();
 			if (binary.ifGeometry()) {
-				Geometry geometry = null;
 				WKTWriter writer = new WKTWriter();
 				GeometryFactory factory = new GeometryFactory();
 				AbstractGeometryInfo geom = binary.getGeometry();
-				geometry = toGeometry(factory, geom);
+				Geometry geometry = toGeometry(factory, geom);
 				String wkt = writer.write(geometry);
 				if (binary instanceof ContainsInfo) {
 					return "CONTAINS(" + propertyName + "," + wkt + ")";
@@ -764,8 +762,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return null;
 	}
 
-	private Rule createRule(Filter filter, FeatureStyleInfo featureStyle, String geometryName) throws LayerException {
-		List<Rule> rules = new ArrayList<Rule>();
+	private Rule createRule(Filter filter, FeatureStyleInfo featureStyle) throws LayerException {
 		Rule rule = styleBuilder.createRule(createGeometrySymbolizer(featureStyle));
 		if (filter.equals(Filter.INCLUDE)) {
 			rule.setElseFilter(true);
@@ -774,12 +771,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 		rule.setName(featureStyle.getName());
 		rule.setTitle(featureStyle.getName());
-		rules.add(rule);
 		return rule;
 	}
 
 	private Symbolizer createGeometrySymbolizer(FeatureStyleInfo featureStyle) throws LayerException {
-		Symbolizer symbolizer = null;
+		Symbolizer symbolizer;
 		switch (featureStyle.getLayerType()) {
 			case MULTIPOLYGON:
 			case POLYGON:
@@ -803,6 +799,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				ps.getGraphic().graphicalSymbols().add(createSymbol(featureStyle));
 				symbolizer = ps;
 				break;
+			default:
+				throw new IllegalArgumentException("Unsupported geometry type " + featureStyle.getLayerType());
 		}
 		return symbolizer;
 	}
@@ -841,7 +839,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			return styleBuilder.createExternalGraphic(getURL(info.getImage().getHref()), getFormat(info.getImage()
 					.getHref()));
 		} else {
-			Mark mark = null;
+			Mark mark;
 			if (info.getRect() != null) {
 				// TODO: do rectangles by adding custom factory ?
 				mark = styleBuilder.createMark("square");
@@ -849,6 +847,10 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			} else if (info.getCircle() != null) {
 				mark = styleBuilder.createMark("circle");
 				mark.setSize(styleBuilder.literalExpression(2 * (int) info.getCircle().getR()));
+			} else {
+				throw new IllegalArgumentException(
+						"Feature style should have either an image, a circle or a rectangle defined. Style name: " +
+								featureStyle.getName() + ", index: " + featureStyle.getIndex());
 			}
 			mark.setFill(createFill(featureStyle));
 			mark.setStroke(createStroke(featureStyle));
@@ -861,13 +863,13 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				styleBuilder.literalExpression(featureStyle.getStrokeWidth()),
 				styleBuilder.literalExpression(featureStyle.getStrokeOpacity()));
 		if (featureStyle.getDashArray() != null) {
-			String[] strs = featureStyle.getDashArray().split(",");
-			float[] nrs = new float[strs.length];
-			for (int i = 0; i < strs.length; i++) {
+			String[] strings = featureStyle.getDashArray().split(",");
+			float[] nrs = new float[strings.length];
+			for (int i = 0; i < strings.length; i++) {
 				try {
-					nrs[i] = Float.parseFloat(strs[i]);
+					nrs[i] = Float.parseFloat(strings[i]);
 				} catch (NumberFormatException e) {
-					log.warn("unparseable dash array " + featureStyle.getDashArray(), e);
+					log.warn("dash array cannot be parsed " + featureStyle.getDashArray(), e);
 				}
 			}
 			stroke.setDashArray(nrs);
