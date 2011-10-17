@@ -58,6 +58,9 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 	public Object getFieldValue(JRField field) throws JRException {
 		if (currentFeature != null) {
 			String fieldName = field.getName();
+			if ("@".equals(fieldName)) {
+				return currentFeature;
+			}
 			if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equals(fieldName)) {
 				return currentFeature.getId();
 			}
