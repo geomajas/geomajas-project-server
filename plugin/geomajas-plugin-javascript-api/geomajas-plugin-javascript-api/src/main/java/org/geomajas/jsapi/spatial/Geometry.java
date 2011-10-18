@@ -128,14 +128,15 @@ public class Geometry implements ExportOverlay<org.geomajas.geometry.Geometry> {
 		return new Geometry[] {};
 	}
 
-	/**
-	 * Set the contained geometries.
-	 * 
-	 * @param geometries
-	 *            contained geometries
-	 */
-	public void setGeometries(Geometry[] geometries) {
-	}
+//FIXME: commented out because it breaks the build
+//	/**
+//	 * Set the contained geometries.
+//	 * 
+//	 * @param geometries
+//	 *            contained geometries
+//	 */
+//	public void setGeometries(Geometry[] geometries) {
+//	}
 
 	/**
 	 * Returns whether the geometry is empty.
