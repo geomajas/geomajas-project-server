@@ -15,8 +15,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
 import org.geomajas.global.Json;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
