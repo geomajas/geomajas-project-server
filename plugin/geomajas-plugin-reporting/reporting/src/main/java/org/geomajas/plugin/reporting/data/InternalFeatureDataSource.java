@@ -10,19 +10,21 @@
  */
 package org.geomajas.plugin.reporting.data;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+import net.sf.jasperreports.engine.JRRewindableDataSource;
+import org.geomajas.configuration.LabelStyleInfo;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.AssociationValue;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.plugin.reporting.mvc.StringToEnvelopeConverter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRField;
-import net.sf.jasperreports.engine.JRRewindableDataSource;
-
-import org.geomajas.configuration.LabelStyleInfo;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.InternalFeature;
 
 /**
  * Jasper Reports data source for a collection of internal features. Report fields should have the attribute names as
@@ -56,20 +58,44 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 	}
 
 	public Object getFieldValue(JRField field) throws JRException {
-		if (currentFeature != null) {
-			String fieldName = field.getName();
-			if ("@".equals(fieldName)) {
-				return currentFeature;
+		if (null != currentFeature && null != field) {
+			return getFieldValue(field.getName());
+		}
+		return null;
+	}
+
+	public Object getFieldValue(String fieldName) {
+		if ("@".equals(fieldName)) {
+			return currentFeature;
+		}
+		if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equals(fieldName)) {
+			return currentFeature.getId();
+		}
+		return getFieldValue(currentFeature.getAttributes(), fieldName);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object getFieldValue(Map<String, Attribute> attributes, String fieldName) {
+		if (null != attributes) {
+			String baseFieldName = fieldName;
+			int dot = fieldName.indexOf('.');
+			if (dot >= 0) {
+				baseFieldName = fieldName.substring(0, dot);
 			}
-			if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equals(fieldName)) {
-				return currentFeature.getId();
-			}
-			Map<String, Attribute> attributes = currentFeature.getAttributes();
-			if (null != attributes) {
-				Attribute attribute = attributes.get(field.getName());
-				if (null != attribute) {
-					return attribute.getValue();
+			Attribute attribute = attributes.get(baseFieldName);
+			if (null != attribute) {
+				if (dot >= 0) {
+					if (attribute instanceof ManyToOneAttribute) {
+						AssociationValue association = ((ManyToOneAttribute) attribute).getValue();
+						if (null != association) {
+							// need double cast to get rid of <?> in type, grmbl
+							return getFieldValue((Map<String, Attribute>) (Map) association.getAllAttributes(),
+									fieldName.substring(dot + 1));
+						}
+					}
+					return null;
 				}
+				return attribute.getValue();
 			}
 		}
 		return null;
