@@ -18,7 +18,6 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
-import org.geomajas.plugin.reporting.mvc.StringToEnvelopeConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
