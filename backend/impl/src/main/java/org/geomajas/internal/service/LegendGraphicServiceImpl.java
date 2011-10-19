@@ -17,7 +17,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +29,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.LegendGraphicService;
+import org.geomajas.service.ResourceService;
 import org.geomajas.service.StyleConverterService;
 import org.geomajas.service.legend.LegendGraphicMetadata;
 import org.geomajas.sld.UserStyleInfo;
@@ -58,7 +58,6 @@ import org.opengis.style.RasterSymbolizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -80,7 +79,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 	private ConfigurationService configurationService;
 
 	@Autowired
-	private ApplicationContext applicationContext;
+	private ResourceService resourceService;
 
 	private SLDStyleFactory styleFactory = new SLDStyleFactory();
 
@@ -194,12 +193,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = image.createGraphics();
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			try {
-				graphics.drawImage(getImage(getRasterImagePath()), 0, 0, width, height, null);
-			} catch (IOException e) {
-				throw new GeomajasException(e, ExceptionCode.LEGEND_GRAPHIC_RENDERING_PROBLEM,
-						legendMetadata.getLayerId());
-			}
+			graphics.drawImage(getImage(getRasterImagePath()), 0, 0, width, height, null);
 			graphics.dispose();
 			return image;
 		} else {
@@ -249,38 +243,33 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 		}
 	}
 
-	private BufferedImage getImage(String href) throws IOException {
-		if (href == null || "".equals(href)) {
-			return null;
-		} else if (href.startsWith("http://")) {
-			return ImageIO.read(new URL(href));
-		} else {
-			String path = href;
-			if (href.startsWith("/")) {
-				path = href.substring(1);
-			}
-			InputStream is = null;
-			try {
-				Resource resource = applicationContext.getResource(path);
-				if (resource != null && resource.exists()) {
+	private BufferedImage getImage(String href) throws GeomajasException {
+		InputStream is = null;
+		try {
+			Resource resource = resourceService.find(href);
+			if (resource != null) {
+				is = resource.getInputStream();
+			} else {
+				// backwards compatibility
+				resource = resourceService.find("images/" + href);
+				if (resource != null) {
 					is = resource.getInputStream();
 				} else {
-					// conveniencecheck so clients can use same url client- as
-					// serverside
-					resource = applicationContext.getResource("images/" + path);
-					if (resource != null && resource.exists()) {
-						is = resource.getInputStream();
-					} else {
-						is = ClassLoader.getSystemResourceAsStream(href);
-					}
+					is = ClassLoader.getSystemResourceAsStream(href);
 				}
-				if (is == null) {
-					throw new IOException("Resource missing in classpath : " + path);
-				}
-				return ImageIO.read(is);
-			} finally {
-				if (is != null) {
+			}
+			if (is == null) {
+				throw new GeomajasException(ExceptionCode.RESOURCE_NOT_FOUND, href);
+			}
+			return ImageIO.read(is);
+		} catch (IOException io) {
+			throw new GeomajasException(io, ExceptionCode.RESOURCE_NOT_FOUND, href);
+		} finally {
+			if (is != null) {
+				try {
 					is.close();
+				} catch (IOException e) {
+					// ignore
 				}
 			}
 		}
