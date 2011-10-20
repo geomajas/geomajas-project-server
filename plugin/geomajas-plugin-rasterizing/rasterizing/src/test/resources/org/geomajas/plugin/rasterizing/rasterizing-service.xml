@@ -33,5 +33,26 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 			</list>
 		</property>
 	</bean>
+
+	<bean name="ImageServiceLegendTest.path" class="java.lang.String">
+		<constructor-arg
+			value="org/geomajas/plugin/rasterizing/images/imageservice/${image.profile}/legend"></constructor-arg>
+	</bean>
+		
+	<bean name="ImageServiceMapTest.path" class="java.lang.String">
+		<constructor-arg
+			value="org/geomajas/plugin/rasterizing/images/imageservice/${image.profile}/map"></constructor-arg>
+	</bean>
+
+	<bean name="ImageServiceVectorTileTest.path" class="java.lang.String">
+		<constructor-arg
+			value="org/geomajas/plugin/rasterizing/images/imageservice/${image.profile}/vectortile"></constructor-arg>
+	</bean>
+
+	<bean name="ImageServiceSldTest.path" class="java.lang.String">
+		<constructor-arg
+			value="org/geomajas/plugin/rasterizing/images/imageservice/${image.profile}/sld"></constructor-arg>
+	</bean>
+
 		
 </beans>

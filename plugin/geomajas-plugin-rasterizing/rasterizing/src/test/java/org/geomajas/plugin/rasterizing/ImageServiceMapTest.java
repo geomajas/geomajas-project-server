@@ -76,15 +76,9 @@ public class ImageServiceMapTest {
 	@Autowired
 	private StyleConverterService styleConverterService;
 
-	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
-
-	static {
-		if (OsCheck.isWindows()) {
-			IMAGE_CLASS_PATH += "windows/map";
-		} else {
-			IMAGE_CLASS_PATH += "linux/map";
-		}
-	}
+	@Qualifier("ImageServiceMapTest.path")
+	@Autowired
+	private String imagePath;
 
 	private static final double DELTA = 0.07;
 
@@ -190,7 +184,7 @@ public class ImageServiceMapTest {
 		private ClientMapInfo map;
 
 		public MapAssert(ClientMapInfo map) {
-			super(IMAGE_CLASS_PATH);
+			super(imagePath);
 			this.map = map;
 		}
 

@@ -67,15 +67,9 @@ public class ImageServiceLegendTest {
 
 	private static final double DELTA = 1E-6;
 	
-	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
-	
-	static {
-		if(OsCheck.isWindows()){
-			IMAGE_CLASS_PATH += "windows/legend";
-		} else {
-			IMAGE_CLASS_PATH += "linux/legend";
-		}
-	}
+	@Qualifier("ImageServiceLegendTest.path")
+	@Autowired
+	private String imagePath;
 
 
 	@Before
@@ -191,7 +185,7 @@ public class ImageServiceLegendTest {
 		private ClientMapInfo map;
 
 		public LegendAssert(ClientMapInfo map) {
-			super(IMAGE_CLASS_PATH);
+			super(imagePath);
 			this.map = map;
 		}
 

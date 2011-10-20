@@ -126,6 +126,21 @@
 	</dependencies>
 
 	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>org/geomajas/plugin/rasterizing/rasterizing-service.xml</include>
+				</includes>	
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>org/geomajas/plugin/rasterizing/rasterizing-service.xml</exclude>
+				</excludes>	
+			</testResource>
+		</testResources>	
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -142,5 +157,28 @@
 			</resource>
 		</resources>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<image.profile>default</image.profile>
+			</properties>
+		</profile>
+		<profile>
+			<id>hudson</id>
+			<activation>
+				<property>
+					<name>hudson</name>
+				</property>
+			</activation>
+			<properties>
+				<image.profile>hudson</image.profile>
+			</properties>
+		</profile>
+	</profiles>	
 
 </project>

@@ -24,7 +24,7 @@
 	-->
 
     <root>
-        <level value="OFF"/>
+        <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

@@ -106,15 +106,9 @@ public class ImageServiceVectorTileTest {
 
 	private static final double DELTA = 0.01;
 
-	private static String IMAGE_CLASS_PATH = "org/geomajas/plugin/rasterizing/images/imageservice/";
-	
-	static {
-		if(OsCheck.isWindows()){
-			IMAGE_CLASS_PATH += "windows/vectortile";
-		} else {
-			IMAGE_CLASS_PATH += "linux/vectortile";
-		}
-	}
+	@Qualifier("ImageServiceVectorTileTest.path")
+	@Autowired
+	private String imagePath;
 
 	@Before
 	public void login() {
@@ -198,7 +192,7 @@ public class ImageServiceVectorTileTest {
 		getPointStyle().setGraphic(StyleUtil.createGraphic(mark, 20));
 		checkPoint("point_rect.png", false, true);
 		// symbol image
-		ExternalGraphicInfo point = StyleUtil.createExternalGraphic("/"+IMAGE_CLASS_PATH+"/point.png");
+		ExternalGraphicInfo point = StyleUtil.createExternalGraphic("/"+imagePath+"/point.png");
 		getPointStyle().setGraphic(StyleUtil.createGraphic(point, 32));
 		checkPoint("point_image.png", false, true);
 		// symbol image
@@ -381,7 +375,7 @@ public class ImageServiceVectorTileTest {
 		info.setHeight(height);
 		// width is not important
 		info.setWidth(height);
-		info.setHref(IMAGE_CLASS_PATH+"/point.png");
+		info.setHref(imagePath+"/point.png");
 		return info;
 	}
 
@@ -397,7 +391,7 @@ public class ImageServiceVectorTileTest {
 		private ClientMapInfo map;
 
 		public MapAssert(ClientMapInfo map) {
-			super(IMAGE_CLASS_PATH);
+			super(imagePath);
 			this.map = map;
 		}
 
