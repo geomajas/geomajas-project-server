@@ -130,12 +130,15 @@ public class PanController extends AbstractGraphicsController {
 	 * Zoom in to the double-clicked position.
 	 */
 	public void onDoubleClick(DoubleClickEvent event) {
-		// Zoom in on the event location.
-		Bbox bounds = mapWidget.getMapModel().getMapView().getBounds();
-		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
-		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
-		Bbox newBounds = new Bbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
-		mapWidget.getMapModel().getMapView().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
+		//Check if there was a last click that was handled in this class.
+		if(null != lastClickPosition) {
+			// Zoom in on the event location.
+			Bbox bounds = mapWidget.getMapModel().getMapView().getBounds();
+			double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
+			double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
+			Bbox newBounds = new Bbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
+			mapWidget.getMapModel().getMapView().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
+		}
 	}
 
 	public boolean isMoving() {
