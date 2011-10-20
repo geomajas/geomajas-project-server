@@ -18,6 +18,7 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class InternalFeatureDataSource implements JRRewindableDataSource {
 
-	private List<InternalFeature> features;
+	private final List<InternalFeature> features;
 
 	private Iterator<InternalFeature> iterator;
 
@@ -44,6 +45,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 		this.features = new ArrayList<InternalFeature>(features);
 	}
 
+	/** {@inheritDoc} */
 	public boolean next() {
 		if (iterator == null) {
 			iterator = features.iterator();
@@ -56,6 +58,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Object getFieldValue(JRField field) throws JRException {
 		if (null != currentFeature && null != field) {
 			return getFieldValue(field.getName());
@@ -63,6 +66,7 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getFieldValue(String fieldName) {
 		if ("@".equals(fieldName)) {
 			return currentFeature;
@@ -70,11 +74,20 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 		if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equals(fieldName)) {
 			return currentFeature.getId();
 		}
-		return getFieldValue(currentFeature.getAttributes(), fieldName);
+		// need double cast to be able to add <?> in type, grmbl
+		return getFieldValue((Map<String, Attribute<?>>) (Map) currentFeature.getAttributes(), fieldName);
 	}
 
-	@SuppressWarnings("unchecked")
-	public Object getFieldValue(Map<String, Attribute> attributes, String fieldName) {
+	/**
+	 * Moves to the position before the first element. Calling {@link #next()} after this will move to the first
+	 * element.
+	 */
+	public void moveFirst() {
+		iterator = features.iterator();
+		currentFeature = null;
+	}
+
+	private static Object getFieldValue(Map<String, Attribute<?>> attributes, String fieldName) {
 		if (null != attributes) {
 			String baseFieldName = fieldName;
 			int dot = fieldName.indexOf('.');
@@ -87,12 +100,14 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 					if (attribute instanceof ManyToOneAttribute) {
 						AssociationValue association = ((ManyToOneAttribute) attribute).getValue();
 						if (null != association) {
-							// need double cast to get rid of <?> in type, grmbl
-							return getFieldValue((Map<String, Attribute>) (Map) association.getAllAttributes(),
+							return getFieldValue(association.getAllAttributes(),
 									fieldName.substring(dot + 1));
 						}
 					}
 					return null;
+				}
+				if (attribute instanceof OneToManyAttribute) {
+					return new AssociationValueDataSource(((OneToManyAttribute) attribute).getValue());
 				}
 				return attribute.getValue();
 			}
@@ -101,12 +116,58 @@ public class InternalFeatureDataSource implements JRRewindableDataSource {
 	}
 
 	/**
-	 * Moves to the position before the first element. Calling {@link #next()} after this will move to the first
-	 * element.
+	 * Data source for one-to-many relations, usable in sub-reports.
+	 *
+	 * @author Joachim Van der Auwera
 	 */
-	public void moveFirst() {
-		iterator = features.iterator();
-		currentFeature = null;
-	}
+	private static class AssociationValueDataSource implements JRRewindableDataSource {
 
+		private final List<AssociationValue> beans;
+		private Iterator<AssociationValue> iterator;
+		private AssociationValue currentBean;
+
+		public AssociationValueDataSource(List<AssociationValue> beans) {
+			this.beans = beans;
+		}
+
+		/** {@inheritDoc} */
+		public boolean next() {
+			if (iterator == null) {
+				iterator = beans.iterator();
+			}
+			if (iterator.hasNext()) {
+				currentBean = iterator.next();
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		/** {@inheritDoc} */
+		public Object getFieldValue(JRField field) throws JRException {
+			if (null != currentBean && null != field) {
+				return getFieldValue(field.getName());
+			}
+			return null;
+		}
+
+		public Object getFieldValue(String fieldName) {
+			if ("@".equals(fieldName)) {
+				return currentBean;
+			}
+			if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equals(fieldName)) {
+				return currentBean.getId();
+			}
+			return InternalFeatureDataSource.getFieldValue(currentBean.getAllAttributes(), fieldName);
+		}
+
+		/**
+		 * Moves to the position before the first element. Calling {@link #next()} after this will move to the first
+		 * element.
+		 */
+		public void moveFirst() {
+			iterator = beans.iterator();
+			currentBean = null;
+		}
+	}
 }
