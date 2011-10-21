@@ -131,7 +131,7 @@ public class PanController extends AbstractGraphicsController {
 	 */
 	public void onDoubleClick(DoubleClickEvent event) {
 		//Check if there was a last click that was handled in this class.
-		if(null != lastClickPosition) {
+		if (null != lastClickPosition) {
 			// Zoom in on the event location.
 			Bbox bounds = mapWidget.getMapModel().getMapView().getBounds();
 			double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
