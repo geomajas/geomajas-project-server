@@ -2151,9 +2151,9 @@ public interface Entity {
         <listitem>
           <para><code>MathTransform
           findMathTransform(CoordinateReferenceSystem sourceCrs,
-          CoordinatesearcheReReferenceSystem targetCrs) throws
-          GeomajasException</code> : get the transformation which converts
-          between two coordinate systems.</para>
+          CoordinateReferenceSystem targetCrs) throws GeomajasException</code>
+          : get the transformation which converts between two coordinate
+          systems.</para>
         </listitem>
 
         <listitem>
