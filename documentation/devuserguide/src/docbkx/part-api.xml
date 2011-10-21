@@ -2151,9 +2151,9 @@ public interface Entity {
         <listitem>
           <para><code>MathTransform
           findMathTransform(CoordinateReferenceSystem sourceCrs,
-          CoordinateReferenceSystem targetCrs) throws GeomajasException</code>
-          : get the transformation which converts between two coordinate
-          systems.</para>
+          CoordinatesearcheReReferenceSystem targetCrs) throws
+          GeomajasException</code> : get the transformation which converts
+          between two coordinate systems.</para>
         </listitem>
 
         <listitem>
@@ -2280,6 +2280,111 @@ public interface Entity {
           fontStyle)</code> : get the bounds for the given string.</para>
         </listitem>
       </itemizedlist>
+    </section>
+
+    <section>
+      <title>ResourceService</title>
+
+      <para>This service allows to look up absolute or relative Spring
+      resources in the context of the application. A resource can be found by
+      passing a location string to the service. The default implementation of
+      the service will use the following algorithm to find the
+      resource:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>try to look up the resource by calling the
+          <code>ApplicationContext.getResource()</code> method</para>
+        </listitem>
+
+        <listitem>
+          <para>try to look up the resource in the classpath. The location is
+          interpreted as a root classpath location (leading <code>'/'</code>
+          is optional).</para>
+        </listitem>
+
+        <listitem>
+          <para>try to look up the resource in a list of configured root
+          resource locations. The location is interpreted as a relative path
+          with respect to the root location.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The ResourceService provides the following methods:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>Resource find(String location) throws
+          GeomajasException</code> : lookup method for resources. If a
+          resource is returned it is guaranteed to exist. This method returns
+          null if it cannot find an existing resource.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>List&lt;String&gt; getRootPaths()</code> : returns the
+          list of root paths. These paths are location strings that are
+          interpreted by the application context's resource loader. Examples
+          are <code>'classpath:com/example'</code> or
+          <code>'http://www.geomajas.org'</code> or
+          <code>'WEB-INF/images'</code>. A list of root paths can be
+          configured by overriding the bean definition of the ResourceService
+          in your application context:</para>
+        </listitem>
+      </itemizedlist>
+
+      <programlisting>&lt;bean class="org.geomajas.internal.service.ResourceServiceImpl" id="service.ResourceService"&gt;
+  &lt;property name="rootPaths"&gt;
+    &lt;list&gt;
+      &lt;value&gt;classpath:org/geomajas/internal/service&lt;/value&gt;
+      &lt;value&gt;WEB-INF/images&lt;/value&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+    </section>
+
+    <section>
+      <title>LegendGraphicService</title>
+
+      <para>This service allows to obtain a graphical image of each layer
+      style. Such images are typically used to create a map legend, hence the
+      name of the service. The service provides the following method:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>RenderedImage getLegendGraphic(LegendGraphicMetadata
+          legendMetadata) throws GeomajasException;</code></para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The LegendGraphicMetadata is a metadata object that more or less
+      follows the parameter set used by the SLD-WMS GetLegendGraphic
+      request:</para>
+
+      <para><programlisting>public interface LegendGraphicMetadata {
+  // server layer id
+  String getLayerId();
+  // user defined SLD style
+  UserStyleInfo getUserStyle();
+  // predefined layer style
+  NamedStyleInfo getNamedStyle();
+  // user defined SLD rule
+  RuleInfo getRule();
+  // scale to determine applicable rule
+  double getScale();
+  // width of the image
+  int getWidth();
+  // height of the image
+  int getHeight();
+}</programlisting>The current implementation will return a single image,
+      representing a single rule in SLD. The rule is either passed directly to
+      the service or derived from the predefined styles of the layer (in this
+      case the first rule is taken). A Spring MVC controller
+      <code>LegendGraphicController</code> is available to access the service
+      from a REST-like URL:</para>
+
+      <para><programlisting>[DISPATCHER_URL]/legendgraphic/{layerId}/{styleName}/{ruleIndex}.{format}</programlisting>In
+      this case the style name (as predefined on the server) and the index of
+      the rule can be passed, as well as the final image format.</para>
     </section>
   </chapter>
 </part>
