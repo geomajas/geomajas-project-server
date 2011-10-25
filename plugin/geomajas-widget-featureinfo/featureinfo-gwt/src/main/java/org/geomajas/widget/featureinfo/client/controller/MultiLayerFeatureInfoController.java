@@ -56,6 +56,8 @@ import com.smartgwt.client.widgets.Window;
  * window. As a starting point for this class the
  * org.geomajas.gwt.client.controller.FeatureInfoController was used.
  * 
+ * FIXME: merge common code between controller and listener.
+ * 
  * @author An Buyle
  * @author Oliver May
  * @author Kristof Heirwegh
@@ -64,7 +66,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 
 	private boolean dragging;
 	private boolean clickstart;
-	private boolean includeRasterLayers = true;
+	private boolean includeRasterLayers = false;
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	/**
