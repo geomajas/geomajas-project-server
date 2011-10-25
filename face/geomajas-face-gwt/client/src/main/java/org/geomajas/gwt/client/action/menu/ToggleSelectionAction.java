@@ -119,47 +119,18 @@ public class ToggleSelectionAction extends MenuAction {
 	 *            Should the current selection be cleared as well?
 	 */
 	public void toggle(Coordinate coordinate, final boolean clearSelection) {
-		if (null == coordinate) {
-			return;
-		}
-		// we can clear here (but remember the selected feature for the special case of single selection) !
-		final String singleSelectionId = mapWidget.getMapModel().getSelectedFeature();
-		if (clearSelection) {
-			mapWidget.getMapModel().clearSelectedFeatures();
-		}
-		MapModel mapModel = mapWidget.getMapModel();
-		Coordinate worldPosition = mapModel.getMapView().getWorldViewTransformer().viewToWorld(coordinate);
-		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
-		SearchByLocationRequest request = new SearchByLocationRequest();
-		Layer<?> layer = mapModel.getSelectedLayer();
-		if (priorityToSelectedLayer && layer != null && layer instanceof VectorLayer) {
-			if (!layer.isShowing()) {
-				return;
-			}
-			request.setLayerIds(new String[] { layer.getServerLayerId() });
-			request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
-		} else {
-			request.setLayerIds(getVisibleServerLayerIds(mapModel));
-		}
-		Point point = mapModel.getGeometryFactory().createPoint(worldPosition);
-		request.setLocation(GeometryConverter.toDto(point));
-		request.setCrs(mapWidget.getMapModel().getCrs());
-		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
-		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
-		request.setBuffer(calculateBufferFromPixelTolerance());
-		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-		commandRequest.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<CommandResponse>() {
-			public void execute(CommandResponse commandResponse) {
-				if (commandResponse instanceof SearchByLocationResponse) {
-					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-					Map<String, List<Feature>> featureMap = response.getFeatureMap();
-					for (String layerId : featureMap.keySet()) {
-						selectFeatures(layerId, featureMap.get(layerId), singleSelectionId);
-					}
-				}
-			}
-		});
+		toggle(coordinate, clearSelection, false);
+	}
+
+	/**
+	 * Toggle selection for the given location in view space, while making sure no more then a single feature is ever
+	 * selected.
+	 * 
+	 * @param coordinate
+	 *            The view space coordinate where to search for features.
+	 */
+	public void toggleSingle(Coordinate coordinate) {
+		toggle(coordinate, true, true);
 	}
 
 	// -------------------------------------------------------------------------
@@ -205,20 +176,72 @@ public class ToggleSelectionAction extends MenuAction {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
+	private void toggle(Coordinate coordinate, final boolean clearSelection, final boolean singleSelection) {
+		if (null == coordinate) {
+			return;
+		}
+		// we can clear here (but remember the selected feature for the special case of single selection) !
+		final String singleSelectionId = mapWidget.getMapModel().getSelectedFeature();
+		if (clearSelection) {
+			mapWidget.getMapModel().clearSelectedFeatures();
+		}
+		MapModel mapModel = mapWidget.getMapModel();
+		Coordinate worldPosition = mapModel.getMapView().getWorldViewTransformer().viewToWorld(coordinate);
+		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
+		SearchByLocationRequest request = new SearchByLocationRequest();
+		Layer<?> layer = mapModel.getSelectedLayer();
+		if (priorityToSelectedLayer && layer != null && layer instanceof VectorLayer) {
+			if (!layer.isShowing()) {
+				return;
+			}
+			request.setLayerIds(new String[] { layer.getServerLayerId() });
+			request.setFilter(layer.getServerLayerId(), ((VectorLayer) layer).getFilter());
+		} else {
+			request.setLayerIds(getVisibleServerLayerIds(mapModel));
+		}
+		Point point = mapModel.getGeometryFactory().createPoint(worldPosition);
+		request.setLocation(GeometryConverter.toDto(point));
+		request.setCrs(mapWidget.getMapModel().getCrs());
+		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
+		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
+		request.setBuffer(calculateBufferFromPixelTolerance());
+		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+		commandRequest.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback<CommandResponse>() {
+
+			public void execute(CommandResponse commandResponse) {
+				if (commandResponse instanceof SearchByLocationResponse) {
+					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
+					Map<String, List<Feature>> featureMap = response.getFeatureMap();
+					for (String layerId : featureMap.keySet()) {
+						selectFeatures(layerId, featureMap.get(layerId), singleSelectionId, singleSelection);
+						if (singleSelection) {
+							break;
+						}
+					}
+				}
+			}
+		});
+	}
+
 	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
-			String selectionId) {
+			String selectionId, boolean singleSelection) {
 		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
 		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
 		for (VectorLayer vectorLayer : layers) {
 			if (isSelectionTargetLayer(vectorLayer, selectedLayer)) {
 				for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
-					org.geomajas.gwt.client.map.feature.Feature feature = new
-						org.geomajas.gwt.client.map.feature.Feature(orgFeature, vectorLayer);
+					org.geomajas.gwt.client.map.feature.Feature feature = 
+						new org.geomajas.gwt.client.map.feature.Feature(orgFeature, vectorLayer);
 					vectorLayer.getFeatureStore().addFeature(feature);
 					if (vectorLayer.isFeatureSelected(feature.getId()) || feature.getId().equals(selectionId)) {
 						vectorLayer.deselectFeature(feature);
 					} else {
 						vectorLayer.selectFeature(feature);
+						if (singleSelection) {
+							break;
+						}
+
 					}
 				}
 			}
