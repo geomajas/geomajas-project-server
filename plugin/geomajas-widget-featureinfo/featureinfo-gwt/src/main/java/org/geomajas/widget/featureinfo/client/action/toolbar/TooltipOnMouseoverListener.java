@@ -339,4 +339,12 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 		c.addChild(new Img("[ISOMORPHIC]/geomajas/loading_small.gif", 16, 16));
 		return c;
 	}
+	
+	public int getPixelTolerance() {
+		return pixelTolerance;
+	}
+
+	public void setPixelTolerance(int pixelTolerance) {
+		this.pixelTolerance = pixelTolerance;
+	}
 }

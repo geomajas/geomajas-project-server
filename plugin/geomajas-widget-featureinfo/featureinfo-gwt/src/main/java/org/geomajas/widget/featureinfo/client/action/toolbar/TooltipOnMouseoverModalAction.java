@@ -11,6 +11,7 @@
 
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
+import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
@@ -24,12 +25,12 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * @author Kristof Heirwegh
  * 
  */
-public class TooltipOnMouseoverModalAction extends ToolbarModalAction {
+public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements ConfigurableAction {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	private MapWidget mapWidget;
-	private int pixelTolerance = 5; // same as FeatureInfoModalAction
+	private int pixelTolerance = 10; // same as FeatureInfoModalAction
 	private TooltipOnMouseoverListener listener;
 
 	public TooltipOnMouseoverModalAction(MapWidget mapWidget) {
@@ -46,5 +47,28 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction {
 
 	public void onDeselect(ClickEvent event) {
 		mapWidget.removeListener(listener);
+	}
+
+	public void configure(String key, String value) {
+		if ("pixelTolerance".equals(key)) {
+			setPixelTolerance(Integer.parseInt(value));
+		}
+	}
+
+	/**
+	 * @return the current pixel tolerance
+	 */
+	public int getPixelTolerance() {
+		return pixelTolerance;
+	}
+
+	/**
+	 * Set the tolerance in pixels, when clicking on the map, the features in this distance around the mouse click will 
+	 * be returned.
+	 * @param pixelTolerance distance in pixels
+	 */
+	public void setPixelTolerance(int pixelTolerance) {
+		this.pixelTolerance = pixelTolerance;
+		listener.setPixelTolerance(pixelTolerance);
 	}
 }
