@@ -88,7 +88,8 @@ public class VectorTilePainter implements Painter {
 	}
 
 	private void drawImage(PaintableGroup group, VectorTile tile, ContentHolder holder, MapContext context) {
-		context.getRasterContext().drawImage(group, tile.getCode().toString(),
+		context.getRasterContext().drawGroup(group, holder);
+		context.getRasterContext().drawImage(holder, tile.getCode().toString(),
 				holder.getContent(), getPanBounds(tile), OPAQUE_PICTURE_STYLE);
 	}
 
