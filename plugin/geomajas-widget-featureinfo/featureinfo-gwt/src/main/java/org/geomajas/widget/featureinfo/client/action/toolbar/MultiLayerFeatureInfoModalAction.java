@@ -74,7 +74,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 */
 	@Override
 	public void onDeselect(ClickEvent event) {
-		mapWidget.setController(controller);
+		mapWidget.setController(null);
 	}
 
 	/**
