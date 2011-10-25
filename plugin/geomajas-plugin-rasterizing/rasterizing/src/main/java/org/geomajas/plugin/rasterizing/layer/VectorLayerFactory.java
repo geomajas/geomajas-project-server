@@ -305,7 +305,7 @@ public class VectorLayerFactory implements LayerFactory {
 		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
 		for (InternalFeature internalFeature : features) {
 			// 3 more attributes : normal style rule index, selected style rule index, geometry index
-			Object[] values = new Object[internalFeature.getAttributes().size() + 3];
+			Object[] values = new Object[featureInfo.getAttributes().size() + 3];
 			int i = 0;
 			for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
 				String name = attrInfo.getName();
