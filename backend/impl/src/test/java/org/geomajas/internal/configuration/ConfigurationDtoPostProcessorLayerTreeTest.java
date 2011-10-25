@@ -39,8 +39,8 @@ public class ConfigurationDtoPostProcessorLayerTreeTest {
 			context.setDisplayName("test");
 			context.setConfigLocation(
 					"/org/geomajas/spring/geomajasContext.xml " +
-					"/org/geomajas/layer/bean/beanContext.xml " +
-					"/org/geomajas/layer/bean/layerBeans.xml " +
+					"/org/geomajas/testdata/beanContext.xml " +
+					"/org/geomajas/testdata/layerBeans.xml " +
 					"/org/geomajas/internal/configuration/layerTreeInvalid.xml " +
 					"");
 			context.refresh();
@@ -59,8 +59,8 @@ public class ConfigurationDtoPostProcessorLayerTreeTest {
 			context.setDisplayName("test");
 			context.setConfigLocation(
 					"/org/geomajas/spring/geomajasContext.xml " +
-					"/org/geomajas/layer/bean/beanContext.xml " +
-					"/org/geomajas/layer/bean/layerBeans.xml " +
+					"/org/geomajas/testdata/beanContext.xml " +
+					"/org/geomajas/testdata/layerBeans.xml " +
 					"/org/geomajas/internal/configuration/layerBeansInvalid.xml " +
 					"");
 			context.refresh();

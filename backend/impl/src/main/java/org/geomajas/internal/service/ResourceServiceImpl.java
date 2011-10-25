@@ -44,7 +44,7 @@ public class ResourceServiceImpl implements ResourceService {
 		} else {
 			String cpResource = null;
 			if (location.startsWith("/")) {
-				cpResource = CLASSPATH + location.substring(0);
+				cpResource = CLASSPATH + location.substring(1);
 			} else {
 				cpResource = CLASSPATH + location;
 			}
