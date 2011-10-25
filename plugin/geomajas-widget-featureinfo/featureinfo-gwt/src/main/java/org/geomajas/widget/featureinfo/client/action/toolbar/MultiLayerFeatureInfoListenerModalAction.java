@@ -14,7 +14,6 @@ import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
-import org.geomajas.widget.featureinfo.client.controller.MultiLayerFeatureInfoController;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -26,11 +25,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * @author An Buyle
  * @author Oliver May
  */
-public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction implements ConfigurableAction {
+public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction implements ConfigurableAction {
 
 	private MapWidget mapWidget;
 
-	private MultiLayerFeatureInfoController controller;
+	private MultiLayerFeatureInfoListener listener;
 
 	/**
 	 * Number of pixels that describes the tolerance allowed when searching nearby features.
@@ -43,12 +42,12 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 * Constructor.
 	 * @param mapWidget the mapwidget where this action should work on
 	 */
-	public MultiLayerFeatureInfoModalAction(MapWidget mapWidget) {
+	public MultiLayerFeatureInfoListenerModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/info.png", null);
 		setTitle(messages.nearbyFeaturesModalActionTitle());
 		setTooltip(messages.nearbyFeaturesModalActionTooltip());
 		this.mapWidget = mapWidget;
-		controller = new MultiLayerFeatureInfoController(mapWidget, pixelTolerance);
+		listener = new MultiLayerFeatureInfoListener(mapWidget, pixelTolerance);
 	}
 
 	/* (non-Javadoc)
@@ -66,7 +65,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 */
 	@Override
 	public void onSelect(ClickEvent event) {
-		mapWidget.setController(controller);
+		mapWidget.addListener(listener);
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +73,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 */
 	@Override
 	public void onDeselect(ClickEvent event) {
-		mapWidget.setController(controller);
+		mapWidget.removeListener(listener);
 	}
 
 	/**
@@ -84,7 +83,7 @@ public class MultiLayerFeatureInfoModalAction extends ToolbarModalAction impleme
 	 */
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
-		controller.setPixelTolerance(pixelTolerance);
+		listener.setPixelTolerance(pixelTolerance);
 	}
 
 	/**
