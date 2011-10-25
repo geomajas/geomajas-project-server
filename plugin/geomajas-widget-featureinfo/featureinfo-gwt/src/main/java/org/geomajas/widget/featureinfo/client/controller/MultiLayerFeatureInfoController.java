@@ -16,11 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
-import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
-import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -36,6 +33,8 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
+import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
 import org.geomajas.widget.featureinfo.client.widget.Notify;
@@ -66,7 +65,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 
 	private boolean dragging;
 	private boolean clickstart;
-	private boolean includeRasterLayers = false;
+	private boolean includeRasterLayers;
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	/**
@@ -119,7 +118,7 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 			request.setBuffer(calculateBufferFromPixelTolerance());
 			request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-			//request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
+			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				if (layer.isShowing() && layer instanceof VectorLayer) {
 					request.setLayerWithFilter(layer.getId(), layer.getServerLayerId(),
@@ -140,30 +139,24 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			commandRequest.setCommandRequest(request);
 			// TODO: commands are now chained. Perhaps we should combine this
 			// into a single command?
-			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+			GwtCommandDispatcher.getInstance().execute(commandRequest, 
+								new CommandCallback<SearchByLocationResponse>() {
+				public void execute(final SearchByLocationResponse vectorResponse) {
+					if (includeRasterLayers) {
+						GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);
+						commandRequest.setCommandRequest(rasterLayerRequest);
+						GwtCommandDispatcher.getInstance().execute(commandRequest,
+								new CommandCallback<SearchByPointResponse>() {
+									public void execute(final SearchByPointResponse rasterResponse) {
+										Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = 
+											vectorResponse.getFeatureMap();
+										featureMap.putAll(rasterResponse.getFeatureMap());
+										showFeatureInfo(featureMap);
+									}
+								});
 
-				public void execute(CommandResponse commandResponse) {
-					if (commandResponse instanceof SearchByLocationResponse) {
-						final SearchByLocationResponse vectorResponse = 
-									(SearchByLocationResponse) commandResponse;
-						if (includeRasterLayers) {
-
-							GwtCommand commandRequest = new GwtCommand(SearchByPointRequest.COMMAND);
-							commandRequest.setCommandRequest(rasterLayerRequest);
-							GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
-								public void execute(CommandResponse commandRasterResponse) {
-									SearchByPointResponse rasterResponse = (SearchByPointResponse)
-											commandRasterResponse;
-									Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = vectorResponse
-											.getFeatureMap();
-									featureMap.putAll(rasterResponse.getFeatureMap());
-									showFeatureInfo(featureMap);
-								}
-							});
-
-						} else {
-							showFeatureInfo(vectorResponse.getFeatureMap());
-						}
+					} else {
+						showFeatureInfo(vectorResponse.getFeatureMap());
 					}
 				}
 			});
@@ -181,12 +174,9 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 	private void showFeatureInfo(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 		if (featureMap.size() > 0) {
 			if (featureMap.size() == 1 && featureMap.values().iterator().next().size() == 1) {
-				List<Layer<?>> layers = mapWidget.getMapModel().getLayersByServerId(
-						featureMap.keySet().iterator().next());
-				if (layers.size() > 0) {
-					// There can be more than one Client VectorLayer for the
-					// same serverLayerId
-					Layer<?> layer = layers.get(0);
+				Layer<?> layer = (VectorLayer) (mapWidget.getMapModel().
+							getLayer(featureMap.keySet().iterator().next()));
+				if (null != layer) {
 					org.geomajas.layer.feature.Feature featDTO = featureMap.values().iterator().next().get(0);
 					Feature feature;
 					if (layer instanceof VectorLayer) {
