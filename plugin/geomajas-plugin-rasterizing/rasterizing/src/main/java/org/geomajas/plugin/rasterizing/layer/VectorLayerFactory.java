@@ -144,8 +144,8 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 		// create the style (index filters)
 		Style indexedStyle = styleConverterService.convert(userStyleInfo);
-		
-		// remove 
+				
+		// remove either label or geometries 
 		SymbolizerFilterVisitor visitor = new SymbolizerFilterVisitor();
 		visitor.setIncludeGeometry(rasterizingInfo.isPaintGeometries());
 		visitor.setIncludeText(rasterizingInfo.isPaintLabels());
@@ -191,6 +191,8 @@ public class VectorLayerFactory implements LayerFactory {
 		}
 
 		// must convert to geotools features because StreamingRenderer does not work on objects
+		// must disable out-of-scale rules for correct rule index assignment
+		disableOutOfScale(mapContext, originalStyle);
 		FeatureCollection<SimpleFeatureType, SimpleFeature> gtFeatures = createCollection(features, layer, selectedIds,
 				mapContext.getCoordinateReferenceSystem(), originalStyle);
 				
@@ -222,6 +224,20 @@ public class VectorLayerFactory implements LayerFactory {
 			}
 		}
 		return ruleInfos;
+	}
+
+	private void disableOutOfScale(MapContext mapContext, Style indexedStyle) {
+		double scaleDenominator = RendererUtilities.calculateOGCScale(mapContext.getAreaOfInterest(), (int) mapContext
+				.getViewport().getScreenArea().getWidth(), null);
+		int ruleIndex = 0;
+		for (FeatureTypeStyle fts : indexedStyle.featureTypeStyles()) {
+			for (Rule rule : fts.rules()) {
+				if (!isWithInScale(rule, scaleDenominator)) {
+					rule.setFilter(Filter.EXCLUDE);
+				}
+				ruleIndex++;
+			}
+		}
 	}
 
 	private void removeOutOfScale(MapContext mapContext, Style indexedStyle, NavigableSet<Integer> ruleIndices) {
@@ -299,8 +315,18 @@ public class VectorLayerFactory implements LayerFactory {
 					values[i++] = null;
 				}
 			}
-			// normal style rule index attribute (TODO deprecate the whole idea of coupling styles to features)
-			values[i++] = internalFeature.getStyleInfo().getIndex();
+			// normal style rule index attribute (TODO deprecate the whole idea of coupling single rule to feature)
+			int ruleIndex = -1;
+			// find the rule, we assume there is only one applicable !
+			List<Rule> rules = style.featureTypeStyles().get(0).rules();
+			for (int j = 0; j < rules.size(); j++) {
+				Rule rule = rules.get(j);
+				if (rule.getFilter() == null || rule.getFilter().evaluate(internalFeature)) {
+					ruleIndex = j;
+					break;
+				}
+			}
+			values[i++] = ruleIndex;
 			// selected style rule index attribute
 			values[i++] = selectedIds.contains(internalFeature.getId());
 			// geometry attribute

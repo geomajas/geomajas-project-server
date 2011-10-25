@@ -12,6 +12,8 @@ import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.spring.ThreadScopeContextHolder;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.junit.After;
 import org.junit.Before;
@@ -20,18 +22,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml",
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
+		ReloadContextTestExecutionListener.class })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/META-INF/geomajasContext.xml",
+		"/org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml", "/org/geomajas/testdata/beanContext.xml",
 		"/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerBeansMultiLine.xml",
 		"/org/geomajas/testdata/layerBeansMultiPolygon.xml", "/org/geomajas/testdata/layerBeansPoint.xml",
 		"/org/geomajas/testdata/layerBeansMixedGeometry.xml" })
 public class ImageServiceSldTest {
-	
+
 	private boolean writeImages = false;
 
 	private static final double DELTA = 1E-6;
@@ -39,7 +44,7 @@ public class ImageServiceSldTest {
 	@Qualifier("ImageServiceSldTest.path")
 	@Autowired
 	private String imagePath;
-	
+
 	@Autowired
 	private ImageService imageService;
 
@@ -50,7 +55,7 @@ public class ImageServiceSldTest {
 	@Autowired
 	@Qualifier("layerBeansMultiPolygonSldStyleInfo")
 	private NamedStyleInfo layerBeansMultiPolygonStyleInfo;
-	
+
 	@Autowired
 	@Qualifier("layerBeansPoint")
 	private VectorLayer layerBeansPoint;
@@ -78,8 +83,9 @@ public class ImageServiceSldTest {
 		// default
 		checkMultiPolygon("multipolygon_default.png", false, true);
 	}
-	
+
 	@Test
+	@ReloadContext
 	public void testPointStyle() throws Exception {
 		// default
 		checkPoint("point_default.png", false, true);
@@ -124,7 +130,7 @@ public class ImageServiceSldTest {
 	protected void checkMultiPolygon(String fileName, boolean paintLabels, boolean paintGeometries) throws Exception {
 		checkOrRender(fileName, paintLabels, paintGeometries, layerBeansMultiPolygon, layerBeansMultiPolygonStyleInfo);
 	}
-	
+
 	class MapAssert extends TestPathBinaryStreamAssert {
 
 		private ClientMapInfo map;
@@ -139,6 +145,5 @@ public class ImageServiceSldTest {
 		}
 
 	}
-
 
 }
