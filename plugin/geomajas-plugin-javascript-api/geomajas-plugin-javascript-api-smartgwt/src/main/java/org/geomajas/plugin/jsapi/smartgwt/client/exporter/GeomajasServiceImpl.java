@@ -21,6 +21,7 @@ import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.MeasureDistanceController;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.controller.SelectionController;
+import org.geomajas.gwt.client.controller.SingleSelectionController;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.jsapi.GeomajasService;
@@ -30,7 +31,11 @@ import org.geomajas.jsapi.event.JsHandlerRegistration;
 import org.geomajas.jsapi.map.ExportableFunction;
 import org.geomajas.jsapi.map.Map;
 import org.geomajas.jsapi.map.controller.MapController;
+import org.geomajas.jsapi.spatial.BboxService;
+import org.geomajas.jsapi.spatial.GeometryService;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
+import org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial.BboxServiceImpl;
+import org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial.GeometryServiceImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -52,8 +57,6 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 	private static final GeomajasServiceImpl INSTANCE = new GeomajasServiceImpl();
 
 	private HashMap<String, HashMap<String, Map>> maps = new HashMap<String, HashMap<String, Map>>();
-
-	// private SimpleEventBus eventBus = new SimpleEventBus();
 
 	private GeomajasServiceImpl() {
 	}
@@ -122,7 +125,7 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 						handler.onDispatchStarted(new org.geomajas.jsapi.event.DispatchStartedEvent());
 					}
 				});
-		return new JsHandlerRegistration(registration);
+		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
 	@Export
@@ -134,9 +137,12 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 						handler.onDispatchStopped(new org.geomajas.jsapi.event.DispatchStoppedEvent());
 					}
 				});
-		return new JsHandlerRegistration(registration);
+		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
+	/**
+	 * TODO add the controller options as a parameter to this method.
+	 */
 	@Export
 	public MapController createMapController(Map map, String id) {
 		MapWidget mapWidget = ((MapImpl) map).getMapWidget();
@@ -148,11 +154,27 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 			return createMapController(map, new FeatureInfoController(mapWidget, 3));
 		} else if (id.equalsIgnoreCase("SelectionMode")) {
 			return createMapController(map, new SelectionController(mapWidget, 500, 0.5f, false, 3));
+		} else if (id.equalsIgnoreCase("SingleSelectionMode")) {
+			return createMapController(map, new SingleSelectionController(mapWidget, false, 3));
 		} else if (id.equalsIgnoreCase("EditMode")) {
 			return createMapController(map, new ParentEditController(mapWidget));
 		}
 		return null;
 	}
+
+	@Export
+	public GeometryService getGeometryService() {
+		return new GeometryServiceImpl();
+	}
+
+	@Export
+	public BboxService getBboxService() {
+		return new BboxServiceImpl();
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
 	private MapController createMapController(Map map, final GraphicsController controller) {
 		MapController mapController = new MapController(map, controller);
