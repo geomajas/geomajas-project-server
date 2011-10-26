@@ -16,6 +16,8 @@ import org.geomajas.jsapi.event.DispatchStoppedHandler;
 import org.geomajas.jsapi.event.JsHandlerRegistration;
 import org.geomajas.jsapi.map.Map;
 import org.geomajas.jsapi.map.controller.MapController;
+import org.geomajas.jsapi.spatial.BboxService;
+import org.geomajas.jsapi.spatial.GeometryService;
 import org.timepedia.exporter.client.Exportable;
 
 /**
@@ -75,6 +77,20 @@ public interface GeomajasService extends Exportable {
 	 * @return The map controller, or null if it could not be found.
 	 */
 	MapController createMapController(Map map, String id);
+
+	/**
+	 * Get a service for geometry manipulation.
+	 * 
+	 * @return A service for geometry manipulation.
+	 */
+	GeometryService getGeometryService();
+
+	/**
+	 * Get a service for bounding box manipulation.
+	 * 
+	 * @return A service for bounding box manipulation.
+	 */
+	BboxService getBboxService();
 
 	/**
 	 * Add a handler that is called whenever the client starts communicating with the back-end.

@@ -71,4 +71,11 @@ public interface FeaturesSupported extends Layer, Exportable {
 
 	/** Deselect all features within this layer. */
 	void clearSelectedFeatures();
+
+	/**
+	 * Get the full list of currently selected features within this layer.
+	 * 
+	 * @return The list of selected features as an array.
+	 */
+	Feature[] getSelectedFeatures();
 }

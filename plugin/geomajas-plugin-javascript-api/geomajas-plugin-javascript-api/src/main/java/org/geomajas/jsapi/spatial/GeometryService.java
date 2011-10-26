@@ -9,22 +9,26 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.jsapi.event;
+package org.geomajas.jsapi.spatial;
 
 import org.geomajas.annotation.Api;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Definition of a map-centric event bus. If defines methods for all supported event types that apply on a map.
+ * Service that defines all possible methods on geometries.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface JsEventBus extends Exportable {
+public interface GeometryService extends Exportable {
 
-	JsHandlerRegistration addLayersModelChangedHandler(LayersModelChangedHandler handler);
-
-	JsHandlerRegistration addFeatureSelectionHandler(FeatureSelectedHandler selectedHandler,
-			FeatureDeselectedHandler deselectedHandler);
+	/**
+	 * Return the bounding box that defines the outer most border of a geometry.
+	 * 
+	 * @param geometry
+	 *            The geometry for which to calculate the bounding box.
+	 * @return The outer bounds for the given geometry.
+	 */
+	org.geomajas.geometry.Bbox getBounds(org.geomajas.geometry.Geometry geometry);
 }

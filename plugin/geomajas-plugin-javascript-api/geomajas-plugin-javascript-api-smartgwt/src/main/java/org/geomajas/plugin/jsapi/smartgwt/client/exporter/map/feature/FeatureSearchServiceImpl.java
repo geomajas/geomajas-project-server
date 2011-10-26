@@ -31,7 +31,6 @@ import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.jsapi.map.feature.Feature;
 import org.geomajas.jsapi.map.feature.FeatureArrayCallback;
 import org.geomajas.jsapi.map.feature.FeatureArrayCallback.FeatureArrayHolder;
-import org.geomajas.jsapi.map.feature.FeatureCallback;
 import org.geomajas.jsapi.map.feature.FeatureSearchService;
 import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.geomajas.layer.feature.SearchCriterion;
@@ -58,20 +57,23 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 		this.map = map;
 	}
 
-	public void searchById(final FeaturesSupported layer, final String id, final FeatureCallback callback) {
+	public void searchById(final FeaturesSupported layer, final String[] ids, final FeatureArrayCallback callback) {
 		Layer<?> gwtLayer = map.getMapWidget().getMapModel().getLayer(layer.getId());
 		if (gwtLayer != null && gwtLayer instanceof VectorLayer) {
 			VectorLayer vLayer = (VectorLayer) gwtLayer;
-			SearchCriterion criterion = new SearchCriterion(SearchFeatureRequest.ID_ATTRIBUTE, "=", id);
+			SearchCriterion[] criteria = new SearchCriterion[ids.length];
+			for (int i = 0; i < ids.length; i++) {
+				criteria[i] = new SearchCriterion(SearchFeatureRequest.ID_ATTRIBUTE, "=", ids[i]);
+			}
 
 			SearchFeatureRequest request = new SearchFeatureRequest();
 			request.setBooleanOperator("OR");
 			request.setCrs(map.getMapWidget().getMapModel().getCrs());
 			request.setLayerId(vLayer.getServerLayerId());
-			request.setMax(1);
+			request.setMax(ids.length);
 			request.setFilter(layer.getFilter());
 			request.setFeatureIncludes(GeomajasConstant.FEATURE_INCLUDE_ALL);
-			request.setCriteria(new SearchCriterion[] { criterion });
+			request.setCriteria(criteria);
 
 			GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 			command.setCommandRequest(request);
@@ -79,7 +81,11 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 
 				public void execute(SearchFeatureResponse response) {
 					if (response.getFeatures() != null && response.getFeatures().length > 0) {
-						callback.execute(new FeatureImpl(response.getFeatures()[0], layer));
+						Feature[] features = new Feature[response.getFeatures().length];
+						for (int i = 0; i < response.getFeatures().length; i++) {
+							features[i] = new FeatureImpl(response.getFeatures()[i], layer);
+						}
+						callback.execute(new FeatureArrayHolder(features));
 					}
 				}
 			});

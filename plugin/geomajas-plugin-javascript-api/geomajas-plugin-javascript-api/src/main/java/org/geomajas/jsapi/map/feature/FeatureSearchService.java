@@ -37,7 +37,7 @@ public interface FeatureSearchService extends Exportable {
 	 * @param callback
 	 *            Call-back method executed on return (when the feature has been found).
 	 */
-	void searchById(FeaturesSupported layer, String id, FeatureCallback callback);
+	void searchById(FeaturesSupported layer, String[] id, FeatureArrayCallback callback);
 
 	/**
 	 * Search all features within a certain layer that intersect a certain bounding box.

@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
 
-import org.geomajas.annotation.FutureApi;
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.jsapi.map.layer.Layer;
 import org.timepedia.exporter.client.Export;
@@ -38,7 +37,6 @@ public class LayerImpl implements Layer, Exportable {
 	 * @param layer
 	 * @since 1.0.0
 	 */
-	@FutureApi
 	public LayerImpl(org.geomajas.gwt.client.map.layer.Layer<?> layer) {
 		this.layer = layer;
 	}

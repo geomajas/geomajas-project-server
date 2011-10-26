@@ -9,22 +9,28 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.jsapi.event;
+package org.geomajas.jsapi.spatial;
 
 import org.geomajas.annotation.Api;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Definition of a map-centric event bus. If defines methods for all supported event types that apply on a map.
+ * Service that defines all possible operations on bounding boxes.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface JsEventBus extends Exportable {
+public interface BboxService extends Exportable {
 
-	JsHandlerRegistration addLayersModelChangedHandler(LayersModelChangedHandler handler);
-
-	JsHandlerRegistration addFeatureSelectionHandler(FeatureSelectedHandler selectedHandler,
-			FeatureDeselectedHandler deselectedHandler);
+	/**
+	 * Calculate the union of two bounding boxes.
+	 * 
+	 * @param one
+	 *            The first bounding box.
+	 * @param two
+	 *            The second bounding box.
+	 * @return The union of the two given bounding boxes.
+	 */
+	org.geomajas.geometry.Bbox union(org.geomajas.geometry.Bbox one, org.geomajas.geometry.Bbox two);
 }

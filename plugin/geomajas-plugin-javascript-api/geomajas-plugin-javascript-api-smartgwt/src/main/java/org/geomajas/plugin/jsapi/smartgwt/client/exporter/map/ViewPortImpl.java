@@ -33,7 +33,7 @@ public class ViewPortImpl implements ViewPort, Exportable {
 
 	private MapView mapView;
 
-	private ZoomOption zoomOption = ZoomOption.LEVEL_CLOSEST;
+	private ZoomOption zoomOption = ZoomOption.LEVEL_FIT;
 
 	public ViewPortImpl() {
 	}

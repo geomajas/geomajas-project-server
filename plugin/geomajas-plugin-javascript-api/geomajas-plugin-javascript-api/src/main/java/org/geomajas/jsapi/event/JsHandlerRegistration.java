@@ -29,9 +29,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api(allMethods = true)
 public class JsHandlerRegistration implements Exportable {
 
-	private HandlerRegistration handlerRegistration;
+	private HandlerRegistration[] handlerRegistration;
 
-	public JsHandlerRegistration(HandlerRegistration handlerRegistration) {
+	public JsHandlerRegistration(HandlerRegistration[] handlerRegistration) {
 		this.handlerRegistration = handlerRegistration;
 	}
 
@@ -40,6 +40,8 @@ public class JsHandlerRegistration implements Exportable {
 	 * the event source...so don't call this twice.
 	 */
 	public void removeHandler() {
-		handlerRegistration.removeHandler();
+		for (int i = 0; i < handlerRegistration.length; i++) {
+			handlerRegistration[i].removeHandler();
+		}
 	}
 }

@@ -21,6 +21,7 @@ import org.geomajas.jsapi.map.Map;
 import org.geomajas.jsapi.map.ViewPort;
 import org.geomajas.jsapi.map.controller.MapController;
 import org.geomajas.jsapi.map.feature.FeatureSearchService;
+import org.geomajas.plugin.jsapi.smartgwt.client.exporter.event.JsEventBusImpl;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureSearchServiceImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -44,7 +45,7 @@ import com.google.gwt.user.client.DOM;
 @ExportPackage("org.geomajas.jsapi.map")
 public class MapImpl implements Exportable, Map {
 
-	private JsEventBus eventBus = new JsEventBus();
+	private JsEventBus eventBus;
 
 	private MapWidget mapWidget;
 
@@ -70,6 +71,7 @@ public class MapImpl implements Exportable, Map {
 	@Api
 	public MapImpl(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
+		eventBus = new JsEventBusImpl(this);
 		viewPort = new ViewPortImpl(mapWidget.getMapModel().getMapView());
 		layersModel = new LayersModelImpl(mapWidget.getMapModel());
 		featureSearchService = new FeatureSearchServiceImpl(this);
