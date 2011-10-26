@@ -123,7 +123,7 @@ public final class SearchWidgetRegistry {
 		return sw;
 	}
 	
-	public SearchController getSearchController() {
+	public static SearchController getSearchController() {
 		return searchController;
 	}
 
