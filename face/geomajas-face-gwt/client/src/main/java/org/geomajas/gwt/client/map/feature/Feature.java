@@ -310,6 +310,7 @@ public class Feature implements Paintable, Cloneable {
 		dto.setId(id);
 		dto.setGeometry(GeometryConverter.toDto(geometry));
 		dto.setCrs(crs);
+		dto.setLabel(getLabel());
 		return dto;
 	}
 
