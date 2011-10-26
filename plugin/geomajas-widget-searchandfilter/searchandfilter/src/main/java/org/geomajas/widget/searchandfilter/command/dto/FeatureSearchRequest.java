@@ -16,6 +16,8 @@ import java.util.Map;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
+import org.geomajas.widget.searchandfilter.search.dto.SortDirection;
+
 
 /**
  * Request for {@link org.geomajas.widget.searchandfilter.command.searchandfilter.FeatureSearchCommand}.
@@ -31,6 +33,10 @@ public class FeatureSearchRequest implements CommandRequest {
 	public static final int MAX_UNLIMITED = 0;
 
 	private int featureIncludes = GeomajasConstant.FEATURE_INCLUDE_ALL;
+	
+	//Note that these sorting config fields have no effect on v1.0 implementations
+	private String sortByFieldName; /* if null: no sorting */
+	private SortDirection sortDirection = SortDirection.ASCENDING;
 
 	private Criterion criterion;
 
@@ -78,6 +84,34 @@ public class FeatureSearchRequest implements CommandRequest {
 
 	public void setMax(int max) {
 		this.max = max;
+	}
+
+	/**
+	 * @return sortByFieldName; if null: no sorting
+	 */
+	public String getSortByField() {
+		return sortByFieldName;
+	}
+
+	/**
+	 * @param sortByFieldName  if null: no sorting
+	 */
+	public void setSortByFieldName(String sortByFieldName) {
+		this.sortByFieldName = sortByFieldName;
+	}
+
+	public SortDirection getSortDirection() {
+		return sortDirection;
+	}
+	
+	/**
+	 * @param sortDirection (SortDirection):  direction for sorting when the field name for 
+	 * 					sorting has been by specified by setSortByFieldName
+	 */
+	public void setSortDirection(SortDirection sortDirection) {
+		if (null != sortDirection) {
+			this.sortDirection = sortDirection;
+		}
 	}
 
 	public Map<String, String> getLayerFilters() {

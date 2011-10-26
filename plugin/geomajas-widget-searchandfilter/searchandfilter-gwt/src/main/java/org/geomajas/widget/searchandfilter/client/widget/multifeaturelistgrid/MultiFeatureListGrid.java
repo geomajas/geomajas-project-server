@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandRequest;
+import org.geomajas.configuration.SortType;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -37,6 +38,7 @@ import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.types.Overflow;
+
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
@@ -56,11 +58,14 @@ import com.smartgwt.client.widgets.tab.events.TabCloseClickEvent;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
+
 /**
  * A collection of FeatureListGrids.
  * 
  * @author Kristof Heirwegh
  * @author Joachim Van der Auwera
+ * @author An Buyle
+ * 
  * @since 1.0.0
  */
 @Api
@@ -75,7 +80,9 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	protected boolean clearTabsetOnSearch;
 
 	protected boolean showDetailsOnSingleResult;
-
+	
+	private boolean sortFeatures; 
+	
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private List<ExtraButton> extraButtons = new ArrayList<ExtraButton>();
@@ -124,6 +131,16 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 
 	public void setShowDetailsOnSingleResult(boolean showDetailsOnSingleResult) {
 		this.showDetailsOnSingleResult = showDetailsOnSingleResult;
+	}
+
+	
+	public void setSortFeatures(boolean sortFeatures) {
+		this.sortFeatures = sortFeatures;
+	
+	}
+
+	public boolean doSortFeatures() {
+		return sortFeatures;
 	}
 
 	/**
@@ -177,6 +194,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			addFeatures(entry.getKey(), entry.getValue(), csvExportData, false);
 		}
 		if (showDetailsOnSingleResult && featureMap.size() == 1) {
+			// sorting is never needed if only 1 entry
 			List<Feature> features = featureMap.values().iterator().next();
 			if (features.size() == 1) {
 				showFeatureDetailWindow(features.get(0));
@@ -199,6 +217,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		}
 
 		t.empty();
+		t.setSortFeatures(sortFeatures);
 		t.addFeatures(features);
 		tabset.selectTab(t);
 		if (showSingleResult && features.size() == 1) {
@@ -327,6 +346,9 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		private List<ToolStripButton> extraButtons = new ArrayList<ToolStripButton>();
 
 		private ExportToCsvHandler handler;
+		private com.smartgwt.client.types.SortDirection sortDirGWT;
+		private boolean sortFeatures;
+		private String sortFieldName;
 
 		public void setExportToCsvHandler(ExportToCsvHandler handler) {
 			this.handler = handler;
@@ -400,7 +422,25 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			featureListGrid.setOverflow(Overflow.AUTO);
 			featureListGrid.setWidth100();
 			featureListGrid.setHeight100();
+			
+			String sortFieldName = layer.getLayerInfo().getFeatureInfo().getSortAttributeName(); 
+						
+			SortType sortType = layer.getLayerInfo().getFeatureInfo().getSortType();
+			
+			com.smartgwt.client.types.SortDirection sortDirGWT = null; 
 
+			if (SortType.DESC.equals(sortType)) {
+				sortDirGWT = com.smartgwt.client.types.SortDirection.DESCENDING;
+			} else { /* also ascending if sortType == null */
+				sortDirGWT = com.smartgwt.client.types.SortDirection.ASCENDING;					
+			}
+			this.sortDirGWT = sortDirGWT;
+			if (null != sortFieldName) { /* if null and if sortFeatures==true, then sort on first column */
+				featureListGrid.setSortField(sortFieldName);
+				this.sortFieldName = sortFieldName;
+			}
+			featureListGrid.setSortDirection(sortDirGWT);
+				
 			VLayout pane = new VLayout();
 			pane.setWidth100();
 			pane.setHeight100();
@@ -410,6 +450,20 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			setPane(pane);
 			setCanClose(true);
 		}
+
+		public boolean getSortFeatures() {
+			return sortFeatures;
+		}
+
+
+
+		public void setSortFeatures(boolean sortFeatures) {
+			this.sortFeatures = sortFeatures;
+		}
+
+
+
+
 
 		/**
 		 * Add a button in the tool strip at the requested position.
@@ -427,6 +481,10 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			for (Feature feature : features) {
 				featureListGrid.addFeature(feature);
 			}
+			if (sortFeatures) {
+				featureListGrid.sort(sortFieldName, sortDirGWT);
+			}
+			
 			if (handler instanceof ExportFeatureListToCsvHandler) {
 				((ExportFeatureListToCsvHandler) handler).setFeatures(features);
 			}
