@@ -33,11 +33,11 @@
 			var layer = map.getLayersModel().getLayerAt(1); // Get the countries layer
 			var service = map.getFeatureSearchService();
 			
-			service.searchById(layer, id, function(feature){
-				if (feature == null) {
+			service.searchById(layer, [id], function(featureHolder){
+				if (featureHolder == null) {
 					element.innerHTML = "Feature could not be found.";
 				} else {
-					element.innerHTML = "Feature ID = " + id + "<br>Label: " + feature.getLabel();
+					element.innerHTML = "ID = " + id + "<br>Label: " + featureHolder.getFeatures()[0].getLabel();
 				}
 			});
 		}
