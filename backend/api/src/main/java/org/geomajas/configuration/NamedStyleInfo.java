@@ -225,7 +225,8 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	 */
 	public String getCacheId() {
 		return "NamedStyleInfo{" +
-				"featureStyles=" + featureStyles +
+				"userStyle=" + userStyle +
+				", featureStyles=" + featureStyles +
 				", labelStyle=" + labelStyle +
 				", name='" + name + '\'' +
 				'}';
