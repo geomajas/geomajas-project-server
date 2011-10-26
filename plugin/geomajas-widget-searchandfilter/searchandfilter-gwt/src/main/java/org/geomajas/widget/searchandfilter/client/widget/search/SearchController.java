@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
@@ -30,10 +30,10 @@ import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.Sea
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Controller to handle the searches.
@@ -50,7 +50,7 @@ public class SearchController implements SearchRequestHandler {
 	private final Set<SearchHandler> searchHandlers = new HashSet<SearchHandler>();
 	private MapWidget mapWidget;
 	private boolean modalSearch;
-	private Window modalWindow;
+	private Window window;
 
 	/**
 	 * Construct search controller.
@@ -71,17 +71,15 @@ public class SearchController implements SearchRequestHandler {
 		fireSearchStartEvent(searchEvent);
 		SearchCommService.searchByCriterion(event.getCriterion(), mapWidget,
 				new DataCallback<Map<VectorLayer, List<Feature>>>() {
-
 					public void execute(Map<VectorLayer, List<Feature>> result) {
 						searchEvent.setResult(result);
 						fireSearchDoneEvent(searchEvent);
 						fireSearchEndEvent(searchEvent);
-
 					}
 				}, new ErrorHandler() {
-
 					public void execute() {
-						destroyModalWindow();
+						fireSearchEndEvent(searchEvent);
+						destroyWindow();
 						SC.say(messages.searchControllerFailureMessage());
 					}
 				});
@@ -112,7 +110,7 @@ public class SearchController implements SearchRequestHandler {
 	// ----------------------------------------------------------
 
 	private void fireSearchStartEvent(SearchEvent event) {
-		showModalWindow();
+		showWindow();
 		for (SearchHandler handler : searchHandlers) {
 			handler.onSearchStart(event);
 		}
@@ -128,44 +126,63 @@ public class SearchController implements SearchRequestHandler {
 		for (SearchHandler handler : searchHandlers) {
 			handler.onSearchEnd(event);
 		}
-		hideModalWindow();
+		hideWindow();
 	}
 
-	private void showModalWindow() {
-		if (isModalSearch()) {
-			if (modalWindow == null) {
-				HLayout layout = new HLayout();
-				layout.setHeight(20);
-				layout.setWidth100();
-				layout.addMember(new Img(WidgetLayout.iconAjaxLoading, 18, 18));
-				layout.addMember(new Label(messages.searchControllerSearchingMessage()));
-				modalWindow = new DockableWindow();
-				modalWindow.setTitle(messages.searchControllerSearchingTitle());
-				modalWindow.setAlign(Alignment.CENTER);
-				modalWindow.setPadding(20);
-				modalWindow.setHeight(100);
-				modalWindow.setWidth(300);
-				modalWindow.addItem(layout);
-				modalWindow.setAutoCenter(true);
-				modalWindow.setShowMinimizeButton(false);
-				modalWindow.setShowCloseButton(false);
-				modalWindow.setIsModal(true);
-				modalWindow.setShowModalMask(true);
-				modalWindow.setKeepInParentRect(true);
+	private void showWindow() {
+		if (window == null) {
+			window = createWindow();
+			if (isModalSearch()) {
+				window.setIsModal(true);
+				window.setShowModalMask(true);
 			}
-			modalWindow.show();
+		}
+		window.show();
+	}
+
+	private void hideWindow() {
+		if (window != null) {
+			window.hide();
 		}
 	}
 
-	private void hideModalWindow() {
-		if (modalWindow != null) {
-			modalWindow.hide();
+	private void destroyWindow() {
+		if (window != null) {
+			window.destroy();
+			window = null;
 		}
 	}
 
-	private void destroyModalWindow() {
-		if (modalWindow != null) {
-			modalWindow.destroy();
-		}
+	private Window createWindow() {
+		VLayout layout = new VLayout(5);
+		layout.setLayoutAlign(Alignment.CENTER);
+		layout.setAlign(Alignment.CENTER);
+		layout.setWidth100();
+		Label label = new Label(messages.searchControllerSearchingMessage());
+		label.setWidth100();
+		label.setHeight(30);
+		label.setAlign(Alignment.CENTER);
+		layout.addMember(label);
+
+		HTMLPane img = new HTMLPane();
+		img.setLayoutAlign(Alignment.CENTER);
+		img.setAlign(Alignment.CENTER);
+		img.setWidth(20);
+		img.setHeight(20);
+		img.setContents("<img src=\"" + Geomajas.getIsomorphicDir()
+				+ "/geomajas/ajax-loader.gif\" width=\"18\" height=\"18\" />");
+		layout.addMember(img);
+		Window w = new DockableWindow();
+		w.setTitle(messages.searchControllerSearchingTitle());
+		w.setAlign(Alignment.CENTER);
+		w.setPadding(5);
+		w.setHeight(100);
+		w.setWidth(300);
+		w.addItem(layout);
+		w.setShowMinimizeButton(false);
+		w.setShowCloseButton(false);
+		w.setKeepInParentRect(true);
+		w.setAutoCenter(true);
+		return w;
 	}
 }
