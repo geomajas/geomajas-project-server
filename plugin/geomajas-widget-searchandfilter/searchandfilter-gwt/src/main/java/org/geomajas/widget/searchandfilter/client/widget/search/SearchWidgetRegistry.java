@@ -117,12 +117,24 @@ public final class SearchWidgetRegistry {
 	}
 
 	public static SearchWidget getSearchWidgetInstance(String searchWidgetId) {
-		SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(mapWidget);
+		final SearchWidget sw = REGISTRY.get(searchWidgetId).createInstance(mapWidget);
 		sw.addSearchRequestHandler(searchController);
 		sw.addFavouriteRequestHandler(favouritesController);
+		SearchHandler sh = new SearchHandler() {
+			public void onSearchStart(SearchEvent event) {
+				sw.onSearchStart();
+			}
+			public void onSearchEnd(SearchEvent event) {
+				sw.onSearchEnd();
+			}
+			public void onSearchDone(SearchEvent event) {
+			}
+		};
+		searchController.addSearchHandler(sh);
+
 		return sw;
 	}
-	
+
 	public static SearchController getSearchController() {
 		return searchController;
 	}
