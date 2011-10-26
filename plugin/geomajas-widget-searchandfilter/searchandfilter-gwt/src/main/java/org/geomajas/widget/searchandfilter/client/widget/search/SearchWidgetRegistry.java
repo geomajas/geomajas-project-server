@@ -122,6 +122,10 @@ public final class SearchWidgetRegistry {
 		sw.addFavouriteRequestHandler(favouritesController);
 		return sw;
 	}
+	
+	public SearchController getSearchController() {
+		return searchController;
+	}
 
 	/**
 	 * Get a list with all the ids + names of the search widgets in the registry.
