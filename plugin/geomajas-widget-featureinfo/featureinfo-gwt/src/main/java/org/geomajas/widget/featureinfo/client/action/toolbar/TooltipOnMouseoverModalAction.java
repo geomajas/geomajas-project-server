@@ -30,7 +30,6 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
 	private MapWidget mapWidget;
-	private int pixelTolerance = 10; // same as FeatureInfoModalAction
 	private TooltipOnMouseoverListener listener;
 
 	public TooltipOnMouseoverModalAction(MapWidget mapWidget) {
@@ -38,7 +37,7 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 		this.mapWidget = mapWidget;
 		this.setTitle(messages.tooltipOnMouseoverActionTitle());
 		this.setTooltip(messages.tooltipOnMouseoverActionTooltip());
-		listener = new TooltipOnMouseoverListener(mapWidget, pixelTolerance);
+		listener = new TooltipOnMouseoverListener(mapWidget);
 	}
 
 	public void onSelect(ClickEvent event) {
@@ -53,13 +52,28 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
 		}
+		if ("showEmptyResult".equals(key)) {
+			setShowEmptyResult(Boolean.parseBoolean(value));
+		}
+		if ("minimalMoveDistance".equals(key)) {
+			setMinimalMoveDistance(Integer.parseInt(value));
+		}
 	}
 
 	/**
-	 * @return the current pixel tolerance
+	 * Set the minimal distence the mouse must move before a new mouse over request is triggered.
+	 * @param distance the minimal distance.
 	 */
-	public int getPixelTolerance() {
-		return pixelTolerance;
+	private void setMinimalMoveDistance(int distance) {
+		listener.setMinimalMoveDistance(distance);
+	}
+
+	/**
+	 * Set if emtry results should be displayed as "no results found" or be omitted.
+	 * @param show true if empty results should be shown.
+	 */
+	private void setShowEmptyResult(boolean show) {
+		listener.setShowEmptyResult(false);
 	}
 
 	/**
@@ -68,7 +82,6 @@ public class TooltipOnMouseoverModalAction extends ToolbarModalAction implements
 	 * @param pixelTolerance distance in pixels
 	 */
 	public void setPixelTolerance(int pixelTolerance) {
-		this.pixelTolerance = pixelTolerance;
 		listener.setPixelTolerance(pixelTolerance);
 	}
 }

@@ -54,11 +54,12 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	private Coordinate lastPosition; // screen
 	private Coordinate currentPosition; // screen
 	private Coordinate worldPosition; // world !!
-	private int minPixelMove = 5;
+	private int minPixelMove = 3;
 	private int showDelay = 250;
 	private int layersToSearch = SearchByLocationRequest.SEARCH_ALL_LAYERS;
 	private int maxLabelCount = 15;
 	private Timer timer;
+	private boolean showEmptyResults;
 	
 	private MapWidget mapWidget;
 
@@ -67,9 +68,8 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			+ ".tblcFeatureLabel {margin: 0; font-size: 0.9em; font-style: italic;} "
 			+ ".tblcMore {padding-top: 5px; font-size: 0.9em; font-style: italic;}</style>";
 
-	public TooltipOnMouseoverListener(MapWidget mapWidget, int pixelTolerance) {
+	public TooltipOnMouseoverListener(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
-		this.pixelTolerance = pixelTolerance;
 	}
 
 	/**
@@ -199,15 +199,19 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 					}
 				}
 			}
-			if (count > maxLabelCount) {
-				writeTooMany(sb, count - maxLabelCount);
-			} else if (count == 0) {
-				writeNone(sb);
-			}
-			
+
 			int left = tooltip.getLeft();
 			int top = tooltip.getTop();
 			destroyTooltip();
+
+			if (count > maxLabelCount) {
+				writeTooMany(sb, count - maxLabelCount);
+			} else if (count == 0 && showEmptyResults) {
+				writeNone(sb);
+			} else if (count == 0) {
+				return;
+			}
+			
 			Canvas content = new Canvas();
 			content.setContents(sb.toString());
 			content.setWidth(widest * 6 + 10);
@@ -347,4 +351,21 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
 	}
+
+	/**
+	 * Set if empty results should be displayed as "no results found" or be omitted.
+	 * @param show true if empty results should be shown.
+	 */
+	public void setShowEmptyResult(boolean show) {
+		this.showEmptyResults = show;
+	}
+
+	/**
+	 * Set the minimal distence the mouse must move before a new mouse over request is triggered.
+	 * @param distance the minimal distance.
+	 */
+	public void setMinimalMoveDistance(int distance) {
+		this.minPixelMove = distance;
+	}
+	
 }
