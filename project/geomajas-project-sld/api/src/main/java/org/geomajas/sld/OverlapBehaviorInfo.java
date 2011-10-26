@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -36,10 +35,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class OverlapBehaviorInfo implements Serializable {
 
@@ -94,5 +94,45 @@ public class OverlapBehaviorInfo implements Serializable {
 			}
 			return null;
 		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "OverlapBehaviorInfo(overlapBehavior=" + this.getOverlapBehavior() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof OverlapBehaviorInfo)) {
+			return false;
+		}
+		final OverlapBehaviorInfo other = (OverlapBehaviorInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getOverlapBehavior() == null ? other.getOverlapBehavior() != null : !this.getOverlapBehavior().equals(
+				(java.lang.Object) other.getOverlapBehavior())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof OverlapBehaviorInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getOverlapBehavior() == null ? 0 : this.getOverlapBehavior().hashCode());
+		return result;
 	}
 }

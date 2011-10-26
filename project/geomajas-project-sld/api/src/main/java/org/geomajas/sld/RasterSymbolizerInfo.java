@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -43,10 +42,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class RasterSymbolizerInfo extends SymbolizerTypeInfo implements Serializable {
 
@@ -210,5 +210,88 @@ public class RasterSymbolizerInfo extends SymbolizerTypeInfo implements Serializ
 	 */
 	public void setImageOutline(ImageOutlineInfo imageOutline) {
 		this.imageOutline = imageOutline;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "RasterSymbolizerInfo(geometry=" + this.getGeometry() + ", opacity=" + this.getOpacity()
+				+ ", channelSelection=" + this.getChannelSelection() + ", overlapBehavior=" + this.getOverlapBehavior()
+				+ ", colorMap=" + this.getColorMap() + ", contrastEnhancement=" + this.getContrastEnhancement()
+				+ ", shadedRelief=" + this.getShadedRelief() + ", imageOutline=" + this.getImageOutline() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof RasterSymbolizerInfo)) {
+			return false;
+		}
+		final RasterSymbolizerInfo other = (RasterSymbolizerInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getGeometry() == null ? other.getGeometry() != null : !this.getGeometry().equals(
+				(java.lang.Object) other.getGeometry())) {
+			return false;
+		}
+		if (this.getOpacity() == null ? other.getOpacity() != null : !this.getOpacity().equals(
+				(java.lang.Object) other.getOpacity())) {
+			return false;
+		}
+		if (this.getChannelSelection() == null ? other.getChannelSelection() != null : !this.getChannelSelection()
+				.equals((java.lang.Object) other.getChannelSelection())) {
+			return false;
+		}
+		if (this.getOverlapBehavior() == null ? other.getOverlapBehavior() != null : !this.getOverlapBehavior().equals(
+				(java.lang.Object) other.getOverlapBehavior())) {
+			return false;
+		}
+		if (this.getColorMap() == null ? other.getColorMap() != null : !this.getColorMap().equals(
+				(java.lang.Object) other.getColorMap())) {
+			return false;
+		}
+		if (this.getContrastEnhancement() == null ? other.getContrastEnhancement() != null : !this
+				.getContrastEnhancement().equals((java.lang.Object) other.getContrastEnhancement())) {
+			return false;
+		}
+		if (this.getShadedRelief() == null ? other.getShadedRelief() != null : !this.getShadedRelief().equals(
+				(java.lang.Object) other.getShadedRelief())) {
+			return false;
+		}
+		if (this.getImageOutline() == null ? other.getImageOutline() != null : !this.getImageOutline().equals(
+				(java.lang.Object) other.getImageOutline())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof RasterSymbolizerInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getGeometry() == null ? 0 : this.getGeometry().hashCode());
+		result = result * prime + (this.getOpacity() == null ? 0 : this.getOpacity().hashCode());
+		result = result * prime + (this.getChannelSelection() == null ? 0 : this.getChannelSelection().hashCode());
+		result = result * prime + (this.getOverlapBehavior() == null ? 0 : this.getOverlapBehavior().hashCode());
+		result = result * prime + (this.getColorMap() == null ? 0 : this.getColorMap().hashCode());
+		result = result * prime
+				+ (this.getContrastEnhancement() == null ? 0 : this.getContrastEnhancement().hashCode());
+		result = result * prime + (this.getShadedRelief() == null ? 0 : this.getShadedRelief().hashCode());
+		result = result * prime + (this.getImageOutline() == null ? 0 : this.getImageOutline().hashCode());
+		return result;
 	}
 }

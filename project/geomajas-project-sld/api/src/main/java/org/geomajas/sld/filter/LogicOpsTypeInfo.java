@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -20,19 +19,53 @@ import org.geomajas.annotation.Api;
  * <pre>
  * &lt;xs:complexType
  * xmlns:ns="http://www.opengis.net/ogc" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" abstract="true" name="LogicOpsType"/>
  * </pre>
  * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public abstract class LogicOpsTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
 	protected LogicOpsTypeInfo() {
-		
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "LogicOpsTypeInfo()";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LogicOpsTypeInfo)) {
+			return false;
+		}
+		final LogicOpsTypeInfo other = (LogicOpsTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof LogicOpsTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		int result = 1;
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld.geometry;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -36,10 +35,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:simpleContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class CoordinatesTypeInfo implements Serializable {
 
@@ -123,5 +123,59 @@ public class CoordinatesTypeInfo implements Serializable {
 	 */
 	public void setTs(String ts) {
 		this.ts = ts;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "CoordinatesTypeInfo(string=" + this.getString() + ", decimal=" + this.getDecimal() + ", cs="
+				+ this.getCs() + ", ts=" + this.getTs() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof CoordinatesTypeInfo)) {
+			return false;
+		}
+		final CoordinatesTypeInfo other = (CoordinatesTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getString() == null ? other.getString() != null : !this.getString().equals(
+				(java.lang.Object) other.getString())) {
+			return false;
+		}
+		if (this.getDecimal() == null ? other.getDecimal() != null : !this.getDecimal().equals(
+				(java.lang.Object) other.getDecimal())) {
+			return false;
+		}
+		if (this.getCs() == null ? other.getCs() != null : !this.getCs().equals((java.lang.Object) other.getCs())) {
+			return false;
+		}
+		if (this.getTs() == null ? other.getTs() != null : !this.getTs().equals((java.lang.Object) other.getTs())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof CoordinatesTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getString() == null ? 0 : this.getString().hashCode());
+		result = result * prime + (this.getDecimal() == null ? 0 : this.getDecimal().hashCode());
+		result = result * prime + (this.getCs() == null ? 0 : this.getCs().hashCode());
+		result = result * prime + (this.getTs() == null ? 0 : this.getTs().hashCode());
+		return result;
 	}
 }

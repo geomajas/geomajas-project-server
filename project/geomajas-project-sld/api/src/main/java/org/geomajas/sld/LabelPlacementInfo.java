@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -25,7 +24,7 @@ import org.geomajas.annotation.Api;
  * <pre>
  * &lt;xs:element
  * xmlns:ns="http://www.opengis.net/sld" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" name="LabelPlacement">
  *   &lt;xs:complexType>
  *     &lt;xs:choice>
@@ -35,10 +34,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class LabelPlacementInfo implements Serializable {
 
@@ -123,5 +123,55 @@ public class LabelPlacementInfo implements Serializable {
 	public void setLinePlacement(LinePlacementInfo linePlacement) {
 		setLabelPlacementSelect(LINE_PLACEMENT_CHOICE);
 		this.linePlacement = linePlacement;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "LabelPlacementInfo(labelPlacementSelect=" + this.labelPlacementSelect + ", pointPlacement="
+				+ this.getPointPlacement() + ", linePlacement=" + this.getLinePlacement() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LabelPlacementInfo)) {
+			return false;
+		}
+		final LabelPlacementInfo other = (LabelPlacementInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.labelPlacementSelect != other.labelPlacementSelect) {
+			return false;
+		}
+		if (this.getPointPlacement() == null ? other.getPointPlacement() != null : !this.getPointPlacement().equals(
+				(java.lang.Object) other.getPointPlacement())) {
+			return false;
+		}
+		if (this.getLinePlacement() == null ? other.getLinePlacement() != null : !this.getLinePlacement().equals(
+				(java.lang.Object) other.getLinePlacement())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof LabelPlacementInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + this.labelPlacementSelect;
+		result = result * prime + (this.getPointPlacement() == null ? 0 : this.getPointPlacement().hashCode());
+		result = result * prime + (this.getLinePlacement() == null ? 0 : this.getLinePlacement().hashCode());
+		return result;
 	}
 }

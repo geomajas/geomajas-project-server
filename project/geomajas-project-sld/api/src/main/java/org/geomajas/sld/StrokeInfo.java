@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -39,10 +38,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class StrokeInfo implements Serializable {
 
@@ -102,8 +102,8 @@ public class StrokeInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:choice
- * xmlns:ns="http://www.opengis.net/sld"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0">
+	 * xmlns:ns="http://www.opengis.net/sld"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0">
 	 *   &lt;xs:element ref="ns:GraphicFill"/>
 	 *   &lt;xs:element ref="ns:GraphicStroke"/>
 	 * &lt;/xs:choice>
@@ -193,6 +193,56 @@ public class StrokeInfo implements Serializable {
 			setChoiceSelect(GRAPHIC_STROKE_CHOICE);
 			this.graphicStroke = graphicStroke;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "StrokeInfo.ChoiceInfo(choiceSelect=" + this.choiceSelect + ", graphicFill=" + this.getGraphicFill()
+					+ ", graphicStroke=" + this.getGraphicStroke() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceSelect != other.choiceSelect) {
+				return false;
+			}
+			if (this.getGraphicFill() == null ? other.getGraphicFill() != null : !this.getGraphicFill().equals(
+					(java.lang.Object) other.getGraphicFill())) {
+				return false;
+			}
+			if (this.getGraphicStroke() == null ? other.getGraphicStroke() != null : !this.getGraphicStroke().equals(
+					(java.lang.Object) other.getGraphicStroke())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceSelect;
+			result = result * prime + (this.getGraphicFill() == null ? 0 : this.getGraphicFill().hashCode());
+			result = result * prime + (this.getGraphicStroke() == null ? 0 : this.getGraphicStroke().hashCode());
+			return result;
+		}
 	}
 
 	public void setStrokeWidth(int i) {
@@ -223,5 +273,50 @@ public class StrokeInfo implements Serializable {
 			}
 		}
 		getCssParameterList().add(new CssParameterInfo(STROKE_OPACITY, Float.toString(f)));
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "StrokeInfo(choice=" + this.getChoice() + ", cssParameterList=" + this.getCssParameterList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof StrokeInfo)) {
+			return false;
+		}
+		final StrokeInfo other = (StrokeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getChoice() == null ? other.getChoice() != null : !this.getChoice().equals(
+				(java.lang.Object) other.getChoice())) {
+			return false;
+		}
+		if (this.getCssParameterList() == null ? other.getCssParameterList() != null : !this.getCssParameterList()
+				.equals((java.lang.Object) other.getCssParameterList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof StrokeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getChoice() == null ? 0 : this.getChoice().hashCode());
+		result = result * prime + (this.getCssParameterList() == null ? 0 : this.getCssParameterList().hashCode());
+		return result;
 	}
 }

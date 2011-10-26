@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -41,10 +40,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class GraphicInfo implements Serializable {
 
@@ -135,8 +135,8 @@ public class GraphicInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:choice
- * xmlns:ns="http://www.opengis.net/sld"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0" maxOccurs="unbounded">
+	 * xmlns:ns="http://www.opengis.net/sld"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0" maxOccurs="unbounded">
 	 *   &lt;xs:element ref="ns:ExternalGraphic"/>
 	 *   &lt;xs:element ref="ns:Mark"/>
 	 * &lt;/xs:choice>
@@ -226,5 +226,111 @@ public class GraphicInfo implements Serializable {
 			setChoiceListSelect(MARK_CHOICE);
 			this.mark = mark;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "GraphicInfo.ChoiceInfo(choiceListSelect=" + this.choiceListSelect + ", externalGraphic="
+					+ this.getExternalGraphic() + ", mark=" + this.getMark() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceListSelect != other.choiceListSelect) {
+				return false;
+			}
+			if (this.getExternalGraphic() == null ? other.getExternalGraphic() != null : !this.getExternalGraphic()
+					.equals((java.lang.Object) other.getExternalGraphic())) {
+				return false;
+			}
+			if (this.getMark() == null ? other.getMark() != null : !this.getMark().equals(
+					(java.lang.Object) other.getMark())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceListSelect;
+			result = result * prime + (this.getExternalGraphic() == null ? 0 : this.getExternalGraphic().hashCode());
+			result = result * prime + (this.getMark() == null ? 0 : this.getMark().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "GraphicInfo(choiceList=" + this.getChoiceList() + ", opacity=" + this.getOpacity() + ", size="
+				+ this.getSize() + ", rotation=" + this.getRotation() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof GraphicInfo)) {
+			return false;
+		}
+		final GraphicInfo other = (GraphicInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getChoiceList() == null ? other.getChoiceList() != null : !this.getChoiceList().equals(
+				(java.lang.Object) other.getChoiceList())) {
+			return false;
+		}
+		if (this.getOpacity() == null ? other.getOpacity() != null : !this.getOpacity().equals(
+				(java.lang.Object) other.getOpacity())) {
+			return false;
+		}
+		if (this.getSize() == null ? other.getSize() != null : !this.getSize().equals(
+				(java.lang.Object) other.getSize())) {
+			return false;
+		}
+		if (this.getRotation() == null ? other.getRotation() != null : !this.getRotation().equals(
+				(java.lang.Object) other.getRotation())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof GraphicInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getChoiceList() == null ? 0 : this.getChoiceList().hashCode());
+		result = result * prime + (this.getOpacity() == null ? 0 : this.getOpacity().hashCode());
+		result = result * prime + (this.getSize() == null ? 0 : this.getSize().hashCode());
+		result = result * prime + (this.getRotation() == null ? 0 : this.getRotation().hashCode());
+		return result;
 	}
 }

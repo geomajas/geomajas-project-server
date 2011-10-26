@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -23,10 +22,11 @@ import org.geomajas.annotation.Api;
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" 
  * type="xs:string" name="Abstract"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class AbstractInfo implements Serializable {
 
@@ -50,5 +50,45 @@ public class AbstractInfo implements Serializable {
 	 */
 	public void setAbstract(String aAbstract) {
 		this.aAbstract = aAbstract;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "AbstractInfo(aAbstract=" + this.aAbstract + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof AbstractInfo)) {
+			return false;
+		}
+		final AbstractInfo other = (AbstractInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
+				.equals((java.lang.Object) other.aAbstract)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof AbstractInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
+		return result;
 	}
 }

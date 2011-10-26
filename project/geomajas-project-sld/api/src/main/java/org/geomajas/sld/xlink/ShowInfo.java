@@ -34,7 +34,7 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:simpleType>
  * &lt;/xs:attribute>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */

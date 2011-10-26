@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -34,10 +33,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class MarkInfo implements Serializable {
 
@@ -101,5 +101,56 @@ public class MarkInfo implements Serializable {
 	 */
 	public void setStroke(StrokeInfo stroke) {
 		this.stroke = stroke;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
+				+ this.getStroke() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof MarkInfo)) {
+			return false;
+		}
+		final MarkInfo other = (MarkInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getWellKnownName() == null ? other.getWellKnownName() != null : !this.getWellKnownName().equals(
+				(java.lang.Object) other.getWellKnownName())) {
+			return false;
+		}
+		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals(
+				(java.lang.Object) other.getFill())) {
+			return false;
+		}
+		if (this.getStroke() == null ? other.getStroke() != null : !this.getStroke().equals(
+				(java.lang.Object) other.getStroke())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof MarkInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getWellKnownName() == null ? 0 : this.getWellKnownName().hashCode());
+		result = result * prime + (this.getFill() == null ? 0 : this.getFill().hashCode());
+		result = result * prime + (this.getStroke() == null ? 0 : this.getStroke().hashCode());
+		return result;
 	}
 }

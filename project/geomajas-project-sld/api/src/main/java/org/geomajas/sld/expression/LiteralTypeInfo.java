@@ -11,7 +11,6 @@
 package org.geomajas.sld.expression;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -31,21 +30,59 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class LiteralTypeInfo extends ExpressionInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
 	public LiteralTypeInfo() {
-		
 	}
-	
+
 	public LiteralTypeInfo(String name) {
 		setValue(name);
 	}
 
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "LiteralTypeInfo()";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LiteralTypeInfo)) {
+			return false;
+		}
+		final LiteralTypeInfo other = (LiteralTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof LiteralTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		return result;
+	}
 }

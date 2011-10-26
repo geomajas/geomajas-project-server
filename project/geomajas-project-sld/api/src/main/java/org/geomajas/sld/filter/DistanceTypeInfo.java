@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -24,17 +23,18 @@ import org.geomajas.annotation.Api;
  *   &lt;xs:attribute type="xs:string" use="required" name="units"/>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class DistanceTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
 	private String units;
-	
+
 	private String value;
 
 	/**
@@ -55,15 +55,56 @@ public class DistanceTypeInfo implements Serializable {
 		this.units = units;
 	}
 
-	
 	public String getValue() {
 		return value;
 	}
 
-	
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "DistanceTypeInfo(units=" + this.getUnits() + ", value=" + this.getValue() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof DistanceTypeInfo)) {
+			return false;
+		}
+		final DistanceTypeInfo other = (DistanceTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getUnits() == null ? other.getUnits() != null : !this.getUnits().equals(
+				(java.lang.Object) other.getUnits())) {
+			return false;
+		}
+		if (this.getValue() == null ? other.getValue() != null : !this.getValue().equals(
+				(java.lang.Object) other.getValue())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof DistanceTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getUnits() == null ? 0 : this.getUnits().hashCode());
+		result = result * prime + (this.getValue() == null ? 0 : this.getValue().hashCode());
+		return result;
+	}
 }

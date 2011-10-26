@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -24,15 +23,55 @@ import org.geomajas.annotation.Api;
  * <pre>
  * &lt;xs:element
  * xmlns:ns="http://www.opengis.net/sld" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="ns:ParameterValueType" name="Label"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class LabelInfo extends ParameterValueTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "LabelInfo()";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LabelInfo)) {
+			return false;
+		}
+		final LabelInfo other = (LabelInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof LabelInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		return result;
+	}
 }

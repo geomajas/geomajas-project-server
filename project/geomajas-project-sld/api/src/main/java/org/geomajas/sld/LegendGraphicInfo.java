@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -20,7 +19,7 @@ import org.geomajas.annotation.Api;
  * <pre>
  * &lt;xs:element
  * xmlns:ns="http://www.opengis.net/sld" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" name="LegendGraphic">
  *   &lt;xs:complexType>
  *     &lt;xs:sequence>
@@ -29,10 +28,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class LegendGraphicInfo implements Serializable {
 
@@ -56,5 +56,45 @@ public class LegendGraphicInfo implements Serializable {
 	 */
 	public void setGraphic(GraphicInfo graphic) {
 		this.graphic = graphic;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "LegendGraphicInfo(graphic=" + this.getGraphic() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LegendGraphicInfo)) {
+			return false;
+		}
+		final LegendGraphicInfo other = (LegendGraphicInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getGraphic() == null ? other.getGraphic() != null : !this.getGraphic().equals(
+				(java.lang.Object) other.getGraphic())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof LegendGraphicInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getGraphic() == null ? 0 : this.getGraphic().hashCode());
+		return result;
 	}
 }

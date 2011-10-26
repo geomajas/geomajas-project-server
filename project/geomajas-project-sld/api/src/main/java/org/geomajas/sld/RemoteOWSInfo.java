@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -33,10 +32,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class RemoteOWSInfo implements Serializable {
 
@@ -80,5 +80,50 @@ public class RemoteOWSInfo implements Serializable {
 	 */
 	public void setOnlineResource(OnlineResourceInfo onlineResource) {
 		this.onlineResource = onlineResource;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "RemoteOWSInfo(service=" + this.getService() + ", onlineResource=" + this.getOnlineResource() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof RemoteOWSInfo)) {
+			return false;
+		}
+		final RemoteOWSInfo other = (RemoteOWSInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getService() == null ? other.getService() != null : !this.getService().equals(
+				(java.lang.Object) other.getService())) {
+			return false;
+		}
+		if (this.getOnlineResource() == null ? other.getOnlineResource() != null : !this.getOnlineResource().equals(
+				(java.lang.Object) other.getOnlineResource())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof RemoteOWSInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getService() == null ? 0 : this.getService().hashCode());
+		result = result * prime + (this.getOnlineResource() == null ? 0 : this.getOnlineResource().hashCode());
+		return result;
 	}
 }

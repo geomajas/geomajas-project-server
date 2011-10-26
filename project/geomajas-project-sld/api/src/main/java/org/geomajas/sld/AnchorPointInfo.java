@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -34,10 +33,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class AnchorPointInfo implements Serializable {
 
@@ -81,5 +81,51 @@ public class AnchorPointInfo implements Serializable {
 	 */
 	public void setAnchorPointY(AnchorPointYInfo anchorPointY) {
 		this.anchorPointY = anchorPointY;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "AnchorPointInfo(anchorPointX=" + this.getAnchorPointX() + ", anchorPointY=" + this.getAnchorPointY()
+				+ ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof AnchorPointInfo)) {
+			return false;
+		}
+		final AnchorPointInfo other = (AnchorPointInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getAnchorPointX() == null ? other.getAnchorPointX() != null : !this.getAnchorPointX().equals(
+				(java.lang.Object) other.getAnchorPointX())) {
+			return false;
+		}
+		if (this.getAnchorPointY() == null ? other.getAnchorPointY() != null : !this.getAnchorPointY().equals(
+				(java.lang.Object) other.getAnchorPointY())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof AnchorPointInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getAnchorPointX() == null ? 0 : this.getAnchorPointX().hashCode());
+		result = result * prime + (this.getAnchorPointY() == null ? 0 : this.getAnchorPointY().hashCode());
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -26,12 +25,46 @@ import org.geomajas.annotation.Api;
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public abstract class SpatialOpsTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
 	protected SpatialOpsTypeInfo() {
-		
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "SpatialOpsTypeInfo()";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof SpatialOpsTypeInfo)) {
+			return false;
+		}
+		final SpatialOpsTypeInfo other = (SpatialOpsTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof SpatialOpsTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		int result = 1;
+		return result;
 	}
 }

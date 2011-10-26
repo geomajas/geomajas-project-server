@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -22,12 +21,52 @@ import org.geomajas.annotation.Api;
  * xmlns:ogc="http://www.opengis.net/ogc"
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="ogc:BinaryLogicOpType" substitutionGroup="ogc:logicOps" name="Or"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class OrInfo extends BinaryLogicOpTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "OrInfo()";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof OrInfo)) {
+			return false;
+		}
+		final OrInfo other = (OrInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof OrInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		return result;
+	}
 }

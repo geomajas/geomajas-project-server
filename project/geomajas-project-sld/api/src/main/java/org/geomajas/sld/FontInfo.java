@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -35,10 +34,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class FontInfo implements Serializable {
 
@@ -110,5 +110,45 @@ public class FontInfo implements Serializable {
 			}
 		}
 		getCssParameterList().add(new CssParameterInfo(FONT_WEIGHT, fontWeight));
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "FontInfo(cssParameterList=" + this.getCssParameterList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof FontInfo)) {
+			return false;
+		}
+		final FontInfo other = (FontInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getCssParameterList() == null ? other.getCssParameterList() != null : !this.getCssParameterList()
+				.equals((java.lang.Object) other.getCssParameterList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof FontInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getCssParameterList() == null ? 0 : this.getCssParameterList().hashCode());
+		return result;
 	}
 }

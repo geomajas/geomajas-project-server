@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.expression.PropertyNameInfo;
 import org.geomajas.sld.geometry.AbstractGeometryInfo;
@@ -35,10 +34,11 @@ import org.geomajas.sld.geometry.AbstractGeometryInfo;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class DistanceBufferTypeInfo extends SpatialOpsTypeInfo implements Serializable {
 
@@ -102,5 +102,60 @@ public class DistanceBufferTypeInfo extends SpatialOpsTypeInfo implements Serial
 	 */
 	public void setDistance(DistanceTypeInfo distance) {
 		this.distance = distance;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "DistanceBufferTypeInfo(propertyName=" + this.getPropertyName() + ", geometry=" + this.getGeometry()
+				+ ", distance=" + this.getDistance() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof DistanceBufferTypeInfo)) {
+			return false;
+		}
+		final DistanceBufferTypeInfo other = (DistanceBufferTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getPropertyName() == null ? other.getPropertyName() != null : !this.getPropertyName().equals(
+				(java.lang.Object) other.getPropertyName())) {
+			return false;
+		}
+		if (this.getGeometry() == null ? other.getGeometry() != null : !this.getGeometry().equals(
+				(java.lang.Object) other.getGeometry())) {
+			return false;
+		}
+		if (this.getDistance() == null ? other.getDistance() != null : !this.getDistance().equals(
+				(java.lang.Object) other.getDistance())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof DistanceBufferTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getPropertyName() == null ? 0 : this.getPropertyName().hashCode());
+		result = result * prime + (this.getGeometry() == null ? 0 : this.getGeometry().hashCode());
+		result = result * prime + (this.getDistance() == null ? 0 : this.getDistance().hashCode());
+		return result;
 	}
 }

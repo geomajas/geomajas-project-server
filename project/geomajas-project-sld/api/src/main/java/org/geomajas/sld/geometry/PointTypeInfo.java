@@ -11,7 +11,6 @@
 package org.geomajas.sld.geometry;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -37,10 +36,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class PointTypeInfo extends AbstractGeometryInfo implements Serializable {
 
@@ -125,5 +125,59 @@ public class PointTypeInfo extends AbstractGeometryInfo implements Serializable 
 	public void setCoordinates(CoordinatesTypeInfo coordinates) {
 		setChoiceSelect(COORDINATES_CHOICE);
 		this.coordinates = coordinates;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "PointTypeInfo(choiceSelect=" + this.choiceSelect + ", coord=" + this.getCoord() + ", coordinates="
+				+ this.getCoordinates() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof PointTypeInfo)) {
+			return false;
+		}
+		final PointTypeInfo other = (PointTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.choiceSelect != other.choiceSelect) {
+			return false;
+		}
+		if (this.getCoord() == null ? other.getCoord() != null : !this.getCoord().equals(
+				(java.lang.Object) other.getCoord())) {
+			return false;
+		}
+		if (this.getCoordinates() == null ? other.getCoordinates() != null : !this.getCoordinates().equals(
+				(java.lang.Object) other.getCoordinates())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof PointTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + this.choiceSelect;
+		result = result * prime + (this.getCoord() == null ? 0 : this.getCoord().hashCode());
+		result = result * prime + (this.getCoordinates() == null ? 0 : this.getCoordinates().hashCode());
+		return result;
 	}
 }

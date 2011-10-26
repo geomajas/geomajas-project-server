@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -38,10 +37,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class NamedLayerInfo implements Serializable {
 
@@ -112,8 +112,8 @@ public class NamedLayerInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:choice
- * xmlns:ns="http://www.opengis.net/sld"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0" maxOccurs="unbounded">
+	 * xmlns:ns="http://www.opengis.net/sld"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0" maxOccurs="unbounded">
 	 *   &lt;xs:element ref="ns:NamedStyle"/>
 	 *   &lt;xs:element ref="ns:UserStyle"/>
 	 * &lt;/xs:choice>
@@ -203,5 +203,107 @@ public class NamedLayerInfo implements Serializable {
 			setChoiceListSelect(USER_STYLE_CHOICE);
 			this.userStyle = userStyle;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "NamedLayerInfo.ChoiceInfo(choiceListSelect=" + this.choiceListSelect + ", namedStyle="
+					+ this.getNamedStyle() + ", userStyle=" + this.getUserStyle() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceListSelect != other.choiceListSelect) {
+				return false;
+			}
+			if (this.getNamedStyle() == null ? other.getNamedStyle() != null : !this.getNamedStyle().equals(
+					(java.lang.Object) other.getNamedStyle())) {
+				return false;
+			}
+			if (this.getUserStyle() == null ? other.getUserStyle() != null : !this.getUserStyle().equals(
+					(java.lang.Object) other.getUserStyle())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceListSelect;
+			result = result * prime + (this.getNamedStyle() == null ? 0 : this.getNamedStyle().hashCode());
+			result = result * prime + (this.getUserStyle() == null ? 0 : this.getUserStyle().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "NamedLayerInfo(name=" + this.getName() + ", layerFeatureConstraints="
+				+ this.getLayerFeatureConstraints() + ", choiceList=" + this.getChoiceList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof NamedLayerInfo)) {
+			return false;
+		}
+		final NamedLayerInfo other = (NamedLayerInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		if (this.getLayerFeatureConstraints() == null ? other.getLayerFeatureConstraints() != null : !this
+				.getLayerFeatureConstraints().equals((java.lang.Object) other.getLayerFeatureConstraints())) {
+			return false;
+		}
+		if (this.getChoiceList() == null ? other.getChoiceList() != null : !this.getChoiceList().equals(
+				(java.lang.Object) other.getChoiceList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof NamedLayerInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime
+				+ (this.getLayerFeatureConstraints() == null ? 0 : this.getLayerFeatureConstraints().hashCode());
+		result = result * prime + (this.getChoiceList() == null ? 0 : this.getChoiceList().hashCode());
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -22,10 +21,11 @@ import org.geomajas.annotation.Api;
  * xmlns:ns="http://www.opengis.net/sld"
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="FeatureTypeName"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class FeatureTypeNameInfo implements Serializable {
 
@@ -49,5 +49,45 @@ public class FeatureTypeNameInfo implements Serializable {
 	 */
 	public void setFeatureTypeName(String featureTypeName) {
 		this.featureTypeName = featureTypeName;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "FeatureTypeNameInfo(featureTypeName=" + this.getFeatureTypeName() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof FeatureTypeNameInfo)) {
+			return false;
+		}
+		final FeatureTypeNameInfo other = (FeatureTypeNameInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getFeatureTypeName() == null ? other.getFeatureTypeName() != null : !this.getFeatureTypeName().equals(
+				(java.lang.Object) other.getFeatureTypeName())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof FeatureTypeNameInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getFeatureTypeName() == null ? 0 : this.getFeatureTypeName().hashCode());
+		return result;
 	}
 }

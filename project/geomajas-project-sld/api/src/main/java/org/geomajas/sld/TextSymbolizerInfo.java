@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -46,10 +45,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class TextSymbolizerInfo extends SymbolizerTypeInfo implements Serializable {
 
@@ -233,5 +233,92 @@ public class TextSymbolizerInfo extends SymbolizerTypeInfo implements Serializab
 	 */
 	public void setVendorOptionList(List<VendorOptionInfo> list) {
 		vendorOptionList = list;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "TextSymbolizerInfo(geometry=" + this.getGeometry() + ", label=" + this.getLabel() + ", font="
+				+ this.getFont() + ", labelPlacement=" + this.getLabelPlacement() + ", halo=" + this.getHalo()
+				+ ", fill=" + this.getFill() + ", graphic=" + this.getGraphic() + ", priority=" + this.getPriority()
+				+ ", vendorOptionList=" + this.getVendorOptionList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof TextSymbolizerInfo)) {
+			return false;
+		}
+		final TextSymbolizerInfo other = (TextSymbolizerInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getGeometry() == null ? other.getGeometry() != null : !this.getGeometry().equals(
+				(java.lang.Object) other.getGeometry())) {
+			return false;
+		}
+		if (this.getLabel() == null ? other.getLabel() != null : !this.getLabel().equals(
+				(java.lang.Object) other.getLabel())) {
+			return false;
+		}
+		if (this.getFont() == null ? other.getFont() != null : !this.getFont().equals(
+				(java.lang.Object) other.getFont())) {
+			return false;
+		}
+		if (this.getLabelPlacement() == null ? other.getLabelPlacement() != null : !this.getLabelPlacement().equals(
+				(java.lang.Object) other.getLabelPlacement())) {
+			return false;
+		}
+		if (this.getHalo() == null ? other.getHalo() != null : !this.getHalo().equals(
+				(java.lang.Object) other.getHalo())) {
+			return false;
+		}
+		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals(
+				(java.lang.Object) other.getFill())) {
+			return false;
+		}
+		if (this.getGraphic() == null ? other.getGraphic() != null : !this.getGraphic().equals(
+				(java.lang.Object) other.getGraphic())) {
+			return false;
+		}
+		if (this.getPriority() == null ? other.getPriority() != null : !this.getPriority().equals(
+				(java.lang.Object) other.getPriority())) {
+			return false;
+		}
+		if (this.getVendorOptionList() == null ? other.getVendorOptionList() != null : !this.getVendorOptionList()
+				.equals((java.lang.Object) other.getVendorOptionList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof TextSymbolizerInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getGeometry() == null ? 0 : this.getGeometry().hashCode());
+		result = result * prime + (this.getLabel() == null ? 0 : this.getLabel().hashCode());
+		result = result * prime + (this.getFont() == null ? 0 : this.getFont().hashCode());
+		result = result * prime + (this.getLabelPlacement() == null ? 0 : this.getLabelPlacement().hashCode());
+		result = result * prime + (this.getHalo() == null ? 0 : this.getHalo().hashCode());
+		result = result * prime + (this.getFill() == null ? 0 : this.getFill().hashCode());
+		result = result * prime + (this.getGraphic() == null ? 0 : this.getGraphic().hashCode());
+		result = result * prime + (this.getPriority() == null ? 0 : this.getPriority().hashCode());
+		result = result * prime + (this.getVendorOptionList() == null ? 0 : this.getVendorOptionList().hashCode());
+		return result;
 	}
 }

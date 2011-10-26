@@ -13,7 +13,6 @@ package org.geomajas.sld.expression;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -33,10 +32,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class FunctionTypeInfo extends ExpressionInfo implements Serializable {
 
@@ -80,5 +80,54 @@ public class FunctionTypeInfo extends ExpressionInfo implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "FunctionTypeInfo(expressionList=" + this.getExpressionList() + ", name=" + this.getName() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof FunctionTypeInfo)) {
+			return false;
+		}
+		final FunctionTypeInfo other = (FunctionTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getExpressionList() == null ? other.getExpressionList() != null : !this.getExpressionList().equals(
+				(java.lang.Object) other.getExpressionList())) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof FunctionTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getExpressionList() == null ? 0 : this.getExpressionList().hashCode());
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		return result;
 	}
 }

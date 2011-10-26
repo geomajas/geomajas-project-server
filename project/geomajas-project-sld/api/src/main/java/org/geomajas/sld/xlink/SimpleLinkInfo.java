@@ -11,7 +11,6 @@
 package org.geomajas.sld.xlink;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -38,10 +37,11 @@ import org.geomajas.annotation.Api;
  *   &lt;xs:attribute use="optional" ref="ns:actuate"/>
  * &lt;/xs:attributeGroup>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class SimpleLinkInfo implements Serializable {
 
@@ -192,12 +192,12 @@ public class SimpleLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:href"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:href"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="href"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="href"/>
 	 * </pre>
 	 */
 	public static class HrefInfo implements Serializable {
@@ -223,6 +223,46 @@ public class SimpleLinkInfo implements Serializable {
 		public void setHref(String href) {
 			this.href = href;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "SimpleLinkInfo.HrefInfo(href=" + this.getHref() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof HrefInfo)) {
+				return false;
+			}
+			final HrefInfo other = (HrefInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getHref() == null ? other.getHref() != null : !this.getHref().equals(
+					(java.lang.Object) other.getHref())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof HrefInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getHref() == null ? 0 : this.getHref().hashCode());
+			return result;
+		}
 	}
 
 	/**
@@ -230,12 +270,12 @@ public class SimpleLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:role"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:role"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="role"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="role"/>
 	 * </pre>
 	 */
 	public static class RoleInfo implements Serializable {
@@ -261,6 +301,46 @@ public class SimpleLinkInfo implements Serializable {
 		public void setRole(String role) {
 			this.role = role;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "SimpleLinkInfo.RoleInfo(role=" + this.getRole() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof RoleInfo)) {
+				return false;
+			}
+			final RoleInfo other = (RoleInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getRole() == null ? other.getRole() != null : !this.getRole().equals(
+					(java.lang.Object) other.getRole())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof RoleInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getRole() == null ? 0 : this.getRole().hashCode());
+			return result;
+		}
 	}
 
 	/**
@@ -268,12 +348,12 @@ public class SimpleLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:arcrole"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:arcrole"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="arcrole"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="arcrole"/>
 	 * </pre>
 	 */
 	public static class ArcroleInfo implements Serializable {
@@ -299,6 +379,46 @@ public class SimpleLinkInfo implements Serializable {
 		public void setArcrole(String arcrole) {
 			this.arcrole = arcrole;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "SimpleLinkInfo.ArcroleInfo(arcrole=" + this.getArcrole() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ArcroleInfo)) {
+				return false;
+			}
+			final ArcroleInfo other = (ArcroleInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getArcrole() == null ? other.getArcrole() != null : !this.getArcrole().equals(
+					(java.lang.Object) other.getArcrole())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ArcroleInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getArcrole() == null ? 0 : this.getArcrole().hashCode());
+			return result;
+		}
 	}
 
 	/**
@@ -306,12 +426,12 @@ public class SimpleLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:title"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:title"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="title"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="title"/>
 	 * </pre>
 	 */
 	public static class TitleInfo implements Serializable {
@@ -337,5 +457,117 @@ public class SimpleLinkInfo implements Serializable {
 		public void setTitle(String title) {
 			this.title = title;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "SimpleLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof TitleInfo)) {
+				return false;
+			}
+			final TitleInfo other = (TitleInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+					(java.lang.Object) other.getTitle())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof TitleInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "SimpleLinkInfo(type=" + this.getType() + ", href=" + this.getHref() + ", role=" + this.getRole()
+				+ ", arcrole=" + this.getArcrole() + ", title=" + this.getTitle() + ", show=" + this.getShow()
+				+ ", actuate=" + this.getActuate() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof SimpleLinkInfo)) {
+			return false;
+		}
+		final SimpleLinkInfo other = (SimpleLinkInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getType() == null ? other.getType() != null : !this.getType().equals(
+				(java.lang.Object) other.getType())) {
+			return false;
+		}
+		if (this.getHref() == null ? other.getHref() != null : !this.getHref().equals(
+				(java.lang.Object) other.getHref())) {
+			return false;
+		}
+		if (this.getRole() == null ? other.getRole() != null : !this.getRole().equals(
+				(java.lang.Object) other.getRole())) {
+			return false;
+		}
+		if (this.getArcrole() == null ? other.getArcrole() != null : !this.getArcrole().equals(
+				(java.lang.Object) other.getArcrole())) {
+			return false;
+		}
+		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+				(java.lang.Object) other.getTitle())) {
+			return false;
+		}
+		if (this.getShow() == null ? other.getShow() != null : !this.getShow().equals(
+				(java.lang.Object) other.getShow())) {
+			return false;
+		}
+		if (this.getActuate() == null ? other.getActuate() != null : !this.getActuate().equals(
+				(java.lang.Object) other.getActuate())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof SimpleLinkInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getType() == null ? 0 : this.getType().hashCode());
+		result = result * prime + (this.getHref() == null ? 0 : this.getHref().hashCode());
+		result = result * prime + (this.getRole() == null ? 0 : this.getRole().hashCode());
+		result = result * prime + (this.getArcrole() == null ? 0 : this.getArcrole().hashCode());
+		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime + (this.getShow() == null ? 0 : this.getShow().hashCode());
+		result = result * prime + (this.getActuate() == null ? 0 : this.getActuate().hashCode());
+		return result;
 	}
 }

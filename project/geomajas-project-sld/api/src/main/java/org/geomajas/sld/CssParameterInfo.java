@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -35,19 +34,19 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class CssParameterInfo extends ParameterValueTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
-	
-	public CssParameterInfo(){
-		
+
+	public CssParameterInfo() {
 	}
-	
+
 	public CssParameterInfo(String name, String value) {
 		setName(name);
 		setValue(value);
@@ -71,5 +70,49 @@ public class CssParameterInfo extends ParameterValueTypeInfo implements Serializ
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "CssParameterInfo(name=" + this.getName() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof CssParameterInfo)) {
+			return false;
+		}
+		final CssParameterInfo other = (CssParameterInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof CssParameterInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		return result;
 	}
 }

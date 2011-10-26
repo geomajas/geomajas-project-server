@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.expression.ExpressionInfo;
 
@@ -35,17 +34,18 @@ import org.geomajas.sld.expression.ExpressionInfo;
  *   &lt;/xs:sequence>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ParameterValueTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
 	private List<ExpressionInfo> expressionList = new ArrayList<ExpressionInfo>();
-	
+
 	private String value;
 
 	/**
@@ -66,15 +66,56 @@ public class ParameterValueTypeInfo implements Serializable {
 		expressionList = list;
 	}
 
-	
 	public String getValue() {
 		return value;
 	}
 
-	
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ParameterValueTypeInfo(expressionList=" + this.getExpressionList() + ", value=" + this.getValue() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ParameterValueTypeInfo)) {
+			return false;
+		}
+		final ParameterValueTypeInfo other = (ParameterValueTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getExpressionList() == null ? other.getExpressionList() != null : !this.getExpressionList().equals(
+				(java.lang.Object) other.getExpressionList())) {
+			return false;
+		}
+		if (this.getValue() == null ? other.getValue() != null : !this.getValue().equals(
+				(java.lang.Object) other.getValue())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ParameterValueTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getExpressionList() == null ? 0 : this.getExpressionList().hashCode());
+		result = result * prime + (this.getValue() == null ? 0 : this.getValue().hashCode());
+		return result;
+	}
 }

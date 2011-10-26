@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -22,10 +21,11 @@ import org.geomajas.annotation.Api;
  * xmlns:ns="http://www.opengis.net/sld"
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" name="BrightnessOnly"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class BrightnessOnlyInfo implements Serializable {
 
@@ -49,5 +49,44 @@ public class BrightnessOnlyInfo implements Serializable {
 	 */
 	public void setBrightnessOnly(boolean brightnessOnly) {
 		this.brightnessOnly = brightnessOnly;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "BrightnessOnlyInfo(brightnessOnly=" + this.isBrightnessOnly() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof BrightnessOnlyInfo)) {
+			return false;
+		}
+		final BrightnessOnlyInfo other = (BrightnessOnlyInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.isBrightnessOnly() != other.isBrightnessOnly()) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof BrightnessOnlyInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.isBrightnessOnly() ? 1231 : 1237);
+		return result;
 	}
 }

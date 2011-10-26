@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -41,10 +40,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class StyledLayerDescriptorInfo implements Serializable {
 
@@ -155,8 +155,8 @@ public class StyledLayerDescriptorInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:choice
- * xmlns:ns="http://www.opengis.net/sld"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0" maxOccurs="unbounded">
+	 * xmlns:ns="http://www.opengis.net/sld"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0" maxOccurs="unbounded">
 	 *   &lt;xs:element ref="ns:NamedLayer"/>
 	 *   &lt;xs:element ref="ns:UserLayer"/>
 	 * &lt;/xs:choice>
@@ -246,5 +246,116 @@ public class StyledLayerDescriptorInfo implements Serializable {
 			setChoiceListSelect(USER_LAYER_CHOICE);
 			this.userLayer = userLayer;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "StyledLayerDescriptorInfo.ChoiceInfo(choiceListSelect=" + this.choiceListSelect + ", namedLayer="
+					+ this.getNamedLayer() + ", userLayer=" + this.getUserLayer() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceListSelect != other.choiceListSelect) {
+				return false;
+			}
+			if (this.getNamedLayer() == null ? other.getNamedLayer() != null : !this.getNamedLayer().equals(
+					(java.lang.Object) other.getNamedLayer())) {
+				return false;
+			}
+			if (this.getUserLayer() == null ? other.getUserLayer() != null : !this.getUserLayer().equals(
+					(java.lang.Object) other.getUserLayer())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceListSelect;
+			result = result * prime + (this.getNamedLayer() == null ? 0 : this.getNamedLayer().hashCode());
+			result = result * prime + (this.getUserLayer() == null ? 0 : this.getUserLayer().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "StyledLayerDescriptorInfo(name=" + this.getName() + ", title=" + this.getTitle() + ", aAbstract="
+				+ this.aAbstract + ", choiceList=" + this.getChoiceList() + ", version=" + this.getVersion() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof StyledLayerDescriptorInfo)) {
+			return false;
+		}
+		final StyledLayerDescriptorInfo other = (StyledLayerDescriptorInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+				(java.lang.Object) other.getTitle())) {
+			return false;
+		}
+		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
+				.equals((java.lang.Object) other.aAbstract)) {
+			return false;
+		}
+		if (this.getChoiceList() == null ? other.getChoiceList() != null : !this.getChoiceList().equals(
+				(java.lang.Object) other.getChoiceList())) {
+			return false;
+		}
+		if (this.getVersion() == null ? other.getVersion() != null : !this.getVersion().equals(
+				(java.lang.Object) other.getVersion())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof StyledLayerDescriptorInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime + (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
+		result = result * prime + (this.getChoiceList() == null ? 0 : this.getChoiceList().hashCode());
+		result = result * prime + (this.getVersion() == null ? 0 : this.getVersion().hashCode());
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld.xlink;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -39,10 +38,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:attribute>
  * &lt;/xs:attributeGroup>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ArcLinkInfo implements Serializable {
 
@@ -193,14 +193,14 @@ public class ArcLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink" 
-	 *
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:arcrole"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink" 
+	 * 
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:arcrole"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink" 
-	 *
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="arcrole"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink" 
+	 * 
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="arcrole"/>
 	 * </pre>
 	 */
 	public static class ArcroleInfo implements Serializable {
@@ -226,6 +226,46 @@ public class ArcLinkInfo implements Serializable {
 		public void setArcrole(String arcrole) {
 			this.arcrole = arcrole;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "ArcLinkInfo.ArcroleInfo(arcrole=" + this.getArcrole() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ArcroleInfo)) {
+				return false;
+			}
+			final ArcroleInfo other = (ArcroleInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getArcrole() == null ? other.getArcrole() != null : !this.getArcrole().equals(
+					(java.lang.Object) other.getArcrole())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ArcroleInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getArcrole() == null ? 0 : this.getArcrole().hashCode());
+			return result;
+		}
 	}
 
 	/**
@@ -233,14 +273,14 @@ public class ArcLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink" 
-	 *
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:title"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink" 
+	 * 
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:title"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink" 
-	 *
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="title"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink" 
+	 * 
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="title"/>
 	 * </pre>
 	 */
 	public static class TitleInfo implements Serializable {
@@ -266,6 +306,46 @@ public class ArcLinkInfo implements Serializable {
 		public void setTitle(String title) {
 			this.title = title;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "ArcLinkInfo.TitleInfo(title=" + this.getTitle() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof TitleInfo)) {
+				return false;
+			}
+			final TitleInfo other = (TitleInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+					(java.lang.Object) other.getTitle())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof TitleInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+			return result;
+		}
 	}
 
 	/**
@@ -273,14 +353,14 @@ public class ArcLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
 	 * 
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:from"/>
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:from"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink"
+	 * xmlns:ns="http://www.w3.org/1999/xlink"
 	 * 
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="from"/>
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="from"/>
 	 * </pre>
 	 */
 	public static class FromInfo implements Serializable {
@@ -306,6 +386,46 @@ public class ArcLinkInfo implements Serializable {
 		public void setFrom(String from) {
 			this.from = from;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "ArcLinkInfo.FromInfo(from=" + this.getFrom() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof FromInfo)) {
+				return false;
+			}
+			final FromInfo other = (FromInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getFrom() == null ? other.getFrom() != null : !this.getFrom().equals(
+					(java.lang.Object) other.getFrom())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof FromInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getFrom() == null ? 0 : this.getFrom().hashCode());
+			return result;
+		}
 	}
 
 	/**
@@ -313,14 +433,14 @@ public class ArcLinkInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink" 
-	 *
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:to"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink" 
+	 * 
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:to"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.w3.org/1999/xlink" 
-	 *
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="to"/>
+	 * xmlns:ns="http://www.w3.org/1999/xlink" 
+	 * 
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="to"/>
 	 * </pre>
 	 */
 	public static class ToInfo implements Serializable {
@@ -346,5 +466,115 @@ public class ArcLinkInfo implements Serializable {
 		public void setTo(String to) {
 			this.to = to;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "ArcLinkInfo.ToInfo(to=" + this.getTo() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ToInfo)) {
+				return false;
+			}
+			final ToInfo other = (ToInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getTo() == null ? other.getTo() != null : !this.getTo().equals((java.lang.Object) other.getTo())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ToInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getTo() == null ? 0 : this.getTo().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ArcLinkInfo(type=" + this.getType() + ", arcrole=" + this.getArcrole() + ", title=" + this.getTitle()
+				+ ", show=" + this.getShow() + ", actuate=" + this.getActuate() + ", from=" + this.getFrom() + ", to="
+				+ this.getTo() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ArcLinkInfo)) {
+			return false;
+		}
+		final ArcLinkInfo other = (ArcLinkInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getType() == null ? other.getType() != null : !this.getType().equals(
+				(java.lang.Object) other.getType())) {
+			return false;
+		}
+		if (this.getArcrole() == null ? other.getArcrole() != null : !this.getArcrole().equals(
+				(java.lang.Object) other.getArcrole())) {
+			return false;
+		}
+		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+				(java.lang.Object) other.getTitle())) {
+			return false;
+		}
+		if (this.getShow() == null ? other.getShow() != null : !this.getShow().equals(
+				(java.lang.Object) other.getShow())) {
+			return false;
+		}
+		if (this.getActuate() == null ? other.getActuate() != null : !this.getActuate().equals(
+				(java.lang.Object) other.getActuate())) {
+			return false;
+		}
+		if (this.getFrom() == null ? other.getFrom() != null : !this.getFrom().equals(
+				(java.lang.Object) other.getFrom())) {
+			return false;
+		}
+		if (this.getTo() == null ? other.getTo() != null : !this.getTo().equals((java.lang.Object) other.getTo())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ArcLinkInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getType() == null ? 0 : this.getType().hashCode());
+		result = result * prime + (this.getArcrole() == null ? 0 : this.getArcrole().hashCode());
+		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime + (this.getShow() == null ? 0 : this.getShow().hashCode());
+		result = result * prime + (this.getActuate() == null ? 0 : this.getActuate().hashCode());
+		result = result * prime + (this.getFrom() == null ? 0 : this.getFrom().hashCode());
+		result = result * prime + (this.getTo() == null ? 0 : this.getTo().hashCode());
+		return result;
 	}
 }

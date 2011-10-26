@@ -11,7 +11,6 @@
 package org.geomajas.sld.geometry;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -22,26 +21,67 @@ import org.geomajas.annotation.Api;
  * xmlns:ns="http://www.opengis.net/gml"
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="ns:GeometryAssociationType" name="outerBoundaryIs"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class OuterBoundaryIsInfo extends GeometryAssociationTypeInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
-	
+
 	private LinearRingTypeInfo linearRing;
 
-	
 	public LinearRingTypeInfo getLinearRing() {
 		return linearRing;
 	}
 
-	
 	public void setLinearRing(LinearRingTypeInfo linearRing) {
 		this.linearRing = linearRing;
 	}
-	
-	
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "OuterBoundaryIsInfo(linearRing=" + this.getLinearRing() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof OuterBoundaryIsInfo)) {
+			return false;
+		}
+		final OuterBoundaryIsInfo other = (OuterBoundaryIsInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getLinearRing() == null ? other.getLinearRing() != null : !this.getLinearRing().equals(
+				(java.lang.Object) other.getLinearRing())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof OuterBoundaryIsInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getLinearRing() == null ? 0 : this.getLinearRing().hashCode());
+		return result;
+	}
 }

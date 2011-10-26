@@ -13,7 +13,6 @@ package org.geomajas.sld.filter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -32,10 +31,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializable {
 
@@ -66,8 +66,8 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 	 * 
 	 * <pre>
 	 * &lt;xs:choice
- * xmlns:ns="http://www.opengis.net/ogc"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="2" maxOccurs="unbounded">
+	 * xmlns:ns="http://www.opengis.net/ogc"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="2" maxOccurs="unbounded">
 	 *   &lt;xs:element ref="ns:comparisonOps"/>
 	 *   &lt;xs:element ref="ns:spatialOps"/>
 	 *   &lt;xs:element ref="ns:logicOps"/>
@@ -190,5 +190,105 @@ public class BinaryLogicOpTypeInfo extends LogicOpsTypeInfo implements Serializa
 			setChoiceListSelect(LOGIC_OPS_CHOICE);
 			this.logicOps = logicOps;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "BinaryLogicOpTypeInfo.ChoiceInfo(choiceListSelect=" + this.choiceListSelect + ", comparisonOps="
+					+ this.getComparisonOps() + ", spatialOps=" + this.getSpatialOps() + ", logicOps="
+					+ this.getLogicOps() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceListSelect != other.choiceListSelect) {
+				return false;
+			}
+			if (this.getComparisonOps() == null ? other.getComparisonOps() != null : !this.getComparisonOps().equals(
+					(java.lang.Object) other.getComparisonOps())) {
+				return false;
+			}
+			if (this.getSpatialOps() == null ? other.getSpatialOps() != null : !this.getSpatialOps().equals(
+					(java.lang.Object) other.getSpatialOps())) {
+				return false;
+			}
+			if (this.getLogicOps() == null ? other.getLogicOps() != null : !this.getLogicOps().equals(
+					(java.lang.Object) other.getLogicOps())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceListSelect;
+			result = result * prime + (this.getComparisonOps() == null ? 0 : this.getComparisonOps().hashCode());
+			result = result * prime + (this.getSpatialOps() == null ? 0 : this.getSpatialOps().hashCode());
+			result = result * prime + (this.getLogicOps() == null ? 0 : this.getLogicOps().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "BinaryLogicOpTypeInfo(choiceList=" + this.getChoiceList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof BinaryLogicOpTypeInfo)) {
+			return false;
+		}
+		final BinaryLogicOpTypeInfo other = (BinaryLogicOpTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getChoiceList() == null ? other.getChoiceList() != null : !this.getChoiceList().equals(
+				(java.lang.Object) other.getChoiceList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof BinaryLogicOpTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getChoiceList() == null ? 0 : this.getChoiceList().hashCode());
+		return result;
 	}
 }

@@ -28,6 +28,7 @@ import org.jibx.runtime.impl.UnmarshallingContext;
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IAliasable {
 
@@ -41,12 +42,9 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 	 * Aliased constructor. This takes a name definition for the top-level element. It'll be used by JiBX when a name is
 	 * supplied by the mapping which references this custom marshaller/unmarshaller.
 	 * 
-	 * @param uri
-	 *            namespace URI for the top-level element (also used for all other names within the binding)
-	 * @param index
-	 *            namespace index corresponding to the defined URI within the marshalling context definitions
-	 * @param name
-	 *            local name for the top-level element
+	 * @param uri namespace URI for the top-level element (also used for all other names within the binding)
+	 * @param index namespace index corresponding to the defined URI within the marshalling context definitions
+	 * @param name local name for the top-level element
 	 */
 	public OverlapBehaviorMarshaller(String uri, int index, String name) {
 		this.uri = uri;
@@ -60,7 +58,6 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 	 * @see org.jibx.runtime.IMarshaller#marshal(java.lang.Object, org.jibx.runtime.IMarshallingContext)
 	 */
 	public void marshal(Object obj, IMarshallingContext ictx) throws JiBXException {
-
 		// make sure the parameters are as expected
 		if (!(obj instanceof OverlapBehaviorInfo)) {
 			throw new JiBXException("Invalid object type for marshaller");
@@ -70,8 +67,7 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 			OverlapBehaviorInfo overlapBehaviorInfo = (OverlapBehaviorInfo) obj;
 			// start by generating start tag for container
 			MarshallingContext ctx = (MarshallingContext) ictx;
-			ctx.startTag(index, name).content(overlapBehaviorInfo.getOverlapBehavior().xmlValue())
-					.closeStartContent();
+			ctx.startTag(index, name).content(overlapBehaviorInfo.getOverlapBehavior().xmlValue()).closeStartContent();
 			ctx.endTag(index, name);
 		}
 	}
@@ -100,19 +96,16 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 	 * @see org.jibx.runtime.IUnmarshaller#unmarshal(java.lang.Object, org.jibx.runtime.IUnmarshallingContext)
 	 */
 	public Object unmarshal(Object obj, IUnmarshallingContext ictx) throws JiBXException {
-
 		// make sure we're at the appropriate start tag
 		UnmarshallingContext ctx = (UnmarshallingContext) ictx;
 		if (!ctx.isAt(uri, name)) {
 			ctx.throwStartTagNameError(uri, name);
 		}
-
 		// create new hashmap if needed
 		OverlapBehaviorInfo overlapBehaviorInfo = (OverlapBehaviorInfo) obj;
 		if (overlapBehaviorInfo == null) {
 			overlapBehaviorInfo = new OverlapBehaviorInfo();
 		}
-
 		// process all entries present in document
 		ctx.parsePastStartTag(uri, name);
 		boolean found = false;
@@ -129,5 +122,52 @@ public class OverlapBehaviorMarshaller implements IMarshaller, IUnmarshaller, IA
 		}
 		ctx.parsePastEndTag(uri, name);
 		return overlapBehaviorInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "OverlapBehaviorMarshaller(uri=" + this.uri + ", index=" + this.index + ", name=" + this.name + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof OverlapBehaviorMarshaller)) {
+			return false;
+		}
+		final OverlapBehaviorMarshaller other = (OverlapBehaviorMarshaller) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.uri == null ? other.uri != null : !this.uri.equals((java.lang.Object) other.uri)) {
+			return false;
+		}
+		if (this.index != other.index) {
+			return false;
+		}
+		if (this.name == null ? other.name != null : !this.name.equals((java.lang.Object) other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof OverlapBehaviorMarshaller;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.uri == null ? 0 : this.uri.hashCode());
+		result = result * prime + this.index;
+		result = result * prime + (this.name == null ? 0 : this.name.hashCode());
+		return result;
 	}
 }

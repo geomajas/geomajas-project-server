@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -33,10 +32,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ExtentInfo implements Serializable {
 
@@ -80,5 +80,50 @@ public class ExtentInfo implements Serializable {
 	 */
 	public void setValue(ValueInfo value) {
 		this.value = value;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ExtentInfo(name=" + this.getName() + ", value=" + this.getValue() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ExtentInfo)) {
+			return false;
+		}
+		final ExtentInfo other = (ExtentInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		if (this.getValue() == null ? other.getValue() != null : !this.getValue().equals(
+				(java.lang.Object) other.getValue())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ExtentInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime + (this.getValue() == null ? 0 : this.getValue().hashCode());
+		return result;
 	}
 }

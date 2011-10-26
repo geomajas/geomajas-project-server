@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -30,10 +29,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:simpleType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ServiceInfo implements Serializable {
 
@@ -64,7 +64,7 @@ public class ServiceInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:simpleType
- * xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	 *   &lt;xs:restriction base="xs:string">
 	 *     &lt;xs:enumeration value="WFS"/>
 	 *     &lt;xs:enumeration value="WCS"/>
@@ -76,5 +76,45 @@ public class ServiceInfo implements Serializable {
 		WFS, WCS;
 
 		private static final long serialVersionUID = 1100;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ServiceInfo(service=" + this.getService() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ServiceInfo)) {
+			return false;
+		}
+		final ServiceInfo other = (ServiceInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getService() == null ? other.getService() != null : !this.getService().equals(
+				(java.lang.Object) other.getService())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ServiceInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getService() == null ? 0 : this.getService().hashCode());
+		return result;
 	}
 }

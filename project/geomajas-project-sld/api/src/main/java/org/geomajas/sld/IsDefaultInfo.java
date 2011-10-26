@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -20,13 +19,14 @@ import org.geomajas.annotation.Api;
  * <pre>
  * &lt;xs:element
  * xmlns:ns="http://www.opengis.net/sld" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" name="IsDefault"/>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class IsDefaultInfo implements Serializable {
 
@@ -50,5 +50,44 @@ public class IsDefaultInfo implements Serializable {
 	 */
 	public void setIsDefault(boolean isDefault) {
 		this.isDefault = isDefault;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "IsDefaultInfo(isDefault=" + this.isIsDefault() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof IsDefaultInfo)) {
+			return false;
+		}
+		final IsDefaultInfo other = (IsDefaultInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.isIsDefault() != other.isIsDefault()) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof IsDefaultInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.isIsDefault() ? 1231 : 1237);
+		return result;
 	}
 }

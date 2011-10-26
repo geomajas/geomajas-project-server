@@ -13,7 +13,6 @@ package org.geomajas.sld.geometry;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -37,12 +36,13 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
-public class PolygonTypeInfo  extends AbstractGeometryInfo implements Serializable {
+public class PolygonTypeInfo extends AbstractGeometryInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
@@ -84,5 +84,55 @@ public class PolygonTypeInfo  extends AbstractGeometryInfo implements Serializab
 	 */
 	public void setInnerBoundaryIList(List<InnerBoundaryIsInfo> list) {
 		innerBoundaryIList = list;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "PolygonTypeInfo(outerBoundaryIs=" + this.getOuterBoundaryIs() + ", innerBoundaryIList="
+				+ this.getInnerBoundaryIList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof PolygonTypeInfo)) {
+			return false;
+		}
+		final PolygonTypeInfo other = (PolygonTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getOuterBoundaryIs() == null ? other.getOuterBoundaryIs() != null : !this.getOuterBoundaryIs().equals(
+				(java.lang.Object) other.getOuterBoundaryIs())) {
+			return false;
+		}
+		if (this.getInnerBoundaryIList() == null ? other.getInnerBoundaryIList() != null : !this
+				.getInnerBoundaryIList().equals((java.lang.Object) other.getInnerBoundaryIList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof PolygonTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getOuterBoundaryIs() == null ? 0 : this.getOuterBoundaryIs().hashCode());
+		result = result * prime + (this.getInnerBoundaryIList() == null ? 0 : this.getInnerBoundaryIList().hashCode());
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -36,10 +35,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ContrastEnhancementInfo implements Serializable {
 
@@ -90,8 +90,8 @@ public class ContrastEnhancementInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:choice
- * xmlns:ns="http://www.opengis.net/sld"
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0">
+	 * xmlns:ns="http://www.opengis.net/sld"
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" minOccurs="0">
 	 *   &lt;xs:element ref="ns:Normalize"/>
 	 *   &lt;xs:element ref="ns:Histogram"/>
 	 * &lt;/xs:choice>
@@ -181,5 +181,100 @@ public class ContrastEnhancementInfo implements Serializable {
 			setChoiceSelect(HISTOGRAM_CHOICE);
 			this.histogram = histogram;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "ContrastEnhancementInfo.ChoiceInfo(choiceSelect=" + this.choiceSelect + ", normalize="
+					+ this.getNormalize() + ", histogram=" + this.getHistogram() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceSelect != other.choiceSelect) {
+				return false;
+			}
+			if (this.getNormalize() == null ? other.getNormalize() != null : !this.getNormalize().equals(
+					(java.lang.Object) other.getNormalize())) {
+				return false;
+			}
+			if (this.getHistogram() == null ? other.getHistogram() != null : !this.getHistogram().equals(
+					(java.lang.Object) other.getHistogram())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceSelect;
+			result = result * prime + (this.getNormalize() == null ? 0 : this.getNormalize().hashCode());
+			result = result * prime + (this.getHistogram() == null ? 0 : this.getHistogram().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ContrastEnhancementInfo(choice=" + this.getChoice() + ", gammaValue=" + this.getGammaValue() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ContrastEnhancementInfo)) {
+			return false;
+		}
+		final ContrastEnhancementInfo other = (ContrastEnhancementInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getChoice() == null ? other.getChoice() != null : !this.getChoice().equals(
+				(java.lang.Object) other.getChoice())) {
+			return false;
+		}
+		if (this.getGammaValue() == null ? other.getGammaValue() != null : !this.getGammaValue().equals(
+				(java.lang.Object) other.getGammaValue())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ContrastEnhancementInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getChoice() == null ? 0 : this.getChoice().hashCode());
+		result = result * prime + (this.getGammaValue() == null ? 0 : this.getGammaValue().hashCode());
+		return result;
 	}
 }

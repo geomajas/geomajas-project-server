@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -37,10 +36,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ColorMapInfo implements Serializable {
 
@@ -104,5 +104,56 @@ public class ColorMapInfo implements Serializable {
 	 */
 	public void setExtended(Boolean extended) {
 		this.extended = extended;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ColorMapInfo(colorMapEntryList=" + this.getColorMapEntryList() + ", type=" + this.getType()
+				+ ", extended=" + this.getExtended() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ColorMapInfo)) {
+			return false;
+		}
+		final ColorMapInfo other = (ColorMapInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getColorMapEntryList() == null ? other.getColorMapEntryList() != null : !this.getColorMapEntryList()
+				.equals((java.lang.Object) other.getColorMapEntryList())) {
+			return false;
+		}
+		if (this.getType() == null ? other.getType() != null : !this.getType().equals(
+				(java.lang.Object) other.getType())) {
+			return false;
+		}
+		if (this.getExtended() == null ? other.getExtended() != null : !this.getExtended().equals(
+				(java.lang.Object) other.getExtended())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ColorMapInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getColorMapEntryList() == null ? 0 : this.getColorMapEntryList().hashCode());
+		result = result * prime + (this.getType() == null ? 0 : this.getType().hashCode());
+		result = result * prime + (this.getExtended() == null ? 0 : this.getExtended().hashCode());
+		return result;
 	}
 }

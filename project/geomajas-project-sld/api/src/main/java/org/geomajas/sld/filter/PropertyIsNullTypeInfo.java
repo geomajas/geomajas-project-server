@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.expression.LiteralTypeInfo;
 import org.geomajas.sld.expression.PropertyNameInfo;
@@ -33,10 +32,11 @@ import org.geomajas.sld.expression.PropertyNameInfo;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class PropertyIsNullTypeInfo extends ComparisonOpsTypeInfo implements Serializable {
 
@@ -121,5 +121,59 @@ public class PropertyIsNullTypeInfo extends ComparisonOpsTypeInfo implements Ser
 	public void setLiteral(LiteralTypeInfo literal) {
 		setChoiceSelect(LITERAL_CHOICE);
 		this.literal = literal;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "PropertyIsNullTypeInfo(choiceSelect=" + this.choiceSelect + ", propertyName=" + this.getPropertyName()
+				+ ", literal=" + this.getLiteral() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof PropertyIsNullTypeInfo)) {
+			return false;
+		}
+		final PropertyIsNullTypeInfo other = (PropertyIsNullTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.choiceSelect != other.choiceSelect) {
+			return false;
+		}
+		if (this.getPropertyName() == null ? other.getPropertyName() != null : !this.getPropertyName().equals(
+				(java.lang.Object) other.getPropertyName())) {
+			return false;
+		}
+		if (this.getLiteral() == null ? other.getLiteral() != null : !this.getLiteral().equals(
+				(java.lang.Object) other.getLiteral())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof PropertyIsNullTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + this.choiceSelect;
+		result = result * prime + (this.getPropertyName() == null ? 0 : this.getPropertyName().hashCode());
+		result = result * prime + (this.getLiteral() == null ? 0 : this.getLiteral().hashCode());
+		return result;
 	}
 }

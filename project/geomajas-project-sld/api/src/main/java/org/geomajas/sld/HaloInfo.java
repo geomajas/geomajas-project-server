@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -34,10 +33,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class HaloInfo implements Serializable {
 
@@ -81,5 +81,50 @@ public class HaloInfo implements Serializable {
 	 */
 	public void setFill(FillInfo fill) {
 		this.fill = fill;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "HaloInfo(radius=" + this.getRadius() + ", fill=" + this.getFill() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof HaloInfo)) {
+			return false;
+		}
+		final HaloInfo other = (HaloInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getRadius() == null ? other.getRadius() != null : !this.getRadius().equals(
+				(java.lang.Object) other.getRadius())) {
+			return false;
+		}
+		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals(
+				(java.lang.Object) other.getFill())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof HaloInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getRadius() == null ? 0 : this.getRadius().hashCode());
+		result = result * prime + (this.getFill() == null ? 0 : this.getFill().hashCode());
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -29,10 +28,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ColorMapEntryInfo implements Serializable {
 
@@ -116,5 +116,61 @@ public class ColorMapEntryInfo implements Serializable {
 	 */
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ColorMapEntryInfo(color=" + this.getColor() + ", opacity=" + this.getOpacity() + ", quantity="
+				+ this.getQuantity() + ", label=" + this.getLabel() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ColorMapEntryInfo)) {
+			return false;
+		}
+		final ColorMapEntryInfo other = (ColorMapEntryInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getColor() == null ? other.getColor() != null : !this.getColor().equals(
+				(java.lang.Object) other.getColor())) {
+			return false;
+		}
+		if (this.getOpacity() == null ? other.getOpacity() != null : !this.getOpacity().equals(
+				(java.lang.Object) other.getOpacity())) {
+			return false;
+		}
+		if (this.getQuantity() == null ? other.getQuantity() != null : !this.getQuantity().equals(
+				(java.lang.Object) other.getQuantity())) {
+			return false;
+		}
+		if (this.getLabel() == null ? other.getLabel() != null : !this.getLabel().equals(
+				(java.lang.Object) other.getLabel())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ColorMapEntryInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getColor() == null ? 0 : this.getColor().hashCode());
+		result = result * prime + (this.getOpacity() == null ? 0 : this.getOpacity().hashCode());
+		result = result * prime + (this.getQuantity() == null ? 0 : this.getQuantity().hashCode());
+		result = result * prime + (this.getLabel() == null ? 0 : this.getLabel().hashCode());
+		return result;
 	}
 }

@@ -12,7 +12,6 @@ package org.geomajas.sld.geometry;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -33,10 +32,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:sequence>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class CoordTypeInfo implements Serializable {
 
@@ -100,5 +100,52 @@ public class CoordTypeInfo implements Serializable {
 	 */
 	public void setZ(BigDecimal z) {
 		this.z = z;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "CoordTypeInfo(x=" + this.getX() + ", y=" + this.getY() + ", z=" + this.getZ() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof CoordTypeInfo)) {
+			return false;
+		}
+		final CoordTypeInfo other = (CoordTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getX() == null ? other.getX() != null : !this.getX().equals((java.lang.Object) other.getX())) {
+			return false;
+		}
+		if (this.getY() == null ? other.getY() != null : !this.getY().equals((java.lang.Object) other.getY())) {
+			return false;
+		}
+		if (this.getZ() == null ? other.getZ() != null : !this.getZ().equals((java.lang.Object) other.getZ())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof CoordTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getX() == null ? 0 : this.getX().hashCode());
+		result = result * prime + (this.getY() == null ? 0 : this.getY().hashCode());
+		result = result * prime + (this.getZ() == null ? 0 : this.getZ().hashCode());
+		return result;
 	}
 }

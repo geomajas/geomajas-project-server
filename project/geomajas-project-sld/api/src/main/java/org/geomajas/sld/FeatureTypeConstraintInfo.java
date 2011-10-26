@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.filter.FilterTypeInfo;
 
@@ -38,10 +37,11 @@ import org.geomajas.sld.filter.FilterTypeInfo;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class FeatureTypeConstraintInfo implements Serializable {
 
@@ -105,5 +105,56 @@ public class FeatureTypeConstraintInfo implements Serializable {
 	 */
 	public void setExtentList(List<ExtentInfo> list) {
 		extentList = list;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "FeatureTypeConstraintInfo(featureTypeName=" + this.getFeatureTypeName() + ", filter="
+				+ this.getFilter() + ", extentList=" + this.getExtentList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof FeatureTypeConstraintInfo)) {
+			return false;
+		}
+		final FeatureTypeConstraintInfo other = (FeatureTypeConstraintInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getFeatureTypeName() == null ? other.getFeatureTypeName() != null : !this.getFeatureTypeName().equals(
+				(java.lang.Object) other.getFeatureTypeName())) {
+			return false;
+		}
+		if (this.getFilter() == null ? other.getFilter() != null : !this.getFilter().equals(
+				(java.lang.Object) other.getFilter())) {
+			return false;
+		}
+		if (this.getExtentList() == null ? other.getExtentList() != null : !this.getExtentList().equals(
+				(java.lang.Object) other.getExtentList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof FeatureTypeConstraintInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getFeatureTypeName() == null ? 0 : this.getFeatureTypeName().hashCode());
+		result = result * prime + (this.getFilter() == null ? 0 : this.getFilter().hashCode());
+		result = result * prime + (this.getExtentList() == null ? 0 : this.getExtentList().hashCode());
+		return result;
 	}
 }

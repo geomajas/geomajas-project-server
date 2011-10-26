@@ -13,7 +13,6 @@ package org.geomajas.sld.geometry;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -26,7 +25,7 @@ import org.geomajas.annotation.Api;
  * <pre>
  * &lt;xs:complexType
  * xmlns:ns="http://www.opengis.net/gml" 
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" name="LineStringType">
  *   &lt;xs:complexContent>
  *     &lt;xs:extension base="xs:anyType">
@@ -40,12 +39,13 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
-public class LineStringTypeInfo  extends AbstractGeometryInfo implements Serializable {
+public class LineStringTypeInfo extends AbstractGeometryInfo implements Serializable {
 
 	private static final long serialVersionUID = 1100;
 
@@ -128,5 +128,59 @@ public class LineStringTypeInfo  extends AbstractGeometryInfo implements Seriali
 	public void setCoordinates(CoordinatesTypeInfo coordinates) {
 		setChoiceSelect(COORDINATES_CHOICE);
 		this.coordinates = coordinates;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "LineStringTypeInfo(choiceSelect=" + this.choiceSelect + ", coordList=" + this.getCoordList()
+				+ ", coordinates=" + this.getCoordinates() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof LineStringTypeInfo)) {
+			return false;
+		}
+		final LineStringTypeInfo other = (LineStringTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.choiceSelect != other.choiceSelect) {
+			return false;
+		}
+		if (this.getCoordList() == null ? other.getCoordList() != null : !this.getCoordList().equals(
+				(java.lang.Object) other.getCoordList())) {
+			return false;
+		}
+		if (this.getCoordinates() == null ? other.getCoordinates() != null : !this.getCoordinates().equals(
+				(java.lang.Object) other.getCoordinates())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof LineStringTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + this.choiceSelect;
+		result = result * prime + (this.getCoordList() == null ? 0 : this.getCoordList().hashCode());
+		result = result * prime + (this.getCoordinates() == null ? 0 : this.getCoordinates().hashCode());
+		return result;
 	}
 }

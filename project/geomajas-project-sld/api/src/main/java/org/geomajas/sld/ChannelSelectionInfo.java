@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -37,10 +36,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ChannelSelectionInfo implements Serializable {
 
@@ -168,5 +168,66 @@ public class ChannelSelectionInfo implements Serializable {
 	public void setGrayChannel(GrayChannelInfo grayChannel) {
 		setChannelSelectionSelect(GRAY_CHANNEL_CHOICE);
 		this.grayChannel = grayChannel;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ChannelSelectionInfo(channelSelectionSelect=" + this.channelSelectionSelect + ", redChannel="
+				+ this.getRedChannel() + ", greenChannel=" + this.getGreenChannel() + ", blueChannel="
+				+ this.getBlueChannel() + ", grayChannel=" + this.getGrayChannel() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ChannelSelectionInfo)) {
+			return false;
+		}
+		final ChannelSelectionInfo other = (ChannelSelectionInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.channelSelectionSelect != other.channelSelectionSelect) {
+			return false;
+		}
+		if (this.getRedChannel() == null ? other.getRedChannel() != null : !this.getRedChannel().equals(
+				(java.lang.Object) other.getRedChannel())) {
+			return false;
+		}
+		if (this.getGreenChannel() == null ? other.getGreenChannel() != null : !this.getGreenChannel().equals(
+				(java.lang.Object) other.getGreenChannel())) {
+			return false;
+		}
+		if (this.getBlueChannel() == null ? other.getBlueChannel() != null : !this.getBlueChannel().equals(
+				(java.lang.Object) other.getBlueChannel())) {
+			return false;
+		}
+		if (this.getGrayChannel() == null ? other.getGrayChannel() != null : !this.getGrayChannel().equals(
+				(java.lang.Object) other.getGrayChannel())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ChannelSelectionInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + this.channelSelectionSelect;
+		result = result * prime + (this.getRedChannel() == null ? 0 : this.getRedChannel().hashCode());
+		result = result * prime + (this.getGreenChannel() == null ? 0 : this.getGreenChannel().hashCode());
+		result = result * prime + (this.getBlueChannel() == null ? 0 : this.getBlueChannel().hashCode());
+		result = result * prime + (this.getGrayChannel() == null ? 0 : this.getGrayChannel().hashCode());
+		return result;
 	}
 }

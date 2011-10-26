@@ -11,7 +11,6 @@
 package org.geomajas.sld.filter;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.expression.ExpressionInfo;
 
@@ -33,10 +32,11 @@ import org.geomajas.sld.expression.ExpressionInfo;
  *   &lt;/xs:complexContent>
  * &lt;/xs:complexType>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class PropertyIsBetweenTypeInfo extends ComparisonOpsTypeInfo implements Serializable {
 
@@ -100,5 +100,60 @@ public class PropertyIsBetweenTypeInfo extends ComparisonOpsTypeInfo implements 
 	 */
 	public void setUpperBoundary(UpperBoundaryTypeInfo upperBoundary) {
 		this.upperBoundary = upperBoundary;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "PropertyIsBetweenTypeInfo(expression=" + this.getExpression() + ", lowerBoundary="
+				+ this.getLowerBoundary() + ", upperBoundary=" + this.getUpperBoundary() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof PropertyIsBetweenTypeInfo)) {
+			return false;
+		}
+		final PropertyIsBetweenTypeInfo other = (PropertyIsBetweenTypeInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
+		if (this.getExpression() == null ? other.getExpression() != null : !this.getExpression().equals(
+				(java.lang.Object) other.getExpression())) {
+			return false;
+		}
+		if (this.getLowerBoundary() == null ? other.getLowerBoundary() != null : !this.getLowerBoundary().equals(
+				(java.lang.Object) other.getLowerBoundary())) {
+			return false;
+		}
+		if (this.getUpperBoundary() == null ? other.getUpperBoundary() != null : !this.getUpperBoundary().equals(
+				(java.lang.Object) other.getUpperBoundary())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof PropertyIsBetweenTypeInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + super.hashCode();
+		result = result * prime + (this.getExpression() == null ? 0 : this.getExpression().hashCode());
+		result = result * prime + (this.getLowerBoundary() == null ? 0 : this.getLowerBoundary().hashCode());
+		result = result * prime + (this.getUpperBoundary() == null ? 0 : this.getUpperBoundary().hashCode());
+		return result;
 	}
 }

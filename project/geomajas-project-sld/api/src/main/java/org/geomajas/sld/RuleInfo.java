@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.filter.FilterTypeInfo;
 
@@ -44,10 +43,11 @@ import org.geomajas.sld.filter.FilterTypeInfo;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class RuleInfo implements Serializable {
 
@@ -310,5 +310,135 @@ public class RuleInfo implements Serializable {
 			setChoiceSelect(ELSE_FILTER_CHOICE);
 			this.elseFilter = elseFilter;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "RuleInfo.ChoiceInfo(choiceSelect=" + this.choiceSelect + ", filter=" + this.getFilter()
+					+ ", elseFilter=" + this.getElseFilter() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof ChoiceInfo)) {
+				return false;
+			}
+			final ChoiceInfo other = (ChoiceInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.choiceSelect != other.choiceSelect) {
+				return false;
+			}
+			if (this.getFilter() == null ? other.getFilter() != null : !this.getFilter().equals(
+					(java.lang.Object) other.getFilter())) {
+				return false;
+			}
+			if (this.getElseFilter() == null ? other.getElseFilter() != null : !this.getElseFilter().equals(
+					(java.lang.Object) other.getElseFilter())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof ChoiceInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + this.choiceSelect;
+			result = result * prime + (this.getFilter() == null ? 0 : this.getFilter().hashCode());
+			result = result * prime + (this.getElseFilter() == null ? 0 : this.getElseFilter().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "RuleInfo(name=" + this.getName() + ", title=" + this.getTitle() + ", aAbstract=" + this.aAbstract
+				+ ", legendGraphic=" + this.getLegendGraphic() + ", choice=" + this.getChoice()
+				+ ", minScaleDenominator=" + this.getMinScaleDenominator() + ", maxScaleDenominator="
+				+ this.getMaxScaleDenominator() + ", symbolizerList=" + this.getSymbolizerList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof RuleInfo)) {
+			return false;
+		}
+		final RuleInfo other = (RuleInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+				(java.lang.Object) other.getTitle())) {
+			return false;
+		}
+		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
+				.equals((java.lang.Object) other.aAbstract)) {
+			return false;
+		}
+		if (this.getLegendGraphic() == null ? other.getLegendGraphic() != null : !this.getLegendGraphic().equals(
+				(java.lang.Object) other.getLegendGraphic())) {
+			return false;
+		}
+		if (this.getChoice() == null ? other.getChoice() != null : !this.getChoice().equals(
+				(java.lang.Object) other.getChoice())) {
+			return false;
+		}
+		if (this.getMinScaleDenominator() == null ? other.getMinScaleDenominator() != null : !this
+				.getMinScaleDenominator().equals((java.lang.Object) other.getMinScaleDenominator())) {
+			return false;
+		}
+		if (this.getMaxScaleDenominator() == null ? other.getMaxScaleDenominator() != null : !this
+				.getMaxScaleDenominator().equals((java.lang.Object) other.getMaxScaleDenominator())) {
+			return false;
+		}
+		if (this.getSymbolizerList() == null ? other.getSymbolizerList() != null : !this.getSymbolizerList().equals(
+				(java.lang.Object) other.getSymbolizerList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof RuleInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime + (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
+		result = result * prime + (this.getLegendGraphic() == null ? 0 : this.getLegendGraphic().hashCode());
+		result = result * prime + (this.getChoice() == null ? 0 : this.getChoice().hashCode());
+		result = result * prime
+				+ (this.getMinScaleDenominator() == null ? 0 : this.getMinScaleDenominator().hashCode());
+		result = result * prime
+				+ (this.getMaxScaleDenominator() == null ? 0 : this.getMaxScaleDenominator().hashCode());
+		result = result * prime + (this.getSymbolizerList() == null ? 0 : this.getSymbolizerList().hashCode());
+		return result;
 	}
 }

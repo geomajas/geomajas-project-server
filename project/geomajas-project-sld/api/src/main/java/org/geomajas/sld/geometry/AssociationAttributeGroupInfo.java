@@ -11,7 +11,6 @@
 package org.geomajas.sld.geometry;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.sld.xlink.SimpleLinkInfo;
 
@@ -37,10 +36,11 @@ import org.geomajas.sld.xlink.SimpleLinkInfo;
  *   &lt;/xs:attribute>
  * &lt;/xs:attributeGroup>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class AssociationAttributeGroupInfo implements Serializable {
 
@@ -91,14 +91,14 @@ public class AssociationAttributeGroupInfo implements Serializable {
 	 * 
 	 * <pre>
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.opengis.net/gml"
+	 * xmlns:ns="http://www.opengis.net/gml"
 	 * 
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:remoteSchema"/>
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" use="optional" ref="ns:remoteSchema"/>
 	 * 
 	 * &lt;xs:attribute
- * xmlns:ns="http://www.opengis.net/gml"
+	 * xmlns:ns="http://www.opengis.net/gml"
 	 * 
- * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="remoteSchema"/>
+	 * xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name="remoteSchema"/>
 	 * </pre>
 	 */
 	public static class RemoteSchemaInfo implements Serializable {
@@ -124,5 +124,91 @@ public class AssociationAttributeGroupInfo implements Serializable {
 		public void setRemoteSchema(String remoteSchema) {
 			this.remoteSchema = remoteSchema;
 		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public java.lang.String toString() {
+			return "AssociationAttributeGroupInfo.RemoteSchemaInfo(remoteSchema=" + this.getRemoteSchema() + ")";
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public boolean equals(final java.lang.Object o) {
+			if (o == this) {
+				return true;
+			}
+			if (!(o instanceof RemoteSchemaInfo)) {
+				return false;
+			}
+			final RemoteSchemaInfo other = (RemoteSchemaInfo) o;
+			if (!other.canEqual((java.lang.Object) this)) {
+				return false;
+			}
+			if (this.getRemoteSchema() == null ? other.getRemoteSchema() != null : !this.getRemoteSchema().equals(
+					(java.lang.Object) other.getRemoteSchema())) {
+				return false;
+			}
+			return true;
+		}
+
+		@java.lang.SuppressWarnings("all")
+		public boolean canEqual(final java.lang.Object other) {
+			return other instanceof RemoteSchemaInfo;
+		}
+
+		@java.lang.Override
+		@java.lang.SuppressWarnings("all")
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = result * prime + (this.getRemoteSchema() == null ? 0 : this.getRemoteSchema().hashCode());
+			return result;
+		}
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "AssociationAttributeGroupInfo(simpleLink=" + this.getSimpleLink() + ", remoteSchema="
+				+ this.getRemoteSchema() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof AssociationAttributeGroupInfo)) {
+			return false;
+		}
+		final AssociationAttributeGroupInfo other = (AssociationAttributeGroupInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getSimpleLink() == null ? other.getSimpleLink() != null : !this.getSimpleLink().equals(
+				(java.lang.Object) other.getSimpleLink())) {
+			return false;
+		}
+		if (this.getRemoteSchema() == null ? other.getRemoteSchema() != null : !this.getRemoteSchema().equals(
+				(java.lang.Object) other.getRemoteSchema())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof AssociationAttributeGroupInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getSimpleLink() == null ? 0 : this.getSimpleLink().hashCode());
+		result = result * prime + (this.getRemoteSchema() == null ? 0 : this.getRemoteSchema().hashCode());
+		return result;
 	}
 }

@@ -11,7 +11,6 @@
 package org.geomajas.sld;
 
 import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -34,10 +33,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class ShadedReliefInfo implements Serializable {
 
@@ -81,5 +81,51 @@ public class ShadedReliefInfo implements Serializable {
 	 */
 	public void setReliefFactor(ReliefFactorInfo reliefFactor) {
 		this.reliefFactor = reliefFactor;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "ShadedReliefInfo(brightnessOnly=" + this.getBrightnessOnly() + ", reliefFactor="
+				+ this.getReliefFactor() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof ShadedReliefInfo)) {
+			return false;
+		}
+		final ShadedReliefInfo other = (ShadedReliefInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getBrightnessOnly() == null ? other.getBrightnessOnly() != null : !this.getBrightnessOnly().equals(
+				(java.lang.Object) other.getBrightnessOnly())) {
+			return false;
+		}
+		if (this.getReliefFactor() == null ? other.getReliefFactor() != null : !this.getReliefFactor().equals(
+				(java.lang.Object) other.getReliefFactor())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof ShadedReliefInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getBrightnessOnly() == null ? 0 : this.getBrightnessOnly().hashCode());
+		result = result * prime + (this.getReliefFactor() == null ? 0 : this.getReliefFactor().hashCode());
+		return result;
 	}
 }

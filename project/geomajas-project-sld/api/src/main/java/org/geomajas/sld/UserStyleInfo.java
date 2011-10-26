@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -38,10 +37,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class UserStyleInfo implements Serializable {
 
@@ -145,5 +145,68 @@ public class UserStyleInfo implements Serializable {
 	 */
 	public void setFeatureTypeStyleList(List<FeatureTypeStyleInfo> list) {
 		featureTypeStyleList = list;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "UserStyleInfo(name=" + this.getName() + ", title=" + this.getTitle() + ", aAbstract=" + this.aAbstract
+				+ ", isDefault=" + this.getIsDefault() + ", featureTypeStyleList=" + this.getFeatureTypeStyleList()
+				+ ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof UserStyleInfo)) {
+			return false;
+		}
+		final UserStyleInfo other = (UserStyleInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+				(java.lang.Object) other.getTitle())) {
+			return false;
+		}
+		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
+				.equals((java.lang.Object) other.aAbstract)) {
+			return false;
+		}
+		if (this.getIsDefault() == null ? other.getIsDefault() != null : !this.getIsDefault().equals(
+				(java.lang.Object) other.getIsDefault())) {
+			return false;
+		}
+		if (this.getFeatureTypeStyleList() == null ? other.getFeatureTypeStyleList() != null : !this
+				.getFeatureTypeStyleList().equals((java.lang.Object) other.getFeatureTypeStyleList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof UserStyleInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime + (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
+		result = result * prime + (this.getIsDefault() == null ? 0 : this.getIsDefault().hashCode());
+		result = result * prime
+				+ (this.getFeatureTypeStyleList() == null ? 0 : this.getFeatureTypeStyleList().hashCode());
+		return result;
 	}
 }

@@ -13,7 +13,6 @@ package org.geomajas.sld;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geomajas.annotation.Api;
 
 /**
@@ -26,9 +25,9 @@ import org.geomajas.annotation.Api;
  * 
  * <pre>
  * &lt;xs:element
- *
+ * 
  * xmlns:ns="http://www.opengis.net/sld"	
- *
+ * 
  * xmlns:xs="http://www.w3.org/2001/XMLSchema" name="FeatureTypeStyle">
  *   &lt;xs:complexType>
  *     &lt;xs:sequence>
@@ -42,10 +41,11 @@ import org.geomajas.annotation.Api;
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.10.0
  */
+
 @Api(allMethods = true)
 public class FeatureTypeStyleInfo implements Serializable {
 
@@ -169,5 +169,73 @@ public class FeatureTypeStyleInfo implements Serializable {
 	 */
 	public void setRuleList(List<RuleInfo> list) {
 		ruleList = list;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public java.lang.String toString() {
+		return "FeatureTypeStyleInfo(name=" + this.getName() + ", title=" + this.getTitle() + ", aAbstract="
+				+ this.aAbstract + ", featureTypeName=" + this.getFeatureTypeName() + ", semanticTypeIdentifierList="
+				+ this.getSemanticTypeIdentifierList() + ", ruleList=" + this.getRuleList() + ")";
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public boolean equals(final java.lang.Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof FeatureTypeStyleInfo)) {
+			return false;
+		}
+		final FeatureTypeStyleInfo other = (FeatureTypeStyleInfo) o;
+		if (!other.canEqual((java.lang.Object) this)) {
+			return false;
+		}
+		if (this.getName() == null ? other.getName() != null : !this.getName().equals(
+				(java.lang.Object) other.getName())) {
+			return false;
+		}
+		if (this.getTitle() == null ? other.getTitle() != null : !this.getTitle().equals(
+				(java.lang.Object) other.getTitle())) {
+			return false;
+		}
+		if (this.aAbstract == null ? other.aAbstract != null : !this.aAbstract
+				.equals((java.lang.Object) other.aAbstract)) {
+			return false;
+		}
+		if (this.getFeatureTypeName() == null ? other.getFeatureTypeName() != null : !this.getFeatureTypeName().equals(
+				(java.lang.Object) other.getFeatureTypeName())) {
+			return false;
+		}
+		if (this.getSemanticTypeIdentifierList() == null ? other.getSemanticTypeIdentifierList() != null : !this
+				.getSemanticTypeIdentifierList().equals((java.lang.Object) other.getSemanticTypeIdentifierList())) {
+			return false;
+		}
+		if (this.getRuleList() == null ? other.getRuleList() != null : !this.getRuleList().equals(
+				(java.lang.Object) other.getRuleList())) {
+			return false;
+		}
+		return true;
+	}
+
+	@java.lang.SuppressWarnings("all")
+	public boolean canEqual(final java.lang.Object other) {
+		return other instanceof FeatureTypeStyleInfo;
+	}
+
+	@java.lang.Override
+	@java.lang.SuppressWarnings("all")
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = result * prime + (this.getName() == null ? 0 : this.getName().hashCode());
+		result = result * prime + (this.getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = result * prime + (this.aAbstract == null ? 0 : this.aAbstract.hashCode());
+		result = result * prime + (this.getFeatureTypeName() == null ? 0 : this.getFeatureTypeName().hashCode());
+		result = result * prime
+				+ (this.getSemanticTypeIdentifierList() == null ? 0 : this.getSemanticTypeIdentifierList().hashCode());
+		result = result * prime + (this.getRuleList() == null ? 0 : this.getRuleList().hashCode());
+		return result;
 	}
 }
