@@ -31,6 +31,9 @@ public final class Examples {
 				"examples/navigation.html"));
 		EXAMPLES.add(new Example("Map & Layers", "Demonstrates the methods of the LayersModel behind a map: hHow to "
 				+ "get the available layers, and how to manipulate them.", "examples/layers.html"));
+		EXAMPLES.add(new Example("Configuration Init Event", "This examples demonstrates the use of an event fired" +
+				"when the layer configuration is loaded. It will display the list of layers that are configured " +
+				"within the map.", "examples/layersmodel_event.html"));
 		EXAMPLES.add(new Example("Default Controllers", "Demonstrates how to use existing controllers from the "
 				+ "Geomajas GWT face on a JavaScript map.", "examples/default_controllers.html"));
 		EXAMPLES.add(new Example("Custom Controllers", "Demonstrates how to create custom controllers and apply them"
@@ -44,7 +47,16 @@ public final class Examples {
 				+ "within a JavaScript environment.", "examples/gwt_app.html"));
 		EXAMPLES.add(new Example("Cursors", "Demonstrates how change the cursor on the map. This sample includes a "
 				+ "custom cursor.", "examples/cursors.html"));
-		EXAMPLES.add(new Example("Feature Selection", "Demonstrates the selection of features in a vector layer.", 
+		EXAMPLES.add(new Example("Feature Selection", "Demonstrates the selection of features in a vector layer.",
 				"examples/feature_selection.html"));
+		EXAMPLES.add(new Example("Zoom to selection", "This examples demonstrates how to acquire the bounds of all "
+				+ "selected features and zoom to it.", "examples/zoom_to_selection.html"));
+		EXAMPLES.add(new Example("Feature Selection Events", "This examples demonstrates how to catch feature "
+				+ "selection and deselection events. When (de)selecting features, Geomajas sends out an event. In this"
+				+ " example features are being selected through a controller on the map, and all events are caught and"
+				+ " logged into the HTML.", "examples/feature_selection_events.html"));
+		EXAMPLES.add(new Example("Catching Server Exceptions", "In this example we let the server execute a faulty"
+				+ " operation just to be able to catch the exception in JavaScript.<br><font color='red'>TODO</font>",
+				"examples/backend_error.html"));
 	};
 }

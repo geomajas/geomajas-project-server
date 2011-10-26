@@ -15,10 +15,10 @@
 	
 	<title>Geomajas Javascript API Showcase</title>
 	<link type="text/css" rel="stylesheet" href="geomajas.css" />
-	
+
 	<script type="text/javascript" language="javascript">var isomorphicDir = "../emptyApp/sc/";</script>
 	<script type="text/javascript" language="javascript" src="../emptyApp/emptyApp.nocache.js"></script>
-	
+
 	<script type="text/javascript">
 		var map;
 
@@ -26,9 +26,23 @@
 			map = Geomajas().createMap("app", "mapMain", "js-map-element");
 		}
 
-		function applyMapController(id) {
-			var mapController = Geomajas().createMapController(map, id);
-			map.setMapController(mapController);
+		function createException() {
+			var log = document.getElementById("log");
+			var layer = map.getLayersModel().getLayer("clientLayerCountries");
+			var service = map.getFeatureSearchService();
+
+			service.searchById(layer, ["id-of-a-feature-that-does-not-exist"], function(featureHolder){
+				if (featureHolder == null) {
+					log.innerHTML += "Feature could not be found.";
+				} else {
+					log.innerHTML += "ID = " + id + "<br>Label: " + featureHolder.getFeatures()[0].getLabel();
+				}
+			});
+		}
+
+		function cleanup(){
+			var log = document.getElementById("log");
+			log.innerHTML = "<h4>The exception will be logged here:</h4>";
 		}
 	</script>
 </head>
@@ -47,16 +61,14 @@
 					</div>
 				</td>
 				<td valign="top">
-					<h2>Map Controllers</h2>
+					<h2>Catch Server Exceptions</h2>
 					
-					<h4>Use default map controllers</h4>
-					Activate a controller on the map (only one can be active at a time):
-					<button onclick="applyMapController('PanMode')">Navigation</button><br>
-					<button onclick="applyMapController('MeasureDistanceMode')">Measure distances</button><br>
-					<button onclick="applyMapController('FeatureInfoMode')">Feature Info</button><br>
-					<button onclick="applyMapController('SelectionMode')">Selection (multiple features)</button><br>
-					<button onclick="applyMapController('SingleSelectionMode')">Selection (single feature)</button><br>
-					<button onclick="applyMapController('EditMode')">Editing</button>
+					<h4>Create server exception</h4>
+					In this example we let the server execute a faulty operation just to be able to catch the 
+					exception in JavaScript. This exception is then logged in the HTML page.<br>
+					<button onclick="createException()">Execute!</button>
+					<button onclick="cleanup()">Cleanup</button>
+					<div id=log><h4>The exception will be logged here:</h4></div>
 				</td>
 			</tr>
 		</table>

@@ -28,8 +28,8 @@
 
 			function selectFeature(id) {
 				var layer = map.getLayersModel().getLayer("clientLayerCountries");
-				map.getFeatureSearchService().searchById(layer, id, function(feature) {
-					layer.selectFeature(feature);
+				map.getFeatureSearchService().searchById(layer, [id], function(featureHolder) {
+					layer.selectFeature(featureHolder.getFeatures()[0]);
 				});
 			}
 
