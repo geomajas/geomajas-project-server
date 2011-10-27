@@ -108,7 +108,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 		IButton resetBtn = new IButton(MESSAGES.searchWidgetReset());
-		resetBtn.setIcon(WidgetLayout.iconCancel);
+		resetBtn.setIcon(WidgetLayout.iconUndo);
 		resetBtn.setAutoFit(true);
 		resetBtn.setShowDisabledIcon(false);
 		resetBtn.addClickHandler(new ClickHandler() {
