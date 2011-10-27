@@ -18,6 +18,7 @@ import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.smartgwt.client.core.Rectangle;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
@@ -42,7 +43,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 	private static final int IMAGE_SIZE = 48;
 
-	private static final int BUTTON_SIZE = IMAGE_SIZE + 0;
+	private static final int BUTTON_SIZE = IMAGE_SIZE + 1;
 
 	private static final String NOTHEME_ICON = "[ISOMORPHIC]/geomajas/widget/themewidget/nothemeselected.png";
 	private static final String BACKGROUND_IMG = "[ISOMORPHIC]/geomajas/widget/themewidget/background.png";
@@ -120,6 +121,18 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 			panel.setAutoWidth();
 			panel.setShowShadow(true);
 			panel.setBackgroundImage(BACKGROUND_IMG);
+			panel.addMouseOutHandler(new MouseOutHandler() {
+				public void onMouseOut(MouseOutEvent event) {
+					Rectangle rect = panel.getRect();
+					int x = event.getX();
+					int y = event.getY();
+					if (x < rect.getLeft() || x > rect.getWidth() + rect.getLeft() || y < rect.getTop() || 
+							y > rect.getTop() + rect.getHeight()) {
+						panel.animateHide(AnimationEffect.FADE);
+					}
+				}
+			});
+
 			panel.hide();
 			panel.draw();
 		}
@@ -146,7 +159,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 
 		int left = (themeInfo.isShowDescription() ? this.getAbsoluteLeft() - 5 : this.getAbsoluteLeft());
 		int top = this.getAbsoluteTop();
-		int height = viewConfigItems.size() * BUTTON_SIZE + (viewConfigItems.size() - 1) * 10;
+		int height = viewConfigItems.size() * BUTTON_SIZE + 2 /* border */ + (viewConfigItems.size() - 1) * 10;
 		height += (themeInfo.isShowDescription() ? 15 : 10);
 		panel.moveTo(left, top - height);
 		panel.animateShow(AnimationEffect.FADE);
