@@ -11,25 +11,28 @@
 
 package org.geomajas.command.feature;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureTransaction;
-import org.geomajas.security.*;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.junit.After;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Test for {@link PersistTransactionCommand}.
@@ -37,8 +40,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
+		ReloadContextTestExecutionListener.class })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+@ReloadContext
+@DirtiesContext
 public class PersistTransactionCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;

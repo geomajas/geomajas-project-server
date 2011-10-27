@@ -20,13 +20,17 @@ import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +41,12 @@ import java.util.List;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
+		ReloadContextTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
+@ReloadContext
 public class SearchByLocationCommandTest {
 
 	private static final String LAYER_ID = "countries";

@@ -17,6 +17,8 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.SearchCriterion;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.geotools.filter.FidFilter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +27,9 @@ import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,9 +40,12 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
+		ReloadContextTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
+@ReloadContext
 public class SearchFeatureCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .00000001;
