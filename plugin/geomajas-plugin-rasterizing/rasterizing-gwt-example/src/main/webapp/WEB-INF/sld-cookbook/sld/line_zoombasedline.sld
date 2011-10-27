@@ -12,7 +12,7 @@
       <FeatureTypeStyle>
         <Rule>
           <Name>Large</Name>
-          <MaxScaleDenominator>180000000</MaxScaleDenominator>
+          <MaxScaleDenominator>18000000</MaxScaleDenominator>
           <LineSymbolizer>
             <Stroke>
               <CssParameter name="stroke">#009933</CssParameter>
@@ -22,8 +22,8 @@
         </Rule>
         <Rule>
           <Name>Medium</Name>
-          <MinScaleDenominator>180000000</MinScaleDenominator>
-          <MaxScaleDenominator>360000000</MaxScaleDenominator>
+          <MinScaleDenominator>18000000</MinScaleDenominator>
+          <MaxScaleDenominator>36000000</MaxScaleDenominator>
           <LineSymbolizer>
             <Stroke>
               <CssParameter name="stroke">#009933</CssParameter>
@@ -33,7 +33,7 @@
         </Rule>
         <Rule>
           <Name>Small</Name>
-          <MinScaleDenominator>360000000</MinScaleDenominator>
+          <MinScaleDenominator>36000000</MinScaleDenominator>
           <LineSymbolizer>
             <Stroke>
               <CssParameter name="stroke">#009933</CssParameter>

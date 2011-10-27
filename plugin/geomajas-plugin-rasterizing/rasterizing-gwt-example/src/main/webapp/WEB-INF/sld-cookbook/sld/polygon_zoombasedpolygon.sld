@@ -12,7 +12,7 @@
       <FeatureTypeStyle>
         <Rule>
           <Name>Large</Name>
-          <MaxScaleDenominator>100000000</MaxScaleDenominator>
+          <MaxScaleDenominator>10000000</MaxScaleDenominator>
           <PolygonSymbolizer>
             <Fill>
               <CssParameter name="fill">#0000CC</CssParameter>
@@ -47,8 +47,8 @@
         </Rule>
         <Rule>
           <Name>Medium</Name>
-          <MinScaleDenominator>100000000</MinScaleDenominator>
-          <MaxScaleDenominator>200000000</MaxScaleDenominator>
+          <MinScaleDenominator>10000000</MinScaleDenominator>
+          <MaxScaleDenominator>20000000</MaxScaleDenominator>
           <PolygonSymbolizer>
             <Fill>
               <CssParameter name="fill">#0000CC</CssParameter>
@@ -61,7 +61,7 @@
         </Rule>
         <Rule>
           <Name>Small</Name>
-          <MinScaleDenominator>200000000</MinScaleDenominator>
+          <MinScaleDenominator>20000000</MinScaleDenominator>
           <PolygonSymbolizer>
             <Fill>
               <CssParameter name="fill">#0000CC</CssParameter>
