@@ -11,6 +11,7 @@
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
 
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
+import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.jsapi.map.layer.Layer;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -20,7 +21,7 @@ import org.timepedia.exporter.client.Exportable;
  * Exportable facade for {@link org.geomajas.gwt.client.map.layer.Layer} in javascript.
  * 
  * @author Oliver May
- * 
+ * @author Pieter De Graef
  */
 @Export("LayerImpl")
 @ExportPackage("org.geomajas.jsapi.map.layer")
@@ -39,6 +40,21 @@ public class LayerImpl implements Layer, Exportable {
 	 */
 	public LayerImpl(org.geomajas.gwt.client.map.layer.Layer<?> layer) {
 		this.layer = layer;
+	}
+
+	public void refresh() {
+		if (layer instanceof RasterLayer) {
+			RasterLayer rLayer = (RasterLayer) layer;
+			rLayer.setVisible(false);
+			rLayer.getStore().clear();
+			rLayer.setVisible(true);
+		} else if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
+			org.geomajas.gwt.client.map.layer.VectorLayer vl = (org.geomajas.gwt.client.map.layer.VectorLayer) layer;
+			vl.setVisible(false);
+			vl.clearSelectedFeatures();
+			vl.getFeatureStore().clear();
+			vl.setVisible(true);
+		}
 	}
 
 	public String getId() {

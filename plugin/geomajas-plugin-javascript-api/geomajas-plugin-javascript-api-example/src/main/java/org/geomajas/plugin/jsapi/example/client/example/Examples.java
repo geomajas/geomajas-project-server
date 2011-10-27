@@ -29,7 +29,7 @@ public final class Examples {
 	static {
 		EXAMPLES.add(new Example("Navigation", "Demonstrates how to use the ViewPort to navigate around the map.",
 				"examples/navigation.html"));
-		EXAMPLES.add(new Example("Map & Layers", "Demonstrates the methods of the LayersModel behind a map: hHow to "
+		EXAMPLES.add(new Example("Map & Layers", "Demonstrates the methods of the LayersModel behind a map: how to "
 				+ "get the available layers, and how to manipulate them.", "examples/layers.html"));
 		EXAMPLES.add(new Example("Configuration Init Event", "This examples demonstrates the use of an event fired" +
 				"when the layer configuration is loaded. It will display the list of layers that are configured " +

@@ -88,4 +88,7 @@ public interface Layer extends Exportable {
 	 * @return true or false.
 	 */
 	boolean isShowing();
+
+	/** Completely clear all rendering of this layer and redraw. */
+	void refresh();
 }

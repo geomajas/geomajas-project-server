@@ -35,11 +35,15 @@
 			document.getElementById("layersList").value = text;
 		}
 
-		function toggleVisibility() {
-			// Toggle visibility for the countries layer:
-			var layer = map.getLayersModel().getLayer("clientLayerCountries");
+		function toggleVisibility(index) {
+			var layer = map.getLayersModel().getLayerAt(index);
 			var visible = eval(layer.isMarkedAsVisible().toString()); // Boolean -> boolean conversion
 			layer.setMarkedAsVisible(!visible);
+		}
+
+		function refreshLayer(layerName) {
+			var layer = map.getLayersModel().getLayer(layerName);
+			layer.refresh();
 		}
 	</script>
 </head>
@@ -64,9 +68,13 @@
 					<button onclick="getLayers()">Show Layers</button><br>
 					<textarea rows="6" cols="50" id="layersList"></textarea>
 
-					<h4>Visibility Countries layer</h4>
-					Toggle the visibility for Countries layer:<br>
-					<button onclick="toggleVisibility()">Toggle visibility</button>
+					<h4>Toggle visibility</h4>
+					Toggle the visibility for OSM layer: <button onclick="toggleVisibility(0)">Toggle</button><br>
+					Toggle the visibility for Countries layer: <button onclick="toggleVisibility(1)">Toggle</button>
+
+					<h4>Refresh layer</h4>
+					Refresh OSM layer: <button onclick="refreshLayer('clientLayerOsm')">Refresh</button><br>
+					Refresh Countries layer: <button onclick="refreshLayer('clientLayerCountries')">Refresh</button>
 				</td>
 			</tr>
 		</table>
