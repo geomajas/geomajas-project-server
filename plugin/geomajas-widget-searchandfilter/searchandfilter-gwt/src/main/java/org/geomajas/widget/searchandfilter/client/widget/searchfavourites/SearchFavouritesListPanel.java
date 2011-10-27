@@ -362,14 +362,15 @@ public class SearchFavouritesListPanel extends AbstractSearchPanel implements Fa
 
 					sw.showForSave(new SaveRequestHandler() {
 						public void onSaveRequested(SaveRequestEvent event) {
-							if (event.getCriterion() != null) {
-								SearchFavourite oldFav = flr.getFavourite();
-								SearchFavourite newFav = (SearchFavourite) oldFav.clone();
-								newFav.setCriterion(event.getCriterion());
-								flr.setFavourite(newFav);
-								SearchWidgetRegistry.getFavouritesController().onChangeRequested(
-										new FavouriteEvent(oldFav, newFav, SearchFavouritesListPanel.this));
-							}
+							SearchFavourite oldFav = flr.getFavourite();
+							SearchFavourite newFav = (SearchFavourite) oldFav.clone();
+							newFav.setCriterion(event.getCriterion());
+							flr.setFavourite(newFav);
+							SearchWidgetRegistry.getFavouritesController().onChangeRequested(
+									new FavouriteEvent(oldFav, newFav, SearchFavouritesListPanel.this));
+						}
+
+						public void onCancelRequested(SaveRequestEvent event) {
 						}
 					});
 					sw.initialize(fav.getCriterion());

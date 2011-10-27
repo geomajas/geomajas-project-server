@@ -145,10 +145,15 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 					final SearchWidget sw = getSearchWidget((String) event.getValue());
 					sw.showForSave(new SaveRequestHandler() {
 						public void onSaveRequested(SaveRequestEvent event) {
-							Criterion criterion = event.getCriterion();
-							if (null != criterion) {
-								searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
-							}
+							searchItems.addData(new SearchListRecord(sw.getName(), event.getCriterion()));
+							update();
+						}
+
+						public void onCancelRequested(SaveRequestEvent event) {
+							update();
+						}
+
+						private void update() {
 							updateDisplay();
 							if (hideButtonsWhenAdding) {
 								Canvas parent = getParentElement();

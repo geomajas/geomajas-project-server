@@ -85,6 +85,9 @@ public class SearchController implements SearchRequestHandler {
 				});
 	}
 
+	public void onCancelRequested(SearchRequestEvent event) {
+	}
+
 	/**
 	 * Add a search handler, for example an instance of
 	 * {@link org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid.MultiFeatureListGrid}.

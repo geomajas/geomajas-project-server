@@ -61,7 +61,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 	private IButton searchBtn;
 	private IButton saveBtn;
 	private IButton removeFilterBtn;
-	
+
 	private AbstractSearchPanel searchPanel;
 	private String widgetId;
 	private String name;
@@ -135,7 +135,7 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		cancelBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				save(null); // assure the combined panel is cleared if needed
+				cancel();
 				close();
 			}
 		});
@@ -162,7 +162,6 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			}
 		});
 
-		
 		addMember(searchPanel);
 		LayoutSpacer ls = new LayoutSpacer();
 		ls.setWidth("*");
@@ -343,6 +342,13 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		}
 	}
 
+	private void cancel() {
+		SaveRequestEvent event = new SaveRequestEvent(this, null);
+		for (SaveRequestHandler handler : saveHandlers) {
+			handler.onCancelRequested(event);
+		}
+	}
+
 	private void onAddToFavourites() {
 		if (searchPanel.validate()) {
 			SearchFavourite fav = new SearchFavourite();
@@ -364,12 +370,12 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 			removeFilterBtn.setDisabled(false);
 		}
 	}
-	
+
 	void onRemoveFilter() {
 		CriterionUtil.clearLayerFilters(searchPanel.getMapWidget());
 		removeFilterBtn.setDisabled(true);
 	}
-	
+
 	private void setVectorLayerOnWhichSearchIsHappeningVisible() {
 		VectorLayer vectorLayer = searchPanel.getFeatureSearchVectorLayer();
 		if (null != vectorLayer && !vectorLayer.isVisible()) {
@@ -392,6 +398,15 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 
 		public void onSaveRequested(SaveRequestEvent event) {
 			oneOffHandler.onSaveRequested(event);
+			removeHandler();
+		}
+
+		public void onCancelRequested(SaveRequestEvent event) {
+			oneOffHandler.onCancelRequested(event);
+			removeHandler();
+		}
+
+		private void removeHandler() {
 			GWT.runAsync(new RunAsyncCallback() {
 
 				public void onSuccess() {

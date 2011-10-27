@@ -112,6 +112,7 @@ public interface SearchWidget {
 	 */
 	public interface SaveRequestHandler {
 		void onSaveRequested(SaveRequestEvent event);
+		void onCancelRequested(SaveRequestEvent event);
 	}
 
 	/**
@@ -121,6 +122,7 @@ public interface SearchWidget {
 	 */
 	public interface SearchRequestHandler {
 		void onSearchRequested(SearchRequestEvent event);
+		void onCancelRequested(SearchRequestEvent event);
 	}
 
 	/**
