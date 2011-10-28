@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.geomajas.configuration.client.BoundsLimitOption;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
@@ -50,6 +51,10 @@ public class MapViewTest {
 		mapView = new MapView();
 		mapView.setSize(200, 100);
 		mapView.setMaxBounds(new Bbox(0, 0, 1000, 400));
+		mapView.setViewBoundsLimitOption(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS);
+		BoundsLimitOption  viewBoundsLimitOption   = mapView.getViewBoundsLimitOption();
+		Assert.assertTrue(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS.equals(viewBoundsLimitOption));
+		mapView.setViewBoundsLimitOption(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS);
 		mapView.setMaximumScale(2);
 		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
 		mapView.setCenterPosition(new Coordinate(500, 200));

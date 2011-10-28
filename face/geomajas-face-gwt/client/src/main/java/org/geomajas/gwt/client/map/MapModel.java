@@ -57,6 +57,7 @@ import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import org.geomajas.gwt.client.util.Log;
+import org.geomajas.configuration.client.BoundsLimitOption;
 
 /**
  * <p>
@@ -474,6 +475,12 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			}
 		}
 		mapView.setMaxBounds(maxBounds);
+		
+		if (null == mapInfo.getViewBoundsLimitOption()) {
+			mapView.setViewBoundsLimitOption(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS);
+		} else {
+			mapView.setViewBoundsLimitOption(mapInfo.getViewBoundsLimitOption());
+		}
 	}
 
 	/**

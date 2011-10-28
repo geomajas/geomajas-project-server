@@ -176,6 +176,29 @@ public class Bbox {
 	}
 
 	/**
+	 * Does this bounding box contain the given point (coordinate) ?
+	 * 
+	 * @param coord
+	 *            Coordinate of point to test.
+	 * @return true if the point lies in the bounding box.
+	 */
+	public boolean contains(Coordinate coord) {
+		if (coord.getX() < this.getX()) {
+			return false;
+		}
+		if (coord.getY() < this.getY()) {
+			return false;
+		}
+		if (coord.getX() > this.getEndPoint().getX()) {
+			return false;
+		}
+		if (coord.getY() > this.getEndPoint().getY()) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Does this bounding box intersect the given bounding box?
 	 * 
 	 * @param other

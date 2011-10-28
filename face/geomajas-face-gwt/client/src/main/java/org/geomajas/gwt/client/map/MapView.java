@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.client.BoundsLimitOption;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -62,6 +63,12 @@ public class MapView {
 		/** Zoom to a scale level that makes the bounds fit inside our view. */
 		LEVEL_FIT
 	}
+	
+	/** 
+	 * The currently configured option for limiting the mapview's bounds when applying the maxBounds limitation. 
+	 */
+
+	private BoundsLimitOption viewBoundsLimitOption = BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS;
 
 	/** The map's width in pixels. */
 	private int width;
@@ -72,7 +79,8 @@ public class MapView {
 	/** A maximum scale level, that this MapView is not allowed to cross. */
 	private double maximumScale = 10;
 
-	/** The maximum bounding box available to this MapView. Never go outside it! */
+	/** The maximum bounding box available to this MapView. Applied on map view according to current 
+	 * ViewBoundsOption  */
 	private Bbox maxBounds;
 
 	/**
@@ -120,6 +128,7 @@ public class MapView {
 		return handlerManager.addHandler(MapViewChangedEvent.getType(), handler);
 	}
 
+	
 	// -------------------------------------------------------------------------
 	// Retrieval of transformation matrices:
 	// -------------------------------------------------------------------------
@@ -438,6 +447,27 @@ public class MapView {
 		}
 	}
 
+	/**
+	 * @return ViewBoundsLimitOption
+	 * 					The current value of the configuration item for limiting the mapview's bounds 
+	 * 					when applying the maxBounds limitation.
+	 */
+	public BoundsLimitOption getViewBoundsLimitOption() {
+		return viewBoundsLimitOption;
+	}
+
+	/**
+	 * @param viewBoundsLimitOption 	
+	 * 					The desired value of the configuration item for limiting the mapview's bounds 
+	 * 					when applying the maxBounds limitation.
+	 */
+	public void setViewBoundsLimitOption(BoundsLimitOption viewBoundsLimitOption) {
+		 if (null != viewBoundsLimitOption) {
+			 this.viewBoundsLimitOption = viewBoundsLimitOption;
+		 }
+	}
+	
+	
 	public Bbox getMaxBounds() {
 		return maxBounds;
 	}
@@ -509,16 +539,23 @@ public class MapView {
 	}
 
 	private double getMinimumScale() {
-		// the minimum scale is determined by the maximum bounds and the pixel
-		// size of the map
+		// the minimum scale is determined by the maximum bounds, viewBoundsLimitOption, the current center
+		// and the pixel size of the map
+		
 		if (maxBounds != null) {
 			double wRatio = width / maxBounds.getWidth();
 			double hRatio = height / maxBounds.getHeight();
-			// return the maximum to fit outside
-			return wRatio > hRatio ? wRatio : hRatio;
-		} else {
-			return Double.MIN_VALUE;
-		}
+
+			if (BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS.equals(viewBoundsLimitOption)) {
+				// return the maximum to fit outside
+				return wRatio > hRatio ? wRatio : hRatio;
+			} 
+//			else {
+//				/* return the smallest of the 2 ratio's */
+//				return wRatio > hRatio ? hRatio : wRatio;
+//			}
+		} 
+		return Double.MIN_VALUE;
 	}
 
 	private double getBestScale(Bbox bounds) {
@@ -671,29 +708,48 @@ public class MapView {
 		double xCenter = worldCenter.getX();
 		double yCenter = worldCenter.getY();
 		if (maxBounds != null) {
-			double w = getViewSpaceWidth() / 2;
-			double h = getViewSpaceHeight() / 2;
 			Coordinate minCoordinate = maxBounds.getOrigin();
 			Coordinate maxCoordinate = maxBounds.getEndPoint();
 
-			if ((w * 2) > maxBounds.getWidth()) {
-				xCenter = maxBounds.getCenterPoint().getX();
-			} else {
-				if ((xCenter - w) < minCoordinate.getX()) {
-					xCenter = minCoordinate.getX() + w;
+			if (BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS.equals(viewBoundsLimitOption)) {
+				/** View must lay completely within maxBounds. **/
+				double w = getViewSpaceWidth() / 2;
+				double h = getViewSpaceHeight() / 2;
+	
+				if ((w * 2) > maxBounds.getWidth()) {
+					xCenter = maxBounds.getCenterPoint().getX();
+				} else {
+					if ((xCenter - w) < minCoordinate.getX()) {
+						xCenter = minCoordinate.getX() + w;
+					}
+					if ((xCenter + w) > maxCoordinate.getX()) {
+						xCenter = maxCoordinate.getX() - w;
+					}
 				}
-				if ((xCenter + w) > maxCoordinate.getX()) {
-					xCenter = maxCoordinate.getX() - w;
+				if ((h * 2) > maxBounds.getHeight()) {
+					yCenter = maxBounds.getCenterPoint().getY();
+				} else {
+					if ((yCenter - h) < minCoordinate.getY()) {
+						yCenter = minCoordinate.getY() + h;
+					}
+					if ((yCenter + h) > maxCoordinate.getY()) {
+						yCenter = maxCoordinate.getY() - h;
+					}
 				}
-			}
-			if ((h * 2) > maxBounds.getHeight()) {
-				yCenter = maxBounds.getCenterPoint().getY();
-			} else {
-				if ((yCenter - h) < minCoordinate.getY()) {
-					yCenter = minCoordinate.getY() + h;
-				}
-				if ((yCenter + h) > maxCoordinate.getY()) {
-					yCenter = maxCoordinate.getY() - h;
+			} else if (BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS.equals(viewBoundsLimitOption)) {
+				/** Center of view must lay within maxBounds. **/
+				Coordinate center = new Coordinate(xCenter, yCenter);
+				if (!maxBounds.contains(center)) {
+					if (xCenter < minCoordinate.getX()) {
+						xCenter = minCoordinate.getX();
+					} else if (xCenter > maxCoordinate.getX()) {
+						xCenter = maxCoordinate.getX();
+					}
+					if (yCenter < minCoordinate.getY()) {
+						yCenter = minCoordinate.getY();
+					} else if (yCenter > maxCoordinate.getX()) {
+						yCenter = maxCoordinate.getY();
+					}
 				}
 			}
 		}
