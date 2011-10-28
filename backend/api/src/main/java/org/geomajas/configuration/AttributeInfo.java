@@ -117,9 +117,9 @@ public class AttributeInfo extends AttributeBaseInfo {
 	}
 
 	/**
-	 * This value determines whether or not this attribute definition should be included in editing forms and other
-	 * widgets on the client. This is an optional value that only makes sense when the attribute in question is not
-	 * hidden.<br/>
+	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
+	 * widgets on the client.
+	 * <p/>
 	 * The default value for this setting is 'false'.
 	 * 
 	 * @return true when hidden.
@@ -129,8 +129,9 @@ public class AttributeInfo extends AttributeBaseInfo {
 	}
 
 	/**
-	 * Determine whether or not this attribute definition should be included in editing forms and other widgets on the
-	 * client. This is an optional value that only makes sense when the attribute in question is not hidden.<br/>
+	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
+	 * widgets on the client.
+	 * <p/>
 	 * The default value for this setting is 'false'.
 	 * 
 	 * @param hidden
