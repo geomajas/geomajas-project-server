@@ -77,6 +77,8 @@ public class ClientMapInfo implements ClientWidgetInfo {
 	private ClientToolbarInfo toolbar;
 
 	private Bbox maxBounds = Bbox.ALL;
+	
+	private BoundsLimitOption viewBoundsLimitOption = BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS;
 
 	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
@@ -84,6 +86,7 @@ public class ClientMapInfo implements ClientWidgetInfo {
 
 	private ClientPreferredPixelsPerTile preferredPixelsPerTile = new ClientPreferredPixelsPerTile();
 
+	
 	/**
 	 * Get the id of this map. This id is unique within the application.
 	 * 
@@ -507,6 +510,31 @@ public class ClientMapInfo implements ClientWidgetInfo {
 	 */
 	public void setMaxBounds(Bbox maxBounds) {
 		this.maxBounds = maxBounds;
+	}
+	
+	
+	/**
+	 * Get configuration option for limiting the mapview's bounds.
+	 * 
+	 * @return BoundsLimitOption
+	 * 					The current value of the configuration item for limiting the mapview's bounds
+	 * 					when applying the maxBounds limitation.
+	 * @since 1.10.0
+	 */
+	public BoundsLimitOption getViewBoundsLimitOption() {
+		return viewBoundsLimitOption;
+	}
+
+	/**
+	 * Sets the configuration option for limiting the mapview's bounds.
+	 * 
+	 * @param viewBoundsLimitOption 	
+	 * 					The desired value of the configuration item for limiting the mapview's bounds 
+	 * 					when applying the maxBounds limitation.
+	 * @since 1.10.0
+	 */
+	public void setViewBoundsLimitOption(BoundsLimitOption viewBoundsLimitOption) {
+		this.viewBoundsLimitOption = viewBoundsLimitOption;
 	}
 
 	/**
