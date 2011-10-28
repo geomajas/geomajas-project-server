@@ -172,6 +172,8 @@ public final class WidgetLayout {
 	public static String iconReload = "[ISOMORPHIC]/geomajas/osgeo/reload.png";
 	/** Remove icon. */
 	public static String iconRemove = "[ISOMORPHIC]/geomajas/silk/cancel.png";
+	/** Reset icon. */
+	public static String iconReset = "[ISOMORPHIC]/geomajas/silk/arrow_refresh.png";
 	/** Ring icon. */
 	public static String iconRing = "[ISOMORPHIC]/geomajas/osgeo/ring.png";
 	/** Add ring icon. */
