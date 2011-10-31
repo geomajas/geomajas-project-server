@@ -23,215 +23,207 @@ public class HtmlBuilderTest {
 
 	@Test
 	public void openTagTest() {
-		String openP = HtmlBuilder.openTag(Html.Tag.P, "testClass", "extra:BIG", "blabla");
-		Assert.assertTrue("<p class='testClass' style='extra:BIG'>blabla".equals(openP));
+		Assert.assertEquals("<p class='testClass' style='extra:BIG'>blabla",
+				HtmlBuilder.openTag(Html.Tag.P, "testClass", "extra:BIG", "blabla"));
 	}
 
 	@Test
 	public void closeTagTest() {
-		String closeP = HtmlBuilder.closeTag(Html.Tag.P);
-		Assert.assertTrue("</p>".equals(closeP));
+		Assert.assertEquals("</p>", HtmlBuilder.closeTag(Html.Tag.P));
 	}
 
 	@Test
 	public void divClassTest() {
-		String div = HtmlBuilder.divClass("testClass", "blabla");
-		Assert.assertTrue("<div class='testClass'>blabla</div>".equals(div));
+		Assert.assertEquals("<div class='testClass'>blabla</div>", HtmlBuilder.divClass("testClass", "blabla"));
 	}
 
 	@Test
 	public void divClassHtmlContentTest() {
-		String div = HtmlBuilder.divClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<div class='testClass'><s>blabla</s></div>".equals(div));
-}
+		Assert.assertEquals("<div class='testClass'><s>blabla</s></div>",
+				HtmlBuilder.divClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void divStyleTest() {
-		String div = HtmlBuilder.divStyle("testClass", "blabla");
-		Assert.assertTrue("<div style='testClass'>blabla</div>".equals(div));
-}
+		Assert.assertEquals("<div style='testClass'>blabla</div>", HtmlBuilder.divStyle("testClass", "blabla"));
+	}
 
 	@Test
 	public void divStyleHtmlContentTest() {
-		String div = HtmlBuilder.divStyleHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<div style='testClass'><s>blabla</s></div>".equals(div));
-}
+		Assert.assertEquals("<div style='testClass'><s>blabla</s></div>",
+				HtmlBuilder.divStyleHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void htmlEncodeTest() {
-		String htmlEncode = HtmlBuilder.htmlEncode("<&>");
-		Assert.assertTrue("&lt;&amp;&gt;".equals(htmlEncode));
-}
+		Assert.assertEquals("&lt;&amp;&gt;", HtmlBuilder.htmlEncode("<&>"));
+		Assert.assertEquals("", HtmlBuilder.htmlEncode(null));
+	}
 
 	@Test
 	public void openTagClassTest() {
-		String openTagClass = HtmlBuilder.openTagClass(Html.Tag.SCRIPT, "testClass", "blabla");
-		Assert.assertTrue("<script class='testClass'>blabla".equals(openTagClass));
-}
+		Assert.assertEquals("<script class='testClass'>blabla",
+				HtmlBuilder.openTagClass(Html.Tag.SCRIPT, "testClass", "blabla"));
+	}
 
 	@Test
 	public void openTagClassHtmlContentTest() {
-		String openTagClassHtmlContent = HtmlBuilder.openTagClassHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<script class='testClass'><s>blabla</s>".equals(openTagClassHtmlContent));
-}
+		Assert.assertEquals("<script class='testClass'><s>blabla</s>",
+				HtmlBuilder.openTagClassHtmlContent(Html.Tag.SCRIPT, "testClass",
+						HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void openTagHtmlContentTest() {
-		String openTagHtmlContent = HtmlBuilder.openTagHtmlContent(Html.Tag.SCRIPT, "testClass", "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<script class='testClass' style='testClass'><s>blabla</s>".equals(openTagHtmlContent));
-}
+		Assert.assertEquals("<script class='testClass' style='testClass'><s>blabla</s>",
+				HtmlBuilder.openTagHtmlContent(Html.Tag.SCRIPT, "testClass", "testClass",
+						HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void openTagStyleTest() {
-		String openTagStyle = HtmlBuilder.openTagStyle(Html.Tag.SCRIPT, "testClass", "blabla");
-		Assert.assertTrue("<script style='testClass'>blabla".equals(openTagStyle));
-}
+		Assert.assertEquals("<script style='testClass'>blabla",
+				HtmlBuilder.openTagStyle(Html.Tag.SCRIPT, "testClass", "blabla"));
+	}
 
 	@Test
 	public void openTagStyleHtmlContentTest() {
-		String openTagStyleHtmlContent = HtmlBuilder.openTagStyleHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<script style='testClass'><s>blabla</s>".equals(openTagStyleHtmlContent));
-}
+		Assert.assertEquals("<script style='testClass'><s>blabla</s>", HtmlBuilder
+				.openTagStyleHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tableClassTest() {
-		String tableClass = HtmlBuilder.tableClass("testClass", "blabla");
-		Assert.assertTrue("<table class='testClass'>blabla</table>".equals(tableClass));
-}
+		Assert.assertEquals("<table class='testClass'>blabla</table>", HtmlBuilder.tableClass("testClass", "blabla"));
+	}
 
 	@Test
 	public void tableClassHtmlContentTest() {
-		String tableClassHtmlContent = HtmlBuilder.tableClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<table class='testClass'><s>blabla</s></table>".equals(tableClassHtmlContent));
-}
+		Assert.assertEquals("<table class='testClass'><s>blabla</s></table>",
+				HtmlBuilder.tableClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tableStyleTest() {
-		String tableStyle = HtmlBuilder.tableStyle("testClass", "blabla");
-		Assert.assertTrue("<table style='testClass'>blabla</table>".equals(tableStyle));
-}
+		Assert.assertEquals("<table style='testClass'>blabla</table>",
+				HtmlBuilder.tableStyle("testClass", "blabla"));
+	}
 
 	@Test
 	public void tableStyleHtmlContentTest() {
-		String tableStyleHtmlContent = HtmlBuilder.tableStyleHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<table style='testClass'><s>blabla</s></table>".equals(tableStyleHtmlContent));
-}
+		Assert.assertEquals("<table style='testClass'><s>blabla</s></table>",
+				HtmlBuilder.tableStyleHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tagTest() {
-		String tag = HtmlBuilder.tag(Html.Tag.S, "blabla");
-		Assert.assertTrue("<s>blabla</s>".equals(tag));
-}
+		Assert.assertEquals("<s>blabla</s>", HtmlBuilder.tag(Html.Tag.S, "blabla"));
+	}
 
 	@Test
 	public void tagClassTest() {
-		String tagClass = HtmlBuilder.tagClass(Html.Tag.SCRIPT, "testClass", "blabla");
-		Assert.assertTrue("<script class='testClass'>blabla</script>".equals(tagClass));
-}
+		Assert.assertEquals("<script class='testClass'>blabla</script>",
+				HtmlBuilder.tagClass(Html.Tag.SCRIPT, "testClass", "blabla"));
+	}
 
 	@Test
 	public void tagClassHtmlContent() {
-		String tagClassHtmlContent = HtmlBuilder.tagClassHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<script class='testClass'><s>blabla</s></script>".equals(tagClassHtmlContent));
-}
+		Assert.assertEquals("<script class='testClass'><s>blabla</s></script>",
+				HtmlBuilder.tagClassHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tagHtmlContentTest() {
-		String tagHtmlContent = HtmlBuilder.tagHtmlContent(Html.Tag.SCRIPT, HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<script><s>blabla</s></script>".equals(tagHtmlContent));
-}
+		Assert.assertEquals("<script><s>blabla</s></script>",
+				HtmlBuilder.tagHtmlContent(Html.Tag.SCRIPT, HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tagStyleTest() {
-		String tagStyle = HtmlBuilder.tagStyle(Html.Tag.SCRIPT, "testClass", "blabla");
-		Assert.assertTrue("<script style='testClass'>blabla</script>".equals(tagStyle));
-}
+		Assert.assertEquals("<script style='testClass'>blabla</script>",
+				HtmlBuilder.tagStyle(Html.Tag.SCRIPT, "testClass", "blabla"));
+	}
 
 	@Test
 	public void tagStyleHtmlContentTest() {
-		String tagStyleHtmlContent = HtmlBuilder.tagStyleHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<script style='testClass'><s>blabla</s></script>".equals(tagStyleHtmlContent));
-}
+		Assert.assertEquals("<script style='testClass'><s>blabla</s></script>",
+				HtmlBuilder.tagStyleHtmlContent(Html.Tag.SCRIPT, "testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tdClassTest() {
-		String tdClass = HtmlBuilder.tdClass("testClass", "blabla");
-		Assert.assertTrue("<td class='testClass'>blabla</td>".equals(tdClass));
-}
+		Assert.assertEquals("<td class='testClass'>blabla</td>", HtmlBuilder.tdClass("testClass", "blabla"));
+	}
 
 	@Test
 	public void tdClassHtmlContentTest() {
-		String tdClassHtmlContent = HtmlBuilder.tdClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<td class='testClass'><s>blabla</s></td>".equals(tdClassHtmlContent));
-}
+		Assert.assertEquals("<td class='testClass'><s>blabla</s></td>",
+				HtmlBuilder.tdClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void tdStyleTest() {
-		String tdStyle = HtmlBuilder.tdStyle("testClass", "blabla");
-		Assert.assertTrue("<td style='testClass'>blabla</td>".equals(tdStyle));
-}
+		Assert.assertEquals("<td style='testClass'>blabla</td>", HtmlBuilder.tdStyle("testClass", "blabla"));
+	}
 
 	@Test
 	public void tdStyleHtmlContentTest() {
-		String tdStyleHtmlContent = HtmlBuilder.tdStyleHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<td style='testClass'><s>blabla</s></td>".equals(tdStyleHtmlContent));
-}
+		Assert.assertEquals("<td style='testClass'><s>blabla</s></td>",
+				HtmlBuilder.tdStyleHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void trTest() {
-		String tr = HtmlBuilder.tr("blabla");
-		Assert.assertTrue("<tr>blabla</tr>".equals(tr));
-}
+		Assert.assertEquals("<tr>blabla</tr>", HtmlBuilder.tr("blabla"));
+	}
 
 	@Test
 	public void trClassTest() {
-		String trClass = HtmlBuilder.trClass("testClass", "blabla");
-		Assert.assertTrue("<tr class='testClass'>blabla</tr>".equals(trClass));
-}
+		Assert.assertEquals("<tr class='testClass'>blabla</tr>", HtmlBuilder.trClass("testClass", "blabla"));
+	}
 
 	@Test
 	public void trClassHtmlContentTest() {
-		String trClassHtmlContent = HtmlBuilder.trClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla"));
-		Assert.assertTrue("<tr class='testClass'><s>blabla</s></tr>".equals(trClassHtmlContent));
-}
+		Assert.assertEquals("<tr class='testClass'><s>blabla</s></tr>",
+				HtmlBuilder.trClassHtmlContent("testClass", HtmlBuilder.tag(Html.Tag.S, "blabla")));
+	}
 
 	@Test
 	public void trHtmlContentTest() {
-		String tr = HtmlBuilder.trHtmlContent(HtmlBuilder.tdStyle("testStyle", "blabla"));
-		Assert.assertTrue("<tr><td style='testStyle'>blabla</td></tr>".equals(tr));
+		Assert.assertEquals("<tr><td style='testStyle'>blabla</td></tr>",
+				HtmlBuilder.trHtmlContent(HtmlBuilder.tdStyle("testStyle", "blabla")));
 	}
 
 	@Test
 	public void trStyleTest() {
-		String tr = HtmlBuilder.trStyle("testStyle", "blabla");
-		Assert.assertTrue("<tr style='testStyle'>blabla</tr>".equals(tr));
+		Assert.assertEquals("<tr style='testStyle'>blabla</tr>", HtmlBuilder.trStyle("testStyle", "blabla"));
 	}
 
 	@Test
 	public void trStyleHtmlContentTest() {
-		String tr = HtmlBuilder.trStyleHtmlContent("testStyle", HtmlBuilder.tdStyle("testStyle", "blabla"));
-		Assert.assertTrue("<tr style='testStyle'><td style='testStyle'>blabla</td></tr>".equals(tr));
+		Assert.assertEquals("<tr style='testStyle'><td style='testStyle'>blabla</td></tr>",
+				HtmlBuilder.trStyleHtmlContent("testStyle", HtmlBuilder.tdStyle("testStyle", "blabla")));
 	}
 
 	@Test
 	public void tdTrTableTest() {
 		String td = HtmlBuilder.tdStyle("testStyle", "blabla");
-		Assert.assertTrue("<td style='testStyle'>blabla</td>".equals(td));
+		Assert.assertEquals("<td style='testStyle'>blabla</td>", td);
 		String tr = HtmlBuilder.trHtmlContent(td);
-		Assert.assertTrue(("<tr>" + td + "</tr>").equals(tr));
-		String table = HtmlBuilder.tableClassHtmlContent("testClass", tr);
-		Assert.assertTrue(("<table class='testClass'>" + tr + "</table>").equals(table));
+		Assert.assertEquals(("<tr>" + td + "</tr>"), tr);
+		Assert.assertEquals(("<table class='testClass'>" + tr + "</table>"),
+				HtmlBuilder.tableClassHtmlContent("testClass", tr));
 	}
-	
+
 	@Test
 	public void tdTrTableTest2() {
 		String td = HtmlBuilder.tdStyle("testStyle", "blabla");
-		Assert.assertTrue("<td style='testStyle'>blabla</td>".equals(td));
+		Assert.assertEquals("<td style='testStyle'>blabla</td>", td);
 		String tr = HtmlBuilder.trHtmlContent(td);
-		Assert.assertTrue(("<tr>" + td + "</tr>").equals(tr));
+		Assert.assertEquals(("<tr>" + td + "</tr>"), tr);
 		String[] rows = new String[2];
 		rows[0] = tr;
-		String table = HtmlBuilder.tableClassHtmlContent("testClass", rows);
-		Assert.assertTrue(("<table class='testClass'>" + tr + "null</table>").equals(table));
+		Assert.assertEquals(("<table class='testClass'>" + tr + "null</table>"),
+				HtmlBuilder.tableClassHtmlContent("testClass", rows));
 	}
 }
