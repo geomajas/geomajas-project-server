@@ -51,7 +51,7 @@ import com.smartgwt.client.widgets.Window;
  * its attributes in a feature attribute window under the list window. As a starting point for this class the
  * org.geomajas.gwt.client.controller.FeatureInfoController was used.
  * 
- * FIXME: merge common code between controller and listener.
+ * @todo: merge common code between controller and listener.
  * 
  * @author An Buyle
  * @author Oliver May
