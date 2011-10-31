@@ -24,7 +24,7 @@ import org.geomajas.geometry.Bbox;
 /**
  * Map configuration.
  * <p>
- * Since version 1.10.0 this configuration object implements the <code>ClientWidgetInfo</code>, so that it can be easily
+ * Since version 1.10.0 this configuration object implements {@link ClientWidgetInfo}, so that it can be easily
  * retrieved like any other widget configuration object.
  * </p>
  * 
@@ -301,7 +301,7 @@ public class ClientMapInfo implements ClientWidgetInfo {
 
 	/**
 	 * Returns the maximum scale (maximum zoom in) of this map. The minimum scale is indirectly determined from the
-	 * maximum bounds. As a better alternative for this value, you can also use <code>maximumZoomScale</code>.
+	 * maximum bounds. As a better alternative for this value, use {@link #getScaleConfiguration}.
 	 * 
 	 * @return the maximum scale (pixels/unit)
 	 * @deprecated use {@link #getScaleConfiguration}
@@ -312,8 +312,8 @@ public class ClientMapInfo implements ClientWidgetInfo {
 	}
 
 	/**
-	 * Set maximum scale (maximum zoom in) of this map. As a better alternative for this value, you can also use
-	 * <code>maximumZoomScale</code>.
+	 * Set maximum scale (maximum zoom in) of this map. As a better alternative for this value, use
+	 * {@link #getScaleConfiguration}.
 	 * 
 	 * @param maximumScale
 	 *            the maximum scale (pixels/unit)
@@ -511,7 +511,6 @@ public class ClientMapInfo implements ClientWidgetInfo {
 	public void setMaxBounds(Bbox maxBounds) {
 		this.maxBounds = maxBounds;
 	}
-	
 	
 	/**
 	 * Get configuration option for limiting the mapview's bounds.

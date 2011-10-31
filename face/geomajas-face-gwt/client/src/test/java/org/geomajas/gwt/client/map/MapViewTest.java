@@ -51,9 +51,6 @@ public class MapViewTest {
 		mapView = new MapView();
 		mapView.setSize(200, 100);
 		mapView.setMaxBounds(new Bbox(0, 0, 1000, 400));
-		mapView.setViewBoundsLimitOption(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS);
-		BoundsLimitOption  viewBoundsLimitOption   = mapView.getViewBoundsLimitOption();
-		Assert.assertTrue(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS.equals(viewBoundsLimitOption));
 		mapView.setViewBoundsLimitOption(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS);
 		mapView.setMaximumScale(2);
 		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
@@ -121,11 +118,19 @@ public class MapViewTest {
 		handler.validate();
 	}
 
+	@Test
+	public void testSetMaxViewBounds() {
+		// @todo this should test the actual bounds being set in both cases, verifying that correct bounds are respected
+
+		mapView.setViewBoundsLimitOption(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS);
+		Assert.assertEquals(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS, mapView.getViewBoundsLimitOption());
+	}
+
 	/**
-	 * Tests the lower and upper boundaries of the resolution list
+	 * Tests the lower and upper boundaries of the resolution list (GWT-36).
 	 */
 	@Test
-	public void testGWT36() {
+	public void testResolutionSnapping() {
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1 / 0.01);
 		resolutions.add(1 / 0.1);

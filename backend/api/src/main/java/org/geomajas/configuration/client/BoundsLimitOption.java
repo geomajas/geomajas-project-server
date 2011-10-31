@@ -21,6 +21,7 @@ import java.io.Serializable;
  * @since 1.10.0
  */
 public enum BoundsLimitOption implements Serializable {
+
 	/**
 	 *  View center must be within maxBounds.
 	 */
@@ -28,5 +29,8 @@ public enum BoundsLimitOption implements Serializable {
 	/** 
 	 * The whole map view must lay completely within the maximum allowed bounds (maxBounds). 
 	 */
-	COMPLETELY_WITHIN_MAX_BOUNDS
+	COMPLETELY_WITHIN_MAX_BOUNDS;
+
+	private static final long serialVersionUID = 1100L;
+
 }
