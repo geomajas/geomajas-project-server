@@ -350,10 +350,10 @@ public final class HtmlBuilder {
 	public static String openTagClassHtmlContent(String tag, String clazz, String... content) {
 		return openTagHtmlContent(tag, clazz, null, content);
 	}
-	
+
 	/**
-	 * Build a String containing a HTML opening tag with given CSS style attribute(s) and concatenates the given content. 
-	 * Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
+	 * Build a String containing a HTML opening tag with given CSS style attribute(s) and concatenates the given
+	 * content. Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
 	 *
 	 * @param tag String name of HTML tag
 	 * @param style style for tag (plain CSS)
@@ -363,7 +363,7 @@ public final class HtmlBuilder {
 	public static String openTagStyle(String tag, String style, String... content) {
 		return openTag(tag, null, style, content);
 	}
-	
+
 	/**
 	 * Build a String containing a HTML opening tag with given CSS class and concatenates the given content. 
 	 * Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
