@@ -13,14 +13,13 @@ package org.geomajas.widget.advancedviews.client.widget;
 
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
-import org.geomajas.global.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -51,21 +50,18 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  * 
  * TODO This is a copy from LayerTree, should make original properties
  * protected, of add get/setters
- * FIXME The @since and @Api tags are no longer valid on this copy, see the above todo
- * 
+ *
  * @author Kristof Heirwegh
  * @author Frank Wynants
  * @author Pieter De Graef
- * @since 1.0.0 (1.6.0)
  */
-@Api
 public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, FolderClickHandler,
 		LayerSelectionHandler {
 
 	protected static final String ICON_BASE = "[ISOMORPHIC]/geomajas/widget/layertree/";
 	protected static final String ICON_HIDE = ICON_BASE + "layer-hide.png";
 	protected static final String ICON_SHOW = ICON_BASE + "layer-show";
-	protected static final String ICON_SHOW_OUTOFRANGE = "-outofrange";
+	protected static final String ICON_SHOW_OUT_OF_RANGE = "-outofrange";
 	protected static final String ICON_SHOW_LABELED = "-labeled";
 	protected static final String ICON_SHOW_FILTERED = "-filtered";
 	protected static final String ICON_SHOW_END = ".png";
@@ -102,7 +98,6 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 *            map widget this layer tree is connected to
 	 * @since 1.0.0
 	 */
-	@Api
 	public LayerTreeBase(final MapWidget mapWidget) {
 		super();
 		setHeight100();
@@ -112,8 +107,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		treeGrid.setSelectionType(SelectionStyle.SINGLE);
 
 		// Wait for the MapModel to be loaded
-		mapModel.addMapModelHandler(new MapModelHandler() {
-			public void onMapModelChange(MapModelEvent event) {
+		mapModel.addMapModelChangedHandler(new MapModelChangedHandler() {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				if (!initialized) {
 					initialize();
 				}
@@ -131,10 +126,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When a layer deselection event comes in, the LayerTree must also deselect
 	 * the correct node in the tree, update the selected layer text, and update
 	 * all buttons icons.
-	 *
-	 * @since 1.0.0
 	 */
-	@Api
 	public void onDeselectLayer(LayerDeselectedEvent event) {
 		ListGridRecord selected = treeGrid.getSelectedRecord();
 		if (selected != null) {
@@ -148,10 +140,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 * When a layer selection event comes in, the LayerTree must also select the
 	 * correct node in the tree, update the selected layer text, and update all
 	 * buttons icons.
-	 *
-	 * @since 1.0.0
 	 */
-	@Api
 	public void onSelectLayer(LayerSelectedEvent event) {
 		for (TreeNode node : tree.getAllNodes()) {
 			if (node.getName().equals(event.getLayer().getLabel())) {
@@ -281,10 +270,6 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 *            The treeNode to process
 	 * @param nodeRoot
 	 *            The root node to which the treeNode has te be added
-	 * @param tree
-	 *            The tree to which the node has to be added
-	 * @param mapModel
-	 *            map model
 	 * @param refresh
 	 *            True if the tree is refreshed (causing it to keep its expanded
 	 *            state)
@@ -295,11 +280,11 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	protected abstract void syncNodeState(boolean layersOnly);
 
 	/**
-	 * Creation of treegrid is decoupled to allow you to make a custom treegrid
-	 * (SmartGWT uses some designpatterns which only give you the ability to
-	 * customize certain aspects through subclassing)
+	 * Creation of tree grid is decoupled to allow you to make a custom tree grid
+	 * (SmartGWT uses some design patterns which only give you the ability to
+	 * customize certain aspects in a subclass)
 	 *
-	 * @return
+	 * @return tree grid
 	 */
 	protected TreeGrid createTreeGrid() {
 		return new TreeGrid();
@@ -328,7 +313,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 
 			// exclude layers, which are handled by syncNodeState()
 			for (TreeNode openNode : openNodes) {
-				if (!(openNode instanceof LayerTreeLegendNode) && !(openNode instanceof LayerTreeLegendNode)) {
+				if (!(openNode instanceof LayerTreeLegendNode)) {
 					this.openFolder(openNode);
 				}
 			}
@@ -369,19 +354,21 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 		/**
 		 * Causes the node to check its status (visible, showing labels, ...)
 		 * and to update its icon to match its status.
+		 *
+		 * @param refresh should tree be refreshed
 		 */
 		public void updateIcon(boolean refresh) {
 			if (layer.isVisible()) {
 				String icon = ICON_SHOW;
 				if (!layer.isShowing()) {
-					icon += ICON_SHOW_OUTOFRANGE;
+					icon += ICON_SHOW_OUT_OF_RANGE;
 				}
 				if (layer.isLabelsVisible()) {
 					icon += ICON_SHOW_LABELED;
 				}
 				if (layer instanceof VectorLayer) {
 					VectorLayer vl = (VectorLayer) layer;
-					if (vl.getFilter() != null && !"".equals(vl.getFilter())) {
+					if (vl.getFilter() != null && vl.getFilter().length() > 0) {
 						icon += ICON_SHOW_FILTERED;
 					}
 				}
