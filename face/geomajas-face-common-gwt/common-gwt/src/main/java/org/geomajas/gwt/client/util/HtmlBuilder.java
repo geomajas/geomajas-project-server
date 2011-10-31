@@ -33,7 +33,7 @@ public final class HtmlBuilder {
 	}
 	/**
 	 * Build a HTML Table with given CSS class for a string.
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for table element
 	 * @param content content string
@@ -45,7 +45,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML Table with given CSS style for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for table element
 	 * @param content content string
@@ -58,7 +58,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML Table with given CSS class for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for table element
 	 * @param content content string
@@ -71,7 +71,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML Table with given CSS style for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for table element
 	 * @param content content string
@@ -83,7 +83,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML TableRow with no CSS of its own. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param content content string
 	 * @return HTML tr element as string
@@ -95,7 +95,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML TableRow with no CSS of its own. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param content content string
 	 * @return HTML tr element as string
@@ -106,7 +106,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML TableRow with given CSS class for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for tr element
 	 * @param content content string
@@ -118,7 +118,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML TableRow with given CSS style attributes for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for tr element
 	 * @param content content string
@@ -131,7 +131,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML TableRow with given CSS class for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for tr element
 	 * @param content content string
@@ -144,7 +144,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML TableRow with given CSS style attributes for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for tr element
 	 * @param content content string
@@ -156,7 +156,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML TableRow with given CSS class for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for tr element
 	 * @param content content string
@@ -168,7 +168,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML TableData with given CSS style attributes for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for td element
 	 * @param content content string
@@ -181,7 +181,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML TableRow with given CSS class for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for tr element
 	 * @param content content string
@@ -194,7 +194,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML TableData with given CSS style attributes for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for td element
 	 * @param content content string
@@ -206,7 +206,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a HTML DIV with given style for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for div (plain CSS)
 	 * @param content content string
@@ -217,7 +217,7 @@ public final class HtmlBuilder {
 	}
 	/**
 	 * Build a HTML DIV with given CSS class for a string. 
-	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * Use this method if given content contains HTML snippets, prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for div element
 	 * @param content content string
@@ -230,7 +230,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML DIV with given style for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param style style for div (plain CSS)
 	 * @param content content string
@@ -242,7 +242,7 @@ public final class HtmlBuilder {
 	/**
 	 * Build a HTML DIV with given CSS class for a string. 
 	 * Given content does <b>not</b> consists of HTML snippets and 
-	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * as such is being prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 *
 	 * @param clazz class for div element
 	 * @param content content string
@@ -278,7 +278,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a String containing a HTML opening tag with given CSS style attribute(s), content and closing tag.
-	 * Content should contain no HTML, because it is prepared with {@link WidgetLayout#htmlEncode(String)}.
+	 * Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
 	 *
 	 * @param tag String name of HTML tag
 	 * @param style style for tag (plain CSS)
@@ -291,7 +291,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a String containing a HTML opening tag with given CSS class, content and closing tag.
-	 * Content should contain no HTML, because it is prepared with {@link WidgetLayout#htmlEncode(String)}.
+	 * Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
 	 *
 	 * @param tag String name of HTML tag
 	 * @param clazz CSS class of the tag
@@ -328,7 +328,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a String containing a HTML opening tag with given CSS style attribute(s) and 
-	 * concats the given HTML content. 
+	 * concatenates the given HTML content. 
 	 *
 	 * @param tag String name of HTML tag
 	 * @param style style for tag (plain CSS)
@@ -340,7 +340,7 @@ public final class HtmlBuilder {
 	}
 	
 	/**
-	 * Build a String containing a HTML opening tag with given CSS class and concats the given HTML content. 
+	 * Build a String containing a HTML opening tag with given CSS class and concatenates the given HTML content. 
 	 *
 	 * @param tag String name of HTML tag
 	 * @param clazz CSS class of the tag
@@ -352,8 +352,8 @@ public final class HtmlBuilder {
 	}
 	
 	/**
-	 * Build a String containing a HTML opening tag with given CSS style attribute(s) and concats the given content. 
-	 * Content should contain no HTML, because it is prepared with {@link WidgetLayout#htmlEncode(String)}.
+	 * Build a String containing a HTML opening tag with given CSS style attribute(s) and concatenates the given content. 
+	 * Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
 	 *
 	 * @param tag String name of HTML tag
 	 * @param style style for tag (plain CSS)
@@ -365,8 +365,8 @@ public final class HtmlBuilder {
 	}
 	
 	/**
-	 * Build a String containing a HTML opening tag with given CSS class and concats the given content. 
-	 * Content should contain no HTML, because it is prepared with {@link WidgetLayout#htmlEncode(String)}.
+	 * Build a String containing a HTML opening tag with given CSS class and concatenates the given content. 
+	 * Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}.
 	 *
 	 * @param tag String name of HTML tag
 	 * @param clazz CSS class of the tag
@@ -378,8 +378,8 @@ public final class HtmlBuilder {
 	}
 	
 	/**
-	 * Build a String containing a HTML opening tag with given CSS class and/or style and concats the given content.
-	 * Content should contain no HTML, because it is prepared with {@link WidgetLayout#htmlEncode(String)}. 
+	 * Build a String containing a HTML opening tag with given CSS class and/or style and concatenates the given 
+	 * content. Content should contain no HTML, because it is prepared with {@link #htmlEncode(String)}. 
 	 *
 	 * @param tag String name of HTML tag
 	 * @param clazz CSS class of the tag
@@ -393,7 +393,7 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a String containing a HTML opening tag with given CSS class and/or 
-	 * style and concats the given HTML content. 
+	 * style and concatenates the given HTML content. 
 	 *
 	 * @param tag String name of HTML tag
 	 * @param clazz CSS class of the tag
@@ -407,12 +407,12 @@ public final class HtmlBuilder {
 	
 	/**
 	 * Build a String containing a HTML opening tag with given CSS class and/or 
-	 * style and concats the given content. 
+	 * style and concatenates the given content. 
 	 *
 	 * @param tag String name of HTML tag
 	 * @param clazz CSS class of the tag
 	 * @param style style for tag (plain CSS)
-	 * @param contentIsHtml if false content is prepared with {@link HtmlBuilder#htmlEncode(String...)}.
+	 * @param contentIsHtml if false content is prepared with {@link HtmlBuilder#htmlEncode(String)}.
 	 * @param content content string
 	 * @return HTML tag element as string
 	 */
@@ -438,10 +438,10 @@ public final class HtmlBuilder {
 		return result.toString();
 	}
 	
-
 	/**
 	 * Replaces & into {@literal &amp;}, < into {@literal &lt;} and > into {@literal &gt;}.
-	 * @param content
+	 *
+	 * @param content content to encode
 	 * @return the encoded content
 	 */
 	public static String htmlEncode(String content) {
