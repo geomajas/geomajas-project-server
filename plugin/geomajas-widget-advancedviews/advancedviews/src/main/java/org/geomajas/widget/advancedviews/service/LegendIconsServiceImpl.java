@@ -68,7 +68,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 
 	private static final Color TEXT_BACKGROUND = new Color(0, 0, 0, 128);
 
-	 private static final String DEFAULT_RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
+	private static final String DEFAULT_RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
 
 	private Map<String, Integer> iconSizes;
 
@@ -367,11 +367,12 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 	}
 
 	/**
-	 * 
-	 * @param gr
-	 * @param text
-	 * @param size
-	 * @param color
+	 * draw text.
+	 *
+	 * @param gr graphics context
+	 * @param text text
+	 * @param size size
+	 * @param color color
 	 */
 	private void drawText(Graphics2D gr, String text, int size, Color color, int iconSize) {
 		int max = iconSize - 1;
