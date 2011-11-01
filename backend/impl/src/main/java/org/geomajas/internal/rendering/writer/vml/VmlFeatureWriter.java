@@ -66,8 +66,9 @@ public class VmlFeatureWriter implements GraphicsWriter {
 							writeRectangle(document, coordinate, feature, info.getRect());
 						} else if (info.getCircle() != null) {
 							RectInfo rectInfo = new RectInfo();
-							rectInfo.setW(info.getCircle().getR() * 2);
-							rectInfo.setH(info.getCircle().getR() * 2);
+							float diameter = info.getCircle().getR() * 2;
+							rectInfo.setW(diameter);
+							rectInfo.setH(diameter);
 							writeRectangle(document, coordinate, feature, rectInfo);
 						} else if (info.getImage() != null) {
 							writeImage(document, coordinate, feature, info.getImage());

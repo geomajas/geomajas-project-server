@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.advancedviews.service;
 
 import java.awt.BasicStroke;
@@ -39,7 +40,6 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
-import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.RasterLayer;
@@ -55,20 +55,18 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 /**
+ * Service for providing legend icons.
  *
  * @author Kristof Heirwegh
- * @since 1.0.0
- *
  */
 @Component
-@Api
 public class LegendIconsServiceImpl implements LegendIconsService {
 
 	private final Logger log = LoggerFactory.getLogger(LegendIconsServiceImpl.class);
 
 	private static final int DEFAULT_ICON_SIZE = 18;
 
-	private static final Color TEXTBACKGROUND = new Color(0, 0, 0, 128);
+	private static final Color TEXT_BACKGROUND = new Color(0, 0, 0, 128);
 
 	 private static final String DEFAULT_RASTER_IMAGE_PATH = "images/osgeo/layer-raster.png";
 
@@ -153,8 +151,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 
 	/**
 	 * @param widgetId
-	 *            name of the LayertreeWithLegend widget for which you want an
-	 *            icon
+	 *            name of the LayertreeWithLegend widget for which you want an icon
 	 */
 	private int getIconSize(String widgetId) {
 		if (iconSizes.containsKey(widgetId)) {
@@ -219,7 +216,10 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 	}
 
 	private void drawPolygon(Graphics2D gr, FeatureStyleInfo fsi, int iconSize) throws AdvancedviewsException {
-		int x = 0, y = 0, w = iconSize - 1, h = iconSize - 1;
+		int x;
+		int y;
+		int w = iconSize - 1;
+		int h = iconSize - 1;
 		float[] paniponidash = toDashArray(fsi.getDashArray());
 		Stroke stroke = new BasicStroke(fsi.getStrokeWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f,
 				paniponidash, 0.0f);
@@ -238,8 +238,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 
 	private void drawLinestring(Graphics2D gr, FeatureStyleInfo fsi, int iconSize) throws AdvancedviewsException {
 		int max = iconSize - 1;
-		int w = max;
-		float onethird = (0f + w) / 3;
+		float onethird = (0f + max) / 3;
 		float twothirds = onethird * 2;
 		float[] paniponidash = toDashArray(fsi.getDashArray());
 		Stroke stroke = new BasicStroke(fsi.getStrokeWidth(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f,
@@ -377,7 +376,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 	private void drawText(Graphics2D gr, String text, int size, Color color, int iconSize) {
 		int max = iconSize - 1;
 		TextLayout tl = new TextLayout(text, gr.getFont(), gr.getFontRenderContext());
-		gr.setColor(TEXTBACKGROUND);
+		gr.setColor(TEXT_BACKGROUND);
 		gr.setStroke(new BasicStroke());
 		Rectangle2D b = tl.getBounds();
 		b = new Rectangle2D.Double(0, max, b.getWidth() + 1, b.getHeight() + 1);
@@ -439,8 +438,7 @@ public class LegendIconsServiceImpl implements LegendIconsService {
 				if (resource != null && resource.exists()) {
 					is = resource.getInputStream();
 				} else {
-					// conveniencecheck so clients can use same url client- as
-					// serverside
+					// conveniencecheck so clients can use same url client- as serverside
 					resource = appContext.getResource("images/" + path);
 					if (resource != null && resource.exists()) {
 						is = resource.getInputStream();

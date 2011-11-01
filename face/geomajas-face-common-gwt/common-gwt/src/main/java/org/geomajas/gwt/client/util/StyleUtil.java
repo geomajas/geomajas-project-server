@@ -33,10 +33,9 @@ import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
 
 /**
- * Utility for creating stylers.
+ * Utility for creating styles.
  * 
  * @author Jan De Moerloose
- * 
  */
 public final class StyleUtil {
 
@@ -51,7 +50,7 @@ public final class StyleUtil {
 	/**
 	 * Create a style with a single rule.
 	 * 
-	 * @param rule
+	 * @param rule rule
 	 * @return the style
 	 */
 	public static UserStyleInfo createStyle(RuleInfo rule) {
@@ -65,7 +64,7 @@ public final class StyleUtil {
 	public static RuleInfo createRule(LayerType type, FeatureStyleInfo featureStyle) {
 		SymbolInfo symbol = featureStyle.getSymbol();
 		RuleInfo rule = null;
-		StrokeInfo stroke = StyleUtil.createStroke(featureStyle.getStrokeColor(), (int) featureStyle.getStrokeWidth(),
+		StrokeInfo stroke = StyleUtil.createStroke(featureStyle.getStrokeColor(), featureStyle.getStrokeWidth(),
 				featureStyle.getStrokeOpacity(), null);
 		FillInfo fill = StyleUtil.createFill(featureStyle.getFillColor(), featureStyle.getFillOpacity());
 		switch (type) {
@@ -78,7 +77,7 @@ public final class StyleUtil {
 				break;
 			case MULTIPOINT:
 			case POINT:
-				GraphicInfo graphic = null;
+				GraphicInfo graphic;
 				if (symbol.getCircle() != null) {
 					MarkInfo circle = StyleUtil.createMark(WKN_CIRCLE, fill, stroke);
 					graphic = StyleUtil.createGraphic(circle, (int) (2 * symbol.getCircle().getR()));
@@ -94,10 +93,11 @@ public final class StyleUtil {
 				break;
 			case POLYGON:
 			case MULTIPOLYGON:
-			default:
 				PolygonSymbolizerInfo polygon = StyleUtil.createPolygonSymbolizer(fill, stroke);
 				rule = StyleUtil.createRule(featureStyle.getName(), featureStyle.getName(), polygon);
 				break;
+			default:
+				throw new IllegalStateException("Unknown layer type " + type);
 		}
 		return rule;
 	}
