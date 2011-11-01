@@ -15,31 +15,19 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 /**
  * Base layer component for printing.
  * 
- * @author Jan De Moerloose
- *
  * @param <T> DTO object class
+ *
+ * @author Jan De Moerloose
  */
 public interface BaseLayerComponent<T extends PrintComponentInfo> extends PrintComponent<T> {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseLayerComponent#isVisible()
-	 */
+	/** {@inheritDoc} */
 	boolean isVisible();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseLayerComponent#isSelected()
-	 */
+	/** {@inheritDoc} */
 	boolean isSelected();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseLayerComponent#getLayerId()
-	 */
+	/** {@inheritDoc} */
 	String getLayerId();
 
 }

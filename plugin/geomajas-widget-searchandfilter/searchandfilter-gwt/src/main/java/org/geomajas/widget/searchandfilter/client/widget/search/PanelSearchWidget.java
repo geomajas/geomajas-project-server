@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * <p>
  * To build a search widget combine this search widget with a {@link AbstractSearchPanel}.
  *
- * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
+ * @see org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry
  * @author Kristof Heirwegh
  * @since 1.0.0
  */

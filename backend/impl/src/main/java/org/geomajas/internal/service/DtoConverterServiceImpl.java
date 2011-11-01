@@ -320,7 +320,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @param feature
 	 *            The server-side feature representation.
 	 * @param featureIncludes
-	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
+	 *            Indicate which aspects of the should be included see {@link VectorLayerService}
 	 * @return Returns the DTO feature.
 	 */
 	public Feature toDto(InternalFeature feature, int featureIncludes) throws GeomajasException {
@@ -585,7 +585,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @param crs
 	 *            crs to include in features (if any)
 	 * @param featureIncludes
-	 *            Indicate which aspects of the should be included @see {@link org.geomajas.layer.VectorLayerService}
+	 *            Indicate which aspects of the should be included see {@link org.geomajas.layer.VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
 	public VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException {

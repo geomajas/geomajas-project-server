@@ -44,7 +44,7 @@ import org.geomajas.layer.LayerType;
  * </p>
  * <p>
  * All you have to do to make use of snapping, is to make an instance of this
- * class, and call the <code>snap</code> method.
+ * class, and call the {@link #snap(org.geomajas.geometry.Coordinate)} method.
  * </p>
  *
  * @author Pieter De Graef
@@ -55,13 +55,13 @@ public class Snapper {
 	/**
 	 * General definition for the different snapping modes. The
 	 * ALL_GEOMETRIES_EQUAL will use a SnappingMode that treats all geometries
-	 * equally (@see EqualSnappingMode), while the
+	 * equally see {@link EqualSnappingMode}, while the
 	 * PRIORITY_TO_INTERSECTING_GEOMETRIES will give priority to geometries that
-	 * intersect the given coordinate (@see IntersectPriorityMode).
+	 * intersect the given coordinate see {@link IntersectPriorityMode}.
 	 */
 	public static enum SnapMode {
 		ALL_GEOMETRIES_EQUAL, PRIORITY_TO_INTERSECTING_GEOMETRIES
-	};
+	}
 
 	/**
 	 * The MapModel that contains the layers to which snapping is possible. If a

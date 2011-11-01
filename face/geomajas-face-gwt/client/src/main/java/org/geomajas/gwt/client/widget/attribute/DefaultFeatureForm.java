@@ -207,20 +207,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#getWidget()
-	 */
+	/** {@inheritDoc} */
 	public DynamicForm getWidget() {
 		return formWidget;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#setDisabled(boolean)
-	 */
+	/** {@inheritDoc} */
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 
@@ -238,20 +230,12 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#isDisabled()
-	 */
+	/** {@inheritDoc} */
 	public boolean isDisabled() {
 		return disabled;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#validate()
-	 */
+	/** {@inheritDoc} */
 	public boolean validate() {
 		boolean validate = true;
 		for (FormItem item : formWidget.getFields()) {
@@ -270,12 +254,8 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	public void fireEvent(GwtEvent<?> event) {
 		manager.fireEvent(event);
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#addItemChangedHandler(
-	 * com.smartgwt.client.widgets.form.events .ItemChangedHandler)
-	 */
+
+	/** {@inheritDoc} */
 	public HandlerRegistration addItemChangedHandler(ItemChangedHandler handler) {
 		MultiHandlerRegistration registration = new MultiHandlerRegistration();
 		// Due to custom made FormItems, we can't set the handler on the form anymore...
@@ -305,12 +285,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#toForm(java.lang.String,
-	 * org.geomajas.layer.feature.Attribute)
-	 */
+	/** {@inheritDoc} */
 	public void toForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = attributeInfoMap.get(name);
 		if (info == null || !isIncluded(info)) {
@@ -383,12 +358,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#fromForm(java.lang.String,
-	 * org.geomajas.layer.feature.Attribute)
-	 */
+	/** {@inheritDoc} */
 	public void fromForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = attributeInfoMap.get(name);
 		if (attribute == null || info == null || !isIncluded(info)) {
@@ -452,11 +422,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.gwt.client.widget.attribute.FeatureForm#clear()
-	 */
+	/** {@inheritDoc} */
 	public void clear() {
 		formWidget.clearValues();
 		// the above does not call clearValue() on every item ?!! so do it explicitly

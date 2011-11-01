@@ -22,7 +22,7 @@ import com.smartgwt.client.widgets.events.CloseClientEvent;
  * <p>
  * To build a search widget combine this search widget with a {@link AbstractSearchPanel}.
  * 
- * @see {@link SearchWidgetRegistry}.
+ * @see SearchWidgetRegistry
  * @author Kristof Heirwegh
  * @since 1.0.0
  */

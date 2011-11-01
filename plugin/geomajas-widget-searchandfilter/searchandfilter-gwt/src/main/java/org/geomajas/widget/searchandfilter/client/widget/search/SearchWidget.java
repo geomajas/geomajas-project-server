@@ -17,7 +17,7 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 /**
  * Interface with common methods needed to build a search widget.
  *
- * @see {@link SearchWidgetRegistry}.
+ * @see SearchWidgetRegistry
  * @author Kristof Heirwegh
  * @since 1.0.0
  */

@@ -13,7 +13,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * DTO object for LabelComponent.
@@ -21,7 +21,6 @@ import org.geomajas.global.Api;
  * @author Jan De Moerloose
  * @see org.geomajas.plugin.printing.component.LabelComponent
  * @since 2.0.0
- *
  */
 @Api(allMethods = true)
 public class LabelComponentInfo extends PrintComponentInfo implements Serializable {

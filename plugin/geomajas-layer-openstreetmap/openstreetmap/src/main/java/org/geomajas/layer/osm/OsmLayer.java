@@ -128,7 +128,7 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	/**
-	 * Set the strategy ({@see UrlSelectionStrategy})for selecting the URL to use for the tiles.
+	 * Set the strategy ({@link UrlSelectionStrategy}) for selecting the URL to use for the tiles.
 	 *
 	 * @param strategy a tile URL builder
 	 * @since 1.8.0

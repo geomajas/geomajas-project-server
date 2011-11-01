@@ -19,7 +19,7 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 import com.smartgwt.client.widgets.Canvas;
 
 /**
- * @see {@link SearchWidgetRegistry}.
+ * @see SearchWidgetRegistry
  * @author Kristof Heirwegh
  * @since 1.0.0
  */

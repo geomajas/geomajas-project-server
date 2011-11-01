@@ -73,7 +73,7 @@ public interface DtoConverterService {
 	 * @param feature
 	 *            The server-side feature representation.
 	 * @param featureIncludes
-	 *            Indicate which aspects of the should be included @see {@link org.geomajas.layer.VectorLayerService}
+	 *            Indicate which aspects of the should be included, see {@link org.geomajas.layer.VectorLayerService}
 	 * @return Returns the DTO feature.
 	 * @throws GeomajasException conversion failed
 	 */
@@ -137,7 +137,7 @@ public interface DtoConverterService {
 	 * @param crs
 	 *            crs code to include in the features (can be null)
 	 * @param featureIncludes
-	 *            Indicate which aspects of the should be included @see {@link org.geomajas.layer.VectorLayerService}
+	 *            Indicate which aspects of the should be included, see {@link org.geomajas.layer.VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
 	 * @throws GeomajasException conversion failed
 	 * @deprecated use {@link #toDto(InternalTile)}

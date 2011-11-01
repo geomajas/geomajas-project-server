@@ -18,8 +18,10 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 /**
- * @see {@link SearchWidgetRegistry}
- * @see {@link org.geomajas.gwt.client.widget.event.SearchEvent}
+ * Search event.
+ *
+ * @see SearchWidgetRegistry
+ * @see org.geomajas.gwt.client.widget.event.SearchEvent
  * @author Kristof Heirwegh
  */
 public class SearchEvent {

@@ -59,7 +59,7 @@ import com.smartgwt.client.widgets.layout.VStack;
 /**
  * Search panel using (non geometry) attributes.
  *
- * @see {@link org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry}.
+ * @see org.geomajas.widget.searchandfilter.client.widget.search.SearchWidgetRegistry
  * @author Kristof Heirwegh
  * @since 1.0.0
  */
@@ -162,7 +162,7 @@ public class AttributeSearchPanel extends AbstractSearchPanel {
 	// ----------------------------------------------------------
 
 	/**
-	 * Adapted from @see {@link FeatureSearch} by @author Pieter De Graef.
+	 * Adapted from {@link FeatureSearch} by Pieter De Graef.
 	 *
 	 * @author Kristof Heirwegh
 	 */

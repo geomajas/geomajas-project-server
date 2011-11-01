@@ -18,7 +18,9 @@ import org.geomajas.annotation.UserImplemented;
 /**
  * Use this interface to define custom data classes to be passed to the client.
  * 
- * @see {@link ClientApplicationInfo}, {@link ClientMapInfo}, {@link ClientLayerInfo}
+ * @see ClientApplicationInfo
+ * @see ClientMapInfo
+ * @see ClientLayerInfo
  * 
  * @author Kristof Heirwegh
  * @since 1.6.0

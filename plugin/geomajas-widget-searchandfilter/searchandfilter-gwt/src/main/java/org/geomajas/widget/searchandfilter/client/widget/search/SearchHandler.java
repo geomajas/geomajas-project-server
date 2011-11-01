@@ -13,10 +13,11 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * @see {@link org.geomajas.gwt.client.widget.event.SearchHandler}
- * @see {@link SearchWidgetRegistry}.
- * @author Kristof Heirwegh
+ * Search handler.
  *
+ * @see org.geomajas.gwt.client.widget.event.SearchHandler
+ * @see SearchWidgetRegistry
+ * @author Kristof Heirwegh
  */
 public interface SearchHandler extends EventHandler {
 

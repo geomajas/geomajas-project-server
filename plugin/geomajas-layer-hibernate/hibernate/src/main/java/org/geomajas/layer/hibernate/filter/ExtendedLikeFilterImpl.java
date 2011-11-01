@@ -450,7 +450,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 
 	/**
 	 * <p>
-	 * THis method calls {@link #getWildcardSingle()()} for subclass backwards compatability.
+	 * THis method calls {@link #getWildcardSingle()()} for subclass backwards compatibility.
 	 * </p>
 	 * 
 	 * @see org.opengis.filter.PropertyIsLike#getSingleChar()().

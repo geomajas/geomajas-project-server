@@ -76,38 +76,22 @@ public class GeometryIndexImpl implements GeometryIndex {
 		return type.toString() + "-" + value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.editing.client.service.GeometryIndex#getType()
-	 */
+	/** {@inheritDoc} */
 	public GeometryIndexType getType() {
 		return type;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.editing.client.service.GeometryIndex#hasChild()
-	 */
+	/** {@inheritDoc} */
 	public boolean hasChild() {
 		return child != null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.editing.client.service.GeometryIndex#getChild()
-	 */
+	/** {@inheritDoc} */
 	public GeometryIndex getChild() {
 		return child;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.editing.client.service.GeometryIndex#getValue()
-	 */
+	/** {@inheritDoc} */
 	public int getValue() {
 		return value;
 	}

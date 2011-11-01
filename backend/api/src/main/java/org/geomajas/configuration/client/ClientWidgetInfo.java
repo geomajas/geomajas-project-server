@@ -19,7 +19,8 @@ import org.geomajas.annotation.UserImplemented;
  * Marker interface for widget information which is contained in the map (or application)
  * and needs to be sent to the client.
  * 
- * @see {@link ClientApplicationInfo}, {@link ClientMapInfo}
+ * @see ClientApplicationInfo
+ * @see ClientMapInfo
  *
  * @author Kristof Heirwegh
  * @since 1.6.0

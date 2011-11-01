@@ -17,7 +17,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 /**
- * Test for {@see RoundRobinUrlSelectionStrategy}.
+ * Test for {@link RoundRobinUrlSelectionStrategy}.
  *
  * @author Joachim Van der Auwera
  */

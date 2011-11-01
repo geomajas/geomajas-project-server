@@ -21,8 +21,8 @@ import org.geomajas.annotation.UserImplemented;
  * {@link org.geomajas.configuration.LayerInfo#setExtraInfo(java.util.Map)}.
  *
  * @author Joachim Van der Auwera
- * @see {@link org.geomajas.configuration.client.ClientApplicationInfo},
- * 	    {@link org.geomajas.configuration.client.ClientMapInfo}
+ * @see org.geomajas.configuration.client.ClientApplicationInfo
+ * @see org.geomajas.configuration.client.ClientMapInfo
  * @since 1.9.0
  */
 @Api(allMethods = true)

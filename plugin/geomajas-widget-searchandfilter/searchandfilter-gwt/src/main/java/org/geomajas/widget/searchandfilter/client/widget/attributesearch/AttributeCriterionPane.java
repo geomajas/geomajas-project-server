@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 
 /**
- * Adjusted from @see {@link AttributeCriterionPane} to work with AttributeCriterion.
+ * Adjusted from see {@link AttributeCriterionPane} to work with AttributeCriterion.
  *
  * @author Pieter De Graef
  * @author Kristof Heirwegh

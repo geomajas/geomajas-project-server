@@ -12,15 +12,14 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * DTO object for ImageComponent.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.ImageComponent
+ * @see org.geomajas.plugin.printing.component.impl.ImageComponentImpl
  * @since 2.0.0
- *
  */
 @Api(allMethods = true)
 public class ImageComponentInfo extends PrintComponentInfo implements Serializable {

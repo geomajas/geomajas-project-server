@@ -37,7 +37,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * Controller to handle the searches.
  *
- * @see {@link SearchWidgetRegistry}.
+ * @see SearchWidgetRegistry
  * @author Kristof Heirwegh
  */
 public class FavouritesController implements FavouriteRequestHandler {
