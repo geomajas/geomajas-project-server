@@ -150,7 +150,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="OPEC and UNESCO Member" />
-					<property name="formula" value="((opec == 1) AND (unesco == 1))" />
+					<property name="formula" value="((opec = 1) AND (unesco = 1))" />
 					<property name="fillColor" value="#995500" />
 					<property name="fillOpacity" value=".6" />
 					<property name="strokeColor" value="#995500" />
@@ -159,7 +159,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</bean>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="OPEC Member" />
-					<property name="formula" value="(opec == 1)" />
+					<property name="formula" value="(opec = 1)" />
 					<property name="fillColor" value="#997722" />
 					<property name="fillOpacity" value=".6" />
 					<property name="strokeColor" value="#997722" />
@@ -168,7 +168,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</bean>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="UNESCO Member" />
-					<property name="formula" value="(unesco == 1)" />
+					<property name="formula" value="(unesco = 1)" />
 					<property name="fillColor" value="#99AA33" />
 					<property name="fillOpacity" value=".6" />
 					<property name="strokeColor" value="#99AA33" />
