@@ -456,7 +456,7 @@ public class SearchByLocationRequest implements CommandRequest {
 			}
 			first = false;
 			layerFiltersToString.append("{ResultTag='" + filterResultTags + "'" 
-					+ ";filter=" + (LayerFilterSpecification)layerFilters.get(filterResultTags)
+					+ ";filter=" + (LayerFilterSpecification) layerFilters.get(filterResultTags)
 					+ "}");
 		}
 		layerFiltersToString.append("}");
