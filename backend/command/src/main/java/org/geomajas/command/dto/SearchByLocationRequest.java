@@ -20,7 +20,8 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasConstant;
 
 /**
- * Request object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
+ * Request object for
+ * {@link org.geomajas.command.feature.SearchByLocationCommand}.
  * 
  * @author Joachim Van der Auwera
  * @author Oliver May
@@ -28,13 +29,13 @@ import org.geomajas.global.GeomajasConstant;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class SearchByLocationRequest implements CommandRequest  {
+public class SearchByLocationRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
 	/**
 	 * Command name for this request.
-	 *
+	 * 
 	 * @since 1.9.0
 	 * */
 	public static final String COMMAND = "command.feature.SearchByLocation";
@@ -44,19 +45,22 @@ public class SearchByLocationRequest implements CommandRequest  {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Search type in which the layers are searched from the beginning to the end of the array until a result is found.
-	 * In other words when a layer returns a successful result, the command will look no further.
+	 * Search type in which the layers are searched from the beginning to the
+	 * end of the array until a result is found. In other words when a layer
+	 * returns a successful result, the command will look no further.
 	 */
 	public static final int SEARCH_FIRST_LAYER = 1;
 
 	/**
-	 * Search type in which all layers are searched for a result, and more than one result may be returned.
+	 * Search type in which all layers are searched for a result, and more than
+	 * one result may be returned.
 	 */
 	public static final int SEARCH_ALL_LAYERS = 2;
 
 	/**
-	 * Use an intersects query. If ratio is between 0 and 1, it will accept geometries that intersects partially with
-	 * the given location. (depending on the value of the ratio).
+	 * Use an intersects query. If ratio is between 0 and 1, it will accept
+	 * geometries that intersects partially with the given location. (depending
+	 * on the value of the ratio).
 	 */
 	public static final int QUERY_INTERSECTS = 1;
 
@@ -77,7 +81,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 
 	/**
 	 * <p>
-	 * Type of geometric query to be executed. Default is "QUERY_INTERSECTS". All options are:
+	 * Type of geometric query to be executed. Default is "QUERY_INTERSECTS".
+	 * All options are:
 	 * </p>
 	 * <ul>
 	 * <li>QUERY_INTERSECTS</li>
@@ -89,13 +94,15 @@ public class SearchByLocationRequest implements CommandRequest  {
 	private int queryType = QUERY_INTERSECTS;
 
 	/**
-	 * This option can only be used in case of an intersects query. It accepts features whose geometry intersect
-	 * with the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
+	 * This option can only be used in case of an intersects query. It accepts
+	 * features whose geometry intersect with the given geometry for at least
+	 * the given ratio. This number must always be a value between 0 and 1.
 	 */
 	private float ratio = -1;
 
 	/**
-	 * The type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
+	 * The type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2
+	 * (=SEARCH_ALL_LAYERS).
 	 */
 	private int searchType = SEARCH_FIRST_LAYER;
 
@@ -105,11 +112,12 @@ public class SearchByLocationRequest implements CommandRequest  {
 	private String crs;
 
 	private String filter;
-	
-	private Map<String, FilterSpec> filters = new HashMap<String, FilterSpec>();
+
+	private Map<String, LayerFilterSpecification> layerFilters = new HashMap<String, LayerFilterSpecification>();
 
 	/**
-	 * The optional buffer that should be added around the location before executing the search.
+	 * The optional buffer that should be added around the location before
+	 * executing the search.
 	 */
 	private double buffer = -1;
 
@@ -141,7 +149,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 
 	/**
 	 * <p>
-	 * Type of geometric query to be executed. Default is "QUERY_INTERSECTS". All options are:
+	 * Type of geometric query to be executed. Default is "QUERY_INTERSECTS".
+	 * All options are:
 	 * </p>
 	 * <ul>
 	 * <li>QUERY_INTERSECTS</li>
@@ -158,7 +167,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 
 	/**
 	 * <p>
-	 * Type of geometric query to be executed. Default is "QUERY_INTERSECTS". All options are:
+	 * Type of geometric query to be executed. Default is "QUERY_INTERSECTS".
+	 * All options are:
 	 * </p>
 	 * <ul>
 	 * <li>QUERY_INTERSECTS</li>
@@ -175,8 +185,9 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * This option can only be used in case of an intersects query. It accepts features whose geometry intersect with
-	 * the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
+	 * This option can only be used in case of an intersects query. It accepts
+	 * features whose geometry intersect with the given geometry for at least
+	 * the given ratio. This number must always be a value between 0 and 1.
 	 * 
 	 * @return minimum match ratio
 	 */
@@ -185,8 +196,9 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * This option can only be used in case of an intersects query. It accepts features whose geometry intersect with
-	 * the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
+	 * This option can only be used in case of an intersects query. It accepts
+	 * features whose geometry intersect with the given geometry for at least
+	 * the given ratio. This number must always be a value between 0 and 1.
 	 * 
 	 * @param ratio
 	 *            The new ratio
@@ -196,7 +208,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Get the coordinate reference space which should be used for the returned geometries.
+	 * Get the coordinate reference space which should be used for the returned
+	 * geometries.
 	 * 
 	 * @return The map's coordinate reference system.
 	 */
@@ -205,7 +218,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Set the coordinate reference space which should be used for the returned geometries.
+	 * Set the coordinate reference space which should be used for the returned
+	 * geometries.
 	 * 
 	 * @param crs
 	 *            The map's coordinate reference system.
@@ -215,7 +229,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Get the type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
+	 * Get the type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2
+	 * (=SEARCH_ALL_LAYERS).
 	 * 
 	 * @return search type
 	 */
@@ -224,7 +239,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Set a new type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
+	 * Set a new type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2
+	 * (=SEARCH_ALL_LAYERS).
 	 * 
 	 * @param searchType
 	 *            search type
@@ -234,7 +250,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Get the optional buffer that should be added around the location before executing the search.
+	 * Get the optional buffer that should be added around the location before
+	 * executing the search.
 	 * 
 	 * @return buffer size
 	 */
@@ -243,7 +260,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Set a buffer that should be added to the location before executing the search.
+	 * Set a buffer that should be added to the location before executing the
+	 * search.
 	 * 
 	 * @param buffer
 	 *            buffer size
@@ -253,8 +271,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Get which data should be included in the features. For possible values, see
-	 * {@link org.geomajas.layer.VectorLayerService}.
+	 * Get which data should be included in the features. For possible values,
+	 * see {@link org.geomajas.layer.VectorLayerService}.
 	 * 
 	 * @return what to include
 	 */
@@ -263,8 +281,8 @@ public class SearchByLocationRequest implements CommandRequest  {
 	}
 
 	/**
-	 * Set the data to include in the features which are returned. For possible values, see
-	 * {@link org.geomajas.layer.VectorLayerService}.
+	 * Set the data to include in the features which are returned. For possible
+	 * values, see {@link org.geomajas.layer.VectorLayerService}.
 	 * 
 	 * @param featureIncludes
 	 *            what the include
@@ -272,89 +290,113 @@ public class SearchByLocationRequest implements CommandRequest  {
 	public void setFeatureIncludes(int featureIncludes) {
 		this.featureIncludes = featureIncludes;
 	}
-	
+
 	/**
-	 * Add a layer with an optional filter expression which should be applied on the given layer.
+	 * Add a layer with an optional filter expression which should be applied on
+	 * the given layer.
 	 * <p/>
-	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
-	 *
-	 * @param result tag to make the distinction in the response object between the features for the same
-	 * 				serverLayerId but a different filter
-	 * @param server layerId layer to set this filter on
-	 * @param filter filter expression (can be null, if no client layer specific filtering)
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it
+	 * is not converted!
+	 * 
+	 * @param resultTag
+	 *            tag to make the distinction in the response object between the
+	 *            features for the same serverLayerId but a different filter
+	 *            (e.g. client layer id)
+	 * @param serverLayerId
+	 *            server layerId layer to set this filter on
+	 * @param filter
+	 *            filter expression for the specified layer, can be null (==true
+	 *            filter)no client layer specific filtering
+	 * 
 	 * @since 1.10.0
 	 */
-	public void setLayerWithFilter(String resultTag, String serverLayerId, String filter) {
-		if (filters.containsKey(resultTag)) {
-			//TODO: log warning
-		}
-		filters.put(resultTag, new FilterSpec(serverLayerId, filter));
+	public void setLayerWithFilter(String resultTag, String serverLayerId,
+			String filter) {
+		// note: layer filter specification will be overwritten if it already
+		// exists
+		layerFilters.put(resultTag, new LayerFilterSpecification(serverLayerId,
+				filter));
 	}
+
 	/**
-	 * Set the filter expression which should be applied on the given layer.
+	 * Set the filter expression which should be applied on the given server
+	 * layer. If there has already been specified a filter for that server
+	 * layer, it will be overwritten.
 	 * <p/>
-	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
-	 *
-	 * @param serverLayerId layer to set this filter on
-	 * @param filter filter expression
-	 *
-	 * @deprecated use {@link #setLayerWithFilter()}
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it
+	 * is not converted!
+	 * 
+	 * @param serverLayerId
+	 *            server layer to set this filter on
+	 * @param filter
+	 *            filter expression
+	 * 
+	 * @deprecated use {@link #setLayerWithFilter(String, String, String)}.
 	 * @since 1.9.0
 	 */
 	@Deprecated
 	public void setFilter(String serverLayerId, String filter) {
 		setLayerWithFilter(serverLayerId, serverLayerId, filter);
 	}
-	
-	
+
 	/**
-	 * Get the filter expression which should be applied on the layer.
-	 * <p/>
-	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
-	 *
-	 * @return filter expression (can be null if no client layer specific filter needs to be applied)
-	 * @param resultTag result tag for the filter
+	 * Get the filter expression which should be applied on the layer for the
+	 * specified result tag (e.g. client layer id) as specified in the filters
+	 * map.
+	 * 
+	 * @return filter expression, which can be null if no layer specific filter
+	 *         needs to be applied (=true filter)
+	 * 
+	 * @param resultTag
+	 *            result tag for the layer filter specification
 	 * @since 1.9.0
 	 */
 	public String getFilter(String resultTag) {
-		return filters.get(resultTag).getFilter();
-	}
-	
-	/**
-	 * Get the server layer id for the specified client layer id as specified in the filters map.
-	 *
-	 * @return 
-	 * @param clientLayerId client layer id for the filter (filter can be null if 
-	 * 						no client layer specific filter needs to be applied)
-	 * @since 1.10.0
-	 */
-	public String getServerLayerId(String clientLayerId) {
-		return filters.get(clientLayerId).getServerLayerId();
+		return layerFilters.get(resultTag).getFilter();
 	}
 
 	/**
-	 * Get the client layer ids.
-	 *
-	 * @return client layer ids
+	 * Get the server layer id for the specified result tag (e.g. client layer
+	 * id).
+	 * 
+	 * @param resultTag
+	 *            result tag for the layer filter specification (e.g. client
+	 *            layer id)
+	 * 
+	 * @return server layer id
+	 * 
+	 * @since 1.10.0
+	 */
+	public String getServerLayerId(String resultTag) {
+		return layerFilters.get(resultTag).getServerLayerId();
+	}
+
+	/**
+	 * Get the result tags for layer specific filtering (e.g. client layer
+	 * id's).
+	 * 
+	 * @return result tags for layer specific filtering (e.g. client layer id's)
 	 * @since 1.10.0
 	 */
 	public String[] getLayerIds() {
-		Set<String> layerIds = filters.keySet();
+		Set<String> layerIds = layerFilters.keySet();
 		if (layerIds == null) {
 			return new String[0];
 		}
-		return (String []) (layerIds.toArray(new String[0]));
+		return (String[]) (layerIds.toArray(new String[0]));
 	}
 
 	/**
 	 * Set the server layer ids.
-	 *
-	 * @param serverLayerIds server layer ids
-	 *
-	 * @deprecated use {@link #setLayerWithFilter()}
+	 * <p/>
+	 * Note: use {@link #setLayerWithFilter(String, String, String)} to specify
+	 * filter expressions
+	 * 
+	 * @param serverLayerIds
+	 *            server layer ids
+	 * 
 	 * @since 1.9.0
 	 */
-	@Deprecated
 	public void setLayerIds(String[] serverLayerIds) {
 		for (String serverLayerId : serverLayerIds) {
 			setLayerWithFilter(serverLayerId, serverLayerId, null);
@@ -364,24 +406,29 @@ public class SearchByLocationRequest implements CommandRequest  {
 	/**
 	 * Set the global filter expression which should be applied.
 	 * <p/>
-	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
-	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
-	 * be set on all layers. To add filters to individual layers use {@link #setFilter(String layerId, String filter)}.
-	 *
-	 * @param filter filter expression
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it
+	 * is not converted! Note that this is a global filter that will be applied
+	 * to all layers, when filtering on attributes these must be set on all
+	 * layers. To add filters to individual layers use
+	 * {@link #setFilter(String layerId, String filter)}.
+	 * 
+	 * @param filter
+	 *            filter expression
 	 * @since 1.8.0
 	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
-	
+
 	/**
-	 * Get the filter expression which should be applied on the layer.
+	 * Get the global filter expression which should be applied on all layers.
 	 * <p/>
-	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
-	 * Note that this is a global filter that will be applied to all layers, when filtering on attributes these must
-	 * be set on all layers. To add filters to individual layers use {@link #setFilter(String layerId, String filter)}.
-	 *
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it
+	 * is not converted! Note that this is a global filter that will be applied
+	 * to all layers, when filtering on attributes these must be set on all
+	 * layers. To add filters to individual layers use
+	 * {@link #setFilter(String layerId, String filter)}.
+	 * 
 	 * @return filter expression
 	 * @since 1.8.0
 	 */
@@ -391,24 +438,37 @@ public class SearchByLocationRequest implements CommandRequest  {
 
 	/**
 	 * Build string representation of object.
-	 *
+	 * 
 	 * @return string
 	 * @since 1.8.0
 	 */
 	@Override
 	public String toString() {
-		return "SearchByLocationRequest{" +
-				"location=" + location +
-				", queryType=" + queryType +
-				", ratio=" + ratio +
-				", searchType=" + searchType +
-				", crs='" + crs + '\'' +
-				", global filter='" + filter + '\'' +
-				", buffer=" + buffer +
-				", featureIncludes=" + featureIncludes +
-				'}';
+		
+		StringBuilder layerFiltersToString =  new StringBuilder();
+		layerFiltersToString.append("{");
+		boolean first = true;
+		
+		for (String filterResultTags : layerFilters.keySet()) {
+			
+			if (!first) {
+				layerFiltersToString.append(", ");
+			}
+			first = false;
+			layerFiltersToString.append("{ResultTag='" + filterResultTags + "'" 
+					+ ";filter=" + (LayerFilterSpecification)layerFilters.get(filterResultTags)
+					+ "}");
+		}
+		layerFiltersToString.append("}");
+		
+		return "SearchByLocationRequest{"
+				+ "location=" + location
+				+ ", queryType=" + queryType + ", ratio=" + ratio
+				+ ", searchType=" + searchType + ", crs='" + crs + '\''
+				+ ", global filter='" + filter + '\'' + ", buffer=" + buffer
+				+ ", featureIncludes=" + featureIncludes 
+				+ ", layerFilters=" + layerFiltersToString.toString()
+				+ '}';
 	}
-
-	
 
 }
