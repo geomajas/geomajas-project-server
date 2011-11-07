@@ -238,6 +238,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 					converterService);
 			featureModel.setLayerInfo(layerInfo);
 			featureModelUsable = true;
+			
+		} catch (LayerException le) {
+			featureModelUsable = false;
+			log.warn("The layer could not be correctly initialized: " + getId(), le);
 		} catch (IOException ioe) {
 			if (MAGIC_STRING_LIBRARY_MISSING.equals(ioe.getMessage())) {
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION, url);
