@@ -123,17 +123,17 @@ public class SearchByLocationCommandTest {
 		Assert.assertTrue(actual.contains("Country 2"));
 		Assert.assertTrue(actual.contains("Country 1"));
 	}
-	
+
 	@Test
-	public void intersectCountriesOnEquatorWithLayerFilterDeprecated() throws Exception {
+	public void intersectCountriesOnEquatorWithLayerFilter() throws Exception {
 		// prepare command
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		request.setCrs("EPSG:4326");
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
-		
+		request.setLayerIds(new String[] {LAYER_ID});
 		request.setFilter(LAYER_ID, "region='Region 1'");
-		
+
 		GeometryFactory factory = new GeometryFactory();
 		LineString equator = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),
 				new Coordinate(-180, 180)});
@@ -145,19 +145,17 @@ public class SearchByLocationCommandTest {
 
 		// test
 		Assert.assertFalse(response.isError());
-			List<Feature> features = response.getFeatureMap().get(LAYER_ID);
-			Assert.assertNotNull(features);
-			Assert.assertEquals(2, features.size());
-			List<String> actual = new ArrayList<String>();
-			for (Feature feature : features) {
-				actual.add(feature.getLabel());
-			}
-			Assert.assertTrue(actual.contains("Country 2"));
-			Assert.assertTrue(actual.contains("Country 1"));
+		List<Feature> features = response.getFeatureMap().get(LAYER_ID);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(2, features.size());
+		List<String> actual = new ArrayList<String>();
+		for (Feature feature : features) {
+			actual.add(feature.getLabel());
+		}
+		Assert.assertTrue(actual.contains("Country 2"));
+		Assert.assertTrue(actual.contains("Country 1"));
 	}
 	
-
-
 	@Test
 	public void intersectCountriesOnEquatorWithLayerFilters() throws Exception {
 		// prepare command
@@ -186,33 +184,27 @@ public class SearchByLocationCommandTest {
 
 		// test
 		Assert.assertFalse(response.isError());
-		{
-			List<Feature> features = response.getFeatureMap().get(region1ResultTag);
-			Assert.assertNotNull(features);
-			Assert.assertEquals(2, features.size());
-			List<String> actual = new ArrayList<String>();
-			for (Feature feature : features) {
-				actual.add(feature.getLabel());
-			}
-			Assert.assertTrue(actual.contains("Country 2"));
-			Assert.assertTrue(actual.contains("Country 1"));
+		List<Feature> features;
+		List<String> actual;
+		features = response.getFeatureMap().get(region1ResultTag);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(2, features.size());
+		actual = new ArrayList<String>();
+		for (Feature feature : features) {
+			actual.add(feature.getLabel());
 		}
-		{
-			List<Feature> features = response.getFeatureMap().get(region2ResultTag);
-			Assert.assertNotNull(features);
-			Assert.assertEquals(2, features.size());
-			List<String> actual = new ArrayList<String>();
-			for (Feature feature : features) {
-				actual.add(feature.getLabel());
-			}
-			Assert.assertTrue(actual.contains("Country 4"));
-			Assert.assertTrue(actual.contains("Country 3"));
+		Assert.assertTrue(actual.contains("Country 2"));
+		Assert.assertTrue(actual.contains("Country 1"));
+		features = response.getFeatureMap().get(region2ResultTag);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(2, features.size());
+		actual = new ArrayList<String>();
+		for (Feature feature : features) {
+			actual.add(feature.getLabel());
 		}
-		
+		Assert.assertTrue(actual.contains("Country 4"));
 	}
 	
-	
-
 	@Test
 	public void intersect50percentOverlapExactly() throws Exception {
 		// prepare command
