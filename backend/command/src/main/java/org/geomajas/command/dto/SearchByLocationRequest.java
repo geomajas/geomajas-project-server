@@ -12,10 +12,9 @@ package org.geomajas.command.dto;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.CommandRequest;
+import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasConstant;
 
@@ -29,7 +28,7 @@ import org.geomajas.global.GeomajasConstant;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class SearchByLocationRequest implements CommandRequest {
+public class SearchByLocationRequest extends LayerIdsCommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
@@ -372,38 +371,6 @@ public class SearchByLocationRequest implements CommandRequest {
 	}
 
 	/**
-	 * Get the result tags for layer specific filtering (e.g. client layer
-	 * id's).
-	 * 
-	 * @return result tags for layer specific filtering (e.g. client layer id's)
-	 * @since 1.10.0
-	 */
-	public String[] getLayerIds() {
-		Set<String> layerIds = layerFilters.keySet();
-		if (layerIds == null) {
-			return new String[0];
-		}
-		return (String[]) (layerIds.toArray(new String[0]));
-	}
-
-	/**
-	 * Set the server layer ids.
-	 * <p/>
-	 * Note: use {@link #setLayerWithFilter(String, String, String)} to specify
-	 * filter expressions
-	 * 
-	 * @param serverLayerIds
-	 *            server layer ids
-	 * 
-	 * @since 1.9.0
-	 */
-	public void setLayerIds(String[] serverLayerIds) {
-		for (String serverLayerId : serverLayerIds) {
-			setLayerWithFilter(serverLayerId, serverLayerId, null);
-		}
-	}
-
-	/**
 	 * Set the global filter expression which should be applied.
 	 * <p/>
 	 * If the filter contains a geometry, then this needs to be in layer CRS, it
@@ -444,31 +411,42 @@ public class SearchByLocationRequest implements CommandRequest {
 	 */
 	@Override
 	public String toString() {
-		
-		StringBuilder layerFiltersToString =  new StringBuilder();
-		layerFiltersToString.append("{");
+		StringBuilder value = new StringBuilder();
+		value.append("SearchByLocationRequest{");
+		value.append("location=");
+		value.append(location);
+		value.append(", queryType=");
+		value.append(queryType);
+		value.append(", ratio=");
+		value.append(ratio);
+		value.append(", searchType=");
+		value.append(searchType);
+		value.append(", crs='");
+		value.append(crs);
+		value.append('\'');
+		value.append(", global filter='");
+		value.append(filter);
+		value.append('\'');
+		value.append(", buffer=");
+		value.append(buffer);
+		value.append(", featureIncludes=");
+		value.append(featureIncludes);
+		value.append(", layerFilters={");
 		boolean first = true;
-		
 		for (String filterResultTags : layerFilters.keySet()) {
-			
 			if (!first) {
-				layerFiltersToString.append(", ");
+				value.append(", ");
 			}
 			first = false;
-			layerFiltersToString.append("{ResultTag='" + filterResultTags + "'" 
-					+ ";filter=" + (LayerFilterSpecification) layerFilters.get(filterResultTags)
-					+ "}");
+			value.append("{ResultTag='");
+			value.append(filterResultTags);
+			value.append("'");
+			value.append(";filter=");
+			value.append(layerFilters.get(filterResultTags));
+			value.append("}");
 		}
-		layerFiltersToString.append("}");
-		
-		return "SearchByLocationRequest{"
-				+ "location=" + location
-				+ ", queryType=" + queryType + ", ratio=" + ratio
-				+ ", searchType=" + searchType + ", crs='" + crs + '\''
-				+ ", global filter='" + filter + '\'' + ", buffer=" + buffer
-				+ ", featureIncludes=" + featureIncludes 
-				+ ", layerFilters=" + layerFiltersToString.toString()
-				+ '}';
+		value.append("}}");
+		return value.toString();
 	}
 
 }
