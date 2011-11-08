@@ -136,7 +136,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 					String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
 					// Transform geometry to layer CRS:
-					Geometry layerGeometry = geoService.transform(geometry, crs, vectorLayer.getCrs());
+					Geometry layerGeometry = geoService.transform(geometry, crs, layerService.getCrs(vectorLayer));
 					log.trace("on layer " + serverLayerId + " use " + layerGeometry);
 
 					// Create the correct Filter object:

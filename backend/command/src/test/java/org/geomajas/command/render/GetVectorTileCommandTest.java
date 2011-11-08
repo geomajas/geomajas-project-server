@@ -17,21 +17,28 @@ import org.geomajas.command.dto.GetVectorTileResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
+import org.geomajas.testdata.ReloadContext;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Test for {@link GetVectorTileCommand}.
  *
  * @author Joachim Van der Auwera
  */
+@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
+		ReloadContextTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
+@ReloadContext // @todo unclear why needed, appeared after add a test (+ related change) in SearchByLocationCommand
 public class GetVectorTileCommandTest {
 
 	private static final String LAYER_ID = "countries";

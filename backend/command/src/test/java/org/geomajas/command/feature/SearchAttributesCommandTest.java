@@ -14,13 +14,11 @@ package org.geomajas.command.feature;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.SearchAttributesRequest;
 import org.geomajas.command.dto.SearchAttributesResponse;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -40,10 +38,6 @@ public class SearchAttributesCommandTest {
 
 	@Autowired
 	private CommandDispatcher dispatcher;
-
-	@Autowired
-	@Qualifier(LAYER_ID)
-	private VectorLayer layer;
 
 	@Test
 	public void testSearchAttributes() throws Exception {

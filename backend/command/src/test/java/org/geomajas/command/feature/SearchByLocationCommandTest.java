@@ -155,7 +155,7 @@ public class SearchByLocationCommandTest {
 		Assert.assertTrue(actual.contains("Country 2"));
 		Assert.assertTrue(actual.contains("Country 1"));
 	}
-	
+
 	@Test
 	public void intersectCountriesOnEquatorWithLayerFilters() throws Exception {
 		// prepare command
@@ -167,8 +167,8 @@ public class SearchByLocationCommandTest {
 		final String region1ResultTag = "countries layer region 1";
 		final String region2ResultTag = "countries layer region 2";
 		
-		request.setLayerWithFilter(region1ResultTag, LAYER_ID, "region='Region 1'"/*filter*/);
-		request.setLayerWithFilter(region2ResultTag, LAYER_ID, "region='Region 2'"/*filter*/);
+		request.setLayerWithFilter(region1ResultTag, LAYER_ID, "region='Region 1'");
+		request.setLayerWithFilter(region2ResultTag, LAYER_ID, "region='Region 2'");
 		
 		GeometryFactory factory = new GeometryFactory();
 		LineString equator = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),
@@ -176,7 +176,6 @@ public class SearchByLocationCommandTest {
 		request.setLocation(converter.toDto(equator));
 		String requestToString = request.toString();
 		Assert.assertTrue(requestToString.length() > 24);
-	//	System.out.println(requestToString);
 
 		// execute
 		SearchByLocationResponse response = (SearchByLocationResponse) dispatcher.execute(
@@ -204,7 +203,7 @@ public class SearchByLocationCommandTest {
 		}
 		Assert.assertTrue(actual.contains("Country 4"));
 	}
-	
+
 	@Test
 	public void intersect50percentOverlapExactly() throws Exception {
 		// prepare command
