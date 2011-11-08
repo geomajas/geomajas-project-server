@@ -24,6 +24,8 @@ import org.geomajas.configuration.client.ClientMapInfo;
 //@Api(allMethods = true) don't know about api, all this caching stuff causes problems cfr lazy loading etc
 public class PrepareReportingRequest extends LayerIdCommandRequest {
 
+	private static final long serialVersionUID = 100L;
+
 	/** Command name. */
 	public static final String COMMAND = "command.reporting.Prepare";
 

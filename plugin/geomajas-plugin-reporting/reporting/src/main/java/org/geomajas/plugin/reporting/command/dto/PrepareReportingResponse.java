@@ -23,8 +23,17 @@ import org.geomajas.command.CommandResponse;
 //@Api(allMethods = true) don't know about api, all this caching stuff causes problems cfr lazy loading etc
 public class PrepareReportingResponse extends CommandResponse {
 
+	private static final long serialVersionUID = 100L;
+
+	/** Report name placeholder in relative URL. */
+	public static final String REPORT_NAME = "${reportName}";
+
+	/** Report format placeholder in relative URL. */
+	public static final String FORMAT = "${format}";
+
 	private String key;
 	private String cacheCategory;
+	private String relativeUrl;
 
 	/**
 	 * Key which can be used to obtain the {@link org.geomajas.plugin.reporting.data.ReportingCacheContainer}.
@@ -60,5 +69,35 @@ public class PrepareReportingResponse extends CommandResponse {
 	 */
 	public void setCacheCategory(String cacheCategory) {
 		this.cacheCategory = cacheCategory;
+	}
+
+	/**
+	 * Url for the report, relative to the dispatcher base. Placeholders are used for the report name
+	 * and report format.
+	 *
+	 * @return report url
+	 */
+	public String getRelativeUrl() {
+		return relativeUrl;
+	}
+
+	/**
+	 * Url for the report, relative to the dispatcher base. Placeholders are used for the report name
+	 * and report format.
+	 *
+	 * @param relativeUrl report url
+	 */
+	public void setRelativeUrl(String relativeUrl) {
+		this.relativeUrl = relativeUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "PrepareReportingResponse{" +
+				super.toString() +
+				", key='" + key + '\'' +
+				", cacheCategory='" + cacheCategory + '\'' +
+				", relativeUrl='" + relativeUrl + '\'' +
+				'}';
 	}
 }

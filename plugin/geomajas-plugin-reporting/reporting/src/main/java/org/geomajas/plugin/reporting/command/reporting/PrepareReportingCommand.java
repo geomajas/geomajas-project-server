@@ -170,6 +170,8 @@ public class PrepareReportingCommand implements Command<PrepareReportingRequest,
 				dtoConverterService.toInternal(mapRasterizingInfo.getBounds()));
 		response.setKey(key);
 		response.setCacheCategory(CacheCategory.RASTER.toString());
+		response.setRelativeUrl("reporting/c/" + layerId + "/" + PrepareReportingResponse.REPORT_NAME + "." +
+				PrepareReportingResponse.FORMAT + "?key=" + response.getKey());
 	}
 
 	/**
