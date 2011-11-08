@@ -12,9 +12,10 @@ package org.geomajas.command.dto;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.LayerIdsCommandRequest;
+import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.GeomajasConstant;
 
@@ -28,7 +29,7 @@ import org.geomajas.global.GeomajasConstant;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class SearchByLocationRequest extends LayerIdsCommandRequest {
+public class SearchByLocationRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
@@ -368,6 +369,38 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	 */
 	public String getServerLayerId(String resultTag) {
 		return layerFilters.get(resultTag).getServerLayerId();
+	}
+
+	/**
+	 * Get the result tags for layer specific filtering (e.g. client layer
+	 * id's).
+	 *
+	 * @return result tags for layer specific filtering (e.g. client layer id's)
+	 * @since 1.10.0
+	 */
+	public String[] getLayerIds() {
+		Set<String> layerIds = layerFilters.keySet();
+		if (layerIds == null) {
+			return new String[0];
+		}
+		return layerIds.toArray(new String[layerIds.size()]);
+	}
+
+	/**
+	 * Set the server layer ids.
+	 * <p/>
+	 * Note: use {@link #setLayerWithFilter(String, String, String)} to specify
+	 * filter expressions
+	 *
+	 * @param serverLayerIds
+	 *            server layer ids
+	 *
+	 * @since 1.9.0
+	 */
+	public void setLayerIds(String[] serverLayerIds) {
+		for (String serverLayerId : serverLayerIds) {
+			setLayerWithFilter(serverLayerId, serverLayerId, null);
+		}
 	}
 
 	/**

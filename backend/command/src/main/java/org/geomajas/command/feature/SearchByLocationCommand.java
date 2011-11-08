@@ -71,8 +71,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class SearchByLocationCommand implements Command<SearchByLocationRequest, 
-												SearchByLocationResponse> {
+public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(SearchByLocationCommand.class);
 
@@ -104,8 +103,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	 * ratio is also checked. The resulting list of features is added to the command result so it can be send back to
 	 * the client.
 	 */
-	public void execute(SearchByLocationRequest request, SearchByLocationResponse response) 
-										throws Exception {
+	public void execute(SearchByLocationRequest request, SearchByLocationResponse response) throws Exception {
 		if (null == request.getLayerIds()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerIds");
 		}

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Test for the SearchByLocationCommand class.
+ * Test for the {@link SearchByLocationCommand} class.
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
