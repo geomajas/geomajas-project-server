@@ -125,4 +125,21 @@ public class CommandResponse implements Serializable {
 		}
 		return exceptions;
 	}
+
+	/**
+	 * String to display as command dispatcher trace.
+	 *
+	 * @return string representation of respone
+	 * @since 1.10.0
+	 */
+	@Override
+	public String toString() {
+		return "CommandResponse{" +
+				"id='" + id + '\'' +
+				", executionTime=" + executionTime +
+				", errorMessages=" + errorMessages +
+				", exceptions=" + exceptions +
+				", errors=" + errors +
+				'}';
+	}
 }

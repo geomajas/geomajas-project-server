@@ -41,4 +41,18 @@ public class SuccessCommandResponse extends CommandResponse {
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
+
+	/**
+	 * String to display as command dispatcher trace.
+	 *
+	 * @return string representation of response
+	 * @since 1.10.0
+	 */
+	@Override
+	public String toString() {
+		return "SuccessCommandResponse{" +
+				super.toString() +
+				", success=" + success +
+				'}';
+	}
 }
