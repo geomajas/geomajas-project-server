@@ -167,8 +167,8 @@ public class SearchByLocationCommandTest {
 		final String region1ResultTag = "countries layer region 1";
 		final String region2ResultTag = "countries layer region 2";
 		
-		request.setLayerWithFilter(region1ResultTag, LAYER_ID, "region='Region 1'");
-		request.setLayerWithFilter(region2ResultTag, LAYER_ID, "region='Region 2'");
+		request.addLayerWithFilter(region1ResultTag, LAYER_ID, "region='Region 1'");
+		request.addLayerWithFilter(region2ResultTag, LAYER_ID, "region='Region 2'");
 		
 		GeometryFactory factory = new GeometryFactory();
 		LineString equator = factory.createLineString(new Coordinate[] {new Coordinate(0, 0),

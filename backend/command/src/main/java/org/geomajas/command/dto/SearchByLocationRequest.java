@@ -310,7 +310,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	 * 
 	 * @since 1.10.0
 	 */
-	public void setLayerWithFilter(String resultTag, String serverLayerId,
+	public void addLayerWithFilter(String resultTag, String serverLayerId,
 			String filter) {
 		// note: layer filter specification will be overwritten if it already
 		// exists
@@ -331,12 +331,12 @@ public class SearchByLocationRequest implements CommandRequest {
 	 * @param filter
 	 *            filter expression
 	 * 
-	 * @deprecated use {@link #setLayerWithFilter(String, String, String)}.
+	 * @deprecated use {@link #addLayerWithFilter(String, String, String)}.
 	 * @since 1.9.0
 	 */
 	@Deprecated
 	public void setFilter(String serverLayerId, String filter) {
-		setLayerWithFilter(serverLayerId, serverLayerId, filter);
+		addLayerWithFilter(serverLayerId, serverLayerId, filter);
 	}
 
 	/**
@@ -389,7 +389,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Set the server layer ids.
 	 * <p/>
-	 * Note: use {@link #setLayerWithFilter(String, String, String)} to specify
+	 * Note: use {@link #addLayerWithFilter(String, String, String)} to specify
 	 * filter expressions
 	 *
 	 * @param serverLayerIds
@@ -399,7 +399,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	 */
 	public void setLayerIds(String[] serverLayerIds) {
 		for (String serverLayerId : serverLayerIds) {
-			setLayerWithFilter(serverLayerId, serverLayerId, null);
+			addLayerWithFilter(serverLayerId, serverLayerId, null);
 		}
 	}
 

@@ -40,11 +40,11 @@
 
 	<modules>
 		<module>api</module>
+		<module>testdata</module>
 		<module>api-experimental</module>
 		<module>impl</module>
 		<module>common-servlet</module>
 		<module>command</module>
-		<module>testdata</module>
 	</modules>
 
 	<repositories>
