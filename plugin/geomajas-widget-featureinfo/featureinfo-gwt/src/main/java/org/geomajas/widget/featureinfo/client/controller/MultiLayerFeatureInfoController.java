@@ -121,8 +121,8 @@ public class MultiLayerFeatureInfoController extends FeatureInfoController {
 			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				if (layer.isShowing() && layer instanceof VectorLayer) {
-					request.setLayerWithFilter(layer.getId(), layer.getServerLayerId(),
-								((VectorLayer) layer).getFilter());
+					request.addLayerWithFilter(layer.getId(), layer.getServerLayerId(),
+							((VectorLayer) layer).getFilter());
 				}
 			}
 

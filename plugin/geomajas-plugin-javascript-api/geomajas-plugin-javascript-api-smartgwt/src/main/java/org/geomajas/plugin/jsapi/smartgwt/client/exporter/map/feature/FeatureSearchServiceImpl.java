@@ -99,7 +99,7 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 			final VectorLayer vLayer = (VectorLayer) gwtLayer;
 
 			SearchByLocationRequest request = new SearchByLocationRequest();
-			request.setLayerWithFilter(vLayer.getId(), vLayer.getServerLayerId(), layer.getFilter());
+			request.addLayerWithFilter(vLayer.getId(), vLayer.getServerLayerId(), layer.getFilter());
 
 			GeometryFactory factory = new GeometryFactory(mapModel.getSrid(), GeometryFactory.PARAM_DEFAULT_PRECISION);
 			org.geomajas.gwt.client.spatial.Bbox box = new org.geomajas.gwt.client.spatial.Bbox(bbox.getX(),
