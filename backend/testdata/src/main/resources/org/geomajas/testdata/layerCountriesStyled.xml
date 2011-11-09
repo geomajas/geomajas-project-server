@@ -8,6 +8,7 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
@@ -34,7 +35,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="countriesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="countriesStyledInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -45,15 +46,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="170.102257" />
 			</bean>
 		</property>
-		<property name="featureInfo" ref="countriesFeatureInfo" />
+		<property name="featureInfo" ref="countriesStyledFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="countriesStyleInfo" />
+				<ref bean="countriesStyledStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.FeatureInfo" name="countriesFeatureInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="countriesStyledFeatureInfo">
 		<property name="dataSourceName" value="org.geomajas.testdata.Country" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -145,16 +146,53 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countriesStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countriesStyledStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="OPEC and UNESCO Member" />
+					<property name="formula" value="((opec = 1) AND (unesco = 1))" />
 					<property name="fillColor" value="#995500" />
 					<property name="fillOpacity" value=".6" />
 					<property name="strokeColor" value="#995500" />
 					<property name="strokeOpacity" value=".3" />
 					<property name="strokeWidth" value="1" />
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="OPEC Member" />
+					<property name="formula" value="(opec = 1)" />
+					<property name="fillColor" value="#997722" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#997722" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="UNESCO Member" />
+					<property name="formula" value="(unesco = 1)" />
+					<property name="fillColor" value="#99AA33" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#99AA33" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Other" />
+					<property name="fillColor" value="#99DD22" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#99DD22" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="rect">
+								<bean class="org.geomajas.configuration.RectInfo">
+									<property name="w" value="5" />
+									<property name="h" value="5" />
+								</bean>
+							</property>
+						</bean>
+					</property>
 				</bean>
 			</list>
 		</property>
@@ -181,8 +219,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 
-	<bean name="countries" class="org.geomajas.layer.bean.BeanLayer">
-		<property name="layerInfo" ref="countriesInfo" />
+	<bean name="countriesStyled" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="countriesStyledInfo" />
 		<property name="features">
 			<list>
 				<bean class="org.geomajas.testdata.Country">
