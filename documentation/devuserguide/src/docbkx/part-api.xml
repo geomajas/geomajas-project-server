@@ -1061,6 +1061,12 @@
                     </listitem>
 
                     <listitem>
+                      <para><emphasis>layerFilters</emphasis>: allow
+                      combination of server layer id and a filter to be
+                      specified for searching.</para>
+                    </listitem>
+
+                    <listitem>
                       <para><emphasis>searchType</emphasis>: determines
                       whether to stop searching once something in found in one
                       of the layers (in order of course), or whether to
