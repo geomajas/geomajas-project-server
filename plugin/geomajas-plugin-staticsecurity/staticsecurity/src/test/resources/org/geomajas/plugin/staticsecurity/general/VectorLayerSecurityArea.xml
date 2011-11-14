@@ -68,6 +68,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
+							<!-- @extract-start AreaPolicies, Area policies -->
 							<bean class="org.geomajas.plugin.staticsecurity.configuration.AreaAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
@@ -93,15 +94,20 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 									<map>
 										<entry key="beans">
 											<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAreaAuthorizationInfo">
-												<property name="visibleArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
-												<property name="updateAuthorizedArea" value="MULTIPOLYGON(((4 0,4 10,10 10,10 0,4 0)))" />
-												<property name="createAuthorizedArea" value="MULTIPOLYGON(((1 0,1 5,10 5,10 0,1 0)))" />
-												<property name="deleteAuthorizedArea" value="MULTIPOLYGON(((1 0,1 2,10 2,10 0,1 0)))" />
+												<property name="visibleArea"
+														  value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
+												<property name="updateAuthorizedArea"
+														  value="MULTIPOLYGON(((4 0,4 10,10 10,10 0,4 0)))" />
+												<property name="createAuthorizedArea"
+														  value="MULTIPOLYGON(((1 0,1 5,10 5,10 0,1 0)))" />
+												<property name="deleteAuthorizedArea"
+														  value="MULTIPOLYGON(((1 0,1 2,10 2,10 0,1 0)))" />
 											</bean>
 										</entry>
 									</map>
 								</property>
 							</bean>
+							<!-- @extract-end -->
 						</list>
 					</property>
 				</bean>

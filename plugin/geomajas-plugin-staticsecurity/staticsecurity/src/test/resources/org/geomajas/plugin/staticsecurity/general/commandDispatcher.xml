@@ -54,17 +54,48 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+								<!-- @extract-start CommandPolicies, Command policies -->
 								<property name="commandsInclude">
 									<list>
 										<value>command.MarinoLoggedIn</value>
 									</list>
 								</property>
+								<!-- @extract-end -->
+								<!-- @extract-start ToolPolicies, Tool policies -->
+								<property name="toolsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="toolsExclude">
+									<list>
+										<value>Zoom.*</value>
+									</list>
+								</property>
+								<!-- @extract-end -->
+								<!-- @extract-start LayerPolicies, Layer policies -->
 								<property name="visibleLayersInclude">
 									<list>
 										<value>roads</value>
 										<value>rivers</value>
 									</list>
 								</property>
+								<property name="createAuthorizedLayersExclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="updateAuthorizedLayersExclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="deleteAuthorizedLayersExclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<!-- @extract-end -->
 							</bean>
 						</list>
 					</property>
@@ -75,13 +106,40 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userName" value="Mr. Nobody"/>
 					<property name="authorizations">
 						<list>
+							<!-- @extract-start BaseLayerPolicies, Base layer policies -->
 							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
 								<property name="commandsInclude">
 									<list>
 										<value>.*</value>
 									</list>
 								</property>
+								<property name="toolsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="createAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="deleteAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
 							</bean>
+							<!-- @extract-end -->
 						</list>
 					</property>
 				</bean>

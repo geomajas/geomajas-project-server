@@ -102,13 +102,196 @@
   <section>
     <title>Configure users</title>
 
-    <para></para>
+    <para>Users can be configured either statically or dynamically.</para>
+
+    <section>
+      <title>Static configuration of users</title>
+
+      <para>In the bean of type SecurityServiceInfo you can define the users
+      which exist. This allows only password based authentication.</para>
+
+      <para>The userId is also used as login. You can add a couple of extra
+      fields to give information about the user.</para>
+
+      <para>The password needs to be specified as a base64 encoded MD5 hash.
+      The string to be hashed is a concatenation of</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>"Geomajas is a wonderful framework"</para>
+        </listitem>
+
+        <listitem>
+          <para>userId</para>
+        </listitem>
+
+        <listitem>
+          <para>actual password</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>There is an online tool which can be used to calculate this has as
+      <ulink
+      url="http://progs.be/md5.html">http://progs.be/md5.html</ulink>.</para>
+
+      <para>The authorizations property allow you to specify the policies,
+      indicating what is allowed for the user.</para>
+
+      <xi:include href="listing/ConfigureUsers.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Dynamic configuration of users</title>
+
+      <para>@todo provide plug-in mechanism to, see SSEC-15</para>
+    </section>
   </section>
 
   <section>
     <title>Configure policies</title>
 
-    <para></para>
+    <para>The policies are configured by providing a list of authentications.
+    Several ways exist, but they all start from the base layer
+    policies.</para>
+
+    <section>
+      <title>Base layer policies policies</title>
+
+      <para>The base policies which always need to be provided include</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>which commands can be executed</para>
+        </listitem>
+
+        <listitem>
+          <para>which tools can be included in the UI</para>
+        </listitem>
+
+        <listitem>
+          <para>CRUD rights which are available for the layers</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>For each of these policies, you can use regular expressions to
+      indicate either what to include or what to exclude. By default you have
+      no rights. You have to indicate what is included and can then refine
+      that list by excluding some stuff from what was included.</para>
+
+      <para>The base configuration to allow everything is displayed
+      below:</para>
+
+      <xi:include href="listing/BaseLayerPolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can explicitly configure which commands can be executed by
+      that user.</para>
+
+      <xi:include href="listing/CommandPolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can also specify the tools which are allowed to be displayed
+      in the UI.</para>
+
+      <xi:include href="listing/ToolPolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>Importantly, you can configure the CRUD rights for each of the
+      layers. You can specify for each layer, using include and exclude
+      regular expressions, whether the user</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>can view the layer</para>
+        </listitem>
+
+        <listitem>
+          <para>add features in the layer</para>
+        </listitem>
+
+        <listitem>
+          <para>edit features for the layer</para>
+        </listitem>
+
+        <listitem>
+          <para>delete features from the layer</para>
+        </listitem>
+      </itemizedlist>
+
+      <xi:include href="listing/LayerPolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Configure policies based on an area or geometry</title>
+
+      <para>Using AreaAuthorizationInfo you can make your policies more
+      granular by defining the are in which the CRUD operations are allowed.
+      You first have to define the normal layer rights. You can then make this
+      more specific by setting the geometry for the rights in the layers
+      property, setting the area for each of the CRUD operations in for the
+      specific layer. The actual geometry is specified using <ulink
+      url="http://en.wikipedia.org/wiki/Well-known_text">WKT</ulink>.</para>
+
+      <xi:include href="listing/AreaPolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Configure policies using a layer filter</title>
+
+      <para>Using the LayerFilterAuthorizationInfo authorization bean you can
+      add a ECQL filter to a layer to limit the features which can be
+      read.</para>
+
+      <para>This is done using the filters property which contains a map where
+      the key is the (server) layers id and the value is the filter
+      string.</para>
+
+      <xi:include href="listing/FilterPolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Configure policies for individual features</title>
+
+      <para>You can also be specific about which features in a layer are
+      accessible by the user. This can be done using the
+      FeatureAuthorizationInfo authorization bean.</para>
+
+      <para>Using the layers property, you can determine which CRUD rights are
+      allowed for which features. The property contains a map with the
+      (server) layer id as key and a LayerFeatureAuthorizationInfo bean as
+      value. This allows you to select the features using include and exclude
+      rules on the feature id. As this only allows you to select on feature
+      ids, consider this bean as an example for building more powerful feature
+      selection policies.</para>
+
+      <xi:include href="listing/FeaturePolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Configure policies for individual attributes</title>
+
+      <para>The most specific access policies can be built using the
+      AttributeAuthorizationInfo authorization bean. This allows you to
+      specify which attributes can be used for specific features.</para>
+
+      <para>Using the layers property, you can determine which CRUD rights are
+      allowed for which features. The property contains a map with the
+      (server) layer id as key and a LayerAttributeAuthorizationInfo bean as
+      value. This allows you to select the attributes using include and
+      exclude rules on the attribute name. You can add a "@featureId" suffix
+      to the regular expression to limit the attribute to a features (using a
+      regular expression on the feature id). As this only allows you to select
+      on feature ids, consider this bean as an example for building more
+      powerful attribute selection policies.</para>
+
+      <xi:include href="listing/AttributePolicies.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
   </section>
 
   <section>
@@ -118,7 +301,7 @@
     using the tokenLifetime property in SecurityServiceInfo. When a token is
     used after it has expired, it will be removed from the list of available
     tokens and the token is invalid. By default the list of available tokens
-    is not automatically purged. However, this can easyli be done using a
+    is not automatically purged. However, this can easily be done using a
     little bit of Spring configuration by adding the following
     configuration.</para>
 

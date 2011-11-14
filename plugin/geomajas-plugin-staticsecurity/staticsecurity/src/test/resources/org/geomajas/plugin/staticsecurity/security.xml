@@ -29,6 +29,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 	</bean>
 
+	<!-- @extract-start ConfigureUsers, Configure users -->
 	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
 		<property name="users">
 			<list>
@@ -41,6 +42,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userLocale" value="nl_BE"/>
 					<property name="authorizations">
 						<list>
+							<!-- ... include authorizations / policies here -->
+							<!-- @extract-skip-start -->
 							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
 								<property name="commandsInclude">
 									<list>
@@ -73,9 +76,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 									</list>
 								</property>
 							</bean>
+							<!-- @extract-skip-end -->
 						</list>
 					</property>
 				</bean>
+				<!-- @extract-skip-start -->
 				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
 					<property name="userId" value="marino"/>
 					<property name="password" value="kMSqVf2EMWilIKhZyV3dKA"/> <!-- "marino" -->
@@ -114,9 +119,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 						</list>
 					</property>
 				</bean>
+				<!-- @extract-skip-end -->
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 </beans>
 

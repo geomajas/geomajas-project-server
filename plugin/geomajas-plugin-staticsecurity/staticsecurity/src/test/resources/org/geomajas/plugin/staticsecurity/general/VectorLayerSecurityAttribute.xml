@@ -63,6 +63,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
+							<!-- @extract-start AttributePolicies, Attribute specific policy -->
 							<bean class="org.geomajas.plugin.staticsecurity.configuration.AttributeAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
@@ -105,6 +106,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 									</map>
 								</property>
 							</bean>
+							<!-- @extract-end -->
 						</list>
 					</property>
 				</bean>
