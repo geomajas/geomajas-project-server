@@ -47,12 +47,12 @@ public class InfinispanCacheFactory implements CacheFactory {
 	private EmbeddedCacheManager manager;
 	private String configurationFile;
 	private CacheInfo defaultConfiguration;
-	private NoCacheCacheFactory noCacheFactory = new NoCacheCacheFactory();
+	private final NoCacheCacheFactory noCacheFactory = new NoCacheCacheFactory();
 
-	private Map<CacheSelector, CacheService> caches = new HashMap<CacheSelector, CacheService>();
+	private final Map<CacheSelector, CacheService> caches = new HashMap<CacheSelector, CacheService>();
 
 	@Autowired(required = false)
-	private Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
+	private Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>(); // NOSONAR autowired does change it
 
 	@Autowired
 	private TestRecorder recorder;

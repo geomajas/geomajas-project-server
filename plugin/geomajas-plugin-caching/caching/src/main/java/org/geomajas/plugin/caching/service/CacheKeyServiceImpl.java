@@ -40,6 +40,10 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	private static final int BASE_KEY_LENGTH = 512;
 
+	private static final int SERIALIZED_BUFFER_SIZE = 512;
+	private static final int SAFE_ASCII_LOWER = 32;
+	private static final int SAFE_ASCII_UPPER = 127;
+
 	private static final char[] CHARACTERS = {
 			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 			'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
@@ -52,6 +56,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	private Random random = new Random();
 
+	/** {@inheritDoc} */
 	public String getCacheKey(CacheContext context) {
 		try {
 			MD5 md5 = new MD5();
@@ -114,7 +119,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		} else {
 			try {
 				log.debug("Serializing {} for unique id", value.getClass().getName());
-				ByteArrayOutputStream baos = new ByteArrayOutputStream(256);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream(SERIALIZED_BUFFER_SIZE);
 				JBossObjectOutputStream serialize = new JBossObjectOutputStream(baos);
 				serialize.writeObject(value);
 				serialize.flush();
@@ -129,6 +134,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys) {
 		CacheContext res = new CacheContextImpl();
 		for (String key : keys) {
@@ -142,6 +148,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		return res;
 	}
 
+	/** {@inheritDoc} */
 	public String makeUnique(String duplicateKey) {
 		log.debug("Need to make key {} unique.", duplicateKey);
 		return duplicateKey + CHARACTERS[random.nextInt(CHARACTERS.length)];
@@ -163,7 +170,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 		StringBuilder res = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
 			char c = source.charAt(i);
-			if ((c >= 32 && c <= 127) || Character.isSpaceChar(c)) {
+			if ((c >= SAFE_ASCII_LOWER && c <= SAFE_ASCII_UPPER) || Character.isSpaceChar(c)) {
 				res.append(c);
 			} else {
 				res.append("\\u");
