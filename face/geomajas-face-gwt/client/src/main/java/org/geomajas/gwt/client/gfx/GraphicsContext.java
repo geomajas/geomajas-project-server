@@ -315,6 +315,16 @@ public interface GraphicsContext {
 	void hide(Object object);
 
 	/**
+	 * Hide the element with the specified name in the specified group. If the element does not exist, nothing will
+	 * happen.
+	 * 
+	 * @param object The group object.
+	 * @param name The element name.
+	 * @since 1.10.0
+	 */
+	void hide(Object object, String name);
+	
+	/**
 	 * Set the controller on an element of this <code>GraphicsContext</code> so it can react to events.
 	 * 
 	 * @param object
@@ -396,12 +406,22 @@ public interface GraphicsContext {
 	void setSize(int width, int height);
 
 	/**
-	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * Show the specified group. If the group does not exist, nothing will happen.
 	 * 
 	 * @param object
 	 *            The group object.
 	 */
 	void unhide(Object object);
+
+	/**
+	 * Show the element with the specified name in the specified group. If the element does not exist, nothing will
+	 * happen.
+	 * 
+	 * @param object The group object.
+	 * @param name The element name.
+	 * @since 1.10.0
+	 */
+	void unhide(Object object, String name);
 
 	/**
 	 * Move an element from on group to another. The elements name will remain the same.

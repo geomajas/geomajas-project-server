@@ -576,6 +576,23 @@ public class SvgGraphicsContext implements GraphicsContext {
 	}
 
 	/**
+	 * Hide the specified element in the specified group. If the element does not exist, nothing will happen.
+	 * 
+	 * @param group
+	 *            The group object.
+	 * @param name
+	 *            The element name.
+	 */
+	public void hide(Object group, String name) {
+		if (isAttached()) {
+			Element element = helper.getElement(group, name);
+			if (element != null) {
+				Dom.setElementAttribute(element, "display", "none");
+			}
+		}
+	}
+
+	/**
 	 * Hide the specified group. If the group does not exist, nothing will happen.
 	 * 
 	 * @param group
@@ -706,7 +723,24 @@ public class SvgGraphicsContext implements GraphicsContext {
 	}
 
 	/**
-	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * Show the specified element in the specified group. If the element does not exist, nothing will happen.
+	 * 
+	 * @param group
+	 *            The group object.
+	 * @param name
+	 *            The element name.
+	 */
+	public void unhide(Object group, String name) {
+		if (isAttached()) {
+			Element element = helper.getElement(group, name);
+			if (element != null) {
+				Dom.setElementAttribute(element, "display", "inline");
+			}
+		}
+	}
+
+	/**
+	 * Show the specified group. If the group does not exist, nothing will happen.
 	 * 
 	 * @param group
 	 *            The group object.

@@ -529,6 +529,23 @@ public class VmlGraphicsContext implements GraphicsContext {
 	}
 
 	/**
+	 * Hide the specified element in the specified group. If the element does not exist, nothing will happen.
+	 * 
+	 * @param group
+	 *            The group object.
+	 * @param name
+	 *            The element name.
+	 */
+	public void hide(Object group, String name) {
+		if (isAttached()) {
+			Element element = helper.getElement(group, name);
+			if (element != null) {
+				Dom.setStyleAttribute(element, "visibility", "hidden");
+			}
+		}
+	}
+
+	/**
 	 * Hide the specified group. If the group does not exist, nothing will happen.
 	 * 
 	 * @param group
@@ -658,7 +675,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 	}
 
 	/**
-	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * Show the specified group. If the group does not exist, nothing will happen.
 	 * 
 	 * @param group
 	 *            The group object.
@@ -666,6 +683,23 @@ public class VmlGraphicsContext implements GraphicsContext {
 	public void unhide(Object group) {
 		if (isAttached()) {
 			Element element = helper.getGroup(group);
+			if (element != null) {
+				Dom.setStyleAttribute(element, "visibility", "inherit");
+			}
+		}
+	}
+
+	/**
+	 * Show the specified element in the specified group. If the element does not exist, nothing will happen.
+	 * 
+	 * @param group
+	 *            The group object.
+	 * @param name
+	 *            The element name.
+	 */
+	public void unhide(Object group, String name) {
+		if (isAttached()) {
+			Element element = helper.getElement(group, name);
 			if (element != null) {
 				Dom.setStyleAttribute(element, "visibility", "inherit");
 			}
