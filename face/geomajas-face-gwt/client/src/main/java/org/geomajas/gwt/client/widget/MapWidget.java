@@ -13,6 +13,7 @@ package org.geomajas.gwt.client.widget;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1185,16 +1186,29 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				if (previousWidth != width || previousHeight != height) {
 					previousWidth = width;
 					previousHeight = height;
-
+					
+					Map<String, WorldPaintable> paintables = null;
 					if (Dom.isIE()) {
+						// Redraw all vector stuff (we have coordsize changes in each shape !!!!)
 						// Vector layers in IE loose their style (because the removeChild, addChild)
 						for (Layer<?> layer : mapModel.getLayers()) {
 							if (layer instanceof VectorLayer) {
 								render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
 							}
 						}
+						// World paintables have to be re-registered !
+						paintables = new HashMap<String, WorldPaintable>(getWorldPaintables());
+						for (String id : paintables.keySet()) {
+							unregisterWorldPaintable(paintables.get(id));
+						}
 					}
 					mapModel.getMapView().setSize(width, height);
+					if (Dom.isIE() && paintables != null) {
+						// Re-register world paintables
+						for (String id : paintables.keySet()) {
+							registerWorldPaintable(paintables.get(id));
+						}
+					}
 					setAddons();
 					for (String addonId : addons.keySet()) {
 						MapAddon addon = addons.get(addonId);
