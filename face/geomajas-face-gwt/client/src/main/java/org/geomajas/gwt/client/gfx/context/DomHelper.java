@@ -925,9 +925,8 @@ public class DomHelper {
 	private void applyHtmlStyle(Element element, PictureStyle style) {
 		double opacity = style.getOpacity();
 		if (opacity >= 0.0 && opacity < 1.0) {
-			String opacityStr = Double.toString((opacity * 100));
-			Dom.setStyleAttribute(element, "filter", "alpha(opacity=" + opacityStr + ")");
-			Dom.setStyleAttribute(element, "opacity", opacityStr);
+			Dom.setStyleAttribute(element, "filter", "alpha(opacity=" + Double.toString((opacity * 100)) + ")");
+			Dom.setStyleAttribute(element, "opacity", Double.toString(opacity));
 		} else if (opacity == 1.0) {
 			Dom.setStyleAttribute(element, "filter", "");
 			Dom.setStyleAttribute(element, "opacity", "");
