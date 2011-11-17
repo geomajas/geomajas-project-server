@@ -17,14 +17,15 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.user.client.Window;
 
 /**
  * Controller that inserts vertices by clicking/tapping on the map.
@@ -54,6 +55,7 @@ public class GeometryIndexInsertController extends AbstractController {
 				GeometryIndex insertIndex = service.getInsertIndex();
 				service.insert(Collections.singletonList(insertIndex),
 						Collections.singletonList(Collections.singletonList(getLocation(event, RenderSpace.WORLD))));
+				service.setTentativeMoveOrigin(getLocation(event, RenderSpace.SCREEN));
 
 				// Update the insert index (if allowed):
 				if (!service.getGeometry().getGeometryType().equals(Geometry.POINT)
@@ -63,14 +65,15 @@ public class GeometryIndexInsertController extends AbstractController {
 					// If the case of a point, no more inserting:
 					service.setEditingState(GeometryEditingState.IDLE);
 				}
-			} catch (GeometryIndexNotFoundException e) {
+			} catch (GeometryOperationFailedException e) {
+				Window.alert("Exception during editing: " + e.getMessage());
 			}
 		}
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (service.getEditingState() == GeometryEditingState.INSERTING) {
-			service.setInsertMoveLocation(getLocation(event, RenderSpace.SCREEN));
+			service.setTentativeMoveLocation(getLocation(event, RenderSpace.SCREEN));
 		}
 	}
 

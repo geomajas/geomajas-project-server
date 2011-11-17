@@ -19,6 +19,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -56,7 +57,7 @@ public class GeometryIndexDragController extends AbstractController {
 		try {
 			// Go over all selected indices and find their new positions:
 			List<List<Coordinate>> coordinateList = new ArrayList<List<Coordinate>>();
-			for (GeometryIndex selected : service.getSelection()) {
+			for (GeometryIndex selected : service.getIndexStateService().getSelection()) {
 				switch (service.getIndexService().getType(selected)) {
 					case TYPE_VERTEX:
 						Coordinate from = service.getIndexService().getVertex(service.getGeometry(), selected);
@@ -70,8 +71,10 @@ public class GeometryIndexDragController extends AbstractController {
 			}
 
 			// Execute the move operation:
-			service.move(service.getSelection(), coordinateList);
+			service.move(service.getIndexStateService().getSelection(), coordinateList);
 		} catch (GeometryIndexNotFoundException e) {
+			// Something went wrong;
+		} catch (GeometryOperationFailedException e) {
 			// Something went wrong;
 		}
 
@@ -80,6 +83,7 @@ public class GeometryIndexDragController extends AbstractController {
 
 	public void onUp(HumanInputEvent<?> event) {
 		previous = null;
+		service.stopOperationSequence();
 		service.setEditingState(GeometryEditingState.IDLE);
 	}
 }
