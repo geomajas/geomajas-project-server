@@ -23,7 +23,6 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
-import com.smartgwt.client.util.SC;
 
 /**
  * An HTML based image context.
@@ -216,10 +215,6 @@ public class DefaultImageContext implements ImageContext {
 					}
 				});
 				Dom.setElementAttribute(image, "src", href);
-				if (SC.isIE()) {
-					// opacity needs src, so reapply style now
-					helper.applyStyle(image, style);
-				}
 			}
 		}
 	}

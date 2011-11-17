@@ -39,7 +39,6 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-import com.smartgwt.client.util.SC;
 
 /**
  * Helper class that provides a mapping between a DOM tree - consisting of groups (DIV, SVG or VML group) and elements
@@ -924,16 +923,14 @@ public class DomHelper {
 	}
 
 	private void applyHtmlStyle(Element element, PictureStyle style) {
-		if (SC.isIE()) {
-			com.google.gwt.dom.client.Style s = element.getStyle();
-			String src = Dom.getElementAttribute(element, "src");
-			int opacity = (int) (style.getOpacity() * 100);
-			if (src != null && src.length() > 0 && opacity >= 0 && opacity < 100) {
-				s.setProperty("filter", "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src
-						+ "',sizingMethod='scale')  progid:DXImageTransform.Microsoft.Alpha(opacity=" + opacity + ");");
-			}
-		} else {
-			Dom.setStyleAttribute(element, "opacity", Double.toString(style.getOpacity()));
+		double opacity = style.getOpacity();
+		if (opacity >= 0.0 && opacity < 1.0) {
+			String opacityStr = Double.toString((opacity * 100));
+			Dom.setStyleAttribute(element, "filter", "alpha(opacity=" + opacityStr + ")");
+			Dom.setStyleAttribute(element, "opacity", opacityStr);
+		} else if (opacity == 1.0) {
+			Dom.setStyleAttribute(element, "filter", "");
+			Dom.setStyleAttribute(element, "opacity", "");
 		}
 		if (style.getDisplay() != null) {
 			Dom.setStyleAttribute(element, "display", style.getDisplay());
