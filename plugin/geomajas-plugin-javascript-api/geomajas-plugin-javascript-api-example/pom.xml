@@ -17,9 +17,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-javascript-api-example</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Geomajas GWT application</name>
@@ -252,7 +250,7 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<style>DETAILED</style>
+					<!--style>DETAILED</style-->
 				</configuration>
 				<executions>
 					<execution>

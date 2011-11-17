@@ -12,8 +12,8 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.jsapi.map.LayersModel;
-import org.geomajas.jsapi.map.layer.Layer;
+import org.geomajas.plugin.jsapi.client.map.LayersModel;
+import org.geomajas.plugin.jsapi.client.map.layer.Layer;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer.LayerImpl;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer.VectorLayer;
 import org.timepedia.exporter.client.Export;
@@ -59,7 +59,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 		return new LayerImpl(layer);
 	}
 
-	public org.geomajas.jsapi.map.layer.Layer getLayerAt(int index) {
+	public org.geomajas.plugin.jsapi.client.map.layer.Layer getLayerAt(int index) {
 		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayers().get(index);
 		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
 			return new VectorLayer((org.geomajas.gwt.client.map.layer.VectorLayer) layer);

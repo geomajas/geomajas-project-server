@@ -24,15 +24,15 @@ import org.geomajas.gwt.client.controller.SelectionController;
 import org.geomajas.gwt.client.controller.SingleSelectionController;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.jsapi.GeomajasService;
-import org.geomajas.jsapi.event.DispatchStartedHandler;
-import org.geomajas.jsapi.event.DispatchStoppedHandler;
-import org.geomajas.jsapi.event.JsHandlerRegistration;
-import org.geomajas.jsapi.map.ExportableFunction;
-import org.geomajas.jsapi.map.Map;
-import org.geomajas.jsapi.map.controller.MapController;
-import org.geomajas.jsapi.spatial.BboxService;
-import org.geomajas.jsapi.spatial.GeometryService;
+import org.geomajas.plugin.jsapi.client.GeomajasService;
+import org.geomajas.plugin.jsapi.client.event.DispatchStartedHandler;
+import org.geomajas.plugin.jsapi.client.event.DispatchStoppedHandler;
+import org.geomajas.plugin.jsapi.client.event.JsHandlerRegistration;
+import org.geomajas.plugin.jsapi.client.map.ExportableFunction;
+import org.geomajas.plugin.jsapi.client.map.Map;
+import org.geomajas.plugin.jsapi.client.map.controller.MapController;
+import org.geomajas.plugin.jsapi.client.spatial.BboxService;
+import org.geomajas.plugin.jsapi.client.spatial.GeometryService;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial.BboxServiceImpl;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial.GeometryServiceImpl;
@@ -45,7 +45,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 
 /**
- * Implementation of the {@link org.geomajas.jsapi.GeomajasService} for the GWT face.
+ * Implementation of the {@link org.geomajas.plugin.jsapi.client.GeomajasService} for the GWT face.
  * 
  * @author Oliver May
  * @author Pieter De Graef
@@ -122,7 +122,7 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 				new org.geomajas.gwt.client.command.event.DispatchStartedHandler() {
 
 					public void onDispatchStarted(DispatchStartedEvent event) {
-						handler.onDispatchStarted(new org.geomajas.jsapi.event.DispatchStartedEvent());
+						handler.onDispatchStarted(new org.geomajas.plugin.jsapi.client.event.DispatchStartedEvent());
 					}
 				});
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
@@ -134,7 +134,7 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 				new org.geomajas.gwt.client.command.event.DispatchStoppedHandler() {
 
 					public void onDispatchStopped(DispatchStoppedEvent event) {
-						handler.onDispatchStopped(new org.geomajas.jsapi.event.DispatchStoppedEvent());
+						handler.onDispatchStopped(new org.geomajas.plugin.jsapi.client.event.DispatchStoppedEvent());
 					}
 				});
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });

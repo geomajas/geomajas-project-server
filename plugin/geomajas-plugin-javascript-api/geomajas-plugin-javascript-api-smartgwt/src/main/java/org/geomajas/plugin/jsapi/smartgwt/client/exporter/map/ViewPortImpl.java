@@ -15,7 +15,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
-import org.geomajas.jsapi.map.ViewPort;
+import org.geomajas.plugin.jsapi.client.map.ViewPort;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;

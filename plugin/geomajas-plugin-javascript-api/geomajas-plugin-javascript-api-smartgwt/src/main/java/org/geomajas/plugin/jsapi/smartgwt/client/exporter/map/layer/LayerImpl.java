@@ -12,7 +12,7 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
 
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
-import org.geomajas.jsapi.map.layer.Layer;
+import org.geomajas.plugin.jsapi.client.map.layer.Layer;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;

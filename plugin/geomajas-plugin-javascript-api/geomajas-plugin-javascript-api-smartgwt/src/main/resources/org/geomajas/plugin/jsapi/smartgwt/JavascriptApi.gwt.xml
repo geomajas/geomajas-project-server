@@ -10,11 +10,10 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<module rename-to="javascriptapi">
-    <inherits name="org.geomajas.gwt.GeomajasClient"/>
-  	<inherits name="org.timepedia.exporter.Exporter"/>
-  	<inherits name="org.geomajas.JavascriptApi"/>
+<module>
+    <inherits name="org.geomajas.gwt.GeomajasClient" />
+  	<inherits name="org.geomajas.plugin.jsapi.JavascriptApi" />
 
   	<set-property name="export" value="yes"/>
-    <entry-point class="org.geomajas.plugin.jsapi.smartgwt.client.JavascriptApiEntryPoint"/>
+    <entry-point class="org.geomajas.plugin.jsapi.smartgwt.client.JsApiEntryPoint"/>
 </module>

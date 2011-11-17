@@ -16,9 +16,9 @@ import java.util.Map;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.gwt.client.util.GeometryConverter;
-import org.geomajas.jsapi.map.feature.Feature;
-import org.geomajas.jsapi.map.layer.FeaturesSupported;
 import org.geomajas.layer.feature.Attribute;
+import org.geomajas.plugin.jsapi.client.map.feature.Feature;
+import org.geomajas.plugin.jsapi.client.map.layer.FeaturesSupported;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;

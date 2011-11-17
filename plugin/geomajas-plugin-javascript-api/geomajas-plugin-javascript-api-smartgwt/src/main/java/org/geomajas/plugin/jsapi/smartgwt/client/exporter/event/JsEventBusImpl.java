@@ -20,14 +20,14 @@ import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
 import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.jsapi.event.FeatureDeselectedHandler;
-import org.geomajas.jsapi.event.FeatureSelectedHandler;
-import org.geomajas.jsapi.event.JsEventBus;
-import org.geomajas.jsapi.event.JsHandlerRegistration;
-import org.geomajas.jsapi.event.LayersModelChangedEvent;
-import org.geomajas.jsapi.event.LayersModelChangedHandler;
-import org.geomajas.jsapi.map.feature.Feature;
-import org.geomajas.jsapi.map.layer.FeaturesSupported;
+import org.geomajas.plugin.jsapi.client.event.FeatureDeselectedHandler;
+import org.geomajas.plugin.jsapi.client.event.FeatureSelectedHandler;
+import org.geomajas.plugin.jsapi.client.event.JsEventBus;
+import org.geomajas.plugin.jsapi.client.event.JsHandlerRegistration;
+import org.geomajas.plugin.jsapi.client.event.LayersModelChangedEvent;
+import org.geomajas.plugin.jsapi.client.event.LayersModelChangedHandler;
+import org.geomajas.plugin.jsapi.client.map.feature.Feature;
+import org.geomajas.plugin.jsapi.client.map.layer.FeaturesSupported;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureImpl;
 import org.timepedia.exporter.client.Export;
@@ -96,12 +96,15 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 
 				public void onFeatureSelected(FeatureSelectedEvent event) {
 					Feature feature = new FeatureImpl(event.getFeature().toDto(), fs);
-					selectedHandler.onFeatureSelected(new org.geomajas.jsapi.event.FeatureSelectedEvent(feature));
+					selectedHandler.onFeatureSelected(new org.geomajas.plugin.jsapi.client.event.FeatureSelectedEvent(
+							feature));
 				}
 
 				public void onFeatureDeselected(FeatureDeselectedEvent event) {
 					Feature feature = new FeatureImpl(event.getFeature().toDto(), fs);
-					deselectedHandler.onFeatureDeselected(new org.geomajas.jsapi.event.FeatureDeselectedEvent(feature));
+					deselectedHandler
+							.onFeatureDeselected(new org.geomajas.plugin.jsapi.client.event.FeatureDeselectedEvent(
+									feature));
 				}
 			});
 		}

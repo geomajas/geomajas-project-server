@@ -13,7 +13,7 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.util.GeometryConverter;
-import org.geomajas.jsapi.spatial.BboxService;
+import org.geomajas.plugin.jsapi.client.spatial.BboxService;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
