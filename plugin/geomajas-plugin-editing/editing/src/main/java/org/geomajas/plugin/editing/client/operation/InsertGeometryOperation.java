@@ -49,6 +49,14 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 		}
 	}
 
+	public GeometryIndexOperation getInverseOperation() {
+		return new DeleteGeometryOperation(service);
+	}
+
+	public GeometryIndex getGeometryIndex() {
+		return index;
+	}
+
 	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
 		operation.execute(geometry, index);

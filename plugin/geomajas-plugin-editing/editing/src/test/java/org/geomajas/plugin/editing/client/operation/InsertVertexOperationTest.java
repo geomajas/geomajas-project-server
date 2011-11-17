@@ -15,7 +15,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.client.service.impl.GeometryIndexServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +29,7 @@ public class InsertVertexOperationTest {
 
 	private static final double NEW_VALUE = 342;
 
-	private GeometryIndexService service = new GeometryIndexServiceImpl();
+	private GeometryIndexService service = new GeometryIndexService();
 
 	private Coordinate target = new Coordinate(NEW_VALUE, NEW_VALUE);
 
@@ -101,7 +100,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getCoordinates());
 	}
 
@@ -168,7 +167,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getCoordinates());
 	}
 
@@ -216,7 +215,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[0].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -233,7 +232,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -249,7 +248,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
 
@@ -265,7 +264,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -282,7 +281,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[2].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -349,7 +348,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(2, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getCoordinates());
 	}
 
@@ -398,7 +397,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[0].getX(), DELTA);
 		Assert.assertEquals(value, result.getCoordinates()[count - 1].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
@@ -416,7 +415,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -433,7 +432,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[3].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -451,7 +450,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -469,7 +468,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[2].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -487,7 +486,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[3].getX(), DELTA);
 		Assert.assertEquals(count, undone.getCoordinates().length);
 	}
@@ -570,7 +569,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(2, result.getGeometries()[0].getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getGeometries()[0].getCoordinates());
 	}
 
@@ -587,7 +586,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(count + 1, result.getGeometries()[0].getCoordinates().length);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 	}
 
@@ -650,7 +649,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getGeometries()[0].getCoordinates());
 	}
 
@@ -714,7 +713,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getGeometries()[0].getCoordinates());
 	}
 
@@ -729,7 +728,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[1].getCoordinates()[2].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getGeometries()[1].getCoordinates()[2].getX(), DELTA);
 	}
 
@@ -795,7 +794,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertNull(undone.getGeometries()[0].getGeometries()[0].getCoordinates());
 	}
 
@@ -810,7 +809,7 @@ public class InsertVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 
 		// Undo the insert operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 	}
 

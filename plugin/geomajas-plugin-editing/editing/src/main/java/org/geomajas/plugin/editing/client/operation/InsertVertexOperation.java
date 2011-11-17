@@ -58,6 +58,19 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
+	public GeometryIndexOperation getInverseOperation() {
+		return new DeleteVertexOperation(service);
+	}
+
+	public GeometryIndex getGeometryIndex() {
+		switch (service.getType(index)) {
+			case TYPE_EDGE:
+				return service.getNextVertex(index);
+			default:
+				return index;
+		}
+	}
+
 	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		switch (service.getType(index)) {
@@ -79,12 +92,6 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	private void insert(Geometry geom, GeometryIndex index, Coordinate coordinate)
 			throws GeometryIndexNotFoundException {
-		// Does the sub-geometry exist? if not, create it:
-		// if (index.hasChild()) {
-		// if (geom.getGeometries() == null || geom.getGeometries().length == index.getValue()) {
-		// addChild(geom);
-		// }
-		// }
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			insert(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE) {

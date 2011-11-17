@@ -40,6 +40,10 @@ public interface GeometryIndexOperation {
 	 */
 	Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException;
 
+	GeometryIndexOperation getInverseOperation();
+	
+	GeometryIndex getGeometryIndex();
+
 	/**
 	 * Undo this operation. The resulting geometry is again the initial geometry before this operation was executed.
 	 * 
@@ -50,5 +54,5 @@ public interface GeometryIndexOperation {
 	 *             In case something goes wrong during the operation undo. All implementations must make sure that if an
 	 *             exception occurs, no changes are made to the initial geometry.
 	 */
-	Geometry undo(Geometry geometry) throws GeometryOperationFailedException;
+	//Geometry undo(Geometry geometry) throws GeometryOperationFailedException;
 }
