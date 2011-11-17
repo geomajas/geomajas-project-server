@@ -24,17 +24,17 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public class GeometryEditMoveEvent extends GeometryEditEvent<GeometryEditOperationHandler> {
+public class GeometryEditMoveEvent extends GeometryEditEvent<GeometryEditMoveHandler> {
 
 	public GeometryEditMoveEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
-	public Type<GeometryEditOperationHandler> getAssociatedType() {
-		return GeometryEditOperationHandler.TYPE;
+	public Type<GeometryEditMoveHandler> getAssociatedType() {
+		return GeometryEditMoveHandler.TYPE;
 	}
 
-	protected void dispatch(GeometryEditOperationHandler geometryEditOperationHandler) {
-		geometryEditOperationHandler.onGeometryEditMove(this);
+	protected void dispatch(GeometryEditMoveHandler handler) {
+		handler.onGeometryEditMove(this);
 	}
 }
