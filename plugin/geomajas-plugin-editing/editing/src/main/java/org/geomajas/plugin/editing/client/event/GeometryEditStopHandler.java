@@ -8,44 +8,32 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.editing.client.event;
 
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.geometry.Geometry;
+import org.geomajas.annotation.UserImplemented;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports the editing of a geometry has ended.
+ * Handler for catching edit stop events.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public class GeometryEditStopEvent extends GwtEvent<GeometryEditStopHandler> {
+@UserImplemented
+public interface GeometryEditStopHandler extends EventHandler {
 
-	private Geometry geometry;
-
-	public GeometryEditStopEvent(Geometry geometry) {
-		this.geometry = geometry;
-	}
-
-	@Override
-	public Type<GeometryEditStopHandler> getAssociatedType() {
-		return GeometryEditStopHandler.TYPE;
-	}
-
-	@Override
-	protected void dispatch(GeometryEditStopHandler handler) {
-		handler.onGeometryEditStop(this);
-	}
+	GwtEvent.Type<GeometryEditStopHandler> TYPE = new GwtEvent.Type<GeometryEditStopHandler>();
 
 	/**
-	 * Get the geometry that will be edited.
+	 * Executed when the geometry editing process has ended.
 	 * 
-	 * @return The geometry that is to be edited.
+	 * @param event
+	 *            The geometry edit stop event.
 	 */
-	public Geometry getGeometry() {
-		return geometry;
-	}
+	void onGeometryEditStop(GeometryEditStopEvent event);
 }
