@@ -1,0 +1,83 @@
+<html>
+<!--
+		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+		  ~
+		  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+		  ~
+		  ~ The program is available in open source according to the GNU Affero
+		  ~ General Public License. All contributions in this program are covered
+		  ~ by the Geomajas Contributors License Agreement. For full licensing
+		  ~ details, see LICENSE.txt in the project root.
+		  -->
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
+		<title>Geomajas Javascript API Showcase</title>
+		<link type="text/css" rel="stylesheet" href="geomajas.css" />
+
+		<script type="text/javascript">var isomorphicDir = "showcase/sc/";</script>
+		<script type="text/javascript" src="showcase/showcase.nocache.js"></script>
+
+		<script type="text/javascript">
+			var map;
+
+			function onGeomajasLoad() {
+				map = Geomajas().createMap("app", "mapMain", "js-map-element");
+			}
+
+			function drawPoint() {
+				try {
+					//var service = new org.geomajas.plugin.editing.service.GeometryEditingService();
+					//log(service.toString());
+					//var indexService = service.getIndexService();
+					var indexService = new org.geomajas.plugin.editing.service.GeometryIndexService();
+					var index = indexService.parse("geometry0.vertex1");
+					log(index.toString());
+					log(indexService.format(index));
+					//var type = indexService.getType(index);
+					log(index.hasChild() + ", " + index.getChild().toString());
+					var type = index.getType();
+					log(type.toString());
+					var index2 = indexService.create(type, [0,2]);
+					log(index2.toString());
+
+					var index3 = indexService.create("edge", [3,4]);				
+					log(index3.toString());
+					log(index3.getValue() + ", " + index3.hasChild() + ", " + index3.getType());
+					log(indexService.getType(index3));
+				} catch (e) {
+					alert(e);
+				}
+			}
+
+			function log(txt) {
+				var el = document.getElementById("log");
+				el.innerHTML += txt + "<br/>";
+			}
+			function listMethods(myObject) {
+				var element = document.getElementById('log');
+				element.innerHTML += "Properties for " + myObject + "<br>";
+				for ( var property in myObject) {
+					element.innerHTML += "    Property: " + property + "<br>";
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="titleBar">
+			<div class="title">Geomajas Editing JavaScript API test</div>
+			<div class="subtitle">Example application for the JavaScript API for the editing plugin. Uses the GWT face.</div>
+		</div>
+		
+		<div>
+			<button onclick="drawPoint()">Draw point</button>
+		</div>
+		
+		<div id="js-map-element" style="width:640px; height:480px; border: 1px solid #337428;">
+			<!-- on load, the map is attached here -->
+		</div>
+		<div id="log"></div>
+	</body>
+</html>
