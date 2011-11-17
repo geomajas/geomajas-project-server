@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
@@ -21,7 +22,7 @@ import org.geomajas.geometry.Geometry;
  * 
  * @author Pieter De Graef
  */
-public interface GeometryIndexService {
+public class GeometryIndexService {
 
 	// ------------------------------------------------------------------------
 	// Methods concerning index construction:
@@ -38,7 +39,20 @@ public interface GeometryIndexService {
 	 *            A list of integer values that determine the indices on each level in the index.
 	 * @return The recursive geometry index resulting from the given parameters.
 	 */
-	GeometryIndex create(GeometryIndexType type, int... values);
+	public GeometryIndex create(GeometryIndexType type, int... values) {
+		GeometryIndex index = null;
+		if (values.length > 0) {
+			index = new GeometryIndex(type, values[values.length - 1], null);
+		} else {
+			throw new NullPointerException("Cannot create a GeometryIndex since no values where given.");
+		}
+		if (values.length > 1) {
+			for (int i = values.length - 2; i >= 0; i--) {
+				index = new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, values[i], index);
+			}
+		}
+		return index;
+	}
 
 	/**
 	 * Given a certain geometry index, add more levels to it.
@@ -51,7 +65,14 @@ public interface GeometryIndexService {
 	 *            A list of integer values that determine the indices on each level in the index.
 	 * @return The recursive geometry index resulting from adding the given parameters to the given parent index.
 	 */
-	GeometryIndex addChildren(GeometryIndex index, GeometryIndexType type, int... values);
+	public GeometryIndex addChildren(GeometryIndex index, GeometryIndexType type, int... values) {
+		if (index == null) {
+			return create(type, values);
+		}
+		GeometryIndex clone = new GeometryIndex(index);
+		clone.setChild(create(type, values));
+		return clone;
+	}
 
 	// ------------------------------------------------------------------------
 	// Methods concerning index parsing/formatting:
@@ -64,7 +85,19 @@ public interface GeometryIndexService {
 	 *            The geometry index to format.
 	 * @return Returns the string value resulting from the index.
 	 */
-	String format(GeometryIndex index);
+	public String format(GeometryIndex index) {
+		if (index.hasChild()) {
+			return "geometry" + index.getValue() + "." + format(index.getChild());
+		}
+		switch (index.getType()) {
+			case TYPE_VERTEX:
+				return "vertex" + index.getValue();
+			case TYPE_EDGE:
+				return "edge" + index.getValue();
+			default:
+				return "geometry" + index.getValue();
+		}
+	}
 
 	/**
 	 * Given a certain string identifier, parse it as a geometry index.
@@ -75,7 +108,17 @@ public interface GeometryIndexService {
 	 * @throws GeometryIndexNotFoundException
 	 *             In case the identifier could not be parsed.
 	 */
-	GeometryIndex parse(String identifier) throws GeometryIndexNotFoundException;
+	public GeometryIndex parse(String id) throws GeometryIndexNotFoundException {
+		try {
+			GeometryIndex index = parseRecursive(id.toLowerCase());
+			if (index == null) {
+				throw new GeometryIndexNotFoundException("Could not parse '" + id + "' as a GeometryIndex.");
+			}
+			return index;
+		} catch (GeometryIndexNotFoundException e) {
+			throw new GeometryIndexNotFoundException("Could not parse '" + id + "' as a GeometryIndex.");
+		}
+	}
 
 	// ------------------------------------------------------------------------
 	// Methods for geometry retrieval:
@@ -94,7 +137,19 @@ public interface GeometryIndexService {
 	 *             Thrown in case the index is of the wrong type, or if the sub-geometry could not be found within the
 	 *             given geometry.
 	 */
-	Geometry getGeometry(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException;
+	public Geometry getGeometry(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+		if (index.hasChild()) {
+			if (geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+				return getGeometry(geometry.getGeometries()[index.getValue()], index.getChild());
+			}
+			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+		}
+		if (index.getType() == GeometryIndexType.TYPE_GEOMETRY && geometry.getGeometries() != null
+				&& geometry.getGeometries().length > index.getValue()) {
+			return geometry.getGeometries()[index.getValue()];
+		}
+		throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+	}
 
 	/**
 	 * Given a certain geometry, get the vertex the index points to. This only works if the index actually points to a
@@ -109,7 +164,19 @@ public interface GeometryIndexService {
 	 *             Thrown in case the index is of the wrong type, or if the vertex could not be found within the given
 	 *             geometry.
 	 */
-	Coordinate getVertex(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException;
+	public Coordinate getVertex(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+		if (index.hasChild()) {
+			if (geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+				return getVertex(geometry.getGeometries()[index.getValue()], index.getChild());
+			}
+			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+		}
+		if (index.getType() == GeometryIndexType.TYPE_VERTEX && geometry.getCoordinates() != null
+				&& geometry.getCoordinates().length > index.getValue() && index.getValue() >= 0) {
+			return geometry.getCoordinates()[index.getValue()];
+		}
+		throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+	}
 
 	/**
 	 * Given a certain geometry, get the edge the index points to. This only works if the index actually points to an
@@ -124,7 +191,20 @@ public interface GeometryIndexService {
 	 *             Thrown in case the index is of the wrong type, or if the edge could not be found within the given
 	 *             geometry.
 	 */
-	Coordinate[] getEdge(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException;
+	public Coordinate[] getEdge(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+		if (index.hasChild()) {
+			if (geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+				return getEdge(geometry.getGeometries()[index.getValue()], index.getChild());
+			}
+			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+		}
+		if (index.getType() == GeometryIndexType.TYPE_EDGE && geometry.getCoordinates() != null
+				&& geometry.getCoordinates().length > (index.getValue() - 1)) {
+			return new Coordinate[] { geometry.getCoordinates()[index.getValue()],
+					geometry.getCoordinates()[index.getValue() + 1] };
+		}
+		throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+	}
 
 	// ------------------------------------------------------------------------
 	// Helper methods:
@@ -137,7 +217,12 @@ public interface GeometryIndexService {
 	 *            The index to check.
 	 * @return true or false.
 	 */
-	boolean isVertex(GeometryIndex index);
+	public boolean isVertex(GeometryIndex index) {
+		if (index.hasChild()) {
+			return isVertex(index.getChild());
+		}
+		return index.getType() == GeometryIndexType.TYPE_VERTEX;
+	}
 
 	/**
 	 * Does the given index point to an edge or not? We look at the deepest level to check this.
@@ -146,7 +231,12 @@ public interface GeometryIndexService {
 	 *            The index to check.
 	 * @return true or false.
 	 */
-	boolean isEdge(GeometryIndex index);
+	public boolean isEdge(GeometryIndex index) {
+		if (index.hasChild()) {
+			return isEdge(index.getChild());
+		}
+		return index.getType() == GeometryIndexType.TYPE_EDGE;
+	}
 
 	/**
 	 * Does the given index point to a sub-geometry or not? We look at the deepest level to check this.
@@ -155,7 +245,12 @@ public interface GeometryIndexService {
 	 *            The index to check.
 	 * @return true or false.
 	 */
-	boolean isGeometry(GeometryIndex index);
+	public boolean isGeometry(GeometryIndex index) {
+		if (index.hasChild()) {
+			return isGeometry(index.getChild());
+		}
+		return index.getType() == GeometryIndexType.TYPE_GEOMETRY;
+	}
 
 	/**
 	 * Get the type of sub-part the given index points to. We look at the deepest level to check this.
@@ -164,7 +259,71 @@ public interface GeometryIndexService {
 	 *            The index to check.
 	 * @return true or false.
 	 */
-	GeometryIndexType getType(GeometryIndex index);
+	public GeometryIndexType getType(GeometryIndex index) {
+		if (index.hasChild()) {
+			return getType(index.getChild());
+		}
+		return index.getType();
+	}
+
+	/**
+	 * What is the geometry type of the sub-geometry pointed to by the given index? If the index points to a vertex or
+	 * edge, the geometry type at the parent level is returned.
+	 * 
+	 * @param geometry
+	 *            The geometry wherein to search.
+	 * @param index
+	 *            The index pointing to a vertex/edge/sub-geometry. In the case of a vertex/edge, the parent geometry
+	 *            type is returned. If index is null, the type of the given geometry is returned.
+	 * @return The geometry type as defined in the {@link Geometry} class.
+	 * @throws GeometryIndexNotFoundException
+	 *             Thrown in case the index points to a non-existing sub-geometry.
+	 */
+	public String getGeometryType(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException {
+		if (index != null && index.getType() == GeometryIndexType.TYPE_GEOMETRY) {
+			if (geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
+				return getGeometryType(geom.getGeometries()[index.getValue()], index.getChild());
+			} else {
+				throw new GeometryIndexNotFoundException("Can't find the geometry referred to in the given index.");
+			}
+		}
+		return geom.getGeometryType();
+	}
+
+	/**
+	 * Checks to see if a given index is the child of another index.
+	 * 
+	 * @param parentIndex
+	 *            The so-called parent index.
+	 * @param childIndex
+	 *            The so-called child index.
+	 * @return Is the second index really a child of the first index?
+	 */
+	public boolean isChildOf(GeometryIndex parentIndex, GeometryIndex childIndex) {
+		if (parentIndex.getValue() != childIndex.getValue()) {
+			return false;
+		}
+		if (parentIndex.hasChild() && childIndex.hasChild()) {
+			return isChildOf(parentIndex.getChild(), childIndex.getChild());
+		} else if (!parentIndex.hasChild() && childIndex.hasChild()) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the value of the innermost child index.
+	 * 
+	 * @param index
+	 *            The index to recursively search.
+	 * @return The value of the deepest child.
+	 */
+	public int getValue(GeometryIndex index) {
+		if (index.hasChild()) {
+			return getValue(index.getChild());
+		}
+		return index.getValue();
+	}
 
 	// ------------------------------------------------------------------------
 	// Methods concerning adjacency (finding ones neighbors):
@@ -183,8 +342,28 @@ public interface GeometryIndexService {
 	 * @throws GeometryIndexNotFoundException
 	 *             Thrown in case the given index does not match the given geometry.
 	 */
-	List<GeometryIndex> getAdjacentVertices(Geometry geometry, GeometryIndex index)
-			throws GeometryIndexNotFoundException;
+	public List<GeometryIndex> getAdjacentVertices(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		if (geometry == null || index == null) {
+			throw new NullPointerException("No null values allowed!");
+		}
+		GeometryIndexCombo combo = recursiveSearch(geometry, index);
+
+		int[] indices = new int[] {};
+		if (isVertex(index)) {
+			indices = getAdjacentVerticesForVertex(combo.getGeometry(), combo.getIndex());
+		} else if (isEdge(index)) {
+			indices = getAdjacentVerticesForEdge(combo.getGeometry(), combo.getIndex());
+		}
+
+		List<GeometryIndex> indexList = new ArrayList<GeometryIndex>();
+		for (int i = 0; i < indices.length; i++) {
+			indexList.add(recursiveCreate(index, indices[i], GeometryIndexType.TYPE_VERTEX));
+		}
+
+		// Can return an empty list.
+		return indexList;
+	}
 
 	/**
 	 * Given a certain geometry and index, find the neighboring edges. It is important to understand that searching
@@ -199,7 +378,27 @@ public interface GeometryIndexService {
 	 * @throws GeometryIndexNotFoundException
 	 *             Thrown in case the given index does not match the given geometry.
 	 */
-	List<GeometryIndex> getAdjacentEdges(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException;
+	public List<GeometryIndex> getAdjacentEdges(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		if (geometry == null || index == null) {
+			throw new NullPointerException("No null values allowed!");
+		}
+		GeometryIndexCombo combo = recursiveSearch(geometry, index);
+		int[] indices = new int[] {};
+		if (isVertex(index)) {
+			indices = getAdjacentEdgesForVertex(combo.getGeometry(), combo.getIndex());
+		} else if (isEdge(index)) {
+			indices = getAdjacentEdgesForEdge(combo.getGeometry(), combo.getIndex());
+		}
+
+		List<GeometryIndex> indexList = new ArrayList<GeometryIndex>();
+		for (int i = 0; i < indices.length; i++) {
+			indexList.add(recursiveCreate(index, indices[i], GeometryIndexType.TYPE_EDGE));
+		}
+
+		// Can return an empty list.
+		return indexList;
+	}
 
 	/**
 	 * Given a certain geometry and index (one), check if the the other index (two) is a neighbor.
@@ -212,7 +411,28 @@ public interface GeometryIndexService {
 	 *            Another one of the indices. Must point to either a vertex or and edge.
 	 * @return true or false.
 	 */
-	boolean isAdjacent(Geometry geometry, GeometryIndex one, GeometryIndex two);
+	public boolean isAdjacent(Geometry geometry, GeometryIndex one, GeometryIndex two) {
+		List<GeometryIndex> neighbors = null;
+		try {
+			if (isVertex(two)) {
+				neighbors = getAdjacentVertices(geometry, one);
+			} else if (isEdge(two)) {
+				neighbors = getAdjacentEdges(geometry, one);
+			}
+		} catch (GeometryIndexNotFoundException e) {
+			return false;
+		}
+
+		if (neighbors != null) {
+			for (GeometryIndex neighbor : neighbors) {
+				if (neighbor.equals(two)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * Given a certain index, find the next vertex in line.
@@ -222,7 +442,13 @@ public interface GeometryIndexService {
 	 * @return Returns the next vertex index. Note that no geometry is given, and so no actual checking is done. It just
 	 *         returns the theoretical answer.
 	 */
-	GeometryIndex getNextVertex(GeometryIndex index);
+	public GeometryIndex getNextVertex(GeometryIndex index) {
+		if (index.hasChild()) {
+			return new GeometryIndex(index.getType(), index.getValue(), getNextVertex(index.getChild()));
+		} else {
+			return new GeometryIndex(GeometryIndexType.TYPE_VERTEX, index.getValue() + 1, null);
+		}
+	}
 
 	/**
 	 * Given a certain index, find the previous vertex in line.
@@ -232,7 +458,13 @@ public interface GeometryIndexService {
 	 * @return Returns the previous vertex index. Note that no geometry is given, and so no actual checking is done. It
 	 *         just returns the theoretical answer.
 	 */
-	GeometryIndex getPreviousVertex(GeometryIndex index);
+	public GeometryIndex getPreviousVertex(GeometryIndex index) {
+		if (index.hasChild()) {
+			return new GeometryIndex(index.getType(), index.getValue(), getPreviousVertex(index.getChild()));
+		} else {
+			return new GeometryIndex(GeometryIndexType.TYPE_VERTEX, index.getValue() - 1, null);
+		}
+	}
 
 	/**
 	 * Given a certain index, how many indices of the same type can be found within the given geometry. This count
@@ -246,17 +478,314 @@ public interface GeometryIndexService {
 	 *            The index to take as example (can be of any type).
 	 * @return Returns the total amount of siblings.
 	 */
-	int getSiblingCount(Geometry geometry, GeometryIndex index);
+	public int getSiblingCount(Geometry geom, GeometryIndex index) {
+		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
+			return getSiblingCount(geom.getGeometries()[index.getValue()], index.getChild());
+		}
+		switch (index.getType()) {
+			case TYPE_VERTEX:
+				return geom.getCoordinates() != null ? geom.getCoordinates().length : 0;
+			case TYPE_EDGE:
+				if (geom.getGeometryType() == Geometry.LINE_STRING) {
+					int count = geom.getCoordinates() != null ? geom.getCoordinates().length - 1 : 0;
+					if (count < 0) {
+						count = 0;
+					}
+					return count;
+				} else if (geom.getGeometryType() == Geometry.LINEAR_RING) {
+					return geom.getCoordinates() != null ? geom.getCoordinates().length : 0;
+				}
+				return 0;
+			case TYPE_GEOMETRY:
+			default:
+				return geom.getGeometries() != null ? geom.getGeometries().length : 0;
+		}
+	}
 
 	/**
-	 * What is the geometry type of the deepest index node of type geometry.
+	 * Get the full list of sibling vertices in the form of a coordinate array.
 	 * 
-	 * @param geometry
-	 *            The geometry wherein to search.
+	 * @param geom
+	 *            The geometry wherein to search for a certain coordinate array.
 	 * @param index
-	 *            The index pointing to a vertex/edge/sub-geometry. In the case of a vertex/edge, the parent geometry
-	 *            type is returned.
-	 * @return The geometry type as defined in the {@link Geometry} class.
+	 *            An index pointing to a vertex or edge within the geometry. This index will then naturally be a part of
+	 *            a coordinate array. It is this array we're looking for.
+	 * @return Returns the array of coordinate from within the geometry where the given index is a part of.
 	 */
-	String getGeometryType(Geometry geometry, GeometryIndex index);
+	public Coordinate[] getSiblingVertices(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException {
+		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
+			return getSiblingVertices(geom.getGeometries()[index.getValue()], index.getChild());
+		}
+		switch (index.getType()) {
+			case TYPE_VERTEX:
+			case TYPE_EDGE:
+				return geom.getCoordinates();
+			case TYPE_GEOMETRY:
+			default:
+				throw new GeometryIndexNotFoundException("Given index is of wrong type. Can't find sibling vertices "
+						+ "for a geometry type of index.");
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private GeometryIndex recursiveCreate(GeometryIndex index, int lastValue, GeometryIndexType lastType) {
+		if (index.hasChild()) {
+			return new GeometryIndex(index.getType(), index.getValue(), recursiveCreate(index.getChild(), lastValue,
+					lastType));
+		} else {
+			GeometryIndexType type = lastType == null ? index.getType() : lastType;
+			return new GeometryIndex(type, lastValue, null);
+		}
+	}
+
+	private GeometryIndexCombo recursiveSearch(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		// We need to stop at the last GEOMETRY level, so check for this first:
+		if (!index.getType().equals(GeometryIndexType.TYPE_GEOMETRY) || !index.hasChild()) {
+			return new GeometryIndexCombo(geometry, index);
+		} else if (geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+			// Go deeper:
+			return recursiveSearch(geometry.getGeometries()[index.getValue()], index.getChild());
+		}
+		throw new GeometryIndexNotFoundException("Could not match index onto geometry.");
+	}
+
+	private int[] getAdjacentVerticesForVertex(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		int n = 0;
+		int i = index.getValue();
+
+		if (i < 0) {
+			throw new GeometryIndexNotFoundException("Cannot find a negative index.");
+		} else if (geometry.getGeometryType().equals(Geometry.LINEAR_RING)) {
+			n = geometry.getCoordinates() == null ? 0 : geometry.getCoordinates().length - 1;
+		} else if (geometry.getGeometryType().equals(Geometry.LINE_STRING)) {
+			n = geometry.getCoordinates() == null ? 0 : geometry.getCoordinates().length;
+		}
+		if (i >= n) {
+			throw new GeometryIndexNotFoundException("Index too big.");
+		} else if (n == 0) {
+			return new int[] {};
+		}
+
+		int previous = (i - 1) % n;
+		int next = (i + 1) % n;
+
+		// A LineString is not closed, so check for this:
+		if (geometry.getGeometryType().equals(Geometry.LINE_STRING)) {
+			if (previous < 0) {
+				return new int[] { next };
+			} else if (next < i) {
+				return new int[] { previous };
+			}
+		}
+
+		if (previous < 0) {
+			// This can only be executed in the case of a LinearRing:
+			previous += n;
+		}
+		if (previous == next) {
+			if (previous == i) {
+				return new int[] {};
+			} else {
+				return new int[] { previous };
+			}
+		} else {
+			return new int[] { previous, next };
+		}
+	}
+
+	private int[] getAdjacentEdgesForVertex(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		int n = 0;
+		int i = index.getValue();
+
+		if (i < 0) {
+			throw new GeometryIndexNotFoundException("Cannot find a negative index.");
+		} else if (geometry.getGeometryType().equals(Geometry.LINEAR_RING)
+				|| geometry.getGeometryType().equals(Geometry.LINE_STRING)) {
+			n = geometry.getCoordinates() == null ? 0 : geometry.getCoordinates().length - 1;
+			if (i > n) {
+				throw new GeometryIndexNotFoundException("Index too big.");
+			}
+		} else if (i >= n) {
+			throw new GeometryIndexNotFoundException("Index too big.");
+		}
+
+		if (n == 0) {
+			return new int[] {};
+		}
+
+		int previous = (i - 1) % n;
+		int next = i % n;
+
+		// A LineString is not closed, so check for this:
+		if (geometry.getGeometryType().equals(Geometry.LINE_STRING)) {
+			if (previous < 0) {
+				return new int[] { next };
+			} else if (next < i) {
+				return new int[] { previous };
+			}
+		}
+
+		if (previous < 0) {
+			// This can only be executed in the case of a LinearRing:
+			previous += n;
+		}
+		if (previous == next) {
+			return new int[] { previous };
+		} else {
+			return new int[] { previous, next };
+		}
+	}
+
+	private int[] getAdjacentVerticesForEdge(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		// Edges always have 2 adjacent vertices.
+		int n = 0;
+		int i = index.getValue();
+
+		if (i < 0) {
+			throw new GeometryIndexNotFoundException("Cannot find a negative index.");
+		} else if (geometry.getGeometryType().equals(Geometry.LINEAR_RING)
+				|| geometry.getGeometryType().equals(Geometry.LINE_STRING)) {
+			n = geometry.getCoordinates() == null ? 0 : geometry.getCoordinates().length - 1;
+			if (i >= n) {
+				throw new GeometryIndexNotFoundException("Index too big.");
+			}
+		} else {
+			throw new GeometryIndexNotFoundException("Index too big.");
+		}
+
+		int previous = i;
+		int next = i + 1;
+		if (i == n - 1 && geometry.getGeometryType().equals(Geometry.LINEAR_RING)) {
+			next = 0;
+		}
+		return new int[] { previous, next };
+	}
+
+	private int[] getAdjacentEdgesForEdge(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException {
+		int n = 0;
+		int i = index.getValue();
+
+		if (i < 0) {
+			throw new GeometryIndexNotFoundException("Cannot find a negative index.");
+		} else if (geom.getGeometryType().equals(Geometry.LINEAR_RING)
+				|| geom.getGeometryType().equals(Geometry.LINE_STRING)) {
+			n = geom.getCoordinates() == null ? 0 : geom.getCoordinates().length - 1;
+			if (i >= n) {
+				throw new GeometryIndexNotFoundException("Index too big.");
+			}
+		} else {
+			throw new GeometryIndexNotFoundException("Index too big.");
+		}
+
+		int previous = (i - 1) % n;
+		int next = (i + 1) % n;
+
+		// A LineString is not closed, so check for this:
+		if (geom.getGeometryType().equals(Geometry.LINE_STRING)) {
+			if (previous < 0) {
+				return new int[] { next };
+			} else if (next < i) {
+				return new int[] { previous };
+			}
+		}
+
+		if (previous < 0) {
+			// This can only be executed in the case of a LinearRing:
+			previous += n;
+		}
+		if (previous == next) {
+			if (previous == i) {
+				return new int[] {};
+			} else {
+				return new int[] { previous };
+			}
+		} else {
+			return new int[] { previous, next };
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods for ID parsing:
+	// ------------------------------------------------------------------------
+
+	private GeometryIndex parseRecursive(String id) throws GeometryIndexNotFoundException {
+		int position = id.indexOf("geometry");
+		if (position >= 0) {
+			String temp = id.substring(position + 8);
+			int value = readInteger(temp);
+			if (value < 0) {
+				throw new GeometryIndexNotFoundException("Could not read value from " + temp);
+			}
+			GeometryIndex childIndex = parseRecursive(temp);
+			return new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, value, childIndex);
+		} else {
+			GeometryIndex index = parseSingle(id, "vertex", GeometryIndexType.TYPE_VERTEX);
+			if (index == null) {
+				index = parseSingle(id, "edge", GeometryIndexType.TYPE_EDGE);
+			}
+			return index;
+		}
+	}
+
+	private GeometryIndex parseSingle(String id, String rexexp, GeometryIndexType type)
+			throws GeometryIndexNotFoundException {
+		int position = id.indexOf(rexexp);
+		if (position >= 0) {
+			String temp = id.substring(position + rexexp.length());
+			int value = readInteger(temp);
+			if (value < 0) {
+				throw new GeometryIndexNotFoundException("Could not read value from " + temp);
+			}
+			return new GeometryIndex(type, value, null);
+		}
+		return null;
+	}
+
+	private static int readInteger(String identifier) {
+		int position = identifier.indexOf('.');
+		try {
+			if (position >= 0) {
+				return Integer.parseInt(identifier.substring(0, position));
+			}
+			return Integer.parseInt(identifier);
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// Private classes:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Combines a geometry and an index. Used internally only.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class GeometryIndexCombo {
+
+		private Geometry geometry;
+
+		private GeometryIndex index;
+
+		protected GeometryIndexCombo(Geometry geometry, GeometryIndex index) {
+			this.geometry = geometry;
+			this.index = index;
+		}
+
+		protected GeometryIndex getIndex() {
+			return index;
+		}
+
+		protected Geometry getGeometry() {
+			return geometry;
+		}
+	}
 }

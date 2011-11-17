@@ -19,7 +19,6 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.client.service.impl.GeometryIndexServiceImpl;
 import org.junit.Test;
 
 /**
@@ -29,7 +28,7 @@ import org.junit.Test;
  */
 public class GeometryIndexServiceParseFormatTest {
 
-	private GeometryIndexService service = new GeometryIndexServiceImpl();
+	private GeometryIndexService service = new GeometryIndexService();
 
 	private Geometry point = new Geometry(Geometry.POINT, 0, 0);
 

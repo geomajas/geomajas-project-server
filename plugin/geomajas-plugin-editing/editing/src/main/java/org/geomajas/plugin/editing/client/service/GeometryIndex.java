@@ -11,20 +11,59 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+
 /**
  * Definition of an index in a geometry. This index will point to a specific sub-part of a geometry. Depending on the
  * "type", this sub-part can be a vertex, an edge or a sub-geometry.
  * 
  * @author Pieter De Graef
  */
-public interface GeometryIndex {
+public class GeometryIndex {
+
+	private GeometryIndexType type;
+
+	private GeometryIndex child;
+
+	private int value;
+
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
+
+	/** Don't use this. Use the index service instead. */
+	public GeometryIndex() {
+	}
+
+	protected GeometryIndex(GeometryIndexType type, int value, GeometryIndex child) {
+		this.type = type;
+		this.value = value;
+		this.child = child;
+	}
+
+	protected GeometryIndex(GeometryIndex other) {
+		type = other.getType();
+		value = other.getValue();
+		if (other.hasChild()) {
+			child = new GeometryIndex(other.getChild());
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
+
+	protected void setChild(GeometryIndex child) {
+		this.child = child;
+	}
 
 	/**
 	 * Get the type of sub-part this index points to. Can be a vertex, edge or sub-geometry.
 	 * 
 	 * @return The type of sub-part this index points to.
 	 */
-	GeometryIndexType getType();
+	public GeometryIndexType getType() {
+		return type;
+	}
 
 	/**
 	 * Does this index have a child index or not? If this index points to a sub-geometry, and a child may point to some
@@ -32,7 +71,9 @@ public interface GeometryIndex {
 	 * 
 	 * @return true or false.
 	 */
-	boolean hasChild();
+	public boolean hasChild() {
+		return child != null;
+	}
 
 	/**
 	 * Get the child index. If this index points to a sub-geometry, and a child may point to some part within the
@@ -40,7 +81,9 @@ public interface GeometryIndex {
 	 * 
 	 * @return Returns the child index, or null if there is no child.
 	 */
-	GeometryIndex getChild();
+	public GeometryIndex getChild() {
+		return child;
+	}
 
 	/**
 	 * Get the index value for this index. This value tells us to exactly which vertex/edge/sub-geometry we are
@@ -49,5 +92,29 @@ public interface GeometryIndex {
 	 * 
 	 * @return The integer index value.
 	 */
-	int getValue();
+	public int getValue() {
+		return value;
+	}
+
+	public boolean equals(Object other) {
+		GeometryIndex index = (GeometryIndex) other;
+		if (hasChild() && index.hasChild()) {
+			return getChild().equals(index.getChild()) && type == index.getType() && value == index.getValue();
+		}
+		return type == index.getType() && value == index.getValue() && hasChild() == index.hasChild();
+	}
+
+	public int hashCode() {
+		if (hasChild()) {
+			return (getChild().hashCode() + value) * type.hashCode();
+		}
+		return (37 + value) * type.hashCode();
+	}
+
+	public String toString() {
+		if (child != null) {
+			return type.toString() + "-" + value + " / " + child.toString();
+		}
+		return type.toString() + "-" + value;
+	}
 }
