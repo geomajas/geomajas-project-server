@@ -15,7 +15,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.client.service.impl.GeometryIndexServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +29,7 @@ public class MoveVertexOperationTest {
 
 	private static final double NEW_VALUE = 342;
 
-	private GeometryIndexService service = new GeometryIndexServiceImpl();
+	private GeometryIndexService service = new GeometryIndexService();
 
 	private Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
@@ -99,7 +98,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(point.getCoordinates()[0].getX(), undone.getCoordinates()[0].getX(), DELTA);
 	}
 
@@ -140,7 +139,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(lineString.getCoordinates()[1].getX(), undone.getCoordinates()[1].getX(), DELTA);
 	}
 
@@ -181,7 +180,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(linearRing.getCoordinates()[1].getX(), undone.getCoordinates()[1].getX(), DELTA);
 	}
 
@@ -222,7 +221,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(polygon.getGeometries()[0].getCoordinates()[1].getX(),
 				undone.getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 	}
@@ -270,7 +269,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[1].getCoordinates()[0].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(multiPoint.getGeometries()[1].getCoordinates()[0].getX(),
 				undone.getGeometries()[1].getCoordinates()[0].getX(), DELTA);
 	}
@@ -318,7 +317,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[1].getCoordinates()[1].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(multiLineString.getGeometries()[1].getCoordinates()[1].getX(),
 				undone.getGeometries()[1].getCoordinates()[1].getX(), DELTA);
 	}
@@ -366,7 +365,7 @@ public class MoveVertexOperationTest {
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 
 		// Revert again should return original result:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(),
 				undone.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 	}

@@ -53,6 +53,14 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
+	public GeometryIndexOperation getInverseOperation() {
+		return new MoveVertexOperation(service, oldLocation);
+	}
+
+	public GeometryIndex getGeometryIndex() {
+		return index;
+	}
+
 	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
 		try {
 			setVertex(geometry, index, oldLocation);
