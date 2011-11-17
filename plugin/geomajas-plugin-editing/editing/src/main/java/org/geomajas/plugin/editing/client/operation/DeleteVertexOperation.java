@@ -50,6 +50,14 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
+	public GeometryIndexOperation getInverseOperation() {
+		return new InsertVertexOperation(service, coordinate);
+	}
+
+	public GeometryIndex getGeometryIndex() {
+		return index;
+	}
+
 	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new InsertVertexOperation(service, coordinate);
 		operation.execute(geometry, index);

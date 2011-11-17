@@ -15,7 +15,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.client.service.impl.GeometryIndexServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,7 +27,7 @@ public class DeleteVertexOperationTest {
 
 	private static final double DELTA = 0.0001;
 
-	private GeometryIndexService service = new GeometryIndexServiceImpl();
+	private GeometryIndexService service = new GeometryIndexService();
 
 	private Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
@@ -111,7 +110,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertNull(result.getCoordinates());
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(value, undone.getCoordinates()[0].getX(), DELTA);
 	}
 
@@ -181,7 +180,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getCoordinates()[1].getX(), DELTA);
 	}
 
@@ -198,7 +197,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getCoordinates()[2].getX(), DELTA);
 	}
 
@@ -214,7 +213,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getCoordinates()[2].getX(), DELTA);
 	}
 
@@ -285,7 +284,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getCoordinates()[1].getX(), DELTA);
 	}
 
@@ -303,7 +302,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getCoordinates()[2].getX(), DELTA);
 	}
 
@@ -321,7 +320,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getCoordinates()[3].getX(), DELTA);
 	}
 
@@ -389,7 +388,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(count - 1, result.getGeometries()[0].getCoordinates().length);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 	}
 
@@ -456,7 +455,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertNull(result.getGeometries()[0].getCoordinates());
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 	}
 
@@ -511,7 +510,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(x, result.getGeometries()[1].getCoordinates()[2].getX(), DELTA);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getGeometries()[1].getCoordinates()[3].getX(), DELTA);
 	}
 
@@ -572,7 +571,7 @@ public class DeleteVertexOperationTest {
 		Assert.assertEquals(x, result.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 
 		// Undo the delete operation:
-		Geometry undone = operation.undo(result);
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
 		Assert.assertEquals(x, undone.getGeometries()[0].getGeometries()[0].getCoordinates()[2].getX(), DELTA);
 	}
 
