@@ -10,7 +10,8 @@
   -->
 
 <module>
-	<!-- Geomajas Javascript api source code -->
+  	<inherits name="org.timepedia.exporter.Exporter"/>
+  	<set-property name="export" value="yes"/>
 
-	<source path="jsapi" />
+	<entry-point class="org.geomajas.plugin.jsapi.client.JsApiEntryPoint"/>
 </module>
