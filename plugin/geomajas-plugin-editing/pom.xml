@@ -10,18 +10,22 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
 		<version>1.0.6-SNAPSHOT</version>
 	</parent>
-	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-editing-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Geomajas Editing plugin parent</name>
+
+	<name>Geomajas Editing plugin - Parent</name>
 	<description>Parent pom for the Geomajas Editing plugin</description>
+
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-editing</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-editing</developerConnection>
@@ -79,6 +83,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-javascript-api-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-editing</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -93,6 +104,17 @@
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-javascript-api</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.timepedia.exporter</groupId>
+				<artifactId>gwtexporter</artifactId>
+				<version>2.4.0-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
@@ -100,6 +122,8 @@
 		<module>editing</module>
 		<module>editing-gwt</module>
 		<module>editing-gwt-example</module>
+		<module>editing-javascript-api</module>
+		<module>editing-javascript-gwt-example</module>
 		<module>documentation</module>
 	</modules>
 
