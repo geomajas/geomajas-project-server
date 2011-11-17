@@ -11,17 +11,16 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import java.util.List;
-
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditHighlightHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditInsertMoveHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditMarkForDeletionHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditOperationHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditSelectionHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditWorkflowHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -33,77 +32,71 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * edges, and that all operations work on a set of such indices. This allows for great flexibility in the operations
  * that can be performed on geometries.
  * </p>
- * <p>
- * Operations in this service do not only include changes to the actual geometry (insert, move, delete, ...) but also
- * allows for managing states of the sub-geometries, vertices or edges. The supported states for any part of a geometry
- * are the following:
- * <ul>
- * <li><b>Selection</b>: vertices and edges can be selected. This selection process can assist the user in his
- * operations. Specific controllers could then allow for the operations to be performed on this selection only. For
- * example dragging of selected vertices.</li>
- * <li><b>Highlighting</b>: vertices and edges can be highlighted usually when the mouse hovers over them.</li>
- * <li><b>Marked for deletion</b>: vertices and edges can be marked for deletion. Specific controllers could then be
- * implement actions for the user for actually delete the indices that are marked.</li>
- * </ul>
- * </p>
  * 
  * @author Pieter De Graef
  */
-public interface GeometryEditingService {
+public interface GeometryEditingService extends GeometryIndexOperationService {
 
 	// ------------------------------------------------------------------------
 	// Registering handlers for specific editing events:
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Register a {@link GeometryEditSelectionHandler} to listen to selection events of sub-geometries, vertices and
+	 * Register a {@link GeometryEditStartHandler} to listen to events that signal the editing process has started.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryEditStartHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditStartHandler(GeometryEditStartHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditStopHandler} to listen to events that signal the editing process has ended.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryEditStopHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditShapeChangedHandler} to listen to operation events (moving, inserting, deleting,
+	 * ...) of sub-geometries, vertices and edges but also listens to undo/redo events. Anything the changes the
+	 * geometry shape basically.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryEditShapeChangedHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditShapeChangedHandler(GeometryEditShapeChangedHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditInsertHandler} to listen to insert events of sub-geometries, vertices and edges.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryEditInsertHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditInsertHandler(GeometryEditInsertHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditMoveHandler} to listen to move(translate) events of sub-geometries, vertices and
 	 * edges.
 	 * 
 	 * @param handler
-	 *            The {@link GeometryEditSelectionHandler} to add as listener.
+	 *            The {@link GeometryEditMoveHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	HandlerRegistration addGeometryEditSelectionHandler(GeometryEditSelectionHandler handler);
+	HandlerRegistration addGeometryEditMoveHandler(GeometryEditMoveHandler handler);
 
 	/**
-	 * Register a {@link GeometryEditWorkflowHandler} to listen to workflow events in the geometry editing process
-	 * (start, stop, ...).
+	 * Register a {@link GeometryEditRemoveHandler} to listen to delete events of sub-geometries, vertices and edges.
 	 * 
 	 * @param handler
-	 *            The {@link GeometryEditWorkflowHandler} to add as listener.
+	 *            The {@link GeometryEditRemoveHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	HandlerRegistration addGeometryEditWorkflowHandler(GeometryEditWorkflowHandler handler);
-
-	/**
-	 * Register a {@link GeometryEditOperationHandler} to listen to operation events (moving, inserting, deleting, ...)
-	 * of sub-geometries, vertices and edges.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryEditOperationHandler} to add as listener.
-	 * @return The registration of the handler.
-	 */
-	HandlerRegistration addGeometryEditOperationHandler(GeometryEditOperationHandler handler);
-
-	/**
-	 * Register a {@link GeometryEditHighlightHandler} to listen to highlighting events of sub-geometries, vertices and
-	 * edges.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryEditHighlightHandler} to add as listener.
-	 * @return The registration of the handler.
-	 */
-	HandlerRegistration addGeometryEditHighlightHandler(GeometryEditHighlightHandler handler);
-
-	/**
-	 * Register a {@link GeometryEditMarkForDeletionHandler} to listen to mark for deletion events of sub-geometries,
-	 * vertices and edges.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryEditMarkForDeletionHandler} to add as listener.
-	 * @return The registration of the handler.
-	 */
-	HandlerRegistration addGeometryEditMarkForDeletionHandler(GeometryEditMarkForDeletionHandler handler);
+	HandlerRegistration addGeometryEditRemoveHandler(GeometryEditRemoveHandler handler);
 
 	/**
 	 * Register a {@link GeometryEditChangeStateHandler} to listen to events the mark changes in the general editing
@@ -117,15 +110,16 @@ public interface GeometryEditingService {
 	HandlerRegistration addGeometryEditChangeStateHandler(GeometryEditChangeStateHandler handler);
 
 	/**
-	 * Register a {@link GeometryEditInsertMoveHandler} to listen to mouse move events while inserting. These move
-	 * events portray the state of the geometry should a point be inserted at the given location. This event exists
-	 * mainly for renderers to display this temporary state.
+	 * Register a {@link GeometryEditTentativeMoveHandler} to listen to mouse move events that point to tentative
+	 * moving. These move events don't have to commit to anything. They may result in operations being executed, they
+	 * may not. This is meant mainly for the renderers to respond quickly to user interaction. (user friendliness and
+	 * all that jazz).
 	 * 
 	 * @param handler
-	 *            The {@link GeometryEditInsertMoveHandler} to add as listener.
+	 *            The {@link GeometryEditTentativeMoveHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	HandlerRegistration addGeometryEditInsertMoveHandler(GeometryEditInsertMoveHandler handler);
+	HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler handler);
 
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:
@@ -147,85 +141,6 @@ public interface GeometryEditingService {
 	Geometry stop();
 
 	// ------------------------------------------------------------------------
-	// Edit operations:
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Move a set of indices to new locations. These indices can point to vertices, edges or sub-geometries. For each
-	 * index, a list of new coordinates is provided.
-	 * 
-	 * @param indices
-	 *            The list of indices to move.
-	 * @param coordinates
-	 *            The coordinates to move the indices to.
-	 * @throws GeometryIndexNotFoundException
-	 *             In case one of the indices could not be found. No changes will have been performed.
-	 */
-	void move(List<GeometryIndex> indices, List<List<Coordinate>> coordinates) throws GeometryIndexNotFoundException;
-
-	/**
-	 * Insert lists of coordinates at the provided indices. These indices can point to vertices, edges or
-	 * sub-geometries. For each index, a list of coordinates is provided to be inserted after that index.
-	 * 
-	 * @param indices
-	 *            The list of indices after which to insert coordinates.
-	 * @param coordinates
-	 *            The coordinates to be inserted after each index.
-	 * @throws GeometryIndexNotFoundException
-	 *             In case one of the indices could not be found. No changes will have been performed.
-	 */
-	void insert(List<GeometryIndex> indices, List<List<Coordinate>> coordinates) throws GeometryIndexNotFoundException;
-
-	/**
-	 * Delete vertices, edges or sub-geometries at the given indices.
-	 * 
-	 * @param indices
-	 *            The list of indices that point to the vertices/edges/sub-geometries that should be deleted.
-	 * @throws GeometryIndexNotFoundException
-	 *             In case one of the indices could not be found. No changes will have been performed.
-	 */
-	void delete(List<GeometryIndex> indices) throws GeometryIndexNotFoundException;
-
-	// ------------------------------------------------------------------------
-	// Methods concerning Vertex/Edge selection:
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Select a list of vertices/edges/sub-geometries.
-	 * 
-	 * @param indices
-	 *            The list of indices to select.
-	 */
-	void select(List<GeometryIndex> indices);
-
-	/**
-	 * Deselect the given list of vertices/edges/sub-geometries.
-	 * 
-	 * @param indices
-	 *            The list of indices to deselect.
-	 */
-	void deselect(List<GeometryIndex> indices);
-
-	/** Deselect all vertices/edges/sub-geometries. */
-	void deselectAll();
-
-	/**
-	 * Check whether or not some index (vertex/edge/sub-geometry) has been selected.
-	 * 
-	 * @param index
-	 *            The index to check.
-	 * @return true or false.
-	 */
-	boolean isSelected(GeometryIndex index);
-
-	/**
-	 * Get the current selection. Do not make changes on this list!
-	 * 
-	 * @return The current selection (vertices/edges/sub-geometries).
-	 */
-	List<GeometryIndex> getSelection();
-
-	// ------------------------------------------------------------------------
 	// Methods concerning editing state:
 	// ------------------------------------------------------------------------
 
@@ -245,70 +160,16 @@ public interface GeometryEditingService {
 	GeometryEditingState getEditingState();
 
 	// ------------------------------------------------------------------------
-	// Methods concerning highlighting:
+	// Methods regarding the tentative move events:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Start highlighting a set vertices/edges/sub-geometries.
-	 * 
-	 * @param indices
-	 *            The set of indices to highlight.
-	 */
-	void highlightBegin(List<GeometryIndex> indices);
+	void setTentativeMoveOrigin(Coordinate origin);
 
-	/**
-	 * Stop highlighting a set vertices/edges/sub-geometries.
-	 * 
-	 * @param indices
-	 *            The set of indices to stop highlighting.
-	 */
-	void highlightEnd(List<GeometryIndex> indices);
+	void setTentativeMoveLocation(Coordinate location);
 
-	/**
-	 * Is a certain index (vertex/edge/sub-geometry) highlighted or not?
-	 * 
-	 * @param index
-	 *            The index to check for highlighting.
-	 * @return true or false.
-	 */
-	boolean isHightlighted(GeometryIndex index);
+	Coordinate getTentativeMoveOrigin();
 
-	// ------------------------------------------------------------------------
-	// Methods concerning marking for deletion:
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Mark a set vertices/edges/sub-geometries for deletion.
-	 * 
-	 * @param indices
-	 *            The set of indices to mark for deletion.
-	 */
-	void markForDeletionBegin(List<GeometryIndex> indices);
-
-	/**
-	 * Unmark a set vertices/edges/sub-geometries for deletion.
-	 * 
-	 * @param indices
-	 *            The set of indices to unmark for deletion.
-	 */
-	void markForDeletionEnd(List<GeometryIndex> indices);
-
-	/**
-	 * Is a certain vertex/edge/sub-geometry marked for deletion or not?
-	 * 
-	 * @param index
-	 *            The index to check.
-	 * @return true or false.
-	 */
-	boolean isMarkedForDeletion(GeometryIndex index);
-
-	// ------------------------------------------------------------------------
-	// Methods regarding the insert move events:
-	// ------------------------------------------------------------------------
-	
-	void setInsertMoveLocation(Coordinate location);
-	
-	Coordinate getInsertMoveLocation();
+	Coordinate getTentativeMoveLocation();
 
 	// ------------------------------------------------------------------------
 	// Getters:
@@ -331,4 +192,12 @@ public interface GeometryEditingService {
 	 * @return The geometry indexing service.
 	 */
 	GeometryIndexService getIndexService();
+
+	/**
+	 * Return the service that keeps track of the changes in state of the individual vertices/edges/sub-geometries
+	 * during editing.
+	 * 
+	 * @return The geometry-index-state-change service.
+	 */
+	GeometryIndexStateService getIndexStateService();
 }

@@ -8,31 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.editing.client.event;
 
 import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.UserImplemented;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports mouse move events when inserting vertices in a geometry.
+ * Interface for handling mouse move events that don't necessarily have to commit to anything.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public class GeometryEditInsertMoveEvent extends GwtEvent<GeometryEditInsertMoveHandler> {
+@UserImplemented
+public interface GeometryEditTentativeMoveHandler extends EventHandler {
 
-	public GeometryEditInsertMoveEvent() {
-	}
+	GwtEvent.Type<GeometryEditTentativeMoveHandler> TYPE = new GwtEvent.Type<GeometryEditTentativeMoveHandler>();
 
-	@Override
-	public Type<GeometryEditInsertMoveHandler> getAssociatedType() {
-		return GeometryEditInsertMoveHandler.TYPE;
-	}
-
-	@Override
-	protected void dispatch(GeometryEditInsertMoveHandler geometryEditInsertMoveHandler) {
-		geometryEditInsertMoveHandler.onInsertMove(this);
-	}
+	void onTentativeMove(GeometryEditTentativeMoveEvent event);
 }

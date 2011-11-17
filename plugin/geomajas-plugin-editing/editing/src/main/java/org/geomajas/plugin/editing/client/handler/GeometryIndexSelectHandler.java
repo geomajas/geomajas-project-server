@@ -29,16 +29,16 @@ public class GeometryIndexSelectHandler extends AbstractGeometryIndexMapHandler 
 		if (service.getEditingState() == GeometryEditingState.IDLE) {
 			if (event.isShiftKeyDown()) {
 				// Add to or remove from selection:
-				if (service.isSelected(index)) {
-					service.deselect(Collections.singletonList(index));
+				if (service.getIndexStateService().isSelected(index)) {
+					service.getIndexStateService().deselect(Collections.singletonList(index));
 					event.stopPropagation();
 				} else {
-					service.select(Collections.singletonList(index));
+					service.getIndexStateService().select(Collections.singletonList(index));
 				}
 			} else {
 				// Deselect all and select only this index:
-				service.deselectAll();
-				service.select(Collections.singletonList(index));
+				service.getIndexStateService().deselectAll();
+				service.getIndexStateService().select(Collections.singletonList(index));
 			}
 		}
 	}

@@ -17,6 +17,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -42,13 +43,13 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 
 	public void onMouseOut(MouseOutEvent event) {
 		if (service.getEditingState() == GeometryEditingState.INSERTING && isCorrectVertex()) {
-			service.highlightEnd(Collections.singletonList(index));
+			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}
 	}
 
 	public void onMouseOver(MouseOverEvent event) {
 		if (service.getEditingState() == GeometryEditingState.INSERTING && isCorrectVertex()) {
-			service.highlightBegin(Collections.singletonList(index));
+			service.getIndexStateService().highlightBegin(Collections.singletonList(index));
 		}
 	}
 
@@ -57,12 +58,15 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	// ------------------------------------------------------------------------
 
 	private boolean isCorrectVertex() {
-		String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
-		if (Geometry.LINE_STRING.equals(geomType)) {
-			GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());
-			return temp.equals(index);
-		} else if (Geometry.LINEAR_RING.equals(geomType)) {
-			return 0 == getLastValue(index);
+		try {
+			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
+			if (Geometry.LINE_STRING.equals(geomType)) {
+				GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());
+				return temp.equals(index);
+			} else if (Geometry.LINEAR_RING.equals(geomType)) {
+				return 0 == getLastValue(index);
+			}
+		} catch (GeometryIndexNotFoundException e) {
 		}
 		return false;
 	}

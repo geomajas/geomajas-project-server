@@ -18,6 +18,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDragHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
@@ -49,7 +50,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
-		service.markForDeletionEnd(Collections.singletonList(index));
+		service.getIndexStateService().markForDeletionEnd(Collections.singletonList(index));
 	}
 
 	public void onDrag(HumanInputEvent<?> event) {
@@ -57,14 +58,14 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 	}
 
 	public void onUp(HumanInputEvent<?> event) {
-		if (service.isMarkedForDeletion(index)) {
+		if (service.getIndexStateService().isMarkedForDeletion(index)) {
 			// If marked for deletion, remove on mouse up:
 			try {
 				List<GeometryIndex> toDelete = Collections.singletonList(index);
-				service.markForDeletionEnd(toDelete);
-				service.deselectAll();
-				service.delete(toDelete);
-			} catch (GeometryIndexNotFoundException e) {
+				service.getIndexStateService().markForDeletionEnd(toDelete);
+				service.getIndexStateService().deselectAll();
+				service.remove(toDelete);
+			} catch (GeometryOperationFailedException e) {
 			}
 		}
 	}
@@ -74,9 +75,10 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 	 */
 	private void checkHover(HumanInputEvent<?> event) {
 		// Check: editing state, selection (there must be 1 index selected, but not this one):
-		if (service.getEditingState() == GeometryEditingState.DRAGGING && !service.isSelected(index)
-				&& service.getSelection().size() == 1) {
-			GeometryIndex selected = service.getSelection().get(0);
+		if (service.getEditingState() == GeometryEditingState.DRAGGING
+				&& !service.getIndexStateService().isSelected(index)
+				&& service.getIndexStateService().getSelection().size() == 1) {
+			GeometryIndex selected = service.getIndexStateService().getSelection().get(0);
 
 			// Check: is the selected index of the same type, and is it a neighbor?
 			if (service.getIndexService().getType(index) == service.getIndexService().getType(selected)
@@ -84,23 +86,27 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 
 				// Neighbor detected. Now see if there are enough vertices left to delete one:
 				int siblingCount = service.getIndexService().getSiblingCount(service.getGeometry(), index);
-				String geometryType = service.getIndexService().getGeometryType(service.getGeometry(), index);
-				if (geometryType.equals(Geometry.LINE_STRING)) {
-					if (siblingCount < 3) {
-						return; // 2 vertices is the minimum for a LineString.
+				try {
+					String geometryType = service.getIndexService().getGeometryType(service.getGeometry(), index);
+					if (geometryType.equals(Geometry.LINE_STRING)) {
+						if (siblingCount < 3) {
+							return; // 2 vertices is the minimum for a LineString.
+						}
+					} else if (geometryType.equals(Geometry.LINEAR_RING)) {
+						if (siblingCount < 5) {
+							return; // 4 vertices is the minimum for a LinearRing.
+						}
+					} else {
+						// What kind of geometry are we editing here??? Better not delete anything....
+						return;
 					}
-				} else if (geometryType.equals(Geometry.LINEAR_RING)) {
-					if (siblingCount < 5) {
-						return; // 4 vertices is the minimum for a LinearRing.
-					}
-				} else {
-					// What kind of geometry are we editing here??? Better not delete anything....
+				} catch (GeometryIndexNotFoundException e) {
 					return;
 				}
 
 				// Mark for deletion:
-				if (!service.isMarkedForDeletion(index)) {
-					service.markForDeletionBegin(Collections.singletonList(index));
+				if (!service.getIndexStateService().isMarkedForDeletion(index)) {
+					service.getIndexStateService().markForDeletionBegin(Collections.singletonList(index));
 				}
 
 				// Than snap the selected vertex/edge to this one:
@@ -111,6 +117,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 								Collections.singletonList(Collections.singletonList(location)));
 						event.stopPropagation();
 					} catch (GeometryIndexNotFoundException e) {
+					} catch (GeometryOperationFailedException e) {
 					}
 				}
 			}

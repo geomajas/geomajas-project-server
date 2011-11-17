@@ -18,21 +18,18 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Interface for handling operation events for geometry editing. Supported operations are: move, insert, delete. For
- * each such operation specific events exist. These events will contain exactly what has been moved/inserted/deleted.
+ * Handler for operation event in a geometry. This will catch all events that signal the shape of the geometry has
+ * changed. The reason can be another event, such a insert, move, delete, but it can also come from undo/redo
+ * operations.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
 @UserImplemented
-public interface GeometryEditOperationHandler extends EventHandler {
+public interface GeometryEditShapeChangedHandler extends EventHandler {
 
-	GwtEvent.Type<GeometryEditOperationHandler> TYPE = new GwtEvent.Type<GeometryEditOperationHandler>();
+	GwtEvent.Type<GeometryEditShapeChangedHandler> TYPE = new GwtEvent.Type<GeometryEditShapeChangedHandler>();
 
-	void onGeometryEditMove(GeometryEditMoveEvent event);
-
-	void onGeometryEditInsert(GeometryEditInsertEvent event);
-
-	void onGeometryEditDelete(GeometryEditDeleteEvent event);
+	void onGeometryShapeChanged(GeometryEditShapeChangedEvent event);
 }

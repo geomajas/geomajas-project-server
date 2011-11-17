@@ -17,9 +17,9 @@ import java.util.List;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -38,8 +38,8 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 			List<GeometryIndex> indices = Collections.singletonList(index);
 			try {
 				// If this edge is highlighted, end it:
-				if (service.isHightlighted(index)) {
-					service.highlightEnd(indices);
+				if (service.getIndexStateService().isHightlighted(index)) {
+					service.getIndexStateService().highlightEnd(indices);
 				}
 
 				// First insert the point into the geometry:
@@ -47,12 +47,13 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 				service.insert(indices, Collections.singletonList(Collections.singletonList(location)));
 
 				// Then change the selection to the newly inserted point:
-				service.deselectAll();
-				service.select(Collections.singletonList(service.getIndexService().getNextVertex(index)));
+				service.getIndexStateService().deselectAll();
+				service.getIndexStateService().select(
+						Collections.singletonList(service.getIndexService().getNextVertex(index)));
 
 				// Set status to dragging:
 				service.setEditingState(GeometryEditingState.DRAGGING);
-			} catch (GeometryIndexNotFoundException e) {
+			} catch (GeometryOperationFailedException e) {
 			}
 		}
 	}
