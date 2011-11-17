@@ -23,7 +23,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public class GeometryEditStartEvent extends GwtEvent<GeometryEditWorkflowHandler> {
+public class GeometryEditStartEvent extends GwtEvent<GeometryEditStartHandler> {
 
 	private Geometry geometry;
 
@@ -32,12 +32,12 @@ public class GeometryEditStartEvent extends GwtEvent<GeometryEditWorkflowHandler
 	}
 
 	@Override
-	public Type<GeometryEditWorkflowHandler> getAssociatedType() {
-		return GeometryEditWorkflowHandler.TYPE;
+	public Type<GeometryEditStartHandler> getAssociatedType() {
+		return GeometryEditStartHandler.TYPE;
 	}
 
 	@Override
-	protected void dispatch(GeometryEditWorkflowHandler geometryEditWorkflowHandler) {
+	protected void dispatch(GeometryEditStartHandler geometryEditWorkflowHandler) {
 		geometryEditWorkflowHandler.onGeometryEditStart(this);
 	}
 
