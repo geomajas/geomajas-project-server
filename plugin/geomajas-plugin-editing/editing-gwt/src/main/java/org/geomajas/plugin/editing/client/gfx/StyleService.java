@@ -21,13 +21,15 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 public interface StyleService {
 
 	ShapeStyle getVertexStyle();
-	
+
 	ShapeStyle getVertexHoverStyle();
 
 	ShapeStyle getVertexSelectStyle();
-	
+
+	ShapeStyle getVertexDisabledStyle();
+
 	ShapeStyle getVertexSelectHoverStyle();
-	
+
 	ShapeStyle getVertexMarkForDeletionStyle();
 
 	ShapeStyle getEdgeStyle();
@@ -35,11 +37,13 @@ public interface StyleService {
 	ShapeStyle getEdgeHoverStyle();
 
 	ShapeStyle getEdgeSelectStyle();
-	
+
+	ShapeStyle getEdgeDisabledStyle();
+
 	ShapeStyle getEdgeSelectHoverStyle();
-	
+
 	ShapeStyle getEdgeMarkForDeletionStyle();
-	
+
 	ShapeStyle getEdgeInsertMoveStyle();
 
 	ShapeStyle getLineStringStyle();
@@ -47,4 +51,8 @@ public interface StyleService {
 	ShapeStyle getLinearRingStyle();
 
 	ShapeStyle getBackgroundStyle();
+
+	ShapeStyle getBackgroundDisabledStyle();
+
+	ShapeStyle getBackgroundMarkedForDeletionStyle();
 }

@@ -26,6 +26,8 @@ public class DefaultStyleService implements StyleService {
 
 	private ShapeStyle vertexSelectStyle = new ShapeStyle("#666666", 1, "#FFFF33", 1, 1);
 
+	private ShapeStyle vertexDisabledStyle = new ShapeStyle("#999999", 1, "#666666", 1, 1);
+
 	private ShapeStyle vertexSelectHoverStyle = new ShapeStyle("#888888", 1, "#FFFF33", 1, 1);
 
 	private ShapeStyle vertexMarkForDeletionStyle = new ShapeStyle("#FF0000", 1, "#990000", 1, 2);
@@ -35,6 +37,8 @@ public class DefaultStyleService implements StyleService {
 	private ShapeStyle edgeHoverStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 6);
 
 	private ShapeStyle edgeSelectStyle = new ShapeStyle("#FFFFFF", 0, "#CC8800", 1, 6);
+
+	private ShapeStyle edgeDisabledStyle = new ShapeStyle("#FFFFFF", 0, "#999999", 1, 4);
 
 	private ShapeStyle edgeSelectHoverStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 6);
 
@@ -47,6 +51,10 @@ public class DefaultStyleService implements StyleService {
 	private ShapeStyle linearRingStyle = new ShapeStyle("#FFEE00", 0, "#FFAA00", 1, 3);
 
 	private ShapeStyle backgroundStyle = new ShapeStyle("#FFCC00", 0.35f, "#FFAA00", 0, 0);
+
+	private ShapeStyle backgroundMarkedForDeletionStyle = new ShapeStyle("#FF0000", 0.35f, "#CC0000", 0, 0);
+
+	private ShapeStyle backgroundDisabledStyle = new ShapeStyle("#CCCCCC", 0.35f, "#CCCCCC", 0, 0);
 
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
@@ -158,5 +166,37 @@ public class DefaultStyleService implements StyleService {
 
 	public void setEdgeInsertMoveStyle(ShapeStyle edgeInsertMoveStyle) {
 		this.edgeInsertMoveStyle = edgeInsertMoveStyle;
+	}
+
+	public ShapeStyle getVertexDisabledStyle() {
+		return vertexDisabledStyle;
+	}
+
+	public void setVertexDisabledStyle(ShapeStyle vertexDisabledStyle) {
+		this.vertexDisabledStyle = vertexDisabledStyle;
+	}
+
+	public ShapeStyle getEdgeDisabledStyle() {
+		return edgeDisabledStyle;
+	}
+
+	public void setEdgeDisabledStyle(ShapeStyle edgeDisabledStyle) {
+		this.edgeDisabledStyle = edgeDisabledStyle;
+	}
+
+	public ShapeStyle getBackgroundDisabledStyle() {
+		return backgroundDisabledStyle;
+	}
+
+	public void setBackgroundDisabledStyle(ShapeStyle backgroundDisabledStyle) {
+		this.backgroundDisabledStyle = backgroundDisabledStyle;
+	}
+
+	public ShapeStyle getBackgroundMarkedForDeletionStyle() {
+		return backgroundMarkedForDeletionStyle;
+	}
+
+	public void setBackgroundMarkedForDeletionStyle(ShapeStyle backgroundMarkedForDeletionStyle) {
+		this.backgroundMarkedForDeletionStyle = backgroundMarkedForDeletionStyle;
 	}
 }

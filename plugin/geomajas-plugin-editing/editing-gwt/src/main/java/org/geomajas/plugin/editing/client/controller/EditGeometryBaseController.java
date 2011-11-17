@@ -117,7 +117,7 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 			insertController.onUp(event);
 		}
 	}
-	
+
 	public void onDoubleClick(DoubleClickEvent event) {
 		if (service.getEditingState() == GeometryEditingState.IDLE) {
 			idleController.onDoubleClick(event);

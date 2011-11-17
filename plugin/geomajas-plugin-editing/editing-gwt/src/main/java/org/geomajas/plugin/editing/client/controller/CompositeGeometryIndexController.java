@@ -130,45 +130,59 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 	// ------------------------------------------------------------------------
 
 	public void onDown(HumanInputEvent<?> event) {
-		for (MapDownHandler handler : downHandlers) {
-			handler.onDown(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			for (MapDownHandler handler : downHandlers) {
+				handler.onDown(event);
+			}
 		}
 	}
 
 	public void onUp(HumanInputEvent<?> event) {
-		for (MapUpHandler handler : upHandlers) {
-			handler.onUp(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			for (MapUpHandler handler : upHandlers) {
+				handler.onUp(event);
+			}
 		}
 	}
 
 	public void onDrag(HumanInputEvent<?> event) {
-		for (MapDragHandler handler : dragHandlers) {
-			handler.onDrag(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			for (MapDragHandler handler : dragHandlers) {
+				handler.onDrag(event);
+			}
 		}
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
-		super.onMouseMove(event); // Make sure we don't forget dragging.
-		for (MouseMoveHandler handler : moveHandlers) {
-			handler.onMouseMove(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			super.onMouseMove(event); // Make sure we don't forget dragging.
+			for (MouseMoveHandler handler : moveHandlers) {
+				handler.onMouseMove(event);
+			}
 		}
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
-		for (MouseOutHandler handler : outHandlers) {
-			handler.onMouseOut(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			for (MouseOutHandler handler : outHandlers) {
+				handler.onMouseOut(event);
+			}
 		}
 	}
 
 	public void onMouseOver(MouseOverEvent event) {
-		for (MouseOverHandler handler : overHandlers) {
-			handler.onMouseOver(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			for (MouseOverHandler handler : overHandlers) {
+				handler.onMouseOver(event);
+			}
 		}
 	}
 
 	public void onDoubleClick(DoubleClickEvent event) {
-		for (DoubleClickHandler handler : doubleClickHandlers) {
-			handler.onDoubleClick(event);
+		if (service.getIndexStateService().isEnabled(index)) {
+			for (DoubleClickHandler handler : doubleClickHandlers) {
+				handler.onDoubleClick(event);
+			}
 		}
 	}
 }

@@ -16,18 +16,17 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.controller.EditGeometryBaseController;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditWorkflowHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.impl.GeometryEditingServiceImpl;
+import org.geomajas.plugin.editing.client.service.GeometryEditingServiceImpl;
 
 /**
  * Top level geometry editor for the GWT face.
  * 
  * @author Pieter De Graef
  */
-public class GeometryEditor implements GeometryEditWorkflowHandler {
+public class GeometryEditor implements GeometryEditStartHandler {
 
 	private MapWidget mapWidget;
 
@@ -48,17 +47,28 @@ public class GeometryEditor implements GeometryEditWorkflowHandler {
 	public GeometryEditor(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
 		service = new GeometryEditingServiceImpl();
-		service.addGeometryEditWorkflowHandler(this);
+		service.addGeometryEditStartHandler(this);
 		baseController = new EditGeometryBaseController(mapWidget, service); // use factories?
 
 		renderer = new GeometryRenderer(mapWidget, service, baseController);
-		service.addGeometryEditWorkflowHandler(renderer);
-		service.addGeometryEditHighlightHandler(renderer);
-		service.addGeometryEditMarkForDeletionHandler(renderer);
-		service.addGeometryEditSelectionHandler(renderer);
-		service.addGeometryEditOperationHandler(renderer);
+		service.addGeometryEditStartHandler(renderer);
+		service.addGeometryEditStopHandler(renderer);
+		service.addGeometryEditShapeChangedHandler(renderer);
+		service.addGeometryEditMoveHandler(renderer);
 		service.addGeometryEditChangeStateHandler(renderer);
-		service.addGeometryEditInsertMoveHandler(renderer);
+		service.addGeometryEditTentativeMoveHandler(renderer);
+
+		service.getIndexStateService().addGeometryIndexSelectedHandler(renderer);
+		service.getIndexStateService().addGeometryIndexDeselectedHandler(renderer);
+
+		service.getIndexStateService().addGeometryIndexEnabledHandler(renderer);
+		service.getIndexStateService().addGeometryIndexDisabledHandler(renderer);
+
+		service.getIndexStateService().addGeometryIndexHighlightBeginHandler(renderer);
+		service.getIndexStateService().addGeometryIndexHighlightEndHandler(renderer);
+
+		service.getIndexStateService().addGeometryIndexMarkForDeletionBeginHandler(renderer);
+		service.getIndexStateService().addGeometryIndexMarkForDeletionEndHandler(renderer);
 	}
 
 	// GeometryEditWorkflowHandler implementation:
@@ -67,21 +77,15 @@ public class GeometryEditor implements GeometryEditWorkflowHandler {
 		// Initialize controllers and painters:
 		previousController = mapWidget.getController();
 		mapWidget.setController(baseController);
-		
+
 		if (zoomOnStart) {
-			// TODO Zoom damnit...
+			// TODO Zoom darnit...
 		}
 	}
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		// Cleanup controllers and painters.
 		mapWidget.setController(previousController);
-	}
-
-	// Editing manipulation methods:
-
-	public void highLight(GeometryIndex index) {
-
 	}
 
 	// Getters and setters:
@@ -100,5 +104,9 @@ public class GeometryEditor implements GeometryEditWorkflowHandler {
 
 	public void setZoomOnStart(boolean zoomOnStart) {
 		this.zoomOnStart = zoomOnStart;
+	}
+
+	public GeometryRenderer getRenderer() {
+		return renderer;
 	}
 }
