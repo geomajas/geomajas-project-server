@@ -90,10 +90,6 @@ public class SearchSample extends SamplePanel {
 		return MESSAGES.searchDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/SearchSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml", };

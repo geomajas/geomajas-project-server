@@ -95,10 +95,6 @@ public class MouseMoveListenerSample extends SamplePanel {
 		return MESSAGES.mouseMoveListenerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/MouseMoveListenerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsm.xml" };
 	}

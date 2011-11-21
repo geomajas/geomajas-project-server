@@ -95,10 +95,6 @@ public class UnitTypesSample extends SamplePanel {
 		return MESSAGES.unitTypesDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/UnitTypesSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapOsm.xml" };

@@ -89,10 +89,6 @@ public class CircleControllerSample extends SamplePanel {
 		return MESSAGES.circleControllerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/CircleControllerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerWmsBluemarble.xml", "WEB-INF/mapWms.xml" };
 	}

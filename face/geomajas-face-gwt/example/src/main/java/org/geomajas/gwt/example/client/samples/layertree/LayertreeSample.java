@@ -73,10 +73,6 @@ public class LayertreeSample extends SamplePanel {
 		return MESSAGES.layertreeDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/layertree/LayertreeSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
 				"WEB-INF/layerRivers50m.xml", "WEB-INF/layerPopulatedPlaces110m.xml",

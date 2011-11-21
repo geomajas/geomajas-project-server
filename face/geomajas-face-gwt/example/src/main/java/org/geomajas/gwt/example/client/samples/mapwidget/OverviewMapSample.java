@@ -147,10 +147,6 @@ public class OverviewMapSample extends SamplePanel {
 		return MESSAGES.overviewMapDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/OverviewMapSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapOverviewOsm.xml",

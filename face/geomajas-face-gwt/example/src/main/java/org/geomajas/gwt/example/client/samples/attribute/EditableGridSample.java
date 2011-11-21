@@ -113,10 +113,6 @@ public class EditableGridSample extends SamplePanel {
 		return MESSAGES.editableGridDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/EditableGridSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapEditableGrid.xml", "WEB-INF/layerBeansEditableGrid.xml"};
 	}

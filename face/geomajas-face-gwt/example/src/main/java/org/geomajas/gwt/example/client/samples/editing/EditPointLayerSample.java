@@ -86,10 +86,6 @@ public class EditPointLayerSample extends SamplePanel {
 		return MESSAGES.editPointLayerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditPointLayerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapEditPointLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerAirports.xml" };

@@ -86,10 +86,6 @@ public class EditLineLayerSample extends SamplePanel {
 		return MESSAGES.editLineLayerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditLineLayerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapEditLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
 				"WEB-INF/layerRoadsTrl020.xml" };

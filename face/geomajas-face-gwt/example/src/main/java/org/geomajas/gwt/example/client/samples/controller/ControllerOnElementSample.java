@@ -110,10 +110,6 @@ public class ControllerOnElementSample extends SamplePanel {
 		return MESSAGES.controllerOnElementDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/ControllerOnElementSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsm.xml" };
 	}

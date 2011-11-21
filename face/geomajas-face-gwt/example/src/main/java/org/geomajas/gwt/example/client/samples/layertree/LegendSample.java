@@ -132,10 +132,6 @@ public class LegendSample extends SamplePanel {
 		return MESSAGES.legendDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/layertree/LegendSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
 				"WEB-INF/layerRivers50m.xml", "WEB-INF/layerPopulatedPlaces110m.xml", 

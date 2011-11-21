@@ -103,10 +103,6 @@ public class LayerOrderSample extends SamplePanel {
 		return MESSAGES.layerOrderDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/layertree/LayerOrderSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
 				"WEB-INF/layerRivers50m.xml", "WEB-INF/layerPopulatedPlaces110m.xml", 

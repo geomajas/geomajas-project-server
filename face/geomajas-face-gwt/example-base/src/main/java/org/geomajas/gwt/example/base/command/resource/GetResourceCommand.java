@@ -12,15 +12,16 @@
 package org.geomajas.gwt.example.base.command.resource;
 
 import org.geomajas.command.Command;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt.example.base.command.dto.GetResourceRequest;
 import org.geomajas.gwt.example.base.command.dto.GetResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,31 +32,51 @@ import java.util.Map;
  * <p>
  * Retrieve the contents of one or more resources on the class-path.
  * </p>
- * 
+ * <p>If the resource filename has a "§panel" as extension, then the file is processed to retrieve only</p>
+ *
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 @Component
 public class GetResourceCommand implements Command<GetResourceRequest, GetResourceResponse> {
+
+	private static final String PROCESS_START_STRING = "\tpublic Canvas getViewPanel";
+	private static final String PROCESS_END_STRING = "\n\t}";
+	private static final String PROCESS_SUFFIX = "§panel";
+	private static final String FILE_ENCODING = "UTF-8";
+	private static final int READ_BUFFER_SIZE = 1024;
+	private static final int READ_FILE_BASE_SIZE = 1024;
 
 	@Autowired
 	private ApplicationContext context;
 
 	public void execute(GetResourceRequest request, GetResourceResponse response) throws Exception {
-		if (request != null && request.getResources() != null) {
-			Map<String, String> resources = new HashMap<String, String>();
-
-			for (int i = 0; i < request.getResources().length; i++) {
-				File file = ResourceUtils.getFile(request.getResources()[i]);
-				if (!file.exists()) {
-					file = context.getResource(request.getResources()[i]).getFile();
-				}
-
-				InputStream in = new FileInputStream(file);
-				String content = new String(read(in), "UTF-8");
-				resources.put(request.getResources()[i], content);
-			}
-			response.setResources(resources);
+		String[] resources = request.getResources();
+		if (null == resources) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "resources");
 		}
+		Map<String, String> result = new HashMap<String, String>();
+
+		for (String resourceName : resources) {
+			String url = resourceName;
+			boolean process = false;
+			if (url.endsWith(PROCESS_SUFFIX)) {
+				url = url.substring(0, url.length() - PROCESS_SUFFIX.length());
+				process = true;
+			}
+			Resource resource = context.getResource(url);
+			String content;
+			if (null != resource && resource.exists()) {
+				content = new String(read(new FileInputStream(resource.getFile())), FILE_ENCODING);
+				if (process) {
+					content = process(content);
+				}
+			} else {
+				content = "*** File " + url + " not found.";
+			}
+			result.put(resourceName, content);
+		}
+		response.setResources(result);
 	}
 
 	public GetResourceResponse getEmptyCommandResponse() {
@@ -65,8 +86,8 @@ public class GetResourceCommand implements Command<GetResourceRequest, GetResour
 	// Private methods:
 
 	private byte[] read(InputStream in) throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream(32768);
-		byte[] buffer = new byte[1024];
+		ByteArrayOutputStream out = new ByteArrayOutputStream(READ_FILE_BASE_SIZE);
+		byte[] buffer = new byte[READ_BUFFER_SIZE];
 		int count = in.read(buffer);
 		while (count != -1) {
 			if (count != 0) {
@@ -76,5 +97,18 @@ public class GetResourceCommand implements Command<GetResourceRequest, GetResour
 		}
 		in.close();
 		return out.toByteArray();
+	}
+
+	private String process(String javaContent) {
+		String result = "";
+		int position = javaContent.indexOf(PROCESS_START_STRING);
+		if (position > 0) {
+			result = javaContent.substring(position);
+			position = result.indexOf(PROCESS_END_STRING);
+			if (position > 0) {
+				result = result.substring(0, position + 3);
+			}
+		}
+		return result;
 	}
 }

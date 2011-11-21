@@ -130,10 +130,6 @@ public class MultipleListenersSample extends SamplePanel {
 		return MESSAGES.multipleListenersDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/MultipleListenersSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsm.xml" };
 	}

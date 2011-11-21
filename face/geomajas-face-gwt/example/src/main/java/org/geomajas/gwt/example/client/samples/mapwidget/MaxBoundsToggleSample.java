@@ -108,10 +108,6 @@ public class MaxBoundsToggleSample extends SamplePanel {
 		return MESSAGES.maxBoundsToggleDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/MaxBoundsToggleSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapOsm.xml" };

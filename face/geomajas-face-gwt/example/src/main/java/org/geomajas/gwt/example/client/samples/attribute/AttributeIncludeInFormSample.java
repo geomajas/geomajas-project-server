@@ -73,10 +73,6 @@ public class AttributeIncludeInFormSample extends SamplePanel {
 		return MESSAGES.attributeIncludeInFormDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/AttributeIncludeInFormSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerBeansIncludeInForm.xml", "WEB-INF/mapBeansIncludeInForm.xml" };
 	}

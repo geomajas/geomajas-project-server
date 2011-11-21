@@ -91,10 +91,6 @@ public class CustomControllerSample extends SamplePanel {
 		return MESSAGES.customControllerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/CustomControllerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerWmsBluemarble.xml", "WEB-INF/mapWms.xml" };
 	}

@@ -79,10 +79,6 @@ public class FallbackControllerSample extends SamplePanel {
 		return MESSAGES.fallbackControllerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/FallbackControllerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapToolbarSecurity.xml", "WEB-INF/layerWmsBluemarble.xml" };
 	}

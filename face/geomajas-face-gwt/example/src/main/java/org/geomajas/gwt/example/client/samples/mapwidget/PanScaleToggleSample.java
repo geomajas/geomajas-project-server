@@ -100,10 +100,6 @@ public class PanScaleToggleSample extends SamplePanel {
 		return MESSAGES.panScaleToggleDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/PanScaleToggleSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapOsm.xml" };

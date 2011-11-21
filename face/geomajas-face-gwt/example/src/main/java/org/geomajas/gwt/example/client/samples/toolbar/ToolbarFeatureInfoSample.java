@@ -78,10 +78,6 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 		return MESSAGES.toolbarFeatureInfoDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/ToolbarFeatureInfoSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerCountries110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml",

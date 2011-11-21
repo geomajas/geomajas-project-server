@@ -108,10 +108,6 @@ public class AttributeCustomFormSample extends SamplePanel {
 		return MESSAGES.attributeCustomFormDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/AttributeCustomFormSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerBeansCustomForm.xml", "WEB-INF/mapBeansCustomForm.xml" };
 	}

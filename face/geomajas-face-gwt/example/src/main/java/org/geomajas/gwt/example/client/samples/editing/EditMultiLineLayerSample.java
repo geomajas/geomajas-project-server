@@ -86,10 +86,6 @@ public class EditMultiLineLayerSample extends SamplePanel {
 		return MESSAGES.editMultiLineLayerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditMultiLineLayerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapEditMultiLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
 				"WEB-INF/layerRoadsTrl020-ML.xml" };

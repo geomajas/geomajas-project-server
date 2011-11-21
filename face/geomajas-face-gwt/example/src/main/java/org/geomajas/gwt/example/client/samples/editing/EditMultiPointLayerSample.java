@@ -86,10 +86,6 @@ public class EditMultiPointLayerSample extends SamplePanel {
 		return MESSAGES.editMultiPointLayerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditMultiPointLayerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapEditMultiPointLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerMultiCities.xml" };

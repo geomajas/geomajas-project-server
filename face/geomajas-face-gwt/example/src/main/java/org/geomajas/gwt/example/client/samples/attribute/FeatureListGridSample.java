@@ -110,10 +110,6 @@ public class FeatureListGridSample extends SamplePanel {
 		return MESSAGES.fltDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/FeatureListGridSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml", };

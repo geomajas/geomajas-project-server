@@ -60,10 +60,6 @@ public class IntroductionTab extends SamplePanel {
 		return null;
 	}
 
-	public String getSourceFileName() {
-		return "IntroductionTab.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return null;
 	}

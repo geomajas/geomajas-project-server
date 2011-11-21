@@ -86,10 +86,6 @@ public class EditPolygonLayerSample extends SamplePanel {
 		return MESSAGES.editPolygonLayerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditPolygonLayerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapEditPolygonLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerLakes110m.xml" };

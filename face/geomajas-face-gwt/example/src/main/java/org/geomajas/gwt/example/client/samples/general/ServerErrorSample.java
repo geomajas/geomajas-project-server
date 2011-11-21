@@ -80,10 +80,6 @@ public class ServerErrorSample extends SamplePanel {
 		return MESSAGES.serverErrorDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/general/ServerErrorSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] {};
 	}

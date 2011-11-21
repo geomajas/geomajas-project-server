@@ -119,10 +119,6 @@ public class RectangleControllerSample extends SamplePanel {
 		return MESSAGES.rectangleControllerDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/controller/RectangleControllerSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerWmsBluemarble.xml", "WEB-INF/mapWms.xml" };
 	}

@@ -78,10 +78,6 @@ public class ToolbarSelectionSample extends SamplePanel {
 		return MESSAGES.toolbarSelectionDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/ToolbarSelectionSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapSelection.xml",
 				"WEB-INF/layerCountries110m.xml",

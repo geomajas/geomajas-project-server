@@ -65,10 +65,6 @@ public class ToolbarNavigationSample extends SamplePanel {
 		return MESSAGES.toolbarNavigationDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/ToolbarNavigationSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapNavigation.xml" };

@@ -124,6 +124,8 @@
 	
 	<modules>
 		<module>client</module>
+		<module>example-base</module>
+		<module>example</module>
 	</modules>
 
 	<dependencyManagement>
@@ -131,6 +133,11 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-gwt-example-base</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

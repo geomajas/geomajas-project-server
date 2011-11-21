@@ -99,10 +99,6 @@ public class EditAttributeSample extends SamplePanel {
 		return MESSAGES.editAttributeDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/EditAttributeSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/mapBeans.xml" };
 	}

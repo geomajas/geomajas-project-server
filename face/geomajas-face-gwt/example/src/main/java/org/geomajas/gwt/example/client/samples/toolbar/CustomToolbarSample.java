@@ -80,10 +80,6 @@ public class CustomToolbarSample extends SamplePanel {
 		return MESSAGES.customToolbarDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/CustomToolbarSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapOsm.xml" };

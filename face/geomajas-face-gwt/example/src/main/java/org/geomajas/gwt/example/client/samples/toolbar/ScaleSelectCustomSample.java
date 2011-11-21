@@ -81,10 +81,6 @@ public class ScaleSelectCustomSample extends SamplePanel {
 		return MESSAGES.scaleSelectCustomDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/ScaleSelectCustomSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsmNoResolutions.xml" };
 	}

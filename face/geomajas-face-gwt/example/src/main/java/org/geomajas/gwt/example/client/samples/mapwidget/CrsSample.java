@@ -60,10 +60,6 @@ public class CrsSample extends SamplePanel {
 		return MESSAGES.crsDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/CrsSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapCrs.xml", "WEB-INF/layerBeansLonLat.xml", "WEB-INF/layerBeansMercator.xml" };
 	}

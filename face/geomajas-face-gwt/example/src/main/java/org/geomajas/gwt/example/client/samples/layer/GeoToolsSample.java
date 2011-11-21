@@ -60,10 +60,6 @@ public class GeoToolsSample extends SamplePanel {
 		return MESSAGES.geoDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/layer/GeoToolsSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/mapGeoTools.xml", "WEB-INF/layerCountries110m.xml" };
 	}

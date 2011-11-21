@@ -96,10 +96,6 @@ public class AttributeSearchSample extends SamplePanel {
 		return MESSAGES.search2Description();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/AttributeSearchSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/mapBeans.xml" };
 	}

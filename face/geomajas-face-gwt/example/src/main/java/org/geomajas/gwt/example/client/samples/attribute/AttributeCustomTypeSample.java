@@ -96,10 +96,6 @@ public class AttributeCustomTypeSample extends SamplePanel {
 		return MESSAGES.attributeCustomTypeDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/attribute/AttributeCustomTypeSample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerBeansCustomType.xml", "WEB-INF/mapBeansCustomType.xml" };
 	}

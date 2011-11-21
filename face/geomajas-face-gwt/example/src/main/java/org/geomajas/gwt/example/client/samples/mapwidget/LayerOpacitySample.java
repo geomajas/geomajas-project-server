@@ -94,10 +94,6 @@ public class LayerOpacitySample extends SamplePanel {
 		return MESSAGES.layerOpacityDescription();
 	}
 
-	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/LayerOpacitySample.txt";
-	}
-
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
 				"WEB-INF/mapOsm.xml" };

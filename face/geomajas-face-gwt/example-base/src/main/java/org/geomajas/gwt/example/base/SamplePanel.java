@@ -121,7 +121,10 @@ public abstract class SamplePanel extends VLayout {
 
 	public abstract String getDescription();
 
-	public abstract String getSourceFileName();
+	public final String getSourceFileName() {
+		String fqn = getClass().getName();
+		return "classpath:" + fqn.replace(".", "/") + ".java§panel";
+	}
 
 	public abstract String[] getConfigurationFiles();
 
