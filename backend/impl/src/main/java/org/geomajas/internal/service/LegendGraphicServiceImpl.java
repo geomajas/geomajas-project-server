@@ -252,6 +252,9 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 			} else {
 				// backwards compatibility
 				resource = resourceService.find("images/" + href);
+				if (null == resource) {
+					resource = resourceService.find("image/" + href);
+				}
 				if (resource != null) {
 					is = resource.getInputStream();
 				} else {

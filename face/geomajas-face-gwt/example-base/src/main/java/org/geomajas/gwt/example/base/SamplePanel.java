@@ -72,7 +72,7 @@ public abstract class SamplePanel extends VLayout {
 			rightLayout.setMembersMargin(15);
 
 			IButton sourceButton = new IButton(MESSAGES.generalSourceButton());
-			sourceButton.setIcon("[ISOMORPHIC]/geomajas/example/images/silk/script_go.png");
+			sourceButton.setIcon("[ISOMORPHIC]/geomajas/example/image/silk/script_go.png");
 			sourceButton.setLayoutAlign(Alignment.RIGHT);
 			sourceButton.setShowDisabledIcon(false);
 			sourceButton.setWidth(125);
@@ -209,7 +209,7 @@ public abstract class SamplePanel extends VLayout {
 				int pos = tabTitle.lastIndexOf('/');
 				tabTitle = tabTitle.substring(pos + 1);
 
-				Tab tab = new Tab(tabTitle, "[ISOMORPHIC]/geomajas/example/images/silk/script_go.png");
+				Tab tab = new Tab(tabTitle, "[ISOMORPHIC]/geomajas/example/image/silk/script_go.png");
 				tab.setPane(resourceLayout);
 				tabs.addTab(tab);
 			}
@@ -235,7 +235,7 @@ public abstract class SamplePanel extends VLayout {
 		int pos = tabTitle.lastIndexOf('/');
 		tabTitle = tabTitle.substring(pos + 1);
 
-		Tab tab = new Tab(tabTitle, "[ISOMORPHIC]/geomajas/example/images/silk/script_go.png");
+		Tab tab = new Tab(tabTitle, "[ISOMORPHIC]/geomajas/example/image/silk/script_go.png");
 		tab.setPane(sourceLayout);
 		tabs.addTab(tab);
 	}
