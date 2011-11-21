@@ -71,6 +71,10 @@
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.smartgwt</groupId>
+			<artifactId>smartgwt-skins</artifactId>
+		</dependency>
 
 		<!-- Test dependencies -->
 		<dependency>
@@ -143,6 +147,9 @@
 			</activation>
 			<build>
 				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+					</resource>
 					<resource>
 						<directory>src/main/java</directory>
 						<includes>
