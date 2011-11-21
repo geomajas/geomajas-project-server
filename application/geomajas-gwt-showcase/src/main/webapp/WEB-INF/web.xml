@@ -24,6 +24,7 @@
 
 			<!-- security -->
 			WEB-INF/security.xml
+			WEB-INF/map*.xml
 
 			<!-- layers and maps included through geomajasExampleContext.xml -->
 

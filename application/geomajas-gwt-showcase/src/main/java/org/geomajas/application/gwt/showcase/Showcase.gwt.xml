@@ -11,6 +11,7 @@
 
 <module rename-to="GwtShowcase">
 	<inherits name="org.geomajas.gwt.example.GwtFaceExample"/>
+	<inherits name="org.geomajas.plugin.staticsecurity.StaticSecurity"/>
 
 	<extend-property name="locale" values="nl"/>
 

@@ -51,8 +51,13 @@ public class ExampleLayout {
 
 	private static final ExampleBaseMessages MESSAGES = GWT.create(ExampleBaseMessages.class);
 	private TabSet mainTabSet;
+	private final Label userLabel = new Label();
 
 	private SimpleAuthenticationHandler authenticationHandler;
+
+	public Label getUserLabel() {
+		return userLabel;
+	}
 
 	/**
 	 * Set the authentication handler to use.
@@ -152,7 +157,6 @@ public class ExampleLayout {
 		leftTreeLayout.addMember(sampleTree);
 
 		// Show a user label:
-		final Label userLabel = new Label();
 		userLabel.setHeight(20);
 		userLabel.setWidth100();
 		userLabel.setPadding(3);
