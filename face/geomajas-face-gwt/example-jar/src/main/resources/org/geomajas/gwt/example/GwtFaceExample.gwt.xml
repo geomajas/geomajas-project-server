@@ -9,11 +9,10 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<module rename-to="GwtFaceExample">
-	<inherits name="org.geomajas.gwt.example.GwtFaceExample"/>
+<module>
+	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
 
-	<!-- uncomment following lines for faster compile during development -->
-	<set-property name="user.agent" value="gecko1_8" />
+	<extend-property name="locale" values="nl"/>
 
-	<entry-point class="org.geomajas.gwt.example.client.GwtFaceExampleStandalone"/>
+    <entry-point class="org.geomajas.gwt.example.client.GwtFaceExample"/>
 </module>

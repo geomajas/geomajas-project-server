@@ -20,4 +20,38 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<context:component-scan base-package="com.my.program" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 	<!-- @extract-end -->
 
+	<bean name="gwtExample" class="org.geomajas.configuration.client.ClientApplicationInfo">
+		<property name="maps">
+			<list>
+				<ref bean="mapOsm" />
+				<ref bean="mapWms" />
+				<ref bean="mapBeans" />
+				<ref bean="mapBeansIncludeInForm" />
+				<ref bean="mapBeansCustomForm" />
+				<ref bean="mapBeansCustomType" />
+				<ref bean="mapBeansAssociation" />
+				<ref bean="mapEditableGrid" />
+				<ref bean="mapCrs" />
+				<ref bean="mapVectorSecurity" />
+				<ref bean="mapToolbarSecurity" />
+				<ref bean="mapGeotools" />
+				<ref bean="mapOsmNavigationToolbar" />
+				<ref bean="mapSelection" />
+				<ref bean="mapFeatureInfo" />
+				<ref bean="mapOsmMeasure" />
+				<ref bean="mapOverviewOsm" />
+				<ref bean="mapOsmNoResolutions" />
+				<ref bean="mapEditPoint" />
+				<ref bean="mapEditLine" />
+				<ref bean="mapEditPolygon" />
+				<ref bean="mapEditMultiPoint" />
+				<ref bean="mapEditMultiLine" />
+				<ref bean="mapEditMultiPolygon" />
+				<ref bean="mapLegend" />
+				<ref bean="mapFeatureListGrid" />
+				<ref bean="mapPrinting" />
+			</list>
+		</property>
+	</bean>
+
 </beans>

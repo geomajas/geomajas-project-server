@@ -19,6 +19,7 @@
         <param-value>
 			<!-- generic Geomajas context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
+
 			<!-- local application context -->
 			WEB-INF/applicationContext.xml
 
@@ -116,8 +117,7 @@
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>samples.html</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 </web-app>
 
