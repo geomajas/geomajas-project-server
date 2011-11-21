@@ -125,6 +125,7 @@
 	<modules>
 		<module>client</module>
 		<module>example-base</module>
+		<module>example-jar</module>
 		<module>example</module>
 	</modules>
 
@@ -137,14 +138,25 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-gwt-client</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-example-base</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-gwt-client</artifactId>
-				<classifier>sources</classifier>
+				<artifactId>geomajas-gwt-face-example-jar</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-gwt-face-example</artifactId>
+				<version>${project.version}</version>
+				<type>war</type>
 			</dependency>
 
 			<dependency>
@@ -186,6 +198,12 @@
 				<artifactId>smartgwt</artifactId>
 				<version>${gwt-face-smartgwt-version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.smartgwt</groupId>
+				<artifactId>smartgwt-skins</artifactId>
+				<version>2.4</version> <!-- @todo should be ${gwt-face-smartgwt-version} -->
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
