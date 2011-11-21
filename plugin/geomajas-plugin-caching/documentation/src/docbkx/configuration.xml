@@ -343,7 +343,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>You can explicitly turn off caching for a category as in the
-      example below. Alternatively, simply not mentioning a category in the
+      example below. Alternatively, not mentioning a category in the
       configuration will also switch off caching for that category.</para>
 
       <xi:include href="listing/CacheOffSample.xml"
