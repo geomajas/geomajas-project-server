@@ -11,28 +11,53 @@
 
 package org.geomajas.example.gwt;
 
-import com.thoughtworks.selenium.SeleneseTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Verify that the application loads properly.
  *
  * @author Joachim Van der Auwera
  */
-public class LoadsProperlyTestInt extends SeleneseTestCase {
+public class LoadsProperlyTestInt {
 
-	public void setUp() throws Exception {
-		setUp("http://localhost:9080/", "*firefox");
+	private WebDriver driver;
+
+	@Before
+	public void setUp() {
+		driver = new FirefoxDriver();
+	}
+
+	@After
+	public void tearDown() {
+		driver.quit();
 	}
 
 	/**
-	 * Simple test which verifies that the demo starts
+	 * Simple test which verifies that the demo starts.
+	 *
 	 * @throws Exception oops
 	 */
+	@Test
 	public void testDemoLoadsProperly() throws Exception {
-		selenium.open("/");
-		selenium.waitForCondition(
-   			"selenium.browserbot.getCurrentWindow().document.getElementById('isc_1E')",
-   			"90000"
-			);
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.pollingEvery(500, TimeUnit.MILLISECONDS);
+
+		driver.get("http://localhost:9080/");
+
+		// the login window should appear
+		wait.until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver d) {
+				return null != d.findElement(By.id("isc_1E"));
+			}
+		});
 	}
 }
