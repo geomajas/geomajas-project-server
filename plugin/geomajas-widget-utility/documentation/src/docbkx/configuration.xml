@@ -84,7 +84,7 @@
       <para>The ribbon is a office like broad toolbar with clear text and
       icons on the main buttons. It has support for not just buttons, but any
       other widget as well. The main idea for the ribbon is that it should
-      easily work together with a MapWidget, by providing a simply way of
+      easily work together with a MapWidget, by providing a way of
       using navigation controllers etc. In order to accomplish this goal, it
       is possible to configure the ribbon within the backend Spring
       configuration, using the tools that are already available for the normal

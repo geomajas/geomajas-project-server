@@ -133,7 +133,7 @@ public class PanButton extends MapAddon {
 	}
 
 	/**
-	 * Apply a new style to be used on this pan button image. To make it visible, simply redraw the pan button.
+	 * Apply a new style to be used on this pan button image. To make it visible, redraw the pan button.
 	 * 
 	 * @param style
 	 *            The new style for the pan button image.

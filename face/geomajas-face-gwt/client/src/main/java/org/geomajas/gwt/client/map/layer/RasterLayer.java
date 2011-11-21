@@ -60,7 +60,7 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 			};
 			TileFunction<RasterTile> onUpdate = new TileFunction<RasterTile>() {
 
-				// Updating a tile, is simply re-rendering it:
+				// Updating a tile, re-rendering it:
 				public void execute(RasterTile tile) {
 					tile.accept(visitor, group, bounds, true);
 				}

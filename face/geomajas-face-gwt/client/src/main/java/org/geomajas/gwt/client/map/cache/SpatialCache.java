@@ -29,7 +29,7 @@ import org.geomajas.layer.tile.TileCode;
 public interface SpatialCache extends VectorLayerStore {
 
 	/**
-	 * Adds the tile with the specified code to the cache or simply returns the tile if it's already in the cache.
+	 * Adds the tile with the specified code to the cache or returns the tile if it's already in the cache.
 	 *
 	 * @param tileCode
 	 *            A {@link TileCode} instance.

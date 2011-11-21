@@ -92,7 +92,7 @@ public class MoveVertexOperationTest {
 	public void testPoint() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(point, service.create(GeometryIndexType.TYPE_VERTEX, 0));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
@@ -133,7 +133,7 @@ public class MoveVertexOperationTest {
 	public void testLineString() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(lineString, service.create(GeometryIndexType.TYPE_VERTEX, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
@@ -174,7 +174,7 @@ public class MoveVertexOperationTest {
 	public void testLinearRing() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
@@ -215,7 +215,7 @@ public class MoveVertexOperationTest {
 	public void testPolygon() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(polygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[1].getX(), DELTA);
@@ -263,7 +263,7 @@ public class MoveVertexOperationTest {
 	public void testMultiPoint() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_VERTEX, 1, 0));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[1].getCoordinates()[0].getX(), DELTA);
@@ -311,7 +311,7 @@ public class MoveVertexOperationTest {
 	public void testMultiLineString() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_VERTEX, 1, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[1].getCoordinates()[1].getX(), DELTA);
@@ -359,7 +359,7 @@ public class MoveVertexOperationTest {
 	public void testMultiPolygon() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);

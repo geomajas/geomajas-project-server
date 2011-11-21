@@ -43,8 +43,8 @@ import com.google.gwt.event.dom.client.TouchStartEvent;
  * <p>
  * In short, here are your three options:
  * <ul>
- * <li>Supporting mouse events only: Simply override the mouse handler methods (onMouseDown, onMouseUp, ....)</li>
- * <li>Supporting touch events only: Simply override the touch handler methods (onTouchStart, onTouchMove, ...)</li>
+ * <li>Supporting mouse events only: Override the mouse handler methods (onMouseDown, onMouseUp, ....)</li>
+ * <li>Supporting touch events only: Override the touch handler methods (onTouchStart, onTouchMove, ...)</li>
  * <li>Supporting both (recommended): Override the onDown, onUp and onDrag methods. By default both the onMouseDown and
  * the onTouchStart will invoke the onDown method. The same goes for the onUp and onDrag. So by implementing those
  * methods you will have both mobile and desktop support.</li>

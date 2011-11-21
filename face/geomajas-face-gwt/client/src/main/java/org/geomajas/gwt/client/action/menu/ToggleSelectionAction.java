@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 /**
  * <p>
  * Toggle selection of item under cursor. Has to option to prioritize the selected layer. In order to accomplish this,
- * there is the <code>priorityToSelectedLayer</code> option.
+ * there is the {@link #priorityToSelectedLayer} option.
  * </p>
  * <p>
  * This option gives priority to the selected layer. This works only if there is a selected layer, and that selected
@@ -70,17 +70,20 @@ public class ToggleSelectionAction extends MenuAction {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Construct an instance, with the <code>MapWidget</code> on whom selection takes place.
+	 * Construct an instance, with the {@link MapWidget} on whom selection takes place.
+	 *
+	 * @param mapWidget map widget
+	 * @param pixelTolerance pixel tolerance
 	 */
 	public ToggleSelectionAction(MapWidget mapWidget, int pixelTolerance) {
 		this(mapWidget, false, pixelTolerance);
 	}
 
 	/**
-	 * Construct an instance, with the <code>MapWidget</code> on whom selection takes place.
+	 * Construct an instance, with the {@link MapWidget} on whom selection takes place.
 	 * 
 	 * @param mapWidget
-	 *            The <code>MapWidget</code> on whom selection takes place.
+	 *            The {@link MapWidget} on whom selection takes place.
 	 * @param priorityToSelectedLayer
 	 *            Activate or disable priority to the selected layer. This works only if there is a selected layer, and
 	 *            that selected layer is a {@link VectorLayer}. If all these checks are okay, but that particular layer
@@ -102,7 +105,7 @@ public class ToggleSelectionAction extends MenuAction {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Simply calls the toggle method, using the lastly clicked right mouse button position. Also automatically clears
+	 * Calls the toggle method, using the lastly clicked right mouse button position. Also automatically clears
 	 * selection first.
 	 */
 	public void onClick(MenuItemClickEvent menuItemClickEvent) {
@@ -142,6 +145,8 @@ public class ToggleSelectionAction extends MenuAction {
 	 * layer is a {@link VectorLayer}. If all these checks are okay, but that particular layer is not visible, then
 	 * nothing will happen. When one of the previous checks is not okay, the selection toggle will occur on the first
 	 * object that is encountered. In other words it will depend on the layer drawing order, starting at the top.
+	 *
+	 * @return true when priority is given to the selected layer
 	 */
 	public boolean isPriorityToSelectedLayer() {
 		return priorityToSelectedLayer;
@@ -152,12 +157,18 @@ public class ToggleSelectionAction extends MenuAction {
 	 * selected layer is a {@link VectorLayer}. If all these checks are okay, but that particular layer is not visible,
 	 * then nothing will happen. When one of the previous checks is not okay, the selection toggle will occur on the
 	 * first object that is encountered. In other words it will depend on the layer drawing order, starting at the top.
+	 *
+	 * @param priorityToSelectedLayer should priority be given to the selected layer
 	 */
 	public void setPriorityToSelectedLayer(boolean priorityToSelectedLayer) {
 		this.priorityToSelectedLayer = priorityToSelectedLayer;
 	}
 
-	/** Number of pixels that describes the tolerance allowed when trying to select features. */
+	/**
+	 * Number of pixels that describes the tolerance allowed when trying to select features.
+	 *
+	 * @return pixel tolerance
+	 */
 	public int getPixelTolerance() {
 		return pixelTolerance;
 	}
@@ -266,7 +277,7 @@ public class ToggleSelectionAction extends MenuAction {
 				layerIds.add(layer.getServerLayerId());
 			}
 		}
-		return layerIds.toArray(new String[] {});
+		return layerIds.toArray(new String[layerIds.size()]);
 	}
 
 	private double calculateBufferFromPixelTolerance() {

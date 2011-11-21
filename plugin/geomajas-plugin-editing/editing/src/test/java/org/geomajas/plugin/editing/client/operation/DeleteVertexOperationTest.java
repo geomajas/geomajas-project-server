@@ -436,7 +436,7 @@ public class DeleteVertexOperationTest {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		Geometry multiPoint = new Geometry(Geometry.MULTI_POINT, 0, 0);
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		try {
 			operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
 			Assert.fail();
@@ -491,7 +491,7 @@ public class DeleteVertexOperationTest {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		Geometry multiLineString = new Geometry(Geometry.MULTI_LINE_STRING, 0, 0);
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		try {
 			operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
 			Assert.fail();
@@ -505,7 +505,7 @@ public class DeleteVertexOperationTest {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		double x = multiLineString.getGeometries()[1].getCoordinates()[3].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_VERTEX, 1, 2));
 		Assert.assertEquals(x, result.getGeometries()[1].getCoordinates()[2].getX(), DELTA);
 
@@ -552,7 +552,7 @@ public class DeleteVertexOperationTest {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		Geometry multiPolygon = new Geometry(Geometry.MULTI_POLYGON, 0, 0);
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		try {
 			operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0, 0));
 			Assert.fail();
@@ -566,7 +566,7 @@ public class DeleteVertexOperationTest {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		double x = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[2].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0, 1));
 		Assert.assertEquals(x, result.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);
 

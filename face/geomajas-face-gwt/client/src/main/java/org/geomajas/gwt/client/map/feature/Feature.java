@@ -46,7 +46,7 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
 
 /**
  * <p>
- * Definition of an object belonging to a {@link VectorLayer}. Simply put, a feature is an object with a unique ID
+ * Definition of an object belonging to a {@link VectorLayer}. A feature is an object with a unique ID
  * within it's layer, a list of alpha-numerical attributes and a geometry.
  * </p>
  * 

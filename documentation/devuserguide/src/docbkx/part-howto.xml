@@ -275,7 +275,7 @@
 
       <para>Example of full output for building a plug-in. In this case, some
       dummy data was first entered as the artifactIdPrefix needed to be
-      changed. </para>
+      changed.</para>
 
       <programlisting>joachim@joachim-E6320:~/temp$ mvn archetype:generate -DarchetypeCatalog=local
 [INFO] Scanning for projects...
@@ -567,8 +567,7 @@ artifactIdPrefix: geomajas-face-
       JavaScript loads, the GWT part may not be loaded yet. For that reason,
       we register a reference to the component in a static map and let this
       reference be picked up and initialized later on by the GWT code. The
-      redraw() function simply creates an empty div with the correct
-      id.</para>
+      redraw() function creates an empty div with the correct id.</para>
 
       <para>The component file is a server side Java class that extends the ZK
       XulElement class. Its main purpose is to act as a relay to the client

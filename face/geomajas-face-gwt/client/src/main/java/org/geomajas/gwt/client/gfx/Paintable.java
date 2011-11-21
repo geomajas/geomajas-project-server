@@ -29,7 +29,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 public interface Paintable {
 
 	/**
-	 * The accept function. Usually it simply calls the visitor's visit function. But sometimes, more needs to be done.
+	 * The accept function. Usually it calls the visitor's visit function. But sometimes, more needs to be done.
 	 * 
 	 * @param visitor
 	 *            The visitor

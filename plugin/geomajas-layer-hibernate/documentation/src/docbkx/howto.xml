@@ -211,7 +211,7 @@ public class AreaOfInterest {
     <title>How to create my own DAOs</title>
 
     <para>If you have followed the configuration guidelines and made use of
-    the Spring configuration options, this will be a piece of cake: we simply
+    the Spring configuration options, this will be a piece of cake: we
     inject the SessionFactory at run-time into your DAO implementation, and
     this SessionFactory will take care of all session and transaction
     handling.</para>

@@ -325,7 +325,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		String style = rasterInfo.getStyle();
 		if (rasterInfo.getStyle() != null) {
 			String match = style;
-			// could be 'opacity:0.5;' or simply '0.5'
+			// could be 'opacity:0.5;' or '0.5'
 			if (style.contains("opacity:")) {
 				match = style.substring(style.indexOf("opacity:") + 8);
 			}

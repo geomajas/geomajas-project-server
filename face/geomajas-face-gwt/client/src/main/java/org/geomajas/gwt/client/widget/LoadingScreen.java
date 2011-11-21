@@ -45,7 +45,7 @@ import org.geomajas.gwt.client.util.WidgetLayout;
  * Also note that when setting a new logo, you have to set it's width. This width may not be larger than 480 pixels.
  * </p>
  * <p>
- * Use: add this loading screen to the main page by simply calling it's <code>draw</code> method. Do this AFTER you have
+ * Use: add this loading screen to the main page by calling it's {#link #draw()} method. Do this AFTER you have
  * drawn your application layout, so the loading screen is placed on top of it.
  * </p>
  * 

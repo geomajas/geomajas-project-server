@@ -30,7 +30,7 @@ public class SampleTreeNode extends TreeNode {
 
 	/**
 	 * When creating internal nodes, use this constructor. Note that no <code>SamplePanel</code> is required, since it's
-	 * an internal panel. It will simply open up a folder with more samples...yey.
+	 * an internal panel. It will open up a folder with more samples...yey.
 	 * 
 	 * @param title
 	 *            The tree node's title.
@@ -47,7 +47,7 @@ public class SampleTreeNode extends TreeNode {
 
 	/**
 	 * When creating internal nodes, use this constructor. Note that no <code>SamplePanel</code> is required, since it's
-	 * an internal panel. It will simply open up a folder with more samples...yey.
+	 * an internal panel. It will open up a folder with more samples...yey.
 	 * 
 	 * @param title
 	 *            The tree node's title.

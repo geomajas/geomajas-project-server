@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Geocoder service which simply jumps to the typed coordinate. The oordinates should be separated by whitespace.
+ * Geocoder service which jumps to the typed coordinate. The ordinates should be separated by whitespace.
  * The default CRS for the coordinate can be configured. An alternate CRS can be chosen using " crs:" followed by the
  * CRS at the end of the string.
  *

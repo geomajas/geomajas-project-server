@@ -38,9 +38,9 @@ import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * <p>
- * Renderer for the map that simply delegates to all layers individually.
+ * Renderer for the map that delegates to all layers individually.
  * </p>
- * Doesn't listen to layer add events, or layer re-order events or....yet.
+ * @todo Doesn't listen to layer add events, or layer re-order events or....yet.
  * 
  * @author Pieter De Graef
  */

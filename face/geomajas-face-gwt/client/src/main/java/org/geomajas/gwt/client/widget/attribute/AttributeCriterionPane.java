@@ -142,7 +142,7 @@ public class AttributeCriterionPane extends Canvas {
 							Date date2 = new Date(date1.getTime() + 86400000); // total milliseconds in a day
 							valueString = format.format(date1) + "/" + format.format(date2);
 						} else {
-							// Simply format the date:
+							// format the date:
 							valueString = format.format((Date) value);
 						}
 					}

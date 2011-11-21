@@ -156,16 +156,16 @@
         </example>
 
         <para>The "install" target will create a .war file for the project in
-        the <code>target</code> directory. This web archive can simply be
-        dropped into a Java application container such as Tomcat.</para>
+        the <code>target</code> directory. This web archive can be dropped
+        into a Java application container such as Tomcat.</para>
       </section>
 
       <section id="runapp">
         <title>Running the compiled template application (full speed)</title>
 
         <para>Secondly, if you don't have a Java application container ready
-        or simply want a quick test, then you can use mvn to run the
-        application for you, using the following commands:</para>
+        or want a quick test, then you can use mvn to run the application
+        for you, using the following commands:</para>
 
         <example>
           <title>Create a build, then run it</title>

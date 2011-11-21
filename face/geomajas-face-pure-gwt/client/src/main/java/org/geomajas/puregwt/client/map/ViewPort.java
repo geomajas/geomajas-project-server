@@ -27,7 +27,7 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * more information.
  * </p>
  * <p>
- * Next to simply storing and changing the map location, implementation of this interface will also send out several
+ * Next to storing and changing the map location, implementation of this interface will also send out several
  * types of events that clearly define the changes in the view on the map.
  * </p>
  * 

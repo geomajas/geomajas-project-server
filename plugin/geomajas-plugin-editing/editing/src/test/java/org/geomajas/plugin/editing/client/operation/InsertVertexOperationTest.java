@@ -95,7 +95,7 @@ public class InsertVertexOperationTest {
 		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
 		Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(point, service.create(GeometryIndexType.TYPE_VERTEX, 0));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
 
@@ -209,7 +209,7 @@ public class InsertVertexOperationTest {
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[0].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(lineString, service.create(GeometryIndexType.TYPE_VERTEX, 0));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
@@ -226,7 +226,7 @@ public class InsertVertexOperationTest {
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[1].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(lineString, service.create(GeometryIndexType.TYPE_VERTEX, 1));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
@@ -258,7 +258,7 @@ public class InsertVertexOperationTest {
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[1].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(lineString, service.create(GeometryIndexType.TYPE_EDGE, 0));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
@@ -275,7 +275,7 @@ public class InsertVertexOperationTest {
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[2].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(lineString, service.create(GeometryIndexType.TYPE_EDGE, 1));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[2].getX(), DELTA);
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
@@ -390,7 +390,7 @@ public class InsertVertexOperationTest {
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[0].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 0));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[count].getX(), DELTA);
@@ -409,7 +409,7 @@ public class InsertVertexOperationTest {
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[1].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 1));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
@@ -426,7 +426,7 @@ public class InsertVertexOperationTest {
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[3].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 3));
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[3].getX(), DELTA);
 		Assert.assertEquals(count + 1, result.getCoordinates().length);
@@ -443,7 +443,7 @@ public class InsertVertexOperationTest {
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[1].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_EDGE, 0));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[1].getX(), DELTA);
@@ -461,7 +461,7 @@ public class InsertVertexOperationTest {
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[2].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_EDGE, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[2].getX(), DELTA);
@@ -479,7 +479,7 @@ public class InsertVertexOperationTest {
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[3].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_EDGE, 2));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[3].getX(), DELTA);
@@ -563,7 +563,7 @@ public class InsertVertexOperationTest {
 		Geometry emptyRing = new Geometry(Geometry.LINEAR_RING, 0, 0);
 		polygon.setGeometries(new Geometry[] { emptyRing });
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(polygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 		Assert.assertEquals(2, result.getGeometries()[0].getCoordinates().length);
@@ -579,7 +579,7 @@ public class InsertVertexOperationTest {
 		int count = polygon.getGeometries()[0].getCoordinates().length;
 		double value = polygon.getGeometries()[0].getCoordinates()[0].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(polygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
@@ -644,7 +644,7 @@ public class InsertVertexOperationTest {
 		Geometry emptyPoint = new Geometry(Geometry.POINT, 0, 0);
 		multiPoint.setGeometries(new Geometry[] { emptyPoint });
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 
@@ -707,7 +707,7 @@ public class InsertVertexOperationTest {
 		Geometry emptyLineString = new Geometry(Geometry.LINE_STRING, 0, 0);
 		multiLineString.setGeometries(new Geometry[] { emptyLineString });
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getCoordinates()[0].getX(), DELTA);
@@ -722,7 +722,7 @@ public class InsertVertexOperationTest {
 		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
 		double value = multiLineString.getGeometries()[1].getCoordinates()[2].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_VERTEX, 1, 2));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[1].getCoordinates()[2].getX(), DELTA);
@@ -788,7 +788,7 @@ public class InsertVertexOperationTest {
 		polygon.setGeometries(new Geometry[] { emptyRing });
 		multiPolygon.setGeometries(new Geometry[] { polygon });
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0, 0));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getGeometries()[0].getCoordinates()[0].getX(), DELTA);
@@ -803,7 +803,7 @@ public class InsertVertexOperationTest {
 		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
 		double value = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX();
 
-		// First a correct index. This should simply work:
+		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0, 1));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(NEW_VALUE, result.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX(), DELTA);

@@ -394,8 +394,8 @@
         <listitem>
           <para><emphasis>ALL_GEOMETRIES_EQUAL</emphasis>: this snapping mode
           considers all geometries equal when it comes to determining where to
-          snap to. Depending on the snapping algorithm used, it will simply
-          consider all nearby geometries.</para>
+          snap to. Depending on the snapping algorithm used, it will consider
+          all nearby geometries.</para>
         </listitem>
 
         <listitem>
@@ -1104,8 +1104,8 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       are passive <code>Listeners</code> as well. These listener have an
       interface very much like the <code>GraphicsController</code> interface,
       but they never receive the real mouse events. As such they are meant to
-      be passive observers, that simply receive notifications of mouse events.
-      As opposed to the <code>GraphicsControllers</code>, these listeners are
+      be passive observers, which receive notifications of mouse events. As
+      opposed to the <code>GraphicsControllers</code>, these listeners are
       never allowed to interfere.</para>
 
       <para>As a result, multiple listeners can be registered on the map,
@@ -1134,8 +1134,8 @@ mapWidget.removeListener(myListener);</programlisting>
       <para><note>
           <para>When creating a new Listener, often it is easiest to start
           from the <code>AbstractListener</code> class, which has all empty
-          methods for catching the mouse events. In this case you simply
-          override the methods for the events you are interested in.</para>
+          methods for catching the mouse events. In this case you override the
+          methods for the events you are interested in.</para>
         </note></para>
     </section>
   </section>

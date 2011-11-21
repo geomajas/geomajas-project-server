@@ -69,7 +69,7 @@
     </example>
 
     <para>Note that the features returned are not defined anywhere in the
-    configuration. The feature is simply filled with whatever data is
+    configuration. The feature is filled with whatever data is
     retrieved from the WMS server.</para>
   </section>
 </chapter>

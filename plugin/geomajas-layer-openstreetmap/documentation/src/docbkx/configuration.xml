@@ -96,7 +96,7 @@
       <para>This is configurable at two levels.</para>
 
       <para>You can configure the URLs which are used for the tiles. You
-      simply define the different options using ${level}, ${x} and ${y} for
+      define the different options using ${level}, ${x} and ${y} for
       the zoom level and tile coordinate. A simple configuration looks like
       this:</para>
 

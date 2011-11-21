@@ -82,7 +82,7 @@ public interface HtmlContainer extends HtmlObject {
 	boolean remove(HtmlObject child);
 
 	/**
-	 * Bring a certain child to the front. In reality this child is simply moved to the back of the list.
+	 * Bring a certain child to the front. In reality this child is moved to the back of the list.
 	 * 
 	 * @param child
 	 *            The child to bring to the front.

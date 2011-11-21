@@ -665,10 +665,10 @@
           </note></para>
 
         <para>The authorization have two possible results. When reading or
-        rendering, all unauthorized data should simply be filtered without
-        warning or exception. When trying to invoke a command or to create,
-        update or delete, any attempt which is not authorized should result in
-        a security exception.</para>
+        rendering, all unauthorized data should be filtered without warning or
+        exception. When trying to invoke a command or to create, update or
+        delete, any attempt which is not authorized should result in a
+        security exception.</para>
 
         <para>The security uses the approach that all access is forbidden
         unless is is allowed. Hence, you will always need to configure at

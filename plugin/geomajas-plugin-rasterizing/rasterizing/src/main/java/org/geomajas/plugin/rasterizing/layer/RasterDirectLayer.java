@@ -238,7 +238,7 @@ public class RasterDirectLayer extends DirectLayer {
 
 	private float getOpacity() {
 		String match = style;
-		// could be 'opacity:0.5;' or simply '0.5'
+		// could be 'opacity:0.5;' or '0.5'
 		if (style.contains(OPACITY)) {
 			match = style.substring(style.indexOf(OPACITY) + OPACITY.length());
 		}

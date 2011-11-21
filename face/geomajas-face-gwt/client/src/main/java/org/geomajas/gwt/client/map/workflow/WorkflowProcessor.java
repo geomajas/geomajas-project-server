@@ -39,8 +39,8 @@ public abstract class WorkflowProcessor {
 	private WorkflowErrorHandler defaultErrorHandler;
 
 	/**
-	 * Protected default constructor that creates a default error handler. This default error handler simply throws up a
-	 * warning, visible to the user.
+	 * Protected default constructor that creates a default error handler. This default error handler throws a
+	 * warning.
 	 */
 	protected WorkflowProcessor() {
 		defaultErrorHandler = new WorkflowErrorHandler() {
@@ -55,7 +55,7 @@ public abstract class WorkflowProcessor {
 	 * Ensures that each activity configured in this process is supported. This method should be called by implemented
 	 * subclasses for each activity that is part of the workflow process (the list of activities).
 	 *
-	 * @param activity
+	 * @param activity activity
 	 * @return
 	 */
 	public abstract boolean supports(Activity activity);
@@ -87,7 +87,7 @@ public abstract class WorkflowProcessor {
 	 * Set a default error handler, in case an activity throws an exception without it having it's own error handler. In
 	 * that case, this default error handler handles the exception.
 	 *
-	 * @param defaultErrorHandler
+	 * @param defaultErrorHandler default error handler
 	 */
 	public void setDefaultErrorHandler(WorkflowErrorHandler defaultErrorHandler) {
 		this.defaultErrorHandler = defaultErrorHandler;
@@ -95,6 +95,8 @@ public abstract class WorkflowProcessor {
 
 	/**
 	 * Return the list of activities.
+	 *
+	 * @return list of activities
 	 */
 	public List<Activity> getActivities() {
 		return activities;
@@ -102,6 +104,8 @@ public abstract class WorkflowProcessor {
 
 	/**
 	 * Return the default error handler.
+	 *
+	 * @return default error handler
 	 */
 	public WorkflowErrorHandler getDefaultErrorHandler() {
 		return defaultErrorHandler;

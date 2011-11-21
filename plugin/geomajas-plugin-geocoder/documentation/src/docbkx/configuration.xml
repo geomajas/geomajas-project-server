@@ -295,9 +295,9 @@
     <title>Type coordinate geocoder service configuration</title>
 
     <para>This is a simplistic geocoder which allows the user to directly type
-    the coordinate. Configuration is very simply, you just have to supply the
+    the coordinate. To configure it, you just have to supply the
     default CRS used for the coordinates (if not specified, this defaults to
-    EPSG:4326.</para>
+    EPSG:4326).</para>
 
     <xi:include href="listing/TypeCoordinate.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />

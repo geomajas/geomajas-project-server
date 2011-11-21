@@ -18,7 +18,7 @@ import org.geomajas.service.TestRecorder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Simple invalidation service which simply records the invalidation (for testing).
+ * Simple invalidation service which records the invalidation (for testing).
  *
  * @author Joachim Van der Auwera
  */

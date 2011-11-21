@@ -11,7 +11,7 @@
 package org.geomajas.puregwt.client.map.event;
 
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -31,8 +31,7 @@ public interface LayerVisibilityHandler extends EventHandler {
 	/**
 	 * <p>
 	 * Called when a layer becomes visible on the map. It doesn't matter what caused the layer to become visible (marked
-	 * as visible, zoom came into scale range, ...). This method is simply executed at the moment a layer has become
-	 * visible.
+	 * as visible, zoom came into scale range, ...). This method is executed at the moment a layer has become visible.
 	 * </p>
 	 * <p>
 	 * If this method is called, then the method <code>layer.isShowing()</code> must return <code>TRUE</code>.
@@ -46,8 +45,7 @@ public interface LayerVisibilityHandler extends EventHandler {
 	/**
 	 * <p>
 	 * Called when a layer becomes invisible on the map. It doesn't matter what caused the layer to become invisible
-	 * (marked as invisible, zoom out of the scale range, ...). This method is simply executed at the moment a layer has
-	 * become invisible.
+	 * (marked as invisible, zoom out of the scale range, ...). This method is executed when a layer becomes invisible.
 	 * </p>
 	 * <p>
 	 * If this method is called, then the method <code>layer.isShowing()</code> must return <code>FALSE</code>.

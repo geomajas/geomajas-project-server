@@ -111,7 +111,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 			};
 			TileFunction<VectorTile> onUpdate = new TileFunction<VectorTile>() {
 
-				// Updating a tile, is simply re-rendering it:
+				// Updating a tile, re-rendering it:
 				public void execute(VectorTile tile) {
 					tile.accept(visitor, group, bounds, true);
 				}
