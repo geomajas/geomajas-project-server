@@ -9,8 +9,8 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<module>
-	<inherits name="org.geomajas.gwt.example.ExampleBase"/>
+<module rename-to="GwtShowcase">
+	<inherits name="org.geomajas.gwt.example.GwtFaceExample"/>
 
 	<extend-property name="locale" values="nl"/>
 
@@ -20,5 +20,5 @@
 	<set-property name="locale" value="default" />
 	-->
 
-    <entry-point class="org.geomajas.gwt.example.client.GwtFaceExample"/>
+    <entry-point class="org.geomajas.application.gwt.showcase.client.ShowcaseEntryPoint"/>
 </module>
