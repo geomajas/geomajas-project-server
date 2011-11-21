@@ -315,6 +315,42 @@
 				</plugins>
 			</build>
 		</profile>
+
+		<profile>
+			<id>jar</id>
+			<activation>
+				<property>
+					<name>!skipJar</name>
+				</property>
+			</activation>
+			<build>
+				<!-- can't use generated name in assembly descriptor -->
+				<plugins>
+					<!-- zip up executable jar and dependencies -->
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/resources/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>single</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
+		</profile>
+
 	</profiles>
 
 </project>
