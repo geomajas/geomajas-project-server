@@ -1,0 +1,58 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+package org.geomajas.gwt.example.client.sample.attribute;
+
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm;
+
+import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.RowSpacerItem;
+
+/**
+ * Custom attribute form.
+ * 
+ * @author Jan De Moerloose
+ */
+// @extract-start CustomFeatureForm, CustomFeatureForm
+// Creating the custom form:
+public class AttributeCustomForm extends DefaultFeatureForm {
+
+	public AttributeCustomForm(VectorLayer vectorLayer) {
+		super(vectorLayer);
+	}
+
+	@Override
+	protected FormItem createItem(AttributeInfo info) {
+		FormItem formItem = super.createItem(info);
+		formItem.setWidth("*");
+		if ("dateAttr".equals(info.getName())) {
+			// The data attribute will span all 4 columns:
+			formItem.setColSpan(4);
+		}
+		return formItem;
+	}
+
+	@Override
+	protected void prepareForm(FormItemList formItems, DataSource source) {
+		// Quickly insert a row spacer before the 'stringAttr' item (which is the text area).
+		formItems.insertBefore("stringAttr", new RowSpacerItem());
+		getWidget().setNumCols(4);
+		getWidget().setWidth(450);
+		getWidget().setColWidths(100, 180, 20, 150);
+		getWidget().setGroupTitle("Custom Attribute Form");
+		getWidget().setIsGroup(true);
+	}
+	// @extract-end
+
+}
