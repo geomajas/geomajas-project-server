@@ -17,13 +17,14 @@ import java.util.Stack;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.operation.DeleteGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.DeleteVertexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
@@ -39,7 +40,8 @@ import com.google.gwt.event.shared.EventBus;
  * 
  * @author Pieter De Graef
  */
-public class GeometryIndexOperationServiceImpl implements GeometryIndexOperationService, GeometryEditStartHandler {
+public class GeometryIndexOperationServiceImpl implements GeometryIndexOperationService, GeometryEditStartHandler,
+		GeometryEditStopHandler {
 
 	private Stack<OperationSequence> undoQueue;
 
@@ -61,6 +63,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		redoQueue = new Stack<OperationSequence>();
 
 		service.addGeometryEditStartHandler(this);
+		service.addGeometryEditStopHandler(this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -141,7 +144,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 	public void move(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
-		if (indices.size() == 0 || coordinates.size() == 0) {
+		if (indices == null || coordinates == null || indices.size() == 0 || coordinates.size() == 0) {
 			throw new GeometryOperationFailedException("Illegal arguments passed; nothing to move.");
 		}
 
@@ -173,7 +176,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 	public void insert(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
-		if (indices.size() == 0 || coordinates.size() == 0) {
+		if (indices == null || coordinates == null || indices.size() == 0 || coordinates.size() == 0) {
 			throw new GeometryOperationFailedException("Illegal arguments passed; nothing to insert.");
 		}
 
@@ -205,7 +208,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	}
 
 	public void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException {
-		if (indices.size() == 0) {
+		if (indices == null || indices.size() == 0) {
 			throw new GeometryOperationFailedException("Illegal arguments passed; nothing to delete.");
 		}
 

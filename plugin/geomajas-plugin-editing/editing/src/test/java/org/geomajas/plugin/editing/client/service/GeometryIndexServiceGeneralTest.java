@@ -84,6 +84,47 @@ public class GeometryIndexServiceGeneralTest {
 	// ------------------------------------------------------------------------
 
 	@Test
+	public void createTest() {
+		GeometryIndex index = service.create(GeometryIndexType.TYPE_GEOMETRY, 1);
+		Assert.assertFalse(index.hasChild());
+		Assert.assertNull(index.getChild());
+		Assert.assertEquals(GeometryIndexType.TYPE_GEOMETRY, index.getType());
+		Assert.assertEquals(1, index.getValue());
+
+		index = service.create(GeometryIndexType.TYPE_VERTEX, 1, 2);
+		Assert.assertTrue(index.hasChild());
+		Assert.assertNotNull(index.getChild());
+		Assert.assertEquals(GeometryIndexType.TYPE_GEOMETRY, index.getType());
+		Assert.assertEquals(1, index.getValue());
+
+		Assert.assertFalse(index.getChild().hasChild());
+		Assert.assertNull(index.getChild().getChild());
+		Assert.assertEquals(GeometryIndexType.TYPE_VERTEX, index.getChild().getType());
+		Assert.assertEquals(2, index.getChild().getValue());
+
+		try {
+			service.create(GeometryIndexType.TYPE_VERTEX, null);
+			Assert.fail();
+		} catch (NullPointerException npe) {
+			// I foresaw this....
+		}
+	}
+
+	@Test
+	public void addChildrenTest() {
+		GeometryIndex index = service.create(GeometryIndexType.TYPE_GEOMETRY, 1);
+		Assert.assertFalse(index.hasChild());
+
+		index = service.addChildren(index, GeometryIndexType.TYPE_EDGE, 2, 3);
+		Assert.assertTrue(index.hasChild());
+		Assert.assertTrue(index.getChild().hasChild());
+		Assert.assertFalse(index.getChild().getChild().hasChild());
+
+		index = service.addChildren(index, GeometryIndexType.TYPE_EDGE, 4); // Can't add edges to edges...
+		Assert.assertNull(index.getChild().getChild());
+	}
+
+	@Test
 	public void isVertexTest() {
 		Assert.assertFalse(service.isVertex(service.create(GeometryIndexType.TYPE_GEOMETRY, 0)));
 		Assert.assertFalse(service.isVertex(service.create(GeometryIndexType.TYPE_EDGE, 0)));
@@ -332,6 +373,12 @@ public class GeometryIndexServiceGeneralTest {
 		Assert.assertEquals(lineString.getCoordinates().length - 1, service.getSiblingCount(lineString, index));
 		index = service.create(GeometryIndexType.TYPE_GEOMETRY, 0);
 		Assert.assertEquals(0, service.getSiblingCount(lineString, index));
+
+		index = service.create(GeometryIndexType.TYPE_EDGE, 0);
+		Assert.assertEquals(linearRing.getCoordinates().length - 1, service.getSiblingCount(linearRing, index));
+
+		index = service.create(GeometryIndexType.TYPE_VERTEX, 0);
+		Assert.assertEquals(point.getCoordinates().length - 1, service.getSiblingCount(point, index));
 	}
 
 	@Test

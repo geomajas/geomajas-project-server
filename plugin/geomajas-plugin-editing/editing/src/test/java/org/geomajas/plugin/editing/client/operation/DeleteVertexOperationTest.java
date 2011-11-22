@@ -154,6 +154,21 @@ public class DeleteVertexOperationTest {
 	}
 
 	@Test
+	public void testErrorPoint() {
+		Geometry point = new Geometry(Geometry.POINT, 0, 0);
+		point.setCoordinates(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2) });
+		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+
+		// Point with 2 coordinates...
+		try {
+			operation.execute(point, service.create(GeometryIndexType.TYPE_VERTEX, 0));
+			Assert.fail();
+		} catch (GeometryOperationFailedException e) {
+			// We expect an error...
+		}
+	}
+
+	@Test
 	public void testEmptyLineString() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new DeleteVertexOperation(service);
 		Geometry lineString = new Geometry(Geometry.LINE_STRING, 0, 0);

@@ -58,12 +58,6 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		return index;
 	}
 
-	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, coordinate);
-		operation.execute(geometry, index);
-		return geometry;
-	}
-
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

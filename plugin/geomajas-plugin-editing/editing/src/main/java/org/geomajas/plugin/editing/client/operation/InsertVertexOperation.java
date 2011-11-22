@@ -71,21 +71,6 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
-	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
-		switch (service.getType(index)) {
-			case TYPE_VERTEX:
-				operation.execute(geometry, index);
-				break;
-			case TYPE_EDGE:
-				operation.execute(geometry, service.getNextVertex(index));
-				break;
-			default:
-				// ....
-		}
-		return geometry;
-	}
-
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

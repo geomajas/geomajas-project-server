@@ -57,12 +57,6 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 		return index;
 	}
 
-	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
-		operation.execute(geometry, index);
-		return geometry;
-	}
-
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

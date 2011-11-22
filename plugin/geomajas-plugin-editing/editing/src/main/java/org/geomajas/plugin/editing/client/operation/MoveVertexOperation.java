@@ -61,15 +61,6 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 		return index;
 	}
 
-	public Geometry undo(Geometry geometry) throws GeometryOperationFailedException {
-		try {
-			setVertex(geometry, index, oldLocation);
-			return geometry;
-		} catch (GeometryIndexNotFoundException e) {
-			throw new GeometryOperationFailedException(e);
-		}
-	}
-
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

@@ -31,8 +31,4 @@ public class GeometryOperationFailedException extends Exception {
 	public GeometryOperationFailedException(Throwable throwable) {
 		super(throwable);
 	}
-
-	public GeometryOperationFailedException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
 }

@@ -142,8 +142,10 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		// Remove the handler that follows changes in the map view:
-		mapViewRegistration.removeHandler();
-		mapViewRegistration = null;
+		if (mapViewRegistration != null) {
+			mapViewRegistration.removeHandler();
+			mapViewRegistration = null;
+		}
 
 		// Cleanup the geometry from the map:
 		groups.clear();

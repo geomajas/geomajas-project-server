@@ -185,6 +185,23 @@ public class MoveVertexOperationTest {
 	}
 
 	@Test
+	public void testLinearRingIsClosed() throws GeometryOperationFailedException {
+		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+
+		// First a correct index. This should simply work:
+		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 0));
+		Assert.assertNotNull(result);
+		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[0].getX(), DELTA);
+		Assert.assertEquals(NEW_VALUE, result.getCoordinates()[result.getCoordinates().length - 1].getX(), DELTA);
+
+		// Revert again should return original result:
+		Geometry undone = operation.getInverseOperation().execute(result, operation.getGeometryIndex());
+		Assert.assertEquals(linearRing.getCoordinates()[0].getX(), undone.getCoordinates()[0].getX(), DELTA);
+		Assert.assertEquals(linearRing.getCoordinates()[0].getX(),
+				undone.getCoordinates()[result.getCoordinates().length - 1].getX(), DELTA);
+	}
+
+	@Test
 	public void testLinearRingCornerCases() throws GeometryOperationFailedException {
 		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
 
