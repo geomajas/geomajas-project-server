@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  * Command that retrieves raster data. The result contains a list of raster tiles. Basic assumption is that
  * raster data is tiled in a pyramid structure based on to the layer's maximum extent and tile level. The optimum tile
  * level for the given scale is determined first. Once the tile level is known, it should be a piece of cake to
- * determine the indexes. The client can cache as many tiles as it likes.
+ * determine the indices. The client can cache as many tiles as it likes.
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose

@@ -649,20 +649,20 @@ public class MapView {
 		// clip upper bounds
 		double allowedScale = limitScale(scale);
 		if (resolutions != null) {
-			IndexRange indexes = getResolutionRange();
-			if (option == ZoomOption.EXACT || !indexes.isValid()) {
+			IndexRange indices = getResolutionRange();
+			if (option == ZoomOption.EXACT || !indices.isValid()) {
 				// should not or cannot snap to resolutions
 				return allowedScale;
 			} else {
 				// find the new index
 				int newResolutionIndex = 0;
 				double screenResolution = 1.0 / allowedScale;
-				if (screenResolution >= resolutions.get(indexes.getMin())) {
-					newResolutionIndex = indexes.getMin();
-				} else if (screenResolution <= resolutions.get(indexes.getMax())) {
-					newResolutionIndex = indexes.getMax();
+				if (screenResolution >= resolutions.get(indices.getMin())) {
+					newResolutionIndex = indices.getMin();
+				} else if (screenResolution <= resolutions.get(indices.getMax())) {
+					newResolutionIndex = indices.getMax();
 				} else {
-					for (int i = indexes.getMin(); i < indexes.getMax(); i++) {
+					for (int i = indices.getMin(); i < indices.getMax(); i++) {
 						double upper = resolutions.get(i);
 						double lower = resolutions.get(i + 1);
 						if (screenResolution <= upper && screenResolution > lower) {
@@ -683,9 +683,9 @@ public class MapView {
 				}
 				// check if we need to change level
 				if (newResolutionIndex == resolutionIndex && option == ZoomOption.LEVEL_CHANGE) {
-					if (scale > viewState.getScale() && newResolutionIndex < indexes.getMax()) {
+					if (scale > viewState.getScale() && newResolutionIndex < indices.getMax()) {
 						newResolutionIndex++;
-					} else if (scale < viewState.getScale() && newResolutionIndex > indexes.getMin()) {
+					} else if (scale < viewState.getScale() && newResolutionIndex > indices.getMin()) {
 						newResolutionIndex--;
 					}
 				}
@@ -757,7 +757,7 @@ public class MapView {
 	}
 
 	/**
-	 * A range of indexes.
+	 * A range of indices.
 	 */
 	private class IndexRange {
 

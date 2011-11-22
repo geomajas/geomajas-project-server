@@ -286,7 +286,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           </listitem>
 
           <listitem>
-            <para>The jar should include indexes.</para>
+            <para>The jar should include indices.</para>
 
             <para><programlisting>&lt;plugin&gt;
     &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;

@@ -123,14 +123,14 @@ public class TiledRasterLayerService {
 				height = 1.0;
 			}
 
-			// Calculate the position and indexes of the center image corner
+			// Calculate the position and indices of the center image corner
 			// in map space
 			double xCenter = boundsCenter.x - (indicesCenter.x - indicesUpperLeft.x) * width;
 			double yCenter = boundsCenter.y + (indicesCenter.y - indicesUpperLeft.y) * height;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
 
-			// Calculate the position and indexes of the upper left image corner
+			// Calculate the position and indices of the upper left image corner
 			// that just falls off the screen
 			double xMin = xCenter;
 			int iMin = iCenter;
@@ -144,7 +144,7 @@ public class TiledRasterLayerService {
 				yMax += height;
 				jMin--;
 			}
-			// Calculate the indexes of the lower right corner
+			// Calculate the indices of the lower right corner
 			// that just falls off the screen
 			int levelMax = POWERS_OF_TWO[zoomLevel] - 1;
 			double xMax = xCenter;

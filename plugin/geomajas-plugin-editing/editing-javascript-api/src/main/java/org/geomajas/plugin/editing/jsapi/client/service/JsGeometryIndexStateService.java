@@ -75,9 +75,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexSelected(GeometryIndexSelectedEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexSelectedEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexSelectedEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexSelected(e);
 			}
 		};
@@ -98,9 +98,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexDeselected(GeometryIndexDeselectedEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexDeselectedEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexDeselectedEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexDeselected(e);
 			}
 		};
@@ -149,8 +149,8 @@ public class JsGeometryIndexStateService implements Exportable {
 	 * @return The current selection (vertices/edges/sub-geometries).
 	 */
 	GeometryIndex[] getSelection() {
-		List<GeometryIndex> indexes = delegate.getSelection();
-		return indexes.toArray(new GeometryIndex[indexes.size()]);
+		List<GeometryIndex> indices = delegate.getSelection();
+		return indices.toArray(new GeometryIndex[indices.size()]);
 	}
 
 	// ------------------------------------------------------------------------
@@ -170,9 +170,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexEnabled(GeometryIndexEnabledEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexEnabledEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexEnabledEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexEnabled(e);
 			}
 		};
@@ -192,9 +192,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexDisabled(GeometryIndexDisabledEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexDisabledEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexDisabledEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexDisabled(e);
 			}
 		};
@@ -235,9 +235,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexHighlightBegin(GeometryIndexHighlightBeginEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexHighlightBeginEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexHighlightBeginEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				h.onGeometryIndexHighlightBegin(e);
 			}
 		};
@@ -259,9 +259,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexHighlightEnd(GeometryIndexHighlightEndEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexHighlightEndEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexHighlightEndEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexHighlightEnd(e);
 			}
 		};
@@ -323,9 +323,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexMarkForDeletionBegin(GeometryIndexMarkForDeletionBeginEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexMarkForDeletionBeginEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexMarkForDeletionBeginEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexMarkForDeletionBegin(e);
 			}
 		};
@@ -348,9 +348,9 @@ public class JsGeometryIndexStateService implements Exportable {
 
 			public void onGeometryIndexMarkForDeletionEnd(GeometryIndexMarkForDeletionEndEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexMarkForDeletionEndEvent e;
-				List<GeometryIndex> indexes = event.getIndices();
+				List<GeometryIndex> indices = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.state.GeometryIndexMarkForDeletionEndEvent(
-						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()]));
+						event.getGeometry(), indices.toArray(new GeometryIndex[indices.size()]));
 				handler.onGeometryIndexMarkForDeletionEnd(e);
 			}
 		};

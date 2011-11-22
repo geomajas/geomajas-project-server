@@ -298,7 +298,7 @@ public class TileCache implements SpatialCache {
 		double tileWidth = Math.ceil((scale * layerBounds.getWidth()) / div) / scale;
 		double tileHeight = Math.ceil((scale * layerBounds.getHeight()) / div) / scale;
 
-		// Now calculate indexes, and return bbox:
+		// Now calculate indices, and return bbox:
 		double x = layerBounds.getX() + tileCode.getX() * tileWidth;
 		double y = layerBounds.getY() + tileCode.getY() * tileHeight;
 		return new Bbox(x, y, tileWidth, tileHeight);

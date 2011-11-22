@@ -63,18 +63,18 @@ public class LayerOrderChangedEvent extends GwtEvent<LayerOrderChangedHandler> {
 	}
 
 	/**
-	 * Return the minimum of the 2 indexes (fromIndex, toIndex).
+	 * Return the minimum of the 2 indices (fromIndex, toIndex).
 	 * 
-	 * @return The minimum of the 2 indexes.
+	 * @return The minimum of the 2 indices.
 	 */
 	public int getMinIndex() {
 		return (toIndex < fromIndex) ? toIndex : fromIndex;
 	}
 
 	/**
-	 * Return the maximum of the 2 indexes (fromIndex, toIndex).
+	 * Return the maximum of the 2 indices (fromIndex, toIndex).
 	 * 
-	 * @return The maximum of the 2 indexes.
+	 * @return The maximum of the 2 indices.
 	 */
 	public int getMaxIndex() {
 		return (toIndex < fromIndex) ? fromIndex : toIndex;
