@@ -375,10 +375,10 @@ public class GeometryIndexServiceGeneralTest {
 		Assert.assertEquals(0, service.getSiblingCount(lineString, index));
 
 		index = service.create(GeometryIndexType.TYPE_EDGE, 0);
-		Assert.assertEquals(linearRing.getCoordinates().length - 1, service.getSiblingCount(linearRing, index));
+		Assert.assertEquals(linearRing.getCoordinates().length, service.getSiblingCount(linearRing, index));
 
 		index = service.create(GeometryIndexType.TYPE_VERTEX, 0);
-		Assert.assertEquals(point.getCoordinates().length - 1, service.getSiblingCount(point, index));
+		Assert.assertEquals(point.getCoordinates().length, service.getSiblingCount(point, index));
 	}
 
 	@Test
