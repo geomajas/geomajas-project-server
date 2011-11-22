@@ -298,8 +298,7 @@ public final class AttributeFormFieldRegistry {
 		registerCustomFormItem(AssociationType.ONE_TO_MANY.name(), new DataSourceFieldFactory() {
 
 			public DataSourceField create() {
-				DataSourceField field = new DataSourceField();
-				return field;
+				return new DataSourceField();
 			}
 		}, new FormItemFactory() {
 
@@ -334,7 +333,7 @@ public final class AttributeFormFieldRegistry {
 	 *        the <code>formInputType</code> field.
 	 * @param fieldType The type of {@link DataSourceFieldFactory} associated with the given key. This factory will
 	 *        create the correct {@link DataSourceField} for the given key.
-	 * @param formItem The type of {@link FormItemFactory} associated with the given key. This factory will create the
+	 * @param editorType The type of {@link FormItemFactory} associated with the given key. This factory will create the
 	 *        correct {@link FormItem} for the given key.
 	 * @param validators A list of validators that can be applied to the {@link DataSourceField}. This is optional and
 	 *        can be null. These validators protect the data, and can for example make sure that a user does not use any
@@ -402,7 +401,7 @@ public final class AttributeFormFieldRegistry {
 				validators.addAll(convertConstraints((PrimitiveAttributeInfo) info));
 			}
 			if (validators.size() > 0) {
-				field.setValidators(validators.toArray(new Validator[] {}));
+				field.setValidators(validators.toArray(new Validator[validators.size()]));
 			}
 			return field;
 		}
@@ -540,8 +539,8 @@ public final class AttributeFormFieldRegistry {
 		FloatPrecisionValidator floatPrecision = new FloatPrecisionValidator();
 		floatPrecision.setPrecision(digits.getFractional());
 		floatPrecision.setRoundToPrecision(digits.getFractional());
-		IntegerRangeValidator integerDigit = null;
-		FloatRangeValidator floatDigit = null;
+		IntegerRangeValidator integerDigit;
+		FloatRangeValidator floatDigit;
 		Validator[] validators;
 		switch (type) {
 			case SHORT:
@@ -553,12 +552,13 @@ public final class AttributeFormFieldRegistry {
 				break;
 			case FLOAT:
 			case DOUBLE:
+			case CURRENCY:
 				floatDigit = new FloatRangeValidator();
 				floatDigit.setMax((int) Math.pow(10.0, digits.getInteger()) - Float.MIN_VALUE);
 				validators = new Validator[] { floatPrecision, floatDigit };
 				break;
 			default:
-				validators = new Validator[] { floatPrecision };
+				throw new IllegalStateException("Cannot createFromDigits for type " + type);
 		}
 		return validators;
 	}

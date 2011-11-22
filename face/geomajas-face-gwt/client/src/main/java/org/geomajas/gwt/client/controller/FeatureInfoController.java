@@ -111,7 +111,7 @@ public class FeatureInfoController extends AbstractGraphicsController {
 				layerIds.add(layer.getServerLayerId());
 			}
 		}
-		return layerIds.toArray(new String[] {});
+		return layerIds.toArray(new String[layerIds.size()]);
 	}
 
 	private double calculateBufferFromPixelTolerance() {

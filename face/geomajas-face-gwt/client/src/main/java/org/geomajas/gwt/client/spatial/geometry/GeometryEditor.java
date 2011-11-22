@@ -81,7 +81,7 @@ public class GeometryEditor {
 			ArrayList<Point> list = new ArrayList<Point>(points.length + 1);
 			Collections.addAll(list, points);
 			list.add(point);
-			multiPoint.setPoints(list.toArray(new Point[] {}));
+			multiPoint.setPoints(list.toArray(new Point[list.size()]));
 		}
 	}
 

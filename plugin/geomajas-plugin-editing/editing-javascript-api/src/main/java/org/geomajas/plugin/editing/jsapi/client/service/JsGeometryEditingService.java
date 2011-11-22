@@ -177,8 +177,9 @@ public class JsGeometryEditingService implements Exportable {
 
 			public void onGeometryEditInsert(GeometryEditInsertEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.event.GeometryEditInsertEvent e;
+				List<GeometryIndex> indexes = event.getIndices();
 				e = new org.geomajas.plugin.editing.jsapi.client.event.GeometryEditInsertEvent(event.getGeometry(),
-						event.getIndices().toArray(new GeometryIndex[] {}));
+						indexes.toArray(new GeometryIndex[indexes.size()]));
 				handler.onGeometryEditInsert(e);
 			}
 		};
@@ -199,8 +200,9 @@ public class JsGeometryEditingService implements Exportable {
 		h = new org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler() {
 
 			public void onGeometryEditMove(GeometryEditMoveEvent event) {
+				List<GeometryIndex> indexes = event.getIndices();
 				handler.onGeometryEditMove(new org.geomajas.plugin.editing.jsapi.client.event.GeometryEditMoveEvent(
-						event.getGeometry(), event.getIndices().toArray(new GeometryIndex[] {})));
+						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()])));
 			}
 		};
 		HandlerRegistration registration = delegate.addGeometryEditMoveHandler(h);
@@ -219,8 +221,9 @@ public class JsGeometryEditingService implements Exportable {
 		h = new org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler() {
 
 			public void onGeometryEditRemove(GeometryEditRemoveEvent event) {
+				List<GeometryIndex> indexes = event.getIndices();
 				handler.onGeometryEditRemove(new org.geomajas.plugin.editing.jsapi.client.event.GeometryEditRemoveEvent(
-						event.getGeometry(), event.getIndices().toArray(new GeometryIndex[] {})));
+						event.getGeometry(), indexes.toArray(new GeometryIndex[indexes.size()])));
 			}
 		};
 		HandlerRegistration registration = delegate.addGeometryEditRemoveHandler(h);
