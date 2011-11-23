@@ -14,8 +14,6 @@ package org.geomajas.gwt.client.spatial;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 
-import com.vividsolutions.jts.geom.LinearRing;
-
 /**
  * General service for calculating mathematical properties of geometries.
  * 
@@ -243,7 +241,8 @@ public final class MathService {
 	 * Is a certain coordinate within a given geometry?
 	 * 
 	 * @param geometry
-	 *            The geometry to check against. Only if it has {@link LinearRing}'s, can the coordinate be inside.
+	 *            The geometry to check against. Only geometries that contain closed rings can return true (i.e.
+	 *            LinearRing, Polygon, MultiPolygon).
 	 * @param coordinate
 	 *            The position that is possibly within the geometry.
 	 * @return Returns true if the coordinate is within the geometry.
