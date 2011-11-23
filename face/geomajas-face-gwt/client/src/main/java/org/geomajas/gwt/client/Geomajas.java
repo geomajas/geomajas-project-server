@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocaleInfo;
 import org.geomajas.annotation.Api;
 
@@ -65,4 +66,25 @@ public final class Geomajas {
 	/*-{
 		return $wnd.isomorphicDir;
 	}-*/;
+	
+	/**
+	 * Return the Spring dispatcher URL for the web application. The URL ends with a slash.
+	 * 
+	 * @return the dispatcher URL
+	 * @since 1.10.0
+	 */
+	public static String getDispatcherUrl() {
+		String moduleBaseUrl = GWT.getModuleBaseURL();
+		// remove last slash
+		moduleBaseUrl = moduleBaseUrl.substring(0, moduleBaseUrl.length() - 1);
+		// replace module part by /d
+		int contextEndIndex = moduleBaseUrl.lastIndexOf("/");
+		if (contextEndIndex > 6) {
+			return moduleBaseUrl.substring(0, contextEndIndex) + "/d/";
+		} else {
+			// fall back to module base URL
+			return GWT.getModuleBaseURL();
+		}
+	}
+
 }

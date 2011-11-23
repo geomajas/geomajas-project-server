@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerFilteredEvent;
@@ -34,7 +35,6 @@ import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.UserStyleInfo;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Img;
@@ -173,7 +173,7 @@ public class Legend extends VLayout {
 	private void addVector(VectorLayer layer, int ruleIndex, String title) {
 		HLayout layout = new HLayout(WidgetLayout.marginSmall);
 		layout.setHeight(WidgetLayout.legendVectorRowHeight);
-		UrlBuilder urlBuilder = new UrlBuilder(GWT.getModuleBaseURL());
+		UrlBuilder urlBuilder = new UrlBuilder(Geomajas.getDispatcherUrl());
 		urlBuilder.addPath("legendgraphic");
 		urlBuilder.addPath(layer.getServerLayerId());
 		urlBuilder.addPath(layer.getLayerInfo().getNamedStyleInfo().getName());
@@ -192,7 +192,7 @@ public class Legend extends VLayout {
 	private void addRaster(RasterLayer layer) {
 		HLayout layout = new HLayout(WidgetLayout.marginSmall);
 		layout.setHeight(WidgetLayout.legendRasterRowHeight);
-		UrlBuilder urlBuilder = new UrlBuilder(GWT.getModuleBaseURL());
+		UrlBuilder urlBuilder = new UrlBuilder(Geomajas.getDispatcherUrl());
 		urlBuilder.addPath("legendgraphic");
 		urlBuilder.addPath(layer.getServerLayerId() + ".png");
 		Img icon =
