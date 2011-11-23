@@ -26,7 +26,8 @@ public class RasterTile implements Tile, Paintable {
 
 	/** The unique tile code. */
 	protected TileCode code;
-	/** The bounds of the tile; */
+	
+	/** The bounds of the tile. */
 	protected Bbox bbox;
 
 	/** The store where this tile is kept. */
@@ -90,5 +91,10 @@ public class RasterTile implements Tile, Paintable {
 
 	public void setStyle(PictureStyle style) {
 		this.style = style;
+	}
+	
+	public void setBounds(Bbox bbox) {
+		this.bbox = bbox;
 	}	
+	
 }

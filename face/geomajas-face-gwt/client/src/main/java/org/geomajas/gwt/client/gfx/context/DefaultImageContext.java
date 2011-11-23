@@ -187,7 +187,6 @@ public class DefaultImageContext implements ImageContext {
 			Dom.setStyleAttribute(image, "border", "0px");
 			Dom.setStyleAttribute(image, "padding", "0px");
 			Dom.setStyleAttribute(image, "margin", "0px");
-			Dom.setStyleAttribute(image, "position", "absolute");
 			Dom.setStyleAttribute(image, "left", (int) bounds.getX() + "px");
 			Dom.setStyleAttribute(image, "top", (int) bounds.getY() + "px");
 			Dom.setStyleAttribute(image, "width", (int) bounds.getWidth() + "px");
@@ -203,7 +202,7 @@ public class DefaultImageContext implements ImageContext {
 					public void onBrowserEvent(Event event) {
 						switch (Dom.eventGetType(event)) {
 							case Event.ONLOAD:
-								Dom.setStyleAttribute(image, "display", "");
+								Dom.setStyleAttribute(image, "display", "block");
 								break;
 							case Event.ONERROR:
 								retries--;

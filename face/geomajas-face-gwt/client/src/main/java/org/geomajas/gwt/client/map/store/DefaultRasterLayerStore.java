@@ -129,6 +129,9 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> images) {
 		Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTranslation();
 		Bbox cacheBounds = null;
+		// flag and reference tile to realign the grid when new tiles come in (transformation shift!)
+		boolean newTiles = false;
+		RasterTile referenceTile = null;
 		for (org.geomajas.layer.tile.RasterTile image : images) {
 			TileCode code = image.getCode().clone();
 			if (!tiles.containsKey(code)) {
@@ -141,9 +144,30 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 				}
 				RasterTile tile = new RasterTile(code, panBounds, image.getUrl(), this);
 				tiles.put(code, tile);
+				newTiles = true;
+				referenceTile = tile;
+			}
+		}
+		// This realigns the grid of tiles based on their code
+		if (newTiles && isTransformed()) {
+			for (RasterTile tile : tiles.values()) {
+				if (!tile.getCode().equals(referenceTile.getCode())) {
+					Bbox aligned = new Bbox(referenceTile.getBounds());
+					aligned.setX(referenceTile.getBounds().getX()
+							+ (tile.getCode().getX() - referenceTile.getCode().getX()) * aligned.getWidth());
+					aligned.setY(referenceTile.getBounds().getY()
+							+ (tile.getCode().getY() - referenceTile.getCode().getY()) * aligned.getHeight());
+					tile.setBounds(aligned);
+				}
 			}
 		}
 		deferred = null;
+	}
+
+	private boolean isTransformed() {
+		String layerCrs = getLayer().getLayerInfo().getCrs();
+		String mapCrs = getLayer().getMapModel().getCrs();
+		return !layerCrs.equals(mapCrs);
 	}
 
 	/**
