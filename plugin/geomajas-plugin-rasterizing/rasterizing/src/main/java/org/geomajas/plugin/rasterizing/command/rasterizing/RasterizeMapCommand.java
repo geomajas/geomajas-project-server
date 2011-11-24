@@ -15,14 +15,24 @@ import java.util.UUID;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.rasterizing.api.ImageService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest;
 import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
+import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
+import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +48,7 @@ import org.springframework.stereotype.Component;
 public class RasterizeMapCommand implements Command<RasterizeMapRequest, RasterizeMapResponse> {
 
 	private static final int MAP_BUFFER_SIZE = 1024 * 10;
+
 	private static final int MAP_LEGEND_SIZE = 1024;
 
 	@Autowired
@@ -49,17 +60,45 @@ public class RasterizeMapCommand implements Command<RasterizeMapRequest, Rasteri
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
+	@Autowired
+	private DispatcherUrlService dispatcherUrlService;
+
 	public void execute(RasterizeMapRequest request, RasterizeMapResponse response) throws Exception {
-		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) request.getClientMapInfo().getWidgetInfo(
-				MapRasterizingInfo.WIDGET_KEY);
+		ClientMapInfo mapInfo = request.getClientMapInfo();
+		if (null == mapInfo) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "clientMapInfo");
+		}
+		MapRasterizingInfo mapRasterizingInfo = (MapRasterizingInfo) mapInfo
+				.getWidgetInfo(MapRasterizingInfo.WIDGET_KEY);
+		if (mapRasterizingInfo == null) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapRasterizingInfo");
+		}
+		for (ClientLayerInfo clientLayer : mapInfo.getLayers()) {
+			if (clientLayer instanceof ClientVectorLayerInfo) {
+				if (null == clientLayer.getWidgetInfo(VectorLayerRasterizingInfo.WIDGET_KEY)) {
+					throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "vectorLayerRasterizingInfo ("
+							+ clientLayer.getId() + ")");
+				}
+			} else if (clientLayer instanceof ClientRasterLayerInfo) {
+				if (null == clientLayer.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY)) {
+					throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "rasterLayerRasterizingInfo ("
+							+ clientLayer.getId() + ")");
+				}
+			}
+		}
 		ByteArrayOutputStream mapStream = new ByteArrayOutputStream(MAP_BUFFER_SIZE);
 		imageService.writeMap(mapStream, request.getClientMapInfo());
 		String mapKey = putInCache(mapStream.toByteArray(), mapRasterizingInfo.getBounds());
 		ByteArrayOutputStream legendStream = new ByteArrayOutputStream(MAP_LEGEND_SIZE);
 		imageService.writeLegend(legendStream, request.getClientMapInfo());
 		String legendKey = putInCache(legendStream.toByteArray(), mapRasterizingInfo.getBounds());
+		// remove last '/' from dispatcher URL
+		String baseUrl = dispatcherUrlService.getDispatcherUrl().substring(0,
+				dispatcherUrlService.getDispatcherUrl().length() - 1);
 		response.setMapKey(mapKey);
+		response.setMapUrl(baseUrl + RasterizingController.IMAGE_MAPPING + mapKey + ".png");
 		response.setLegendKey(legendKey);
+		response.setLegendUrl(baseUrl + RasterizingController.IMAGE_MAPPING + legendKey + ".png");
 	}
 
 	private String putInCache(byte[] byteArray, Bbox bounds) {

@@ -68,7 +68,12 @@ public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 	private String buildUrl(PipelineContext context, String key) throws GeomajasException {
 		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 		StringBuilder url = new StringBuilder(200);
-		url.append(dispatcherUrlService.getDispatcherUrl());
+		String dispatcherUrl = dispatcherUrlService.getDispatcherUrl();
+		// check for trailing '/'
+		if (dispatcherUrl.endsWith("/")) {
+			dispatcherUrl = dispatcherUrl.substring(0, dispatcherUrl.length() - 1);
+		}
+		url.append(dispatcherUrl);
 		url.append(RasterizingController.LAYER_MAPPING);
 		url.append(layerId);
 		url.append("/");

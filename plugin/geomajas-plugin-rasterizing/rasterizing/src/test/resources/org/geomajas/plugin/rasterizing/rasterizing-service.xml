@@ -22,7 +22,7 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 		
 	<bean name="service.DispatcherUrlService"
 		class="org.geomajas.service.impl.StaticDispatcherUrlService">
-		<property name="dispatcherUrl" value="http://test" />
+		<property name="dispatcherUrl" value="http://test/" />
 	</bean>	
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">

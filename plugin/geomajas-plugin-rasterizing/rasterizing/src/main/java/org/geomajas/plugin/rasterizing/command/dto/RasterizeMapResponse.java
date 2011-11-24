@@ -28,6 +28,10 @@ public class RasterizeMapResponse extends CommandResponse {
 
 	private String legendKey;
 
+	private String mapUrl;
+
+	private String legendUrl;
+
 	/**
 	 * Get the map key. This is the key used to store the map in the raster cache.
 	 *
@@ -63,5 +67,46 @@ public class RasterizeMapResponse extends CommandResponse {
 	public void setLegendKey(String legendKey) {
 		this.legendKey = legendKey;
 	}
+
+	
+	/**
+	 * Get the map URL. This is the URL used to access the map image.
+	 *
+	 * @return map URL
+	 */
+	public String getMapUrl() {
+		return mapUrl;
+	}
+
+	/**
+	 * Set the map URL. This is the URL used to access the map image.
+	 * 
+	 * @param mapUrl the map URL
+	 */
+	public void setMapUrl(String mapUrl) {
+		this.mapUrl = mapUrl;
+	}
+
+	
+	/**
+	 * Get the legend URL. This is the URL used to access the legend image.
+	 *
+	 * @return legend URL
+	 */
+	public String getLegendUrl() {
+		return legendUrl;
+	}
+
+	
+	/**
+	 * Set the legend URL. This is the URL used to access the legend image.
+	 * 
+	 * @param legendUrl the map URL
+	 */
+	public void setLegendUrl(String legendUrl) {
+		this.legendUrl = legendUrl;
+	}
+	
+	
 
 }

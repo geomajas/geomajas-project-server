@@ -42,8 +42,6 @@ import org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.sld.RuleInfo;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Implementation for {@link ImageUrlService}.
  * 
@@ -65,8 +63,8 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 			public void execute(CommandResponse commandResponse) {
 				if (commandResponse instanceof RasterizeMapResponse) {
 					RasterizeMapResponse rasterizeMapResponse = (RasterizeMapResponse) commandResponse;
-					callBack.onImageUrl(toUrl(rasterizeMapResponse.getMapKey()),
-							toUrl(rasterizeMapResponse.getLegendKey()));
+					callBack.onImageUrl(rasterizeMapResponse.getMapUrl(),
+							rasterizeMapResponse.getLegendUrl());
 				}
 			}
 
@@ -164,10 +162,6 @@ public class ImageUrlServiceImpl implements ImageUrlService {
 		fs.setSymbol(symbol);
 		fs.setName(geometry.getId());
 		return StyleUtil.createRule(geometry.getGeometry().getLayerType(), fs);
-	}
-
-	private String toUrl(String key) {
-		return GWT.getHostPageBaseURL() + "d/rasterizing/image/" + key + ".png";
 	}
 
 }
