@@ -14,8 +14,11 @@ package org.geomajas.widget.utility.gwt.client.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.junit.GWTMockUtilities;
 import org.geomajas.widget.utility.gwt.client.wizard.WizardButton.ButtonType;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -26,7 +29,22 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
+/**
+ * Test for {@link Wizard}.
+ *
+ * @author jan De Moerloose
+ */
 public class WizardTest {
+
+	@Before
+	public void disableWidgets() {
+		GWTMockUtilities.disarm();
+	}
+
+	@After
+	public void reEnableWidgets() {
+		GWTMockUtilities.restore();
+	}
 
 	@Test
 	public void testStartToFinish() {
@@ -96,8 +114,6 @@ public class WizardTest {
 
 	class TestView implements WizardView<String> {
 
-		private WizardPage<String> currentPage;
-
 		private TestButton back = new TestButton(ButtonType.PREVIOUS);
 
 		private TestButton next = new TestButton(ButtonType.NEXT);
@@ -121,11 +137,7 @@ public class WizardTest {
 		}
 
 		public void setCurrentPage(WizardPage<String> currentPage) {
-			this.currentPage = currentPage;
-		}
-
-		public WizardPage<String> getCurrentPage() {
-			return currentPage;
+			// not needed here
 		}
 
 		public List<WizardButton<String>> getButtons() {
@@ -178,7 +190,7 @@ public class WizardTest {
 		}
 
 		@Override
-		protected boolean doValidate() {
+		public boolean doValidate() {
 			return validate;
 		}
 
@@ -187,16 +199,16 @@ public class WizardTest {
 		}
 
 		@Override
-		protected Canvas asWidget() {
+		public Canvas asWidget() {
 			return null;
 		}
 
 		@Override
-		protected void clear() {
+		public void clear() {
 		}
 
 		@Override
-		protected void show() {
+		public void show() {
 
 		}
 
@@ -209,11 +221,11 @@ public class WizardTest {
 		}
 
 		@Override
-		protected void onCancel() {
+		public void onCancel() {
 		}
 
 		@Override
-		protected void onFinish() {
+		public void onFinish() {
 		}
 
 	}

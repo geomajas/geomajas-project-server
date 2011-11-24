@@ -10,20 +10,20 @@
  */
 package org.geomajas.widget.utility.gwt.client.wizard;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 /**
  * Common interface to be implemented by all wizard buttons.
  * 
- * @author Jan De Moerloose
- * 
  * @param <DATA>
  *            wizard data
- * 
+
+ * @author Jan De Moerloose
+ * @since 1.0.0
  */
-@FutureApi
+@Api(allMethods = true)
 public interface WizardButton<DATA> extends HasClickHandlers {
 
 	/**

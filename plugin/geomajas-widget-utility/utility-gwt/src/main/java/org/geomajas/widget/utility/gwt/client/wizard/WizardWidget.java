@@ -13,6 +13,9 @@ package org.geomajas.widget.utility.gwt.client.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import org.geomajas.annotation.Api;
+import org.geomajas.widget.utility.gwt.client.i18n.GuwMessages;
 import org.geomajas.widget.utility.gwt.client.wizard.WizardButton.ButtonType;
 
 import com.smartgwt.client.types.Alignment;
@@ -31,22 +34,26 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  * 
  * @param <DATA> type of data to view
+ * @since 1.0.0
  */
+@Api
 public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
+
+	private static final GuwMessages MESSAGES = GWT.create(GuwMessages.class);
 
 	private String title;
 
 	private String helpText;
 
-	private VLayout leftLayout;
+	private final VLayout leftLayout;
 
-	private VLayout pageBody;
+	private final VLayout pageBody;
 
 	private HTMLFlow pageTitleDiv;
 
 	private HTMLFlow loadingDiv;
 
-	private List<WizardButton<DATA>> buttons;
+	private final List<WizardButton<DATA>> buttons;
 
 	public WizardWidget(String title, String helpText) {
 		this.title = title;
@@ -219,17 +226,21 @@ public class WizardWidget<DATA> extends VLayout implements WizardView<DATA> {
 		DefaultWizardButton(ButtonType type) {
 			switch (type) {
 				case CANCEL:
-					setTitle("Cancel");
+					setTitle(MESSAGES.wizardCancel());
 					break;
 				case FINISH:
-					setTitle("Finish");
+					setTitle(MESSAGES.wizardFinish());
 					break;
 				case NEXT:
-					setTitle("Next");
+					setTitle(MESSAGES.wizardNext());
 					break;
 				case PREVIOUS:
-					setTitle("Previous");
+					setTitle(MESSAGES.wizardPrevious());
 					break;
+				case PAGE:
+					throw new IllegalStateException("DefaultWizardButton should not be called for PAGE type");
+				default:
+					throw new IllegalStateException("Unknown button type " + type);
 			}
 			this.type = type;
 			setLayoutAlign(VerticalAlignment.CENTER);

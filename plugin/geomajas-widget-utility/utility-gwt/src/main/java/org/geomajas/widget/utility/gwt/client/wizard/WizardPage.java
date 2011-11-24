@@ -10,7 +10,7 @@
  */
 package org.geomajas.widget.utility.gwt.client.wizard;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
  * <li>getTitle() : return the title of the page</li>
  * <li>getExplanation() : return an explanatory text for the page</li>
  * <li>doValidate() : validate the page (e.g. validate the form on the page)</li>
+ * <li>savePage() : save the page</li>
  * <li>asWidget() : return the actual view component</li>
  * <li>clear() : clear the page (e.g. clearing the form on the page)</li>
  * <li>show() : prepare the page for showing (e.g. transfer wizard data to the form)</li>
@@ -28,13 +29,14 @@ import com.google.gwt.user.client.ui.Widget;
  * @param <DATA> data type
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
-@FutureApi
+@Api
 public abstract class WizardPage<DATA> {
 
 	private DATA wizardData;
 
-	private WizardPage<DATA> backPage;
+	private WizardPage<DATA> previousPage;
 
 	private WizardPage<DATA> nextPage;
 
@@ -51,20 +53,38 @@ public abstract class WizardPage<DATA> {
 
 	/**
 	 * Get the previous page.
-	 * 
+	 *
 	 * @return the previous page
 	 */
-	public WizardPage<DATA> getBackPage() {
-		return backPage;
+	public WizardPage<DATA> getPreviousPage() {
+		return previousPage;
+	}
+
+	/**
+	 * Set the previous page.
+	 *
+	 * @param previousPage previous page
+	 */
+	public void setPreviousPage(WizardPage<DATA> previousPage) {
+		this.previousPage = previousPage;
 	}
 
 	/**
 	 * Get the next page.
-	 * 
+	 *
 	 * @return the next page
 	 */
 	public WizardPage<DATA> getNextPage() {
 		return nextPage;
+	}
+
+	/**
+	 * Set the next page.
+	 *
+	 * @param nextPage next page
+	 */
+	public void setNextPage(WizardPage<DATA> nextPage) {
+		this.nextPage = nextPage;
 	}
 
 	/**
@@ -84,6 +104,20 @@ public abstract class WizardPage<DATA> {
 	public boolean validate() {
 		setValid(doValidate());
 		return isValid();
+	}
+
+	/**
+	 * Save the page data. This can communicate with the server if needed. The return is handled by calling either the
+	 * success or failure callback.
+	 *
+	 * @param view wizard view
+	 * @param successCallback what to do on success
+	 * @param failureCallback what to do on failure
+	 */
+	public void savePage(WizardView view, Runnable successCallback, Runnable failureCallback) {
+		if (null != successCallback) {
+			successCallback.run();
+		}
 	}
 
 	/**
@@ -107,35 +141,47 @@ public abstract class WizardPage<DATA> {
 	 * @return true if page can be shown
 	 */
 	public boolean canShow() {
-		WizardPage<DATA> back = getBackPage();
+		WizardPage<DATA> back = getPreviousPage();
 		while (back != null && back.isValid()) {
-			back = back.getBackPage();
+			back = back.getPreviousPage();
 		}
 		return back == null;
 	}
 
-	protected void setValid(boolean valid) {
+	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
 
-	protected abstract boolean doValidate();
+	/**
+	 * Method to overwrite which does the actual page validation.
+	 *
+	 * @return true when page validation is successful
+	 */
+	public abstract boolean doValidate();
 
-	protected abstract Widget asWidget();
+	/**
+	 * Method to overwrite. Get the the widget for the wizard.
+	 *
+	 * @return widget
+	 */
+	public abstract Widget asWidget();
 
-	protected abstract void clear();
+	/**
+	 * Clear the page content.
+	 */
+	public abstract void clear();
 
-	protected abstract void show();
+	/**
+	 * Show the page.
+	 */
+	public abstract void show();
 
-	protected void setWizardData(DATA wizardData) {
+	/**
+	 * Set the wizard data for the page.
+	 *
+	 * @param wizardData wizard data
+	 */
+	public void setWizardData(DATA wizardData) {
 		this.wizardData = wizardData;
 	}
-
-	protected void setBackPage(WizardPage<DATA> backPage) {
-		this.backPage = backPage;
-	}
-
-	protected void setNextPage(WizardPage<DATA> nextPage) {
-		this.nextPage = nextPage;
-	}
-
 }

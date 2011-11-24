@@ -16,11 +16,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.geomajas.annotation.FutureApi;
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.util.SC;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import org.geomajas.widget.utility.gwt.client.i18n.GuwMessages;
 
 /**
  * <p>
@@ -28,7 +31,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * NEXT, BACK, CANCEL and FINISH buttons, this wizard provides direct page navigation by means of a button per page
  * (typically shown in a vertical navigation bar). This abstract class handles all the navigation logic and state
  * handling of the buttons. The NEXT and BACK button are handled directly by this class. The CANCEL and FINISH button
- * should be handled by concrete subclasses by implementing the abstract {@link onCancel()} and {@link onFinish()}
+ * should be handled by concrete subclasses by implementing the abstract {@link #onCancel()} and {@link #onFinish()}
  * methods.
  * </p>
  * 
@@ -62,9 +65,12 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * @param <DATA> data type
  *
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
-@FutureApi
+@Api(allMethods = true)
 public abstract class Wizard<DATA> {
+
+	private static final GuwMessages MESSAGES = GWT.create(GuwMessages.class);
 
 	private List<WizardPage<DATA>> pages;
 
@@ -99,7 +105,7 @@ public abstract class Wizard<DATA> {
 	 * should only be called after all pages have been added. After this method has been called, no more pages can be
 	 * added.
 	 * 
-	 * @param wizardData
+	 * @param wizardData initial data
 	 */
 	public void start(DATA wizardData) {
 		if (!started) {
@@ -149,7 +155,7 @@ public abstract class Wizard<DATA> {
 			WizardPage<DATA> lastPage = pages.size() > 0 ? pages.get(pages.size() - 1) : null;
 			if (lastPage != null) {
 				lastPage.setNextPage(page);
-				page.setBackPage(lastPage);
+				page.setPreviousPage(lastPage);
 			}
 			pages.add(page);
 			wizardView.addPageToView(page);
@@ -159,12 +165,12 @@ public abstract class Wizard<DATA> {
 	/**
 	 * Called when the user presses the CANCEL button.
 	 */
-	protected abstract void onCancel();
+	public abstract void onCancel();
 
 	/**
 	 * Called when the user presses the FINISH button.
 	 */
-	protected abstract void onFinish();
+	public abstract void onFinish();
 
 	private void initHandlers() {
 		for (WizardButton<DATA> button : wizardView.getButtons()) {
@@ -184,7 +190,8 @@ public abstract class Wizard<DATA> {
 				case PAGE:
 					button.addClickHandler(new GoToHandler(button.getPage()));
 					break;
-
+				default:
+					throw new IllegalStateException("Unknown button type " + button.getType());
 			}
 		}
 		started = true;
@@ -194,7 +201,7 @@ public abstract class Wizard<DATA> {
 		for (WizardButton<DATA> button : wizardView.getButtons()) {
 			switch (button.getType()) {
 				case PREVIOUS:
-					if (currentPage.getBackPage() != null) {
+					if (currentPage.getPreviousPage() != null) {
 						button.setEnabled(true);
 					} else {
 						button.setEnabled(false);
@@ -225,6 +232,8 @@ public abstract class Wizard<DATA> {
 						widget.setVisible(button.getPage() == currentPage);
 					}
 					break;
+				default:
+					throw new IllegalStateException("Unknown button type " + button.getType());
 			}
 		}
 	}
@@ -247,7 +256,6 @@ public abstract class Wizard<DATA> {
 	 * Performs CANCEL operation.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class CancelHandler implements ClickHandler {
 
@@ -261,12 +269,11 @@ public abstract class Wizard<DATA> {
 	 * Performs BACK operation.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class BackHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			setCurrentPage(currentPage.getBackPage());
+			setCurrentPage(currentPage.getPreviousPage());
 		}
 
 	}
@@ -275,13 +282,20 @@ public abstract class Wizard<DATA> {
 	 * Performs NEXT operation.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class NextHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
 			if (currentPage.validate()) {
-				setCurrentPage(currentPage.getNextPage());
+				currentPage.savePage(wizardView, new Runnable() {
+					public void run() {
+						setCurrentPage(currentPage.getNextPage());
+					}
+				}, new Runnable() {
+					public void run() {
+						SC.warn(MESSAGES.wizardSavePageFailed());
+					}
+				});
 			}
 		}
 
@@ -291,7 +305,6 @@ public abstract class Wizard<DATA> {
 	 * Performs page operation.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class GoToHandler implements ClickHandler {
 

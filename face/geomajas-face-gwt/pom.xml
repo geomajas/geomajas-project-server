@@ -201,7 +201,7 @@
 			<dependency>
 				<groupId>com.smartgwt</groupId>
 				<artifactId>smartgwt-skins</artifactId>
-				<version>2.4</version> <!-- @todo should be ${gwt-face-smartgwt-version} -->
+				<version>2.4</version> <!-- @todo should be ${gwt-face-gwt-version} -->
 			</dependency>
 
 		</dependencies>

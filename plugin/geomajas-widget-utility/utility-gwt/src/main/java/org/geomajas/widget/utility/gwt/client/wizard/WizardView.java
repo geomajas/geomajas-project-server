@@ -12,7 +12,7 @@ package org.geomajas.widget.utility.gwt.client.wizard;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -22,8 +22,9 @@ import com.google.gwt.user.client.ui.Widget;
  * @param <DATA> data type
  *
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
-@FutureApi
+@Api(allMethods = true)
 public interface WizardView<DATA> {
 
 	/**
