@@ -45,9 +45,10 @@ public class UpdateFeatureStep implements PipelineStep {
 		InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
-//		// Not needed for existing features, but no problem to re-set feature id
-//		String id = featureModel.getId(feature);
-//		newFeature.setId(id);
+		// Not needed for existing features, but no problem to re-set feature id
+		// essential for auto-generated ids (like for Hibernate layer)
+		String id = layer.getFeatureModel().getId(feature);
+		newFeature.setId(id);
 
 		newFeature = attributeService.getAttributes(layer, newFeature, feature);
 		if (null == newFeature) {

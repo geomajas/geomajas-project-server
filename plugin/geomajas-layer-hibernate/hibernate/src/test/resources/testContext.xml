@@ -18,6 +18,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<import resource="spring-hibernate.xml" />
 
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false"/>
+		<property name="securityServices">
+			<list>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
+			</list>
+		</property>
+	</bean>
+
 	<bean name="layer" class="org.geomajas.layer.hibernate.HibernateLayer">
 		<property name="layerInfo" ref="layerInfo" />
 		<property name="featureModel">

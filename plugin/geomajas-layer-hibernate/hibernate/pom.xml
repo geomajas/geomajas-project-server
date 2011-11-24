@@ -123,6 +123,11 @@
 			<artifactId>geomajas-impl</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
