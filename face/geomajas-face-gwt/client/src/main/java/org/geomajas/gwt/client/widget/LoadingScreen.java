@@ -59,6 +59,8 @@ public class LoadingScreen extends VLayout {
 
 	private String logoWidth = WidgetLayout.loadingScreenLogoWidth;
 
+	private String logoHeight = WidgetLayout.loadingScreenLogoHeight;
+
 	private String logo = WidgetLayout.loadingScreenLogo;
 
 	private Label label;
@@ -107,6 +109,7 @@ public class LoadingScreen extends VLayout {
 
 		Img logoImg = new Img(logo);
 		logoImg.setWidth(logoWidth);
+		logoImg.setHeight(logoHeight);
 		logoImg.setLayoutAlign(Alignment.CENTER);
 		logoImg.setLayoutAlign(VerticalAlignment.CENTER);
 		banner.addMember(logoImg);
@@ -154,7 +157,9 @@ public class LoadingScreen extends VLayout {
 		inner.setLayoutAlign(VerticalAlignment.CENTER);
 		inner.setWidth(WidgetLayout.loadingScreenWidth);
 		inner.setHeight(WidgetLayout.loadingScreenHeight);
-		inner.setBackgroundImage(WidgetLayout.loadingScreenBackgroundImage);
+		if (!(WidgetLayout.loadingScreenBackgroundImage == null)) {
+			inner.setBackgroundImage(WidgetLayout.loadingScreenBackgroundImage);
+		}
 		inner.setEdgeOpacity(WidgetLayout.loadingScreenEdgeOpacity);
 		inner.setAlign(Alignment.CENTER);
 		inner.addMember(banner);

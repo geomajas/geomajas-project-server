@@ -237,6 +237,8 @@ public final class WidgetLayout {
 	public static String loadingScreenLogo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 	/** Loading screen logo width. */
 	public static String loadingScreenLogoWidth = "300";
+	/** Loading screen logo height. */
+	public static String loadingScreenLogoHeight = "80";
 	/** Loading screen inner width. */
 	public static String loadingScreenWidth = "500";
 	/** Loading screen inner height. */
