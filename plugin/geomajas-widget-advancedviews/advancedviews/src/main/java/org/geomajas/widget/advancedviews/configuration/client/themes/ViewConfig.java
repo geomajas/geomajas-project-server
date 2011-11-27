@@ -44,6 +44,11 @@ public class ViewConfig implements Serializable {
 	private String description;
 
 	/**
+	 * Is the theme is active by default. Note that the last theme with this property set will be active.
+	 */
+	private boolean activeByDefault;
+	
+	/**
 	 * Different ranges defined in this Viewconfig. Note that the list of ranges is not checked against overlaps, so the
 	 * first occurence within a specific viewscale is a hit.
 	 *
@@ -100,5 +105,19 @@ public class ViewConfig implements Serializable {
 	 */
 	public String getTitle() {
 		return title;
+	}
+
+	/**
+	 * @param activeByDefault the activeByDefault to set
+	 */
+	public void setActiveByDefault(boolean activeByDefault) {
+		this.activeByDefault = activeByDefault;
+	}
+
+	/**
+	 * @return the activeByDefault
+	 */
+	public boolean isActiveByDefault() {
+		return activeByDefault;
 	}
 }

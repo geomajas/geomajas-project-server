@@ -77,6 +77,12 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 			layer.addLayerChangedHandler(this);
 		}
+		// Set default viewConfig active is configured
+		for (ViewConfigItem viewConfig : viewConfigItems) {
+			if (viewConfig.getViewConfig().isActiveByDefault()) {
+				activeViewConfig = viewConfig;
+			}
+		}
 	}
 
 	protected abstract void buildWidget();
