@@ -128,7 +128,12 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 		themeChange = true;
 		RangeConfig config = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel().getMapView()
 				.getCurrentScale());
-
+		
+		if (themeInfo.isHideOtherlayers()) {
+			for (Layer layer : mapWidget.getMapModel().getLayers()) {
+				layer.setVisible(false);
+			}
+		}
 		for (LayerConfig layerConfig : config.getLayerConfigs()) {
 			Layer<?> layer = mapWidget.getMapModel().getLayer(layerConfig.getLayer().getId());
 			if (layer != null) {
