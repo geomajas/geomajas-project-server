@@ -130,7 +130,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 				.getCurrentScale());
 		
 		if (themeInfo.isHideOtherlayers()) {
-			for (Layer layer : mapWidget.getMapModel().getLayers()) {
+			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				layer.setVisible(false);
 			}
 		}
