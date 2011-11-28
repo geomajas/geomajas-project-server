@@ -28,11 +28,11 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 
 	private Coordinate oldLocation;
 
-	private Coordinate newLocation;
+	private final Coordinate newLocation;
 
 	private GeometryIndex index;
 
-	private GeometryIndexService service;
+	private final GeometryIndexService service;
 
 	public MoveVertexOperation(GeometryIndexService service, Coordinate newLocation) {
 		this.service = service;

@@ -116,7 +116,7 @@ public class GeometryIndexService {
 			}
 			return index;
 		} catch (GeometryIndexNotFoundException e) {
-			throw new GeometryIndexNotFoundException("Could not parse '" + id + "' as a GeometryIndex.");
+			throw new GeometryIndexNotFoundException("Could not parse '" + id + "' as a GeometryIndex.", e);
 		}
 	}
 
@@ -486,13 +486,13 @@ public class GeometryIndexService {
 			case TYPE_VERTEX:
 				return geom.getCoordinates() != null ? geom.getCoordinates().length : 0;
 			case TYPE_EDGE:
-				if (geom.getGeometryType() == Geometry.LINE_STRING) {
+				if (Geometry.LINE_STRING.equals(geom.getGeometryType())) {
 					int count = geom.getCoordinates() != null ? geom.getCoordinates().length - 1 : 0;
 					if (count < 0) {
 						count = 0;
 					}
 					return count;
-				} else if (geom.getGeometryType() == Geometry.LINEAR_RING) {
+				} else if (Geometry.LINEAR_RING.equals(geom.getGeometryType())) {
 					return geom.getCoordinates() != null ? geom.getCoordinates().length : 0;
 				}
 				return 0;
@@ -769,11 +769,11 @@ public class GeometryIndexService {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class GeometryIndexCombo {
+	private static class GeometryIndexCombo {
 
-		private Geometry geometry;
+		private final Geometry geometry;
 
-		private GeometryIndex index;
+		private final GeometryIndex index;
 
 		protected GeometryIndexCombo(Geometry geometry, GeometryIndex index) {
 			this.geometry = geometry;

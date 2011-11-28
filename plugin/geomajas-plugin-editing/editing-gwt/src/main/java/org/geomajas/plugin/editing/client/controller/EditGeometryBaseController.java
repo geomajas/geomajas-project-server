@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.snapping.SnappingService;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -33,9 +34,9 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 
 	private AbstractController idleController;
 
-	private AbstractController dragController;
+	private GeometryIndexDragController dragController;
 
-	private AbstractController insertController;
+	private GeometryIndexInsertController insertController;
 
 	private GeometryEditingService service;
 
@@ -43,12 +44,13 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public EditGeometryBaseController(MapWidget mapWidget, GeometryEditingService service) {
+	public EditGeometryBaseController(MapWidget mapWidget, GeometryEditingService service,
+			SnappingService snappingService) {
 		super(mapWidget);
 		this.service = service;
 		idleController = new PanController(mapWidget);
-		dragController = new GeometryIndexDragController(service, this);
-		insertController = new GeometryIndexInsertController(service, this);
+		dragController = new GeometryIndexDragController(service, snappingService, this);
+		insertController = new GeometryIndexInsertController(service, snappingService, this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -140,19 +142,19 @@ public class EditGeometryBaseController extends AbstractGraphicsController {
 		this.idleController = idleController;
 	}
 
-	public AbstractController getDragController() {
+	public GeometryIndexDragController getDragController() {
 		return dragController;
 	}
 
-	public void setDragController(AbstractController dragController) {
+	public void setDragController(GeometryIndexDragController dragController) {
 		this.dragController = dragController;
 	}
 
-	public AbstractController getInsertController() {
+	public GeometryIndexInsertController getInsertController() {
 		return insertController;
 	}
 
-	public void setInsertController(AbstractController insertController) {
+	public void setInsertController(GeometryIndexInsertController insertController) {
 		this.insertController = insertController;
 	}
 }

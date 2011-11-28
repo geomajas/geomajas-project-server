@@ -12,31 +12,40 @@
 package org.geomajas.plugin.editing.client;
 
 import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
+import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.controller.EditGeometryBaseController;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingServiceImpl;
+import org.geomajas.plugin.editing.client.snapping.SnappingService;
 
 /**
  * Top level geometry editor for the GWT face.
  * 
  * @author Pieter De Graef
  */
-public class GeometryEditor implements GeometryEditStartHandler {
+public class GeometryEditor implements GeometryEditStartHandler, GeometryEditStopHandler {
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
-	private GeometryEditingService service;
+	private final GeometryEditingService service;
+
+	private final SnappingService snappingService;
+
+	private final GeometryRenderer renderer;
+
+	private final EditGeometryBaseController baseController;
 
 	private GraphicsController previousController;
 
-	private EditGeometryBaseController baseController;
-
-	private GeometryRenderer renderer;
+	private boolean isBusyEditing;
 
 	// Options:
 
@@ -48,9 +57,14 @@ public class GeometryEditor implements GeometryEditStartHandler {
 		this.mapWidget = mapWidget;
 		service = new GeometryEditingServiceImpl();
 		service.addGeometryEditStartHandler(this);
-		baseController = new EditGeometryBaseController(mapWidget, service); // use factories?
+		service.addGeometryEditStopHandler(this);
 
+		snappingService = new SnappingService();
+		baseController = new EditGeometryBaseController(mapWidget, service, snappingService);
 		renderer = new GeometryRenderer(mapWidget, service, baseController);
+		
+		snappingService.addCoordinateSnapHandler(renderer);
+		
 		service.addGeometryEditStartHandler(renderer);
 		service.addGeometryEditStopHandler(renderer);
 		service.addGeometryEditShapeChangedHandler(renderer);
@@ -69,11 +83,24 @@ public class GeometryEditor implements GeometryEditStartHandler {
 
 		service.getIndexStateService().addGeometryIndexMarkForDeletionBeginHandler(renderer);
 		service.getIndexStateService().addGeometryIndexMarkForDeletionEndHandler(renderer);
+
+		mapWidget.getMapModel().getMapView().addMapViewChangedHandler(new MapViewChangedHandler() {
+
+			public void onMapViewChanged(MapViewChangedEvent event) {
+				if (isBusyEditing && isSnapOnDrag() && !event.isSameScaleLevel()) {
+					org.geomajas.geometry.Bbox bounds = new org.geomajas.geometry.Bbox(event.getBounds().getX(), event
+							.getBounds().getY(), event.getBounds().getWidth(), event.getBounds().getHeight());
+					snappingService.update(bounds);
+				}
+			}
+		});
 	}
 
 	// GeometryEditWorkflowHandler implementation:
 
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
+		isBusyEditing = true;
+
 		// Initialize controllers and painters:
 		previousController = mapWidget.getController();
 		mapWidget.setController(baseController);
@@ -81,9 +108,16 @@ public class GeometryEditor implements GeometryEditStartHandler {
 		if (zoomOnStart) {
 			// TODO Zoom darnit...
 		}
+		if (isBusyEditing && isSnapOnDrag()) {
+			Bbox bounds = mapWidget.getMapModel().getMapView().getBounds();
+			snappingService.update(new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(),
+					bounds.getHeight()));
+		}
 	}
 
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
+		isBusyEditing = false;
+
 		// Cleanup controllers and painters.
 		mapWidget.setController(previousController);
 	}
@@ -108,5 +142,29 @@ public class GeometryEditor implements GeometryEditStartHandler {
 
 	public GeometryRenderer getRenderer() {
 		return renderer;
+	}
+
+	public SnappingService getSnappingService() {
+		return snappingService;
+	}
+
+	public boolean isSnapOnDrag() {
+		return baseController.getDragController().isSnappingEnabled();
+	}
+
+	public void setSnapOnDrag(boolean snapOnDrag) {
+		baseController.getDragController().setSnappingEnabled(snapOnDrag);
+	}
+	
+	public boolean isSnapOnInsert() {
+		return baseController.getInsertController().isSnappingEnabled();
+	}
+	
+	public void setSnapOnInsert(boolean snapOnInsert) {
+		baseController.getInsertController().setSnappingEnabled(snapOnInsert);
+	}
+
+	public boolean isBusyEditing() {
+		return isBusyEditing;
 	}
 }

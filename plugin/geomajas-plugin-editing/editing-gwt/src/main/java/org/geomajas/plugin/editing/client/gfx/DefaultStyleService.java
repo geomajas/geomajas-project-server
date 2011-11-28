@@ -44,7 +44,7 @@ public class DefaultStyleService implements StyleService {
 
 	private ShapeStyle edgeMarkForDeletionStyle = new ShapeStyle("#FF0000", 0, "#990000", 1, 6);
 
-	private ShapeStyle edgeInsertMoveStyle = new ShapeStyle("#FFFFFF", 0, "#FFCC33", 1, 2);
+	private ShapeStyle edgeInsertMoveStyle = new ShapeStyle("#FFFFFF", 0, "#666666", 1, 2);
 
 	private ShapeStyle lineStringStyle = new ShapeStyle("#FFFFFF", 0, "#FFFFFF", 0, 0);
 
@@ -55,6 +55,8 @@ public class DefaultStyleService implements StyleService {
 	private ShapeStyle backgroundMarkedForDeletionStyle = new ShapeStyle("#FF0000", 0.35f, "#CC0000", 0, 0);
 
 	private ShapeStyle backgroundDisabledStyle = new ShapeStyle("#CCCCCC", 0.35f, "#CCCCCC", 0, 0);
+
+	private ShapeStyle snappedVertexStyle = new ShapeStyle("#888888", 1, "#CC0000", 1, 1);
 
 	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
@@ -160,7 +162,7 @@ public class DefaultStyleService implements StyleService {
 		this.backgroundStyle = backgroundStyle;
 	}
 
-	public ShapeStyle getEdgeInsertMoveStyle() {
+	public ShapeStyle getEdgeTentativeMoveStyle() {
 		return edgeInsertMoveStyle;
 	}
 
@@ -198,5 +200,13 @@ public class DefaultStyleService implements StyleService {
 
 	public void setBackgroundMarkedForDeletionStyle(ShapeStyle backgroundMarkedForDeletionStyle) {
 		this.backgroundMarkedForDeletionStyle = backgroundMarkedForDeletionStyle;
+	}
+
+	public ShapeStyle getVertexSnappedStyle() {
+		return snappedVertexStyle;
+	}
+
+	public void setSnappedVertexStyle(ShapeStyle snappedVertexStyle) {
+		this.snappedVertexStyle = snappedVertexStyle;
 	}
 }

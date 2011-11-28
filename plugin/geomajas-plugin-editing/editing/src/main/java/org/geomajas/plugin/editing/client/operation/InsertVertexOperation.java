@@ -35,9 +35,9 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	private GeometryIndex index;
 
-	private GeometryIndexService service;
+	private final GeometryIndexService service;
 
-	private Coordinate coordinate;
+	private final Coordinate coordinate;
 
 	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate) {
 		this.service = service;

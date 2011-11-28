@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.plugin.editing.client.event.GeometryEditEvent;
+import org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
 /**
@@ -27,7 +27,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  */
 @FutureApi(allMethods = true)
 public class GeometryIndexMarkForDeletionBeginEvent extends 
-		GeometryEditEvent<GeometryIndexMarkForDeletionBeginHandler> {
+		AbstractGeometryEditEvent<GeometryIndexMarkForDeletionBeginHandler> {
 
 	public GeometryIndexMarkForDeletionBeginEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);

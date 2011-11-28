@@ -31,6 +31,8 @@ public interface StyleService {
 	ShapeStyle getVertexSelectHoverStyle();
 
 	ShapeStyle getVertexMarkForDeletionStyle();
+	
+	ShapeStyle getVertexSnappedStyle();
 
 	ShapeStyle getEdgeStyle();
 
@@ -44,7 +46,7 @@ public interface StyleService {
 
 	ShapeStyle getEdgeMarkForDeletionStyle();
 
-	ShapeStyle getEdgeInsertMoveStyle();
+	ShapeStyle getEdgeTentativeMoveStyle();
 
 	ShapeStyle getLineStringStyle();
 

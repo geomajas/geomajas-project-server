@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.client.controller;
 
 import java.util.Collections;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
@@ -21,6 +22,7 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.snapping.SnappingService;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -34,11 +36,17 @@ import com.google.gwt.user.client.Window;
  */
 public class GeometryIndexInsertController extends AbstractController {
 
-	private GeometryEditingService service;
+	private final GeometryEditingService service;
 
-	public GeometryIndexInsertController(GeometryEditingService service, MapEventParser mapEventParser) {
+	private final SnappingService snappingService;
+
+	private boolean snappingEnabled;
+
+	public GeometryIndexInsertController(GeometryEditingService service, SnappingService snappingService,
+			MapEventParser mapEventParser) {
 		super(mapEventParser, service.getEditingState() == GeometryEditingState.DRAGGING);
 		this.service = service;
+		this.snappingService = snappingService;
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
@@ -53,9 +61,13 @@ public class GeometryIndexInsertController extends AbstractController {
 			try {
 				// Insert the location at the given index:
 				GeometryIndex insertIndex = service.getInsertIndex();
+				Coordinate location = getLocation(event, RenderSpace.WORLD);
+				if (snappingEnabled) {
+					location = snappingService.snap(location);
+				}
 				service.insert(Collections.singletonList(insertIndex),
-						Collections.singletonList(Collections.singletonList(getLocation(event, RenderSpace.WORLD))));
-				service.setTentativeMoveOrigin(getLocation(event, RenderSpace.SCREEN));
+						Collections.singletonList(Collections.singletonList(location)));
+				service.setTentativeMoveOrigin(location);
 
 				// Update the insert index (if allowed):
 				if (!service.getGeometry().getGeometryType().equals(Geometry.POINT)
@@ -73,7 +85,20 @@ public class GeometryIndexInsertController extends AbstractController {
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (service.getEditingState() == GeometryEditingState.INSERTING) {
-			service.setTentativeMoveLocation(getLocation(event, RenderSpace.SCREEN));
+			Coordinate location = getLocation(event, RenderSpace.WORLD);
+			if (snappingEnabled) {
+				Coordinate result = snappingService.snap(location);
+				if (snappingService.hasSnapped()) {
+					service.setTentativeMoveLocation(result);
+					//service.getIndexStateService().snappingBegin(Collections.singletonList(index));
+				} else {
+					service.setTentativeMoveLocation(location);
+					service.getIndexStateService().snappingEndAll();
+				}
+			} else {
+				service.setTentativeMoveLocation(location);
+				service.getIndexStateService().snappingEndAll();
+			}
 		}
 	}
 
@@ -81,5 +106,13 @@ public class GeometryIndexInsertController extends AbstractController {
 		if (service.getEditingState() == GeometryEditingState.INSERTING) {
 			service.setEditingState(GeometryEditingState.IDLE);
 		}
+	}
+
+	public boolean isSnappingEnabled() {
+		return snappingEnabled;
+	}
+
+	public void setSnappingEnabled(boolean snappingEnabled) {
+		this.snappingEnabled = snappingEnabled;
 	}
 }

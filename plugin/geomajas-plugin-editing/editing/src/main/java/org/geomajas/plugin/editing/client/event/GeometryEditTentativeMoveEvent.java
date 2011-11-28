@@ -24,9 +24,9 @@ import com.google.gwt.event.shared.GwtEvent;
 @FutureApi(allMethods = true)
 public class GeometryEditTentativeMoveEvent extends GwtEvent<GeometryEditTentativeMoveHandler> {
 
-	private Coordinate origin;
+	private final Coordinate origin;
 
-	private Coordinate currentPosition;
+	private final Coordinate currentPosition;
 
 	public GeometryEditTentativeMoveEvent(Coordinate origin, Coordinate currentPosition) {
 		this.origin = origin;

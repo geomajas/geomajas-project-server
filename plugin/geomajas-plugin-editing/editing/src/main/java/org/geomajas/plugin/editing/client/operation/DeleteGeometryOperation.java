@@ -27,7 +27,7 @@ public class DeleteGeometryOperation implements GeometryIndexOperation {
 
 	private GeometryIndex index;
 
-	private GeometryIndexService service;
+	private final GeometryIndexService service;
 
 	private Geometry deleted;
 

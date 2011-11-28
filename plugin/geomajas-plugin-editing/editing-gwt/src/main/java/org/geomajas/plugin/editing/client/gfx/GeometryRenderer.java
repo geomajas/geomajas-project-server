@@ -62,6 +62,10 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginEvent;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
 import org.geomajas.plugin.editing.client.handler.EditingHandlerRegistry;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
@@ -69,6 +73,8 @@ import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
+import org.geomajas.plugin.editing.client.snapping.event.CoordinateSnapEvent;
+import org.geomajas.plugin.editing.client.snapping.event.CoordinateSnapHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Cursor;
@@ -83,21 +89,24 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		GeometryEditShapeChangedHandler, GeometryEditChangeStateHandler, GeometryIndexSelectedHandler,
 		GeometryIndexDeselectedHandler, GeometryIndexDisabledHandler, GeometryIndexEnabledHandler,
 		GeometryIndexMarkForDeletionBeginHandler, GeometryIndexMarkForDeletionEndHandler,
-		GeometryEditTentativeMoveHandler, MapViewChangedHandler {
+		GeometryIndexSnappingBeginHandler, GeometryIndexSnappingEndHandler, GeometryEditTentativeMoveHandler,
+		MapViewChangedHandler, CoordinateSnapHandler {
 
 	private StyleService styleService = new DefaultStyleService();
 
-	private MapWidget mapWidget;
+	private final MapWidget mapWidget;
 
-	private GeometryEditingService editingService;
+	private final GeometryEditingService editingService;
 
-	private Map<String, Composite> groups = new HashMap<String, Composite>();
+	private final Map<String, Composite> groups = new HashMap<String, Composite>();
 
 	private String baseName = "editing";
 
-	private String insertMoveEdgeId1 = "insert-move-edge1";
+	private final String insertMoveEdgeId1 = "insert-move-edge1";
 
-	private String insertMoveEdgeId2 = "insert-move-edge2";
+	private final String insertMoveEdgeId2 = "insert-move-edge2";
+
+	private final String insertSnapPoint = "insert-snap-point";
 
 	private HandlerRegistration mapViewRegistration;
 
@@ -201,7 +210,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	}
 
 	// ------------------------------------------------------------------------
-	// GeometryEditMarkForDeletionHandler:
+	// GeometryEditMarkForDeletionHandlers:
 	// ------------------------------------------------------------------------
 
 	public void onGeometryIndexMarkForDeletionBegin(GeometryIndexMarkForDeletionBeginEvent event) {
@@ -211,6 +220,22 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	}
 
 	public void onGeometryIndexMarkForDeletionEnd(GeometryIndexMarkForDeletionEndEvent event) {
+		for (GeometryIndex index : event.getIndices()) {
+			redraw(event.getGeometry(), index);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// GeometryEditSnappingHandlers:
+	// ------------------------------------------------------------------------
+
+	public void onGeometryIndexSnappingEnd(GeometryIndexSnappingEndEvent event) {
+		for (GeometryIndex index : event.getIndices()) {
+			redraw(event.getGeometry(), index);
+		}
+	}
+
+	public void onGeometryIndexSnappingBegin(GeometryIndexSnappingBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			redraw(event.getGeometry(), index);
 		}
@@ -315,15 +340,15 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 						+ editingService.getIndexService().format(editingService.getInsertIndex());
 				Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
 
-				// Coordinate temp1 = vertices[vertices.length - 1];
 				Coordinate temp1 = event.getOrigin();
 				Coordinate temp2 = event.getCurrentPosition();
-				Coordinate c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToPan(temp1);
-				Coordinate c2 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToPan(temp2);
+				Coordinate c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp1);
+				Coordinate c2 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp2);
+
 				LineString edge = mapWidget.getMapModel().getGeometryFactory()
 						.createLineString(new Coordinate[] { c1, c2 });
 				mapWidget.getVectorContext().drawLine(parentGroup, insertMoveEdgeId1, edge,
-						styleService.getEdgeInsertMoveStyle());
+						styleService.getEdgeTentativeMoveStyle());
 			} else if (vertices != null && Geometry.LINEAR_RING.equals(geometryType)) {
 				String identifier = baseName + "."
 						+ editingService.getIndexService().format(editingService.getInsertIndex());
@@ -333,12 +358,12 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				// Coordinate temp1 = vertices[vertices.length - 2];
 				Coordinate temp1 = event.getOrigin();
 				Coordinate temp2 = event.getCurrentPosition();
-				Coordinate c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToPan(temp1);
-				Coordinate c2 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToPan(temp2);
+				Coordinate c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp1);
+				Coordinate c2 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp2);
 				LineString edge = mapWidget.getMapModel().getGeometryFactory()
 						.createLineString(new Coordinate[] { c1, c2 });
 				mapWidget.getVectorContext().drawLine(parentGroup, insertMoveEdgeId1, edge,
-						styleService.getEdgeInsertMoveStyle());
+						styleService.getEdgeTentativeMoveStyle());
 
 				// Line 2
 				if (closeRingWhileInserting) {
@@ -346,10 +371,34 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 					c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp1);
 					edge = mapWidget.getMapModel().getGeometryFactory().createLineString(new Coordinate[] { c1, c2 });
 					mapWidget.getVectorContext().drawLine(parentGroup, insertMoveEdgeId2, edge,
-							styleService.getEdgeInsertMoveStyle());
+							styleService.getEdgeTentativeMoveStyle());
 				}
 			}
 		} catch (GeometryIndexNotFoundException e) {
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// CoordinateSnappedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onCoordinateSnapAttempt(CoordinateSnapEvent event) {
+		if (editingService.getEditingState() == GeometryEditingState.INSERTING) {
+			String identifier = baseName + "."
+					+ editingService.getIndexService().format(editingService.getInsertIndex());
+			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.'))
+					+ ".vertices-selection");
+
+			if (event.hasSnapped()) {
+				Coordinate temp = event.getTo();
+				Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
+				Bbox rectangle = new Bbox(coordinate.getX() - 6, coordinate.getY() - 6, 12, 12);
+
+				mapWidget.getVectorContext().drawRectangle(parentGroup, insertSnapPoint, rectangle,
+						styleService.getVertexSnappedStyle());
+			} else {
+				mapWidget.getVectorContext().deleteElement(parentGroup, insertSnapPoint);
+			}
 		}
 	}
 
@@ -625,6 +674,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			return styleService.getVertexMarkForDeletionStyle();
 		} else if (!editingService.getIndexStateService().isEnabled(index)) {
 			return styleService.getVertexDisabledStyle();
+		} else if (editingService.getIndexStateService().isSnapped(index)) {
+			return styleService.getVertexSnappedStyle();
 		}
 
 		boolean selected = editingService.getIndexStateService().isSelected(index);

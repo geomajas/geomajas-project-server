@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @FutureApi(allMethods = true)
 public class GeometryEditStopEvent extends GwtEvent<GeometryEditStopHandler> {
 
-	private Geometry geometry;
+	private final Geometry geometry;
 
 	public GeometryEditStopEvent(Geometry geometry) {
 		this.geometry = geometry;

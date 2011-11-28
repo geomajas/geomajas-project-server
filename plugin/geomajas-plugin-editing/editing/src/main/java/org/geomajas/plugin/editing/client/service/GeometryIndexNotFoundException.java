@@ -28,4 +28,8 @@ public class GeometryIndexNotFoundException extends Exception {
 	public GeometryIndexNotFoundException(String message) {
 		super(message);
 	}
+
+	public GeometryIndexNotFoundException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

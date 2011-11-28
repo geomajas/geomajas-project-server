@@ -26,7 +26,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @FutureApi(allMethods = true)
 public class GeometryEditShapeChangedEvent extends GwtEvent<GeometryEditShapeChangedHandler> {
 
-	private Geometry geometry;
+	private final Geometry geometry;
 
 	public GeometryEditShapeChangedEvent(Geometry geometry) {
 		this.geometry = geometry;

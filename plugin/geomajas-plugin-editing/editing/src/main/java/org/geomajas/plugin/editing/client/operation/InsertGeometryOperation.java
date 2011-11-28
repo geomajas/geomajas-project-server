@@ -27,9 +27,9 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 
 	private GeometryIndex index;
 
-	private GeometryIndexService service;
+	private final GeometryIndexService service;
 
-	private Geometry child;
+	private final Geometry child;
 
 	public InsertGeometryOperation(GeometryIndexService service, Geometry child) {
 		this.service = service;

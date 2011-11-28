@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.GwtEvent;
 @FutureApi(allMethods = true)
 public class GeometryEditChangeStateEvent extends GwtEvent<GeometryEditChangeStateHandler> {
 
-	private GeometryEditingState editingState;
+	private final GeometryEditingState editingState;
 
 	public GeometryEditChangeStateEvent(GeometryEditingState editingState) {
 		this.editingState = editingState;

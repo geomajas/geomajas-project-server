@@ -28,7 +28,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 
 	private GeometryIndex index;
 
-	private GeometryIndexService service;
+	private final GeometryIndexService service;
 
 	private Coordinate coordinate;
 

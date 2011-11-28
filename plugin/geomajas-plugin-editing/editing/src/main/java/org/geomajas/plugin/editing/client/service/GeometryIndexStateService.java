@@ -21,6 +21,8 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndH
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -36,6 +38,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * <li><b>Marked for deletion</b>: vertices and edges can be marked for deletion. Specific controllers could then be
  * implement actions for the user for actually delete the indices that are marked.</li>
  * <li><b>Enabled/Disabled</b>: All parts of the geometry can be individually enabled/disabled for further editing.</li>
+ * <li><b>Snapping</b>: During dragging or inserting it can be possible that snapping is being used. This state keeps
+ * track of whether or not any vertices have snapped to some external geometry.</li>
  * </ul>
  * </p>
  * 
@@ -235,4 +239,56 @@ public interface GeometryIndexStateService {
 	 * @return true or false.
 	 */
 	boolean isMarkedForDeletion(GeometryIndex index);
+
+	// ------------------------------------------------------------------------
+	// Methods concerning snapping:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Register a {@link GeometryIndexSnappingBeginHandler} to listen to snapping begin events of sub-geometries,
+	 * vertices and edges.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryIndexSnappingBeginHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryIndexSnappingBeginHandler(GeometryIndexSnappingBeginHandler handler);
+
+	/**
+	 * Register a {@link GeometryIndexSnappingEndHandler} to listen to snapping end events of sub-geometries, vertices
+	 * and edges.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryIndexSnappingEndHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryIndexSnappingEndHandler(GeometryIndexSnappingEndHandler handler);
+
+	/**
+	 * Add the given list of indices to the list of snapped indices.
+	 * 
+	 * @param indices
+	 *            The indices that have snapped to some external geometry.
+	 */
+	void snappingBegin(List<GeometryIndex> indices);
+
+	/**
+	 * Unmark the given indices as being snapped. They return to their normal state and location.
+	 * 
+	 * @param indices
+	 *            The indices that have stopped snapping.
+	 */
+	void snappingEnd(List<GeometryIndex> indices);
+
+	/** Empty the list of snapped indices. */
+	void snappingEndAll();
+	
+	/**
+	 * Has a certain index snapped to some external geometry or not?
+	 * 
+	 * @param index
+	 *            The index to check.
+	 * @return True or false.
+	 */
+	boolean isSnapped(GeometryIndex index);
 }

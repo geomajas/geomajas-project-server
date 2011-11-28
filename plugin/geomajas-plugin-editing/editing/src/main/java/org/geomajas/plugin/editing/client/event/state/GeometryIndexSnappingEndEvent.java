@@ -13,29 +13,29 @@ package org.geomajas.plugin.editing.client.event.state;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
 /**
- * Event which is passed when highlighting some part of a geometry has begun during geometry editing.
+ * Event which is passed when some part of a geometry has stopped snapping to another geometry during editing.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
-public class GeometryIndexHighlightBeginEvent extends AbstractGeometryEditEvent<GeometryIndexHighlightBeginHandler> {
+@Api(allMethods = true)
+public class GeometryIndexSnappingEndEvent extends AbstractGeometryEditEvent<GeometryIndexSnappingEndHandler> {
 
-	public GeometryIndexHighlightBeginEvent(Geometry geometry, List<GeometryIndex> indices) {
+	public GeometryIndexSnappingEndEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
-	public Type<GeometryIndexHighlightBeginHandler> getAssociatedType() {
-		return GeometryIndexHighlightBeginHandler.TYPE;
+	public Type<GeometryIndexSnappingEndHandler> getAssociatedType() {
+		return GeometryIndexSnappingEndHandler.TYPE;
 	}
 
-	protected void dispatch(GeometryIndexHighlightBeginHandler geometryIndexHighlightHandler) {
-		geometryIndexHighlightHandler.onGeometryIndexHighlightBegin(this);
+	protected void dispatch(GeometryIndexSnappingEndHandler handler) {
+		handler.onGeometryIndexSnappingEnd(this);
 	}
 }

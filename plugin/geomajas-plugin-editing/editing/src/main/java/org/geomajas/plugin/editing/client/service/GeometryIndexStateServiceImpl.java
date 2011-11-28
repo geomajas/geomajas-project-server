@@ -30,6 +30,10 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginEvent;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -40,15 +44,17 @@ import com.google.gwt.event.shared.HandlerRegistration;
  */
 public class GeometryIndexStateServiceImpl implements GeometryIndexStateService {
 
-	private List<GeometryIndex> highlights = new ArrayList<GeometryIndex>();
+	private final List<GeometryIndex> highlights = new ArrayList<GeometryIndex>();
 
-	private List<GeometryIndex> markedForDeletion = new ArrayList<GeometryIndex>();
+	private final List<GeometryIndex> markedForDeletion = new ArrayList<GeometryIndex>();
 
-	private List<GeometryIndex> selection = new ArrayList<GeometryIndex>();
+	private final List<GeometryIndex> selection = new ArrayList<GeometryIndex>();
 
-	private List<GeometryIndex> disabled = new ArrayList<GeometryIndex>();
+	private final List<GeometryIndex> disabled = new ArrayList<GeometryIndex>();
 
-	private GeometryEditingServiceImpl editingService;
+	private final List<GeometryIndex> snapped = new ArrayList<GeometryIndex>();
+
+	private final GeometryEditingServiceImpl editingService;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -251,5 +257,88 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 
 	public boolean isMarkedForDeletion(GeometryIndex index) {
 		return markedForDeletion.contains(index);
+	}
+
+	// ------------------------------------------------------------------------
+	// Methods concerning snapping:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Register a {@link GeometryIndexSnappingBeginHandler} to listen to snapping begin events of sub-geometries,
+	 * vertices and edges.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryIndexSnappingBeginHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	public HandlerRegistration addGeometryIndexSnappingBeginHandler(GeometryIndexSnappingBeginHandler handler) {
+		return editingService.getEventBus().addHandler(GeometryIndexSnappingBeginHandler.TYPE, handler);
+	}
+
+	/**
+	 * Register a {@link GeometryIndexSnappingEndHandler} to listen to snapping end events of sub-geometries, vertices
+	 * and edges.
+	 * 
+	 * @param handler
+	 *            The {@link GeometryIndexSnappingEndHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	public HandlerRegistration addGeometryIndexSnappingEndHandler(GeometryIndexSnappingEndHandler handler) {
+		return editingService.getEventBus().addHandler(GeometryIndexSnappingEndHandler.TYPE, handler);
+	}
+
+	/**
+	 * Add the given list of indices to the list of snapped indices.
+	 * 
+	 * @param indices
+	 *            The indices that have snapped to some external geometry.
+	 */
+	public void snappingBegin(List<GeometryIndex> indices) {
+		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
+		for (GeometryIndex index : indices) {
+			if (!snapped.contains(index)) {
+				temp.add(index);
+			}
+		}
+		snapped.addAll(temp);
+		editingService.getEventBus().fireEvent(new GeometryIndexSnappingBeginEvent(editingService.getGeometry(), temp));
+	}
+
+	/**
+	 * Unmark the given indices as being snapped. They return to their normal state and location.
+	 * 
+	 * @param indices
+	 *            The indices that have stopped snapping.
+	 */
+	public void snappingEnd(List<GeometryIndex> indices) {
+		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
+		for (GeometryIndex index : indices) {
+			if (snapped.contains(index)) {
+				temp.add(index);
+			}
+		}
+		snapped.removeAll(temp);
+		editingService.getEventBus().fireEvent(new GeometryIndexSnappingEndEvent(editingService.getGeometry(), temp));
+	}
+
+	/**
+	 * Has a certain index snapped to some external geometry or not?
+	 * 
+	 * @param index
+	 *            The index to check.
+	 * @return True or false.
+	 */
+	public boolean isSnapped(GeometryIndex index) {
+		return snapped.contains(index);
+	}
+
+	/** Empty the list of snapped indices. */
+	public void snappingEndAll() {
+		if (snapped.size() > 0) {
+			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(snapped);
+			snapped.clear();
+			editingService.getEventBus().fireEvent(
+					new GeometryIndexSnappingEndEvent(editingService.getGeometry(), clone));
+		}
 	}
 }

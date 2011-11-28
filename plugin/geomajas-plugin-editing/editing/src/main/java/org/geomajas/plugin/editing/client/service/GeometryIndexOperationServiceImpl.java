@@ -43,15 +43,15 @@ import com.google.gwt.event.shared.EventBus;
 public class GeometryIndexOperationServiceImpl implements GeometryIndexOperationService, GeometryEditStartHandler,
 		GeometryEditStopHandler {
 
-	private Stack<OperationSequence> undoQueue;
+	private final Stack<OperationSequence> undoQueue;
 
-	private Stack<OperationSequence> redoQueue;
+	private final Stack<OperationSequence> redoQueue;
 
-	private GeometryEditingServiceImpl service;
+	private final GeometryEditingServiceImpl service;
 
-	private GeometryIndexService indexService;
+	private final GeometryIndexService indexService;
 
-	private EventBus eventBus;
+	private final EventBus eventBus;
 
 	private OperationSequence current;
 
@@ -298,9 +298,9 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class OperationSequence {
+	private static class OperationSequence {
 
-		private List<GeometryIndexOperation> operations = new ArrayList<GeometryIndexOperation>();
+		private final List<GeometryIndexOperation> operations = new ArrayList<GeometryIndexOperation>();
 
 		public void addOperation(GeometryIndexOperation operation) {
 			operations.add(operation);

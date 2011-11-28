@@ -24,7 +24,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public class GeometryEditInsertEvent extends GeometryEditEvent<GeometryEditInsertHandler> {
+public class GeometryEditInsertEvent extends AbstractGeometryEditEvent<GeometryEditInsertHandler> {
 
 	public GeometryEditInsertEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);

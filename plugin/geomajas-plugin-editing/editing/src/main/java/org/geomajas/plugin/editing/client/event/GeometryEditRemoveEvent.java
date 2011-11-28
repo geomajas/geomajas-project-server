@@ -24,7 +24,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public class GeometryEditRemoveEvent extends GeometryEditEvent<GeometryEditRemoveHandler> {
+public class GeometryEditRemoveEvent extends AbstractGeometryEditEvent<GeometryEditRemoveHandler> {
 
 	public GeometryEditRemoveEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
