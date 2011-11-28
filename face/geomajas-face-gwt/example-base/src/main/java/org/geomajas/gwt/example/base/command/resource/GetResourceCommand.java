@@ -22,7 +22,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -67,7 +66,7 @@ public class GetResourceCommand implements Command<GetResourceRequest, GetResour
 			Resource resource = context.getResource(url);
 			String content;
 			if (null != resource && resource.exists()) {
-				content = new String(read(new FileInputStream(resource.getFile())), FILE_ENCODING);
+				content = new String(read(resource.getInputStream()), FILE_ENCODING);
 				if (process) {
 					content = process(content);
 				}
