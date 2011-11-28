@@ -18,8 +18,9 @@ import java.util.List;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
 import org.geomajas.plugin.editing.client.handler.EditingHandlerRegistry;
@@ -50,7 +51,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Pieter De Graef
  */
-public class DeleteRingBtn extends ToolStripButton implements GeometryEditStartHandler {
+public class DeleteRingBtn extends ToolStripButton implements GeometryEditStartHandler, GeometryEditStopHandler {
 
 	private MenuBar menuBar;
 
@@ -96,6 +97,7 @@ public class DeleteRingBtn extends ToolStripButton implements GeometryEditStartH
 		});
 
 		service.addGeometryEditStartHandler(this);
+		service.addGeometryEditStopHandler(this);
 	}
 
 	// ------------------------------------------------------------------------

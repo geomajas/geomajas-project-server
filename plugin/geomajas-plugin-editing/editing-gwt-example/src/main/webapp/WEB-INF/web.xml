@@ -23,7 +23,8 @@
 			<!-- application context -->
 			WEB-INF/applicationContext.xml
 			WEB-INF/map*.xml
-			<!--WEB-INF/layer*.xml-->
+			WEB-INF/layer*.xml
+			WEB-INF/client*.xml
 		</param-value>
     </context-param>
 

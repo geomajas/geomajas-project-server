@@ -14,8 +14,9 @@ package org.geomajas.plugin.editing.gwt.example.client.widget;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditResumeEvent;
@@ -32,7 +33,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * @author Pieter De Graef
  */
 public class UndoBtn extends ToolStripButton implements GeometryEditShapeChangedHandler, GeometryEditStartHandler,
-		GeometryEditSuspensionHandler {
+		GeometryEditStopHandler, GeometryEditSuspensionHandler {
 
 	private GeometryEditingService service;
 
@@ -56,6 +57,7 @@ public class UndoBtn extends ToolStripButton implements GeometryEditShapeChanged
 		});
 		service.addGeometryEditShapeChangedHandler(this);
 		service.addGeometryEditStartHandler(this);
+		service.addGeometryEditStopHandler(this);
 	}
 
 	// ------------------------------------------------------------------------

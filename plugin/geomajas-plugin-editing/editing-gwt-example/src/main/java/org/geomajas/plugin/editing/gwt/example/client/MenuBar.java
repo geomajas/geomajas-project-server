@@ -24,17 +24,20 @@ import org.geomajas.plugin.editing.gwt.example.client.widget.AddRingBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.CancelEditingBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.DeleteRingBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.RedoBtn;
+import org.geomajas.plugin.editing.gwt.example.client.widget.SnappingOptionWindow;
 import org.geomajas.plugin.editing.gwt.example.client.widget.UndoBtn;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
+import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.toolbar.ToolStripMenuButton;
 
 /**
@@ -49,6 +52,8 @@ public class MenuBar extends ToolStrip {
 	private MapWidget map;
 
 	private EventBus eventBus;
+
+	private SnappingOptionWindow wnd;
 
 	public MenuBar(GeometryEditor editor) {
 		this.editor = editor;
@@ -79,6 +84,20 @@ public class MenuBar extends ToolStrip {
 		addGeometryEditSuspensionHandler(addRingBtn);
 		addButton(addRingBtn);
 		addButton(new DeleteRingBtn(this, editor.getService(), editor.getRenderer()));
+
+		addSeparator();
+		ToolStripButton snappingBtn = new ToolStripButton("Snapping options");
+		snappingBtn.setHeight(32);
+		snappingBtn.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				if (wnd == null) {
+					wnd = new SnappingOptionWindow(MenuBar.this.editor);
+				}
+				wnd.show();
+			}
+		});
+		addButton(snappingBtn);
 	}
 
 	public HandlerRegistration addGeometryEditSuspensionHandler(GeometryEditSuspensionHandler handler) {

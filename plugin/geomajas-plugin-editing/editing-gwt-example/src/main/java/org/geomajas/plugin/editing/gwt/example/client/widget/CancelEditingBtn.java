@@ -12,8 +12,9 @@
 package org.geomajas.plugin.editing.gwt.example.client.widget;
 
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -25,7 +26,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Pieter De Graef
  */
-public class CancelEditingBtn extends ToolStripButton implements GeometryEditStartHandler {
+public class CancelEditingBtn extends ToolStripButton implements GeometryEditStartHandler, GeometryEditStopHandler {
 
 	public CancelEditingBtn(final GeometryEditingService service) {
 		setIcon("[ISOMORPHIC]/geomajas/silk/cancel.png");
@@ -41,6 +42,7 @@ public class CancelEditingBtn extends ToolStripButton implements GeometryEditSta
 			}
 		});
 		service.addGeometryEditStartHandler(this);
+		service.addGeometryEditStopHandler(this);
 	}
 
 	// ------------------------------------------------------------------------
