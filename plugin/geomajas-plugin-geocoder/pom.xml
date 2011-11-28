@@ -68,14 +68,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geocoder-gwt-version}</version>
+				<version>${geocoder-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-pure-gwt</artifactId>
-				<version>${geocoder-puregwt-version}</version>
+				<version>${geocoder-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -94,6 +94,11 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-geocoder-gwt-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -153,7 +158,8 @@
 
 	<properties>
 		<geocoder-backend-version>1.10.0-SNAPSHOT</geocoder-backend-version>
-		<geocoder-gwt-version>1.10.0-SNAPSHOT</geocoder-gwt-version>
-		<geocoder-puregwt-version>1.0.0-SNAPSHOT</geocoder-puregwt-version>
+		<geocoder-gwt-face-version>1.10.0-SNAPSHOT</geocoder-gwt-face-version>
+		<geocoder-puregwt-face-version>1.0.0-SNAPSHOT</geocoder-puregwt-face-version>
+		<geocoder-gwt-version>2.4.0</geocoder-gwt-version>
 	</properties>
 </project>

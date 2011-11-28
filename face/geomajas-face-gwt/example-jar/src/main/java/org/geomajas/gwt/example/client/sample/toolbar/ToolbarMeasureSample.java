@@ -67,8 +67,9 @@ public class ToolbarMeasureSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/mapMeasure.xml" };
+		return new String[] {
+				"classpath:org/geomajas/gwt/example/mapMeasure.xml",
+				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

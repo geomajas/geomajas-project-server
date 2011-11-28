@@ -82,7 +82,9 @@ public class ScaleSelectCustomSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsmNoResolutions.xml" };
+		return new String[] {
+				"classpath:org/geomajas/gwt/example/mapOsmNoResolutions.xml",
+				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

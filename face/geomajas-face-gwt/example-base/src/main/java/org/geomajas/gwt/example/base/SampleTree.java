@@ -17,6 +17,7 @@ import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeGridField;
+import com.smartgwt.client.widgets.tree.TreeNode;
 import org.geomajas.gwt.example.base.i18n.ExampleBaseMessages;
 
 /**
@@ -58,6 +59,11 @@ public class SampleTree extends TreeGrid {
 
 		setData(tree);
 		// tree.openAll(tree.getRoot());
-		tree.openFolder(tree.getChildren(tree.getRoot())[2]);
+		int index = 0;
+		TreeNode[] nodes = tree.getChildren(tree.getRoot());
+		if (nodes.length > 2) {
+			index = 2;
+		}
+		tree.openFolder(nodes[index]);
 	}
 }

@@ -51,7 +51,7 @@ public class LoadsProperlyTestInt {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.pollingEvery(500, TimeUnit.MILLISECONDS);
 
-		driver.get("http://localhost:9080/index.html");
+		driver.get("http://localhost:9080/");
 
 		// the login window should appear
 		wait.until(new ExpectedCondition<Boolean>() {

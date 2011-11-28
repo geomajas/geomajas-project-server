@@ -18,7 +18,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapOsm" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapGeocoderOsm" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF"/>
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -74,19 +74,19 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="osmLayer"/>
+				<ref bean="clientLayerOsmGeocoder"/>
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-		<property name="serverLayerId" value="osm"/>
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerOsmGeocoder">
+		<property name="serverLayerId" value="layerOsmGeocoder"/>
 		<property name="label" value="OpenStreetMap (raster)"/>
 		<property name="visible" value="true"/>
 		<property name="style" value="1"/>
 	</bean>
 
-	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<bean name="osmGeocoderInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -100,8 +100,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="tileHeight" value="256"/>
 	</bean>
 
-	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer">
-		<property name="layerInfo" ref="osmInfo"/>
+	<bean name="layerOsmGeocoder" class="org.geomajas.layer.osm.OsmLayer">
+		<property name="layerInfo" ref="osmGeocoderInfo"/>
 	</bean>
 
 </beans>
