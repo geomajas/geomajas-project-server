@@ -83,6 +83,13 @@ org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetX():1
 org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetY():1.8.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onActivate():1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onDeactivate():1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onDoubleClick(DoubleClickEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseDown(MouseDownEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseMove(MouseMoveEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseOut(MouseOutEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseOver(MouseOverEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseUp(MouseUpEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseWheel(MouseWheelEvent, ):1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void setOffsetX(int, ):1.8.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void setOffsetY(int, ):1.8.0
 org.geomajas.gwt.client.controller.GraphicsController::1.6.0

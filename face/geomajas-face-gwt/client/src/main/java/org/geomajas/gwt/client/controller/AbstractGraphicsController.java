@@ -20,8 +20,15 @@ import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Touch;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.TouchEvent;
 
 /**
@@ -61,6 +68,45 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	}
 
 	public void onDeactivate() {
+	}
+
+	// -------------------------------------------------------------------------
+	// Keeping the API check happy - Mouse handling methods:
+	// -------------------------------------------------------------------------
+
+	/** {@inheritDoc} */
+	public void onMouseDown(MouseDownEvent event) {
+		super.onMouseDown(event);
+	}
+
+	/** {@inheritDoc} */
+	public void onMouseUp(MouseUpEvent event) {
+		super.onMouseUp(event);
+	}
+
+	/** {@inheritDoc} */
+	public void onMouseMove(MouseMoveEvent event) {
+		super.onMouseMove(event);
+	}
+
+	/** {@inheritDoc} */
+	public void onMouseOut(MouseOutEvent event) {
+		super.onMouseOut(event);
+	}
+
+	/** {@inheritDoc} */
+	public void onMouseOver(MouseOverEvent event) {
+		super.onMouseOver(event);
+	}
+
+	/** {@inheritDoc} */
+	public void onMouseWheel(MouseWheelEvent event) {
+		super.onMouseWheel(event);
+	}
+
+	/** {@inheritDoc} */
+	public void onDoubleClick(DoubleClickEvent event) {
+		super.onDoubleClick(event);
 	}
 
 	// ------------------------------------------------------------------------
