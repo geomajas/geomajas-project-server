@@ -43,20 +43,11 @@
 		</developer>
 	</developers>
 
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
+	<properties>
+		<geomajas-plugin-editing-backend-version>1.10.0-SNAPSHOT</geomajas-plugin-editing-backend-version>
+		<geomajas-plugin-editing-gwt-version>1.10.0-SNAPSHOT</geomajas-plugin-editing-gwt-version>
+		<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>
+	</properties>	
 
 	<dependencyManagement>
 		<dependencies>
@@ -113,7 +104,7 @@
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
-				<version>2.4.0-SNAPSHOT</version>
+				<version>${gwt-exporter-version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -155,8 +146,28 @@
 		</profile>
 	</profiles>
 
-	<properties>
-		<geomajas-plugin-editing-backend-version>1.10.0-SNAPSHOT</geomajas-plugin-editing-backend-version>
-		<geomajas-plugin-editing-gwt-version>1.10.0-SNAPSHOT</geomajas-plugin-editing-gwt-version>
-	</properties>	
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+
+		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<repository>
+			<id>Geomajas snapshots</id>
+			<name>Geomajas snapshot repository</name>
+			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
