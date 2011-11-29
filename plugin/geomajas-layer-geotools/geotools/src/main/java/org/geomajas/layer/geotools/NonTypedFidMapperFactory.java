@@ -25,12 +25,20 @@ import org.geotools.data.jdbc.fidmapper.FIDMapper;
  */
 public class NonTypedFidMapperFactory extends DefaultFIDMapperFactory {
 
+	/**
+	 * Create a {@link NonTypedFidMapperFactory}.
+	 */
 	public NonTypedFidMapperFactory() {
 		super();
 	}
 
-	public NonTypedFidMapperFactory(boolean returnFIDColumnsAsAttributes) {
-		super(returnFIDColumnsAsAttributes);
+	/**
+	 * Create a {@link NonTypedFidMapperFactory}.
+	 *
+	 * @param returnFidColumnsAsAttributes should feature id columns be considered as attributes?
+	 */
+	public NonTypedFidMapperFactory(boolean returnFidColumnsAsAttributes) {
+		super(returnFidColumnsAsAttributes);
 	}
 
 	/**

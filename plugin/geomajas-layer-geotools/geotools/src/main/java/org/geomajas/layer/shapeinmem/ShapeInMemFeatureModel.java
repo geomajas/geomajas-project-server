@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  */
 public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements FeatureModel {
 
-	private int srid;
+	private final int srid;
 
 	private VectorLayerInfo vectorLayerInfo;
 
@@ -51,6 +51,15 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	// Constructor:
 
+	/**
+	 * Create a {@link ShapeInMemFeatureModel}.
+	 *
+	 * @param dataStore data store
+	 * @param featureSourceName feature source name
+	 * @param srid srid
+	 * @param converterService converter service
+	 * @throws LayerException oops
+	 */
 	public ShapeInMemFeatureModel(DataStore dataStore, String featureSourceName, int srid,
 			DtoConverterService converterService) throws LayerException {
 		setDataStore(dataStore);
@@ -59,6 +68,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		this.converterService = converterService;
 	}
 
+	/** {@inheritDoc} */
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		this.vectorLayerInfo = vectorLayerInfo;
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
@@ -69,6 +79,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	// FeatureModel implementation:
 
+	/** {@inheritDoc} */
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		AttributeInfo attributeInfo = attributeInfoMap.get(name);
 		if (null == attributeInfo) {
@@ -81,6 +92,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
@@ -95,10 +107,12 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		return attribs;
 	}
 
+	/** {@inheritDoc} */
 	public int getSrid() throws LayerException {
 		return srid;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Geometry geom = (Geometry) asFeature(feature).getDefaultGeometry();
 		if (geom instanceof MultiLineString && vectorLayerInfo.getLayerType() == LayerType.LINESTRING) {
@@ -111,15 +125,18 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		return (Geometry) geom.clone();
 	}
 
+	/** {@inheritDoc} */
 	public String getGeometryAttributeName() throws LayerException {
 		return getSchema().getGeometryDescriptor().getLocalName();
 	}
 
+	/** {@inheritDoc} */
 	public String getId(Object feature) throws LayerException {
 		SimpleFeature realFeature = asFeature(feature);
 		return realFeature.getID();
 	}
 
+	/** {@inheritDoc} */
 	public Object newInstance() throws LayerException {
 		String id = Long.toString(nextId);
 		nextId++;
@@ -127,11 +144,13 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 				new Object[getSchema().getAttributeCount()], getSchema(), id);
 	}
 
+	/** {@inheritDoc} */
 	public Object newInstance(String id) throws LayerException {
 		return CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
 				new Object[getSchema().getAttributeCount()], getSchema(), id);
 	}
 
+	/** {@inheritDoc} */
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
 		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
 			if (!entry.getKey().equals(getGeometryAttributeName())) {
@@ -140,16 +159,21 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		asFeature(feature).setDefaultGeometry(geometry);
 	}
 
+	/** {@inheritDoc} */
 	public boolean canHandle(Object feature) {
 		return feature instanceof SimpleFeature;
 	}
 
-	// Private functions:
-
+	/**
+	 * Set the next id for attempts to set the feature id on new features.
+	 *
+	 * @param nextId next id
+	 */
 	void setNextId(long nextId) {
 		this.nextId = nextId;
 	}

@@ -46,6 +46,7 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 		this.iterators.add(new IteratorInfo(iterator));
 	}
 
+	@Override
 	public void clear() {
 		super.clear();
 		for (IteratorInfo info : iterators) {
@@ -62,7 +63,6 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 	 * Transaction which can be tested for closed state.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public static class GeotoolsTransaction extends DefaultTransaction {
 
@@ -74,6 +74,11 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 			closed = true;
 		}
 
+		/**
+		 * Is transaction already already closed?
+		 *
+		 * @return true when transaction is closed
+		 */
 		public boolean isClosed() {
 			return closed;
 		}
@@ -81,18 +86,26 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 	}
 
 	/**
-	 * 
+	 * Container object to manage iterators.
+	 *
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	private static class IteratorInfo {
 
 		private FeatureIterator<SimpleFeature> iterator;
 
+		/**
+		 * Create a {@IteratorInfo}.
+		 *
+		 * @param iterator iterator to maintain
+		 */
 		public IteratorInfo(FeatureIterator<SimpleFeature> iterator) {
 			this.iterator = iterator;
 		}
 
+		/**
+		 * Close the iterator.
+		 */
 		public void close() {
 			iterator.close();
 		}

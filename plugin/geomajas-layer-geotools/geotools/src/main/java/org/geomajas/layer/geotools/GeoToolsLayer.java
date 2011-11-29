@@ -104,6 +104,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private long cooldownTimeBetweenInitializationRetries = DEFAULT_COOLDOWN_TIME;
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
@@ -168,6 +169,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		this.cooldownTimeBetweenInitializationRetries = cooldownTimeBetweenInitializationRetries;
 	}
 
+	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -186,26 +188,37 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		this.layerInfo = layerInfo;
 	}
 
+	/** {@inheritDoc} */
 	public VectorLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isCreateCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isUpdateCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isDeleteCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public void setDataStore(DataStore dataStore) throws LayerException {
 		super.setDataStore(dataStore);
 	}
 
+	/**
+	 * Finish initializing the layer.
+	 *
+	 * @throws LayerException oops
+	 */
 	@PostConstruct
 	protected void initFeatures() throws LayerException {
 		if (null == layerInfo) {
@@ -238,8 +251,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 					converterService);
 			featureModel.setLayerInfo(layerInfo);
 			featureModelUsable = true;
-			
+
 		} catch (LayerException le) {
+			// GT-32 @todo is this the correct behaviour, does this not catch too much??
 			featureModelUsable = false;
 			log.warn("The layer could not be correctly initialized: " + getId(), le);
 		} catch (IOException ioe) {
@@ -252,6 +266,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Object create(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
@@ -276,7 +291,13 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	public void update(Object feature) throws LayerException {
+	/**
+	 * Update an existing feature. Made package private for testing purposes.
+	 *
+	 * @param feature feature to update
+	 * @throws LayerException oops
+	 */
+	void update(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
 			SimpleFeatureStore store = (SimpleFeatureStore) source;
@@ -288,9 +309,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			List<Name> names = new ArrayList<Name>();
 			Map<String, Attribute> attrMap = getFeatureModel().getAttributes(feature);
 			List<Object> values = new ArrayList<Object>();
-			for (String name : attrMap.keySet()) {
+			for (Map.Entry<String, Attribute> entry : attrMap.entrySet()) {
+				String name = entry.getKey();
 				names.add(store.getSchema().getDescriptor(name).getName());
-				values.add(attrMap.get(name).getValue());
+				values.add(entry.getValue().getValue());
 			}
 
 			try {
@@ -310,6 +332,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void delete(String featureId) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
@@ -335,6 +358,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		if (exists(getFeatureModel().getId(feature))) {
 			update(feature);
@@ -344,6 +368,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return feature;
 	}
 
+	/** {@inheritDoc} */
 	public Object read(String featureId) throws LayerException {
 		Filter filter = filterService.createFidFilter(new String[] {featureId});
 		Iterator<?> iterator = getElements(filter, 0, 0);
@@ -354,6 +379,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Envelope getBounds() throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
@@ -369,16 +395,12 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				transactionManager.addIterator(it);
 			}
 			return fc.getBounds();
-		} catch (Throwable t) {
+		} catch (Throwable t) { // NOSONAR avoid errors (like NPE) as well
 			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}
 
-	/**
-	 * Retrieve the bounds of the specified features.
-	 * 
-	 * @return the bounds of the specified features
-	 */
+	/** {@inheritDoc} */
 	public Envelope getBounds(Filter filter) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
@@ -400,6 +422,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
@@ -422,6 +446,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
+	/** {@inheritDoc} */
 	public FeatureModel getFeatureModel() {
 		if (!featureModelUsable) {
 			retryInitFeatures();
@@ -439,7 +464,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * Adapter to java iterator.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	private class JavaIterator implements Iterator {
 

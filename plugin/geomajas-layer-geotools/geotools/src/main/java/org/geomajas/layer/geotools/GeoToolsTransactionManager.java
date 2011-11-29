@@ -58,7 +58,6 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	 * Adds the specified collection and iterator. This method should be called when opening a feature collection to
 	 * allow proper connection/transaction/lock cleanup in the case of exceptions.
 	 * 
-	 * @param featureCollection feature collection
 	 * @param iterator SimpleFeature iterator
 	 */
 	public void addIterator(FeatureIterator<SimpleFeature> iterator) {
@@ -116,9 +115,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	protected Object doSuspend(Object transaction) {
 		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) transaction;
 		txObject.setTransactionHolder(null, false);
-		GeoToolsTransactionHolder txHolder = (GeoToolsTransactionHolder) TransactionSynchronizationManager
-				.unbindResource(this);
-		return txHolder;
+		return TransactionSynchronizationManager.unbindResource(this);
 	}
 
 	@Override

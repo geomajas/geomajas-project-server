@@ -21,7 +21,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Both the GeotoolsFeatureModel and the GeotoolsLayer use the same FeatureSource a their way of dealing with geotools
+ * Both the {@link org.geomajas.layer.geotools.GeoToolsFeatureModel} and the
+ * {@link org.geomajas.layer.geotools.GeoToolsLayer} use the same FeatureSource a their way of dealing with GeoTools
  * persistence. So instead of each of these classes having the same functions, we created this little class.
  * 
  * @author Pieter De Graef
@@ -29,30 +30,47 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class FeatureSourceRetriever {
 
 	/**
-	 * Reference to a geotools datastore.
+	 * Reference to a GeoTools data store.
 	 */
 	private DataStore dataStore;
 
 	/**
-	 * The name of the feature source in the geotools datastore.
+	 * The name of the feature source in the GeoTools data store.
 	 */
 	private String featureSourceName;
 
 	/**
-	 * The FeatureSource object with which we have access to the geotools persistence layer.
+	 * The FeatureSource object with which we have access to the GeoTools persistence layer.
 	 */
 	private SimpleFeatureSource featureSource;
 
 	protected long nextId;
 
+	/**
+	 * Set the data store.
+	 *
+	 * @param dataStore data store
+	 * @throws LayerException in case something goes wrong
+	 */
 	public void setDataStore(DataStore dataStore) throws LayerException {
 		this.dataStore = dataStore;
 	}
 
+	/**
+	 * Get the current data store.
+	 *
+	 * @return data store
+	 */
 	public DataStore getDataStore() {
 		return dataStore;
 	}
 
+	/**
+	 * Set feature source name.
+	 *
+	 * @param featureSourceName feature source name
+	 * @throws LayerException oops
+	 */
 	public void setFeatureSourceName(String featureSourceName) throws LayerException {
 		this.featureSourceName = featureSourceName;
 	}
@@ -60,7 +78,7 @@ public class FeatureSourceRetriever {
 	// Class specific functions:
 
 	/**
-	 * Retrieve the geotools feature type for the 'featureSourceName'.
+	 * Retrieve the GeoTools feature type for the 'featureSourceName'.
 	 * 
 	 * @return feature type
 	 * @throws LayerException problem when retrieving feature source
@@ -72,7 +90,7 @@ public class FeatureSourceRetriever {
 	/**
 	 * Retrieve the FeatureSource object from the data store.
 	 * 
-	 * @return An opengis FeatureSource object;
+	 * @return An OpenGIS FeatureSource object;
 	 * @throws LayerException
 	 *             oops
 	 */
@@ -100,6 +118,13 @@ public class FeatureSourceRetriever {
 		return featureSourceName;
 	}
 
+	/**
+	 * Convert the given feature object to a {@link SimpleFeature}.
+	 *
+	 * @param possibleFeature feature object to convert
+	 * @return converted feature
+	 * @throws LayerException object could not be converted
+	 */
 	protected SimpleFeature asFeature(Object possibleFeature) throws LayerException {
 		if (possibleFeature instanceof SimpleFeature) {
 			return (SimpleFeature) possibleFeature;

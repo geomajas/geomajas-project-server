@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
 
 /**
- * A simple utility factory for injecting a {@link DataStore} via Spring.
+ * A simple utility factory which creates a GeoTools data store from a parameter map.
  * 
  * @author Jan De Moerloose
  */
@@ -40,11 +40,9 @@ public final class DataStoreFactory {
 	/**
 	 * Creates a suitable {@link DataStore} for the specified parameters.
 	 * 
-	 * @param parameters
-	 *            list of GeoTools parameters.
-	 * @return data store
-	 * @throws IOException
-	 *             oops
+	 * @param parameters list of GeoTools parameters.
+	 * @return data store, never null
+	 * @throws IOException could not create data store
 	 */
 	public static DataStore create(Map<String, String> parameters) throws IOException {
 		String url = parameters.get("url");
@@ -59,7 +57,7 @@ public final class DataStoreFactory {
 			JDBCDataStore jdbcStore = (JDBCDataStore) store;
 			jdbcStore.setFIDMapperFactory(new NonTypedFidMapperFactory());
 		}
-		if (store == null) {
+		if (null == store) {
 			StringBuilder availableStr = new StringBuilder();
 			StringBuilder missingStr = new StringBuilder();
 			Iterator<DataStoreFactorySpi> all = DataStoreFinder.getAllDataStores();

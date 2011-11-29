@@ -47,6 +47,15 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	// Constructor:
 
+	/**
+	 * Create a GeoTools feature model.
+	 *
+	 * @param dataStore data store
+	 * @param featureSourceName feature source name
+	 * @param srid srid
+	 * @param converterService converter service
+	 * @throws LayerException feature model could not be constructed
+	 */
 	public GeoToolsFeatureModel(DataStore dataStore, String featureSourceName, int srid,
 			DtoConverterService converterService) throws LayerException {
 		setDataStore(dataStore);
@@ -56,6 +65,12 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		this.converterService = converterService;
 	}
 
+	/**
+	 * Create a GeoTools feature model.
+	 *
+	 * @param vectorLayerInfo vector layer info
+	 * @throws LayerException feature model could not be constructed
+	 */
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
 		for (AttributeInfo info : featureInfo.getAttributes()) {
@@ -65,10 +80,12 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	// FeatureModel implementation:
 
+	/** {@inheritDoc} */
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		return convertAttribute(asFeature(feature).getAttribute(name), name);
 	}
 
+	/** {@inheritDoc} */
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
@@ -91,25 +108,30 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Geometry geometry = (Geometry) asFeature(feature).getDefaultGeometry();
 		geometry.setSRID(srid);
 		return (Geometry) geometry.clone();
 	}
 
+	/** {@inheritDoc} */
 	public String getGeometryAttributeName() throws LayerException {
 		return getSchema().getGeometryDescriptor().getLocalName();
 	}
 
+	/** {@inheritDoc} */
 	public String getId(Object feature) throws LayerException {
 		SimpleFeature featureAsFeature = asFeature(feature);
 		return featureAsFeature.getID();
 	}
 
+	/** {@inheritDoc} */
 	public int getSrid() throws LayerException {
 		return srid;
 	}
 
+	/** {@inheritDoc} */
 	public Object newInstance() throws LayerException {
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);
@@ -117,6 +139,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		return builder.buildFeature(Long.toString(nextId++));
 	}
 
+	/** {@inheritDoc} */
 	public Object newInstance(String id) throws LayerException {
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);
@@ -124,6 +147,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		return builder.buildFeature(id);
 	}
 
+	/** {@inheritDoc} */
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
 		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
 			if (!entry.getKey().equals(getGeometryAttributeName())) {
@@ -132,10 +156,12 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		asFeature(feature).setDefaultGeometry(geometry);
 	}
 
+	/** {@inheritDoc} */
 	public boolean canHandle(Object feature) {
 		return feature instanceof SimpleFeature;
 	}

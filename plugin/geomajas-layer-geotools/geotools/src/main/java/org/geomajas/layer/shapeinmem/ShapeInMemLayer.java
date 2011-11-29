@@ -71,14 +71,21 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	private String id;
 	
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * Set the id for this layer.
+	 *
+	 * @param id layer id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -95,18 +102,22 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		this.layerInfo = layerInfo;
 	}
 
+	/** {@inheritDoc} */
 	public VectorLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isCreateCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isUpdateCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isDeleteCapable() {
 		return true;
 	}
@@ -125,7 +136,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("url", url);
 			DataStore store = DataStoreFactory.create(params);
-			if (store == null) {
+			if (null == store) {
 				throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 			}
 			setDataStore(store);
@@ -134,11 +145,9 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
-	public void setDataStore(DataStore dataStore) throws LayerException {
-		super.setDataStore(dataStore);
-	}
-
 	/**
+	 * {@inheritDoc}
+	 *
 	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
@@ -154,14 +163,17 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return filteredList.iterator();
 	}
 
+	/** {@inheritDoc} */
 	public Envelope getBounds() throws LayerException {
 		return getBounds(Filter.INCLUDE);
 	}
 
 	/**
 	 * Retrieve the bounds of the specified features.
-	 * 
+	 *
+	 * @param filter filter
 	 * @return the bounds of the specified features
+	 * @throws LayerException cannot read features
 	 */
 	public Envelope getBounds(Filter filter) throws LayerException {
 		try {
@@ -172,10 +184,12 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
+	/** {@inheritDoc} */
 	public FeatureModel getFeatureModel() {
 		return featureModel;
 	}
 
+	/** {@inheritDoc} */
 	public Object create(Object feature) throws LayerException {
 		String id = featureModel.getId(feature);
 		if (id != null && !features.containsKey(id)) {
@@ -186,6 +200,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	public Object read(String featureId) throws LayerException {
 		if (!features.containsKey(featureId)) {
 			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
@@ -194,6 +209,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		if (!features.containsKey(getFeatureModel().getId(feature))) {
 			return create(feature);
@@ -203,6 +219,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void delete(String featureId) throws LayerException {
 		features.remove(featureId);
 	}
@@ -211,6 +228,11 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	// Private functions:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Finish initializing the layer.
+	 *
+	 * @throws LayerException oops
+	 */
 	@PostConstruct
 	protected void initFeatures() throws LayerException {
 		crs = geoService.getCrs2(layerInfo.getCrs());
@@ -235,7 +257,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		} catch (NumberFormatException nfe) {
 			throw new LayerException(nfe, ExceptionCode.FEATURE_MODEL_PROBLEM, url);
 		} catch (MalformedURLException e) {
-			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
+			throw new LayerException(e, ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		} catch (IOException ioe) {
 			throw new LayerException(ioe, ExceptionCode.CANNOT_CREATE_LAYER_MODEL, url);
 		} catch (GeomajasException ge) {
