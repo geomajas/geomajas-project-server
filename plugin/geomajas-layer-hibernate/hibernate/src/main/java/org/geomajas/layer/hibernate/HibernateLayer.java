@@ -21,11 +21,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.ConvertUtils;
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -99,6 +99,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	private boolean useLazyFeatureConversion = true;
 
+	/** {@inheritDoc */
 	public String getId() {
 		return id;
 	}
@@ -115,14 +116,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		this.id = id;
 	}
 
+	/** {@inheritDoc */
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
+	/** {@inheritDoc */
 	public FeatureModel getFeatureModel() {
 		return featureModel;
 	}
 
+	/** {@inheritDoc */
 	public boolean useLazyFeatureConversion() {
 		return useLazyFeatureConversion;
 	}
@@ -157,6 +161,11 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		}
 	}
 
+	/**
+	 * Finish initializing the layer.
+	 *
+	 * @throws GeomajasException oops
+	 */
 	@PostConstruct
 	@SuppressWarnings("unused")
 	protected void postConstruct() throws GeomajasException {
@@ -172,14 +181,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	}
 
+	/** {@inheritDoc */
 	public boolean isCreateCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc */
 	public boolean isUpdateCapable() {
 		return true;
 	}
 
+	/** {@inheritDoc */
 	public boolean isDeleteCapable() {
 		return true;
 	}
@@ -258,6 +270,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		}
 	}
 
+	/** {@inheritDoc */
 	public Object create(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
@@ -266,6 +279,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return feature;
 	}
 
+	/** {@inheritDoc */
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
@@ -274,12 +288,14 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return session.merge(feature);
 	}
 
+	/** {@inheritDoc */
 	public void delete(String featureId) throws LayerException {
 		Session session = getSessionFactory().getCurrentSession();
 		session.delete(getFeature(featureId));
 		session.flush();
 	}
 
+	/** {@inheritDoc */
 	public Object read(String featureId) throws LayerException {
 		Object object = getFeature(featureId);
 		if (object == null) {
@@ -288,11 +304,18 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return object;
 	}
 
+	/**
+	 * Update a feature object in the Hibernate session.
+	 *
+	 * @param feature feature object
+	 * @throws LayerException oops
+	 */
 	public void update(Object feature) throws LayerException {
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(feature);
 	}
 
+	/** {@inheritDoc */
 	public Envelope getBounds() throws LayerException {
 		return getBounds(filterService.createTrueFilter());
 	}
@@ -314,6 +337,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return getBoundsLocal(filter);
 	}
 
+	/** {@inheritDoc */
 	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
 		if (attributeName == null) {
 			throw new HibernateLayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, (Object) null);
@@ -344,14 +368,29 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	// Extra getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Get the date format.
+	 *
+	 * @return date format
+	 */
 	public DateFormat getDateFormat() {
 		return dateFormat;
 	}
 
+	/**
+	 * Set the date format.
+	 *
+	 * @param dateFormat date format
+	 */
 	public void setDateFormat(DateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 	}
 
+	/**
+	 * Is the result set scrollable?
+	 *
+	 * @return true when result set is scrollable
+	 */
 	public boolean isScrollableResultSet() {
 		return scrollableResultSet;
 	}
@@ -386,25 +425,32 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 		private boolean hasNext;
 
+		/**
+		 * Create a {@link ScrollIterator}.
+		 *
+		 * @param sr scrollable result set
+		 */
 		public ScrollIterator(ScrollableResults sr) {
 			this.sr = sr;
 			hasNext = sr.first();
 		}
 
+		/** {@inheritDoc */
 		public boolean hasNext() {
 			return hasNext;
 		}
 
+		/** {@inheritDoc */
 		public Object next() {
 			Object o = sr.get(0);
 			hasNext = sr.next();
 			return o;
 		}
 
+		/** {@inheritDoc */
 		public void remove() {
 			// TODO the alternative (default) version with list allows remove(),
-			// but this will
-			// only remove it from the list, not from db, so maybe we should
+			// but this will only remove it from the list, not from db, so maybe we should
 			// just ignore instead of throwing an exception
 			throw new HibernateException("Unsupported operation: You cannot remove records this way.");
 		}
