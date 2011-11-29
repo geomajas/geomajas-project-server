@@ -11,6 +11,7 @@
 package org.geomajas.configuration.client;
 
 import java.io.Serializable;
+import org.geomajas.annotation.Api;
 
 /**
  * Enumeration class for the available options to limit (e.g. the mapview's) bounds when applying 
@@ -20,6 +21,7 @@ import java.io.Serializable;
  * 
  * @since 1.10.0
  */
+@Api
 public enum BoundsLimitOption implements Serializable {
 
 	/**
