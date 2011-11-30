@@ -31,21 +31,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-	
-	<bean name="simpleDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
-		<constructor-arg>
-			<map>
-				<entry key="namespace" value="postgis" />
-				<entry key="user" value="simple" />
-				<entry key="passwd" value="simple" />
-				<entry key="database" value="simple" />
-				<entry key="schema" value="simple" />
-				<entry key="host" value="localhost" />
-				<entry key="port" value="5432" />
-				<entry key="dbtype" value="postgis" />
-			</map>
-		</constructor-arg>
-	</bean>
 
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
 

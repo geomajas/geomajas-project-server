@@ -24,7 +24,38 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="layerRoads" class="org.geomajas.layer.geotools.GeoToolsLayer">
 		<property name="layerInfo" ref="layerRoadsInfo"/>
-		<property name="dataStore" ref="appDatastore" />
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="namespace" />
+					<property name="value" value="postgis" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="user" />
+					<property name="value" value="app" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="passwd" />
+					<property name="value" value="app" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="database" />
+					<property name="value" value="app" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="host" />
+					<property name="value" value="localhost" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="port" />
+					<property name="value" value="5432" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="dbtype" />
+					<property name="value" value="postgis" />
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 	<bean name="layerRoadsInfo" class="org.geomajas.configuration.VectorLayerInfo">

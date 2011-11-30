@@ -33,16 +33,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="citiesDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
-		<constructor-arg>
-			<map>
-				<entry key="url" value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp" />
-			</map>
-		</constructor-arg>
-	</bean>
-
 	<bean name="test" class="org.geomajas.layer.geotools.GeoToolsLayer">
-		<property ref="citiesDatastore" name="dataStore" />
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="url" />
+					<property name="value"
+						value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp" />
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 </beans>

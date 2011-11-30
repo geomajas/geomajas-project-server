@@ -48,10 +48,10 @@
           <row>
             <entry>url</entry>
 
-            <entry>Url for the shape file. Apart from standard protocols
-            supported by java, you can also use the "classpath:" protocol (the
+            <entry>URL for the shape file. Apart from standard protocols
+            supported by Java, you can also use the "classpath:" protocol (the
             resource location should not start with a slash) to refer to shape
-            files on the classpath.</entry>
+            files on the class path.</entry>
           </row>
 
           <row>
@@ -90,7 +90,7 @@
       <para>In order to read data from a WFS, a GeoTools layer is required.
       Currently GeoTools has support for WFS 1.0 and 1.1, and support for
       WFS-T 1.0. As the GeoTools WFS plug-in is not by default part of the
-      classpath, you must add it to the classpath manually. First things
+      class path, you must add it to the class path manually. First things
       first, the XML configuration. There are 2 ways of configuring a WFS
       layer through the GeoTools layer. As Geomajas uses a GeoTools DataStore
       behind the screens, it is possible to configure this DataStore
@@ -156,36 +156,16 @@
         </itemizedlist></para>
 
       <para>Note that most of the parameters above are optional. Only the
-      capabilities url is required.</para>
+      capabilities URL is required.</para>
 
-      <para>Configuring a WFS layer, with a separate DataStore:</para>
-
-      <programlisting>&lt;!-- GeoTools DataStore: connects to a WFS server --&gt;
-&lt;bean name="<emphasis role="bold">wfsDatastore</emphasis>" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create"&gt;
-   &lt;constructor-arg&gt;
-      &lt;map&gt;
-         &lt;entry key="WFSDataStoreFactory:GET_CAPABILITIES_URL"
-            value="http://www.some-wfs.com/ows?service=WFS&amp;amp;VERSION&amp;#61;1.0.0&amp;amp;request&amp;#61;GetCapabilities" /&gt;
-         &lt;entry key="WFSDataStoreFactory.TIMEOUT" value="5000" /&gt;
-      &lt;/map&gt;
-   &lt;/constructor-arg&gt;
-&lt;/bean&gt;
-
-&lt;!-- Layer definition, that uses the WFS DataStore --&gt;
-&lt;bean name="myWfsLayer" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
-   &lt;property name="layerInfo" ref="someLayerInfo" /&gt;
-   &lt;property name="dataStore" ref="<emphasis role="bold">wfsDatastore</emphasis>" /&gt;
-&lt;/bean&gt;</programlisting>
-
-      <para>Alternatively, the layer can be configured directly with the
-      required parameters:</para>
+      <para>You can configure a WFS layer like this:</para>
 
       <programlisting>&lt;bean name="anotherWfsLayer" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
    &lt;property name="parameters"&gt;
       &lt;list&gt;
          &lt;bean class="org.geomajas.configuration.Parameter"&gt;
             &lt;property name="name" value="WFSDataStoreFactory:GET_CAPABILITIES_URL" /&gt;
-            &lt;property name="value" value="aaaaaaa" /&gt;
+            &lt;property name="value" value="http://www.some-wfs.com/ows?service=WFS&amp;amp;VERSION&amp;#61;1.0.0&amp;amp;request&amp;#61;GetCapabilities" /&gt;
          &lt;/bean&gt;
          &lt;bean class="org.geomajas.configuration.Parameter"&gt;
             &lt;property name="name" value="WFSDataStoreFactory:TIMEOUT" /&gt;
@@ -212,11 +192,11 @@
       Spatial,...)</title>
 
       <warning>
-        <para>The configurations in this section still need to be
-        doublechecked! If you find errors, please post it on the forum.</para>
+        <para>The configurations in this section still need to be double
+        checked! If you find errors, please post it on the forum.</para>
       </warning>
 
-      <para>Configuring a GeoTools layer that makes use of a PostGis database,
+      <para>Configuring a GeoTools layer that makes use of a PostGIS database,
       is again a question of using the correct parameters. As with other
       examples of using a GeoTools layer, there is the choice of configuring
       the GetoTools DataStore separately or not. By configuring the DataStore
@@ -228,12 +208,12 @@
       <itemizedlist>
         <listitem>
           <para><emphasis>namespace</emphasis>: The namespace of the database
-          (i.e. "postgis")</para>
+          (i.e. "postgis").</para>
         </listitem>
 
         <listitem>
           <para><emphasis>dbtype</emphasis>: The type of database: (i.e.
-          "postgis")</para>
+          "postgis").</para>
         </listitem>
 
         <listitem>
@@ -261,31 +241,8 @@
         </listitem>
       </itemizedlist>
 
-      <para>Configuring a database layer, with a separate DataStore:</para>
-
-      <programlisting>&lt;!-- GeoTools DataStore: connects to a PostGIS database --&gt;
-&lt;bean name="<emphasis role="bold">postGisDatastore</emphasis>" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create"&gt;
-   &lt;constructor-arg&gt;
-      &lt;map&gt;
-         &lt;entry key="namespace" value="postgis" /&gt;
-         &lt;entry key="dbtype" value="postgis" /&gt;
-         &lt;entry key="database" value="some_database" /&gt;
-         &lt;entry key="user" value="some_user" /&gt;
-         &lt;entry key="passwd" value="some_password" /&gt;
-         &lt;entry key="host" value="localhost" /&gt;
-         &lt;entry key="port" value="5432" /&gt;
-      &lt;/map&gt;
-   &lt;/constructor-arg&gt;
-&lt;/bean&gt;
-
-&lt;!-- Layer definition, that uses the DataStore --&gt;
-&lt;bean name="myPostGisLayer" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
-   &lt;property name="layerInfo" ref="someLayerInfo" /&gt;
-   &lt;property name="dataStore" ref="<emphasis role="bold">postGisDatastore</emphasis>" /&gt;
-&lt;/bean&gt;</programlisting>
-
-      <para>Alternatively one can configure the layer directly with the
-      required parameters:</para>
+      <para>Configuring a database layer using PostGIS can be done like
+      this:</para>
 
       <programlisting>&lt;bean name="myPostGisLayer" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
    &lt;property name="parameters"&gt;
@@ -349,8 +306,8 @@
         that you use. For example, column names in a PostGIS database all have
         lower cases, and so the Geomajas attribute configuration should
         reflect this. If you are using Oracle Spatial on the other hand all
-        column names are uppercase, so your configuration should contain
-        uppercases for the attribute names.</para>
+        column names are upper case, so your configuration should contain
+        upper case for the attribute names.</para>
       </note>
     </section>
   </section>
@@ -380,10 +337,10 @@
             <row>
               <entry>url</entry>
 
-              <entry>Url for the shape file. Apart from standard protocols
-              supported by java, you can also use the "classpath:" protocol
+              <entry>URL for the shape file. Apart from standard protocols
+              supported by Java, you can also use the "classpath:" protocol
               (the resource location should not start with a slash) to refer
-              to shape files on the classpath.</entry>
+              to shape files on the class path.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -405,18 +362,18 @@
       <listitem>
         <para>The data store: this is GeoTools' primary data object and will
         be referenced in the GeoTools layer. The parameters define the
-        connection properties of the underlying physical medium (PostGis in
-        this case)</para>
+        connection properties of the underlying physical medium (PostGIS in
+        this case).</para>
       </listitem>
 
       <listitem>
         <para>A tag to enable annotation-based transactional behavior,
         internally used by Geomajas to decide which commands need transaction
-        support</para>
+        support.</para>
       </listitem>
 
       <listitem>
-        <para>The platform transaction manager for GeoTools</para>
+        <para>The platform transaction manager for GeoTools.</para>
       </listitem>
     </itemizedlist>
   </section>

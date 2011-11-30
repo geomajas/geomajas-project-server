@@ -61,7 +61,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 1.7.1
  */
 @Api
-@Transactional(rollbackFor = { Exception.class })
+@Transactional(rollbackFor = { Throwable.class })
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
@@ -161,7 +161,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	/**
 	 * The time to wait between initialization retries in case the service is unavailable.
 	 *
-	 * @param cooldownTimeBetweenInitializationRetries cooldown time in milliseconds
+	 * @param cooldownTimeBetweenInitializationRetries cool down time in milliseconds
 	 * @since 1.8.0
 	 */
 	@Api
@@ -209,6 +209,17 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated set the data store parameters on the parameter object instead
+	 */
+	@Override
+	@Deprecated
+	public void setDataStore(DataStore dataStore) throws LayerException {
+		super.setDataStore(dataStore);
+	}
+
+	/**
 	 * Finish initializing the layer.
 	 *
 	 * @throws LayerException oops
@@ -246,10 +257,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			featureModel.setLayerInfo(layerInfo);
 			featureModelUsable = true;
 
-		} catch (LayerException le) {
-			// GT-32 @todo is this the correct behaviour, does this not catch too much??
-			featureModelUsable = false;
-			log.warn("The layer could not be correctly initialized: " + getId(), le);
 		} catch (IOException ioe) {
 			if (MAGIC_STRING_LIBRARY_MISSING.equals(ioe.getMessage())) {
 				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION, url);

@@ -64,7 +64,7 @@
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -74,40 +74,40 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-jdbc</artifactId>
-			<version>${geotools-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-cql</artifactId>
-			<version>${geotools-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-postgis</artifactId>
-			<version>${geotools-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.postgis</groupId>
-					<artifactId>postgis-driver</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-shapefile</artifactId>
-			<version>${geotools-version}</version>
-		</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-jdbc</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-cql</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-postgis</artifactId>
+				<version>${geotools-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.postgis</groupId>
+						<artifactId>postgis-driver</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-shapefile</artifactId>
+				<version>${geotools-version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
@@ -147,10 +147,10 @@
 			</activation>
 		</profile>
 	</profiles>
-	
+
 	<properties>
 		<geotools-layer-backend-version>1.9.0</geotools-layer-backend-version>
 		<geotools-version>2.7.1</geotools-version>
 	</properties>
-	
+
 </project>

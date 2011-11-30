@@ -8,13 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.layer.geotools;
 
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.FilterService;
+import org.apache.commons.collections.functors.ExceptionClosure;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.feature.simple.SimpleFeature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,26 +30,20 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/layerPopulatedPlaces110m.xml",
-		"/org/geomajas/testdata/simplevectorsContext.xml", "/org/geomajas/layer/geotools/test.xml" })
-@Transactional(rollbackFor = { Throwable.class })
-public abstract class AbstractGeoToolsTest {
-
-	protected static final String SHAPE_FILE = 
-		"org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp";
-
-	protected static final String LAYER_NAME = "110m_populated_places_simple";
-	
-	protected static final String ATTRIBUTE_NAME = "NAME";
-
-	protected static final String ATTRIBUTE_POPULATION = "POP_OTHER";
+		"/org/geomajas/layer/geotools/dataStoreCannotStart.xml"})
+@Transactional(rollbackFor = { java.lang.Throwable.class })
+public class DataStoreStartWfsTest {
 
 	@Autowired
-	protected ApplicationContext applicationContext;
+	private GeoToolsLayer layer;
 
-	@Autowired
-	protected FilterService filterCreator;
+	@Test
+	public void testRead() throws Exception {
+		try {
+		SimpleFeature f = (SimpleFeature) layer.read("whatever"); // there is nothing there, exception should come now
+		} catch (GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.FEATURE_MODEL_PROBLEM, ge.getExceptionCode());
+		}
+	}
 
-	@Autowired
-	protected DtoConverterService converterService;
 }

@@ -24,20 +24,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<context:component-scan base-package="org.geomajas.test" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
 
-	<bean name="appDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
-		<constructor-arg>
-			<map>
-				<entry key="namespace" value="postgis" />
-				<entry key="user" value="app" />
-				<entry key="passwd" value="app" />
-				<entry key="database" value="app" />
-				<entry key="host" value="localhost" />
-				<entry key="port" value="5432" />
-				<entry key="dbtype" value="postgis" />
-			</map>
-		</constructor-arg>
-	</bean>
-
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" />
 
 	<bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager">
