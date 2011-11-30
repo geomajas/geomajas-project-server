@@ -9,11 +9,32 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The GeoTools layer allows you to build a Geomajas vector layer from
+  any GeoTools DataStore object.</para>
+
+  <para>The layer is built to be able to recover from connection problems.
+  When a data source is temporary unavailable, you will get exceptions during
+  the downtime, but the connection should recover once the data source is
+  available again.</para>
+
+  <para>The GeoTools layer also allows you to connect build a layer from a
+  shape file. You can do this using the ShapeInMemLayer, which reads the
+  entire shape file in memory. This does not allow you to save the changes
+  back to disk at the moment (changes are saved in memory but will be lost
+  when the application is restarted).</para>
+
+  <para>Alternatively, you can use a GeoTools data store to access a shape
+  file. This will persist changes back to disk but is not safe for concurrent
+  access (which is the case in Geomajas) and thus should only be used for
+  testing<footnote>
+      <para>GeoTools 2.7 indexes the shape file in a data structure which does
+      not handle concurrency.</para>
+    </footnote>. For proper support of shape files, it is recommended to
+  import the shape file into a database (PostGIS for example has a script for
+  this).</para>
 </chapter>
