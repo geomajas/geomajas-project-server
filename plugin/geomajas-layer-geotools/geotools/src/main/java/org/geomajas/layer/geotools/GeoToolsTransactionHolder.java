@@ -28,20 +28,40 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 
 	private GeotoolsTransaction transaction = new GeotoolsTransaction();
 
-	private List<IteratorInfo> iterators = new ArrayList<IteratorInfo>();
+	private final List<IteratorInfo> iterators = new ArrayList<IteratorInfo>();
 
+	/**
+	 * Get the list of iterators.
+	 *
+	 * @return list of iterators
+	 */
 	public List<IteratorInfo> getIterators() {
 		return iterators;
 	}
 
+	/**
+	 * Get transaction.
+	 *
+	 * @return transaction
+	 */
 	public Transaction getTransaction() {
 		return transaction;
 	}
 
+	/**
+	 * Is transaction active?
+	 *
+	 * @return true when transaction is active
+	 */
 	public boolean isTransactionActive() {
 		return !transaction.isClosed();
 	}
 
+	/**
+	 * Add an iterator.
+	 *
+	 * @param iterator iterator
+	 */
 	public void addIterator(FeatureIterator<SimpleFeature> iterator) {
 		this.iterators.add(new IteratorInfo(iterator));
 	}
@@ -95,7 +115,7 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 		private FeatureIterator<SimpleFeature> iterator;
 
 		/**
-		 * Create a {@IteratorInfo}.
+		 * Create a {@link IteratorInfo}.
 		 *
 		 * @param iterator iterator to maintain
 		 */

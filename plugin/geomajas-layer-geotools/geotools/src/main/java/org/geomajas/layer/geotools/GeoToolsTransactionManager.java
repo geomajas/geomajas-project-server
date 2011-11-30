@@ -30,6 +30,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class GeoToolsTransactionManager extends AbstractPlatformTransactionManager {
 
+	private static final long serialVersionUID = 190L;
+
 	private final Logger log = LoggerFactory.getLogger(AbstractPlatformTransactionManager.class);
 
 	/**
@@ -161,7 +163,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	/**
 	 * GeoTools transaction object.
 	 */
-	private class GeoToolsTransactionObject {
+	private static class GeoToolsTransactionObject {
 
 		private GeoToolsTransactionHolder holder;
 
@@ -169,23 +171,47 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 		
 		private boolean rollbackOnly;
 
+		/**
+		 * Get the transaction holder.
+		 *
+		 * @return transaction holder
+		 */
 		public GeoToolsTransactionHolder getTransactionHolder() {
 			return holder;
 		}
 
+		/**
+		 * Set transaction holder.
+		 *
+		 * @param holder tx holder
+		 * @param newTransactionHolder true when new
+		 */
 		public void setTransactionHolder(GeoToolsTransactionHolder holder, boolean newTransactionHolder) {
 			this.holder = holder;
 			this.newTransactionHolder = newTransactionHolder;
 		}
 
+		/**
+		 * Is this a new transaction holder?
+		 *
+		 * @return true when transaction holder is new
+		 */
 		public boolean isNewTransactionHolder() {
 			return newTransactionHolder;
 		}
 
+		/**
+		 * Is for transaction for rollback only?
+		 *
+		 * @return true when tx should be rolled back
+		 */
 		public boolean isRollbackOnly() {
 			return rollbackOnly;
 		}
 
+		/**
+		 * Set rollback only state to true.
+		 */
 		public void setRollbackOnly() {
 			this.rollbackOnly = true;
 		}

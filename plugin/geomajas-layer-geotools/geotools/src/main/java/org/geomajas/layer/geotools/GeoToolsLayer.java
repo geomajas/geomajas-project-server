@@ -208,12 +208,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return true;
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public void setDataStore(DataStore dataStore) throws LayerException {
-		super.setDataStore(dataStore);
-	}
-
 	/**
 	 * Finish initializing the layer.
 	 *
@@ -465,7 +459,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * 
 	 * @author Jan De Moerloose
 	 */
-	private class JavaIterator implements Iterator {
+	private static class JavaIterator implements Iterator {
 
 		private final FeatureIterator<SimpleFeature> delegate;
 

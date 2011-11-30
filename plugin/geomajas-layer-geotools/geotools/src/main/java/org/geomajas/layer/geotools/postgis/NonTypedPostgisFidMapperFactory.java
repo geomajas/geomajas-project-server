@@ -28,21 +28,29 @@ import java.util.logging.Level;
  */
 public class NonTypedPostgisFidMapperFactory extends DefaultFIDMapperFactory {
 
+	/**
+	 * Create a {@link NonTypedPostgisFidMapperFactory}.
+	 */
 	public NonTypedPostgisFidMapperFactory() {
 		super();
 	}
 
-	public NonTypedPostgisFidMapperFactory(boolean returnFIDColumnsAsAttributes) {
-		super(returnFIDColumnsAsAttributes);
+	/**
+	 * Create a {@link NonTypedPostgisFidMapperFactory}.
+	 *
+	 * @param returnFidColumnsAsAttributes return fid columns as attributes?
+	 */
+	public NonTypedPostgisFidMapperFactory(boolean returnFidColumnsAsAttributes) {
+		super(returnFidColumnsAsAttributes);
 	}
 
 	/**
 	 * Get the appropriate FIDMapper for the specified table. Overridden to
 	 * return a non-typed mapper !!!!
 	 *
-	 * @param catalog
-	 * @param schema
-	 * @param tableName
+	 * @param catalog catalog
+	 * @param schema schema
+	 * @param tableName table name
 	 * @param connection
 	 *            the active database connection to get table key information
 	 *
@@ -54,7 +62,7 @@ public class NonTypedPostgisFidMapperFactory extends DefaultFIDMapperFactory {
 	public FIDMapper getMapper(String catalog, String schema, String tableName, Connection connection)
 			throws IOException {
 		ColumnInfo[] colInfos = getPkColumnInfo(catalog, schema, tableName, connection);
-		FIDMapper mapper = null;
+		FIDMapper mapper;
 
 		if (colInfos.length == 0) {
 			mapper = buildNoPKMapper(schema, tableName, connection);
@@ -66,10 +74,10 @@ public class NonTypedPostgisFidMapperFactory extends DefaultFIDMapperFactory {
 			mapper = buildSingleColumnFidMapper(schema, tableName, connection, ci);
 		}
 
-		if (mapper == null) {
+		if (null == mapper) {
 			mapper = buildLastResortFidMapper(schema, tableName, connection, colInfos);
 
-			if (mapper == null) {
+			if (null == mapper) {
 				String msg = "Cannot map primary key to a FID mapper, primary key columns are:\n"
 						+ getColumnInfoList(colInfos);
 				LOGGER.log(Level.SEVERE, msg);
@@ -86,8 +94,8 @@ public class NonTypedPostgisFidMapperFactory extends DefaultFIDMapperFactory {
 	 * {@link MaxIncFIDMapper} type for numeric columns, and a plain
 	 * {@link BasicFIDMapper} of text based columns.
 	 *
-	 * @param schema
-	 * @param tableName
+	 * @param schema schema
+	 * @param tableName table name
 	 * @param connection
 	 *            an open database connection.
 	 * @param ci
