@@ -32,6 +32,7 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 
 	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY};
 
+	@Override
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		TileCacheContainer cc =
 				getContainer(CacheStepConstant.CACHE_TILE_KEY, CacheStepConstant.CACHE_TILE_CONTEXT, KEYS,
@@ -46,6 +47,7 @@ public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInt
 		return ExecutionMode.EXECUTE_ALL;
 	}
 
+	@Override
 	public void afterSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		recorder.record(CacheCategory.TILE, "Put item in cache");
 		InternalTile tile = response.getTile();

@@ -47,14 +47,21 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 
 	private String id;
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the step id.
+	 *
+	 * @param id id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/** {@inheritDoc} */
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
 		try {
 			InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);

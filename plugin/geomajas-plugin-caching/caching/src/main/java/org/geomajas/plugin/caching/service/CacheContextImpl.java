@@ -31,14 +31,17 @@ public class CacheContextImpl implements CacheContext {
 
 	private Map<String, Object> map = new HashMap<String, Object>();
 
+	/** {@inheritDoc} */
 	public void put(String key, Object object) {
 		map.put(key, object);
 	}
 
+	/** {@inheritDoc} */
 	public Object get(String key) {
 		return map.get(key);
 	}
 
+	/** {@inheritDoc} */
 	public <TYPE> TYPE get(String key, Class<TYPE> type) {
 		Object res = get(key);
 		if (type.isInstance(res)) {
@@ -47,6 +50,11 @@ public class CacheContextImpl implements CacheContext {
 		return null;
 	}
 
+	/**
+	 * Get the set of entries.
+	 *
+	 * @return current cache entries
+	 */
 	Set<Map.Entry<String, Object>> entries() {
 		return map.entrySet();
 	}

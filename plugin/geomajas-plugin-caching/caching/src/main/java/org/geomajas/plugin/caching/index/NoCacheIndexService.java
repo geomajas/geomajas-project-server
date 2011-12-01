@@ -24,22 +24,27 @@ import java.util.List;
  */
 public class NoCacheIndexService implements CacheIndexService {
 
+	/** {@inheritDoc} */
 	public void put(String key, Envelope envelope) {
 		// nothing to do
 	}
 
+	/** {@inheritDoc} */
 	public void remove(String key) {
 		// nothing to do
 	}
 
+	/** {@inheritDoc} */
 	public void clear() {
 		// nothing to do
 	}
 
+	/** {@inheritDoc} */
 	public void drop() {
 		// nothing to do
 	}
 
+	/** {@inheritDoc} */
 	public List<String> getOverlappingKeys(Envelope envelope) {
 		return ALL_KEYS;
 	}

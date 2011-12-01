@@ -23,18 +23,26 @@ public class InfinispanCacheService implements CacheService {
 
 	private Cache<String, Object> cache;
 
+	/**
+	 * Create a {@link InfinispanCacheService}.
+	 *
+	 * @param cache cache
+	 */
 	public InfinispanCacheService(Cache<String, Object> cache) {
 		this.cache = cache;
 	}
 
+	/** {@inheritDoc} */
 	public void put(String key, Object object) {
 		cache.putAsync(key, object);
 	}
 
+	/** {@inheritDoc} */
 	public Object get(String key) {
 		return cache.get(key);
 	}
 
+	/** {@inheritDoc} */
 	public <TYPE> TYPE get(String key, Class<TYPE> type) {
 		Object res = get(key);
 		if (type.isInstance(res)) {
@@ -43,14 +51,17 @@ public class InfinispanCacheService implements CacheService {
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	public void remove(String key) {
 		cache.remove(key);
 	}
 
+	/** {@inheritDoc} */
 	public void clear() {
 		cache.clear();
 	}
 
+	/** {@inheritDoc} */
 	public void drop() {
 		clear();
 	}

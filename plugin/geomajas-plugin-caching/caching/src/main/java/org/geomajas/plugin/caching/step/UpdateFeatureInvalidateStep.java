@@ -43,14 +43,21 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 
 	private String id;
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the step id.
+	 *
+	 * @param id step id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/** {@inheritDoc} */
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
 		try {
 			log.debug("UpdateFeatureInvalidateStep start");

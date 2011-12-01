@@ -31,6 +31,7 @@ public class GetBoundsCachingInterceptor extends AbstractSecurityContextCachingI
 
 	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY};
 
+	@Override
 	public ExecutionMode beforeSteps(PipelineContext context, GetBoundsContainer response) throws GeomajasException {
 		BoundsCacheContainer cc = getContainer(CacheStepConstant.CACHE_BOUNDS_KEY,
 				CacheStepConstant.CACHE_BOUNDS_CONTEXT, KEYS, CacheCategory.BOUNDS, context,
@@ -43,6 +44,7 @@ public class GetBoundsCachingInterceptor extends AbstractSecurityContextCachingI
 		return ExecutionMode.EXECUTE_ALL;
 	}
 
+	@Override
 	public void afterSteps(PipelineContext context, GetBoundsContainer response) throws GeomajasException {
 		recorder.record(CacheCategory.BOUNDS, "Put item in cache");
 		putContainer(context, CacheCategory.BOUNDS, KEYS, CacheStepConstant.CACHE_BOUNDS_KEY,

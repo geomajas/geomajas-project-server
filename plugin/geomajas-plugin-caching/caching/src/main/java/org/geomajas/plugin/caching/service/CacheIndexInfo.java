@@ -27,10 +27,20 @@ public class CacheIndexInfo extends LayerCategoryInfo {
 	@NotNull
 	private CacheIndexFactory cacheIndexFactory;
 
+	/**
+	 * Get the a {@link CacheIndexFactory}.
+	 *
+	 * @return cache index factory
+	 */
 	public CacheIndexFactory getCacheIndexFactory() {
 		return cacheIndexFactory;
 	}
 
+	/**
+	 * Set the a {@link CacheIndexFactory}.
+	 *
+	 * @param indexFactory cache index factory
+	 */
 	public void setCacheIndexFactory(CacheIndexFactory indexFactory) {
 		this.cacheIndexFactory = indexFactory;
 	}

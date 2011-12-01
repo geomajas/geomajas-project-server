@@ -30,6 +30,11 @@ public class CacheCategory {
 
 	private String name;
 
+	/**
+	 * Create a cache category for the given name.
+	 *
+	 * @param name cache category name
+	 */
 	public CacheCategory(String name) {
 		if (null == name) {
 			throw new IllegalStateException("Null CacheCategory is not allowed");

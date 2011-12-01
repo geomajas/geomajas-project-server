@@ -34,6 +34,7 @@ public class GetFeaturesEachCachingInterceptor extends AbstractSecurityContextCa
 			PipelineCode.STYLE_KEY, PipelineCode.OFFSET_KEY, PipelineCode.MAX_RESULT_SIZE_KEY,
 			PipelineCode.FEATURE_INCLUDES_KEY};
 
+	@Override
 	public ExecutionMode beforeSteps(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		// do not cache features which are converted lazily, this would put detached objects in cache
 		if (isCacheable(context)) {
@@ -50,6 +51,7 @@ public class GetFeaturesEachCachingInterceptor extends AbstractSecurityContextCa
 		return ExecutionMode.EXECUTE_ALL;
 	}
 
+	@Override
 	public void afterSteps(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		// do not cache features which are converted lazily, this would put detached objects in cache
 		if (isCacheable(context)) {

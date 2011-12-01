@@ -86,6 +86,11 @@ public class InfinispanCacheFactory implements CacheFactory {
 		this.defaultConfiguration = defaultConfiguration;
 	}
 
+	/**
+	 * Finish initializing service.
+	 *
+	 * @throws IOException oop
+	 */
 	@PostConstruct
 	protected void init() throws IOException {
 		// base configuration from XML file
@@ -161,6 +166,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 		return ciCaches;
 	}
 
+	/** {@inheritDoc} */
 	public CacheService create(Layer layer, CacheCategory category) {
 		CacheSelector cacheSelector = new CacheSelector(category, layer);
 		CacheService cacheService;
@@ -181,6 +187,12 @@ public class InfinispanCacheFactory implements CacheFactory {
 		private String category = "";
 		private String layer = "";
 
+		/**
+		 * Create a {@link CacheSelector}.
+		 *
+		 * @param category category
+		 * @param layer layer
+		 */
 		public CacheSelector(CacheCategory category, Layer layer) {
 			if (null != category) {
 				this.category = category.toString();

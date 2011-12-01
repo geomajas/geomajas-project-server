@@ -36,11 +36,15 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 
 	private Configuration configuration = new Configuration();
 
+	/**
+	 * Create a {@link SimpleInfinispanCacheInfo}.
+	 */
 	public SimpleInfinispanCacheInfo() {
 		super();
 		configuration.setUseLockStriping(false);
 	}
 
+	/** {@inheritDoc} */
 	public Configuration getInfinispanConfiguration() {
 		return configuration;
 	}
