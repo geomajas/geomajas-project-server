@@ -28,6 +28,9 @@ public class LayerAuthorization implements BaseAuthorization {
 
 	private LayerAuthorizationInfo info; // NOSONAR
 
+	/**
+	 * Create a {@link LayerAuthorization} for deserialization.
+	 */
 	protected LayerAuthorization() {
 		// for deserialization
 	}
@@ -77,10 +80,25 @@ public class LayerAuthorization implements BaseAuthorization {
 		return check(layerId, info.getDeleteAuthorizedLayersInclude(), info.getDeleteAuthorizedLayersExclude());
 	}
 
+	/**
+	 * Check whether the given id is included in the list of includes and not excluded.
+	 *
+	 * @param id id to check
+	 * @param includes list of include regular expressions
+	 * @param excludes list of exclude regular expressions
+	 * @return true when id included and not excluded
+	 */
 	protected boolean check(String id, List<String> includes, List<String> excludes) {
 		return check(id, includes) && !check(id, excludes);
 	}
 
+	/**
+	 * Check whether the given is is matched by one of the include expressions.
+	 *
+	 * @param id id to check
+	 * @param includes list of include regular expressions
+	 * @return true when id is included
+	 */
 	protected boolean check(String id, List<String> includes) {
 		if (null != includes) {
 			for (String check : includes) {
@@ -92,6 +110,13 @@ public class LayerAuthorization implements BaseAuthorization {
 		return false;
 	}
 
+	/**
+	 * Check whether the value is matched by a regular expression.
+	 *
+	 * @param value value
+	 * @param regex regular expression
+	 * @return true when value is matched
+	 */
 	protected boolean check(String value, String regex) {
 		Pattern pattern = Pattern.compile(regex);
 		return pattern.matcher(value).matches();

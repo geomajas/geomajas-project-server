@@ -35,10 +35,12 @@ public class LogoutCommand implements Command<EmptyCommandRequest, SuccessComman
 	@Autowired
 	private AuthenticationTokenService tokenService;
 
+	/** {@inheritDoc} */
 	public SuccessCommandResponse getEmptyCommandResponse() {
 		return new SuccessCommandResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(EmptyCommandRequest emptyCommandRequest, SuccessCommandResponse commandResponse)
 			throws Exception {
 		commandResponse.setSuccess(false);

@@ -25,10 +25,12 @@ import org.geomajas.security.SecurityService;
  */
 public class LoginAllowedSecurityService implements SecurityService {
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return "staticsecurity.LoginAllowed";
 	}
 
+	/** {@inheritDoc} */
 	public Authentication getAuthentication(String authenticationToken) {
 		Authentication auth = new Authentication();
 		auth.setAuthorizations(new BaseAuthorization[]{new LoginAuthorization()});
@@ -41,32 +43,39 @@ public class LoginAllowedSecurityService implements SecurityService {
 	 */
 	private static final class LoginAuthorization implements BaseAuthorization {
 
+		/** {@inheritDoc} */
 		public String getId() {
 			return "staticsecurity.LoginAuthorization";
 		}
 
+		/** {@inheritDoc} */
 		public boolean isToolAuthorized(String toolId) {
 			return false;
 		}
 
+		/** {@inheritDoc} */
 		public boolean isCommandAuthorized(String commandName) {
 			return LoginRequest.COMMAND.equals(commandName) ||
 					LogoutRequest.COMMAND.equals(commandName) ||
 					LogRequest.COMMAND.equals(commandName);
 		}
 
+		/** {@inheritDoc} */
 		public boolean isLayerVisible(String layerId) {
 			return false;
 		}
 
+		/** {@inheritDoc} */
 		public boolean isLayerUpdateAuthorized(String layerId) {
 			return false;
 		}
 
+		/** {@inheritDoc} */
 		public boolean isLayerCreateAuthorized(String layerId) {
 			return false;
 		}
 
+		/** {@inheritDoc} */
 		public boolean isLayerDeleteAuthorized(String layerId) {
 			return false;
 		}

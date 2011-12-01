@@ -63,15 +63,24 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private AreaAuthorizationInfo info; // NOSONAR
 
+		/**
+		 * Create a {@link LocalAuthorization} for deserialization.
+		 */
 		protected LocalAuthorization() {
 			super(); // for deserialization
 		}
 
+		/**
+		 * Create a {@link LocalAuthorization} for a specific {@link AreaAuthorizationInfo} object.
+		 *
+		 * @param info authorization info
+		 */
 		public LocalAuthorization(AreaAuthorizationInfo info) {
 			super(info);
 			this.info = info;
 		}
 
+		/** {@inheritDoc} */
 		public Geometry getVisibleArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -86,11 +95,13 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public boolean isPartlyVisibleSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyVisibleSufficient();
 		}
 
+		/** {@inheritDoc} */
 		public Geometry getUpdateAuthorizedArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -105,11 +116,13 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyUpdateAuthorizedSufficient();
 		}
 
+		/** {@inheritDoc} */
 		public Geometry getCreateAuthorizedArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -124,11 +137,13 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyCreateAuthorizedSufficient();
 		}
 
+		/** {@inheritDoc} */
 		public Geometry getDeleteAuthorizedArea(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			if (null == layer) {
@@ -143,6 +158,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyDeleteAuthorizedSufficient();

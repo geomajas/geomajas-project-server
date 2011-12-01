@@ -60,21 +60,31 @@ public class AttributeAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private AttributeAuthorizationInfo info; // NOSONAR
 
+		/**
+		 * Create a {@link LocalAuthorization} for deserialization.
+		 */
 		protected LocalAuthorization() {
 			super(); // for deserialization
 		}
 
+		/**
+		 * Create a {@link LocalAuthorization} object for a specific configuration.
+		 *
+		 * @param info authorization info
+		 */
 		public LocalAuthorization(AttributeAuthorizationInfo info) {
 			super(info);
 			this.info = info;
 		}
 
+		/** {@inheritDoc} */
 		public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
 			LayerAttributeAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&
 					check(feature, attributeName, layer.getReadableIncludes(), layer.getReadableExcludes());
 		}
 
+		/** {@inheritDoc} */
 		public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
 			LayerAttributeAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&

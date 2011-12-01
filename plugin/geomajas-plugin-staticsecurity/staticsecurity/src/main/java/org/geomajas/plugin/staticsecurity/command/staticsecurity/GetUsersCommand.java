@@ -39,10 +39,12 @@ public class GetUsersCommand implements Command<GetUsersRequest, GetUsersRespons
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
 
+	/** {@inheritDoc} */
 	public GetUsersResponse getEmptyCommandResponse() {
 		return new GetUsersResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(GetUsersRequest request, GetUsersResponse response) throws Exception {
 		HashSet<String> users = new HashSet<String>();
 		for (UserInfo userInfo : securityServiceInfo.getUsers()) {

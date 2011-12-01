@@ -60,26 +60,37 @@ public class FeatureAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private FeatureAuthorizationInfo info; // NOSONAR
 
+		/**
+		 * Create a {@link LocalAuthorization} for deserialization.
+		 */
 		protected LocalAuthorization() {
 			super(); // for deserialization
 		}
 
+		/**
+		 * Create a {@link LocalAuthorization} object for a specific configuration.
+		 *
+		 * @param info authorization info
+		 */
 		public LocalAuthorization(FeatureAuthorizationInfo info) {
 			super(info);
 			this.info = info;
 		}
 
+		/** {@inheritDoc} */
 		public boolean isFeatureVisible(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null && check(feature, layer.getVisibleIncludes(), layer.getVisibleExcludes());
 		}
 
+		/** {@inheritDoc} */
 		public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&
 					check(feature, layer.getUpdateAuthorizedIncludes(), layer.getUpdateAuthorizedExcludes());
 		}
 
+		/** {@inheritDoc} */
 		public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature,
 												 InternalFeature newFeature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
@@ -87,12 +98,14 @@ public class FeatureAuthorizationInfo extends LayerAuthorizationInfo {
 					check(newFeature, layer.getUpdateAuthorizedIncludes(), layer.getUpdateAuthorizedExcludes());
 		}
 
+		/** {@inheritDoc} */
 		public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null &&
 					check(feature, layer.getDeleteAuthorizedIncludes(), layer.getDeleteAuthorizedExcludes());
 		}
 
+		/** {@inheritDoc} */
 		public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
 			LayerFeatureAuthorizationInfo layer = info.getLayers().get(layerId);
 			return layer != null && layer.isCreateAuthorized();

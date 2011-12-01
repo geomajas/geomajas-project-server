@@ -69,6 +69,12 @@ public class AuthenticationTokenService {
 		tokens.remove(token);
 	}
 
+	/**
+	 * Login for a specific authentication, creating a new token.
+	 *
+	 * @param authentication authentication to assign to token
+	 * @return token
+	 */
 	public String login(Authentication authentication) {
 		String token = getToken();
 		return login(token, authentication);

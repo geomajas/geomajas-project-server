@@ -35,14 +35,25 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 	private Map<String, String> filters;
 
+	@Override
 	public BaseAuthorization getAuthorization() {
 		return new FilterAuthorization(this);
 	}
 
+	/**
+	 * Get the map of filters, key is the layer id, value is the filter.
+	 *
+	 * @return filters
+	 */
 	public Map<String, String> getFilters() {
 		return filters;
 	}
 
+	/**
+	 * Set the map of filters, key is the layer id, value is the filter.
+	 *
+	 * @param filters filters map
+	 */
 	public void setFilters(Map<String, String> filters) {
 		this.filters = filters;
 	}
@@ -55,19 +66,29 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private LayerFilterAuthorizationInfo info; // NOSONAR
 
+		/**
+		 * Create a {@link FilterAuthorization} for deserialization.
+		 */
 		private FilterAuthorization() {
 			super(); // for deserialization
 		}
 
+		/**
+		 * Create a {@link FilterAuthorization} object for a specific configuration.
+		 *
+		 * @param info authorization info
+		 */
 		private FilterAuthorization(LayerFilterAuthorizationInfo info) {
 			super(info);
 			this.info = info;
 		}
 
+		/** {@inheritDoc} */
 		public String getId() {
 			return "LayerFilterAuthorizationInfo." + Integer.toString(info.hashCode());
 		}
 
+		/** {@inheritDoc} */
 		public Filter getFeatureFilter(String layerId) {
 			try {
 				String filter = info.getFilters().get(layerId);

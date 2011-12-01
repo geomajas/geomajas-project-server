@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.security.BaseAuthorization;
 
 /**
- * Authorization info, which needs to be convertable to a {@link org.geomajas.security.BaseAuthorization} class.
+ * Authorization info, which needs to be convertible to a {@link org.geomajas.security.BaseAuthorization} class.
  *
  * @author Joachim Van der Auwera
  * @since 1.6.0
@@ -23,5 +23,10 @@ import org.geomajas.security.BaseAuthorization;
 @Api(allMethods = true)
 public interface AuthorizationInfo {
 
+	/**
+	 * Get authorization object.
+	 *
+	 * @return authorization
+	 */
 	BaseAuthorization getAuthorization();
 }

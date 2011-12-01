@@ -55,10 +55,12 @@ public class LoginCommand implements Command<LoginRequest, LoginResponse> {
 	@Autowired
 	private AuthenticationTokenService tokenService;
 
+	/** {@inheritDoc} */
 	public LoginResponse getEmptyCommandResponse() {
 		return new LoginResponse();
 	}
 
+	/** {@inheritDoc} */
 	public void execute(LoginRequest request, LoginResponse response) throws Exception {
 		String login = request.getLogin();
 		String password = request.getPassword();
