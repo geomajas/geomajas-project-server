@@ -14,24 +14,7 @@ package org.geomajas.plugin.staticsecurity.command.staticsecurity;
 import java.io.IOException;
 
 /**
- * Encodes and decodes to and from Base64 notation. <p/> <p> Change Log: </p> <ul> <li>v2.0.2 - Now specifies UTF-8
- * encoding in places where the code fails on systems with other encodings (like EBCDIC).</li> <li>v2.0.1 - Fixed an
- * error when decoding a single byte, that is, when the encoded data was a single byte.</li> <li>v2.0 - I got rid of
- * methods that used booleans to set options. Now everything is more consolidated and cleaner. The code now detects when
- * data that's being decoded is gzip-compressed and will decompress it automatically. Generally things are cleaner.
- * You'll probably have to change some method calls that you were making to support the new options format
- * (<tt>int</tt>s that you "OR" together).</li> <li>v1.5.1 - Fixed bug when decompressing and decoding to a byte[] using
- * <tt>decode( String s, boolean gzipCompressed )</tt>. Added the ability to "suspend" encoding in the Output Stream so
- * you can turn on and off the encoding if you need to embed base64 data in an otherwise "normal" stream (like an XML
- * file).</li> <li>v1.5 - Output stream pases on flush() command but doesn't do anything itself. This helps when using
- * GZIP streams. Added the ability to GZip-compress objects before encoding them.</li> <li>v1.4 - Added helper methods
- * to read/write files.</li> <li>v1.3.6 - Fixed OutputStream.flush() so that 'position' is reset.</li> <li>v1.3.5 -
- * Added flag to turn on and off line breaks. Fixed bug in input stream where last buffer being read, if not completely
- * full, was not returned.</li> <li>v1.3.4 - Fixed when "improperly padded stream" error was thrown at the wrong
- * time.</li> <li>v1.3.3 - Fixed I/O streams which were totally messed up.</li> </ul> <p/> <p> I am placing this code in
- * the Public Domain. Do with it as you will. This software comes with no guarantees or warranties but with plenty of
- * well-wishing instead! Please visit <a href="http://iharder.net/xmlizable">http://iharder.net/base64</a> periodically
- * to check for updates or to contribute improvements. </p>
+ * Encodes and decodes to and from Base64 notation.
  *
  * @author Robert Harder
  * @author rob@iharder.net
@@ -102,6 +85,8 @@ public final class Base64 {
 		ALPHABET = bytes;
 	}
 
+	private static final byte WHITE_SPACE_ENC = -5; // Indicates white space in encoding
+	private static final byte EQUALS_SIGN_ENC = -1; // Indicates equals sign in encoding
 
 	/**
 	 * Translates a Base64 value to either its 6-bit reconstruction value or a negative number indicating some other
@@ -122,7 +107,7 @@ public final class Base64 {
 					63, // Slash at decimal 47
 					52, 53, 54, 55, 56, 57, 58, 59, 60, 61, // Numbers zero through nine
 					-9, -9, -9, // Decimal 58 - 60
-					-1, // Equals sign at decimal 61
+					EQUALS_SIGN_ENC, // Equals sign at decimal 61
 					-9, -9, -9, // Decimal 62 - 64
 					0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, // Letters 'A' through 'N'
 					14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, // Letters 'O' through 'Z'
@@ -141,10 +126,6 @@ public final class Base64 {
 								-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,     // Decimal 231 - 243
 								-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9,-9         // Decimal 244 - 255 */
 			};
-
-	private static final byte WHITE_SPACE_ENC = -5; // Indicates white space in encoding
-	private static final byte EQUALS_SIGN_ENC = -1; // Indicates equals sign in encoding
-
 
 	/** Defeats instantiation. */
 	private Base64() {
@@ -427,7 +408,6 @@ public final class Base64 {
 	 * @param off The offset of where to begin decoding
 	 * @param len The length of characters to decode
 	 * @return decoded data
-	 */
 	public static byte[] decode(byte[] source, int off, int len) {
 		int len34 = len * 3 / 4;
 		byte[] outBuff = new byte[len34]; // Upper limit on size of output
@@ -467,6 +447,7 @@ public final class Base64 {
 		System.arraycopy(outBuff, 0, out, 0, outBuffPosn);
 		return out;
 	}   // end decode
+	*/
 
 
 	/**
@@ -474,7 +455,6 @@ public final class Base64 {
 	 *
 	 * @param s the string to decode
 	 * @return the decoded data
-	 */
 	public static byte[] decode(String s) {
 		byte[] bytes;
 		try {
@@ -544,6 +524,7 @@ public final class Base64 {
 
 		return bytes;
 	}   // end decode
+	*/
 
 
 	/* ********  I N N E R   C L A S S   O U T P U T S T R E A M  ******** */
