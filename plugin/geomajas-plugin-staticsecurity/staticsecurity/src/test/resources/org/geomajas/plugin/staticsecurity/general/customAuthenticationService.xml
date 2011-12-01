@@ -28,6 +28,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 	</bean>
 
+	<!-- @extract-start CustomAuthenticationService, Configuring a custom authentication service -->
 	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
 		<property name="authenticationServices">
 			<list>
@@ -46,6 +47,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 				</bean>
 			</list>
 		</property>
+		<!-- @extract-skip-start -->
 		<property name="users">
 			<list>
 				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
@@ -66,6 +68,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 				</bean>
 			</list>
 		</property>
+		<!-- @extract-skip-end -->
 	</bean>
+	<!-- @extract-end -->
 
 </beans>

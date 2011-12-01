@@ -144,7 +144,16 @@
     <section>
       <title>Dynamic configuration of users</title>
 
-      <para>@todo provide plug-in mechanism to, see SSEC-15</para>
+      <para>The user information can also be determined dynamically by using
+      explicitly configuring authentication services. The statically defined
+      users (see previous section) are always automatically included after the
+      configured authentication services.</para>
+
+      <para>Below is a simple example from the tests which shows a
+      configuration of an authentication service.</para>
+
+      <xi:include href="listing/CustomAuthenticationService.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
   </section>
 
