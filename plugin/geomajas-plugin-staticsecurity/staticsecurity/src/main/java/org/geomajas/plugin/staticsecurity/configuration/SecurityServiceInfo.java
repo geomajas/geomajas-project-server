@@ -12,7 +12,12 @@
 package org.geomajas.plugin.staticsecurity.configuration;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.plugin.staticsecurity.security.AuthenticationService;
+import org.geomajas.plugin.staticsecurity.security.StaticAuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +31,10 @@ public class SecurityServiceInfo {
 
 	private int tokenLifetime = 4 * 60 * 60; // 4 hours // NOSONAR
 	private List<UserInfo> users;
+	private List<AuthenticationService> authenticationServices;
+
+	@Autowired
+	private StaticAuthenticationService staticAuthenticationService;
 
 	/**
 	 * Get information about existing users.
@@ -63,5 +72,36 @@ public class SecurityServiceInfo {
 	 */
 	public void setTokenLifetime(int tokenLifetime) {
 		this.tokenLifetime = tokenLifetime;
+	}
+
+	/**
+	 * Get the list of authentication services for this configuration.
+	 *
+	 * @return list of authentication services
+	 * @since 1.9.0
+	 */
+	public List<AuthenticationService> getAuthenticationServices() {
+		return authenticationServices;
+	}
+
+	/**
+	 * Set the list of authentication services for this configuration.
+	 *
+	 * @param authenticationServices list of authentication services
+	 * @since 1.9.0
+	 */
+	public void setAuthenticationServices(List<AuthenticationService> authenticationServices) {
+		this.authenticationServices = authenticationServices;
+	}
+
+	/**
+	 * Finish initialization of the configuration.
+	 */
+	@PostConstruct
+	protected void postConstruct() {
+		if (null == authenticationServices) {
+			authenticationServices = new ArrayList<AuthenticationService>();
+		}
+		authenticationServices.add(staticAuthenticationService);
 	}
 }

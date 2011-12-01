@@ -23,7 +23,7 @@ import java.util.Locale;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class UserInfo implements org.geomajas.security.UserInfo {
+public class UserInfo extends RoleInfo implements org.geomajas.security.UserInfo {
 
 	private String userId;
 	private String userName;
@@ -31,7 +31,6 @@ public class UserInfo implements org.geomajas.security.UserInfo {
 	private String userOrganization;
 	private String userDivision;
 	private String password;
-	private List<AuthorizationInfo> authorizations;
 
 	/**
 	 * Get user name.
@@ -75,22 +74,14 @@ public class UserInfo implements org.geomajas.security.UserInfo {
 		this.password = password;
 	}
 
-	/**
-	 * Get authorization info for user.
-	 *
-	 * @return authorization info
-	 */
+	@Override // need for @Api
 	public List<AuthorizationInfo> getAuthorizations() {
-		return authorizations;
+		return super.getAuthorizations();
 	}
 
-	/**
-	 * Set authorization info.
-	 *
-	 * @param authorizations authorization info
-	 */
+	@Override // need for @Api
 	public void setAuthorizations(List<AuthorizationInfo> authorizations) {
-		this.authorizations = authorizations;
+		super.setAuthorizations(authorizations);
 	}
 
 	/**

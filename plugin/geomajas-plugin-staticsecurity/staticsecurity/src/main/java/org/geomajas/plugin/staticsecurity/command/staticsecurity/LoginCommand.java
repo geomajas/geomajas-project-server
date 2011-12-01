@@ -18,17 +18,13 @@ import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo;
 import org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo;
 import org.geomajas.plugin.staticsecurity.configuration.UserInfo;
+import org.geomajas.plugin.staticsecurity.security.AuthenticationService;
 import org.geomajas.plugin.staticsecurity.security.AuthenticationTokenService;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +39,6 @@ import java.util.List;
 @Api
 @Component
 public class LoginCommand implements Command<LoginRequest, LoginResponse> {
-
-	private final Logger log = LoggerFactory.getLogger(LoginCommand.class);
-
-	private static final String PREFIX = "Geomajas is a wonderful framework";
-	private static final String PADDING = "==";
 
 	@Autowired
 	private SecurityServiceInfo securityServiceInfo;
@@ -70,17 +61,12 @@ public class LoginCommand implements Command<LoginRequest, LoginResponse> {
 			return;
 		}
 
-		password = encode(PREFIX + login + password);
-		if (password.endsWith(PADDING)) {
-			password = password.substring(0, password.length() - 2);
-		}
+		for (AuthenticationService authenticationService : securityServiceInfo.getAuthenticationServices()) {
+			final String convertedPass = authenticationService.convertPassword(login, password);
 
-		for (UserInfo user : securityServiceInfo.getUsers()) {
-			String userpw = user.getPassword();
-			if (null != userpw && userpw.endsWith(PADDING)) {
-				userpw = userpw.substring(0, userpw.length() - 2);
-			}
-			if (login.equals(user.getUserId()) && password.equals(userpw)) {
+			UserInfo user = authenticationService.isAuthenticated(login, convertedPass);
+			if (null != user) {
+				// login successful
 				Authentication authentication = new Authentication();
 				authentication.setUserId(login);
 				authentication.setUserName(user.getUserName());
@@ -109,18 +95,5 @@ public class LoginCommand implements Command<LoginRequest, LoginResponse> {
 			}
 		}
 		return res.toArray(new BaseAuthorization[res.size()]);
-	}
-
-	private String encode(String plaintext) {
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(plaintext.getBytes("UTF-8"));
-			return Base64.encodeBytes(md.digest());
-		} catch (NoSuchAlgorithmException e) {
-			log.error(e.getMessage(), e);
-		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage(), e);
-		}
-		return "";
 	}
 }
