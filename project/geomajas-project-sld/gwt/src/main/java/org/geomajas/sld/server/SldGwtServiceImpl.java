@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Implementation of {@link SldGwtService} that exposes some methods of the {@link SldService}.
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
  * 
  */
 public class SldGwtServiceImpl implements SldGwtService {
@@ -43,8 +44,12 @@ public class SldGwtServiceImpl implements SldGwtService {
 		return sldService.findByName(name);
 	}
 
-	public StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
-		return sldService.saveOrUpdate(sld);
+	public StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
+		return sldService.createOrUpdate(sld);
+	}
+
+	public StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException {
+		return sldService.create(sld);
 	}
 
 	public boolean remove(String name) throws SldException {
