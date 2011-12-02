@@ -49,9 +49,15 @@ import java.util.Random;
 public class AuthenticationTokenGeneratorService {
 
 	private static final Object LOCK = new Object(); // lock to force sequential access
+	public static final int TOKEN_LENGTH = 14;
+	public static final int BITS_6 = 0x3F;
+	public static final int SHIFT_6 = 6;
+	public static final int TIME_LENGTH = 6;
+	public static final int TIME_OFFSET = 8;
+
 	private long time = System.currentTimeMillis(); // time part of high value
 	private boolean initialised; // true when id is initialised
-	private byte[] value = new byte[14]; // array to build token, contains high in fourth and following characters
+	private byte[] value = new byte[TOKEN_LENGTH]; // array to build token, contains high in character 4 and following
 	private int low; // next value for LOW
 	private int lowLast; // last value for LOW, when low==lowLast then a new high has to be
 	// regenerated (test on increment, increment after use)
@@ -80,11 +86,11 @@ public class AuthenticationTokenGeneratorService {
 				// we get a string and narrow that down to base64, use the top 6 bits of the characters
 				// as they are more random than the bottom ones...
 				rnd.nextBytes(value);		// get some random characters
-				value[3] = BASE64[((value[3] >> 2) & 0x3f)];
-				value[4] = BASE64[((value[4] >> 2) & 0x3f)];
-				value[5] = BASE64[((value[5] >> 2) & 0x3f)];
-				value[6] = BASE64[((value[6] >> 2) & 0x3f)];
-				value[7] = BASE64[((value[7] >> 2) & 0x3f)];
+				value[3] = BASE64[((value[3] >> 2) & BITS_6)]; // NOSONAR
+				value[4] = BASE64[((value[4] >> 2) & BITS_6)]; // NOSONAR
+				value[5] = BASE64[((value[5] >> 2) & BITS_6)]; // NOSONAR
+				value[6] = BASE64[((value[6] >> 2) & BITS_6)]; // NOSONAR
+				value[7] = BASE64[((value[7] >> 2) & BITS_6)]; // NOSONAR
 
 				// complete the time part in the HIGH value of the token
 				// this also sets the initial low value
@@ -95,11 +101,11 @@ public class AuthenticationTokenGeneratorService {
 
 			// fill in LOW value in id
 			int l = low;
-			value[0] = BASE64[(l & 0x3f)];
-			l >>= 6;
-			value[1] = BASE64[(l & 0x3f)];
-			l >>= 6;
-			value[2] = BASE64[(l & 0x3f)];
+			value[0] = BASE64[(l & BITS_6)];
+			l >>= SHIFT_6;
+			value[1] = BASE64[(l & BITS_6)];
+			l >>= SHIFT_6;
+			value[2] = BASE64[(l & BITS_6)];
 
 			String res = new String(value);
 
@@ -124,9 +130,9 @@ public class AuthenticationTokenGeneratorService {
 	private void completeToken(Random rnd) {
 		// fill in time part in token string
 		long t = time;
-		for (int i = 0; i < 6; i++) {
-			value[8 + i] = BASE64[(((int) t) & 0x3f)];
-			t >>= 6;
+		for (int i = 0; i < TIME_LENGTH; i++) {
+			value[TIME_OFFSET + i] = BASE64[(((int) t) & BITS_6)];
+			t >>= SHIFT_6;
 		}
 
 		// generate new LOW start value
