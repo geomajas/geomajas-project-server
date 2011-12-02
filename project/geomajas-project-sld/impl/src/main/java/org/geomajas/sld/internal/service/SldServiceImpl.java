@@ -39,6 +39,7 @@ import org.springframework.util.StringUtils;
  * files at startup.
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
  * 
  */
 public class SldServiceImpl implements SldService {
@@ -65,9 +66,21 @@ public class SldServiceImpl implements SldService {
 		return allSlds.get(name);
 	}
 
-	public StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
+	public StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
 		validate(sld);
-		return allSlds.put(sld.getName(), sld);
+		allSlds.put(sld.getName(), sld);
+		StyledLayerDescriptorInfo newValue = allSlds.get(sld.getName());
+		return newValue;
+	}
+
+	public StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException {
+
+		if (allSlds.containsKey(sld.getName())) {
+			throw new SldException("SLD met naam " + sld.getName() + " bestaat reeds");
+		}
+
+		return createOrUpdate(sld);
+
 	}
 
 	public boolean remove(String name) throws SldException {
@@ -94,7 +107,7 @@ public class SldServiceImpl implements SldService {
 							StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
 							String fileName = StringUtils.stripFilenameExtension(file.getName());
 							if (sld.getName() == null) {
-									sld.setName(fileName);
+								sld.setName(fileName);
 							}
 							log.info("added sld {} to service", fileName);
 							allSlds.put(sld.getName(), sld);

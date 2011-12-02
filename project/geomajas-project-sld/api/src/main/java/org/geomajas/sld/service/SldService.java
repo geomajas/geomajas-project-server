@@ -44,11 +44,21 @@ public interface SldService {
 	 * Create or update a style.
 	 * 
 	 * @param sld the style
-	 * @return the update style
+	 * @return the style after update
 	 * @throws SldException oops
 	 */
-	StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException;
+	StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException;
 
+	/**
+	 * Create a style.
+	 * 
+	 * @param sld the style
+	 * @return the new style
+	 * @throws SldException oops (e.g. if SLD with the same name already exists)
+	 */
+	StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException;
+
+	
 	/**
 	 * Remove a style.
 	 * @param name the name of the style

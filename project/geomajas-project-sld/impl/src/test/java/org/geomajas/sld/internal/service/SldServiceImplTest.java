@@ -41,16 +41,16 @@ public class SldServiceImplTest {
 	}
 
 	@Test
-	public void testSaveOrUpdate() throws SldException, JiBXException {
+	public void testCreateOrUpdate() throws SldException, JiBXException {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("test");
 		try {
-			sldService.saveOrUpdate(sld);
+			sldService.createOrUpdate(sld);
 			Assert.fail("invalid sld saved");
 		} catch (Exception e) {
 		}
 		sld.setVersion("1.0.0");
-		sldService.saveOrUpdate(sld);
+		sldService.createOrUpdate(sld);
 		Assert.assertEquals(2, sldService.findAll().size());
 	}
 

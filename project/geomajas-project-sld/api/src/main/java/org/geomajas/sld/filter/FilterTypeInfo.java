@@ -71,6 +71,9 @@ public class FilterTypeInfo implements Serializable {
 	 */
 	public void clearChoiceSelect() {
 		choiceSelect = -1;
+		spatialOps = null;
+		comparisonOps = null;
+		logicOps = null;
 	}
 
 	/**

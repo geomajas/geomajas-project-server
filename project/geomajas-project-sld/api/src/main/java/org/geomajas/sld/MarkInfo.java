@@ -106,8 +106,9 @@ public class MarkInfo implements Serializable {
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
-		return "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
+		String str = "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
 				+ this.getStroke() + ")";
+		return str;
 	}
 
 	@java.lang.Override
