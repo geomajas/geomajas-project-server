@@ -30,7 +30,7 @@ public interface SldGwtServiceAsync {
 
 	void remove(String name, AsyncCallback<Boolean> callback);
 
-	void createOrUpdate(StyledLayerDescriptorInfo sld, AsyncCallback<StyledLayerDescriptorInfo> callback);
+	void saveOrUpdate(StyledLayerDescriptorInfo sld, AsyncCallback<StyledLayerDescriptorInfo> callback);
 	
 	void create(StyledLayerDescriptorInfo sld, AsyncCallback<StyledLayerDescriptorInfo> callback);
 }

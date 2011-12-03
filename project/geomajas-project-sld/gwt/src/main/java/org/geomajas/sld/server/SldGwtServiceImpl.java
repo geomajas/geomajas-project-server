@@ -44,8 +44,8 @@ public class SldGwtServiceImpl implements SldGwtService {
 		return sldService.findByName(name);
 	}
 
-	public StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
-		return sldService.createOrUpdate(sld);
+	public StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
+		return sldService.saveOrUpdate(sld);
 	}
 
 	public StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException {

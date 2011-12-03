@@ -2117,7 +2117,7 @@ public class SldWidget {
 		GWT.log("Entering Saving of SLD " + currentSld.getName());
 		
 		synchronizeFilter();
-		service.createOrUpdate(currentSld, new AsyncCallback<StyledLayerDescriptorInfo>() {
+		service.saveOrUpdate(currentSld, new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 			/** call-back for handling saveOrUpdate() success return **/
 			public void onSuccess(StyledLayerDescriptorInfo sld) {
