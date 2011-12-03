@@ -66,7 +66,7 @@ public class SldServiceImpl implements SldService {
 		return allSlds.get(name);
 	}
 
-	public StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
+	public StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
 		validate(sld);
 		allSlds.put(sld.getName(), sld);
 		StyledLayerDescriptorInfo newValue = allSlds.get(sld.getName());
@@ -76,10 +76,10 @@ public class SldServiceImpl implements SldService {
 	public StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException {
 
 		if (allSlds.containsKey(sld.getName())) {
-			throw new SldException("SLD met naam " + sld.getName() + " bestaat reeds");
+			throw new SldException("SLD with name " + sld.getName() + " already exists.");
 		}
 
-		return createOrUpdate(sld);
+		return saveOrUpdate(sld);
 
 	}
 

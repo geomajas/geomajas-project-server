@@ -41,17 +41,41 @@ public class SldServiceImplTest {
 	}
 
 	@Test
-	public void testCreateOrUpdate() throws SldException, JiBXException {
+	public void testSaveOrUpdate() throws SldException, JiBXException {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("test");
 		try {
-			sldService.createOrUpdate(sld);
+			sldService.saveOrUpdate(sld);
 			Assert.fail("invalid sld saved");
 		} catch (Exception e) {
 		}
 		sld.setVersion("1.0.0");
-		sldService.createOrUpdate(sld);
+		sldService.saveOrUpdate(sld);
 		Assert.assertEquals(2, sldService.findAll().size());
+	}
+
+	@Test
+	public void testCreate() throws SldException, JiBXException {
+		// make sure the an SLD with name 'test' is created in case the previous test hasn't been run
+		testSaveOrUpdate(); 
+		
+		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
+		sld.setVersion("1.0.0");
+		sld.setName("test");
+		try {
+			sldService.create(sld);
+			Assert.fail("Creating an already existing sld should fail");
+		} catch (Exception e) {
+		}
+
+		int prevNumOfSlds = sldService.findAll().size();
+		sld.setName("testCreate");
+		try {
+			sldService.create(sld);
+		} catch (Exception e) {
+			Assert.fail("Creating failed");
+		}
+		Assert.assertEquals(sldService.findAll().size(), prevNumOfSlds+1);
 	}
 
 	@Test

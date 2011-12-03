@@ -29,7 +29,7 @@ public interface SldGwtService extends RemoteService {
 
 	StyledLayerDescriptorInfo findByName(String name) throws SldException;
 
-	StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException;
+	StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException;
 	
 	StyledLayerDescriptorInfo create(StyledLayerDescriptorInfo sld) throws SldException;
 

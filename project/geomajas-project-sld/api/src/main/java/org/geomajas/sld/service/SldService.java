@@ -47,7 +47,7 @@ public interface SldService {
 	 * @return the style after update
 	 * @throws SldException oops
 	 */
-	StyledLayerDescriptorInfo createOrUpdate(StyledLayerDescriptorInfo sld) throws SldException;
+	StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException;
 
 	/**
 	 * Create a style.
