@@ -102,7 +102,8 @@
 		<collection item-type="org.geomajas.sld.expression.ExpressionInfo" get-method="getExpressionList"
 			set-method="setExpressionList" create-type="java.util.ArrayList" />
 	</mapping>
-	<mapping abstract="true" type-name="ogc:PropertyIsLikeType" class="org.geomajas.sld.filter.PropertyIsLikeTypeInfo">
+	<mapping abstract="true" type-name="ogc:PropertyIsLikeType" class="org.geomajas.sld.filter.PropertyIsLikeTypeInfo"
+		ordered="false">
 		<structure map-as="ogc:ComparisonOpsType" />
 		<structure type="org.geomajas.sld.expression.PropertyNameInfo" get-method="getPropertyName" set-method="setPropertyName" />
 		<structure type="org.geomajas.sld.expression.LiteralTypeInfo" get-method="getLiteral" set-method="setLiteral" />
@@ -111,10 +112,11 @@
 		<value style="attribute" name="escape" get-method="getEscape" set-method="setEscape" />
 	</mapping>
 	<mapping extends="org.geomajas.sld.filter.ComparisonOpsTypeInfo" class="org.geomajas.sld.filter.PropertyIsLikeTypeInfo"
-		name="PropertyIsLike">
+		name="PropertyIsLike" ordered="false">
 		<structure map-as="ogc:PropertyIsLikeType" />
 	</mapping>
-	<mapping abstract="true" type-name="ogc:PropertyIsNullType" class="org.geomajas.sld.filter.PropertyIsNullTypeInfo">
+	<mapping abstract="true" type-name="ogc:PropertyIsNullType" class="org.geomajas.sld.filter.PropertyIsNullTypeInfo"
+		ordered="false">
 		<structure map-as="ogc:ComparisonOpsType" />
 		<structure ordered="false" choice="true">
 			<structure type="org.geomajas.sld.expression.PropertyNameInfo" test-method="ifPropertyName" get-method="getPropertyName"
@@ -127,7 +129,8 @@
 		name="PropertyIsNull">
 		<structure map-as="ogc:PropertyIsNullType" />
 	</mapping>
-	<mapping abstract="true" type-name="ogc:PropertyIsBetweenType" class="org.geomajas.sld.filter.PropertyIsBetweenTypeInfo">
+	<mapping abstract="true" type-name="ogc:PropertyIsBetweenType" class="org.geomajas.sld.filter.PropertyIsBetweenTypeInfo"
+		ordered="false">
 		<structure map-as="ogc:ComparisonOpsType" />
 		<structure type="org.geomajas.sld.expression.ExpressionInfo" get-method="getExpression" set-method="setExpression" />
 		<structure map-as="ogc:LowerBoundaryType" get-method="getLowerBoundary" set-method="setLowerBoundary" name="LowerBoundary" />
@@ -153,7 +156,7 @@
 				usage="optional" />
 		</structure>
 	</mapping>
-	<mapping abstract="true" type-name="ogc:BBOXType" class="org.geomajas.sld.filter.BBOXTypeInfo">
+	<mapping abstract="true" type-name="ogc:BBOXType" class="org.geomajas.sld.filter.BBOXTypeInfo" ordered="false">
 		<structure map-as="ogc:SpatialOpsType" />
 		<structure type="org.geomajas.sld.expression.PropertyNameInfo" get-method="getPropertyName" set-method="setPropertyName" />
 		<structure type="org.geomajas.sld.geometry.BoxTypeInfo" get-method="getBox" set-method="setBox" />
@@ -162,7 +165,7 @@
 		name="BBOX">
 		<structure map-as="ogc:BBOXType" />
 	</mapping>
-	<mapping abstract="true" type-name="ogc:DistanceBufferType" class="org.geomajas.sld.filter.DistanceBufferTypeInfo">
+	<mapping abstract="true" type-name="ogc:DistanceBufferType" class="org.geomajas.sld.filter.DistanceBufferTypeInfo" ordered="false">
 		<structure map-as="ogc:SpatialOpsType" />
 		<structure type="org.geomajas.sld.expression.PropertyNameInfo" get-method="getPropertyName" set-method="setPropertyName" />
 		<structure type="org.geomajas.sld.geometry.AbstractGeometryInfo" get-method="getGeometry" set-method="setGeometry" />
@@ -225,7 +228,7 @@
 	<mapping abstract="true" type-name="ogc:BinaryOperatorType" class="org.geomajas.sld.expression.BinaryOperatorTypeInfo">
 		<structure map-as="ogc:ExpressionType" />
 		<collection item-type="org.geomajas.sld.expression.ExpressionInfo" get-method="getExpressionList"
-			set-method="setExpressionList" create-type="java.util.ArrayList" />
+			set-method="setExpressionList" create-type="java.util.ArrayList"  ordered="false"/>
 	</mapping>
 	<mapping abstract="true" type-name="ogc:FunctionType" class="org.geomajas.sld.expression.FunctionTypeInfo">
 		<structure map-as="ogc:ExpressionType" />
