@@ -80,7 +80,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 		// Set default viewConfig active is configured
 		for (ViewConfigItem viewConfig : viewConfigItems) {
 			if (viewConfig.getViewConfig().isActiveByDefault()) {
-				activeViewConfig = viewConfig;
+				activateViewConfig(viewConfig);
 			}
 		}
 	}
