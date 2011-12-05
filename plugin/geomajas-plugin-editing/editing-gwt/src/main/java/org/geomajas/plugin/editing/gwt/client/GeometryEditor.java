@@ -9,22 +9,22 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.client;
+package org.geomajas.plugin.editing.gwt.client;
 
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.controller.EditGeometryBaseController;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
-import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.client.service.GeometryEditingServiceImpl;
 import org.geomajas.plugin.editing.client.snapping.SnappingService;
+import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
+import org.geomajas.plugin.editing.gwt.client.gfx.GeometryRenderer;
 
 /**
  * Top level geometry editor for the GWT face.

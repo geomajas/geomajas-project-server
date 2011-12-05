@@ -12,7 +12,7 @@
 package org.geomajas.plugin.editing.gwt.example.client;
 
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.smartgwt.client.widgets.Img;

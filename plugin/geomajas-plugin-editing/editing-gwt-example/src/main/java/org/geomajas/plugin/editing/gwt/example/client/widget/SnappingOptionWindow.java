@@ -12,14 +12,14 @@
 package org.geomajas.plugin.editing.gwt.example.client.widget;
 
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.plugin.editing.client.GeometryEditor;
 import org.geomajas.plugin.editing.client.snapping.SnappingAlgorithm;
 import org.geomajas.plugin.editing.client.snapping.SnappingSourceProvider;
-import org.geomajas.plugin.editing.client.snapping.VectorLayerSourceProvider;
 import org.geomajas.plugin.editing.client.snapping.impl.NearestEdgeOfIntersection;
 import org.geomajas.plugin.editing.client.snapping.impl.NearestEdgeSnappingAlgorithm;
 import org.geomajas.plugin.editing.client.snapping.impl.NearestVertexOfIntersection;
 import org.geomajas.plugin.editing.client.snapping.impl.NearestVertexSnappingAlgorithm;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.snapping.VectorLayerSourceProvider;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.HeaderControls;
