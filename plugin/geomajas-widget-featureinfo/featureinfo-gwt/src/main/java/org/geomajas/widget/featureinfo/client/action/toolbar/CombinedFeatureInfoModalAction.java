@@ -41,6 +41,7 @@ public class CombinedFeatureInfoModalAction extends ToolbarModalAction {
 		controller = new CombinedFeatureInfoController(mapWidget);
 
 		// if it is available it is the default:
+		// TODO: what is the impact of setting this default controller? 
 		mapWidget.setFallbackController(controller);
 	}
 

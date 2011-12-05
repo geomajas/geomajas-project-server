@@ -27,8 +27,6 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
  */
 public class CombinedFeatureInfoController extends AbstractGraphicsController {
 
-	private static final int PIXEL_TOLERANCE = 5;
-	
 	private PanController panC;
 	private TooltipOnMouseoverController tomC;
 	private MultiLayerFeatureInfoController mlfC;
@@ -36,8 +34,8 @@ public class CombinedFeatureInfoController extends AbstractGraphicsController {
 	public CombinedFeatureInfoController(MapWidget mapWidget) {
 		super(mapWidget);
 		panC = new PanController(mapWidget);
-		tomC = new TooltipOnMouseoverController(mapWidget, PIXEL_TOLERANCE);
-		mlfC = new MultiLayerFeatureInfoController(mapWidget, PIXEL_TOLERANCE);
+		tomC = new TooltipOnMouseoverController(mapWidget);
+		mlfC = new MultiLayerFeatureInfoController(mapWidget);
 	}
 
 	@Override

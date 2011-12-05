@@ -33,6 +33,7 @@ import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
+import org.geomajas.widget.featureinfo.client.util.FitSetting;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.impl.StringBuilderImpl;
@@ -43,23 +44,25 @@ import com.smartgwt.client.widgets.Img;
 /**
  * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  * 
  */
 public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private Canvas tooltip;
-	private int pixelTolerance;
+	private int pixelTolerance = FitSetting.TOOLTIP_PIXEL_TOLERANCE;
+
+	private int minPixelMove = FitSetting.TOOLTIP_MIN_PIXEL_MOVE;
+	private int showDelay = FitSetting.TOOLTIP_SHOW_DELAY;
+	private int layersToSearch = SearchByLocationRequest.SEARCH_ALL_LAYERS;
+	private int maxLabelCount = FitSetting.TOOLTIP_MAX_LABEL_COUNT;
+	private boolean showEmptyResults = FitSetting.TOOLTIP_SHOW_EMPTY_RESULTS_MESSAGE;
 
 	private Coordinate lastPosition; // screen
 	private Coordinate currentPosition; // screen
 	private Coordinate worldPosition; // world !!
-	private int minPixelMove = 3;
-	private int showDelay = 250;
-	private int layersToSearch = SearchByLocationRequest.SEARCH_ALL_LAYERS;
-	private int maxLabelCount = 15;
 	private Timer timer;
-	private boolean showEmptyResults;
 	
 	private MapWidget mapWidget;
 

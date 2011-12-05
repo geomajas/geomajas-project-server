@@ -36,7 +36,9 @@ import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
+import org.geomajas.widget.featureinfo.client.FeatureInfoEntryPoint;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
+import org.geomajas.widget.featureinfo.client.util.FitSetting;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
 import org.geomajas.widget.featureinfo.client.widget.Notify;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
@@ -51,8 +53,6 @@ import com.smartgwt.client.widgets.Window;
  * its attributes in a feature attribute window under the list window. As a starting point for this class the
  * org.geomajas.gwt.client.controller.FeatureInfoController was used.
  * 
- * @todo: merge common code between controller and listener.
- * 
  * @author An Buyle
  * @author Oliver May
  * @author Kristof Heirwegh
@@ -61,17 +61,22 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 
 	private boolean dragging;
 	private boolean clickstart;
-	private boolean includeRasterLayers;
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private MapWidget mapWidget;
+
+	private boolean includeRasterLayers = FitSetting.FEATUREINFO_INCLUDE_RASTERLAYERS;
 
 	/**
 	 * Number of pixels that describes the tolerance allowed when trying to select features.
 	 */
-	private int pixelTolerance;
+	private int pixelTolerance = FitSetting.FEATUREINFO_PIXEL_TOLERANCE;
 
-	public MultiLayerFeatureInfoListener(MapWidget mapWidget, int pixelTolerance) {
+	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
+	}
+	
+	public MultiLayerFeatureInfoListener(MapWidget mapWidget, int pixelTolerance) {
+		this(mapWidget);
 		this.pixelTolerance = pixelTolerance;
 	}
 
