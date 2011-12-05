@@ -23,30 +23,30 @@ import org.geomajas.annotation.Api;
  * @since 1.0.0
  */
 @Api
-public class FitSetting {
+public final class FitSetting {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 	
-	/** Weither to show a message when no results are fount on the location. */
-	public static final boolean TOOLTIP_SHOW_EMPTY_RESULTS_MESSAGE = false;
+	/** Weither to show a message when no results are found on the location. */
+	public static boolean tooltipShowEmptyResultMessage;
 
 	/** Weither to include raster layers when requesting feature info. */
-	public static final boolean FEATUREINFO_INCLUDE_RASTERLAYERS = false;
+	public static boolean featureinfoIncludeRasterLayer;
 
 	/** Amount of pixels the mouse has to move before a new mouse over request is done. */
-	public static int TOOLTIP_MIN_PIXEL_MOVE = 5;
+	public static int tooltipMinimalPixelMove = 5;
 	
 	/** Amount of time the mouse must retain it's position before it triggers a request to the server. */
-	public static int TOOLTIP_SHOW_DELAY = 250;
+	public static int tooltipShowDelay = 250;
 	
 	/** Maximum amount of results to show in the tooltip. */
-	public static int TOOLTIP_MAX_LABEL_COUNT = 15;
+	public static int tooltipMaxLabelCount = 15;
 	
 	/** Pixel tolerance on tooltips. */
-	public static int TOOLTIP_PIXEL_TOLERANCE = 5;
+	public static int tooltipPixelTolerance = 5;
 	
 	/** Pixel tolerance on featureinfo requests. */
-	public static int FEATUREINFO_PIXEL_TOLERANCE = TOOLTIP_PIXEL_TOLERANCE;
+	public static int featureInfoPixelTolerance = tooltipPixelTolerance;
 	
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 

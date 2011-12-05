@@ -36,7 +36,6 @@ import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.layer.wms.command.dto.SearchByPointRequest;
 import org.geomajas.layer.wms.command.dto.SearchByPointResponse;
-import org.geomajas.widget.featureinfo.client.FeatureInfoEntryPoint;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.util.FitSetting;
 import org.geomajas.widget.featureinfo.client.widget.MultiLayerFeatureInfoWindow;
@@ -64,12 +63,12 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private MapWidget mapWidget;
 
-	private boolean includeRasterLayers = FitSetting.FEATUREINFO_INCLUDE_RASTERLAYERS;
+	private boolean includeRasterLayers = FitSetting.featureinfoIncludeRasterLayer;
 
 	/**
 	 * Number of pixels that describes the tolerance allowed when trying to select features.
 	 */
-	private int pixelTolerance = FitSetting.FEATUREINFO_PIXEL_TOLERANCE;
+	private int pixelTolerance = FitSetting.featureInfoPixelTolerance;
 
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;

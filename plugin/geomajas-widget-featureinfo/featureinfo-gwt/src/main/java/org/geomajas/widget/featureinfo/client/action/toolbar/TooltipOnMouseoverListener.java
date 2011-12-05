@@ -51,13 +51,13 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 	private Canvas tooltip;
-	private int pixelTolerance = FitSetting.TOOLTIP_PIXEL_TOLERANCE;
+	private int pixelTolerance = FitSetting.tooltipPixelTolerance;
 
-	private int minPixelMove = FitSetting.TOOLTIP_MIN_PIXEL_MOVE;
-	private int showDelay = FitSetting.TOOLTIP_SHOW_DELAY;
+	private int minPixelMove = FitSetting.tooltipMinimalPixelMove;
+	private int showDelay = FitSetting.tooltipShowDelay;
 	private int layersToSearch = SearchByLocationRequest.SEARCH_ALL_LAYERS;
-	private int maxLabelCount = FitSetting.TOOLTIP_MAX_LABEL_COUNT;
-	private boolean showEmptyResults = FitSetting.TOOLTIP_SHOW_EMPTY_RESULTS_MESSAGE;
+	private int maxLabelCount = FitSetting.tooltipMaxLabelCount;
+	private boolean showEmptyResults = FitSetting.tooltipShowEmptyResultMessage;
 
 	private Coordinate lastPosition; // screen
 	private Coordinate currentPosition; // screen
