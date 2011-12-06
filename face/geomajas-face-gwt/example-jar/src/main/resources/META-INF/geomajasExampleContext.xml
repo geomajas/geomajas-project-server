@@ -22,8 +22,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<import resource="classpath:org/geomajas/gwt/example/layer*.xml"/>
-	<import resource="classpath:org/geomajas/gwt/example/map*.xml"/>
-	<import resource="classpath:org/geomajas/gwt/example/app*.xml"/>
+	<bean name="XxxYyyZzz" class="org.geomajas.configuration.AttributeInfo">
+		<property name="name" value="xyz" />
+		<property name="label" value="xyz" />
+	</bean>
+	<import resource="classpath:org/geomajas/gwt/example/context/layer*.xml"/>
+	<import resource="classpath:org/geomajas/gwt/example/context/map*.xml"/>
+	<import resource="classpath:org/geomajas/gwt/example/context/app*.xml"/>
 
 </beans>
