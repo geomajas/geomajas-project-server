@@ -76,6 +76,7 @@
 
 	<modules>
 		<module>staticsecurity</module>
+		<module>staticsecurity-ldap</module>
 		<module>staticsecurity-gwt</module>
 		<module>staticsecurity-gwt-example</module>
 	</modules>
@@ -114,6 +115,22 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.unboundid</groupId>
+				<artifactId>unboundid-ldapsdk</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.easytesting</groupId>
+				<artifactId>fest-assert</artifactId>
+				<version>1.4</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

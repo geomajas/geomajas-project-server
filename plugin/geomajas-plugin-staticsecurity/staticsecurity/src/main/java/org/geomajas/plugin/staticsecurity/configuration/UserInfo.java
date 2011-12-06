@@ -117,7 +117,7 @@ public class UserInfo extends RoleInfo implements org.geomajas.security.UserInfo
 	 * @param locale locale code as string
 	 */
 	public void setUserLocale(String locale) {
-		setUserLocale(new Locale(locale));
+		setUserLocale(null == locale ? null : new Locale(locale));
 	}
 
 	/**
