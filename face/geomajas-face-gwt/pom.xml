@@ -118,14 +118,6 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
-		<pluginRepository>
-			<id>Geomajas-latest</id>
-			<name>Geomajas snapshot repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/latest</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
 	</pluginRepositories>
 	
 	<modules>

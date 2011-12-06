@@ -81,16 +81,12 @@
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
 		
-		<!-- @extract-start EditingDependency, Editing plugin dependencies - including source -->
+		<!-- @extract-start EditingDependency, Editing plugin dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-editing-gwt</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-editing-gwt</artifactId>
-			<classifier>sources</classifier>
-		</dependency>		
+		<!-- @extract-end -->
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -178,7 +174,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.3.0-1</version>
+				<version>2.4.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
@@ -192,12 +188,16 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<inplace>true</inplace>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>false</disableClassMetadata>
+					<!--<logLevel>DEBUG</logLevel>-->
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
+					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 					<module>org.geomajas.plugin.editing.gwt.example.GeomajasEntryPoint</module>
 					<runTarget>index.html</runTarget>
-					<disableCastChecking>true</disableCastChecking>
-					<disableClassMetadata>true</disableClassMetadata>
-					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<executions>
 					<execution>
@@ -220,7 +220,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
 			</plugin>
 
 			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
