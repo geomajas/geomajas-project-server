@@ -40,21 +40,18 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
 public class ZoomSliderController extends AbstractGraphicsController {
 
 	private ZoomSlider zoomSlider;
-	private SliderArea sliderArea;
 	
 	public ZoomSliderController(ZoomSlider zoomSlider) {
 		super(zoomSlider.getMapWidget());
 		this.zoomSlider = zoomSlider;
-		this.sliderArea = zoomSlider.getSliderArea();
 	}
 	
 	@Override
 	public void onDown(HumanInputEvent<?> event) {
+		SliderArea sliderArea = zoomSlider.getSliderArea();
 		event.stopPropagation();
 		double y = getLocation(event, RenderSpace.SCREEN).getY();
 		double x = getLocation(event, RenderSpace.SCREEN).getX();
-		System.out.println("Down event.getY() = " + y);
-		System.out.println("Down event.getX() = " + x);
 		Bbox sliderAreaBounds = sliderArea.getAddonBounds();
 		Coordinate origin = sliderAreaBounds.getOrigin();
 		Coordinate endPoint = sliderAreaBounds.getEndPoint();
@@ -70,11 +67,10 @@ public class ZoomSliderController extends AbstractGraphicsController {
 		event.stopPropagation();
 		dragging = false;
 		double lastY = getLocation(event, RenderSpace.SCREEN).getY();
-		System.out.println("Up event.getY() = " + lastY);
 		lastY = validateY(lastY);
 		zoom(lastY);
 		drawSliderIcon(lastY);
-		sliderArea.drawStartRectangle(zoomSlider.getSliderUnit().getBounds().getWidth());
+		zoomSlider.getSliderArea().drawStartRectangle(zoomSlider.getSliderUnit().getBounds().getWidth());
 	}
 	
 	@Override
@@ -82,14 +78,13 @@ public class ZoomSliderController extends AbstractGraphicsController {
 		event.stopPropagation();
 		double y = getLocation(event, RenderSpace.SCREEN).getY();
 		if (dragging) {
-			System.out.println("Move event.getY() = " + y);
 			y = validateY(y);
 			drawSliderIcon(y);
-			System.out.println("Move validated = " + y);
 		}
 	}
 	
 	private double validateY(double y) {
+		SliderArea sliderArea = zoomSlider.getSliderArea();
 		y -= 2 * (zoomSlider.getVerticalMargin() + sliderArea.getVerticalMargin()) + 5;
 		double startY = 0;
 		double endY = sliderArea.getHeight() - zoomSlider.getSliderUnit().getBounds().getHeight();
@@ -102,6 +97,7 @@ public class ZoomSliderController extends AbstractGraphicsController {
 	}
 	
 	private void drawSliderIcon(double y) {
+		SliderArea sliderArea = zoomSlider.getSliderArea();
 		Bbox bounds = (Bbox) sliderArea.getIcon().getBounds();
 		bounds.setY(y);
 		sliderArea.drawImage(sliderArea.applyMargins(bounds));
@@ -110,7 +106,6 @@ public class ZoomSliderController extends AbstractGraphicsController {
 	private void zoom(double y) {
 		int index = (int) (y / zoomSlider.getSliderUnit().getBounds().getHeight());
 		Double targetScale = zoomSlider.getCurrentScaleList().get(index);
-		System.out.println("Zoomed to: " + targetScale);
 		mapWidget.getMapModel().getMapView().setCurrentScale(targetScale, ZoomOption.LEVEL_CLOSEST);
 	}
 }
