@@ -39,6 +39,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<ref bean="mapCountries" />
 				<ref bean="mapWmsCountries" />
 				<ref bean="mapWms" />
+				<ref bean="mapMsWms" />
 			</list>
 		</property>
 		<property name="widgetInfo">
@@ -54,6 +55,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</entry>
 				<entry key="ribbon-bar-3">
 					<ref bean="ribbon-bar-3" />
+				</entry>
+				<entry key="ribbon-bar-4">
+					<ref bean="ribbon-bar-4" />
 				</entry>
 			</map>
 		</property>

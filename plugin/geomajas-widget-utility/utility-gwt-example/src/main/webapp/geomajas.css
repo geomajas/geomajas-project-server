@@ -14,6 +14,10 @@
     background: #E0E0F8;
     background-image: -moz-linear-gradient(top, #D8D8F0, #E8E8FF);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#D8D8F0), to(#E8E8FF));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#D8D8F0, endColorstr=#E8E8FF, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#D8D8F0, endColorstr=#E8E8FF, GradientType=1)";
     border: 1px solid #A7ABD4;
 }
 

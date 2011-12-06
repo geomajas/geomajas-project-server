@@ -376,5 +376,75 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	
+	<bean name="ribbon-bar-4"
+		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
+		<property name="groups">
+			<list>
+				<bean
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+					<property name="title" value="Navigation" />
+					<property name="columns">
+						<list>
+							<bean
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="ZoomIn" />
+									</list>
+								</property>
+							</bean>
+							<bean
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="ZoomOut" />
+									</list>
+								</property>
+							</bean>
+							<bean
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionList" />
+								<property name="tools">
+									<list>
+										<ref bean="ZoomPrevious" />
+										<ref bean="ZoomNext" />
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				<bean
+					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+					<property name="title" value="Information" />
+					<property name="columns">
+						<list>
+							<bean
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="MeasureDistanceMode" />
+									</list>
+								</property>
+							</bean>
+							<bean
+								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+								<property name="type" value="ToolbarActionButton" />
+								<property name="tools">
+									<list>
+										<ref bean="FeatureInfoMode" />
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 </beans>

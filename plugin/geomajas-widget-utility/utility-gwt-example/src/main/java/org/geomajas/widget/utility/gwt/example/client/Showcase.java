@@ -97,6 +97,10 @@ public class Showcase implements EntryPoint {
 		tab4.setPane(getExample4());
 		tabs.addTab(tab4);
 
+		Tab tab5 = new Tab("Microsoft Ribbon Style");
+		tab5.setPane(getExample5());
+		tabs.addTab(tab5);
+		
 		main.addMember(tabs);
 		main.draw();
 	}
@@ -169,6 +173,20 @@ public class Showcase implements EntryPoint {
 		MapWidget mapWidget = new MapWidget("mapWms", "widget-utility");
 		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "widget-utility", "ribbon-bar-3");
 		ribbon.setStyleName("myRibbon");
+		ribbon.setSize("100%", "94px");
+
+		layout.addMember(ribbon);
+		layout.addMember(mapWidget);
+		return layout;
+	}
+	
+	private Canvas getExample5() {
+		VLayout layout = new VLayout(5);
+		layout.setPadding(5);
+
+		MapWidget mapWidget = new MapWidget("mapMsWms", "widget-utility");
+		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "widget-utility", "ribbon-bar-3");
+		ribbon.setStyleName("msRibbon");
 		ribbon.setSize("100%", "94px");
 
 		layout.addMember(ribbon);
