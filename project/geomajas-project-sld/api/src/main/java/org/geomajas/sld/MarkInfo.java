@@ -37,7 +37,6 @@ import org.geomajas.annotation.Api;
  * @author Jan De Moerloose
  * @since 1.10.0
  */
-
 @Api(allMethods = true)
 public class MarkInfo implements Serializable {
 
@@ -61,7 +60,7 @@ public class MarkInfo implements Serializable {
 	/**
 	 * Set the 'WellKnownName' element value.
 	 * 
-	 * @param wellKnownName
+	 * @param wellKnownName well known name
 	 */
 	public void setWellKnownName(WellKnownNameInfo wellKnownName) {
 		this.wellKnownName = wellKnownName;
@@ -79,7 +78,7 @@ public class MarkInfo implements Serializable {
 	/**
 	 * Set the 'Fill' element value.
 	 * 
-	 * @param fill
+	 * @param fill fill
 	 */
 	public void setFill(FillInfo fill) {
 		this.fill = fill;
@@ -97,22 +96,19 @@ public class MarkInfo implements Serializable {
 	/**
 	 * Set the 'Stroke' element value.
 	 * 
-	 * @param stroke
+	 * @param stroke stroke
 	 */
 	public void setStroke(StrokeInfo stroke) {
 		this.stroke = stroke;
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
-		String str = "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
+		return "MarkInfo(wellKnownName=" + this.getWellKnownName() + ", fill=" + this.getFill() + ", stroke="
 				+ this.getStroke() + ")";
-		return str;
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
 			return true;
@@ -121,31 +117,33 @@ public class MarkInfo implements Serializable {
 			return false;
 		}
 		final MarkInfo other = (MarkInfo) o;
-		if (!other.canEqual((java.lang.Object) this)) {
+		if (!other.canEqual(this)) {
 			return false;
 		}
-		if (this.getWellKnownName() == null ? other.getWellKnownName() != null : !this.getWellKnownName().equals(
-				(java.lang.Object) other.getWellKnownName())) {
+		if (this.getWellKnownName() == null ? other.getWellKnownName() != null :
+				!this.getWellKnownName().equals(other.getWellKnownName())) {
 			return false;
 		}
-		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals(
-				(java.lang.Object) other.getFill())) {
+		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals( other.getFill())) {
 			return false;
 		}
-		if (this.getStroke() == null ? other.getStroke() != null : !this.getStroke().equals(
-				(java.lang.Object) other.getStroke())) {
+		if (this.getStroke() == null ? other.getStroke() != null : !this.getStroke().equals( other.getStroke())) {
 			return false;
 		}
 		return true;
 	}
 
-	@java.lang.SuppressWarnings("all")
-	public boolean canEqual(final java.lang.Object other) {
+	/**
+	 * Check whether the object can be compared with this.
+	 *
+	 * @param other other object
+	 * @return true when object can be compared
+	 */
+	public boolean canEqual(final Object other) {
 		return other instanceof MarkInfo;
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

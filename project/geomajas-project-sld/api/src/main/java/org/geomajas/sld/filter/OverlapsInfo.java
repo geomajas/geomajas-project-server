@@ -33,14 +33,12 @@ public class OverlapsInfo extends BinarySpatialOpTypeInfo implements Serializabl
 	private static final long serialVersionUID = 1100;
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "OverlapsInfo()";
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
-	public boolean equals(final java.lang.Object o) {
+	public boolean equals(final Object o) {
 		if (o == this) {
 			return true;
 		}
@@ -48,7 +46,7 @@ public class OverlapsInfo extends BinarySpatialOpTypeInfo implements Serializabl
 			return false;
 		}
 		final OverlapsInfo other = (OverlapsInfo) o;
-		if (!other.canEqual((java.lang.Object) this)) {
+		if (!other.canEqual(this)) {
 			return false;
 		}
 		if (!super.equals(o)) {
@@ -57,13 +55,17 @@ public class OverlapsInfo extends BinarySpatialOpTypeInfo implements Serializabl
 		return true;
 	}
 
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Check whether the object can be compared with this.
+	 *
+	 * @param other other object
+	 * @return true when object can be compared
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof OverlapsInfo;
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

@@ -34,7 +34,6 @@ import org.geomajas.annotation.Api;
  * @author Jan De Moerloose
  * @since 1.10.0
  */
-
 @Api(allMethods = true)
 public class FilterTypeInfo implements Serializable {
 
@@ -97,7 +96,7 @@ public class FilterTypeInfo implements Serializable {
 	/**
 	 * Set the 'spatialOps' element value.
 	 * 
-	 * @param spatialOps
+	 * @param spatialOps spatial operation
 	 */
 	public void setSpatialOps(SpatialOpsTypeInfo spatialOps) {
 		setChoiceSelect(SPATIAL_OPS_CHOICE);
@@ -125,7 +124,7 @@ public class FilterTypeInfo implements Serializable {
 	/**
 	 * Set the 'comparisonOps' element value.
 	 * 
-	 * @param comparisonOps
+	 * @param comparisonOps comparison operation
 	 */
 	public void setComparisonOps(ComparisonOpsTypeInfo comparisonOps) {
 		setChoiceSelect(COMPARISON_OPS_CHOICE);
@@ -153,7 +152,7 @@ public class FilterTypeInfo implements Serializable {
 	/**
 	 * Set the 'logicOps' element value.
 	 * 
-	 * @param logicOps
+	 * @param logicOps logic operation
 	 */
 	public void setLogicOps(LogicOpsTypeInfo logicOps) {
 		setChoiceSelect(LOGIC_OPS_CHOICE);
@@ -181,7 +180,7 @@ public class FilterTypeInfo implements Serializable {
 	/**
 	 * Set the list of 'FeatureId' element items.
 	 * 
-	 * @param list
+	 * @param list list
 	 */
 	public void setFeatureIdList(List<FeatureIdTypeInfo> list) {
 		setChoiceSelect(FEATURE_ID_LIST_CHOICE);
@@ -189,7 +188,6 @@ public class FilterTypeInfo implements Serializable {
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
 		return "FilterTypeInfo(choiceSelect=" + this.choiceSelect + ", spatialOps=" + this.getSpatialOps()
 				+ ", comparisonOps=" + this.getComparisonOps() + ", logicOps=" + this.getLogicOps()
@@ -197,7 +195,6 @@ public class FilterTypeInfo implements Serializable {
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public boolean equals(final java.lang.Object o) {
 		if (o == this) {
 			return true;
@@ -206,38 +203,42 @@ public class FilterTypeInfo implements Serializable {
 			return false;
 		}
 		final FilterTypeInfo other = (FilterTypeInfo) o;
-		if (!other.canEqual((java.lang.Object) this)) {
+		if (!other.canEqual(this)) {
 			return false;
 		}
 		if (this.choiceSelect != other.choiceSelect) {
 			return false;
 		}
-		if (this.getSpatialOps() == null ? other.getSpatialOps() != null : !this.getSpatialOps().equals(
-				(java.lang.Object) other.getSpatialOps())) {
+		if (this.getSpatialOps() == null ? other.getSpatialOps() != null :
+				!this.getSpatialOps().equals(other.getSpatialOps())) {
 			return false;
 		}
-		if (this.getComparisonOps() == null ? other.getComparisonOps() != null : !this.getComparisonOps().equals(
-				(java.lang.Object) other.getComparisonOps())) {
+		if (this.getComparisonOps() == null ? other.getComparisonOps() != null :
+				!this.getComparisonOps().equals(other.getComparisonOps())) {
 			return false;
 		}
-		if (this.getLogicOps() == null ? other.getLogicOps() != null : !this.getLogicOps().equals(
-				(java.lang.Object) other.getLogicOps())) {
+		if (this.getLogicOps() == null ? other.getLogicOps() != null :
+				!this.getLogicOps().equals(other.getLogicOps())) {
 			return false;
 		}
-		if (this.getFeatureIdList() == null ? other.getFeatureIdList() != null : !this.getFeatureIdList().equals(
-				(java.lang.Object) other.getFeatureIdList())) {
+		if (this.getFeatureIdList() == null ? other.getFeatureIdList() != null :
+				!this.getFeatureIdList().equals(other.getFeatureIdList())) {
 			return false;
 		}
 		return true;
 	}
 
-	@java.lang.SuppressWarnings("all")
+	/**
+	 * Check whether the object can be compared with this.
+	 *
+	 * @param other other object
+	 * @return true when object can be compared
+	 */
 	public boolean canEqual(final java.lang.Object other) {
 		return other instanceof FilterTypeInfo;
 	}
 
 	@java.lang.Override
-	@java.lang.SuppressWarnings("all")
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
