@@ -17,7 +17,7 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
 
 /**
- * Request object for {@link org.geomajas.command.geometry.MergePolygonCommand}.
+ * Request object for {@link org.geomajas.plugin.editing.server.command.GeometryMergeCommand}.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -33,6 +33,9 @@ public class GeometryMergeRequest implements CommandRequest {
 	private List<Geometry> geometries;
 
 	private int precision;
+
+	public GeometryMergeRequest() {
+	}
 
 	public List<Geometry> getGeometries() {
 		return geometries;

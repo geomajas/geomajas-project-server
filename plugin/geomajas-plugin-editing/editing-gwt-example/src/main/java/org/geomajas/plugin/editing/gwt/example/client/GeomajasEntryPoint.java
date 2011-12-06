@@ -13,12 +13,15 @@ package org.geomajas.plugin.editing.gwt.example.client;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.example.client.merging.MergingTab;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
@@ -29,7 +32,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 	public void onModuleLoad() {
 
-		VLayout mainLayout = new VLayout();
+		VLayout mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
 
@@ -60,13 +63,19 @@ public class GeomajasEntryPoint implements EntryPoint {
 		final MapWidget map = new MapWidget("mapEditing", "app");
 		final GeometryEditor editor = new GeometryEditor(map);
 
+		TabSet tabSet = new TabSet();
+		Tab tab = new Tab("Editing & Snapping");
 		VLayout mapLayout = new VLayout();
 		MenuBar editingToolStrip = new MenuBar(editor);
 		mapLayout.addMember(editingToolStrip);
 		mapLayout.addMember(map);
 		mapLayout.setHeight("100%");
+		tab.setPane(mapLayout);
+		tabSet.addTab(tab);
 
-		layout.addMember(mapLayout);
+		tabSet.addTab(new MergingTab());
+
+		layout.addMember(tabSet);
 
 		// ---------------------------------------------------------------------
 		// Finally draw everything:

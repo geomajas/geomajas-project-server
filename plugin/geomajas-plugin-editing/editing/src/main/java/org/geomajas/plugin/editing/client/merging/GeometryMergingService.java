@@ -117,9 +117,14 @@ public class GeometryMergingService {
 			public void execute(Geometry geometry) {
 				callback.execute(geometry);
 				busy = false;
+				geometries.clear();
 				eventBus.fireEvent(new GeometryMergingStopEvent(geometry));
 			}
 		});
+	}
+	
+	public boolean isBusy() {
+		return busy;
 	}
 
 	// ------------------------------------------------------------------------

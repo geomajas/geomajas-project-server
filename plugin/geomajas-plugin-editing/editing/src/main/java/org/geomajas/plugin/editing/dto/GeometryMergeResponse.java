@@ -27,6 +27,9 @@ public class GeometryMergeResponse extends CommandResponse {
 
 	private Geometry geometry;
 
+	public GeometryMergeResponse() {
+	}
+
 	public Geometry getGeometry() {
 		return geometry;
 	}

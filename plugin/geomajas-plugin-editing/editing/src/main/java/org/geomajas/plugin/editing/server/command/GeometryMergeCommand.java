@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
 /**
  * <p>
@@ -48,20 +49,27 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 			response.setGeometry(request.getGeometries().get(0));
 			return;
 		}
+		int precision = request.getPrecision();
 
 		Geometry[] geometries = new Geometry[request.getGeometries().size()];
 		for (int i = 0; i < request.getGeometries().size(); i++) {
+			request.getGeometries().get(i).setPrecision(precision);
 			geometries[i] = converter.toInternal(request.getGeometries().get(i));
 		}
 
-		int precision = request.getPrecision();
 		PrecisionModel precisionModel = new PrecisionModel(Math.pow(10.0, precision));
 		GeometryFactory factory = new GeometryFactory(precisionModel, geometries[0].getSRID());
 
+		// Calculate the union:
 		Geometry temp = factory.createGeometry(geometries[0]);
 		for (int i = 1; i < geometries.length; i++) {
 			Geometry geometry = factory.createGeometry(geometries[i]);
-			temp = temp.union(geometry.buffer(Math.pow(10.0, -(precision - 1))));
+
+			// Buffer to make sure that after a split, the merging the same geometries would work:
+			Geometry bfr = EnhancedPrecisionOp.buffer(geometry, Math.pow(10.0, -(precision - 1)));
+
+			// Use EnhancedPrecisionOp to reduce likeliness of robustness problems:
+			temp = EnhancedPrecisionOp.union(temp, bfr);
 		}
 
 		response.setGeometry(converter.toDto(temp));
