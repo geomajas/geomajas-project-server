@@ -70,13 +70,13 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	// GeometryEditWorkflowHandler implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
 		undoQueue.clear();
 		redoQueue.clear();
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		undoQueue.clear();
 		redoQueue.clear();
@@ -86,17 +86,17 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	// Methods concerning "UNDO/REDO":
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public boolean canUndo() {
 		return undoQueue.size() > 0;
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public boolean canRedo() {
 		return redoQueue.size() > 0;
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void undo() throws GeometryOperationFailedException {
 		if (!canUndo()) {
 			throw new GeometryOperationFailedException("Cannot perform UNDO. No operation sequence could be found.");
@@ -108,7 +108,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		eventBus.fireEvent(new GeometryEditShapeChangedEvent(service.getGeometry()));
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void redo() throws GeometryOperationFailedException {
 		if (!canRedo()) {
 			throw new GeometryOperationFailedException("Cannot perform REDO. No operation sequence could be found.");
@@ -124,7 +124,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	// Operation sequence manipulation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void startOperationSequence() throws GeometryOperationFailedException {
 		if (current != null) {
 			throw new GeometryOperationFailedException("An operation sequence has already been started.");
@@ -133,7 +133,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		redoQueue.clear();
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void stopOperationSequence() {
 		if (isOperationSequenceActive() && !current.isEmpty()) {
 			undoQueue.add(current);
@@ -142,7 +142,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		current = null;
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public boolean isOperationSequenceActive() {
 		return current != null;
 	}
@@ -151,7 +151,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	// Supported operations:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void move(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
 		if (indices == null || coordinates == null || indices.size() == 0 || coordinates.size() == 0) {
@@ -184,7 +184,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		}
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void insert(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
 		if (indices == null || coordinates == null || indices.size() == 0 || coordinates.size() == 0) {
@@ -218,7 +218,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		}
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException {
 		if (indices == null || indices.size() == 0) {
 			throw new GeometryOperationFailedException("Illegal arguments passed; nothing to delete.");
@@ -253,7 +253,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		}
 	}
 
-	/** {@inheritDoc}} */
+	/** {@inheritDoc} */
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
 		Geometry geometry = service.getGeometry();
 		OperationSequence seq = null;
