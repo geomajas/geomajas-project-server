@@ -56,8 +56,13 @@ public class GeometryMergeCommand implements Command<GeometryMergeRequest, Geome
 			request.getGeometries().get(i).setPrecision(precision);
 			geometries[i] = converter.toInternal(request.getGeometries().get(i));
 		}
-
-		PrecisionModel precisionModel = new PrecisionModel(Math.pow(10.0, precision));
+		PrecisionModel precisionModel;
+		if (precision == -1) {
+			precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
+			precision = 20;
+		} else {
+			precisionModel = new PrecisionModel(Math.pow(10.0, precision));
+		}
 		GeometryFactory factory = new GeometryFactory(precisionModel, geometries[0].getSRID());
 
 		// Calculate the union:

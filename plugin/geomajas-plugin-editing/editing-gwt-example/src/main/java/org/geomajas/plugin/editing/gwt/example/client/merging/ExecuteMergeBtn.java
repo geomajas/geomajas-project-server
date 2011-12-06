@@ -20,6 +20,7 @@ import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.GeometryFunction;
+import org.geomajas.plugin.editing.client.merging.GeometryMergingException;
 import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedEvent;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedHandler;
@@ -30,6 +31,7 @@ import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHand
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopEvent;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler;
 
+import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
@@ -58,26 +60,19 @@ public class ExecuteMergeBtn extends ToolStripButton implements GeometryMergingS
 		addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				// for (Feature feature : mapWidget.getMapModel().getVectorLayer("clientLayerCountries")
-				// .getSelectedFeatureValues()) {
-				// try {
-				// service.addGeometry(GeometryConverter.toDto(feature.getGeometry()));
-				// } catch (IllegalStateException e) {
-				// Window.alert(e.getMessage());
-				// } catch (GeometryMergingException e) {
-				// Window.alert(e.getMessage());
-				// }
-				// }
+				try {
+					service.stop(new GeometryFunction() {
 
-				service.stop(new GeometryFunction() {
-
-					public void execute(Geometry geometry) {
-						mapWidget.getMapModel().clearSelectedFeatures();
-						gfx = new GfxGeometry("merged", GeometryConverter.toGwt(geometry), new ShapeStyle("#CC0000",
-								.9f, "#660000", 1.0f, 3));
-						mapWidget.registerWorldPaintable(gfx);
-					}
-				});
+						public void execute(Geometry geometry) {
+							mapWidget.getMapModel().clearSelectedFeatures();
+							gfx = new GfxGeometry("merged", GeometryConverter.toGwt(geometry), new ShapeStyle(
+									"#CC0000", .9f, "#660000", 1.0f, 3));
+							mapWidget.registerWorldPaintable(gfx);
+						}
+					});
+				} catch (GeometryMergingException e) {
+					Window.alert(e.getMessage());
+				}
 			}
 		});
 

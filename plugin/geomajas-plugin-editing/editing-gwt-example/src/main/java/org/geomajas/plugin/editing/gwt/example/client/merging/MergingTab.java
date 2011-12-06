@@ -33,6 +33,7 @@ public class MergingTab extends Tab {
 		super("Merging geometries");
 		mapWidget = new MapWidget("mapMerging", "app");
 		mergingService = new GeometryMergingService();
+		mergingService.setPrecision(1);
 
 		VLayout layout = new VLayout();
 		layout.setSize("100%", "100%");
@@ -44,8 +45,10 @@ public class MergingTab extends Tab {
 
 		StartMergingBtn startBtn = new StartMergingBtn(mapWidget, mergingService);
 		ExecuteMergeBtn stopBtn = new ExecuteMergeBtn(mapWidget, mergingService);
+		CancelMergingBtn cancelBtn = new CancelMergingBtn(mapWidget, mergingService);
 		toolStrip.addButton(startBtn);
 		toolStrip.addButton(stopBtn);
+		toolStrip.addButton(cancelBtn);
 
 		setPane(layout);
 	}
