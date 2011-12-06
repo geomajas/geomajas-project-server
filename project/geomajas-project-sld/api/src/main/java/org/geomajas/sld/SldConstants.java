@@ -15,7 +15,6 @@ package org.geomajas.sld;
  * SLD constants utility class.
  * 
  * @author An Buyle
- * 
  */
 public final class SldConstants {
 
@@ -29,9 +28,9 @@ public final class SldConstants {
 
 	public static final String FILL_OPACITY = "fill-opacity";
 
-	// OGC 02-070: : If the “stroke” CssParameter element is absent, the (default) color is defined to
-	// be black (“#000000”)
-	// “stroke-opacity” CssParameter: The default value is 1.0 (opaque).
+	// OGC 02-070: : If the "stroke" CssParameter element is absent, the (default) color is defined to
+	// be black ("#000000")
+	// "stroke-opacity" CssParameter: The default value is 1.0 (opaque).
 	// "stroke-width" CssParameter: The default is 1.0 (pixel).
 
 	public static final Integer DEFAULT_STROKE_OPACITY_PERCENTAGE = 100;
@@ -41,8 +40,8 @@ public final class SldConstants {
 	public static final String DEFAULT_FILL_FOR_LINE = "#000000"; // The default fill color for a lineSymbolizer (black)
 
 	// OGC 02-070: The default if neither an ExternalGraphic nor a Mark is specified is to use the default
-	// mark of a “square” with a 50%-gray (#808080) fill and a black border, with a size of 6 pixels,
-	public static final String DEFAULT_WKNAME_FOR_MARKER = "square"; // The default WellKnownName is “square”
+	// mark of a "square" with a 50%-gray (#808080) fill and a black border, with a size of 6 pixels,
+	public static final String DEFAULT_WKNAME_FOR_MARKER = "square"; // The default WellKnownName is "square"
 
 	public static final String DEFAULT_FILL_FOR_MARKER = "#808080"; // The default fill color for a marker
 
@@ -58,7 +57,7 @@ public final class SldConstants {
 
 	public static final String DEFAULT_ROTATION_MARKER_AS_STRING = "0";
 
-	// OGC 02-070: the default value for the fill color in the polygon symbolizer context is 50% gray (value “#808080”)
+	// OGC 02-070: the default value for the fill color in the polygon symbolizer context is 50% gray (value "#808080")
 	public static final String DEFAULT_FILL_FOR_POLYGON = "#808080";
 
 	public static final Integer DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON = 100; // default value in SLD is "1.0"
