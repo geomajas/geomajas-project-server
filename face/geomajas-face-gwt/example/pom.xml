@@ -106,7 +106,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.3.0-1</version>
+				<version>2.4.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
@@ -121,7 +121,10 @@
 				</dependencies>
 				<configuration>
 					<disableCastChecking>true</disableCastChecking>
-					<disableClassMetadata>true</disableClassMetadata>
+					<disableClassMetadata>false</disableClassMetadata>
+					<!--<logLevel>DEBUG</logLevel>-->
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1200M -Xss1024k</extraJvmArgs>
 					<module>org.geomajas.gwt.example.GwtFaceExampleStandalone</module>
 					<runTarget>index.html</runTarget>
