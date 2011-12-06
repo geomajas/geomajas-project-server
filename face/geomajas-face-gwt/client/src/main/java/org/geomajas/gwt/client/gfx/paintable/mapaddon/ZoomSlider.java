@@ -48,8 +48,6 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 	private SingleMapAddon zoomIn;
 	private SliderArea sliderArea;
 	private SingleMapAddon zoomOut;
-	private int sliderHeight;
-	private List<ScaleInfo> allZoomLevels;
 
 	/**
 	 * A custom map addon group, which is always on top of other addons. You need to provide this class with 
@@ -61,7 +59,6 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 	public ZoomSlider(String id, MapWidget mapWidget) {
 		super(id, 0, 0);
 		this.mapWidget = mapWidget;
-		allZoomLevels = mapWidget.getMapModel().getMapInfo().getScaleConfiguration().getZoomLevels();
 	}
 	
 	public MapWidget getMapWidget() {
@@ -84,27 +81,28 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		bgBounds.setX(internalHorMargin);
 		
 		int backgroundPartHeight = (int) bgBounds.getHeight();
-		sliderHeight = 0;
+		int sliderAreaHeight = 0;
 		/*
 		 * Needed for aligning the sliderUnit's y with currentScale's y.
 		 */
-		int currentUnitY = sliderHeight;
+		int currentUnitY = sliderAreaHeight;
 		double currentScale = mapWidget.getMapModel().getMapView().getCurrentScale();
 		
 		List<Bbox> partBounds = new ArrayList<Bbox>();
-		int size = allZoomLevels.size();
+		List<ScaleInfo> zoomLevels = mapWidget.getMapModel().getMapInfo().getScaleConfiguration().getZoomLevels();
+		int size = zoomLevels.size();
 		currentScaleList.clear();
 		for (int i = size - 1 ; i >= 0 ; i--) {
-			double scale = allZoomLevels.get(i).getPixelPerUnit();
+			double scale = zoomLevels.get(i).getPixelPerUnit();
 			if (mapWidget.getMapModel().getMapView().isResolutionAvailable(1.0 / scale)) {
 				Bbox bounds = (Bbox) bgBounds.clone();
-				bounds.setY(sliderHeight);
+				bounds.setY(sliderAreaHeight);
 				partBounds.add(bounds);
 				currentScaleList.add(scale);
 				if (scale == currentScale) {
-					currentUnitY = sliderHeight;
+					currentUnitY = sliderAreaHeight;
 				}
-				sliderHeight += backgroundPartHeight;
+				sliderAreaHeight += backgroundPartHeight;
 			}
 		}
 		/*
@@ -117,7 +115,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		 * Zoom slider area 
 		 */
 		sliderArea = new SliderArea(SLIDER_AREA, (int) sliderUnit.getBounds().getWidth(), 
-				sliderHeight, sliderUnit, backgroundPart, partBounds,
+				sliderAreaHeight, sliderUnit, backgroundPart, partBounds,
 				mapWidget, new ZoomSliderController(this));
 		sliderArea.setHorizontalMargin((int) -bgBounds.getX());
 		sliderArea.setVerticalMargin((int) backgroundPart.getBounds().getWidth());
@@ -125,8 +123,8 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		/*
 		 * Zoom out button internal margin.
 		 */
-		zoomOut.getBackground().getBounds().setY(sliderArea.getVerticalMargin() + sliderHeight);
-		zoomOut.getIcon().getBounds().setY(sliderArea.getVerticalMargin() + sliderHeight);
+		zoomOut.getBackground().getBounds().setY(sliderArea.getVerticalMargin() + sliderAreaHeight);
+		zoomOut.getIcon().getBounds().setY(sliderArea.getVerticalMargin() + sliderAreaHeight);
 	}
 
 	public void onMapViewChanged(MapViewChangedEvent event) {
