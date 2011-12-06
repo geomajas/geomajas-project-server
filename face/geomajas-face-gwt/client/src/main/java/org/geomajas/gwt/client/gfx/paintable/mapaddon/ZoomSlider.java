@@ -24,7 +24,8 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
- * A custom map addon group, which is always on top of other addons to make sure the onDrag event of {@link ZoomSliderController} is not interrupted. 
+ * A custom map addon group, which is always on top of other addons to make sure the 
+ * onDrag event of {@link ZoomSliderController} is not interrupted. 
  * You need to provide this class with 2 {@link SingleMapAddon}s (zoom in, zoom out) and 1 {@link SliderArea}.
  * 
  * @author Emiel Ackermann
