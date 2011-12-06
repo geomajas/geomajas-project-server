@@ -24,6 +24,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="maps">
 			<list>
 				<ref bean="mapOsm" />
+				<ref bean="mapNoNav" />
 				<ref bean="mapWms" />
 				<ref bean="mapBeans" />
 				<ref bean="mapBeansIncludeInForm" />

@@ -115,6 +115,16 @@ public interface SampleMessages extends Messages {
 	String togglePanButtons();
 
 	String toggleScaleBar();
+	
+	// Custom map addon examples
+	
+	String groupAndSingleTitle();
+	
+	String groupAndSingleDescription();
+	
+	String panAndSliderTitle();
+	
+	String panAndSliderDescription();
 
 	// Rendering Sample:
 
@@ -391,4 +401,5 @@ public interface SampleMessages extends Messages {
 	String attributeCustomFormTitle();
 
 	String attributeCustomFormDescription();
+
 }

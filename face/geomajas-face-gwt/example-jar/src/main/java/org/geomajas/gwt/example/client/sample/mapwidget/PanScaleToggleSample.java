@@ -11,19 +11,19 @@
 
 package org.geomajas.gwt.example.client.sample.mapwidget;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
 /**
  * <p>
@@ -102,8 +102,7 @@ public class PanScaleToggleSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/mapOsm.xml",
-				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
+				"classpath:org/geomajas/gwt/example/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

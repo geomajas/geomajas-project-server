@@ -11,8 +11,6 @@
 
 package org.geomajas.gwt.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.example.base.SampleTreeNode;
 import org.geomajas.gwt.example.base.SampleTreeNodeRegistry;
@@ -43,10 +41,12 @@ import org.geomajas.gwt.example.client.sample.layertree.LayerOrderSample;
 import org.geomajas.gwt.example.client.sample.layertree.LayertreeSample;
 import org.geomajas.gwt.example.client.sample.layertree.LegendSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.CrsSample;
+import org.geomajas.gwt.example.client.sample.mapwidget.GroupAndSingleAddonSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.LayerOpacitySample;
 import org.geomajas.gwt.example.client.sample.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.NavigationSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.OverviewMapSample;
+import org.geomajas.gwt.example.client.sample.mapwidget.PanAndZoomSliderSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.PanScaleToggleSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.RenderingSample;
 import org.geomajas.gwt.example.client.sample.mapwidget.UnitTypesSample;
@@ -59,6 +59,9 @@ import org.geomajas.gwt.example.client.sample.toolbar.ToolbarFeatureInfoSample;
 import org.geomajas.gwt.example.client.sample.toolbar.ToolbarMeasureSample;
 import org.geomajas.gwt.example.client.sample.toolbar.ToolbarNavigationSample;
 import org.geomajas.gwt.example.client.sample.toolbar.ToolbarSelectionSample;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * <p>
@@ -97,6 +100,12 @@ public class GwtFaceExample implements EntryPoint {
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.panScaleToggleTitle(),
 				"[ISOMORPHIC]/geomajas/example/image/silk/world.png", PanScaleToggleSample.TITLE, "MapWidget",
 				PanScaleToggleSample.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.groupAndSingleTitle(),
+				"[ISOMORPHIC]/geomajas/example/image/silk/world.png", GroupAndSingleAddonSample.TITLE, "MapWidget",
+				GroupAndSingleAddonSample.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.panAndSliderTitle(),
+				"[ISOMORPHIC]/geomajas/example/image/silk/world.png", PanAndZoomSliderSample.TITLE, "MapWidget",
+				PanAndZoomSliderSample.FACTORY));
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.renderingTitle(),
 				"[ISOMORPHIC]/geomajas/osgeo/edit.png", RenderingSample.TITLE, "MapWidget",
 				RenderingSample.FACTORY));
