@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * Authentication service which authenticates the users which are configured in
@@ -52,7 +53,9 @@ public class StaticAuthenticationService implements AuthenticationService {
 
 	/** {@inheritDoc} */
 	public UserInfo isAuthenticated(String login, String convertedPassword) {
-		for (UserInfo user : securityServiceInfo.getUsers()) {
+		List<UserInfo> users = securityServiceInfo.getUsers();
+		if (null != users) {
+		for (UserInfo user : users) {
 			String userPassword = user.getPassword();
 			if (null != userPassword && userPassword.endsWith(PADDING)) {
 				userPassword = userPassword.substring(0, userPassword.length() - 2);
@@ -60,6 +63,7 @@ public class StaticAuthenticationService implements AuthenticationService {
 			if (login.equals(user.getUserId()) && convertedPassword.equals(userPassword)) {
 				return user;
 			}
+		}
 		}
 		return null;
 	}

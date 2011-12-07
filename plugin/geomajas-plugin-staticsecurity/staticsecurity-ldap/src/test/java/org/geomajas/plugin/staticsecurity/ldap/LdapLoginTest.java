@@ -11,54 +11,88 @@
 
 package org.geomajas.plugin.staticsecurity.ldap;
 
-import com.unboundid.ldap.listener.InMemoryDirectoryServer;
-import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
-import com.unboundid.ldap.listener.InMemoryListenerConfig;
-import org.junit.After;
-import org.junit.Before;
+import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
+import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
+import org.geomajas.plugin.staticsecurity.command.staticsecurity.LoginCommand;
+import org.geomajas.plugin.staticsecurity.security.AuthenticationTokenService;
+import org.geomajas.security.Authentication;
+import org.geomajas.security.BaseAuthorization;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * ...
+ * Integration test verifying the normal login procedure using the {@link LdapAuthenticationService}.
  *
  * @author Joachim Van der Auwera
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {//"/org/geomajas/spring/geomajasContext.xml",
-//		"/org/geomajas/plugin/staticsecurity/ldap/ldapConnection.xml"})
-public class LdapLoginTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/staticsecurity/ldap/ldapConnection.xml"})
+public class LdapLoginTest extends LdapServerProvider {
 
-	private InMemoryDirectoryServer server;
+	@Autowired
+	private LoginCommand loginCommand;
 
-	@Before
-	public void start() throws Exception {
-		InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig("dc=org");
-		config.addAdditionalBindCredentials("cn=test,dc=staticsecurity,dc=geomajas,dc=org", "cred");
-		InMemoryListenerConfig listenerConfig = new InMemoryListenerConfig("test", null, 3636, null, null, null);
-		config.setListenerConfigs(listenerConfig);
-		config.setSchema(null); // do not check (attribute) schema
-		server = new InMemoryDirectoryServer(config);
-		server.startListening();
-		server.add("dn: dc=org", "objectClass: top", "objectClass: domain", "dc: org");
+	@Autowired
+	private AuthenticationTokenService tokenService;
 
-		server.add("dn: dc=geomajas,dc=org", "objectClass: top", "objectClass: domain", "dc: geomajas");
-		server.add("dn: dc=roles,dc=geomajas,dc=org", "objectClass: top", "objectClass: domain",
-				"dc: roles");
-		server.add("dn: dc=staticsecurity,dc=geomajas,dc=org", "objectClass: top", "objectClass: domain",
-				"dc: staticsecurity");
-		server.add("dn: cn=testgroup,dc=roles,dc=geomajas,dc=org", "objectClass: groupOfUniqueNames",
-				"cn: testgroup");
-		server.add("dn: cn=test,dc=staticsecurity,dc=geomajas,dc=org", "objectClass: Person", "objectClass: person",
-				"sn: Tester", "givenName: Joe", "cn: test", "memberOf: cn=testgroup,dc=roles,dc=geomajas,dc=org");
-	}
+	@Test
+	public void testValidLogin() throws Exception {
+		LoginRequest request = new LoginRequest();
+		String userId = "test";
+		request.setLogin(userId);
+		request.setPassword("cred");
+		LoginResponse response = loginCommand.getEmptyCommandResponse();
+		loginCommand.execute(request, response);
+		String token = response.getToken();
+		assertThat(token).isNotNull();
+		assertThat(response.getUserId()).isEqualTo(userId);
+		assertThat(response.getUserName()).isEqualTo("Joe Tester");
+		assertThat(response.getUserLocale()).isEqualTo("nl_be");
+		assertThat(response.getUserOrganization()).isNull();
+		assertThat(response.getUserDivision()).isNull();
 
-	@After
-	public void shutdown() {
-		server.shutDown(true);
+		Authentication auth = tokenService.getAuthentication(token);
+		Assert.assertEquals(1, auth.getAuthorizations().length);
+		BaseAuthorization authorizaton = auth.getAuthorizations()[0];
+		Assert.assertFalse(authorizaton.isToolAuthorized("bla"));
+		Assert.assertTrue(authorizaton.isCommandAuthorized("bla"));
 	}
 
 	@Test
-	public void bla() throws Exception {
+	public void testInvalidLogin() throws Exception {
+		LoginRequest request = new LoginRequest();
+		request.setLogin("chris");
+		request.setPassword("chris");
+		LoginResponse response = loginCommand.getEmptyCommandResponse();
+		loginCommand.execute(request, response);
+		assertThat(response.getToken()).isNull();
+
+		request.setLogin("test");
+		request.setPassword("some");
+		loginCommand.execute(request, response);
+		assertThat(response.getToken()).isNull();
+
+		request.setLogin(null);
+		request.setPassword("cred");
+		loginCommand.execute(request, response);
+		assertThat(response.getToken()).isNull();
+
+		request.setLogin("test");
+		request.setPassword(null);
+		loginCommand.execute(request, response);
+		assertThat(response.getToken()).isNull();
+
+		request.setLogin("empty");
+		request.setPassword("");
+		loginCommand.execute(request, response);
+		assertThat(response.getToken()).isNull();
 	}
 
 }

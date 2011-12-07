@@ -93,7 +93,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${staticsecurity-gwt-version}</version>
+				<version>${staticsecurity-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -164,6 +164,7 @@
 
 	<properties>
 		<staticsecurity-backend-version>1.10.0-SNAPSHOT</staticsecurity-backend-version>
-		<staticsecurity-gwt-version>1.10.0-SNAPSHOT</staticsecurity-gwt-version>
+		<staticsecurity-gwt-face-version>1.10.0-SNAPSHOT</staticsecurity-gwt-face-version>
+		<staticsecurity-gwt-version>2.4.0</staticsecurity-gwt-version>
 	</properties>
 </project>

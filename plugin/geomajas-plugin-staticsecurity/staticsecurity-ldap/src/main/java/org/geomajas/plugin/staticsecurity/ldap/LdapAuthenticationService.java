@@ -167,7 +167,7 @@ public class LdapAuthenticationService implements AuthenticationService {
 	}
 
 	/** {@inheritDoc} */
-	public UserInfo isAuthenticated(String user, String convertedPassword) {
+	public UserInfo isAuthenticated(String user, String password) {
 		String userDn = userDnTemplate.replace("{}", user);
 		LDAPConnection connection = null;
 		try {
@@ -178,7 +178,7 @@ public class LdapAuthenticationService implements AuthenticationService {
 				connection = new LDAPConnection(serverHost, serverPort);
 			}
 
-			BindResult auth = connection.bind(userDn, "cred");
+			BindResult auth = connection.bind(userDn, password);
 			if (auth.getResultCode().isConnectionUsable()) {
 				List<String> attributes = new ArrayList<String>();
 				attributes.add("cn");

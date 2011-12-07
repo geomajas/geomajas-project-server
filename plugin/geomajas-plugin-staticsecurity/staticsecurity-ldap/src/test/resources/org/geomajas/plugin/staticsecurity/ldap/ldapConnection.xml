@@ -18,23 +18,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-
-	<bean id="contextSource" class="org.springframework.ldap.pool.factory.PoolingContextSource">
-		<property name="contextSource" ref="contextSourceTarget"/>
-	</bean>
-
-	<bean id="contextSourceTarget" class="org.springframework.ldap.core.support.LdapContextSource">
-        <property name="url" value="ldap://localhost:8389" />
-        <property name="base" value="ou=LND,o=KN" />
-        <!--<property name="userName" value="cn=LandsTemp,ou=LND,o=KN" />--> <!-- cn=JGaldamez,ou=LND,o=KN -->
-        <property name="password" value="dakota" />
-	</bean>
-
-    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
-        <constructor-arg ref="contextSource" />
-    </bean>
-
-	<!--
+	<!-- @extract-start LdapAuthentication, Configuration to use LDAP to authorize users -->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
@@ -48,42 +32,35 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
 		<property name="authenticationServices">
 			<list>
-				<bean class="org.geomajas.plugin.staticsecurity.general.CustomAuthenticationService">
-					<property name="userId" value="custom"/>
-					<property name="password" value="custom"/>
-					<property name="authorizationInfo">
-						<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
-							<property name="commandsInclude">
+				<bean class="org.geomajas.plugin.staticsecurity.ldap.LdapAuthenticationService">
+					<property name="serverHost" value="localhost"/>
+					<property name="serverPort" value="3636" />
+					<property name="userDnTemplate" value="cn={},dc=staticsecurity,dc=geomajas,dc=org" />
+					<property name="givenNameAttribute" value="givenName" />
+					<property name="surNameAttribute" value="sn" />
+					<property name="localeAttribute" value="locale" />
+					<property name="organizationAttribute" value="o" />
+					<property name="divisionAttribute" value="ou" />
+					<property name="rolesAttribute" value="memberOf" />
+					<property name="roles">
+						<map>
+							<entry key="cn=testgroup,dc=roles,dc=geomajas,dc=org">
 								<list>
-									<value>.*</value>
+									<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+										<property name="commandsInclude">
+											<list>
+												<value>.*</value>
+											</list>
+										</property>
+									</bean>
 								</list>
-							</property>
-						</bean>
-					</property>
-				</bean>
-			</list>
-		</property>
-		<property name="users">
-			<list>
-				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
-					<property name="userId" value="luc"/>
-					<property name="password" value="b7NMSP1pZN3Hi6nJGVe9JA"/>
-					<property name="userName" value="Luc Van Lierde"/>
-					<property name="authorizations">
-						<list>
-							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
-								<property name="commandsInclude">
-									<list>
-										<value>.*</value>
-									</list>
-								</property>
-							</bean>
-						</list>
+							</entry>
+						</map>
 					</property>
 				</bean>
 			</list>
 		</property>
 	</bean>
-	-->
+	<!-- @extract-end -->
 
 </beans>

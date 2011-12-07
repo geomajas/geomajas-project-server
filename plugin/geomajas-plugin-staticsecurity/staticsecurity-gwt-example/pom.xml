@@ -37,7 +37,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${staticsecurity-gwt-version}</version>
+				<version>${staticsecurity-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -105,13 +105,13 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
+			<version>${staticsecurity-gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt.version}</version>
+			<version>${staticsecurity-gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -179,12 +179,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt.version}</version>
+						<version>${staticsecurity-gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt.version}</version>
+						<version>${staticsecurity-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -251,7 +251,7 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt.version}</version>
+					<version>${staticsecurity-gwt-version}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -341,9 +341,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<properties>
-		<gwt.version>2.4.0</gwt.version>
-	</properties>
 
 </project>
