@@ -76,6 +76,16 @@
     &lt;artifactId&gt;geomajas-plugin-staticsecurity&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
     </informalexample>
+
+    <para>In case your users are stored in LDAP, you will need to include a
+    dependency on the LDAP module:</para>
+
+    <informalexample>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-staticsecurity-ldap&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </informalexample>
   </section>
 
   <section>
@@ -118,11 +128,11 @@
 
       <itemizedlist>
         <listitem>
-          <para>"Geomajas is a wonderful framework"</para>
+          <para>"Geomajas is a wonderful framework" (without quotes)</para>
         </listitem>
 
         <listitem>
-          <para>userId</para>
+          <para>user id</para>
         </listitem>
 
         <listitem>
@@ -153,6 +163,29 @@
       configuration of an authentication service.</para>
 
       <xi:include href="listing/CustomAuthenticationService.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Using LDAP to store user information</title>
+
+      <para>Below is an example configuration for obtaining user information
+      from an LDAP store.</para>
+
+      <para>You have to configure the host and port for the LDAP server. The
+      template to build the user DN<footnote>
+          <para>distinguished named</para>
+        </footnote> from the user id needs to be given. In the template the
+      pair of braces ("{}") is replaced by the actual login. You can also
+      define the attributes which are used to store the various pieces of user
+      information. The given name and surname are concatenated (separated by a
+      space) when both have a value.</para>
+
+      <para>The roles property is used to define the authorizations for the
+      roles which are configured in the LDAP store. The keys are the values of
+      the roles attribute, often DN values.</para>
+
+      <xi:include href="listing/LdapAuthentication.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
   </section>
