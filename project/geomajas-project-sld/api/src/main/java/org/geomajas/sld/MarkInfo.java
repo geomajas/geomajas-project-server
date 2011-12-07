@@ -124,10 +124,10 @@ public class MarkInfo implements Serializable {
 				!this.getWellKnownName().equals(other.getWellKnownName())) {
 			return false;
 		}
-		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals( other.getFill())) {
+		if (this.getFill() == null ? other.getFill() != null : !this.getFill().equals(other.getFill())) {
 			return false;
 		}
-		if (this.getStroke() == null ? other.getStroke() != null : !this.getStroke().equals( other.getStroke())) {
+		if (this.getStroke() == null ? other.getStroke() != null : !this.getStroke().equals(other.getStroke())) {
 			return false;
 		}
 		return true;
