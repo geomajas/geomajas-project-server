@@ -1,8 +1,6 @@
 package org.geomajas.testdata;
 
 import java.awt.image.RenderedImage;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
@@ -18,7 +16,7 @@ public class TestPathRenderedImageAssertTest extends TestPathRenderedImageAssert
 	@Test
 	public void testAssertEqual() throws Exception {
 		RenderedImage image = ImageIO.read(getClass().getResourceAsStream("test.png"));
-		ImageIO.write(image, "png", new FileOutputStream("test1.png"));
+		//ImageIO.write(image, "png", new FileOutputStream("test1.png"));
 		assertEquals("test.png", image, 0.0001, false);
 	}
 
