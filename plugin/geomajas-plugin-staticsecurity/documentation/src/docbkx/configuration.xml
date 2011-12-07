@@ -88,7 +88,7 @@
     </informalexample>
   </section>
 
-  <section>
+  <section id="useSecServ">
     <title>Use staticsecurity security service</title>
 
     <para>To enable the use of the staticsecurity security service, you have
@@ -109,12 +109,12 @@
     bean. Details are given in the following sections.</para>
   </section>
 
-  <section>
+  <section id="confUsers">
     <title>Configure users</title>
 
     <para>Users can be configured either statically or dynamically.</para>
 
-    <section>
+    <section id="consUsersStatic">
       <title>Static configuration of users</title>
 
       <para>In the bean of type SecurityServiceInfo you can define the users
@@ -151,7 +151,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="confUsersDyn">
       <title>Dynamic configuration of users</title>
 
       <para>The user information can also be determined dynamically by using
@@ -166,7 +166,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="confUsersLdap">
       <title>Using LDAP to store user information</title>
 
       <para>Below is an example configuration for obtaining user information
@@ -190,14 +190,14 @@
     </section>
   </section>
 
-  <section>
+  <section id="confPolicies">
     <title>Configure policies</title>
 
     <para>The policies are configured by providing a list of authentications.
     Several ways exist, but they all start from the base layer
     policies.</para>
 
-    <section>
+    <section id="policiesBase">
       <title>Base layer policies policies</title>
 
       <para>The base policies which always need to be provided include</para>
@@ -265,7 +265,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="policiesAre">
       <title>Configure policies based on an area or geometry</title>
 
       <para>Using AreaAuthorizationInfo you can make your policies more
@@ -280,7 +280,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="policiesFilter">
       <title>Configure policies using a layer filter</title>
 
       <para>Using the LayerFilterAuthorizationInfo authorization bean you can
@@ -295,7 +295,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="policiesFeature">
       <title>Configure policies for individual features</title>
 
       <para>You can also be specific about which features in a layer are
@@ -314,7 +314,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="policiesAttr">
       <title>Configure policies for individual attributes</title>
 
       <para>The most specific access policies can be built using the
@@ -336,7 +336,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="tokenValidity">
     <title>Configure token validity</title>
 
     <para>Tokens have a default lifespan of four hours. You can change this
