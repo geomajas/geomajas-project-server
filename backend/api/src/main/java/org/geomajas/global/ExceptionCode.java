@@ -178,5 +178,13 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int INVALID_FEATURE_STYLE_LAYER_TYPE = 84;
+	/**
+	 * @since 1.10.0
+	 */
+	int EXPRESSION_INVALID = 85;
+	/**
+	 * @since 1.10.0
+	 */
+	int EXPRESSION_EVALUATION_FAILED = 86;
 
 }

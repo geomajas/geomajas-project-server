@@ -12,7 +12,7 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.PostConstruct;
 
 import org.geomajas.annotation.Api;
 
@@ -34,8 +34,8 @@ public class LabelStyleInfo implements Serializable {
 	public static final String ATTRIBUTE_NAME_ID = "@id";
 
 	private static final long serialVersionUID = 151L;
-	@NotNull
 	private String labelAttributeName;
+	private String labelValueExpression;
 	private FontStyleInfo fontStyle = new FontStyleInfo();
 	private FeatureStyleInfo backgroundStyle = new FeatureStyleInfo();
 	
@@ -57,6 +57,27 @@ public class LabelStyleInfo implements Serializable {
 		this.labelAttributeName = labelAttributeName;
 	}
 
+	/**
+	 * Get label value expression. The expression is evaluated by the
+	 * configured {@link org.geomajas.service.FeatureExpressionService}.
+	 * 
+	 * @return label value expression
+	 * @since 1.10.0
+	 */
+	public String getLabelValueExpression() {
+		return labelValueExpression;
+	}
+
+	/**
+	 * Set label value expression. The expression is evaluated by the
+	 * configured {@link org.geomajas.service.FeatureExpressionService}.
+	 *
+	 * @param labelValueExpression label value expression
+	 * @since 1.10.0
+	 */
+	public void setLabelValueExpression(String labelValueExpression) {
+		this.labelValueExpression = labelValueExpression;
+	}
 	/**
 	 * Get font style for label.
 	 *
@@ -164,5 +185,12 @@ public class LabelStyleInfo implements Serializable {
 		result = 31 * result + (fontStyle != null ? fontStyle.hashCode() : 0);
 		result = 31 * result + (backgroundStyle != null ? backgroundStyle.hashCode() : 0);
 		return result;
+	}
+	
+	@PostConstruct
+	private void postConstruct() {
+		if (labelValueExpression == null && labelAttributeName == null) {
+			labelAttributeName = ATTRIBUTE_NAME_ID;
+		}
 	}
 }

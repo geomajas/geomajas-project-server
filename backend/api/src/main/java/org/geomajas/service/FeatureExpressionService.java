@@ -14,6 +14,7 @@ package org.geomajas.service;
 import java.util.Map;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 
 /**
@@ -37,8 +38,9 @@ public interface FeatureExpressionService {
 	 * @param expression the expression to be evaluated (see class implementation)
 	 * @param feature the internal feature
 	 * @return the expression value
+	 * @throws LayerException expression was invalid or could not be evaluated on this feature
 	 */
-	Object evaluate(String expression, InternalFeature feature);
+	Object evaluate(String expression, InternalFeature feature) throws LayerException;
 
 	/**
 	 * Adds a map of variables to the expression context. The specified key will be used as the name to refer to this

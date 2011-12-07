@@ -15,10 +15,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.feature.InternalFeaturePropertyAccessor;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.FeatureExpressionService;
+import org.springframework.expression.EvaluationException;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ParseException;
 import org.springframework.expression.PropertyAccessor;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -49,11 +55,19 @@ public class FeatureExpressionServiceImpl implements FeatureExpressionService {
 
 	private Map<String, Object> variables = new HashMap<String, Object>();
 
-	public FeatureExpressionServiceImpl() throws SecurityException, NoSuchMethodException {
+	private Map<String, Expression> expressionCache = new ConcurrentHashMap<String, Expression>();
+
+	/**
+	 * Construct a new service instance.
+	 */
+	public FeatureExpressionServiceImpl() {
 		propertyAccessors.add(new InternalFeaturePropertyAccessor());
 	}
 
-	public Object evaluate(String expression, InternalFeature feature) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public Object evaluate(String expression, InternalFeature feature) throws LayerException {
 		StandardEvaluationContext context = new StandardEvaluationContext(feature);
 		// set a new list of accessors, custom accessors first !
 		List<PropertyAccessor> allAccessors = new ArrayList<PropertyAccessor>(propertyAccessors);
@@ -61,15 +75,38 @@ public class FeatureExpressionServiceImpl implements FeatureExpressionService {
 		context.setPropertyAccessors(allAccessors);
 		// set context variables
 		context.setVariables(variables);
-		return parser.parseExpression(expression).getValue(context);
+		try {
+			return getExpression(expression).getValue(context);
+		} catch (ParseException e) {
+			throw new LayerException(e, ExceptionCode.EXPRESSION_INVALID, expression, feature.getLayer().getId());
+		} catch (EvaluationException e) {
+			throw new LayerException(e, ExceptionCode.EXPRESSION_EVALUATION_FAILED, expression, feature.getLayer()
+					.getId());
+		}
 	}
 
-	public Map<String, Object> getVariables() {
-		return variables;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setVariables(Map<String, Object> variables) {
 		this.variables.putAll(variables);
+	}
+
+	/**
+	 * Fetch the specified expression from the cache or create it if necessary.
+	 * 
+	 * @param expressionString the expression string
+	 * @return the expression
+	 * @throws ParseException oops
+	 */
+	private Expression getExpression(String expressionString) throws ParseException {
+		if (!expressionCache.containsKey(expressionString)) {
+			Expression expression;
+			expression = parser.parseExpression(expressionString);
+			expressionCache.put(expressionString, expression);
+		}
+		return expressionCache.get(expressionString);
+
 	}
 
 }

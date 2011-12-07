@@ -36,10 +36,16 @@ public class InternalFeaturePropertyAccessor implements PropertyAccessor {
 
 	public static final String ID_PROPERTY_NAME = "id";
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Class[] getSpecificTargetClasses() {
 		return new Class[] { InternalFeature.class, AssociationValue.class };
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean canRead(EvaluationContext context, Object target, String name) throws AccessException {
 		if (target == null) {
 			return false;
@@ -56,6 +62,9 @@ public class InternalFeaturePropertyAccessor implements PropertyAccessor {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public TypedValue read(EvaluationContext context, Object target, String name) throws AccessException {
 		if (target == null) {
 			throw new AccessException("Cannot read property of null target");
@@ -86,11 +95,18 @@ public class InternalFeaturePropertyAccessor implements PropertyAccessor {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean canWrite(EvaluationContext context, Object target, String name) throws AccessException {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void write(EvaluationContext context, Object target, String name, Object newValue) throws AccessException {
+		throw new AccessException("InternalFeaturePropertyAccess is read-only");
 	}
 
 }

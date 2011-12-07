@@ -29,6 +29,7 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
+import org.geomajas.service.FeatureExpressionService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -58,6 +59,9 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 	@Autowired
 	private AttributeService attributeService;
+
+	@Autowired
+	private FeatureExpressionService featureExpressionService;
 
 	public String getId() {
 		return id;
@@ -167,17 +171,23 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 			// add and clear data according to the feature includes
 			// unfortunately the data needs to be there for the security tests and can only be removed later
 			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
-				String labelAttr = labelStyle.getLabelAttributeName();
-				if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(labelAttr)) {
-					res.setLabel(featureModel.getId(feature));
+				// value expression takes preference over attribute name
+				String valueExpression = labelStyle.getLabelValueExpression();
+				if (valueExpression != null) {
+					res.setLabel(featureExpressionService.evaluate(valueExpression, res).toString());
 				} else {
-					Attribute<?> attribute = featureModel.getAttribute(feature, labelAttr);
-					if (null != attribute && null != attribute.getValue()) {
-						res.setLabel(attribute.getValue().toString());
+					// must have an attribute name !
+					String labelAttr = labelStyle.getLabelAttributeName();
+					if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(labelAttr)) {
+						res.setLabel(featureModel.getId(feature));
+					} else {
+						Attribute<?> attribute = featureModel.getAttribute(feature, labelAttr);
+						if (null != attribute && null != attribute.getValue()) {
+							res.setLabel(attribute.getValue().toString());
+						}
 					}
 				}
 			}
-
 			// If allowed, add the geometry (transformed!) to the InternalFeature:
 			if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
 				Geometry transformed;

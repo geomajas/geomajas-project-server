@@ -1,18 +1,10 @@
 package org.geomajas.internal.service;
 
 import java.util.List;
-/*
- * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
- *
- * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
- *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
- * by the Geomajas Contributors License Agreement. For full licensing
- * details, see LICENSE.txt in the project root.
- */
+
 import junit.framework.Assert;
 
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayerService;
@@ -133,6 +125,27 @@ public class FeatureExpressionServiceTest {
 
 		Assert.assertEquals(2, expressionService.evaluate(expression1, features.get(0)));
 		Assert.assertEquals("<oneToMany - 1,oneToMany - 2>", expressionService.evaluate(expression2, features.get(0)));
+	}
+
+	@Test
+	public void testExceptions() throws LayerException, GeomajasException {
+		Filter filter = filterService.createFidFilter(new String[] { "1" });
+		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
+				geoService.getCrs2(beanLayer.getLayerInfo().getCrs()), filter, null,
+				VectorLayerService.FEATURE_INCLUDE_ALL);
+		Assert.assertEquals(1, features.size());
+		try {
+			expressionService.evaluate("?", features.get(0));
+			Assert.fail("Expected invalid expression for '?'");
+		} catch (LayerException e) {
+			Assert.assertEquals(ExceptionCode.EXPRESSION_INVALID, e.getExceptionCode());
+		}
+		try {
+			expressionService.evaluate("missingAttribute", features.get(0));
+			Assert.fail("Expected expression evaluation error for missing attribute");
+		} catch (LayerException e) {
+			Assert.assertEquals(ExceptionCode.EXPRESSION_EVALUATION_FAILED, e.getExceptionCode());
+		}
 	}
 
 	/**
