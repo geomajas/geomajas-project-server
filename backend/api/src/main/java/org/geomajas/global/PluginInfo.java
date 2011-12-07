@@ -137,4 +137,12 @@ public class PluginInfo {
 	public void setCopyrightInfo(List<CopyrightInfo> copyrightInfo) {
 		this.copyrightInfo = copyrightInfo;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @since 1.10.0
+	 */
+	public String toString() {
+		return "PluginInfo(version=" + this.getVersion() + ", backendVersion=" + this.getBackendVersion() + ")";
+	}
 }

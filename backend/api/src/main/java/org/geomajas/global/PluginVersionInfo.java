@@ -65,4 +65,13 @@ public class PluginVersionInfo {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @since 1.10.0
+	 */
+	public String toString() {
+		return "PluginVersionInfo(name=" + this.getName() + ", version=" + this.getVersion() + ")";
+	}
+
 }
