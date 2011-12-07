@@ -58,11 +58,6 @@ public class LdapAuthenticationServiceTest extends LdapServerProvider {
 		service.setRoles(roles);
 	}
 
-	@After
-	public void shutdown() {
-		server.shutDown(true);
-	}
-
 	@Test
 	public void testLdapAuthenticationService() throws Exception {
 		String password = "bladibla";

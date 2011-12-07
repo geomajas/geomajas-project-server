@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 @Deprecated
 public class LogoutButton extends IButton implements ClickHandler, LoginHandler, LogoutHandler {
 
-	private StaticSecurityMessages i18n;
+	private static final StaticSecurityMessages I18N = GWT.create(StaticSecurityMessages.class);
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -53,8 +53,7 @@ public class LogoutButton extends IButton implements ClickHandler, LoginHandler,
 	@Api
 	public LogoutButton() {
 		super();
-		i18n = GWT.create(StaticSecurityMessages.class);
-		setTitle(i18n.logoutBtnTitle());
+		setTitle(I18N.logoutBtnTitle());
 		setIcon("[ISOMORPHIC]/geomajas/staticsecurity/key_delete.png");
 		setDisabled(true);
 		addClickHandler(this);

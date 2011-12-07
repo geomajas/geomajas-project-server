@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @Api(allMethods = true)
 public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
-
+	
 	private Map<String, LayerAreaAuthorizationInfo> layers;
 
 	/**
@@ -86,13 +86,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			if (null == layer) {
 				return null;
 			}
-			String area = layer.getVisibleArea();
-			try {
-				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
-				return wktReader.read(area);
-			} catch (ParseException pe) {
-				throw new IllegalStateException("Could not parse geometry " + area, pe);
-			}
+			return readWkt(layer.getVisibleArea());
 		}
 
 		/** {@inheritDoc} */
@@ -107,13 +101,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			if (null == layer) {
 				return null;
 			}
-			String area = layer.getUpdateAuthorizedArea();
-			try {
-				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
-				return wktReader.read(area);
-			} catch (ParseException pe) {
-				throw new IllegalStateException("Could not parse geometry " + area, pe);
-			}
+			return readWkt(layer.getUpdateAuthorizedArea());
 		}
 
 		/** {@inheritDoc} */
@@ -128,13 +116,7 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			if (null == layer) {
 				return null;
 			}
-			String area = layer.getCreateAuthorizedArea();
-			try {
-				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
-				return wktReader.read(area);
-			} catch (ParseException pe) {
-				throw new IllegalStateException("Could not parse geometry " + area, pe);
-			}
+			return readWkt(layer.getCreateAuthorizedArea());
 		}
 
 		/** {@inheritDoc} */
@@ -149,19 +131,22 @@ public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 			if (null == layer) {
 				return null;
 			}
-			String area = layer.getDeleteAuthorizedArea();
-			try {
-				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
-				return wktReader.read(area);
-			} catch (ParseException pe) {
-				throw new IllegalStateException("Could not parse geometry " + area, pe);
-			}
+			return readWkt(layer.getDeleteAuthorizedArea());
 		}
 
 		/** {@inheritDoc} */
 		public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
 			LayerAreaAuthorizationInfo layer = info.getLayers().get(layerId);
 			return null != layer && layer.isPartlyDeleteAuthorizedSufficient();
+		}
+
+		private Geometry readWkt(String area) {
+			try {
+				WKTReader wktReader = new WKTReader(new GeometryFactory(new PrecisionModel(), 0));
+				return wktReader.read(area);
+			} catch (ParseException pe) {
+				throw new IllegalStateException("Could not parse geometry " + area, pe);
+			}
 		}
 	}
 

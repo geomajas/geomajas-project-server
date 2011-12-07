@@ -46,13 +46,26 @@ public class StaticSecurityTokenRequestHandler implements TokenRequestHandler {
 	}
 
 	/** @{inheritDoc} */
-	public void login(final TokenChangedHandler tokenCHangedHandler) {
-		final TokenRequestWindow tokenRequestWindow = new TokenRequestWindow(new TokenChangedHandler() {
-			public void onTokenChanged(TokenChangedEvent event) {
-				tokenCHangedHandler.onTokenChanged(event);
-			}
-		});
+	public void login(final TokenChangedHandler tokenChangedHandler) {
+		final TokenRequestWindow tokenRequestWindow =
+				new TokenRequestWindow(new LoginTokenChangedHandler(tokenChangedHandler));
 		tokenRequestWindow.setSlogan(slogan);
 		tokenRequestWindow.draw();
+	}
+
+	/** Forward token changed. */
+	private static final class LoginTokenChangedHandler implements TokenChangedHandler {
+
+		private TokenChangedHandler tokenChangedHandler;
+
+		private LoginTokenChangedHandler(TokenChangedHandler tokenChangedHandler) {
+			this.tokenChangedHandler = tokenChangedHandler;
+		}
+
+		/** {@inheritDoc} */
+		public void onTokenChanged(TokenChangedEvent event) {
+			tokenChangedHandler.onTokenChanged(event);
+		}
+
 	}
 }

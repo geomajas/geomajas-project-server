@@ -29,6 +29,7 @@ public class LoginFailureEvent extends GwtEvent<LoginHandler> {
 	private final List<String> messages;
 
 	public LoginFailureEvent(List<String> messages) {
+		super();
 		this.messages = messages;
 	}
 

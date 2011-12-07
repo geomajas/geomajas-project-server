@@ -31,6 +31,8 @@ public class AppConfigurationRequest extends GetConfigurationRequest {
 	}
 
 	public AppConfigurationRequest() {
+		// for deserialization
+		super();
 	}
 }
 // @extract-end

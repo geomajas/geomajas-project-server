@@ -25,6 +25,7 @@ import org.geomajas.annotation.Api;
 public class LogoutSuccessEvent extends GwtEvent<LogoutHandler> {
 
 	public LogoutSuccessEvent() {
+		super();
 	}
 
 	@SuppressWarnings("unchecked")

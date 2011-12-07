@@ -103,7 +103,7 @@ public final class Base64 {
 				| (numSigBytes > 2 ? ((source[srcOffset + 2] << SHIFT_3B) >>> SHIFT_3B) : 0);
 
 		switch (numSigBytes) {
-			case 3:
+			case 3: // NOSONAR
 				destination[destOffset] = ALPHABET[(inBuff >>> SHIFT_3S)];
 				destination[destOffset + 1] = ALPHABET[(inBuff >>> SHIFT_2S) & BITS_6];
 				destination[destOffset + 2] = ALPHABET[(inBuff >>> SHIFT_1S) & BITS_6];
@@ -170,7 +170,7 @@ public final class Base64 {
 
 			if (d < len) {
 				encode3to4(source, d + off, len - d, outBuff, e);
-				e += 4;
+				e += 4; // NOSONAR
 			}
 
 			// Return value according to relevant encoding.

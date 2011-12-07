@@ -27,6 +27,7 @@ public class LoginSuccessEvent extends GwtEvent<LoginHandler> {
 	private final String token;
 
 	public LoginSuccessEvent(String token) {
+		super();
 		this.token = token;
 	}
 

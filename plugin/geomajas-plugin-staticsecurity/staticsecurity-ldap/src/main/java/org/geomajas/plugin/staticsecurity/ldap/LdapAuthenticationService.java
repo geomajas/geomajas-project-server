@@ -205,7 +205,7 @@ public class LdapAuthenticationService implements AuthenticationService {
 				connection.close();
 			}
 		}
-		return null;  // not logged in
+		return null; // not logged in
 	}
 
 	private UserInfo getUserInfo(String userId, SearchResult search) {

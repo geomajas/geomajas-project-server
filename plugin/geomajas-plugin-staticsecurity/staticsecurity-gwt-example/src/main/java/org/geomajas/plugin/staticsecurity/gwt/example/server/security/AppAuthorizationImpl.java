@@ -25,6 +25,7 @@ public class AppAuthorizationImpl extends LayerAuthorization implements AppAutho
 
 	protected AppAuthorizationImpl() {
 		// for deserialization
+		super();
 	}
 
 	public AppAuthorizationImpl(AppAuthorizationInfo info) {
