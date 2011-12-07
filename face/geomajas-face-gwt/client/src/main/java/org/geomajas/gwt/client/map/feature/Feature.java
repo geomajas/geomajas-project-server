@@ -19,7 +19,6 @@ import java.util.Map.Entry;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -74,6 +73,9 @@ public class Feature implements Paintable, Cloneable {
 	/** The identifier of this feature's style. */
 	private String styleId;
 
+	/** Label text. */
+	private String label = ""; // new features have no label yet, empty string to avoid npe !
+
 	/** Coordinate for the label. */
 	private Coordinate labelPosition;
 
@@ -114,6 +116,7 @@ public class Feature implements Paintable, Cloneable {
 		this.labelPosition = null;
 		this.clipped = false;
 		if (null != dto) {
+			label = dto.getLabel();
 			attributes = dto.getAttributes();
 			attributesLoaded = true;
 			id = dto.getId();
@@ -156,6 +159,7 @@ public class Feature implements Paintable, Cloneable {
 		}
 		feature.clipped = clipped;
 		feature.labelPosition = labelPosition;
+		feature.label = label;
 		feature.layer = layer;
 		if (null != geometry) {
 			feature.geometry = (Geometry) geometry.clone();
@@ -315,14 +319,7 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public String getLabel() {
-		String attributeName = layer.getLayerInfo().getNamedStyleInfo().getLabelStyle().getLabelAttributeName();
-		Object attributeValue = null;
-		if (LabelStyleInfo.ATTRIBUTE_NAME_ID.equalsIgnoreCase(attributeName)) {
-			attributeValue = getId();
-		} else {
-			attributeValue = getAttributeValue(attributeName);
-		}
-		return attributeValue == null ? "null" : attributeValue.toString();
+		return label;
 	}
 
 	// Getters and setters:
