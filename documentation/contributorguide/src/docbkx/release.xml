@@ -318,7 +318,8 @@
         </listitem>
 
         <listitem>
-          <para>For each of the modules in the part, the
+          <para><emphasis>(Only for final releases, not for
+          milstones!)</emphasis> For each of the modules in the part, the
           src/main/resources/api.txt file needs to be updated. The header at
           the top should remain, with the version updated. The rest of the
           file needs to be replaced by the contents of target/api.txt. This

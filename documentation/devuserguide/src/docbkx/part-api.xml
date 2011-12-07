@@ -28,10 +28,10 @@
 
       <para>For this reason, we have introduced the "<code>@Api</code>"
       annotation. A class or interface is only considered part of the public
-      API when it is annotated using "<code>@Api</code>". When all public
-      methods in the class or interface are considered part of the API, you
-      could use "<code>@Api(allMethods = true)</code>". The alternative is to
-      annotate the individual methods.</para>
+      API when it is annotated using "<code>@Api</code>" in a final release.
+      When all public methods in the class or interface are considered part of
+      the API, you could use "<code>@Api(allMethods = true)</code>". The
+      alternative is to annotate the individual methods.</para>
 
       <para>The API includes many interfaces. These interfaces should only be
       implemented by client code when they are annotated by
@@ -50,6 +50,11 @@
           something is part of the API or not. The manual may discuss things
           which are not considered API, probably because they are
           experimental.</para>
+        </note><note>
+          <para>There is also a @FutureApi annotation which indicates that the
+          annotated class/interface/method is very likely to become API in one
+          of the following releases, but we would like some extra
+          validation.</para>
         </note></para>
     </section>
 
@@ -147,7 +152,9 @@
     <section id="apiVersions">
       <title>API compatibility and Geomajas versions</title>
 
-      <para>Versions have the structure "major.minor.revision".</para>
+      <para>Final Releases have a versions with structure
+      "major.minor.revision". Intermediate version (snapshots and milestones)
+      have a structure "major.minor.revision-QUALIFIER". </para>
 
       <para>The major number indicates major changes in the framework and thus
       gives no guarantee about API compatibility with previous major
@@ -197,6 +204,11 @@
       "<code>@Deprecated</code>" annotation only indicates that a method or
       class is not recommended to be used. The method or class will not be
       removed in future versions with the same major number.</para>
+
+      <para>Intermediate releases are ordered (when comparing versions)
+      alphabetically. However, the @Api annotation only becomes effective on a
+      final release. If a milestone is released (e.g. "1.2.0-M1" then this
+      release does not guarantee anything about the @Api annotations).</para>
     </section>
   </chapter>
 

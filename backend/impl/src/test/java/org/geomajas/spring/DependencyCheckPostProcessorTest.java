@@ -72,6 +72,30 @@ public class DependencyCheckPostProcessorTest {
 		Assert.assertEquals(0, version.getMinor());
 		Assert.assertEquals(0, version.getRevision());
 		Assert.assertEquals("SNAPSHOT", version.getQualifier());
+
+		version = new DependencyCheckPostProcessor.Version("1.2.3-M5");
+		Assert.assertEquals(1, version.getMajor());
+		Assert.assertEquals(2, version.getMinor());
+		Assert.assertEquals(3, version.getRevision());
+		Assert.assertEquals("M5", version.getQualifier());
+
+		version = new DependencyCheckPostProcessor.Version("1.2.3.M5");
+		Assert.assertEquals(1, version.getMajor());
+		Assert.assertEquals(2, version.getMinor());
+		Assert.assertEquals(3, version.getRevision());
+		Assert.assertEquals("M5", version.getQualifier());
+
+		version = new DependencyCheckPostProcessor.Version("1.2-M5");
+		Assert.assertEquals(1, version.getMajor());
+		Assert.assertEquals(2, version.getMinor());
+		Assert.assertEquals(0, version.getRevision());
+		Assert.assertEquals("M5", version.getQualifier());
+
+		version = new DependencyCheckPostProcessor.Version("1-M5");
+		Assert.assertEquals(1, version.getMajor());
+		Assert.assertEquals(0, version.getMinor());
+		Assert.assertEquals(0, version.getRevision());
+		Assert.assertEquals("M5", version.getQualifier());
 	}
 
 	@Test
@@ -84,6 +108,10 @@ public class DependencyCheckPostProcessorTest {
 				new DependencyCheckPostProcessor.Version("1.2.3")));
 		Assert.assertTrue(new DependencyCheckPostProcessor.Version("1.2.3").after(
 				new DependencyCheckPostProcessor.Version("1.2.3-SNAPSHOT")));
+		Assert.assertTrue(new DependencyCheckPostProcessor.Version("1.2.3").after(
+				new DependencyCheckPostProcessor.Version("1.2.3-M5")));
+		Assert.assertTrue(new DependencyCheckPostProcessor.Version("1.2.3-SNAPSHOT").after(
+				new DependencyCheckPostProcessor.Version("1.2.3-M5")));
 
 		Assert.assertFalse(new DependencyCheckPostProcessor.Version("1.2.3").after(
 				new DependencyCheckPostProcessor.Version("1.2.3")));
@@ -97,6 +125,8 @@ public class DependencyCheckPostProcessorTest {
 				new DependencyCheckPostProcessor.Version("2.3.4")));
 		Assert.assertFalse(new DependencyCheckPostProcessor.Version("1.2.3-SNAPSHOT").after(
 				new DependencyCheckPostProcessor.Version("1.2.3")));
+		Assert.assertFalse(new DependencyCheckPostProcessor.Version("1.2.3-M5").after(
+				new DependencyCheckPostProcessor.Version("1.2.3-SNAPSHOT")));
 	}
 
 	@Test

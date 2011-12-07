@@ -34,7 +34,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DependencyCheckPostProcessor {
 
+	/** Group name for recorder. */
 	protected static final String GROUP = "depcheck";
+	/** Value which needs to be recorded. */
 	protected static final String VALUE = "done";
 
 	private static final String EXPR_START = "$";
@@ -45,6 +47,11 @@ public class DependencyCheckPostProcessor {
 	@Autowired
 	private TestRecorder recorder;
 
+	/**
+	 * Finish initializing.
+	 *
+	 * @throws GeomajasException oops
+	 */
 	@PostConstruct
 	protected void checkPluginDependencies() throws GeomajasException {
 		if ("true".equals(System.getProperty("skipPluginDependencyCheck"))) {
@@ -109,6 +116,15 @@ public class DependencyCheckPostProcessor {
 		recorder.record(GROUP, VALUE);
 	}
 
+	/**
+	 * Check the version to assure it is allowed.
+	 *
+	 * @param pluginName plugin name which needs the dependency
+	 * @param dependency dependency which needs to be verified
+	 * @param requestedVersion requested/minimum version
+	 * @param availableVersion available version
+	 * @return version check problem or empty string when all is fine
+	 */
 	String checkVersion(String pluginName, String dependency, String requestedVersion, String availableVersion) {
 		if (null == availableVersion) {
 			return "Dependency " + dependency + " not found for " + pluginName + ", version " + requestedVersion +
@@ -137,6 +153,11 @@ public class DependencyCheckPostProcessor {
 		private int major, minor, revision;
 		private String qualifier;
 
+		/**
+		 * Construct a version from a version string.
+		 *
+		 * @param version version string
+		 */
 		public Version(String version) {
 			int pos;
 			String part;
@@ -193,6 +214,15 @@ public class DependencyCheckPostProcessor {
 			return "";
 		}
 
+		/**
+		 * Check whether this version is more recent as the other version.
+		 * Note that we explicitly allow intermediate milestone releases.
+		 * When there is a qualifier, we order them alphabetically. This way a 1.0.0-M1 precedes 1.0.0-SNAPSHOT which
+		 * precedes 1.0.0-ZZZ.
+		 *
+		 * @param other version to compare with
+		 * @return false when other is older or equal, true when other is younger
+		 */
 		public boolean after(Version other) {
 			if (major > other.major) {
 				return true;
@@ -204,23 +234,44 @@ public class DependencyCheckPostProcessor {
 				return true;
 			}
 			if (major == other.major && minor == other.minor && revision == other.revision) {
-				return qualifier.compareTo(other.qualifier) < 0;
+				return ("".equals(qualifier) && !("".equals(other.qualifier))) ||
+						(!"".equals(other.qualifier) && qualifier.compareTo(other.qualifier) > 0);
 			}
 			return false;
 		}
 
+		/**
+		 * Get major version number, the 1 in 1.2.3-SNAPSHOT.
+		 *
+		 * @return major version number
+		 */
 		public int getMajor() {
 			return major;
 		}
 
+		/**
+		 * Get minor version number, the 2 in 1.2.3-SNAPSHOT.
+		 *
+		 * @return minor version number
+		 */
 		public int getMinor() {
 			return minor;
 		}
 
+		/**
+		 * Get revision, the 3 in 1.2.3-SNAPSHOT.
+		 *
+		 * @return revision
+		 */
 		public int getRevision() {
 			return revision;
 		}
 
+		/**
+		 * Get qualifier, the SNAPSHOT in 1.2.3-SNAPSHOT.
+		 *
+		 * @return qualifier or ""
+		 */
 		public String getQualifier() {
 			return qualifier;
 		}
