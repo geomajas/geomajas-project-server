@@ -26,9 +26,17 @@
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5E9EE, endColorstr=#FFFFFF, GradientType=3)"; */
 }
 
-.msRibbonGroupBody {
+.msRibbonGroupBody,
+.msRibbonDropDownPanel {
 	background: #FFFFFF;
 	padding: 3px 5px;
+}
+
+.msRibbonDropDownPanel {
+	border: 1px solid #B3B8BE;
+	border-radius: 0px, 3px, 3px, 3px;
+	-moz-border-radius: 0px, 3px, 3px, 3px;
+    -webkit-border-radius: 0px, 3px, 3px, 3px;
 }
 
 .msRibbonGroupTitle {
