@@ -19,6 +19,7 @@ import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.plugin.jsapi.client.map.feature.Feature;
 import org.geomajas.plugin.jsapi.client.map.layer.FeaturesSupported;
+import org.geomajas.plugin.jsapi.client.map.layer.LabelsSupported;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -33,7 +34,7 @@ import org.timepedia.exporter.client.Exportable;
  */
 @Export("VectorLayer")
 @ExportPackage("org.geomajas.jsapi.map.layer")
-public class VectorLayer extends LayerImpl implements Exportable, FeaturesSupported {
+public class VectorLayer extends LayerImpl implements Exportable, FeaturesSupported, LabelsSupported {
 
 	public VectorLayer() {
 	}
@@ -86,6 +87,18 @@ public class VectorLayer extends LayerImpl implements Exportable, FeaturesSuppor
 			count++;
 		}
 		return features;
+	}
+
+	// ------------------------------------------------------------------------
+	// LabelsSupported implementation:
+	// ------------------------------------------------------------------------
+
+	public void setLabeled(boolean labeled) {
+		getLayer().setLabeled(labeled);
+	}
+
+	public boolean isLabeled() {
+		return getLayer().isLabelsVisible();
 	}
 
 	// ------------------------------------------------------------------------

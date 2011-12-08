@@ -45,20 +45,19 @@
 		</developer>
 	</developers>
 
-	<repositories>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
+	<modules>
+		<module>geomajas-plugin-javascript-api</module>
+		<module>geomajas-plugin-javascript-api-smartgwt</module>
+	    <module>documentation</module>
+	    <module>geomajas-plugin-javascript-api-example</module>
+	</modules>
+
+	<properties>
+		<geomajas-plugin-javascript-api-backend-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-backend-version>
+		<geomajas-plugin-javascript-api-gwt-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-gwt-version>
+		<gwt-version>2.4.0</gwt-version>
+		<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>
+	</properties>	
 
 	<dependencyManagement>
 		<dependencies>
@@ -80,7 +79,7 @@
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
-				<version>2.4.0-SNAPSHOT</version>
+				<version>${gwt-exporter-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -108,13 +107,21 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
-	<modules>
-		<module>geomajas-plugin-javascript-api</module>
-		<module>geomajas-plugin-javascript-api-smartgwt</module>
-	    <module>documentation</module>
-	    <module>geomajas-plugin-javascript-api-example</module>
-	</modules>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<profiles>
 		<profile>
@@ -143,10 +150,4 @@
 			</activation>
 		</profile>
 	</profiles>
-
-	<properties>
-		<geomajas-plugin-javascript-api-backend-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-backend-version>
-		<geomajas-plugin-javascript-api-gwt-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-gwt-version>
-		<gwt-version>2.4.0</gwt-version>
-	</properties>	
 </project>

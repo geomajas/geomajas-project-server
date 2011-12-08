@@ -41,6 +41,12 @@
 			layer.setMarkedAsVisible(!visible);
 		}
 
+		function toggleLabels(index) {
+			var layer = map.getLayersModel().getLayerAt(index);
+			var labeled = eval(layer.isLabeled().toString()); // Boolean -> boolean conversion
+			layer.setLabeled(!labeled);
+		}
+
 		function refreshLayer(layerName) {
 			var layer = map.getLayersModel().getLayer(layerName);
 			layer.refresh();
@@ -56,7 +62,7 @@
 	<div>
 		<table cellspacing="0" cellpadding="5">
 			<tr>
-				<td style="width:640px;">
+				<td style="width:640px;" valign="top">
 					<div id="js-map-element" style="width:640px; height:480px; border: 1px solid #337428;">
 						<!-- on load, the map is attached here -->
 					</div>
@@ -71,6 +77,9 @@
 					<h4>Toggle visibility</h4>
 					Toggle the visibility for OSM layer: <button onclick="toggleVisibility(0)">Toggle</button><br>
 					Toggle the visibility for Countries layer: <button onclick="toggleVisibility(1)">Toggle</button>
+
+					<h4>Toggle labels</h4>
+					Toggle the visibility for Countries layer: <button onclick="toggleLabels(1)">Toggle</button>
 
 					<h4>Refresh layer</h4>
 					Refresh OSM layer: <button onclick="refreshLayer('clientLayerOsm')">Refresh</button><br>
