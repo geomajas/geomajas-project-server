@@ -24,6 +24,20 @@
         http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<context:component-scan base-package="org.geomajas.plugin.reporting.mvc" />
-	
+	<bean name="reportingHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<!-- make controller transactional & secured -->
+		<property name="interceptors">
+			<list>
+				<ref bean="transactionalInterceptor" />
+				<ref bean="securityInterceptor" />
+			</list>
+		</property>
+		<property name="mappings" value="/reporting/**=reportingController"/>
+		<property name="order" value="5" />
+	</bean>
+
+	<bean name="transactionalInterceptor" class="org.geomajas.servlet.mvc.TransactionalInterceptor"/>
+
+	<bean name="reportingController" class="org.geomajas.plugin.reporting.mvc.ReportingController"/>
+
 </beans>
