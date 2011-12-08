@@ -36,12 +36,11 @@
 		<property name="order" value="0"></property>
 	</bean>
 
-	<bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"></bean>
+	<bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"/>
 
 	<!--  we need a view resolver -->
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"></bean>
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
 
 	<context:component-scan base-package="org.geomajas.servlet"/>
-
 
 </beans>

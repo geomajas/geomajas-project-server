@@ -93,6 +93,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${reporting-spring-version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
 				<version>4.1.2</version>
@@ -156,5 +162,6 @@
 		<reporting-gwt-face-version>1.10.0-SNAPSHOT</reporting-gwt-face-version>
 		<reporting-rasterizing-version>1.0.0-SNAPSHOT</reporting-rasterizing-version>
 		<reporting-gwt-version>2.4.0</reporting-gwt-version>
-	</properties>	
+		<reporting-spring-version>3.0.5.RELEASE</reporting-spring-version>
+	</properties>
 </project>
