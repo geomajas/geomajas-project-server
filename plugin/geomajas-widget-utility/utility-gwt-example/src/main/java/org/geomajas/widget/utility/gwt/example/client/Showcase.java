@@ -78,7 +78,8 @@ public class Showcase implements EntryPoint {
 			}
 		});
 		
-		final DropDownRibbonButton zoomDropDown = new DropDownRibbonButton(new DropDownButtonAction("[ISOMORPHIC]/images/magnifying-glass.png", "Zoom", ""));
+		final DropDownRibbonButton zoomDropDown = new DropDownRibbonButton(
+				new DropDownButtonAction("[ISOMORPHIC]/images/magnifying-glass.png", "Zoom", ""));
 		RibbonColumnRegistry.put("ZoomDropDown", new RibbonColumnCreator() {
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				List<ButtonAction> actions = new ArrayList<ButtonAction>();
