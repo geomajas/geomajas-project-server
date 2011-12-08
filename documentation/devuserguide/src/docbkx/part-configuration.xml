@@ -459,8 +459,7 @@
         <para>The following table describes the properties of the
         <code>VectorLayerInfo</code> object:</para>
 
-        <para>
-          <table>
+        <para><table>
             <title>VectorLayer info</title>
 
             <tgroup cols="2">
@@ -518,8 +517,7 @@
                 </row>
               </tbody>
             </tgroup>
-          </table>
-        </para>
+          </table></para>
 
         <para>The feature metadata can be found in the
         <code>FeatureInfo</code> object. This objects contains the complete
@@ -739,6 +737,34 @@
         <xi:include href="listing/ShapeInMemAirportStyleInfo.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
+        <para>The LabelStyleInfo configuration declares a label value, a font
+        style and a background style. This configuration is used to render the
+        labels in the default tile rendering pipeline of the vector layer
+        service. The result is a rectangular label with the specified font and
+        background color, expressed in SVG or VML. If the style is defined in
+        SLD, a reasonable attempt is made to convert the TextSymbolizer of the
+        SLD file to a LabelStyleInfo instance (extracting the halo color as
+        background color and using the same font style). </para>
+
+        <para>The label value can be specified in two ways in the
+        <code>LabelStyleInfo</code> object:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><code>labelAttributeName</code>: this is the name of the
+            feature attribute value that should be directly used as the label
+            text</para>
+          </listitem>
+
+          <listitem>
+            <para><code>labelValueExpression</code>: this a textual expression
+            that may contain by-name references of feature attribute values as
+            well as any other constructs allowed by the
+            <code>FeatureExpressionService</code> of the current application
+            context.</para>
+          </listitem>
+        </itemizedlist>
+
         <section id="conf-validation">
           <title>Validation</title>
 
@@ -868,8 +894,7 @@
         used for rendering and retrieving tiles. These can be defined in two
         ways:</para>
 
-        <para>
-          <itemizedlist>
+        <para><itemizedlist>
             <listitem>
               <para>The MAP type will base the pixels per tile on the map
               dimensions.</para>
@@ -879,8 +904,7 @@
               <para>The CONFIGURED type you configure the size of the tiles,
               this defaults to 256x256 pixels.</para>
             </listitem>
-          </itemizedlist>
-        </para>
+          </itemizedlist></para>
 
         <para>An other important aspect of the map is the scale configuration.
         The scale configuration allows to define a maximum scale beyond which
@@ -898,8 +922,7 @@
 
         <para>Scales can be defined in 2 possible notations:</para>
 
-        <para>
-          <itemizedlist>
+        <para><itemizedlist>
             <listitem>
               <para>the 1 : x notation (see the above listing) is most
               commonly used in geographics and expresses the ratio between 1
@@ -912,8 +935,7 @@
               unit on the map (1 pixel per 10000 map units in our
               example)</para>
             </listitem>
-          </itemizedlist>
-        </para>
+          </itemizedlist></para>
 
         <para>Both scale definitions serve a different purpose. The 1 : x
         scale should give you an idea of what the true scale is at which the
