@@ -19,5 +19,9 @@ package org.geomajas.sld.editor.client.widget;
  */
 public interface RefuseSldLoadingHandler {
 
+	/**
+	 * @param refusedSldName  optional, if null : caller tried to switch to "no SLD" state
+	 * @param currentSldName  will always be non-null, name of SLD that was previously active
+	 */
 	void execute(String refusedSldName, String currentSldName);
 }

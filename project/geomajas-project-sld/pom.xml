@@ -39,6 +39,8 @@
 		<module>api</module>
 		<module>impl</module>
 		<module>gwt</module>
+		<module>common-gwt</module>
+		<module>editor-pure-gwt</module>
 		<module>editor</module>
 	</modules>
 

@@ -54,6 +54,11 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 	private static final String RULE_NAME_UNSPECIFIED = "";
 
 	private static final String RULE_TITLE_UNSPECIFIED = "(zonder titel)";
+	
+	private static final int 	INDEX_FIRST_RULE = 1;
+	private static final String INDEX_FIRST_RULE_AS_STRING = new Integer(INDEX_FIRST_RULE).toString();
+	private static final int POSITION_IN_NODES_OF_FIRST_RULE = 0; // 0 if no folder nodes, 
+									// in other words no grouping of rules
 
 	private VLayout vLayout;
 
@@ -94,6 +99,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 
 	private GeometryTypes currentGeomType = GeometryTypes.UNSPECIFIED;
 
+	
 	public RuleSelector() {
 		super();
 
@@ -147,17 +153,20 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				RuleTreeNode newLeaf = new RuleTreeNode(getNewIdForRuleInTree(), "nieuwe stijl"/* title */,
 						RULE_NAME_UNSPECIFIED/* name */, false/* isFolder */, null/* ruleData */);
 				// -- add newLeaf at the end of the tree
-				TreeNode[] nodes = tree.getAllNodes();
 
-				int index = nodes.length;
+		// Note: Commented out code below, it partly supports grouping of rules
+//				TreeNode[] nodes = tree.getAllNodes();
 
-				RuleTreeNode parent = null;
-				while (index-- > 0) {
-					if (((RuleTreeNode) nodes[index]).isFolder()) {
-						parent = (RuleTreeNode) nodes[index];
-						break;
-					}
-				}
+//				int index = nodes.length;
+//
+//				RuleTreeNode parent = null;
+//				while (index-- > 0) {
+//					if (((RuleTreeNode) nodes[index]).isFolder()) {
+//						parent = (RuleTreeNode) nodes[index];
+//						break;
+//					}
+//				}
+				RuleTreeNode parent = (RuleTreeNode) tree.getRoot();
 				if (parent != null) {
 					RuleTreeNode[] children;
 
@@ -169,7 +178,8 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 					newChildren[children.length] = newLeaf;
 					parent.setChildren(newChildren);
 					refresh();
-					treeGrid.selectSingleRecord(children.length + 1); /* assuming only 1 group */
+					treeGrid.selectSingleRecord(children.length + POSITION_IN_NODES_OF_FIRST_RULE); 
+								/* assuming only 1 group */
 					updateButtons();
 				}
 
@@ -224,16 +234,18 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 											break;
 										}
 									}
-									if (indexNode <= 0) {
-										return; // ABORT
-									}
-									int indexParent = indexNode;
-									while (indexParent-- > 0) {
-										if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
-											parent = (RuleTreeNode) nodes[indexParent];
-											break;
-										}
-									}
+						// Note: Commented out code below, it partly supports grouping of rules
+//									if (indexNode <= 0) {
+//										return; // ABORT
+//									}
+//									int indexParent = indexNode;
+//									while (indexParent-- > 0) {
+//										if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
+//											parent = (RuleTreeNode) nodes[indexParent];
+//											break;
+//										}
+//									}
+									parent = (RuleTreeNode) tree.getRoot();
 									if (parent != null) {
 										RuleTreeNode[] children;
 
@@ -255,7 +267,8 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 										parent.setChildren(newChildren);
 										refresh();
 										int indexSelect = indexNode;
-										if (indexNode >= nodes.length - 1) {
+										
+										if (indexSelect >= nodes.length - 1) {
 											indexSelect--;
 										}
 										treeGrid.selectSingleRecord(indexSelect);
@@ -302,22 +315,27 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				int indexNode = nodes.length;
 				String id = node.getRuleId();
 
-				RuleTreeNode parent = null;
+			// Note: Commented out code below, it partly supports grouping of rules				
+//				RuleTreeNode parent = null;
 				while (indexNode-- > 0) {
 					if (id.equals(((RuleTreeNode) nodes[indexNode]).getRuleId())) {
 						break;
 					}
 				}
-				if (indexNode <= 1) {
+				if (indexNode < POSITION_IN_NODES_OF_FIRST_RULE) {
 					return; // ABORT
 				}
-				int indexParent = indexNode;
-				while (indexParent-- > 0) {
-					if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
-						parent = (RuleTreeNode) nodes[indexParent];
-						break;
-					}
-				}
+				 
+				
+//				int indexParent = indexNode;
+//				while (indexParent-- > 0) {
+//					if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
+//						parent = (RuleTreeNode) nodes[indexParent];
+//						break;
+//					}
+//				}
+				RuleTreeNode parent = (RuleTreeNode) tree.getRoot();
+				
 				if (parent != null) {
 					RuleTreeNode[] children;
 					int indexSelect = indexNode;
@@ -370,7 +388,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				int indexNode = nodes.length;
 				String id = node.getRuleId();
 
-				RuleTreeNode parent = null;
+				
 				while (indexNode-- > 0) {
 					if (id.equals(((RuleTreeNode) nodes[indexNode]).getRuleId())) {
 						break;
@@ -379,13 +397,18 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				if (indexNode >= nodes.length - 1) { /* the last node cannot be moved down */
 					return; // ABORT
 				}
-				int indexParent = indexNode;
-				while (indexParent-- > 0) {
-					if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
-						parent = (RuleTreeNode) nodes[indexParent];
-						break;
-					}
-				}
+				
+			// Note: Commented out code below, it partly supports grouping of rules				
+//				RuleTreeNode parent = null;
+//				int indexParent = indexNode;
+//				while (indexParent-- > 0) {
+//					if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
+//						parent = (RuleTreeNode) nodes[indexParent];
+//						break;
+//					}
+//				}
+				RuleTreeNode parent = (RuleTreeNode) tree.getRoot(); 
+				
 				if (parent != null) {
 					RuleTreeNode[] children;
 					int indexSelect = indexNode;
@@ -579,11 +602,14 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		if (null == styleTitle) {
 			styleTitle = "groep 1";
 		}
-		final TreeNode root = new RuleTreeNode("root", "Root", "Root", true, null/* data */,
-				new RuleTreeNode[] { new RuleTreeNode("group 1", styleTitle, featureTypeStyle.getName(), true, null,
-						arrayOfRules) });
+//		final TreeNode root = new RuleTreeNode("root", "Root", "Root", true, null/* data */,
+//				new RuleTreeNode[] { new RuleTreeNode("group 1", styleTitle, featureTypeStyle.getName(), true, null,
+//						arrayOfRules) });
 
-		setRuleTree((RuleTreeNode) root);
+		final RuleTreeNode root = new RuleTreeNode("root", "Root", "Root", true, null/* data */,
+						arrayOfRules );
+
+		setRuleTree(root);
 
 		currentLeaf = children.get(0); /* current leaf = also previous leaf for next call */
 
@@ -672,7 +698,9 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 
 		treeGrid.setData(tree);
 		treeGrid.getData().openAll();
-		treeGrid.selectSingleRecord(1);
+		
+		treeGrid.selectSingleRecord(POSITION_IN_NODES_OF_FIRST_RULE );
+		
 		updateButtons();
 
 		treeGrid.markForRedraw();
@@ -716,11 +744,10 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		int index = nodes.length;
 
 		// Assume only 1 group
-		if (nodes.length == 0 || (nodes.length == 1 && ((RuleTreeNode) nodes[index - 1]).isFolder())) { // no rules,
-																										// only a
-																										// folder(group)
-																										// node
-			newId = "1";
+		if (nodes.length == 0 || (nodes.length == 1 && ((RuleTreeNode) nodes[0]).isFolder())) { // no rules,
+												// possibly 1 folder(group) node
+																				
+			newId = INDEX_FIRST_RULE_AS_STRING;
 		} else {
 			String lastId = ((RuleTreeNode) nodes[index - 1]).getRuleId();
 			newId = new Integer(new Integer(lastId) + 1).toString();
@@ -732,18 +759,18 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		/* the ruleId == index of the rule in the ruleList */
 
 		sldHasChanged();
-		ruleList.remove(new Integer(ruleId) - 1); /* remove the rule at position ruleId */
+		ruleList.remove(new Integer(ruleId) - INDEX_FIRST_RULE); /* remove the rule at position ruleId */
 	}
 
 	private void moveRuleUp(String ruleId) {
 		/* the ruleId == index of the rule in the ruleList before it has been moved up */
-		if (new Integer(ruleId) <= 1) {
+		if (new Integer(ruleId) <= INDEX_FIRST_RULE) {
 			return;
 		}
 		sldHasChanged();
-		RuleInfo ruleToSwap = ruleList.get(new Integer(ruleId) - 2);
-		ruleList.set(new Integer(ruleId) - 2, ruleList.get(new Integer(ruleId) - 1));
-		ruleList.set(new Integer(ruleId) - 1, ruleToSwap);
+		RuleInfo ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE - 1);
+		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE - 1, ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE));
+		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE, ruleToSwap);
 	}
 
 	private void moveRuleDown(String ruleId) {
@@ -754,9 +781,9 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		}
 		sldHasChanged();
 
-		RuleInfo ruleToSwap = ruleList.get(new Integer(ruleId));
-		ruleList.set(new Integer(ruleId), ruleList.get(new Integer(ruleId) - 1));
-		ruleList.set(new Integer(ruleId) - 1, ruleToSwap);
+		RuleInfo ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE + 1);
+		ruleList.set(new Integer(ruleId), ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE));
+		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE, ruleToSwap);
 	}
 
 	// -------------------------------------------------------------------------
@@ -882,13 +909,11 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 			downButton.setDisabled(true);
 		} else {
 			removeRuleButton.setDisabled(false);
-			upButton.setDisabled("1".equals(node.getRuleId())/* first leaf node */);
+			upButton.setDisabled(INDEX_FIRST_RULE_AS_STRING.equals(node.getRuleId())/* first leaf node */);
 			TreeNode[] nodes = tree.getAllNodes();
 
-			boolean disable = node.getRuleId().equals(new Integer(new Integer(nodes.length) - 1).toString()); /*
-																											 * last leaf
-																											 * node ?
-																											 */
+			// Test if ID equals that one of the last leaf node
+			boolean disable = node.getRuleId().equals(((RuleTreeNode) nodes[nodes.length - 1]).getRuleId());
 			downButton.setDisabled(disable);
 		}
 

@@ -26,12 +26,12 @@ import org.geomajas.sld.client.SldGwtServiceAsync;
 import org.geomajas.sld.editor.client.GeometryTypes;
 import org.geomajas.sld.editor.client.SldUtils;
 
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -54,7 +54,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * Provides GUI controls for SLD management: showing a list of available SLD's, 
+ * Widget that provides GUI controls for SLD management: showing a list of available SLD's, 
  * adding/removing an SLD rule.
  * 
  * @author An Buyle
@@ -71,7 +71,7 @@ public class SldManager {
 
 	private ListGrid listGrid;
 
-	private boolean selectedAfterLoad;
+	private boolean userFlagDuringSelect;
 
 	private RecordList recordsSorted;
 
@@ -90,12 +90,16 @@ public class SldManager {
 	public SldManager(SldGwtServiceAsync sldService) {
 
 		vLayout = new VLayout(10);
-		vLayout.setSize("100%", "100%");
 		vLayout.setLayoutTopMargin(10);
-
+		vLayout.setLayoutBottomMargin(5);
+		
 		listGrid = new ListGrid();
-		// listGrid.setHeight("85%");
-		vLayout.addMember(listGrid);
+		
+		
+		listGrid.setMinHeight(100);
+		listGrid.setOverflow(Overflow.AUTO);
+		listGrid.setLeaveScrollbarGap(true);
+		
 
 		this.service = sldService;
 		listGrid.setShowAllRecords(true);
@@ -106,7 +110,7 @@ public class SldManager {
 		nameField.setAlign(Alignment.LEFT);
 		listGrid.setFields(nameField);
 		listGrid.setSelectionType(SelectionStyle.SINGLE);
-		// setSortField(nameField);
+
 		listGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
 
 			public void onSelectionChanged(SelectionEvent event) {
@@ -121,8 +125,15 @@ public class SldManager {
 			}
 		});
 
+		vLayout.addMember(listGrid);
+		listGrid.setHeight("*");
+		
+		
 		toolStrip = new HLayout(10/* membersMargin */);
-		toolStrip.setHeight("30");
+		toolStrip.setPadding(10); 
+		toolStrip.setHeight(40); /* fixed size for tool strip for SLD manager */
+		
+		
 		addButton = new AddButton();
 
 		addButton.addClickHandler(new ClickHandler() {
@@ -156,6 +167,69 @@ public class SldManager {
 		return vLayout;
 	}
 
+	public void addSelectionChangedHandler(SelectionChangedHandler selectionChangedHandler) {
+		this.externalSelectionChangedHandler = selectionChangedHandler;
+	}
+
+	public void setData(List<String> sldList) {
+		this.sldList = sldList;
+
+		recordsArray = new ListGridRecord[sldList.size()];
+
+		int i = 0;
+		for (String sldName : sldList) {
+			recordsArray[i] = new ListGridRecord();
+			recordsArray[i].setAttribute(SLD_NAME_ATTRIBUTE_NAME, sldName);
+			i++;
+		}
+
+		listGrid.setData(recordsArray);
+		listGrid.sort();
+	}
+
+	/**
+	 * Select a certain SLD in the list (if present).
+	 *  
+	 * @param sldName
+	 * @param userFlagDuringSelect
+	 */
+	public void selectSld(String sldName, boolean userFlagDuringSelect) {
+		if (null != sldName) { 
+			recordsSorted = listGrid.getDataAsRecordList();
+	
+			Record record = recordsSorted.find(SLD_NAME_ATTRIBUTE_NAME, sldName);
+			this.userFlagDuringSelect = userFlagDuringSelect;  // This flag can be polled during the 
+													// subsequent execution of selectionChangedHandler.
+			listGrid.selectSingleRecord(record);
+			this.userFlagDuringSelect = false;
+		} else {
+			deselectAllSlds(userFlagDuringSelect);
+		}
+	}
+
+	/**
+	 *  Do not select any SLD in the list.  
+	 */
+	public void deselectAllSlds(boolean userFlagDuringSelect) {
+		this.userFlagDuringSelect = userFlagDuringSelect;  // This flag can be polled during the 
+													// subsequent execution of selectionChangedHandler.
+		listGrid.deselectAllRecords();
+		this.userFlagDuringSelect =  false;
+	}
+
+	
+	/**
+	 * @return true if inside select()/deselectAll() of list grid record and <code>userFlagDuringSelect</code> argument
+	 * 			of triggering <code>selectSld</code> or <code>deselectAll</code> was set to value true, 
+	 * 			else false.   
+	 */
+	public boolean getUserFlagDuringSelect() {
+		return userFlagDuringSelect;
+	}
+
+
+	
+	
 	private void enableRemoveButton(boolean enable) {
 		if (enable) {
 			removeButton.enable();
@@ -167,7 +241,7 @@ public class SldManager {
 	private void handleAddByUserCommand() {
 
 		// addButton.disable();
-
+		GWT.log("User clicked on 'Add new SLD' button");
 		final Window winModal = new Window();
 		winModal.setWidth(360);
 		winModal.setHeight(150);
@@ -178,19 +252,7 @@ public class SldManager {
 		winModal.setShowModalMask(true); // darken all other elements on the screen when a modal dialog is showing.
 		winModal.setShowCloseButton(false);
 		winModal.centerInPage();
-		// winModal.setKeepInParentRect(WidgetLayout.exceptionWindowKeepInScreen);
-		// winModal.addCloseClickHandler(new CloseClickHandler() {
-		// public void onCloseClick(CloseClientEvent event) {
-		// buttonTouchThis.setTitle("Touch This");
-		// winModal.destroy();
-		// }
-		//
-		// public void onCloseClick(TabCloseClickEvent event) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-
+	
 		final DynamicForm addSldForm = new DynamicForm();
 
 		final TextItem nameOfSldItem = new TextItem("NameOfSld", "Naam SLD");
@@ -224,7 +286,7 @@ public class SldManager {
 		HLayout toolStrip = new HLayout(10/* membersMargin */);
 		toolStrip.setPadding(10);
 		toolStrip.setAlign(Alignment.RIGHT);
-		toolStrip.setHeight(34);
+		toolStrip.setHeight(30); /* fixed size for buttons strip for dialogue to add an SLD */
 
 		final IButton createButton = new IButton();
 		createButton.setIcon(WidgetLayout.iconCreate);
@@ -255,36 +317,24 @@ public class SldManager {
 					service.create(sld, new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 						/** call-back for handling saveOrUpdate() success return **/
-						@SuppressWarnings("deprecation")
+
 						public void onSuccess(StyledLayerDescriptorInfo sld) {
 							SC.say("De SLD met standaard inhoud is succesvol gecre&euml;erd.");
 							if (null != sld) {
 								sldList.add(sld.getName());
 								setData(sldList);
+								GWT.log("SldManager: new SLD was successfully created. Execute selectSld()");
 								selectSld(sld.getName(), false);
 								listGrid.markForRedraw();
 							}
-
-							DeferredCommand.addCommand(new Command() {
-
-								public void execute() {
-									winModal.destroy();
-								}
-							});
-
+							winModal.destroy();
 						}
 
-						@SuppressWarnings("deprecation")
 						public void onFailure(Throwable caught) {
 							SC.warn("De SLD met standaard inhoud kon niet gecre&euml;erd worden. (Interne fout: "
 									+ caught.getMessage() + ")");
 
-							DeferredCommand.addCommand(new Command() {
-
-								public void execute() {
-									winModal.destroy();
-								}
-							});
+							winModal.destroy();
 
 						}
 					});
@@ -299,15 +349,9 @@ public class SldManager {
 
 		cancelButton.addClickHandler(new ClickHandler() {
 
-			@SuppressWarnings("deprecation")
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				winModal.setIsModal(false);
-				DeferredCommand.addCommand(new Command() {
-
-					public void execute() {
-						winModal.destroy();
-					}
-				});
+				winModal.destroy();
 			}
 
 		});
@@ -398,39 +442,6 @@ public class SldManager {
 		namedlayerChoicelist.get(0).getUserStyle().setFeatureTypeStyleList(featureTypeStyleList);
 
 		return sld;
-	}
-
-	public void addSelectionChangedHandler(SelectionChangedHandler selectionChangedHandler) {
-		this.externalSelectionChangedHandler = selectionChangedHandler;
-	}
-
-	public void setData(List<String> sldList) {
-		this.sldList = sldList;
-
-		recordsArray = new ListGridRecord[sldList.size()];
-
-		int i = 0;
-		for (String sldName : sldList) {
-			recordsArray[i] = new ListGridRecord();
-			recordsArray[i].setAttribute(SLD_NAME_ATTRIBUTE_NAME, sldName);
-			i++;
-		}
-
-		listGrid.setData(recordsArray);
-		listGrid.sort();
-	}
-
-	public void selectSld(String sldName, boolean selectedAfterLoad) {
-		recordsSorted = listGrid.getDataAsRecordList();
-
-		Record record = recordsSorted.find(SLD_NAME_ATTRIBUTE_NAME, sldName);
-		this.selectedAfterLoad = selectedAfterLoad;
-		listGrid.selectSingleRecord(record);
-		this.selectedAfterLoad = false;
-	}
-
-	public boolean isSelectAfterLoaded() {
-		return selectedAfterLoad;
 	}
 
 	// -------------------------------------------------------------------------

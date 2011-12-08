@@ -15,6 +15,7 @@ import java.util.List;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.SldGwtService;
 import org.geomajas.sld.client.SldGwtServiceAsync;
+import org.geomajas.sld.editor.client.widget.CloseSldHandler;
 import org.geomajas.sld.editor.client.widget.RefreshSldHandler;
 import org.geomajas.sld.editor.client.widget.RefuseSldLoadingHandler;
 import org.geomajas.sld.editor.client.widget.SldManager;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -53,7 +55,7 @@ public class SldEditorEntryPoint implements EntryPoint {
 
 	private SldGwtServiceAsync service;
 
-	private SldManager sldSelector;
+	private SldManager sldManager;
 
 	private VLayout vLayoutRight;
 
@@ -69,85 +71,59 @@ public class SldEditorEntryPoint implements EntryPoint {
 		Cookies.setCookie("skin_name", "Enterprise");
 
 		mainLayout = new HLayout();
-		mainLayout.setWidth100();
-		mainLayout.setHeight100();
-
+		
+		mainLayout.setWidth("95%"); // when setting to 100% the panels resize annoyingly ('dancing pannels')
+									// when the mouse pointer is moved   
+		mainLayout.setHeight("95%");
+		//mainLayout.setMaxHeight(1000);
 		// mainLayout.setMinWidth(300);
 		// mainLayout.setMinHeight(400);
 
 		vLayoutLeft = new VLayout();
 		vLayoutLeft.setWidth("30%");
-		vLayoutLeft.setHeight100();
-		vLayoutLeft.setMembersMargin(5);
+		
+		//vLayoutLeft.setMembersMargin(5);
 		vLayoutLeft.setMargin(5);
-		vLayoutLeft.setShowResizeBar(true);
-		vLayoutLeft.setMinWidth(150);
+		// Possibility for the user to make vLayoutLeft more/less wide and consequently vlayoutRight
+		// less/more wide
+		vLayoutLeft.setShowResizeBar(true); 
+		vLayoutLeft.setMinWidth(100); /* min 100px wide */
+		vLayoutLeft.setOverflow(Overflow.AUTO);
+
 
 		mainLayout.addMember(vLayoutLeft);
-
+		vLayoutLeft.setHeight100();
+		
 		service = GWT.create(SldGwtService.class);
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sld");
 
-		// Select Control to select an SLD from the list of sld's made available
-		// by the server
-		sldSelector = new SldManager(service);
-		vLayoutLeft.addMember(sldSelector.getCanvas());
-
-		sldWidget = new SldWidget(service);
-
-		sldWidget.addRefuseSldLoadingHandler(new RefuseSldLoadingHandler() {
-
-			public void execute(String refusedSldName, String currentSldName) {
-
-				sldSelector.selectSld(currentSldName, true/* do not reload current SLD */);
-
-			}
-
-		});
-
-		// formSelectLayer.setItems(selectSLD);
-
-		vLayoutRight = new VLayout();
-		vLayoutRight.setWidth("70%");
-		vLayoutRight.setHeight100();
-		vLayoutRight.setMembersMargin(5);
-		vLayoutRight.setMargin(5);
-		vLayoutRight.setShowResizeBar(true);
-		vLayoutRight.setMinWidth(150);
-
-		mainLayout.addMember(vLayoutRight);
-
-		/** Populate select list of Select SLD control **/
-		service.findAll(new AsyncCallback<List<String>>() {
-
-			public void onSuccess(List<String> result) {
-
-				GWT.log("got " + result.size() + " SLDs");
-
-				sldSelector.setData(result);
-			}
-
-			public void onFailure(Throwable caught) {
-				GWT.log("could not access SLDs", caught);
-			}
-		});
-
-		/** Add ChangedHandler for Select SLD control **/
-		sldSelector.addSelectionChangedHandler(new SelectionChangedHandler() {
+		/** Setup SLD manager widget (left panel) **/ 
+		sldManager = new SldManager(service);
+		vLayoutLeft.addMember(sldManager.getCanvas());
+		sldManager.getCanvas().setWidth100();
+		sldManager.getCanvas().setHeight100();
+		
+		/** Add ChangedHandler for SLD Manager widget **/
+		sldManager.addSelectionChangedHandler(new SelectionChangedHandler() {
 
 			public void onSelectionChanged(SelectionEvent event) {
-				if (sldSelector.isSelectAfterLoaded()) {
+				GWT.log("SldgEditorEntryPoint: onSelectionChanged of sldManager for SLD "
+						+ (null == event.getSelectedRecord()
+							? "null" : (String) event.getSelectedRecord().getAttribute(
+									SldManager.SLD_NAME_ATTRIBUTE_NAME)));
+				
+				if (sldManager.getUserFlagDuringSelect()) {
+					GWT.log("SldgEditorEntryPoint: onSelectionChanged :  getUserFlagDuringSelect() == true,~"
+							+ " so do nothing");
 					return; /* ABORT */
 				}
 				ListGridRecord record = event.getSelectedRecord();
 
 				if (record == null) {
-					if (null != canvasForSLD) {
-						sldWidget.clear(true);
-						//canvasForSLD.disable(); // TODO: needed?
-					}
-					vLayoutRight.markForRedraw();
+					sldWidget.clear(true);
+					canvasForSLD.disable();
+					//vLayoutRight.markForRedraw();
 				} else {
 
 					selectedSLDName = (String) record.getAttribute(SldManager.SLD_NAME_ATTRIBUTE_NAME);
@@ -157,48 +133,125 @@ public class SldEditorEntryPoint implements EntryPoint {
 						/** call-back for handling service.findByName() success return **/
 						public void onSuccess(StyledLayerDescriptorInfo sld) {
 							if (!sld.getChoiceList().isEmpty()) {
-
-								if (null == canvasForSLD) {
-									canvasForSLD = sldWidget.getCanvasForSLD(sld);
-
-									sldWidget.addRefreshHandler(new RefreshSldHandler() {
-
-										public void execute(String sldName) {
-											service.findByName(sldName,
-													new AsyncCallback<StyledLayerDescriptorInfo>() {
-
-														public void onSuccess(StyledLayerDescriptorInfo sld) {
-															sldWidget.getCanvasForSLD(sld);
-														}
-
-														public void onFailure(Throwable caught) {
-															SC.warn("De SLD " + selectedSLDName
-																	+ " kan niet gevonden worden. Interne fout: "
-																	+ caught.getMessage());
-															GWT.log("could not access SLD " + selectedSLDName, caught);
-														}
-													});
-										}
-									});
-									vLayoutRight.addMember(canvasForSLD);
-								} else {
-									sldWidget.getCanvasForSLD(sld);
-									vLayoutRight.markForRedraw();
-								}
-								if (null != canvasForSLD) {
-									canvasForSLD.enable(); // TODO: needed?
-								}
+								sldWidget.getCanvasForSLD(sld);
+								canvasForSLD.enable();
 							}
 						}
-
 						public void onFailure(Throwable caught) {
-							GWT.log("could not access SLDs", caught);
+							GWT.log("could not access SLD", caught);
+							SC.warn("De SLD " + selectedSLDName
+									+ " kan niet gevonden worden. Interne fout: "
+									+ caught.getMessage());
 						}
-					});
+					}); /* call service */
 				}
 			}
 
 		});
+
+		/** Setup the right panel (which will show the currently loaded SLD in detail) **/
+		
+		sldWidget = new SldWidget(service);
+		
+//		sldWidget.addOpenSldHandler(new OpenSldHandler() {
+//			
+//			public void execute(String sldName) {
+//				sldManager.selectSld(sldName, true/* do not load the SLD again in onSelectionChanged */);
+//			}
+//		});
+		
+		sldWidget.setCloseFunctionality(true, new CloseSldHandler() {
+			
+			public void execute(String sldName, boolean closeTriggeredByCloseButton) {
+				GWT.log("SldgEditorEntryPoint: execute CloseSldHandler of sldWidget for SLD "
+						+ (null == sldName ? "null" : sldName)
+						+ "; closeTriggeredByCloseButton=" + closeTriggeredByCloseButton);
+				
+				if (closeTriggeredByCloseButton) {
+					sldManager.selectSld(null, true/* do not load the "null" SLD */);
+				}
+			}
+		});
+
+		sldWidget.addRefuseSldLoadingHandler(new RefuseSldLoadingHandler() {
+
+			public void execute(String refusedSldName, String currentSldName) {
+
+				GWT.log(getClass().getName() + ": execute RefuseSldLoadingHandler of sldWidget for SLD "
+						+ (null == refusedSldName ? "null" : refusedSldName));
+
+				if (null != currentSldName) {
+					sldManager.selectSld(currentSldName, true);
+									// 2nd arg = true: no need to load SLD currentSldName, 
+									// since already loaded by sldWidget
+				} else {
+					// Do nothing
+				}
+
+			}
+
+		});
+		
+		sldWidget.addRefreshHandler(new RefreshSldHandler() {
+
+			public void execute(String sldName) {
+				GWT.log(getClass().getName() + ": execute addRefreshHandler of sldWidget for SLD "
+						+ (null == sldName ? "null" : sldName));
+
+				service.findByName(sldName,
+						new AsyncCallback<StyledLayerDescriptorInfo>() {
+
+							public void onSuccess(StyledLayerDescriptorInfo sld) {
+								sldWidget.getCanvasForSLD(sld);
+							}
+
+							public void onFailure(Throwable caught) {
+								SC.warn("De SLD " + selectedSLDName
+										+ " kan niet gevonden worden. Interne fout: "
+										+ caught.getMessage());
+								GWT.log("could not access SLD " + selectedSLDName, caught);
+							}
+						});
+			}
+		});
+
+
+		vLayoutRight = new VLayout();
+		vLayoutRight.setWidth("70%");
+		vLayoutRight.setHeight100();
+		//vLayoutRight.setMembersMargin(5);
+		vLayoutRight.setMargin(5);
+		//No ResizeBar needed here
+		vLayoutRight.setMinWidth(150);
+
+		canvasForSLD = sldWidget.getCanvas();
+		if (null == canvasForSLD) {
+			SC.warn("The SLD editor widget could not be created successfully");
+			GWT.log("The SLD editor widget could not be created successfully");
+			return mainLayout;  /** ABORT !!! **/
+		}
+		canvasForSLD.disable();
+
+		vLayoutRight.addMember(canvasForSLD);
+		canvasForSLD.setHeight("100%");		
+
+		mainLayout.addMember(vLayoutRight);
+
+		/** Populate select list of SLD Manager widget **/
+		service.findAll(new AsyncCallback<List<String>>() {
+
+			public void onSuccess(List<String> result) {
+
+				GWT.log("got " + result.size() + " SLDs");
+
+				sldManager.setData(result);
+			}
+
+			public void onFailure(Throwable caught) {
+				GWT.log("could not access SLDs", caught);
+			}
+		});
+
 
 		return mainLayout;
 	}

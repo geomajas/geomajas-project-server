@@ -39,11 +39,11 @@ import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.WellKnownNameInfo;
 import org.geomajas.sld.client.SldGwtServiceAsync;
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Side;
@@ -74,27 +74,47 @@ import com.smartgwt.client.widgets.tab.TabSet;
  *
  * The current version will support a limited set of features.
  * <p>Not supported are, amongst others:
- * <br/>- no style symbol preview
- * <br/>- no XML view of SLD
- * <br/>- no XML editing of SLD (advanced editing)
- * <br/>- no filling of polygon with pattern
- * <br/>- no support for external graphic for point symbolizer
+ * <li> no style symbol preview
+ * <li> no XML view of SLD
+ * <li> no XML editing of SLD (advanced editing)
+ * <li> no filling of polygon with pattern
+ * <li> no support for external graphic for point symbolizer
+ * </li> 
  * 
  * @author An Buyle
  *
  */
+
+/**
+ * @author BuyleA
+ *
+ */
 public class SldWidget {
 
-	private static final String SELECT_TYPE_OF_GRAPHIC_EXTERNE_FIGUUR = "Externe figuur";
-	private static final String SELECT_TYPE_OF_GRAPHIC_MARKER = "Marker";
+	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
 	
-	private static final int WAITING_FOR_OPTIONAL_SAVE_SEC = 4;
+	private final String externalGraphicsSelectTitle = sldEditorMessages.externalGraphicsSelectTitle();
+
+	private final String markerSelectTitle = sldEditorMessages.markerSelectTitle();
 	
+	// Configuration members
 	private SldGwtServiceAsync service;
+	private StyledLayerDescriptorInfo sldLatestRequest;
+	private RefreshSldHandler refreshSldHandler;	
+	private RefuseSldLoadingHandler refuseSldLoadingHandler;
+	private CloseSldHandler 	closeSldHandler;
+	private OpenSldHandler		openSldHandler;
+	private boolean 			showCloseButton;
 
+
+	// Current state
 	private StyledLayerDescriptorInfo currentSld;
+	private boolean sldHasChanged;
+	private State state = State.INIT;
+	private boolean answerForConfirmSaveReceived = true; // to lock loading of another SLD, 
+				// to avoid loading a new SLD while waiting for a response of the user in a dialogue
 
-	private VLayout widgetLayout;
+	private final VLayout widgetLayout = new VLayout(10);;  // main widget layout canvas
 
 	private VLayout ruleDetailContainer;
 
@@ -104,11 +124,12 @@ public class SldWidget {
 
 	private DynamicForm specificFormPoint;
 
-	private HLayout savePanel;
+	// Panel for SLD Action buttons (Save/Close/Cancel)
+	private HLayout sldActionsPanel;
 
 	private IButton saveButton;
-
 	private CancelButton cancelButton;
+	private CloseButton  closeSldButton;
 
 	// generalForm items
 	private TextItem nameOfLayerItem;
@@ -117,9 +138,10 @@ public class SldWidget {
 
 	private TextItem geomTypeItem;
 
-	// SpecificFormPoint form items
+	// SpecificFormPoint form item
 	private SelectItem typeOfGraphicItem;
 
+	/** private member for point layer **/
 	private GraphicInfo currrentGraphicInfo;
 
 	/** private members for point symbolizer - type=marker **/
@@ -213,121 +235,123 @@ public class SldWidget {
 	private FilterEditor filterEditor;
 
 	private boolean isSupportedFilter;
-
-	private RefreshSldHandler refreshSldHandler;
-
-	private boolean sldHasChanged;
 	
-	private boolean answerForConfirmSaveReceived = true; 
-	private StyledLayerDescriptorInfo sldLatestRequest;
+	
 
-	
-	private RefuseSldLoadingHandler refuseSldLoadingHandler;
-	
+	/**
+	 * Default constructor.  
+	 */
 
 	public SldWidget() {
 		init(null);
 	}
 
+	/**
+	 * @param service
+	 */
 	public SldWidget(SldGwtServiceAsync service) {
 		init(service);
 	}
 
+	/**
+	 * @param refuseSldLoadingHandler
+	 */
 	public void addRefuseSldLoadingHandler(RefuseSldLoadingHandler refuseSldLoadingHandler) {
 		this.refuseSldLoadingHandler = refuseSldLoadingHandler;
 
 	}
 
+	/**
+	 * @param refreshSldHandler
+	 */
+	public void addRefreshHandler(RefreshSldHandler refreshSldHandler) {
+		this.refreshSldHandler = refreshSldHandler;
+
+	}
+	
+	/**
+	 * @param handler Handler called when an SLD has been successfully loaded
+	 */
+	public void addOpenSldHandler(OpenSldHandler handler) {
+		this.openSldHandler = handler;
+
+	}
+
+	/** Configure  the functionality that allows user to close the currently loaded
+	 *  SLD.
+	 *  
+	 * @param showCloseButton  If true show  a close button in the tool bar of the widget,
+	 * 		else hide it.
+	 * @param closeSldHandler Handler that is executed after the user clicks on the close button
+	 * 				(and has confirmed this closing. Can be <code>null</code>. This parameter is 
+	 * 				ignored if <code>showButton</code> is false. 
+	 */
+	public void setCloseFunctionality(boolean showCloseButton, CloseSldHandler closeSldHandler) {
+		this.showCloseButton = showCloseButton;
+		this.closeSldHandler = closeSldHandler;
+	}
+
+	/**
+	 * See setCloseFunctionality to configure the close button .
+	 * 
+	 * @return true if close button is shown. 
+	 */
+	public boolean isShowCloseSldButton() {
+		return this.showCloseButton;
+	}
+
+	
+	/**
+	 * Return a canvas (GUI) presenting the current state of the widget.
+	 *  
+	 * @return Canvas A canvas presenting the current state of the widget
+	 */
+	public Canvas getCanvas() {
+		return widgetLayout;
+	}
+
 	public Canvas getCanvasForSLD(StyledLayerDescriptorInfo sld) {
-		GWT.log("Entering getCanvasForSLD() for sld = "
-				+ (null != sld ? sld.getName() : "null"));
+		GWT.log("ENTERING getCanvasForSLD() for sld = "
+				+ (null != sld ? sld.getName() : "null")
+				+ "; current Sld = " + (null != currentSld ? currentSld.getName() : "null")
+				+ "; current state = " + state);
 		sldLatestRequest = sld;
 		
 		if (!answerForConfirmSaveReceived) {
 			
 				GWT.log("getCanvasForSLD(): waiting for save of previous one. Aborting immediate loading of "
 						+ (null != sld ? sld.getName() : "null"));
-				
-				return null;  // TODO: call-back to inform caller that switch to another or no SLD loaded failed 
+				// TODO: call-back to inform caller that switch to another or no SLD loaded failed
+				//  ABORT, loading of SLD will possibly be handled asynchronously
+				return null;   
 		}
 		
 		
-		final StyledLayerDescriptorInfo sldNew = sld;
-
-		if (!saveButton.getDisabled() && null != this.currentSld) {
-			answerForConfirmSaveReceived = false;
-			
-			GWT.log("getCanvasForSLD(): giving the user the option to save the SLD before unloading it");
-					
-			
-			SC.confirm("Wenst u uw wijzigingen aan de SLD '" + this.currentSld.getName()
-					+ "' eerst te bewaren alvorens de nieuwe SLD in te laden? Zo ja, druk dan op 'OK'.",
-					new BooleanCallback() {
-
-						public void execute(Boolean value) {
-							if (value != null && value) {
-								/* First save the current SLD, then load the new SLD */
-								saveSld();
-							}
-							answerForConfirmSaveReceived = true;
-							final Timer timer = new Timer() {
-								@Override
-								public void run() {
-									GWT.log("getCanvasForSLD(): calling MYSELF after optional save and sleeping");
-									getCanvasForSLD(sldLatestRequest);
-								}
-							};
-							// sleep 200 msec before calling getCanvasForSLD() again
-							timer.schedule(200);
-						} /* execute */
-				});
-			/* confirm returns immediately */
-
-			return widgetLayout;
-		} else if (!cancelButton.getDisabled() && null != this.currentSld) {
-			
-			answerForConfirmSaveReceived = false;
-
-			SC.confirm(
-					"U hebt de huidige SLD '"
-							+ currentSld.getName()
-							+ "'  gewijzigd, maar nog niet bewaard.<break/>"
-							+ "Wenst u eerst die SLD af te werken, druk dan 'OK'."
-							+ "  Indien u op 'Annuleer' drukt, zijn uw wijzigingen verloren.",
-					new BooleanCallback() {
-
-						public void execute(Boolean value) {
-							answerForConfirmSaveReceived = true;
-							if (value != null && value) {
-								if (null != refuseSldLoadingHandler) {
-									refuseSldLoadingHandler.execute(sldNew.getName(), currentSld.getName());
-								}
-								return; /* ABORT loading the new SLD */
-
-							} else {
-								enableSave(false);
-								enableCancel(false);
-								getCanvasForSLD(sldNew);
-							}
-
-						} /* execute */
-					});
-
-			return widgetLayout;
+		if (state == State.SLD_LOADED && null != this.currentSld) {	
+			boolean isWidgetAvail = startDialogueForClosingfOfSLD(sld/*new one*/, false);
+			if (!isWidgetAvail) {
+				return widgetLayout; // ABORT, loading of SLD will possibly be handled asynchronously
+			}
+		}
+		
+		this.currentSld = null;
+		
+		
+		if (state == State.SLD_LOADED || state == State.START_SLD_LOADING) {
+			GWT.log("getCanvasForSLD(): executing clear(false)");
+			clear(false);
+			state = State.NO_SLD_LOADED;
 		}
 
-		this.currentSld = sld;
-		
-		GWT.log("getCanvasForSLD(): executing clear(false)");
-		
-		clear(false);
-
-		if (null == sld) { /* We only needed to optionally save the already loaded SLD */ 
-			return widgetLayout;
+		if (null == sld) { /* We only needed to optionally save the currently loaded SLD */ 
+			return widgetLayout; // Task is finished
 		}
 
 		// widgetLayout.enable();
-
+		
+		GWT.log("getCanvasForSLD(): State from " + state + " to " + State.START_SLD_LOADING);
+		state = State.START_SLD_LOADING;
+		
 		if (null == sld.getChoiceList() || sld.getChoiceList().isEmpty()) {
 			SC.warn("Empty SLD's are not supported.");
 			return widgetLayout; // ABORT
@@ -385,12 +409,153 @@ public class SldWidget {
 			ruleSelector.setRules(choiceInfo.getUserStyle().getFeatureTypeStyleList());
 
 		}
-
+		// (show+enable)/hide close SLD button
+		if (null != closeSldButton) {
+			if (!this.isShowCloseSldButton()) {
+				closeSldButton.hide();
+			} else {
+				closeSldButton.show();
+				closeSldButton.enable();
+			}
+		}
+		this.currentSld = sld; 
+		GWT.log("getCanvasForSLD(): State from " + state + " to " + State.SLD_LOADED);
+		state = State.SLD_LOADED;
+		if (null != openSldHandler) {
+			openSldHandler.execute(currentSld.getName());
+		}
+		widgetLayout.markForRedraw();
 		return widgetLayout;
 	}
 	
 	
 	
+	/**
+	 * Start a dialogue to optionally save the current SLD and optionally initiate the request
+	 * 		to load a new one.
+	 * 
+	 * @param sldNew The new SLD that should optionally be loaded after closing the current one. 
+	 * 					Can be <code>null</code> if no new SLD should be loaded. 
+	 * @param closeViaCloseButton
+	 *
+	 * @return true if SLD Widget is immediately available for loading another SLD, else false
+	 */
+	private boolean startDialogueForClosingfOfSLD(final StyledLayerDescriptorInfo sldNew, 
+			final boolean closeViaCloseButton) {
+		boolean isWidgetAvailableNow = false;
+				
+		if (!saveButton.getDisabled() && null != this.currentSld) {
+			/** 
+			 * current state = An SLD loaded with unsaved changes 
+			 **/ 
+			
+			answerForConfirmSaveReceived = false; // lock loading of another SLD 
+			
+			GWT.log("startDialogueForClosingfOfSLD(): Entering");
+			
+			SC.confirm(sldEditorMessages.confirmSavingChangesBeforeUnloadingSld(), new BooleanCallback() {
+
+				public void execute(Boolean value) {
+					if (value != null && value) {
+						/* First save the current SLD, then load the new SLD (if specified) */
+						GWT.log("startDialogueForClosingfOfSLD(): User choose to first save the current SLD");
+						// initiate save of currentSld.getName() (asynchronous execution on the server)
+						saveSld();
+						if (null != closeSldHandler) { // Note: state will be State.SLD_LOADED
+							closeSldHandler.execute(currentSld.getName(), closeViaCloseButton);
+						}
+
+						clear(false);
+						currentSld = null;
+						GWT.log("startDialogueForClosingfOfSLD(): State from " + state + " to "
+								+ State.NO_SLD_LOADED);
+						state = State.NO_SLD_LOADED;
+						answerForConfirmSaveReceived = true; // Unlock (before calling getCanvasForSLD()!)
+						getCanvasForSLD(sldLatestRequest);
+					} else {
+						/* cancel loading the new one */
+						GWT.log("startDialogueForClosingfOfSLD():"
+								+ " user wants to keep the current SLD loaded (no saving).");
+						/** Inform the caller **/
+						if (null != refuseSldLoadingHandler) {
+							refuseSldLoadingHandler.execute(sldLatestRequest != null ? sldLatestRequest.getName()
+									: null, currentSld != null ? currentSld.getName() : null);
+						}
+						answerForConfirmSaveReceived = true; // Unlock
+					}
+				} /* execute */
+			});
+			/* confirm returns immediately */
+
+		} else if (!cancelButton.getDisabled() && null != this.currentSld) { 
+			/**
+			 * Current state = An SLD loaded with unsaved changes (cancelButton is enabled), but save button is
+			 * disabled because not all required SLD info is specified (e.g. because at least 1 incomplete
+			 * rule filter)
+			 */
+			
+			answerForConfirmSaveReceived = false; // lock loading of another SLD
+
+
+			SC.confirm(sldEditorMessages.confirmSavingChangesBeforeUnloadingIncompleteSld(),
+					new BooleanCallback() {
+
+						public void execute(Boolean value) {
+							
+							
+							if (value != null && value) {
+								/* Current SLD must be kept, new one must be refused */ 
+								GWT.log("startDialogueForClosingfOfSLD(): cancel loading new SLD. Keep current SLD");
+								if (null != refuseSldLoadingHandler) {
+									refuseSldLoadingHandler.execute(sldNew != null ? sldNew.getName() : null, 
+											currentSld.getName());
+								}
+								answerForConfirmSaveReceived = true;  // Unlock 
+							} else {
+								enableSave(false);
+								enableCancel(false);
+								/* changes to currentSld are lost */
+								if (null != closeSldHandler) {
+									closeSldHandler.execute(currentSld.getName(), closeViaCloseButton);
+								}
+								
+								clear(false);
+								currentSld = null;
+								GWT.log("startDialogueForClosingfOfSLD(): State from "
+										+ state + " to " + State.NO_SLD_LOADED);
+								state = State.NO_SLD_LOADED;
+								answerForConfirmSaveReceived = true;  // Unlock before calling getCanvasForSLD()
+								getCanvasForSLD(sldLatestRequest/* can be null*/);
+								
+							}
+						} /* execute */
+					});
+			/* Note: confirm returns immediately, waiting for user reaction and processing is handled asynchronously */
+		} else { 
+			/**
+			 * Current state = No SLD with unsaved changes. possibly no SLD loaded 
+			 */
+			if (null != closeSldHandler && null != currentSld && state == State.SLD_LOADED) {
+				closeSldHandler.execute(currentSld.getName(), closeViaCloseButton);
+			}
+			// check state to determine of clearing is needed
+			if (state == State.SLD_LOADED || state == State.START_SLD_LOADING) {
+				clear(false); // clear all SLD panels/forms
+			}
+			currentSld = null;
+			GWT.log("startDialogueForClosingfOfSLD(): State from " + state + " to " + State.NO_SLD_LOADED);
+			state = State.NO_SLD_LOADED;
+			isWidgetAvailableNow = true;
+		}
+		return isWidgetAvailableNow;
+	}
+
+	/**
+	 * Clear all SLD panels and forms.
+	 * 
+	 * @param optionallySaveCurrentSld if true, check first if there's already an SLD loaded
+	 * 		and if it needs to be saved.  
+	 */
 	public void clear(boolean optionallySaveCurrentSld) {
 		GWT.log("Entering clear() with optionallySaveCurrentSld = " + optionallySaveCurrentSld);
 		
@@ -407,6 +572,16 @@ public class SldWidget {
 			if (null != cancelButton) {
 				cancelButton.disable();
 			}
+			
+			if (null != closeSldButton) {
+				if (!this.isShowCloseSldButton()) {
+					closeSldButton.hide();
+				} else {
+					closeSldButton.show();
+					closeSldButton.disable();
+				}
+			}
+			
 	
 			if (null != ruleSelector) {
 				ruleSelector.reset();
@@ -416,6 +591,8 @@ public class SldWidget {
 			}
 			clearForCurrentRule();
 		}
+		GWT.log("Leaving clear() with optionallySaveCurrentSld = " + optionallySaveCurrentSld);
+		
 	}
 
 
@@ -423,12 +600,16 @@ public class SldWidget {
 
 		this.service = service;
 		
-		widgetLayout = new VLayout();
-		widgetLayout.setWidth("100%");
-		widgetLayout.setHeight100();
+		
+//		widgetLayout.setWidth("100%");
+//		widgetLayout.setHeight100();
+		
+		widgetLayout.setLayoutTopMargin(10);
+		widgetLayout.setLayoutBottomMargin(5);
+		
 
 		VLayout topContainer = new VLayout(5); /* Top container of widgetLayout */
-		topContainer.setShowResizeBar(true); /* Resizebar to make the height of the ruleSelector bigger/smaller */
+		topContainer.setShowResizeBar(true); /* Resize bar to make the height of the topContainer bigger/smaller */
 		topContainer.setMinHeight(200);
 
 		topContainer.setLayoutBottomMargin(5);
@@ -436,7 +617,7 @@ public class SldWidget {
 		generalForm = new DynamicForm();
 		generalForm.setNumCols(4);
 
-		nameOfLayerItem = new TextItem("Laag", "Laag");
+		nameOfLayerItem = new TextItem("Layer", sldEditorMessages.layerTitle());
 		nameOfLayerItem.setWidth(200);
 		nameOfLayerItem.addChangedHandler(new ChangedHandler() {
 
@@ -459,11 +640,11 @@ public class SldWidget {
 		nameOfLayerItem.setRequiredMessage("De naam van de laag mag niet leeg zijn");
 		nameOfLayerItem.setValidateOnChange(true);
 
-		geomTypeItem = new TextItem("Geometrie-type");
+		geomTypeItem = new TextItem("Geometry", sldEditorMessages.geometryTitle());
 		geomTypeItem.setWidth(150);
 		geomTypeItem.disable(); // cannot be changed by the user
 
-		styleTitleItem = new TextItem("Stijl", "Stijl");
+		styleTitleItem = new TextItem("Style", sldEditorMessages.styleTitle());
 		styleTitleItem.setWidth(300);
 		styleTitleItem.setColSpan(4);
 
@@ -520,7 +701,7 @@ public class SldWidget {
 				} else {
 					setNoRuleSelected();
 				}
-
+				widgetLayout.markForRedraw();
 			}
 
 		});
@@ -557,7 +738,8 @@ public class SldWidget {
 		ruleSelector.setWidth("100%");
 		topContainer.addMember(ruleSelector);
 
-		topContainer.setHeight("35%"); /* SLD top-level items + rule selector take 30% of widget layout */
+		topContainer.setHeight("35%"); /* SLD top-level items + rule selector takes this
+		 								percentage of widget layout */
 
 		topContainer.setWidth("100%");
 		topContainer.setMinHeight(120);
@@ -565,6 +747,7 @@ public class SldWidget {
 
 		ruleDetailContainer = new VLayout(5);
 		ruleDetailContainer.setMinHeight(200);
+		//ruleDetailContainer.setHeight("*"); // TODO: needed???
 		ruleDetailContainer.setWidth("100%");
 		ruleDetailContainer.setMinWidth(100);
 		ruleDetailContainer.setLayoutTopMargin(10);
@@ -589,11 +772,11 @@ public class SldWidget {
 
 		filterPane = new VLayout();
 
-		Tab tTab1 = new Tab("Symbologie");
+		Tab tTab1 = new Tab(sldEditorMessages.symbologyTabTitle());
 
 		tTab1.setPane(symbolPane);
 
-		Tab tTab2 = new Tab("Filter");
+		Tab tTab2 = new Tab(sldEditorMessages.filterTabTitle());
 		filterPane = new VLayout();
 		filterPane.setMembersMargin(5);
 		filterPane.setMargin(5);
@@ -641,24 +824,37 @@ public class SldWidget {
 		filterForm.hide();
 		filterPane.addMember(filterForm);
 
-		savePanel = new HLayout(10);
+		sldActionsPanel = new HLayout(10);
 		saveButton = new SaveButton();
 		saveButton.disable();
 
-		savePanel.addMember(saveButton);
+		sldActionsPanel.addMember(saveButton);
 		cancelButton = new CancelButton();
 		cancelButton.disable();
-		savePanel.addMember(cancelButton);
+		sldActionsPanel.addMember(cancelButton);
+		
+		closeSldButton = new CloseButton();
+		closeSldButton.disable(); 
+		sldActionsPanel.addMember(closeSldButton);
+
+		if (!this.isShowCloseSldButton()) {
+			closeSldButton.hide();
+		} else {
+			closeSldButton.show();
+		}
 
 		// savePanel.addMember(resetButton);
 		// savePanel.setVisible(false);
-		savePanel.setAlign(Alignment.CENTER);
-		// savePanel.setPadding(10);
-		savePanel.setHeight(30);
-		ruleDetailContainer.addMember(savePanel);
-
+		sldActionsPanel.setAlign(Alignment.CENTER);
+		sldActionsPanel.setHeight(40); /* fixed size for buttons strip for saving */
+		sldActionsPanel.setPadding(10);
+		widgetLayout.addMember(sldActionsPanel);
+		
+		/** Make sure are panels are disabled initially */
+		clear(false); 
 
 	}
+
 
 	private Object getCurrentRuleState() {
 		Object ruleData = null;
@@ -747,16 +943,22 @@ public class SldWidget {
 	/**
 	 * Update the rule detail form items (incl. the associated filter).
 	 * 
-	 * @param object
-	 * @return
+	 * @param object  The rule object, its class must be one of 2 types:  IncompleteRuleInfo.class 
+	 * 			or RuleInfo.class.
+	 * @return 
 	 */
-	private Canvas setRule(Object object) {
+	private void setRule(Object object) {
+		
+		RuleInfo 	rule = null;
+		
+		GWT.log("Entering setRule for rule of class " + object.getClass().getName());
 		clearForCurrentRule();
 
 		if (object.getClass().equals(IncompleteRuleInfo.class)) {
-			enableSave(false);
+			
+			enableSave(false); /* should already have been false */
 			IncompleteRuleInfo incompleteRuleInfo = (IncompleteRuleInfo) object;
-
+			// Filter must be incomplete to justify the use of an IncompleteRuleInfo object 
 			if (null != incompleteRuleInfo.getIncompleteFilter()) {
 				filterEditor.createOrUpdateFilterForm(incompleteRuleInfo.getIncompleteFilter());
 			} else {
@@ -764,34 +966,37 @@ public class SldWidget {
 				/* create/empty filter form */
 				filterEditor.createOrUpdateFilterForm(new IncompleteFilterInfo(null, null));
 			}
-			filterForm.show();
 			// this.currentGeomType = SldUtils.getGeometryType(incompleteRuleInfo.getRule());
-			return setRuleExclFilter(incompleteRuleInfo.getRule());
+			rule = incompleteRuleInfo.getRule();
 		} else if (object.getClass().equals(RuleInfo.class)) {
-			RuleInfo rule = (RuleInfo) object;
+
+			rule = (RuleInfo) object;
 			currentRule = (RuleInfo) object;
 			// this.currentGeomType = SldUtils.getGeometryType(rule);
 
 			if (null != rule.getChoice() && rule.getChoice().ifFilter()) {
 				FilterTypeInfo filter = rule.getChoice().getFilter();
 
-				isSupportedFilter = filterEditor.createOrUpdateFilterForm(filter);
+				this.isSupportedFilter = filterEditor.createOrUpdateFilterForm(filter);
 
 			} else {
 				// TODO: needed ?: currentFilterInfo = new FilterTypeInfo();
 				/* create/empty filter form */
 				filterEditor.createOrUpdateFilterForm(new IncompleteFilterInfo(null, null));
 			}
-
-			noRuleSelectedMessage.hide();
-
-			filterForm.show();
-
 			enableSave(ruleSelector.checkIfAllRulesComplete());
-
-			return setRuleExclFilter((RuleInfo) rule);
+		} else {
+			/* TODO: ERROR -> throw exception */
+			GWT.log("setRule fatal error: illegal rule arg: " + object.toString());
 		}
-		return null; /* TODO: ERROR -> throw */
+		if (null != rule) {
+			noRuleSelectedMessage.hide();
+			filterForm.show();
+			setRuleExclFilter((RuleInfo) rule);
+			//ruleDetailPane.show(); Not needed, never disabled by this class
+			GWT.log("Leaving setRule for rule " + (null == rule.getName() ? "unnamed" : rule.getName()));
+		} 
+		
 	}
 
 	private void enableSave(boolean enable) {
@@ -809,14 +1014,15 @@ public class SldWidget {
 			cancelButton.disable();
 		}
 	}
-
-	private Canvas setRuleExclFilter(RuleInfo rule) {
+	
+	
+	private void setRuleExclFilter(RuleInfo rule) {
 		DynamicForm specificForm = null;
 		currentRule = rule;
 
 		if (null == rule || null == rule.getSymbolizerList() || 0 == rule.getSymbolizerList().size()) {
 			SC.warn("Ongeldige SLD: stijlregel dient een <xxxSymbolizer> te specifi&euml;ren.");
-			return widgetLayout;
+			return;
 		}
 
 		Object symbolizerInfo = rule.getSymbolizerList().get(0); // retrieve the first symbolizer specification
@@ -857,11 +1063,11 @@ public class SldWidget {
 					currentPointSymbolizerInfo.getGraphic().setChoiceList(list);
 				}
 				if (choiceInfoGraphic.ifExternalGraphic()) {
-					typeOfGraphicItem.setValue(SELECT_TYPE_OF_GRAPHIC_EXTERNE_FIGUUR);
+					typeOfGraphicItem.setValue(externalGraphicsSelectTitle);
 					createOrUpdateExternalGraphicForm(currentPointSymbolizerInfo.getGraphic());
 				} else {
 					/* default = marker */
-					typeOfGraphicItem.setValue(SELECT_TYPE_OF_GRAPHIC_MARKER);
+					typeOfGraphicItem.setValue(markerSelectTitle);
 					createOrUpdateMarkerForm(currentPointSymbolizerInfo.getGraphic());
 				}
 			}
@@ -912,9 +1118,6 @@ public class SldWidget {
 		}
 
 		ruleDetailContainer.markForRedraw();
-		widgetLayout.markForRedraw();
-		return widgetLayout;
-
 	}
 
 	private void createOrUpdateLineSymbolizerForm(LineSymbolizerInfo lineSymbolizerInfo) {
@@ -1188,11 +1391,11 @@ public class SldWidget {
 
 	private void setupPointInfoTypeOfGraphicItem() {
 		typeOfGraphicItem = new SelectItem();
-		typeOfGraphicItem.setTitle("Type van grafische specificatie");
+		typeOfGraphicItem.setTitle(sldEditorMessages.typeofGraphicsTitleInSymbologyTab());
 
 		final LinkedHashMap<String, String> typeOfGraphicList = new LinkedHashMap<String, String>();
-		typeOfGraphicList.put(SELECT_TYPE_OF_GRAPHIC_MARKER, SELECT_TYPE_OF_GRAPHIC_MARKER);
-		typeOfGraphicList.put(SELECT_TYPE_OF_GRAPHIC_EXTERNE_FIGUUR, SELECT_TYPE_OF_GRAPHIC_EXTERNE_FIGUUR);
+		typeOfGraphicList.put(markerSelectTitle, markerSelectTitle);
+		typeOfGraphicList.put(externalGraphicsSelectTitle, externalGraphicsSelectTitle);
 		typeOfGraphicItem.setValueMap(typeOfGraphicList);
 
 		typeOfGraphicItem.addChangedHandler(new ChangedHandler() {
@@ -1230,7 +1433,7 @@ public class SldWidget {
 					}
 					pointSymbolizerInfo.getGraphic().setChoiceList(list);
 
-					if (newValue.equals(SELECT_TYPE_OF_GRAPHIC_EXTERNE_FIGUUR)) {
+					if (newValue.equals(externalGraphicsSelectTitle)) {
 						choiceInfoGraphic.setExternalGraphic(new ExternalGraphicInfo());
 						createOrUpdateExternalGraphicForm(pointSymbolizerInfo.getGraphic());
 					} else { // Default: marker
@@ -1268,7 +1471,7 @@ public class SldWidget {
 		});
 
 		graphicFormatItem = new SelectItem();
-		graphicFormatItem.setTitle("Type van grafische specificatie");
+		graphicFormatItem.setTitle(sldEditorMessages.formatTitleInPointSymbologyTab());
 
 		final LinkedHashMap<String, String> graficFormatList = new LinkedHashMap<String, String>();
 		graficFormatList.put("image/png", "image/png");
@@ -1303,7 +1506,7 @@ public class SldWidget {
 		});
 
 		/** **/
-		urlItem = new TextItem("Href", "Href");
+		urlItem = new TextItem("Href", sldEditorMessages.hRefTitle());
 		urlItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -1377,7 +1580,7 @@ public class SldWidget {
 		/** Construct and setup "marker symbol name" form field **/
 
 		markerSymbolName = new SelectItem();
-		markerSymbolName.setTitle("Symbool-naam");
+		markerSymbolName.setTitle(sldEditorMessages.nameOfSymbolTitleInSymbologyTab());
 		markerSymbolName.setDefaultValue(SldConstants.DEFAULT_WKNAME_FOR_MARKER);
 
 		final LinkedHashMap<String, String> markerSymbolList = new LinkedHashMap<String, String>();
@@ -2064,7 +2267,9 @@ public class SldWidget {
 
 	private void clearForCurrentRule() {
 		isSupportedFilter = true;
-
+		
+		GWT.log("Entering clearForCurrentRule()");
+		
 		if (null != noRuleSelectedMessage) {
 			noRuleSelectedMessage.show();
 		}
@@ -2114,18 +2319,18 @@ public class SldWidget {
 		enableSave(false);
 		enableCancel(false);
 
-		GWT.log("Entering Saving of SLD " + currentSld.getName());
+		GWT.log("saveSld(): Entering Saving of SLD " + currentSld.getName());
 		
 		synchronizeFilter();
 		service.saveOrUpdate(currentSld, new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 			/** call-back for handling saveOrUpdate() success return **/
 			public void onSuccess(StyledLayerDescriptorInfo sld) {
-				GWT.log("Successfully saved SLD " + sld.getName());
+				GWT.log("saveSld(): Successfully saved SLD " + sld.getName());
 			}
 
 			public void onFailure(Throwable caught) {
-				GWT.log("could not save SLD ", caught);
+				GWT.log("saveSld(): could not save SLD ", caught);
 				SC.warn("De SLD kon niet bewaard worden. (Interne fout: " + caught.getMessage() + ")");
 				enableSave(true);
 				enableCancel(true);
@@ -2154,6 +2359,7 @@ public class SldWidget {
 		}
 
 		public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+			GWT.log("SldWidget: User clicked on SLD save button");
 			saveSld();
 		}
 
@@ -2170,8 +2376,8 @@ public class SldWidget {
 			setIcon(WidgetLayout.iconCancel);
 			setShowDisabledIcon(false);
 			setTitle("Annuleer"); // TODO i18n
-			setTooltip("Annuleer alle veranderingen sinds de laatste bewaaroperatie.");
-
+			setTooltip("Annuleer de veranderingen.");
+			
 			setDisabled(false);
 
 			// TODO: setTitle(I18nProvider.getAttribute().btnSaveTitle());
@@ -2181,17 +2387,99 @@ public class SldWidget {
 		}
 
 		public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+			answerForConfirmSaveReceived = false; // lock loading of another SLD
+			GWT.log("User clicked on cancel button to cancel all changes since the last save");
+			SC.ask(
+					"Wenst u al uw wijzigingen sinds de laatste bewaaroperatie te annuleren?"
+					+ "<br/>Zo ja, druk op <b>'Ja'</b>."
+					+ "<br/>Druk op <b>'Nee'</b> om uw wijzigingen (voorlopig) te behouden.",
+					new BooleanCallback() {
 
-			if (null != refreshSldHandler) {
-				refreshSldHandler.execute(currentSld.getName());
-			}
+						public void execute(Boolean value) {
+							
+							if (value != null && value) {
+								/* continue with cancel */
+								
+								if (null != refreshSldHandler) {
+									refreshSldHandler.execute(currentSld.getName()); 
+												/* Refresh must be called before executing clear ! */
+								}
+								SldWidget.this.clear(false);
+
+							} else {
+								/* Do nothing */
+							}
+							answerForConfirmSaveReceived = true; // Unlock
+						} /* execute */
+					});
+			
 		}
 
 	}
+	// -------------------------------------------------------------------------
+	// Private class CancelButton:
+	// -------------------------------------------------------------------------
 
-	public void addRefreshHandler(RefreshSldHandler refreshSldHandler) {
-		this.refreshSldHandler = refreshSldHandler;
+	/** Definition of the Cancel button. */
+	private class CloseButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
+		public static final String ICON_CLOSE = "[ISOMORPHIC]/" + "geomajas/icons/silk/door_out.png";
+		
+		public CloseButton() {
+			if (null != ICON_CLOSE) {
+				setIcon(ICON_CLOSE);
+			}
+			setShowDisabledIcon(false);
+			setTitle("Sluit af"); // TODO i18n
+			setTooltip("Sluit de sessie voor de huidige SLD af.");
+			
+			setDisabled(false);
 
+			// TODO: setTitle(I18nProvider.getAttribute().btnSaveTitle());
+			// TODO: setTooltip(I18nProvider.getAttribute().btnSaveTooltip());
+
+			addClickHandler(this);
+		}
+
+		public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+			GWT.log("User clicked on close SLD button");
+			startDialogueForClosingfOfSLD(null, true);
+		}
+	}
+
+	/**
+	 * Private State enumeration.
+	 */
+	private enum State {
+		UNSPECIFIED("unspecified"), 
+		INIT("init"),
+		START_SLD_LOADING("startLoading"),
+		SLD_LOADED("sldLoaded"),
+		NO_SLD_LOADED("noSldLoaded");
+
+		private final String value;
+
+		State(String v) {
+			value = v;
+		}
+
+		@SuppressWarnings("unused")
+		public String value() {
+			return value;
+		}
+
+//		public static State fromValue(String v) {
+//			for (State c : State.values()) {
+//				if (c.value.equals(v)) {
+//					return c;
+//				}
+//			}
+//			throw new IllegalArgumentException(v.toString());
+//		}
+		
+		public String toString() {
+			return value;
+			
+		}
 	}
 
 }

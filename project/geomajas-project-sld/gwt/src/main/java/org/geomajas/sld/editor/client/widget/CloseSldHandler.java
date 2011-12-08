@@ -12,17 +12,18 @@
 package org.geomajas.sld.editor.client.widget;
 
 /**
- * Provides call-back to refresh the current SLD by e.g. retrieving it again from the server and to load it in the SLD
- * widget. This can be used to undo all client-side changes to the SLD.
+ * Provides call-back to signal the closure of the current SLD.
  * 
  * @author An Buyle
  * 
  */
-public interface RefreshSldHandler {
+public interface CloseSldHandler {
 
 	/**
-	 * @param sldName  will always be non-null, name of SLD that the user wants to reload in order to lose all changes
-	 * 					since the last save operation
+	 * @param sldName  Will always be non-null, name of SLD that was closed. 
+	 * 					
+	 * @param closeTriggeredByCloseButton  If true, the closing was triggered by the user 
+	 * 			clicking on the <i>'close SLDB'</i> button 
 	 */
-	void execute(String sldName);
+	void execute(String sldName, boolean closeTriggeredByCloseButton);
 }
