@@ -18,7 +18,9 @@ import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.editor.client.GeometryTypes;
 import org.geomajas.sld.editor.client.SldUtils;
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.util.BooleanCallback;
@@ -51,9 +53,9 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  */
 public class RuleSelector extends Canvas implements LeafClickHandler, FolderClickHandler {
 
-	private static final String RULE_NAME_UNSPECIFIED = "";
-
-	private static final String RULE_TITLE_UNSPECIFIED = "(zonder titel)";
+	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+	private final String ruleTitleUnspecified = sldEditorMessages.ruleTitleUnspecified();
+	private final String ruleNameUnspecified = "";
 	
 	private static final int 	INDEX_FIRST_RULE = 1;
 	private static final String INDEX_FIRST_RULE_AS_STRING = new Integer(INDEX_FIRST_RULE).toString();
@@ -91,7 +93,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 	// ruleGeneralForm items
 	private TextItem ruleTitleItem;
 
-	private TextItem ruleNameItem;
+	//private TextItem ruleNameItem;
 
 	private List<RuleInfo> ruleList;
 
@@ -111,7 +113,8 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		// treeGrid.setBorder("2px solid #A7ABB4");
 		treeGrid.setBodyStyleName("normal");
 		treeGrid.setShowHeader(false);
-		treeGrid.setEmptyMessage("Nog geen regels aanwezig...");
+		treeGrid.setEmptyMessage(sldEditorMessages.emptyRuleList());
+				
 		treeGrid.setPrompt("Selecteer de stijl die u in het detail venster wenst te bekijken of aanpassen."); // TODO:
 																												// i18n
 
@@ -119,7 +122,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		titleField.setCanSort(false);
 
 		TreeGridField nameField = new TreeGridField(RuleTreeNode.RULE_NAME_FIELDNAME, "Naam");
-		nameField.setEmptyCellValue(RULE_NAME_UNSPECIFIED);
+		nameField.setEmptyCellValue(ruleNameUnspecified);
 		treeGrid.setFields(titleField, nameField);
 		treeGrid.setWrapCells(true);
 		treeGrid.setFixedRecordHeights(false);
@@ -131,7 +134,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		vLayout.setLayoutTopMargin(10);
 		vLayout.setLayoutLeftMargin(5);
 
-		vLayout.setGroupTitle("Stijlen Overzicht"); // TODO i18n
+		vLayout.setGroupTitle(sldEditorMessages.ruleOverviewGroupTitle());
 		vLayout.setIsGroup(true);
 
 		if (null != treeGrid) {
@@ -151,7 +154,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				}
 
 				RuleTreeNode newLeaf = new RuleTreeNode(getNewIdForRuleInTree(), "nieuwe stijl"/* title */,
-						RULE_NAME_UNSPECIFIED/* name */, false/* isFolder */, null/* ruleData */);
+						ruleNameUnspecified/* name */, false/* isFolder */, null/* ruleData */);
 				// -- add newLeaf at the end of the tree
 
 		// Note: Commented out code below, it partly supports grouping of rules
@@ -215,7 +218,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				if (node.isFolder()) {
 					return; /* do nothing for a folder node */
 				}
-				SC.confirm("Bent u zeker dat u de stijl '" + node.getTitle() + "' wilt verwijderen?",
+				SC.confirm(sldEditorMessages.confirmDeleteOfStyle(node.getTitle()),
 						new BooleanCallback() {
 
 							public void execute(Boolean value) {
@@ -449,7 +452,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		ruleGeneralForm = new DynamicForm();
 		ruleGeneralForm.setNumCols(4);
 
-		ruleTitleItem = new TextItem("RuleTitle", "Titel");
+		ruleTitleItem = new TextItem("RuleTitle", sldEditorMessages.ruleTitleFieldTitle());
 		ruleTitleItem.setWidth(200);
 		ruleTitleItem.addChangedHandler(new ChangedHandler() {
 
@@ -465,7 +468,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 					refreshMinimal();
 					// Update SLD object, assume currentLeaf != null
 					if (null != currentLeaf.getRuleData()) {
-						updateRuleHeaderHandler.execute(ruleTitle, ruleNameItem.getValueAsString());
+						updateRuleHeaderHandler.updateTitle(ruleTitle);
 						// TODO setSldHasChangedTrue in call-back
 					}
 				}
@@ -473,32 +476,32 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 			}
 		});
 
-		ruleNameItem = new TextItem("RuleName", "Naam");
-		ruleNameItem.setEmptyDisplayValue(RULE_NAME_UNSPECIFIED);
-		ruleNameItem.setWidth(200);
-		ruleNameItem.addChangedHandler(new ChangedHandler() {
+//		ruleNameItem = new TextItem("RuleName", "Naam");
+//		ruleNameItem.setEmptyDisplayValue(ruleNameUnspecified);
+//		ruleNameItem.setWidth(200);
+//		ruleNameItem.addChangedHandler(new ChangedHandler() {
+//
+//			public void onChanged(ChangedEvent event) {
+//				if (null != currentLeaf) {
+//
+//					String ruleName = null;
+//					if (null == event.getValue()) {
+//						ruleName = null;
+//					} else {
+//						ruleName = event.getValue().toString();
+//					}
+//					currentLeaf.setRuleName(ruleName);
+//					refreshMinimal();
+//					// Update SLD object
+//					if (null != currentLeaf.getRuleData()) {
+//						updateRuleHeaderHandler.execute(ruleTitleItem.getValueAsString(), ruleName);
+//					}
+//				}
+//
+//			}
+//		});
 
-			public void onChanged(ChangedEvent event) {
-				if (null != currentLeaf) {
-
-					String ruleName = null;
-					if (null == event.getValue()) {
-						ruleName = null;
-					} else {
-						ruleName = event.getValue().toString();
-					}
-					currentLeaf.setRuleName(ruleName);
-					refreshMinimal();
-					// Update SLD object
-					if (null != currentLeaf.getRuleData()) {
-						updateRuleHeaderHandler.execute(ruleTitleItem.getValueAsString(), ruleName);
-					}
-				}
-
-			}
-		});
-
-		ruleGeneralForm.setItems(ruleTitleItem, ruleNameItem);
+		ruleGeneralForm.setItems(ruleTitleItem /*, ruleNameItem*/);
 
 		vLayout.addMember(toolStrip);
 		vLayout.addMember(treeGrid);
@@ -586,7 +589,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 			} else if (null != rule.getName() && rule.getName().length() > 0) {
 				title = rule.getName();
 			} else {
-				title = RULE_TITLE_UNSPECIFIED;
+				title = ruleTitleUnspecified;
 			}
 			String name = rule.getName();
 
@@ -650,7 +653,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		if (null != ruleGeneralForm) {
 
 			ruleTitleItem.setValue(ruleTitle);
-			ruleNameItem.setValue(ruleName);
+			//ruleNameItem.setValue(ruleName);
 			ruleGeneralForm.enable();
 			ruleGeneralForm.show();
 		}

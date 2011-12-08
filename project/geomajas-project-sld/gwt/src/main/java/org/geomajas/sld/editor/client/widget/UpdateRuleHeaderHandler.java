@@ -21,4 +21,6 @@ package org.geomajas.sld.editor.client.widget;
 public interface UpdateRuleHeaderHandler {
 	
 	void  execute(String ruleTitle, String ruleName);
+
+	void updateTitle(String ruleTitle);
 }

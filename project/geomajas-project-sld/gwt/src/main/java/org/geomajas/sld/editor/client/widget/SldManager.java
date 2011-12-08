@@ -25,6 +25,7 @@ import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.client.SldGwtServiceAsync;
 import org.geomajas.sld.editor.client.GeometryTypes;
 import org.geomajas.sld.editor.client.SldUtils;
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -65,6 +66,8 @@ public class SldManager {
 
 	public static final String SLD_NAME_ATTRIBUTE_NAME = "SLDName";
 
+	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+	
 	private SldGwtServiceAsync service;
 
 	private VLayout vLayout;
@@ -104,9 +107,10 @@ public class SldManager {
 		this.service = sldService;
 		listGrid.setShowAllRecords(true);
 		listGrid.setSelectionType(SelectionStyle.SINGLE);
-		listGrid.setPrompt("Klik op een SLD om deze te bekijken of the wijzigen."); // TODo i18n
-
-		ListGridField nameField = new ListGridField("SLDName", "Beschikbare SLD's");
+		listGrid.setPrompt(sldEditorMessages.listingOfSldsTooltip());
+		
+		ListGridField nameField = new ListGridField("SLDName", sldEditorMessages.listingOfSldsTitle());
+		
 		nameField.setAlign(Alignment.LEFT);
 		listGrid.setFields(nameField);
 		listGrid.setSelectionType(SelectionStyle.SINGLE);
@@ -255,7 +259,8 @@ public class SldManager {
 	
 		final DynamicForm addSldForm = new DynamicForm();
 
-		final TextItem nameOfSldItem = new TextItem("NameOfSld", "Naam SLD");
+		final TextItem nameOfSldItem = new TextItem("NameOfSld", sldEditorMessages.nameSld());
+		
 		nameOfSldItem.setWidth(200);
 		nameOfSldItem.addChangedHandler(new ChangedHandler() {
 
@@ -267,15 +272,15 @@ public class SldManager {
 		});
 
 		nameOfSldItem.setRequired(true);
-		nameOfSldItem.setRequiredMessage("De naam van de SLD mag niet leeg zijn");
-
+		nameOfSldItem.setRequiredMessage(sldEditorMessages.nameSldCanNotBeEmpty());
+		
 		final SelectItem typeOfGeomItem = new SelectItem();
-		typeOfGeomItem.setTitle("Type van geometry");
+		typeOfGeomItem.setTitle(sldEditorMessages.geometryTitle());
 
 		final LinkedHashMap<String, String> typeOfGeomList = new LinkedHashMap<String, String>();
-		typeOfGeomList.put(GeometryTypes.POINT.value(), "Punt");
-		typeOfGeomList.put(GeometryTypes.LINE.value(), "Lijn");
-		typeOfGeomList.put(GeometryTypes.POLYGON.value(), "Polygoon");
+		typeOfGeomList.put(GeometryTypes.POINT.value(), sldEditorMessages.pointTitle());
+		typeOfGeomList.put(GeometryTypes.LINE.value(), sldEditorMessages.lineTitle());
+		typeOfGeomList.put(GeometryTypes.POLYGON.value(), sldEditorMessages.polygonTitle());
 		typeOfGeomItem.setValueMap(typeOfGeomList);
 		typeOfGeomItem.setDefaultValue(GeometryTypes.POINT.value());
 		typeOfGeomItem.setRequired(true);
@@ -291,17 +296,18 @@ public class SldManager {
 		final IButton createButton = new IButton();
 		createButton.setIcon(WidgetLayout.iconCreate);
 		// createButton.setShowDisabledIcon(false);
-		createButton.setPrompt("Cre&euml;er de SLD en voeg ze aan de lijst toe"); // TODO i18n
+		createButton.setPrompt(sldEditorMessages.createButtonTooltip());
+		
 		// TODO: validate form first
-		createButton.setTitle("Voeg toe");
+		createButton.setTitle(sldEditorMessages.createButtonTitle());
 		createButton.setShowDisabledIcon(false);
 
 		final IButton cancelButton = new IButton();
 		cancelButton.setIcon(WidgetLayout.iconCancel);
 		cancelButton.setShowDisabledIcon(false);
-		cancelButton.setTitle("Annuleer"); // TODO i18n
-		cancelButton.setTooltip("Annuleer de creatie van een nieuwe SLD.");
-
+		cancelButton.setTitle(sldEditorMessages.cancelButtonTitle());
+		cancelButton.setTooltip(sldEditorMessages.createSldCancelButtonTitle());
+		
 		createButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -454,7 +460,7 @@ public class SldManager {
 		public AddButton() {
 			setIcon(WidgetLayout.iconAdd);
 			setShowDisabledIcon(false);
-			setPrompt("Voeg nieuwe SLD toe"); // TODO i18n
+			setPrompt(sldEditorMessages.addSldButtonTooltip());
 			// TODO: validate form first
 			setWidth(24);
 			setDisabled(false);
@@ -475,12 +481,9 @@ public class SldManager {
 		public RemoveButton() {
 			setIcon(WidgetLayout.iconRemove);
 			setShowDisabledIcon(true);
-			setPrompt("Verwijder geselecteerde SLD"); // TODO i18n
+			setPrompt(sldEditorMessages.removeSldButtonTooltip());
 			setWidth(24);
 			setDisabled(true);
-
-			// TODO: setTitle(I18nProvider.getAttribute().btnSaveTitle());
-			// TODO: setTooltip(I18nProvider.getAttribute().btnSaveTooltip());
 
 		}
 	}

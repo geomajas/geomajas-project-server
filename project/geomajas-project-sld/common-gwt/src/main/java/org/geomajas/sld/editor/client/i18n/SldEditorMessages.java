@@ -38,6 +38,11 @@ public interface SldEditorMessages extends Messages {
 
 	String hRefTitle();
 
+	String generalFormTitle();
+	String ruleDetailContainerTitle();
+
+	String confirmDeleteOfStyle(String styleName);
+	
 	String symbologyTabTitle();
 
 	String filterTabTitle();
@@ -46,10 +51,74 @@ public interface SldEditorMessages extends Messages {
 
 	String nameOfSymbolTitleInSymbologyTab();
 
-	String formatTitleInPointSymbologyTab();
+	String formatTitleInPointInSymbologyTab();
+
+
+	String enableFillInSymbologyTab();
+	String enableBorderInSymbologyTab();
+
+	String opacityTitleInSymbologyTab();
+
+	String opacityTooltipInSymbologyTab();
+
+	String fillColorInSymbologyTab();
+	String borderColor();
+	String borderWidthTitle();
+	String borderWidthTooltip();
+	
+	String strokeColorTitle();
+	
+	String sizeOfGraphicInSymbologyTab();
+
+	String rotationOfGraphicInSymbologyTab();
+
+	String rotationOfGraphicTooltipInSymbologyTab();
+
+	String triangleTitle();
+
+	String nameUnspecified();
 
 	
+	// Filter editor messages
+	String warnMessageUnsupportedOperator(String operator);
 
+	String likeFilterSpecTemplate(String wildCard, String singleChar,
+								String escape);
+
+	// Rule overview pane
+	String ruleOverviewGroupTitle();
+
+	String ruleTitleFieldTitle();
+
+	String closeButtonTitle();
+	String closeButtonTooltip();
 	
+	String cancelButtonTitle();
+	String saveButtonTitle();
+	String saveButtonTooltip();
+
+	String listingOfSldsTitle();
+
+	String listingOfSldsTooltip();
+
+	String addSldButtonTooltip();
+	String removeSldButtonTooltip();
+
+	String ruleTitleUnspecified();
+
+	String pointTitle();
+	String lineTitle();
+	String polygonTitle();
+
+	String emptyRuleList();
+
+	String createButtonTitle();
+	String createSldCancelButtonTitle();
+
+	String createButtonTooltip();
+
+	String nameSldCanNotBeEmpty();
+
+	String nameSld();
 
 }

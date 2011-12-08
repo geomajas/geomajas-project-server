@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.expression.LiteralTypeInfo;
 import org.geomajas.sld.expression.PropertyNameInfo;
 import org.geomajas.sld.expression.ExpressionInfo;
@@ -35,6 +36,7 @@ import org.geomajas.sld.filter.PropertyIsNullTypeInfo;
 import org.geomajas.sld.filter.UnaryLogicOpTypeInfo;
 import org.geomajas.sld.filter.UpperBoundaryTypeInfo;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
@@ -60,7 +62,13 @@ public class FilterEditor {
 	private static final String DEFAULT_WILD_CARD_SINGLE_CHAR = "?";
 
 	private static final String DEFAULT_ESCAPE = "\\";
+	
+	private static final String PROPERTY_IS_LIKE_TYPE_INFO = "PropertyIsLikeTypeInfo";
+	private static final String PROPERTY_IS_NOT_LIKE_TYPE_INFO = "PropertyIsNotLikeTypeInfo";
+					//TODO: also for other operators
 
+	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+		
 	private DynamicForm filterForm;
 
 	private boolean isFilterFormFirstSetup = true;
@@ -136,7 +144,7 @@ public class FilterEditor {
 				String propertyName = null;
 				String propertyValue = null;
 
-				filterOperatorSelect.setValue("PropertyIsLikeTypeInfo");
+				filterOperatorSelect.setValue(PROPERTY_IS_LIKE_TYPE_INFO);
 				propertyName = ((PropertyIsLikeTypeInfo) op).getPropertyName().getValue();
 				propertyValue = ((PropertyIsLikeTypeInfo) op).getLiteral().getValue();
 				filterAttributeName.setValue(propertyName);
@@ -225,7 +233,7 @@ public class FilterEditor {
 						String propertyName = null;
 						String propertyValue = null;
 
-						filterOperatorSelect.setValue("PropertyIsNotLikeTypeInfo");
+						filterOperatorSelect.setValue(PROPERTY_IS_NOT_LIKE_TYPE_INFO);
 						propertyName = ((PropertyIsLikeTypeInfo) innerOp).getPropertyName().getValue();
 						propertyValue = ((PropertyIsLikeTypeInfo) innerOp).getLiteral().getValue();
 						filterAttributeName.setValue(propertyName);
@@ -315,12 +323,13 @@ public class FilterEditor {
 
 			if ("PropertyIsNullTypeInfo".equals(operator) || "PropertyIsNotNullTypeInfo".equals(operator)) {
 				filterAttributeValue.setDisabled(true); /* unary operator ! */
-			} else if ("PropertyIsLikeTypeInfo".equals("PropertyIsLikeTypeInfo")) {
+			} else if (PROPERTY_IS_LIKE_TYPE_INFO.equals(operator)
+					|| PROPERTY_IS_NOT_LIKE_TYPE_INFO.equals(operator)) {
 				setLikeFilterSpec(DEFAULT_WILD_CARD, DEFAULT_WILD_CARD_SINGLE_CHAR, DEFAULT_ESCAPE);
 				filterForm.showItem("likeFilterSpec");
 				filterAttributeValue.setDisabled(false);
 
-			} else if ("PropertyIsBetweenTypeInfo".equals("PropertyIsBetweenTypeInfo")) {
+			} else if ("PropertyIsBetweenTypeInfo".equals(operator)) {
 				filterForm.hideItem("attributeValue");
 				filterForm.showItem("attributeLowerBoundaryValue");
 				filterForm.showItem("attributeUpperBoundaryValue");
@@ -370,8 +379,8 @@ public class FilterEditor {
 		operatorMap.put("PropertyIsBetweenTypeInfo", "ligt tussen"); // PropertyIsBetween
 		operatorMap.put("PropertyIsNotBetweenTypeInfo", "ligt niet tussen"); // extension for NOT(PropertyIsBetween())
 
-		operatorMap.put("PropertyIsLikeTypeInfo", "voldaat aan patroon (string)"); // PropertyIsLike
-		operatorMap.put("PropertyIsNotLikeTypeInfo", "voldaat niet aan patroon (string)"); // extension for
+		operatorMap.put(PROPERTY_IS_LIKE_TYPE_INFO, "voldaat aan patroon (string)"); // PropertyIsLike
+		operatorMap.put(PROPERTY_IS_NOT_LIKE_TYPE_INFO, "voldaat niet aan patroon (string)"); // extension for
 																							// NOT(PropertyIsLike())
 
 		operatorMap.put("PropertyIsNullTypeInfo", "is null"); // PropertyIsNull
@@ -440,7 +449,8 @@ public class FilterEditor {
 					if ("PropertyIsNullTypeInfo".equals(operator) || "PropertyIsNotNullTypeInfo".equals(operator)) {
 						filterAttributeValue.clearValue();
 						filterAttributeValue.setDisabled(true); /* unary operator ! */
-					} else if ("PropertyIsLikeTypeInfo".equals(operator)) {
+					} else if (PROPERTY_IS_LIKE_TYPE_INFO.equals(operator)
+							|| PROPERTY_IS_NOT_LIKE_TYPE_INFO.equals(operator)) {
 						setLikeFilterSpec(DEFAULT_WILD_CARD, DEFAULT_WILD_CARD_SINGLE_CHAR, DEFAULT_ESCAPE);
 						filterForm.showItem("likeFilterSpec");
 						filterAttributeValue.setDisabled(false);
@@ -541,7 +551,7 @@ public class FilterEditor {
 				couldConvert = attemptConvertToBetweenFilter();
 			} else if ("PropertyIsNotBetweenTypeInfo".equals(operator)) {
 				couldConvert = attemptConvertFormToNotBetweenFilter();
-			} else if ("PropertyIsNotLikeTypeInfo".equals(operator)) {
+			} else if (PROPERTY_IS_NOT_LIKE_TYPE_INFO.equals(operator)) {
 				couldConvert = attemptConvertFormToNotLikeFilter();
 			} else {
 				filterAttributeValue.setDisabled(false);
@@ -722,7 +732,7 @@ public class FilterEditor {
 			return false; /* too early to convert * */
 		}
 
-		if ("PropertyIsLikeTypeInfo".equals(operator)) {
+		if (PROPERTY_IS_LIKE_TYPE_INFO.equals(operator)) {
 			/** Like operator **/
 
 			PropertyIsLikeTypeInfo info = new PropertyIsLikeTypeInfo();
@@ -767,6 +777,7 @@ public class FilterEditor {
 
 		} else {
 			// TODO
+			SC.warn(sldEditorMessages.warnMessageUnsupportedOperator(operator));
 			retValue = false;
 		}
 		return retValue;
@@ -789,10 +800,9 @@ public class FilterEditor {
 		currentPatternMatchingSingleChar = singleChar;
 		currentPatternMatchingEscape = escape;
 
-		likeFilterSpec.setValue("<table style='font-size:11px;' border='1' cellpadding='10px'>"
-				+ "<tr><td>Willekeurige reeks tekens (wildcard):</td>" + "<td>" + wildCard + "</td></tr>"
-				+ "<tr><td>E" + "\u00E9" + "n Willekeurig karakter:</td>" + "<td>" + singleChar + "</td>"
-				+ "<tr><td>Escape-karakter</td>" + "<td>" + escape + "</td>" + "</tr></table>");
+		likeFilterSpec.setValue(sldEditorMessages.likeFilterSpecTemplate(
+					wildCard, singleChar, escape));
+				
 	}
 
 	private void processBinaryComparisonOp(BinaryComparisonOpTypeInfo op) {

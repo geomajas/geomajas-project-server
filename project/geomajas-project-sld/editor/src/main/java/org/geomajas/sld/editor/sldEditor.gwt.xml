@@ -12,14 +12,14 @@
 	<!-- Plugin Enterprise theme: -->
 	<inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources" />
 	
-	<extend-property name="locale" values="nl" />
+	<extend-property name="locale" values="nl,en" />
 	
 	<source path="client" />
 
 <!-- set target browser to compile for, use this to limit to the browser used for testing -->
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
 
-	<set-property name="user.agent" value="gecko1_8" />
+	<set-property name="user.agent" value="ie6,opera,gecko1_8,safari" />
 
 	
 	<entry-point
