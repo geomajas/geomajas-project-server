@@ -74,6 +74,7 @@ public class ApiCompatibilityCheck extends Check {
 				TokenTypes.PACKAGE_DEF,
 				TokenTypes.CLASS_DEF,
 				TokenTypes.INTERFACE_DEF,
+				TokenTypes.ANNOTATION_DEF,
 				TokenTypes.METHOD_DEF,
 				TokenTypes.CTOR_DEF,
 				TokenTypes.VARIABLE_DEF,
@@ -109,6 +110,7 @@ public class ApiCompatibilityCheck extends Check {
 				break;
 			case TokenTypes.CLASS_DEF:
 			case TokenTypes.INTERFACE_DEF:
+			case TokenTypes.ANNOTATION_DEF:
 				fullyQualifiedClassName = packageName + "." + getName(ast);
 				checkClassAnnotation(ast);
 				if (TokenTypes.INTERFACE_DEF == ast.getType()) {

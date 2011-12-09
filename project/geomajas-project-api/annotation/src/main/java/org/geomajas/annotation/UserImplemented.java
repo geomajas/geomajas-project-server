@@ -22,11 +22,11 @@ import java.lang.annotation.Target;
  * that no methods may be added to the interface without breaking API compatibility.
  *
  * @author Joachim Van der Auwera
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target({ ElementType.TYPE })
 @Documented
-@Api
+@Api(allMethods = true)
 public @interface UserImplemented {
 }

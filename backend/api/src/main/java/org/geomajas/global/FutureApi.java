@@ -29,12 +29,13 @@ import java.lang.annotation.Target;
  *
  * @author Joachim Van der Auwera
  * @deprecated use {@link org.geomajas.annotation.FutureApi}
+ * @since 1.9.0.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,
 		ElementType.ANNOTATION_TYPE })
 @Documented
-@Api
+@Api(allMethods = true)
 @Deprecated
 public @interface FutureApi {
 

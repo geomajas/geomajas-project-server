@@ -11,6 +11,8 @@
 
 package org.geomajas.global;
 
+import org.geomajas.annotation.Api;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -20,9 +22,11 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @author Joachim Van der Auwera
  * @deprecated use {@link org.geomajas.annotation.ExpectAlternatives}
+ * @since 1.5.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Deprecated
+@Api
 public @interface ExpectAlternatives {
 
 }

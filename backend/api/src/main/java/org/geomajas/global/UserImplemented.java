@@ -11,6 +11,8 @@
 
 package org.geomajas.global;
 
+import org.geomajas.annotation.Api;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -23,10 +25,12 @@ import java.lang.annotation.Target;
  *
  * @author Joachim Van der Auwera
  * @deprecated use {@link org.geomajas.annotation.UserImplemented}
+ * @since 1.5.0
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target({ ElementType.TYPE })
 @Documented
 @Deprecated
+@Api
 public @interface UserImplemented {
 }

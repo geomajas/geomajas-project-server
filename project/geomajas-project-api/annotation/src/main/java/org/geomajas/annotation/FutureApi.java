@@ -28,13 +28,13 @@ import java.lang.annotation.Target;
  * indicate why it is not yet @Api and/or indicate when it should become {@link Api}.
  *
  * @author Joachim Van der Auwera
- * @since 1.10.0
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,
 		ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 @Documented
-@Api
+@Api(allMethods = true)
 public @interface FutureApi {
 
 	/**
