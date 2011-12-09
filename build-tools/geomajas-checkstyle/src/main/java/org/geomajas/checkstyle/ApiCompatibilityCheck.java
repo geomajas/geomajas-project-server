@@ -319,6 +319,14 @@ public class ApiCompatibilityCheck extends Check {
 				int index = line.indexOf("@since");
 				if (index >= 0) {
 					since = line.substring(index + 6).trim();
+					int firstSpace = since.indexOf(" ");
+					if (firstSpace > 0) {
+						since = since.substring(0, firstSpace);
+					}
+					firstSpace = since.indexOf("\t");
+					if (firstSpace > 0) {
+						since = since.substring(0, firstSpace);
+					}
 				}
 			}
 		} else {
