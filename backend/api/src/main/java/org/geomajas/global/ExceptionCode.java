@@ -11,7 +11,6 @@
 
 package org.geomajas.global;
 
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.geomajas.annotation.Api;
 
 /**
@@ -37,7 +36,7 @@ public interface ExceptionCode {
 	int MAP_MAX_EXTENT_MISSING = 1;
 	/** Layer ${0} has problematic CRS ${1}. */
 	int LAYER_CRS_PROBLEMATIC = 2;
-	/** Layer ${0} has CRS ${1} with unknown authority code */
+	/** Layer ${0} has CRS ${1} with unknown authority code. */
 	int LAYER_CRS_UNKNOWN_AUTHORITY = 3;
 	/** Could not create CRS transformer to transform geometries from layer to map coordinate system. */
 	int TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED = 4;

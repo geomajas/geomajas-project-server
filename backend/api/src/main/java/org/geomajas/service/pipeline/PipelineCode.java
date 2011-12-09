@@ -62,13 +62,13 @@ public interface PipelineCode {
 	String LAYER_KEY = "layer"; 
 	/** Maximum size for result, {@link Integer}. */
 	String MAX_RESULT_SIZE_KEY = "maxResultSize"; 
-	/** List of new features, {@link java.util.List< org.geomajas.layer.feature.InternalFeature>} */
+	/** List of new features, {@link java.util.List< org.geomajas.layer.feature.InternalFeature>}. */
 	String NEW_FEATURES_KEY = "newFeatures"; 
 	 /** Offset for result set, {@link Integer}. */
 	String OFFSET_KEY = "offset";
 	/** Old feature (state before change), {@link org.geomajas.layer.feature.InternalFeature}. */
 	String OLD_FEATURE_KEY = "oldFeature";
-	/** List of old features, {@link java.util.List< org.geomajas.layer.feature.InternalFeature>} */
+	/** List of old features, {@link java.util.List< org.geomajas.layer.feature.InternalFeature>}. */
 	String OLD_FEATURES_KEY = "oldFeatures"; 
 	/** Scale {@link Double}. */
 	String SCALE_KEY = "scale"; 

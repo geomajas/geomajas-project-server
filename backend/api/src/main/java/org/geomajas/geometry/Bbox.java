@@ -35,7 +35,7 @@ public class Bbox implements Serializable {
 
 	private double height;
 
-	// huge bbox, should cover coordinate space of all known crs-es
+	/** Huge bbox, should cover coordinate space of all known CRSes. */
 	public static final Bbox ALL = new Bbox(-1E20, -1E20, 2E20, 2E20);
 
 	/**
