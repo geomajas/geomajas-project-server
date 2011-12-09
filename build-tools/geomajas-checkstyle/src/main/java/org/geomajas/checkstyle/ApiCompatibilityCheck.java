@@ -321,6 +321,8 @@ public class ApiCompatibilityCheck extends Check {
 					since = line.substring(index + 6).trim();
 				}
 			}
+		} else {
+			log(ast, "missingJavaDocOnApi", fullyQualifiedClassName, getSignature(ast));
 		}
 		return since;
 	}
