@@ -15,7 +15,87 @@ import org.junit.Test;
 public class FilterTest {
 
 	@Test
-	public void testRead() throws JiBXException {
+	public void testBbox() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/bbox.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+	
+	@Test
+	public void testBetween() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/between.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+	@Test
+	public void testDateBetween() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/date_between.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	@Test
+	public void testFeatureId() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/feature_id.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	@Test
+	public void testFunction() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/function.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+	
+	@Test
+	public void testLogicAnd() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/logic_and.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	@Test
+	public void testMathAnd() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/math_and.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	
+	@Test
+	public void testMultiFeatureId() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/multi_feature_id.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	@Test
+	public void testNotDisjoint() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/not_disjoint.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	@Test
+	public void testOverlaps() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/overlaps.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+
+	@Test
+	public void testIsEqual() throws JiBXException {
 		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
 		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
 		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/property_is_equal.xml"), null);
@@ -33,5 +113,22 @@ public class FilterTest {
 		Assert.assertEquals("SomeProperty", prop.getValue());
 		Assert.assertEquals("100", litteral.getValue());
 	}
-
+	
+	@Test
+	public void testIsLessThan() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/property_is_less_than.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+	@Test
+	public void testIsLike() throws JiBXException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(getClass().getResourceAsStream("samples/filter/property_is_like.xml"), null);
+		FilterTypeInfo filter = (FilterTypeInfo) object;
+	}
+	
+	
+	
 }

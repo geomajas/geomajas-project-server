@@ -7,16 +7,16 @@
    
    <FeatureTypeStyle>
     <Rule>
-     <Title>Niet vastgesteld</Title>
      <Name>niet_vastgest</Name>
-     <MinScaleDenominator>0</MinScaleDenominator>
-     <MaxScaleDenominator>500000</MaxScaleDenominator>
+     <Title>Niet vastgesteld</Title>
      <ogc:Filter>
       <ogc:PropertyIsEqualTo>
        <ogc:PropertyName>vastges</ogc:PropertyName>
        <ogc:Literal>False</ogc:Literal>
       </ogc:PropertyIsEqualTo>
      </ogc:Filter>
+     <MinScaleDenominator>0</MinScaleDenominator>
+     <MaxScaleDenominator>500000</MaxScaleDenominator>
      <PolygonSymbolizer>
       <Fill>
        <CssParameter name="fill">#c4590a</CssParameter>
@@ -49,14 +49,14 @@
     <Rule>
      <Name>vastgesteld</Name>
      <Title>Vastgesteld</Title>
-     <MinScaleDenominator>0</MinScaleDenominator>
-     <MaxScaleDenominator>500000</MaxScaleDenominator>
      <ogc:Filter>
       <ogc:PropertyIsEqualTo>
        <ogc:PropertyName>vastges</ogc:PropertyName>
        <ogc:Literal>True</ogc:Literal>
       </ogc:PropertyIsEqualTo>
      </ogc:Filter>
+     <MinScaleDenominator>0</MinScaleDenominator>
+     <MaxScaleDenominator>500000</MaxScaleDenominator>
      <PolygonSymbolizer>
       <Fill>
        <CssParameter name="fill">#e2660c</CssParameter>

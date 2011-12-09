@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Filter xmlns="http://www.opengis.net/ogc">
 	<PropertyIsEqualTo>
-		<PropertyName>SomeProperty</PropertyName>
-		<Literal>100</Literal>
+		<PropertyName>PROPA</PropertyName>
+		<Add>
+			<PropertyName>PROPB</PropertyName>
+			<Literal>100</Literal>
+		</Add>
 	</PropertyIsEqualTo>
 </Filter>

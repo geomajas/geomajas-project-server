@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Filter xmlns="http://www.opengis.net/ogc">
+	<PropertyIsLike wildCard="%" singleChar="_"
+		escape="\">
+		<PropertyName>typeNaam</PropertyName>
+		<Literal>Onderneming</Literal>
+	</PropertyIsLike>
+</Filter>

@@ -15,14 +15,14 @@
         <Rule>
           <Name>relict_vastges</Name>
           <Title>Vastgesteld</Title>
-          <MinScaleDenominator>0</MinScaleDenominator>
-          <MaxScaleDenominator>50000</MaxScaleDenominator>
           <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>vastgest</ogc:PropertyName>
               <ogc:Literal>True</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
+          <MinScaleDenominator>0</MinScaleDenominator>
+          <MaxScaleDenominator>50000</MaxScaleDenominator>
           <PointSymbolizer>
             <Graphic>
               <Mark>
@@ -46,14 +46,14 @@
         <Rule>
           <Name>relict_vastges</Name>
           <Title>Niet vastgesteld</Title>
-          <MinScaleDenominator>0</MinScaleDenominator>
-          <MaxScaleDenominator>50000</MaxScaleDenominator>
           <ogc:Filter>
             <ogc:PropertyIsEqualTo>
               <ogc:PropertyName>vastgest</ogc:PropertyName>
               <ogc:Literal>False</ogc:Literal>
             </ogc:PropertyIsEqualTo>
           </ogc:Filter>
+          <MinScaleDenominator>0</MinScaleDenominator>
+          <MaxScaleDenominator>50000</MaxScaleDenominator>
           <PointSymbolizer>
             <Graphic>
               <Mark>

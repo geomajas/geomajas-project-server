@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Filter xmlns="http://www.opengis.net/ogc">
+	<PropertyIsBetween>
+		<PropertyName>SAMPLE_DATE</PropertyName>
+		<LowerBoundary>
+			<Literal>2001-01-15T20:07:48.11</Literal>
+		</LowerBoundary>
+		<UpperBoundary>
+			<Literal>2001-03-06T12:00:00.00</Literal>
+		</UpperBoundary>
+	</PropertyIsBetween>
+</Filter>

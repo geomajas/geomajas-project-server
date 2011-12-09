@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Filter xmlns="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+	<And>
+		<PropertyIsLessThan>
+			<PropertyName>DEPTH</PropertyName>
+			<Literal>30</Literal>
+		</PropertyIsLessThan>
+		<Not>
+			<Disjoint>
+				<PropertyName>Geometry</PropertyName>
+				<gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+					<gml:coordinates>13.0983,31.5899 35.5472,42.8143</gml:coordinates>
+				</gml:Box>
+			</Disjoint>
+		</Not>
+	</And>
+</Filter>
