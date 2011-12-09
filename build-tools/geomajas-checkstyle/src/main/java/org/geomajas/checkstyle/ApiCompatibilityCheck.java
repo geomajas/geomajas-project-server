@@ -330,9 +330,31 @@ public class ApiCompatibilityCheck extends Check {
 				}
 			}
 		} else {
-			log(ast, "missingJavaDocOnApi", fullyQualifiedClassName, getSignature(ast));
+			if (!annotatedWithOverride(ast)) {
+				log(ast, "missingJavaDocOnApi", fullyQualifiedClassName, getSignature(ast));
+			}
 		}
 		return since;
+	}
+
+	private boolean annotatedWithOverride(DetailAST ast) {
+		DetailAST modifiers = ast.findFirstToken(TokenTypes.MODIFIERS);
+		if (null != modifiers) {
+			if (isAllMethods) {
+				// if public then it is API
+				if (isInterface || null != modifiers.findFirstToken(TokenTypes.LITERAL_PUBLIC)) {
+					return true;
+				}
+			}
+			DetailAST check = modifiers.getFirstChild();
+			while (null != check) {
+				if (TokenTypes.ANNOTATION == check.getType() && "Override".equals(getName(check))) {
+					return true;
+				}
+				check = check.getNextSibling();
+			}
+		}
+		return false;
 	}
 
 	@Override
