@@ -827,6 +827,7 @@ public class DomHelper {
 			Element group = (Element) element.getParentElement();
 			if (group != null) {
 				Dom.removeChild(group, element);
+				Dom.setEventListener(element, null);
 				elementToName.remove(element.getId());
 			}
 		}
@@ -845,6 +846,7 @@ public class DomHelper {
 			if (parent != null) {
 				try {
 					Dom.removeChild(parent, element);
+					Dom.setEventListener(element, null);
 					groupToId.remove(object);
 				} catch (Exception e) {
 					// do something...
