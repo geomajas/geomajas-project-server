@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 
@@ -22,7 +23,9 @@ import org.geomajas.geometry.Geometry;
  * General service for Well-Known-Text to and from geometry conversion.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public final class WktService {
 
 	private static final String ERR_MSG = "Error while parsing WKT: ";

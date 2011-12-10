@@ -11,11 +11,15 @@
 
 package org.geomajas.gwt.client.spatial;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Exception thrown from within the {@link WktService} in case of parsing or formatting errors.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public class WktException extends Exception {
 
 	private static final long serialVersionUID = 100L;
