@@ -48,6 +48,7 @@ public class ContentPanelView extends Composite {
 
 	public ContentPanelView() {
 		initWidget(UI_BINDER.createAndBindUi(this));
+		setSize("100%", "100%");
 
 		contentWidget.getElement().getStyle().setMarginLeft(10, Unit.PX);
 		contentWidget.getElement().getStyle().setMarginRight(10, Unit.PX);

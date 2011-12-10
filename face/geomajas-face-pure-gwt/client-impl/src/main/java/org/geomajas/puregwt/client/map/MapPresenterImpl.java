@@ -136,14 +136,17 @@ public final class MapPresenterImpl implements MapPresenter {
 		/**
 		 * Removes a user-defined container.
 		 * 
-		 * @param container container
+		 * @param container
+		 *            container
 		 * @return true if removed, false if unknown
 		 */
 		boolean removeVectorContainer(VectorContainer container);
 
 		/**
 		 * Brings the user-defined container to the front (relative to its world-space or screen-space peers!).
-		 * @param container container
+		 * 
+		 * @param container
+		 *            container
 		 * @return true if successful
 		 */
 		boolean bringToFront(VectorContainer container);
@@ -265,6 +268,7 @@ public final class MapPresenterImpl implements MapPresenter {
 				eventBus.fireEvent(new MapInitializationEvent());
 			}
 		});
+		setSize(640, 480);
 	}
 
 	public Widget asWidget() {
@@ -285,7 +289,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	public VectorContainer addWorldContainer() {
 		VectorContainer container = display.getNewWorldContainer();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer 
+		// set transform parameters once, after that all is handled by WorldContainerRenderer
 		Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		container.setScale(matrix.getXx(), matrix.getYy());
 		container.setTranslation(matrix.getDx(), matrix.getDy());
@@ -512,13 +516,17 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 		}
 
-		public void onFeatureDeselected(FeatureDeselectedEvent event) {}
+		public void onFeatureDeselected(FeatureDeselectedEvent event) {
+		}
 
-		public void onShow(LayerShowEvent event) {}
+		public void onShow(LayerShowEvent event) {
+		}
 
-		public void onHide(LayerHideEvent event) {}
+		public void onHide(LayerHideEvent event) {
+		}
 
-		public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {}
+		public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
+		}
 
 		private void render(Feature f) {
 			Path path = gfxUtil.toPath(f.getGeometry());

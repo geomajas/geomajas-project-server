@@ -18,10 +18,18 @@
 		}
 	</ui:style>
 
-	<g:HTMLPanel>
-		<div class='{style.name}' ui:field='titleElement'>Name</div>
-		<div class='{style.description}' ui:field='descriptionElement'>Description</div>
-		<g:SimplePanel ui:field='contentWidget' />
-	</g:HTMLPanel>
+
+	<g:DockLayoutPanel unit='PX'>
+		<g:north size='80'>
+			<g:HTML>
+				<div class='{style.name}' ui:field='titleElement'>Name</div>
+				<div class='{style.description}' ui:field='descriptionElement'>Description</div>
+			</g:HTML>
+	    </g:north>
+
+	    <g:center>
+	        <g:SimplePanel ui:field='contentWidget' />
+	    </g:center>
+	</g:DockLayoutPanel>
 
 </ui:UiBinder> 
