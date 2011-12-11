@@ -21,11 +21,18 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public enum AssociationType {
 
+	/** Many to one association. */
 	MANY_TO_ONE("many-to-one"),
+	/** One to meny association. */
 	ONE_TO_MANY("one-to-many");
 
 	private final String value;
 
+	/**
+	 * Create an {@link AssociationType}.
+	 *
+	 * @param v value
+	 */
 	AssociationType(String v) {
 		value = v;
 	}

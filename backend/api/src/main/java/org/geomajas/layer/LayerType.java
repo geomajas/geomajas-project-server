@@ -26,13 +26,21 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public enum LayerType implements Serializable {
 
+	/** Raster layer. */
 	RASTER(1),
+	/** Vector layer with point features. */
 	POINT(2),
+	/** Vector layer with linestring features. */
 	LINESTRING(3),
+	/** Vector layer with polygon features. */
 	POLYGON(4),
+	/** Vector layer with multi-point features. */
 	MULTIPOINT(5),
+	/** Vector layer with multi-linestring features. */
 	MULTILINESTRING(6),
+	/** Vector layer with multi-polygon features. */
 	MULTIPOLYGON(7),
+	/** Vector layer without limitation on the geometry type. */
 	GEOMETRY(8);
 
 	private int code;

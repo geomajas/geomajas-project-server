@@ -21,7 +21,10 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public enum SortType {
 
+	/** Ascending order. */
 	ASC,
+
+	/** Descending order. */
 	DESC;
 
 	/**
