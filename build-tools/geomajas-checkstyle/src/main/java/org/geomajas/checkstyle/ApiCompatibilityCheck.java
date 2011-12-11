@@ -45,6 +45,7 @@ public class ApiCompatibilityCheck extends Check {
 	private boolean isAnnotated;
 	private boolean isAllMethods;
 	private boolean isInterface;
+	private boolean isEnum;
 	private String classSince;
 
 	private String basedir;
@@ -75,9 +76,11 @@ public class ApiCompatibilityCheck extends Check {
 				TokenTypes.CLASS_DEF,
 				TokenTypes.INTERFACE_DEF,
 				TokenTypes.ANNOTATION_DEF,
+				TokenTypes.ENUM_DEF,
 				TokenTypes.METHOD_DEF,
 				TokenTypes.CTOR_DEF,
 				TokenTypes.VARIABLE_DEF,
+				TokenTypes.ENUM_CONSTANT_DEF,
 		};
 	}
 
@@ -111,11 +114,11 @@ public class ApiCompatibilityCheck extends Check {
 			case TokenTypes.CLASS_DEF:
 			case TokenTypes.INTERFACE_DEF:
 			case TokenTypes.ANNOTATION_DEF:
+			case TokenTypes.ENUM_DEF:
 				fullyQualifiedClassName = packageName + "." + getName(ast);
 				checkClassAnnotation(ast);
-				if (TokenTypes.INTERFACE_DEF == ast.getType()) {
-					isInterface = true;
-				}
+				isInterface = (TokenTypes.INTERFACE_DEF == ast.getType());
+				isEnum = (TokenTypes.ENUM_DEF == ast.getType());
 				if (isAnnotated) {
 					String since = getSince(ast);
 					api.add(fullyQualifiedClassName + "::" + since);
@@ -136,7 +139,8 @@ public class ApiCompatibilityCheck extends Check {
 				break;
 			case TokenTypes.METHOD_DEF:
 			case TokenTypes.CTOR_DEF:
-			case TokenTypes.VARIABLE_DEF:
+			case TokenTypes.VARIABLE_DEF:    
+			case TokenTypes.ENUM_CONSTANT_DEF:    
 				String signature = getSignature(ast);
 				if (isApi(ast)) {
 					String since = getSince(ast);
@@ -186,7 +190,7 @@ public class ApiCompatibilityCheck extends Check {
 				check = check.getNextSibling();
 			}
 		}
-		return false;
+		return TokenTypes.ENUM_CONSTANT_DEF == ast.getType();
 	}
 
 	private String getSignature(DetailAST ast) {
