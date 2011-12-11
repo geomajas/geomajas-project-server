@@ -1,5 +1,4 @@
 // geomajas caching plug-in 1.0.0
-org.geomajas.plugin.caching.cache.CacheSelector::1.0.0
 org.geomajas.plugin.caching.cache.InfinispanCacheFactory::1.0.0
 org.geomajas.plugin.caching.cache.InfinispanCacheFactory:void setConfigurationFile(String, ):1.0.0
 org.geomajas.plugin.caching.cache.NoCacheCacheFactory::1.0.0
