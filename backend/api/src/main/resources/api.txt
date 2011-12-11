@@ -366,12 +366,6 @@ org.geomajas.configuration.client.ClientVectorLayerInfo:void setNamedStyleInfo(N
 org.geomajas.configuration.client.ClientVectorLayerInfo:void setSnappingRules(List<SnappingRuleInfo>, ):1.6.0
 org.geomajas.configuration.client.ClientVectorLayerInfo:void setUpdatable(boolean, ):1.6.0
 org.geomajas.configuration.client.ClientWidgetInfo::1.6.0
-org.geomajas.configuration.client.DummyClientUserDataInfo::1.6.0
-org.geomajas.configuration.client.DummyClientUserDataInfo:String getDummy():1.6.0
-org.geomajas.configuration.client.DummyClientUserDataInfo:void setDummy(String, ):1.6.0
-org.geomajas.configuration.client.DummyClientWidgetInfo::1.6.0
-org.geomajas.configuration.client.DummyClientWidgetInfo:String getDummy():1.6.0
-org.geomajas.configuration.client.DummyClientWidgetInfo:void setDummy(String, ):1.6.0
 org.geomajas.configuration.client.ScaleConfigurationInfo::1.7.0
 org.geomajas.configuration.client.ScaleConfigurationInfo:List<ScaleInfo> getZoomLevels():1.7.0
 org.geomajas.configuration.client.ScaleConfigurationInfo:ScaleInfo getMaximumScale():1.7.0
@@ -615,8 +609,6 @@ org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_GEOMETRY:1.6.0
 org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_LABEL:1.6.0
 org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_NONE:1.6.0
 org.geomajas.global.GeomajasConstant:int FEATURE_INCLUDE_STYLE:1.6.0
-org.geomajas.global.GeomajasConstantImpl::1.6.0
-org.geomajas.global.GeomajasConstantImpl:void dummy():1.6.0
 org.geomajas.global.GeomajasException::1.6.0
 org.geomajas.global.GeomajasException:GeomajasException():1.6.0
 org.geomajas.global.GeomajasException:GeomajasException(Throwable, ):1.6.0
