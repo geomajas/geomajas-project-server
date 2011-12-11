@@ -39,13 +39,13 @@ import java.util.Map;
 public class ApiCompatibilityCheck extends Check {
 
 	private String packageName;
+	private String shortClassName;
 	private String fullyQualifiedClassName;
 	private Map<String, VersionAndCheck> checkApi = new LinkedHashMap<String, VersionAndCheck>();
 	private List<String> api = new ArrayList<String>();
 	private boolean isAnnotated;
 	private boolean isAllMethods;
 	private boolean isInterface;
-	private boolean isEnum;
 	private String classSince;
 
 	private String basedir;
@@ -81,6 +81,7 @@ public class ApiCompatibilityCheck extends Check {
 				TokenTypes.CTOR_DEF,
 				TokenTypes.VARIABLE_DEF,
 				TokenTypes.ENUM_CONSTANT_DEF,
+				TokenTypes.RCURLY,
 		};
 	}
 
@@ -115,50 +116,54 @@ public class ApiCompatibilityCheck extends Check {
 			case TokenTypes.INTERFACE_DEF:
 			case TokenTypes.ANNOTATION_DEF:
 			case TokenTypes.ENUM_DEF:
-				fullyQualifiedClassName = packageName + "." + getName(ast);
-				checkClassAnnotation(ast);
-				isInterface = (TokenTypes.INTERFACE_DEF == ast.getType());
-				isEnum = (TokenTypes.ENUM_DEF == ast.getType());
-				if (isAnnotated) {
-					String since = getSince(ast);
-					api.add(fullyQualifiedClassName + "::" + since);
-
-					// @since needs to be specified
-					if ("?".equals(since)) {
-						log(ast, "classMissingSince", fullyQualifiedClassName);
-					}
-					// check that class/interface @since has not changed and mark as encountered
-					VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":");
-					if (null != vac) {
-						if (!"?".equals(since) && !since.equals(vac.getVersion())) {
-							log(ast, "wrongClassSince", vac.getVersion(), since, fullyQualifiedClassName);
+				if (null == ast.getParent()) { // do not include inner classes
+					shortClassName = getName(ast); 
+					fullyQualifiedClassName = packageName + "." + shortClassName;
+					checkClassAnnotation(ast);
+					isInterface = (TokenTypes.INTERFACE_DEF == ast.getType());
+					if (isAnnotated) {
+						String since = getSince(ast);
+						api.add(fullyQualifiedClassName + "::" + since);
+	
+						// @since needs to be specified
+						if ("?".equals(since)) {
+							log(ast, "classMissingSince", fullyQualifiedClassName);
 						}
-						vac.setEncountered(true);
+						// check that class/interface @since has not changed and mark as encountered
+						VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":");
+						if (null != vac) {
+							if (!"?".equals(since) && !since.equals(vac.getVersion())) {
+								log(ast, "wrongClassSince", vac.getVersion(), since, fullyQualifiedClassName);
+							}
+							vac.setEncountered(true);
+						}
 					}
 				}
 				break;
 			case TokenTypes.METHOD_DEF:
 			case TokenTypes.CTOR_DEF:
 			case TokenTypes.VARIABLE_DEF:    
-			case TokenTypes.ENUM_CONSTANT_DEF:    
-				String signature = getSignature(ast);
-				if (isApi(ast)) {
-					String since = getSince(ast);
-					api.add(fullyQualifiedClassName + ":" + signature + ":" + since);
+			case TokenTypes.ENUM_CONSTANT_DEF:
+				if (shortClassName.equals(getName(ast.getParent().getParent()))) { // exclude stuff from inner classes
+					String signature = getSignature(ast);
+					if (isApi(ast)) {
+						String since = getSince(ast);
+						api.add(fullyQualifiedClassName + ":" + signature + ":" + since);
 
-					// check that class/interface @since has not changed and mark as encountered
-					VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":" + signature);
-					if (null != vac) {
-						if (!since.equals(vac.getVersion())) {
-							log(ast, "wrongMethodSince", vac.getVersion(), since, fullyQualifiedClassName,
-									signature);
-						}
-						vac.setEncountered(true);
-					} else {
-						// check that version is different from class version (indicates added without @since)
-						vac = checkApi.get(fullyQualifiedClassName + ":");
-						if (null != vac && since.equals(vac.getVersion())) {
-							log(ast, "missingMethodSince", fullyQualifiedClassName, signature);
+						// check that class/interface @since has not changed and mark as encountered
+						VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":" + signature);
+						if (null != vac) {
+							if (!since.equals(vac.getVersion())) {
+								log(ast, "wrongMethodSince", vac.getVersion(), since, fullyQualifiedClassName,
+										signature);
+							}
+							vac.setEncountered(true);
+						} else {
+							// check that version is different from class version (indicates added without @since)
+							vac = checkApi.get(fullyQualifiedClassName + ":");
+							if (null != vac && since.equals(vac.getVersion())) {
+								log(ast, "missingMethodSince", fullyQualifiedClassName, signature);
+							}
 						}
 					}
 				}
