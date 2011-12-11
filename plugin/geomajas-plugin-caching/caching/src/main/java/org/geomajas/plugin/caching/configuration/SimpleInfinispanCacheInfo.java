@@ -34,7 +34,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 
 	private static final long MILLISECONDS_PER_MINUTE = 60000L;
 
-	private Configuration configuration = new Configuration();
+	private final Configuration configuration = new Configuration();
 
 	/**
 	 * Create a {@link SimpleInfinispanCacheInfo}.

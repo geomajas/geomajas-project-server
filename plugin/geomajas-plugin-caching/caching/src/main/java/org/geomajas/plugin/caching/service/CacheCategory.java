@@ -28,7 +28,7 @@ public class CacheCategory {
 	public static final CacheCategory FEATURE = new CacheCategory("feature");
 	public static final CacheCategory BOUNDS = new CacheCategory("bounds");
 
-	private String name;
+	private final String name;
 
 	/**
 	 * Create a cache category for the given name.

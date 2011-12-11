@@ -34,7 +34,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	private Map<String, Map<CacheCategory, IndexedCache>> caches =
+	private final Map<String, Map<CacheCategory, IndexedCache>> caches =
 			new ConcurrentHashMap<String, Map<CacheCategory, IndexedCache>>();
 
 	/** {@inheritDoc} */

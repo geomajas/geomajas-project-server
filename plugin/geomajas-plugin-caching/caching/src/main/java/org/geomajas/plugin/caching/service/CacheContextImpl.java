@@ -29,7 +29,7 @@ public class CacheContextImpl implements CacheContext {
 
 	private final transient Logger log = LoggerFactory.getLogger(CacheContextImpl.class);
 
-	private Map<String, Object> map = new HashMap<String, Object>();
+	private final Map<String, Object> map = new HashMap<String, Object>();
 
 	/** {@inheritDoc} */
 	public void put(String key, Object object) {

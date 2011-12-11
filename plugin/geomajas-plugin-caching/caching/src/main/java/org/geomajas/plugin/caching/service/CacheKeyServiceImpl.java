@@ -54,7 +54,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	private final Logger log = LoggerFactory.getLogger(CacheKeyServiceImpl.class);
 
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	/** {@inheritDoc} */
 	public String getCacheKey(CacheContext context) {

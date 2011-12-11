@@ -22,7 +22,7 @@ public class TileCacheContainer extends CacheContainer {
 
 	private static final long serialVersionUID = 100L;
 
-	private InternalTile tile;
+	private final InternalTile tile;
 
 	/**
 	 * Create for a specific tile.

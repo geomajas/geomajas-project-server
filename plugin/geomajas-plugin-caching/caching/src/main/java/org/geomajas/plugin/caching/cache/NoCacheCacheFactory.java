@@ -26,7 +26,7 @@ import org.geomajas.plugin.caching.service.CacheService;
 @Api
 public class NoCacheCacheFactory implements CacheFactory {
 
-	private NoCacheCacheService cacheService = new NoCacheCacheService();
+	private final NoCacheCacheService cacheService = new NoCacheCacheService();
 
 	/** {@inheritDoc} */
 	public CacheService create(Layer layer, CacheCategory category) {

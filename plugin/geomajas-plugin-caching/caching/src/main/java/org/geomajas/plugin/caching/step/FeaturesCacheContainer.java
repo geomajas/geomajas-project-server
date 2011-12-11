@@ -25,8 +25,8 @@ public class FeaturesCacheContainer extends CacheContainer {
 
 	private static final long serialVersionUID = 100L;
 
-	private List<InternalFeature> features;
-	private Envelope bounds;
+	private final List<InternalFeature> features;
+	private final Envelope bounds;
 
 	/**
 	 * Create for specific features.

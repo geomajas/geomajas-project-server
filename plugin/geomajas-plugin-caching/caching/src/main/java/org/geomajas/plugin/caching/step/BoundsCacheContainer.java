@@ -22,7 +22,7 @@ public class BoundsCacheContainer extends CacheContainer {
 
 	private static final long serialVersionUID = 100L;
 
-	private Envelope bounds;
+	private final Envelope bounds;
 
 	/**
 	 * Create object for specific bounds.

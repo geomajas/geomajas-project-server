@@ -26,8 +26,8 @@ public class IndexedCache {
 
 	private final Logger log = LoggerFactory.getLogger(IndexedCache.class);
 
-	private CacheService cache;
-	private CacheIndexService index;
+	private final CacheService cache;
+	private final CacheIndexService index;
 
 	public IndexedCache(CacheService cache, CacheIndexService index) {
 		this.cache = cache;

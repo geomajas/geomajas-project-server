@@ -21,7 +21,7 @@ import org.infinispan.Cache;
  */
 public class InfinispanCacheService implements CacheService {
 
-	private Cache<String, Object> cache;
+	private final Cache<String, Object> cache;
 
 	/**
 	 * Create a {@link InfinispanCacheService}.
@@ -43,6 +43,7 @@ public class InfinispanCacheService implements CacheService {
 	}
 
 	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
 	public <TYPE> TYPE get(String key, Class<TYPE> type) {
 		Object res = get(key);
 		if (type.isInstance(res)) {

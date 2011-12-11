@@ -88,9 +88,10 @@ public class NativeInfinispanCacheInfo extends Configuration implements Infinisp
 
 	@Override
 	public int hashCode() {
+		int prime = 31;
 		int result = super.hashCode();
-		result = 31 * result + (cacheEnabled ? 1 : 0);
-		result = 31 * result + (baseConfigurationName != null ? baseConfigurationName.hashCode() : 0);
+		result = prime * result + (cacheEnabled ? 1 : 0);
+		result = prime * result + (baseConfigurationName != null ? baseConfigurationName.hashCode() : 0);
 		return result;
 	}
 }
