@@ -105,14 +105,17 @@
 		<!-- Javadoc comments checks, see http://checkstyle.sourceforge.net/config_javadoc.html -->
 
 		<module name="JavadocMethod">
-			<property name="scope" value="public"/>
+			<property name="scope" value="package"/>
 		</module>
 		<module name="JavadocType">
 			<property name="authorFormat" value="\S"/>
 		</module>
-		<!--<module name="JavadocVariable"/>-->
+		<module name="JavadocVariable">
+			<property name="scope" value="package"/>
+		</module>
 		<module name="JavadocStyle">
-			<property name="scope" value="public"/>
+			<property name="scope" value="package"/>
+			<property name="checkEmptyJavadoc" value="true"/>
 		</module>
 
 		<!-- Naming conventions, see http://checkstyle.sourceforge.net/config_naming.html -->
