@@ -65,7 +65,7 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	 * @since 1.10.0
 	 */
 	public GetVectorTileRequest(){
-		
+		super();
 	}
 
 	/**
@@ -76,6 +76,7 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	 * @since 1.10.0
 	 */
 	public GetVectorTileRequest(TileMetadata tileMetadata) {
+		super();
 		setLayerId(tileMetadata.getLayerId());
 		setCrs(tileMetadata.getCrs());
 		setCode(tileMetadata.getCode().clone());

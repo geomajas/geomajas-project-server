@@ -161,9 +161,18 @@ import com.vividsolutions.jts.io.WKTWriter;
 @Component
 public class StyleConverterServiceImpl implements StyleConverterService {
 
-	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+	private static final String SLD_VERSION = "1.0.0";
 
-	private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+	private static final String DUMMY_NAMED_LAYER = "Dummy";
+
+	private static final String CSS_FILL = "fill";
+	private static final String CSS_FILL_OPACITY = "fill-opacity";
+	private static final String CSS_STROKE = "stroke";
+	private static final String CSS_STROKE_OPACITY = "stroke-opacity";
+	private static final String CSS_STROKE_WIDTH = "stroke-width";
+	private static final String CSS_STROKE_DASH_ARRAY = "stroke-dasharray";
+
+	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
 	private StyleBuilder styleBuilder;
 
@@ -178,22 +187,25 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	@Autowired
 	private ResourceService resourceService;
 
+	/**
+	 * Get the GeoTools style factory.
+	 *
+	 * @return style factory
+	 */
 	public StyleFactory getStyleFactory() {
 		return styleFactory;
 	}
 
+	/**
+	 * Set the GeoTools style factory.
+	 *
+	 * @param styleFactory style factory
+	 */
 	public void setStyleFactory(StyleFactory styleFactory) {
 		this.styleFactory = styleFactory;
 	}
 
-	public FilterFactory getFilterFactory() {
-		return filterFactory;
-	}
-
-	public void setFilterFactory(FilterFactory filterFactory) {
-		this.filterFactory = filterFactory;
-	}
-
+	/** {@inheritDoc} */
 	public NamedStyleInfo convert(UserStyleInfo userStyle, FeatureInfo featureInfo) {
 		NamedStyleInfo namedStyleInfo = new NamedStyleInfo();
 		LabelStyleInfo labelStyleInfo = new LabelStyleInfo();
@@ -202,10 +214,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			int styleIndex = 0;
 			for (RuleInfo ruleInfo : featureTypeStyleInfo.getRuleList()) {
 				FeatureStyleInfo featureStyleInfo = new FeatureStyleInfo();
-				if (ruleInfo.getChoice() != null) {
-					if (ruleInfo.getChoice().ifFilter()) {
-						featureStyleInfo.setFormula(convertFormula(ruleInfo.getChoice().getFilter(), featureInfo));
-					}
+				if (null != ruleInfo.getChoice()  && ruleInfo.getChoice().ifFilter()) {
+					featureStyleInfo.setFormula(convertFormula(ruleInfo.getChoice().getFilter(), featureInfo));
 				}
 				for (SymbolizerTypeInfo symbolizerTypeInfo : ruleInfo.getSymbolizerList()) {
 					if (symbolizerTypeInfo instanceof PointSymbolizerInfo) {
@@ -230,6 +240,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 							convertFill(background, textInfo.getHalo().getFill());
 						}
 						labelStyleInfo.setBackgroundStyle(background);
+					} else {
+						throw new IllegalStateException("Unknown symbolizer type " + symbolizerTypeInfo);
 					}
 				}
 				if (featureStyleInfo.getStrokeColor() == null && featureStyleInfo.getFillColor() != null) {
@@ -249,15 +261,16 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return namedStyleInfo;
 	}
 
+	/** {@inheritDoc} */
 	public Style convert(UserStyleInfo userStyleInfo) throws LayerException {
 		IBindingFactory bindingFactory;
 		try {
 			// create a dummy SLD root
 			StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
-			sld.setVersion("1.0.0");
+			sld.setVersion(SLD_VERSION);
 			StyledLayerDescriptorInfo.ChoiceInfo choice = new StyledLayerDescriptorInfo.ChoiceInfo();
 			NamedLayerInfo namedLayerInfo = new NamedLayerInfo();
-			namedLayerInfo.setName("Dummy");
+			namedLayerInfo.setName(DUMMY_NAMED_LAYER);
 			NamedLayerInfo.ChoiceInfo userChoice = new NamedLayerInfo.ChoiceInfo();
 			userChoice.setUserStyle(userStyleInfo);
 			namedLayerInfo.getChoiceList().add(userChoice);
@@ -292,6 +305,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Rule convert(RuleInfo ruleInfo) throws LayerException {
 		UserStyleInfo styleInfo = new UserStyleInfo();
 		FeatureTypeStyleInfo fts = new FeatureTypeStyleInfo();
@@ -301,8 +315,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return style.featureTypeStyles().get(0).rules().get(0);
 	}
 
+	/** {@inheritDoc} */
 	public UserStyleInfo convert(NamedStyleInfo namedStyleInfo, String geometryName) throws LayerException {
-		StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
 		Style style = styleBuilder.createStyle();
 
 		// list of rules
@@ -314,7 +328,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				try {
 					styleFilter = filterService.parseFilter(featureStyle.getFormula());
 				} catch (GeomajasException e) {
-					throw new LayerException(ExceptionCode.FILTER_PARSE_PROBLEM, featureStyle.getFormula());
+					throw new LayerException(e, ExceptionCode.FILTER_PARSE_PROBLEM, featureStyle.getFormula());
 				}
 			} else {
 				styleFilter = Filter.INCLUDE;
@@ -389,9 +403,9 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private void convertFontFill(FontStyleInfo fontStyle, FillInfo fill) {
 		if (fill != null) {
 			Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
-			fontStyle.setColor(cssMap.get("fill"));
-			if (cssMap.containsKey("fill-opacity")) {
-				fontStyle.setOpacity(Float.parseFloat(cssMap.get("fill-opacity")));
+			fontStyle.setColor(cssMap.get(CSS_FILL));
+			if (cssMap.containsKey(CSS_FILL_OPACITY)) {
+				fontStyle.setOpacity(Float.parseFloat(cssMap.get(CSS_FILL_OPACITY)));
 			}
 		}
 	}
@@ -415,11 +429,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private void convertFill(FeatureStyleInfo featureStyleInfo, FillInfo fill) {
 		if (fill != null) {
 			Map<String, String> cssMap = getLiteralMap(fill.getCssParameterList());
-			if (cssMap.containsKey("fill")) {
-				featureStyleInfo.setFillColor(cssMap.get("fill"));
+			if (cssMap.containsKey(CSS_FILL)) {
+				featureStyleInfo.setFillColor(cssMap.get(CSS_FILL));
 			}
-			if (cssMap.containsKey("fill-opacity")) {
-				featureStyleInfo.setFillOpacity(Float.parseFloat(cssMap.get("fill-opacity")));
+			if (cssMap.containsKey(CSS_FILL_OPACITY)) {
+				featureStyleInfo.setFillOpacity(Float.parseFloat(cssMap.get(CSS_FILL_OPACITY)));
 			}
 			if (fill.getGraphicFill() != null) {
 				GraphicInfo graphic = fill.getGraphicFill().getGraphic();
@@ -444,15 +458,15 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		if (stroke != null) {
 			Map<String, String> cssMap = getLiteralMap(stroke.getCssParameterList());
 			// not supported are "stroke-linejoin", "stroke-linecap", and "stroke-dashoffset"
-			featureStyleInfo.setStrokeColor(cssMap.get("stroke"));
-			if (cssMap.containsKey("stroke-opacity")) {
-				featureStyleInfo.setStrokeOpacity(Float.parseFloat(cssMap.get("stroke-opacity")));
+			featureStyleInfo.setStrokeColor(cssMap.get(CSS_STROKE));
+			if (cssMap.containsKey(CSS_STROKE_OPACITY)) {
+				featureStyleInfo.setStrokeOpacity(Float.parseFloat(cssMap.get(CSS_STROKE_OPACITY)));
 			}
-			if (cssMap.containsKey("stroke-width")) {
-				featureStyleInfo.setStrokeWidth((int) Float.parseFloat(cssMap.get("stroke-width")));
+			if (cssMap.containsKey(CSS_STROKE_WIDTH)) {
+				featureStyleInfo.setStrokeWidth((int) Float.parseFloat(cssMap.get(CSS_STROKE_WIDTH)));
 			}
-			if (cssMap.containsKey("stroke-dasharray")) {
-				featureStyleInfo.setDashArray(cssMap.get("stroke-dasharray"));
+			if (cssMap.containsKey(CSS_STROKE_DASH_ARRAY)) {
+				featureStyleInfo.setDashArray(cssMap.get(CSS_STROKE_DASH_ARRAY));
 			}
 		}
 	}
@@ -693,7 +707,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				case URL:
 					propertyValue = "'" + propertyValue + "'";
 					break;
-
+				default:
+					throw new IllegalStateException("Don't know how to handle primitive type " + type);
 			}
 			if (binary instanceof PropertyIsEqualToInfo) {
 				return propertyName + " = " + propertyValue;
@@ -707,6 +722,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				return propertyName + " <= " + propertyValue;
 			} else if (binary instanceof PropertyIsNotEqualToInfo) {
 				return propertyName + " != " + propertyValue;
+			} else {
+				throw new IllegalStateException("Unknown binary comparison operator " + binary);
 			}
 		} else {
 			if (coOps instanceof PropertyIsBetweenTypeInfo) {
@@ -728,9 +745,10 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 					String propertyName = isNull.getPropertyName().getValue();
 					return propertyName + " IS NULL ";
 				}
+			} else {
+				throw new IllegalStateException("Unknown comparison operator " + coOps);
 			}
 		}
-		return null;
 	}
 
 	private Map<String, String> getLiteralMap(List<CssParameterInfo> css) {
@@ -912,9 +930,13 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		return "image/" + StringUtils.getFilenameExtension(href);
 	}
 
+	/**
+	 * Finish service initialization.
+	 */
 	@PostConstruct
-	private void postConstruct() {
-		styleBuilder = new StyleBuilder(styleFactory, filterFactory);
+	protected void postConstruct() {
+		// @todo is it ok that this uses the default GeoTools filter factory instead of the one use in FilterService ?
+		styleBuilder = new StyleBuilder(styleFactory);
 	}
 
 }

@@ -25,7 +25,6 @@ import org.geotools.styling.Style;
  * 
  * @author Jan De Moerloose
  * @since 1.10.0
- * 
  */
 @Api(allMethods = true)
 public interface StyleConverterService {

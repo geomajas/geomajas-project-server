@@ -150,8 +150,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			attributes.put(attributeInfo.getName(),
 					getRecursiveAttribute(entity, childInfo, new String[] { attributeInfo.getName() }));
 		}
-		AssociationValue value = new AssociationValue(id, attributes, false);
-		return value;
+		return new AssociationValue(id, attributes, false);
 	}
 
 	/**
@@ -189,9 +188,9 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 */
 	class CreateManyToOneOperation extends AbstractOperation {
 
-		private Entity parent;
+		private final Entity parent;
 
-		private String name;
+		private final String name;
 
 		public CreateManyToOneOperation(EntityMapper mapper, Entity parent, AssociationAttributeInfo attributeInfo,
 				AssociationValue value) throws LayerException {
@@ -232,13 +231,12 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for deleting a {@link ManyToOneAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class DeleteManyToOneOperation extends AbstractOperation {
 
-		private Entity parent;
+		private final Entity parent;
 
-		private String name;
+		private final String name;
 
 		public DeleteManyToOneOperation(EntityMapper mapper, Entity parent, AssociationAttributeInfo attributeInfo)
 				throws LayerException {
@@ -256,13 +254,12 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for deleting a {@link OneToManyAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class DeleteOneToManyOperation extends AbstractOperation {
 
-		private Entity parent;
+		private final Entity parent;
 
-		private String name;
+		private final String name;
 
 		public DeleteOneToManyOperation(EntityMapper mapper, Entity parent, AssociationAttributeInfo attributeInfo)
 				throws LayerException {
@@ -280,13 +277,12 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for removing value from a {@link OneToManyAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class RemoveManyValue extends AbstractOperation {
 
-		private Entity toDelete;
+		private final Entity toDelete;
 
-		private EntityCollection existing;
+		private final EntityCollection existing;
 
 		public RemoveManyValue(EntityMapper mapper, EntityCollection existing, Entity toDelete) throws LayerException {
 			super(mapper, null, null, null);
@@ -303,7 +299,6 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for updating an existing value of a {@link OneToManyAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class UpdateManyValue extends AbstractOperation {
 
@@ -318,11 +313,10 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for adding a value to a {@link OneToManyAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class AddManyValue extends AbstractOperation {
 
-		private EntityCollection collection;
+		private final EntityCollection collection;
 
 		public AddManyValue(EntityMapper mapper, EntityCollection collection, AssociationAttributeInfo attributeInfo,
 				AssociationValue associationValue) throws LayerException {
@@ -348,26 +342,20 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * reflected in the bean properties.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	abstract class AbstractOperation implements Operation {
 
 		private Entity entity;
 
-		private Map<String, PrimitiveAttribute<?>> primitives = new HashMap<String, PrimitiveAttribute<?>>();
+		private final Map<String, PrimitiveAttribute<?>> primitives = new HashMap<String, PrimitiveAttribute<?>>();
 
-		private Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
+		private final Map<String, Attribute<?>> attributes;
 
-		private FeatureInfo featureInfo;
+		private final FeatureInfo featureInfo;
 
-		private EntityMapper mapper;
+		private final EntityMapper mapper;
 
 		private List<Operation> children = new ArrayList<Operation>();
-
-		public AbstractOperation(EntityMapper mapper, FeatureInfo featureInfo, Map<String, Attribute<?>> attributes)
-				throws LayerException {
-			this(mapper, null, featureInfo, attributes);
-		}
 
 		public AbstractOperation(EntityMapper mapper, Entity entity, FeatureInfo featureInfo,
 				Map<String, Attribute<?>> attributes) throws LayerException {

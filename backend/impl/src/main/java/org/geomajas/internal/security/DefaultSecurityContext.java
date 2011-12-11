@@ -67,7 +67,7 @@ public class DefaultSecurityContext implements SecurityContext {
 
 	private final Logger log = LoggerFactory.getLogger(DefaultSecurityContext.class);
 
-	private List<Authentication> authentications = new ArrayList<Authentication>();
+	private final List<Authentication> authentications = new ArrayList<Authentication>();
 
 	private String token;
 
@@ -198,10 +198,9 @@ public class DefaultSecurityContext implements SecurityContext {
 					userLocale = auth.getUserLocale();
 					first = false;
 				} else {
-					if (null != auth.getUserLocale()) {
-						if (null == userLocale || !userLocale.equals(auth.getUserLocale())) {
-							userLocale = null;
-						}
+					if (null != auth.getUserLocale() &&
+							(null == userLocale || !userLocale.equals(auth.getUserLocale()))) {
+						userLocale = null;
 					}
 				}
 				userOrganization = combine(userOrganization, auth.getUserOrganization());

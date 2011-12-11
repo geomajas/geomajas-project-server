@@ -317,7 +317,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 
 		private PipelineStep<T> toStep;
 
-		private int width;
+		private final int width;
 
 		public PipelineInterceptorStep(PipelineInterceptor<T> interceptor, List<PipelineStep<T>> steps)
 				throws GeomajasException {

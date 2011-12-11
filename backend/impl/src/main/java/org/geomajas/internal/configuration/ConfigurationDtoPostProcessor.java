@@ -282,28 +282,24 @@ public class ConfigurationDtoPostProcessor {
 		for (StyledLayerDescriptorInfo.ChoiceInfo choice : sld.getChoiceList()) {
 			// we only support named layers, pick the right name or the first one
 			if (choice.ifNamedLayer()) {
-				if (sldLayerName != null) {
-					if (sldLayerName.equals(choice.getNamedLayer().getName())) {
-						namedLayerInfo = choice.getNamedLayer();
-						break;
-					}
+				if (null != sldLayerName && sldLayerName.equals(choice.getNamedLayer().getName())) {
+					namedLayerInfo = choice.getNamedLayer();
+					break;
 				}
-				if (namedLayerInfo == null) {
+				if (null == namedLayerInfo) {
 					namedLayerInfo = choice.getNamedLayer();
 				}
 			} else if (choice.ifUserLayer()) {
-				if (sldLayerName != null) {
-					if (sldLayerName.equals(choice.getUserLayer().getName())) {
-						userLayerInfo = choice.getUserLayer();
-						break;
-					}
+				if (sldLayerName != null && sldLayerName.equals(choice.getUserLayer().getName())) {
+					userLayerInfo = choice.getUserLayer();
+					break;
 				}
 				if (namedLayerInfo == null) {
 					userLayerInfo = choice.getUserLayer();
 				}
 			}
 		}
-		if (namedLayerInfo == null && userLayerInfo == null) {
+		if (null == namedLayerInfo && null == userLayerInfo) {
 			throw new LayerException(ExceptionCode.INVALID_SLD, sld.getName(), sldLayerName);
 		}
 
@@ -312,24 +308,20 @@ public class ConfigurationDtoPostProcessor {
 			for (NamedLayerInfo.ChoiceInfo choice : namedLayerInfo.getChoiceList()) {
 				// we only support user styles, pick the right name or the first
 				if (choice.ifUserStyle()) {
-					if (sldStyleName != null) {
-						if (sldStyleName.equals(choice.getUserStyle().getName())) {
-							userStyleInfo = choice.getUserStyle();
-							break;
-						}
+					if (null != sldStyleName  && sldStyleName.equals(choice.getUserStyle().getName())) {
+						userStyleInfo = choice.getUserStyle();
+						break;
 					}
 					if (userStyleInfo == null) {
 						userStyleInfo = choice.getUserStyle();
 					}
 				}
 			}
-		} else if (userLayerInfo != null) {
+		} else {
 			for (UserStyleInfo userStyle : userLayerInfo.getUserStyleList()) {
-				if (sldStyleName != null) {
-					if (sldStyleName.equals(userStyle.getName())) {
-						userStyleInfo = userStyle;
-						break;
-					}
+				if (null != sldStyleName  && sldStyleName.equals(userStyle.getName())) {
+					userStyleInfo = userStyle;
+					break;
 				}
 				if (userStyleInfo == null) {
 					userStyleInfo = userStyle;

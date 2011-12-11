@@ -148,8 +148,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	/**
 	 * Set feature style name.
 	 * 
-	 * @param name
-	 *            name
+	 * @param name name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -445,17 +444,18 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	 */
 	@Override
 	public int hashCode() {
+		int prime = 31;
 		int result = index;
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		result = 31 * result + (formula != null ? formula.hashCode() : 0);
-		result = 31 * result + (fillColor != null ? fillColor.hashCode() : 0);
-		result = 31 * result + (fillOpacity != +0.0f ? (int) (fillOpacity * 10000) : 0);
-		result = 31 * result + (strokeColor != null ? strokeColor.hashCode() : 0);
-		result = 31 * result + (strokeOpacity != +0.0f ? (int) (strokeOpacity * 10000) : 0);
-		result = 31 * result + strokeWidth;
-		result = 31 * result + (dashArray != null ? dashArray.hashCode() : 0);
-		result = 31 * result + (symbol != null ? symbol.hashCode() : 0);
-		result = 31 * result + (styleId != null ? styleId.hashCode() : 0);
+		result = prime * result + (name != null ? name.hashCode() : 0);
+		result = prime * result + (formula != null ? formula.hashCode() : 0);
+		result = prime * result + (fillColor != null ? fillColor.hashCode() : 0);
+		result = prime * result + (fillOpacity != +0.0f ? (int) (fillOpacity * 10000) : 0);
+		result = prime * result + (strokeColor != null ? strokeColor.hashCode() : 0);
+		result = prime * result + (strokeOpacity != +0.0f ? (int) (strokeOpacity * 10000) : 0);
+		result = prime * result + strokeWidth;
+		result = prime * result + (dashArray != null ? dashArray.hashCode() : 0);
+		result = prime * result + (symbol != null ? symbol.hashCode() : 0);
+		result = prime * result + (styleId != null ? styleId.hashCode() : 0);
 		return result;
 	}
 }
