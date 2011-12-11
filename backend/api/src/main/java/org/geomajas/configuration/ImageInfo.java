@@ -26,6 +26,8 @@ import org.geomajas.global.CacheableObject;
  */
 @Api(allMethods = true)
 public class ImageInfo implements Serializable, CacheableObject {
+	
+	private static final int PRIME = 31;
 
 	private static final long serialVersionUID = 160L;
 
@@ -37,7 +39,11 @@ public class ImageInfo implements Serializable, CacheableObject {
 
 	private int height;
 
-	/** @return Return the link to the image. */
+	/**
+	 * Get the link to the image.
+	 * 
+	 * @return Return the link to the image. 
+	 */
 	public String getHref() {
 		return href;
 	}
@@ -53,6 +59,8 @@ public class ImageInfo implements Serializable, CacheableObject {
 	}
 
 	/**
+	 * Get the link to the image to be used when a feature is selected.
+	 * 
 	 * @return Return the link to the image to be used when a feature is selected.
 	 */
 	public String getSelectionHref() {
@@ -69,7 +77,11 @@ public class ImageInfo implements Serializable, CacheableObject {
 		this.selectionHref = selectionHref;
 	}
 
-	/** @return Get the width of the image. */
+	/**
+	 * Get the width of the image. 
+	 * 
+	 * @return Get the width of the image. 
+	 */
 	public int getWidth() {
 		return width;
 	}
@@ -84,7 +96,11 @@ public class ImageInfo implements Serializable, CacheableObject {
 		this.width = width;
 	}
 
-	/** @return Get the height of the image. */
+	/** 
+	 * Get the height of the image.
+	 * 
+	 * @return Get the height of the image. 
+	 */
 	public int getHeight() {
 		return height;
 	}
@@ -160,9 +176,9 @@ public class ImageInfo implements Serializable, CacheableObject {
 	@Override
 	public int hashCode() {
 		int result = href != null ? href.hashCode() : 0;
-		result = 31 * result + (selectionHref != null ? selectionHref.hashCode() : 0);
-		result = 31 * result + width;
-		result = 31 * result + height;
+		result = PRIME * result + (selectionHref != null ? selectionHref.hashCode() : 0);
+		result = PRIME * result + width;
+		result = PRIME * result + height;
 		return result;
 	}
 }

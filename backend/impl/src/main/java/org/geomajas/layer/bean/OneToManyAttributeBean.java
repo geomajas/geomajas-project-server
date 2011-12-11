@@ -22,6 +22,8 @@ import org.springframework.util.ObjectUtils;
  */
 public class OneToManyAttributeBean {
 
+	private static final int PRIME = 31;
+
 	private Long id;
 
 	private Boolean booleanAttr;
@@ -168,22 +170,21 @@ public class OneToManyAttributeBean {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((booleanAttr == null) ? 0 : booleanAttr.hashCode());
-		result = prime * result + ((currencyAttr == null) ? 0 : currencyAttr.hashCode());
-		result = prime * result + ((dateAttr == null) ? 0 : dateAttr.hashCode());
-		result = prime * result + ((doubleAttr == null) ? 0 : doubleAttr.hashCode());
-		result = prime * result + ((floatAttr == null) ? 0 : floatAttr.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((imageUrlAttr == null) ? 0 : imageUrlAttr.hashCode());
-		result = prime * result + ((integerAttr == null) ? 0 : integerAttr.hashCode());
-		result = prime * result + ((longAttr == null) ? 0 : longAttr.hashCode());
-		result = prime * result + ((manyToOneAttr == null) ? 0 : manyToOneAttr.hashCode());
-		result = prime * result + ((oneToManyAttr == null) ? 0 : oneToManyAttr.hashCode());
-		result = prime * result + ((shortAttr == null) ? 0 : shortAttr.hashCode());
-		result = prime * result + ((stringAttr == null) ? 0 : stringAttr.hashCode());
-		result = prime * result + ((urlAttr == null) ? 0 : urlAttr.hashCode());
+		result = PRIME * result + ((booleanAttr == null) ? 0 : booleanAttr.hashCode());
+		result = PRIME * result + ((currencyAttr == null) ? 0 : currencyAttr.hashCode());
+		result = PRIME * result + ((dateAttr == null) ? 0 : dateAttr.hashCode());
+		result = PRIME * result + ((doubleAttr == null) ? 0 : doubleAttr.hashCode());
+		result = PRIME * result + ((floatAttr == null) ? 0 : floatAttr.hashCode());
+		result = PRIME * result + ((id == null) ? 0 : id.hashCode());
+		result = PRIME * result + ((imageUrlAttr == null) ? 0 : imageUrlAttr.hashCode());
+		result = PRIME * result + ((integerAttr == null) ? 0 : integerAttr.hashCode());
+		result = PRIME * result + ((longAttr == null) ? 0 : longAttr.hashCode());
+		result = PRIME * result + ((manyToOneAttr == null) ? 0 : manyToOneAttr.hashCode());
+		result = PRIME * result + ((oneToManyAttr == null) ? 0 : oneToManyAttr.hashCode());
+		result = PRIME * result + ((shortAttr == null) ? 0 : shortAttr.hashCode());
+		result = PRIME * result + ((stringAttr == null) ? 0 : stringAttr.hashCode());
+		result = PRIME * result + ((urlAttr == null) ? 0 : urlAttr.hashCode());
 		return result;
 	}
 

@@ -62,9 +62,10 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	
 	/**
 	 * Constructs an empty request (GWT).
+	 *
 	 * @since 1.10.0
 	 */
-	public GetVectorTileRequest(){
+	public GetVectorTileRequest() {
 		super();
 	}
 
@@ -89,34 +90,74 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		setPaintLabels(tileMetadata.isPaintLabels());
 	}
 
+	/**
+	 * Get tile code.
+	 *
+	 * @return tile code
+	 */
 	public TileCode getCode() {
 		return code;
 	}
 
+	/**
+	 * Set tile code.
+	 *
+	 * @param code tile code
+	 */
 	public void setCode(TileCode code) {
 		this.code = code;
 	}
 
+	/**
+	 * Get zoom scale.
+	 *
+	 * @return scale
+	 */
 	public double getScale() {
 		return scale;
 	}
 
+	/**
+	 * Set zoom scale.
+	 *
+	 * @param scale scale in pix/map unit (at map center)
+	 */
 	public void setScale(double scale) {
 		this.scale = scale;
 	}
 
+	/**
+	 * Get pan origin.
+	 *
+	 * @return pan origin
+	 */
 	public Coordinate getPanOrigin() {
 		return panOrigin;
 	}
 
+	/**
+	 * Set pan origin.
+	 *
+	 * @param panOrigin pan origin
+	 */
 	public void setPanOrigin(Coordinate panOrigin) {
 		this.panOrigin = panOrigin;
 	}
 
+	/**
+	 * Filter to apply to the tile.
+	 *
+	 * @return filter
+	 */
 	public String getFilter() {
 		return filter;
 	}
 
+	/**
+	 * Filter to apply to the tile.
+	 *
+	 * @param filter filter which needs to be applied for the tile
+	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
@@ -138,36 +179,74 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
-	
+
+	/**
+	 * Get style for rendering.
+	 *
+	 * @return style
+	 */
 	public NamedStyleInfo getStyleInfo() {
 		return styleInfo;
 	}
 
-	
+	/**
+	 * Set style for rendering.
+	 *
+	 * @param styleInfo style info for rendering the tile
+	 */
 	public void setStyleInfo(NamedStyleInfo styleInfo) {
 		this.styleInfo = styleInfo;
 	}
 
+	/**
+	 * Get renderer to use.
+	 *
+	 * @return renderer
+	 */
 	public String getRenderer() {
 		return renderer;
 	}
 
+	/** Set renderer to use.
+	 *
+	 * @param renderer renderer type
+	 */
 	public void setRenderer(String renderer) {
 		this.renderer = renderer;
 	}
 
+	/**
+	 * Should geometries be painted?
+	 *
+	 * @return true when labels need to be renderer
+	 */
 	public boolean isPaintGeometries() {
 		return paintGeometries;
 	}
 
+	/**
+	 * Should geometries be painted?
+	 *
+	 * @param paintGeometries include geometries when rendering?
+	 */
 	public void setPaintGeometries(boolean paintGeometries) {
 		this.paintGeometries = paintGeometries;
 	}
 
+	/**
+	 * Should labels be painted?
+	 *
+	 * @return true when labels need to be rendered
+	 */
 	public boolean isPaintLabels() {
 		return paintLabels;
 	}
 
+	/**
+	 * Should labels be painted?
+	 *
+	 * @param paintLabels include labels when rendering?
+	 */
 	public void setPaintLabels(boolean paintLabels) {
 		this.paintLabels = paintLabels;
 	}

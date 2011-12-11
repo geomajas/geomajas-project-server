@@ -134,6 +134,7 @@ public final class GeoServiceImpl implements GeoService {
 		return empty;
 	}
 
+	/** @{inheritDoc} */
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
 		return getCrs2(crs);
 	}

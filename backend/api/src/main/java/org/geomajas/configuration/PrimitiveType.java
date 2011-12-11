@@ -21,16 +21,27 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public enum PrimitiveType {
 
+	/** Boolean. */
 	BOOLEAN("boolean"),
+	/** Short. */
 	SHORT("short"),
+	/** Integer. */
 	INTEGER("integer"),
+	/** Long. */
 	LONG("long"),
+	/** Float. */
 	FLOAT("float"),
+	/** Double. */
 	DOUBLE("double"),
+	/** Currency. */
 	CURRENCY("currency"),
+	/** String. */
 	STRING("string"),
+	/** Date. */
 	DATE("date"),
+	/** URL. */
 	URL("url"),
+	/** Image URL. */
 	IMGURL("imgurl");
 
 	private final String value;

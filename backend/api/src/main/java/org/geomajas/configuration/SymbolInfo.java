@@ -24,6 +24,8 @@ import org.geomajas.global.CacheableObject;
 @Api(allMethods = true)
 public class SymbolInfo implements Serializable, CacheableObject {
 
+	private static final int PRIME = 31;
+
 	private static final long serialVersionUID = 151L;
 
 	private CircleInfo circle;
@@ -104,6 +106,8 @@ public class SymbolInfo implements Serializable, CacheableObject {
 	}
 
 	/**
+	 * Get the image for this symbol.
+	 *
 	 * @return  Get the image for this symbol.
 	 */
 	public ImageInfo getImage() {
@@ -177,8 +181,8 @@ public class SymbolInfo implements Serializable, CacheableObject {
 	@Override
 	public int hashCode() {
 		int result = circle != null ? circle.hashCode() : 0;
-		result = 31 * result + (rect != null ? rect.hashCode() : 0);
-		result = 31 * result + (image != null ? image.hashCode() : 0);
+		result = PRIME * result + (rect != null ? rect.hashCode() : 0);
+		result = PRIME * result + (image != null ? image.hashCode() : 0);
 		return result;
 	}
 }

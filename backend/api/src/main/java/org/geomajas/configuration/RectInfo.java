@@ -24,6 +24,8 @@ import org.geomajas.global.CacheableObject;
 @Api(allMethods = true)
 public class RectInfo implements Serializable, CacheableObject {
 
+	private static final int PRIME = 31;
+
 	private static final long serialVersionUID = 151L;
 	private float h;
 	private float w;
@@ -117,7 +119,7 @@ public class RectInfo implements Serializable, CacheableObject {
 	@Override
 	public int hashCode() {
 		int result = (h != +0.0f ? Float.valueOf(h).hashCode() : 0);
-		result = 31 * result + (w != +0.0f ? Float.valueOf(w).hashCode() : 0);
+		result = PRIME * result + (w != +0.0f ? Float.valueOf(w).hashCode() : 0);
 		return result;
 	}
 }

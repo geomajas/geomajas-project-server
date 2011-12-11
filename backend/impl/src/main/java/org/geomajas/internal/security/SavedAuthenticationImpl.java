@@ -33,6 +33,8 @@ public class SavedAuthenticationImpl implements SavedAuthentication {
 
 	private static final long serialVersionUID = 190L;
 
+	private static final int PRIME = 31;
+
 	private String securityServiceId;
 
 	private byte[][] authorizations; // serialized authorizations
@@ -179,7 +181,7 @@ public class SavedAuthenticationImpl implements SavedAuthentication {
 	@Override
 	public int hashCode() {
 		int result = securityServiceId != null ? securityServiceId.hashCode() : 0;
-		result = 31 * result + (authorizations != null ? hashCodeNestedByteArray(authorizations) : 0);
+		result = PRIME * result + (authorizations != null ? hashCodeNestedByteArray(authorizations) : 0);
 		return result;
 	}
 
@@ -191,7 +193,7 @@ public class SavedAuthenticationImpl implements SavedAuthentication {
 		int result = 1;
 
 		for (byte[] element : array) {
-			result = 31 * result + (element == null ? 0 : hashCodeByteArray(element));
+			result = PRIME * result + (element == null ? 0 : hashCodeByteArray(element));
 		}
 
 		return result;
@@ -206,7 +208,7 @@ public class SavedAuthenticationImpl implements SavedAuthentication {
 		int result = 1;
 
 		for (byte element : array) {
-			result = 31 * result + element;
+			result = PRIME * result + element;
 		}
 
 		return result;

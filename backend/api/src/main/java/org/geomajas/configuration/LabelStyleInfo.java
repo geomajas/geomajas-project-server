@@ -25,6 +25,8 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class LabelStyleInfo implements Serializable {
 
+	private static final int PRIME = 31;
+
 	/**
 	 * A special constant to be passed to {@link #setLabelAttributeName(String)}, denoting that the id should be used as
 	 * the label text instead of a normal attribute value.
@@ -182,8 +184,8 @@ public class LabelStyleInfo implements Serializable {
 	@Override
 	public int hashCode() {
 		int result = labelAttributeName != null ? labelAttributeName.hashCode() : 0;
-		result = 31 * result + (fontStyle != null ? fontStyle.hashCode() : 0);
-		result = 31 * result + (backgroundStyle != null ? backgroundStyle.hashCode() : 0);
+		result = PRIME * result + (fontStyle != null ? fontStyle.hashCode() : 0);
+		result = PRIME * result + (backgroundStyle != null ? backgroundStyle.hashCode() : 0);
 		return result;
 	}
 	

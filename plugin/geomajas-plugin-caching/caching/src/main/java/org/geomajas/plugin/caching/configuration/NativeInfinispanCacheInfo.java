@@ -25,6 +25,8 @@ public class NativeInfinispanCacheInfo extends Configuration implements Infinisp
 
 	private static final long serialVersionUID = 190L;
 
+	private static final int PRIME = 31;
+
 	private boolean cacheEnabled = true;
 	private String baseConfigurationName;
 
@@ -88,10 +90,9 @@ public class NativeInfinispanCacheInfo extends Configuration implements Infinisp
 
 	@Override
 	public int hashCode() {
-		int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + (cacheEnabled ? 1 : 0);
-		result = prime * result + (baseConfigurationName != null ? baseConfigurationName.hashCode() : 0);
+		result = PRIME * result + (cacheEnabled ? 1 : 0);
+		result = PRIME * result + (baseConfigurationName != null ? baseConfigurationName.hashCode() : 0);
 		return result;
 	}
 }

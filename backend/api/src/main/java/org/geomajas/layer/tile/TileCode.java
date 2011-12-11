@@ -43,6 +43,8 @@ import org.geomajas.global.CacheableObject;
 @Api(allMethods = true)
 public class TileCode implements Serializable, CacheableObject {
 
+	private static final int PRIME = 31;
+
 	private static final long serialVersionUID = 151L;
 
 	private int x;
@@ -202,8 +204,8 @@ public class TileCode implements Serializable, CacheableObject {
 	@Override
 	public int hashCode() {
 		int result = x;
-		result = 31 * result + y;
-		result = 31 * result + tileLevel;
+		result = PRIME * result + y;
+		result = PRIME * result + tileLevel;
 		return result;
 	}
 }

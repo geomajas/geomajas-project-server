@@ -42,6 +42,8 @@ import java.util.Map;
 @Api
 public class InfinispanCacheFactory implements CacheFactory {
 
+	private static final int PRIME = 31;
+
 	private final Logger log = LoggerFactory.getLogger(InfinispanCacheFactory.class);
 
 	private EmbeddedCacheManager manager;
@@ -221,7 +223,7 @@ public class InfinispanCacheFactory implements CacheFactory {
 		@Override
 		public int hashCode() {
 			int result = category != null ? category.hashCode() : 0;
-			result = 31 * result + (layer != null ? layer.hashCode() : 0);
+			result = PRIME * result + (layer != null ? layer.hashCode() : 0);
 			return result;
 		}
 	}

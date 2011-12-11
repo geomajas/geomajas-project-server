@@ -42,7 +42,7 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 	}
 
 	/**
-	 * Property accessor for feature models
+	 * Property accessor for feature models.
 	 */
 	static class FeatureModelPropertyAccessor implements PropertyAccessor {
 

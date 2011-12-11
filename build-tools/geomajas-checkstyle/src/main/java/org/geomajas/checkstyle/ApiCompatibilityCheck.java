@@ -81,7 +81,6 @@ public class ApiCompatibilityCheck extends Check {
 				TokenTypes.CTOR_DEF,
 				TokenTypes.VARIABLE_DEF,
 				TokenTypes.ENUM_CONSTANT_DEF,
-				TokenTypes.RCURLY,
 		};
 	}
 

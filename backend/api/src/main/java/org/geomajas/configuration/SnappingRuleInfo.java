@@ -32,7 +32,10 @@ public class SnappingRuleInfo implements Serializable {
 	 * Snapping type.
 	 */
 	public static enum SnappingType {
-		CLOSEST_ENDPOINT, NEAREST_POINT
+		/** Closest endpoint. */
+		CLOSEST_ENDPOINT,
+		/** Nearest point on the geometry. */
+		NEAREST_POINT
 	}
 
 	private double distance;

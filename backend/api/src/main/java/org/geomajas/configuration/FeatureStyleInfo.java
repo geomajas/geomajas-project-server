@@ -27,6 +27,8 @@ import org.geomajas.layer.LayerType;
 @Api(allMethods = true)
 public class FeatureStyleInfo implements Serializable, CacheableObject {
 
+	private static final int PRIME = 31;
+
 	/**
 	 * Default value for style index, should be the last in sort order.
 	 */
@@ -444,18 +446,17 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	 */
 	@Override
 	public int hashCode() {
-		int prime = 31;
 		int result = index;
-		result = prime * result + (name != null ? name.hashCode() : 0);
-		result = prime * result + (formula != null ? formula.hashCode() : 0);
-		result = prime * result + (fillColor != null ? fillColor.hashCode() : 0);
-		result = prime * result + (fillOpacity != +0.0f ? (int) (fillOpacity * 10000) : 0);
-		result = prime * result + (strokeColor != null ? strokeColor.hashCode() : 0);
-		result = prime * result + (strokeOpacity != +0.0f ? (int) (strokeOpacity * 10000) : 0);
-		result = prime * result + strokeWidth;
-		result = prime * result + (dashArray != null ? dashArray.hashCode() : 0);
-		result = prime * result + (symbol != null ? symbol.hashCode() : 0);
-		result = prime * result + (styleId != null ? styleId.hashCode() : 0);
+		result = PRIME * result + (name != null ? name.hashCode() : 0);
+		result = PRIME * result + (formula != null ? formula.hashCode() : 0);
+		result = PRIME * result + (fillColor != null ? fillColor.hashCode() : 0);
+		result = PRIME * result + (fillOpacity != +0.0f ? (int) (fillOpacity * 10000) : 0);
+		result = PRIME * result + (strokeColor != null ? strokeColor.hashCode() : 0);
+		result = PRIME * result + (strokeOpacity != +0.0f ? (int) (strokeOpacity * 10000) : 0);
+		result = PRIME * result + strokeWidth;
+		result = PRIME * result + (dashArray != null ? dashArray.hashCode() : 0);
+		result = PRIME * result + (symbol != null ? symbol.hashCode() : 0);
+		result = PRIME * result + (styleId != null ? styleId.hashCode() : 0);
 		return result;
 	}
 }

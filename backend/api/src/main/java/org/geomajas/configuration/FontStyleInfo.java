@@ -24,6 +24,8 @@ import org.geomajas.global.CacheableObject;
 @Api(allMethods = true)
 public class FontStyleInfo implements Serializable, CacheableObject {
 
+	private static final int PRIME = 31;
+
 	private static final long serialVersionUID = 160L;
 
 	private int size = -1;
@@ -252,11 +254,11 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 	@Override
 	public int hashCode() {
 		int result = size;
-		result = 31 * result + (family != null ? family.hashCode() : 0);
-		result = 31 * result + (weight != null ? weight.hashCode() : 0);
-		result = 31 * result + (style != null ? style.hashCode() : 0);
-		result = 31 * result + (color != null ? color.hashCode() : 0);
-		result = 31 * result + (opacity != +0.0f ? (int) (opacity * 10000) : 0);
+		result = PRIME * result + (family != null ? family.hashCode() : 0);
+		result = PRIME * result + (weight != null ? weight.hashCode() : 0);
+		result = PRIME * result + (style != null ? style.hashCode() : 0);
+		result = PRIME * result + (color != null ? color.hashCode() : 0);
+		result = PRIME * result + (opacity != +0.0f ? (int) (opacity * 10000) : 0);
 		return result;
 	}
 }

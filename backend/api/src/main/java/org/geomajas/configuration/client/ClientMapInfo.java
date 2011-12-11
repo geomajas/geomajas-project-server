@@ -606,6 +606,9 @@ public class ClientMapInfo implements ClientWidgetInfo {
 	}
 
 	/**
+	 * Get the preferred pixels per tile size you wish the client will fetch from the server. This allows some tweaks
+	 * for performance. The default is closest to 256x256 pixels.
+	 *
 	 * @return the preferredPixelsPerTile
 	 * @since 1.9.0
 	 */

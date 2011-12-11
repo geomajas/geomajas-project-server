@@ -115,7 +115,7 @@
 		</module>
 		<module name="JavadocStyle">
 			<property name="scope" value="package"/>
-			<property name="checkEmptyJavadoc" value="true"/>
+			<property name="checkEmptyJavadoc" value="false"/> <!-- true complains on {@inheritDoc} -->
 		</module>
 
 		<!-- Naming conventions, see http://checkstyle.sourceforge.net/config_naming.html -->
