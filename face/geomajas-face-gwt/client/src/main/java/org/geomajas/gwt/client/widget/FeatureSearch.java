@@ -86,7 +86,10 @@ public class FeatureSearch extends Canvas {
 	 * @author Pieter De Graef
 	 */
 	public static enum LogicalOperator {
-		AND, OR
+		/** AND operator. */
+		AND,
+		/** OR operator. */
+		OR
 	}
 
 	private VectorLayer layer; // The vector layer to search in.
@@ -103,20 +106,20 @@ public class FeatureSearch extends Canvas {
 
 	private VStack buttonStack;
 
-	private MapModel mapModel;
+	private final MapModel mapModel;
 
-	private List<AttributeCriterionPane> criterionPanes;
+	private final List<AttributeCriterionPane> criterionPanes;
 
-	private List<HLayout> buttonPanes;
+	private final List<HLayout> buttonPanes;
 
-	private List<HandlerRegistration> addHandlers;
+	private final List<HandlerRegistration> addHandlers;
 
-	private List<HandlerRegistration> removeHandlers;
+	private final List<HandlerRegistration> removeHandlers;
 
 	/** The maximum number of allowed results. No more features will be retrieved then this number. */
 	private int maximumResultSize = 100;
 
-	private boolean manualLayerSelection;
+	private final boolean manualLayerSelection;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -193,7 +196,7 @@ public class FeatureSearch extends Canvas {
 
 		HLayout btnLayout = new HLayout();
 		btnLayout.setHeight(32);
-		btnLayout.setMembersMargin(5);
+		btnLayout.setMembersMargin(WidgetLayout.marginSmall);
 		btnLayout.setAlign(Alignment.CENTER);
 		btnLayout.setPadding(4);
 		btnLayout.setStyleName(STYLE_SEARCH_ROW);
@@ -369,6 +372,9 @@ public class FeatureSearch extends Canvas {
 				break;
 			case OR:
 				logicalOperatorRadio.setValue(I18nProvider.getSearch().radioOperatorOr());
+				break;
+			default:
+				throw new IllegalStateException("Unknown operator " + operator);
 		}
 	}
 

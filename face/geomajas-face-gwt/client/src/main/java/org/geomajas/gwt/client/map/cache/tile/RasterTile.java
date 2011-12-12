@@ -33,18 +33,21 @@ public class RasterTile implements Tile, Paintable {
 	/** The store where this tile is kept. */
 	protected RasterLayerStore store;
 
-	/** the image url */
+	/** The image url. */
 	protected String url;
 
-	/** style */
+	/** Style. */
 	protected PictureStyle style;
 
 	protected String id;
 
 	/**
-	 * @param code
-	 * @param bbox
-	 * @param store
+	 * Constructor for a raster tile.
+	 *
+	 * @param code tile code
+	 * @param bbox bounding box
+	 * @param url tile URL
+	 * @param store raster layer store
 	 */
 	public RasterTile(TileCode code, Bbox bbox, String url, RasterLayerStore store) {
 		this.code = code;
@@ -53,46 +56,74 @@ public class RasterTile implements Tile, Paintable {
 		this.store = store;
 		this.id = store.getLayer().getMapModel().getId() + "." + store.getLayer().getId() + "." + code.toString();
 		String styleStr = store.getLayer().getLayerInfo().getStyle();
-		style = new PictureStyle(Double.valueOf(styleStr).doubleValue());
+		style = new PictureStyle(Double.parseDouble(styleStr));
 	}
 
+	/** {@inheritDoc} */
 	public TileCode getCode() {
 		return code;
 	}
 
+	/** {@inheritDoc} */
 	public Bbox getBounds() {
 		return bbox;
 	}
 
-	public boolean isComplete() {
-		return true;
-	}
-
-	/** Return the unique value of the spatial code for this node. */
+	/**
+	 * Return the unique value of the spatial code for this node.
+	 *
+	 * @return id
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		visitor.visit(this, group);
 	}
 
+	/**
+	 * Get style for this tile.
+	 *
+	 * @return tile style
+	 */
 	public PictureStyle getStyle() {
 		return style;
 	}
 
+	/**
+	 * Get URL for this tile.
+	 *
+	 * @return tile URL
+	 */
 	public String getUrl() {
 		return url;
 	}
-	
+
+	/**
+	 * Get raster layer store.
+	 *
+	 * @return raster layer store
+	 */
 	public RasterLayerStore getStore() {
 		return store;
 	}
 
+	/**
+	 * Set style.
+	 *
+	 * @param style style
+	 */
 	public void setStyle(PictureStyle style) {
 		this.style = style;
 	}
-	
+
+	/**
+	 * Set bounding box.
+	 *
+	 * @param bbox bounding box
+	 */
 	public void setBounds(Bbox bbox) {
 		this.bbox = bbox;
 	}	

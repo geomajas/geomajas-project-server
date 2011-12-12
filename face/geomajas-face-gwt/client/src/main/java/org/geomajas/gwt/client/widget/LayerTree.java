@@ -190,7 +190,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	}
 
 	/**
-	 * When the user clicks on a leaf the headertext of the treetable is changed to the selected leaf and the toolbar
+	 * When the user clicks on a leaf the header text of the tree table is changed to the selected leaf and the toolbar
 	 * buttons are updated to represent the correct state of the buttons.
 	 */
 	public void onLeafClick(LeafClickEvent event) {
@@ -262,8 +262,6 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		final Canvas[] toolStripMembers = toolStrip.getMembers();
 		// delaying this fixes an image 'undefined' error
 		Timer t = new Timer() {
-
-			@Override
 			public void run() {
 				updateButtonIconsAndStates(toolStripMembers);
 			}
@@ -297,7 +295,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		treeGrid.addLeafClickHandler(this);
 		treeGrid.addFolderClickHandler(this);
 
-		// -- add eventlisteners to layers
+		// -- add event listeners to layers
 		for (Layer<?> layer : mapModel.getLayers()) {
 			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
 				public void onLabelChange(LayerLabeledEvent event) {
@@ -396,7 +394,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	 * @author Frank Wynants
 	 * @author Pieter De Graef
 	 */
-	private class LayerTreeButton extends IButton {
+	private static class LayerTreeButton extends IButton {
 
 		private LayerTree tree;
 
@@ -445,7 +443,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	 * @author Frank Wynants
 	 * @author Pieter De Graef
 	 */
-	private class LayerTreeModalButton extends IButton {
+	private static class LayerTreeModalButton extends IButton {
 
 		private LayerTree tree;
 
@@ -512,7 +510,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	 * 
 	 * @author Frank Wynants
 	 */
-	private class RefreshableTree extends Tree {
+	private static class RefreshableTree extends Tree {
 
 		/**
 		 * Refreshes the icons in the tree, this is done by closing and reopening all nodes A dirty solution but no
@@ -530,11 +528,11 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 
 	/**
 	 * A node inside the LayerTree.
-	 * 
+	 *
 	 * @author Frank Wynants
 	 * @author Pieter De Graef
 	 */
-	public class LayerTreeTreeNode extends TreeNode {
+	private static class LayerTreeTreeNode extends TreeNode {
 
 		private RefreshableTree tree;
 
@@ -542,7 +540,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 
 		/**
 		 * Constructor creates a TreeNode with layer.getLabel as label.
-		 * 
+		 *
 		 * @param tree
 		 *            tree for node
 		 * @param layer
@@ -575,6 +573,11 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			tree.refreshIcons();
 		}
 
+		/**
+		 * Get layer.
+		 *
+		 * @return layer
+		 */
 		public Layer<?> getLayer() {
 			return layer;
 		}

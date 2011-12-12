@@ -39,20 +39,26 @@ public class ScaleBar extends MapAddon {
 
 	private static final FontStyle STYLE_FONT = new FontStyle("#000000", 10, "Arial, Verdana", "normal", "normal");
 
-	private static final double METERSINMILE = 1609.344d;
+	private static final double METERS_IN_MILE = 1609.344d;
 
-	private static final double METERSINYARD = 0.9144d;
+	private static final double METERS_IN_YARD = 0.9144d;
 
-	private static final double FEETINMETER = 3.2808399d;
+	private static final double FEET_IN_METER = 3.2808399d;
 
-	private static final int HORIZONTALPADDING = 3; // px
+	private static final int HORIZONTAL_PADDING = 3; // px @todo WidgetLayout
 
-	private static final int VERTICALPADDING = 3; // px
+	private static final int VERTICAL_PADDING = 3; // px @todo WidgetLayout
 
-	private static final int MARKERHEIGHT = 13; // px
+	private static final int MARKER_HEIGHT = 13; // px @todo WidgetLayout
 
-	// max width this scalebar should be
-	private static final int MAXSIZEINPIXELS = 125;
+	// max width this scale bar should be @todo WidgetLayout
+	private static final int MAX_SIZE_IN_PIXELS = 125;
+
+	private static final int[] LENGTHS = new int[] { 1, 2, 5, 10, 25, 50, 100, 250, 500, 750, 1000, 2000, 5000, 10000,
+			25000, 50000, 75000, 100000, 250000, 500000, 750000, 1000000, 2000000, 5000000, 10000000 };
+
+	// position in lengths array up to where to test for yards (larger values is for miles)
+	private static final int YARD_STARTING_POINT = 11;
 
 	private Rectangle backGround;
 
@@ -66,20 +72,10 @@ public class ScaleBar extends MapAddon {
 
 	private Rectangle dummy;
 
-	private int[] lengths = new int[] { 1, 2, 5, 10, 25, 50, 100, 250, 500, 750, 1000, 2000, 5000, 10000, 25000, 50000,
-			75000, 100000, 250000, 500000, 750000, 1000000, 2000000, 5000000, 10000000 };
-
-	// position in lengths array up to where to test for yards (larger values is for miles)
-	private int yardStartingPoint = 11;
-
-	/**
-	 * unitlength in meter
-	 */
+	/** Unit length in meter. */
 	private double unitLength;
 
-	/**
-	 * how should units be shown to the user
-	 */
+	/** How should units be shown to the user. */
 	private UnitType unitType;
 
 	// -- for internal use, holds the last calculated best value
@@ -91,13 +87,20 @@ public class ScaleBar extends MapAddon {
 	// -- for internal use, for UnitType.ENGLISH only
 	private boolean widthInUnitsIsMiles;
 
-	private MapWidget map;
+	private final MapWidget map;
 
+	/**
+	 * Construct a scale bar.
+	 *
+	 * @param id object id
+	 * @param map map
+	 */
 	public ScaleBar(String id, MapWidget map) {
-		super(id, MAXSIZEINPIXELS, MARKERHEIGHT + VERTICALPADDING * 2);
+		super(id, MAX_SIZE_IN_PIXELS, MARKER_HEIGHT + VERTICAL_PADDING * 2);
 		this.map = map;
 	}
 
+	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		map.getVectorContext().drawGroup(group, this);
 
@@ -118,13 +121,16 @@ public class ScaleBar extends MapAddon {
 				(FontStyle) distance.getStyle());
 	}
 
+	/** {@inheritDoc} */
 	public void onDraw() {
 	}
 
+	/** {@inheritDoc} */
 	public void onRemove() {
 	}
 
 	/**
+	 * Initialize scale bar.
 	 * 
 	 * @param unitType
 	 *            how are units shown (english/metric/crs)
@@ -142,15 +148,15 @@ public class ScaleBar extends MapAddon {
 		this.unitLength = unitLength;
 
 		backGround = new Rectangle((null == getId() ? "" : getId() + "-bg"));
-		backGround.setBounds(new Bbox(0, 0, 5, MARKERHEIGHT + 2 * VERTICALPADDING));
+		backGround.setBounds(new Bbox(0, 0, 5, MARKER_HEIGHT + 2 * VERTICAL_PADDING));
 		backGround.setStyle(STYLE_BACKGROUND);
 		leftMarker = new Rectangle((null == getId() ? "" : getId() + "-lm"));
 		leftMarker.setStyle(STYLE_MARKER);
-		leftMarker.setBounds(new Bbox(0, 0, 1, MARKERHEIGHT));
+		leftMarker.setBounds(new Bbox(0, 0, 1, MARKER_HEIGHT));
 
 		rightMarker = new Rectangle((null == getId() ? "" : getId() + "-rm"));
 		rightMarker.setStyle(STYLE_MARKER);
-		rightMarker.setBounds(new Bbox(0, 0, 1, MARKERHEIGHT));
+		rightMarker.setBounds(new Bbox(0, 0, 1, MARKER_HEIGHT));
 		bottomLine = new Rectangle((null == getId() ? "" : getId() + "-bm"));
 		bottomLine.setStyle(STYLE_MARKER);
 		bottomLine.setBounds(new Bbox(0, 0, 0, 1));
@@ -164,18 +170,28 @@ public class ScaleBar extends MapAddon {
 
 	// ----------------------------------------------------------
 
+	/**
+	 * Get unit length.
+	 *
+	 * @return unit length
+	 */
 	public double getUnitLength() {
 		return unitLength;
 	}
 
+	/**
+	 * Get unit type.
+	 *
+	 * @return unit type
+	 */
 	public UnitType getUnitType() {
 		return unitType;
 	}
 
 	/**
-	 * Adjust the scalebar to reflect the given scale.
+	 * Adjust the scale bar to reflect the given scale.
 	 * 
-	 * @param scale
+	 * @param scale scale
 	 */
 	public void adjustScale(double scale) {
 		if (null == unitType) {
@@ -186,21 +202,26 @@ public class ScaleBar extends MapAddon {
 		updatePaintables();
 	}
 
+	/**
+	 * Set map size.
+	 *
+	 * @param mapWidth map width
+	 * @param mapHeight map height
+	 */
 	public void setMapSize(int mapWidth, int mapHeight) {
 		super.setMapSize(mapWidth, mapHeight);
 		if (null == unitType) {
-			throw new IllegalStateException("Please initialize scalebar before using");
+			throw new IllegalStateException("Please initialize scale bar before using");
 		}
 		backGround.getBounds().setX(getUpperLeftCorner().getX());
 		backGround.getBounds().setY(getUpperLeftCorner().getY());
-		bottomLine.getBounds().setX(getUpperLeftCorner().getX() + HORIZONTALPADDING);
-		bottomLine.getBounds().setY(getUpperLeftCorner().getY() + VERTICALPADDING + MARKERHEIGHT);
-		leftMarker.getBounds().setX(getUpperLeftCorner().getX() + HORIZONTALPADDING);
-		leftMarker.getBounds().setY(getUpperLeftCorner().getY() + VERTICALPADDING);
-		rightMarker.getBounds().setY(getUpperLeftCorner().getY() + VERTICALPADDING);
-		distance.setPosition(new Coordinate(getUpperLeftCorner().getX() + HORIZONTALPADDING + 6, getUpperLeftCorner()
-				.getY()
-				+ VERTICALPADDING));
+		bottomLine.getBounds().setX(getUpperLeftCorner().getX() + HORIZONTAL_PADDING);
+		bottomLine.getBounds().setY(getUpperLeftCorner().getY() + VERTICAL_PADDING + MARKER_HEIGHT);
+		leftMarker.getBounds().setX(getUpperLeftCorner().getX() + HORIZONTAL_PADDING);
+		leftMarker.getBounds().setY(getUpperLeftCorner().getY() + VERTICAL_PADDING);
+		rightMarker.getBounds().setY(getUpperLeftCorner().getY() + VERTICAL_PADDING);
+		distance.setPosition(new Coordinate(getUpperLeftCorner().getX() + HORIZONTAL_PADDING + 6,
+				getUpperLeftCorner().getY() + VERTICAL_PADDING));
 		updatePaintables();
 	}
 
@@ -208,36 +229,35 @@ public class ScaleBar extends MapAddon {
 
 	private void updatePaintables() {
 		distance.setContent(formatUnits(widthInUnits));
-		backGround.getBounds().setWidth(widthInPixels + 2 * HORIZONTALPADDING);
+		backGround.getBounds().setWidth(widthInPixels + 2 * HORIZONTAL_PADDING);
 		rightMarker.getBounds().setX(leftMarker.getBounds().getX() + widthInPixels - 1);
 		bottomLine.getBounds().setWidth(widthInPixels);
 	}
 
 	/**
-	 * Find the rounded value (from the lengths array) which fits the closest into the maxSizeInPixels for the given
+	 * Set the rounded value (from the lengths array) which fits the closest into the maxSizeInPixels for the given
 	 * scale.
 	 * 
-	 * @param scale
-	 * @return closest fit in units (will be miles or yards for English, m for metric, unit for crs)
+	 * @param scale scale
 	 */
 	public void calculateBestFit(double scale) {
 		int len = 0;
 		long px = 0;
 		if (UnitType.ENGLISH.equals(unitType)) {
 			// try miles
-			for (int i = lengths.length - 1; i > -1; i--) {
-				len = this.lengths[i];
-				px = Math.round((len * scale / unitLength) * METERSINMILE);
-				if (px < MAXSIZEINPIXELS) {
+			for (int i = LENGTHS.length - 1; i > -1; i--) {
+				len = LENGTHS[i];
+				px = Math.round((len * scale / unitLength) * METERS_IN_MILE);
+				if (px < MAX_SIZE_IN_PIXELS) {
 					break;
 				}
 			}
 			// try yards
-			if (px > MAXSIZEINPIXELS) {
-				for (int i = yardStartingPoint; i > -1; i--) {
-					len = this.lengths[i];
-					px = Math.round((len * scale / unitLength) * METERSINYARD);
-					if (px < MAXSIZEINPIXELS) {
+			if (px > MAX_SIZE_IN_PIXELS) {
+				for (int i = YARD_STARTING_POINT; i > -1; i--) {
+					len = LENGTHS[i];
+					px = Math.round((len * scale / unitLength) * METERS_IN_YARD);
+					if (px < MAX_SIZE_IN_PIXELS) {
 						break;
 					}
 				}
@@ -247,19 +267,19 @@ public class ScaleBar extends MapAddon {
 			}
 		} else if (UnitType.ENGLISH_FOOT.equals(unitType)) {
 			// try miles
-			for (int i = lengths.length - 1; i > -1; i--) {
-				len = this.lengths[i];
-				px = Math.round((len * scale / unitLength) * METERSINMILE);
-				if (px < MAXSIZEINPIXELS) {
+			for (int i = LENGTHS.length - 1; i > -1; i--) {
+				len = LENGTHS[i];
+				px = Math.round((len * scale / unitLength) * METERS_IN_MILE);
+				if (px < MAX_SIZE_IN_PIXELS) {
 					break;
 				}
 			}
 			// try feet
-			if (px > MAXSIZEINPIXELS) {
-				for (int i = yardStartingPoint; i > -1; i--) {
-					len = this.lengths[i];
-					px = Math.round((len * scale / unitLength) / FEETINMETER);
-					if (px < MAXSIZEINPIXELS) {
+			if (px > MAX_SIZE_IN_PIXELS) {
+				for (int i = YARD_STARTING_POINT; i > -1; i--) {
+					len = LENGTHS[i];
+					px = Math.round((len * scale / unitLength) / FEET_IN_METER);
+					if (px < MAX_SIZE_IN_PIXELS) {
 						break;
 					}
 				}
@@ -268,10 +288,10 @@ public class ScaleBar extends MapAddon {
 				widthInUnitsIsMiles = true;
 			}
 		} else {
-			for (int i = lengths.length - 1; i > -1; i--) {
-				len = this.lengths[i];
+			for (int i = LENGTHS.length - 1; i > -1; i--) {
+				len = LENGTHS[i];
 				px = Math.round(len * scale / unitLength);
-				if (px < MAXSIZEINPIXELS) {
+				if (px < MAX_SIZE_IN_PIXELS) {
 					break;
 				}
 			}
@@ -281,23 +301,38 @@ public class ScaleBar extends MapAddon {
 		widthInPixels = (int) px;
 	}
 
-	public boolean getWidthInUnitsIsMiles() {
+	/**
+	 * Is the unit width in miles? Provided for unit testing only.
+	 *
+	 * @return true when current unit is miles.
+	 */
+	protected boolean isUnitWidthInMiles() {
 		return widthInUnitsIsMiles;
 	}
 
+	/**
+	 * Get width in units.
+	 *
+	 * @return width in units
+	 */
 	public int getWidthInUnits() {
 		return widthInUnits;
 	}
 
+	/**
+	 * Get width in pixels.
+	 *
+	 * @return width in pixels
+	 */
 	public int getWidthInPixels() {
 		return widthInPixels;
 	}
 
 	/**
-	 * format to humanreadable string converting to unittype
+	 * Convert distance (in CRS units) to human readable format (including unit indicator).
 	 * 
-	 * @param units
-	 * @return
+	 * @param units unit
+	 * @return human readable string in unit type
 	 */
 	String formatUnits(int units) {
 		switch (unitType) {
@@ -316,7 +351,7 @@ public class ScaleBar extends MapAddon {
 				return NumberFormat.getDecimalFormat().format(units) + " u";
 
 			default:
-				return "??";
+				throw new IllegalStateException("Unknown unit type " + unitType);
 		}
 	}
 }
