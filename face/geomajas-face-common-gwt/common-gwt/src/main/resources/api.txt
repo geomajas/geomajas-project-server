@@ -43,8 +43,6 @@ org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesS
 org.geomajas.gwt.client.command.GwtCommandDispatcher:static GwtCommandDispatcher getInstance():0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommandException(CommandResponse, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommunicationException(Throwable, ):0.0.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void onFailure(Throwable, ):0.0.0
-org.geomajas.gwt.client.command.GwtCommandDispatcher:void onSuccess(CommandResponse, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesAll(int, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesDefault(int, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesSelect(int, ):0.0.0
