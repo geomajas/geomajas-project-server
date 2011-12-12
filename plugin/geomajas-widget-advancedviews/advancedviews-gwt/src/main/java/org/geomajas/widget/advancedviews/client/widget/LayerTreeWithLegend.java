@@ -14,13 +14,13 @@ package org.geomajas.widget.advancedviews.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
@@ -542,7 +542,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 					// TODO update layerstyles
 				}
 			}));
-			
+
 			if (layer instanceof VectorLayer) {
 				VectorLayer vl = (VectorLayer) layer;
 				registrations.add(vl.addLayerFilteredHandler(new LayerFilteredHandler() {
