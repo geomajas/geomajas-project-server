@@ -37,13 +37,13 @@ import java.util.Map;
  */
 public class GeoToolsFeatureModel extends FeatureSourceRetriever implements FeatureModel {
 
-	private SimpleFeatureBuilder builder;
+	private final SimpleFeatureBuilder builder;
 
-	private int srid;
+	private final int srid;
 
-	private DtoConverterService converterService;
+	private final DtoConverterService converterService;
 
-	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+	private final Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
 
 	// Constructor:
 
@@ -58,6 +58,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 	 */
 	public GeoToolsFeatureModel(DataStore dataStore, String featureSourceName, int srid,
 			DtoConverterService converterService) throws LayerException {
+		super();
 		setDataStore(dataStore);
 		setFeatureSourceName(featureSourceName);
 		this.srid = srid;

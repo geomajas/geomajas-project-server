@@ -45,9 +45,9 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	private VectorLayerInfo vectorLayerInfo;
 
-	private DtoConverterService converterService;
+	private final DtoConverterService converterService;
 
-	private Map<String, AttributeInfo> attributeInfoMap = new ConcurrentHashMap<String, AttributeInfo>();
+	private final Map<String, AttributeInfo> attributeInfoMap = new ConcurrentHashMap<String, AttributeInfo>();
 
 	// Constructor:
 
@@ -62,6 +62,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 	 */
 	public ShapeInMemFeatureModel(DataStore dataStore, String featureSourceName, int srid,
 			DtoConverterService converterService) throws LayerException {
+		super();
 		setDataStore(dataStore);
 		setFeatureSourceName(featureSourceName);
 		this.srid = srid;

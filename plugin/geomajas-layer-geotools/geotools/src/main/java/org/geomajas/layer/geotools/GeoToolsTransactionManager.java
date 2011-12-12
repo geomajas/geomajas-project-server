@@ -38,6 +38,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	 * Constructs a new GeoToolsTransactionManager.
 	 */
 	public GeoToolsTransactionManager() {
+		super();
 		setNestedTransactionAllowed(false);
 	}
 

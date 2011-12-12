@@ -112,7 +112,7 @@ public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 	 */
 	private static class IteratorInfo {
 
-		private FeatureIterator<SimpleFeature> iterator;
+		private final FeatureIterator<SimpleFeature> iterator;
 
 		/**
 		 * Create a {@link IteratorInfo}.
