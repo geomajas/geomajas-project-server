@@ -12,11 +12,27 @@
 package org.geomajas.plugin.editing.client.service;
 
 /**
- * General editing state for the {@link GeometryEditingService}.
+ * General editing state for the {@link GeometryEditingService}. This state determines which controller is currently
+ * active on the map, and thus changes the behavior.
  * 
  * @author Pieter De Graef
  */
 public enum GeometryEditingState {
 
-	IDLE, DRAGGING, INSERTING
+	/**
+	 * The idle state. This is the default state while editing.
+	 */
+	IDLE,
+
+	/**
+	 * The dragging state is activated when the user is actually dragging one or more vertices/edges/sub-geometries
+	 * during editing.
+	 */
+	DRAGGING,
+
+	/**
+	 * The inserting state is used when the user is inserting new vertices into a geometry. The default behavior works
+	 * so that inserting vertices is done by clicking on the map. Each click will insert a new vertex.
+	 */
+	INSERTING
 }

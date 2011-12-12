@@ -18,5 +18,12 @@ package org.geomajas.plugin.editing.gwt.example.client.event;
  */
 public enum GeometryEditSuspensionReason {
 
-	UNKNOWN, REMOVE_RING
+	/** Default reason. */
+	UNKNOWN,
+
+	/**
+	 * Suspension is caused because we're waiting for a remove-ring event. Only when the user has clicked on an inner
+	 * ring, will editing continue.
+	 */
+	REMOVE_RING
 }

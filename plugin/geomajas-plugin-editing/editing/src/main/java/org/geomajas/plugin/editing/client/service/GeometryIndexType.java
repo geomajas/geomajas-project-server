@@ -19,5 +19,12 @@ package org.geomajas.plugin.editing.client.service;
  */
 public enum GeometryIndexType {
 
-	TYPE_GEOMETRY, TYPE_VERTEX, TYPE_EDGE
+	/** Points to the geometry itself or one of it's sub-geometries. */
+	TYPE_GEOMETRY,
+
+	/** Points to a vertex (coordinate) within a geometry. */
+	TYPE_VERTEX,
+
+	/** Points to an edge within a geometry. Actually an edge is defined by it's 2 end-vertices. */
+	TYPE_EDGE
 }
