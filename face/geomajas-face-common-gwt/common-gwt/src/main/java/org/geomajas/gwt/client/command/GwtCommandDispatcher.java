@@ -59,9 +59,9 @@ public final class GwtCommandDispatcher
 
 	private static GwtCommandDispatcher instance = new GwtCommandDispatcher();
 
-	private GeomajasServiceAsync service;
+	private final GeomajasServiceAsync service;
 
-	private HandlerManager manager = new HandlerManager(this);
+	private final HandlerManager manager = new HandlerManager(this);
 
 	private int nrOfDispatchedCommands;
 
@@ -88,7 +88,7 @@ public final class GwtCommandDispatcher
 	private CommunicationExceptionCallback communicationExceptionCallback;
 
 	// map is not synchronized as this class runs in JavaScript which only has one execution thread
-	private Map<String, List<RetryCommand>> afterLoginCommands = new HashMap<String, List<RetryCommand>>();
+	private final Map<String, List<RetryCommand>> afterLoginCommands = new HashMap<String, List<RetryCommand>>();
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -564,9 +564,9 @@ public final class GwtCommandDispatcher
 	 *
 	 * @author Joachim Van der Auwera
 	 */
-	private class RetryCommand {
-		private GwtCommand command;
-		private Deferred deferred;
+	private static class RetryCommand {
+		private final GwtCommand command;
+		private final Deferred deferred;
 
 		/**
 		 * Create data to allow retying the command later.

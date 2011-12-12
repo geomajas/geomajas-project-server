@@ -20,14 +20,18 @@ import com.google.gwt.http.client.URL;
  * Builds parametrized URL from a base URL.
  *
  * @author Jan De Moerloose
- *
  */
 public class UrlBuilder {
 
-	private Map<String, String> params = new HashMap<String, String>();
+	private final Map<String, String> params = new HashMap<String, String>();
 
 	private String baseUrl;
 
+	/**
+	 * Constructor using the given base URL.
+	 *
+	 * @param baseUrl base URL
+	 */
 	public UrlBuilder(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}

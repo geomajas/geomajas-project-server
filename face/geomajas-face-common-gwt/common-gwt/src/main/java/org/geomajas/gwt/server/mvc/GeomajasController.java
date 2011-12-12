@@ -52,9 +52,9 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 
 	/**
 	 * Implements Spring Controller interface method.
-	 * 
-	 * Call GWT's RemoteService doPost() method and return null.
-	 * 
+	 * <p/>
+	 * Call {@link RemoteServiceServlet#doPost(HttpServletRequest, HttpServletResponse)} method and return null.
+	 *
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @return a ModelAndView to render, or null if handled directly
@@ -65,7 +65,7 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 		doPost(request, response);
 		return null;
 	}
-	
+
 	/**
 	 * Returns this controller's GWT-RPC serialization policy loader. May be null in case the built-in policy loading
 	 * strategy is used.
@@ -121,8 +121,8 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 	}
 
 	public ServletContext getServletContext() {
-		if (servletContext == null) {
-			throw new RuntimeException("getServletContext() cannot be used outside web context");
+		if (null == servletContext) {
+			throw new IllegalStateException("getServletContext() cannot be used outside web context");
 		}
 		return servletContext;
 	}
@@ -131,8 +131,7 @@ public class GeomajasController extends RemoteServiceServlet implements Geomajas
 		try {
 			super.init(servletConfig);
 		} catch (ServletException e) {
-			throw new RuntimeException("init(servletConfig) failed", e);
+			throw new IllegalStateException("init(servletConfig) failed", e);
 		}
-
 	}
 }

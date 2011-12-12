@@ -195,26 +195,20 @@ public final class ClientConfigurationService {
 
 		// Corner case: check the layer trees:
 		ClientLayerTreeInfo layerTree = mapInfo.getLayerTree();
-		if (layerTree != null) {
-			if (name.equals(layerTree.getId())) {
-				return mapInfo.getLayerTree();
-			}
+		if (null != layerTree && name.equals(layerTree.getId())) {
+			return mapInfo.getLayerTree();
 		}
 
 		// Corner case: check the tool-bar:
 		ClientToolbarInfo toolBar = mapInfo.getToolbar();
-		if (toolBar != null) {
-			if (name.equals(toolBar.getId())) {
-				return mapInfo.getToolbar();
-			}
+		if (null != toolBar && name.equals(toolBar.getId())) {
+			return mapInfo.getToolbar();
 		}
 
 		// Now search all widget info objects within the map:
 		Map<String, ClientWidgetInfo> widgets = mapInfo.getWidgetInfo();
-		if (widgets != null) {
-			if (widgets.containsKey(name)) {
-				return widgets.get(name);
-			}
+		if (null != widgets && widgets.containsKey(name)) {
+			return widgets.get(name);
 		}
 
 		// Bean was not found:
@@ -229,13 +223,12 @@ public final class ClientConfigurationService {
 	 */
 	private static final class DelayedCallback {
 
-		private String mapId;
-		private String widgetKey;
-		private WidgetConfigurationCallback callback;
+		private final String mapId;
+		private final String widgetKey;
+		private final WidgetConfigurationCallback callback;
 
 		private DelayedCallback(String widgetKey, WidgetConfigurationCallback callback) {
-			this.widgetKey = widgetKey;
-			this.callback = callback;
+			this(null, widgetKey, callback);
 		}
 
 		private DelayedCallback(String mapId, String widgetKey, WidgetConfigurationCallback callback) {

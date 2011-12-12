@@ -140,6 +140,7 @@ public final class MathService {
 	 *            First coordinate
 	 * @param c2
 	 *            Second coordinate
+	 * @return distance between given points
 	 */
 	public static double distance(Coordinate c1, Coordinate c2) {
 		double a = c1.getX() - c2.getX();
@@ -157,6 +158,7 @@ public final class MathService {
 	 *            Second coordinate of the line segment.
 	 * @param c
 	 *            Coordinate to calculate distance to line from.
+	 * @return distance between point and line segment
 	 */
 	public static double distance(Coordinate c1, Coordinate c2, Coordinate c) {
 		return distance(nearest(c1, c2, c), c);
@@ -275,9 +277,6 @@ public final class MathService {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * @private
-	 */
 	private static boolean touchesLineString(Geometry lineString, Coordinate coordinate) {
 		// Basic argument checking:
 		if (lineString.getCoordinates() == null || lineString.getCoordinates().length == 0) {
@@ -303,9 +302,6 @@ public final class MathService {
 		return false;
 	}
 
-	/**
-	 * @private
-	 */
 	private static boolean isWithinRing(Geometry linearRing, Coordinate coordinate) {
 		// Basic argument checking:
 		if (linearRing.getCoordinates() == null || linearRing.getCoordinates().length < 4) {
@@ -319,25 +315,19 @@ public final class MathService {
 			Coordinate c2 = linearRing.getCoordinates()[i % num]; // this way, it should work to concatenate all ring
 			// coordinate arrays of a polygon....(if they all have an equal number of coordinates)
 
-			if (coordinate.getY() > Math.min(c1.getY(), c2.getY())) { // some checks to try and avoid the expensive
-				// intersect calculation.
-				if (coordinate.getY() <= Math.max(c1.getY(), c2.getY())) {
-					if (coordinate.getX() <= Math.max(c1.getX(), c2.getX())) {
-						if (c1.getY() != c2.getY()) {
-							double xIntercept = (coordinate.getY() - c1.getY()) * (c2.getX() - c1.getX())
-									/ (c2.getY() - c1.getY()) + c1.getX();
-							if (c1.getX() == c2.getX() || coordinate.getX() <= xIntercept) {
-								counter++;
-							}
-						}
-					}
+			// some checks to try and avoid the expensive intersect calculation.
+			if (coordinate.getY() > Math.min(c1.getY(), c2.getY()) &&
+					coordinate.getY() <= Math.max(c1.getY(), c2.getY()) &&
+					coordinate.getX() <= Math.max(c1.getX(), c2.getX()) &&
+					c1.getY() != c2.getY()) {
+				double xIntercept = (coordinate.getY() - c1.getY()) * (c2.getX() - c1.getX())
+						/ (c2.getY() - c1.getY()) + c1.getX();
+				if (c1.getX() == c2.getX() || coordinate.getX() <= xIntercept) {
+					counter++;
 				}
 			}
 			c1 = c2;
 		}
-		if (counter % 2 == 0) {
-			return false;
-		}
-		return true;
+		return counter % 2 != 0;
 	}
 }
