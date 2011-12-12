@@ -23,7 +23,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.advancedviews.client.util.WidgetInfoHelper;
+import org.geomajas.widget.advancedviews.client.util.WidgetInfoUtil;
 import org.geomajas.widget.advancedviews.configuration.client.ThemesInfo;
 import org.geomajas.widget.advancedviews.configuration.client.themes.LayerConfig;
 import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig;
@@ -72,7 +72,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	}
 
 	protected void initialize() {
-		themeInfo = WidgetInfoHelper.getClientWidgetInfo(ThemesInfo.IDENTIFIER, mapWidget);
+		themeInfo = WidgetInfoUtil.getClientWidgetInfo(ThemesInfo.IDENTIFIER, mapWidget);
 		buildWidget();
 		for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 			layer.addLayerChangedHandler(this);

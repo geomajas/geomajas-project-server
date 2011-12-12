@@ -14,7 +14,7 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
-import org.geomajas.widget.advancedviews.client.util.LayerIconHelper;
+import org.geomajas.widget.advancedviews.client.util.LayerIconUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.ImageStyle;
@@ -73,11 +73,11 @@ public class LayerActions extends Window {
 
 		// ----------------------------------------------------------
 
-		layerImg = LayerIconHelper.getLargeLayerIcon(layer);
+		layerImg = LayerIconUtil.getLargeLayerIcon(layer);
 		layerImg.setImageType(ImageStyle.NORMAL);
-		layerLabelOverlay = LayerIconHelper.getLabelOverlayImg();
+		layerLabelOverlay = LayerIconUtil.getLabelOverlayImg();
 		layerLabelOverlay.setImageType(ImageStyle.NORMAL);
-		layerTransparencyUnderlay = LayerIconHelper.getTransparencyUnderlayImg();
+		layerTransparencyUnderlay = LayerIconUtil.getTransparencyUnderlayImg();
 		layerTransparencyUnderlay.setImageType(ImageStyle.NORMAL);
 
 		// ----------------------------------------------------------

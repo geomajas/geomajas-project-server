@@ -24,9 +24,9 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Kristof Heirwegh
  */
-public final class WidgetInfoHelper {
+public final class WidgetInfoUtil {
 
-	private WidgetInfoHelper() {
+	private WidgetInfoUtil() {
 	}
 
 	@SuppressWarnings("unchecked")

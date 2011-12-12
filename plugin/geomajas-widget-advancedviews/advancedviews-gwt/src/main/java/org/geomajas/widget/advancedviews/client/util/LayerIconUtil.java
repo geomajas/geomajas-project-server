@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.Img;
  * @author Kristof Heirwegh
  * 
  */
-public final class LayerIconHelper {
+public final class LayerIconUtil {
 
 	private static final String LAYER_LABEL_OVERLAY_URL = "[ISOMORPHIC]/geomajas/layerIcons/layer_label_overlay.png";
 	private static final String LAYER_TRANSPARENCY_UNDERLAY_URL = "[ISOMORPHIC]/geomajas/layerIcons/layer_transparenc" +
@@ -36,7 +36,7 @@ public final class LayerIconHelper {
 	private static final String LAYER_VECTOR_POLYGON_ICON_LARGE_URL = "[ISOMORPHIC]/geomajas/layerIcons/vector_polygo" +
 			"n_icon_large.png";
 
-	private LayerIconHelper() {
+	private LayerIconUtil() {
 	}
 
 	public static Img getSmallLayerIcon(Layer<?> layer) {
@@ -49,7 +49,7 @@ public final class LayerIconHelper {
 	}
 
 	public static String getSmallLayerIconUrl(Layer<?> layer) {
-		ExtraLayerInfo eli = WidgetInfoHelper.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
+		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
 		if (eli != null) {
 			return eli.getSmallLayerIconUrl();
@@ -59,7 +59,7 @@ public final class LayerIconHelper {
 	}
 
 	public static Img getLargeLayerIcon(Layer<?> layer) {
-		ExtraLayerInfo eli = WidgetInfoHelper.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
+		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
 		if (eli != null) {
 			return new Img(eli.getLargeLayerIconUrl());
@@ -88,7 +88,7 @@ public final class LayerIconHelper {
 	}
 
 	public static Img getLegendImage(Layer<?> layer) {
-		ExtraLayerInfo eli = WidgetInfoHelper.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
+		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
 		if (eli != null) {
 			return new Img(eli.getLegendImageUrl());

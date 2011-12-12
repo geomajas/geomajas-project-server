@@ -21,7 +21,7 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
-import org.geomajas.widget.advancedviews.client.util.LayerIconHelper;
+import org.geomajas.widget.advancedviews.client.util.LayerIconUtil;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -73,7 +73,7 @@ public class LayerInfo extends Window {
 		layout.setPadding(5);
 		layout.setMembersMargin(5);
 
-		Img icon = LayerIconHelper.getLargeLayerIcon(layer);
+		Img icon = LayerIconUtil.getLargeLayerIcon(layer);
 		icon.setImageType(ImageStyle.NORMAL);
 		layout.addMember(icon);
 		layout.addMember(createLayerInfo(layer));
@@ -209,7 +209,7 @@ public class LayerInfo extends Window {
 	}
 
 	private Canvas createLegendInfo(RasterLayer layer) {
-		Img legend = LayerIconHelper.getLegendImage(layer);
+		Img legend = LayerIconUtil.getLegendImage(layer);
 		if (legend != null) {
 			SectionStack sectionStack = new SectionStack();
 			sectionStack.setWidth(MAX_LEGEND_WIDTH);

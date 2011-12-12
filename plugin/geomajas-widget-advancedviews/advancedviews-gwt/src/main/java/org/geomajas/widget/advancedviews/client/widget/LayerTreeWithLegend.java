@@ -37,9 +37,9 @@ import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
-import org.geomajas.widget.advancedviews.client.util.LayerIconHelper;
+import org.geomajas.widget.advancedviews.client.util.LayerIconUtil;
 import org.geomajas.widget.advancedviews.client.util.UrlBuilder;
-import org.geomajas.widget.advancedviews.client.util.WidgetInfoHelper;
+import org.geomajas.widget.advancedviews.client.util.WidgetInfoUtil;
 import org.geomajas.widget.advancedviews.configuration.client.LayerTreeWithLegendInfo;
 
 import com.google.gwt.core.client.GWT;
@@ -169,7 +169,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 			} else {
 				RasterLayer rl = (RasterLayer) layer;
 				LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, rl.getServerLayerId(),
-						LayerIconHelper.getSmallLayerIconUrl(rl));
+						LayerIconUtil.getSmallLayerIconUrl(rl));
 				tree.add(tn, this);
 			}
 		}
@@ -506,7 +506,7 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		LayerTreeWithLegendInfo ltwli = WidgetInfoHelper.getClientWidgetInfo(LayerTreeWithLegendInfo.IDENTIFIER,
+		LayerTreeWithLegendInfo ltwli = WidgetInfoUtil.getClientWidgetInfo(LayerTreeWithLegendInfo.IDENTIFIER,
 				mapWidget);
 		setIconSize(ltwli == null ? DEFAULT_ICONSIZE : ltwli.getIconSize());
 
