@@ -22,9 +22,6 @@ org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo::1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:Map<String,LayerFeatureAuthorizationInfo> getLayers():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:void setLayers(Map<String,LayerFeatureAuthorizationInfo>, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.FilterAuthorization::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.FilterAuthorization:Filter getFeatureFilter(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.FilterAuthorization:String getId():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAreaAuthorizationInfo::1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAreaAuthorizationInfo:String getCreateAuthorizedArea():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAreaAuthorizationInfo:String getDeleteAuthorizedArea():1.6.0
@@ -104,27 +101,6 @@ org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo::1
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:Map<String,String> getFilters():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:void setFilters(Map<String,String>, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:Geometry getCreateAuthorizedArea(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:Geometry getDeleteAuthorizedArea(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:Geometry getUpdateAuthorizedArea(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:Geometry getVisibleArea(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:LocalAuthorization(AreaAuthorizationInfo, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:LocalAuthorization(AttributeAuthorizationInfo, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:LocalAuthorization(FeatureAuthorizationInfo, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isAttributeReadable(String, InternalFeature, String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isAttributeWritable(String, InternalFeature, String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isFeatureCreateAuthorized(String, InternalFeature, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isFeatureDeleteAuthorized(String, InternalFeature, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isFeatureUpdateAuthorized(String, InternalFeature, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isFeatureUpdateAuthorized(String, InternalFeature, InternalFeature, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isFeatureVisible(String, InternalFeature, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isPartlyCreateAuthorizedSufficient(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isPartlyDeleteAuthorizedSufficient(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isPartlyUpdateAuthorizedSufficient(String, ):1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LocalAuthorization:boolean isPartlyVisibleSufficient(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo::1.6.0
 org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:List<UserInfo> getUsers():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:void setUsers(List<UserInfo>, ):1.6.0

@@ -1,5 +1,4 @@
 // geomajas-plugin-staticsecurity-gwt module API, 1.7.1
-org.geomajas.plugin.staticsecurity.client.LoginClickHandler::1.7.1
 org.geomajas.plugin.staticsecurity.client.LoginWindow::1.7.1
 org.geomajas.plugin.staticsecurity.client.LoginWindow:LoginWindow():1.7.1
 org.geomajas.plugin.staticsecurity.client.LoginWindow:LoginWindow(LoginHandler, ):1.7.1
@@ -7,7 +6,6 @@ org.geomajas.plugin.staticsecurity.client.LoginWindow:LoginWindow(LoginHandler, 
 org.geomajas.plugin.staticsecurity.client.LogoutButton::1.7.1
 org.geomajas.plugin.staticsecurity.client.LogoutButton:LogoutButton():1.7.1
 org.geomajas.plugin.staticsecurity.client.LogoutButton:LogoutButton(LogoutHandler, ):1.7.1
-org.geomajas.plugin.staticsecurity.client.ResetClickHandler::1.7.1
 org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent::1.7.1
 org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent:List<String> getMessages():1.7.1
 org.geomajas.plugin.staticsecurity.client.event.LoginHandler:. TYPE:1.7.1
