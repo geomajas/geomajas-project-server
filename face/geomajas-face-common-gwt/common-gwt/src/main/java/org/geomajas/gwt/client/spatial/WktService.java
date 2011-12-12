@@ -24,7 +24,7 @@ import org.geomajas.geometry.Geometry;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public final class WktService {
 
 	private static final String ERR_MSG = "Error while parsing WKT: ";
