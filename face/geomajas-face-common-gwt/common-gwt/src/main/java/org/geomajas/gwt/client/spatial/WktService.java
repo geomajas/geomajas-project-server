@@ -13,7 +13,6 @@ package org.geomajas.gwt.client.spatial;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
@@ -91,25 +90,25 @@ public final class WktService {
 						+ "\" has no direct coordinates.");
 			}
 			// Format coordinates:
-			String coordStr = scopeWkt.substring(0, scopeWkt.indexOf(")"));
-			StringTokenizer tokenizer = new StringTokenizer(coordStr, ",");
-			List<Coordinate> coordinates = new ArrayList<Coordinate>();
-			while (tokenizer.hasMoreTokens()) {
-				String token = tokenizer.nextToken().trim();
+			String[] coordStrings = scopeWkt.substring(0, scopeWkt.indexOf(")")).split(",");
+			if (Geometry.POINT.equals(geometry.getGeometryType()) && coordStrings.length > 1) {
+				throw new WktException(ERR_MSG + "a point can have only one coordinate");
+			}
+
+			Coordinate[] coordinates = new Coordinate[coordStrings.length];
+			for (int i = 0; i < coordStrings.length; i++) {
+				String token = coordStrings[i].trim();
 				String[] values = token.split(" ");
 				if (values.length != 2) {
 					throw new WktException(ERR_MSG + "only 2D coordinates are supported");
 				}
 				try {
-					coordinates.add(new Coordinate(Double.parseDouble(values[0]), Double.parseDouble(values[1])));
+					coordinates[i] = new Coordinate(Double.parseDouble(values[0]), Double.parseDouble(values[1]));
 				} catch (Exception e) {
 					throw new WktException(ERR_MSG + "could not parse X and Y values (" + token + ")");
 				}
 			}
-			if (Geometry.POINT.equals(geometry.getGeometryType()) && coordinates.size() > 1) {
-				throw new WktException(ERR_MSG + "a point can have only one coordinate");
-			}
-			geometry.setCoordinates(coordinates.toArray(new Coordinate[coordinates.size()]));
+			geometry.setCoordinates(coordinates);
 			scopeWkt = scopeWkt.substring(scopeWkt.indexOf(")") + 1);
 		}
 		return scopeWkt;
