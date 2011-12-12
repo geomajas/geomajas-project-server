@@ -882,4 +882,52 @@ public class GeomajasMapWrapper {
 &lt;/dependencyManagement&gt;</programlisting>
     </example>
   </chapter>
+
+  <chapter>
+    <title>Set up cross-context communication between GWT face and another web
+    application</title>
+
+    <para>In some cases it may be necessary to put the Geomajas server on a
+    different server node (B) than the one that contains the HTML page (A). As
+    long as that node B is located in the same domain, such a situation can be
+    handled without taking recourse to cross-domain communication hacks. Two
+    measures have to be taken to ensure succesful cross-context
+    communication:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>The GWT face should direct its requests to a different URL. This
+        can be done by calling the following method on the
+        <code>GwtCommandDispatcher</code> instance: <programlisting>public void setServiceEndPointUrl(String url) </programlisting>The
+        url should be the absolute service URL of the cross-context server
+        (B)</para>
+      </listitem>
+
+      <listitem>
+        <para>The cross-context server (B) should have a
+        <code>GeomajasController</code> that is especially configured to
+        accept the gwt.rpc policy file of the compiled GWT
+        client:<programlisting>&lt;bean name="/geomajasService" class="org.geomajas.gwt.server.mvc.GeomajasController"&gt;
+ &lt;property name="serializationPolicyLocator"&gt;
+  &lt;bean class="org.geomajas.gwt.server.mvc.ResourceSerializationPolicyLocator"&gt;
+   &lt;property name="policyRoots"&gt;
+    &lt;list&gt;
+     &lt;value&gt;WEB-INF/policies/&lt;/value&gt;
+    &lt;/list&gt;
+   &lt;/property&gt;
+  &lt;/bean&gt;
+ &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>The policy file is the file with extension
+        <code>.gwt.rpc</code> that is obtained after the GWT compilation
+        process. For the above configuration it should be copied to the folder
+        <code>WEB-INF/policies</code> in the web root of B.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>This solution can also be useful if there is a library conflict
+    between the Geomajas backend and other parts of the application. In such
+    cases web service communication or communication via javascript may be
+    your best option.</para>
+  </chapter>
 </part>
