@@ -17,7 +17,22 @@ package org.geomajas.sld.editor.client;
  * 
  */
 public enum GeometryTypes {
-	UNSPECIFIED("unspecified"), POINT("point"), LINE("line"), POLYGON("polygon");
+	/**
+	 * Unspecified geometry.
+	 */
+	UNSPECIFIED("unspecified"),
+	/**
+	 * Point-type geometry.
+	 */
+	POINT("point"),
+	/**
+	 * Line-type geometry.
+	 */
+	LINE("line"),
+	/**
+	 * Polygon-type geometry.
+	 */
+	POLYGON("polygon");
 
 	private final String value;
 

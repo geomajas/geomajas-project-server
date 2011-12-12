@@ -40,7 +40,26 @@ import org.geomajas.annotation.Api;
  */
 @Api(allMethods = true)
 public enum ShowInfo implements Serializable {
-	NEW("new"), REPLACE("replace"), EMBED("embed"), OTHER("other"), NONE("none");
+	/**
+	 * Load ending resource in a new window, frame, pane, or other presentation context.
+	 */
+	NEW("new"),
+	/**
+	 * Load the resource in the same window, frame, pane, or other presentation context.
+	 */
+	REPLACE("replace"),
+	/**
+	 * Load ending resource in place of the presentation of the starting resource.
+	 */
+	EMBED("embed"),
+	/**
+	 * Behavior is unconstrained; examine other markup in the link for hints.
+	 */
+	OTHER("other"),
+	/**
+	 * Behavior is unconstrained.
+	 */
+	NONE("none");
 
 	private static final long serialVersionUID = 1100;
 

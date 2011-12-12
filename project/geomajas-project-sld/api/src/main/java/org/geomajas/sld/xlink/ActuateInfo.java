@@ -39,7 +39,23 @@ import org.geomajas.annotation.Api;
  */
 @Api(allMethods = true)
 public enum ActuateInfo implements Serializable {
-	ON_LOAD("onLoad"), ON_REQUEST("onRequest"), OTHER("other"), NONE("none");
+	/**
+	 * Traverse to the ending resource immediately on loading the starting resource.
+	 */
+	ON_LOAD("onLoad"),
+	/**
+	 * Traverse from the starting resource to the ending resource only on a post-loading event triggered for this
+	 * purpose.
+	 */
+	ON_REQUEST("onRequest"),
+	/**
+	 * Behavior is unconstrained; examine other markup in link for hints.
+	 */
+	OTHER("other"),
+	/**
+	 * Behavior is unconstrained.
+	 */
+	NONE("none");
 
 	private static final long serialVersionUID = 1100;
 
