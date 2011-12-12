@@ -40,12 +40,12 @@ import com.lowagie.text.pdf.PdfWriter;
 public class SinglePageDocument extends AbstractDocument {
 
 	/**
-	 * the page to render
+	 * The page to render.
 	 */
 	protected PageComponent page;
 
 	/**
-	 * filters to apply to layers
+	 * Filters to apply to layers.
 	 */
 	protected Map<String, String> filters;
 

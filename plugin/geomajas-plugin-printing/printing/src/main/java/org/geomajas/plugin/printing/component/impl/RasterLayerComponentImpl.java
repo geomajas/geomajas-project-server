@@ -95,19 +95,19 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	@XStreamOmitField
 	private final ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	/** The calculated bounds */
+	/** The calculated bounds. */
 	@XStreamOmitField
 	protected Envelope bbox;
 
-	/** List of the tile images */
+	/** List of the tile images. */
 	@XStreamOmitField
 	protected List<RasterTile> tiles;
 
-	/** The raster scale, may be different from map ppunit */
+	/** The raster scale, may be different from map ppunit. */
 	@XStreamOmitField
 	protected double rasterScale;
 
-	/** to fetch images */
+	/** To fetch images. */
 	@XStreamOmitField
 	private HttpClient httpClient;
 
@@ -128,6 +128,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	private float opacity = 1.0f;
 
+	/** Constructor. */
 	public RasterLayerComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
 		getConstraint().setAlignmentY(LayoutConstraint.JUSTIFIED);
@@ -139,7 +140,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor
+	 * @param visitor visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 	}
@@ -311,10 +312,20 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		return bounds;
 	}
 
+	/**
+	 * Get the layer opacity.
+	 *
+	 * @return layer opacity
+	 */
 	public float getOpacity() {
 		return opacity;
 	}
 
+	/**
+	 * Set the layer opacity.
+	 *
+	 * @param opacity layer opacity
+	 */
 	public void setOpacity(float opacity) {
 		this.opacity = opacity;
 	}
@@ -340,6 +351,14 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		}
 	}
 
+	/**
+	 * Add image in the document.
+	 *
+	 * @param context PDF context
+	 * @param imageResult image
+	 * @throws BadElementException PDF construction problem
+	 * @throws IOException PDF construction problem
+	 */
 	protected void addImage(PdfContext context, ImageResult imageResult) throws BadElementException, IOException {
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		float scaleFactor = (float) (72 / getMap().getRasterResolution());
@@ -361,6 +380,12 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		log.debug("after drawImage");
 	}
 
+	/**
+	 * Add image with a exception message in the PDF document.
+	 *
+	 * @param context PDF context
+	 * @param e exception to put in image
+	 */
 	protected void addLoadError(PdfContext context, ImageException e) {
 		Bbox imageBounds = e.getRasterImage().getBounds();
 		float scaleFactor = (float) (72 / getMap().getRasterResolution());
@@ -418,18 +443,25 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 		private static final long serialVersionUID = 151L;
 
-		private RasterTile rasterImage;
+		private final RasterTile rasterImage;
 
-		public ImageException(RasterTile rasterImage) {
-			super();
-			this.rasterImage = rasterImage;
-		}
-
+		/**
+		 * Constructor.
+		 *
+		 * @param rasterImage image for which the exception occurred
+		 * @param cause cause exception
+		 *
+		 * */
 		public ImageException(RasterTile rasterImage, Throwable cause) {
 			super(cause);
 			this.rasterImage = rasterImage;
 		}
 
+		/**
+		 * Get image for which the exception occurred.
+		 *
+		 * @return image for which the exception occurred
+		 */
 		public RasterTile getRasterImage() {
 			return rasterImage;
 		}
@@ -483,6 +515,14 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	// converts an image to a RGBA direct color model using a workaround via buffered image
 	// directly calling the ColorConvert operation fails for unknown reasons ?!
+
+	/**
+	 * Converts an image to a RGBA direct color model using a workaround via buffered image
+	 * directly calling the ColorConvert operation fails for unknown reasons ?!
+	 *
+	 * @param img image to convert
+	 * @return converted image
+	 */
 	public PlanarImage toDirectColorModel(RenderedImage img) {
 		BufferedImage dest = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		BufferedImage source = new BufferedImage(img.getColorModel(), (WritableRaster) img.getData(), img
@@ -492,6 +532,12 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		return PlanarImage.wrapRenderedImage(dest);
 	}
 
+	/**
+	 * Lookup error message for internationalization bundle.
+	 *
+	 * @param key key to lookup
+	 * @return internationalized value
+	 */
 	public String getNlsString(String key) {
 		try {
 			return resourceBundle.getString(key);

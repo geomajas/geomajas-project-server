@@ -73,15 +73,15 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 	/** True if labels are visible. */
 	private boolean labelsVisible;
 
-	/** The calculated bounds */
+	/** The calculated bounds. */
 	@XStreamOmitField
 	protected Envelope bbox;
 
-	/** List of the features */
+	/** List of the features. */
 	@XStreamOmitField
 	protected List<InternalFeature> features = new ArrayList<InternalFeature>();
 
-	/** A sorted set of selected feature ids */
+	/** A sorted set of selected feature ids. */
 	@XStreamOmitField
 	protected Set<String> selectedFeatures = new TreeSet<String>();
 
@@ -314,49 +314,70 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		}
 	}
 
+	/**
+	 * Set style for layer.
+	 *
+	 * @param styleInfo style info
+	 */
 	public void setStyleInfo(NamedStyleInfo styleInfo) {
 		this.styleInfo = styleInfo;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.VectorLayerComponent#getSelectedFeatureIds()
+	/**
+	 * Get selected feature ids.
+	 *
+	 * @return selected feature ids.
 	 */
 	public String[] getSelectedFeatureIds() {
 		return selectedFeatureIds;
 	}
 
+	/**
+	 * Set selected feature ids.
+	 *
+	 * @param selectedFeatureIds selected feature ids
+	 */
 	public void setSelectedFeatureIds(String[] selectedFeatureIds) {
 		this.selectedFeatureIds = selectedFeatureIds;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.VectorLayerComponent#getFilter()
+	/**
+	 * Get layer filter.
+	 *
+	 * @return layer filter
 	 */
 	public String getFilter() {
 		return filter;
 	}
 
+	/**
+	 * Set the layer filter.
+	 *
+	 * @param filter layer filter
+	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.VectorLayerComponent#isLabelsVisible()
+	/**
+	 * Are labels visible?
+	 *
+	 * @return true when labels are visible
 	 */
 	public boolean isLabelsVisible() {
 		return labelsVisible;
 	}
 
+	/**
+	 * Set the label visibility.
+	 *
+	 * @param labelsVisible labels visible?
+	 */
 	public void setLabelsVisible(boolean labelsVisible) {
 		this.labelsVisible = labelsVisible;
 	}
 
+	@Override
 	public void fromDto(VectorLayerComponentInfo vectorLayerInfo) {
 		super.fromDto(vectorLayerInfo);
 		setLabelsVisible(vectorLayerInfo.isLabelsVisible());

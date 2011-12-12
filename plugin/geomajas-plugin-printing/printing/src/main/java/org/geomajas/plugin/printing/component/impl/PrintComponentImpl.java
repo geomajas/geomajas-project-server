@@ -58,14 +58,28 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 
 	protected String tag;
 
+	/**
+	 * Create a print component with empty id and no constraints.
+	 */
 	public PrintComponentImpl() {
 		this("");
 	}
 
+	/**
+	 * Create a print component with given id and no constraints.
+	 *
+	 * @param id component id
+	 */
 	public PrintComponentImpl(String id) {
 		this(id, new LayoutConstraint());
 	}
 
+	/**
+	 * Create a print component with given id and constraints.
+	 *
+	 * @param id id
+	 * @param constraint constraints
+	 */
 	public PrintComponentImpl(String id, LayoutConstraint constraint) {
 		this.id = id;
 		this.constraint = constraint;
@@ -77,6 +91,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 	public void accept(PrintComponentVisitor visitor) {
 	}
 
+	/** {@inheritDoc} */
 	public void layout(PdfContext context) {
 		// top down layout
 		float x = getBounds().getLeft();
@@ -104,6 +119,8 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 					layoutChild(child, new Rectangle(x, y - ch - 2 * marginY, x + w, y));
 					y -= ch + 2 * marginY;
 					break;
+				default:
+					throw new IllegalStateException("Unknown flow direction " + getConstraint().getFlowDirection());
 			}
 		}
 		for (PrintComponent<?> child : children) {
@@ -134,6 +151,8 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 					width = Math.max(width, cw);
 					height += ch;
 					break;
+				default:
+					throw new IllegalStateException("Unknown flow direction " + getConstraint().getFlowDirection());
 			}
 		}
 		if (getConstraint().getWidth() != 0) {
@@ -145,6 +164,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		setBounds(new Rectangle(0, 0, width, height));
 	}
 
+	/** {@inheritDoc} */
 	public void render(PdfContext context) {
 		for (PrintComponent<?> child : children) {
 			context.saveOrigin();
@@ -154,6 +174,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void addComponent(PrintComponent<?> child) {
 		if (!children.contains(child)) {
 			child.setParent(this);
@@ -161,6 +182,7 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void removeComponent(PrintComponent<?> child) {
 		if (children.contains(child)) {
 			child.setParent(null);
@@ -168,17 +190,20 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void addComponent(int index, PrintComponent<?> child) {
 		child.setParent(this);
 		children.add(index, child);
 	}
 
+	/** {@inheritDoc} */
 	public void addComponents(Collection<? extends PrintComponent<?>> children) {
 		for (PrintComponent<?> child : children) {
 			addComponent(child);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void addComponents(int index, Collection<? extends PrintComponent<?>> children) {
 		// reverse add to index to keep the order
 		List<PrintComponent<?>> reverse = new ArrayList<PrintComponent<?>>(children);
@@ -188,56 +213,46 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Json(serialize = false)
 	public PrintComponent<?> getParent() {
 		return parent;
 	}
 
+	/** {@inheritDoc} */
 	public void setParent(PrintComponent<?> parent) {
 		this.parent = parent;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseComponent#getBounds()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.BaseComponent#getBounds()
-	 */
+	/** {@inheritDoc} */
 	public Rectangle getBounds() {
 		return bounds;
 	}
 
+	/** {@inheritDoc} */
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
 
 	/**
-	 * Return a rectangle with the size of this component and origin (0,0)
+	 * Return a rectangle with the size of this component and origin (0,0).
 	 * 
-	 * @return
+	 * @return rectangle with the size of this component
 	 */
 	protected Rectangle getSize() {
 		return new Rectangle(getBounds().getWidth(), getBounds().getHeight());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseComponent#getConstraint()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.BaseComponent#getConstraint()
-	 */
+	/** {@inheritDoc} */
 	public LayoutConstraint getConstraint() {
 		return constraint;
 	}
 
+	/**
+	 * Set constraint on this component.
+	 *
+	 * @param constraint constraint
+	 */
 	public void setConstraint(LayoutConstraint constraint) {
 		this.constraint = constraint;
 	}
@@ -276,6 +291,8 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 				x = marginX;
 				w = absw;
 				break;
+			default:
+				throw new IllegalStateException("Unknown X alignment " + layoutConstraint.getAlignmentX());
 		}
 		switch (layoutConstraint.getAlignmentY()) {
 			case LayoutConstraint.BOTTOM:
@@ -295,6 +312,8 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 				y = marginY;
 				h = absh;
 				break;
+			default:
+				throw new IllegalStateException("Unknown Y alignment " + layoutConstraint.getAlignmentY());
 		}
 		child.setBounds(new Rectangle(x, y, x + w, y + h));
 	}
@@ -305,20 +324,12 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 				+ "] x [" + (int) getBounds().getBottom() + " : " + (int) getBounds().getTop() + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseComponent#getChildren()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.BaseComponent#getChildren()
-	 */
+	/** {@inheritDoc} */
 	public List<PrintComponent<?>> getChildren() {
 		return children;
 	}
 
+	/** {@inheritDoc} */
 	public PrintComponent<?> getChild(String childTag) {
 		for (PrintComponent<?> child : children) {
 			if (child.getTag() != null && child.getTag().equals(childTag)) {
@@ -328,6 +339,11 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		return null;
 	}
 
+	/**
+	 * Set child components.
+	 *
+	 * @param children children
+	 */
 	public void setChildren(List<PrintComponent<?>> children) {
 		this.children = children;
 		// needed for Json unmarshall !!!!
@@ -336,42 +352,35 @@ public abstract class PrintComponentImpl<T extends PrintComponentInfo> implement
 		}
 	}
 
+	/**
+	 * Set component id.
+	 *
+	 * @param id id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseComponent#getId()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.BaseComponent#getId()
-	 */
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set tag.
+	 *
+	 * @param tag tag
+	 */
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.IBaseComponent#getTag()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.BaseComponent#getTag()
-	 */
+	/** {@inheritDoc} */
 	public String getTag() {
 		return tag;
 	}
 
+	/** {@inheritDoc} */
 	public void fromDto(T info) {
 		if (info.getBounds() != null) {
 			setBounds(createRectangle(info.getBounds()));

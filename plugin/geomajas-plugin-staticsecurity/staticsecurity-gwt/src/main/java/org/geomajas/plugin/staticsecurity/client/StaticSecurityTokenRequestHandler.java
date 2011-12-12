@@ -45,7 +45,7 @@ public class StaticSecurityTokenRequestHandler implements TokenRequestHandler {
 		this.slogan = slogan;
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public void login(final TokenChangedHandler tokenChangedHandler) {
 		final TokenRequestWindow tokenRequestWindow =
 				new TokenRequestWindow(new LoginTokenChangedHandler(tokenChangedHandler));

@@ -134,12 +134,12 @@ public final class GeoServiceImpl implements GeoService {
 		return empty;
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
 		return getCrs2(crs);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Crs getCrs2(String crs) throws LayerException {
 		try {
 			Crs res = crsCache.get(crs);
@@ -176,12 +176,12 @@ public final class GeoServiceImpl implements GeoService {
 		return crsInt;
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public String getCodeFromCrs(Crs crs) {
 		return crs.getId();
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public String getCodeFromCrs(CoordinateReferenceSystem crs) {
 		return "EPSG:" + getSridFromCrs(crs);
 	}
@@ -212,18 +212,18 @@ public final class GeoServiceImpl implements GeoService {
 		}
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException {
 		return getCrsTransform(getCrs2(getCodeFromCrs(sourceCrs)), getCrs2(getCodeFromCrs(targetCrs)));
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public CrsTransform getCrsTransform(String sourceCrs, String targetCrs) throws GeomajasException {
 		return getCrsTransform(getCrs2(sourceCrs), getCrs2(targetCrs));
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public CrsTransform getCrsTransform(CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException {
 		Crs source, target;
@@ -240,7 +240,7 @@ public final class GeoServiceImpl implements GeoService {
 		return getCrsTransform(source, target);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public CrsTransform getCrsTransform(Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		String key = getTransformKey(sourceCrs, targetCrs);
 		CrsTransform transform = transformCache.get(key);
@@ -277,7 +277,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform;
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public Geometry transform(Geometry source, CrsTransform crsTransform) {
 		try {
@@ -298,7 +298,7 @@ public final class GeoServiceImpl implements GeoService {
 		}
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Geometry transform(Geometry geometry, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
@@ -309,7 +309,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(geometry, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Geometry transform(Geometry geometry, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			return geometry;
@@ -319,7 +319,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(geometry, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Geometry transform(Geometry geometry, CoordinateReferenceSystem sourceCrs,
 			CoordinateReferenceSystem targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
@@ -342,7 +342,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(geometry, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public Bbox transform(Bbox source, CrsTransform crsTransform) {
 		try {
@@ -370,7 +370,7 @@ public final class GeoServiceImpl implements GeoService {
 		}
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Bbox transform(Bbox bbox, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
@@ -381,7 +381,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(bbox, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Bbox transform(Bbox bbox, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			// only works when the caching of the CRSs works
@@ -392,7 +392,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(bbox, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "REC_CATCH_EXCEPTION")
 	public Envelope transform(Envelope source, CrsTransform crsTransform) {
 		try {
@@ -418,7 +418,7 @@ public final class GeoServiceImpl implements GeoService {
 		}
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Envelope transform(Envelope source, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
@@ -429,7 +429,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(source, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Envelope transform(Envelope source, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			// only works when the caching of the CRSs works
@@ -440,7 +440,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(source, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Coordinate transform(Coordinate source, CrsTransform crsTransform) {
 		try {
 			if (crsTransform.isTransforming()) {
@@ -460,7 +460,7 @@ public final class GeoServiceImpl implements GeoService {
 		}
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Coordinate transform(Coordinate source, Crs sourceCrs, Crs targetCrs) throws GeomajasException {
 		if (sourceCrs == targetCrs) { // NOPMD
 			// only works when the caching of the CRSs works
@@ -471,7 +471,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(source, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Coordinate transform(Coordinate source, String sourceCrs, String targetCrs) throws GeomajasException {
 		if (sourceCrs.equals(targetCrs)) {
 			// only works when the caching of the CRSs works
@@ -482,7 +482,7 @@ public final class GeoServiceImpl implements GeoService {
 		return transform(source, crsTransform);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Coordinate calcDefaultLabelPosition(InternalFeature feature) {
 		Geometry geometry = feature.getGeometry();
 		Coordinate labelPoint = null;
@@ -514,7 +514,7 @@ public final class GeoServiceImpl implements GeoService {
 		return null == labelPoint ? null : new Coordinate(labelPoint);
 	}
 
-	/** @{inheritDoc} */
+	/** {@inheritDoc} */
 	public Geometry createCircle(final Point point, final double radius, final int nrPoints) {
 		double x = point.getX();
 		double y = point.getY();
