@@ -48,7 +48,7 @@ public class TextServiceImpl implements TextService {
 			styleStr = styleStr.trim();
 			if (STYLE_BOLD.equalsIgnoreCase(styleStr)) {
 				style = Font.BOLD;
-			} else if (STYLE_ITALIC.equalsIgnoreCase(styleStr))) {
+			} else if (STYLE_ITALIC.equalsIgnoreCase(styleStr)) {
 				style = Font.ITALIC;
 			}
 		}
