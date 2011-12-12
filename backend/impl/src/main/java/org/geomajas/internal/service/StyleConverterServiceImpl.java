@@ -906,7 +906,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				return resource.getURL();
 			} catch (IOException e) {
 				log.warn("missing resource {}", resourceLocation);
-				throw new LayerException(ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
+				throw new LayerException(e, ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
 			}
 		} else {
 			String gwtResource = "classpath:" + resourceLocation;
@@ -920,7 +920,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				}
 			} catch (IOException e) {
 				log.warn("missing resource {}", resourceLocation);
-				throw new LayerException(ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
+				throw new LayerException(e, ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
 			}
 		}
 	}

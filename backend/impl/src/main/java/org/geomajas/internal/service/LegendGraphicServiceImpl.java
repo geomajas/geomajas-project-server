@@ -147,7 +147,7 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 	}
 
 	/**
-	 * Get legend image
+	 * Get legend image.
 	 *
 	 * @param legendMetadata the legend metadata
 	 * @return rendered image
