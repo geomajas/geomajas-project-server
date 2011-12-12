@@ -24,7 +24,9 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.gwt.client.util.Log;
 
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -707,19 +709,18 @@ public class DomHelper {
 			return null;
 		} else {
 			Element element;
-			if (Dom.NS_HTML.equals(namespace)) {
-				element = Dom.createElement("div");
-			} else {
-				element = Dom.createElementNS(namespace, type);
-			}
-			parentElement.appendChild(element);
 			String id = Dom.createUniqueId();
 			if (group instanceof PaintableGroup) {
 				id = Dom.assembleId(id, ((PaintableGroup) group).getGroupName());
 			}
 			groupToId.put(group, id);
 			idToGroup.put(id, group);
-			Dom.setElementAttribute(element, "id", id);
+			if (Dom.NS_HTML.equals(namespace)) {
+				element = Dom.createElement("div", id);
+			} else {
+				element = Dom.createElementNS(namespace, type, id);
+			}
+			parentElement.appendChild(element);
 			return element;
 		}
 	}
@@ -775,15 +776,17 @@ public class DomHelper {
 			return null;
 		} else {
 			Element element;
+			String id = generateId ? Dom.assembleId(parentElement.getId(), name) : name;
+			elementToName.put(id, name);
 			switch (namespace) {
 				case SVG:
-					element = Dom.createElementNS(Dom.NS_SVG, type);
+					element = Dom.createElementNS(Dom.NS_SVG, type, id);
 					if (style != null) {
 						applyStyle(element, style);
 					}
 					break;
 				case VML:
-					element = Dom.createElementNS(Dom.NS_VML, type);
+					element = Dom.createElementNS(Dom.NS_VML, type, id);
 					Element stroke = Dom.createElementNS(Dom.NS_VML, "stroke");
 					element.appendChild(stroke);
 					Element fill = Dom.createElementNS(Dom.NS_VML, "fill");
@@ -800,14 +803,12 @@ public class DomHelper {
 					break;
 				case HTML:
 				default:
-					element = Dom.createElementNS(Dom.NS_HTML, type);
+					element = Dom.createElementNS(Dom.NS_HTML, type, id);
 					if (style != null) {
 						applyStyle(element, style);
 					}
 			}
 			parentElement.appendChild(element);
-			String id = generateId ? Dom.assembleId(parentElement.getId(), name) : name;
-			elementToName.put(id, name);
 			Dom.setElementAttribute(element, "id", id);
 			return element;
 		}
@@ -826,9 +827,7 @@ public class DomHelper {
 		if (element != null) {
 			Element group = (Element) element.getParentElement();
 			if (group != null) {
-				Dom.removeChild(group, element);
-				Dom.setEventListener(element, null);
-				elementToName.remove(element.getId());
+				deleteRecursively(group, element);
 			}
 		}
 	}
@@ -836,32 +835,43 @@ public class DomHelper {
 	/**
 	 * Delete this group from the graphics DOM structure.
 	 * 
-	 * @param object
-	 *            The group's object.
+	 * @param object The group's object.
 	 */
 	public void deleteGroup(Object object) {
 		Element element = getGroup(object);
 		if (element != null) {
 			Element parent = (Element) element.getParentElement();
 			if (parent != null) {
-				try {
-					Dom.removeChild(parent, element);
-					Dom.setEventListener(element, null);
-					groupToId.remove(object);
-				} catch (Exception e) {
-					// do something...
-				}
+				deleteRecursively(parent, element);
 			}
+		}
+	}
+
+	private void deleteRecursively(Element parent, Element element) {
+		for (int i = element.getChildCount() - 1; i >= 0; i--) {
+			Node node = element.getChild(i);
+			if (node instanceof Element) {
+				deleteRecursively(element, (Element) node);
+			}
+		}
+		try {
+			groupToId.remove(element);
+			if (element.getId() != null) {
+				Log.logDebug("Removing element " + element.getId());
+				elementToName.remove(element.getId());
+			}
+			Dom.setEventListener(element, null);
+			Dom.removeChild(parent, element);
+		} catch (Exception e) {
+			// do something...
 		}
 	}
 
 	/**
 	 * Apply the style.
 	 * 
-	 * @param element
-	 *            DOM element
-	 * @param style
-	 *            style
+	 * @param element DOM element
+	 * @param style style
 	 */
 	public void applyStyle(Element element, Style style) {
 		if (element != null && style != null) {

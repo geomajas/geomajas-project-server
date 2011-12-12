@@ -110,22 +110,56 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * "namespace:tag".
 	 * </p>
 	 * 
-	 * @param ns
-	 *            The name-space to be used in the element creation.
-	 * @param tag
-	 *            The tag-name to be used in the element creation.
+	 * @param ns The name-space to be used in the element creation.
+	 * @param tag The tag-name to be used in the element creation.
+	 * @return Returns a newly created DOM element in the given name-space.
+	 */
+	public static Element createElementNS(String ns, String tag, String id) {
+		Element element;
+		if (NS_HTML.equals(ns)) {
+			element = createElement(tag);
+		} else {
+			if (isIE()) {
+				element = createElement(ns + ":" + tag);
+			} else {
+				element = createNameSpaceElement(ns, tag);
+			}
+		}
+		if (id != null) {
+			setElementAttribute(element, "id", id);
+		}
+		Log.logDebug("Creating element " + id);
+		return element;
+	}
+
+	/**
+	 * <p>
+	 * Creates a new DOM element in the given name-space. If the name-space is HTML, a normal element will be created.
+	 * </p>
+	 * <p>
+	 * There is an exception when using Internet Explorer! For Internet Explorer a new element will be created of type
+	 * "namespace:tag".
+	 * </p>
+	 * 
+	 * @param ns The name-space to be used in the element creation.
+	 * @param tag The tag-name to be used in the element creation.
 	 * @return Returns a newly created DOM element in the given name-space.
 	 */
 	public static Element createElementNS(String ns, String tag) {
-		if (NS_HTML.equals(ns)) {
-			return createElement(tag);
-		} else {
-			if (isIE()) {
-				return createElement(ns + ":" + tag);
-			} else {
-				return createNameSpaceElement(ns, tag);
-			}
-		}
+		return createElementNS(ns, tag, null);
+	}
+
+	/**
+	 * Creates an HTML element with the given id.
+	 * 
+	 * @param tagName the HTML tag of the element to be created
+	 * @return the newly-created element
+	 */
+	public static Element createElement(String tagName, String id) {
+		Log.logDebug("Creating element " + id);
+		Element element = createElement(tagName).cast();
+		setElementAttribute(element, "id", id);
+		return element;
 	}
 
 	private static native Element createNameSpaceElement(String ns, String tag)
@@ -142,14 +176,10 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * will be set.
 	 * </p>
 	 * 
-	 * @param ns
-	 *            The name-space to be used in the element creation.
-	 * @param element
-	 *            The element to which the attribute is to be set.
-	 * @param attr
-	 *            The name of the attribute.
-	 * @param value
-	 *            The new value for the attribute.
+	 * @param ns The name-space to be used in the element creation.
+	 * @param element The element to which the attribute is to be set.
+	 * @param attr The name of the attribute.
+	 * @param value The new value for the attribute.
 	 */
 	public static void setElementAttributeNS(String ns, Element element, String attr, String value) {
 		if (isIE()) {
@@ -171,6 +201,15 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 */
 	public static boolean isIE() {
 		return getUserAgent().contains("msie");
+	}
+
+	/**
+	 * Is the browser supporting SVG?
+	 * 
+	 * @return true or false - yes or no.
+	 */
+	public static boolean isSvg() {
+		return !getUserAgent().contains("msie") || getUserAgent().contains("msie 9.0");
 	}
 
 	/**
@@ -219,10 +258,8 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * possible to set a string of SVG on an object. This method can do that. On the other hand, this method is better
 	 * not used for setting normal HTML as an element's innerHTML.
 	 * 
-	 * @param element
-	 *            The element onto which to set the SVG string.
-	 * @param svg
-	 *            The string of SVG to set on the element.
+	 * @param element The element onto which to set the SVG string.
+	 * @param svg The string of SVG to set on the element.
 	 */
 	public static void setInnerSvg(Element element, String svg) {
 		svg = "<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">" + svg + "</g>";
@@ -260,8 +297,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	/**
 	 * Clone a single SVG element.
 	 * 
-	 * @param source
-	 *            The source SVG element.
+	 * @param source The source SVG element.
 	 * @return Returns the clone.
 	 */
 	public static Element cloneSvgElement(Element source) {
@@ -271,7 +307,7 @@ public class Dom extends com.google.gwt.user.client.DOM {
 		if ("#text".equals(source.getNodeName())) {
 			return Document.get().createTextNode(source.getNodeValue()).cast();
 		}
-		Element clone = Dom.createElementNS(Dom.NS_SVG, source.getNodeName());
+		Element clone = createElementNS(Dom.NS_SVG, source.getNodeName(), Dom.createUniqueId());
 		cloneAttributes(source, clone);
 		for (int i = 0; i < source.getChildCount(); i++) {
 			Element child = source.getChild(i).cast();
