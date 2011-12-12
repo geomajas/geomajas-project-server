@@ -23,7 +23,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditResumeEvent;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendEvent;
-import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspensionHandler;
+import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -36,7 +36,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * @author Pieter De Graef
  */
 public class AddRingBtn extends ToolStripButton implements GeometryEditStartHandler, GeometryEditStopHandler,
-		GeometryEditSuspensionHandler {
+		GeometryEditSuspendResumeHandler {
 
 	private GeometryEditingService service;
 

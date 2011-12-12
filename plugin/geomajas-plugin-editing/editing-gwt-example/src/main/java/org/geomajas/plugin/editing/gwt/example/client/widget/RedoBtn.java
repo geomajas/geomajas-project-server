@@ -21,7 +21,7 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
 import org.geomajas.plugin.editing.client.service.GeometryEditingService;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditResumeEvent;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendEvent;
-import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspensionHandler;
+import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * @author Pieter De Graef
  */
 public class RedoBtn extends ToolStripButton implements GeometryEditShapeChangedHandler, GeometryEditStartHandler,
-		GeometryEditStopHandler, GeometryEditSuspensionHandler {
+		GeometryEditStopHandler, GeometryEditSuspendResumeHandler {
 
 	private GeometryEditingService service;
 

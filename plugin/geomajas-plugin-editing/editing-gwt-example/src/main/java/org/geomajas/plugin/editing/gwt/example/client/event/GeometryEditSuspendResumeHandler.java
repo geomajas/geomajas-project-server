@@ -19,9 +19,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * 
  * @author Pieter De Graef
  */
-public interface GeometryEditSuspensionHandler extends EventHandler {
+public interface GeometryEditSuspendResumeHandler extends EventHandler {
 
-	GwtEvent.Type<GeometryEditSuspensionHandler> TYPE = new GwtEvent.Type<GeometryEditSuspensionHandler>();
+	GwtEvent.Type<GeometryEditSuspendResumeHandler> TYPE = new GwtEvent.Type<GeometryEditSuspendResumeHandler>();
 
 	/**
 	 * Called when the editing process has been suspended.

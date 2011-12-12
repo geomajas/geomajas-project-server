@@ -16,7 +16,7 @@ package org.geomajas.plugin.editing.gwt.example.client.event;
  * 
  * @author Pieter De Graef
  */
-public enum GeometryEditSuspensionReason {
+public enum GeometryEditSuspendReason {
 
 	/** Default reason. */
 	UNKNOWN,

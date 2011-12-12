@@ -33,7 +33,7 @@ import org.geomajas.plugin.editing.gwt.client.handler.EditingHandlerRegistry.Geo
 import org.geomajas.plugin.editing.gwt.example.client.MenuBar;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditResumeEvent;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendEvent;
-import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspensionReason;
+import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendReason;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -89,7 +89,7 @@ public class DeleteRingBtn extends ToolStripButton implements GeometryEditStartH
 					renderer.redraw();
 
 					menuBar.getEventBus().fireEvent(
-							new GeometryEditSuspendEvent(GeometryEditSuspensionReason.REMOVE_RING));
+							new GeometryEditSuspendEvent(GeometryEditSuspendReason.REMOVE_RING));
 				} else {
 					resumeNormalBehavior();
 				}

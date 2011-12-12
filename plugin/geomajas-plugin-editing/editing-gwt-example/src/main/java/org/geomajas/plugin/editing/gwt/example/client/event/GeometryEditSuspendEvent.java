@@ -18,23 +18,23 @@ import com.google.gwt.event.shared.GwtEvent;
  * 
  * @author Pieter De Graef
  */
-public class GeometryEditSuspendEvent extends GwtEvent<GeometryEditSuspensionHandler> {
+public class GeometryEditSuspendEvent extends GwtEvent<GeometryEditSuspendResumeHandler> {
 
-	private GeometryEditSuspensionReason reason;
+	private GeometryEditSuspendReason reason;
 
-	public GeometryEditSuspendEvent(GeometryEditSuspensionReason reason) {
+	public GeometryEditSuspendEvent(GeometryEditSuspendReason reason) {
 		this.reason = reason;
 	}
 
-	public Type<GeometryEditSuspensionHandler> getAssociatedType() {
-		return GeometryEditSuspensionHandler.TYPE;
+	public Type<GeometryEditSuspendResumeHandler> getAssociatedType() {
+		return GeometryEditSuspendResumeHandler.TYPE;
 	}
 
-	protected void dispatch(GeometryEditSuspensionHandler handler) {
+	protected void dispatch(GeometryEditSuspendResumeHandler handler) {
 		handler.onGeometryEditSuspend(this);
 	}
 
-	public GeometryEditSuspensionReason getReason() {
+	public GeometryEditSuspendReason getReason() {
 		return reason;
 	}
 }

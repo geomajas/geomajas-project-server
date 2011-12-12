@@ -19,7 +19,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditingState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspensionHandler;
+import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
 import org.geomajas.plugin.editing.gwt.example.client.widget.AddRingBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.CancelEditingBtn;
 import org.geomajas.plugin.editing.gwt.example.client.widget.DeleteRingBtn;
@@ -100,8 +100,8 @@ public class MenuBar extends ToolStrip {
 		addButton(snappingBtn);
 	}
 
-	public HandlerRegistration addGeometryEditSuspensionHandler(GeometryEditSuspensionHandler handler) {
-		return eventBus.addHandler(GeometryEditSuspensionHandler.TYPE, handler);
+	public HandlerRegistration addGeometryEditSuspensionHandler(GeometryEditSuspendResumeHandler handler) {
+		return eventBus.addHandler(GeometryEditSuspendResumeHandler.TYPE, handler);
 	}
 
 	public EventBus getEventBus() {
