@@ -54,28 +54,9 @@ org.geomajas.gwt.client.action.layertree.LayerTreeModalAction:void setDisabledIc
 org.geomajas.gwt.client.action.layertree.LayerTreeModalAction:void setSelectedIcon(String, ):1.6.0
 org.geomajas.gwt.client.action.layertree.LayerTreeModalAction:void setSelectedTooltip(String, ):1.6.0
 org.geomajas.gwt.client.action.layertree.LayerTreeRegistry::1.6.0
-org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:static ToolbarBaseAction getToolbarAction(String, MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.layertree.LayerTreeRegistry:static void put(String, ToolCreator, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry::1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
-org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:ToolbarBaseAction createTool(MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static ToolbarBaseAction getToolbarAction(String, MapWidget, ):1.6.0
 org.geomajas.gwt.client.action.toolbar.ToolbarRegistry:static void put(String, ToolCreator, ):1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController::1.6.0
@@ -178,8 +159,6 @@ org.geomajas.gwt.client.gfx.Painter::1.6.0
 org.geomajas.gwt.client.gfx.WorldPaintable::1.6.0
 org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon::1.8.0
 org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon:MapAddon(String, int, int, ):1.8.0
-org.geomajas.gwt.client.map.IndexRange::1.6.0
-org.geomajas.gwt.client.map.LayerSelectionPropagator::1.6.0
 org.geomajas.gwt.client.map.MapModel::1.6.0
 org.geomajas.gwt.client.map.MapModel:HandlerRegistration addFeatureTransactionHandler(FeatureTransactionHandler, ):1.7.0
 org.geomajas.gwt.client.map.MapModel:HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler, ):1.6.0
@@ -285,9 +264,6 @@ org.geomajas.gwt.client.util.GeometryConverter:static . toGwt(Bbox, ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static . toGwt(Geometry, ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static Bbox toDto(., ):1.9.0
 org.geomajas.gwt.client.util.GeometryConverter:static Geometry toDto(., ):1.9.0
-org.geomajas.gwt.client.widget.ApplyFeatureTransactionToWindow::1.6.0
-org.geomajas.gwt.client.widget.CancelButton::1.6.0
-org.geomajas.gwt.client.widget.EditButton::1.6.0
 org.geomajas.gwt.client.widget.FeatureAttributeWindow::1.6.0
 org.geomajas.gwt.client.widget.FeatureAttributeWindow:FeatureAttributeWindow(Feature, boolean, ):1.6.0
 org.geomajas.gwt.client.widget.FeatureAttributeWindow:FeatureAttributeWindow(Feature, boolean, FeatureFormFactory<?>, ):1.9.0
@@ -295,9 +271,6 @@ org.geomajas.gwt.client.widget.LayerTree::1.6.0
 org.geomajas.gwt.client.widget.LayerTree:LayerTree(MapWidget, ):1.6.0
 org.geomajas.gwt.client.widget.LayerTree:void onDeselectLayer(LayerDeselectedEvent, ):1.6.0
 org.geomajas.gwt.client.widget.LayerTree:void onSelectLayer(LayerSelectedEvent, ):1.6.0
-org.geomajas.gwt.client.widget.LayerTreeButton::1.6.0
-org.geomajas.gwt.client.widget.LayerTreeModalButton::1.6.0
-org.geomajas.gwt.client.widget.LayerTreeTreeNode::1.6.0
 org.geomajas.gwt.client.widget.LocaleSelect::1.6.0
 org.geomajas.gwt.client.widget.LocaleSelect:LocaleSelect(String, ):1.6.0
 org.geomajas.gwt.client.widget.LocaleSelect:void onChanged(ChangedEvent, ):1.6.0
@@ -324,8 +297,6 @@ org.geomajas.gwt.client.widget.MapWidget:void setFallbackController(GraphicsCont
 org.geomajas.gwt.client.widget.MapWidget:void setMouseWheelController(MouseWheelHandler, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void unregisterPainter(Painter, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void unregisterWorldPaintable(WorldPaintable, ):1.6.0
-org.geomajas.gwt.client.widget.MapWidgetFeatureSelectionHandler::1.6.0
-org.geomajas.gwt.client.widget.MaxExtentHandler::1.6.0
 org.geomajas.gwt.client.widget.OverviewMap::1.6.0
 org.geomajas.gwt.client.widget.OverviewMap:OverviewMap(String, String, MapWidget, boolean, boolean, ):1.8.0
 org.geomajas.gwt.client.widget.OverviewMap:OverviewMap(String, String, MapWidget, boolean, boolean, int, ):1.8.0
@@ -333,15 +304,7 @@ org.geomajas.gwt.client.widget.OverviewMap:void setDrawTargetMaxExtent(boolean, 
 org.geomajas.gwt.client.widget.OverviewMap:void setMaxExtentIncreasePercentage(int, ):1.8.0
 org.geomajas.gwt.client.widget.OverviewMap:void setRectangleStyle(ShapeStyle, ):1.8.0
 org.geomajas.gwt.client.widget.OverviewMap:void setTargetMaxExtentRectangleStyle(ShapeStyle, ):1.8.0
-org.geomajas.gwt.client.widget.RefreshableTree::1.6.0
-org.geomajas.gwt.client.widget.RenderMapOnResizeHandler::1.6.0
-org.geomajas.gwt.client.widget.ResetButton::1.6.0
-org.geomajas.gwt.client.widget.SaveButton::1.6.0
 org.geomajas.gwt.client.widget.ScaleSelect::1.6.0
 org.geomajas.gwt.client.widget.ScaleSelect:ScaleSelect(MapView, double, ):1.6.0
 org.geomajas.gwt.client.widget.ScaleSelect:void setScales(Double, ):1.6.0
-org.geomajas.gwt.client.widget.ScaleValidator::1.6.0
 org.geomajas.gwt.client.widget.Toolbar::1.6.0
-org.geomajas.gwt.client.widget.UpdatePointOfViewHandler::1.6.0
-org.geomajas.gwt.client.widget.ZoomButton::1.6.0
-org.geomajas.gwt.client.widget.ZoomOnScrollController::1.6.0
