@@ -9,31 +9,27 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.client.merging;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.geomajas.plugin.editing.jsapi.client.merging;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.plugin.editing.client.GeometryFunction;
+import org.geomajas.plugin.editing.client.merging.GeometryMergingException;
+import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedHandler;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingRemovedEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingRemovedHandler;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHandler;
 import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler;
-import org.geomajas.plugin.editing.dto.GeometryMergeRequest;
-import org.geomajas.plugin.editing.dto.GeometryMergeResponse;
+import org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingAddedHandler;
+import org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingRemovedHandler;
+import org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingStartHandler;
+import org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingStopHandler;
+import org.geomajas.plugin.jsapi.client.event.JsHandlerRegistration;
+import org.timepedia.exporter.client.Export;
+import org.timepedia.exporter.client.ExportPackage;
+import org.timepedia.exporter.client.Exportable;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.SimpleEventBus;
 
 /**
  * Service for the process of merging multiple geometries into a single geometry.
@@ -41,18 +37,15 @@ import com.google.gwt.event.shared.SimpleEventBus;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
-public class GeometryMergingService {
+@Export("GeometryMergingService")
+@ExportPackage("org.geomajas.plugin.editing.merging")
+@Api(allMethods = true)
+public class JsGeometryMergingService implements Exportable {
 
-	private final List<Geometry> geometries = new ArrayList<Geometry>();
+	private final GeometryMergingService delegate;
 
-	private final EventBus eventBus = new SimpleEventBus();
-
-	private boolean busy;
-
-	private int precision = -1;
-
-	public GeometryMergingService() {
+	public JsGeometryMergingService() {
+		this.delegate = new GeometryMergingService();
 	}
 
 	// ------------------------------------------------------------------------
@@ -66,8 +59,18 @@ public class GeometryMergingService {
 	 *            The {@link GeometryMergingStartHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingStartHandler(GeometryMergingStartHandler handler) {
-		return eventBus.addHandler(GeometryMergingStartHandler.TYPE, handler);
+	public JsHandlerRegistration addGeometryMergingStartHandler(final GeometryMergingStartHandler handler) {
+		org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHandler h;
+		h = new org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHandler() {
+
+			public void onGeometryMergingStart(GeometryMergingStartEvent event) {
+				org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingStartEvent e;
+				e = new org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingStartEvent();
+				handler.onGeometryMergingStart(e);
+			}
+		};
+		HandlerRegistration registration = delegate.addGeometryMergingStartHandler(h);
+		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
 	/**
@@ -78,8 +81,18 @@ public class GeometryMergingService {
 	 *            The {@link GeometryMergingStopHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingStopHandler(GeometryMergingStopHandler handler) {
-		return eventBus.addHandler(GeometryMergingStopHandler.TYPE, handler);
+	public JsHandlerRegistration addGeometryMergingStopHandler(final GeometryMergingStopHandler handler) {
+		org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler h;
+		h = new org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler() {
+
+			public void onGeometryMergingStop(GeometryMergingStopEvent event) {
+				org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingStopEvent e;
+				e = new org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingStopEvent();
+				handler.onGeometryMergingStop(e);
+			}
+		};
+		HandlerRegistration registration = delegate.addGeometryMergingStopHandler(h);
+		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
 	/**
@@ -90,8 +103,19 @@ public class GeometryMergingService {
 	 *            The {@link GeometryMergingAddedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingAddedHandler(GeometryMergingAddedHandler handler) {
-		return eventBus.addHandler(GeometryMergingAddedHandler.TYPE, handler);
+	public JsHandlerRegistration addGeometryMergingAddedHandler(final GeometryMergingAddedHandler handler) {
+		org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedHandler h;
+		h = new org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedHandler() {
+
+			public void onGeometryMergingAdded(GeometryMergingAddedEvent event) {
+				org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingAddedEvent e;
+				e = new org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingAddedEvent(
+						event.getGeometry());
+				handler.onGeometryMergingAdded(e);
+			}
+		};
+		HandlerRegistration registration = delegate.addGeometryMergingAddedHandler(h);
+		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
 	/**
@@ -102,8 +126,19 @@ public class GeometryMergingService {
 	 *            The {@link GeometryMergingRemovedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingRemovedHandler(GeometryMergingRemovedHandler handler) {
-		return eventBus.addHandler(GeometryMergingRemovedHandler.TYPE, handler);
+	public JsHandlerRegistration addGeometryMergingRemovedHandler(final GeometryMergingRemovedHandler handler) {
+		org.geomajas.plugin.editing.client.merging.event.GeometryMergingRemovedHandler h;
+		h = new org.geomajas.plugin.editing.client.merging.event.GeometryMergingRemovedHandler() {
+
+			public void onGeometryMergingRemoved(GeometryMergingRemovedEvent event) {
+				org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingRemovedEvent e;
+				e = new org.geomajas.plugin.editing.jsapi.client.merging.event.GeometryMergingRemovedEvent(
+						event.getGeometry());
+				handler.onGeometryMergingRemoved(e);
+			}
+		};
+		HandlerRegistration registration = delegate.addGeometryMergingRemovedHandler(h);
+		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
 	// ------------------------------------------------------------------------
@@ -118,11 +153,7 @@ public class GeometryMergingService {
 	 *             In case a merging process is already started.
 	 */
 	public void start() throws GeometryMergingException {
-		if (busy) {
-			throw new GeometryMergingException("Can't start a new merging process while another one is still busy.");
-		}
-		busy = true;
-		eventBus.fireEvent(new GeometryMergingStartEvent());
+		delegate.start();
 	}
 
 	/**
@@ -134,11 +165,7 @@ public class GeometryMergingService {
 	 *             In case the merging process has not been started.
 	 */
 	public void addGeometry(Geometry geometry) throws GeometryMergingException {
-		if (!busy) {
-			throw new GeometryMergingException("Can't add a geometry if no merging process is active.");
-		}
-		geometries.add(geometry);
-		eventBus.fireEvent(new GeometryMergingAddedEvent(geometry));
+		delegate.addGeometry(geometry);
 	}
 
 	/**
@@ -150,11 +177,7 @@ public class GeometryMergingService {
 	 *             In case the merging process has not been started.
 	 */
 	public void removeGeometry(Geometry geometry) throws GeometryMergingException {
-		if (!busy) {
-			throw new GeometryMergingException("Can't remove a geometry if no merging process is active.");
-		}
-		geometries.remove(geometry);
-		eventBus.fireEvent(new GeometryMergingRemovedEvent(geometry));
+		delegate.removeGeometry(geometry);
 	}
 
 	/**
@@ -164,13 +187,7 @@ public class GeometryMergingService {
 	 *             In case the merging process has not been started.
 	 */
 	public void clearGeometries() throws GeometryMergingException {
-		if (!busy) {
-			throw new GeometryMergingException("Can't clear geometry list if no merging process is active.");
-		}
-		for (Geometry geometry : geometries) {
-			eventBus.fireEvent(new GeometryMergingRemovedEvent(geometry));
-		}
-		geometries.clear();
+		delegate.clearGeometries();
 	}
 
 	/**
@@ -183,25 +200,7 @@ public class GeometryMergingService {
 	 *             Thrown in case the merging process has not been started or some other merging error.
 	 */
 	public void stop(final GeometryFunction callback) throws GeometryMergingException {
-		if (!busy) {
-			throw new GeometryMergingException("Can't stop the merging process since it is not activated.");
-		}
-		if (callback == null) {
-			cancel();
-			return;
-		}
-		merge(new GeometryFunction() {
-
-			public void execute(Geometry geometry) {
-				callback.execute(geometry);
-				try {
-					clearGeometries();
-				} catch (GeometryMergingException e) {
-				}
-				busy = false;
-				eventBus.fireEvent(new GeometryMergingStopEvent(geometry));
-			}
-		});
+		delegate.stop(callback);
 	}
 
 	/**
@@ -211,9 +210,7 @@ public class GeometryMergingService {
 	 *             In case the merging process has not been started.
 	 */
 	public void cancel() throws GeometryMergingException {
-		clearGeometries();
-		busy = false;
-		eventBus.fireEvent(new GeometryMergingStopEvent(null));
+		delegate.cancel();
 	}
 
 	/**
@@ -222,7 +219,7 @@ public class GeometryMergingService {
 	 * @return Is the merging process currently active or not?
 	 */
 	public boolean isBusy() {
-		return busy;
+		return delegate.isBusy();
 	}
 
 	/**
@@ -231,7 +228,7 @@ public class GeometryMergingService {
 	 * @return The current precision to be used when merging geometries.
 	 */
 	public int getPrecision() {
-		return precision;
+		return delegate.getPrecision();
 	}
 
 	/**
@@ -246,24 +243,6 @@ public class GeometryMergingService {
 	 *            The new value.
 	 */
 	public void setPrecision(int precision) {
-		this.precision = precision;
-	}
-
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private void merge(final GeometryFunction callback) {
-		GeometryMergeRequest request = new GeometryMergeRequest();
-		request.setGeometries(geometries);
-		request.setPrecision(precision);
-		GwtCommand command = new GwtCommand(GeometryMergeRequest.COMMAND);
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometryMergeResponse>() {
-
-			public void execute(GeometryMergeResponse response) {
-				callback.execute(response.getGeometry());
-			}
-		});
+		delegate.setPrecision(precision);
 	}
 }

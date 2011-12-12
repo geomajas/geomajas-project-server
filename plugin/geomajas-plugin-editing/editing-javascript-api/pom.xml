@@ -60,6 +60,11 @@
 			<version>2.4.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-client</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>
