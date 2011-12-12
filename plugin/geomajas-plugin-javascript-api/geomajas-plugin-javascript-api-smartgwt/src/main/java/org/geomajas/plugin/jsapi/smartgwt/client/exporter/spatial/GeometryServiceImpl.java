@@ -13,6 +13,8 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.spatial.WktException;
+import org.geomajas.gwt.client.spatial.WktService;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.plugin.jsapi.client.spatial.GeometryService;
 import org.timepedia.exporter.client.Export;
@@ -34,5 +36,21 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 	public Bbox getBounds(Geometry geometry) {
 		org.geomajas.gwt.client.spatial.geometry.Geometry geom = GeometryConverter.toGwt(geometry);
 		return GeometryConverter.toDto(geom.getBounds());
+	}
+
+	public String toWkt(Geometry geometry) {
+		try {
+			return WktService.toWkt(geometry);
+		} catch (WktException e) {
+			return null;
+		}
+	}
+
+	public Geometry toGeometry(String wkt) {
+		try {
+			return WktService.toGeometry(wkt);
+		} catch (WktException e) {
+			return null;
+		}
 	}
 }

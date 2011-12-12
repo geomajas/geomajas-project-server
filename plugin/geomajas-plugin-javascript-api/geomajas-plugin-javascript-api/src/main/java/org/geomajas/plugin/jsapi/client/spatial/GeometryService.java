@@ -31,4 +31,22 @@ public interface GeometryService extends Exportable {
 	 * @return The outer bounds for the given geometry.
 	 */
 	org.geomajas.geometry.Bbox getBounds(org.geomajas.geometry.Geometry geometry);
+
+	/**
+	 * Format the given geometry object to Well Known Text representation.
+	 * 
+	 * @param geometry
+	 *            The geometry to format.
+	 * @return Get WKT representation of the given geometry, or null in case something went wrong.
+	 */
+	String toWkt(org.geomajas.geometry.Geometry geometry);
+
+	/**
+	 * Parse the given Well Known Text string into a geometry.
+	 * 
+	 * @param wkt
+	 *            The WKT text.
+	 * @return The resulting geometry, or null in case something went wrong.
+	 */
+	org.geomajas.geometry.Geometry toGeometry(String wkt);
 }

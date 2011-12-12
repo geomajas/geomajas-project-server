@@ -13,7 +13,6 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Attribute;
@@ -49,7 +48,6 @@ public class FeatureImpl implements Exportable, Feature {
 	public FeatureImpl() {
 	}
 
-	@Api
 	public FeatureImpl(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
 		this.layer = layer;
 		id = feature.getId();
