@@ -60,6 +60,7 @@ public class ZoomSliderController extends AbstractGraphicsController {
 			dragging = true;
 			sliderArea.drawMapRectangle();
 		}
+		event.preventDefault();
 	}
 	
 	@Override
@@ -71,6 +72,7 @@ public class ZoomSliderController extends AbstractGraphicsController {
 		zoom(lastY);
 		drawSliderIcon(lastY);
 		zoomSlider.getSliderArea().drawStartRectangle(zoomSlider.getSliderUnit().getBounds().getWidth());
+		event.preventDefault();
 	}
 	
 	@Override
@@ -81,6 +83,7 @@ public class ZoomSliderController extends AbstractGraphicsController {
 			y = validateY(y);
 			drawSliderIcon(y);
 		}
+		event.preventDefault();
 	}
 	
 	private double validateY(double y) {
