@@ -60,6 +60,8 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 	/**
 	 * Authorization including layer filter.
+	 *
+	 * @author Joachim Van der Auwera
 	 */
 	public static final class FilterAuthorization extends LayerAuthorization
 			implements VectorLayerSelectFilterAuthorization {

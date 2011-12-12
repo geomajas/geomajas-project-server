@@ -42,6 +42,14 @@ public class CrsTransformImpl implements CrsTransform {
 	private Bbox transformableBbox;
 	private boolean transforming;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param id id
+	 * @param source source CRS
+	 * @param target target CRS
+	 * @param mathTransform transformation
+	 */
 	public CrsTransformImpl(String id, Crs source, Crs target, MathTransform mathTransform) {
 		this.id = id;
 		this.source = source;
@@ -50,6 +58,15 @@ public class CrsTransformImpl implements CrsTransform {
 		transforming = !(getSource().equals(getTarget()));
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param id id
+	 * @param source source CRS
+	 * @param target target CRS
+	 * @param mathTransform transformation
+	 * @param transformableBbox bounding bow of transformable area
+	 */
 	public CrsTransformImpl(String id, Crs source, Crs target, MathTransform mathTransform,
 			Bbox transformableBbox) {
 		this(id, source, target, mathTransform);
@@ -62,6 +79,15 @@ public class CrsTransformImpl implements CrsTransform {
 		}
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param id id
+	 * @param source source CRS
+	 * @param target target CRS
+	 * @param mathTransform transformation
+	 * @param transformableEnvelope bounding bow of transformable area
+	 */
 	public CrsTransformImpl(String id, Crs source, Crs target, MathTransform mathTransform,
 			Envelope transformableEnvelope) {
 		this(id, source, target, mathTransform);
@@ -73,75 +99,93 @@ public class CrsTransformImpl implements CrsTransform {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 
+	/** {@inheritDoc} */
 	public Crs getSource() {
 		return source;
 	}
 
+	/** {@inheritDoc} */
 	public Crs getTarget() {
 		return target;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry getTransformableGeometry() {
 		return transformableGeometry;
 	}
 
+	/** {@inheritDoc} */
 	public Envelope getTransformableEnvelope() {
 		return transformableEnvelope;
 	}
 
+	/** {@inheritDoc} */
 	public Bbox getTransformableBbox() {
 		return transformableBbox;
 	}
 
+	/** {@inheritDoc} */
 	public int getSourceDimensions() {
 		return mathTransform.getSourceDimensions();
 	}
 
+	/** {@inheritDoc} */
 	public int getTargetDimensions() {
 		return mathTransform.getTargetDimensions();
 	}
 
+	/** {@inheritDoc} */
 	public boolean isTransforming() {
 		return transforming;
 	}
 
+	/** {@inheritDoc} */
 	public DirectPosition transform(DirectPosition directPosition, DirectPosition directPosition1)
 			throws MismatchedDimensionException, TransformException {
 		return mathTransform.transform(directPosition, directPosition1);
 	}
 
+	/** {@inheritDoc} */
 	public void transform(double[] doubles, int i, double[] doubles1, int i1, int i2) throws TransformException {
 		mathTransform.transform(doubles, i, doubles1, i1, i2);
 	}
 
+	/** {@inheritDoc} */
 	public void transform(float[] floats, int i, float[] floats1, int i1, int i2) throws TransformException {
 		mathTransform.transform(floats, i, floats1, i1, i2);
 	}
 
+	/** {@inheritDoc} */
 	public void transform(float[] floats, int i, double[] doubles, int i1, int i2) throws TransformException {
 		mathTransform.transform(floats, i, doubles, i1, i2);
 	}
 
+	/** {@inheritDoc} */
 	public void transform(double[] doubles, int i, float[] floats, int i1, int i2) throws TransformException {
 		mathTransform.transform(doubles, i, floats, i1, i2);
 	}
 
+	/** {@inheritDoc} */
 	public Matrix derivative(DirectPosition directPosition) throws MismatchedDimensionException, TransformException {
 		return mathTransform.derivative(directPosition);
 	}
 
+	/** {@inheritDoc} */
 	public MathTransform inverse() throws NoninvertibleTransformException {
 		return mathTransform.inverse();
 	}
 
+	/** {@inheritDoc} */
 	public boolean isIdentity() {
 		return mathTransform.isIdentity();
 	}
 
+	/** {@inheritDoc} */
 	public String toWKT() throws UnsupportedOperationException {
 		return mathTransform.toWKT();
 	}

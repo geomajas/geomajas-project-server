@@ -356,6 +356,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return dto;
 	}
 
+	/** {@inheritDoc} */
 	public Feature toDto(InternalFeature feature) throws GeomajasException {
 		return toDto(feature, VectorLayerService.FEATURE_INCLUDE_ALL);
 	}
@@ -621,10 +622,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Convert a <code>Bbox</code> to a JTS envelope.
+	 * Convert a {@link Bbox} to a JTS envelope.
 	 * 
-	 * @param bbox
-	 *            Geomajas <code>Bbox</code>
+	 * @param bbox bounding box
 	 * @return JTS envelope
 	 */
 	public Envelope toInternal(Bbox bbox) {
@@ -632,11 +632,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	}
 
 	/**
-	 * Convert JTS envelope into a <code>Bbox</code>.
+	 * Convert JTS envelope into a {@link Bbox}.
 	 * 
 	 * @param envelope
 	 *            JTS envelope
-	 * @return Geomajas <code>Bbox</code>
+	 * @return Geomajas {@link Bbox}
 	 */
 	public Bbox toDto(Envelope envelope) {
 		return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());

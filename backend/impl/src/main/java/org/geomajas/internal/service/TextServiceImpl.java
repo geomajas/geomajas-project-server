@@ -27,29 +27,36 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TextServiceImpl implements TextService {
+	
+	private static final String DEFAULT_FONT = "Verdana";
+	private static final int DEFAULT_FONT_SIZE = 12;
+	
+	private static final String STYLE_BOLD = "bold";
+	private static final String STYLE_ITALIC = "italic";
 
+	/** {@inheritDoc} */
 	public Rectangle2D getStringBounds(String text, FontStyleInfo fontStyle) {
 		Font font = getFont(fontStyle);
 		return font.getStringBounds(text, 0, text.length(), new FontRenderContext(new AffineTransform(), true, true));
 	}
 
+	/** {@inheritDoc} */
 	public Font getFont(FontStyleInfo fontStyle) {
 		int style = Font.PLAIN;
 		String styleStr = fontStyle.getStyle();
 		if (styleStr != null) {
-			if (styleStr.trim().equalsIgnoreCase("normal")) {
-				style = Font.PLAIN;
-			} else if (styleStr.trim().equalsIgnoreCase("bold")) {
+			styleStr = styleStr.trim();
+			if (STYLE_BOLD.equalsIgnoreCase(styleStr)) {
 				style = Font.BOLD;
-			} else if (styleStr.trim().equalsIgnoreCase("italic")) {
+			} else if (STYLE_ITALIC.equalsIgnoreCase(styleStr))) {
 				style = Font.ITALIC;
 			}
 		}
-		String family = "Verdana";
+		String family = DEFAULT_FONT;
 		if (fontStyle.getFamily() != null) {
 			family = fontStyle.getFamily();
 		}
-		int size = 12;
+		int size = DEFAULT_FONT_SIZE;
 		if (fontStyle.getSize() != -1) {
 			size = fontStyle.getSize();
 		}

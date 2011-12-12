@@ -32,6 +32,7 @@ public class RealTestRecorder implements TestRecorder {
 
 	private Map<String, List<String>> messages = new HashMap<String, List<String>>();
 
+	/** {@inheritDoc} */
 	public void record(Object groupObj, String message) {
 		String group = "" + groupObj;
 		List<String> list = messages.get(group);
@@ -45,10 +46,12 @@ public class RealTestRecorder implements TestRecorder {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void clear() {
 		messages.clear();
 	}
 
+	/** {@inheritDoc} */
 	public String matches(Object groupObj, String... compare) {
 		String group = "" + groupObj;
 		List<String> list = messages.get(group);

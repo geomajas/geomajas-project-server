@@ -67,7 +67,6 @@ import com.vividsolutions.jts.io.WKTReader;
  * Default implementation of {@link LegendGraphicService}.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class LegendGraphicServiceImpl implements LegendGraphicService {
@@ -93,30 +92,67 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 
 	private final Logger log = LoggerFactory.getLogger(LegendGraphicServiceImpl.class);
 
+	/**
+	 * Get default width.
+	 *
+	 * @return default width
+	 */
 	public int getDefaultWidth() {
 		return defaultWidth;
 	}
 
+	/**
+	 * Set default width.
+	 *
+	 * @param defaultWidth default width
+	 */
 	public void setDefaultWidth(int defaultWidth) {
 		this.defaultWidth = defaultWidth;
 	}
 
+	/**
+	 * Get default height.
+	 *
+	 * @return default height
+	 */
 	public int getDefaultHeight() {
 		return defaultHeight;
 	}
 
+	/**
+	 * Set default height.
+	 *
+	 * @param defaultHeight default height
+	 */
 	public void setDefaultHeight(int defaultHeight) {
 		this.defaultHeight = defaultHeight;
 	}
-	
+
+	/**
+	 * Get raster image path.
+	 *
+	 * @return raster image path
+	 */
 	public String getRasterImagePath() {
 		return rasterImagePath;
 	}
-	
+
+	/**
+	 * Set raster image path.
+	 *
+	 * @param rasterImagePath raster image path
+	 */
 	public void setRasterImagePath(String rasterImagePath) {
 		this.rasterImagePath = rasterImagePath;
 	}
 
+	/**
+	 * Get legend image
+	 *
+	 * @param legendMetadata the legend metadata
+	 * @return rendered image
+	 * @throws GeomajasException cannot render image
+	 */
 	public RenderedImage getLegendGraphic(LegendGraphicMetadata legendMetadata) throws GeomajasException {
 		Style style = null;
 		VectorLayer vectorLayer = null;

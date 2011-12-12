@@ -22,14 +22,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class DummyTestRecorder implements TestRecorder {
 
+	/** {@inheritDoc} */
 	public void record(Object group, String message) {
 		// do nothing, this is a dummy
 	}
 
+	/** {@inheritDoc} */
 	public void clear() {
 		// nothing to clear
 	}
 
+	/** {@inheritDoc} */
 	public String matches(Object group, String... messages) {
 		// return false to prevent accidental test success when using dummy
 		return "DummyTestRecorder, cannot test";  

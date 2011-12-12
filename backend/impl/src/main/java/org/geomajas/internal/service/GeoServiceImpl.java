@@ -80,6 +80,11 @@ public final class GeoServiceImpl implements GeoService {
 	private static final Map<Class<? extends Geometry>, Geometry> EMPTY_GEOMETRIES = 
 		new HashMap<Class<? extends Geometry>, Geometry>();
 
+	/**
+	 * Finish service initialization.
+	 *
+	 * @throws GeomajasException oops
+	 */
 	@PostConstruct
 	protected void postConstruct() throws GeomajasException {
 		if (null != crsDefinitions) {

@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
  * Default implementation of {@link ResourceService}.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class ResourceServiceImpl implements ResourceService {
@@ -37,6 +36,7 @@ public class ResourceServiceImpl implements ResourceService {
 
 	private List<String> rootPaths = new ArrayList<String>();
 
+	/** {@inheritDoc} */
 	public Resource find(String location) throws GeomajasException {
 		Resource resource = applicationContext.getResource(location);
 		if (resource.exists()) {
@@ -67,10 +67,12 @@ public class ResourceServiceImpl implements ResourceService {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public List<String> getRootPaths() {
 		return rootPaths;
 	}
 
+	/** {@inheritDoc} */
 	public void setRootPaths(List<String> rootPaths) {
 		this.rootPaths = rootPaths;
 	}
