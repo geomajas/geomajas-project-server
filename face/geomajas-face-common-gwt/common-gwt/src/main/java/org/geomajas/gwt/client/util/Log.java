@@ -14,6 +14,7 @@ package org.geomajas.gwt.client.util;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.LogRequest;
+import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 
@@ -139,7 +140,9 @@ public final class Log {
 		logRequest.setStatement(message);
 		GwtCommand command = new GwtCommand(LogRequest.COMMAND);
 		command.setCommandRequest(logRequest);
-		GwtCommandDispatcher.getInstance().execute(command);
+		Deferred deferred = new Deferred();
+		deferred.setLogCommunicationExceptions(false);
+		GwtCommandDispatcher.getInstance().execute(command, deferred);
 	}
 
 }

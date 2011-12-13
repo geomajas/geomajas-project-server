@@ -35,6 +35,9 @@ public class Deferred {
 
 	private boolean cancelled;
 
+	private boolean logCommunicationExceptions = true;
+
+	/** Constructor. */
 	public Deferred() {
 	}
 
@@ -112,5 +115,25 @@ public class Deferred {
 	 */
 	public boolean isCancelled() {
 		return cancelled;
+	}
+
+	/**
+	 * Should communication exceptions be logged?
+	 *
+	 * @return true when communication exceptions should be logged on the server side
+	 * @since 1.10.0
+	 */
+	public boolean isLogCommunicationExceptions() {
+		return logCommunicationExceptions;
+	}
+
+	/**
+	 * Should communication exceptions be logged?
+	 *
+	 * @param logCommunicationExceptions should communication exceptions be logged?
+	 * @since 1.10.0
+	 */
+	public void setLogCommunicationExceptions(boolean logCommunicationExceptions) {
+		this.logCommunicationExceptions = logCommunicationExceptions;
 	}
 }

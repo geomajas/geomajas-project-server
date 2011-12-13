@@ -179,7 +179,9 @@ public final class GwtCommandDispatcher
 						onCommunicationException(error);
 					}
 				} catch (Throwable t) {
-					Log.logError("Command failed on error callback", t);
+					if (deferred.isLogCommunicationExceptions()) {
+						Log.logError("Command failed on error callback", t);
+					}
 				} finally {
 					decrementDispatched();
 				}
