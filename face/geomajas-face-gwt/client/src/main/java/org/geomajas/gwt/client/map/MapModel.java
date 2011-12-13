@@ -106,6 +106,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
 	
+	private List<Runnable> whenInitializedRunnables = new ArrayList<Runnable>();
+	
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -158,6 +160,21 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		mapView.addMapViewChangedHandler(this);
 
 		refresh(info);
+	}
+
+	/**
+	 * Run some code once when the map is initialized.
+	 *
+	 * @param runnable code to run
+	 * @since 1.10.0
+	 */
+	@Api
+	public void runWhenInitialized(Runnable runnable) {
+		if (isInitialized()) {
+			runnable.run();
+		} else {
+			whenInitializedRunnables.add(runnable);
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -414,6 +431,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			initialized = true;
 		}
 		fireRefreshEvents();
+		
+		while (whenInitializedRunnables.size() > 0) {
+			Runnable runnable = whenInitializedRunnables.remove(0);
+			runnable.run();
+		}
 	}
 
 	private void fireRefreshEvents() {
