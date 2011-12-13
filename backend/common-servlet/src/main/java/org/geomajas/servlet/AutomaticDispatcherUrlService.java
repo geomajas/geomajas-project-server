@@ -38,6 +38,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 	
 	private Logger log = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
 
+	/** {@inheritDoc} */
 	public String getDispatcherUrl() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		if (null == requestAttributes || !(requestAttributes instanceof ServletRequestAttributes)) {
