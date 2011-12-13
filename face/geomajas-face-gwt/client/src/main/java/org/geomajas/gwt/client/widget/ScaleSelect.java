@@ -17,15 +17,16 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import com.smartgwt.client.types.KeyNames;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
+
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 
+import com.smartgwt.client.types.KeyNames;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
@@ -47,13 +48,16 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
  * </p>
  * 
  * @author Jan De Moerloose
+ * @author An Buyle
+ * 
  * @since 1.6.0
  */
 @Api
 public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandler, MapViewChangedHandler {
 
 	private MapView mapView;
-
+	private MapWidget mapWidget;
+	
 	private ComboBoxItem scaleItem;
 
 	private LinkedHashMap<String, Double> valueToScale = new LinkedHashMap<String, Double>();
@@ -70,6 +74,10 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	private int precision;
 
 	private int significantDigits;
+	private boolean isScaleItemInitialized; /* Initially false, if true a legal getPixelPerUnit() could be retrieved
+		from the mapWidget and the selectItem is in a normal state (a list of possible scales, and display value
+		shows the current scale of the mapView */ 
+
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -77,7 +85,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	/**
 	 * Constructs a ScaleSelect that acts on the specified map view.
-	 * 
+	 *
 	 * @param mapView
 	 *            the map view
 	 * @param pixelLength
@@ -87,25 +95,40 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	@Api
 	public ScaleSelect(MapView mapView, double pixelLength) {
 		this.mapView = mapView;
-		this.pixelLength = pixelLength;
+		this.pixelLength = pixelLength; // Possibly NaN if called by new ScaleSelect(MapWidget) and 
+								// mapWidget hasn't been fully initialized yet 
 		setWidth100();
 		setHeight100();
 		init();
 	}
-
 	/**
-	 * Constructs a ScaleSelect that acts on the specified map view.
+	 * Constructs a ScaleSelect that acts on the specified map widget.
 	 *
-	 * @param mapWidget map widget
+	 * @param mapWidget map widget, must be non-null
 	 * @since 1.10.0
 	 */
 	@Api
 	public ScaleSelect(final MapWidget mapWidget) {
 		this(mapWidget.getMapModel().getMapView(), mapWidget.getPixelPerUnit());
+		this.mapWidget = mapWidget;
+
 		mapWidget.getMapModel().addMapModelHandler(new MapModelHandler() {
 			public void onMapModelChange(MapModelEvent event) {
-				pixelLength = mapWidget.getPixelPerUnit();
-				updateResolutions();
+				/** When the MapModel changes, , setup the select item if it hasn't been fully initialized yet. */
+
+				refreshPixelLength();
+				if ( !Double.isNaN(pixelLength) && (0.0 != pixelLength)) {
+					if (!isScaleItemInitialized) {
+						scaleItem.clearValue();
+						updateResolutions();
+						setDisplayScale(mapView.getCurrentScale() * pixelLength);
+					} else if (scaleItem.getValueAsString() == null || "".equals(scaleItem.getValueAsString())) {
+						setDisplayScale(mapView.getCurrentScale() * pixelLength);
+					} else if (scaleItem.getDisplayValue() == null
+							|| "".equals(scaleItem.getDisplayValue())) {
+						setDisplayScale(mapView.getCurrentScale() * pixelLength);
+					}
+				}
 			}
 		});
 	}
@@ -116,7 +139,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	/**
 	 * Set the specified relative scale values in the select item.
-	 * 
+	 *
 	 * @param scales
 	 *            array of relative scales (should be multiplied by pixelLength if in pixels/m)
 	 * @since 1.6.0
@@ -126,10 +149,10 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		// Sort decreasing and store the list:
 		Arrays.sort(scales, Collections.reverseOrder());
 		scaleList = Arrays.asList(scales);
-
 		// Apply the requested scales on the SelectItem. Make sure only available scales are added:
 		updateScaleList();
 	}
+
 
 	/**
 	 * Set the precision for displaying the scales.
@@ -185,7 +208,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	/**
 	 * When typing custom scale levels in the select item, should these new scale levels be added to the list or not?
 	 * The default value is false, which means that the list of scales in the select item does not change.
-	 * 
+	 *
 	 * @param updatingScaleList
 	 *            Should the new scale be added?
 	 */
@@ -193,23 +216,39 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		this.updatingScaleList = updatingScaleList;
 	}
 
-	/** When the MapView changes, update the select item to the correct scale. */
+	/** Will be called when the MapView changes (caused by e.g zooming); updates the select item to the correct scale.
+	 *
+	 * Note: This method implements MapViewChangedHandler's (only) method, this handler is registered in this.init())
+	 * 
+	 * @see org.geomajas.gwt.client.map.event.MapViewChangedHandler#onMapViewChanged
+	 * 	(org.geomajas.gwt.client.map.event.MapViewChangedEvent)
+	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (scaleItem.getValueAsString() == null || "".equals(scaleItem.getValueAsString())) {
-			setDisplayScale(mapView.getCurrentScale() * pixelLength);
-		}
-
-		if (event.isMapResized()) {
-			updateScaleList();
-			setDisplayScale(mapView.getCurrentScale() * pixelLength);
-		} else if (!event.isSameScaleLevel() || scaleItem.getDisplayValue() == null
-				|| "".equals(scaleItem.getDisplayValue())) {
-			setDisplayScale(mapView.getCurrentScale() * pixelLength);
+		refreshPixelLength();
+		// Note: if this.mapWidget is null, pixelLength must be valid
+		if ( !Double.isNaN(pixelLength) && (0.0 != pixelLength)) {
+			if (!isScaleItemInitialized) {
+				scaleItem.clearValue();
+				updateResolutions();
+				setDisplayScale(mapView.getCurrentScale() * pixelLength);
+			} else 	if (scaleItem.getValueAsString() == null || "".equals(scaleItem.getValueAsString())) {
+				setDisplayScale(mapView.getCurrentScale() * pixelLength);
+			} else if (event.isMapResized()) {
+				updateScaleList();
+				setDisplayScale(mapView.getCurrentScale() * pixelLength);
+			} else if (!event.isSameScaleLevel() || scaleItem.getDisplayValue() == null
+					|| "".equals(scaleItem.getDisplayValue())) {
+				setDisplayScale(mapView.getCurrentScale() * pixelLength);
+			}
 		}
 	}
 
+
 	/**
 	 * Make sure that the scale in the scale select is applied on the map, when the user presses the 'Enter' key.
+	 * 
+	 * @see com.smartgwt.client.widgets.form.fields.events.KeyPressHandler#onKeyPress
+	 * 	(com.smartgwt.client.widgets.form.fields.events.KeyPressEvent)
 	 */
 	public void onKeyPress(KeyPressEvent event) {
 		String name = event.getKeyName();
@@ -220,11 +259,15 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	/**
 	 * When the user selects a different scale, have the map zoom to it.
+	 * 
+	 * @see com.smartgwt.client.widgets.form.fields.events.ChangedHandler#onChanged
+	 * 			(com.smartgwt.client.widgets.form.fields.events.ChangedEvent)
 	 */
 	public void onChanged(ChangedEvent event) {
 		String value = (String) scaleItem.getValue();
+
 		Double scale = valueToScale.get(value);
-		if (scale != null) {
+		if (scale != null && !Double.isNaN(pixelLength) && 0.0 != pixelLength) {
 			mapView.setCurrentScale(scale / pixelLength, MapView.ZoomOption.LEVEL_CLOSEST);
 		}
 	}
@@ -241,25 +284,32 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 * Given the full list of desirable resolutions, which ones are actually available? Update the widget accordingly.
 	 */
 	private void updateScaleList() {
+		refreshPixelLength(); /* retrieve pixelLength from mapWidget. Needed in case mapWidget wasn't fully initialized
+					the previous time the pixelLength was requested */
+
 		// Update lookup map (stores user friendly representation):
 		valueToScale.clear();
-		for (Double scale : scaleList) {
-			// Eliminate duplicates and null:
-			if (scale != null) {
-				String value = ScaleConverter.scaleToString(scale, precision, significantDigits);
-				valueToScale.put(value, scale);
+		if ( !Double.isNaN(pixelLength) && (0.0 != pixelLength)) {
+			for (Double scale : scaleList) {
+				// Eliminate duplicates and null:
+				if (scale != null) {
+					String value = ScaleConverter.scaleToString(scale, precision, significantDigits);
+					valueToScale.put(value, scale);
+				}
 			}
-		}
 
-		List<String> availableScales = new ArrayList<String>();
+			List<String> availableScales = new ArrayList<String>();
 
-		for (Double scale : scaleList) {
-			if (mapView.isResolutionAvailable(pixelLength / scale)) {
-				availableScales.add(ScaleConverter.scaleToString(scale, precision, significantDigits));
+			for (Double scale : scaleList) {
+				if (mapView.isResolutionAvailable(pixelLength / scale)) {
+					availableScales.add(ScaleConverter.scaleToString(scale, precision, significantDigits));
+				}
 			}
-		}
 
-		scaleItem.setValueMap(availableScales.toArray(new String[availableScales.size()]));
+			scaleItem.setValueMap(availableScales.toArray(new String[availableScales.size()]));
+
+			isScaleItemInitialized = true;
+		}
 	}
 
 	private void init() {
@@ -272,17 +322,34 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		scaleItem.addChangedHandler(this);
 		form.setFields(scaleItem);
 		addChild(form);
-		updateResolutions();
+
+
+		updateResolutions();	// Does nothing if mapWidget provided in constructor, hasn't been fully initialized yet.
+							  		//	Else, will call setDisplayScale() if scaleItem value's hasn't been set yet
+									//	or scaleItem's displayValue is null or empty
+		if (null != mapView && isScaleItemInitialized) {
+			setDisplayScale(mapView.getCurrentScale() * pixelLength);
+		}
 		mapView.addMapViewChangedHandler(this);
 	}
 
 	private void updateResolutions() {
-		if (mapView.getResolutions() != null) {
+		if (mapView.getResolutions() != null && !Double.isNaN(pixelLength) && 0.0 != pixelLength) {
 			List<Double> scales = new ArrayList<Double>();
 			for (Double resolution : mapView.getResolutions()) {
 				scales.add(pixelLength / resolution);
 			}
 			setScales(scales.toArray(new Double[scales.size()]));
+				// this will call updateScaleList() which will set isScaleItemInitialized
+					// to true if scaleItem can be fully initialized
+
+			if (null == scaleItem.getValue() || scaleItem.getValueAsString() == null
+					|| "".equals(scaleItem.getValueAsString())
+					) {
+				setDisplayScale(mapView.getCurrentScale() * pixelLength);
+			} else if (scaleItem.getDisplayValue() == null  || "".equals(scaleItem.getDisplayValue())) {
+				setDisplayScale(mapView.getCurrentScale() * pixelLength);
+			}
 		}
 	}
 
@@ -317,4 +384,15 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 			}
 		}
 	}
+
+	private void refreshPixelLength() {
+		if (null != this.mapWidget) {
+			pixelLength = mapWidget.getPixelPerUnit();
+			if (Double.isNaN(pixelLength) || (0.0 == pixelLength)) {
+				isScaleItemInitialized = false;
+			}
+		}
+
+	}
+
 }
