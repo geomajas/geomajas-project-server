@@ -67,7 +67,7 @@ public class ThemeWidget extends AbstractThemeWidget {
 			button.setIconAlign("left");
 
 			button.setTooltip(viewConfig.getDescription());
-			
+
 			final ViewConfigItem item = new ViewConfigItem();
 			item.setViewConfig(viewConfig);
 			item.setButton(button);
@@ -88,7 +88,7 @@ public class ThemeWidget extends AbstractThemeWidget {
 			layout.addMember(button);
 
 			vLayout.addMember(layout);
-			
+
 		}
 		addChild(vLayout);
 		markForRedraw();
@@ -101,16 +101,16 @@ public class ThemeWidget extends AbstractThemeWidget {
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		super.onMapViewChanged(event);
 		if (null != activeViewConfig && !event.isSameScaleLevel()) {
-			resetIcons(); 
+			resetIcons();
 		}
 	}
 
 	/**
-	 * Reset all icons
+	 * Reset all icons.
 	 */
 	protected void resetIcons() {
 		for (ViewConfigItem item : viewConfigItems) {
-			RangeConfig config = getRangeConfigForCurrentScale(item.getViewConfig(), 
+			RangeConfig config = getRangeConfigForCurrentScale(item.getViewConfig(),
 					mapWidget.getMapModel().getMapView().getCurrentScale());
 			if (null != config && null != config.getIcon()) {
 				item.getButton().setIcon("[ISOMORPHIC]/" + config.getIcon());

@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
 import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
@@ -35,10 +35,13 @@ import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.client.util.LayerIconUtil;
-import org.geomajas.widget.advancedviews.client.util.UrlBuilder;
 import org.geomajas.widget.advancedviews.client.util.WidgetInfoUtil;
 import org.geomajas.widget.advancedviews.configuration.client.LayerTreeWithLegendInfo;
 
@@ -67,7 +70,8 @@ import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 @Api
 public class LayerTreeWithLegend extends LayerTreeBase {
 
-	private static final String LEGEND_ICONS_PATH = "d/legendIcons";
+	private static final String LEGEND_ICONS_PATH = "legendgraphic";
+	private static final String LEGEND_ICONS_TYPE = ".png";
 
 	private static final String SHOW_LAYERINFO_ICON = "[ISOMORPHIC]/geomajas/silk/cog.png";
 
@@ -160,15 +164,27 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 		public void init() {
 			if (layer instanceof VectorLayer) {
 				VectorLayer vl = (VectorLayer) layer;
-				NamedStyleInfo nsi = vl.getLayerInfo().getNamedStyleInfo();
-				for (FeatureStyleInfo fsi : nsi.getFeatureStyles()) {
-					LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, vl.getServerLayerId(),
-							nsi.getName(), fsi);
+				ClientVectorLayerInfo layerInfo = vl.getLayerInfo();
+
+				// For vector layer; loop over the style definitions:
+				UserStyleInfo userStyle = layerInfo.getNamedStyleInfo().getUserStyle();
+				FeatureTypeStyleInfo info = userStyle.getFeatureTypeStyleList().get(0);
+				for (int i = 0; i < info.getRuleList().size(); i++) {
+					RuleInfo rule = info.getRuleList().get(i);
+					// use title if present, name if not
+					String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
+					// fall back to style name
+					if (title == null) {
+						title = layerInfo.getNamedStyleInfo().getName();
+					}
+
+					LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, vl, i, title);
 					tree.add(tn, this);
 				}
-			} else {
+
+			} else if (layer instanceof RasterLayer) {
 				RasterLayer rl = (RasterLayer) layer;
-				LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, rl.getServerLayerId(),
+				LayerTreeLegendItemNode tn = new LayerTreeLegendItemNode(this, rl,
 						LayerIconUtil.getSmallLayerIconUrl(rl));
 				tree.add(tn, this);
 			}
@@ -180,34 +196,34 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 	 */
 	public class LayerTreeLegendItemNode extends LayerTreeTreeNode {
 		private LayerTreeLegendNode parent;
-		private UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
+		private UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
 
 		// rasterlayer
-		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, String layerId, String rasterIconUrl) {
+		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, RasterLayer layer, String rasterIconUrl) {
 			super(parent.tree, parent.layer);
 			this.parent = parent;
 			setTitle(layer.getLabel());
 			setName(parent.getAttribute("id") + "_legend");
-			url.addPath(LEGEND_ICONS_PATH);
-			url.addParameter("widgetId", LayerTreeWithLegend.this.getID());
 			if (rasterIconUrl != null) {
-				url.addParameter("styleName", rasterIconUrl);
+				setIcon(rasterIconUrl);
+			} else {
+				url.addPath(LEGEND_ICONS_PATH);
+				url.addPath(layer.getServerLayerId() + LEGEND_ICONS_TYPE);
+				setIcon(url.toString());
 			}
-			url.addParameter("layerId", layerId);
-			setIcon(url.toString());
 		}
 
 		// vectorlayer
-		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, String layerId, String styleName,
-				FeatureStyleInfo fsi) {
+		public LayerTreeLegendItemNode(LayerTreeLegendNode parent, VectorLayer layer, int ruleIndex, String title) {
 			super(parent.tree, parent.layer);
 			this.parent = parent;
-			setName(fsi.getName());
+			setTitle(title);
+			String name = layer.getLayerInfo().getNamedStyleInfo().getName();
+			setName(name + "_" + ruleIndex);
 			url.addPath(LEGEND_ICONS_PATH);
-			url.addParameter("widgetId", LayerTreeWithLegend.this.getID());
-			url.addParameter("layerId", layerId);
-			url.addParameter("styleName", styleName);
-			url.addParameter("featureStyleId", fsi.getStyleId());
+			url.addPath(layer.getServerLayerId());
+			url.addPath(name);
+			url.addPath(ruleIndex + ".png");
 			setIcon(url.toString());
 		}
 

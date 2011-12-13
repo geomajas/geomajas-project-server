@@ -16,6 +16,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<!--  scan for controllers and views -->
+	<!-- 	
 	<context:component-scan base-package="org.geomajas.widget.advancedviews.mvc" />
-
+ 	-->
 </beans>

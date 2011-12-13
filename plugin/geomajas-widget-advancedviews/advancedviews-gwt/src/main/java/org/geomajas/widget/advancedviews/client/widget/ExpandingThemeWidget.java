@@ -220,7 +220,7 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 	}
 
 	/**
-	 * Reset all icons
+	 * Reset all icons.
 	 */
 	protected void resetIcons() {
 		for (ViewConfigItem item : viewConfigItems) {

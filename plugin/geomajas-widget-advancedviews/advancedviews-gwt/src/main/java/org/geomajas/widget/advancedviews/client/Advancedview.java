@@ -22,5 +22,5 @@ public class Advancedview implements EntryPoint {
 
 	public void onModuleLoad() {
 	}
-	
+
 }

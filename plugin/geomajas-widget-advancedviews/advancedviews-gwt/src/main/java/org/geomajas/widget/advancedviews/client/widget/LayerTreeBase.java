@@ -45,7 +45,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
 
 /**
- * The LayerTree shows a tree resembling the available layers for the map
+ * The LayerTree shows a tree resembling the available layers for the map.
  * Several actions can be executed on the layers (make them invisible, ...).
  * 
  * TODO This is a copy from LayerTree, should make original properties
@@ -264,7 +264,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	}
 
 	/**
-	 * Processes a treeNode (add it to the TreeGrid)
+	 * Processes a treeNode (add it to the TreeGrid).
 	 * 
 	 * @param treeNode
 	 *            The treeNode to process
@@ -280,7 +280,7 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	protected abstract void syncNodeState(boolean layersOnly);
 
 	/**
-	 * Creation of tree grid is decoupled to allow you to make a custom tree grid
+	 * Creation of tree grid is decoupled to allow you to make a custom tree grid.
 	 * (SmartGWT uses some design patterns which only give you the ability to
 	 * customize certain aspects in a subclass)
 	 *
@@ -298,9 +298,8 @@ public abstract class LayerTreeBase extends Canvas implements LeafClickHandler, 
 	 */
 	protected class RefreshableTree extends Tree {
 		/**
-		 * Refreshes the icons in the tree, this is done by closing and
-		 * reopening all nodes A dirty solution but no other option was found at
-		 * the time
+		 * Refreshes the icons in the tree, this is done by closing and reopening all nodes.
+		 * A dirty solution but no other option was found at the time.
 		 */
 		public void refreshIcons() {
 			GWT.log("Refresh node(icon)s");
