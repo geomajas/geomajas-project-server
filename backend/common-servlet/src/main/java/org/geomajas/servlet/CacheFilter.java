@@ -106,9 +106,11 @@ public class CacheFilter implements Filter {
 	// Filter implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void destroy() {
 	}
 
+	/** {@inheritDoc} */
 	public void init(FilterConfig config) throws ServletException {
 		ServletContext context = config.getServletContext();
 		String param;
@@ -156,6 +158,7 @@ public class CacheFilter implements Filter {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "AvoidUsingHardCodedIP",
 			justification = "double-safe check on localhost, ease configuration for development")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException,
@@ -199,21 +202,46 @@ public class CacheFilter implements Filter {
 		}
 	}
 
+	/**
+	 * Should the URI be cached?
+	 *
+	 * @param requestUri request URI
+	 * @return true when caching is needed
+	 */
 	public boolean shouldCache(String requestUri) {
 		String uri = requestUri.toLowerCase();
 		return checkContains(uri, cacheIdentifiers) || checkSuffixes(uri, cacheSuffixes);
 	}
 
+	/**
+	 * Should the URI explicitly not be cached.
+	 *
+	 * @param requestUri request URI
+	 * @return true when caching is prohibited
+	 */
 	public boolean shouldNotCache(String requestUri) {
 		String uri = requestUri.toLowerCase();
 		return checkContains(uri, noCacheIdentifiers) || checkSuffixes(uri, noCacheSuffixes);
 	}
 
+	/**
+	 * Should this request URI be compressed?
+	 *
+	 * @param requestUri request URI
+	 * @return true when should be compressed
+	 */
 	public boolean shouldCompress(String requestUri) {
 		String uri = requestUri.toLowerCase();
 		return checkSuffixes(uri, zipSuffixes);
 	}
 
+	/**
+	 * Check whether the URL contains one of the patterns.
+	 *
+	 * @param uri URI
+	 * @param patterns possible patterns
+	 * @return true when URL contains one of the patterns
+	 */
 	public boolean checkContains(String uri, String[] patterns) {
 		for (String pattern : patterns) {
 			if (pattern.length() > 0) {
@@ -225,6 +253,13 @@ public class CacheFilter implements Filter {
 		return false;
 	}
 
+	/**
+	 * Check whether the URL end with one of the given suffixes.
+	 *
+	 * @param uri URI
+	 * @param patterns possible suffixes
+	 * @return true when URL ends with one of the suffixes
+	 */
 	public boolean checkSuffixes(String uri, String[] patterns) {
 		for (String pattern : patterns) {
 			if (pattern.length() > 0) {
@@ -236,6 +271,13 @@ public class CacheFilter implements Filter {
 		return false;
 	}
 
+	/**
+	 * Check whether the URL start with one of the given prefixes.
+	 *
+	 * @param uri URI
+	 * @param patterns possible prefixes
+	 * @return true when URL starts with one of the prefixes
+	 */
 	public boolean checkPrefixes(String uri, String[] patterns) {
 		for (String pattern : patterns) {
 			if (pattern.length() > 0) {
