@@ -11,8 +11,6 @@
 
 package org.geomajas.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.geomajas.service.DispatcherUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * {@link org.geomajas.service.DispatcherUrlService} which tries to automatically detect the dispatcher server address.
@@ -35,7 +35,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
 	private static final String X_FORWARD_HOST_HEADER = "X-Forwarded-Host";
 	private static final String X_GWT_MODULE_HEADER = "X-GWT-Module-Base";
-	
+
 	private Logger log = LoggerFactory.getLogger(AutomaticDispatcherUrlService.class);
 
 	/** {@inheritDoc} */
@@ -50,7 +50,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
 		String serverName = request.getServerName();
-		
+
 		// X-Forwarded-Host if behind a reverse proxy, fallback to general method.
 		// Alternative we could use the gwt module url to guess the real URL.
 		if (null != request.getHeader(X_FORWARD_HOST_HEADER)) {
@@ -70,16 +70,20 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 				serverName = request.getHeader(X_FORWARD_HOST_HEADER);
 			}
 		}
-		
-		String url = request.getScheme() + "://" + serverName;
+
+		StringBuilder url = new StringBuilder();
+		url.append(request.getScheme());
+		url.append("://");
+		url.append(serverName);
 		if (80 != request.getServerPort()) {
-			url += ":" + request.getServerPort();
+			url.append(":");
+			url.append(Integer.toString(request.getServerPort()));
 		}
 		String cp = request.getContextPath();
 		if (null != cp && cp.length() > 0) {
-			url += request.getContextPath();
+			url.append(request.getContextPath());
 		}
-		url += "/d/";
-		return url;
+		url.append("/d/");
+		return url.toString();
 	}
 }
