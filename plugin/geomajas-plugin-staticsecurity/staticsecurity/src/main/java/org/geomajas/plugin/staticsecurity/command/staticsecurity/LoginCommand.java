@@ -82,6 +82,7 @@ public class LoginCommand implements Command<LoginRequest, LoginResponse> {
 				if (null != user.getUserLocale()) {
 					response.setUserLocale(user.getUserLocale().toString());
 				}
+				break;
 			}
 		}
 	}
