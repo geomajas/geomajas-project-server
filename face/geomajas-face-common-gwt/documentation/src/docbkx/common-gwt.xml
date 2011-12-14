@@ -22,7 +22,33 @@
   some important security hooks, and a string of utility classes which can
   help you in your application.</para>
 
-  <para></para>
+  <section>
+    <title>Setting up GWT-RPC communication</title>
+
+    <para>Geomajas makes use of GWT RPC, which is a mechanism for passing Java
+    objects to and from a server over standard HTTP. GWT RPC allows the client
+    to call a server-based service through an automatically generated proxy
+    class. Synchronous or asynchronous calls can be made to the server through
+    a very efficient protocol on top of HTTP. The service endpoint is defined
+    by configuring a standard servlet mapping or an MVC controller, which is
+    more in line with Spring MVC practices.</para>
+
+    <para>Because the GWT module name is the first part of the service
+    endpoint URL, the MVC controller should also be mapped to this module
+    name. This requires the following addition to the web.xml file:</para>
+
+    <para><programlisting>&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
+  &lt;url-pattern&gt;/<emphasis>&lt;GWT module name&gt;</emphasis>/*&lt;/url-pattern&gt; &lt;!-- add this line --&gt;
+&lt;/servlet-mapping&gt;
+</programlisting>This is all that is necessary to enable the communication and
+    should work for all GWT faces. This will also establish a fallback
+    resource controller that ensures that static resources can be successfully
+    retrieved through the dispatcher servlet. This is necessary because the
+    above mapping will catch any request that has the module name as the first
+    part in its path.</para>
+  </section>
 
   <section id="common-dispatcher">
     <title>Command dispatcher</title>
@@ -30,8 +56,7 @@
     <para>The command dispatcher allows you to communicate to the server using
     the Geomajas command interface with the Geomajas built-in support for
     security and localization. Using the GwtCommandDispatcher class, you can
-    send your request objects to the server and process the
-    response.</para>
+    send your request objects to the server and process the response.</para>
 
     <para>A simple invocation looks like this:</para>
 
