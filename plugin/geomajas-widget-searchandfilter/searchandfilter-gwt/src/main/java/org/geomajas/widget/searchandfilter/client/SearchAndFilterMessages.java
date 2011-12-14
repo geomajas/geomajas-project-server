@@ -31,7 +31,8 @@ public interface SearchAndFilterMessages extends Messages {
 
 	String exportToCsvWindowTitle();
 	String exportToCsvContentReady();
-	String exportToCsvDownloadLink(String url);
+	String exportToCsvDownloadLinkDescription();
+	String exportToCsvDownloadLinkName();
 	String exportToCsvSeparatorChar();
 	String exportToCsvQuoteChar();
 	String exportToCsvEncoding();

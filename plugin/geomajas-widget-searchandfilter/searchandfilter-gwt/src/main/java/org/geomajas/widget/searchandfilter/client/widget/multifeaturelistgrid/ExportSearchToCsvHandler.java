@@ -8,10 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.gwt.client.command.CommandCallback;
@@ -31,9 +31,14 @@ import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.smartgwt.client.core.Function;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.Window;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Export the results of a search to CSV, supported searches are
@@ -95,38 +100,60 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 
 			GwtCommand command = new GwtCommand(ExportToCsvRequest.COMMAND);
 			command.setCommandRequest(exportRequest);
-			Deferred deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-				private static final String CONTENT_PRE = "<div style='margin-top: 20px; width: 200px; text-align: "
-						+ "center'><b>";
-				private static final String CONTENT_POST = "</b><br />";
-				private static final String LINK_POST = "</div>";
+			Deferred deferred = GwtCommandDispatcher.getInstance().execute(command,
+					new CommandCallback<ExportToCsvResponse>() {
 
-				public void execute(CommandResponse response) {
-					if (response instanceof ExportToCsvResponse) {
-						ExportToCsvResponse resp = (ExportToCsvResponse) response;
-						if (resp.getDocumentId() != null) {
-							UrlBuilder ub = new UrlBuilder();
-							ub.setPath("d/csvDownload");
-							ub.setParameter("id", resp.getDocumentId());
-							String link = ub.buildString().replaceFirst("http:///", GWT.getHostPageBaseURL());
+						public void execute(ExportToCsvResponse response) {
+							ExportToCsvResponse resp = (ExportToCsvResponse) response;
+							if (resp.getDocumentId() != null) {
+								UrlBuilder ub = new UrlBuilder();
+								ub.setPath("d/csvDownload");
+								ub.setParameter("id", resp.getDocumentId());
+								String link = ub.buildString().replaceFirst("http:///", GWT.getHostPageBaseURL());
 
-							Window window = new DockableWindow();
-							window.setTitle(messages.exportToCsvWindowTitle());
-							String content = CONTENT_PRE + messages.exportToCsvContentReady() + CONTENT_POST;
-							String linktocsv = messages.exportToCsvDownloadLink(link) + LINK_POST;
-							window.addItem(new HTMLFlow(content + linktocsv));
-							window.centerInPage();
-							window.setAutoSize(true);
-							window.show();
-							window.setKeepInParentRect(true);
+								final Window window = new DockableWindow();
+								window.setTitle(messages.exportToCsvWindowTitle());
+								window.setWidth(200);
+
+								String content = "<div style='margin-top: 20px; width: 200px; text-align: center'>";
+								content += "<b>" + messages.exportToCsvContentReady() + "</b><br />";
+								content += messages.exportToCsvDownloadLinkDescription() + "</b></div>";
+								HTMLFlow infoSpinnerCanvas = new HTMLFlow(content);
+								infoSpinnerCanvas.setAutoHeight();
+								Anchor anchor = new Anchor(messages.exportToCsvDownloadLinkName(), link);
+								anchor.setHeight("20px");
+								anchor.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+								anchor.addClickHandler(new com.google.gwt.event.dom.client.ClickHandler() {
+									public void onClick(com.google.gwt.event.dom.client.ClickEvent event) {
+										window.hide();
+										window.destroy();
+									}
+								});
+								VerticalPanel panel = new VerticalPanel();
+								panel.setHeight("22px");
+								panel.setWidth("198px");
+								panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+								panel.add(anchor);
+
+								VLayout lay = new VLayout(0);
+								lay.setWidth100();
+								lay.setLayoutAlign(Alignment.CENTER);
+								lay.addMember(infoSpinnerCanvas);
+								lay.addMember(panel);
+								lay.setAutoHeight();
+								window.addItem(lay);
+								window.centerInPage();
+								window.setAutoSize(true);
+								window.show();
+								window.setKeepInParentRect(true);
+							}
+							if (onFinished != null) {
+								onFinished.execute();
+							}
 						}
-						if (onFinished != null) {
-							onFinished.execute();
-						}
-					}
-				}
-			});
+					});
 			deferred.addErrorCallback(new Function() {
+
 				public void execute() {
 					if (onFinished != null) {
 						onFinished.execute();
