@@ -47,29 +47,35 @@ public class CsvDownloadController {
 	public void handleCsvDownload(@RequestParam("id") String id, HttpServletResponse response) throws IOException {
 		try {
 			Item item = service.getFile(id);
+			if (item == null) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+			
 			File f = item.getFile();
-			if (f == null || !f.canRead()) {
-				response.sendError(404, "Geen document gevonden met id: " + id);
-			} else {
-				// Set response headers
-				response.setContentType("text/csv");
-				response.setContentLength((int) f.length());
-				String filename = (item.getDescription());
-				response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+			if (f == null || !f.isFile() || !f.canRead()) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+			
+			// Set response headers
+			response.setContentType("text/csv");
+			response.setContentLength((int) f.length());
+			String filename = (item.getDescription());
+			response.setHeader("Content-Disposition", "attachment; filename=" + filename);
 
-				FileInputStream fis = new FileInputStream(f);
-				FileChannel in = fis.getChannel();
-				WritableByteChannel out = Channels.newChannel(response.getOutputStream());
-				try {
-					in.transferTo(0, in.size(), out);
-					service.removeFile(id);
-				} catch (Exception e) {
-					throw e;
-				} finally {
-					in.close();
-					// make sure servlet doesn't append anything unnecessary:
-					out.close();
-				}
+			FileInputStream fis = new FileInputStream(f);
+			FileChannel in = fis.getChannel();
+			WritableByteChannel out = Channels.newChannel(response.getOutputStream());
+			try {
+				in.transferTo(0, in.size(), out);
+				service.removeFile(id);
+			} catch (Exception e) {
+				throw e;
+			} finally {
+				in.close();
+				// make sure servlet doesn't append anything unnecessary:
+				out.close();
 			}
 		} catch (FileNotFoundException e) {
 			log.warn("Error retrieving file: " + e.getMessage());
@@ -77,7 +83,7 @@ public class CsvDownloadController {
 
 		} catch (Exception e) {
 			log.warn("Error retrieving file: " + e.getMessage());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 	}
 }
