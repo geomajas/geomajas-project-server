@@ -30,11 +30,11 @@ public interface AdvancedViewsMessages extends Messages {
 	String layerActionsLabelsToolTip();
 	String layerActionsShowLegend();
 	String layerActionsRemoveFilter();
-	
+
 	String layerInfoWindowTitle();
 	String layerInfoLayerInfo();
 	String layerInfoLayerInfoValue();
-	
+
 	String layerInfoLayerInfoFldLayer();
 	String layerInfoLayerInfoFldLayerType();
 	String layerInfoLayerInfoFldMaxViewScale();
@@ -44,18 +44,19 @@ public interface AdvancedViewsMessages extends Messages {
 	String layerInfoLayerInfoFldVisibleStatusHidden();
 	String layerInfoLayerInfoFldLayerTypeRaster();
 	String layerInfoLayerInfoFldLayerTypeVector();
-	String layerInfoLayerInfoAttAttribute(); 
-	String layerInfoLayerInfoAttLabel(); 
-	String layerInfoLayerInfoAttType(); 
-	String layerInfoLayerInfoAttEditable(); 
-	String layerInfoLayerInfoAttIdentifying(); 
-	String layerInfoLayerInfoAttHidden(); 
-	String layerInfoLayerInfoAttNumeric(); 
-	String layerInfoLayerInfoAttYes(); 
-	String layerInfoLayerInfoAttNo(); 
+	String layerInfoLayerInfoAttAttribute();
+	String layerInfoLayerInfoAttLabel();
+	String layerInfoLayerInfoAttType();
+	String layerInfoLayerInfoAttEditable();
+	String layerInfoLayerInfoAttIdentifying();
+	String layerInfoLayerInfoAttHidden();
+	String layerInfoLayerInfoAttNumeric();
+	String layerInfoLayerInfoAttYes();
+	String layerInfoLayerInfoAttNo();
 	String layerInfoLayerInfoLegend();
-	
+
 	String expandingThemeWidgetNoThemeSelected();
 	String expandingThemeWidgetTooltip();
-	
+	String expandingThemeWidgetTitle();
+
 }

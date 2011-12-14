@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.advancedviews.client.widget;
 
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.IButton;
 
 /**
  * Base class that handles the layer and map Changes. Contains no GUI.
@@ -128,7 +128,7 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 		themeChange = true;
 		RangeConfig config = getRangeConfigForCurrentScale(viewConfig, mapWidget.getMapModel().getMapView()
 				.getCurrentScale());
-		
+
 		if (themeInfo.isHideOtherlayers()) {
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				layer.setVisible(false);
@@ -147,12 +147,13 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 		}
 		// LayerShownEvents are run async, we need to deactivate after these.
 		GWT.runAsync(new RunAsyncCallback() {
+
 			public void onSuccess() {
 				themeChange = false;
 			}
 
 			public void onFailure(Throwable reason) {
-			}
+				}
 		});
 	}
 
@@ -187,8 +188,9 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 	 * 
 	 */
 	protected static class ViewConfigItem {
+
 		protected ViewConfig viewConfig;
-		protected IButton button;
+		protected Button button;
 
 		public ViewConfig getViewConfig() {
 			return viewConfig;
@@ -198,12 +200,31 @@ public abstract class AbstractThemeWidget extends Canvas implements MapViewChang
 			this.viewConfig = viewConfig;
 		}
 
-		public IButton getButton() {
+		public Button getButton() {
 			return button;
 		}
 
-		public void setButton(IButton button) {
+		public void setButton(Button button) {
 			this.button = button;
+		}
+	}
+
+	/**
+	 * Custom button type, can be an IButton, but this is not required.
+	 */
+	protected static interface Button {
+
+		void setIcon(String src);
+
+		String getIcon();
+	}
+
+	/**
+	 * Default implementation using IButton.
+	 */
+	protected static class IButton extends com.smartgwt.client.widgets.IButton implements Button {
+		public IButton() {
+			super();
 		}
 	}
 }

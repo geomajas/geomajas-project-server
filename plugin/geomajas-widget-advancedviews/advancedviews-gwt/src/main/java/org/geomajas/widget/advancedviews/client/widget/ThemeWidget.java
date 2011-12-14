@@ -16,7 +16,6 @@ import org.geomajas.widget.advancedviews.configuration.client.themes.RangeConfig
 import org.geomajas.widget.advancedviews.configuration.client.themes.ViewConfig;
 
 import com.smartgwt.client.types.SelectionType;
-import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;

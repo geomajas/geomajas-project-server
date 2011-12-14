@@ -206,6 +206,7 @@ public class Application implements EntryPoint {
 		exthemes.setSnapTo("BR");
 		exthemes.setSnapOffsetTop(-50);
 		exthemes.setSnapOffsetLeft(-20);
+		exthemes.setWidth(160);
 
 		// ---------------------------------------------------------------------
 		// Finally draw everything:
