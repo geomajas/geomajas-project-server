@@ -26,10 +26,14 @@ import org.geomajas.global.Json;
 public class Bbox implements Serializable {
 
 	private static final long serialVersionUID = 151L;
-
-	private double x;
-
-	private double y;
+	/**
+	 * the lowest x boundary of the bbox.
+	 */
+	private double lx;
+	/**
+	 * the lowest y boundary of the bbox.
+	 */
+	private double ly;
 
 	private double width;
 
@@ -53,9 +57,9 @@ public class Bbox implements Serializable {
 	 * @param width width of bounding box, should be positive
 	 * @param height height of bounding box, should be positive
 	 */
-	public Bbox(double x, double y, double width, double height) {
-		this.x = x;
-		this.y = y;
+	public Bbox(double lx, double ly, double width, double height) {
+		this.lx = lx;
+		this.ly = ly;
 		setWidth(width);
 		setHeight(height);
 	}
@@ -79,7 +83,7 @@ public class Bbox implements Serializable {
 	public void setHeight(double height) {
 		if (height < 0) {
 			this.height = -height;
-			y += height;
+			ly += height;
 		} else {
 			this.height = height;
 		}
@@ -104,7 +108,7 @@ public class Bbox implements Serializable {
 	public void setWidth(double width) {
 		if (width < 0) {
 			this.width = -width;
-			x += width;
+			lx += width;
 		} else {
 			this.width = width;
 		}
@@ -116,7 +120,7 @@ public class Bbox implements Serializable {
 	 * @return lowest x
 	 */
 	public double getX() {
-		return x;
+		return lx;
 	}
 
 	/**
@@ -124,8 +128,8 @@ public class Bbox implements Serializable {
 	 *
 	 * @param x lowest x
 	 */
-	public void setX(double x) {
-		this.x = x;
+	public void setX(double lx) {
+		this.lx = lx;
 	}
 
 	/**
@@ -134,7 +138,7 @@ public class Bbox implements Serializable {
 	 * @return lowest y
 	 */
 	public double getY() {
-		return y;
+		return ly;
 	}
 
 	/**
@@ -142,8 +146,8 @@ public class Bbox implements Serializable {
 	 *
 	 * @param y lowest y
 	 */
-	public void setY(double y) {
-		this.y = y;
+	public void setY(double ly) {
+		this.ly = ly;
 	}
 
 	/**
@@ -164,7 +168,7 @@ public class Bbox implements Serializable {
 	 * @since 1.8.0
 	 */
 	public void setMaxX(double x) {
-		setWidth(x - this.x);
+		setWidth(x - this.lx);
 	}
 
 	/**
@@ -185,7 +189,7 @@ public class Bbox implements Serializable {
 	 * @since 1.8.0
 	 */
 	public void setMaxY(double y) {
-		setHeight(y - this.y);
+		setHeight(y - this.ly);
 	}	
 
 	/**
@@ -194,6 +198,6 @@ public class Bbox implements Serializable {
 	 * @return readable string for bbox
 	 */
 	public String toString() {
-		return "Bbox[" + x + " " + y + " " + width + " " + height + "]";
+		return "Bbox[" + lx + " " + ly + " " + width + " " + height + "]";
 	}
 }
