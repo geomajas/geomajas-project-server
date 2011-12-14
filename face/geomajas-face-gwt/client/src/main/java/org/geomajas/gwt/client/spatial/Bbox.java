@@ -24,14 +24,14 @@ import org.geomajas.geometry.Coordinate;
 public class Bbox {
 
 	/**
-	 * The ordinate along the X-axis.
+	 * The lower left ordinate along the X-axis.
 	 */
-	private double x;
+	private double llx;
 
 	/**
-	 * The ordinate along the Y-axis.
+	 * The lower left ordinate along the Y-axis.
 	 */
-	private double y;
+	private double lly;
 
 	/**
 	 * The bounding box' width.
@@ -59,18 +59,18 @@ public class Bbox {
 	/**
 	 * constructor that immediately applies values to all the fields.
 	 * 
-	 * @param x
-	 *            The ordinate along the X-axis.
-	 * @param y
-	 *            The ordinate along the Y-axis.
+	 * @param llx
+	 *            The lower left ordinate along the X-axis.
+	 * @param lly
+	 *            The lower left ordinate along the Y-axis.
 	 * @param width
 	 *            The bounding box' width.
 	 * @param height
 	 *            The bounding box' height.
 	 */
-	public Bbox(double x, double y, double width, double height) {
-		this.x = x;
-		this.y = y;
+	public Bbox(double llx, double lly, double width, double height) {
+		this.llx = llx;
+		this.lly = lly;
 		this.width = width;
 		this.height = height;
 	}
@@ -82,8 +82,8 @@ public class Bbox {
 	 *            Another bounding box instance.
 	 */
 	public Bbox(Bbox bounds) {
-		x = bounds.getX();
-		y = bounds.getY();
+		llx = bounds.getX();
+		lly = bounds.getY();
 		width = bounds.getWidth();
 		height = bounds.getHeight();
 	}
@@ -95,8 +95,8 @@ public class Bbox {
 	 *            A DTO bounding box instance.
 	 */
 	public Bbox(org.geomajas.geometry.Bbox bounds) {
-		x = bounds.getX();
-		y = bounds.getY();
+		llx = bounds.getX();
+		lly = bounds.getY();
 		width = bounds.getWidth();
 		height = bounds.getHeight();
 	}
@@ -109,22 +109,22 @@ public class Bbox {
 	 * Create a clone of the object.
 	 */
 	public Object clone() {
-		return new Bbox(x, y, width, height);
+		return new Bbox(llx, lly, width, height);
 	}
 
 	/**
 	 * Return the origin (x, y) as a Coordinate.
 	 */
 	public Coordinate getOrigin() {
-		return new Coordinate(x, y);
+		return new Coordinate(llx, lly);
 	}
 
 	/**
 	 * Get the center of the bounding box as a Coordinate.
 	 */
 	public Coordinate getCenterPoint() {
-		double centerX = (width == 0 ? x : x + width / 2);
-		double centerY = (height == 0 ? y : y + height / 2);
+		double centerX = (width == 0 ? llx : llx + width / 2);
+		double centerY = (height == 0 ? lly : lly + height / 2);
 		return new Coordinate(centerX, centerY);
 	}
 
@@ -132,7 +132,7 @@ public class Bbox {
 	 * Get the end-point of the bounding box as a Coordinate.
 	 */
 	public Coordinate getEndPoint() {
-		return new Coordinate(x + width, y + height);
+		return new Coordinate(llx + width, lly + height);
 	}
 
 	/**
@@ -144,11 +144,11 @@ public class Bbox {
 	public Coordinate[] getCoordinates() {
 		Coordinate[] result = new Coordinate[5];
 
-		result[0] = new Coordinate(x, y);
-		result[1] = new Coordinate(x + width, y);
-		result[2] = new Coordinate(x + width, y + height);
-		result[3] = new Coordinate(x, y + height);
-		result[4] = new Coordinate(x, y);
+		result[0] = new Coordinate(llx, lly);
+		result[1] = new Coordinate(llx + width, lly);
+		result[2] = new Coordinate(llx + width, lly + height);
+		result[3] = new Coordinate(llx, lly + height);
+		result[4] = new Coordinate(llx, lly);
 		return result;
 	}
 
@@ -252,7 +252,7 @@ public class Bbox {
 		if (other.getWidth() == 0 && other.getHeight() == 0 && other.getX() == 0 && other.getY() == 0) {
 			return (Bbox) clone();
 		}
-		if (width == 0 && height == 0 && x == 0 && y == 0) {
+		if (width == 0 && height == 0 && llx == 0 && lly == 0) {
 			return (Bbox) other.clone();
 		}
 
@@ -274,7 +274,7 @@ public class Bbox {
 	public Bbox buffer(double range) {
 		if (range > 0) {
 			double r2 = range * 2;
-			return new Bbox(x - range, y - range, width + r2, height + r2);
+			return new Bbox(llx - range, lly - range, width + r2, height + r2);
 		}
 		return null;
 	}
@@ -333,8 +333,8 @@ public class Bbox {
 	 *            y displacement
 	 */
 	public void translate(double dx, double dy) {
-		this.x = this.x + dx;
-		this.y = this.y + dy;
+		this.llx = this.llx + dx;
+		this.lly = this.lly + dy;
 	}
 
 	/**
@@ -345,8 +345,8 @@ public class Bbox {
 	 * @return the transformed bounds
 	 */
 	public Bbox transform(Matrix t) {
-		Coordinate c1 = transform(t, new Coordinate(x, y));
-		Coordinate c2 = transform(t, new Coordinate(x + width, y + height));
+		Coordinate c1 = transform(t, new Coordinate(llx, lly));
+		Coordinate c2 = transform(t, new Coordinate(llx + width, lly + height));
 		Coordinate origin = new Coordinate(Math.min(c1.getX(), c2.getX()), Math.min(c1.getY(), c2.getY()));
 		Coordinate endPoint = new Coordinate(Math.max(c1.getX(), c2.getX()), Math.max(c1.getY(), c2.getY()));
 		return new Bbox(origin.getX(), origin.getY(), endPoint.getX() - origin.getX(), endPoint.getY() - origin.getY());
@@ -359,8 +359,8 @@ public class Bbox {
 	 *            new center point
 	 */
 	public void setCenterPoint(Coordinate coordinate) {
-		this.x = coordinate.getX() - 0.5 * this.width;
-		this.y = coordinate.getY() - 0.5 * this.height;
+		this.llx = coordinate.getX() - 0.5 * this.width;
+		this.lly = coordinate.getY() - 0.5 * this.height;
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class Bbox {
 	 * Return a nice print of this bounding box.
 	 */
 	public String toString() {
-		return "Bbox[" + x + " " + y + ", " + width + " " + height + "]";
+		return "Bbox[" + llx + " " + lly + ", " + width + " " + height + "]";
 	}
 
 	// -------------------------------------------------------------------------
@@ -398,20 +398,33 @@ public class Bbox {
 		this.width = width;
 	}
 
+	/**
+	 * 
+	 * @return The lower left ordinate along the X-axis.
+	 */
 	public double getX() {
-		return x;
+		return llx;
 	}
-
-	public void setX(double x) {
-		this.x = x;
+	/**
+	 * Set the lower left ordinate along the X-axis.
+	 * @param llx
+	 */
+	public void setX(double llx) {
+		this.llx = llx;
 	}
-
+	/**
+	 * 
+	 * @return The lower left ordinate along the Y-axis.
+	 */
 	public double getY() {
-		return y;
+		return lly;
 	}
-
-	public void setY(double y) {
-		this.y = y;
+	/**
+	 * Set the lower left ordinate along the Y-axis.
+	 * @param lly
+	 */
+	public void setY(double lly) {
+		this.lly = lly;
 	}
 
 	public double getMaxX() {
@@ -430,7 +443,7 @@ public class Bbox {
 	 * @return true if equal within the precision, false otherwise
 	 */
 	public boolean equals(Bbox other, double delta) {
-		return null != other && equals(this.x, other.x, delta) && equals(this.y, other.y, delta)
+		return null != other && equals(this.llx, other.llx, delta) && equals(this.lly, other.lly, delta)
 				&& equals(this.width, other.width, delta) && equals(this.height, other.height, delta);
 	}
 	
