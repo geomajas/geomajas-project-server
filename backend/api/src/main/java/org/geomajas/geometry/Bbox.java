@@ -27,13 +27,13 @@ public class Bbox implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 	/**
-	 * the lowest lx boundary of the bbox.
+	 * the min x boundary of the bbox.
 	 */
-	private double lx;
+	private double x;
 	/**
-	 * the lowest ly boundary of the bbox.
+	 * the min y boundary of the bbox.
 	 */
-	private double ly;
+	private double y;
 
 	private double width;
 
@@ -52,14 +52,14 @@ public class Bbox implements Serializable {
 	/**
 	 * Create bounding box.
 	 *
-	 * @param lx lowest x origin
-	 * @param ly lowest y origin
+	 * @param x min x origin
+	 * @param y min y origin
 	 * @param width width of bounding box, should be positive
 	 * @param height height of bounding box, should be positive
 	 */
-	public Bbox(double lx, double ly, double width, double height) {
-		this.lx = lx;
-		this.ly = ly;
+	public Bbox(double x, double y, double width, double height) {
+		this.x = x;
+		this.y = y;
 		setWidth(width);
 		setHeight(height);
 	}
@@ -83,7 +83,7 @@ public class Bbox implements Serializable {
 	public void setHeight(double height) {
 		if (height < 0) {
 			this.height = -height;
-			ly += height;
+			y += height;
 		} else {
 			this.height = height;
 		}
@@ -108,46 +108,46 @@ public class Bbox implements Serializable {
 	public void setWidth(double width) {
 		if (width < 0) {
 			this.width = -width;
-			lx += width;
+			x += width;
 		} else {
 			this.width = width;
 		}
 	}
 
 	/**
-	 * Get the lowest x boundary of the bbox.
+	 * Get the min x boundary of the bbox.
 	 *
-	 * @return lowest x
+	 * @return min x
 	 */
 	public double getX() {
-		return lx;
+		return x;
 	}
 
 	/**
-	 * Set the lowest x boundary for the bbox.
+	 * Set the min x boundary for the bbox.
 	 *
-	 * @param lx lowest x
+	 * @param x min x
 	 */
-	public void setX(double lx) {
-		this.lx = lx;
+	public void setX(double x) {
+		this.x = x;
 	}
 
 	/**
-	 * Get the lowest y boundary of the bbox.
+	 * Get the min y boundary of the bbox.
 	 *
-	 * @return ly lowest y
+	 * @return y min y
 	 */
 	public double getY() {
-		return ly;
+		return y;
 	}
 
 	/**
-	 * Set the lowest y boundary for the bbox.
+	 * Set the min y boundary for the bbox.
 	 *
-	 * @param ly lowest y
+	 * @param y min y
 	 */
-	public void setY(double ly) {
-		this.ly = ly;
+	public void setY(double y) {
+		this.y = y;
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class Bbox implements Serializable {
 	 * @since 1.8.0
 	 */
 	public void setMaxX(double x) {
-		setWidth(x - this.lx);
+		setWidth(x - this.x);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class Bbox implements Serializable {
 	 * @since 1.8.0
 	 */
 	public void setMaxY(double y) {
-		setHeight(y - this.ly);
+		setHeight(y - this.y);
 	}	
 
 	/**
@@ -198,6 +198,6 @@ public class Bbox implements Serializable {
 	 * @return readable string for bbox
 	 */
 	public String toString() {
-		return "Bbox[" + lx + " " + ly + " " + width + " " + height + "]";
+		return "Bbox[" + x + " " + y + " " + width + " " + height + "]";
 	}
 }
