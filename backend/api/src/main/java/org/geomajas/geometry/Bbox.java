@@ -27,11 +27,11 @@ public class Bbox implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 	/**
-	 * the lowest x boundary of the bbox.
+	 * the lowest lx boundary of the bbox.
 	 */
 	private double lx;
 	/**
-	 * the lowest y boundary of the bbox.
+	 * the lowest ly boundary of the bbox.
 	 */
 	private double ly;
 
@@ -52,8 +52,8 @@ public class Bbox implements Serializable {
 	/**
 	 * Create bounding box.
 	 *
-	 * @param x x origin
-	 * @param y y origin
+	 * @param lx lowest x origin
+	 * @param ly lowest y origin
 	 * @param width width of bounding box, should be positive
 	 * @param height height of bounding box, should be positive
 	 */
@@ -126,7 +126,7 @@ public class Bbox implements Serializable {
 	/**
 	 * Set the lowest x boundary for the bbox.
 	 *
-	 * @param x lowest x
+	 * @param lx lowest x
 	 */
 	public void setX(double lx) {
 		this.lx = lx;
@@ -135,7 +135,7 @@ public class Bbox implements Serializable {
 	/**
 	 * Get the lowest y boundary of the bbox.
 	 *
-	 * @return lowest y
+	 * @return ly lowest y
 	 */
 	public double getY() {
 		return ly;
@@ -144,7 +144,7 @@ public class Bbox implements Serializable {
 	/**
 	 * Set the lowest y boundary for the bbox.
 	 *
-	 * @param y lowest y
+	 * @param ly lowest y
 	 */
 	public void setY(double ly) {
 		this.ly = ly;
