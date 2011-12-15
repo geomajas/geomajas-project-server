@@ -101,14 +101,14 @@ public interface FilterService {
 	 *            name of geometry attribute, empty string will choose default geometry
 	 * @param geometryType
 	 *            the geometry type ('Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon' or
-	 *            'MultiPolygon', see {@link org.geotools.filter.function.FilterFunction_geometryType})
+	 *            'MultiPolygon', see {@link org.geotools.filter.function.FilterFunction#geometryType})
 	 * @return filter
 	 * @since 1.9.0
 	 */
 	Filter createGeometryTypeFilter(String geomName, String geometryType);
 	
 	/**
-	 * Creates a logic filter. This is a combination of filters.
+	 * Create a logic filter. This is a combination of filters.
 	 *
 	 * @param filter1 first filter to combine
 	 * @param logic
@@ -129,36 +129,36 @@ public interface FilterService {
 	Filter createFidFilter(String[] featureIDs);
 
 	/**
-	 * Creates a filter with all the geometries that lie completely within the given geometry (including the
+	 * Create a filter with all the geometries that lie completely within the given geometry (including the
 	 * geometry itself).
 	 *
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
-	 *            the name of the geometry field ("the_geom")
+	 *            the name of the geometry field
 	 * @return filter
 	 */
 	Filter createWithinFilter(Geometry geometry, String geomName);
 
 	/**
-	 * Creates a filter with all the geometries that contain the given geometry (including the geometry itself).
+	 * Create a filter with all the geometries that contain the given geometry (including the geometry itself).
 	 *
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
-	 *            the name of the geometry field ("the_geom")
+	 *            the name of the geometry field
 	 * @return filter
 	 */
 	Filter createContainsFilter(Geometry geometry, String geomName);
 
 	/**
-	 * Creates a filter with all the geometries that have a non-empty intersection (overlap or touching) with
+	 * Create a filter with all the geometries that have a non-empty intersection (overlap or touching) with
 	 * given geometry (including the geometry itself).
 	 *
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
-	 *            the name of the geometry field ("the_geom")
+	 *            the name of the geometry field
 	 * @return filter
 	 */
 	Filter createIntersectsFilter(Geometry geometry, String geomName);
@@ -169,7 +169,7 @@ public interface FilterService {
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
-	 *            the name of the geometry field ("the_geom")
+	 *            the name of the geometry field
 	 * @return filter
 	 */
 	Filter createTouchesFilter(Geometry geometry, String geomName);
@@ -182,7 +182,7 @@ public interface FilterService {
 	 * @param bbox
 	 *            The bounding box itself.
 	 * @param geomName
-	 *            The name of the geometry field ("the_geom")
+	 *            The name of the geometry field
 	 * @return filter
 	 */
 	Filter createBboxFilter(String epsg, Envelope bbox, String geomName);
@@ -195,7 +195,7 @@ public interface FilterService {
 	 * @param bbox
 	 *            The bounding box itself.
 	 * @param geomName
-	 *            The name of the geometry field ("the_geom")
+	 *            The name of the geometry field
 	 * @return filter
 	 * @since 1.9.0
 	 */
@@ -203,12 +203,12 @@ public interface FilterService {
 	
 
 	/**
-	 * Creates a filter with all the geometries that overlap the given geometry.
+	 * Create a filter with all the geometries that overlap the given geometry.
 	 *
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
-	 *            the name of the geometry field ("the_geom")
+	 *            the name of the geometry field
 	 * @return filter
 	 */
 	Filter createOverlapsFilter(Geometry geometry, String geomName);
@@ -244,6 +244,16 @@ public interface FilterService {
 	 * @return new filter combining the parameters using "and"
 	 */
 	Filter createAndFilter(Filter left, Filter right);
+
+	/**
+	 * Combine two filters using the "OR" operator.
+	 *
+	 * @param left first filter to combine
+	 * @param right second filter to combine
+	 * @return new filter combining the parameters using "or"
+	 * @since 1.10.0
+	 */
+	Filter createOrFilter(Filter left, Filter right);
 
 	/**
 	 * Parse a string to build a filter object.
