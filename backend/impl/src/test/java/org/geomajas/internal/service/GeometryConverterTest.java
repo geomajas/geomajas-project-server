@@ -33,6 +33,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
  * <p>
  * Test class that test conversions between JTS and DTO geometries. It specifically tests certain methods in the
@@ -128,6 +130,7 @@ public class GeometryConverterTest {
 		Geometry po = converter.toDto(createJtsEmpty(Polygon.class));
 		Assert.assertEquals(Geometry.POLYGON, po.getGeometryType());
 		Assert.assertTrue(po.isEmpty());
+		assertThat(po.getGeometries()).isNull();
 		Geometry mp = converter.toDto(createJtsEmpty(MultiPoint.class));
 		Assert.assertEquals(Geometry.MULTI_POINT, mp.getGeometryType());
 		Assert.assertTrue(mp.isEmpty());
@@ -234,9 +237,75 @@ public class GeometryConverterTest {
 
 	@Test
 	public void dtoPolygonToJts() throws GeomajasException {
+		Geometry shell = new Geometry(Geometry.LINEAR_RING, SRID, -1);
+		shell.setCoordinates(new Coordinate[] { dtoC1, dtoC2, dtoC3, dtoC4, dtoC1 });
+
+		Geometry hole = new Geometry(Geometry.LINEAR_RING, SRID, -1);
+		hole.setCoordinates(new Coordinate[] { dtoC5, dtoC6, dtoC7, dtoC8, dtoC5 });
+
+		Geometry polygon1 = new Geometry(Geometry.POLYGON, SRID, -1);
+		polygon1.setGeometries(new Geometry[] { shell, hole });
+		Geometry polygon2 = new Geometry(Geometry.POLYGON, SRID, -1);
+		polygon2.setGeometries(new Geometry[] { shell });
+		Geometry polygon3 = new Geometry(Geometry.POLYGON, SRID, -1);
+		polygon3.setGeometries(new Geometry[] {});
+		Geometry polygon4 = new Geometry(Geometry.POLYGON, SRID, -1);
+
 		// Test DTO Polygon to JTS:
-		Polygon polygon = (Polygon) converter.toInternal(createDtoPolygon());
+		Polygon polygon;
+		polygon = (Polygon) converter.toInternal(polygon1);
+		assertThat(polygon).isNotNull();
+		assertThat(polygon.isEmpty()).isFalse();
+		assertThat(polygon.getExteriorRing()).isNotNull();
+		Assert.assertEquals(dtoC1.getX(), polygon.getExteriorRing().getCoordinateN(0).x);
+		Assert.assertEquals(dtoC1.getY(), polygon.getExteriorRing().getCoordinateN(0).y);
+		Assert.assertEquals(dtoC2.getX(), polygon.getExteriorRing().getCoordinateN(1).x);
+		Assert.assertEquals(dtoC2.getY(), polygon.getExteriorRing().getCoordinateN(1).y);
+		Assert.assertEquals(dtoC3.getX(), polygon.getExteriorRing().getCoordinateN(2).x);
+		Assert.assertEquals(dtoC3.getY(), polygon.getExteriorRing().getCoordinateN(2).y);
+		Assert.assertEquals(dtoC4.getX(), polygon.getExteriorRing().getCoordinateN(3).x);
+		Assert.assertEquals(dtoC4.getY(), polygon.getExteriorRing().getCoordinateN(3).y);
+		Assert.assertEquals(dtoC1.getX(), polygon.getExteriorRing().getCoordinateN(4).x);
+		Assert.assertEquals(dtoC1.getY(), polygon.getExteriorRing().getCoordinateN(4).y);
+		assertThat(polygon.getNumInteriorRing()).isEqualTo(1);
+		Assert.assertEquals(dtoC5.getX(), polygon.getInteriorRingN(0).getCoordinateN(0).x);
+		Assert.assertEquals(dtoC5.getY(), polygon.getInteriorRingN(0).getCoordinateN(0).y);
 		Assert.assertEquals(dtoC6.getX(), polygon.getInteriorRingN(0).getCoordinateN(1).x);
+		Assert.assertEquals(dtoC6.getY(), polygon.getInteriorRingN(0).getCoordinateN(1).y);
+		Assert.assertEquals(dtoC7.getX(), polygon.getInteriorRingN(0).getCoordinateN(2).x);
+		Assert.assertEquals(dtoC7.getY(), polygon.getInteriorRingN(0).getCoordinateN(2).y);
+		Assert.assertEquals(dtoC8.getX(), polygon.getInteriorRingN(0).getCoordinateN(3).x);
+		Assert.assertEquals(dtoC8.getY(), polygon.getInteriorRingN(0).getCoordinateN(3).y);
+		Assert.assertEquals(dtoC5.getX(), polygon.getInteriorRingN(0).getCoordinateN(4).x);
+		Assert.assertEquals(dtoC5.getY(), polygon.getInteriorRingN(0).getCoordinateN(4).y);
+
+		polygon = (Polygon) converter.toInternal(polygon2);
+		assertThat(polygon).isNotNull();
+		assertThat(polygon.isEmpty()).isFalse();
+		assertThat(polygon.getExteriorRing()).isNotNull();
+		Assert.assertEquals(dtoC1.getX(), polygon.getExteriorRing().getCoordinateN(0).x);
+		Assert.assertEquals(dtoC1.getY(), polygon.getExteriorRing().getCoordinateN(0).y);
+		Assert.assertEquals(dtoC2.getX(), polygon.getExteriorRing().getCoordinateN(1).x);
+		Assert.assertEquals(dtoC2.getY(), polygon.getExteriorRing().getCoordinateN(1).y);
+		Assert.assertEquals(dtoC3.getX(), polygon.getExteriorRing().getCoordinateN(2).x);
+		Assert.assertEquals(dtoC3.getY(), polygon.getExteriorRing().getCoordinateN(2).y);
+		Assert.assertEquals(dtoC4.getX(), polygon.getExteriorRing().getCoordinateN(3).x);
+		Assert.assertEquals(dtoC4.getY(), polygon.getExteriorRing().getCoordinateN(3).y);
+		Assert.assertEquals(dtoC1.getX(), polygon.getExteriorRing().getCoordinateN(4).x);
+		Assert.assertEquals(dtoC1.getY(), polygon.getExteriorRing().getCoordinateN(4).y);
+		assertThat(polygon.getNumInteriorRing()).isEqualTo(0);
+
+		polygon = (Polygon) converter.toInternal(polygon3);
+		assertThat(polygon).isNotNull();
+		assertThat(polygon.isEmpty()).isTrue();
+		assertThat(polygon.getExteriorRing()).isNotNull();
+		assertThat(polygon.getNumInteriorRing()).isEqualTo(0);
+
+		polygon = (Polygon) converter.toInternal(polygon4);
+		assertThat(polygon).isNotNull();
+		assertThat(polygon.isEmpty()).isTrue();
+		assertThat(polygon.getExteriorRing()).isNotNull();
+		assertThat(polygon.getNumInteriorRing()).isEqualTo(0);
 	}
 
 	@Test

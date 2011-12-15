@@ -361,13 +361,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return toDto(feature, VectorLayerService.FEATURE_INCLUDE_ALL);
 	}
 
-	/**
-	 * Convert a DTO feature to a server-side feature.
-	 * 
-	 * @param dto
-	 *            The DTO feature that comes from the client.
-	 * @return Returns a server-side feature object.
-	 */
+	/** {@inheritDoc} */
 	public InternalFeature toInternal(Feature dto) throws GeomajasException {
 		if (dto == null) {
 			return null;
@@ -387,13 +381,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	// Geometry conversion:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Takes in a JTS geometry, and creates a new DTO geometry from it.
-	 * 
-	 * @param geometry
-	 *            The geometry to convert into a DTO geometry.
-	 * @return Returns a DTO type geometry, that is serializable.
-	 */
+	/** {@inheritDoc} */
 	public Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
@@ -437,13 +425,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return dto;
 	}
 
-	/**
-	 * Takes in a DTO geometry, and converts it into a JTS geometry.
-	 * 
-	 * @param geometry
-	 *            The DTO geometry to convert into a JTS geometry.
-	 * @return Returns a JTS geometry.
-	 */
+	/** {@inheritDoc} */
 	public com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
@@ -469,12 +451,17 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		} else if (Geometry.LINE_STRING.equals(geometryType)) {
 			jts = factory.createLineString(convertCoordinates(geometry));
 		} else if (Geometry.POLYGON.equals(geometryType)) {
-			LinearRing exteriorRing = (LinearRing) toInternal(geometry.getGeometries()[0]);
-			LinearRing[] interiorRings = new LinearRing[geometry.getGeometries().length - 1];
-			for (int i = 0; i < interiorRings.length; i++) {
-				interiorRings[i] = (LinearRing) toInternal(geometry.getGeometries()[i + 1]);
+			Geometry[] geometries = geometry.getGeometries();
+			if (null != geometries && geometries.length > 0) {
+				LinearRing exteriorRing = (LinearRing) toInternal(geometries[0]);
+				LinearRing[] interiorRings = new LinearRing[geometries.length - 1];
+				for (int i = 0; i < interiorRings.length; i++) {
+					interiorRings[i] = (LinearRing) toInternal(geometries[i + 1]);
+				}
+				jts = factory.createPolygon(exteriorRing, interiorRings);
+			} else {
+				jts = factory.createPolygon(null, null);
 			}
-			jts = factory.createPolygon(exteriorRing, interiorRings);
 		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
 			Point[] points = new Point[geometry.getGeometries().length];
 			jts = factory.createMultiPoint((Point[]) convertGeometries(geometry, points));
@@ -498,7 +485,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	private com.vividsolutions.jts.geom.Geometry createEmpty(GeometryFactory factory, String geometryType)
 			throws GeomajasException {
 		if (Geometry.POINT.equals(geometryType)) {
-			return factory.createPoint((com.vividsolutions.jts.geom.Coordinate) null);
+			return new Point(null, factory); // do not use GeometryFactory.createPoint(null,...) as that returns null
 		} else if (Geometry.LINEAR_RING.equals(geometryType)) {
 			return factory.createLinearRing((com.vividsolutions.jts.geom.Coordinate[]) null);
 		} else if (Geometry.LINE_STRING.equals(geometryType)) {
