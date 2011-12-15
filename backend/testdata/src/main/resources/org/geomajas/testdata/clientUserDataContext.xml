@@ -27,6 +27,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.testdata.rule.SecurityRule" />
+
 	<bean name="myClientUserData" class="org.geomajas.testdata.ClientUserDataObject">
 		<property name="something" value="Hmm, this is interesting..."/>
 	</bean>

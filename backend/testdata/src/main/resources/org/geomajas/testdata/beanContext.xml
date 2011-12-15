@@ -26,6 +26,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.testdata.rule.SecurityRule" />
+
 	<bean id="bean" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
