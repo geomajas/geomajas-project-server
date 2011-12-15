@@ -35,6 +35,8 @@ public class VectorLayerInfo extends LayerInfo implements Serializable {
 	private FeatureInfo featureInfo;
 
 	private List<NamedStyleInfo> namedStyleInfos = new ArrayList<NamedStyleInfo>();
+	
+	private boolean allowEmptyGeometries;
 
 	/**
 	 * Get filter which needs to be applied to all queries on this layer.
@@ -106,4 +108,31 @@ public class VectorLayerInfo extends LayerInfo implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Is it allowed to create empty geometries? Default value is false.
+	 * <p/>
+	 * <b>Note: </b> empty geometries are not possible for {@link org.geomajas.layer.LayerType#POINT} layers.
+	 * <p/>
+	 * <b>Note: </b> empty geometries are insecure. This disables all security filtering on areas.
+	 * 
+	 * @return true when empty geometries are allowed
+	 * @since 1.10.0
+	 */
+	public boolean isAllowEmptyGeometries() {
+		return allowEmptyGeometries;
+	}
+
+	/**
+	 * Is it allowed to create empty geometries? Default value is false.
+	 * <p/>
+	 * <b>Note: </b> empty geometries are not possible for {@link org.geomajas.layer.LayerType#POINT} layers.
+	 * <p/>
+	 * <b>Note: </b> empty geometries are insecure. This disables all security filtering on areas.
+	 *
+	 * @param allowEmptyGeometries true when empty geometries are allowed
+	 * @since 1.10.0
+	 */
+	public void setAllowEmptyGeometries(boolean allowEmptyGeometries) {
+		this.allowEmptyGeometries = allowEmptyGeometries;
+	}
 }

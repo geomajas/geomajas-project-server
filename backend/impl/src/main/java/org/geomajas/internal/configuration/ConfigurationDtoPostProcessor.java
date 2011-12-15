@@ -150,6 +150,12 @@ public class ConfigurationDtoPostProcessor {
 	private void postProcess(VectorLayer layer) throws LayerException {
 		VectorLayerInfo info = layer.getLayerInfo();
 		if (info != null) {
+			// log warning when allowing empty attributes
+			if (info.isAllowEmptyGeometries()) {
+				log.warn("Empty geometries are allowed for layer " + layer.getId() + ". " +
+						"This disables all security filtering on areas.");
+			}
+			
 			// check for invalid attribute names
 			for (AttributeInfo attributeInfo : info.getFeatureInfo().getAttributes()) {
 				if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
