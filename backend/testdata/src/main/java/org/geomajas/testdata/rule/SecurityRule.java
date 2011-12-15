@@ -26,9 +26,10 @@ public class SecurityRule implements TestRule {
 
 	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
-	
+
 	private String token;
 
+	// CHECKSTYLE THROWS_THROWABLE: OFF
 	public Statement apply(final Statement statement, final Description description) {
 		return new Statement() {
 			@Override
@@ -37,11 +38,12 @@ public class SecurityRule implements TestRule {
 				try {
 					statement.evaluate();
 				} finally {
-				    securityManager.clearSecurityContext();
+					securityManager.clearSecurityContext();
 				}
 			}
 		};
 	}
+	// CHECKSTYLE THROWS_THROWABLE: ON
 
 	/**
 	 * Token which should be used to login.

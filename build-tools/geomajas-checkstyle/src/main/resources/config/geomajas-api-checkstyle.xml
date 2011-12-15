@@ -73,8 +73,14 @@
 
 	<module name="SuppressionCommentFilter">
 		<property name="offCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: OFF"/>
-		<property name="onCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: OFF"/>
+		<property name="onCommentFormat" value="CHECKSTYLE VISIBILITY MODIFIER\: ON"/>
 		<property name="checkFormat" value="VisibilityModifierCheck"/>
+	</module>
+
+	<module name="SuppressionCommentFilter">
+		<property name="offCommentFormat" value="CHECKSTYLE THROWS_THROWABLE\: OFF"/>
+		<property name="onCommentFormat" value="CHECKSTYLE THROWS_THROWABLE\: ON"/>
+		<property name="checkFormat" value="IllegalThrowsCheck"/>
 	</module>
 
 	<module name="org.geomajas.checkstyle.TreeWalker">
