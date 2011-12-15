@@ -50,10 +50,15 @@ public abstract class AbstractSaveOrUpdateStep implements PipelineStep {
 	}
 
 	protected Filter getSecurityFilter(VectorLayer layer, Geometry geometry) throws GeomajasException {
+		return getSecurityFilter(null, layer, geometry);
+	}
+
+	protected Filter getSecurityFilter(Filter baseFilter, VectorLayer layer, Geometry geometry)
+			throws GeomajasException {
 		String layerId = layer.getId();
 
 		// apply generic security filter
-		Filter filter = securityContext.getFeatureFilter(layerId);
+		Filter filter = and(baseFilter, securityContext.getFeatureFilter(layerId));
 
 		// apply default filter
 		String defaultFilter = layer.getLayerInfo().getFilter();
@@ -61,19 +66,26 @@ public abstract class AbstractSaveOrUpdateStep implements PipelineStep {
 			filter = and(filter, filterService.parseFilter(defaultFilter));
 		}
 
-		// apply visible area filter
-		if (null != geometry) {
-			String geometryName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-			if (securityContext.isPartlyVisibleSufficient(layerId)) {
-				filter = and(filter, filterService.createIntersectsFilter(geometry, geometryName));
+		// apply area filter
+		if (!layer.getLayerInfo().isAllowEmptyGeometries()) {
+			if (null != geometry) {
+				String geometryName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
+				Filter areaFilter;
+				if (securityContext.isPartlyVisibleSufficient(layerId)) {
+					areaFilter = filterService.createIntersectsFilter(geometry, geometryName);
+				} else {
+					areaFilter = filterService.createWithinFilter(geometry, geometryName);
+				}
+				filter = and(filter, areaFilter);
 			} else {
-				filter = and(filter, filterService.createWithinFilter(geometry, geometryName));
+				log.warn("Usable area is null for layer " + layerId + "removing all content!");
+				filter = filterService.createFalseFilter();
 			}
-		} else {
-			log.warn("Usable area is null for layer " + layerId + "removing all content!");
-			filter = filterService.createFalseFilter();
 		}
 
+		if (null == filter) {
+			filter = filterService.createTrueFilter();
+		}
 		return filter;
 	}
 

@@ -170,6 +170,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	private static final String CSS_STROKE_OPACITY = "stroke-opacity";
 	private static final String CSS_STROKE_WIDTH = "stroke-width";
 	private static final String CSS_STROKE_DASH_ARRAY = "stroke-dasharray";
+	
+	private static final String MARK_SQUARE = "square";
+	private static final String MARK_CIRCLE = "circle";
+	
+	private static final String MISSING_RESOURCE = "missing resource {}";
 
 	private StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
 
@@ -381,7 +386,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			} else if (choice.ifMark()) {
 				MarkInfo mark = choice.getMark();
 				String name = mark.getWellKnownName().getWellKnownName();
-				if (name.equalsIgnoreCase("square")) {
+				if (MARK_SQUARE.equalsIgnoreCase(name)) {
 					RectInfo rect = new RectInfo();
 					rect.setH(Float.parseFloat(getParameterValue(graphic.getSize())));
 					rect.setW(Float.parseFloat(getParameterValue(graphic.getSize())));
@@ -737,13 +742,13 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				return propertyName + " LIKE '" + isLike.getLiteral().getValue() + "'";
 			} else if (coOps instanceof PropertyIsNullTypeInfo) {
 				PropertyIsNullTypeInfo isNull = (PropertyIsNullTypeInfo) coOps;
+				String what;
 				if (isNull.ifLiteral()) {
-					String literal = isNull.getLiteral().getValue();
-					return "'" + literal + "' IS NULL ";
+					what = isNull.getLiteral().getValue();
 				} else {
-					String propertyName = isNull.getPropertyName().getValue();
-					return propertyName + " IS NULL ";
+					what = isNull.getPropertyName().getValue();
 				}
+				return what + " IS NULL ";
 			} else {
 				throw new IllegalStateException("Unknown comparison operator " + coOps);
 			}
@@ -859,10 +864,10 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			Mark mark;
 			if (info.getRect() != null) {
 				// TODO: do rectangles by adding custom factory ?
-				mark = styleBuilder.createMark("square");
+				mark = styleBuilder.createMark(MARK_SQUARE);
 				mark.setSize(styleBuilder.literalExpression((int) info.getRect().getW()));
 			} else if (info.getCircle() != null) {
-				mark = styleBuilder.createMark("circle");
+				mark = styleBuilder.createMark(MARK_CIRCLE);
 				mark.setSize(styleBuilder.literalExpression(2 * (int) info.getCircle().getR()));
 			} else {
 				throw new IllegalArgumentException(
@@ -886,7 +891,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				try {
 					nrs[i] = Float.parseFloat(strings[i]);
 				} catch (NumberFormatException e) {
-					log.warn("dash array cannot be parsed " + featureStyle.getDashArray(), e);
+					log.warn("Dash array cannot be parsed " + featureStyle.getDashArray(), e);
 				}
 			}
 			stroke.setDashArray(nrs);
@@ -901,27 +906,22 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 
 	private URL getURL(String resourceLocation) throws LayerException {
 		Resource resource = applicationContext.getResource(resourceLocation);
-		if (resource.exists()) {
-			try {
+		try {
+			if (resource.exists()) {
 				return resource.getURL();
-			} catch (IOException e) {
-				log.warn("missing resource {}", resourceLocation);
-				throw new LayerException(e, ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
-			}
-		} else {
-			String gwtResource = "classpath:" + resourceLocation;
-			try {
+			} else {
+				String gwtResource = "classpath:" + resourceLocation;
 				Resource[] matching = applicationContext.getResources(gwtResource);
 				if (matching.length > 0) {
 					return matching[0].getURL();
 				} else {
-					log.warn("missing resource {}", gwtResource);
+					log.warn(MISSING_RESOURCE, gwtResource);
 					throw new LayerException(ExceptionCode.RESOURCE_NOT_FOUND, gwtResource);
 				}
-			} catch (IOException e) {
-				log.warn("missing resource {}", resourceLocation);
-				throw new LayerException(e, ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
 			}
+		} catch (IOException e) {
+			log.warn(MISSING_RESOURCE, resourceLocation);
+			throw new LayerException(e, ExceptionCode.RESOURCE_NOT_FOUND, resourceLocation);
 		}
 	}
 

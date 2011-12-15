@@ -306,4 +306,10 @@ public interface ExceptionCode {
 	 */
 	int EXPRESSION_EVALUATION_FAILED = 86;
 
+	/**
+	 * Layer ${0} does not allow features with an empty geometry.
+	 *
+	 * @since 1.10.0
+	 */
+	int LAYER_EMPTY_GEOMETRY_NOT_ALLOWED = 87;
 }

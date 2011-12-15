@@ -14,16 +14,22 @@ package org.geomajas.internal.layer.vector;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.GeomajasSecurityException;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Save the data from the feature data object (read from the context) into the layer.
@@ -31,6 +37,9 @@ import org.opengis.filter.Filter;
  * @author Joachim Van der Auwera
  */
 public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
 		InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
@@ -57,8 +66,22 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 		}
 		featureModel.setAttributes(feature, filteredAttributes);
 
-		if (newFeature.getGeometry() != null) {
+		if (null != newFeature.getGeometry()) {
 			featureModel.setGeometry(feature, newFeature.getGeometry());
+		} else {
+			if (isCreate) {
+				VectorLayerInfo layerInfo = layer.getLayerInfo();
+				if (layerInfo.isAllowEmptyGeometries()) {
+					// use empty geometry
+					LayerType layerType = layer.getLayerInfo().getLayerType();
+					com.vividsolutions.jts.geom.Geometry geometry = converterService.toInternal(
+							new Geometry(layerType.getGeometryType(), featureModel.getSrid(), -1));
+					newFeature.setGeometry(geometry);
+					featureModel.setGeometry(feature, geometry);
+				} else {
+					throw new LayerException(ExceptionCode.LAYER_EMPTY_GEOMETRY_NOT_ALLOWED, layerId);
+				}
+			}
 		}
 
 		Filter securityFilter;

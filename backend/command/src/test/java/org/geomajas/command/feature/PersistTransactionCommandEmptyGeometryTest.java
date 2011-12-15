@@ -14,19 +14,14 @@ package org.geomajas.command.feature;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;
-import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureTransaction;
-import org.geomajas.security.*;
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.GeoService;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.geomajas.testdata.rule.SecurityRule;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,112 +33,86 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test for {@link PersistTransactionCommand}.
+ * Test for {@link org.geomajas.command.feature.PersistTransactionCommand}.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners(listeners = { DependencyInjectionTestExecutionListener.class,
-		ReloadContextTestExecutionListener.class })
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class,
+		ReloadContextTestExecutionListener.class})
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/testdata/allowAll.xml",
+		"/org/geomajas/command/emptyGeometryTest.xml"})
 @ReloadContext
-public class PersistTransactionCommandTest {
+public class PersistTransactionCommandEmptyGeometryTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
-	private static final String LAYER_ID = "countries";
+	private static final String LAYER_EMPTY_POINT_ID = "layerEmptyPoint";
+	private static final String LAYER_EMPTY_POLYGON_ID = "layerEmptyGeometry";
 	private static final String CRS = "EPSG:4326";
 
 	@Autowired
 	private CommandDispatcher dispatcher;
 
 	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private DtoConverterService dtoConverter;
-
-	@Autowired
 	@Rule
 	public SecurityRule securityRule;
 
-	@Test
-	public void testPersistEmptyTransaction() throws Exception {
-		PersistTransactionRequest request = new PersistTransactionRequest();
-		request.setCrs(CRS);
-		FeatureTransaction featureTransaction = new FeatureTransaction();
-		featureTransaction.setLayerId(LAYER_ID);
-		request.setFeatureTransaction(featureTransaction);
-		PersistTransactionResponse response = (PersistTransactionResponse) dispatcher.execute(
-				PersistTransactionRequest.COMMAND, request, null, "en");
-		if (response.isError()) {
-			response.getErrors().get(0).printStackTrace();
-		}
-		Assert.assertFalse(response.isError());
-		Assert.assertNotNull(response.getFeatureTransaction());
-	}
-
-	@Test
-	@DirtiesContext // adding a bean
-	public void testPersistAddFeatureTransaction() throws Exception {
-		PersistTransactionRequest request = new PersistTransactionRequest();
-		request.setCrs(CRS);
-		FeatureTransaction featureTransaction = new FeatureTransaction();
-		featureTransaction.setLayerId(LAYER_ID);
-		Feature feature = new Feature();
-		GeometryFactory factory = new GeometryFactory();
-		Geometry circle =
-				dtoConverter.toDto(geoService.createCircle(factory.createPoint(new Coordinate(0, 0)), 10, 10));
-		feature.setGeometry(circle);
-		featureTransaction.setNewFeatures(new Feature[] {feature});
-		request.setFeatureTransaction(featureTransaction);
-		PersistTransactionResponse response = (PersistTransactionResponse) dispatcher.execute(
-				PersistTransactionRequest.COMMAND, request, null, "en");
-		if (response.isError()) {
-			response.getErrors().get(0).printStackTrace();
-		}
-		Assert.assertFalse(response.isError());
-		Assert.assertNotNull(response.getFeatureTransaction());
-		Feature[] newFeatures = response.getFeatureTransaction().getNewFeatures();
-		Assert.assertEquals(1, newFeatures.length);
-		Assert.assertNotNull(newFeatures[0].getId());
-	}
-
-	// Test for creating a feature without geometry. This should put an empty geometry in the feature.
+	// Test for creating a feature with null (point) geometry. This should fail as empty points don't exist.
 	@Test
 	@DirtiesContext // adding a bean with empty context if the test fails
-	public void testCreateWithoutGeometry() throws Exception {
+	public void testCreateEmptyPoint() throws Exception {
 		PersistTransactionRequest request = new PersistTransactionRequest();
 		request.setCrs(CRS);
 		FeatureTransaction featureTransaction = new FeatureTransaction();
-		featureTransaction.setLayerId(LAYER_ID);
+		featureTransaction.setLayerId(LAYER_EMPTY_POINT_ID);
 		Feature feature = new Feature();
 		featureTransaction.setNewFeatures(new Feature[] {feature});
 		request.setFeatureTransaction(featureTransaction);
 		PersistTransactionResponse response = (PersistTransactionResponse) dispatcher.execute(
 				PersistTransactionRequest.COMMAND, request, null, "en");
-		assertThat(response.isError()).isTrue();
-		Throwable error = response.getErrors().get(0);
-		assertThat(error).isInstanceOf(LayerException.class);
-		assertThat(((LayerException) error).getExceptionCode()).isEqualTo(
-				ExceptionCode.LAYER_EMPTY_GEOMETRY_NOT_ALLOWED);
-		/*
 		if (response.isError()) {
 			response.getErrors().get(0).printStackTrace();
 		}
-		Assert.assertFalse(response.isError());
-		Assert.assertNotNull(response.getFeatureTransaction());
+		assertThat(response.isError()).isFalse();
+		assertThat(response.getFeatureTransaction()).isNotNull();
 		Feature[] newFeatures = response.getFeatureTransaction().getNewFeatures();
 		assertThat(newFeatures.length).isEqualTo(1);
 		assertThat(newFeatures[0].getId()).isNotNull();
 		assertThat(newFeatures[0].getGeometry()).isNotNull();
-		*/
+/*
+		assertThat(response.isError()).isTrue();
+		Throwable error = response.getErrors().get(0);
+		assertThat(error).isInstanceOf(LayerException.class);
+		assertThat(((LayerException) error).getExceptionCode()).isEqualTo(
+				ExceptionCode.LAYER_EMPTY_GEOMETRY_POINT);
+*/
+	}
+
+	// Test for creating a feature with null (polygon) geometry. This should add a feature in the layer.
+	@Test
+	@DirtiesContext // adding a bean
+	public void testCreateEmptyPolygon() throws Exception {
+		PersistTransactionRequest request = new PersistTransactionRequest();
+		request.setCrs(CRS);
+		FeatureTransaction featureTransaction = new FeatureTransaction();
+		featureTransaction.setLayerId(LAYER_EMPTY_POLYGON_ID);
+		Feature feature = new Feature();
+		featureTransaction.setNewFeatures(new Feature[] {feature});
+		request.setFeatureTransaction(featureTransaction);
+		PersistTransactionResponse response = (PersistTransactionResponse) dispatcher.execute(
+				PersistTransactionRequest.COMMAND, request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
+		assertThat(response.isError()).isFalse();
+		assertThat(response.getFeatureTransaction()).isNotNull();
+		Feature[] newFeatures = response.getFeatureTransaction().getNewFeatures();
+		assertThat(newFeatures.length).isEqualTo(1);
+		assertThat(newFeatures[0].getId()).isNotNull();
+		assertThat(newFeatures[0].getGeometry()).isNotNull();
 	}
 
 }

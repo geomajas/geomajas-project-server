@@ -32,8 +32,10 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.testdata.rule.SecurityRule;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
@@ -86,16 +88,9 @@ public class VectorLayerServiceTest {
 	@Autowired
 	private GeoService geoService;
 
-	@Before
-	public void login() {
-		// assure security context is set
-		securityManager.createSecurityContext(null);
-	}
-
-	@After
-	public void clearSecurityContext() {
-		securityManager.clearSecurityContext();
-	}
+	@Autowired
+	@Rule
+	public SecurityRule securityRule;
 
 	@Test
 	public void testGetFeaturesLazy() throws Exception {

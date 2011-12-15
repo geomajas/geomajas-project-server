@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
@@ -516,7 +517,8 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return Geometry.MULTI_POINT;
 		} else if (geometry instanceof MultiLineString) {
 			return Geometry.MULTI_LINE_STRING;
-		} else if (geometry instanceof MultiPolygon) {
+		} else if (geometry instanceof GeometryCollection) {
+			// Multi-polygon and other GeometryCollection implementations
 			return Geometry.MULTI_POLYGON;
 		} else {
 			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getClass().getName());
