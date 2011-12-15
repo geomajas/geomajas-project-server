@@ -14,6 +14,7 @@ package org.geomajas.layer;
 import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Geometry;
 
 /**
  * <p>
@@ -61,5 +62,34 @@ public enum LayerType implements Serializable {
 	 */
 	public String toString() {
 		return Integer.toString(code);
+	}
+
+	/**
+	 * Convert to the type indication in {@link Geometry}.
+	 *
+	 * @return geometry type as recognized by {@link Geometry}
+	 * @since 1.10.0
+	 */
+	public String getGeometryType() {
+		switch (this) {
+			case GEOMETRY:
+			case POINT:
+				return Geometry.POINT;
+			case LINESTRING:
+				return Geometry.LINE_STRING;
+			case MULTILINESTRING:
+				return Geometry.MULTI_LINE_STRING;
+			case MULTIPOINT:
+				return Geometry.MULTI_POINT;
+			case POLYGON:
+				return Geometry.POLYGON;
+			case MULTIPOLYGON:
+				return Geometry.MULTI_POLYGON;
+			case RASTER:
+				throw new IllegalStateException("Cannot convert LayerType.RASTER to Geometry#type.");
+			default:
+				throw new IllegalStateException("Cannot convert LayerType " + code + " to Geometry#type.");
+		}
+
 	}
 }
