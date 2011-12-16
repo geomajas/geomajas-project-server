@@ -41,6 +41,7 @@ public class GeocoderWidget extends DynamicForm {
 	private TextItem textItem;
 	private GeocoderPresenter presenter;
 	private MapWidget map;
+	private PickerIcon clearIcon;
 
 	/**
 	 * Create geocoder widget which allows searching a location from a string.
@@ -51,9 +52,8 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
-		this(map, name, title, true);
+		this(map, name, title, true, true);
 	}
-
 	/**
 	 * Create geocoder widget which allows searching a location from a string.
 	 *
@@ -65,6 +65,21 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle) {
+		this(map, name, title, showTitle, true);
+	}
+
+	/**
+	 * Create geocoder widget which allows searching a location from a string.
+	 *
+	 * @param map map to apply search results
+	 * @param name widget name
+	 * @param title label which is displayed left of the widget
+	 * @param showTitle determines whether the label should be displayed or not
+	 * @param showClearIcon determines whether the clear icon should be usable or not
+	 * @since 1.2.0
+	 */
+	@Api
+	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle, final boolean showClearIcon) {
 		super();
 		presenter = new GeocoderPresenter(map, this);
 		this.map = map;
@@ -81,13 +96,17 @@ public class GeocoderWidget extends DynamicForm {
 		});
 
 		final PickerIcon findIcon = new PickerIcon(WidgetLayout.iconPickerSearch);
-		final PickerIcon clearIcon = new PickerIcon(WidgetLayout.iconPickerClear);
-		textItem.setIcons(findIcon, clearIcon);
+		if (showClearIcon) {
+			clearIcon = new PickerIcon(WidgetLayout.iconPickerClear);
+			textItem.setIcons(findIcon, clearIcon);
+		} else {
+			textItem.setIcons(findIcon);
+		}
 
 		textItem.addIconClickHandler(new IconClickHandler() {
 			public void onIconClick(IconClickEvent iconClickEvent) {
 				FormItemIcon icon = iconClickEvent.getIcon();
-				if (clearIcon.getSrc().equals(icon.getSrc())) {
+				if (showClearIcon && clearIcon.getSrc().equals(icon.getSrc())) {
 					presenter.clearLocation();
 				} else {
 					presenter.goToLocation((String) textItem.getValue());
