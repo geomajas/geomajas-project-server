@@ -52,7 +52,7 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
-		this(map, name, title, true, true);
+		this(map, name, title, true);
 	}
 	/**
 	 * Create geocoder widget which allows searching a location from a string.
@@ -65,21 +65,6 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle) {
-		this(map, name, title, showTitle, true);
-	}
-
-	/**
-	 * Create geocoder widget which allows searching a location from a string.
-	 *
-	 * @param map map to apply search results
-	 * @param name widget name
-	 * @param title label which is displayed left of the widget
-	 * @param showTitle determines whether the label should be displayed or not
-	 * @param showClearIcon determines whether the clear icon should be usable or not
-	 * @since 1.2.0
-	 */
-	@Api
-	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle, final boolean showClearIcon) {
 		super();
 		presenter = new GeocoderPresenter(map, this);
 		this.map = map;
@@ -96,7 +81,7 @@ public class GeocoderWidget extends DynamicForm {
 		});
 
 		final PickerIcon findIcon = new PickerIcon(WidgetLayout.iconPickerSearch);
-		if (showClearIcon) {
+		if (GeocoderLayout.showClearIcon) {
 			clearIcon = new PickerIcon(WidgetLayout.iconPickerClear);
 			textItem.setIcons(findIcon, clearIcon);
 		} else {
@@ -106,7 +91,7 @@ public class GeocoderWidget extends DynamicForm {
 		textItem.addIconClickHandler(new IconClickHandler() {
 			public void onIconClick(IconClickEvent iconClickEvent) {
 				FormItemIcon icon = iconClickEvent.getIcon();
-				if (showClearIcon && clearIcon.getSrc().equals(icon.getSrc())) {
+				if (GeocoderLayout.showClearIcon && clearIcon.getSrc().equals(icon.getSrc())) {
 					presenter.clearLocation();
 				} else {
 					presenter.goToLocation((String) textItem.getValue());
