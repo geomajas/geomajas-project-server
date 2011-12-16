@@ -183,7 +183,10 @@
 
       <para>The roles property is used to define the authorizations for the
       roles which are configured in the LDAP store. The keys are the values of
-      the roles attribute, often DN values.</para>
+      the roles attribute, often DN values. You can also define the
+      defaultRole. This is the set of authorizations which is always assigned
+      to all users who can authenticate using LDAP (the authorizations for the
+      roles are added to that set).</para>
 
       <xi:include href="listing/LdapAuthentication.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />

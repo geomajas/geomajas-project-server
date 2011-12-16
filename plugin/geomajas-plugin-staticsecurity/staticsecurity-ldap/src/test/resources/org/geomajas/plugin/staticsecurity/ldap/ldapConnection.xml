@@ -12,10 +12,8 @@
 <beans
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
 		xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
 		>
 
 	<!-- @extract-start LdapAuthentication, Configuration to use LDAP to authenticate users -->
@@ -42,15 +40,22 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="organizationAttribute" value="o" />
 					<property name="divisionAttribute" value="ou" />
 					<property name="rolesAttribute" value="memberOf" />
+					<property name="defaultRole">
+						<list>
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
+								<property name="toolsInclude">
+									<list><value>.*</value></list>
+								</property>
+							</bean>
+						</list>
+					</property>
 					<property name="roles">
 						<map>
 							<entry key="cn=testgroup,dc=roles,dc=geomajas,dc=org">
 								<list>
 									<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
 										<property name="commandsInclude">
-											<list>
-												<value>.*</value>
-											</list>
+											<list><value>.*</value></list>
 										</property>
 									</bean>
 								</list>

@@ -59,6 +59,7 @@ public class LdapAuthenticationService implements AuthenticationService {
 	private String divisionAttribute;
 	private String rolesAttribute;
 
+	private List<AuthorizationInfo> defaultRole;
 	private Map<String, List<AuthorizationInfo>> roles;
 
 	/**
@@ -153,6 +154,24 @@ public class LdapAuthenticationService implements AuthenticationService {
 	}
 
 	/**
+	 * Get the authorizations which apply for all users who can successfully authenticate using LDAP.
+	 *
+	 * @return authentications for all users authenticated through LDAP
+	 */
+	public List<AuthorizationInfo> getDefaultRole() {
+		return defaultRole;
+	}
+
+	/**
+	 * Set the authorizations which apply for all users who can successfully authenticate using LDAP.
+	 *
+	 * @param defaultRole list of authentications for all users who can authenticate through LDAP
+	 */
+	public void setDefaultRole(List<AuthorizationInfo> defaultRole) {
+		this.defaultRole = defaultRole;
+	}
+
+	/**
 	 * Set the authorizations for the roles which may be defined.
 	 *
 	 * @param roles map with roles, keys are the values for {@link #rolesAttribute}, probably DN values
@@ -234,6 +253,9 @@ public class LdapAuthenticationService implements AuthenticationService {
 
 	private List<AuthorizationInfo> getAuthorizations(SearchResultEntry entry) {
 		List<AuthorizationInfo> auths = new ArrayList<AuthorizationInfo>();
+		if (null != defaultRole) {
+			auths.addAll(defaultRole);
+		}
 		String[] attributes = entry.getAttributeValues(rolesAttribute);
 		if (null != attributes) {
 			for (String attr : attributes) {

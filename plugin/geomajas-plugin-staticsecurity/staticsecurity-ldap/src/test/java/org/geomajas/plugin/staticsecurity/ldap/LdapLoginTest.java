@@ -59,8 +59,11 @@ public class LdapLoginTest extends LdapServerProvider {
 		assertThat(response.getUserDivision()).isNull();
 
 		Authentication auth = tokenService.getAuthentication(token);
-		Assert.assertEquals(1, auth.getAuthorizations().length);
-		BaseAuthorization authorizaton = auth.getAuthorizations()[0];
+		Assert.assertEquals(2, auth.getAuthorizations().length); // defaultRole + assigned role
+		BaseAuthorization authorizaton = auth.getAuthorizations()[0]; // default Role
+		Assert.assertTrue(authorizaton.isToolAuthorized("bla"));
+		Assert.assertFalse(authorizaton.isCommandAuthorized("bla"));
+		authorizaton = auth.getAuthorizations()[1]; // assigned Role
 		Assert.assertFalse(authorizaton.isToolAuthorized("bla"));
 		Assert.assertTrue(authorizaton.isCommandAuthorized("bla"));
 	}
