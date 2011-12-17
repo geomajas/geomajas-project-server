@@ -8,22 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.rest.server.mvc;
 
 /**
  * Enum for feature ordering.
  * 
  * @author Jan De Moerloose
- * 
  */
 public enum FeatureOrder {
-	/*
-	 * ascending order
-	 */
-	ASC 
-	, 
-	/*
-	 * descending order
-	 */
-	DESC;
+	/** Ascending order. */
+	ASC,
+	/** Descending order. */
+	DESC
 }
