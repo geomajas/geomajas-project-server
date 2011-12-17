@@ -16,56 +16,50 @@ package org.geomajas.sld;
  * 
  * @author An Buyle
  */
-public final class SldConstant {
+public interface SldConstant {
 
-	public static final String STROKE_OPACITY = "stroke-opacity";
+	String STROKE_OPACITY = "stroke-opacity";
 
-	public static final String STROKE = "stroke";
+	String STROKE = "stroke";
 
-	public static final String STROKE_WIDTH = "stroke-width";
+	String STROKE_WIDTH = "stroke-width";
 
-	public static final String FILL = "fill";
+	String FILL = "fill";
 
-	public static final String FILL_OPACITY = "fill-opacity";
+	String FILL_OPACITY = "fill-opacity";
 
 	// OGC 02-070: : If the "stroke" CssParameter element is absent, the (default) color is defined to
 	// be black ("#000000")
 	// "stroke-opacity" CssParameter: The default value is 1.0 (opaque).
 	// "stroke-width" CssParameter: The default is 1.0 (pixel).
 
-	public static final Integer DEFAULT_STROKE_OPACITY_PERCENTAGE = 100;
+	int DEFAULT_STROKE_OPACITY_PERCENTAGE = 100;
 
-	public static final Integer DEFAULT_STROKE_WIDTH_FOR_LINE = 1; // in pixels, the default is 1.0.
+	int DEFAULT_STROKE_WIDTH_FOR_LINE = 1; // in pixels, the default is 1.0.
 
-	public static final String DEFAULT_FILL_FOR_LINE = "#000000"; // The default fill color for a lineSymbolizer (black)
+	String DEFAULT_FILL_FOR_LINE = "#000000"; // The default fill color for a lineSymbolizer (black)
 
 	// OGC 02-070: The default if neither an ExternalGraphic nor a Mark is specified is to use the default
 	// mark of a "square" with a 50%-gray (#808080) fill and a black border, with a size of 6 pixels,
-	public static final String DEFAULT_WKNAME_FOR_MARKER = "square"; // The default WellKnownName is "square"
+	String DEFAULT_WKNAME_FOR_MARKER = "square"; // The default WellKnownName is "square"
 
-	public static final String DEFAULT_FILL_FOR_MARKER = "#808080"; // The default fill color for a marker
+	String DEFAULT_FILL_FOR_MARKER = "#808080"; // The default fill color for a marker
 
 	// pointSymbolizer: 50%-gray (#808080)
 
-	public static final Integer DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER = 100; // default value in SLD is "1.0"
+	int DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER = 100; // default value in SLD is "1.0"
 
-	public static final Integer DEFAULT_SIZE_MARKER = 6; // in pixels
+	int DEFAULT_SIZE_MARKER = 6; // in pixels
 
-	public static final Integer DEFAULT_STROKE_WIDTH = 1; // in pixels, the default is 1.0.
+	int DEFAULT_STROKE_WIDTH = 1; // in pixels, the default is 1.0.
 
-	public static final Integer DEFAULT_ROTATION_MARKER = 0;
+	int DEFAULT_ROTATION_MARKER = 0;
 
-	public static final String DEFAULT_ROTATION_MARKER_AS_STRING = "0";
+	String DEFAULT_ROTATION_MARKER_AS_STRING = "0";
 
 	// OGC 02-070: the default value for the fill color in the polygon symbolizer context is 50% gray (value "#808080")
-	public static final String DEFAULT_FILL_FOR_POLYGON = "#808080";
+	String DEFAULT_FILL_FOR_POLYGON = "#808080";
 
-	public static final Integer DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON = 100; // default value in SLD is "1.0"
-
-	/**
-	 * Hide constructor
-	 */
-	private SldConstant() {
-	}
+	int DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON = 100; // default value in SLD is "1.0"
 
 }

@@ -82,25 +82,23 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * </li> 
  * 
  * @author An Buyle
- *
  */
-
 public class SldWidget {
 
-	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+	private static final SldEditorMessages MESSAGES = GWT.create(SldEditorMessages.class);
 	
-	private final String externalGraphicsSelectTitle = sldEditorMessages.externalGraphicsSelectTitle();
+	private final String externalGraphicsSelectTitle = MESSAGES.externalGraphicsSelectTitle();
 
-	private final String markerSelectTitle = sldEditorMessages.markerSelectTitle();
+	private final String markerSelectTitle = MESSAGES.markerSelectTitle();
 	
 	// Configuration members
 	private SldGwtServiceAsync service;
 	private StyledLayerDescriptorInfo sldLatestRequest;
 	private RefreshSldHandler refreshSldHandler;	
 	private RefuseSldLoadingHandler refuseSldLoadingHandler;
-	private CloseSldHandler 	closeSldHandler;
-	private OpenSldHandler		openSldHandler;
-	private boolean 			showCloseButton;
+	private CloseSldHandler	closeSldHandler;
+	private OpenSldHandler openSldHandler;
+	private boolean showCloseButton;
 
 
 	// Current state
@@ -237,7 +235,6 @@ public class SldWidget {
 	/**
 	 * Default constructor.  
 	 */
-
 	public SldWidget() {
 		init(null);
 	}
@@ -392,7 +389,7 @@ public class SldWidget {
 		NamedLayerInfo namedLayerInfo = info.getNamedLayer();
 
 		String nameValue = (null != namedLayerInfo.getName()) ? namedLayerInfo.getName()
-				: sldEditorMessages.nameUnspecified();
+				: MESSAGES.nameUnspecified();
 		nameOfLayerItem.setValue(nameValue);
 
 		// <LayerFeatureConstraints> is not supported
@@ -518,7 +515,7 @@ public class SldWidget {
 			
 			GWT.log("startDialogueForClosingfOfSLD(): Entering");
 			
-			SC.confirm(sldEditorMessages.confirmSavingChangesBeforeUnloadingSld(), new BooleanCallback() {
+			SC.confirm(MESSAGES.confirmSavingChangesBeforeUnloadingSld(), new BooleanCallback() {
 
 				public void execute(Boolean value) {
 					if (value != null && value) {
@@ -562,7 +559,7 @@ public class SldWidget {
 			answerForConfirmSaveReceived = false; // lock loading of another SLD
 
 
-			SC.confirm(sldEditorMessages.confirmSavingChangesBeforeUnloadingIncompleteSld(),
+			SC.confirm(MESSAGES.confirmSavingChangesBeforeUnloadingIncompleteSld(),
 					new BooleanCallback() {
 
 						public void execute(Boolean value) {
@@ -638,7 +635,7 @@ public class SldWidget {
 		generalForm = new DynamicForm();
 		generalForm.setNumCols(4);
 
-		nameOfLayerItem = new TextItem("Layer", sldEditorMessages.layerTitle());
+		nameOfLayerItem = new TextItem("Layer", MESSAGES.layerTitle());
 		nameOfLayerItem.setWidth(200);
 		nameOfLayerItem.addChangedHandler(new ChangedHandler() {
 
@@ -661,11 +658,11 @@ public class SldWidget {
 		nameOfLayerItem.setRequiredMessage("De naam van de laag mag niet leeg zijn");
 		nameOfLayerItem.setValidateOnChange(true);
 
-		geomTypeItem = new TextItem("Geometry", sldEditorMessages.geometryTitle());
+		geomTypeItem = new TextItem("Geometry", MESSAGES.geometryTitle());
 		geomTypeItem.setWidth(150);
 		geomTypeItem.disable(); // cannot be changed by the user
 
-		styleTitleItem = new TextItem("Style", sldEditorMessages.styleTitle());
+		styleTitleItem = new TextItem("Style", MESSAGES.styleTitle());
 		styleTitleItem.setWidth(300);
 		styleTitleItem.setColSpan(4);
 
@@ -707,7 +704,7 @@ public class SldWidget {
 		styleTitleItem.setRequiredMessage("De naam van de stijl mag niet leeg zijn");
 		styleTitleItem.setValidateOnChange(true);
 
-		generalForm.setGroupTitle(sldEditorMessages.generalFormTitle());
+		generalForm.setGroupTitle(MESSAGES.generalFormTitle());
 		generalForm.setIsGroup(true);
 
 		generalForm.setItems(nameOfLayerItem, geomTypeItem, styleTitleItem);
@@ -780,7 +777,7 @@ public class SldWidget {
 		ruleDetailContainer.setLayoutTopMargin(10);
 		ruleDetailContainer.setLayoutLeftMargin(5);
 		ruleDetailContainer.setLayoutBottomMargin(5);
-		ruleDetailContainer.setGroupTitle(sldEditorMessages.ruleDetailContainerTitle());
+		ruleDetailContainer.setGroupTitle(MESSAGES.ruleDetailContainerTitle());
 		ruleDetailContainer.setIsGroup(true);
 
 		widgetLayout.addMember(ruleDetailContainer); /* In the bottom pane of the widget */
@@ -799,11 +796,11 @@ public class SldWidget {
 
 		filterPane = new VLayout();
 
-		Tab tTab1 = new Tab(sldEditorMessages.symbologyTabTitle());
+		Tab tTab1 = new Tab(MESSAGES.symbologyTabTitle());
 
 		tTab1.setPane(symbolPane);
 
-		Tab tTab2 = new Tab(sldEditorMessages.filterTabTitle());
+		Tab tTab2 = new Tab(MESSAGES.filterTabTitle());
 		filterPane = new VLayout();
 		filterPane.setMembersMargin(5);
 		filterPane.setMargin(5);
@@ -1055,7 +1052,7 @@ public class SldWidget {
 		Object symbolizerInfo = rule.getSymbolizerList().get(0); // retrieve the first symbolizer specification
 
 		if (symbolizerInfo.getClass().equals(PointSymbolizerInfo.class)) {
-			geomTypeItem.setValue(sldEditorMessages.pointTitle());
+			geomTypeItem.setValue(MESSAGES.pointTitle());
 
 			PointSymbolizerInfo currentPointSymbolizerInfo = (PointSymbolizerInfo) symbolizerInfo;
 			if (null == typeOfGraphicItem) {
@@ -1099,7 +1096,7 @@ public class SldWidget {
 				}
 			}
 		} else if (symbolizerInfo.getClass().equals(LineSymbolizerInfo.class)) {
-			geomTypeItem.setValue(sldEditorMessages.lineTitle());
+			geomTypeItem.setValue(MESSAGES.lineTitle());
 
 			final LineSymbolizerInfo lineSymbolizerInfo = (LineSymbolizerInfo) symbolizerInfo;
 			GeometryInfo geometryInfo = lineSymbolizerInfo.getGeometry();
@@ -1120,7 +1117,7 @@ public class SldWidget {
 			createOrUpdateLineSymbolizerForm(lineSymbolizerInfo);
 
 		} else if (symbolizerInfo.getClass().equals(PolygonSymbolizerInfo.class)) {
-			geomTypeItem.setValue(sldEditorMessages.polygonTitle());
+			geomTypeItem.setValue(MESSAGES.polygonTitle());
 			final PolygonSymbolizerInfo polygonSymbolizerInfo = (PolygonSymbolizerInfo) symbolizerInfo;
 			GeometryInfo geometryInfo = polygonSymbolizerInfo.getGeometry();
 			if (null != geometryInfo) {
@@ -1233,11 +1230,11 @@ public class SldWidget {
 
 			mark.getStroke().setCssParameterList(
 					updateCssParameterList(mark.getStroke().getCssParameterList(), SldConstant.STROKE_WIDTH,
-							(SldConstant.DEFAULT_STROKE_WIDTH).toString()));
+							(Integer.toString(SldConstant.DEFAULT_STROKE_WIDTH))));
 			choiceInfoGraphic.setMark(mark);
 			if (null == currrentGraphicInfo.getSize()) {
 				currrentGraphicInfo.setSize(new SizeInfo());
-				currrentGraphicInfo.getSize().setValue(SldConstant.DEFAULT_SIZE_MARKER.toString());
+				currrentGraphicInfo.getSize().setValue(Integer.toString(SldConstant.DEFAULT_SIZE_MARKER));
 			}
 		}
 		currentMark = choiceInfoGraphic.getMark();
@@ -1418,7 +1415,7 @@ public class SldWidget {
 
 	private void setupPointInfoTypeOfGraphicItem() {
 		typeOfGraphicItem = new SelectItem();
-		typeOfGraphicItem.setTitle(sldEditorMessages.typeofGraphicsTitleInSymbologyTab());
+		typeOfGraphicItem.setTitle(MESSAGES.typeofGraphicsTitleInSymbologyTab());
 
 		final LinkedHashMap<String, String> typeOfGraphicList = new LinkedHashMap<String, String>();
 		typeOfGraphicList.put(markerSelectTitle, markerSelectTitle);
@@ -1474,7 +1471,7 @@ public class SldWidget {
 
 	private void setupExternalGraphic() {
 		externalGraphicSizeItem = new SpinnerItem();
-		externalGraphicSizeItem.setTitle(sldEditorMessages.sizeOfGraphicInSymbologyTab());
+		externalGraphicSizeItem.setTitle(MESSAGES.sizeOfGraphicInSymbologyTab());
 		externalGraphicSizeItem.setDefaultValue(12);
 		externalGraphicSizeItem.setMin(0);
 		externalGraphicSizeItem.setMax(200);
@@ -1498,7 +1495,7 @@ public class SldWidget {
 		});
 
 		graphicFormatItem = new SelectItem();
-		graphicFormatItem.setTitle(sldEditorMessages.formatTitleInPointInSymbologyTab());
+		graphicFormatItem.setTitle(MESSAGES.formatTitleInPointInSymbologyTab());
 
 		final LinkedHashMap<String, String> graficFormatList = new LinkedHashMap<String, String>();
 		graficFormatList.put("image/png", "image/png");
@@ -1533,7 +1530,7 @@ public class SldWidget {
 		});
 
 		/** **/
-		urlItem = new TextItem("Href", sldEditorMessages.hRefTitle());
+		urlItem = new TextItem("Href", MESSAGES.hRefTitle());
 		urlItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
@@ -1558,7 +1555,7 @@ public class SldWidget {
 		/** Construct and setup "marker symbol size" form field **/
 
 		markerSizeItem = new SpinnerItem();
-		markerSizeItem.setTitle(sldEditorMessages.sizeOfGraphicInSymbologyTab());
+		markerSizeItem.setTitle(MESSAGES.sizeOfGraphicInSymbologyTab());
 		markerSizeItem.setDefaultValue(SldConstant.DEFAULT_SIZE_MARKER);
 		markerSizeItem.setMin(0);
 		markerSizeItem.setMax(200);
@@ -1566,7 +1563,8 @@ public class SldWidget {
 		markerSizeItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				String newValue = numericalToString(event.getValue(), SldConstant.DEFAULT_SIZE_MARKER.toString());
+				String newValue =
+						numericalToString(event.getValue(), Integer.toString(SldConstant.DEFAULT_SIZE_MARKER));
 
 				if (newValue != null) {
 					setSldHasChangedTrue();
@@ -1583,8 +1581,8 @@ public class SldWidget {
 		/** Construct and setup "marker symbol rotation" form field **/
 
 		markerRotationItem = new SpinnerItem();
-		markerRotationItem.setTitle(sldEditorMessages.rotationOfGraphicInSymbologyTab());
-		markerRotationItem.setTooltip(sldEditorMessages.rotationOfGraphicTooltipInSymbologyTab());
+		markerRotationItem.setTitle(MESSAGES.rotationOfGraphicInSymbologyTab());
+		markerRotationItem.setTooltip(MESSAGES.rotationOfGraphicTooltipInSymbologyTab());
 		markerRotationItem.setDefaultValue(SldConstant.DEFAULT_ROTATION_MARKER);
 		markerRotationItem.setMin(-360);
 		markerRotationItem.setMax(360);
@@ -1608,7 +1606,7 @@ public class SldWidget {
 		/** Construct and setup "marker symbol name" form field **/
 
 		markerSymbolName = new SelectItem();
-		markerSymbolName.setTitle(sldEditorMessages.nameOfSymbolTitleInSymbologyTab());
+		markerSymbolName.setTitle(MESSAGES.nameOfSymbolTitleInSymbologyTab());
 		markerSymbolName.setDefaultValue(SldConstant.DEFAULT_WKNAME_FOR_MARKER);
 
 		final LinkedHashMap<String, String> markerSymbolList = new LinkedHashMap<String, String>();
@@ -1618,7 +1616,7 @@ public class SldWidget {
 		markerSymbolList.put("circle", "circle"); // TODO
 		markerSymbolList.put("square", "square"); // TODO
 		markerSymbolList.put("star", "star"); // TODO
-		markerSymbolList.put("triangle", sldEditorMessages.triangleTitle());
+		markerSymbolList.put("triangle", MESSAGES.triangleTitle());
 		markerSymbolList.put("X", "X");
 
 		markerSymbolName.setValueMap(markerSymbolList);
@@ -1648,7 +1646,7 @@ public class SldWidget {
 
 		/** Construct and setup "marker FillCheckBoxItem" form field **/
 		markerFillCheckBoxItem = new CheckboxItem();
-		markerFillCheckBoxItem.setTitle(sldEditorMessages.enableFillInSymbologyTab());
+		markerFillCheckBoxItem.setTitle(MESSAGES.enableFillInSymbologyTab());
 		markerFillCheckBoxItem.setDefaultValue(true);
 
 		markerFillCheckBoxItem.addChangedHandler(new ChangedHandler() {
@@ -1683,7 +1681,7 @@ public class SldWidget {
 
 		markerFillColorPicker = new ColorPickerItem();
 		
-		markerFillColorPicker.setTitle(sldEditorMessages.fillColorInSymbologyTab());
+		markerFillColorPicker.setTitle(MESSAGES.fillColorInSymbologyTab());
 		markerFillColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_MARKER);
 
 		markerFillColorPicker.addChangedHandler(new ChangedHandler() {
@@ -1711,8 +1709,8 @@ public class SldWidget {
 		/** Construct and setup "marker symbol fill opacity" form field **/
 
 		markerFillOpacityItem = new SpinnerItem();
-		markerFillOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
-		markerFillOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
+		markerFillOpacityItem.setTitle(MESSAGES.opacityTitleInSymbologyTab());
+		markerFillOpacityItem.setTooltip(MESSAGES.opacityTooltipInSymbologyTab());
 		markerFillOpacityItem.setDefaultValue(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
 		markerFillOpacityItem.setMin(0);
 		markerFillOpacityItem.setMax(100);
@@ -1747,7 +1745,7 @@ public class SldWidget {
 		 * Border (stroke) fields for a marker symbol
 		 */
 		markerBorderCheckBoxItem = new CheckboxItem();
-		markerBorderCheckBoxItem.setTitle(sldEditorMessages.enableBorderInSymbologyTab());
+		markerBorderCheckBoxItem.setTitle(MESSAGES.enableBorderInSymbologyTab());
 		markerBorderCheckBoxItem.setDefaultValue(false);
 
 		markerBorderCheckBoxItem.addChangedHandler(new ChangedHandler() {
@@ -1777,7 +1775,7 @@ public class SldWidget {
 
 		markerStrokeColorPicker = new ColorPickerItem();
 		markerStrokeColorPicker.setName("borderColor");
-		markerStrokeColorPicker.setTitle(sldEditorMessages.borderColor());
+		markerStrokeColorPicker.setTitle(MESSAGES.borderColor());
 		markerStrokeColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_LINE);
 
 		markerStrokeColorPicker.addChangedHandler(new ChangedHandler() {
@@ -1803,8 +1801,8 @@ public class SldWidget {
 
 		markerStrokeWidthItem = new SpinnerItem();
 		markerStrokeWidthItem.setName("borderWidth");
-		markerStrokeWidthItem.setTitle(sldEditorMessages.borderWidthTitle());
-		markerStrokeWidthItem.setTooltip(sldEditorMessages.borderWidthTooltip());
+		markerStrokeWidthItem.setTitle(MESSAGES.borderWidthTitle());
+		markerStrokeWidthItem.setTooltip(MESSAGES.borderWidthTooltip());
 		markerStrokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH);
 		markerStrokeWidthItem.setMin(0);
 		markerStrokeWidthItem.setMax(100);
@@ -1831,8 +1829,8 @@ public class SldWidget {
 		/** Stroke opacity **/
 		markerStrokeOpacityItem = new SpinnerItem();
 		markerStrokeOpacityItem.setName("borderOpacity");
-		markerStrokeOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
-		markerStrokeOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
+		markerStrokeOpacityItem.setTitle(MESSAGES.opacityTitleInSymbologyTab());
+		markerStrokeOpacityItem.setTooltip(MESSAGES.opacityTooltipInSymbologyTab());
 		markerStrokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		markerStrokeOpacityItem.setMin(0);
 		markerStrokeOpacityItem.setMax(100);
@@ -1880,7 +1878,7 @@ public class SldWidget {
 	private void setupPolygonSymbolizerForm() {
 
 		polygonFillCheckBoxItem = new CheckboxItem();
-		polygonFillCheckBoxItem.setTitle(sldEditorMessages.enableFillInSymbologyTab());
+		polygonFillCheckBoxItem.setTitle(MESSAGES.enableFillInSymbologyTab());
 		polygonFillCheckBoxItem.setDefaultValue(true);
 
 		polygonFillCheckBoxItem.addChangedHandler(new ChangedHandler() {
@@ -1914,7 +1912,7 @@ public class SldWidget {
 		/** Construct and setup "polygon symbol fill color" form field **/
 
 		polygonFillColorPicker = new ColorPickerItem();
-		polygonFillColorPicker.setTitle(sldEditorMessages.fillColorInSymbologyTab());
+		polygonFillColorPicker.setTitle(MESSAGES.fillColorInSymbologyTab());
 		polygonFillColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_POLYGON);
 
 		polygonFillColorPicker.addChangedHandler(new ChangedHandler() {
@@ -1940,8 +1938,8 @@ public class SldWidget {
 		/** Construct and setup "polygon symbol fill opacity" form field **/
 
 		polygonFillOpacityItem = new SpinnerItem();
-		polygonFillOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
-		polygonFillOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
+		polygonFillOpacityItem.setTitle(MESSAGES.opacityTitleInSymbologyTab());
+		polygonFillOpacityItem.setTooltip(MESSAGES.opacityTooltipInSymbologyTab());
 		polygonFillOpacityItem.setDefaultValue(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
 		polygonFillOpacityItem.setMin(0);
 		polygonFillOpacityItem.setMax(100);
@@ -1975,7 +1973,7 @@ public class SldWidget {
 		 * Border (stroke) attributes for a polygon symbol
 		 */
 		polygonBorderCheckBoxItem = new CheckboxItem();
-		polygonBorderCheckBoxItem.setTitle(sldEditorMessages.enableBorderInSymbologyTab());
+		polygonBorderCheckBoxItem.setTitle(MESSAGES.enableBorderInSymbologyTab());
 		polygonBorderCheckBoxItem.setDefaultValue(true);
 
 		polygonBorderCheckBoxItem.addChangedHandler(new ChangedHandler() {
@@ -2031,8 +2029,8 @@ public class SldWidget {
 
 		polygonStrokeWidthItem = new SpinnerItem();
 		polygonStrokeWidthItem.setName("borderWidth");
-		polygonStrokeWidthItem.setTitle(sldEditorMessages.borderWidthTitle());
-		polygonStrokeWidthItem.setTooltip(sldEditorMessages.borderWidthTooltip());
+		polygonStrokeWidthItem.setTitle(MESSAGES.borderWidthTitle());
+		polygonStrokeWidthItem.setTooltip(MESSAGES.borderWidthTooltip());
 		polygonStrokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH);
 		polygonStrokeWidthItem.setMin(0);
 		polygonStrokeWidthItem.setMax(100);
@@ -2059,8 +2057,8 @@ public class SldWidget {
 		/** Stroke opacity **/
 		polygonStrokeOpacityItem = new SpinnerItem();
 		polygonStrokeOpacityItem.setName("borderOpacity");
-		polygonStrokeOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
-		polygonStrokeOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
+		polygonStrokeOpacityItem.setTitle(MESSAGES.opacityTitleInSymbologyTab());
+		polygonStrokeOpacityItem.setTooltip(MESSAGES.opacityTooltipInSymbologyTab());
 		polygonStrokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		polygonStrokeOpacityItem.setMin(0);
 		polygonStrokeOpacityItem.setMax(100);
@@ -2104,7 +2102,7 @@ public class SldWidget {
 
 	private void setupLineSymbolizerForm() {
 		lineStrokeColorPicker = new ColorPickerItem();
-		lineStrokeColorPicker.setTitle(sldEditorMessages.strokeColorTitle());
+		lineStrokeColorPicker.setTitle(MESSAGES.strokeColorTitle());
 		lineStrokeColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_LINE);
 
 		lineStrokeColorPicker.addChangedHandler(new ChangedHandler() {
@@ -2126,8 +2124,8 @@ public class SldWidget {
 		});
 
 		strokeWidthItem = new SpinnerItem();
-		strokeWidthItem.setTitle(sldEditorMessages.borderWidthTitle());
-		strokeWidthItem.setTooltip(sldEditorMessages.borderWidthTooltip());
+		strokeWidthItem.setTitle(MESSAGES.borderWidthTitle());
+		strokeWidthItem.setTooltip(MESSAGES.borderWidthTooltip());
 		strokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH_FOR_LINE);
 		strokeWidthItem.setMin(0);
 		strokeWidthItem.setMax(100);
@@ -2154,14 +2152,14 @@ public class SldWidget {
 		IntegerRangeValidator rangeValidatorWidth = new IntegerRangeValidator();
 		rangeValidatorWidth.setMin(0);
 		rangeValidatorWidth.setMax(100);
-		rangeValidatorWidth.setErrorMessage(sldEditorMessages.borderWidthTooltip());
+		rangeValidatorWidth.setErrorMessage(MESSAGES.borderWidthTooltip());
 
 		strokeWidthItem.setValidators(rangeValidatorWidth);
 		strokeWidthItem.setValidateOnChange(true);
 
 		/** Stroke opacity **/
 		strokeOpacityItem = new SpinnerItem();
-		strokeOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
+		strokeOpacityItem.setTitle(MESSAGES.opacityTitleInSymbologyTab());
 		
 		strokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		strokeOpacityItem.setMin(0);
@@ -2191,7 +2189,7 @@ public class SldWidget {
 
 		strokeOpacityItem.setValidators(rangeValidator);
 		strokeOpacityItem.setValidateOnChange(true);
-		strokeOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
+		strokeOpacityItem.setTooltip(MESSAGES.opacityTooltipInSymbologyTab());
 		lineSymbolizerForm.hide();
 		lineSymbolizerForm.setItems(lineStrokeColorPicker, strokeWidthItem, strokeOpacityItem);
 	}
@@ -2379,8 +2377,8 @@ public class SldWidget {
 		public SaveButton() {
 			setIcon(WidgetLayout.iconSave);
 			setShowDisabledIcon(false);
-			setTitle(sldEditorMessages.saveButtonTitle());
-			setTooltip(sldEditorMessages.saveButtonTooltip());
+			setTitle(MESSAGES.saveButtonTitle());
+			setTooltip(MESSAGES.saveButtonTooltip());
 			
 			// TODO: validate form first
 			setDisabled(false);
@@ -2407,7 +2405,7 @@ public class SldWidget {
 		public CancelButton() {
 			setIcon(WidgetLayout.iconCancel);
 			setShowDisabledIcon(false);
-			setTitle(sldEditorMessages.cancelButtonTitle());
+			setTitle(MESSAGES.cancelButtonTitle());
 			setTooltip("Annuleer de veranderingen.");
 			
 			setDisabled(false);
@@ -2461,8 +2459,8 @@ public class SldWidget {
 				setIcon(ICON_CLOSE);
 			}
 			setShowDisabledIcon(false);
-			setTitle(sldEditorMessages.closeButtonTitle());
-			setTooltip(sldEditorMessages.closeButtonTooltip());
+			setTitle(MESSAGES.closeButtonTitle());
+			setTooltip(MESSAGES.closeButtonTooltip());
 			
 			setDisabled(false);
 
