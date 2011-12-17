@@ -34,7 +34,7 @@ import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RotationInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SizeInfo;
-import org.geomajas.sld.SldConstants;
+import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.WellKnownNameInfo;
@@ -1166,11 +1166,11 @@ public class SldWidget {
 
 		if (null != cssParameterList) {
 			for (CssParameterInfo cssParameterInfo : cssParameterList) {
-				if (SldConstants.STROKE.equals(cssParameterInfo.getName())) {
+				if (SldConstant.STROKE.equals(cssParameterInfo.getName())) {
 					lineStrokeColorPicker.setValue(cssParameterInfo.getValue());
-				} else if (SldConstants.STROKE_WIDTH.equals(cssParameterInfo.getName())) {
+				} else if (SldConstant.STROKE_WIDTH.equals(cssParameterInfo.getName())) {
 					strokeWidthItem.setValue(Float.parseFloat(cssParameterInfo.getValue()));
-				} else if (SldConstants.STROKE_OPACITY.equals(cssParameterInfo.getName())) {
+				} else if (SldConstant.STROKE_OPACITY.equals(cssParameterInfo.getName())) {
 					strokeOpacityItem.setValue(factorToPercentage(cssParameterInfo.getValue()));
 				} else if ("stroke-dasharray".equals(cssParameterInfo.getName())) {
 					// TODO
@@ -1192,7 +1192,7 @@ public class SldWidget {
 			markerSymbolizerForm.clearValues();
 		}
 
-		markerSizeItem.setValue(SldConstants.DEFAULT_SIZE_MARKER); /* init with default */
+		markerSizeItem.setValue(SldConstant.DEFAULT_SIZE_MARKER); /* init with default */
 		if (null != graphicInfo.getSize()) {
 			String size = graphicInfo.getSize().getValue();
 			if (null != size) {
@@ -1215,29 +1215,29 @@ public class SldWidget {
 			mark.setFill(new FillInfo());
 			mark.setStroke(new StrokeInfo());
 			mark.setWellKnownName(new WellKnownNameInfo());
-			mark.getWellKnownName().setWellKnownName(SldConstants.DEFAULT_WKNAME_FOR_MARKER); // TODO!!!
+			mark.getWellKnownName().setWellKnownName(SldConstant.DEFAULT_WKNAME_FOR_MARKER); // TODO!!!
 
 			mark.setFill(new FillInfo());
 			mark.getFill().setCssParameterList(
-					updateCssParameterList(null, SldConstants.FILL, SldConstants.DEFAULT_FILL_FOR_MARKER));
+					updateCssParameterList(null, SldConstant.FILL, SldConstant.DEFAULT_FILL_FOR_MARKER));
 
 			mark.getFill().setCssParameterList(
-					updateCssParameterList(mark.getFill().getCssParameterList(), SldConstants.FILL_OPACITY,
-							percentageToFactor(SldConstants.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER)));
+					updateCssParameterList(mark.getFill().getCssParameterList(), SldConstant.FILL_OPACITY,
+							percentageToFactor(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER)));
 
 			mark.setStroke(new StrokeInfo());
 
 			mark.getStroke().setCssParameterList(
-					updateCssParameterList(mark.getStroke().getCssParameterList(), SldConstants.STROKE,
-							SldConstants.DEFAULT_FILL_FOR_LINE));
+					updateCssParameterList(mark.getStroke().getCssParameterList(), SldConstant.STROKE,
+							SldConstant.DEFAULT_FILL_FOR_LINE));
 
 			mark.getStroke().setCssParameterList(
-					updateCssParameterList(mark.getStroke().getCssParameterList(), SldConstants.STROKE_WIDTH,
-							(SldConstants.DEFAULT_STROKE_WIDTH).toString()));
+					updateCssParameterList(mark.getStroke().getCssParameterList(), SldConstant.STROKE_WIDTH,
+							(SldConstant.DEFAULT_STROKE_WIDTH).toString()));
 			choiceInfoGraphic.setMark(mark);
 			if (null == currrentGraphicInfo.getSize()) {
 				currrentGraphicInfo.setSize(new SizeInfo());
-				currrentGraphicInfo.getSize().setValue(SldConstants.DEFAULT_SIZE_MARKER.toString());
+				currrentGraphicInfo.getSize().setValue(SldConstant.DEFAULT_SIZE_MARKER.toString());
 			}
 		}
 		currentMark = choiceInfoGraphic.getMark();
@@ -1267,9 +1267,9 @@ public class SldWidget {
 			if (null != cssParameterList) {
 
 				for (CssParameterInfo cssParameterInfo : cssParameterList) {
-					if (cssParameterInfo.getName().equals(SldConstants.FILL)) {
+					if (cssParameterInfo.getName().equals(SldConstant.FILL)) {
 						markerFillColorPicker.setValue(cssParameterInfo.getValue());
-					} else if (cssParameterInfo.getName().equals(SldConstants.FILL_OPACITY)) {
+					} else if (cssParameterInfo.getName().equals(SldConstant.FILL_OPACITY)) {
 						markerFillOpacityItem.setValue(factorToPercentage(cssParameterInfo.getValue()));
 					}
 				}
@@ -1288,11 +1288,11 @@ public class SldWidget {
 
 			if (null != cssParameterList) {
 				for (CssParameterInfo cssParameterInfo : cssParameterList) {
-					if (cssParameterInfo.getName().equals(SldConstants.STROKE)) {
+					if (cssParameterInfo.getName().equals(SldConstant.STROKE)) {
 						markerStrokeColorPicker.setValue(cssParameterInfo.getValue());
-					} else if (cssParameterInfo.getName().equals(SldConstants.STROKE_WIDTH)) {
+					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_WIDTH)) {
 						markerStrokeWidthItem.setValue(Float.parseFloat(cssParameterInfo.getValue()));
-					} else if (cssParameterInfo.getName().equals(SldConstants.STROKE_OPACITY)) {
+					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_OPACITY)) {
 						markerStrokeOpacityItem.setValue(factorToPercentage(cssParameterInfo.getValue()));
 					} else if ("stroke-dasharray".equals(cssParameterInfo.getName())) {
 						// TODO
@@ -1371,9 +1371,9 @@ public class SldWidget {
 			if (null != cssParameterList) {
 
 				for (CssParameterInfo cssParameterInfo : cssParameterList) {
-					if (cssParameterInfo.getName().equals(SldConstants.FILL)) {
+					if (cssParameterInfo.getName().equals(SldConstant.FILL)) {
 						polygonFillColorPicker.setValue(cssParameterInfo.getValue());
-					} else if (cssParameterInfo.getName().equals(SldConstants.FILL_OPACITY)) {
+					} else if (cssParameterInfo.getName().equals(SldConstant.FILL_OPACITY)) {
 						polygonFillOpacityItem.setValue(factorToPercentage(cssParameterInfo.getValue()));
 					}
 				}
@@ -1395,11 +1395,11 @@ public class SldWidget {
 
 			if (null != cssParameterList) {
 				for (CssParameterInfo cssParameterInfo : cssParameterList) {
-					if (cssParameterInfo.getName().equals(SldConstants.STROKE)) {
+					if (cssParameterInfo.getName().equals(SldConstant.STROKE)) {
 						polygonStrokeColorPicker.setValue(cssParameterInfo.getValue());
-					} else if (cssParameterInfo.getName().equals(SldConstants.STROKE_WIDTH)) {
+					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_WIDTH)) {
 						polygonStrokeWidthItem.setValue(Float.parseFloat(cssParameterInfo.getValue()));
-					} else if (cssParameterInfo.getName().equals(SldConstants.STROKE_OPACITY)) {
+					} else if (cssParameterInfo.getName().equals(SldConstant.STROKE_OPACITY)) {
 						polygonStrokeOpacityItem.setValue(factorToPercentage(cssParameterInfo.getValue()));
 					} else if ("stroke-dasharray".equals(cssParameterInfo.getName())) {
 						// TODO
@@ -1559,14 +1559,14 @@ public class SldWidget {
 
 		markerSizeItem = new SpinnerItem();
 		markerSizeItem.setTitle(sldEditorMessages.sizeOfGraphicInSymbologyTab());
-		markerSizeItem.setDefaultValue(SldConstants.DEFAULT_SIZE_MARKER);
+		markerSizeItem.setDefaultValue(SldConstant.DEFAULT_SIZE_MARKER);
 		markerSizeItem.setMin(0);
 		markerSizeItem.setMax(200);
 		markerSizeItem.setStep(1.0f);
 		markerSizeItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				String newValue = numericalToString(event.getValue(), SldConstants.DEFAULT_SIZE_MARKER.toString());
+				String newValue = numericalToString(event.getValue(), SldConstant.DEFAULT_SIZE_MARKER.toString());
 
 				if (newValue != null) {
 					setSldHasChangedTrue();
@@ -1585,7 +1585,7 @@ public class SldWidget {
 		markerRotationItem = new SpinnerItem();
 		markerRotationItem.setTitle(sldEditorMessages.rotationOfGraphicInSymbologyTab());
 		markerRotationItem.setTooltip(sldEditorMessages.rotationOfGraphicTooltipInSymbologyTab());
-		markerRotationItem.setDefaultValue(SldConstants.DEFAULT_ROTATION_MARKER);
+		markerRotationItem.setDefaultValue(SldConstant.DEFAULT_ROTATION_MARKER);
 		markerRotationItem.setMin(-360);
 		markerRotationItem.setMax(360);
 		markerRotationItem.setStep(15.0f);
@@ -1595,7 +1595,7 @@ public class SldWidget {
 				// ((FormItem) event.getSource()).validate();
 				setSldHasChangedTrue();
 
-				String newValue = numericalToString(event.getValue(), SldConstants.DEFAULT_ROTATION_MARKER_AS_STRING);
+				String newValue = numericalToString(event.getValue(), SldConstant.DEFAULT_ROTATION_MARKER_AS_STRING);
 
 				if (null == currrentGraphicInfo.getRotation()) {
 					currrentGraphicInfo.setRotation(new RotationInfo());
@@ -1609,7 +1609,7 @@ public class SldWidget {
 
 		markerSymbolName = new SelectItem();
 		markerSymbolName.setTitle(sldEditorMessages.nameOfSymbolTitleInSymbologyTab());
-		markerSymbolName.setDefaultValue(SldConstants.DEFAULT_WKNAME_FOR_MARKER);
+		markerSymbolName.setDefaultValue(SldConstant.DEFAULT_WKNAME_FOR_MARKER);
 
 		final LinkedHashMap<String, String> markerSymbolList = new LinkedHashMap<String, String>();
 		// See http://docs.geoserver.org/stable/en/user/styling/sld-extensions/pointsymbols.html
@@ -1630,7 +1630,7 @@ public class SldWidget {
 				String selected = null;
 				ListGridRecord record = markerSymbolName.getSelectedRecord();
 				if (record == null) {
-					selected = SldConstants.DEFAULT_WKNAME_FOR_MARKER;
+					selected = SldConstant.DEFAULT_WKNAME_FOR_MARKER;
 				} else {
 					selected = (String) event.getValue();
 				}
@@ -1684,7 +1684,7 @@ public class SldWidget {
 		markerFillColorPicker = new ColorPickerItem();
 		
 		markerFillColorPicker.setTitle(sldEditorMessages.fillColorInSymbologyTab());
-		markerFillColorPicker.setDefaultValue(SldConstants.DEFAULT_FILL_FOR_MARKER);
+		markerFillColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_MARKER);
 
 		markerFillColorPicker.addChangedHandler(new ChangedHandler() {
 
@@ -1694,14 +1694,14 @@ public class SldWidget {
 
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
-					newValue = SldConstants.DEFAULT_FILL_FOR_MARKER;
+					newValue = SldConstant.DEFAULT_FILL_FOR_MARKER;
 				}
 				if (null == currentMark.getFill()) {
 					currentMark.setFill(new FillInfo());
 				}
 				currentMark.getFill()
 						.setCssParameterList(
-								updateCssParameterList(currentMark.getFill().getCssParameterList(), SldConstants.FILL,
+								updateCssParameterList(currentMark.getFill().getCssParameterList(), SldConstant.FILL,
 										newValue));
 
 				// Debugging: updateStyleDesc();
@@ -1713,7 +1713,7 @@ public class SldWidget {
 		markerFillOpacityItem = new SpinnerItem();
 		markerFillOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
 		markerFillOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
-		markerFillOpacityItem.setDefaultValue(SldConstants.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
+		markerFillOpacityItem.setDefaultValue(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
 		markerFillOpacityItem.setMin(0);
 		markerFillOpacityItem.setMax(100);
 		markerFillOpacityItem.setStep(10.0f);
@@ -1724,13 +1724,13 @@ public class SldWidget {
 				setSldHasChangedTrue();
 
 				float newValue = numericalToFloat(event.getValue(),
-						SldConstants.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
+						SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
 
 				if (null == currentMark.getFill()) {
 					currentMark.setFill(new FillInfo());
 				}
 				currentMark.getFill().setCssParameterList(
-						updateCssParameterList(currentMark.getFill().getCssParameterList(), SldConstants.FILL_OPACITY,
+						updateCssParameterList(currentMark.getFill().getCssParameterList(), SldConstant.FILL_OPACITY,
 								percentageToFactor(newValue)));
 				// Debugging: updateStyleDesc();
 			}
@@ -1778,7 +1778,7 @@ public class SldWidget {
 		markerStrokeColorPicker = new ColorPickerItem();
 		markerStrokeColorPicker.setName("borderColor");
 		markerStrokeColorPicker.setTitle(sldEditorMessages.borderColor());
-		markerStrokeColorPicker.setDefaultValue(SldConstants.DEFAULT_FILL_FOR_LINE);
+		markerStrokeColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_LINE);
 
 		markerStrokeColorPicker.addChangedHandler(new ChangedHandler() {
 
@@ -1787,14 +1787,14 @@ public class SldWidget {
 				setSldHasChangedTrue();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
-					newValue = SldConstants.DEFAULT_FILL_FOR_LINE;
+					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
 				}
 				if (null == currentMark.getStroke()) {
 					currentMark.setStroke(new StrokeInfo());
 				}
 
 				currentMark.getStroke().setCssParameterList(
-						updateCssParameterList(currentMark.getStroke().getCssParameterList(), SldConstants.STROKE,
+						updateCssParameterList(currentMark.getStroke().getCssParameterList(), SldConstant.STROKE,
 								newValue));
 
 				// Debugging: updateStyleDesc();
@@ -1805,7 +1805,7 @@ public class SldWidget {
 		markerStrokeWidthItem.setName("borderWidth");
 		markerStrokeWidthItem.setTitle(sldEditorMessages.borderWidthTitle());
 		markerStrokeWidthItem.setTooltip(sldEditorMessages.borderWidthTooltip());
-		markerStrokeWidthItem.setDefaultValue(SldConstants.DEFAULT_STROKE_WIDTH);
+		markerStrokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH);
 		markerStrokeWidthItem.setMin(0);
 		markerStrokeWidthItem.setMax(100);
 		markerStrokeWidthItem.setStep(1.0f);
@@ -1814,7 +1814,7 @@ public class SldWidget {
 			public void onChanged(ChangedEvent event) {
 				setSldHasChangedTrue();
 
-				float newValue = numericalToFloat(event.getValue(), SldConstants.DEFAULT_STROKE_WIDTH);
+				float newValue = numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_WIDTH);
 
 				if (null == currentMark.getStroke()) {
 					currentMark.setStroke(new StrokeInfo());
@@ -1822,7 +1822,7 @@ public class SldWidget {
 
 				currentMark.getStroke().setCssParameterList(
 						updateCssParameterList(currentMark.getStroke().getCssParameterList(),
-								SldConstants.STROKE_WIDTH, new Float(newValue).toString()));
+								SldConstant.STROKE_WIDTH, new Float(newValue).toString()));
 
 				// Debugging: updateStyleDesc();
 
@@ -1833,7 +1833,7 @@ public class SldWidget {
 		markerStrokeOpacityItem.setName("borderOpacity");
 		markerStrokeOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
 		markerStrokeOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
-		markerStrokeOpacityItem.setDefaultValue(SldConstants.DEFAULT_STROKE_OPACITY_PERCENTAGE);
+		markerStrokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		markerStrokeOpacityItem.setMin(0);
 		markerStrokeOpacityItem.setMax(100);
 		markerStrokeOpacityItem.setStep(10.0f);
@@ -1842,7 +1842,7 @@ public class SldWidget {
 			public void onChanged(ChangedEvent event) {
 				setSldHasChangedTrue();
 
-				float newValue = numericalToFloat(event.getValue(), SldConstants.DEFAULT_STROKE_OPACITY_PERCENTAGE);
+				float newValue = numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 
 				if (null == currentMark.getStroke()) {
 					currentMark.setStroke(new StrokeInfo());
@@ -1850,7 +1850,7 @@ public class SldWidget {
 
 				currentMark.getStroke().setCssParameterList(
 						updateCssParameterList(currentMark.getStroke().getCssParameterList(),
-								SldConstants.STROKE_OPACITY, percentageToFactor(newValue)));
+								SldConstant.STROKE_OPACITY, percentageToFactor(newValue)));
 				// Debugging: updateStyleDesc();
 
 			}
@@ -1915,7 +1915,7 @@ public class SldWidget {
 
 		polygonFillColorPicker = new ColorPickerItem();
 		polygonFillColorPicker.setTitle(sldEditorMessages.fillColorInSymbologyTab());
-		polygonFillColorPicker.setDefaultValue(SldConstants.DEFAULT_FILL_FOR_POLYGON);
+		polygonFillColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_POLYGON);
 
 		polygonFillColorPicker.addChangedHandler(new ChangedHandler() {
 
@@ -1924,14 +1924,14 @@ public class SldWidget {
 				setSldHasChangedTrue();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
-					newValue = SldConstants.DEFAULT_FILL_FOR_POLYGON;
+					newValue = SldConstant.DEFAULT_FILL_FOR_POLYGON;
 				}
 				if (null == currentPolygonSymbolizerInfo.getFill()) {
 					currentPolygonSymbolizerInfo.setFill(new FillInfo());
 				}
 				currentPolygonSymbolizerInfo.getFill().setCssParameterList(
 						updateCssParameterList(currentPolygonSymbolizerInfo.getFill().getCssParameterList(),
-								SldConstants.FILL, newValue));
+								SldConstant.FILL, newValue));
 
 				// Debugging: updateStyleDesc();
 			}
@@ -1942,7 +1942,7 @@ public class SldWidget {
 		polygonFillOpacityItem = new SpinnerItem();
 		polygonFillOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
 		polygonFillOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
-		polygonFillOpacityItem.setDefaultValue(SldConstants.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
+		polygonFillOpacityItem.setDefaultValue(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
 		polygonFillOpacityItem.setMin(0);
 		polygonFillOpacityItem.setMax(100);
 		polygonFillOpacityItem.setStep(10.0f);
@@ -1952,14 +1952,14 @@ public class SldWidget {
 				setSldHasChangedTrue();
 
 				float newValue = numericalToFloat(event.getValue(),
-						SldConstants.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
+						SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
 
 				if (null == currentPolygonSymbolizerInfo.getFill()) {
 					currentPolygonSymbolizerInfo.setFill(new FillInfo());
 				}
 				currentPolygonSymbolizerInfo.getFill().setCssParameterList(
 						updateCssParameterList(currentPolygonSymbolizerInfo.getFill().getCssParameterList(),
-								SldConstants.FILL_OPACITY, percentageToFactor(newValue)));
+								SldConstant.FILL_OPACITY, percentageToFactor(newValue)));
 				// Debugging: updateStyleDesc();
 			}
 		});
@@ -2006,7 +2006,7 @@ public class SldWidget {
 		polygonStrokeColorPicker = new ColorPickerItem();
 		polygonStrokeColorPicker.setName("borderColor");
 		polygonStrokeColorPicker.setTitle("Lijnkleur rand");
-		polygonStrokeColorPicker.setDefaultValue(SldConstants.DEFAULT_FILL_FOR_LINE);
+		polygonStrokeColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_LINE);
 
 		polygonStrokeColorPicker.addChangedHandler(new ChangedHandler() {
 
@@ -2015,7 +2015,7 @@ public class SldWidget {
 				setSldHasChangedTrue();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
-					newValue = SldConstants.DEFAULT_FILL_FOR_LINE;
+					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
 				}
 				if (null == currentPolygonSymbolizerInfo.getStroke()) {
 					currentPolygonSymbolizerInfo.setStroke(new StrokeInfo());
@@ -2023,7 +2023,7 @@ public class SldWidget {
 
 				currentPolygonSymbolizerInfo.getStroke().setCssParameterList(
 						updateCssParameterList(currentPolygonSymbolizerInfo.getStroke().getCssParameterList(),
-								SldConstants.STROKE, newValue));
+								SldConstant.STROKE, newValue));
 
 				// Debugging: updateStyleDesc();
 			}
@@ -2033,7 +2033,7 @@ public class SldWidget {
 		polygonStrokeWidthItem.setName("borderWidth");
 		polygonStrokeWidthItem.setTitle(sldEditorMessages.borderWidthTitle());
 		polygonStrokeWidthItem.setTooltip(sldEditorMessages.borderWidthTooltip());
-		polygonStrokeWidthItem.setDefaultValue(SldConstants.DEFAULT_STROKE_WIDTH);
+		polygonStrokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH);
 		polygonStrokeWidthItem.setMin(0);
 		polygonStrokeWidthItem.setMax(100);
 		polygonStrokeWidthItem.setStep(1.0f);
@@ -2042,7 +2042,7 @@ public class SldWidget {
 			public void onChanged(ChangedEvent event) {
 				setSldHasChangedTrue();
 
-				float newValue = numericalToFloat(event.getValue(), (float) SldConstants.DEFAULT_STROKE_WIDTH);
+				float newValue = numericalToFloat(event.getValue(), (float) SldConstant.DEFAULT_STROKE_WIDTH);
 
 				if (null == currentPolygonSymbolizerInfo.getStroke()) {
 					currentPolygonSymbolizerInfo.setStroke(new StrokeInfo());
@@ -2050,7 +2050,7 @@ public class SldWidget {
 
 				currentPolygonSymbolizerInfo.getStroke().setCssParameterList(
 						updateCssParameterList(currentPolygonSymbolizerInfo.getStroke().getCssParameterList(),
-								SldConstants.STROKE_WIDTH, new Float(newValue).toString()));
+								SldConstant.STROKE_WIDTH, new Float(newValue).toString()));
 
 				// Debugging: updateStyleDesc();
 
@@ -2061,7 +2061,7 @@ public class SldWidget {
 		polygonStrokeOpacityItem.setName("borderOpacity");
 		polygonStrokeOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
 		polygonStrokeOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
-		polygonStrokeOpacityItem.setDefaultValue(SldConstants.DEFAULT_STROKE_OPACITY_PERCENTAGE);
+		polygonStrokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		polygonStrokeOpacityItem.setMin(0);
 		polygonStrokeOpacityItem.setMax(100);
 		polygonStrokeOpacityItem.setStep(10.0f);
@@ -2070,7 +2070,7 @@ public class SldWidget {
 			public void onChanged(ChangedEvent event) {
 				setSldHasChangedTrue();
 
-				float newValue = numericalToFloat(event.getValue(), SldConstants.DEFAULT_STROKE_OPACITY_PERCENTAGE);
+				float newValue = numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 
 				if (null == currentPolygonSymbolizerInfo.getStroke()) {
 					currentPolygonSymbolizerInfo.setStroke(new StrokeInfo());
@@ -2078,7 +2078,7 @@ public class SldWidget {
 
 				currentPolygonSymbolizerInfo.getStroke().setCssParameterList(
 						updateCssParameterList(currentPolygonSymbolizerInfo.getStroke().getCssParameterList(),
-								SldConstants.STROKE_OPACITY, percentageToFactor(newValue)));
+								SldConstant.STROKE_OPACITY, percentageToFactor(newValue)));
 
 			}
 		});
@@ -2105,7 +2105,7 @@ public class SldWidget {
 	private void setupLineSymbolizerForm() {
 		lineStrokeColorPicker = new ColorPickerItem();
 		lineStrokeColorPicker.setTitle(sldEditorMessages.strokeColorTitle());
-		lineStrokeColorPicker.setDefaultValue(SldConstants.DEFAULT_FILL_FOR_LINE);
+		lineStrokeColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_LINE);
 
 		lineStrokeColorPicker.addChangedHandler(new ChangedHandler() {
 
@@ -2114,12 +2114,12 @@ public class SldWidget {
 
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
-					newValue = SldConstants.DEFAULT_FILL_FOR_LINE;
+					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
 				}
 
 				currentLineSymbolizerInfo.getStroke().setCssParameterList(
 						updateCssParameterList(currentLineSymbolizerInfo.getStroke().getCssParameterList(),
-								SldConstants.STROKE, newValue));
+								SldConstant.STROKE, newValue));
 
 				// Debugging: updateStyleDesc();
 			}
@@ -2128,7 +2128,7 @@ public class SldWidget {
 		strokeWidthItem = new SpinnerItem();
 		strokeWidthItem.setTitle(sldEditorMessages.borderWidthTitle());
 		strokeWidthItem.setTooltip(sldEditorMessages.borderWidthTooltip());
-		strokeWidthItem.setDefaultValue(SldConstants.DEFAULT_STROKE_WIDTH_FOR_LINE);
+		strokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH_FOR_LINE);
 		strokeWidthItem.setMin(0);
 		strokeWidthItem.setMax(100);
 		strokeWidthItem.setStep(1.0f);
@@ -2140,12 +2140,12 @@ public class SldWidget {
 				Integer newValue = (Integer) event.getValue();
 
 				if (newValue == null) {
-					newValue = SldConstants.DEFAULT_STROKE_WIDTH_FOR_LINE;
+					newValue = SldConstant.DEFAULT_STROKE_WIDTH_FOR_LINE;
 				}
 
 				currentLineSymbolizerInfo.getStroke().setCssParameterList(
 						updateCssParameterList(currentLineSymbolizerInfo.getStroke().getCssParameterList(),
-								SldConstants.STROKE_WIDTH, newValue.toString()));
+								SldConstant.STROKE_WIDTH, newValue.toString()));
 
 				// Debugging: updateStyleDesc();
 
@@ -2163,7 +2163,7 @@ public class SldWidget {
 		strokeOpacityItem = new SpinnerItem();
 		strokeOpacityItem.setTitle(sldEditorMessages.opacityTitleInSymbologyTab());
 		
-		strokeOpacityItem.setDefaultValue(SldConstants.DEFAULT_STROKE_OPACITY_PERCENTAGE);
+		strokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		strokeOpacityItem.setMin(0);
 		strokeOpacityItem.setMax(100);
 		strokeOpacityItem.setStep(10.0f);
@@ -2175,12 +2175,12 @@ public class SldWidget {
 				Integer newValue = (Integer) event.getValue();
 
 				if (null == newValue) {
-					newValue = SldConstants.DEFAULT_STROKE_OPACITY_PERCENTAGE;
+					newValue = SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE;
 				}
 
 				currentLineSymbolizerInfo.getStroke().setCssParameterList(
 						updateCssParameterList(currentLineSymbolizerInfo.getStroke().getCssParameterList(),
-								SldConstants.STROKE_OPACITY, percentageToFactor(newValue)));
+								SldConstant.STROKE_OPACITY, percentageToFactor(newValue)));
 				// Debugging: updateStyleDesc();
 
 			}

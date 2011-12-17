@@ -16,7 +16,7 @@ package org.geomajas.sld;
  * 
  * @author An Buyle
  */
-public final class SldConstants {
+public final class SldConstant {
 
 	public static final String STROKE_OPACITY = "stroke-opacity";
 
@@ -65,7 +65,7 @@ public final class SldConstants {
 	/**
 	 * Hide constructor
 	 */
-	private SldConstants() {
+	private SldConstant() {
 	}
 
 }
