@@ -22,6 +22,7 @@ import org.geomajas.gwt.client.action.menu.EditFeatureAction;
 import org.geomajas.gwt.client.action.menu.NewFeatureAction;
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
 import org.geomajas.gwt.client.action.toolbar.SelectionModalAction;
+import org.geomajas.gwt.client.action.toolbar.ToolId;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
@@ -279,7 +280,7 @@ public class ParentEditController extends EditController {
 			ClientToolbarInfo toolbarInfo = mapWidget.getMapModel().getMapInfo().getToolbar();
 			if (null != toolbarInfo && null != toolbarInfo.getTools()) {
 				for (ClientToolInfo tool : toolbarInfo.getTools()) {
-					if ("SelectionMode".equals(tool.getId())) {
+					if (ToolId.TOOL_SELECTION_MODE.equals(tool.getId())) {
 						ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
 						if (action instanceof SelectionModalAction) {
 							for (Parameter parameter : tool.getParameters()) {
