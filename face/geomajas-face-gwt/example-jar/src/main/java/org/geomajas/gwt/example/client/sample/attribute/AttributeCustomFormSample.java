@@ -12,6 +12,8 @@
 package org.geomajas.gwt.example.client.sample.attribute;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt.client.widget.attribute.DataSourceFieldFactory;
+import org.geomajas.gwt.client.widget.attribute.FormItemFactory;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
@@ -20,8 +22,6 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.DataSourceFieldFactory;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.FormItemFactory;
 import org.geomajas.gwt.client.widget.attribute.FeatureForm;
 import org.geomajas.gwt.client.widget.attribute.FeatureFormFactory;
 

@@ -20,8 +20,8 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.DataSourceFieldFactory;
-import org.geomajas.gwt.client.widget.attribute.AttributeFormFieldRegistry.FormItemFactory;
+import org.geomajas.gwt.client.widget.attribute.DataSourceFieldFactory;
+import org.geomajas.gwt.client.widget.attribute.FormItemFactory;
 
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;

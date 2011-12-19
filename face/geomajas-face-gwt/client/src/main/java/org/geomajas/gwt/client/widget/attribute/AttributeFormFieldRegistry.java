@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
@@ -35,7 +36,6 @@ import org.geomajas.configuration.validation.PastConstraintInfo;
 import org.geomajas.configuration.validation.PatternConstraintInfo;
 import org.geomajas.configuration.validation.SizeConstraintInfo;
 import org.geomajas.configuration.validation.ValidatorInfo;
-import org.geomajas.annotation.FutureApi;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.smartgwt.client.data.DataSourceField;
@@ -62,6 +62,7 @@ import com.smartgwt.client.widgets.form.validator.IsFloatValidator;
 import com.smartgwt.client.widgets.form.validator.LengthRangeValidator;
 import com.smartgwt.client.widgets.form.validator.RegExpValidator;
 import com.smartgwt.client.widgets.form.validator.Validator;
+import org.geomajas.gwt.client.util.Log;
 
 /**
  * <p>
@@ -78,8 +79,9 @@ import com.smartgwt.client.widgets.form.validator.Validator;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.10.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public final class AttributeFormFieldRegistry {
 
 	private static final Map<String, FormItemFactory> FORMITEMS;
@@ -87,28 +89,6 @@ public final class AttributeFormFieldRegistry {
 	private static final Map<String, DataSourceFieldFactory> DATESOURCEFIELDS;
 
 	private static final Map<String, List<Validator>> FIELDVALIDATORS;
-
-	/**
-	 * Definition of a factory capable of creating a certain kind of {@link FormItem}. These factories are stored within
-	 * this registry and used for building {@link DefaultFeatureForm}s.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	public interface FormItemFactory {
-
-		FormItem create();
-	}
-
-	/**
-	 * Definition of a factory capable of creating a certain kind of {@link DataSourceField}. These factories are stored
-	 * within this registry and used for building {@link DefaultFeatureForm}s.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	public interface DataSourceFieldFactory {
-
-		DataSourceField create();
-	}
 
 	// Create the default types for the known attribute types:
 	static {
@@ -378,8 +358,18 @@ public final class AttributeFormFieldRegistry {
 		DataSourceField field = null;
 		List<Validator> validators = new ArrayList<Validator>();
 		if (info.getFormInputType() != null) {
-			field = DATESOURCEFIELDS.get(info.getFormInputType()).create();
-			validators.addAll(FIELDVALIDATORS.get(info.getFormInputType()));
+			String formInputType = info.getFormInputType(); 
+			DataSourceFieldFactory factory = DATESOURCEFIELDS.get(formInputType);
+			if (null != factory) {
+				field = factory.create();
+				List<Validator> fieldValidators = FIELDVALIDATORS.get(formInputType);
+				if (null != fieldValidators) {
+					validators.addAll(fieldValidators);
+				}
+			} else {
+				Log.logWarn("Cannot find data source factory for " + info.getFormInputType() + 
+						", using default instead.");				
+			}
 		}
 		if (field == null) {
 			if (info instanceof PrimitiveAttributeInfo) {
@@ -433,7 +423,12 @@ public final class AttributeFormFieldRegistry {
 	public static FormItem createFormItem(AttributeInfo info, AttributeProvider attributeProvider) {
 		FormItem formItem = null;
 		if (info.getFormInputType() != null) {
-			formItem = FORMITEMS.get(info.getFormInputType()).create();
+			FormItemFactory factory = FORMITEMS.get(info.getFormInputType());
+			if (null != factory) {
+				formItem = factory.create();
+			} else {
+				Log.logWarn("Cannot find form item for " + info.getFormInputType() + ", using default instead.");
+			}
 		}
 		if (formItem == null) {
 			if (info instanceof PrimitiveAttributeInfo) {
@@ -489,6 +484,7 @@ public final class AttributeFormFieldRegistry {
 		List<Validator> validators = new ArrayList<Validator>();
 		for (ConstraintInfo constraint : info.getValidator().getConstraints()) {
 			Validator validator = null;
+			boolean nullValidator = false;
 			if (constraint instanceof DecimalMaxConstraintInfo) {
 				validator = createFromDecimalMax((DecimalMaxConstraintInfo) constraint);
 			} else if (constraint instanceof DecimalMinConstraintInfo) {
@@ -499,19 +495,23 @@ public final class AttributeFormFieldRegistry {
 					addErrorMessage(info, validators, v);
 				}
 			} else if (constraint instanceof FutureConstraintInfo) {
-				validator = createFromFuture((FutureConstraintInfo) constraint);
+				validator = createFromFuture();
 			} else if (constraint instanceof MaxConstraintInfo) {
 				validator = createFromMax((MaxConstraintInfo) constraint);
 			} else if (constraint instanceof MinConstraintInfo) {
 				validator = createFromMin((MinConstraintInfo) constraint);
 			} else if (constraint instanceof PastConstraintInfo) {
-				validator = createFromPast((PastConstraintInfo) constraint);
+				validator = createFromPast();
 			} else if (constraint instanceof PatternConstraintInfo) {
 				validator = createFromPattern((PatternConstraintInfo) constraint);
 			} else if (constraint instanceof SizeConstraintInfo) {
 				validator = createFromSize((SizeConstraintInfo) constraint, info.getType());
+			} else if (constraint instanceof NotNullConstraintInfo) {
+				nullValidator = true; // nothing to do
+			} else {
+				throw new IllegalStateException("Unknown constraint type " + constraint);
 			}
-			if (validator != null) {
+			if (null != validator && !nullValidator) {
 				addErrorMessage(info, validators, validator);
 			}
 		}
@@ -563,7 +563,7 @@ public final class AttributeFormFieldRegistry {
 		return validators;
 	}
 
-	private static Validator createFromFuture(FutureConstraintInfo future) {
+	private static Validator createFromFuture() {
 		DateRangeValidator dateFuture = new DateRangeValidator();
 		dateFuture.setMin(new Date());
 		return dateFuture;
@@ -581,7 +581,7 @@ public final class AttributeFormFieldRegistry {
 		return integerMin;
 	}
 
-	private static Validator createFromPast(PastConstraintInfo past) {
+	private static Validator createFromPast() {
 		DateRangeValidator datePast = new DateRangeValidator();
 		datePast.setMax(new Date());
 		return datePast;

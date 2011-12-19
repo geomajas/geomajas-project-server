@@ -151,6 +151,8 @@ public class SelectionController extends AbstractRectangleController {
 	/**
 	 * Coverage percentage which is used to determine a feature as selected. This is only used when dragging a rectangle
 	 * to select in. Must be a floating value between 0 and 1.
+	 *
+	 * @return coverage ratio
 	 */
 	public float getCoverageRatio() {
 		return coverageRatio;
@@ -159,6 +161,8 @@ public class SelectionController extends AbstractRectangleController {
 	/**
 	 * Set a new coverage percentage which is used to determine a feature as selected. This is only used when dragging a
 	 * rectangle to select in. Must be a floating value between 0 and 1.
+	 *
+	 * @param coverageRatio coverage ratio
 	 */
 	public void setCoverageRatio(float coverageRatio) {
 		this.coverageRatio = coverageRatio;
@@ -168,6 +172,8 @@ public class SelectionController extends AbstractRectangleController {
 	 * Will priority be given to the selected layer? This works only if there is a selected layer, and that selected
 	 * layer is a {@link VectorLayer}. In all other cases, the selection toggle will occur on the first object that is
 	 * encountered. In other words it will depend on the layer drawing order, starting at the top.
+	 *
+	 * @return true when selected layer has priority
 	 */
 	public boolean isPriorityToSelectedLayer() {
 		return priorityToSelectedLayer;
@@ -177,6 +183,8 @@ public class SelectionController extends AbstractRectangleController {
 	 * Activate or disable priority to the selected layer. This works only if there is a selected layer, and that
 	 * selected layer is a {@link VectorLayer}. In all other cases, the selection toggle will occur on the first object
 	 * that is encountered. In other words it will depend on the layer drawing order, starting at the top.
+	 *
+	 * @param priorityToSelectedLayer should selected layer have priority
 	 */
 	public void setPriorityToSelectedLayer(boolean priorityToSelectedLayer) {
 		this.priorityToSelectedLayer = priorityToSelectedLayer;
@@ -184,6 +192,8 @@ public class SelectionController extends AbstractRectangleController {
 
 	/**
 	 * Number of pixels that describes the tolerance allowed when trying to select features.
+	 *
+	 * @return pixel tolerance
 	 */
 	public int getPixelTolerance() {
 		return pixelTolerance;
@@ -274,10 +284,7 @@ public class SelectionController extends AbstractRectangleController {
 		if (!targetLayer.isShowing()) {
 			return false;
 		} else {
-			if (priorityToSelectedLayer && selectedLayer != null) {
-				return (selectedLayer.equals(targetLayer));
-			}
-			return true;
+			return !(priorityToSelectedLayer && null != selectedLayer) || (selectedLayer.equals(targetLayer));
 		}
 	}
 }
