@@ -6,4 +6,3 @@ org.geomajas.layer.hibernate.HibernateLayer:void setLayerInfo(VectorLayerInfo, )
 org.geomajas.layer.hibernate.HibernateLayer:void setScrollableResultSet(boolean, ):1.8.0
 org.geomajas.layer.hibernate.HibernateLayer:void setSessionFactory(SessionFactory, ):1.8.0
 org.geomajas.layer.hibernate.HibernateLayer:void setUseLazyFeatureConversion(boolean, ):1.8.0
-org.geomajas.layer.hibernate.ScrollIterator::1.7.1
