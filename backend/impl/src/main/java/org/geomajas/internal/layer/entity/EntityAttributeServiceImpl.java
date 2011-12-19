@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Default implementation of {@link EntityAttributeService}. This class maps attributes in a generic way using an
- * operation tree. Values are read/written according to the Hibernate access type.
+ * operation tree.
  * 
  * @author Jan De Moerloose
  */
@@ -53,6 +53,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
+	/** {@inheritDoc} */
 	public void setAttributes(Object object, FeatureInfo featureInfo, EntityMapper mapper,
 			Map<String, Attribute<?>> attributes) throws LayerException {
 		UpdateEntityOperation operation = new UpdateEntityOperation(mapper, mapper.asEntity(object), featureInfo,
@@ -60,6 +61,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		operation.execute();
 	}
 
+	/** {@inheritDoc} */
 	public Attribute<?> getAttribute(Object feature, FeatureInfo featureInfo, EntityMapper mapper, String name)
 			throws LayerException {
 		String[] path = name.split(ATTRIBUTE_SEPARATOR);
@@ -156,10 +158,14 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation interface.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public interface Operation {
 
+		/**
+		 * Execute the operation.
+		 *
+		 * @throws LayerException oops
+		 */
 		void execute() throws LayerException;
 	}
 
@@ -167,7 +173,6 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for updating the top entity belonging to the {@link FeatureInfo} of this class.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class UpdateEntityOperation extends AbstractOperation {
 
@@ -183,7 +188,6 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for creating a {@link ManyToOneAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class CreateManyToOneOperation extends AbstractOperation {
 
@@ -204,6 +208,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			addChildOperations();
 		}
 
+		@Override
 		public void execute() throws LayerException {
 			parent.setChild(name, getEntity());
 			super.execute();
@@ -214,7 +219,6 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 	 * Operation for updating a {@link ManyToOneAttribute}.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class UpdateManyToOneOperation extends AbstractOperation {
 
@@ -244,6 +248,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			this.name = attributeInfo.getName();
 		}
 
+		@Override
 		public void execute() throws LayerException {
 			parent.setChild(name, null);
 		}
@@ -267,6 +272,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			this.name = attributeInfo.getName();
 		}
 
+		@Override
 		public void execute() throws LayerException {
 			parent.setChild(name, null);
 		}
@@ -289,6 +295,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			this.existing = existing;
 		}
 
+		@Override
 		public void execute() throws LayerException {
 			existing.removeEntity(toDelete);
 		}
@@ -329,6 +336,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			addChildOperations();
 		}
 
+		@Override
 		public void execute() throws LayerException {
 			collection.addEntity(getEntity());
 			super.execute();
@@ -399,6 +407,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public void execute() throws LayerException {
 			for (Map.Entry<String, PrimitiveAttribute<?>> entry : primitives.entrySet()) {
 				Object value = (entry.getValue() == null ? null : entry.getValue().getValue());

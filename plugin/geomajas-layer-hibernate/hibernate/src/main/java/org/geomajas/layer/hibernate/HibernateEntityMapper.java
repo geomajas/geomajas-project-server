@@ -31,22 +31,30 @@ import org.hibernate.type.Type;
 
 /**
  * Hibernate based implementation of {@link EntityMapper} for the {@link HibernateLayer}.
+ * <p/>
+ *  Values are read/written according to the Hibernate access type.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class HibernateEntityMapper implements EntityMapper {
 
 	private SessionFactory sessionFactory;
 
+	/**
+	 * Contructor.
+	 *
+	 * @param sessionFactory session factory
+	 */
 	public HibernateEntityMapper(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
+	/** {@inheritDoc} */
 	public Entity findOrCreateEntity(String dataSourceName, Object id) throws LayerException {
 		return new HibernateEntity(dataSourceName, id);
 	}
 
+	/** {@inheritDoc} */
 	public Entity asEntity(Object object) throws LayerException {
 		if (object == null) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM);
@@ -65,6 +73,12 @@ public class HibernateEntityMapper implements EntityMapper {
 
 		private ClassMetadata metadata;
 
+		/**
+		 * Construct an entity for the Hibernate object with given id.
+		 *
+		 * @param dataSourceName data source name
+		 * @param id object id
+		 */
 		public HibernateEntity(String dataSourceName, Object id) {
 			metadata = sessionFactory.getClassMetadata(dataSourceName);
 			if (id != null) {
@@ -75,24 +89,37 @@ public class HibernateEntityMapper implements EntityMapper {
 			}
 		}
 
+		/**
+		 * Create a entity for the given Hibernate managed object.
+		 *
+		 * @param object hibernate managed object
+		 */
 		public HibernateEntity(Object object) {
 			this.object = object;
 			metadata = sessionFactory.getClassMetadata(object.getClass());
 		}
 
+		/**
+		 * Get the Hibernate managed object for this entity.
+		 *
+		 * @return hibernate managed object
+		 */
 		public Object getObject() {
 			return object;
 		}
 
+		/** {@inheritDoc} */
 		public Object getId(String name) throws LayerException {
 			return metadata.getIdentifier(object, (SessionImplementor) sessionFactory.getCurrentSession());
 		}
 
+		/** {@inheritDoc} */
 		public Entity getChild(String name) throws LayerException {
 			Object child = (object == null ? null : metadata.getPropertyValue(object, name, EntityMode.POJO));
 			return child == null ? null : new HibernateEntity(child);
 		}
 
+		/** {@inheritDoc} */
 		public void setChild(String name, Entity entity) throws LayerException {
 			if (entity != null) {
 				metadata.setPropertyValue(object, name, ((HibernateEntity) entity).getObject(), EntityMode.POJO);
@@ -101,6 +128,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public EntityCollection getChildCollection(String name) throws LayerException {
 			Type type = metadata.getPropertyType(name);
 			if (type instanceof CollectionType) {
@@ -119,10 +147,12 @@ public class HibernateEntityMapper implements EntityMapper {
 			}
 		}
 
+		/** {@inheritDoc} */
 		public void setAttribute(String name, Object value) throws LayerException {
 			metadata.setPropertyValue(object, name, value, EntityMode.POJO);
 		}
 
+		/** {@inheritDoc} */
 		public Object getAttribute(String name) throws LayerException {
 			if (metadata.getIdentifierPropertyName().equals(name)) {
 				return getId(name);
@@ -147,6 +177,14 @@ public class HibernateEntityMapper implements EntityMapper {
 
 		private Collection objects;
 
+		/**
+		 * Construct a entity collection.
+		 *
+		 * @param parentMetadata parent meta data
+		 * @param childMetadata child meta data
+		 * @param parent parent object
+		 * @param objects child objects
+		 */
 		public HibernateEntityCollection(ClassMetadata parentMetadata, ClassMetadata childMetadata, Object parent,
 				Collection<?> objects) {
 			this.objects = objects;
@@ -164,6 +202,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			this.parent = parent;
 		}
 
+		/** {@inheritDoc} */
 		public Iterator<Entity> iterator() {
 			Collection<Entity> entities = new ArrayList<Entity>();
 			for (Object bean : objects) {
@@ -172,6 +211,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			return entities.iterator();
 		}
 
+		/** {@inheritDoc} */
 		@SuppressWarnings("unchecked")
 		public void addEntity(Entity entity) throws LayerException {
 			Object object = ((HibernateEntity) entity).getObject();
@@ -182,6 +222,7 @@ public class HibernateEntityMapper implements EntityMapper {
 			objects.add(object);
 		}
 
+		/** {@inheritDoc} */
 		public void removeEntity(Entity entity) throws LayerException {
 			Object object = ((HibernateEntity) entity).getObject();
 			// remove parent from many-to-one

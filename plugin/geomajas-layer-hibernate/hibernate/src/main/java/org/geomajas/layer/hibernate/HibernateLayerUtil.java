@@ -30,7 +30,6 @@ class HibernateLayerUtil {
 
 	public static final String XPATH_SEPARATOR = "/";
 	public static final String SEPARATOR = ".";
-
 	public static final String SEPARATOR_REGEXP = "\\.";
 
 	private SessionFactory sessionFactory;
@@ -39,14 +38,30 @@ class HibernateLayerUtil {
 
 	private VectorLayerInfo layerInfo;
 
+	/**
+	 * Get feature info.
+	 *
+	 * @return feature info
+	 */
 	public FeatureInfo getFeatureInfo() {
 		return layerInfo.getFeatureInfo();
 	}
 
+	/***
+	 * Get layer configuration.
+	 *
+	 * @return layer info
+	 */
 	public VectorLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer info
+	 * @throws LayerException oops
+	 */
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 		if (null != sessionFactory) {
@@ -113,7 +128,7 @@ class HibernateLayerUtil {
 	}
 
 	/**
-	 * Return the Hibernate SessionFactory
+	 * Return the Hibernate SessionFactory.
 	 * 
 	 * @return session factory
 	 */
@@ -121,10 +136,12 @@ class HibernateLayerUtil {
 		return sessionFactory;
 	}
 
-	// -------------------------------------------------------------------------
-	// Private functions:
-	// -------------------------------------------------------------------------
-
+	/**
+	 * Set session factory.
+	 *
+	 * @param sessionFactory session factory
+	 * @throws HibernateLayerException could not get class metadata for data source
+	 */
 	public void setSessionFactory(SessionFactory sessionFactory) throws HibernateLayerException {
 		try {
 			this.sessionFactory = sessionFactory;
