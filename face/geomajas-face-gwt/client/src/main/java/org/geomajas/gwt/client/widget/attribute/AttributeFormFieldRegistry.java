@@ -84,17 +84,17 @@ import org.geomajas.gwt.client.util.Log;
 @Api(allMethods = true)
 public final class AttributeFormFieldRegistry {
 
-	private static final Map<String, FormItemFactory> FORMITEMS;
+	private static final Map<String, FormItemFactory> FORM_ITEMS;
 
-	private static final Map<String, DataSourceFieldFactory> DATESOURCEFIELDS;
+	private static final Map<String, DataSourceFieldFactory> DATA_SOURCE_FIELDS;
 
-	private static final Map<String, List<Validator>> FIELDVALIDATORS;
+	private static final Map<String, List<Validator>> FIELD_VALIDATORS;
 
 	// Create the default types for the known attribute types:
 	static {
-		FORMITEMS = new HashMap<String, FormItemFactory>();
-		DATESOURCEFIELDS = new HashMap<String, DataSourceFieldFactory>();
-		FIELDVALIDATORS = new HashMap<String, List<Validator>>();
+		FORM_ITEMS = new HashMap<String, FormItemFactory>();
+		DATA_SOURCE_FIELDS = new HashMap<String, DataSourceFieldFactory>();
+		FIELD_VALIDATORS = new HashMap<String, List<Validator>>();
 
 		// Type: BOOLEAN
 		registerCustomFormItem(PrimitiveType.BOOLEAN.name(), new DataSourceFieldFactory() {
@@ -322,27 +322,12 @@ public final class AttributeFormFieldRegistry {
 	public static void registerCustomFormItem(String key, DataSourceFieldFactory fieldType, FormItemFactory editorType,
 			List<Validator> validators) {
 		if (key == null || fieldType == null || editorType == null) {
-			throw new NullPointerException("Cannot provide null values when registering new form items.");
+			throw new IllegalStateException("Cannot provide null values when registering new form items.");
 		}
 
-		if (DATESOURCEFIELDS.containsKey(key)) {
-			DATESOURCEFIELDS.remove(key);
-		}
-		DATESOURCEFIELDS.put(key, fieldType);
-
-		if (FORMITEMS.containsKey(key)) {
-			FORMITEMS.remove(key);
-		}
-		FORMITEMS.put(key, editorType);
-
-		if (FIELDVALIDATORS.containsKey(key)) {
-			FIELDVALIDATORS.remove(key);
-		}
-		if (validators == null) {
-			FIELDVALIDATORS.put(key, new ArrayList<Validator>());
-		} else {
-			FIELDVALIDATORS.put(key, validators);
-		}
+		DATA_SOURCE_FIELDS.put(key, fieldType);
+		FORM_ITEMS.put(key, editorType);
+		FIELD_VALIDATORS.put(key, null == validators ? new ArrayList<Validator>() : validators);
 	}
 
 	/**
@@ -359,10 +344,10 @@ public final class AttributeFormFieldRegistry {
 		List<Validator> validators = new ArrayList<Validator>();
 		if (info.getFormInputType() != null) {
 			String formInputType = info.getFormInputType(); 
-			DataSourceFieldFactory factory = DATESOURCEFIELDS.get(formInputType);
+			DataSourceFieldFactory factory = DATA_SOURCE_FIELDS.get(formInputType);
 			if (null != factory) {
 				field = factory.create();
-				List<Validator> fieldValidators = FIELDVALIDATORS.get(formInputType);
+				List<Validator> fieldValidators = FIELD_VALIDATORS.get(formInputType);
 				if (null != fieldValidators) {
 					validators.addAll(fieldValidators);
 				}
@@ -374,12 +359,12 @@ public final class AttributeFormFieldRegistry {
 		if (field == null) {
 			if (info instanceof PrimitiveAttributeInfo) {
 				String name = ((PrimitiveAttributeInfo) info).getType().name();
-				field = DATESOURCEFIELDS.get(name).create();
-				validators = new ArrayList<Validator>(FIELDVALIDATORS.get(name));
+				field = DATA_SOURCE_FIELDS.get(name).create();
+				validators = new ArrayList<Validator>(FIELD_VALIDATORS.get(name));
 			} else if (info instanceof AssociationAttributeInfo) {
 				String name = ((AssociationAttributeInfo) info).getType().name();
-				field = DATESOURCEFIELDS.get(name).create();
-				validators.addAll(FIELDVALIDATORS.get(name));
+				field = DATA_SOURCE_FIELDS.get(name).create();
+				validators.addAll(FIELD_VALIDATORS.get(name));
 			}
 		}
 		if (field != null) {
@@ -423,7 +408,7 @@ public final class AttributeFormFieldRegistry {
 	public static FormItem createFormItem(AttributeInfo info, AttributeProvider attributeProvider) {
 		FormItem formItem = null;
 		if (info.getFormInputType() != null) {
-			FormItemFactory factory = FORMITEMS.get(info.getFormInputType());
+			FormItemFactory factory = FORM_ITEMS.get(info.getFormInputType());
 			if (null != factory) {
 				formItem = factory.create();
 			} else {
@@ -433,10 +418,10 @@ public final class AttributeFormFieldRegistry {
 		if (formItem == null) {
 			if (info instanceof PrimitiveAttributeInfo) {
 				String name = ((PrimitiveAttributeInfo) info).getType().name();
-				formItem = FORMITEMS.get(name).create();
+				formItem = FORM_ITEMS.get(name).create();
 			} else if (info instanceof AssociationAttributeInfo) {
 				String name = ((AssociationAttributeInfo) info).getType().name();
-				formItem = FORMITEMS.get(name).create();
+				formItem = FORM_ITEMS.get(name).create();
 			}
 		}
 		if (formItem != null) {
