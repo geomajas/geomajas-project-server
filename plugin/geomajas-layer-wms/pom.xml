@@ -91,6 +91,15 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching</artifactId>
+				<version>${wms-layer-caching-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
 
 			<dependency>
 				<groupId>commons-httpclient</groupId>
@@ -143,5 +152,6 @@
 
 	<properties>
 		<wms-layer-backend-version>1.9.0</wms-layer-backend-version>
+		<wms-layer-caching-version>1.0.0</wms-layer-caching-version>
 	</properties>
 </project>

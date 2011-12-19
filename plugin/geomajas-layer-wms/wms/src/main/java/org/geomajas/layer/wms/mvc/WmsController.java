@@ -16,11 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.wms.WmsHttpService;
 import org.geomajas.layer.wms.WmsLayer;
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -41,9 +46,11 @@ import java.io.Writer;
 import java.util.StringTokenizer;
 
 /**
- * Spring MVC controller that maps a WMS request so it can be proxied to the real URL with authentication parameters.
+ * Spring MVC controller that maps a WMS request so it can be proxied to the real URL with authentication parameters,
+ * and if configured be retrieved from the cache.
  * 
  * @author Pieter De Graef
+ * @author Oliver May
  */
 @Controller("/wms/**")
 public class WmsController {
@@ -55,6 +62,9 @@ public class WmsController {
 
 	@Autowired
 	private WmsHttpService httpService;
+	
+	@Autowired
+	private CacheManagerService cacheManagerService;
 
 	// method provided for testing
 	protected void setHttpService(WmsHttpService httpService) {
@@ -74,15 +84,35 @@ public class WmsController {
 
 		String url = layer.getBaseWmsUrl() + "?" + request.getQueryString();
 		InputStream stream = null;
-
+		
 		try {
 			response.setContentType(layer.getFormat());
-			stream = httpService.getStream(url, layer.getAuthentication());
 			ServletOutputStream out = response.getOutputStream();
-			int b;
-			while ((b = stream.read()) >= 0 ) {
-				out.write(b);
+			
+			if (layer.isUseCache()) {
+				Object o = cacheManagerService.get(layer, CacheCategory.RASTER, url);
+				if (o != null) {
+					out.write((byte[]) o);
+				} else {
+					stream = httpService.getStream(url, layer.getAuthentication());
+					ByteArrayOutputStream os = new ByteArrayOutputStream();
+					int b;
+					while ((b = stream.read()) >= 0 ) {
+						os.write(b);
+						out.write(b);
+					}
+					cacheManagerService.put(layer, CacheCategory.RASTER, url, os.toByteArray(), 
+							getLayerEnvelope(layer));
+				}
+				
+			} else {
+				stream = httpService.getStream(url, layer.getAuthentication());
+				int b;
+				while ((b = stream.read()) >= 0 ) {
+					out.write(b);
+				}
 			}
+			
 		} catch (Exception e) {
 			log.error("Cannot get original WMS image", e);
 			// Create an error image to make the reason for the error visible:
@@ -99,7 +129,7 @@ public class WmsController {
 			}
 		}
 	}
-
+	
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
@@ -163,5 +193,16 @@ public class WmsController {
 		out.close();
 
 		return result;
+	}
+	
+	/**
+	 * Return the max bounds of the layer as envelope.
+	 * 
+	 * @param layer the layer to get envelope from
+	 * @return Envelope the envelope
+	 */
+	private Envelope getLayerEnvelope(WmsLayer layer) {
+		Bbox bounds = layer.getLayerInfo().getMaxExtent();
+		return new Envelope(bounds.getX(), bounds.getMaxX(), bounds.getY(), bounds.getMaxY());
 	}
 }

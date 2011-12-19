@@ -96,7 +96,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private String version = "1.1.1";
 	private String styles = "";
 	private List<Parameter> parameters;
-
+	
 	private boolean enableFeatureInfoSupport;
 
 	private RasterLayerInfo layerInfo;
@@ -108,6 +108,8 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private WmsAuthentication authentication;
 
 	private boolean useProxy;
+	
+	private boolean useCache;
 
 	@Autowired
 	private GeoService geoService;
@@ -353,7 +355,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	}
 
 	private String getWmsTargetUrl() {
-		if (useProxy || null != authentication) {
+		if (useProxy || null != authentication || useCache) {
 			if (null != dispatcherUrlService) {
 				String url = dispatcherUrlService.getDispatcherUrl();
 				if (!url.endsWith("/")) {
@@ -644,6 +646,28 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	@Api
 	public void setUseProxy(boolean useProxy) {
 		this.useProxy = useProxy;
+	}
+
+	/**
+	 * Set whether the WMS tiles should be cached for later use. This implies that the WMS tiles will be proxied.
+	 *
+	 * @param useCache true when request needs to use the proxy
+	 * @since 1.9.0
+	 */
+	@Api
+	public void setUseCache(boolean useCache) {
+		this.useCache = useCache;
+	}
+
+	/**
+	 * Set whether the WMS tiles should be cached for later use. This implies that the WMS tiles will be proxied.
+	 *
+	 * @param useCache true when request needs to use the proxy
+	 * @since 1.9.0
+	 */
+	@Api
+	public boolean isUseCache() {
+		return useCache;
 	}
 
 	/**
