@@ -285,7 +285,7 @@ public class AreaOfInterest {
           PostGIS will use lowercase characters while Oracle uses uppercase
           characters.</para>
 
-          <para>Also make sure you add the Java classnames to the
+          <para>Also make sure you add the Java class names to the
           hibernate.cfg.cml configuration file.</para>
         </caution></para>
 
@@ -293,6 +293,16 @@ public class AreaOfInterest {
         <para>At this point you might want to check if the O/R mapping is
         correct by writing a DAO and few unit tests.</para>
       </tip>
+
+      <para>The Hibernate layer uses the same way to access you class as
+      Hibernate itself. If your Hibernate annotations are on the fields (which
+      is recommended), then the fields will be used for reading and writing of
+      values. If the annotations are on the getters, then the getters and
+      setters will be used for reading and writing of values. You can changes
+      this at both class and field level by using an AccessType annotation.
+      Use <code>@AccessType("property")</code> to use the getters and setters
+      and <code>@AccessType("field")</code> to directly access the field
+      itself.</para>
     </section>
 
     <section id="vlconf">

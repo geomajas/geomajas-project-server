@@ -41,10 +41,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * Default implementation of {@link EntityAttributeService}. This class maps attributes in a generic way using an
- * operation tree.
+ * operation tree. Values are read/written according to the Hibernate access type.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class EntityAttributeServiceImpl implements EntityAttributeService {
