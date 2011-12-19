@@ -54,21 +54,29 @@ public class SelectionModalAction extends ToolbarModalAction implements Configur
 
 	private int pixelTolerance = 5;
 
+	/**
+	 * Construct the selection tool.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public SelectionModalAction(MapWidget mapWidget) {
 		super(WidgetLayout.iconSelect, I18nProvider.getToolbar().selectionSelectTitle(), I18nProvider
 				.getToolbar().selectionSelectTooltip());
 		this.map = mapWidget;
 	}
 
+	/** {@inheritDoc} */
 	public void onSelect(ClickEvent event) {
 		map.setController(new SelectionController(map, clickTimeout, coverageRatio, priorityToSelectedLayer,
 				pixelTolerance));
 	}
 
+	/** {@inheritDoc} */
 	public void onDeselect(ClickEvent event) {
 		map.setController(null);
 	}
 
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if ("clickTimeout".equals(key)) {
 			clickTimeout = Integer.parseInt(value);
@@ -82,23 +90,5 @@ public class SelectionModalAction extends ToolbarModalAction implements Configur
 		if ("pixelTolerance".equals(key)) {
 			pixelTolerance = Integer.parseInt(value);
 		}
-	}
-
-	// Getters:
-
-	public int getClickTimeout() {
-		return clickTimeout;
-	}
-
-	public float getCoverageRatio() {
-		return coverageRatio;
-	}
-
-	public boolean isPriorityToSelectedLayer() {
-		return priorityToSelectedLayer;
-	}
-
-	public int getPixelTolerance() {
-		return pixelTolerance;
 	}
 }

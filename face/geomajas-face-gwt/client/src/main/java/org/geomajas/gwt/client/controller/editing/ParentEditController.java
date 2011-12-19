@@ -11,19 +11,11 @@
 
 package org.geomajas.gwt.client.controller.editing;
 
-import org.geomajas.configuration.Parameter;
-import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.configuration.client.ClientToolbarInfo;
-import org.geomajas.gwt.client.action.ConfigurableAction;
-import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.menu.DeleteFeatureAction;
 import org.geomajas.gwt.client.action.menu.DeselectAllAction;
 import org.geomajas.gwt.client.action.menu.EditFeatureAction;
 import org.geomajas.gwt.client.action.menu.NewFeatureAction;
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
-import org.geomajas.gwt.client.action.toolbar.SelectionModalAction;
-import org.geomajas.gwt.client.action.toolbar.ToolId;
-import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -52,7 +44,7 @@ public class ParentEditController extends EditController {
 	/** The real controller responsible for editing. */
 	private EditController controller;
 	
-	private PanController panner;
+	private PanController panController;
 	
 	private TransactionGeomIndex geometryIndex;
 
@@ -62,21 +54,28 @@ public class ParentEditController extends EditController {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public ParentEditController(MapWidget mapWidget) {
 		super(mapWidget, null);
-		panner = new PanController(mapWidget);
-		panner.setShowCursorOnMove(true);
+		panController = new PanController(mapWidget);
+		panController.setShowCursorOnMove(true);
 	}
 
 	// -------------------------------------------------------------------------
 	// MapController implementation:
 	// -------------------------------------------------------------------------
 
+	@Override
 	public void onActivate() {
 		menu = getContextMenu();
 		mapWidget.setContextMenu(menu);
 	}
 
+	@Override
 	public void onDeactivate() {
 		if (menu != null) {
 			menu.destroy();
@@ -92,6 +91,7 @@ public class ParentEditController extends EditController {
 	// EditController implementation:
 	// -------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public Menu getContextMenu() {
 		if (menu == null) {
 			menu = new Menu();
@@ -104,10 +104,12 @@ public class ParentEditController extends EditController {
 		return menu;
 	}
 
+	/** {@inheritDoc} */
 	public TransactionGeomIndex getGeometryIndex() {
 		return geometryIndex;
 	}
 
+	/** {@inheritDoc} */
 	public void setGeometryIndex(TransactionGeomIndex geometryIndex) {
 		if (controller != null) {
 			controller.setGeometryIndex(geometryIndex);
@@ -115,6 +117,7 @@ public class ParentEditController extends EditController {
 		this.geometryIndex = geometryIndex;
 	}
 
+	/** {@inheritDoc} */
 	public void cleanup() {
 		if (controller != null) {
 			controller.cleanup();
@@ -122,24 +125,28 @@ public class ParentEditController extends EditController {
 		}
 	}
 
+	@Override
 	public void showGeometricInfo() {
 		if (controller != null) {
 			controller.showGeometricInfo();
 		}
 	}
 
+	@Override
 	public void updateGeometricInfo() {
 		if (controller != null) {
 			controller.updateGeometricInfo();
 		}
 	}
 
+	@Override
 	public void hideGeometricInfo() {
 		if (controller != null) {
 			controller.hideGeometricInfo();
 		}
 	}
-	
+
+	/** {@inheritDoc} */
 	public boolean isBusy() {
 		// busy when inserting or dragging has started
 		return controller != null && controller.isBusy();
@@ -150,78 +157,85 @@ public class ParentEditController extends EditController {
 	// Event handler functions delegating to child controller:
 	// -------------------------------------------------------------------------
 
+	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		if (controller != null) {
 			controller.onMouseDown(event);
 			if (!controller.isBusy()) {
-				panner.onMouseDown(event);
+				panController.onMouseDown(event);
 			}
 		} else {
-			panner.onMouseDown(event);
+			panController.onMouseDown(event);
 		}
 	}
 
+	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		if (controller != null) {
 			controller.onMouseUp(event);
 			if (!controller.isBusy()) {
-				panner.onMouseUp(event);
+				panController.onMouseUp(event);
 			}
 		} else {
 			if (event.getNativeButton() != Event.BUTTON_RIGHT) {
-				boolean moving = panner.isMoving();
-				panner.onMouseUp(event);
+				boolean moving = panController.isMoving();
+				panController.onMouseUp(event);
 				if (!moving) {
 					// Check if we can toggle selection on a feature:
-					ToggleSelectionAction action = new ToggleSelectionAction(mapWidget, getPixelTolerance());
+					ToggleSelectionAction action = new ToggleSelectionAction(mapWidget, pixelTolerance);
 					action.toggle(getScreenPosition(event), true);
 				}
 			}
 		}
 	}
 
+	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		if (controller != null) {
 			controller.onMouseMove(event);
 			if (!controller.isBusy()) {
-				panner.onMouseMove(event);
+				panController.onMouseMove(event);
 			}
 		} else {
-			panner.onMouseMove(event);
+			panController.onMouseMove(event);
 		}
 	}
 
+	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		if (controller != null) {
 			controller.onMouseOut(event);
 			if (!controller.isBusy()) {
-				panner.onMouseOut(event);
+				panController.onMouseOut(event);
 			}
 		} else {
-			panner.onMouseOut(event);
+			panController.onMouseOut(event);
 		}
 	}
 
+	@Override
 	public void onMouseOver(MouseOverEvent event) {
 		if (controller != null) {
 			controller.onMouseOver(event);
 		}
 	}
 
+	@Override
 	public void onMouseWheel(MouseWheelEvent event) {
 		if (controller != null) {
 			controller.onMouseWheel(event);
 		}
 	}
 
+	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
 		if (controller != null) {
 			controller.onDoubleClick(event);
 			if (!controller.isBusy()) {
-				panner.onDoubleClick(event);
+				panController.onDoubleClick(event);
 			}
 		} else {
-			panner.onDoubleClick(event);
+			panController.onDoubleClick(event);
 		}
 	}
 
@@ -229,6 +243,7 @@ public class ParentEditController extends EditController {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	@Override
 	public void setEditMode(EditMode currentMode) {
 		super.setEditMode(currentMode);
 		if (controller != null) {
@@ -262,36 +277,12 @@ public class ParentEditController extends EditController {
 		}
 	}
 
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
-
 	/**
-	 * Returns a pixel tolerance for selection. Tries to get it from the toolbar configuration for the selection
-	 * controller. Otherwise returns a default of 5 pixels.
+	 * Set the pixel tolerance which is used to select objects.
 	 *
-	 * @return accuracy for clicking in pixels
+	 * @param pixelTolerance pixel tolerance
 	 */
-	private int getPixelTolerance() {
-		if (pixelTolerance < 0) {
-			pixelTolerance = 5;
-
-			// First try and get the pixelTolerance value from the selection controller configuration:
-			ClientToolbarInfo toolbarInfo = mapWidget.getMapModel().getMapInfo().getToolbar();
-			if (null != toolbarInfo && null != toolbarInfo.getTools()) {
-				for (ClientToolInfo tool : toolbarInfo.getTools()) {
-					if (ToolId.TOOL_SELECTION_MODE.equals(tool.getId())) {
-						ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
-						if (action instanceof SelectionModalAction) {
-							for (Parameter parameter : tool.getParameters()) {
-								((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
-							}
-							pixelTolerance = ((SelectionModalAction) action).getPixelTolerance();
-						}
-					}
-				}
-			}
-		}
-		return pixelTolerance;
+	public void setPixelTolerance(int pixelTolerance) {
+		this.pixelTolerance = pixelTolerance;
 	}
 }

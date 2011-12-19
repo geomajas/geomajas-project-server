@@ -34,22 +34,30 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 
 	private boolean maxBoundsDisplayed;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param mapWidget map widget
+	 */
 	public EditingModalAction(MapWidget mapWidget) {
 		super(WidgetLayout.iconEdit, I18nProvider.getToolbar().editingSelectTitle(), I18nProvider
 				.getToolbar().editingSelectTooltip());
 		this.mapWidget = mapWidget;
 	}
 
+	/** {@inheritDoc} */
 	public void onSelect(ClickEvent event) {
 		ParentEditController controller = new ParentEditController(mapWidget);
 		controller.setMaxBoundsDisplayed(maxBoundsDisplayed);
 		mapWidget.setController(controller);
 	}
 
+	/** {@inheritDoc} */
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
 	}
 
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if ("maxBoundsDisplayed".equals(key)) {
 			maxBoundsDisplayed = Boolean.parseBoolean(value);
