@@ -14,7 +14,7 @@ package org.geomajas.plugin.geocoder.gwt.example.client.i18n;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * Messages for the goecoder example panels.
+ * Messages for the geocoder example panels.
  *
  * @author Joachim Van der Auwera
  */
