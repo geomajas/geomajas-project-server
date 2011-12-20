@@ -64,7 +64,10 @@ public abstract class SamplePanel extends VLayout {
 		HLayout hLayout = new HLayout();
 		hLayout.setMembersMargin(10);
 		hLayout.setWidth100();
-		hLayout.addMember(getViewPanel());
+		Canvas viewPanel = getViewPanel();
+		viewPanel.setWidth100();
+		viewPanel.setHeight100();
+		hLayout.addMember(viewPanel);
 
 		String description = getDescription();
 		if (description != null) {
