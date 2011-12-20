@@ -84,17 +84,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<encoding>utf8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.4.0</version>
@@ -149,18 +138,12 @@
 					<webAppConfig>
 						<contextPath>/</contextPath>
 						<baseResource implementation="org.mortbay.resource.ResourceCollection">
-							<!-- need both the webbapp dir and location where GWT puts stuff -->
+							<!-- need both the webapp dir and location where GWT puts stuff -->
 							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
 						</baseResource>
 					</webAppConfig>
 					<reload>manual</reload>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
 			</plugin>
 
 		</plugins>
