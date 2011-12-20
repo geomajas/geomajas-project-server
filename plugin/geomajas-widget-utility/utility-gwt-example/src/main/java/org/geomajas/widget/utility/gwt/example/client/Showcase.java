@@ -11,22 +11,11 @@
 
 package org.geomajas.widget.utility.gwt.example.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientToolInfo;
-import org.geomajas.gwt.client.action.ToolbarAction;
-import org.geomajas.gwt.client.action.ToolbarBaseAction;
-import org.geomajas.gwt.client.action.ToolbarModalAction;
-import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
-import org.geomajas.widget.utility.gwt.client.action.DropDownButtonAction;
-import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
-import org.geomajas.widget.utility.gwt.client.action.ToolbarRadioAction;
-import org.geomajas.widget.utility.gwt.client.ribbon.DropDownRibbonButton;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonBarLayout;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry;
@@ -75,34 +64,6 @@ public class Showcase implements EntryPoint {
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				RibbonColumn rc = new RibbonButton(new ChangeStateAction(theAnswer));
 				return rc;
-			}
-		});
-		
-		final DropDownRibbonButton zoomDropDown = new DropDownRibbonButton(
-				new DropDownButtonAction("[ISOMORPHIC]/images/magnifying-glass.png", "Zoom", ""));
-		RibbonColumnRegistry.put("ZoomDropDown", new RibbonColumnCreator() {
-			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
-				List<ButtonAction> actions = new ArrayList<ButtonAction>();
-				for (ClientToolInfo tool : tools) {
-					//Copied from RibbonColumnRegistry; generic implementation later?
-					ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
-					if (toolbarAction != null) {
-						ButtonAction action = null;
-						if (toolbarAction instanceof ToolbarAction) {
-							action = new ToolbarButtonAction(toolbarAction);
-						} else if (toolbarAction instanceof ToolbarModalAction) {
-							action = new ToolbarRadioAction((ToolbarModalAction) toolbarAction, "map-controller-group");
-						}
-						if (action != null) {
-							for (Parameter parameter : tool.getParameters()) {
-								action.configure(parameter.getName(), parameter.getValue());
-							}
-							actions.add(action);
-						}
-					}
-				}
-				zoomDropDown.prepareButtons(actions);
-				return zoomDropDown;
 			}
 		});
 		
@@ -222,11 +183,11 @@ public class Showcase implements EntryPoint {
 	private Canvas getExample5() {
 		VLayout layout = new VLayout(5);
 		layout.setPadding(5);
-
-		MapWidget mapWidget = new MapWidget("mapMsWms", "widget-utility");
-		final RibbonBarLayout ribbon = new RibbonBarLayout(mapWidget, "widget-utility", "ribbon-bar-4");
+		MapWidget mapWidget = new MapWidget("mapMsOsm", "widget-utility");
+		final RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "widget-utility", "ribbon-4");
+		ribbon.setRibbonBarMembersMargin(0);
 		ribbon.setStyleName("msRibbon");
-		ribbon.setSize("100%", "94px");
+		ribbon.setSize("100%", "120px");
 
 		layout.addMember(ribbon);
 		layout.addMember(mapWidget);

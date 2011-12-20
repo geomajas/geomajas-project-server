@@ -21,8 +21,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 
-	<bean name="ribbon-1"
-		class="org.geomajas.widget.utility.configuration.RibbonInfo">
+	<bean name="ribbon-1" class="org.geomajas.widget.utility.configuration.RibbonInfo">
 		<property name="id" value="ribbon1-id" />
 		<property name="tabs">
 			<list>
@@ -162,8 +161,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="ribbon-bar-1"
-		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
+	<bean name="ribbon-bar-1" class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
 		<property name="groups">
 			<list>
 				<bean
@@ -234,9 +232,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-
-	<bean name="ribbon-bar-2"
-		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
+	<bean name="ribbon-bar-2" class="org.geomajas.widget.utility.configuration.RibbonBarInfo"> 
 		<property name="groups">
 			<list>
 				<bean
@@ -377,80 +373,190 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 	
-	<bean name="ribbon-bar-4"
-		class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
-		<property name="groups">
+	<bean name="ribbon-4" class="org.geomajas.widget.utility.configuration.RibbonInfo">
+		<property name="id" value="ribbon4-id" />
+		<property name="tabs">
 			<list>
 				<bean
-					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
-					<property name="title" value="Navigation" />
-					<property name="columns">
+					class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
+					<property name="title" value="TAB Nr 1" />
+					<property name="groups">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ToolbarActionButton" />
-								<property name="tools">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+								<property name="title" value="Group Nr 1" />
+								<property name="columns">
 									<list>
-										<ref bean="ZoomIn" />
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomIn" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomOut" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarDropDownButton" />
+											<property name="parameters">
+												<list>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="title" />
+														<property name="value" value="Zoom" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="icon" />
+														<property name="value" value="[ISOMORPHIC]/images/magnifying-glass.png" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="style" />
+														<property name="value" value="iconTitleAndDescription" />
+													</bean>
+												</list>
+											</property>
+											<property name="tools">
+												<list>
+													<bean class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="id" value="DropdownPanelGroupTitle" />
+														<property name="parameters">
+														<list>
+															<bean class="org.geomajas.configuration.Parameter">
+																<property name="name" value="title" />
+																<property name="value" value="Navigation" />
+															</bean>
+														</list>
+														</property>
+													</bean>
+													<ref bean="ZoomIn" />
+													<ref bean="ZoomOut" />
+													<ref bean="ZoomPrevious" />
+													<ref bean="ZoomNext" />
+													<bean class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="id" value="DropdownPanelGroupTitle" />
+														<property name="parameters">
+														<list>
+															<bean class="org.geomajas.configuration.Parameter">
+																<property name="name" value="title" />
+																<property name="value" value="Navigation" />
+															</bean>
+														</list>
+														</property>
+													</bean>
+													<ref bean="ZoomIn" />
+													<ref bean="ZoomOut" />
+													<ref bean="ZoomPrevious" />
+													<ref bean="ZoomNext" />
+												</list>
+											</property>
+										</bean>
 									</list>
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ToolbarActionButton" />
-								<property name="tools">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+								<property name="title" value="Information" />
+								<property name="columns">
 									<list>
-										<ref bean="ZoomOut" />
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="MeasureDistanceMode" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="FeatureInfoMode" />
+												</list>
+											</property>
+										</bean>
 									</list>
 								</property>
 							</bean>
 							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ZoomDropDown" />
-								<property name="tools">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+								<property name="title" value="Group Nr 2" />
+								<property name="columns">
 									<list>
-										<ref bean="ZoomIn" />
-										<ref bean="ZoomOut" />
-										<ref bean="ZoomPrevious" />
-										<ref bean="ZoomNext" />
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomIn" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionList" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomIn" />
+													<ref bean="ZoomOut" />
+													<ref bean="ZoomIn" />
+												</list>
+											</property>
+										</bean>
 									</list>
 								</property>
 							</bean>
 						</list>
 					</property>
 				</bean>
-				<bean
-					class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
-					<property name="title" value="Information" />
-					<property name="columns">
+				<bean name="ribbon-bar-1"
+					class="org.geomajas.widget.utility.configuration.RibbonBarInfo">
+					<property name="title" value="TAB Nr 2" />
+					<property name="groups">
 						<list>
 							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ToolbarActionButton" />
-								<property name="tools">
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+								<property name="title" value="Navigation" />
+								<property name="columns">
 									<list>
-										<ref bean="MeasureDistanceMode" />
-									</list>
-								</property>
-							</bean>
-							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ToolbarActionButton" />
-								<property name="tools">
-									<list>
-										<ref bean="FeatureInfoMode" />
-									</list>
-								</property>
-							</bean>
-							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-								<property name="type" value="ZoomDropDown" />
-								<property name="tools">
-									<list>
-										<ref bean="ZoomIn" />
-										<ref bean="ZoomOut" />
-										<ref bean="ZoomPrevious" />
-										<ref bean="ZoomNext" />
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomIn" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomOut" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionList" />
+											<property name="tools">
+												<list>
+													<ref bean="ZoomPrevious" />
+													<ref bean="ZoomNext" />
+												</list>
+											</property>
+										</bean>
 									</list>
 								</property>
 							</bean>
@@ -460,5 +566,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-
+	
 </beans>
