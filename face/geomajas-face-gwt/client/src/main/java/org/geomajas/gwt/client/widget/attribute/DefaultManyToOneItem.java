@@ -22,20 +22,22 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
  * the possible values.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 
 	private SelectItem selectItem;
 
+	/** Constructor. */
 	public DefaultManyToOneItem() {
 		selectItem = new SelectItem();
 	}
 
+	/** {@inheritDoc} */
 	public SelectItem getItem() {
 		return selectItem;
 	}
 
+	/** {@inheritDoc} */
 	public void toItem(ManyToOneAttribute attribute) {
 		if (attribute != null && attribute.getValue() != null) {
 			// value field = id as text field !
@@ -45,6 +47,7 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void fromItem(ManyToOneAttribute attribute) {
 		ListGridRecord record = selectItem.getSelectedRecord();
 		if (record != null) {
@@ -54,15 +57,16 @@ public class DefaultManyToOneItem implements ManyToOneItem<SelectItem> {
 			}
 		}
 	}
-	
+
+	/** {@inheritDoc} */
 	public void clearValue() {
 		selectItem.clearValue();
 	}
 
+	/** {@inheritDoc} */
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		selectItem.setValueField(ManyToOneDataSource.ASSOCIATION_ITEM_VALUE_FIELD_NAME);
 		selectItem.setOptionDataSource(new ManyToOneDataSource(attributeInfo, attributeProvider));
 	}
-
 
 }

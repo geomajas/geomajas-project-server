@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.gwt.client.widget.attribute.AttributeProvider.CallBack;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 
@@ -117,7 +116,7 @@ public class ManyToOneDataSource extends DataSource {
 	}
 
 	protected void executeFetch(final String requestId, final DSRequest dsRequest, final DSResponse dsResponse) {
-		attributeProvider.getAttributes(new CallBack() {
+		attributeProvider.getAttributes(new AttributeProviderCallBack() {
 
 			public void onSuccess(List<Attribute<?>> attributes) {
 				// Add the values to the list:

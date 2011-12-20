@@ -74,7 +74,7 @@ public class DefaultAttributeProvider implements AttributeProvider {
 		this.attributePath = attributePath;
 	}
 
-	public void getAttributes(final CallBack callBack) {
+	public void getAttributes(final AttributeProviderCallBack callBack) {
 		GwtCommand command = new GwtCommand(SearchAttributesRequest.COMMAND);
 		command.setCommandRequest(new SearchAttributesRequest(serverLayerId, attributePath));
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {

@@ -10,10 +10,6 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import java.util.List;
-
-import org.geomajas.layer.feature.Attribute;
-
 /**
  * An {@link AttributeProvider} provides all possible attribute values of an association attribute. This is usually done
  * by calling the server, so a call back mechanism is needed.
@@ -27,7 +23,7 @@ public interface AttributeProvider {
 	 * 
 	 * @param callBack the call-back object
 	 */
-	void getAttributes(CallBack callBack);
+	void getAttributes(AttributeProviderCallBack callBack);
 
 	/**
 	 * Create an attribute provider for given attribute name.
@@ -36,27 +32,5 @@ public interface AttributeProvider {
 	 * @return attribute provider
 	 */
 	AttributeProvider createProvider(String attributeName);
-
-	/**
-	 * Interface to be implemented by call-back objects of this provider.
-	 * 
-	 * @author Jan De Moerloose
-	 */
-	public interface CallBack {
-
-		/**
-		 * Called when the attributes have been successfully found.
-		 * 
-		 * @param attributes list of attributes
-		 */
-		void onSuccess(List<Attribute<?>> attributes);
-
-		/**
-		 * Called when an error occurred while trying to provide the attributes.
-		 * 
-		 * @param errorMessages error messages
-		 */
-		void onError(List<String> errorMessages);
-	}
 
 }

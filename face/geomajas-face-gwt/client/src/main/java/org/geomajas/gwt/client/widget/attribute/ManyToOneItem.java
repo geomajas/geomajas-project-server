@@ -46,7 +46,7 @@ public interface ManyToOneItem<F extends FormItem> extends AssociationItem<F> {
 	void toItem(ManyToOneAttribute attribute);
 
 	/**
-	 * Copy the attribute value from the form item to the atribute.
+	 * Copy the attribute value from the form item to the attribute.
 	 * 
 	 * @param attribute attribute to copy value to
 	 */
@@ -64,5 +64,4 @@ public interface ManyToOneItem<F extends FormItem> extends AssociationItem<F> {
 	 * Clear this item's value.
 	 */
 	void clearValue();
-
 }
