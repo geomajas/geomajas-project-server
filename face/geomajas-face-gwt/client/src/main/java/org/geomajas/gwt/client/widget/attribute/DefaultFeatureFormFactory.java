@@ -26,7 +26,7 @@ public class DefaultFeatureFormFactory implements FeatureFormFactory<DynamicForm
 	/**
 	 * Creates a form using the specified attribute information.
 	 * 
-	 * @param infos List of attribute definitions. Normally taken from a {@link VectorLayer}.
+	 * @param vectorLayer vector layer for which the form needs to be built
 	 * @return An attribute form that allows for editing of it's values.
 	 */
 	public FeatureForm<DynamicForm> createFeatureForm(VectorLayer vectorLayer) {
