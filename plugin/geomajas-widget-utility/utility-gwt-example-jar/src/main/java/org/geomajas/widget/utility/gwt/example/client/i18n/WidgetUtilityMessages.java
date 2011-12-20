@@ -23,10 +23,34 @@ public interface WidgetUtilityMessages extends Messages {
 	/** @return title for the utility widgets tree node. */
 	String treeGroupUtilityWidgets();
 
-	/** @return title for the ribbon panel. */
-	String ribbonTitle();
+	/** @return title for the default ribbon panel. */
+	String defaultRibbonTitle();
 
-	/** @return description for the ribbon panel. */
-	String ribbonDescription();
+	/** @return description for the default ribbon panel. */
+	String defaultRibbonDescription();
+
+	/** @return title for the default ribbon panel. */
+	String tabbedRibbonTitle();
+
+	/** @return description for the default ribbon panel. */
+	String tabbedRibbonDescription();
+
+	/** @return title for the default ribbon panel. */
+	String customWidgetsRibbonTitle();
+
+	/** @return description for the default ribbon panel. */
+	String customWidgetsRibbonDescription();
+
+	/** @return title for the default ribbon panel. */
+	String customStyleRibbonTitle();
+
+	/** @return description for the default ribbon panel. */
+	String customStyleRibbonDescription();
+
+	/** @return title for the default ribbon panel. */
+	String msStyleRibbonTitle();
+
+	/** @return description for the default ribbon panel. */
+	String msStyleRibbonDescription();
 
 }

@@ -58,9 +58,21 @@ public class WidgetUtilityExample implements EntryPoint {
 
 		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.treeGroupUtilityWidgets(),
 				"[ISOMORPHIC]/geomajas/silk/plugin.png", "UtilityWidgets", "topLevel"));
-		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.ribbonTitle(),
-				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", RibbonPanel.TITLE, "UtilityWidgets",
-				RibbonPanel.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.defaultRibbonTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", DefaultRibbonPanel.TITLE, "UtilityWidgets",
+				DefaultRibbonPanel.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.tabbedRibbonTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", TabbedRibbonPanel.TITLE, "UtilityWidgets",
+				TabbedRibbonPanel.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.customWidgetsRibbonTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", CustomWidgetsRibbonPanel.TITLE, "UtilityWidgets",
+				CustomWidgetsRibbonPanel.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.customStyleRibbonTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", CustomStyleRibbonPanel.TITLE, "UtilityWidgets",
+				CustomStyleRibbonPanel.FACTORY));
+		SampleTreeNodeRegistry.addSampleTreeNode(new SampleTreeNode(MESSAGES.msStyleRibbonTitle(),
+				"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", MsStyleRibbonPanel.TITLE, "UtilityWidgets",
+				MsStyleRibbonPanel.FACTORY));
 	}
 }
 
