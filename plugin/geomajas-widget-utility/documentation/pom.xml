@@ -21,7 +21,7 @@
 	<artifactId>geomajas-widget-utility-documentation</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas Utility widgets plugin - Documentation</name>
+	<name>Widget utility documentation</name>
 	<description>geomajas-widget-utility documentation</description>
 	
 	<properties>

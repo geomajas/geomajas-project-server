@@ -23,7 +23,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<name>Geomajas Utility widgets plugin - SmartGWT client implementation</name>
+	<name>Widget utility GWT client</name>
 	<description>Implementation of the Geomajas Utility widgets using the SmartGWT widget library.</description>
 
 	<dependencies>

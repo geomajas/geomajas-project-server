@@ -21,6 +21,17 @@
 	<inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/>
 	<inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources"/>
 
+	<!-- @extract-skip-start -->
+
+	<!-- add required languages
+	<extend-property name="locale" values="nl"/>
+	-->
+
+	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
+	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
+	<set-property name="user.agent" value="gecko1_8" />
+	<!-- @extract-skip-end -->
+
 	<entry-point class="org.geomajas.widget.utility.gwt.example.client.WidgetUtilityExampleStandalone"/>
 	<source path='client'/>
 </module>

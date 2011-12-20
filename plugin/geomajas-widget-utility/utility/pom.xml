@@ -23,7 +23,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<name>Geomajas Utility widgets plugin - backend.</name>
+	<name>Widget utility backend</name>
 	<description>Backend for the Geomajas utility widgets plugin. Provides configuration and commands.</description>
 	
 	<dependencies>

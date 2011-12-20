@@ -23,7 +23,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<name>Geomajas Utility widgets plugin - GWT client definitions.</name>
+	<name>Widget utility common GWT client definitions.</name>
 	<description>General GWT widget definitions (MVP) for the Geomajas utility widgets plug-in.</description>
 
 	<dependencies>

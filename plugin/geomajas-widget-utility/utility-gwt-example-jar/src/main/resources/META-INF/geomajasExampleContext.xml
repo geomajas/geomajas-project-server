@@ -13,9 +13,9 @@
 	   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<import resource="classpath:org/geomajas/widget/utility/gwt/example/appGuw.xml"/>
-	<import resource="classpath:org/geomajas/widget/utility/gwt/example/map*.xml"/>
-	<import resource="classpath:org/geomajas/widget/utility/gwt/example/layer*.xml"/>
-	<import resource="classpath:org/geomajas/widget/utility/gwt/example/ribbon.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/appGuw.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/map*.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/layer*.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/ribbon.xml"/>
 
 </beans>

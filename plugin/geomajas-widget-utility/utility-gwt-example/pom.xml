@@ -88,8 +88,8 @@
 					<webAppConfig>
 						<contextPath>/</contextPath>
 						<baseResource implementation="org.mortbay.resource.ResourceCollection">
-							<!-- need both the webbapp dir and location where GWT puts stuff -->
-							<resourcesAsCSV>src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+							<!-- need both the webapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
 						</baseResource>
 					</webAppConfig>
 					<reload>manual</reload>
