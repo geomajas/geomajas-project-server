@@ -45,7 +45,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-widget-utility-gwtface-version}</version>
+				<version>${geomajas-widget-utility-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -72,7 +72,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.widget</groupId>
+				<artifactId>geomajas-widget-utility-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.widget</groupId>
 				<artifactId>geomajas-widget-utility-gwt-example</artifactId>
+				<type>war</type>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -90,6 +96,7 @@
 		<module>utility</module>
 		<module>utility-common-gwt</module>
 		<module>utility-gwt</module>
+		<module>utility-gwt-example-jar</module>
 		<module>utility-gwt-example</module>
 	</modules>
 
@@ -107,11 +114,6 @@
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<properties>
-		<geomajas-widget-utility-backend-version>1.10.0-SNAPSHOT</geomajas-widget-utility-backend-version>
-		<geomajas-widget-utility-gwtface-version>1.10.0-SNAPSHOT</geomajas-widget-utility-gwtface-version>
-	</properties>
 
 	<profiles>
 		<profile>
@@ -140,4 +142,11 @@
 			</activation>
 		</profile>
 	</profiles>
+
+	<properties>
+		<geomajas-widget-utility-backend-version>1.10.0-SNAPSHOT</geomajas-widget-utility-backend-version>
+		<geomajas-widget-utility-gwt-face-version>1.10.0-SNAPSHOT</geomajas-widget-utility-gwt-face-version>
+		<geomajas-widget-utility-gwt-version>2.4.0</geomajas-widget-utility-gwt-version>
+	</properties>
+
 </project>

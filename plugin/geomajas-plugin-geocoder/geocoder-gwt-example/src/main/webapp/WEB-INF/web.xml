@@ -52,11 +52,6 @@
     </listener>
 
 	<servlet>
-		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
-	</servlet>
-
-	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>

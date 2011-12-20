@@ -52,6 +52,8 @@ public class GeocoderPanel extends SamplePanel {
 	};
 
 	/**
+	 * Get view panel.
+	 *
 	 * @return The viewPanel Canvas
 	 */
 	public Canvas getViewPanel() {

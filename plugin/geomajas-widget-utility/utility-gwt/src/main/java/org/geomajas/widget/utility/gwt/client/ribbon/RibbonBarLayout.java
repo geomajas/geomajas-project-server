@@ -74,13 +74,17 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	 *            A unique spring bean identifier for a bean of class {@link RibbonBarInfo}. This configuration is then
 	 *            fetched and applied.
 	 */
-	public RibbonBarLayout(final MapWidget mapWidget, String application, String beanId) {
+	public RibbonBarLayout(final MapWidget mapWidget, final String application, final String beanId) {
 		this();
 
 		ClientConfigurationService.getApplicationWidgetInfo(application, beanId,
 				new WidgetConfigurationCallback<RibbonBarInfo>() {
 
 					public void execute(RibbonBarInfo ribbonBarInfo) {
+						if (null == ribbonBarInfo) {
+							throw new IllegalStateException("Cannot find ribbon configuration bean " + beanId +
+									" for application " + application);
+						}
 						buildGui(ribbonBarInfo, mapWidget);
 					}
 				});
@@ -154,6 +158,9 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	// ------------------------------------------------------------------------
 
 	private void buildGui(RibbonBarInfo barInfo, MapWidget mapWidget) {
+		if (null == barInfo) {
+			throw new IllegalStateException("RibbonBarLayout cannot be built without RibbonBarInfo configuration.");
+		}
 		for (RibbonGroupInfo groupInfo : barInfo.getGroups()) {
 			RibbonGroupLayout group = new RibbonGroupLayout(groupInfo.getTitle());
 			for (RibbonColumnInfo columnInfo : groupInfo.getColumns()) {
