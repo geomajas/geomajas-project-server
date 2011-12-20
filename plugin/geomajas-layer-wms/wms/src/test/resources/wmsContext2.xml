@@ -1,0 +1,81 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:util="http://www.springframework.org/schema/util"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="securityServices">
+			<list>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerLuchtfotos">
+		<property name="serverLayerId" value="layerLuchtfotos" />
+		<property name="label" value="Luchtfotos" />
+		<property name="visible" value="true" />
+		<property name="style" value="1" />
+		<property name="viewScaleMin" value="0.125984252" />
+		<property name="viewScaleMax" value="7.559055118" />
+	</bean>
+
+ 	<bean name="layerLuchtfotos" class="org.geomajas.layer.wms.WmsLayer">
+		<property name="layerInfo" ref="layerLuchtfotosInfo" />
+		<property value="https://e-loketoefen.landbouwvlaanderen.be/tilecache/tilecache.py"	name="baseWmsUrl" />
+		<property value="1.1.1" name="version" />
+		<property value="image/jpeg" name="format" />
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="map" />
+					<property name="value" value="mapfile_WMS.map" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="layerLuchtfotosInfo" class="org.geomajas.configuration.RasterLayerInfo">
+		<property value="luchtfotos" name="dataSourceName" />
+		<property value="EPSG:31300" name="crs" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="20000" />
+				<property name="y" value="150000" />
+				<property name="width" value="250000" />
+				<property name="height" value="100000" />
+			</bean>
+		</property>
+		<property name="tileWidth" value="400" />
+		<property name="tileHeight" value="400" />
+		<property name="resolutions">
+			<list>
+				<value>10.582011</value>
+				<value>7.054674</value>
+				<value>3.527337</value>
+				<value>2.116402</value>
+				<value>1.410935</value>
+				<value>0.705467</value>
+				<value>0.352734</value>
+				<value>0.176367</value>
+			</list>
+		</property>
+ 	</bean>
+
+</beans>
