@@ -24,7 +24,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
- * A custom map addon group, which is always on top of other addons to make sure the 
+ * A custom map add-on group, which is always on top of other add-ons to make sure the
  * onDrag event of {@link ZoomSliderController} is not interrupted. 
  * You need to provide this class with 2 {@link SingleMapAddon}s (zoom in, zoom out) and 1 {@link SliderArea}.
  * 
@@ -51,11 +51,11 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 	private SingleMapAddon zoomOut;
 
 	/**
-	 * A custom map addon group, which is always on top of other addons. You need to provide this class with 
+	 * A custom map add-on group, which is always on top of other add-ons. You need to provide this class with
 	 * 2 {@link SingleMapAddon}s (zoom in, zoom out) and 1 {@link SliderArea}.
 	 * 
-	 * @param id
-	 * @param mapWidget
+	 * @param id id
+	 * @param mapWidget map widget
 	 */
 	public ZoomSlider(String id, MapWidget mapWidget) {
 		super(id, 0, 0);
@@ -71,7 +71,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 	}
 
 	/**
-	 * <p>Given the full list of possible scales, which ones are actually usable?</p>
+	 * Update the list of scales to include only the list of usable scales (from all possible scales).
 	 */
 	public void updateUsableScales() {
 		Bbox bgBounds = backgroundPart.getBounds();
@@ -109,7 +109,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		/*
 		 * Align zoom slider unit with current zoom
 		 */
-		Bbox bounds = (Bbox) sliderUnit.getBounds();
+		Bbox bounds = sliderUnit.getBounds();
 		bounds.setY(currentUnitY);
 
 		/*
