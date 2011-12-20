@@ -20,35 +20,65 @@
 		<script type="text/javascript" src="showcase/showcase.nocache.js"></script>
 
 		<script type="text/javascript">
-			var map;
+			var map; // The map object.
+			var editor; // Geometry editor. Holds the central editing service, the renderer, the styling information...
+			var service; // The central editing service.
 
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapMain", "js-map-element");
+				editor = new org.geomajas.plugin.editing.GeometryEditor(map);
+				service = editor.getService();
+			}
+
+			function cancel() {
+				if (editor.isBusyEditing()) {
+					var geometry = service.stop();
+					var wkt = Geomajas().getGeometryService().toWkt(geometry);
+					alert("Resulting geometry: " + wkt);
+				} else {
+					alert("No editing process busy.");
+				}
+			}
+
+			function undo() {
+				if (service.canUndo()) {
+					service.undo();
+				} else {
+					alert("No UNDO operation available.");
+				}
+			}
+
+			function redo() {
+				if (service.canRedo()) {
+					service.redo();
+				} else {
+					alert("No REDO operation available.");
+				}
 			}
 
 			function drawPoint() {
-				try {
-					//var service = new org.geomajas.plugin.editing.service.GeometryEditingService();
-					//log(service.toString());
-					//var indexService = service.getIndexService();
-					var indexService = new org.geomajas.plugin.editing.service.GeometryIndexService();
-					var index = indexService.parse("geometry0.vertex1");
-					log(index.toString());
-					log(indexService.format(index));
-					//var type = indexService.getType(index);
-					log(index.hasChild() + ", " + index.getChild().toString());
-					var type = index.getType();
-					log(type.toString());
-					var index2 = indexService.create(type, [0,2]);
-					log(index2.toString());
+				var geometry = new org.geomajas.jsapi.spatial.Geometry("Point", 0, 0);
+				service.start(geometry);
+				var index = service.getIndexService().create("vertex", 0);
+				service.setInsertIndex(index);
+				service.setEditingState("inserting");
+			}
 
-					var index3 = indexService.create("edge", [3,4]);				
-					log(index3.toString());
-					log(index3.getValue() + ", " + index3.hasChild() + ", " + index3.getType());
-					log(indexService.getType(index3));
-				} catch (e) {
-					alert(e);
-				}
+			function drawLineString() {
+				var geometry = new org.geomajas.jsapi.spatial.Geometry("LineString", 0, 0);
+				service.start(geometry);
+				var index = service.getIndexService().create("vertex", 0);
+				service.setInsertIndex(index);
+				service.setEditingState("inserting");
+			}
+
+			function drawPolygon() {
+				var geometry = new org.geomajas.jsapi.spatial.Geometry("Polygon", 0, 0);
+				service.start(geometry);
+				service.addEmptyChild();
+				var index = service.getIndexService().create("vertex", 0, 0);
+				service.setInsertIndex(index);
+				service.setEditingState("inserting");
 			}
 
 			function log(txt) {
@@ -72,12 +102,27 @@
 		</div>
 		
 		<div>
-			<button onclick="drawPoint()">Draw point</button>
+			<button onclick="drawPoint()">Draw Point</button>
+			<button onclick="drawLineString()">Draw LineString</button>
+			<button onclick="drawPolygon()">Draw Polygon</button>
 		</div>
 		
-		<div id="js-map-element" style="width:640px; height:480px; border: 1px solid #337428;">
-			<!-- on load, the map is attached here -->
-		</div>
-		<div id="log"></div>
+		<table>
+			<tr>
+				<td valign="top">
+					<div id="js-map-element" style="width:640px; height:480px; border: 1px solid #337428;">
+						<!-- on load, the map is attached here -->
+					</div>
+					<div id="log"></div>
+				</td>
+				<td valign="top">
+					<div>
+						<button id="cancel" onclick="cancel()">Cancel</button><br/>
+						<button id="undo" onclick="undo()">Undo</button><br/>
+						<button id="redo" onclick="redo()">Redo</button>
+					</div>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>

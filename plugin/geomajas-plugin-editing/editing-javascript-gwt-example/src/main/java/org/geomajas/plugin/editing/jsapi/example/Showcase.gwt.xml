@@ -16,8 +16,7 @@
 	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
 
 	<!-- Import Geomajas plugins -->
-	<inherits name="org.geomajas.plugin.editing.jsapi.EditingJavascriptApi"/>
-    <inherits name="org.geomajas.plugin.jsapi.smartgwt.JavascriptApi"/>
+	<inherits name="org.geomajas.plugin.editing.jsapi.gwt.EditingJsApi"/>
 
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>

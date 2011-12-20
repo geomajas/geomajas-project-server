@@ -97,7 +97,7 @@
 		<!-- Geomajas dependencies -->		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-editing-javascript-api</artifactId>
+			<artifactId>geomajas-plugin-editing-javascript-api-gwt</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
