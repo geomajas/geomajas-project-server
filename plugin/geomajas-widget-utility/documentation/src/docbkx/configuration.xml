@@ -59,15 +59,15 @@
     <example>
       <title>Loading the GWT modules</title>
 
-      <programlisting><![CDATA[&lt;!-- Plugin module: --&gt;
-&lt;inherits name="org.geomajas.widget.utility.gwt.SmartGwtUtilityWidgets" /&gt;
+      <programlisting>&amp;lt;!-- Plugin module: --&amp;gt;
+&amp;lt;inherits name="org.geomajas.widget.utility.gwt.GwtUtilityWidgets" /&amp;gt;
 
-&lt;!-- Plugin Enterprise theme: --&gt;
-&lt;inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources"/&gt;
+&amp;lt;!-- Plugin Enterprise theme: --&amp;gt;
+&amp;lt;inherits name="org.geomajas.widget.utility.theme.enterprise.EnterpriseResources"/&amp;gt;
 
-&lt;!-- Inherited SmartGWT themes: --&gt;
-&lt;inherits name="com.smartclient.theme.enterprise.Enterprise"/&gt;
-&lt;inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/&gt;]]></programlisting>
+&amp;lt;!-- Inherited SmartGWT themes: --&amp;gt;
+&amp;lt;inherits name="com.smartclient.theme.enterprise.Enterprise"/&amp;gt;
+&amp;lt;inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/&amp;gt;</programlisting>
     </example>
   </section>
 
@@ -84,9 +84,9 @@
       <para>The ribbon is a office like broad toolbar with clear text and
       icons on the main buttons. It has support for not just buttons, but any
       other widget as well. The main idea for the ribbon is that it should
-      easily work together with a MapWidget, by providing a way of
-      using navigation controllers etc. In order to accomplish this goal, it
-      is possible to configure the ribbon within the backend Spring
+      easily work together with a MapWidget, by providing a way of using
+      navigation controllers etc. In order to accomplish this goal, it is
+      possible to configure the ribbon within the backend Spring
       configuration, using the tools that are already available for the normal
       Toolbar widget (from the SmartGWT face).</para>
 
