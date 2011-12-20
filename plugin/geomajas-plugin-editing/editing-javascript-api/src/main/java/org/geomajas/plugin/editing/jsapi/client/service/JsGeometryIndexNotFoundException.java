@@ -19,7 +19,8 @@ import org.timepedia.exporter.client.ExportOverlay;
 import org.timepedia.exporter.client.ExportPackage;
 
 /**
- * ...
+ * Exception that is thrown when a certain {@link JsGeometryIndex} could not be found within a certain
+ * {@link org.geomajas.geometry.Geometry}. Used mainly in the {@link JsGeometryIndexService}.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -29,11 +30,23 @@ import org.timepedia.exporter.client.ExportPackage;
 @Api(allMethods = true)
 public class JsGeometryIndexNotFoundException implements ExportOverlay<GeometryIndexNotFoundException> {
 
+	/**
+	 * Create a new exception with the given message.
+	 * 
+	 * @param message
+	 *            The exception message.
+	 * @return The exception.
+	 */
 	@ExportConstructor
 	public static GeometryIndexNotFoundException create(String message) {
 		return new GeometryIndexNotFoundException(message);
 	}
 
+	/**
+	 * Return the exception message.
+	 * 
+	 * @return The exception message.
+	 */
 	public String getMessage() {
 		return "";
 	}

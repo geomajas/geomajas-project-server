@@ -19,7 +19,7 @@ import org.timepedia.exporter.client.ExportOverlay;
 import org.timepedia.exporter.client.ExportPackage;
 
 /**
- * ...
+ * Exception throws during operations on geometries.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -29,11 +29,23 @@ import org.timepedia.exporter.client.ExportPackage;
 @Api(allMethods = true)
 public class JsGeometryOperationFailedException implements ExportOverlay<GeometryOperationFailedException> {
 
+	/**
+	 * Create a new exception with the given message.
+	 * 
+	 * @param message
+	 *            The exception message.
+	 * @return The exception.
+	 */
 	@ExportConstructor
 	public static GeometryOperationFailedException create(String message) {
 		return new GeometryOperationFailedException(message);
 	}
 
+	/**
+	 * Return the exception message.
+	 * 
+	 * @return The exception message.
+	 */
 	public String getMessage() {
 		return "";
 	}

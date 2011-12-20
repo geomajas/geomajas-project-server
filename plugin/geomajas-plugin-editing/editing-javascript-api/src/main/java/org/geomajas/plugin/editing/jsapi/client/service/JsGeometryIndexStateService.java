@@ -37,11 +37,26 @@ import org.geomajas.plugin.jsapi.client.event.JsHandlerRegistration;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.NoExport;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * ...
+ * <p>
+ * Service that keeps track of the state of all the individual parts of the geometry being edited. The supported states
+ * for any part of a geometry are the following:
+ * <ul>
+ * <li><b>Selection</b>: vertices and edges can be selected. This selection process can assist the user in his
+ * operations. Specific controllers could then allow for the operations to be performed on this selection only. For
+ * example dragging of selected vertices.</li>
+ * <li><b>Highlighting</b>: vertices and edges can be highlighted usually when the mouse hovers over them.</li>
+ * <li><b>Marked for deletion</b>: vertices and edges can be marked for deletion. Specific controllers could then be
+ * implement actions for the user for actually delete the indices that are marked.</li>
+ * <li><b>Enabled/Disabled</b>: All parts of the geometry can be individually enabled/disabled for further editing.</li>
+ * <li><b>Snapping</b>: During dragging or inserting it can be possible that snapping is being used. This state keeps
+ * track of whether or not any vertices have snapped to some external geometry.</li>
+ * </ul>
+ * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -53,6 +68,17 @@ public class JsGeometryIndexStateService implements Exportable {
 
 	private GeometryIndexStateService delegate;
 
+	/** No argument constructor. Do not use. */
+	public JsGeometryIndexStateService() {
+	}
+
+	/**
+	 * Initiate this service with it's Java counterpart.
+	 * 
+	 * @param delegate
+	 *            The Java counterpart.
+	 */
+	@NoExport
 	public JsGeometryIndexStateService(GeometryIndexStateService delegate) {
 		this.delegate = delegate;
 	}
@@ -201,18 +227,38 @@ public class JsGeometryIndexStateService implements Exportable {
 		return new JsHandlerRegistration(new HandlerRegistration[] { delegate.addGeometryIndexDisabledHandler(h) });
 	}
 
+	/**
+	 * Enable the given list of vertices/edges/sub-geometries for further editing.
+	 * 
+	 * @param indices
+	 *            The list of indices to enable.
+	 */
 	public void enable(GeometryIndex[] indices) {
 		delegate.enable(Arrays.asList(indices));
 	}
 
+	/**
+	 * Disable the given list of vertices/edges/sub-geometries for further editing.
+	 * 
+	 * @param indices
+	 *            The list of indices to disable.
+	 */
 	public void disable(GeometryIndex[] indices) {
 		delegate.disable(Arrays.asList(indices));
 	}
 
+	/** Enable everything for further editing. Nothing remains disabled. */
 	public void enableAll() {
 		delegate.enableAll();
 	}
 
+	/**
+	 * Is the given vertex/edge/sub-geometry currently enabled or disabled for further editing?
+	 * 
+	 * @param index
+	 *            The vertex/edge/sub-geometry to check.
+	 * @return True or false.
+	 */
 	public boolean isEnabled(GeometryIndex index) {
 		return delegate.isEnabled(index);
 	}

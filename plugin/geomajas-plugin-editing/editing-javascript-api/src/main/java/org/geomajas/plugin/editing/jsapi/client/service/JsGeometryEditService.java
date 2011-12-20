@@ -19,17 +19,17 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingServiceImpl;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.jsapi.client.event.GeometryEditChangeStateHandler;
@@ -46,27 +46,61 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 import org.timepedia.exporter.client.ExporterBaseActual.JsArrayObject;
 import org.timepedia.exporter.client.ExporterUtil;
+import org.timepedia.exporter.client.NoExport;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * ...
+ * <p>
+ * Central service for all operations concerning the geometry editing process. This process should work together with a
+ * set of controllers on the map that execute methods from this service after which events are fired for a renderer to
+ * act upon. Note that this service uses the {@link GeometryIndexService} to identify sub-geometries, vertices and
+ * edges, and that all operations work on a set of such indices. This allows for great flexibility in the operations
+ * that can be performed on geometries.
+ * </p>
+ * <p>
+ * This service also extends the {@link org.geomajas.plugin.editing.client.service.GeometryIndexOperationService}
+ * service, which defines possible operations on geometries during the editing process. Operations can be stand alone or
+ * can be part of an operation sequence. Using an operations sequence wherein multiple operations are executed will be
+ * regarded as a single operation unit for the undo and redo methods.
+ * </p>
+ * <p>
+ * Take for example the moving of a vertex on the map. The user might drag a vertex over a lot of pixels, but every
+ * intermediary change is executed as an operation (otherwise no events would be thrown and the renderer on the map
+ * wouldn't know there was a change). When the user finally releases the vertex, dozens of move operations might already
+ * have been executed. If the user would now have to click an undo button dozens of times to get the vertex back to it's
+ * original position, that would not be very user-friendly.<br/>
+ * On such occasions, an operation sequence would be used so that those dozens move operations are regarded as a single
+ * unit, undone with a single call to undo.
+ * </p>
+ * <p>
+ * Know also that operations onto the geometry really do apply on the same geometry that was passed with the
+ * <code>start</code> method. In other words, this service does change the original geometry. If you want to support
+ * some roll-back functionality within your code, make sure to create a clone of the geometry before starting this edit
+ * service.
+ * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Export("GeometryEditingService")
+@Export("GeometryEditService")
 @ExportPackage("org.geomajas.plugin.editing.service")
 @Api(allMethods = true)
-public class JsGeometryEditingService implements Exportable {
+public class JsGeometryEditService implements Exportable {
 
-	private GeometryEditingService delegate;
+	private GeometryEditService delegate;
 
 	private JsGeometryIndexStateService stateService;
 
-	public JsGeometryEditingService() {
-		delegate = new GeometryEditingServiceImpl();
+	public JsGeometryEditService() {
+		delegate = new GeometryEditServiceImpl();
+		stateService = new JsGeometryIndexStateService(delegate.getIndexStateService());
+	}
+
+	@NoExport
+	public JsGeometryEditService(GeometryEditService delegate) {
+		this.delegate = delegate;
 		stateService = new JsGeometryIndexStateService(delegate.getIndexStateService());
 	}
 
@@ -445,11 +479,11 @@ public class JsGeometryEditingService implements Exportable {
 	 */
 	public void setEditingState(String state) {
 		if ("idle".equalsIgnoreCase(state)) {
-			delegate.setEditingState(GeometryEditingState.IDLE);
+			delegate.setEditingState(GeometryEditState.IDLE);
 		} else if ("dragging".equalsIgnoreCase(state)) {
-			delegate.setEditingState(GeometryEditingState.DRAGGING);
+			delegate.setEditingState(GeometryEditState.DRAGGING);
 		} else if ("inserting".equalsIgnoreCase(state)) {
-			delegate.setEditingState(GeometryEditingState.INSERTING);
+			delegate.setEditingState(GeometryEditState.INSERTING);
 		}
 	}
 
@@ -475,18 +509,42 @@ public class JsGeometryEditingService implements Exportable {
 	// Methods regarding the tentative move events:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Set the origin for a line to a possible next vertex position. This is regarded as tentative, because no
+	 * commitment is taken yet.
+	 * 
+	 * @param origin
+	 *            The origin for the tentative move event.
+	 */
 	public void setTentativeMoveOrigin(Coordinate origin) {
 		delegate.setTentativeMoveOrigin(origin);
 	}
 
-	public Coordinate getTentativeMoveOrigin() {
-		return delegate.getTentativeMoveOrigin();
-	}
-
+	/**
+	 * Set the end-point for a possible next vertex position. This is regarded as tentative, because no commitment is
+	 * taken yet. An event is thrown though, containing both the tentative origin and end-point.
+	 * 
+	 * @param location
+	 *            The end-point for the tentative move event.
+	 */
 	public void setTentativeMoveLocation(Coordinate location) {
 		delegate.setTentativeMoveLocation(location);
 	}
 
+	/**
+	 * Get the origin for the tentative move event.
+	 * 
+	 * @return The origin for the tentative move event.
+	 */
+	public Coordinate getTentativeMoveOrigin() {
+		return delegate.getTentativeMoveOrigin();
+	}
+
+	/**
+	 * Get the end-point for the tentative move event.
+	 * 
+	 * @return The end-point for the tentative move event.
+	 */
 	public Coordinate getTentativeMoveLocation() {
 		return delegate.getTentativeMoveLocation();
 	}
@@ -495,22 +553,51 @@ public class JsGeometryEditingService implements Exportable {
 	// Getters:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the index where the next insert operation should take place.
+	 * 
+	 * @return The index where the next insert operation should take place.
+	 */
 	public GeometryIndex getInsertIndex() {
 		return delegate.getInsertIndex();
 	}
 
+	/**
+	 * Set the index where the insert operation should take place. This is mainly used as a helper method. The insert
+	 * operation can actually insert wherever it wants, but this is often used to keep track of the latest inserts and
+	 * extrapolate where to insert next.
+	 * 
+	 * @param insertIndex
+	 *            The vertex/edge/sub-geometry where to insert on the next insert statement.
+	 */
 	public void setInsertIndex(GeometryIndex insertIndex) {
 		delegate.setInsertIndex(insertIndex);
 	}
 
+	/**
+	 * Get the current geometry. This geometry may change shape during the editing process.
+	 * 
+	 * @return The current geometry that is being edited.
+	 */
 	public Geometry getGeometry() {
 		return delegate.getGeometry();
 	}
 
+	/**
+	 * Return the indexing service the is being used to identify vertices/edges/sub-geometries.
+	 * 
+	 * @return The geometry indexing service.
+	 */
 	public GeometryIndexService getIndexService() {
 		return delegate.getIndexService();
 	}
 
+	/**
+	 * Return the service that keeps track of the changes in state of the individual vertices/edges/sub-geometries
+	 * during editing.
+	 * 
+	 * @return The geometry-index-state-change service.
+	 */
 	public JsGeometryIndexStateService getIndexStateService() {
 		return stateService;
 	}

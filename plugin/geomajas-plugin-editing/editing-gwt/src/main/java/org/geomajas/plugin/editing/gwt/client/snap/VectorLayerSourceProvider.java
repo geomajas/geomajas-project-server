@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.gwt.client.snapping;
+package org.geomajas.plugin.editing.gwt.client.snap;
 
 import java.util.List;
 
@@ -24,7 +24,8 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.plugin.editing.client.snapping.SnappingSourceProvider;
+import org.geomajas.plugin.editing.client.GeometryArrayFunction;
+import org.geomajas.plugin.editing.client.snap.SnapSourceProvider;
 
 /**
  * Source provider implementation for the snapping service that fetches it's geometries from the features of a vector
@@ -32,7 +33,7 @@ import org.geomajas.plugin.editing.client.snapping.SnappingSourceProvider;
  * 
  * @author Pieter De Graef
  */
-public class VectorLayerSourceProvider implements SnappingSourceProvider {
+public class VectorLayerSourceProvider implements SnapSourceProvider {
 
 	private final VectorLayer layer;
 
@@ -45,7 +46,7 @@ public class VectorLayerSourceProvider implements SnappingSourceProvider {
 	/**
 	 * Get the geometries of all features within the map view bounds.
 	 */
-	public void getSnappingSources(final GeometryArrayCallback callback) {
+	public void getSnappingSources(final GeometryArrayFunction callback) {
 		GwtCommand commandRequest = new GwtCommand(SearchByLocationRequest.COMMAND);
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		request.setLayerIds(new String[] { layer.getServerLayerId() });

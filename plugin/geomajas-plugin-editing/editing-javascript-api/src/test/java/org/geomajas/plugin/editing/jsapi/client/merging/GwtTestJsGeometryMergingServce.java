@@ -11,14 +11,14 @@
 
 package org.geomajas.plugin.editing.jsapi.client.merging;
 
-import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
 import org.timepedia.exporter.client.ExporterUtil;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
- * Tests to see if the JavaScript for the {@link GeometryMergingService} actually works.
+ * Tests to see if the JavaScript for the {@link GeometryMergeService} actually works.
  * 
  * @author Pieter De Graef
  */
