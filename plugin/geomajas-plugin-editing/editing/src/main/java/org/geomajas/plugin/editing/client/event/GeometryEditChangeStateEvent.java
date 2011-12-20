@@ -11,7 +11,7 @@
 package org.geomajas.plugin.editing.client.event;
 
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -24,9 +24,9 @@ import com.google.gwt.event.shared.GwtEvent;
 @FutureApi(allMethods = true)
 public class GeometryEditChangeStateEvent extends GwtEvent<GeometryEditChangeStateHandler> {
 
-	private final GeometryEditingState editingState;
+	private final GeometryEditState editingState;
 
-	public GeometryEditChangeStateEvent(GeometryEditingState editingState) {
+	public GeometryEditChangeStateEvent(GeometryEditState editingState) {
 		this.editingState = editingState;
 	}
 
@@ -45,7 +45,7 @@ public class GeometryEditChangeStateEvent extends GwtEvent<GeometryEditChangeSta
 	 * 
 	 * @return Returns the current editing state.
 	 */
-	public GeometryEditingState getEditingState() {
+	public GeometryEditState getEditingState() {
 		return editingState;
 	}
 }

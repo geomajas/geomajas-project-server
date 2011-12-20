@@ -20,7 +20,7 @@ import org.geomajas.gwt.client.handler.MapDragHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -54,11 +54,11 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 
 	private List<DoubleClickHandler> doubleClickHandlers = new ArrayList<DoubleClickHandler>();
 
-	private GeometryEditingService service;
+	private GeometryEditService service;
 
 	private GeometryIndex index;
 
-	public CompositeGeometryIndexController(MapWidget map, GeometryEditingService service, GeometryIndex index,
+	public CompositeGeometryIndexController(MapWidget map, GeometryEditService service, GeometryIndex index,
 			boolean dragging) {
 		super(map);
 		this.service = service;

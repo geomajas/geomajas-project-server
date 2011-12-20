@@ -19,7 +19,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDragHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
@@ -75,7 +75,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 	 */
 	private void checkHover(HumanInputEvent<?> event) {
 		// Check: editing state, selection (there must be 1 index selected, but not this one):
-		if (service.getEditingState() == GeometryEditingState.DRAGGING
+		if (service.getEditingState() == GeometryEditState.DRAGGING
 				&& !service.getIndexStateService().isSelected(index)
 				&& service.getIndexStateService().getSelection().size() == 1) {
 			GeometryIndex selected = service.getIndexStateService().getSelection().get(0);

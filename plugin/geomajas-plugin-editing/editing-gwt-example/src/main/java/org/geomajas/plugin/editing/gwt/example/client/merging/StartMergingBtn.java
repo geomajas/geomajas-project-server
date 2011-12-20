@@ -21,12 +21,12 @@ import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingException;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHandler;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeException;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -38,14 +38,14 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Pieter De Graef
  */
-public class StartMergingBtn extends ToolStripButton implements GeometryMergingStartHandler, 
-		GeometryMergingStopHandler {
+public class StartMergingBtn extends ToolStripButton implements GeometryMergeStartHandler, 
+		GeometryMergeStopHandler {
 
 	private final Map<Feature, Geometry> selectionMap = new HashMap<Feature, Geometry>();
 
 	private final MapWidget mapWidget;
 
-	public StartMergingBtn(final MapWidget mapWidget, final GeometryMergingService service) {
+	public StartMergingBtn(final MapWidget mapWidget, final GeometryMergeService service) {
 		this.mapWidget = mapWidget;
 		setTitle("Start merging process");
 		setHoverWidth(300);
@@ -58,7 +58,7 @@ public class StartMergingBtn extends ToolStripButton implements GeometryMergingS
 					mapWidget.getMapModel().clearSelectedFeatures();
 					mapWidget.setController(new MergeSelectionController(mapWidget));
 					service.start();
-				} catch (GeometryMergingException e) {
+				} catch (GeometryMergeException e) {
 					Window.alert(e.getMessage());
 				}
 			}
@@ -77,7 +77,7 @@ public class StartMergingBtn extends ToolStripButton implements GeometryMergingS
 						service.addGeometry(geometry);
 					} catch (IllegalStateException e) {
 						Window.alert(e.getMessage());
-					} catch (GeometryMergingException e) {
+					} catch (GeometryMergeException e) {
 						Window.alert(e.getMessage());
 					}
 				}
@@ -90,7 +90,7 @@ public class StartMergingBtn extends ToolStripButton implements GeometryMergingS
 						selectionMap.remove(event.getFeature());
 					} catch (IllegalStateException e) {
 						Window.alert(e.getMessage());
-					} catch (GeometryMergingException e) {
+					} catch (GeometryMergeException e) {
 						Window.alert(e.getMessage());
 					}
 				}
@@ -102,12 +102,12 @@ public class StartMergingBtn extends ToolStripButton implements GeometryMergingS
 	// GeometryEditWorkflowHandler implementation:
 	// ------------------------------------------------------------------------
 
-	public void onGeometryMergingStop(GeometryMergingStopEvent event) {
+	public void onGeometryMergingStop(GeometryMergeStopEvent event) {
 		setDisabled(false);
 		mapWidget.setController(null);
 	}
 
-	public void onGeometryMergingStart(GeometryMergingStartEvent event) {
+	public void onGeometryMergingStart(GeometryMergeStartEvent event) {
 		setDisabled(true);
 	}
 }

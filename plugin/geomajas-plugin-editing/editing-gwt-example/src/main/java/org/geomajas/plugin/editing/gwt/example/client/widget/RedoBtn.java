@@ -18,7 +18,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditResumeEvent;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendEvent;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditSuspendResumeHandler;
@@ -35,9 +35,9 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class RedoBtn extends ToolStripButton implements GeometryEditShapeChangedHandler, GeometryEditStartHandler,
 		GeometryEditStopHandler, GeometryEditSuspendResumeHandler {
 
-	private GeometryEditingService service;
+	private GeometryEditService service;
 
-	public RedoBtn(final GeometryEditingService service) {
+	public RedoBtn(final GeometryEditService service) {
 		this.service = service;
 		setIcon("[ISOMORPHIC]/geomajas/silk/redo.png");
 		setIconSize(24);

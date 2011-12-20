@@ -26,19 +26,26 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  */
 public class MoveVertexOperation implements GeometryIndexOperation {
 
-	private Coordinate oldLocation;
+	private final GeometryIndexService service;
 
 	private final Coordinate newLocation;
 
+	private Coordinate oldLocation;
+
 	private GeometryIndex index;
 
-	private final GeometryIndexService service;
-
+	/**
+	 * Initialize this operation with an indexing service.
+	 * 
+	 * @param service
+	 *            geometry index service.
+	 */
 	public MoveVertexOperation(GeometryIndexService service, Coordinate newLocation) {
 		this.service = service;
 		this.newLocation = newLocation;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX) {
@@ -53,10 +60,12 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndexOperation getInverseOperation() {
 		return new MoveVertexOperation(service, oldLocation);
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndex getGeometryIndex() {
 		return index;
 	}

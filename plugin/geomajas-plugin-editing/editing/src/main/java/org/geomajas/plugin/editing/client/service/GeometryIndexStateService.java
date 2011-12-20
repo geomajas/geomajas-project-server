@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.client.service;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledHandler;
@@ -44,7 +45,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface GeometryIndexStateService {
 
 	// ------------------------------------------------------------------------
@@ -128,12 +131,32 @@ public interface GeometryIndexStateService {
 	 */
 	HandlerRegistration addGeometryIndexEnabledHandler(GeometryIndexEnabledHandler handler);
 
+	/**
+	 * Enable the given list of vertices/edges/sub-geometries for further editing.
+	 * 
+	 * @param indices
+	 *            The list of indices to enable.
+	 */
 	void enable(List<GeometryIndex> indices);
 
+	/**
+	 * Disable the given list of vertices/edges/sub-geometries for further editing.
+	 * 
+	 * @param indices
+	 *            The list of indices to disable.
+	 */
 	void disable(List<GeometryIndex> indices);
 
+	/** Enable everything for further editing. Nothing remains disabled. */
 	void enableAll();
 
+	/**
+	 * Is the given vertex/edge/sub-geometry currently enabled or disabled for further editing?
+	 * 
+	 * @param index
+	 *            The vertex/edge/sub-geometry to check.
+	 * @return True or false.
+	 */
 	boolean isEnabled(GeometryIndex index);
 
 	// ------------------------------------------------------------------------
@@ -282,7 +305,7 @@ public interface GeometryIndexStateService {
 
 	/** Empty the list of snapped indices. */
 	void snappingEndAll();
-	
+
 	/**
 	 * Has a certain index snapped to some external geometry or not?
 	 * 

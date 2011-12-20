@@ -17,7 +17,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
@@ -45,19 +45,19 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 		MouseOverHandler, MouseOutHandler {
 
 	public void onDown(HumanInputEvent<?> event) {
-		if (service.getEditingState() == GeometryEditingState.INSERTING && isCorrectVertex()) {
-			service.setEditingState(GeometryEditingState.IDLE);
+		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
+			service.setEditingState(GeometryEditState.IDLE);
 		}
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
-		if (service.getEditingState() == GeometryEditingState.INSERTING && isCorrectVertex()) {
+		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}
 	}
 
 	public void onMouseOver(MouseOverEvent event) {
-		if (service.getEditingState() == GeometryEditingState.INSERTING && isCorrectVertex()) {
+		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 			service.getIndexStateService().highlightBegin(Collections.singletonList(index));
 
 			// Now snap the vertex to this location:

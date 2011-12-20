@@ -20,9 +20,9 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingServiceImpl;
-import org.geomajas.plugin.editing.client.snapping.SnappingService;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
+import org.geomajas.plugin.editing.client.snap.SnapService;
 import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
 import org.geomajas.plugin.editing.gwt.client.gfx.GeometryRenderer;
 
@@ -35,9 +35,9 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 
 	private final MapWidget mapWidget;
 
-	private final GeometryEditingService service;
+	private final GeometryEditService service;
 
-	private final SnappingService snappingService;
+	private final SnapService snappingService;
 
 	private final GeometryRenderer renderer;
 
@@ -55,11 +55,11 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 
 	public GeometryEditor(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
-		service = new GeometryEditingServiceImpl();
+		service = new GeometryEditServiceImpl();
 		service.addGeometryEditStartHandler(this);
 		service.addGeometryEditStopHandler(this);
 
-		snappingService = new SnappingService();
+		snappingService = new SnapService();
 		baseController = new EditGeometryBaseController(mapWidget, service, snappingService);
 		renderer = new GeometryRenderer(mapWidget, service, baseController);
 		
@@ -128,7 +128,7 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 		return mapWidget;
 	}
 
-	public GeometryEditingService getService() {
+	public GeometryEditService getService() {
 		return service;
 	}
 
@@ -144,7 +144,7 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 		return renderer;
 	}
 
-	public SnappingService getSnappingService() {
+	public SnapService getSnappingService() {
 		return snappingService;
 	}
 

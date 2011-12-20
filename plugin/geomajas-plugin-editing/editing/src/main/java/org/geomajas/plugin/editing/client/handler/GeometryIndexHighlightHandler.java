@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.handler;
 
 import java.util.Collections;
 
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
@@ -29,7 +29,7 @@ public class GeometryIndexHighlightHandler extends AbstractGeometryIndexMapHandl
 		MouseOutHandler {
 
 	public void onMouseOver(MouseOverEvent event) {
-		if (service.getEditingState() == GeometryEditingState.IDLE) {
+		if (service.getEditingState() == GeometryEditState.IDLE) {
 			service.getIndexStateService().highlightBegin(Collections.singletonList(index));
 		}
 	}

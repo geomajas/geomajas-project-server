@@ -17,7 +17,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
 /**
  * Definition of an operation onto a geometry that changes that geometries' shape. Example are translating, inserting or
- * deleting vertices.
+ * deleting vertices or sub-geometries.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -40,19 +40,18 @@ public interface GeometryIndexOperation {
 	 */
 	Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException;
 
+	/**
+	 * Get the inverse operation of this operation. The inverse can for example be used to undo the result of this
+	 * operation.
+	 * 
+	 * @return The inverse operation.
+	 */
 	GeometryIndexOperation getInverseOperation();
-	
-	GeometryIndex getGeometryIndex();
 
 	/**
-	 * Undo this operation. The resulting geometry is again the initial geometry before this operation was executed.
+	 * Get the index (vertex/edge/sub-geometry) onto which this operation executes.
 	 * 
-	 * @param geometry
-	 *            The transformed geometry after execution.
-	 * @return The original geometry before execution.
-	 * @throws GeometryOperationFailedException
-	 *             In case something goes wrong during the operation undo. All implementations must make sure that if an
-	 *             exception occurs, no changes are made to the initial geometry.
+	 * @return The index onto which this operation executes.
 	 */
-	//Geometry undo(Geometry geometry) throws GeometryOperationFailedException;
+	GeometryIndex getGeometryIndex();
 }

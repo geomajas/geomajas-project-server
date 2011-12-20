@@ -37,7 +37,7 @@ import org.junit.Test;
  */
 public class GeometryIndexOperationServiceTest {
 
-	private GeometryEditingService service = new GeometryEditingServiceImpl();
+	private GeometryEditService service = new GeometryEditServiceImpl();
 
 	private GeometryIndexService indexService;
 

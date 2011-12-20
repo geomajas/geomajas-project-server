@@ -12,14 +12,14 @@
 package org.geomajas.plugin.editing.gwt.example.client.widget;
 
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.plugin.editing.client.snapping.SnappingAlgorithm;
-import org.geomajas.plugin.editing.client.snapping.SnappingSourceProvider;
-import org.geomajas.plugin.editing.client.snapping.impl.NearestEdgeOfIntersection;
-import org.geomajas.plugin.editing.client.snapping.impl.NearestEdgeSnappingAlgorithm;
-import org.geomajas.plugin.editing.client.snapping.impl.NearestVertexOfIntersection;
-import org.geomajas.plugin.editing.client.snapping.impl.NearestVertexSnappingAlgorithm;
+import org.geomajas.plugin.editing.client.snap.SnapAlgorithm;
+import org.geomajas.plugin.editing.client.snap.SnapSourceProvider;
+import org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection;
+import org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm;
+import org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection;
+import org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.gwt.client.snapping.VectorLayerSourceProvider;
+import org.geomajas.plugin.editing.gwt.client.snap.VectorLayerSourceProvider;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.HeaderControls;
@@ -44,7 +44,7 @@ public class SnappingOptionWindow extends Window {
 
 	private final GeometryEditor editor;
 
-	private final SnappingSourceProvider sourceProvider;
+	private final SnapSourceProvider sourceProvider;
 
 	private final DynamicForm enableForm;
 
@@ -132,7 +132,7 @@ public class SnappingOptionWindow extends Window {
 		String type = (String) options.getItem("type").getValue();
 		boolean intersect = (Boolean) options.getItem("intersect").getValue();
 
-		SnappingAlgorithm algorithm;
+		SnapAlgorithm algorithm;
 		if (intersect) {
 			if (type.indexOf("edge") > 0) {
 				algorithm = new NearestEdgeOfIntersection();
@@ -141,9 +141,9 @@ public class SnappingOptionWindow extends Window {
 			}
 		} else {
 			if (type.indexOf("edge") > 0) {
-				algorithm = new NearestEdgeSnappingAlgorithm();
+				algorithm = new NearestEdgeSnapAlgorithm();
 			} else {
-				algorithm = new NearestVertexSnappingAlgorithm();
+				algorithm = new NearestVertexSnapAlgorithm();
 			}
 		}
 

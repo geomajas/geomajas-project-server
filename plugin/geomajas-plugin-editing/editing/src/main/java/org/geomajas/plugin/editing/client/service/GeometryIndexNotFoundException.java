@@ -11,12 +11,16 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Exception that is thrown when a certain {@link GeometryIndex} could not be found within a certain
  * {@link org.geomajas.geometry.Geometry}. Used mainly in the {@link GeometryIndexService}.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class GeometryIndexNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 100L;

@@ -15,7 +15,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
@@ -122,7 +122,7 @@ public class MenuBar extends ToolStrip {
 
 				editor.getService().start(point);
 				editor.getService().setInsertIndex(index);
-				editor.getService().setEditingState(GeometryEditingState.INSERTING);
+				editor.getService().setEditingState(GeometryEditState.INSERTING);
 			}
 		});
 		MenuItem lineItem = new MenuItem("Draw Line", "[ISOMORPHIC]/geomajas/osgeo/line-create.png");
@@ -134,7 +134,7 @@ public class MenuBar extends ToolStrip {
 
 				editor.getService().start(line);
 				editor.getService().setInsertIndex(index);
-				editor.getService().setEditingState(GeometryEditingState.INSERTING);
+				editor.getService().setEditingState(GeometryEditState.INSERTING);
 			}
 		});
 		MenuItem polyItem = new MenuItem("Draw Polygon", "[ISOMORPHIC]/geomajas/osgeo/polygon-create.png");
@@ -148,7 +148,7 @@ public class MenuBar extends ToolStrip {
 					GeometryIndex index = editor.getService().addEmptyChild();
 					editor.getService().setInsertIndex(
 							editor.getService().getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0));
-					editor.getService().setEditingState(GeometryEditingState.INSERTING);
+					editor.getService().setEditingState(GeometryEditState.INSERTING);
 				} catch (GeometryOperationFailedException e) {
 					editor.getService().stop();
 					Window.alert("Exception during editing: " + e.getMessage());

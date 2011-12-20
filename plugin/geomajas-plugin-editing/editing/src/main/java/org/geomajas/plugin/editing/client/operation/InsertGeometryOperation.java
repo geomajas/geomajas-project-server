@@ -25,17 +25,24 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  */
 public class InsertGeometryOperation implements GeometryIndexOperation {
 
-	private GeometryIndex index;
-
 	private final GeometryIndexService service;
 
 	private final Geometry child;
 
+	private GeometryIndex index;
+
+	/**
+	 * Initialize this operation with an indexing service.
+	 * 
+	 * @param service
+	 *            geometry index service.
+	 */
 	public InsertGeometryOperation(GeometryIndexService service, Geometry child) {
 		this.service = service;
 		this.child = child;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
@@ -49,10 +56,12 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndexOperation getInverseOperation() {
 		return new DeleteGeometryOperation(service);
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndex getGeometryIndex() {
 		return index;
 	}

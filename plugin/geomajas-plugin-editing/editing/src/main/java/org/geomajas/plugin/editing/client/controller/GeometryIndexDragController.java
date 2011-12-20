@@ -20,11 +20,11 @@ import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.client.snapping.SnappingService;
+import org.geomajas.plugin.editing.client.snap.SnapService;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
@@ -43,17 +43,17 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  */
 public class GeometryIndexDragController extends AbstractController {
 
-	private final GeometryEditingService service;
+	private final GeometryEditService service;
 
-	private final SnappingService snappingService;
+	private final SnapService snappingService;
 
 	private Coordinate previous;
 
 	private boolean snappingEnabled;
 
-	public GeometryIndexDragController(GeometryEditingService service, SnappingService snappingService,
+	public GeometryIndexDragController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
-		super(mapEventParser, service.getEditingState() == GeometryEditingState.DRAGGING);
+		super(mapEventParser, service.getEditingState() == GeometryEditState.DRAGGING);
 		this.snappingService = snappingService;
 		this.service = service;
 	}
@@ -116,7 +116,7 @@ public class GeometryIndexDragController extends AbstractController {
 	public void onUp(HumanInputEvent<?> event) {
 		previous = null;
 		service.stopOperationSequence();
-		service.setEditingState(GeometryEditingState.IDLE);
+		service.setEditingState(GeometryEditState.IDLE);
 	}
 
 	public boolean isSnappingEnabled() {

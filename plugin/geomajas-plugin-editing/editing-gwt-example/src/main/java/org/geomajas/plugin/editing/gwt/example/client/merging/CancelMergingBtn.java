@@ -12,12 +12,12 @@
 package org.geomajas.plugin.editing.gwt.example.client.merging;
 
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingException;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHandler;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeException;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -29,10 +29,10 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Pieter De Graef
  */
-public class CancelMergingBtn extends ToolStripButton implements GeometryMergingStartHandler,
-		GeometryMergingStopHandler {
+public class CancelMergingBtn extends ToolStripButton implements GeometryMergeStartHandler,
+		GeometryMergeStopHandler {
 
-	public CancelMergingBtn(final MapWidget mapWidget, final GeometryMergingService service) {
+	public CancelMergingBtn(final MapWidget mapWidget, final GeometryMergeService service) {
 		setIcon("[ISOMORPHIC]/geomajas/silk/cancel.png");
 		setDisabled(true);
 		setHoverWidth(400);
@@ -43,7 +43,7 @@ public class CancelMergingBtn extends ToolStripButton implements GeometryMerging
 				try {
 					mapWidget.getMapModel().clearSelectedFeatures();
 					service.cancel();
-				} catch (GeometryMergingException e) {
+				} catch (GeometryMergeException e) {
 					Window.alert(e.getMessage());
 				}
 			}
@@ -56,11 +56,11 @@ public class CancelMergingBtn extends ToolStripButton implements GeometryMerging
 	// GeometryEditWorkflowHandler implementation:
 	// ------------------------------------------------------------------------
 
-	public void onGeometryMergingStop(GeometryMergingStopEvent event) {
+	public void onGeometryMergingStop(GeometryMergeStopEvent event) {
 		setDisabled(true);
 	}
 
-	public void onGeometryMergingStart(GeometryMergingStartEvent event) {
+	public void onGeometryMergingStart(GeometryMergeStartEvent event) {
 		setDisabled(false);
 	}
 }

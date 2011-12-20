@@ -17,7 +17,20 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
 /**
- * ...
+ * <p>
+ * Service definition that defines possible operations on geometries during the editing process. Operations can be stand
+ * alone or can be part of an operation sequence. Using an operations sequence wherein multiple operations are executed
+ * will be regarded as a single operation unit for the undo and redo methods.
+ * </p>
+ * <p>
+ * Take for example the moving of a vertex on the map. The user might drag a vertex over a lot of pixels, but every
+ * intermediary change is executed as an operation (otherwise no events would be thrown and the renderer on the map
+ * wouldn't know there was a change). When the user finally releases the vertex, dozens of move operations might already
+ * have been executed. If the user would now have to click an undo button dozens of times to get the vertex back to it's
+ * original position, that would not be very user-friendly.<br/>
+ * On such occasions, an operation sequence would be used so that those dozens move operations are regarded as a single
+ * unit, undone with a single call to undo.
+ * </p>
  * 
  * @author Pieter De Graef
  */

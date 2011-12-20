@@ -14,6 +14,7 @@ package org.geomajas.plugin.editing.client.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 
@@ -21,7 +22,9 @@ import org.geomajas.geometry.Geometry;
  * Service for managing sub-parts of geometries through special geometry indices.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class GeometryIndexService {
 
 	// ------------------------------------------------------------------------

@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.handler;
 
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
@@ -26,7 +26,7 @@ public class GeometryIndexDragSelectionHandler extends AbstractGeometryIndexMapH
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getIndexStateService().isSelected(index)) {
-			service.setEditingState(GeometryEditingState.DRAGGING);
+			service.setEditingState(GeometryEditState.DRAGGING);
 
 			if (service.isOperationSequenceActive()) {
 				service.stopOperationSequence();

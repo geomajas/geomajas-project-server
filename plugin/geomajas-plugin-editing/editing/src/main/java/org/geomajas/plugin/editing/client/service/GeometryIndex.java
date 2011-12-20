@@ -11,12 +11,16 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Definition of an index in a geometry. This index will point to a specific sub-part of a geometry. Depending on the
  * "type", this sub-part can be a vertex, an edge or a sub-geometry.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class GeometryIndex {
 
 	private GeometryIndexType type;
@@ -95,6 +99,7 @@ public class GeometryIndex {
 		return value;
 	}
 
+	/** {@inheritDoc} */
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof GeometryIndex)) {
 			return false;
@@ -106,6 +111,7 @@ public class GeometryIndex {
 		return type == index.getType() && value == index.getValue() && hasChild() == index.hasChild();
 	}
 
+	/** {@inheritDoc} */
 	public int hashCode() {
 		if (hasChild()) {
 			return (getChild().hashCode() + value) * type.hashCode();
@@ -113,6 +119,7 @@ public class GeometryIndex {
 		return (37 + value) * type.hashCode();
 	}
 
+	/** {@inheritDoc} */
 	public String toString() {
 		if (child != null) {
 			return type.toString() + "-" + value + " / " + child.toString();

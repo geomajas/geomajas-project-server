@@ -17,8 +17,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.example.client.event.GeometryEditResumeEvent;
@@ -38,9 +38,9 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class AddRingBtn extends ToolStripButton implements GeometryEditStartHandler, GeometryEditStopHandler,
 		GeometryEditSuspendResumeHandler {
 
-	private GeometryEditingService service;
+	private GeometryEditService service;
 
-	public AddRingBtn(final GeometryEditingService service) {
+	public AddRingBtn(final GeometryEditService service) {
 		this.service = service;
 		setDisabled(true);
 		setHoverWidth(300);
@@ -63,7 +63,7 @@ public class AddRingBtn extends ToolStripButton implements GeometryEditStartHand
 					// the child's first vertex:
 					service.setInsertIndex(service.getIndexService().addChildren(ringIndex,
 							GeometryIndexType.TYPE_VERTEX, 0));
-					service.setEditingState(GeometryEditingState.INSERTING);
+					service.setEditingState(GeometryEditState.INSERTING);
 				} catch (GeometryOperationFailedException e) {
 					Window.alert("Error during editing: " + e.getMessage());
 				}

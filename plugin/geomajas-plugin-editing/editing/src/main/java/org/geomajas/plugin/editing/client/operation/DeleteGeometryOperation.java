@@ -31,10 +31,17 @@ public class DeleteGeometryOperation implements GeometryIndexOperation {
 
 	private Geometry deleted;
 
+	/**
+	 * Initialize this operation with an indexing service.
+	 * 
+	 * @param service
+	 *            geometry index service.
+	 */
 	public DeleteGeometryOperation(GeometryIndexService service) {
 		this.service = service;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
@@ -49,10 +56,12 @@ public class DeleteGeometryOperation implements GeometryIndexOperation {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndexOperation getInverseOperation() {
 		return new InsertGeometryOperation(service, deleted);
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndex getGeometryIndex() {
 		return index;
 	}

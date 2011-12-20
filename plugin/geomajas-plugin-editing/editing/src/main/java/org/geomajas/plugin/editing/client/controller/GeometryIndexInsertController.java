@@ -19,10 +19,10 @@ import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.snapping.SnappingService;
+import org.geomajas.plugin.editing.client.snap.SnapService;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -36,28 +36,28 @@ import com.google.gwt.user.client.Window;
  */
 public class GeometryIndexInsertController extends AbstractController {
 
-	private final GeometryEditingService service;
+	private final GeometryEditService service;
 
-	private final SnappingService snappingService;
+	private final SnapService snappingService;
 
 	private boolean snappingEnabled;
 
-	public GeometryIndexInsertController(GeometryEditingService service, SnappingService snappingService,
+	public GeometryIndexInsertController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
-		super(mapEventParser, service.getEditingState() == GeometryEditingState.DRAGGING);
+		super(mapEventParser, service.getEditingState() == GeometryEditState.DRAGGING);
 		this.service = service;
 		this.snappingService = snappingService;
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
-		if (service.getEditingState() == GeometryEditingState.INSERTING && isRightMouseButton(event)) {
-			service.setEditingState(GeometryEditingState.IDLE);
+		if (service.getEditingState() == GeometryEditState.INSERTING && isRightMouseButton(event)) {
+			service.setEditingState(GeometryEditState.IDLE);
 		}
 	}
 
 	public void onUp(HumanInputEvent<?> event) {
 		// Only insert when service is in the correct state:
-		if (service.getEditingState() == GeometryEditingState.INSERTING) {
+		if (service.getEditingState() == GeometryEditState.INSERTING) {
 			try {
 				// Insert the location at the given index:
 				GeometryIndex insertIndex = service.getInsertIndex();
@@ -75,7 +75,7 @@ public class GeometryIndexInsertController extends AbstractController {
 					service.setInsertIndex(service.getIndexService().getNextVertex(insertIndex));
 				} else {
 					// If the case of a point, no more inserting:
-					service.setEditingState(GeometryEditingState.IDLE);
+					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
 				Window.alert("Exception during editing: " + e.getMessage());
@@ -84,7 +84,7 @@ public class GeometryIndexInsertController extends AbstractController {
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
-		if (service.getEditingState() == GeometryEditingState.INSERTING) {
+		if (service.getEditingState() == GeometryEditState.INSERTING) {
 			Coordinate location = getLocation(event, RenderSpace.WORLD);
 			if (snappingEnabled) {
 				Coordinate result = snappingService.snap(location);
@@ -103,8 +103,8 @@ public class GeometryIndexInsertController extends AbstractController {
 	}
 
 	public void onDoubleClick(DoubleClickEvent event) {
-		if (service.getEditingState() == GeometryEditingState.INSERTING) {
-			service.setEditingState(GeometryEditingState.IDLE);
+		if (service.getEditingState() == GeometryEditState.INSERTING) {
+			service.setEditingState(GeometryEditState.IDLE);
 		}
 	}
 

@@ -36,7 +36,20 @@ import org.geomajas.plugin.editing.client.operation.MoveVertexOperation;
 import com.google.gwt.event.shared.EventBus;
 
 /**
- * ...
+ * <p>
+ * Service definition that defines possible operations on geometries during the editing process. Operations can be stand
+ * alone or can be part of an operation sequence. Using an operations sequence wherein multiple operations are executed
+ * will be regarded as a single operation unit for the undo and redo methods.
+ * </p>
+ * <p>
+ * Take for example the moving of a vertex on the map. The user might drag a vertex over a lot of pixels, but every
+ * intermediary change is executed as an operation (otherwise no events would be thrown and the renderer on the map
+ * wouldn't know there was a change). When the user finally releases the vertex, dozens of move operations might already
+ * have been executed. If the user would now have to click an undo button dozens of times to get the vertex back to it's
+ * original position, that would not be very user-friendly.<br/>
+ * On such occasions, an operation sequence would be used so that those dozens move operations are regarded as a single
+ * unit, undone with a single call to undo.
+ * </p>
  * 
  * @author Pieter De Graef
  */
@@ -47,7 +60,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 	private final Stack<OperationSequence> redoQueue;
 
-	private final GeometryEditingServiceImpl service;
+	private final GeometryEditServiceImpl service;
 
 	private final GeometryIndexService indexService;
 
@@ -55,7 +68,19 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 	private OperationSequence current;
 
-	protected GeometryIndexOperationServiceImpl(GeometryEditingServiceImpl service, EventBus eventBus) {
+	// ------------------------------------------------------------------------
+	// Protected constructor:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Initialize this service implementation with the required references.
+	 * 
+	 * @param service
+	 *            The editing service that will delegate to this service. We still need it's other functionalities.
+	 * @param eventBus
+	 *            We wish to use the same event bus as the service that delegates to us.
+	 */
+	protected GeometryIndexOperationServiceImpl(GeometryEditServiceImpl service, EventBus eventBus) {
 		this.service = service;
 		this.eventBus = eventBus;
 		indexService = service.getIndexService();

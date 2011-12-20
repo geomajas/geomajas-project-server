@@ -38,7 +38,21 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHa
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * Implementation of the {@link GeometryIndexStateService}.
+ * <p>
+ * Service that keeps track of the state of all the individual parts of the geometry being edited. The supported states
+ * for any part of a geometry are the following:
+ * <ul>
+ * <li><b>Selection</b>: vertices and edges can be selected. This selection process can assist the user in his
+ * operations. Specific controllers could then allow for the operations to be performed on this selection only. For
+ * example dragging of selected vertices.</li>
+ * <li><b>Highlighting</b>: vertices and edges can be highlighted usually when the mouse hovers over them.</li>
+ * <li><b>Marked for deletion</b>: vertices and edges can be marked for deletion. Specific controllers could then be
+ * implement actions for the user for actually delete the indices that are marked.</li>
+ * <li><b>Enabled/Disabled</b>: All parts of the geometry can be individually enabled/disabled for further editing.</li>
+ * <li><b>Snapping</b>: During dragging or inserting it can be possible that snapping is being used. This state keeps
+ * track of whether or not any vertices have snapped to some external geometry.</li>
+ * </ul>
+ * </p>
  * 
  * @author Pieter De Graef
  */
@@ -54,13 +68,19 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 
 	private final List<GeometryIndex> snapped = new ArrayList<GeometryIndex>();
 
-	private final GeometryEditingServiceImpl editingService;
+	private final GeometryEditServiceImpl editingService;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
 	// ------------------------------------------------------------------------
 
-	protected GeometryIndexStateServiceImpl(GeometryEditingServiceImpl editingService) {
+	/**
+	 * Initialize this service with a reference to the editing service to which this service belongs.
+	 * 
+	 * @param editingService
+	 *            The editing service to which this service belongs.
+	 */
+	protected GeometryIndexStateServiceImpl(GeometryEditServiceImpl editingService) {
 		this.editingService = editingService;
 	}
 
@@ -68,14 +88,17 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 	// Methods concerning Vertex/Edge selection:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexSelectedHandler(GeometryIndexSelectedHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexSelectedHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexDeselectedHandler(GeometryIndexDeselectedHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexDeselectedHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public void select(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -87,6 +110,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexSelectedEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void deselect(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -98,6 +122,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexDeselectedEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void deselectAll() {
 		if (selection.size() > 0) {
 			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(selection);
@@ -107,10 +132,12 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isSelected(GeometryIndex index) {
 		return selection.contains(index);
 	}
 
+	/** {@inheritDoc} */
 	public List<GeometryIndex> getSelection() {
 		return selection;
 	}
@@ -119,14 +146,17 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 	// Methods concerning disabling of indices:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexDisabledHandler(GeometryIndexDisabledHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexDisabledHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexEnabledHandler(GeometryIndexEnabledHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexEnabledHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public void enable(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -138,6 +168,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexEnabledEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void disable(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -149,6 +180,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexDisabledEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void enableAll() {
 		if (disabled.size() > 0) {
 			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(disabled);
@@ -157,6 +189,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isEnabled(GeometryIndex index) {
 		return !disabled.contains(index);
 	}
@@ -165,14 +198,17 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 	// Methods concerning highlighting:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexHighlightBeginHandler(GeometryIndexHighlightBeginHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexHighlightBeginHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexHighlightEndHandler(GeometryIndexHighlightEndHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexHighlightEndHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public void highlightBegin(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -185,6 +221,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 				.fireEvent(new GeometryIndexHighlightBeginEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void highlightEnd(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -196,6 +233,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexHighlightEndEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void highlightEndAll() {
 		if (highlights.size() > 0) {
 			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(highlights);
@@ -205,6 +243,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isHightlighted(GeometryIndex index) {
 		return highlights.contains(index);
 	}
@@ -213,15 +252,18 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 	// Methods concerning the mark for deletion:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexMarkForDeletionBeginHandler(
 			GeometryIndexMarkForDeletionBeginHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexMarkForDeletionBeginHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexMarkForDeletionEndHandler(GeometryIndexMarkForDeletionEndHandler h) {
 		return editingService.getEventBus().addHandler(GeometryIndexMarkForDeletionEndHandler.TYPE, h);
 	}
 
+	/** {@inheritDoc} */
 	public void markForDeletionBegin(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -234,6 +276,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 				new GeometryIndexMarkForDeletionBeginEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void markForDeletionEnd(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -246,6 +289,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 				new GeometryIndexMarkForDeletionEndEvent(editingService.getGeometry(), temp));
 	}
 
+	/** {@inheritDoc} */
 	public void markForDeletionEndAll() {
 		if (markedForDeletion.size() > 0) {
 			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(markedForDeletion);
@@ -255,6 +299,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isMarkedForDeletion(GeometryIndex index) {
 		return markedForDeletion.contains(index);
 	}
@@ -263,36 +308,17 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 	// Methods concerning snapping:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Register a {@link GeometryIndexSnappingBeginHandler} to listen to snapping begin events of sub-geometries,
-	 * vertices and edges.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryIndexSnappingBeginHandler} to add as listener.
-	 * @return The registration of the handler.
-	 */
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexSnappingBeginHandler(GeometryIndexSnappingBeginHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexSnappingBeginHandler.TYPE, handler);
 	}
 
-	/**
-	 * Register a {@link GeometryIndexSnappingEndHandler} to listen to snapping end events of sub-geometries, vertices
-	 * and edges.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryIndexSnappingEndHandler} to add as listener.
-	 * @return The registration of the handler.
-	 */
+	/** {@inheritDoc} */
 	public HandlerRegistration addGeometryIndexSnappingEndHandler(GeometryIndexSnappingEndHandler handler) {
 		return editingService.getEventBus().addHandler(GeometryIndexSnappingEndHandler.TYPE, handler);
 	}
 
-	/**
-	 * Add the given list of indices to the list of snapped indices.
-	 * 
-	 * @param indices
-	 *            The indices that have snapped to some external geometry.
-	 */
+	/** {@inheritDoc} */
 	public void snappingBegin(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -304,12 +330,7 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexSnappingBeginEvent(editingService.getGeometry(), temp));
 	}
 
-	/**
-	 * Unmark the given indices as being snapped. They return to their normal state and location.
-	 * 
-	 * @param indices
-	 *            The indices that have stopped snapping.
-	 */
+	/** {@inheritDoc} */
 	public void snappingEnd(List<GeometryIndex> indices) {
 		List<GeometryIndex> temp = new ArrayList<GeometryIndex>();
 		for (GeometryIndex index : indices) {
@@ -321,18 +342,12 @@ public class GeometryIndexStateServiceImpl implements GeometryIndexStateService 
 		editingService.getEventBus().fireEvent(new GeometryIndexSnappingEndEvent(editingService.getGeometry(), temp));
 	}
 
-	/**
-	 * Has a certain index snapped to some external geometry or not?
-	 * 
-	 * @param index
-	 *            The index to check.
-	 * @return True or false.
-	 */
+	/** {@inheritDoc} */
 	public boolean isSnapped(GeometryIndex index) {
 		return snapped.contains(index);
 	}
 
-	/** Empty the list of snapped indices. */
+	/** {@inheritDoc} */
 	public void snappingEndAll() {
 		if (snapped.size() > 0) {
 			List<GeometryIndex> clone = new ArrayList<GeometryIndex>(snapped);

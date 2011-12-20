@@ -21,8 +21,8 @@ import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -45,7 +45,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 
 	private MapWidget mapWidget;
 
-	private GeometryEditingService service;
+	private GeometryEditService service;
 
 	private MapEventParser eventParser;
 
@@ -53,7 +53,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	protected EdgeMarkerHandler(MapWidget mapWidget, GeometryEditingService service, MapEventParser eventParser) {
+	protected EdgeMarkerHandler(MapWidget mapWidget, GeometryEditService service, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.service = service;
 		this.eventParser = eventParser;
@@ -88,7 +88,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	// ------------------------------------------------------------------------
 
 	private void drawEdgeHighlightMarker(Coordinate location) {
-		if (service.getEditingState() == GeometryEditingState.IDLE) {
+		if (service.getEditingState() == GeometryEditState.IDLE) {
 			Coordinate tl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() + MARKER_SIZE);
 			Coordinate tr = new Coordinate(location.getX() + MARKER_SIZE, location.getY() + MARKER_SIZE);
 			Coordinate bl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() - MARKER_SIZE);

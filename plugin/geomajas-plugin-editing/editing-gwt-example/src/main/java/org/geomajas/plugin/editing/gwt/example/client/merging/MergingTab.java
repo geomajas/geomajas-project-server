@@ -12,7 +12,7 @@
 package org.geomajas.plugin.editing.gwt.example.client.merging;
 
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
 
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -27,12 +27,12 @@ public class MergingTab extends Tab {
 
 	private final MapWidget mapWidget;
 
-	private final GeometryMergingService mergingService;
+	private final GeometryMergeService mergingService;
 
 	public MergingTab() {
 		super("Merging geometries");
 		mapWidget = new MapWidget("mapMerging", "app");
-		mergingService = new GeometryMergingService();
+		mergingService = new GeometryMergeService();
 		mergingService.setPrecision(1);
 
 		VLayout layout = new VLayout();

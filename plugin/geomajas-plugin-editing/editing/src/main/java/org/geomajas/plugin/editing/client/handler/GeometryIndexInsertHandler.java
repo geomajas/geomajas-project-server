@@ -18,7 +18,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
@@ -33,7 +33,7 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 
 	public void onDown(HumanInputEvent<?> event) {
 		// This handler should only have been applied onto edges. Can't hurt to check again:
-		if (service.getEditingState() == GeometryEditingState.IDLE
+		if (service.getEditingState() == GeometryEditState.IDLE
 				&& service.getIndexService().getType(index) == GeometryIndexType.TYPE_EDGE) {
 			List<GeometryIndex> indices = Collections.singletonList(index);
 			try {
@@ -52,7 +52,7 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 						Collections.singletonList(service.getIndexService().getNextVertex(index)));
 
 				// Set status to dragging:
-				service.setEditingState(GeometryEditingState.DRAGGING);
+				service.setEditingState(GeometryEditState.DRAGGING);
 			} catch (GeometryOperationFailedException e) {
 			}
 		}

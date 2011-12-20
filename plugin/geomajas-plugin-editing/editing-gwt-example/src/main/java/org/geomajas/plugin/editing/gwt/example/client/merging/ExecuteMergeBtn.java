@@ -20,16 +20,16 @@ import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.GeometryFunction;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingException;
-import org.geomajas.plugin.editing.client.merging.GeometryMergingService;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingAddedHandler;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingRemovedEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingRemovedHandler;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStartHandler;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopEvent;
-import org.geomajas.plugin.editing.client.merging.event.GeometryMergingStopHandler;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeException;
+import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedHandler;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent;
+import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -41,8 +41,8 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Pieter De Graef
  */
-public class ExecuteMergeBtn extends ToolStripButton implements GeometryMergingStartHandler,
-		GeometryMergingStopHandler, GeometryMergingAddedHandler, GeometryMergingRemovedHandler {
+public class ExecuteMergeBtn extends ToolStripButton implements GeometryMergeStartHandler,
+		GeometryMergeStopHandler, GeometryMergeAddedHandler, GeometryMergeRemovedHandler {
 
 	private final MapWidget mapWidget;
 
@@ -50,7 +50,7 @@ public class ExecuteMergeBtn extends ToolStripButton implements GeometryMergingS
 
 	private int count;
 
-	public ExecuteMergeBtn(final MapWidget mapWidget, final GeometryMergingService service) {
+	public ExecuteMergeBtn(final MapWidget mapWidget, final GeometryMergeService service) {
 		this.mapWidget = mapWidget;
 		setDisabled(true);
 		setTitle("Merge selection");
@@ -70,7 +70,7 @@ public class ExecuteMergeBtn extends ToolStripButton implements GeometryMergingS
 							mapWidget.registerWorldPaintable(gfx);
 						}
 					});
-				} catch (GeometryMergingException e) {
+				} catch (GeometryMergeException e) {
 					Window.alert(e.getMessage());
 				}
 			}
@@ -96,24 +96,24 @@ public class ExecuteMergeBtn extends ToolStripButton implements GeometryMergingS
 	// Handler implementation:
 	// ------------------------------------------------------------------------
 
-	public void onGeometryMergingStop(GeometryMergingStopEvent event) {
+	public void onGeometryMergingStop(GeometryMergeStopEvent event) {
 		setDisabled(true);
 	}
 
-	public void onGeometryMergingStart(GeometryMergingStartEvent event) {
+	public void onGeometryMergingStart(GeometryMergeStartEvent event) {
 		count = 0;
 		mapWidget.unregisterWorldPaintable(gfx);
 		gfx = null;
 	}
 
-	public void onGeometryMergingRemoved(GeometryMergingRemovedEvent event) {
+	public void onGeometryMergingRemoved(GeometryMergeRemovedEvent event) {
 		count--;
 		if (count < 2) {
 			setDisabled(true);
 		}
 	}
 
-	public void onGeometryMergingAdded(GeometryMergingAddedEvent event) {
+	public void onGeometryMergingAdded(GeometryMergeAddedEvent event) {
 		count++;
 		if (count >= 2) {
 			setDisabled(false);

@@ -66,13 +66,13 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBegin
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
-import org.geomajas.plugin.editing.client.service.GeometryEditingState;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.client.snapping.event.CoordinateSnapEvent;
-import org.geomajas.plugin.editing.client.snapping.event.CoordinateSnapHandler;
+import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent;
+import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler;
 import org.geomajas.plugin.editing.gwt.client.controller.CompositeGeometryIndexController;
 import org.geomajas.plugin.editing.gwt.client.handler.EditingHandlerRegistry;
 
@@ -96,7 +96,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private final MapWidget mapWidget;
 
-	private final GeometryEditingService editingService;
+	private final GeometryEditService editingService;
 
 	private final Map<String, Composite> groups = new HashMap<String, Composite>();
 
@@ -112,7 +112,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private boolean closeRingWhileInserting;
 
-	public GeometryRenderer(MapWidget mapWidget, GeometryEditingService editingService, MapEventParser eventParser) {
+	public GeometryRenderer(MapWidget mapWidget, GeometryEditService editingService, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.editingService = editingService;
 	}
@@ -383,7 +383,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	// ------------------------------------------------------------------------
 
 	public void onCoordinateSnapAttempt(CoordinateSnapEvent event) {
-		if (editingService.getEditingState() == GeometryEditingState.INSERTING) {
+		if (editingService.getEditingState() == GeometryEditState.INSERTING) {
 			String identifier = baseName + "."
 					+ editingService.getIndexService().format(editingService.getInsertIndex());
 			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.'))
@@ -570,7 +570,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 			// Draw individual edges:
 			int max = coordinates.length;
-			if (!closeRingWhileInserting && editingService.getEditingState() == GeometryEditingState.INSERTING
+			if (!closeRingWhileInserting && editingService.getEditingState() == GeometryEditState.INSERTING
 					&& editingService.getIndexService().isChildOf(parentIndex, editingService.getInsertIndex())) {
 				max--;
 			}
@@ -711,7 +711,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private GraphicsController createVertexController(GeometryIndex index) {
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(mapWidget, editingService,
-				index, editingService.getEditingState() == GeometryEditingState.DRAGGING);
+				index, editingService.getEditingState() == GeometryEditState.DRAGGING);
 		for (AbstractGeometryIndexMapHandler handler : EditingHandlerRegistry.getVertexHandlers()) {
 			controller.addMapHandler(handler);
 		}
@@ -720,7 +720,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private GraphicsController createEdgeController(GeometryIndex index) {
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(mapWidget, editingService,
-				index, editingService.getEditingState() == GeometryEditingState.DRAGGING);
+				index, editingService.getEditingState() == GeometryEditState.DRAGGING);
 		for (AbstractGeometryIndexMapHandler handler : EditingHandlerRegistry.getEdgeHandlers()) {
 			controller.addMapHandler(handler);
 		}
@@ -740,7 +740,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		}
 
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(mapWidget, editingService,
-				index, editingService.getEditingState() == GeometryEditingState.DRAGGING);
+				index, editingService.getEditingState() == GeometryEditState.DRAGGING);
 		for (AbstractGeometryIndexMapHandler handler : handlers) {
 			controller.addMapHandler(handler);
 		}

@@ -26,16 +26,23 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  */
 public class DeleteVertexOperation implements GeometryIndexOperation {
 
-	private GeometryIndex index;
-
 	private final GeometryIndexService service;
+
+	private GeometryIndex index;
 
 	private Coordinate coordinate;
 
+	/**
+	 * Initialize this operation with an indexing service.
+	 * 
+	 * @param service
+	 *            geometry index service.
+	 */
 	public DeleteVertexOperation(GeometryIndexService service) {
 		this.service = service;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
 		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX) {
@@ -50,10 +57,12 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndexOperation getInverseOperation() {
 		return new InsertVertexOperation(service, coordinate);
 	}
 
+	/** {@inheritDoc} */
 	public GeometryIndex getGeometryIndex() {
 		return index;
 	}

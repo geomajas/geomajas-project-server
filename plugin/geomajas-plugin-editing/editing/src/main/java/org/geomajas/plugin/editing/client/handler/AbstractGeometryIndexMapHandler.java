@@ -14,7 +14,7 @@ package org.geomajas.plugin.editing.client.handler;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.plugin.editing.client.service.GeometryEditingService;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
@@ -28,7 +28,7 @@ import com.google.gwt.event.shared.EventHandler;
  */
 public abstract class AbstractGeometryIndexMapHandler implements MapEventParser, EventHandler {
 
-	protected GeometryEditingService service;
+	protected GeometryEditService service;
 
 	protected GeometryIndex index;
 
@@ -50,7 +50,7 @@ public abstract class AbstractGeometryIndexMapHandler implements MapEventParser,
 		return service.getIndexService().getType(index);
 	}
 
-	public void setService(GeometryEditingService service) {
+	public void setService(GeometryEditService service) {
 		this.service = service;
 	}
 
@@ -58,7 +58,7 @@ public abstract class AbstractGeometryIndexMapHandler implements MapEventParser,
 		this.index = index;
 	}
 
-	public GeometryEditingService getService() {
+	public GeometryEditService getService() {
 		return service;
 	}
 
