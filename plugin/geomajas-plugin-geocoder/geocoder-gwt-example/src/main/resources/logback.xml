@@ -18,13 +18,13 @@
 	</appender>
 
 	<!--
-    <logger name="org.geomajas.gwt">
-        <level value="DEBUG"/>
-    </logger>
-    -->
+    <logger name="org.geomajas.gwt" level="DEBUG" />
+	-->
+	<!--
+	<logger name="org.geomajas.internal.service.CommandDispatcherImpl" level="TRACE" />
+	-->
 
-	<root>
-		<level value="INFO"/>
+	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>
 	</root>
 
