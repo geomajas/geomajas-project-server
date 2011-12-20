@@ -124,9 +124,9 @@ public class GeocoderPanel extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[]{"classpath:org/geomajas/plugin/geocoder/gwt/example/geocoder.xml",
-				"classpath:org/geomajas/plugin/geocoder/gwt/example/appGeocoder.xml",
-				"classpath:org/geomajas/plugin/geocoder/gwt/example/mapGeocoderOsm.xml",
+		return new String[]{"classpath:org/geomajas/plugin/geocoder/gwt/example/context/geocoder.xml",
+				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/appGeocoder.xml",
+				"classpath:org/geomajas/plugin/geocoder/gwt/example/context/mapGeocoderOsm.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml"};
 	}
 
