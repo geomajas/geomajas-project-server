@@ -14,5 +14,18 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The goal of this plug-in is to provide a pure JavaScript API for the
+  Geomajas client.</para>
+
+  <para>By default, Geomajas uses the GWT technology to develop client side
+  code in. Since the GWT Java code is by default compiled into unreadable and
+  obfuscated JavaScript code, this plug-in basically provides a wrapper around
+  the GWT code wherein names and packages are pre-defined.</para>
+
+  <para>A secondary goal for this plug-in is to provide the same API for all
+  Geomajas GWT based faces. This means that for all GWT based faces, there
+  will be a different implementation using the same API.</para>
+
+  <remark>At first this plug-in will focus on the implementation for the GWT
+  face, later for the Pure GWT face.</remark>
 </chapter>
