@@ -11,12 +11,13 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
@@ -36,7 +37,7 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface ViewPort {
 
 	// -------------------------------------------------------------------------

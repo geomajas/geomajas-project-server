@@ -20,10 +20,10 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.EventBusImpl;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
-import org.geomajas.puregwt.client.spatial.MathService;
-import org.geomajas.puregwt.client.spatial.MathServiceImpl;
+import org.geomajas.puregwt.client.spatial.BboxService;
+import org.geomajas.puregwt.client.spatial.BboxServiceImpl;
+import org.geomajas.puregwt.client.spatial.GeometryService;
+import org.geomajas.puregwt.client.spatial.GeometryServiceImpl;
 import org.geomajas.puregwt.client.widget.MapWidgetTestImpl;
 
 import com.google.inject.AbstractModule;
@@ -39,15 +39,15 @@ public class GeomajasTestModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		// Spatial services:
-		bind(MathService.class).to(MathServiceImpl.class).in(Singleton.class);
-		bind(GeometryFactory.class).to(GeometryFactoryImpl.class).in(Singleton.class);
+		bind(BboxService.class).to(BboxServiceImpl.class).in(Singleton.class);
+		bind(GeometryService.class).to(GeometryServiceImpl.class).in(Singleton.class);
 
 		// Map related interfaces:
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
 		bind(LayersModel.class).to(LayersModelImpl.class);
 		bind(ViewPort.class).to(ViewPortImpl.class);
 		bind(EventBus.class).to(EventBusImpl.class);
-		
+
 		bind(MapWidget.class).to(MapWidgetTestImpl.class);
 	}
 }

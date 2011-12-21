@@ -13,23 +13,19 @@ package org.geomajas.puregwt.client.map.controller;
 
 import java.util.Date;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.GeomajasGinjector;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.inject.Inject;
 
 /**
  * <p>
@@ -46,8 +42,6 @@ import com.google.inject.Inject;
  * @author Joachim Van der Auwera
  */
 public abstract class AbstractRectangleController extends AbstractMapController {
-
-	private final GeomajasGinjector injector = GWT.create(GeomajasGinjector.class);
 
 	protected Rectangle rectangle;
 
@@ -71,15 +65,11 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	private VectorContainer container;
 
-	@Inject
-	private GeometryFactory factory;
-
 	// ------------------------------------------------------------------------
 	// Constructor - only here because GIN doesn't work yet...
 	// ------------------------------------------------------------------------
 
 	public AbstractRectangleController() {
-		factory = injector.getGeometryFactory();
 	}
 
 	// ------------------------------------------------------------------------
@@ -113,8 +103,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 			shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
 			updateRectangle(event);
 
-			Bbox bounds = factory.createBbox(rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
-					rectangle.getHeight());
+			Bbox bounds = new Bbox(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
 			execute(mapPresenter.getViewPort().transform(bounds, RenderSpace.SCREEN, RenderSpace.WORLD));
 
 			stopDragging();

@@ -13,14 +13,7 @@ package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.spatial.Geometry;
-import org.geomajas.puregwt.client.spatial.LineString;
-import org.geomajas.puregwt.client.spatial.LinearRing;
-import org.geomajas.puregwt.client.spatial.MultiLineString;
-import org.geomajas.puregwt.client.spatial.MultiPoint;
-import org.geomajas.puregwt.client.spatial.MultiPolygon;
-import org.geomajas.puregwt.client.spatial.Point;
-import org.geomajas.puregwt.client.spatial.Polygon;
+import org.geomajas.geometry.Geometry;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
@@ -56,21 +49,22 @@ public final class GfxUtil {
 	}
 
 	public Path toPath(Geometry geometry) {
-		if (geometry instanceof Point) {
-			Point point = (Point) geometry;
-			return new Path((int) point.getX(), (int) point.getY());
-		} else if (geometry instanceof LineString) {
-			return toPath((LineString) geometry);
-		} else if (geometry instanceof LinearRing) {
-			return toPath((LinearRing) geometry);
-		} else if (geometry instanceof Polygon) {
-			return toPath((Polygon) geometry);
-		} else if (geometry instanceof MultiPoint) {
-			return toPath((MultiPoint) geometry);
-		} else if (geometry instanceof MultiLineString) {
-			return toPath((MultiLineString) geometry);
-		} else if (geometry instanceof MultiPolygon) {
-			return toPath((MultiPolygon) geometry);
+		if (geometry != null) {
+			if (Geometry.POINT.equals(geometry.getGeometryType())) {
+				return toPathPoint(geometry);
+			} else if (Geometry.LINE_STRING.equals(geometry.getGeometryType())) {
+				return toPathLineString(geometry);
+			} else if (Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {
+				return toPathLinearRing(geometry);
+			} else if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
+				return toPathPolygon(geometry);
+			} else if (Geometry.MULTI_POINT.equals(geometry.getGeometryType())) {
+				return toPathMultiPoint(geometry);
+			} else if (Geometry.MULTI_LINE_STRING.equals(geometry.getGeometryType())) {
+				return toPathMultiLineString(geometry);
+			} else if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
+				return toPathMultiPolygon(geometry);
+			}
 		}
 		return null;
 	}
@@ -79,84 +73,103 @@ public final class GfxUtil {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private Path toPath(LineString lineString) {
-		Path path = new Path((int) lineString.getCoordinate().getX(), (int) lineString.getCoordinate().getY());
-		for (int i = 1; i < lineString.getNumPoints(); i++) {
-			Coordinate coordinate = lineString.getCoordinateN(i);
-			path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+	private Path toPathPoint(Geometry point) {
+		if (point.getCoordinates() != null && point.getCoordinates().length == 1) {
+			Coordinate first = point.getCoordinates()[0];
+			return new Path((int) first.getX(), (int) first.getY());
 		}
-		return path;
+		return null;
 	}
 
-	private Path toPath(LinearRing linearRing) {
-		Path path = new Path((int) linearRing.getCoordinate().getX(), (int) linearRing.getCoordinate().getY());
-		for (int i = 1; i < linearRing.getNumPoints() - 1; i++) {
-			Coordinate coordinate = linearRing.getCoordinateN(i);
-			path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+	private Path toPathLineString(Geometry lineString) {
+		if (lineString.getCoordinates() != null && lineString.getCoordinates().length > 0) {
+			Coordinate first = lineString.getCoordinates()[0];
+			Path path = new Path((int) first.getX(), (int) first.getY());
+			for (int i = 1; i < lineString.getCoordinates().length; i++) {
+				Coordinate coordinate = lineString.getCoordinates()[i];
+				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+			}
+			return path;
 		}
-		path.close();
-		return path;
+		return null;
 	}
 
-	private Path toPath(Polygon polygon) {
-		Path path = toPath(polygon.getExteriorRing());
-		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-			LinearRing interiorRing = polygon.getInteriorRingN(i);
-			path.moveTo((int) interiorRing.getCoordinate().getX(), (int) interiorRing.getCoordinate().getY());
-			for (int j = 1; j < interiorRing.getNumPoints() - 1; j++) {
-				Coordinate coordinate = interiorRing.getCoordinateN(j);
+	private Path toPathLinearRing(Geometry linearRing) {
+		if (linearRing.getCoordinates() != null && linearRing.getCoordinates().length > 0) {
+			Coordinate first = linearRing.getCoordinates()[0];
+			Path path = new Path((int) first.getX(), (int) first.getY());
+			for (int i = 1; i < linearRing.getCoordinates().length - 1; i++) {
+				Coordinate coordinate = linearRing.getCoordinates()[i];
 				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
 			}
 			path.close();
+			return path;
 		}
-		return path;
+		return null;
 	}
 
-	private Path toPath(MultiPoint multiPoint) {
-		Path path = new Path((int) multiPoint.getCoordinate().getX(), (int) multiPoint.getCoordinate().getY());
-		for (int i = 1; i < multiPoint.getNumGeometries(); i++) {
-			Point point = (Point) multiPoint.getGeometryN(i);
-			path.moveTo((int) point.getX(), (int) point.getY());
-		}
-		return path;
-	}
-
-	private Path toPath(MultiLineString multiLineString) {
-		Path path = toPath((LineString) multiLineString.getGeometryN(0));
-		for (int i = 1; i < multiLineString.getNumGeometries(); i++) {
-			LineString lineString = (LineString) multiLineString.getGeometryN(i);
-			path.moveTo((int) lineString.getCoordinate().getX(), (int) lineString.getCoordinate().getY());
-			for (int j = 1; j < lineString.getNumPoints(); j++) {
-				Coordinate coordinate = lineString.getCoordinateN(j);
-				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
-			}
-		}
-		return path;
-	}
-
-	private Path toPath(MultiPolygon multiPolygon) {
-		Path path = toPath((Polygon) multiPolygon.getGeometryN(0));
-		for (int g = 1; g < multiPolygon.getNumGeometries(); g++) {
-			Polygon polygon = (Polygon) multiPolygon.getGeometryN(g);
-
-			LinearRing exteriorRing = polygon.getExteriorRing();
-			path.moveTo((int) exteriorRing.getCoordinate().getX(), (int) exteriorRing.getCoordinate().getY());
-			for (int i = 1; i < exteriorRing.getNumPoints() - 1; i++) {
-				Coordinate coordinate = exteriorRing.getCoordinateN(i);
-				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
-			}
-			path.close();
-
-			for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-				LinearRing interiorRing = polygon.getInteriorRingN(i);
-				path.moveTo((int) interiorRing.getCoordinate().getX(), (int) interiorRing.getCoordinate().getY());
-				for (int j = 1; j < interiorRing.getNumPoints() - 1; j++) {
-					Coordinate coordinate = interiorRing.getCoordinateN(j);
+	private Path toPathPolygon(Geometry polygon) {
+		if (polygon.getGeometries() != null && polygon.getGeometries().length > 0) {
+			Path path = toPathLinearRing(polygon.getGeometries()[0]);
+			for (int i = 1; i < polygon.getGeometries().length; i++) {
+				Geometry ring = polygon.getGeometries()[i];
+				path.moveTo((int) ring.getCoordinates()[0].getX(), (int) ring.getCoordinates()[0].getY());
+				for (int j = 1; i < ring.getCoordinates().length - 1; i++) {
+					Coordinate coordinate = ring.getCoordinates()[j];
 					path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
 				}
 				path.close();
 			}
+			return path;
 		}
-		return path;
+		return null;
+	}
+
+	private Path toPathMultiPoint(Geometry multiPoint) {
+		if (multiPoint.getGeometries() != null && multiPoint.getGeometries().length > 0) {
+			Path path = toPathPoint(multiPoint.getGeometries()[0]);
+			for (int i = 1; i < multiPoint.getGeometries().length; i++) {
+				Geometry point = multiPoint.getGeometries()[i];
+				path.moveTo(point.getCoordinates()[0].getX(), point.getCoordinates()[0].getY());
+			}
+			return path;
+		}
+		return null;
+	}
+
+	private Path toPathMultiLineString(Geometry multiLineString) {
+		if (multiLineString.getGeometries() != null && multiLineString.getGeometries().length > 0) {
+			Path path = toPathLineString(multiLineString.getGeometries()[0]);
+			for (int i = 1; i < multiLineString.getGeometries().length; i++) {
+				Geometry lineString = multiLineString.getGeometries()[i];
+				path.moveTo((int) lineString.getCoordinates()[0].getX(), (int) lineString.getCoordinates()[0].getY());
+				for (int j = 1; j < lineString.getCoordinates().length; j++) {
+					Coordinate coordinate = lineString.getCoordinates()[j];
+					path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+				}
+			}
+			return path;
+		}
+		return null;
+	}
+
+	private Path toPathMultiPolygon(Geometry multiPolygon) {
+		if (multiPolygon.getGeometries() != null && multiPolygon.getGeometries().length > 0) {
+			Path path = toPathPolygon(multiPolygon.getGeometries()[0]);
+			for (int i = 1; i < multiPolygon.getGeometries().length; i++) {
+				Geometry polygon = multiPolygon.getGeometries()[i];
+				for (int j = 0; j < polygon.getGeometries().length; j++) {
+					Geometry ring = polygon.getGeometries()[0];
+					path.moveTo((int) ring.getCoordinates()[0].getX(), (int) ring.getCoordinates()[0].getY());
+					for (int k = 1; k < ring.getCoordinates().length; k++) {
+						Coordinate coordinate = ring.getCoordinates()[k];
+						path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
+					}
+					path.close();
+				}
+			}
+			return path;
+		}
+		return null;
 	}
 }

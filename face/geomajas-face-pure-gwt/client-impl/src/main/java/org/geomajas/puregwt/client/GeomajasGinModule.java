@@ -21,12 +21,11 @@ import org.geomajas.puregwt.client.map.ViewPortImpl;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.feature.FeatureSearch;
-import org.geomajas.puregwt.client.map.feature.GeometryConverter;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
-import org.geomajas.puregwt.client.spatial.MathService;
-import org.geomajas.puregwt.client.spatial.MathServiceImpl;
+import org.geomajas.puregwt.client.spatial.BboxService;
+import org.geomajas.puregwt.client.spatial.BboxServiceImpl;
+import org.geomajas.puregwt.client.spatial.GeometryService;
+import org.geomajas.puregwt.client.spatial.GeometryServiceImpl;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -42,8 +41,8 @@ public class GeomajasGinModule extends AbstractGinModule {
 
 	protected void configure() {
 		// Spatial services:
-		bind(MathService.class).to(MathServiceImpl.class).in(Singleton.class);
-		bind(GeometryFactory.class).to(GeometryFactoryImpl.class).in(Singleton.class);
+		bind(BboxService.class).to(BboxServiceImpl.class).in(Singleton.class);
+		bind(GeometryService.class).to(GeometryServiceImpl.class).in(Singleton.class);
 
 		// Map related interfaces:
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
@@ -53,7 +52,6 @@ public class GeomajasGinModule extends AbstractGinModule {
 		bind(MapWidget.class).to(MapWidgetImpl.class);
 
 		// Other:
-		bind(GeometryConverter.class);
 		bind(FeatureSearch.class);
 		bind(GfxUtil.class);
 	}

@@ -13,24 +13,19 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.Geometry;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.LineString;
-import org.geomajas.puregwt.client.spatial.LinearRing;
+import org.geomajas.puregwt.client.spatial.BboxService;
+import org.geomajas.puregwt.client.spatial.GeometryService;
 import org.geomajas.puregwt.client.spatial.Matrix;
 import org.geomajas.puregwt.client.spatial.MatrixImpl;
-import org.geomajas.puregwt.client.spatial.MultiLineString;
-import org.geomajas.puregwt.client.spatial.MultiPoint;
-import org.geomajas.puregwt.client.spatial.MultiPolygon;
-import org.geomajas.puregwt.client.spatial.Point;
-import org.geomajas.puregwt.client.spatial.Polygon;
 
 import com.google.inject.Inject;
 
@@ -42,7 +37,10 @@ import com.google.inject.Inject;
 public final class ViewPortImpl implements ViewPort {
 
 	@Inject
-	private GeometryFactory factory;
+	private BboxService bboxService;
+
+	@Inject
+	private GeometryService geometryService;
 
 	/** The map's width in pixels. */
 	private int mapWidth;
@@ -86,14 +84,15 @@ public final class ViewPortImpl implements ViewPort {
 		crs = mapInfo.getCrs();
 
 		// Calculate maximum bounds:
-		maxBounds = factory.createBbox(mapInfo.getMaxBounds());
-		Bbox initialBounds = factory.createBbox(mapInfo.getInitialBounds());
+		maxBounds = new Bbox(mapInfo.getMaxBounds().getX(), mapInfo.getMaxBounds().getY(), mapInfo.getMaxBounds()
+				.getWidth(), mapInfo.getMaxBounds().getHeight());
+
 		// if the max bounds was not configured, take the union of initial and layer bounds
-		Bbox all = factory.createBbox(org.geomajas.geometry.Bbox.ALL);
-		if (maxBounds.equals(all)) {
+		if (bboxService.equals(maxBounds, Bbox.ALL, 1e-10)) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-				maxBounds = factory.createBbox(initialBounds);
-				maxBounds = maxBounds.union(factory.createBbox(layerInfo.getMaxExtent()));
+				maxBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
+						.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
+				maxBounds = bboxService.union(maxBounds, layerInfo.getMaxExtent());
 			}
 		}
 
@@ -159,7 +158,7 @@ public final class ViewPortImpl implements ViewPort {
 		double h = mapHeight / scale;
 		double x = position.getX() - w / 2;
 		double y = position.getY() - h / 2;
-		return factory.createBbox(x, y, w, h);
+		return new Bbox(x, y, w, h);
 	}
 
 	// -------------------------------------------------------------------------
@@ -189,7 +188,7 @@ public final class ViewPortImpl implements ViewPort {
 		double limitedScale = zoomStrategy.checkScale(newScale, ZoomOption.LEVEL_CLOSEST);
 		if (limitedScale != scale) {
 			// Calculate theoretical new bounds. First create a BBOX of correct size:
-			Bbox newBbox = factory.createBbox(0, 0, getMapWidth() / limitedScale, getMapHeight() / limitedScale);
+			Bbox newBbox = new Bbox(0, 0, getMapWidth() / limitedScale, getMapHeight() / limitedScale);
 
 			// Calculate translate vector to assure rescalePoint is on the same position as before.
 			double factor = limitedScale / scale;
@@ -197,12 +196,12 @@ public final class ViewPortImpl implements ViewPort {
 			double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / factor);
 
 			// Apply translation to set the BBOX on the correct location:
-			newBbox.setCenterPoint(new Coordinate(position.getX(), position.getY()));
-			newBbox.translate(dX, dY);
+			newBbox = bboxService.setCenterPoint(newBbox, new Coordinate(position.getX(), position.getY()));
+			newBbox = bboxService.translate(newBbox, dX, dY);
 
 			// Now apply on this view port:
 			scale = limitedScale;
-			position = newBbox.getCenterPoint();
+			position = bboxService.getCenterPoint(newBbox);
 			if (eventBus != null) {
 				if (dX == 0 && dY == 0) {
 					eventBus.fireEvent(new ViewPortScaledEvent(this));
@@ -215,7 +214,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	public void applyBounds(Bbox bounds) {
 		double newScale = getScaleForBounds(bounds);
-		Coordinate tempPosition = checkPosition(bounds.getCenterPoint(), newScale);
+		Coordinate tempPosition = checkPosition(bboxService.getCenterPoint(bounds), newScale);
 		if (newScale == scale) {
 			if (!position.equals(tempPosition)) {
 				position = tempPosition;
@@ -261,7 +260,7 @@ public final class ViewPortImpl implements ViewPort {
 			case SCREEN:
 				switch (to) {
 					case SCREEN:
-						return factory.createGeometry(geometry);
+						return geometryService.clone(geometry);
 					case WORLD:
 						return screenToWorld(geometry);
 				}
@@ -270,7 +269,7 @@ public final class ViewPortImpl implements ViewPort {
 					case SCREEN:
 						return worldToScreen(geometry);
 					case WORLD:
-						return factory.createGeometry(geometry);
+						return geometryService.clone(geometry);
 				}
 		}
 		return geometry;
@@ -281,7 +280,7 @@ public final class ViewPortImpl implements ViewPort {
 			case SCREEN:
 				switch (to) {
 					case SCREEN:
-						return factory.createBbox(bbox);
+						return new Bbox(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 					case WORLD:
 						return screenToWorld(bbox);
 				}
@@ -290,7 +289,7 @@ public final class ViewPortImpl implements ViewPort {
 					case SCREEN:
 						return worldToScreen(bbox);
 					case WORLD:
-						return factory.createBbox(bbox);
+						return new Bbox(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 				}
 		}
 		return bbox;
@@ -375,11 +374,11 @@ public final class ViewPortImpl implements ViewPort {
 		if (maxBounds != null) {
 			double w = mapWidth / (newScale * 2);
 			double h = mapHeight / (newScale * 2);
-			Coordinate minCoordinate = maxBounds.getOrigin();
-			Coordinate maxCoordinate = maxBounds.getEndPoint();
+			Coordinate minCoordinate = bboxService.getOrigin(maxBounds);
+			Coordinate maxCoordinate = bboxService.getEndPoint(maxBounds);
 
 			if ((w * 2) > maxBounds.getWidth()) {
-				xCenter = maxBounds.getCenterPoint().getX();
+				xCenter = bboxService.getCenterPoint(maxBounds).getX();
 			} else {
 				if ((xCenter - w) < minCoordinate.getX()) {
 					xCenter = minCoordinate.getX() + w;
@@ -389,7 +388,7 @@ public final class ViewPortImpl implements ViewPort {
 				}
 			}
 			if ((h * 2) > maxBounds.getHeight()) {
-				yCenter = maxBounds.getCenterPoint().getY();
+				yCenter = bboxService.getCenterPoint(maxBounds).getY();
 			} else {
 				if ((yCenter - h) < minCoordinate.getY()) {
 					yCenter = minCoordinate.getY() + h;
@@ -421,59 +420,33 @@ public final class ViewPortImpl implements ViewPort {
 
 	private Geometry worldToScreen(Geometry geometry) {
 		if (geometry != null) {
-			if (geometry instanceof Point) {
-				Coordinate transformed = worldToScreen(geometry.getCoordinate());
-				return factory.createPoint(transformed);
-			} else if (geometry instanceof LinearRing) {
-				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
-				for (int i = 0; i < coordinates.length; i++) {
-					coordinates[i] = worldToScreen(geometry.getCoordinates()[i]);
+			Geometry result = new Geometry(geometry.getGeometryType(), geometry.getSrid(), geometry.getPrecision());
+			if (geometry.getGeometries() != null) {
+				Geometry[] transformed = new Geometry[geometry.getGeometries().length];
+				for (int i = 0; i < geometry.getGeometries().length; i++) {
+					transformed[i] = worldToScreen(geometry.getGeometries()[i]);
 				}
-				return factory.createLinearRing(coordinates);
-			} else if (geometry instanceof LineString) {
-				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
-				for (int i = 0; i < coordinates.length; i++) {
-					coordinates[i] = worldToScreen(geometry.getCoordinates()[i]);
-				}
-				return factory.createLineString(coordinates);
-			} else if (geometry instanceof Polygon) {
-				Polygon polygon = (Polygon) geometry;
-				LinearRing shell = (LinearRing) worldToScreen(polygon.getExteriorRing());
-				LinearRing[] holes = new LinearRing[polygon.getNumInteriorRing()];
-				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
-					holes[n] = (LinearRing) worldToScreen(polygon.getInteriorRingN(n));
-				}
-				return factory.createPolygon(shell, holes);
-			} else if (geometry instanceof MultiPoint) {
-				Point[] points = new Point[geometry.getNumGeometries()];
-				for (int n = 0; n < geometry.getNumGeometries(); n++) {
-					points[n] = (Point) worldToScreen(geometry.getGeometryN(n));
-				}
-				return factory.createMultiPoint(points);
-			} else if (geometry instanceof MultiLineString) {
-				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
-				for (int n = 0; n < geometry.getNumGeometries(); n++) {
-					lineStrings[n] = (LineString) worldToScreen(geometry.getGeometryN(n));
-				}
-				return factory.createMultiLineString(lineStrings);
-			} else if (geometry instanceof MultiPolygon) {
-				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
-				for (int n = 0; n < geometry.getNumGeometries(); n++) {
-					polygons[n] = (Polygon) worldToScreen(geometry.getGeometryN(n));
-				}
-				return factory.createMultiPolygon(polygons);
+				result.setGeometries(transformed);
 			}
+			if (geometry.getCoordinates() != null) {
+				Coordinate[] transformed = new Coordinate[geometry.getCoordinates().length];
+				for (int i = 0; i < geometry.getCoordinates().length; i++) {
+					transformed[i] = worldToScreen(geometry.getCoordinates()[i]);
+				}
+				result.setCoordinates(transformed);
+			}
+			return result;
 		}
-		return null;
+		throw new IllegalArgumentException("Cannot transform null geometry.");
 	}
 
 	private Bbox worldToScreen(Bbox bbox) {
 		if (bbox != null) {
-			Coordinate c1 = worldToScreen(bbox.getOrigin());
-			Coordinate c2 = worldToScreen(bbox.getEndPoint());
+			Coordinate c1 = worldToScreen(bboxService.getOrigin(bbox));
+			Coordinate c2 = worldToScreen(bboxService.getEndPoint(bbox));
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}
@@ -498,59 +471,33 @@ public final class ViewPortImpl implements ViewPort {
 
 	private Geometry screenToWorld(Geometry geometry) {
 		if (geometry != null) {
-			if (geometry instanceof Point) {
-				Coordinate transformed = screenToWorld(geometry.getCoordinate());
-				return factory.createPoint(transformed);
-			} else if (geometry instanceof LinearRing) {
-				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
-				for (int i = 0; i < coordinates.length; i++) {
-					coordinates[i] = screenToWorld(geometry.getCoordinates()[i]);
+			Geometry result = new Geometry(geometry.getGeometryType(), geometry.getSrid(), geometry.getPrecision());
+			if (geometry.getGeometries() != null) {
+				Geometry[] transformed = new Geometry[geometry.getGeometries().length];
+				for (int i = 0; i < geometry.getGeometries().length; i++) {
+					transformed[i] = screenToWorld(geometry.getGeometries()[i]);
 				}
-				return factory.createLinearRing(coordinates);
-			} else if (geometry instanceof LineString) {
-				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
-				for (int i = 0; i < coordinates.length; i++) {
-					coordinates[i] = screenToWorld(geometry.getCoordinates()[i]);
-				}
-				return factory.createLineString(coordinates);
-			} else if (geometry instanceof Polygon) {
-				Polygon polygon = (Polygon) geometry;
-				LinearRing shell = (LinearRing) screenToWorld(polygon.getExteriorRing());
-				LinearRing[] holes = new LinearRing[polygon.getNumInteriorRing()];
-				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
-					holes[n] = (LinearRing) screenToWorld(polygon.getInteriorRingN(n));
-				}
-				return factory.createPolygon(shell, holes);
-			} else if (geometry instanceof MultiPoint) {
-				Point[] points = new Point[geometry.getNumGeometries()];
-				for (int n = 0; n < geometry.getNumGeometries(); n++) {
-					points[n] = (Point) screenToWorld(geometry.getGeometryN(n));
-				}
-				return factory.createMultiPoint(points);
-			} else if (geometry instanceof MultiLineString) {
-				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
-				for (int n = 0; n < geometry.getNumGeometries(); n++) {
-					lineStrings[n] = (LineString) screenToWorld(geometry.getGeometryN(n));
-				}
-				return factory.createMultiLineString(lineStrings);
-			} else if (geometry instanceof MultiPolygon) {
-				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
-				for (int n = 0; n < geometry.getNumGeometries(); n++) {
-					polygons[n] = (Polygon) screenToWorld(geometry.getGeometryN(n));
-				}
-				return factory.createMultiPolygon(polygons);
+				result.setGeometries(transformed);
 			}
+			if (geometry.getCoordinates() != null) {
+				Coordinate[] transformed = new Coordinate[geometry.getCoordinates().length];
+				for (int i = 0; i < geometry.getCoordinates().length; i++) {
+					transformed[i] = screenToWorld(geometry.getCoordinates()[i]);
+				}
+				result.setCoordinates(transformed);
+			}
+			return result;
 		}
-		return null;
+		throw new IllegalArgumentException("Cannot transform null geometry.");
 	}
 
 	private Bbox screenToWorld(Bbox bbox) {
 		if (bbox != null) {
-			Coordinate c1 = screenToWorld(bbox.getOrigin());
-			Coordinate c2 = screenToWorld(bbox.getEndPoint());
+			Coordinate c1 = screenToWorld(bboxService.getOrigin(bbox));
+			Coordinate c2 = screenToWorld(bboxService.getEndPoint(bbox));
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return factory.createBbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
 		}
 		return null;
 	}

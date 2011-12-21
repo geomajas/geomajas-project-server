@@ -19,13 +19,13 @@ import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.spatial.Geometry;
 
 import com.google.inject.Inject;
 
@@ -87,9 +87,6 @@ public final class FeatureSearch {
 
 	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
-	@Inject
-	private GeometryConverter geometryConverter;
-
 	private int resultSize = 100;
 
 	// ------------------------------------------------------------------------
@@ -112,7 +109,7 @@ public final class FeatureSearch {
 			request.setBuffer(buffer);
 			request.setLayerIds(new String[] { layer.getServerLayerId() });
 			request.setFilter(layer.getId(), fs.getFilter());
-			request.setLocation(geometryConverter.toDto(location));
+			request.setLocation(location);
 			request.setSearchType(SearchType.SEARCH_ALL_LAYERS.getValue());
 			request.setCrs(crs);
 			request.setFeatureIncludes(11);
@@ -148,7 +145,7 @@ public final class FeatureSearch {
 
 		request.setBuffer(buffer);
 		request.setLayerIds(layerIds);
-		request.setLocation(geometryConverter.toDto(location));
+		request.setLocation(location);
 		request.setQueryType(queryType.getValue());
 		request.setSearchType(searchType.getValue());
 		request.setRatio(ratio);

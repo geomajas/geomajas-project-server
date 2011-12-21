@@ -11,14 +11,12 @@
 
 package org.geomajas.puregwt.client.map.gadget;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapGadget;
-import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -283,8 +281,6 @@ public class NavigationGadget implements MapGadget {
 
 		private int offset;
 
-		private GeometryFactory factory = new GeometryFactoryImpl();
-
 		private Rectangle eventCatcher;
 
 		private Path zoomInRect;
@@ -397,7 +393,7 @@ public class NavigationGadget implements MapGadget {
 				zoomInRect.setStep(7, new LineTo(false, endX, endY));
 				zoomInRect.setStep(8, new LineTo(false, beginX, endY));
 				zoomInRect.setStep(9, new ClosePath());
-				screenBounds = factory.createBbox(beginX, beginY, width, height);
+				screenBounds = new Bbox(beginX, beginY, width, height);
 			}
 		}
 	}

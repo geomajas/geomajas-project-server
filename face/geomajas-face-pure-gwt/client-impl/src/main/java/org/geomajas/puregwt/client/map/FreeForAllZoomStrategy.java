@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
-import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Zooming strategy that allows any zoom scale between the minimum and maximum scales to be used.

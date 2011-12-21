@@ -12,8 +12,8 @@
 package org.geomajas.puregwt.client.map.controller;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.RenderSpace;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;

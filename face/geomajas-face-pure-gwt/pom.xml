@@ -16,7 +16,6 @@
 		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-pure-gwt</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -241,5 +240,4 @@
 		<gwt-pure-face-common-gwt-version>1.0.0-SNAPSHOT</gwt-pure-face-common-gwt-version>
 		<gwt-pure-face-gwt-version>2.4.0</gwt-pure-face-gwt-version>
 	</properties>
-	
 </project>

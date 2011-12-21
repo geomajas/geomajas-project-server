@@ -20,9 +20,6 @@ import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +48,7 @@ public class FixedStepZoomStrategyTest {
 
 	@PostConstruct
 	public void initialize() {
-		GeometryFactory factory = new GeometryFactoryImpl();
-		Bbox maxBounds = factory.createBbox(mapInfo.getMaxBounds());
-		zoomStrategy = new FixedStepZoomStrategy(mapInfo, maxBounds);
+		zoomStrategy = new FixedStepZoomStrategy(mapInfo, mapInfo.getMaxBounds());
 		zoomStrategy.setMapSize(100, 100);
 	}
 
@@ -149,13 +144,10 @@ public class FixedStepZoomStrategyTest {
 	@Test
 	@DirtiesContext
 	public void testFaultyConfiguration() {
-		GeometryFactory factory = new GeometryFactoryImpl();
-		Bbox maxBounds = factory.createBbox(mapInfo.getMaxBounds());
-
 		// Null value for scale levels:
 		mapInfo.getScaleConfiguration().setZoomLevels(null);
 		try {
-			zoomStrategy = new FixedStepZoomStrategy(mapInfo, maxBounds);
+			zoomStrategy = new FixedStepZoomStrategy(mapInfo, mapInfo.getMaxBounds());
 			Assert.fail();
 		} catch (IllegalArgumentException e) {
 			// Expected exception.
@@ -164,7 +156,7 @@ public class FixedStepZoomStrategyTest {
 		// Empty list of scale levels:
 		mapInfo.getScaleConfiguration().setZoomLevels(new ArrayList<ScaleInfo>());
 		try {
-			zoomStrategy = new FixedStepZoomStrategy(mapInfo, maxBounds);
+			zoomStrategy = new FixedStepZoomStrategy(mapInfo, mapInfo.getMaxBounds());
 			Assert.fail();
 		} catch (IllegalArgumentException e) {
 			// Expected exception.

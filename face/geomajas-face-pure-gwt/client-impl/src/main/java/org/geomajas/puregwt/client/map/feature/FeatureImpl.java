@@ -15,13 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Attribute;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.spatial.Geometry;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * Default implementation of the Feature interface. Represents the individual objects of vector layers.
@@ -30,15 +27,13 @@ import com.google.gwt.core.client.GWT;
  */
 public class FeatureImpl implements Feature {
 
-	private static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
+	private final Layer<?> layer;
 
 	private String id;
 
 	private Map<String, Attribute<?>> attributes;
 
 	private Geometry geometry;
-
-	private Layer<?> layer;
 
 	private String label;
 
@@ -61,9 +56,7 @@ public class FeatureImpl implements Feature {
 		label = feature.getLabel();
 		updatable = feature.isUpdatable();
 		deletable = feature.isDeletable();
-
-		GeometryConverter converter = INJECTOR.getGeometryConverter();
-		geometry = converter.toGwt(feature.getGeometry());
+		geometry = feature.getGeometry();
 	}
 
 	// ------------------------------------------------------------------------

@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
@@ -25,6 +26,7 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
@@ -44,7 +46,9 @@ import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.service.BooleanCallback;
-import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.BboxService;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * <p>
@@ -57,9 +61,13 @@ import org.geomajas.puregwt.client.spatial.Bbox;
  */
 public class SmartRasterLayerRenderer implements MapRenderer {
 
-	private ViewPort viewPort;
+	protected static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
 
-	private RasterLayer rasterLayer;
+	private final BboxService bboxService;
+
+	private final ViewPort viewPort;
+
+	private final RasterLayer rasterLayer;
 
 	/** The container that should render all images. */
 	private HtmlContainer htmlContainer;
@@ -95,6 +103,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	protected SmartRasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer) {
 		this.viewPort = viewPort;
 		this.rasterLayer = rasterLayer;
+		bboxService = INJECTOR.getBboxService();
 	}
 
 	// ------------------------------------------------------------------------
@@ -168,7 +177,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		if (currentTileBounds == null || !currentTileBounds.contains(event.getViewPort().getBounds())) {
+		if (currentTileBounds == null || !bboxService.contains(currentTileBounds, event.getViewPort().getBounds())) {
 			beginOrigin = viewPort.getPosition();
 			fetchTiles(event.getViewPort().getBounds(), false);
 		}
@@ -220,9 +229,11 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 
 	/**
 	 * Fetch tiles and make sure they are rendered when the response returns.
-	 *
-	 * @param bounds bounds to fetch tiles for
-	 * @param zooming is the user zooming?
+	 * 
+	 * @param bounds
+	 *            bounds to fetch tiles for
+	 * @param zooming
+	 *            is the user zooming?
 	 */
 	private void fetchTiles(final Bbox bounds, final boolean zooming) {
 		// Are we still busy loading a previous batch? Than clean that up and create a new temporary rendering.
@@ -237,7 +248,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		}
 
 		// Scale the bounds to fetch tiles for:
-		currentTileBounds = bounds.scale(mapExtentScaleAtFetch);
+		currentTileBounds = bboxService.scale(bounds, mapExtentScaleAtFetch);
 
 		// Create the command:
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
@@ -260,9 +271,11 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 
 	/**
 	 * Add tiles to the list and render them on the map.
-	 *
-	 * @param rasterTiles tiles to add/render
-	 * @param zooming are we zooming
+	 * 
+	 * @param rasterTiles
+	 *            tiles to add/render
+	 * @param zooming
+	 *            are we zooming
 	 */
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> rasterTiles, boolean zooming) {
 		// Go over all tiles we got back from the server:

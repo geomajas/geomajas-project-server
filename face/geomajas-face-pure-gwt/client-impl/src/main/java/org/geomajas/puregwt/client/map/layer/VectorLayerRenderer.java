@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
@@ -34,9 +34,8 @@ import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.layer.TilePresenter.STATUS;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
+import org.geomajas.puregwt.client.spatial.BboxService;
+import org.geomajas.puregwt.client.spatial.BboxServiceImpl;
 
 /**
  * MapRenderer implementation that renders a single vector layer.
@@ -45,21 +44,19 @@ import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
  */
 public class VectorLayerRenderer implements MapRenderer {
 
-	private VectorLayer layer;
+	private final BboxService bboxService;
 
-	private ViewPort viewPort;
+	private final VectorLayer layer;
 
-	private EventBus eventBus;
+	private final ViewPort viewPort;
+
+	private final Bbox layerBounds;
 
 	private HtmlContainer htmlContainer;
 
 	private VectorContainer vectorContainer;
 
-	private GeometryFactory factory;
-
 	private Map<String, TilePresenter> tiles;
-
-	private Bbox layerBounds;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -69,8 +66,10 @@ public class VectorLayerRenderer implements MapRenderer {
 		this.layer = layer;
 		this.viewPort = viewPort;
 
-		factory = new GeometryFactoryImpl();
-		layerBounds = factory.createBbox(layer.getLayerInfo().getMaxExtent());
+		// TODO replace with GIN:
+		bboxService = new BboxServiceImpl();
+
+		layerBounds = layer.getLayerInfo().getMaxExtent();
 		tiles = new HashMap<String, TilePresenter>();
 	}
 
@@ -100,7 +99,7 @@ public class VectorLayerRenderer implements MapRenderer {
 
 	public void render(Bbox bbox) {
 		// Only fetch when inside the layer bounds:
-		if (bbox.intersects(layerBounds)) {
+		if (bboxService.intersects(bbox, layerBounds)) {
 
 			// Find needed tile codes:
 			List<TileCode> tempCodes = calcCodesForBounds(bbox);
@@ -239,10 +238,6 @@ public class VectorLayerRenderer implements MapRenderer {
 		return layer;
 	}
 
-	public EventBus getEventBus() {
-		return eventBus;
-	}
-
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------
@@ -270,7 +265,7 @@ public class VectorLayerRenderer implements MapRenderer {
 		}
 
 		// Calculate bounds relative to extents:
-		Bbox clippedBounds = bounds.intersection(layerBounds);
+		Bbox clippedBounds = bboxService.intersection(bounds, layerBounds);
 		if (clippedBounds == null) {
 			// TODO throw error? If this is null, then the server configuration is incorrect.
 			return codes;

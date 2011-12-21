@@ -34,7 +34,8 @@ public interface Layer<T extends ClientLayerInfo> {
 	String getId();
 
 	/**
-	 * Return this layer's server ID.
+	 * Return this layer's server ID. Multiple client side layer (connected with a map) can point to a single data
+	 * source on the back-end. This returns the actual layer name as used on the server.
 	 * 
 	 * @return id of the server layer
 	 */

@@ -17,9 +17,6 @@ import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +46,7 @@ public class FreeForAllZoomStrategyTest {
 
 	@PostConstruct
 	public void initialize() {
-		GeometryFactory factory = new GeometryFactoryImpl();
-		Bbox maxBounds = factory.createBbox(mapInfo.getMaxBounds());
-		zoomStrategy = new FreeForAllZoomStrategy(mapInfo, maxBounds);
+		zoomStrategy = new FreeForAllZoomStrategy(mapInfo, mapInfo.getMaxBounds());
 		zoomStrategy.setMapSize(100, 100);
 	}
 

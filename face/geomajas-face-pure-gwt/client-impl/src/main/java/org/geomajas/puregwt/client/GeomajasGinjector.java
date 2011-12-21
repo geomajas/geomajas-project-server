@@ -13,10 +13,9 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.FeatureSearch;
-import org.geomajas.puregwt.client.map.feature.GeometryConverter;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.MathService;
+import org.geomajas.puregwt.client.spatial.BboxService;
+import org.geomajas.puregwt.client.spatial.GeometryService;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -29,15 +28,13 @@ import com.google.gwt.inject.client.Ginjector;
 @GinModules(GeomajasGinModule.class)
 public interface GeomajasGinjector extends Ginjector {
 
-	GeometryFactory getGeometryFactory();
+	BboxService getBboxService();
 
-	MathService getMathService();
+	GeometryService getGeometryService();
 
 	MapPresenter getMapPresenter();
-	
-	GeometryConverter getGeometryConverter();
-	
+
 	FeatureSearch getFeatureSearch();
-	
+
 	GfxUtil getGfxUtil();
 }

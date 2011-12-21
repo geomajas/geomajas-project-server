@@ -23,9 +23,11 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.controller.ListenerController;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
@@ -55,16 +57,7 @@ import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.LineString;
-import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.spatial.Matrix;
-import org.geomajas.puregwt.client.spatial.MultiLineString;
-import org.geomajas.puregwt.client.spatial.MultiPoint;
-import org.geomajas.puregwt.client.spatial.MultiPolygon;
-import org.geomajas.puregwt.client.spatial.Point;
-import org.geomajas.puregwt.client.spatial.Polygon;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -194,9 +187,6 @@ public final class MapPresenterImpl implements MapPresenter {
 	private MapWidget display;
 
 	@Inject
-	private GeometryFactory factory;
-
-	@Inject
 	private GfxUtil gfxUtil;
 
 	@Inject
@@ -249,8 +239,7 @@ public final class MapPresenterImpl implements MapPresenter {
 				viewPort.initialize(r.getMapInfo(), eventBus);
 
 				// Immediately zoom to the initial bounds as configured:
-				Bbox initialBounds = factory.createBbox(r.getMapInfo().getInitialBounds());
-				viewPort.applyBounds(initialBounds);
+				viewPort.applyBounds(r.getMapInfo().getInitialBounds());
 
 				// If there are already some MapGadgets registered, draw them now:
 				for (Entry<MapGadget, VectorContainer> entry : gadgets.entrySet()) {
@@ -530,12 +519,12 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		private void render(Feature f) {
 			Path path = gfxUtil.toPath(f.getGeometry());
-			if (f.getGeometry() instanceof Point || f.getGeometry() instanceof MultiPoint) {
+			String type = f.getGeometry().getGeometryType();
+			if (Geometry.POINT.equals(type) || Geometry.MULTI_POINT.equals(type)) {
 				gfxUtil.applyStyle(path, pointStyle);
-			} else if (f.getGeometry() instanceof LineString || f.getGeometry() instanceof MultiLineString) {
+			} else if (Geometry.LINE_STRING.equals(type) || Geometry.MULTI_LINE_STRING.equals(type)) {
 				gfxUtil.applyStyle(path, lineStyle);
-			} else if (f.getGeometry() instanceof Polygon || f.getGeometry() instanceof MultiPolygon
-					|| f.getGeometry() instanceof LinearRing) {
+			} else {
 				gfxUtil.applyStyle(path, ringStyle);
 			}
 			container.add(path);

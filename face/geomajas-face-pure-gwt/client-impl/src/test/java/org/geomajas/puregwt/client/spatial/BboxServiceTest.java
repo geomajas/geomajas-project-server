@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.spatial;
 
 import junit.framework.Assert;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.junit.Before;
@@ -26,51 +27,58 @@ import com.google.inject.Injector;
  * 
  * @author Pieter De Graef
  */
-public class BboxTest {
+public class BboxServiceTest {
 
-	private Bbox empty = new BboxImpl(0, 0, 0, 0);
+	private Bbox empty = new Bbox(0, 0, 0, 0);
 
-	private Bbox origin = new BboxImpl(0, 0, 10, 10);
+	private Bbox origin = new Bbox(0, 0, 10, 10);
 
-	private Bbox movedEmpty = new BboxImpl(-10, -10, 0, 0);
+	private Bbox movedEmpty = new Bbox(-10, -10, 0, 0);
 
-	private Bbox movedEmpty2 = new BboxImpl(5, 5, 0, 0);
+	private Bbox movedEmpty2 = new Bbox(5, 5, 0, 0);
 
-	private Bbox normal = new BboxImpl(-5, -5, 20, 20);
+	private Bbox normal = new Bbox(-5, -5, 20, 20);
 
-	private GeometryFactory factory;
+	private BboxService service;
 
 	@Before
 	public void setUp() {
 		Injector myInjector = Guice.createInjector(new GeomajasTestModule());
-		factory = myInjector.getInstance(GeometryFactory.class);
-		empty = factory.createBbox(0, 0, 0, 0);
-		origin = factory.createBbox(0, 0, 10, 10);
-		movedEmpty = factory.createBbox(-10, -10, 0, 0);
-		movedEmpty2 = factory.createBbox(5, 5, 0, 0);
-		normal = factory.createBbox(-5, -5, 20, 20);
+		service = myInjector.getInstance(BboxService.class);
+
+		empty = new Bbox(0, 0, 0, 0);
+		origin = new Bbox(0, 0, 10, 10);
+		movedEmpty = new Bbox(-10, -10, 0, 0);
+		movedEmpty2 = new Bbox(5, 5, 0, 0);
+		normal = new Bbox(-5, -5, 20, 20);
 	}
 
 	@Test
 	public void testGuice() {
-		Assert.assertNotNull(factory);
+		Assert.assertNotNull(service);
+	}
+
+	@Test
+	public void testEquals() {
+		Assert.assertTrue(service.equals(empty, empty, 0.0001));
+		Assert.assertFalse(service.equals(normal, empty, 0.0001));
 	}
 
 	@Test
 	public void testGetCenterPoint() {
-		Coordinate c = empty.getCenterPoint();
+		Coordinate c = service.getCenterPoint(empty);
 		Assert.assertEquals(c.getX(), 0.0);
 		Assert.assertEquals(c.getY(), 0.0);
 
-		c = origin.getCenterPoint();
+		c = service.getCenterPoint(origin);
 		Assert.assertEquals(c.getX(), 5.0);
 		Assert.assertEquals(c.getY(), 5.0);
 
-		c = movedEmpty.getCenterPoint();
+		c = service.getCenterPoint(movedEmpty);
 		Assert.assertEquals(c.getX(), -10.0);
 		Assert.assertEquals(c.getY(), -10.0);
 
-		c = normal.getCenterPoint();
+		c = service.getCenterPoint(normal);
 		Assert.assertEquals(c.getX(), 5.0);
 		Assert.assertEquals(c.getY(), 5.0);
 	}
@@ -78,44 +86,44 @@ public class BboxTest {
 	@Test
 	public void testUnion() {
 		// Result should equal empty:
-		Bbox union = empty.union(empty);
-		Assert.assertTrue(union.equals(empty));
+		Bbox union = service.union(empty, empty);
+		Assert.assertTrue(service.equals(union, empty, 0.0001));
 
 		// Result should equal origin:
-		union = empty.union(origin);
-		Assert.assertTrue(union.equals(origin));
+		union = service.union(empty, origin);
+		Assert.assertTrue(service.equals(union, origin, 0.0001));
 
 		// Result should equal origin:
-		union = origin.union(empty);
-		Assert.assertTrue(union.equals(origin));
+		union = service.union(origin, empty);
+		Assert.assertTrue(service.equals(union, origin, 0.0001));
 
 		// Result should equal movedEmpty:
-		union = movedEmpty.union(empty);
-		Assert.assertTrue(union.equals(movedEmpty));
+		union = service.union(movedEmpty, empty);
+		Assert.assertTrue(service.equals(union, movedEmpty, 0.0001));
 
 		// Result should equal movedEmpty:
-		union = empty.union(movedEmpty);
-		Assert.assertTrue(union.equals(movedEmpty));
+		union = service.union(empty, movedEmpty);
+		Assert.assertTrue(service.equals(union, movedEmpty, 0.0001));
 
-		union = movedEmpty.union(origin);
+		union = service.union(movedEmpty, origin);
 		Assert.assertEquals(union.getX(), -10.0);
 		Assert.assertEquals(union.getWidth(), 20.0);
 		Assert.assertEquals(union.getY(), -10.0);
 		Assert.assertEquals(union.getHeight(), 20.0);
 
-		union = origin.union(movedEmpty);
+		union = service.union(origin, movedEmpty);
 		Assert.assertEquals(union.getX(), -10.0);
 		Assert.assertEquals(union.getWidth(), 20.0);
 		Assert.assertEquals(union.getY(), -10.0);
 		Assert.assertEquals(union.getHeight(), 20.0);
 
-		union = movedEmpty.union(movedEmpty2);
+		union = service.union(movedEmpty, movedEmpty2);
 		Assert.assertEquals(union.getX(), -10.0);
 		Assert.assertEquals(union.getWidth(), 15.0);
 		Assert.assertEquals(union.getY(), -10.0);
 		Assert.assertEquals(union.getHeight(), 15.0);
 
-		union = movedEmpty.union(normal);
+		union = service.union(movedEmpty, normal);
 		Assert.assertEquals(union.getX(), -10.0);
 		Assert.assertEquals(union.getWidth(), 25.0);
 		Assert.assertEquals(union.getY(), -10.0);
@@ -124,7 +132,7 @@ public class BboxTest {
 
 	@Test
 	public void testBuffer() {
-		Bbox buffer = empty.buffer(10);
+		Bbox buffer = service.buffer(empty, 10);
 		Assert.assertEquals(buffer.getX(), -10.0);
 		Assert.assertEquals(buffer.getWidth(), 20.0);
 		Assert.assertEquals(buffer.getY(), -10.0);
@@ -133,22 +141,22 @@ public class BboxTest {
 
 	@Test
 	public void testIntersection() {
-		Bbox intersection = empty.intersection(empty);
-		Assert.assertTrue(intersection.equals(empty));
+		Bbox intersection = service.intersection(empty, empty);
+		Assert.assertTrue(service.equals(intersection, empty, 0.0001));
 
-		intersection = empty.intersection(origin);
-		Assert.assertTrue(intersection.equals(empty));
+		intersection = service.intersection(empty, origin);
+		Assert.assertTrue(service.equals(intersection, empty, 0.0001));
 
-		intersection = origin.intersection(empty);
-		Assert.assertTrue(intersection.equals(empty));
+		intersection = service.intersection(origin, empty);
+		Assert.assertTrue(service.equals(intersection, empty, 0.0001));
 
-		intersection = empty.intersection(movedEmpty);
+		intersection = service.intersection(empty, movedEmpty);
 		Assert.assertNull(intersection);
 
-		intersection = movedEmpty.intersection(empty);
+		intersection = service.intersection(movedEmpty, empty);
 		Assert.assertNull(intersection);
 
-		intersection = normal.intersection(origin);
+		intersection = service.intersection(normal, origin);
 		Assert.assertEquals(intersection.getX(), 0.0);
 		Assert.assertEquals(intersection.getWidth(), 10.0);
 		Assert.assertEquals(intersection.getY(), 0.0);
@@ -157,27 +165,27 @@ public class BboxTest {
 
 	@Test
 	public void testIntersects() {
-		Assert.assertTrue(empty.intersects(empty));
-		Assert.assertTrue(empty.intersects(origin));
-		Assert.assertTrue(origin.intersects(empty));
-		Assert.assertFalse(empty.intersects(movedEmpty));
-		Assert.assertFalse(movedEmpty.intersects(empty));
-		Assert.assertTrue(normal.intersects(origin));
+		Assert.assertTrue(service.intersects(empty, empty));
+		Assert.assertTrue(service.intersects(empty, origin));
+		Assert.assertTrue(service.intersects(origin, empty));
+		Assert.assertFalse(service.intersects(empty, movedEmpty));
+		Assert.assertFalse(service.intersects(movedEmpty, empty));
+		Assert.assertTrue(service.intersects(normal, origin));
 	}
 
 	@Test
 	public void testContains() {
-		Assert.assertTrue(normal.contains(empty));
-		Assert.assertTrue(normal.contains(origin));
-		Assert.assertTrue(normal.contains(normal));
-		Assert.assertFalse(origin.contains(normal));
+		Assert.assertTrue(service.contains(normal, empty));
+		Assert.assertTrue(service.contains(normal, origin));
+		Assert.assertTrue(service.contains(normal, normal));
+		Assert.assertFalse(service.contains(origin, normal));
 	}
 
 	@Test
 	public void testScale() {
-		Bbox scaled = normal.scale(2);
-		Assert.assertEquals(normal.getCenterPoint().getX(), scaled.getCenterPoint().getX());
-		Assert.assertEquals(normal.getCenterPoint().getY(), scaled.getCenterPoint().getY());
+		Bbox scaled = service.scale(normal, 2);
+		Assert.assertEquals(service.getCenterPoint(normal).getX(), service.getCenterPoint(scaled).getX());
+		Assert.assertEquals(service.getCenterPoint(normal).getY(), service.getCenterPoint(scaled).getY());
 		Assert.assertEquals(scaled.getX(), -15.0);
 		Assert.assertEquals(scaled.getWidth(), 40.0);
 		Assert.assertEquals(scaled.getY(), -15.0);
@@ -186,14 +194,7 @@ public class BboxTest {
 
 	@Test
 	public void testIsEmpty() {
-		Assert.assertTrue(empty.isEmpty());
-		Assert.assertFalse(normal.isEmpty());
-	}
-
-	@Test
-	public void testEquals() {
-		Assert.assertTrue(empty.equals(empty));
-		Assert.assertFalse(normal.equals(empty));
-		Assert.assertFalse(empty.equals(new Integer(342)));
+		Assert.assertTrue(service.isEmpty(empty));
+		Assert.assertFalse(service.isEmpty(normal));
 	}
 }

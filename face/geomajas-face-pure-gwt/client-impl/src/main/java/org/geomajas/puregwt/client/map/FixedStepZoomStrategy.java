@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Zooming strategy that only allows a fixed number of scales to be used. These fixed steps are taken from the map

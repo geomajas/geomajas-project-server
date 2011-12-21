@@ -11,13 +11,12 @@
 
 package org.geomajas.puregwt.client.map.controller;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.spatial.Bbox;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -63,9 +62,7 @@ public class NavigationController extends AbstractMapController {
 		ZOOM_POSITION
 	}
 
-	private ZoomToRectangleController zoomToRectangleController;
-
-	protected GeometryFactory factory;
+	private final ZoomToRectangleController zoomToRectangleController;
 
 	protected Coordinate dragOrigin;
 
@@ -83,7 +80,6 @@ public class NavigationController extends AbstractMapController {
 
 	public NavigationController() {
 		super();
-		factory = INJECTOR.getGeometryFactory();
 		zoomToRectangleController = new ZoomToRectangleController();
 	}
 
@@ -138,7 +134,7 @@ public class NavigationController extends AbstractMapController {
 		Bbox bounds = mapPresenter.getViewPort().getBounds();
 		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
 		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
-		Bbox newBounds = factory.createBbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
+		Bbox newBounds = new Bbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
 		mapPresenter.getViewPort().applyBounds(newBounds);
 	}
 

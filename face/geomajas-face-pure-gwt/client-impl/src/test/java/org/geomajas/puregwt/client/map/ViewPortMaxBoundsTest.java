@@ -16,9 +16,9 @@ import javax.annotation.PostConstruct;
 import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Test;

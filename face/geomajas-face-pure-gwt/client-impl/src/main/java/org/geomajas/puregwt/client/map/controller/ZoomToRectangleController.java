@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.controller;
 
-import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Map controller that lets the user drag a rectangle on the map, after which it zooms to that rectangle.

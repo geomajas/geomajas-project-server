@@ -11,9 +11,9 @@
 
 package org.geomajas.puregwt.client.map.controller;
 
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.puregwt.client.map.RenderSpace;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
 
 import com.google.gwt.dom.client.Element;

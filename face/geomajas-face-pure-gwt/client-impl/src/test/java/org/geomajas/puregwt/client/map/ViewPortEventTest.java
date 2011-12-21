@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.GeomajasTestModule;
 import org.geomajas.puregwt.client.map.event.EventBus;
@@ -23,8 +24,6 @@ import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.GeometryFactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +77,9 @@ public class ViewPortEventTest {
 
 	@Test
 	public void testApplyPosition() {
+		viewPort.applyBounds(viewPort.getMaximumBounds());
+		event = null;
+
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
@@ -110,12 +112,11 @@ public class ViewPortEventTest {
 	public void testApplyBounds() {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
-		GeometryFactory factory = new GeometryFactoryImpl();
 
 		HandlerRegistration reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowChangedHandler());
 
 		// Now a changed event should occur:
-		viewPort.applyBounds(factory.createBbox(0, 0, 100, 100));
+		viewPort.applyBounds(new Bbox(0, 0, 100, 100));
 		Assert.assertEquals(8.0, viewPort.getScale());
 		Assert.assertNotNull(event);
 		Assert.assertTrue(event instanceof ViewPortChangedEvent);
@@ -124,7 +125,7 @@ public class ViewPortEventTest {
 		reg = eventBus.addHandler(ViewPortChangedHandler.TYPE, new AllowTranslationHandler());
 
 		// Expect to end up at the same scale, so no changed event, but translation only:
-		viewPort.applyBounds(factory.createBbox(-50, -50, 100, 100));
+		viewPort.applyBounds(new Bbox(-50, -50, 100, 100));
 		Assert.assertEquals(8.0, viewPort.getScale());
 		Assert.assertNotNull(event);
 		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);

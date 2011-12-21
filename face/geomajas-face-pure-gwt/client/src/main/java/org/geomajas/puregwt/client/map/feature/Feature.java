@@ -14,9 +14,9 @@ package org.geomajas.puregwt.client.map.feature;
 import java.util.Map;
 
 import org.geomajas.annotation.FutureApi;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.spatial.Geometry;
 
 /**
  * General interface for a GWT client side feature.<br/>

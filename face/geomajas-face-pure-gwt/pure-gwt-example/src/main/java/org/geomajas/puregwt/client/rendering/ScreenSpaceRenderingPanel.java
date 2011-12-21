@@ -117,6 +117,7 @@ public class ScreenSpaceRenderingPanel extends ContentPanel {
 				path.lineRelativelyTo(0, 50);
 				path.lineRelativelyTo(-50, 0);
 				path.lineRelativelyTo(0, -50);
+				path.getElement().getStyle().setProperty("fillRule", "even-odd");
 				container.add(path);
 			}
 		});

@@ -63,13 +63,16 @@ public interface MapPresenter {
 	void setSize(int width, int height);
 
 	/**
+	 * <p>
 	 * Create a new container in world space wherein one can render new vector objects and return it. Note that all
 	 * objects drawn into such a container should be expressed in world coordinates (the CRS of the map). These objects
 	 * will also be automatically redrawn when the view port on the map changes.<br/>
 	 * New containers are automatically drawn on top of all other containers - that includes both world and screen
 	 * containers.
-	 * 
+	 * </p>
+	 * <p>
 	 * WARNING: adding subgroups to the returned result does not work in IE !
+	 * </p>
 	 * 
 	 * @return Returns the world vector container.
 	 */

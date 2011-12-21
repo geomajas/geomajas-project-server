@@ -11,8 +11,8 @@
 
 package org.geomajas.puregwt.client.map;
 
-import org.geomajas.annotation.FutureApi;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 
 /**
@@ -25,7 +25,7 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
  * @since 1.0.0
  */
 @UserImplemented
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface MapGadget {
 
 	/**

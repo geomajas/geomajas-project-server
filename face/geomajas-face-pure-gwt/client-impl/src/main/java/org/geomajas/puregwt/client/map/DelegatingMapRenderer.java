@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedEvent;
