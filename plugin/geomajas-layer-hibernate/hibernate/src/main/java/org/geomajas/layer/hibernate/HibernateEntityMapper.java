@@ -38,7 +38,7 @@ import org.hibernate.type.Type;
  */
 public class HibernateEntityMapper implements EntityMapper {
 
-	private SessionFactory sessionFactory;
+	private final SessionFactory sessionFactory;
 
 	/**
 	 * Contructor.
@@ -63,7 +63,7 @@ public class HibernateEntityMapper implements EntityMapper {
 	}
 
 	/**
-	 * {@link Entity} that provides access to a Hibernate entity.
+	 * Entity that provides access to a Hibernate entity.
 	 * 
 	 * @author Jan De Moerloose
 	 */
@@ -71,7 +71,7 @@ public class HibernateEntityMapper implements EntityMapper {
 
 		private Object object;
 
-		private ClassMetadata metadata;
+		private final ClassMetadata metadata;
 
 		/**
 		 * Construct an entity for the Hibernate object with given id.
@@ -171,11 +171,11 @@ public class HibernateEntityMapper implements EntityMapper {
 
 		private String parentName;
 
-		private ClassMetadata metadata;
+		private final ClassMetadata metadata;
 
-		private Object parent;
+		private final Object parent;
 
-		private Collection objects;
+		private final Collection objects;
 
 		/**
 		 * Construct a entity collection.

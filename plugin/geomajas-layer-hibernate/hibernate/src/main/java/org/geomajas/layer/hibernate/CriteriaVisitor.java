@@ -11,7 +11,6 @@
 package org.geomajas.layer.hibernate;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,9 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.geomajas.layer.LayerException;
-import org.geotools.filter.LiteralExpressionImpl;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernatespatial.criterion.SpatialRestrictions;
@@ -42,6 +39,7 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -82,19 +80,19 @@ public class CriteriaVisitor implements FilterVisitor {
 	/**
 	 * The srid of the coordinate reference system used in the HibernateLayer. Stored here as a shortcut.
 	 */
-	private int srid;
+	private final int srid;
 
 	/**
 	 * The HibernateFeatureModel that contains all Hibernate metadata. This is needed when creating criteria.
 	 */
-	private HibernateFeatureModel featureModel;
+	private final HibernateFeatureModel featureModel;
 
-	private DateFormat dateFormat;
+	private final DateFormat dateFormat;
 
 	/**
 	 * List of aliases created when converting an OpenGis filter to a Hibernate criteria object.
 	 */
-	private List<String> aliases; // These never get cleaned!
+	private final List<String> aliases = new ArrayList<String>(); // These never get cleaned!
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -117,13 +115,13 @@ public class CriteriaVisitor implements FilterVisitor {
 			log.warn("Cannot read geomName, defaulting to 'geometry'", e);
 			geomName = "geometry";
 		}
-		aliases = new ArrayList<String>();
 	}
 
 	// -------------------------------------------------------------------------
 	// FilterVisitor implementation:
 	// -------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public Object visit(And filter, Object userData) {
 		Criterion c = null;
 		for (Filter element : filter.getChildren()) {
@@ -136,11 +134,13 @@ public class CriteriaVisitor implements FilterVisitor {
 		return c;
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Not filter, Object userData) {
 		Criterion c = (Criterion) filter.getFilter().accept(this, userData);
 		return Restrictions.not(c);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Or filter, Object userData) {
 		Criterion c = null;
 		for (Filter element : filter.getChildren()) {
@@ -153,65 +153,73 @@ public class CriteriaVisitor implements FilterVisitor {
 		return c;
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsBetween filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object lo = castLiteral(((Literal) filter.getLowerBoundary()).getValue(), propertyName);
-		Object hi = castLiteral(((Literal) filter.getUpperBoundary()).getValue(), propertyName);
+		Object lo = castLiteral(getLiteralValue(filter.getLowerBoundary()), propertyName);
+		Object hi = castLiteral(getLiteralValue(filter.getUpperBoundary()), propertyName);
 		return Restrictions.between(finalName, lo, hi);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsEqualTo filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression1());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object value = castLiteral(((Literal) filter.getExpression2()).getValue(), propertyName);
+		Object value = castLiteral(getLiteralValue(filter.getExpression2()), propertyName);
 		return Restrictions.eq(finalName, value);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsNotEqualTo filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression1());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object value = castLiteral(((Literal) filter.getExpression2()).getValue(), propertyName);
+		Object value = castLiteral(getLiteralValue(filter.getExpression2()), propertyName);
 		return Restrictions.ne(finalName, value);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsGreaterThan filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression1());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object literal = ((Literal) filter.getExpression2()).getValue();
+		Object literal = getLiteralValue(filter.getExpression2());
 		return Restrictions.gt(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression1());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object literal = ((Literal) filter.getExpression2()).getValue();
+		Object literal = getLiteralValue(filter.getExpression2());
 		return Restrictions.ge(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsLessThan filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression1());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object literal = ((Literal) filter.getExpression2()).getValue();
+		Object literal = getLiteralValue(filter.getExpression2());
 		return Restrictions.lt(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsLessThanOrEqualTo filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression1()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression1());
 		String finalName = parsePropertyName(propertyName, userData);
 
-		Object literal = ((Literal) filter.getExpression2()).getValue();
+		Object literal = getLiteralValue(filter.getExpression2());
 		return Restrictions.le(finalName, castLiteral(literal, propertyName));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsLike filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression());
 		String finalName = parsePropertyName(propertyName, userData);
 
 		String value = filter.getLiteral();
@@ -220,74 +228,85 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.like(finalName, value);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(PropertyIsNull filter, Object userData) {
-		String propertyName = ((PropertyName) filter.getExpression()).getPropertyName();
+		String propertyName = getPropertyName(filter.getExpression());
 		String finalName = parsePropertyName(propertyName, userData);
 		return Restrictions.isNull(finalName);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(BBOX filter, Object userData) {
 		Envelope env = new Envelope(filter.getMinX(), filter.getMaxX(), filter.getMinY(), filter.getMaxY());
 		String finalName = parsePropertyName(geomName, userData);
 		return SpatialRestrictions.filter(finalName, env, srid);
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Beyond filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Beyond filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Contains filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Contains filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Crosses filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Crosses filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Disjoint filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Disjoint filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(DWithin filter, Object userData) {
 		throw new UnsupportedOperationException("visit(DWithin filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Equals filter, Object userData) {
 		throw new UnsupportedOperationException("visit(Equals filter, Object userData)");
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Intersects filter, Object userData) {
-		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.intersects(finalName, asGeometry(exp.getValue()));
+		return SpatialRestrictions.intersects(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Overlaps filter, Object userData) {
-		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.overlaps(finalName, asGeometry(exp.getValue()));
+		return SpatialRestrictions.overlaps(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Touches filter, Object userData) {
-		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.touches(finalName, asGeometry(exp.getValue()));
+		return SpatialRestrictions.touches(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Within filter, Object userData) {
-		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.within(finalName, asGeometry(exp.getValue()));
+		return SpatialRestrictions.within(finalName, asGeometry(getLiteralValue(filter.getExpression2())));
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(ExcludeFilter filter, Object userData) {
 		return Restrictions.not(Restrictions.conjunction());
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(IncludeFilter filter, Object userData) {
 		return Restrictions.conjunction();
 	}
 
+	/** {@inheritDoc} */
 	public Object visit(Id filter, Object userData) {
 		String idName;
 		try {
@@ -300,6 +319,7 @@ public class CriteriaVisitor implements FilterVisitor {
 		return Restrictions.in(idName, c);
 	}
 
+	/** {@inheritDoc} */
 	public Object visitNullFilter(Object userData) {
 		throw new UnsupportedOperationException("visit(Object userData)");
 	}
@@ -309,18 +329,48 @@ public class CriteriaVisitor implements FilterVisitor {
 	// -------------------------------------------------------------------------
 
 	/**
+	 * Get the property name from the expression.
+	 * 
+	 * @param expression expression
+	 * @return property name
+	 */
+	private String getPropertyName(Expression expression) {
+		if (!(expression instanceof PropertyName)) {
+			throw new IllegalStateException("Expression " + expression + " is not a PropertyName.");
+		}
+		String name = ((PropertyName) expression).getPropertyName();
+		if ("@id".equals(name)) {
+			name = "id"; // replace by Hibernate id property, always refers to the id, even if named differently
+		}
+		return name;
+	}
+
+	/**
+	 * Get the literal value for an expression.
+	 * 
+	 * @param expression expression
+	 * @return literal value
+	 */
+	private Object getLiteralValue(Expression expression) {
+		if (!(expression instanceof Literal)) {
+			throw new IllegalStateException("Expression " + expression + " is not a Literal.");
+		}
+		return ((Literal) expression).getValue();
+	}
+
+	/**
 	 * Go through the property name to see if it is a complex one. If it is, aliases must be declared.
 	 * 
-	 * @param propertyName
+	 * @param orgPropertyName
 	 *            The propertyName. Can be complex.
 	 * @param userData
 	 *            The userData object that is passed in each method of the FilterVisitor. Should always be of the info
 	 *            "Criteria".
 	 * @return property name
 	 */
-	private String parsePropertyName(String propertyName, Object userData) {
+	private String parsePropertyName(String orgPropertyName, Object userData) {
 		// try to assure the correct separator is used
-		propertyName = propertyName.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
+		String propertyName = orgPropertyName.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
 
 		// split the path (separator is defined in the HibernateLayerUtil)
 		String[] props = propertyName.split(HibernateLayerUtil.SEPARATOR_REGEXP);
@@ -361,33 +411,18 @@ public class CriteriaVisitor implements FilterVisitor {
 	 */
 	private Object castLiteral(Object literal, String propertyName) {
 		try {
-			if (literal instanceof Collection<?>) {
-				Collection<?> c = (Collection<?>) literal;
-				Iterator<?> iterator = c.iterator();
-				List<Object> cast = new ArrayList<Object>();
-				while (iterator.hasNext()) {
-					cast.add(castLiteral(iterator.next(), propertyName));
-				}
-				return cast;
+			if (literal instanceof Collection) {
+				return castCollection(literal, propertyName);
 			}
 			if (literal instanceof Object[]) {
-				Object[] array = (Object[]) literal;
-				Object[] cast = new Object[array.length];
-				for (int i = 0; i < array.length; i++) {
-					cast[i] = castLiteral(array[i], propertyName);
-				}
-				return cast;
+				return castObjectArray(literal, propertyName);
 			}
 			Class<?> clazz = featureModel.getPropertyClass(featureModel.getEntityMetadata(), propertyName);
 			if (!clazz.equals(literal.getClass())) {
 				if (clazz.equals(Boolean.class)) {
 					return Boolean.valueOf(literal.toString());
 				} else if (clazz.equals(Date.class)) {
-					try {
-						dateFormat.parse(literal.toString());
-					} catch (ParseException e) {
-						return literal.toString();
-					}
+					dateFormat.parse(literal.toString());
 				} else if (clazz.equals(Double.class)) {
 					return Double.valueOf(literal.toString());
 				} else if (clazz.equals(Float.class)) {
@@ -402,22 +437,48 @@ public class CriteriaVisitor implements FilterVisitor {
 					return literal.toString();
 				}
 			}
-		} catch (LayerException e) {
-			log.error(e.getMessage(), e);
-		} catch (HibernateException e) {
+		} catch (Exception e) { // NOSONAR
 			log.error(e.getMessage(), e);
 		}
-
 		return literal;
 	}
-	
+
+	private Object castCollection(Object literal, String propertyName) {
+		try {
+			Collection<?> c = (Collection) literal;
+			Iterator iterator = c.iterator();
+			List<Object> cast = new ArrayList<Object>();
+			while (iterator.hasNext()) {
+				cast.add(castLiteral(iterator.next(), propertyName));
+			}
+			return cast;
+		} catch (Exception e) { // NOSONAR
+			log.error(e.getMessage(), e);
+		}
+		return literal;
+	}
+
+	private Object castObjectArray(Object literal, String propertyName) {
+		try {
+			Object[] array = (Object[]) literal;
+			Object[] cast = new Object[array.length];
+			for (int i = 0; i < array.length; i++) {
+				cast[i] = castLiteral(array[i], propertyName);
+			}
+			return cast;
+		} catch (Exception e) { // NOSONAR
+			log.error(e.getMessage(), e);
+		}
+		return literal;
+	}
+
 	private Geometry asGeometry(Object geometry) {
 		if (geometry instanceof Geometry) {
 			Geometry geom = (Geometry) geometry;
 			geom.setSRID(srid);
 			return geom;
 		} else {
-			return null;
+			throw new IllegalStateException("Cannot handle " + geometry + " as geometry.");
 		}
 	}
 
