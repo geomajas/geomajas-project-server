@@ -32,6 +32,8 @@ public class ClientToolInfo implements Serializable {
 
 	@NotNull
 	private String id;
+	
+	private String toolId;
 
 	private List<Parameter> parameters = new ArrayList<Parameter>();
 
@@ -55,22 +57,42 @@ public class ClientToolInfo implements Serializable {
 	}
 
 	/**
-	 * Get the tool id.
+	 * Get the id to fetch the {@link org.geomajas.gwt.client.action.ToolbarBaseAction}.
 	 * 
 	 * @return tool id
 	 */
 	public String getId() {
-		return id;
+		return null == toolId ? id : toolId;
 	}
 
 	/**
-	 * Set the tool id.
+	 * Set the id unique for the tool.
 	 * 
 	 * @param value
-	 *            tool id
+	 *            unique tool id
 	 */
 	public void setId(String value) {
 		this.id = value;
+	}
+
+	/**
+	 * Set the id used for creating the tool in {@link org.geomajas.gwt.client.action.toolbar.ToolbarRegistry}.
+	 * 
+	 * @param toolId tool id
+	 * @since 1.10.0
+	 */
+	public void setToolId(String toolId) {
+		this.toolId = toolId;
+	}
+	
+	/**
+	 * Get the id used for creating the tool in {@link org.geomajas.gwt.client.action.toolbar.ToolbarRegistry}.
+	 * 
+	 * @return tool id
+	 * @since 1.10.0
+	 */
+	public String getToolId() {
+		return toolId;
 	}
 
 }
