@@ -14,16 +14,24 @@ package org.geomajas.widget.utility.gwt.client.action;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
+import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
+import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.common.client.event.DisabledEvent;
+import org.geomajas.widget.utility.common.client.event.EnabledEvent;
+import org.geomajas.widget.utility.common.client.event.EnabledHandler;
+import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * Button action implementation that delegates to a {@link ToolbarBaseAction} instance.
  * 
  * @author Pieter De Graef
  */
-public class ToolbarButtonAction implements ButtonAction {
+public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 
 	protected ToolbarBaseAction toolbarAction;
 
@@ -96,4 +104,37 @@ public class ToolbarButtonAction implements ButtonAction {
 	public ToolbarBaseAction getToolbarAction() {
 		return toolbarAction;
 	}
+	
+	public boolean isEnabled() {
+		return !toolbarAction.isDisabled();
+	}
+
+	public HandlerRegistration addEnabledHandler(EnabledHandler handler) {
+		return toolbarAction.addToolbarActionHandler(new ToolbarActionForwarder(handler));
+	}
+	
+	/**
+	 * Forwards {@link ToolbarActionEnabledEvent} and {@link ToolbarActionDisabledEvent} to {@link EnabledHandler}s.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class ToolbarActionForwarder implements ToolbarActionHandler {
+
+		private EnabledHandler handler;
+
+		ToolbarActionForwarder(EnabledHandler handler) {
+			this.handler = handler;
+		}
+
+		public void onToolbarActionEnabled(ToolbarActionEnabledEvent event) {
+			handler.onEnabled(new EnabledEvent(ToolbarButtonAction.this));
+		}
+
+		public void onToolbarActionDisabled(ToolbarActionDisabledEvent event) {
+			handler.onDisabled(new DisabledEvent(ToolbarButtonAction.this));
+		}
+
+	}
+
 }

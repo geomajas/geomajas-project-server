@@ -15,6 +15,10 @@ import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.action.RadioAction;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
+import org.geomajas.widget.utility.common.client.event.DisabledEvent;
+import org.geomajas.widget.utility.common.client.event.EnabledEvent;
+import org.geomajas.widget.utility.common.client.event.EnabledHandler;
+import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 
 import com.smartgwt.client.types.Cursor;
@@ -115,6 +119,14 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 
 		if (buttonAction instanceof RibbonColumnAware) {
 			((RibbonColumnAware) buttonAction).setRibbonColumn(this);
+		}
+
+		if (isEnabled()) {
+			if (buttonAction instanceof HasEnabledHandlers) {
+				HasEnabledHandlers h = (HasEnabledHandlers) buttonAction;
+				h.addEnabledHandler(new ActionEnabler());
+				setEnabled(h.isEnabled());
+			}
 		}
 
 		updateGui();
@@ -342,4 +354,23 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		}
 		return icon;
 	}
+
+	/**
+	 * Applies state changes of the action to this widget.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class ActionEnabler implements EnabledHandler {
+
+		public void onEnabled(EnabledEvent event) {
+			setEnabled(true);
+		}
+
+		public void onDisabled(DisabledEvent event) {
+			setEnabled(false);
+		}
+
+	}
+
 }
