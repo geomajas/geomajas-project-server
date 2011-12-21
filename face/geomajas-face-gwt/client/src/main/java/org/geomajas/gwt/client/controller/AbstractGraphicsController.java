@@ -191,7 +191,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 */
 	@Deprecated
 	protected Coordinate getScreenPosition(MouseEvent<?> event) {
-		return GwtEventUtil.getPosition(event, offsetX, offsetY);
+		return getLocation(event, RenderSpace.SCREEN);
 	}
 
 	protected Coordinate getClientPosition(MouseEvent<?> event) {
@@ -212,7 +212,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 */
 	@Deprecated
 	protected Coordinate getWorldPosition(MouseEvent<?> event) {
-		return getTransformer().viewToWorld(GwtEventUtil.getPosition(event, offsetX, offsetY));
+		return getLocation(event, RenderSpace.WORLD);
 	}
 
 	protected Element getTarget(MouseEvent<?> event) {
