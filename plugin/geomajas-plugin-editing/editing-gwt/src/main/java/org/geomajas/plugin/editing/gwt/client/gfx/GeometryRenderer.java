@@ -92,13 +92,17 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		GeometryIndexSnappingBeginHandler, GeometryIndexSnappingEndHandler, GeometryEditTentativeMoveHandler,
 		MapViewChangedHandler, CoordinateSnapHandler {
 
-	private StyleService styleService = new DefaultStyleService();
+	private static final int VERTEX_SIZE = 12;
+
+	private static final int HALF_VERTEX_SIZE = 6;
 
 	private final MapWidget mapWidget;
 
 	private final GeometryEditService editingService;
 
 	private final Map<String, Composite> groups = new HashMap<String, Composite>();
+
+	private StyleService styleService = new DefaultStyleService();
 
 	private String baseName = "editing";
 
@@ -392,7 +396,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			if (event.hasSnapped()) {
 				Coordinate temp = event.getTo();
 				Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
-				Bbox rectangle = new Bbox(coordinate.getX() - 6, coordinate.getY() - 6, 12, 12);
+				Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
+						VERTEX_SIZE, VERTEX_SIZE);
 
 				mapWidget.getVectorContext().drawRectangle(parentGroup, insertSnapPoint, rectangle,
 						styleService.getVertexSnappedStyle());
@@ -472,7 +477,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		// Draw the new one:
 		Coordinate temp = editingService.getIndexService().getVertex(geometry, index);
 		Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
-		Bbox rectangle = new Bbox(coordinate.getX() - 6, coordinate.getY() - 6, 12, 12);
+		Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
+				VERTEX_SIZE, VERTEX_SIZE);
 		mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
 		mapWidget.getVectorContext().setController(parentGroup, identifier, createVertexController(index));
 	}
@@ -591,7 +597,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 						GeometryIndexType.TYPE_VERTEX, i);
 				String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
 
-				Bbox rectangle = new Bbox(coordinates[i].getX() - 6, coordinates[i].getY() - 6, 12, 12);
+				Bbox rectangle = new Bbox(coordinates[i].getX() - HALF_VERTEX_SIZE, coordinates[i].getY()
+						- HALF_VERTEX_SIZE, VERTEX_SIZE, VERTEX_SIZE);
 				graphics.drawRectangle(vertexGroup, identifier, rectangle, findVertexStyle(vertexIndex));
 				graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 			}
@@ -628,7 +635,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 						GeometryIndexType.TYPE_VERTEX, i);
 				String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
 
-				Bbox rectangle = new Bbox(coordinates[i].getX() - 6, coordinates[i].getY() - 6, 12, 12);
+				Bbox rectangle = new Bbox(coordinates[i].getX() - HALF_VERTEX_SIZE, coordinates[i].getY()
+						- HALF_VERTEX_SIZE, VERTEX_SIZE, VERTEX_SIZE);
 				graphics.drawRectangle(vertexGroup, identifier, rectangle, findVertexStyle(vertexIndex));
 				graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 			}
@@ -650,7 +658,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 					GeometryIndexType.TYPE_VERTEX, 0);
 			String identifier = baseName + "." + editingService.getIndexService().format(vertexIndex);
 
-			Bbox rectangle = new Bbox(point.getCoordinate().getX() - 6, point.getCoordinate().getY() - 6, 12, 12);
+			Bbox rectangle = new Bbox(point.getCoordinate().getX() - HALF_VERTEX_SIZE, point.getCoordinate().getY()
+					- HALF_VERTEX_SIZE, VERTEX_SIZE, VERTEX_SIZE);
 			graphics.drawRectangle(vertexGroup, identifier, rectangle, findVertexStyle(vertexIndex));
 			graphics.setController(vertexGroup, identifier, createVertexController(vertexIndex));
 		}

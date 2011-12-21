@@ -30,6 +30,7 @@ public class GeometryIndexHighlightHandler extends AbstractGeometryIndexMapHandl
 
 	public void onMouseOver(MouseOverEvent event) {
 		if (service.getEditingState() == GeometryEditState.IDLE) {
+			service.getIndexStateService().highlightEndAll();
 			service.getIndexStateService().highlightBegin(Collections.singletonList(index));
 		}
 	}

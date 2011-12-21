@@ -19,14 +19,17 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
+import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.GeometryIndexType;
+import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.snap.SnapService;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.user.client.Window;
 
 /**
  * <p>
@@ -47,6 +50,8 @@ public class GeometryIndexDragController extends AbstractController {
 
 	private final SnapService snappingService;
 
+	private GeometryIndex lastSelection;
+
 	private Coordinate previous;
 
 	private boolean snappingEnabled;
@@ -56,6 +61,15 @@ public class GeometryIndexDragController extends AbstractController {
 		super(mapEventParser, service.getEditingState() == GeometryEditState.DRAGGING);
 		this.snappingService = snappingService;
 		this.service = service;
+
+		service.getIndexStateService().addGeometryIndexSelectedHandler(new GeometryIndexSelectedHandler() {
+
+			public void onGeometryIndexSelected(GeometryIndexSelectedEvent event) {
+				if (event.getIndices() != null && event.getIndices().size() >= 0) {
+					lastSelection = event.getIndices().get(0);
+				}
+			}
+		});
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
@@ -63,53 +77,56 @@ public class GeometryIndexDragController extends AbstractController {
 	}
 
 	public void onDrag(HumanInputEvent<?> event) {
-		// First calculate moving delta:
+		// Get the position in world space:
 		Coordinate worldPos = getLocation(event, RenderSpace.WORLD);
-		double deltaX = worldPos.getX() - previous.getX();
-		double deltaY = worldPos.getY() - previous.getY();
 
-		try {
-			// If snapping is enabled, it might influence deltaX and deltY:
-			if (snappingEnabled) {
-				// Snapping is calculated on a selected and highlighted vertex:
-				GeometryIndex target = getSelectedAndHighlightedVertex();
-				if (target != null) {
-					// Check snapping on this target to influence deltaX and deltaY:
-					Coordinate to = snappingService.snap(new Coordinate(worldPos.getX() + deltaX, worldPos.getY()
-							+ deltaY));
-					deltaX = to.getX() - worldPos.getX();
-					deltaY = to.getY() - worldPos.getY();
+		// In case snapping is enabled, this might influence the target position:
+		if (snappingEnabled) {
 
-					if (snappingService.hasSnapped()) {
-						service.getIndexStateService().snappingBegin(Collections.singletonList(target));
-					} else {
-						service.getIndexStateService().snappingEndAll();
-					}
+			// Snapping is calculated on a selected and highlighted vertex:
+			if (lastSelection != null) {
+				worldPos = snappingService.snap(worldPos);
+
+				// Set index snapping state:
+				if (snappingService.hasSnapped()) {
+					service.getIndexStateService().snappingBegin(Collections.singletonList(lastSelection));
 				} else {
 					service.getIndexStateService().snappingEndAll();
 				}
 			}
-
-			// Go over all selected indices and find their new positions:
-			List<List<Coordinate>> coordinateList = new ArrayList<List<Coordinate>>();
-			for (GeometryIndex selected : service.getIndexStateService().getSelection()) {
-				switch (service.getIndexService().getType(selected)) {
-					case TYPE_VERTEX:
-						Coordinate to = new Coordinate(worldPos.getX() + deltaX, worldPos.getY() + deltaY);
-						coordinateList.add(Collections.singletonList(to));
-						break;
-					case TYPE_EDGE:
-					default:
-						throw new RuntimeException("Not really a RTE. Just not implemented ;-)");
-				}
-			}
-
-			// Execute the move operation:
-			service.move(service.getIndexStateService().getSelection(), coordinateList);
-		} catch (GeometryOperationFailedException e) {
-			// Something went wrong;
 		}
 
+		// Calculate the delta relative to the drag origin:
+		double deltaX = worldPos.getX() - previous.getX();
+		double deltaY = worldPos.getY() - previous.getY();
+
+		// Go over all selected indices and find their new positions:
+		List<List<Coordinate>> coordinateList = new ArrayList<List<Coordinate>>();
+		for (GeometryIndex selected : service.getIndexStateService().getSelection()) {
+			switch (service.getIndexService().getType(selected)) {
+				case TYPE_VERTEX:
+					// Get the original position for the selected vertex:
+					try {
+						Coordinate vertex = service.getIndexService().getVertex(service.getGeometry(), selected);
+						vertex = new Coordinate(vertex.getX() + deltaX, vertex.getY() + deltaY);
+						coordinateList.add(Collections.singletonList(vertex));
+					} catch (GeometryIndexNotFoundException e) {
+						Window.alert("Error while dragging: " + e.getMessage());
+						break;
+					}
+					break;
+				case TYPE_EDGE:
+				default:
+					throw new RuntimeException("Not really a RTE. Just not implemented ;-)");
+			}
+		}
+
+		// Execute the move operation:
+		try {
+			service.move(service.getIndexStateService().getSelection(), coordinateList);
+		} catch (GeometryOperationFailedException e) {
+			Window.alert("Error while dragging: " + e.getMessage());
+		}
 		previous = worldPos;
 	}
 
@@ -117,6 +134,7 @@ public class GeometryIndexDragController extends AbstractController {
 		previous = null;
 		service.stopOperationSequence();
 		service.setEditingState(GeometryEditState.IDLE);
+		service.getIndexStateService().snappingEndAll();
 	}
 
 	public boolean isSnappingEnabled() {
@@ -125,15 +143,5 @@ public class GeometryIndexDragController extends AbstractController {
 
 	public void setSnappingEnabled(boolean snappingEnabled) {
 		this.snappingEnabled = snappingEnabled;
-	}
-
-	private GeometryIndex getSelectedAndHighlightedVertex() {
-		for (GeometryIndex selected : service.getIndexStateService().getSelection()) {
-			if (service.getIndexService().getType(selected) == GeometryIndexType.TYPE_VERTEX
-					&& service.getIndexStateService().isHightlighted(selected)) {
-				return selected;
-			}
-		}
-		return service.getIndexStateService().getSelection().get(0);
 	}
 }

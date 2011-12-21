@@ -74,11 +74,12 @@ public class SnapService {
 	}
 
 	/**
-	 * Using the current list of snapping rules, try to snap the given coordinate.
+	 * Using the current list of snapping rules, try to snap the given coordinate. Fires a {@link CoordinateSnapEvent}
+	 * in any case (whether snapping occurred or not).
 	 * 
 	 * @param coordinate
 	 *            The original location.
-	 * @return The returned (perhaps snapped) locatio. If no snapping occurred, the original location is returned.
+	 * @return The returned (perhaps snapped) location. If no snapping occurred, the original location is returned.
 	 */
 	public Coordinate snap(Coordinate coordinate) {
 		Coordinate result = coordinate;

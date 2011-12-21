@@ -62,9 +62,9 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 		snappingService = new SnapService();
 		baseController = new EditGeometryBaseController(mapWidget, service, snappingService);
 		renderer = new GeometryRenderer(mapWidget, service, baseController);
-		
+
 		snappingService.addCoordinateSnapHandler(renderer);
-		
+
 		service.addGeometryEditStartHandler(renderer);
 		service.addGeometryEditStopHandler(renderer);
 		service.addGeometryEditShapeChangedHandler(renderer);
@@ -83,6 +83,9 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 
 		service.getIndexStateService().addGeometryIndexMarkForDeletionBeginHandler(renderer);
 		service.getIndexStateService().addGeometryIndexMarkForDeletionEndHandler(renderer);
+
+		service.getIndexStateService().addGeometryIndexSnappingBeginHandler(renderer);
+		service.getIndexStateService().addGeometryIndexSnappingEndHandler(renderer);
 
 		mapWidget.getMapModel().getMapView().addMapViewChangedHandler(new MapViewChangedHandler() {
 
@@ -155,11 +158,11 @@ public class GeometryEditor implements GeometryEditStartHandler, GeometryEditSto
 	public void setSnapOnDrag(boolean snapOnDrag) {
 		baseController.getDragController().setSnappingEnabled(snapOnDrag);
 	}
-	
+
 	public boolean isSnapOnInsert() {
 		return baseController.getInsertController().isSnappingEnabled();
 	}
-	
+
 	public void setSnapOnInsert(boolean snapOnInsert) {
 		baseController.getInsertController().setSnappingEnabled(snapOnInsert);
 	}

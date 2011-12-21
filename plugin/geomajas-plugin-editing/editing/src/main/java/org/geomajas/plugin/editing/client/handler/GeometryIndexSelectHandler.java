@@ -38,7 +38,7 @@ public class GeometryIndexSelectHandler extends AbstractGeometryIndexMapHandler 
 			} else {
 				// Deselect all and select only this index:
 				service.getIndexStateService().deselectAll();
-				service.getIndexStateService().select(Collections.singletonList(index));
+				service.getIndexStateService().select(Collections.singletonList(index));				
 			}
 		}
 	}

@@ -47,6 +47,7 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 			service.setEditingState(GeometryEditState.IDLE);
+			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}
 	}
 
