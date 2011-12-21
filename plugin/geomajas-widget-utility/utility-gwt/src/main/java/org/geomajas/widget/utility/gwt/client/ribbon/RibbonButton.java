@@ -307,7 +307,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	/**
 	 * Update the GUI to reflect the settings.
 	 */
-	private void updateGui() {
+	protected void updateGui() {
 		String title = buttonAction.getTitle() == null ? buttonAction.getTooltip() : buttonAction.getTitle();
 		if (title == null) {
 			title = "??";
@@ -336,7 +336,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		}
 	}
 
-	private String getTitleTextStyle() {
+	protected String getTitleTextStyle() {
 		if (isDisabled()) {
 			return "color: #777777;";
 		} else {
@@ -344,7 +344,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		}
 	}
 
-	private String getIconUrl() {
+	protected String getIconUrl() {
 		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
 		if (isDisabled() && showDisabledIcon) {
 			int dot = icon.lastIndexOf(".");
