@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.editing.server.command;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.command.Command;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -30,8 +31,10 @@ import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
-@Component()
+@Component
+@Api(allMethods = true)
 public class GeometryMergeCommand implements Command<GeometryMergeRequest, GeometryMergeResponse> {
 
 	@Autowired

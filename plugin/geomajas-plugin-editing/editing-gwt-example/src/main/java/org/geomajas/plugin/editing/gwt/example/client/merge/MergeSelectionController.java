@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.gwt.example.client.merging;
+package org.geomajas.plugin.editing.gwt.example.client.merge;
 
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;

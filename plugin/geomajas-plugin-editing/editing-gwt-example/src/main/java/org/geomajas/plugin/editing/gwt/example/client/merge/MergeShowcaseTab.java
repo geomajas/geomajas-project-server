@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.gwt.example.client.merging;
+package org.geomajas.plugin.editing.gwt.example.client.merge;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
@@ -23,13 +23,13 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * 
  * @author Pieter De Graef
  */
-public class MergingTab extends Tab {
+public class MergeShowcaseTab extends Tab {
 
 	private final MapWidget mapWidget;
 
 	private final GeometryMergeService mergingService;
 
-	public MergingTab() {
+	public MergeShowcaseTab() {
 		super("Merging geometries");
 		mapWidget = new MapWidget("mapMerging", "app");
 		mergingService = new GeometryMergeService();
@@ -43,9 +43,9 @@ public class MergingTab extends Tab {
 		layout.addMember(toolStrip);
 		layout.addMember(mapWidget);
 
-		StartMergingBtn startBtn = new StartMergingBtn(mapWidget, mergingService);
-		ExecuteMergeBtn stopBtn = new ExecuteMergeBtn(mapWidget, mergingService);
-		CancelMergingBtn cancelBtn = new CancelMergingBtn(mapWidget, mergingService);
+		StartMergeProcessButton startBtn = new StartMergeProcessButton(mapWidget, mergingService);
+		ExecuteMergeButton stopBtn = new ExecuteMergeButton(mapWidget, mergingService);
+		CancelMergeProcessButton cancelBtn = new CancelMergeProcessButton(mapWidget, mergingService);
 		toolStrip.addButton(startBtn);
 		toolStrip.addButton(stopBtn);
 		toolStrip.addButton(cancelBtn);

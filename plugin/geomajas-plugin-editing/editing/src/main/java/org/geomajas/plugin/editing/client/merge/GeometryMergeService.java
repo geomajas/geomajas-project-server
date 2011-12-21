@@ -41,7 +41,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public class GeometryMergeService {
 
 	private final List<Geometry> geometries = new ArrayList<Geometry>();
@@ -51,6 +51,10 @@ public class GeometryMergeService {
 	private boolean busy;
 
 	private int precision = -1;
+
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
 
 	public GeometryMergeService() {
 	}
@@ -71,8 +75,8 @@ public class GeometryMergeService {
 	}
 
 	/**
-	 * Register a {@link GeometryMergeStopHandler} to listen to events that signal the merging process has ended
-	 * (either through stop or cancel).
+	 * Register a {@link GeometryMergeStopHandler} to listen to events that signal the merging process has ended (either
+	 * through stop or cancel).
 	 * 
 	 * @param handler
 	 *            The {@link GeometryMergeStopHandler} to add as listener.

@@ -58,7 +58,6 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 
 	public void onMouseOver(MouseOverEvent event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
-			service.getIndexStateService().highlightBegin(Collections.singletonList(index));
 
 			// Now snap the vertex to this location:
 			if (service.getIndexService().getType(index) == GeometryIndexType.TYPE_VERTEX) {

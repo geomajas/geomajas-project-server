@@ -90,7 +90,6 @@ public class GeometryIndexInsertController extends AbstractController {
 				Coordinate result = snappingService.snap(location);
 				if (snappingService.hasSnapped()) {
 					service.setTentativeMoveLocation(result);
-					//service.getIndexStateService().snappingBegin(Collections.singletonList(index));
 				} else {
 					service.setTentativeMoveLocation(location);
 					service.getIndexStateService().snappingEndAll();

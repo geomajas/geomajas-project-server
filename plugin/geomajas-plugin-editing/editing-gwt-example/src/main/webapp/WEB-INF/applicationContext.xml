@@ -36,6 +36,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<list>
 				<ref bean="mapEditing"/>
 				<ref bean="mapMerging" />
+				<ref bean="mapSplitting" />
 			</list>
 		</property>
 	</bean>

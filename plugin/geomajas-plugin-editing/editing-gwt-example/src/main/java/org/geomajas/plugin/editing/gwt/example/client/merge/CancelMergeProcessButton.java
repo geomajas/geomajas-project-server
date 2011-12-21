@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.gwt.example.client.merging;
+package org.geomajas.plugin.editing.gwt.example.client.merge;
 
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.client.merge.GeometryMergeException;
@@ -29,10 +29,10 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * 
  * @author Pieter De Graef
  */
-public class CancelMergingBtn extends ToolStripButton implements GeometryMergeStartHandler,
+public class CancelMergeProcessButton extends ToolStripButton implements GeometryMergeStartHandler,
 		GeometryMergeStopHandler {
 
-	public CancelMergingBtn(final MapWidget mapWidget, final GeometryMergeService service) {
+	public CancelMergeProcessButton(final MapWidget mapWidget, final GeometryMergeService service) {
 		setIcon("[ISOMORPHIC]/geomajas/silk/cancel.png");
 		setDisabled(true);
 		setHoverWidth(400);
