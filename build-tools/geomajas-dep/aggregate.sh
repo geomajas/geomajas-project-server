@@ -215,6 +215,13 @@ include "org.geomajas.widget" "geomajas-widget-utility-documentation" "1.0.0-SNA
     "Utility widgets for GWT" \
     "incubating" "master.pdf" \
     "" "" ""
+
+include "org.geomajas.plugin" "geomajas-plugin-javascript-api-documentation" "1.0.0-SNAPSHOT" \
+    "JavaScript API plug-in" \
+    "JavaScript API wrapper around the GWT faces for client side integration support." \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-plugin-javascript-api" "1.0.0"
+
 #    "org.geomajas.plugin" "geomajas-widget-utility-smartgwt" "1.0.0-SNAPSHOT"
 
 
