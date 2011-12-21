@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonBar;
 import org.geomajas.widget.utility.configuration.RibbonBarInfo;
 import org.geomajas.widget.utility.configuration.RibbonInfo;
+import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -30,6 +31,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
 public class RibbonTabLayout extends VLayout {
 
 	private TabSet tabs;
+	private Integer ribbonBarMembersMargin;
 
 	/**
 	 * Create a ribbon bar widget using a back-end spring bean identifier and a map.
@@ -53,10 +55,18 @@ public class RibbonTabLayout extends VLayout {
 					public void execute(RibbonInfo ribbonInfo) {
 						for (RibbonBarInfo tabInfo : ribbonInfo.getTabs()) {
 							RibbonBarLayout ribbon = new RibbonBarLayout(tabInfo, mapWidget);
+							if (null != ribbonBarMembersMargin) {
+								ribbon.setMembersMargin(ribbonBarMembersMargin);
+							}
+							ribbon.setStyleName(getStyleName()); // in case the styleName has been set already.
 							ribbon.setBorder("0px");
 							Tab tab = new Tab(tabInfo.getTitle());
+							tab.setTitleStyle(getStyleName() + "TabTitle"); // not working
 							tab.setPane(ribbon);
 							tabs.addTab(tab);
+							tabs.setStyleName(getStyleName()+ "TabSet"); // tabs and panes
+//							tabs.setStylePrimaryName(getStyleName()+ "TabSet"); // DO NOT USE
+							tabs.setPaneContainerClassName(getStyleName() + "TabContainer"); // not working
 						}
 					}
 				});
@@ -65,4 +75,20 @@ public class RibbonTabLayout extends VLayout {
 	public RibbonBar getRibbonBar(int index) {
 		return (RibbonBarLayout) tabs.getTab(index).getPane();
 	}
+	
+	@Override
+	public void setStyleName(String styleName) {
+		super.setStyleName(styleName);
+		for (int i = 0 ; i < tabs.getNumTabs() ; i++) {
+			getRibbonBar(i).asWidget().setStyleName(getStyleName());
+		}
+	}
+	/**
+	 * If set, it overrides the {@link GuwLayout#ribbonBarInternalMargin} set in {@link RibbonBarLayout#RibbonBarLayout()}. 
+	 */
+	public void setRibbonBarMembersMargin(Integer ribbonBarMembersMargin) {
+		this.ribbonBarMembersMargin = ribbonBarMembersMargin;
+	}
+	
+	
 }
