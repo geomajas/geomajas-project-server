@@ -120,7 +120,9 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 * correct screen and world position.
 	 * 
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	public int getOffsetX() {
 		return offsetX;
 	}
@@ -135,7 +137,9 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 *            Set the actual offset value in pixels.
 	 * 
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	public void setOffsetX(int offsetX) {
 		this.offsetX = offsetX;
 	}
@@ -147,7 +151,9 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 * correct screen and world position.
 	 * 
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	public int getOffsetY() {
 		return offsetY;
 	}
@@ -161,7 +167,9 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 * @param offsetY
 	 *            Set the actual offset value in pixels.
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	public void setOffsetY(int offsetY) {
 		this.offsetY = offsetY;
 	}
@@ -176,6 +184,12 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 
 	// @extract-start AbstractGraphicsController, Extract from AbstractGraphicsController
 
+	/**
+	 * Use the <code>getLocation</code> method instead.
+	 * 
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354.
+	 */
+	@Deprecated
 	protected Coordinate getScreenPosition(MouseEvent<?> event) {
 		return GwtEventUtil.getPosition(event, offsetX, offsetY);
 	}
@@ -185,9 +199,18 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	}
 
 	protected Coordinate getPanPosition(MouseEvent<?> event) {
-		return getTransformer().viewToPan(GwtEventUtil.getPosition(event, offsetX, offsetY));
+		Element element = mapWidget.getDOM();
+		double offsetX = ((MouseEvent<?>) event).getRelativeX(element);
+		double offsetY = ((MouseEvent<?>) event).getRelativeY(element);
+		return getTransformer().viewToPan(new Coordinate(offsetX, offsetY));
 	}
 
+	/**
+	 * Use the <code>getLocation</code> method instead.
+	 * 
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354.
+	 */
+	@Deprecated
 	protected Coordinate getWorldPosition(MouseEvent<?> event) {
 		return getTransformer().viewToWorld(GwtEventUtil.getPosition(event, offsetX, offsetY));
 	}
@@ -217,7 +240,10 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 				case SCREEN:
 				default:
 					if (event instanceof MouseEvent<?>) {
-						return GwtEventUtil.getPosition((MouseEvent<?>) event, offsetX, offsetY);
+						Element element = mapWidget.getDOM();
+						double offsetX = ((MouseEvent<?>) event).getRelativeX(element);
+						double offsetY = ((MouseEvent<?>) event).getRelativeY(element);
+						return new Coordinate(offsetX, offsetY);
 					} else if (event instanceof TouchEvent<?>) {
 						Touch touch = ((TouchEvent<?>) event).getTouches().get(0);
 						return new Coordinate(touch.getClientX(), touch.getClientY());

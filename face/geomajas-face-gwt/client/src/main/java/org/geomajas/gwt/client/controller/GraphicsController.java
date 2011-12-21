@@ -50,7 +50,9 @@ public interface GraphicsController extends /*MouseDownHandler, MouseUpHandler, 
 	 * correct screen and world position.
 	 * 
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	int getOffsetX();
 
 	/**
@@ -63,7 +65,9 @@ public interface GraphicsController extends /*MouseDownHandler, MouseUpHandler, 
 	 *            Set the actual offset value in pixels.
 	 * 
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	void setOffsetX(int offsetX);
 
 	/**
@@ -73,7 +77,9 @@ public interface GraphicsController extends /*MouseDownHandler, MouseUpHandler, 
 	 * correct screen and world position.
 	 * 
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	int getOffsetY();
 
 	/**
@@ -85,7 +91,9 @@ public interface GraphicsController extends /*MouseDownHandler, MouseUpHandler, 
 	 * @param offsetY
 	 *            Set the actual offset value in pixels.
 	 * @since 1.8.0
+	 * @deprecated Since 1.10, due to http://jira.geomajas.org/browse/GWT-354. No longer used.
 	 */
+	@Deprecated
 	void setOffsetY(int offsetY);
 }
 // @extract-end
