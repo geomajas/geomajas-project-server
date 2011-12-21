@@ -57,12 +57,12 @@ public class ClientToolInfo implements Serializable {
 	}
 
 	/**
-	 * Get the id to fetch the {@link org.geomajas.gwt.client.action.ToolbarBaseAction}.
+	 * Get the unique id of this tool.
 	 * 
 	 * @return tool id
 	 */
 	public String getId() {
-		return null == toolId ? id : toolId;
+		return id;
 	}
 
 	/**
@@ -76,7 +76,8 @@ public class ClientToolInfo implements Serializable {
 	}
 
 	/**
-	 * Set the id used for creating the tool in {@link org.geomajas.gwt.client.action.toolbar.ToolbarRegistry}.
+	 * Set the toolId used for fetching the {@link org.geomajas.gwt.client.action.ToolbarBaseAction} 
+	 * from {@link org.geomajas.gwt.client.action.toolbar.ToolbarRegistry}.
 	 * 
 	 * @param toolId tool id
 	 * @since 1.10.0
@@ -86,13 +87,14 @@ public class ClientToolInfo implements Serializable {
 	}
 	
 	/**
-	 * Get the id used for creating the tool in {@link org.geomajas.gwt.client.action.toolbar.ToolbarRegistry}.
-	 * 
+	 * <p>Get the toolId used for fetching the {@link org.geomajas.gwt.client.action.ToolbarBaseAction} 
+	 * from {@link org.geomajas.gwt.client.action.toolbar.ToolbarRegistry}.</p>
+	 * <p>If toolId == null, the id is returned.</p>
 	 * @return tool id
 	 * @since 1.10.0
 	 */
 	public String getToolId() {
-		return toolId;
+		return toolId == null ? id : toolId;
 	}
 
 }

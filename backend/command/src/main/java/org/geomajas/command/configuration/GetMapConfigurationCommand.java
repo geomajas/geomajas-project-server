@@ -206,7 +206,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		}
 		List<ClientToolInfo> tools = new ArrayList<ClientToolInfo>();
 		for (ClientToolInfo tool : original) {
-			if (securityContext.isToolAuthorized(tool.getId())) {
+			if (securityContext.isToolAuthorized(tool.getToolId())) {
 				tools.add(tool);
 			}
 		}

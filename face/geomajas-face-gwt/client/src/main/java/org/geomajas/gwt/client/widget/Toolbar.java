@@ -130,7 +130,7 @@ public class Toolbar extends ToolStrip {
 		ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
 		if (toolbarInfo != null) {
 			for (ClientToolInfo tool : toolbarInfo.getTools()) {
-				String id = tool.getId();
+				String id = tool.getToolId();
 				if (ToolId.TOOL_SEPARATOR.equals(id)) {
 					addToolbarSeparator();
 				} else {

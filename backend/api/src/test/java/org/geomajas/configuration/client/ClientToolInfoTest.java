@@ -27,7 +27,7 @@ public class ClientToolInfoTest {
 		ClientToolInfo info = new ClientToolInfo();
 		String toolId = "zoomIn";
 		info.setToolId(toolId);
-		Assert.assertTrue(info.getId().equals(toolId));
+		Assert.assertTrue(info.getToolId().equals(toolId));
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class ClientToolInfoTest {
 		ClientToolInfo info = new ClientToolInfo();
 		String id = "firstZoomIn";
 		info.setId(id);
-		Assert.assertTrue(info.getId().equals(id));
+		Assert.assertTrue(info.getToolId().equals(id));
 	}
 	
 	@Test
@@ -45,6 +45,6 @@ public class ClientToolInfoTest {
 		String toolId = "zoomIn";
 		info.setId(id);
 		info.setToolId(toolId);
-		Assert.assertTrue(info.getId().equals(toolId));
+		Assert.assertTrue(info.getToolId().equals(toolId));
 	}
 }

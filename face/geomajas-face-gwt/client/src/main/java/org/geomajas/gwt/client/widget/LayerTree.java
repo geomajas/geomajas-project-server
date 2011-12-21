@@ -235,7 +235,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		ClientLayerTreeInfo layerTreeInfo = mapModel.getMapInfo().getLayerTree();
 		if (layerTreeInfo != null) {
 			for (ClientToolInfo tool : layerTreeInfo.getTools()) {
-				String id = tool.getId();
+				String id = tool.getToolId();
 				Canvas button = null;
 				ToolbarBaseAction action = LayerTreeRegistry.getToolbarAction(id, mapWidget);
 				if (action instanceof ToolbarWidget) {
