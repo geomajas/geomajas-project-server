@@ -32,6 +32,7 @@
 
 	<modules>
 		<module>geomajas-project-api</module>
+		<module>geomajas-project-geometry</module>
 		<module>geomajas-project-sld</module>
 	</modules>
 
