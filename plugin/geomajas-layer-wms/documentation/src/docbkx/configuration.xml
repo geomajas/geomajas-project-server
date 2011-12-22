@@ -189,7 +189,7 @@
               (optional)</entry>
 
               <entry>Allows yout to force caching of WMS tiles.This can be useful 
-              if you want to unload the used geoserver. This automaticly enables
+              if you want to unload the used WMS server. This automatically enables
               the useProxy property to be able to cache the images.</entry>
             </row>
 
