@@ -114,7 +114,7 @@ public final class GfxUtil {
 			for (int i = 1; i < polygon.getGeometries().length; i++) {
 				Geometry ring = polygon.getGeometries()[i];
 				path.moveTo((int) ring.getCoordinates()[0].getX(), (int) ring.getCoordinates()[0].getY());
-				for (int j = 1; i < ring.getCoordinates().length - 1; i++) {
+				for (int j = 1; j < ring.getCoordinates().length - 1; j++) {
 					Coordinate coordinate = ring.getCoordinates()[j];
 					path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
 				}
