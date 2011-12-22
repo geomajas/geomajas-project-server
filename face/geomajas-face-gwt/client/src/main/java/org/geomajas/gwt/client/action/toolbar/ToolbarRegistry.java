@@ -33,6 +33,12 @@ public final class ToolbarRegistry {
 	static {
 		REGISTRY = new HashMap<String, ToolCreator>();
 		// Please keep registrations in alphabetical order
+		REGISTRY.put(ToolId.BUTTON_GROUP_TITLE, new ToolCreator() {
+			
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new ButtonGroupTitle();
+			}
+		});
 		REGISTRY.put(ToolId.TOOL_EDIT, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {

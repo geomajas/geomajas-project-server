@@ -22,6 +22,9 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public interface ToolId {
 
+	/** Tool id for a title of a button group (used for instance in a drop-down panel). */
+	String BUTTON_GROUP_TITLE = "ButtonGroupTitle";
+	
 	/** Tool id for toolbar separator. */
 	String TOOL_SEPARATOR = "ToolbarSeparator";
 
@@ -84,5 +87,11 @@ public interface ToolId {
 
 	/** Tool id for the layer tree xxx toolbar button. */
 	String TOOL_LAYER_REFRESH = "LayerRefreshAction";
+
+	/** Tool id for a button consisting of a icon and a title. */
+	String BUTTON_ICON_TITLE = "ButtonIconTitle";
+	
+	/** Tool id for a button consisting of a icon, a title and a description. */
+	String BUTTON_ICON_TITLE_DESCRIPTION = "ButtonIconTitleDescription";
 
 }
