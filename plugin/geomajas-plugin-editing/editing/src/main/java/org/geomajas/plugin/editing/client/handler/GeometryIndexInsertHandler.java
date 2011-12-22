@@ -15,9 +15,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
@@ -30,6 +32,20 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * @author Pieter De Graef
  */
 public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler {
+
+	private final GeometryIndexDragSelectionHandler dragHandler = new GeometryIndexDragSelectionHandler();
+
+	@Override
+	public void setService(GeometryEditService service) {
+		super.setService(service);
+		dragHandler.setService(service);
+	}
+
+	@Override
+	public void setEventParser(MapEventParser eventParser) {
+		super.setEventParser(eventParser);
+		dragHandler.setEventParser(eventParser);
+	}
 
 	public void onDown(HumanInputEvent<?> event) {
 		// This handler should only have been applied onto edges. Can't hurt to check again:
@@ -48,11 +64,12 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 
 				// Then change the selection to the newly inserted point:
 				service.getIndexStateService().deselectAll();
-				service.getIndexStateService().select(
-						Collections.singletonList(service.getIndexService().getNextVertex(index)));
+				GeometryIndex insertedIndex = service.getIndexService().getNextVertex(index);
+				service.getIndexStateService().select(Collections.singletonList(insertedIndex));
 
 				// Set status to dragging:
-				service.setEditingState(GeometryEditState.DRAGGING);
+				dragHandler.setIndex(insertedIndex);
+				dragHandler.onDown(event);
 			} catch (GeometryOperationFailedException e) {
 			}
 		}
