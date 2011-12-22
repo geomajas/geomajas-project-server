@@ -82,7 +82,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -111,7 +111,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -137,7 +137,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -166,7 +166,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -192,7 +192,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -221,7 +221,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -247,7 +247,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 
@@ -277,7 +277,7 @@ public class GwtTestJsGeometryIndexStateService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndexStateService::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var stateService = service.getIndexStateService();
 		var indexService = service.getIndexService();
 

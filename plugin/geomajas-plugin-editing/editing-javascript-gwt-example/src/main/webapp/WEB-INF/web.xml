@@ -25,9 +25,9 @@
 
 			<!-- application context -->
 			WEB-INF/applicationContext.xml
-			WEB-INF/mapMain.xml
-			WEB-INF/clientLayerOsm.xml
-			WEB-INF/layerOsm.xml
+			WEB-INF/map*.xml
+			WEB-INF/clientLayer*.xml
+			WEB-INF/layer*.xml
 		</param-value>
 	</context-param>
 

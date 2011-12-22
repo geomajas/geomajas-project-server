@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.editing.jsapi.client.merging;
+package org.geomajas.plugin.editing.jsapi.client.merge;
 
 import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
 import org.timepedia.exporter.client.ExporterUtil;
@@ -22,7 +22,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * 
  * @author Pieter De Graef
  */
-public class GwtTestJsGeometryMergingServce extends GWTTestCase {
+public class GwtTestJsGeometryMergeServce extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
@@ -53,9 +53,9 @@ public class GwtTestJsGeometryMergingServce extends GWTTestCase {
 	/*-{
 		// Some initialization:
 		assertEquals = function(a, b) {
-			@org.geomajas.plugin.editing.jsapi.client.merging.GwtTestJsGeometryMergingServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
+			@org.geomajas.plugin.editing.jsapi.client.merge.GwtTestJsGeometryMergeServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.merging.GeometryMergingService();
+		var service = new $wnd.org.geomajas.plugin.editing.merge.GeometryMergeService();
 
 		assertEquals("false", service.isBusy() + "");
 		service.start();
@@ -68,15 +68,15 @@ public class GwtTestJsGeometryMergingServce extends GWTTestCase {
 	/*-{
 		// Some initialization:
 		assertEquals = function(a, b) {
-			@org.geomajas.plugin.editing.jsapi.client.merging.GwtTestJsGeometryMergingServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
+			@org.geomajas.plugin.editing.jsapi.client.merge.GwtTestJsGeometryMergeServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.merging.GeometryMergingService();
+		var service = new $wnd.org.geomajas.plugin.editing.merge.GeometryMergeService();
 		var active = false;
 
-		service.addGeometryMergingStartHandler(function(event) {
+		service.addGeometryMergeStartHandler(function(event) {
 			active = true;
 		});
-		service.addGeometryMergingStopHandler(function(event) {
+		service.addGeometryMergeStopHandler(function(event) {
 			active = false;
 		});
 
@@ -94,9 +94,9 @@ public class GwtTestJsGeometryMergingServce extends GWTTestCase {
 	/*-{
 		// Some initialization:
 		assertEquals = function(a, b) {
-			@org.geomajas.plugin.editing.jsapi.client.merging.GwtTestJsGeometryMergingServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
+			@org.geomajas.plugin.editing.jsapi.client.merge.GwtTestJsGeometryMergeServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.merging.GeometryMergingService();
+		var service = new $wnd.org.geomajas.plugin.editing.merge.GeometryMergeService();
 		var ring = new $wnd.org.geomajas.jsapi.spatial.Geometry("LineString",
 				0, 0);
 		ring.setCoordinates([
@@ -109,10 +109,10 @@ public class GwtTestJsGeometryMergingServce extends GWTTestCase {
 
 		var count = 0;
 
-		service.addGeometryMergingAddedHandler(function(event) {
+		service.addGeometryMergeAddedHandler(function(event) {
 			count++;
 		});
-		service.addGeometryMergingRemovedHandler(function(event) {
+		service.addGeometryMergeRemovedHandler(function(event) {
 			count--;
 		});
 

@@ -36,5 +36,5 @@ public interface GeometryMergeRemovedHandler extends JsHandler, Exportable {
 	 * @param event
 	 *            The geometry merging removed event.
 	 */
-	void onGeometryMergingRemoved(GeometryMergeRemovedEvent event);
+	void onGeometryMergeRemoved(GeometryMergeRemovedEvent event);
 }

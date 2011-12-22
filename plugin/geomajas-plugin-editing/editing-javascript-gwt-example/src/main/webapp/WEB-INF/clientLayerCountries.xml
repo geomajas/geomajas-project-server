@@ -29,9 +29,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="snappingRules">
 			<list>
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
-					<property name="distance" value="10000" />
+					<property name="distance" value="100000" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="countriesLayer" />
+					<property name="layerId" value="clientLayerCountries" />
 				</bean>
 			</list>
 		</property>

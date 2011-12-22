@@ -70,7 +70,7 @@ public class GeometryMergeService {
 	 *            The {@link GeometryMergeStartHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingStartHandler(GeometryMergeStartHandler handler) {
+	public HandlerRegistration addGeometryMergeStartHandler(GeometryMergeStartHandler handler) {
 		return eventBus.addHandler(GeometryMergeStartHandler.TYPE, handler);
 	}
 
@@ -82,7 +82,7 @@ public class GeometryMergeService {
 	 *            The {@link GeometryMergeStopHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingStopHandler(GeometryMergeStopHandler handler) {
+	public HandlerRegistration addGeometryMergeStopHandler(GeometryMergeStopHandler handler) {
 		return eventBus.addHandler(GeometryMergeStopHandler.TYPE, handler);
 	}
 
@@ -94,7 +94,7 @@ public class GeometryMergeService {
 	 *            The {@link GeometryMergeAddedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingAddedHandler(GeometryMergeAddedHandler handler) {
+	public HandlerRegistration addGeometryMergeAddedHandler(GeometryMergeAddedHandler handler) {
 		return eventBus.addHandler(GeometryMergeAddedHandler.TYPE, handler);
 	}
 
@@ -106,7 +106,7 @@ public class GeometryMergeService {
 	 *            The {@link GeometryMergeRemovedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public HandlerRegistration addGeometryMergingRemovedHandler(GeometryMergeRemovedHandler handler) {
+	public HandlerRegistration addGeometryMergeRemovedHandler(GeometryMergeRemovedHandler handler) {
 		return eventBus.addHandler(GeometryMergeRemovedHandler.TYPE, handler);
 	}
 

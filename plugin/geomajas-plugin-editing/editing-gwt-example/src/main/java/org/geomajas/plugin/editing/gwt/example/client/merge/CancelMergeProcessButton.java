@@ -48,8 +48,8 @@ public class CancelMergeProcessButton extends ToolStripButton implements Geometr
 				}
 			}
 		});
-		service.addGeometryMergingStartHandler(this);
-		service.addGeometryMergingStopHandler(this);
+		service.addGeometryMergeStartHandler(this);
+		service.addGeometryMergeStopHandler(this);
 	}
 
 	// ------------------------------------------------------------------------

@@ -11,8 +11,12 @@
 
 package org.geomajas.plugin.editing.jsapi.gwt.client;
 
+import org.geomajas.configuration.SnappingRuleInfo;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.editing.gwt.client.snap.SnapRuleUtil;
 import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
 import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
@@ -31,6 +35,8 @@ import org.timepedia.exporter.client.NoExport;
 @ExportPackage("org.geomajas.plugin.editing")
 public class JsGeometryEditor implements Exportable {
 
+	private MapWidget mapWidget;
+
 	private MapImpl map;
 
 	private GeometryEditor delegate;
@@ -44,7 +50,7 @@ public class JsGeometryEditor implements Exportable {
 	@NoExport
 	public JsGeometryEditor(Map map) {
 		this.map = (MapImpl) map;
-		MapWidget mapWidget = this.map.getMapWidget();
+		mapWidget = this.map.getMapWidget();
 		delegate = new GeometryEditor(mapWidget);
 		editingService = new JsGeometryEditService(delegate.getService());
 	}
@@ -52,6 +58,22 @@ public class JsGeometryEditor implements Exportable {
 	@ExportConstructor
 	public static JsGeometryEditor createEditor(Map map) {
 		return new JsGeometryEditor(map);
+	}
+
+	/**
+	 * Add the list of snapping rules as they are configured for a specific layer within the XML configuration.
+	 * 
+	 * @param layerId
+	 *            The vector layer to use the configuration from.
+	 */
+	public void addLayerSnappingRules(String layerId) {
+		Layer<?> layer = mapWidget.getMapModel().getLayer(layerId);
+		if (layer != null && layer instanceof VectorLayer) {
+			VectorLayer vLayer = (VectorLayer) layer;
+			for (SnappingRuleInfo snappingRuleInfo : vLayer.getLayerInfo().getSnappingRules()) {
+				SnapRuleUtil.addRule(delegate.getSnappingService(), mapWidget, snappingRuleInfo);
+			}
+		}
 	}
 
 	public MapImpl getMap() {
@@ -85,7 +107,7 @@ public class JsGeometryEditor implements Exportable {
 	public void setSnapOnInsert(boolean snapOnInsert) {
 		delegate.setSnapOnInsert(snapOnInsert);
 	}
-	
+
 	public boolean isBusyEditing() {
 		return delegate.isBusyEditing();
 	}

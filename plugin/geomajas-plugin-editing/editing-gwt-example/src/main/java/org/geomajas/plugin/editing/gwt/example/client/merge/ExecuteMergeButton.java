@@ -76,11 +76,11 @@ public class ExecuteMergeButton extends ToolStripButton implements GeometryMerge
 			}
 		});
 
-		service.addGeometryMergingStartHandler(this);
-		service.addGeometryMergingStopHandler(this);
+		service.addGeometryMergeStartHandler(this);
+		service.addGeometryMergeStopHandler(this);
 
-		service.addGeometryMergingAddedHandler(this);
-		service.addGeometryMergingRemovedHandler(this);
+		service.addGeometryMergeAddedHandler(this);
+		service.addGeometryMergeRemovedHandler(this);
 
 		mapWidget.getMapModel().addFeatureSelectionHandler(new FeatureSelectionHandler() {
 

@@ -25,7 +25,7 @@ import org.timepedia.exporter.client.Exportable;
  */
 @Api(allMethods = true)
 @Export
-@ExportPackage("org.geomajas.plugin.editing.merging.event")
+@ExportPackage("org.geomajas.plugin.editing.merge.event")
 public class GeometryMergeStopEvent extends JsEvent<GeometryMergeStopHandler> implements Exportable {
 
 	public GeometryMergeStopEvent() {
@@ -36,6 +36,6 @@ public class GeometryMergeStopEvent extends JsEvent<GeometryMergeStopHandler> im
 	}
 
 	protected void dispatch(GeometryMergeStopHandler handler) {
-		handler.onGeometryMergingStop(this);
+		handler.onGeometryMergeStop(this);
 	}
 }

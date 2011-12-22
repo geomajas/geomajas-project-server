@@ -21,7 +21,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * 
  * @author Pieter De Graef
  */
-public class GwtTestJsGeometryEditingService extends GWTTestCase {
+public class GwtTestJsGeometryEditService extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
@@ -97,7 +97,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 31300, 0);
 
@@ -124,7 +124,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry("Point", 0,
 				0);
 		geometry.setCoordinates([
@@ -159,7 +159,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry("Polygon",
 				0, 0);
 
@@ -184,7 +184,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry("Polygon",
 				0, 0);
 
@@ -205,7 +205,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry("Polygon",
 				0, 0);
 
@@ -231,7 +231,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 0, 0);
 
@@ -265,7 +265,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 0, 0);
 		geometry.setCoordinates([
@@ -306,7 +306,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 0, 0);
 		geometry.setCoordinates([
@@ -339,7 +339,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 0, 0);
 
@@ -378,7 +378,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 0, 0);
 
@@ -409,7 +409,7 @@ public class GwtTestJsGeometryEditingService extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.service.GwtTestJsGeometryIndex::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditingService();
+		var service = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
 		var geometry = new $wnd.org.geomajas.jsapi.spatial.Geometry(
 				"LineString", 0, 0);
 		geometry.setCoordinates([

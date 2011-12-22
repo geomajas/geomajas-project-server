@@ -64,8 +64,8 @@ public class StartMergeProcessButton extends ToolStripButton implements Geometry
 			}
 		});
 
-		service.addGeometryMergingStartHandler(this);
-		service.addGeometryMergingStopHandler(this);
+		service.addGeometryMergeStartHandler(this);
+		service.addGeometryMergeStopHandler(this);
 
 		mapWidget.getMapModel().addFeatureSelectionHandler(new FeatureSelectionHandler() {
 

@@ -37,8 +37,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Export("GeometryMergingService")
-@ExportPackage("org.geomajas.plugin.editing.merging")
+@Export("GeometryMergeService")
+@ExportPackage("org.geomajas.plugin.editing.merge")
 @Api(allMethods = true)
 public class JsGeometryMergeService implements Exportable {
 
@@ -59,17 +59,17 @@ public class JsGeometryMergeService implements Exportable {
 	 *            The {@link GeometryMergeStartHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public JsHandlerRegistration addGeometryMergingStartHandler(final GeometryMergeStartHandler handler) {
+	public JsHandlerRegistration addGeometryMergeStartHandler(final GeometryMergeStartHandler handler) {
 		org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler h;
 		h = new org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler() {
 
 			public void onGeometryMergingStart(GeometryMergeStartEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeStartEvent e;
 				e = new org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeStartEvent();
-				handler.onGeometryMergingStart(e);
+				handler.onGeometryMergeStart(e);
 			}
 		};
-		HandlerRegistration registration = delegate.addGeometryMergingStartHandler(h);
+		HandlerRegistration registration = delegate.addGeometryMergeStartHandler(h);
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
@@ -81,17 +81,17 @@ public class JsGeometryMergeService implements Exportable {
 	 *            The {@link GeometryMergeStopHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public JsHandlerRegistration addGeometryMergingStopHandler(final GeometryMergeStopHandler handler) {
+	public JsHandlerRegistration addGeometryMergeStopHandler(final GeometryMergeStopHandler handler) {
 		org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler h;
 		h = new org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler() {
 
 			public void onGeometryMergingStop(GeometryMergeStopEvent event) {
 				org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeStopEvent e;
 				e = new org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeStopEvent();
-				handler.onGeometryMergingStop(e);
+				handler.onGeometryMergeStop(e);
 			}
 		};
-		HandlerRegistration registration = delegate.addGeometryMergingStopHandler(h);
+		HandlerRegistration registration = delegate.addGeometryMergeStopHandler(h);
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
@@ -103,7 +103,7 @@ public class JsGeometryMergeService implements Exportable {
 	 *            The {@link GeometryMergeAddedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public JsHandlerRegistration addGeometryMergingAddedHandler(final GeometryMergeAddedHandler handler) {
+	public JsHandlerRegistration addGeometryMergeAddedHandler(final GeometryMergeAddedHandler handler) {
 		org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler h;
 		h = new org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler() {
 
@@ -111,10 +111,10 @@ public class JsGeometryMergeService implements Exportable {
 				org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeAddedEvent e;
 				e = new org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeAddedEvent(
 						event.getGeometry());
-				handler.onGeometryMergingAdded(e);
+				handler.onGeometryMergeAdded(e);
 			}
 		};
-		HandlerRegistration registration = delegate.addGeometryMergingAddedHandler(h);
+		HandlerRegistration registration = delegate.addGeometryMergeAddedHandler(h);
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
@@ -126,7 +126,7 @@ public class JsGeometryMergeService implements Exportable {
 	 *            The {@link GeometryMergeRemovedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
-	public JsHandlerRegistration addGeometryMergingRemovedHandler(final GeometryMergeRemovedHandler handler) {
+	public JsHandlerRegistration addGeometryMergeRemovedHandler(final GeometryMergeRemovedHandler handler) {
 		org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedHandler h;
 		h = new org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedHandler() {
 
@@ -134,10 +134,10 @@ public class JsGeometryMergeService implements Exportable {
 				org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeRemovedEvent e;
 				e = new org.geomajas.plugin.editing.jsapi.client.merge.event.GeometryMergeRemovedEvent(
 						event.getGeometry());
-				handler.onGeometryMergingRemoved(e);
+				handler.onGeometryMergeRemoved(e);
 			}
 		};
-		HandlerRegistration registration = delegate.addGeometryMergingRemovedHandler(h);
+		HandlerRegistration registration = delegate.addGeometryMergeRemovedHandler(h);
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
