@@ -64,6 +64,7 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if ("icon".equalsIgnoreCase(key)) {
 			setIcon(value);
@@ -71,32 +72,39 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 			setTitle(value);
 		} else if ("tooltip".equalsIgnoreCase(key)) {
 			setTooltip(value);
-		} else if (toolbarAction instanceof ConfigurableAction) {
+		}
+		if (toolbarAction instanceof ConfigurableAction) {
 			ConfigurableAction ca = (ConfigurableAction) toolbarAction;
 			ca.configure(key, value);
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getIcon() {
 		return toolbarAction.getIcon();
 	}
 
+	/** {@inheritDoc} */
 	public void setIcon(String icon) {
 		toolbarAction.setIcon(icon);
 	}
 
+	/** {@inheritDoc} */
 	public String getTitle() {
 		return toolbarAction.getTitle();
 	}
 
+	/** {@inheritDoc} */
 	public void setTitle(String title) {
 		toolbarAction.setTitle(title);
 	}
 
+	/** {@inheritDoc} */
 	public String getTooltip() {
 		return toolbarAction.getTooltip();
 	}
 
+	/** {@inheritDoc} */
 	public void setTooltip(String tooltip) {
 		toolbarAction.setTooltip(tooltip);
 	}
@@ -104,11 +112,13 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 	public ToolbarBaseAction getToolbarAction() {
 		return toolbarAction;
 	}
-	
+
+	/** {@inheritDoc} */
 	public boolean isEnabled() {
 		return !toolbarAction.isDisabled();
 	}
 
+	/** {@inheritDoc} */
 	public HandlerRegistration addEnabledHandler(EnabledHandler handler) {
 		return toolbarAction.addToolbarActionHandler(new ToolbarActionForwarder(handler));
 	}
@@ -117,7 +127,6 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 	 * Forwards {@link ToolbarActionEnabledEvent} and {@link ToolbarActionDisabledEvent} to {@link EnabledHandler}s.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class ToolbarActionForwarder implements ToolbarActionHandler {
 
@@ -127,10 +136,12 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 			this.handler = handler;
 		}
 
+		/** {@inheritDoc} */
 		public void onToolbarActionEnabled(ToolbarActionEnabledEvent event) {
 			handler.onEnabled(new EnabledEvent(ToolbarButtonAction.this));
 		}
 
+		/** {@inheritDoc} */
 		public void onToolbarActionDisabled(ToolbarActionDisabledEvent event) {
 			handler.onDisabled(new DisabledEvent(ToolbarButtonAction.this));
 		}

@@ -79,36 +79,41 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	// RibbonGroup implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public RibbonColumn getColumn(int index) {
 		return columns.get(index);
 	}
 
+	/** {@inheritDoc} */
 	public void addColumn(RibbonColumn ribbonColumn) {
 		if (ribbonColumn == null) {
-			throw new NullPointerException("Cannot add RibbonColumn with null value.");
+			throw new IllegalStateException("Cannot add RibbonColumn with null value.");
 		}
 		ribbonColumn.setButtonBaseStyle(buttonBaseStyle);
 		columns.add(ribbonColumn);
 		memberLayout.addMember(ribbonColumn.asWidget());
 	}
 
+	/** {@inheritDoc} */
 	public void addColumn(RibbonColumn ribbonColumn, int index) {
 		if (ribbonColumn == null) {
-			throw new NullPointerException("Cannot add RibbonColumn with null value.");
+			throw new IllegalStateException("Cannot add RibbonColumn with null value.");
 		}
 		ribbonColumn.setButtonBaseStyle(buttonBaseStyle);
 		columns.add(ribbonColumn);
 		memberLayout.addMember(ribbonColumn.asWidget(), index);
 	}
 
+	/** {@inheritDoc} */
 	public void removeColumn(RibbonColumn ribbonColumn) {
 		if (ribbonColumn == null) {
-			throw new NullPointerException("Cannot remove RibbonColumn with null value.");
+			throw new IllegalStateException("Cannot remove RibbonColumn with null value.");
 		}
 		columns.remove(ribbonColumn);
 		memberLayout.removeMember((Canvas) ribbonColumn.asWidget());
 	}
 
+	/** {@inheritDoc} */
 	public void removeColumn(int index) {
 		removeColumn(getColumn(index));
 	}
@@ -117,19 +122,23 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		return id;
 	}
 
+	/** {@inheritDoc} */
 	public void setShowTitle(boolean showTitle) {
 		this.showTitle = showTitle;
 		titleLabel.setVisible(showTitle);
 	}
 
+	/** {@inheritDoc} */
 	public boolean isShowTitle() {
 		return showTitle;
 	}
 
+	/** {@inheritDoc} */
 	public String getTitle() {
 		return title;
 	}
 
+	/** {@inheritDoc} */
 	public void setTitle(String title) {
 		this.title = title;
 	}

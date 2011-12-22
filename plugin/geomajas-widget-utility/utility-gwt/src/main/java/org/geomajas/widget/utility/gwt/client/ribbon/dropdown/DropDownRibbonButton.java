@@ -46,19 +46,18 @@ public class DropDownRibbonButton extends RibbonButton {
 	}
 	
 	/**
-	 * Add configuration key/value pair. The "style" value will trigger the conversion of the actions into buttons on the {@link DropDownPanel}.
+	 * Add configuration key/value pair. The "style" value will trigger the conversion of the actions into buttons on
+	 * the {@link DropDownPanel}.
 	 * 
-	 * @param key
-	 *            parameter key
-	 * @param value
-	 *            parameter value
+	 * @param key parameter key
+	 * @param value parameter value
 	 */
 	public void configure(String key, String value) {
-		if (key.equals("title")) {
+		if ("title".equals(key)) {
 			setTitle(value);
-		} else if (key.equals("icon")) {
+		} else if ("icon".equals(key)) {
 			setIcon(value);
-		} else if (key.equals("toolTip")) {
+		} else if ("toolTip".equals(key)) {
 			setTooltip(value);
 		} 
 	}

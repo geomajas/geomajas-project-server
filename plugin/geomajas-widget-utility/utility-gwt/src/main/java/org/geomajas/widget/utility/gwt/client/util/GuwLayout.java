@@ -27,6 +27,11 @@ public final class GuwLayout {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
+	/** Default icon size for the big buttons in a ribbon. */
+	public static int ribbonColumnButtonIconSize = 24;
+	/** Default icon size for the small vertical action lists in a ribbon. */
+	public static int ribbonColumnListIconSize = 16;
+
 	/** Member margin between ribbon groups in the ribbon bar. */
 	public static int ribbonBarInternalMargin = 2;
 	/** Member margin between components in a ribbon group. */

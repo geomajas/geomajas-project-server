@@ -39,7 +39,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	public static final String PARAMETER_SELECTED = "selected";
 	public static final String PARAMETER_SHOWDISABLEDICON = "showDisabledIcon";
 
-	private static final String DISABLEDMARKER = "-disabled";
+	private static final String DISABLED_MARKER = "-disabled";
 
 	private boolean showTitles = true;
 
@@ -136,12 +136,6 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	// RibbonColumn implementation:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * The text title to display in this button. Set the title.
-	 * 
-	 * @param title
-	 *            new title.
-	 */
 	@Override
 	public void setTitle(String title) {
 		super.setTitle(title);
@@ -149,12 +143,6 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		updateGui();
 	}
 
-	/**
-	 * Icon to be shown with the button title text.
-	 * 
-	 * @param icon
-	 *            URL of new icon. Default value is null
-	 */
 	@Override
 	public void setIcon(String icon) {
 		super.setIcon(icon);
@@ -168,83 +156,44 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		updateGui();
 	}
 
-	/**
-	 * Sets the base CSS class for this button.
-	 * 
-	 * @param The
-	 *            new base CSS class for this button.
-	 */
+	/** {@inheritDoc} */
 	public void setButtonBaseStyle(String buttonBaseStyle) {
 		setBaseStyle(buttonBaseStyle);
 	}
 
-	/**
-	 * Determine whether or not to display the title on this button.
-	 * 
-	 * @param showTitles
-	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
-	 */
+	/** {@inheritDoc} */
 	public void setShowTitles(boolean showTitles) {
 		this.showTitles = showTitles;
 		updateGui();
 	}
 
-	/**
-	 * See whether or not the title on this button is currently visible.
-	 * 
-	 * @return Return whether or not the title on this button is currently visible.
-	 */
+	/** {@inheritDoc} */
 	public boolean isShowTitles() {
 		return showTitles;
 	}
 
-	/**
-	 * Determine the alignment (BOTTOM, RIGHT) for the title on this button.
-	 * 
-	 * @param titleAlignment
-	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
-	 */
+	/** {@inheritDoc} */
 	public void setTitleAlignment(TitleAlignment titleAlignment) {
 		this.titleAlignment = titleAlignment;
 		updateGui();
 	}
 
-	/**
-	 * Get the current value for the title alignment (BOTTOM, RIGHT).
-	 * 
-	 * @return The current value for the title alignment (BOTTOM, RIGHT).
-	 */
+	/** {@inheritDoc} */
 	public TitleAlignment getTitleAlignment() {
 		return titleAlignment;
 	}
 
-	/**
-	 * Is the ribbonColumn enabled?
-	 * 
-	 * @return true if column is enabled
-	 */
+	/** {@inheritDoc} */
 	public boolean isEnabled() {
 		return !isDisabled();
 	}
 
-	/**
-	 * Set the enabled state of the RibbonColumn.
-	 * 
-	 * @param enabled
-	 *            The enabled state
-	 */
+	/** {@inheritDoc} */
 	public void setEnabled(boolean enabled) {
 		setDisabled(!enabled);
 	}
 
-	/**
-	 * Add configuration key/value pair.
-	 * 
-	 * @param key
-	 *            parameter key
-	 * @param value
-	 *            parameter value
-	 */
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		if (PARAMETER_SELECTED.equalsIgnoreCase(key)) {
 			if (buttonAction instanceof RadioAction) {
@@ -271,21 +220,12 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	// Class specific getters and setters:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Get the current icon size in pixels.
-	 * 
-	 * @return The current icon size in pixels.
-	 */
+	@Override
 	public int getIconSize() {
 		return iconSize;
 	}
 
-	/**
-	 * Set a new icon size in pixels.
-	 * 
-	 * @param iconSize
-	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
-	 */
+	@Override
 	public void setIconSize(int iconSize) {
 		this.iconSize = iconSize;
 		updateGui();
@@ -336,6 +276,11 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		}
 	}
 
+	/**
+	 * Get the style for the title text.
+	 *
+	 * @return title text style
+	 */
 	protected String getTitleTextStyle() {
 		if (isDisabled()) {
 			return "color: #777777;";
@@ -344,12 +289,17 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		}
 	}
 
+	/**
+	 * Get the URL for the icon.
+	 *
+	 * @return icon URL
+	 */
 	protected String getIconUrl() {
 		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
 		if (isDisabled() && showDisabledIcon) {
 			int dot = icon.lastIndexOf(".");
 			if (dot > -1) {
-				icon = icon.substring(0, dot) + DISABLEDMARKER + icon.substring(dot, icon.length());
+				icon = icon.substring(0, dot) + DISABLED_MARKER + icon.substring(dot, icon.length());
 			}
 		}
 		return icon;
@@ -359,14 +309,15 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 * Applies state changes of the action to this widget.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class ActionEnabler implements EnabledHandler {
 
+		/** {@inheritDoc} */
 		public void onEnabled(EnabledEvent event) {
 			setEnabled(true);
 		}
 
+		/** {@inheritDoc} */
 		public void onDisabled(DisabledEvent event) {
 			setEnabled(false);
 		}

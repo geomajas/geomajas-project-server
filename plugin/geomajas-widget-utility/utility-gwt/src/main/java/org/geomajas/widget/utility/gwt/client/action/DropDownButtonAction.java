@@ -27,23 +27,35 @@ public class DropDownButtonAction extends AbstractButtonAction {
 	private VStack dropDownPanel;
 
 	/**
+	 * Constructor.
 	 * 
-	 * @param icon
-	 * @param title
-	 * @param tooltip
+	 * @param icon icon
+	 * @param title title
+	 * @param tooltip tooltip
 	 */
 	public DropDownButtonAction(String icon, String title, String tooltip) {
 		super(icon, title, tooltip);
 	}
-	
+
+	/** {@inheritDoc} */
 	public void onClick(ClickEvent event) {
 		dropDownPanel.animateShow(AnimationEffect.SLIDE);
 	}
 
+	/**
+	 * Set panel which should be displayed in the drop down.
+	 *
+	 * @param dropDownPanel drop down panel
+	 */
 	public void setDropDownPanel(VStack dropDownPanel) {
 		this.dropDownPanel = dropDownPanel;
 	}
 
+	/**
+	 * Get the panel which should be displayed in the drop down.
+	 *
+	 * @return drop down panel
+	 */
 	public VStack getDropDownPanel() {
 		return dropDownPanel;
 	}

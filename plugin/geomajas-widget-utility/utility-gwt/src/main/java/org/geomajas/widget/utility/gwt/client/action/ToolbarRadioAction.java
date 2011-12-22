@@ -56,6 +56,7 @@ public class ToolbarRadioAction extends ToolbarButtonAction implements RadioActi
 	// RadioAction implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setSelected(boolean selected) {
 		if (selected) {
 			((ToolbarModalAction) toolbarAction).onSelect(null);
@@ -64,10 +65,12 @@ public class ToolbarRadioAction extends ToolbarButtonAction implements RadioActi
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getRadioGroup() {
 		return radioGroup;
 	}
 
+	/** {@inheritDoc} */
 	public void setRadioGroup(String radioGroup) {
 		this.radioGroup = radioGroup;
 	}

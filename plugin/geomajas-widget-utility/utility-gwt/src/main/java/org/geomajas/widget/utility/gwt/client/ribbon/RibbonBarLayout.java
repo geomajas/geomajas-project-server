@@ -80,6 +80,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		ClientConfigurationService.getApplicationWidgetInfo(application, beanId,
 				new WidgetConfigurationCallback<RibbonBarInfo>() {
 
+					/** {@inheritDoc} */
 					public void execute(RibbonBarInfo ribbonBarInfo) {
 						if (null == ribbonBarInfo) {
 							throw new IllegalStateException("Cannot find ribbon configuration bean " + beanId +
@@ -94,6 +95,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	// Ribbon implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void addGroup(RibbonGroup ribbonGroup) {
 		if (ribbonGroup == null) {
 			throw new NullPointerException("Cannot add RibbonGroup with null value.");
@@ -104,6 +106,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		addMember(ribbonGroup.asWidget());
 	}
 
+	/** {@inheritDoc} */
 	public void addGroup(RibbonGroup ribbonGroup, int index) {
 		if (ribbonGroup == null) {
 			throw new NullPointerException("Cannot add RibbonGroup with null value.");
@@ -114,6 +117,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		addMember(ribbonGroup.asWidget(), index);
 	}
 
+	/** {@inheritDoc} */
 	public void removeGroup(RibbonGroup ribbonGroup) {
 		if (ribbonGroup == null) {
 			throw new NullPointerException("Cannot remove RibbonGroup with null value.");
@@ -122,14 +126,17 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		removeMember((Canvas) ribbonGroup.asWidget());
 	}
 
+	/** {@inheritDoc} */
 	public void removeGroup(int index) {
 		removeGroup(getGroup(index));
 	}
 
+	/** {@inheritDoc} */
 	public RibbonGroup getGroup(int index) {
 		return groups.get(index);
 	}
 
+	/** {@inheritDoc} */
 	public void setShowGroupTitles(boolean showGroupTitles) {
 		this.showGroupTitles = showGroupTitles;
 		for (RibbonGroup group : groups) {
@@ -137,6 +144,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isShowGroupTitles() {
 		return showGroupTitles;
 	}

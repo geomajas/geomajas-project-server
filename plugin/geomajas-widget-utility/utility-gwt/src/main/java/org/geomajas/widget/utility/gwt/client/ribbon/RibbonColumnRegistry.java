@@ -29,6 +29,7 @@ import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarRadioAction;
+import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 /**
  * Registry for all {@link RibbonColumn} types. By default only big buttons and vertical columns are known, but users
@@ -61,10 +62,6 @@ public final class RibbonColumnRegistry {
 
 	private static final Map<String, RibbonColumnCreator> REGISTRY;
 
-	private static int buttonIconSize = 24;
-
-	private static int listIconSize = 16;
-
 	static {
 		REGISTRY = new HashMap<String, RibbonColumnCreator>();
 
@@ -74,7 +71,7 @@ public final class RibbonColumnRegistry {
 				if (tools != null && tools.size() > 0) {
 					ButtonAction action = getAction(tools.get(0), mapWidget);
 					if (action != null) {
-						return new RibbonButton(action, buttonIconSize, TitleAlignment.BOTTOM);
+						return new RibbonButton(action, GuwLayout.ribbonColumnButtonIconSize, TitleAlignment.BOTTOM);
 					}
 				}
 				return null;
@@ -93,7 +90,7 @@ public final class RibbonColumnRegistry {
 						}
 					}
 					if (actions.size() > 0) {
-						return new ActionListRibbonColumn(actions, listIconSize);
+						return new ActionListRibbonColumn(actions, GuwLayout.ribbonColumnListIconSize);
 					}
 				}
 				return null;
@@ -103,26 +100,6 @@ public final class RibbonColumnRegistry {
 
 	private RibbonColumnRegistry() {
 		// utility class, hide constructor
-	}
-
-	/**
-	 * Change the default icon size for the big buttons in a ribbon.
-	 * 
-	 * @param buttonIconSize
-	 *            The new icon size. Default is 24 pixels.
-	 */
-	public static void setButtonIconSize(int buttonIconSize) {
-		RibbonColumnRegistry.buttonIconSize = buttonIconSize;
-	}
-
-	/**
-	 * Change the default icon size for the small vertical action lists in a ribbon.
-	 * 
-	 * @param listIconSize
-	 *            The new icon size. Default is 16.
-	 */
-	public static void setListIconSize(int listIconSize) {
-		RibbonColumnRegistry.listIconSize = listIconSize;
 	}
 
 	/**

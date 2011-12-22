@@ -59,9 +59,8 @@ public interface RibbonColumn {
 
 	/**
 	 * Determine title alignment (BOTTOM, RIGHT) for title within this column.
-	 * 
-	 * @param titleAlignment
-	 *            The new value.
+	 *
+	 * @param titleAlignment The new value. Applying this new value will immediately trigger the GUI to redraw.
 	 */
 	void setTitleAlignment(TitleAlignment titleAlignment);
 

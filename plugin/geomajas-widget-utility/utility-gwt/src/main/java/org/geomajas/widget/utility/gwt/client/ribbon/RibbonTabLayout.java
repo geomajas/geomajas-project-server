@@ -17,7 +17,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonBar;
 import org.geomajas.widget.utility.configuration.RibbonBarInfo;
 import org.geomajas.widget.utility.configuration.RibbonInfo;
-import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -64,8 +63,8 @@ public class RibbonTabLayout extends VLayout {
 							tab.setTitleStyle(getStyleName() + "TabTitle"); // not working
 							tab.setPane(ribbon);
 							tabs.addTab(tab);
-							tabs.setStyleName(getStyleName()+ "TabSet"); // tabs and panes
-//							tabs.setStylePrimaryName(getStyleName()+ "TabSet"); // DO NOT USE
+							tabs.setStyleName(getStyleName() + "TabSet"); // tabs and panes
+//							tabs.setStylePrimaryName(getStyleName() + "TabSet"); // DO NOT USE
 							tabs.setPaneContainerClassName(getStyleName() + "TabContainer"); // not working
 						}
 					}
@@ -84,11 +83,11 @@ public class RibbonTabLayout extends VLayout {
 		}
 	}
 	/**
-	 * If set, it overrides the {@link GuwLayout#ribbonBarInternalMargin} set in {@link RibbonBarLayout#RibbonBarLayout()}. 
+	 * If set, it overrides the {@link org.geomajas.widget.utility.gwt.client.util.GuwLayout#ribbonBarInternalMargin}
+	 * set in {@link RibbonBarLayout#RibbonBarLayout()}.
 	 */
 	public void setRibbonBarMembersMargin(Integer ribbonBarMembersMargin) {
 		this.ribbonBarMembersMargin = ribbonBarMembersMargin;
 	}
-	
-	
+
 }

@@ -47,9 +47,9 @@ public abstract class ToolbarBaseAction {
 	/**
 	 * Constructor for ToolbarBaseAction.
 	 * 
-	 * @param icon
-	 * @param title
-	 * @param tooltip
+	 * @param icon icon
+	 * @param title title
+	 * @param tooltip tool tip
 	 * @since 1.10.0
 	 */
 	public ToolbarBaseAction(String icon, String title, String tooltip) {

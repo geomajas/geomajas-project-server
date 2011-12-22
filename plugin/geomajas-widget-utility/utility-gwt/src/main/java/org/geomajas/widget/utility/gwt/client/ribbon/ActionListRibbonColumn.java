@@ -66,6 +66,7 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	// Class specific methods:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setButtonBaseStyle(String buttonBaseStyle) {
 		for (RibbonButton button : buttons) {
 			button.setBaseStyle(buttonBaseStyle);
@@ -76,56 +77,31 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	// RibbonColumn implementation:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Returns the vertical layout that holds all buttons.
-	 * 
-	 * @return The vertical layout that holds all buttons.
-	 */
+	/** {@inheritDoc} */
 	public Widget asWidget() {
 		return this;
 	}
 
-	/**
-	 * Determine whether or not to display all titles on all buttons.
-	 * 
-	 * @param showTitles
-	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
-	 */
+	/** {@inheritDoc} */
 	public void setShowTitles(boolean showTitles) {
 		for (RibbonButton button : buttons) {
 			button.setShowTitles(showTitles);
 		}
 	}
 
-	/**
-	 * See whether or not the titles on the buttons are currently visible.
-	 * 
-	 * @return Return whether or not the titles on the buttons are currently visible.
-	 */
+	/** {@inheritDoc} */
 	public boolean isShowTitles() {
-		if (buttons.size() > 0) {
-			return buttons.get(0).isShowTitles();
-		}
-		return false;
+		return buttons.size() > 0 && buttons.get(0).isShowTitles();
 	}
 
-	/**
-	 * Determine the alignment (BOTTOM, RIGHT) for the titles on all buttons.
-	 * 
-	 * @param titleAlignment
-	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
-	 */
+	/** {@inheritDoc} */
 	public void setTitleAlignment(TitleAlignment titleAlignment) {
 		for (RibbonButton button : buttons) {
 			button.setTitleAlignment(titleAlignment);
 		}
 	}
 
-	/**
-	 * Get the current value for the title alignment (BOTTOM, RIGHT).
-	 * 
-	 * @return The current value for the title alignment (BOTTOM, RIGHT).
-	 */
+	/** {@inheritDoc} */
 	public TitleAlignment getTitleAlignment() {
 		if (buttons.size() > 0) {
 			return buttons.get(0).getTitleAlignment();
@@ -133,33 +109,17 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 		return TitleAlignment.BOTTOM;
 	}
 
-	/**
-	 * Is the ribbonColumn enabled?
-	 * 
-	 * @return true if column is enabled
-	 */
+	/** {@inheritDoc} */
 	public boolean isEnabled() {
 		return !isDisabled();
 	}
 
-	/**
-	 * Set the enabled state of the RibbonColumn.
-	 * 
-	 * @param enabled
-	 *            The enabled state
-	 */
+	/** {@inheritDoc} */
 	public void setEnabled(boolean enabled) {
 		setDisabled(!enabled);
 	}
 
-	/**
-	 * Add configuration key/value pair. This pair will be applied on all actions within this list.
-	 * 
-	 * @param key
-	 *            parameter key
-	 * @param value
-	 *            parameter value
-	 */
+	/** {@inheritDoc} */
 	public void configure(String key, String value) {
 		for (RibbonButton button : buttons) {
 			button.configure(key, value);

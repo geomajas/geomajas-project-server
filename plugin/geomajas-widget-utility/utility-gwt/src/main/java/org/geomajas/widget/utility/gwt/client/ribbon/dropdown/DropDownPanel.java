@@ -1,3 +1,14 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
 package org.geomajas.widget.utility.gwt.client.ribbon.dropdown;
 
 import java.util.ArrayList;
@@ -29,20 +40,20 @@ import com.smartgwt.client.widgets.layout.VStack;
 public class DropDownPanel extends VStack {
 	
 	/**
-	 * Same as a RibbonButton in a ToolbarActionList; icon (16px) on the left and title on the right
+	 * Same as a RibbonButton in a ToolbarActionList; icon (16px) on the left and title on the right.
 	 */
 	public static final String ICON_AND_TITLE = "iconAndTitle";
 	/**
-	 * Icon (24px) on the left and the title and description on the right, the title on top of the description
+	 * Icon (24px) on the left and the title and description on the right, the title on top of the description.
 	 */
 	public static final String ICON_TITLE_AND_DESCRIPTION = "iconTitleAndDescription";
 
 	private final DropDownRibbonButton button;
 	private HandlerRegistration registration;
 	
-	List<VStack> groups = new ArrayList<VStack>();
-	List<Label> groupTitles = new ArrayList<Label>();
-	List<RibbonButton> buttons = new ArrayList<RibbonButton>();
+	private List<VStack> groups = new ArrayList<VStack>();
+	private List<Label> groupTitles = new ArrayList<Label>();
+	private List<RibbonButton> buttons = new ArrayList<RibbonButton>();
 
 	public DropDownPanel(final DropDownRibbonButton button) {
 		super();
@@ -65,15 +76,18 @@ public class DropDownPanel extends VStack {
 	/**
 	 * Converts the given action into a {@link RibbonButton}.
 	 * 
-	 * @param actions
+	 * @param action action
 	 * @param buttonLayout determines the layout of the button.
+	 * @return converted button
 	 */
 	private RibbonButton getButton(ButtonAction action, String buttonLayout) {
-		RibbonButton button = null;
-		if (buttonLayout.equals(ICON_AND_TITLE)) {
+		RibbonButton button;
+		if (ICON_AND_TITLE.equals(buttonLayout)) {
 			button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
-		} else if (buttonLayout.equals(ICON_TITLE_AND_DESCRIPTION)) {
+		} else if (ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
 			button = new RibbonButtonDescribed(action, 32);
+		} else {
+			throw new IllegalStateException("Unknown layout: " + buttonLayout);
 		}
 		button.setWidth100();
 		button.setMargin(2);
@@ -111,42 +125,43 @@ public class DropDownPanel extends VStack {
 				button.getPageTop() + button.getInnerContentHeight() - 4);
 		button.setSelected(true);
 		registration = Event.addNativePreviewHandler(new NativePreviewHandler() {
-	        public void onPreviewNativeEvent(NativePreviewEvent preview) {
-	        	int typeInt = preview.getTypeInt();
+			public void onPreviewNativeEvent(NativePreviewEvent preview) {
+				int typeInt = preview.getTypeInt();
 				if (typeInt == Event.ONMOUSEUP) {
-	        		Event event = Event.as(preview.getNativeEvent());
-	        		// Can not retrieve the clicked widget from the Event, so here goes...
-	        		int clientX = event.getClientX();
-	        		int clientY = event.getClientY();
-	        		// Was the button clicked?
-	        		int left = button.getPageLeft();
-	        		int right = left + button.getInnerContentWidth();
+					Event event = Event.as(preview.getNativeEvent());
+					// Can not retrieve the clicked widget from the Event, so here goes...
+					int clientX = event.getClientX();
+					int clientY = event.getClientY();
+					// Was the button clicked?
+					int left = button.getPageLeft();
+					int right = left + button.getInnerContentWidth();
 					int top = button.getPageTop();
 					int bottom = top + button.getInnerContentHeight();
-	        		boolean clickIsOutside = true;
-	        		if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
-	        			clickIsOutside = false;
-	        		}
-	        		if (clickIsOutside) {
-	        			// Was this panel clicked?
-	        			right = getPageRight();
-	        			top = getPageTop();
-	        			bottom = getPageBottom();
-	        			if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
-	        				clickIsOutside = false;
-		        		}
-	        		}
-	        		if (clickIsOutside) {
-	        			hide();
-	        		}
-	        	}
-	        }
+					boolean clickIsOutside = true;
+					if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
+						clickIsOutside = false;
+					}
+					if (clickIsOutside) {
+						// Was this panel clicked?
+						right = getPageRight();
+						top = getPageTop();
+						bottom = getPageBottom();
+						if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
+							clickIsOutside = false;
+						}
+					}
+					if (clickIsOutside) {
+						hide();
+					}
+				}
+			}
 		});
 		super.animateShow(effect);
 	}
-	
+
 	/**
-	 * hide() instead of animateHide(), to make sure that the panel hides immediately (when navigating away from the ribbon).
+	 * Use hide() instead of animateHide(), to make sure that the panel hides immediately (when navigating away from
+	 * the ribbon).
 	 */
 	@Override
 	public void hide() {

@@ -14,6 +14,7 @@ package org.geomajas.widget.utility.gwt.client.ribbon;
 import org.geomajas.gwt.client.util.HtmlBuilder;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
+import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 /**
  * Extension of the RibbonButton class that displays a single button with a description.
@@ -24,14 +25,25 @@ public class RibbonButtonDescribed extends RibbonButton {
 
 	private String description;
 
+	/**
+	 * Construct a button which displays the description.
+	 *
+	 * @param buttonAction base action
+	 */
 	public RibbonButtonDescribed(ButtonAction buttonAction) {
-		this(buttonAction, 24);
+		this(buttonAction, GuwLayout.ribbonColumnButtonIconSize);
 	}
 
+	/**
+	 * Construct a button which displays the description.
+	 *
+	 * @param buttonAction base action
+	 * @param iconSize icon size
+	 */
 	public RibbonButtonDescribed(ButtonAction buttonAction, Integer iconSize) {
 		super(buttonAction, iconSize, null);
 		if (buttonAction instanceof ToolbarButtonAction) {
-			description = ((ToolbarButtonAction)buttonAction).getDescription();
+			description = ((ToolbarButtonAction) buttonAction).getTitle(); // @todo Description();
 		}
 	}
 
@@ -39,7 +51,7 @@ public class RibbonButtonDescribed extends RibbonButton {
 	protected void updateGui() {
 		ButtonAction buttonAction = getButtonAction();
 		String title = buttonAction.getTitle() == null ? buttonAction.getTooltip() : buttonAction.getTitle();
-		if (title == null) {
+		if (null == title) {
 			title = "??";
 		} else {
 			title = title.trim();
