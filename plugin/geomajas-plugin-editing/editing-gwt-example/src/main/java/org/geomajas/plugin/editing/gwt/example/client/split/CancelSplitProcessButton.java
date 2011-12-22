@@ -34,7 +34,7 @@ public class CancelSplitProcessButton extends ToolStripButton implements Geometr
 		setIconSize(24);
 		setHeight(32);
 		setDisabled(true);
-		setHoverWidth(400);
+		setHoverWrap(false);
 		setTooltip("Cancel the splitting process. Nothing will be saved.");
 		addClickHandler(new ClickHandler() {
 

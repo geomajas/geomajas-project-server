@@ -63,5 +63,8 @@ public class SplitShowcaseTab extends Tab {
 		layout.addMember(toolStrip);
 		layout.addMember(mapWidget);
 		setPane(layout);
+
+		// Add the possibility to calculate area's while drawing the splitting line:
+		new SplitShowAreaHandler(mapWidget, service);
 	}
 }

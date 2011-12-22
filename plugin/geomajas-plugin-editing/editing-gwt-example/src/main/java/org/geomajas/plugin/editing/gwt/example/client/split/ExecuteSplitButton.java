@@ -31,7 +31,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 /**
- * Button that executes the split calculation and displays the resut on the map.
+ * Button that executes the split calculation and displays the result on the map.
  * 
  * @author Pieter De Graef
  */
@@ -49,7 +49,7 @@ public class ExecuteSplitButton extends ToolStripButton implements GeometrySplit
 		setIconSize(24);
 		setHeight(32);
 		setDisabled(true);
-		setHoverWidth(400);
+		setHoverWrap(false);
 		setTooltip("Split the selected country now.");
 		addClickHandler(new ClickHandler() {
 
