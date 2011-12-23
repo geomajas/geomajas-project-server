@@ -46,8 +46,13 @@ public class DropDownRibbonButton extends RibbonButton {
 	}
 	
 	/**
+<<<<<<< .mine
+	 * Add configuration key/value pair. The "style" value will trigger 
+	 * the conversion of the actions into buttons on the {@link DropDownPanel}.
+=======
 	 * Add configuration key/value pair. The "style" value will trigger the conversion of the actions into buttons on
 	 * the {@link DropDownPanel}.
+>>>>>>> .r9525
 	 * 
 	 * @param key parameter key
 	 * @param value parameter value

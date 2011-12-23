@@ -30,10 +30,12 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * Button action implementation that delegates to a {@link ToolbarBaseAction} instance.
  * 
  * @author Pieter De Graef
+ * @author Emiel Ackermann
  */
 public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 
 	protected ToolbarBaseAction toolbarAction;
+	private String description;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -72,11 +74,20 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 			setTitle(value);
 		} else if ("tooltip".equalsIgnoreCase(key)) {
 			setTooltip(value);
-		}
-		if (toolbarAction instanceof ConfigurableAction) {
+		} else if ("description".equalsIgnoreCase(key)) {
+			setDescription(value);
+		} else if (toolbarAction instanceof ConfigurableAction) {
 			ConfigurableAction ca = (ConfigurableAction) toolbarAction;
 			ca.configure(key, value);
 		}
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	private void setDescription(String description) {
+		this.description = description;
 	}
 
 	/** {@inheritDoc} */

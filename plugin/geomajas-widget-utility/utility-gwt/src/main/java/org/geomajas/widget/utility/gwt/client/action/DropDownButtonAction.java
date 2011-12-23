@@ -11,10 +11,11 @@
 
 package org.geomajas.widget.utility.gwt.client.action;
 
-import org.geomajas.widget.utility.common.client.action.AbstractButtonAction;
+import org.geomajas.gwt.client.action.ToolbarAction;
+import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownPanel;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.smartgwt.client.types.AnimationEffect;
+import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.layout.VStack;
 
 /**
@@ -22,24 +23,16 @@ import com.smartgwt.client.widgets.layout.VStack;
  * 
  * @author Emiel Ackermann
  */
-public class DropDownButtonAction extends AbstractButtonAction {
+public class DropDownButtonAction extends ToolbarAction {
 
-	private VStack dropDownPanel;
-
+	private DropDownPanel dropDownPanel;
+	
 	/**
-	 * Constructor.
-	 * 
-	 * @param icon icon
-	 * @param title title
-	 * @param tooltip tooltip
+	 * Title, icon and tool tip of the {@link DropDownRibbonButton} 
+	 * are set through {@link Parameter}s of the {@link RibbonColumnInfo}.
 	 */
-	public DropDownButtonAction(String icon, String title, String tooltip) {
-		super(icon, title, tooltip);
-	}
-
-	/** {@inheritDoc} */
-	public void onClick(ClickEvent event) {
-		dropDownPanel.animateShow(AnimationEffect.SLIDE);
+	public DropDownButtonAction() {
+		super("", "");
 	}
 
 	/**
@@ -47,7 +40,7 @@ public class DropDownButtonAction extends AbstractButtonAction {
 	 *
 	 * @param dropDownPanel drop down panel
 	 */
-	public void setDropDownPanel(VStack dropDownPanel) {
+	public void setDropDownPanel(DropDownPanel dropDownPanel) {
 		this.dropDownPanel = dropDownPanel;
 	}
 
@@ -58,5 +51,13 @@ public class DropDownButtonAction extends AbstractButtonAction {
 	 */
 	public VStack getDropDownPanel() {
 		return dropDownPanel;
+	}
+
+	public void onClick(ClickEvent event) {
+		if (dropDownPanel.isVisible()) {
+			dropDownPanel.hide();
+		} else {
+			dropDownPanel.animateShow(AnimationEffect.SLIDE);
+		}
 	}
 }

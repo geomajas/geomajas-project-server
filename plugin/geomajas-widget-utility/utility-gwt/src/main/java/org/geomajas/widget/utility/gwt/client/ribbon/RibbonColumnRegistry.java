@@ -21,16 +21,19 @@ import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
+import org.geomajas.gwt.client.action.toolbar.ButtonGroupTitle;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
+import org.geomajas.widget.utility.gwt.client.action.DropDownButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarRadioAction;
+import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownPanel;
+import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownRibbonButton;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
-
 /**
  * Registry for all {@link RibbonColumn} types. By default only big buttons and vertical columns are known, but users
  * can add their own types. This registry also offers a few configuration settings, such as icon sizes for the default
@@ -96,6 +99,42 @@ public final class RibbonColumnRegistry {
 				return null;
 			}
 		});
+		
+		REGISTRY.put("ToolbarDropDownButton", new RibbonColumnCreator() {
+
+			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
+				final DropDownRibbonButton dropDown = new DropDownRibbonButton(new DropDownButtonAction());
+				DropDownPanel panel = dropDown.getPanel();
+				ButtonGroupTitle title = null;
+				List<ButtonAction> actions = null;
+				for (ClientToolInfo tool : tools) {
+					ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
+					if (toolbarAction != null) {
+						if (toolbarAction instanceof ButtonGroupTitle) {
+							// First wrap current button group title and actions into a group.
+							if (null != actions) {
+								panel.addGroup(title, actions);
+							}
+							title = new ButtonGroupTitle();
+							for (Parameter parameter : tool.getParameters()) {
+								title.configure(parameter.getName(), parameter.getValue());
+							}
+							actions = new ArrayList<ButtonAction>();
+						} else {
+							ButtonAction action = getAction(tool, mapWidget);
+							if (action != null) {
+								for (Parameter parameter : tool.getParameters()) {
+									action.configure(parameter.getName(), parameter.getValue());
+								}
+							}
+							actions.add(action);
+						}
+					}
+				}
+				panel.addGroup(title, actions);
+				return dropDown;
+			}
+		});
 	}
 
 	private RibbonColumnRegistry() {
@@ -154,7 +193,7 @@ public final class RibbonColumnRegistry {
 	// ------------------------------------------------------------------------
 
 	private static ButtonAction getAction(ClientToolInfo tool, MapWidget mapWidget) {
-		ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
+		ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
 
 		if (toolbarAction != null) {
 			ButtonAction action = null;

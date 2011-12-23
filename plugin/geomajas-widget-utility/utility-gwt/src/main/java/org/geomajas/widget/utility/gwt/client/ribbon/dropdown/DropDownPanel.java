@@ -76,18 +76,15 @@ public class DropDownPanel extends VStack {
 	/**
 	 * Converts the given action into a {@link RibbonButton}.
 	 * 
-	 * @param action action
+	 * @param actions
 	 * @param buttonLayout determines the layout of the button.
-	 * @return converted button
 	 */
 	private RibbonButton getButton(ButtonAction action, String buttonLayout) {
-		RibbonButton button;
-		if (ICON_AND_TITLE.equals(buttonLayout)) {
+		RibbonButton button = null;
+		if (buttonLayout.equals(ICON_AND_TITLE)) {
 			button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
-		} else if (ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+		} else if (buttonLayout.equals(ICON_TITLE_AND_DESCRIPTION)) {
 			button = new RibbonButtonDescribed(action, 32);
-		} else {
-			throw new IllegalStateException("Unknown layout: " + buttonLayout);
 		}
 		button.setWidth100();
 		button.setMargin(2);
@@ -158,10 +155,10 @@ public class DropDownPanel extends VStack {
 		});
 		super.animateShow(effect);
 	}
-
+	
 	/**
-	 * Use hide() instead of animateHide(), to make sure that the panel hides immediately (when navigating away from
-	 * the ribbon).
+	 * hide() instead of animateHide(), to make sure 
+	 * the panel hides immediately (when navigating away from the ribbon).
 	 */
 	@Override
 	public void hide() {
