@@ -37,6 +37,15 @@
 			<artifactId>geomajas-project-api-annotation</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-geometry</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-geometry</artifactId>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
 		</dependency>
