@@ -17,6 +17,8 @@ import org.geomajas.plugin.editing.client.GeometryArrayFunction;
 import org.geomajas.plugin.editing.client.split.GeometrySplitService;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent;
+import org.geomajas.plugin.editing.jsapi.client.GeometryArrayCallback;
+import org.geomajas.plugin.editing.jsapi.client.GeometryArrayCallback.GeometryArrayHolder;
 import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
 import org.geomajas.plugin.editing.jsapi.client.split.event.GeometrySplitStartHandler;
 import org.geomajas.plugin.editing.jsapi.client.split.event.GeometrySplitStopHandler;
@@ -24,6 +26,7 @@ import org.geomajas.plugin.jsapi.client.event.JsHandlerRegistration;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
+import org.timepedia.exporter.client.NoExport;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -48,9 +51,19 @@ public class JsGeometrySplitService implements Exportable {
 		editService = new JsGeometryEditService(delegate.getGeometryEditService());
 	}
 
+	public JsGeometrySplitService(JsGeometryEditService editService) {
+		this.editService = editService;
+		this.delegate = new GeometrySplitService(editService.getDelegate());
+	}
+
 	// ------------------------------------------------------------------------
 	// Public methods for adding handlers:
 	// ------------------------------------------------------------------------
+
+	@NoExport
+	public GeometrySplitService getDelegate() {
+		return delegate;
+	}
 
 	/**
 	 * Register a {@link GeometrySplitStartHandler} to listen to events that signal the splitting process has started.
@@ -105,8 +118,17 @@ public class JsGeometrySplitService implements Exportable {
 		delegate.start(geometry);
 	}
 
-	public void stop(GeometryArrayFunction callback) {
-		delegate.stop(callback);
+	public void stop(final GeometryArrayCallback callback) {
+		if (callback == null) {
+			delegate.stop(null);
+		} else {
+			delegate.stop(new GeometryArrayFunction() {
+
+				public void execute(Geometry[] geometries) {
+					callback.execute(new GeometryArrayHolder(geometries));
+				}
+			});
+		}
 	}
 
 	// ------------------------------------------------------------------------

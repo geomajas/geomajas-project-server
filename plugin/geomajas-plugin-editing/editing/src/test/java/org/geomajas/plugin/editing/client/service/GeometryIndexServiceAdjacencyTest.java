@@ -128,13 +128,13 @@ public class GeometryIndexServiceAdjacencyTest {
 		try {
 			service.getAdjacentVertices(null, index);
 			Assert.fail();
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			// We expect this exception.
 		}
 		try {
 			service.getAdjacentVertices(point, null);
 			Assert.fail();
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			// We expect this exception.
 		}
 		try {
@@ -322,13 +322,13 @@ public class GeometryIndexServiceAdjacencyTest {
 		try {
 			service.getAdjacentEdges(null, index);
 			Assert.fail();
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			// We expect this exception.
 		}
 		try {
 			service.getAdjacentEdges(point, null);
 			Assert.fail();
-		} catch (NullPointerException e) {
+		} catch (Exception e) {
 			// We expect this exception.
 		}
 		try {

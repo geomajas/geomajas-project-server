@@ -45,7 +45,8 @@ public class GwtTestJsGeometrySplitServce extends GWTTestCase {
 		assertEquals = function(a, b) {
 			@org.geomajas.plugin.editing.jsapi.client.split.GwtTestJsGeometrySplitServce::jsAssertEquals(Ljava/lang/Object;Ljava/lang/Object;)(a, b);
 		}
-		var service = new $wnd.org.geomajas.plugin.editing.split.GeometrySplitService();
+		var editService = new $wnd.org.geomajas.plugin.editing.service.GeometryEditService();
+		var service = new $wnd.org.geomajas.plugin.editing.split.GeometrySplitService(editService);
 
 		var ring = new $wnd.org.geomajas.jsapi.spatial.Geometry("LinearRing",
 				0, 0);

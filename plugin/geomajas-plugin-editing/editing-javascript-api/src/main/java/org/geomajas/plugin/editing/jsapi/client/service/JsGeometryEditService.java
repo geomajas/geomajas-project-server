@@ -104,6 +104,11 @@ public class JsGeometryEditService implements Exportable {
 		stateService = new JsGeometryIndexStateService(delegate.getIndexStateService());
 	}
 
+	@NoExport
+	public GeometryEditService getDelegate() {
+		return delegate;
+	}
+
 	// Registering event handlers:
 
 	/**

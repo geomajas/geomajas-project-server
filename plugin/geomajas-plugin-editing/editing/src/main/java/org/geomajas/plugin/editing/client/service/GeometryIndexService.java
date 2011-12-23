@@ -105,7 +105,8 @@ public class GeometryIndexService {
 	/**
 	 * Given a certain string identifier, parse it as a geometry index.
 	 * 
-	 * @param id The identifier to try and parse.
+	 * @param id
+	 *            The identifier to try and parse.
 	 * @return Returns the associating geometry index (if no exception was thrown).
 	 * @throws GeometryIndexNotFoundException
 	 *             In case the identifier could not be parsed.
@@ -481,7 +482,8 @@ public class GeometryIndexService {
 	 * @return Returns the total amount of siblings.
 	 */
 	public int getSiblingCount(Geometry geometry, GeometryIndex index) {
-		if (index.hasChild() && geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+		if (index.hasChild() && geometry.getGeometries() != null && 
+				geometry.getGeometries().length > index.getValue()) {
 			return getSiblingCount(geometry.getGeometries()[index.getValue()], index.getChild());
 		}
 		switch (index.getType()) {
@@ -513,10 +515,13 @@ public class GeometryIndexService {
 	 *            An index pointing to a vertex or edge within the geometry. This index will then naturally be a part of
 	 *            a coordinate array. It is this array we're looking for.
 	 * @return Returns the array of coordinate from within the geometry where the given index is a part of.
-	 * @throws GeometryIndexNotFoundException geometry index not found
+	 * @throws GeometryIndexNotFoundException
+	 *             geometry index not found
 	 */
-	public Coordinate[] getSiblingVertices(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
-		if (index.hasChild() && geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+	public Coordinate[] getSiblingVertices(Geometry geometry, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		if (index.hasChild() && geometry.getGeometries() != null && 
+				geometry.getGeometries().length > index.getValue()) {
 			return getSiblingVertices(geometry.getGeometries()[index.getValue()], index.getChild());
 		}
 		switch (index.getType()) {

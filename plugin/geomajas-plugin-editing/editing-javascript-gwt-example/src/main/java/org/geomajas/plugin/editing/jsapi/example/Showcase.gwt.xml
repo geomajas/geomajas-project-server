@@ -17,6 +17,7 @@
 
 	<!-- Import Geomajas plugins -->
 	<inherits name="org.geomajas.plugin.editing.jsapi.gwt.EditingJsApi"/>
+  	<set-property name="export" value="yes"/>
 
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
