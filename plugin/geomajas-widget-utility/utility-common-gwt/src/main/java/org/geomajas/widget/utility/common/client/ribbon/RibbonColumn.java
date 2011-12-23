@@ -32,7 +32,7 @@ public interface RibbonColumn {
 	 * @since 1.0.0
 	 */
 	enum TitleAlignment {
-		BOTTOM, RIGHT
+		TOP, BOTTOM, RIGHT
 	};
 
 	/**
