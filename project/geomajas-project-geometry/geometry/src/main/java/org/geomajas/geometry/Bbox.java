@@ -14,24 +14,27 @@ package org.geomajas.geometry;
 import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.global.Json;
 
 /**
- * DTO bounding box definition.
+ * Basic axis aligned bounding box definition. This type of coordinate is meant as a Data Transfer Object (DTO) within
+ * Java environments, and especially within GWT environments.
  * 
+ * @author Pieter De Graef
  * @author Joachim Van der Auwera
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class Bbox implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+
 	/**
-	 * the min x boundary of the bbox.
+	 * the minimum X boundary of the bounding box.
 	 */
 	private double x;
+
 	/**
-	 * the min y boundary of the bbox.
+	 * the minimum Y boundary of the bounding box.
 	 */
 	private double y;
 
@@ -39,7 +42,7 @@ public class Bbox implements Serializable {
 
 	private double height;
 
-	/** Huge bbox, should cover coordinate space of all known CRSes. */
+	/** Huge bounding box, should cover coordinate space of all known CRSes. */
 	public static final Bbox ALL = new Bbox(-1E20, -1E20, 2E20, 2E20);
 
 	/**
@@ -51,11 +54,15 @@ public class Bbox implements Serializable {
 
 	/**
 	 * Create bounding box.
-	 *
-	 * @param x min x origin
-	 * @param y min y origin
-	 * @param width width of bounding box, should be positive
-	 * @param height height of bounding box, should be positive
+	 * 
+	 * @param x
+	 *            minimum X origin
+	 * @param y
+	 *            minimum Y origin
+	 * @param width
+	 *            width of bounding box, should be positive
+	 * @param height
+	 *            height of bounding box, should be positive
 	 */
 	public Bbox(double x, double y, double width, double height) {
 		this.x = x;
@@ -66,8 +73,8 @@ public class Bbox implements Serializable {
 
 	/**
 	 * Return the height for the bounding box. This will always be a positive value.
-	 *
-	 * @return height of the bbox
+	 * 
+	 * @return height of the bounding box
 	 */
 	public double getHeight() {
 		return height;
@@ -91,8 +98,8 @@ public class Bbox implements Serializable {
 
 	/**
 	 * Return the width for the bounding box. This will always be a positive value.
-	 *
-	 * @return width of the bbox
+	 * 
+	 * @return width of the bounding box
 	 */
 	public double getWidth() {
 		return width;
@@ -115,86 +122,86 @@ public class Bbox implements Serializable {
 	}
 
 	/**
-	 * Get the min x boundary of the bbox.
-	 *
-	 * @return min x
+	 * Get the minimum X boundary of the bounding box.
+	 * 
+	 * @return minimum X value
 	 */
 	public double getX() {
 		return x;
 	}
 
 	/**
-	 * Set the min x boundary for the bbox.
-	 *
-	 * @param x min x
+	 * Set the minimum X boundary for the bounding box.
+	 * 
+	 * @param x
+	 *            minimum X value
 	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 
 	/**
-	 * Get the min y boundary of the bbox.
-	 *
-	 * @return y min y
+	 * Get the minimum y boundary of the bounding box.
+	 * 
+	 * @return y minimum Y value
 	 */
 	public double getY() {
 		return y;
 	}
 
 	/**
-	 * Set the min y boundary for the bbox.
-	 *
-	 * @param y min y
+	 * Set the minimum Y boundary for the bounding box.
+	 * 
+	 * @param y
+	 *            minimum Y value
 	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 
 	/**
-	 * Get the highest x boundary of the bbox.
-	 *
-	 * @return highest x
+	 * Get the highest X boundary (X + width) of the bounding box.
+	 * 
+	 * @return highest X value
 	 */
-	@Json(serialize = false)
 	public double getMaxX() {
 		return getX() + getWidth();
 	}
-	
+
 	/**
-	 * Set the highest x boundary for the bbox.
+	 * Set the highest X boundary for the bounding box.<br/>
 	 * Attention, order is important, setMaxY() must always be called after setY().
 	 * 
-	 * @param x highest x
-	 * @since 1.8.0
+	 * @param x
+	 *            highest X value
 	 */
 	public void setMaxX(double x) {
 		setWidth(x - this.x);
 	}
 
 	/**
-	 * Get the highest y boundary of the bbox.
-	 *
-	 * @return highest y
+	 * Get the highest Y boundary (Y + height) of the bounding box.
+	 * 
+	 * @return highest y value
 	 */
-	@Json(serialize = false)
 	public double getMaxY() {
 		return getY() + getHeight();
 	}
-	
+
 	/**
-	 * Set the highest y boundary for the bbox. 
+	 * Set the highest Y boundary for the bounding box.<br/>
 	 * Attention, order is important, setMaxY() must always be called after setY().
-	 *
-	 * @param y highest y
-	 * @since 1.8.0
+	 * 
+	 * @param y
+	 *            highest Y value.
 	 */
 	public void setMaxY(double y) {
 		setHeight(y - this.y);
-	}	
+	}
 
 	/**
 	 * Convert to readable string.
-	 *
+	 * 
 	 * @return readable string for bbox
 	 */
 	public String toString() {

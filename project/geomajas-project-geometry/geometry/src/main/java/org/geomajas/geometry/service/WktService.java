@@ -52,7 +52,7 @@ public final class WktService {
 				return new Geometry(type, 0, 0);
 			}
 			Geometry geometry = new Geometry(type, 0, 0);
-			String result = format(wkt.substring(wkt.indexOf("(")), geometry);
+			String result = parse(wkt.substring(wkt.indexOf("(")), geometry);
 			if (result.length() != 0) {
 				throw new WktException(ERR_MSG + "unexpected ending \"" + result + "\"");
 			}
@@ -61,7 +61,38 @@ public final class WktService {
 		throw new WktException(ERR_MSG + "illegal argument; no WKT");
 	}
 
-	private static String format(String wkt, Geometry geometry) throws WktException {
+	/**
+	 * Format a given geometry to Well Known Text.
+	 * 
+	 * @param geometry
+	 *            The geometry to format.
+	 * @return Returns the WKT string.
+	 * @throws WktException
+	 *             In case something went wrong while formatting.
+	 */
+	public static String toWkt(Geometry geometry) throws WktException {
+		if (Geometry.POINT.equals(geometry.getGeometryType())) {
+			return toWktPoint(geometry);
+		} else if (Geometry.LINE_STRING.equals(geometry.getGeometryType())
+				|| Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {
+			return toWktLineString(geometry);
+		} else if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
+			return toWktPolygon(geometry);
+		} else if (Geometry.MULTI_POINT.equals(geometry.getGeometryType())) {
+			return toWktMultiPoint(geometry);
+		} else if (Geometry.MULTI_LINE_STRING.equals(geometry.getGeometryType())) {
+			return toWktMultiLineString(geometry);
+		} else if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
+			return toWktMultiPolygon(geometry);
+		}
+		return "";
+	}
+
+	// ------------------------------------------------------------------------
+	// Private parsing methods:
+	// ------------------------------------------------------------------------
+
+	private static String parse(String wkt, Geometry geometry) throws WktException {
 		String childType = getChildType(geometry.getGeometryType());
 		String scopeWkt = wkt.substring(1);
 		if (scopeWkt.startsWith("(")) {
@@ -75,7 +106,7 @@ public final class WktService {
 			while (scopeWkt.startsWith("(")) {
 				Geometry childGeometry = new Geometry(childType, 0, 0);
 				geometries.add(childGeometry);
-				scopeWkt = format(scopeWkt, childGeometry);
+				scopeWkt = parse(scopeWkt, childGeometry);
 				if (scopeWkt.startsWith(",")) {
 					scopeWkt = scopeWkt.substring(1).trim();
 				}
@@ -145,33 +176,6 @@ public final class WktService {
 			return Geometry.POLYGON;
 		}
 		return null;
-	}
-
-	/**
-	 * Format a given geometry to Well Known Text.
-	 * 
-	 * @param geometry
-	 *            The geometry to format.
-	 * @return Returns the WKT string.
-	 * @throws WktException
-	 *             In case something went wrong while formatting.
-	 */
-	public static String toWkt(Geometry geometry) throws WktException {
-		if (Geometry.POINT.equals(geometry.getGeometryType())) {
-			return toWktPoint(geometry);
-		} else if (Geometry.LINE_STRING.equals(geometry.getGeometryType())
-				|| Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {
-			return toWktLineString(geometry);
-		} else if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
-			return toWktPolygon(geometry);
-		} else if (Geometry.MULTI_POINT.equals(geometry.getGeometryType())) {
-			return toWktMultiPoint(geometry);
-		} else if (Geometry.MULTI_LINE_STRING.equals(geometry.getGeometryType())) {
-			return toWktMultiLineString(geometry);
-		} else if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
-			return toWktMultiPolygon(geometry);
-		}
-		return "";
 	}
 
 	// ------------------------------------------------------------------------
