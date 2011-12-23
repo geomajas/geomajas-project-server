@@ -29,7 +29,7 @@ import org.timepedia.exporter.client.Exportable;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Export
+@Export("Feature")
 @ExportPackage("org.geomajas.jsapi.map")
 @FutureApi(allMethods = true)
 public class FeatureImpl implements Exportable, Feature {

@@ -36,12 +36,12 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.user.client.DOM;
 
 /**
- * ... TODO write javadoc...
+ * Map for the GWT face.
  * 
  * @author Pieter De Graef
  * @author Oliver May
  */
-@Export
+@Export("Map")
 @ExportPackage("org.geomajas.jsapi.map")
 public class MapImpl implements Exportable, Map {
 
@@ -81,20 +81,24 @@ public class MapImpl implements Exportable, Map {
 	// Map implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setHtmlElementId(String id) {
 		htmlElementId = id;
 		mapWidget.setHtmlElement(DOM.getElementById(id));
 		mapWidget.draw();
 	}
 
+	/** {@inheritDoc} */
 	public LayersModel getLayersModel() {
 		return layersModel;
 	}
 
+	/** {@inheritDoc} */
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
 
+	/** {@inheritDoc} */
 	public void setMapController(MapController mapController) {
 		if (mapController != null) {
 			mapController.setMap(this);
@@ -104,6 +108,7 @@ public class MapImpl implements Exportable, Map {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public MapController getMapController() {
 		final GraphicsController controller = mapWidget.getController();
 		MapController mapController = new MapController(this, controller);
@@ -122,11 +127,13 @@ public class MapImpl implements Exportable, Map {
 		return mapController;
 	}
 
+	/** {@inheritDoc} */
 	public void setSize(int width, int height) {
 		mapWidget.setWidth(width);
 		mapWidget.setHeight(height);
 	}
 
+	/** {@inheritDoc} */
 	public void setCursor(String cursor) {
 		mapWidget.setCursorString(cursor);
 	}
@@ -135,10 +142,12 @@ public class MapImpl implements Exportable, Map {
 		return htmlElementId;
 	}
 
+	/** {@inheritDoc} */
 	public JsEventBus getEventBus() {
 		return eventBus;
 	}
 
+	/** {@inheritDoc} */
 	public FeatureSearchService getFeatureSearchService() {
 		return featureSearchService;
 	}

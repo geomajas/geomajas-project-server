@@ -10,7 +10,6 @@
  */
 package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.MapView;
@@ -27,7 +26,7 @@ import org.timepedia.exporter.client.Exportable;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Export
+@Export("ViewPort")
 @ExportPackage("org.geomajas.jsapi.map")
 public class ViewPortImpl implements ViewPort, Exportable {
 
@@ -42,49 +41,56 @@ public class ViewPortImpl implements ViewPort, Exportable {
 	 * TODO.
 	 * 
 	 * @param mapView
-	 * @since 1.0.0
 	 */
-	@Api
 	public ViewPortImpl(MapView mapView) {
 		this.mapView = mapView;
 	}
 
+	/** {@inheritDoc} */
 	public void applyPosition(Coordinate coordinate) {
 		mapView.setCenterPosition(coordinate);
 	}
 
+	/** {@inheritDoc} */
 	public void applyScale(final double newScale) {
 		mapView.setCurrentScale(newScale, zoomOption);
 	}
 
+	/** {@inheritDoc} */
 	public void applyBounds(final Bbox bounds) {
 		org.geomajas.gwt.client.spatial.Bbox bbox = new org.geomajas.gwt.client.spatial.Bbox(bounds.getX(),
 				bounds.getY(), bounds.getWidth(), bounds.getHeight());
 		mapView.applyBounds(bbox, zoomOption);
 	}
 
+	/** {@inheritDoc} */
 	public Bbox getBounds() {
 		org.geomajas.gwt.client.spatial.Bbox box = mapView.getBounds();
 		return new Bbox(box.getX(), box.getY(), box.getWidth(), box.getHeight());
 	}
 
+	/** {@inheritDoc} */
 	public Coordinate getPosition() {
 		return new Coordinate(mapView.getBounds().getCenterPoint());
 	}
 
+	/** {@inheritDoc} */
 	public double getScale() {
 		return mapView.getCurrentScale();
 	}
 
+	/** {@inheritDoc} */
 	public Bbox getMaximumBounds() {
 		org.geomajas.gwt.client.spatial.Bbox box = mapView.getMaxBounds();
 		return new Bbox(box.getX(), box.getY(), box.getWidth(), box.getHeight());
 	}
 
+	/** {@inheritDoc} */
 	public void applyScale(double scale, Coordinate rescalePoint) {
 		mapView.setCurrentScale(scale, zoomOption, rescalePoint);
 	}
 
+	/** {@inheritDoc} */
 	public Coordinate transform(Coordinate coordinate, String from, String to) {
 		if (from.equalsIgnoreCase(to)) {
 			return coordinate;

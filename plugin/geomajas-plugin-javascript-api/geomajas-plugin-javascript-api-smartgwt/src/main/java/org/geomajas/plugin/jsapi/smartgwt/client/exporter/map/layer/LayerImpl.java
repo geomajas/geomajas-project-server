@@ -42,6 +42,7 @@ public class LayerImpl implements Layer, Exportable {
 		this.layer = layer;
 	}
 
+	/** {@inheritDoc} */
 	public void refresh() {
 		if (layer instanceof RasterLayer) {
 			RasterLayer rLayer = (RasterLayer) layer;
@@ -57,35 +58,43 @@ public class LayerImpl implements Layer, Exportable {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return layer.getId();
 	}
 
+	/** {@inheritDoc} */
 	public String getServerLayerId() {
 		return layer.getServerLayerId();
 	}
 
+	/** {@inheritDoc} */
 	public String getTitle() {
 		return layer.getLabel();
 	}
 
+	/** {@inheritDoc} */
 	public void setSelected(boolean selected) {
 		layer.setLabeled(selected);
 	}
 
+	/** {@inheritDoc} */
 	public boolean isSelected() {
 		return layer.isSelected();
 	}
 
+	/** {@inheritDoc} */
 	public void setMarkedAsVisible(boolean markedAsVisible) {
 		layer.setVisible(markedAsVisible);
 	}
 
+	/** {@inheritDoc} */
 	public boolean isMarkedAsVisible() {
 		// TODO revisit
 		return ((AbstractLayer<?>) layer).isVisible();
 	}
 
+	/** {@inheritDoc} */
 	public boolean isShowing() {
 		return layer.isShowing();
 	}

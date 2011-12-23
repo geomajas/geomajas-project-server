@@ -54,30 +54,37 @@ public class VectorLayer extends LayerImpl implements Exportable, FeaturesSuppor
 	// FeaturesSupported implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setFilter(String filter) {
 		getLayer().setFilter(filter);
 	}
 
+	/** {@inheritDoc} */
 	public String getFilter() {
 		return getLayer().getFilter();
 	}
 
+	/** {@inheritDoc} */
 	public boolean isFeatureSelected(String featureId) {
 		return getLayer().isFeatureSelected(featureId);
 	}
 
+	/** {@inheritDoc} */
 	public boolean selectFeature(Feature feature) {
 		return getLayer().selectFeature(toGwt(feature));
 	}
 
+	/** {@inheritDoc} */
 	public boolean deselectFeature(Feature feature) {
 		return getLayer().deselectFeature(toGwt(feature));
 	}
 
+	/** {@inheritDoc} */
 	public void clearSelectedFeatures() {
 		getLayer().clearSelectedFeatures();
 	}
 
+	/** {@inheritDoc} */
 	public Feature[] getSelectedFeatures() {
 		Collection<org.geomajas.gwt.client.map.feature.Feature> selection = getLayer().getSelectedFeatureValues();
 		Feature[] features = new Feature[selection.size()];
@@ -93,10 +100,12 @@ public class VectorLayer extends LayerImpl implements Exportable, FeaturesSuppor
 	// LabelsSupported implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setLabeled(boolean labeled) {
 		getLayer().setLabeled(labeled);
 	}
 
+	/** {@inheritDoc} */
 	public boolean isLabeled() {
 		return getLayer().isLabelsVisible();
 	}

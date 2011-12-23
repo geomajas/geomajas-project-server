@@ -26,7 +26,7 @@ import org.timepedia.exporter.client.Exportable;
  * @author Oliver May
  * @author Pieter De Graef
  */
-@Export
+@Export("LayersModel")
 @ExportPackage("org.geomajas.jsapi.map")
 public class LayersModelImpl implements Exportable, LayersModel {
 
@@ -51,6 +51,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 	// LayersModel implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public Layer getLayer(String layerId) {
 		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayer(layerId);
 		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
@@ -59,6 +60,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 		return new LayerImpl(layer);
 	}
 
+	/** {@inheritDoc} */
 	public org.geomajas.plugin.jsapi.client.map.layer.Layer getLayerAt(int index) {
 		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayers().get(index);
 		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
@@ -67,6 +69,7 @@ public class LayersModelImpl implements Exportable, LayersModel {
 		return new LayerImpl(layer);
 	}
 
+	/** {@inheritDoc} */
 	public int getLayerCount() {
 		return mapModel.getLayers().size();
 	}

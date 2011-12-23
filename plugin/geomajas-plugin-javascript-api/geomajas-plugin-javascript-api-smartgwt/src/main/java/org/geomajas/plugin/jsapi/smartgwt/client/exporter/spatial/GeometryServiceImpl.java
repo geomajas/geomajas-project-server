@@ -33,11 +33,13 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 	public GeometryServiceImpl() {
 	}
 
+	/** {@inheritDoc} */
 	public Bbox getBounds(Geometry geometry) {
 		org.geomajas.gwt.client.spatial.geometry.Geometry geom = GeometryConverter.toGwt(geometry);
 		return GeometryConverter.toDto(geom.getBounds());
 	}
 
+	/** {@inheritDoc} */
 	public String toWkt(Geometry geometry) {
 		try {
 			return WktService.toWkt(geometry);
@@ -46,6 +48,7 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public Geometry toGeometry(String wkt) {
 		try {
 			return WktService.toGeometry(wkt);

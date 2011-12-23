@@ -51,6 +51,7 @@ import com.google.gwt.user.client.DOM;
  * @author Pieter De Graef
  * @since 1.0.0
  */
+@Export("GeomajasService")
 @ExportPackage("org.geomajas.jsapi")
 public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 

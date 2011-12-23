@@ -30,6 +30,7 @@ public class BboxServiceImpl implements BboxService, Exportable {
 	public BboxServiceImpl() {
 	}
 
+	/** {@inheritDoc} */
 	public Bbox union(Bbox one, Bbox two) {
 		org.geomajas.gwt.client.spatial.Bbox bbox1 = GeometryConverter.toGwt(one);
 		org.geomajas.gwt.client.spatial.Bbox bbox2 = GeometryConverter.toGwt(two);

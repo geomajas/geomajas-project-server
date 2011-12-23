@@ -44,7 +44,7 @@ import org.timepedia.exporter.client.Exportable;
  * 
  * @author Pieter De Graef
  */
-@Export
+@Export("FeatureSearchService")
 @ExportPackage("org.geomajas.jsapi.map.feature")
 public class FeatureSearchServiceImpl implements FeatureSearchService, Exportable {
 
@@ -57,6 +57,7 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 		this.map = map;
 	}
 
+	/** {@inheritDoc} */
 	public void searchById(final FeaturesSupported layer, final String[] ids, final FeatureArrayCallback callback) {
 		Layer<?> gwtLayer = map.getMapWidget().getMapModel().getLayer(layer.getId());
 		if (gwtLayer != null && gwtLayer instanceof VectorLayer) {
@@ -92,6 +93,7 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void searchInBounds(final FeaturesSupported layer, Bbox bbox, final FeatureArrayCallback callback) {
 		MapModel mapModel = map.getMapWidget().getMapModel();
 		Layer<?> gwtLayer = mapModel.getLayer(layer.getId());
