@@ -145,7 +145,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		}
 		this.geometry = geometry;
 		if (geometry == null) {
-			throw new NullPointerException("Null geometry not allowed.");
+			throw new IllegalStateException("Null geometry not allowed.");
 		}
 		started = true;
 		eventBus.fireEvent(new GeometryEditStartEvent(geometry));
