@@ -1,0 +1,55 @@
+// Geomajas Geometry API for 1.0.0
+org.geomajas.geometry.Bbox::1.0.0
+org.geomajas.geometry.Bbox:Bbox():1.0.0
+org.geomajas.geometry.Bbox:Bbox(double, double, double, double, ):1.0.0
+org.geomajas.geometry.Bbox:String toString():1.0.0
+org.geomajas.geometry.Bbox:double getHeight():1.0.0
+org.geomajas.geometry.Bbox:double getMaxX():1.0.0
+org.geomajas.geometry.Bbox:double getMaxY():1.0.0
+org.geomajas.geometry.Bbox:double getWidth():1.0.0
+org.geomajas.geometry.Bbox:double getX():1.0.0
+org.geomajas.geometry.Bbox:double getY():1.0.0
+org.geomajas.geometry.Bbox:static final Bbox ALL:1.0.0
+org.geomajas.geometry.Bbox:void setHeight(double, ):1.0.0
+org.geomajas.geometry.Bbox:void setMaxX(double, ):1.0.0
+org.geomajas.geometry.Bbox:void setMaxY(double, ):1.0.0
+org.geomajas.geometry.Bbox:void setWidth(double, ):1.0.0
+org.geomajas.geometry.Bbox:void setX(double, ):1.0.0
+org.geomajas.geometry.Bbox:void setY(double, ):1.0.0
+org.geomajas.geometry.Coordinate::1.0.0
+org.geomajas.geometry.Coordinate:Coordinate():1.0.0
+org.geomajas.geometry.Coordinate:Coordinate(Coordinate, ):1.0.0
+org.geomajas.geometry.Coordinate:Coordinate(double, double, ):1.0.0
+org.geomajas.geometry.Coordinate:Object clone():1.0.0
+org.geomajas.geometry.Coordinate:String toString():1.0.0
+org.geomajas.geometry.Coordinate:boolean equals(Object, ):1.0.0
+org.geomajas.geometry.Coordinate:boolean equalsDelta(Coordinate, double, ):1.0.0
+org.geomajas.geometry.Coordinate:double distance(Coordinate, ):1.0.0
+org.geomajas.geometry.Coordinate:double getX():1.0.0
+org.geomajas.geometry.Coordinate:double getY():1.0.0
+org.geomajas.geometry.Coordinate:int compareTo(Coordinate, ):1.0.0
+org.geomajas.geometry.Coordinate:int hashCode():1.0.0
+org.geomajas.geometry.Coordinate:void setCoordinate(Coordinate, ):1.0.0
+org.geomajas.geometry.Coordinate:void setX(double, ):1.0.0
+org.geomajas.geometry.Coordinate:void setY(double, ):1.0.0
+org.geomajas.geometry.Geometry::1.0.0
+org.geomajas.geometry.Geometry:Coordinate[] getCoordinates():1.0.0
+org.geomajas.geometry.Geometry:Geometry():1.0.0
+org.geomajas.geometry.Geometry:Geometry(String, int, int, ):1.0.0
+org.geomajas.geometry.Geometry:Geometry[] getGeometries():1.0.0
+org.geomajas.geometry.Geometry:String getGeometryType():1.0.0
+org.geomajas.geometry.Geometry:int getPrecision():1.0.0
+org.geomajas.geometry.Geometry:int getSrid():1.0.0
+org.geomajas.geometry.Geometry:static final String LINEAR_RING:1.0.0
+org.geomajas.geometry.Geometry:static final String LINE_STRING:1.0.0
+org.geomajas.geometry.Geometry:static final String MULTI_LINE_STRING:1.0.0
+org.geomajas.geometry.Geometry:static final String MULTI_POINT:1.0.0
+org.geomajas.geometry.Geometry:static final String MULTI_POLYGON:1.0.0
+org.geomajas.geometry.Geometry:static final String POINT:1.0.0
+org.geomajas.geometry.Geometry:static final String POLYGON:1.0.0
+org.geomajas.geometry.Geometry:void setCoordinates(Coordinate[], ):1.0.0
+org.geomajas.geometry.Geometry:void setGeometries(Geometry[], ):1.0.0
+org.geomajas.geometry.Geometry:void setGeometryType(String, ):1.0.0
+org.geomajas.geometry.Geometry:void setPrecision(int, ):1.0.0
+org.geomajas.geometry.Geometry:void setSrid(int, ):1.0.0
+org.geomajas.geometry.Geometry:boolean isEmpty():1.0.0

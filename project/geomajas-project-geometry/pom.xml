@@ -57,8 +57,14 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-geometry</artifactId>
+				<artifactId>geomajas-geometry</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-geometry</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<dependency>

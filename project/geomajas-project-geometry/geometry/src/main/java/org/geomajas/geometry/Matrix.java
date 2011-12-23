@@ -20,6 +20,9 @@ package org.geomajas.geometry;
  */
 public class Matrix {
 
+	/** The identity matrix. */
+	public static final Matrix IDENTITY = new Matrix(1, 0, 0, 1, 0, 0);
+
 	private final double xx;
 
 	private final double xy;
