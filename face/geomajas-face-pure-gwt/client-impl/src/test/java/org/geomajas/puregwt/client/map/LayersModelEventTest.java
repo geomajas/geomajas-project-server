@@ -290,7 +290,7 @@ public class LayersModelEventTest {
 		try {
 			layersModel.removeLayer(null);
 			Assert.fail();
-		} catch (NullPointerException npe) {
+		} catch (Exception e) {
 			// Test passed.
 		}
 

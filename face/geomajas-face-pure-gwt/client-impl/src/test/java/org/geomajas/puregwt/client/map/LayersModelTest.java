@@ -135,7 +135,7 @@ public class LayersModelTest {
 		try {
 			layersModel.getLayer(null);
 			Assert.fail();
-		} catch (NullPointerException npe) {
+		} catch (Exception e) {
 			// Test passed.
 		}
 	}
@@ -157,7 +157,7 @@ public class LayersModelTest {
 		try {
 			layersModel.getLayerPosition(null);
 			Assert.fail();
-		} catch (NullPointerException npe) {
+		} catch (Exception e) {
 			// Test passed.
 		}
 	}
