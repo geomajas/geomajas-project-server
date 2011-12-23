@@ -31,7 +31,7 @@ public class SearchByPointResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 180L;
 
-	private Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>();
+	private final Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>();
 
 	public SearchByPointResponse() {
 		super();

@@ -87,7 +87,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
 
-	private List<Resolution> resolutions = new ArrayList<Resolution>();
+	private final List<Resolution> resolutions = new ArrayList<Resolution>();
 
 	// @NotNull this seems to cause problems, it is tested in @PostConstruct anyway
 	private String baseWmsUrl;
@@ -218,7 +218,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 		Resolution bestResolution = getResolutionForScale(layerScale);
 		RasterGrid grid = getRasterGrid(new Envelope(layerCoordinate), bestResolution.getTileWidth(),
-				bestResolution.getTileHeight(), layerScale);
+				bestResolution.getTileHeight());
 		int x = (int) (((layerCoordinate.x - grid.getLowerLeft().x) * bestResolution.getTileWidthPx()) / grid
 				.getTileWidth());
 		int y = (int) (bestResolution.getTileHeightPx() - (((layerCoordinate.y - grid.getLowerLeft().y) * bestResolution
@@ -324,8 +324,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 		// Grid is in layer coordinate space!
 		Resolution bestResolution = getResolutionForScale(layerScale);
-		RasterGrid grid = getRasterGrid(layerBounds, bestResolution.getTileWidth(), bestResolution.getTileHeight(),
-				layerScale);
+		RasterGrid grid = getRasterGrid(layerBounds, bestResolution.getTileWidth(), bestResolution.getTileHeight());
 
 		// We calculate the first tile's screen box with this assumption
 		List<RasterTile> result = new ArrayList<RasterTile>();
@@ -537,7 +536,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		}
 	}
 
-	private RasterGrid getRasterGrid(Envelope bounds, double width, double height, double scale) {
+	private RasterGrid getRasterGrid(Envelope bounds, double width, double height) {
 		Bbox bbox = getLayerInfo().getMaxExtent();
 		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getY()) / height);
 		int ymax = (int) Math.ceil((bounds.getMaxY() - bbox.getY()) / height);
@@ -546,24 +545,6 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 		Coordinate lowerLeft = new Coordinate(bbox.getX() + xmin * width, bbox.getY() + ymin * height);
 		return new RasterGrid(lowerLeft, xmin, ymin, xmax, ymax, width, height);
-	}
-
-	private RasterGrid getRasterGridOld(Envelope bounds, double width, double height, double scale) {
-		// slightly adjust the width and height so it becomes integer for the current scale:
-		double realWidth = Math.round(width * scale) / scale;
-		double realHeight = Math.round(height * scale) / scale;
-
-		Bbox bbox = getLayerInfo().getMaxExtent();
-		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getY()) / realHeight);
-		int ymax = (int) Math.ceil((bounds.getMaxY() - bbox.getY()) / realHeight);
-		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getX()) / realWidth);
-		int xmax = (int) Math.ceil((bounds.getMaxX() - bbox.getX()) / realWidth);
-
-		// same adjustment for corner:
-		double realXmin = (Math.round(bbox.getX() * scale)) / scale;
-		double realYmin = (Math.round(bbox.getY() * scale)) / scale;
-		Coordinate lowerLeft = new Coordinate(realXmin + xmin * realWidth, realYmin + ymin * realHeight);
-		return new RasterGrid(lowerLeft, xmin, ymin, xmax, ymax, realWidth, realHeight);
 	}
 
 	private Envelope clipBounds(Envelope bounds) {
@@ -655,7 +636,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 * </p>
 	 * <p>
 	 * Note that there is still the option of adding a user name and password as HTTP parameters, as some WMS server
-	 * support. To do that, just add <code>parameters</code>.
+	 * support. To do that, just add {@link #parameters}.
 	 * </p>
 	 * 
 	 * @param authentication
@@ -683,7 +664,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	/**
 	 * Set whether the WMS tiles should be cached for later use. This implies that the WMS tiles will be proxied.
 	 *
-	 * @param useCache true when request needs to use the proxy
+	 * @param useCache true when request needs to be cached
 	 * @since 1.9.0
 	 */
 	@Api
@@ -694,7 +675,7 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	/**
 	 * Set whether the WMS tiles should be cached for later use. This implies that the WMS tiles will be proxied.
 	 *
-	 * @param useCache true when request needs to use the proxy
+	 * @return true when request needs to be cached
 	 * @since 1.9.0
 	 */
 	@Api
@@ -732,19 +713,19 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 */
 	private static class RasterGrid {
 
-		private Coordinate lowerLeft;
+		private final Coordinate lowerLeft;
 
-		private int xmin;
+		private final int xmin;
 
-		private int ymin;
+		private final int ymin;
 
-		private int xmax;
+		private final int xmax;
 
-		private int ymax;
+		private final int ymax;
 
-		private double tileWidth;
+		private final double tileWidth;
 
-		private double tileHeight;
+		private final double tileHeight;
 
 		RasterGrid(Coordinate lowerLeft, int xmin, int ymin, int xmax, int ymax, double tileWidth, double tileHeight) {
 			super();
@@ -795,13 +776,13 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 */
 	private static class Resolution {
 
-		private double resolution;
+		private final double resolution;
 
-		private int level;
+		private final int level;
 
-		private int tileWidth;
+		private final int tileWidth;
 
-		private int tileHeight;
+		private final int tileHeight;
 
 		/**
 		 * Constructor that immediately requires all fields.

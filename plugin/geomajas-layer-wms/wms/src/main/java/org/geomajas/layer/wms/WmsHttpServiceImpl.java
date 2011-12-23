@@ -107,8 +107,8 @@ public class WmsHttpServiceImpl implements WmsHttpService {
 	 */
 	private static class WmsHttpServiceStream extends InputStream {
 
-		private GetMethod get;
-		private InputStream inputStream;
+		private final GetMethod get;
+		private final InputStream inputStream;
 
 		public WmsHttpServiceStream(GetMethod getMethod) throws IOException {
 			super();

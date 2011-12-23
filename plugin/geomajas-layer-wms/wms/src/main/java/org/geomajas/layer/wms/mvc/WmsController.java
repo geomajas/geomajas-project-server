@@ -55,6 +55,8 @@ import java.util.StringTokenizer;
 @Controller("/wms/**")
 public class WmsController {
 
+	private static final int ERROR_MESSAGE_X = 10;
+
 	private final Logger log = LoggerFactory.getLogger(WmsController.class);
 
 	@Autowired
@@ -184,7 +186,7 @@ public class WmsController {
 		Graphics2D g = (Graphics2D) image.getGraphics();
 
 		g.setColor(Color.RED);
-		g.drawString(error, 10, height / 2);
+		g.drawString(error, ERROR_MESSAGE_X, height / 2);
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		ImageIO.write(image, "PNG", out);
