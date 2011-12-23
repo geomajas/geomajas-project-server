@@ -27,6 +27,7 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
  * interface is an extension of the {@link ViewPortChangedHandler}.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibilityHandler,
