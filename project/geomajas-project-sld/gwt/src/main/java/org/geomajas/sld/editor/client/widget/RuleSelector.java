@@ -480,7 +480,6 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 	//--------------------------------------------------------------------------------------
 
 	private void onAddRuleButtonClicked(ClickEvent event) {
-		onAddRuleButtonClicked(event);
 		if (null != currentLeaf) {
 			currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 		}
@@ -560,8 +559,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		if (indexNode < POSITION_IN_NODES_OF_FIRST_RULE) {
 			return; // ABORT
 		}
-		 
-		
+
 //		int indexParent = indexNode;
 //		while (indexParent-- > 0) {
 //			if (((RuleTreeNode) nodes[indexParent]).isFolder()) {
