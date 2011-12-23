@@ -192,10 +192,8 @@ public final class GeometryService {
 				}
 				if (Geometry.MULTI_LINE_STRING.equals(geometry.getGeometryType())) {
 					for (Geometry child2 : geometry.getGeometries()) {
-						if (child != child2) {
-							if (intersects(child, child2)) {
-								return false;
-							}
+						if (child != child2 && intersects(child, child2)) {
+							return false;
 						}
 					}
 				}
@@ -657,8 +655,6 @@ public final class GeometryService {
 						return true;
 					}
 				}
-			} else {
-				// Check if points are equal...
 			}
 		}
 		return false;

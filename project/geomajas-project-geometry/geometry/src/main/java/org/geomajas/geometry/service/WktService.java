@@ -44,15 +44,15 @@ public final class WktService {
 	 */
 	public static Geometry toGeometry(String wkt) throws WktException {
 		if (wkt != null) {
-			String type = typeWktToGeom(wkt.substring(0, wkt.indexOf(" ")).trim());
+			String type = typeWktToGeom(wkt.substring(0, wkt.indexOf(' ')).trim());
 			if (type == null) {
-				throw new WktException(ERR_MSG + "type of geometry (" + type + ") not supported");
+				throw new WktException(ERR_MSG + "type of geometry not supported");
 			}
 			if (wkt.indexOf("EMPTY") >= 0) {
 				return new Geometry(type, 0, 0);
 			}
 			Geometry geometry = new Geometry(type, 0, 0);
-			String result = parse(wkt.substring(wkt.indexOf("(")), geometry);
+			String result = parse(wkt.substring(wkt.indexOf('(')), geometry);
 			if (result.length() != 0) {
 				throw new WktException(ERR_MSG + "unexpected ending \"" + result + "\"");
 			}
@@ -95,7 +95,7 @@ public final class WktService {
 	private static String parse(String wkt, Geometry geometry) throws WktException {
 		String childType = getChildType(geometry.getGeometryType());
 		String scopeWkt = wkt.substring(1);
-		if (scopeWkt.startsWith("(")) {
+		if (scopeWkt.charAt(0) == '(') {
 			// Type has sub-geometries, so there must be a child type:
 			if (childType == null) {
 				throw new WktException(ERR_MSG + "no child geometry type could be found for type "
@@ -103,11 +103,11 @@ public final class WktService {
 			}
 
 			List<Geometry> geometries = new ArrayList<Geometry>();
-			while (scopeWkt.startsWith("(")) {
+			while (scopeWkt.charAt(0) == '(') {
 				Geometry childGeometry = new Geometry(childType, 0, 0);
 				geometries.add(childGeometry);
 				scopeWkt = parse(scopeWkt, childGeometry);
-				if (scopeWkt.startsWith(",")) {
+				if (scopeWkt.charAt(0) == ',') {
 					scopeWkt = scopeWkt.substring(1).trim();
 				}
 			}
@@ -140,7 +140,7 @@ public final class WktService {
 				}
 			}
 			geometry.setCoordinates(coordinates);
-			scopeWkt = scopeWkt.substring(scopeWkt.indexOf(")") + 1);
+			scopeWkt = scopeWkt.substring(scopeWkt.indexOf(')') + 1);
 		}
 		return scopeWkt;
 	}
@@ -198,75 +198,82 @@ public final class WktService {
 		if (isEmpty(geometry)) {
 			return "LINESTRING EMPTY";
 		}
-		String wkt = "LINESTRING (";
+		StringBuilder builder = new StringBuilder("LINESTRING (");
 		for (int i = 0; i < geometry.getCoordinates().length; i++) {
 			if (i > 0) {
-				wkt += ", ";
+				builder.append(", ");
 			}
-			wkt += geometry.getCoordinates()[i].getX() + " " + geometry.getCoordinates()[i].getY();
+			builder.append(geometry.getCoordinates()[i].getX());
+			builder.append(" ");
+			builder.append(geometry.getCoordinates()[i].getY());
 		}
-		return wkt + ")";
+		builder.append(")");
+		return builder.toString();
 	}
 
 	private static String toWktPolygon(Geometry geometry) {
 		if (isEmpty(geometry)) {
 			return "POLYGON EMPTY";
 		}
-		String wkt = "POLYGON (";
+		StringBuilder builder = new StringBuilder("POLYGON (");
 		if (geometry.getGeometries() != null) {
 			for (int i = 0; i < geometry.getGeometries().length; i++) {
-				String ringWkt = toWktLineString(geometry.getGeometries()[i]);
 				if (i > 0) {
-					wkt += ",";
+					builder.append(",");
 				}
-				wkt += ringWkt.substring(ringWkt.indexOf("("));
+				String ringWkt = toWktLineString(geometry.getGeometries()[i]);
+				builder.append(ringWkt.substring(ringWkt.indexOf('(')));
 			}
 		}
-		return wkt + ")";
+		builder.append(")");
+		return builder.toString();
 	}
 
 	private static String toWktMultiPoint(Geometry geometry) {
 		if (isEmpty(geometry)) {
 			return "MULTIPOINT EMPTY";
 		}
-		String wkt = "MULTIPOINT (";
+		StringBuilder builder = new StringBuilder("MULTIPOINT (");
 		for (int i = 0; i < geometry.getGeometries().length; i++) {
-			String pointWkt = toWktPoint(geometry.getGeometries()[i]);
 			if (i > 0) {
-				wkt += ",";
+				builder.append(",");
 			}
-			wkt += pointWkt.substring(pointWkt.indexOf("("));
+			String pointWkt = toWktPoint(geometry.getGeometries()[i]);
+			builder.append(pointWkt.substring(pointWkt.indexOf('(')));
 		}
-		return wkt + ")";
+		builder.append(")");
+		return builder.toString();
 	}
 
 	private static String toWktMultiLineString(Geometry geometry) {
 		if (isEmpty(geometry)) {
 			return "MULTILINESTRING EMPTY";
 		}
-		String wkt = "MULTILINESTRING (";
+		StringBuilder builder = new StringBuilder("MULTILINESTRING (");
 		for (int i = 0; i < geometry.getGeometries().length; i++) {
-			String lineWkt = toWktLineString(geometry.getGeometries()[i]);
 			if (i > 0) {
-				wkt += ",";
+				builder.append(",");
 			}
-			wkt += lineWkt.substring(lineWkt.indexOf("("));
+			String lineWkt = toWktLineString(geometry.getGeometries()[i]);
+			builder.append(lineWkt.substring(lineWkt.indexOf('(')));
 		}
-		return wkt + ")";
+		builder.append(")");
+		return builder.toString();
 	}
 
 	private static String toWktMultiPolygon(Geometry geometry) {
 		if (isEmpty(geometry)) {
 			return "MULTIPOLYGON EMPTY";
 		}
-		String wkt = "MULTIPOLYGON (";
+		StringBuilder builder = new StringBuilder("MULTIPOLYGON (");
 		for (int i = 0; i < geometry.getGeometries().length; i++) {
-			String polygonWkt = toWktPolygon(geometry.getGeometries()[i]);
 			if (i > 0) {
-				wkt += ",";
+				builder.append(",");
 			}
-			wkt += polygonWkt.substring(polygonWkt.indexOf("("));
+			String polygonWkt = toWktPolygon(geometry.getGeometries()[i]);
+			builder.append(polygonWkt.substring(polygonWkt.indexOf('(')));
 		}
-		return wkt + ")";
+		builder.append(")");
+		return builder.toString();
 	}
 }

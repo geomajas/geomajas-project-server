@@ -96,7 +96,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 *         ordinates.
 	 */
 	public boolean equals(Object other) {
-		if (other == null || !(other instanceof Coordinate)) {
+		if (!(other instanceof Coordinate)) {
 			return false;
 		}
 		Coordinate c = (Coordinate) other;
