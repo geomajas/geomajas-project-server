@@ -188,7 +188,7 @@
               <entry><emphasis role="bold">useCache</emphasis>
               (optional)</entry>
 
-              <entry>Allows yout to force caching of WMS tiles.This can be useful 
+              <entry>Allows you to force caching of WMS tiles.This can be useful
               if you want to unload the used WMS server. This automatically enables
               the useProxy property to be able to cache the images.</entry>
             </row>
