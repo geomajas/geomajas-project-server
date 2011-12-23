@@ -45,7 +45,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 
 /**
- * Implementation of the {@link org.geomajas.plugin.jsapi.client.GeomajasService} for the GWT face.
+ * MapRegistry provides a registry where {@link org.geomajas.plugin.jsapi.map.Map} components can be registered from GWT
+ * to be retrieved from plain JavaScript.
  * 
  * @author Oliver May
  * @author Pieter De Graef
@@ -74,6 +75,16 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 		return INSTANCE;
 	}
 
+	/**
+	 * Register the given {@link Map} with applicationId and mapId.
+	 * 
+	 * @param applicationId
+	 *            the application id.
+	 * @param mapId
+	 *            the map id.
+	 * @param elementId
+	 *            the DOM element ID onto which to attach the map.
+	 */
 	@Export
 	public Map createMap(String applicationId, String mapId, String elementId) {
 		Map map = getMap(applicationId, mapId);
@@ -94,6 +105,16 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 		return map;
 	}
 
+	/**
+	 * Register the given {@link Map} with applicationId and mapId.
+	 * 
+	 * @param applicationId
+	 *            the application id.
+	 * @param mapId
+	 *            the map id.
+	 * @param map
+	 *            the map to register.
+	 */
 	public void registerMap(String applicationId, String mapId, Map map) {
 		HashMap<String, Map> mapmap = null;
 		if (maps.containsKey(applicationId)) {
@@ -108,6 +129,15 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 		}
 	}
 
+	/**
+	 * Return the {@link Map} that is registered with the given application and map ID.
+	 * 
+	 * @param applicationId
+	 *            the application id.
+	 * @param mapId
+	 *            the map id.
+	 * @return the map.
+	 */
 	@Export
 	public Map getMap(String applicationId, String mapId) {
 		HashMap<String, Map> application = maps.get(applicationId);
@@ -117,6 +147,13 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 		return application.get(mapId);
 	}
 
+	/**
+	 * Add a handler that is called whenever the client starts communicating with the back-end.
+	 * 
+	 * @param handler
+	 *            The actual handler (closure).
+	 * @return The registration for the handler. Using this object the handler can be removed again.
+	 */
 	@Export
 	public JsHandlerRegistration addDispatchStartedHandler(final DispatchStartedHandler handler) {
 		HandlerRegistration registration = GwtCommandDispatcher.getInstance().addDispatchStartedHandler(
@@ -129,6 +166,13 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
+	/**
+	 * Add a handler that is called whenever the client stops communicating with the back-end.
+	 * 
+	 * @param handler
+	 *            The actual handler (closure).
+	 * @return The registration for the handler. Using this object the handler can be removed again.
+	 */
 	@Export
 	public JsHandlerRegistration addDispatchStoppedHandler(final DispatchStoppedHandler handler) {
 		HandlerRegistration registration = GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(
@@ -142,7 +186,14 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 	}
 
 	/**
-	 * TODO add the controller options as a parameter to this method.
+	 * Create a known controller for the map. Different implementations may 'know' different controllers, so it's best
+	 * to check with the implementing class.
+	 * 
+	 * @param map
+	 *            The onto which the controller should be applied.
+	 * @param id
+	 *            The unique ID for the map controller (implementation specific).
+	 * @return The map controller, or null if it could not be found.
 	 */
 	@Export
 	public MapController createMapController(Map map, String id) {
@@ -163,11 +214,21 @@ public final class GeomajasServiceImpl implements Exportable, GeomajasService {
 		return null;
 	}
 
+	/**
+	 * Get a service for geometry manipulation.
+	 * 
+	 * @return A service for geometry manipulation.
+	 */
 	@Export
 	public GeometryService getGeometryService() {
 		return new GeometryServiceImpl();
 	}
 
+	/**
+	 * Get a service for bounding box manipulation.
+	 * 
+	 * @return A service for bounding box manipulation.
+	 */
 	@Export
 	public BboxService getBboxService() {
 		return new BboxServiceImpl();

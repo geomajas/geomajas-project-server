@@ -56,6 +56,10 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 		this.map = map;
 	}
 
+	/**
+	 * Add a handler to change events in the layer configuration from the map. This event is fired for example when the
+	 * map gets it's configuration from the server. Only then can it know what layers it has available.
+	 */
 	public JsHandlerRegistration addLayersModelChangedHandler(final LayersModelChangedHandler handler) {
 		HandlerRegistration registration = map.getMapWidget().getMapModel()
 				.addMapModelChangedHandler(new MapModelChangedHandler() {
@@ -67,6 +71,9 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 		return new JsHandlerRegistration(new HandlerRegistration[] { registration });
 	}
 
+	/**
+	 * Add a handler for feature selection.
+	 */
 	public JsHandlerRegistration addFeatureSelectionHandler(final FeatureSelectedHandler selectedHandler,
 			final FeatureDeselectedHandler deselectedHandler) {
 		if (map.getMapWidget().getMapModel().isInitialized()) {
@@ -82,6 +89,10 @@ public class JsEventBusImpl implements Exportable, JsEventBus {
 		});
 		return callbackRegistration;
 	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
 	private JsHandlerRegistration addFeatureSelectionHandler2(final FeatureSelectedHandler selectedHandler,
 			final FeatureDeselectedHandler deselectedHandler) {

@@ -36,7 +36,11 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.user.client.DOM;
 
 /**
- * Map for the GWT face.
+ * Javascript exportable facade of the Map presentation. See the specific implementation for details how to initialize.
+ * 
+ * The implementation should make sure the newly created Map is registered in a
+ * {@link org.geomajas.plugin.jsapi.client.GeomajasService}! This way created maps are guaranteed available trough
+ * JavaScript.
  * 
  * @author Pieter De Graef
  * @author Oliver May
@@ -81,24 +85,48 @@ public class MapImpl implements Exportable, Map {
 	// Map implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	/**
+	 * Couples this map to an existing HTML element (div or span).
+	 * 
+	 * @param id
+	 *            id of the element
+	 */
 	public void setHtmlElementId(String id) {
 		htmlElementId = id;
 		mapWidget.setHtmlElement(DOM.getElementById(id));
 		mapWidget.draw();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Returns the layers model for this presenter. This model is the central layer handler for the map, with methods
+	 * for getting layers, moving them up and down, adding or removing layers, ..
+	 * 
+	 * @return The layers model.
+	 */
 	public LayersModel getLayersModel() {
 		return layersModel;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Returns the {@link ViewPort} associated with this map. The view port regulates zooming and panning around the
+	 * map, but also presents transformation methods for transforming vector objects between the different render
+	 * spaces.
+	 * 
+	 * @return Returns the view port.
+	 */
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for
+	 * the map. Only one controller can be set at any given time. When a controller is active on the map, using this
+	 * method, any fall-back controller is automatically disabled.
+	 * 
+	 * @param controller
+	 *            The new {@link MapController} object. If null is passed, then the active controller is again disabled.
+	 *            At that time the fall-back controller is again activated.
+	 */
 	public void setMapController(MapController mapController) {
 		if (mapController != null) {
 			mapController.setMap(this);
@@ -108,7 +136,11 @@ public class MapImpl implements Exportable, Map {
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return the currently active controller on the map.
+	 * 
+	 * @return The currently active controller.
+	 */
 	public MapController getMapController() {
 		final GraphicsController controller = mapWidget.getController();
 		MapController mapController = new MapController(this, controller);
@@ -127,13 +159,25 @@ public class MapImpl implements Exportable, Map {
 		return mapController;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Apply a new width and height on the map. Both parameters are expressed in pixels.
+	 * 
+	 * @param width
+	 *            The new pixel width for the map.
+	 * @param height
+	 *            The new pixel height for the map.
+	 */
 	public void setSize(int width, int height) {
 		mapWidget.setWidth(width);
 		mapWidget.setHeight(height);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Apply a new mouse cursor when hovering above the map.
+	 * 
+	 * @param cursor
+	 *            The new cursor to apply.
+	 */
 	public void setCursor(String cursor) {
 		mapWidget.setCursorString(cursor);
 	}
@@ -142,12 +186,20 @@ public class MapImpl implements Exportable, Map {
 		return htmlElementId;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the event bus that handles all event handlers and event firing for this map.
+	 * 
+	 * @return The event bus that manages all event related to this map.
+	 */
 	public JsEventBus getEventBus() {
 		return eventBus;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return a service that can search for features.
+	 * 
+	 * @return A service that can search for features.
+	 */
 	public FeatureSearchService getFeatureSearchService() {
 		return featureSearchService;
 	}

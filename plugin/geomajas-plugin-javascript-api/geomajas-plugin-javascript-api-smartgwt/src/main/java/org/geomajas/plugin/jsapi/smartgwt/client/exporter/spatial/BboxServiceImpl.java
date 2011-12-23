@@ -19,7 +19,7 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Implementation of the {@link BboxService} for the GWT face.
+ * Service that defines all possible operations on bounding boxes.
  * 
  * @author Pieter De Graef
  */
@@ -30,7 +30,15 @@ public class BboxServiceImpl implements BboxService, Exportable {
 	public BboxServiceImpl() {
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Calculate the union of two bounding boxes.
+	 * 
+	 * @param one
+	 *            The first bounding box.
+	 * @param two
+	 *            The second bounding box.
+	 * @return The union of the two given bounding boxes.
+	 */
 	public Bbox union(Bbox one, Bbox two) {
 		org.geomajas.gwt.client.spatial.Bbox bbox1 = GeometryConverter.toGwt(one);
 		org.geomajas.gwt.client.spatial.Bbox bbox2 = GeometryConverter.toGwt(two);

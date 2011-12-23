@@ -21,7 +21,7 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Exportable facade for {@link LayersModel}. This implementation uses the {@link MapModel} to delegate to.
+ * Javascript exportable facade for the model of layers that form a map.
  * 
  * @author Oliver May
  * @author Pieter De Graef
@@ -51,7 +51,13 @@ public class LayersModelImpl implements Exportable, LayersModel {
 	// LayersModel implementation:
 	// ------------------------------------------------------------------------
 
-	/** {@inheritDoc} */
+	/**
+	 * Get a single layer by its identifier.
+	 * 
+	 * @param id
+	 *            The layers unique identifier within this map.
+	 * @return Returns the layer, or null if it could not be found.
+	 */
 	public Layer getLayer(String layerId) {
 		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayer(layerId);
 		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
@@ -60,7 +66,13 @@ public class LayersModelImpl implements Exportable, LayersModel {
 		return new LayerImpl(layer);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return the layer at a certain index. If the index can't be found, null is returned.
+	 * 
+	 * @param index
+	 *            The specified index.
+	 * @return Returns the layer, or null if the index can't be found.
+	 */
 	public org.geomajas.plugin.jsapi.client.map.layer.Layer getLayerAt(int index) {
 		org.geomajas.gwt.client.map.layer.Layer<?> layer = mapModel.getLayers().get(index);
 		if (layer instanceof org.geomajas.gwt.client.map.layer.VectorLayer) {
@@ -69,7 +81,11 @@ public class LayersModelImpl implements Exportable, LayersModel {
 		return new LayerImpl(layer);
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return the total number of layers within this map.
+	 * 
+	 * @return The layer count.
+	 */
 	public int getLayerCount() {
 		return mapModel.getLayers().size();
 	}

@@ -22,7 +22,7 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Implementation of the {@link GeometryService} for the GWT face.
+ * Service that defines all possible methods on geometries.
  * 
  * @author Pieter De Graef
  */
@@ -33,13 +33,25 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 	public GeometryServiceImpl() {
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Return the bounding box that defines the outer most border of a geometry.
+	 * 
+	 * @param geometry
+	 *            The geometry for which to calculate the bounding box.
+	 * @return The outer bounds for the given geometry.
+	 */
 	public Bbox getBounds(Geometry geometry) {
 		org.geomajas.gwt.client.spatial.geometry.Geometry geom = GeometryConverter.toGwt(geometry);
 		return GeometryConverter.toDto(geom.getBounds());
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Format the given geometry object to Well Known Text representation.
+	 * 
+	 * @param geometry
+	 *            The geometry to format.
+	 * @return Get WKT representation of the given geometry, or null in case something went wrong.
+	 */
 	public String toWkt(Geometry geometry) {
 		try {
 			return WktService.toWkt(geometry);
@@ -48,7 +60,13 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Parse the given Well Known Text string into a geometry.
+	 * 
+	 * @param wkt
+	 *            The WKT text.
+	 * @return The resulting geometry, or null in case something went wrong.
+	 */
 	public Geometry toGeometry(String wkt) {
 		try {
 			return WktService.toGeometry(wkt);

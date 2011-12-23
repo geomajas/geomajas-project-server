@@ -40,7 +40,8 @@ import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
 /**
- * Implementation of the {@link FeatureSearchService} for the GWT face.
+ * Service definition for searching for features. It defines a list of methods that do nothing but presenting different
+ * ways of searching features.
  * 
  * @author Pieter De Graef
  */
@@ -57,7 +58,16 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 		this.map = map;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Search a single feature within a certain layer, using the feature ID.
+	 * 
+	 * @param layer
+	 *            The features supported layer wherein to search.
+	 * @param id
+	 *            The unique ID of the feature within the layer.
+	 * @param callback
+	 *            Call-back method executed on return (when the feature has been found).
+	 */
 	public void searchById(final FeaturesSupported layer, final String[] ids, final FeatureArrayCallback callback) {
 		Layer<?> gwtLayer = map.getMapWidget().getMapModel().getLayer(layer.getId());
 		if (gwtLayer != null && gwtLayer instanceof VectorLayer) {
@@ -93,7 +103,16 @@ public class FeatureSearchServiceImpl implements FeatureSearchService, Exportabl
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Search all features within a certain layer that intersect a certain bounding box.
+	 * 
+	 * @param layer
+	 *            The features supported layer wherein to search.
+	 * @param bbox
+	 *            The bounding box wherein to search.
+	 * @param callback
+	 *            Call-back method executed on return (when features have been found).
+	 */
 	public void searchInBounds(final FeaturesSupported layer, Bbox bbox, final FeatureArrayCallback callback) {
 		MapModel mapModel = map.getMapWidget().getMapModel();
 		Layer<?> gwtLayer = mapModel.getLayer(layer.getId());
