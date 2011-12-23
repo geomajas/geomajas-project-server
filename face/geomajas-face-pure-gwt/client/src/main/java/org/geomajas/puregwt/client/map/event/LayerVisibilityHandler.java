@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -22,7 +22,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface LayerVisibilityHandler extends EventHandler {
 

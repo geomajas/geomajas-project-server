@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.map;
 import java.util.Collection;
 import java.util.Set;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.event.EventBus;
@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface MapPresenter {
 
 	/**

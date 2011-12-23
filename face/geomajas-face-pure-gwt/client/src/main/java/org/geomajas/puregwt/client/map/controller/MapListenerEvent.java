@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.controller;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ViewPort;
@@ -27,7 +27,7 @@ import com.google.gwt.dom.client.Element;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class MapListenerEvent {
 
 	private int event;

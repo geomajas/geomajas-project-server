@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.layer;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 /**
  * Extension for the layer interface which signifies that this particular layer can change in opacity.
@@ -19,7 +19,7 @@ import org.geomajas.annotation.FutureApi;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi
+@Api
 public interface OpacitySupported {
 
 	/**

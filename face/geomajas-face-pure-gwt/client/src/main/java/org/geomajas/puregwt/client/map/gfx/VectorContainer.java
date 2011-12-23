@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
@@ -21,7 +21,7 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi
+@Api
 public interface VectorContainer extends VectorObjectContainer {
 	
 	void setTranslation(double deltaX, double deltaY);

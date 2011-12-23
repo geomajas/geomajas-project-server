@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 /**
  * Strategy that determines all scale levels. The {@link ViewPort} uses such a <code>ZoomStrategy</code> to ask for
@@ -21,7 +21,7 @@ import org.geomajas.annotation.FutureApi;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface ZoomStrategy {
 
 	/**

@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.feature.Feature;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -22,7 +22,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class FeatureDeselectedEvent extends GwtEvent<FeatureSelectionHandler> {
 
 	private Feature feature;

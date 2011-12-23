@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi
+@Api
 public interface HtmlObject {
 
 	Element getElement();

@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
@@ -28,7 +28,7 @@ import org.geomajas.puregwt.client.map.gfx.VectorContainer;
  * 
  * @author Pieter De Graef
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibilityHandler,
 		LayerStyleChangedHandler, MapResizedHandler, MapCompositionHandler {
 

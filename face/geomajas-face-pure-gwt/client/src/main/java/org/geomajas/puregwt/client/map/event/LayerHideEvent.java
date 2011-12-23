@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -22,7 +22,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class LayerHideEvent extends GwtEvent<LayerVisibilityHandler> {
 
 	private Layer<?> layer;

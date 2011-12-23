@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -23,7 +23,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@FutureApi
+@Api
 public interface EventBus {
 
 	<H extends EventHandler> HandlerRegistration addHandler(Type<H> type, H handler);
