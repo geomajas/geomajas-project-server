@@ -16,9 +16,9 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.spatial.Matrix;
 
 /**
  * <p>
@@ -28,8 +28,8 @@ import org.geomajas.puregwt.client.spatial.Matrix;
  * more information.
  * </p>
  * <p>
- * Next to storing and changing the map location, implementation of this interface will also send out several
- * types of events that clearly define the changes in the view on the map.
+ * Next to storing and changing the map location, implementation of this interface will also send out several types of
+ * events that clearly define the changes in the view on the map.
  * </p>
  * 
  * @author Pieter De Graef
@@ -52,7 +52,8 @@ public interface ViewPort {
 	 * @param mapInfo
 	 *            The map information meta-data from which to initialize the <code>ViewPort</code>.
 	 * @param eventBus
-	 *            TODO
+	 *            The {@link MapPresenter}s event bus. Events regarding ViewPort changes (zoom, pan, ...) are fired upon
+	 *            this bus.
 	 */
 	void initialize(ClientMapInfo mapInfo, EventBus eventBus);
 

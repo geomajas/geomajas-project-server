@@ -22,14 +22,9 @@ import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.feature.FeatureSearch;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
-import org.geomajas.puregwt.client.spatial.BboxService;
-import org.geomajas.puregwt.client.spatial.BboxServiceImpl;
-import org.geomajas.puregwt.client.spatial.GeometryService;
-import org.geomajas.puregwt.client.spatial.GeometryServiceImpl;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 
 /**
  * Gin binding module. All bindings defined in here are used by the GeomajasGinjector.
@@ -40,10 +35,6 @@ import com.google.inject.Singleton;
 public class GeomajasGinModule extends AbstractGinModule {
 
 	protected void configure() {
-		// Spatial services:
-		bind(BboxService.class).to(BboxServiceImpl.class).in(Singleton.class);
-		bind(GeometryService.class).to(GeometryServiceImpl.class).in(Singleton.class);
-
 		// Map related interfaces:
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
 		bind(LayersModel.class).to(LayersModelImpl.class);

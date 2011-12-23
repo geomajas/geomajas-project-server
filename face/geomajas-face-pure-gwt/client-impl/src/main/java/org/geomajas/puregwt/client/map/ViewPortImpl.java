@@ -16,16 +16,15 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
-import org.geomajas.puregwt.client.spatial.BboxService;
-import org.geomajas.puregwt.client.spatial.GeometryService;
-import org.geomajas.puregwt.client.spatial.Matrix;
-import org.geomajas.puregwt.client.spatial.MatrixImpl;
 
 import com.google.inject.Inject;
 
@@ -35,12 +34,6 @@ import com.google.inject.Inject;
  * @author Pieter De Graef
  */
 public final class ViewPortImpl implements ViewPort {
-
-	@Inject
-	private BboxService bboxService;
-
-	@Inject
-	private GeometryService geometryService;
 
 	/** The map's width in pixels. */
 	private int mapWidth;
@@ -88,11 +81,11 @@ public final class ViewPortImpl implements ViewPort {
 				.getWidth(), mapInfo.getMaxBounds().getHeight());
 
 		// if the max bounds was not configured, take the union of initial and layer bounds
-		if (bboxService.equals(maxBounds, Bbox.ALL, 1e-10)) {
+		if (BboxService.equals(maxBounds, Bbox.ALL, 1e-10)) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 				maxBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
 						.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
-				maxBounds = bboxService.union(maxBounds, layerInfo.getMaxExtent());
+				maxBounds = BboxService.union(maxBounds, layerInfo.getMaxExtent());
 			}
 		}
 
@@ -196,12 +189,12 @@ public final class ViewPortImpl implements ViewPort {
 			double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / factor);
 
 			// Apply translation to set the BBOX on the correct location:
-			newBbox = bboxService.setCenterPoint(newBbox, new Coordinate(position.getX(), position.getY()));
-			newBbox = bboxService.translate(newBbox, dX, dY);
+			newBbox = BboxService.setCenterPoint(newBbox, new Coordinate(position.getX(), position.getY()));
+			newBbox = BboxService.translate(newBbox, dX, dY);
 
 			// Now apply on this view port:
 			scale = limitedScale;
-			position = bboxService.getCenterPoint(newBbox);
+			position = BboxService.getCenterPoint(newBbox);
 			if (eventBus != null) {
 				if (dX == 0 && dY == 0) {
 					eventBus.fireEvent(new ViewPortScaledEvent(this));
@@ -214,7 +207,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	public void applyBounds(Bbox bounds) {
 		double newScale = getScaleForBounds(bounds);
-		Coordinate tempPosition = checkPosition(bboxService.getCenterPoint(bounds), newScale);
+		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), newScale);
 		if (newScale == scale) {
 			if (!position.equals(tempPosition)) {
 				position = tempPosition;
@@ -260,7 +253,7 @@ public final class ViewPortImpl implements ViewPort {
 			case SCREEN:
 				switch (to) {
 					case SCREEN:
-						return geometryService.clone(geometry);
+						return GeometryService.clone(geometry);
 					case WORLD:
 						return screenToWorld(geometry);
 				}
@@ -269,7 +262,7 @@ public final class ViewPortImpl implements ViewPort {
 					case SCREEN:
 						return worldToScreen(geometry);
 					case WORLD:
-						return geometryService.clone(geometry);
+						return GeometryService.clone(geometry);
 				}
 		}
 		return geometry;
@@ -310,9 +303,9 @@ public final class ViewPortImpl implements ViewPort {
 						if (scale > 0) {
 							double dX = -(position.getX() * scale) + mapWidth / 2;
 							double dY = position.getY() * scale + mapHeight / 2;
-							return new MatrixImpl(scale, 0, 0, -scale, dX, dY);
+							return new Matrix(scale, 0, 0, -scale, dX, dY);
 						}
-						return new MatrixImpl(1, 0, 0, 1, 0, 0);
+						return new Matrix(1, 0, 0, 1, 0, 0);
 					case WORLD:
 						return Matrix.IDENTITY;
 				}
@@ -335,9 +328,9 @@ public final class ViewPortImpl implements ViewPort {
 						if (scale > 0) {
 							double dX = -(position.getX() * scale) + mapWidth / 2;
 							double dY = position.getY() * scale + mapHeight / 2;
-							return new MatrixImpl(1, 0, 0, 1, dX, dY);
+							return new Matrix(1, 0, 0, 1, dX, dY);
 						}
-						return new MatrixImpl(1, 0, 0, 1, 0, 0);
+						return new Matrix(1, 0, 0, 1, 0, 0);
 					case WORLD:
 						return Matrix.IDENTITY;
 				}
@@ -374,11 +367,11 @@ public final class ViewPortImpl implements ViewPort {
 		if (maxBounds != null) {
 			double w = mapWidth / (newScale * 2);
 			double h = mapHeight / (newScale * 2);
-			Coordinate minCoordinate = bboxService.getOrigin(maxBounds);
-			Coordinate maxCoordinate = bboxService.getEndPoint(maxBounds);
+			Coordinate minCoordinate = BboxService.getOrigin(maxBounds);
+			Coordinate maxCoordinate = BboxService.getEndPoint(maxBounds);
 
 			if ((w * 2) > maxBounds.getWidth()) {
-				xCenter = bboxService.getCenterPoint(maxBounds).getX();
+				xCenter = BboxService.getCenterPoint(maxBounds).getX();
 			} else {
 				if ((xCenter - w) < minCoordinate.getX()) {
 					xCenter = minCoordinate.getX() + w;
@@ -388,7 +381,7 @@ public final class ViewPortImpl implements ViewPort {
 				}
 			}
 			if ((h * 2) > maxBounds.getHeight()) {
-				yCenter = bboxService.getCenterPoint(maxBounds).getY();
+				yCenter = BboxService.getCenterPoint(maxBounds).getY();
 			} else {
 				if ((yCenter - h) < minCoordinate.getY()) {
 					yCenter = minCoordinate.getY() + h;
@@ -442,8 +435,8 @@ public final class ViewPortImpl implements ViewPort {
 
 	private Bbox worldToScreen(Bbox bbox) {
 		if (bbox != null) {
-			Coordinate c1 = worldToScreen(bboxService.getOrigin(bbox));
-			Coordinate c2 = worldToScreen(bboxService.getEndPoint(bbox));
+			Coordinate c1 = worldToScreen(BboxService.getOrigin(bbox));
+			Coordinate c2 = worldToScreen(BboxService.getEndPoint(bbox));
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
 			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
@@ -493,8 +486,8 @@ public final class ViewPortImpl implements ViewPort {
 
 	private Bbox screenToWorld(Bbox bbox) {
 		if (bbox != null) {
-			Coordinate c1 = screenToWorld(bboxService.getOrigin(bbox));
-			Coordinate c2 = screenToWorld(bboxService.getEndPoint(bbox));
+			Coordinate c1 = screenToWorld(BboxService.getOrigin(bbox));
+			Coordinate c2 = screenToWorld(BboxService.getEndPoint(bbox));
 			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
 			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
 			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));

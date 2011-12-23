@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.feature.FeatureCallback;
@@ -23,7 +24,6 @@ import org.geomajas.puregwt.client.map.feature.FeatureSearch.QueryType;
 import org.geomajas.puregwt.client.map.feature.FeatureSearch.SearchType;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
-import org.geomajas.puregwt.client.spatial.GeometryService;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -57,8 +57,6 @@ public class FeatureSelectionController extends NavigationController {
 
 	private final FeatureSearch featureSearch;
 
-	private final GeometryService geometryService;
-
 	private final SelectionRectangleController selectionRectangleController;
 
 	private SelectionMethod selectionMethod = SelectionMethod.CLICK_AND_DRAG;
@@ -71,7 +69,6 @@ public class FeatureSelectionController extends NavigationController {
 		super();
 		selectionRectangleController = new SelectionRectangleController();
 		featureSearch = INJECTOR.getFeatureSearch();
-		geometryService = INJECTOR.getGeometryService();
 	}
 
 	public void onActivate(MapPresenter mapPresenter) {
@@ -137,7 +134,7 @@ public class FeatureSelectionController extends NavigationController {
 					searchType = SearchType.SEARCH_FIRST_LAYER;
 				}
 			}
-			featureSearch.search(mapPresenter.getViewPort().getCrs(), layers, geometryService.toPolygon(worldBounds),
+			featureSearch.search(mapPresenter.getViewPort().getCrs(), layers, GeometryService.toPolygon(worldBounds),
 					0, QueryType.INTERSECTS, searchType, intersectionRatio, new SelectionCallback(true));
 		}
 	}

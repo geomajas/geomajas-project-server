@@ -24,6 +24,7 @@ import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -57,7 +58,6 @@ import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;

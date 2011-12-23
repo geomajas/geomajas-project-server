@@ -18,13 +18,13 @@ import java.util.Map;
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
@@ -42,9 +42,6 @@ import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.spatial.BboxService;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * <p>
@@ -55,8 +52,6 @@ import com.google.gwt.core.client.GWT;
  * @author Pieter De Graef
  */
 public class RasterLayerRenderer implements MapRenderer {
-
-	protected static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
 
 	private ViewPort viewPort;
 
@@ -75,8 +70,6 @@ public class RasterLayerRenderer implements MapRenderer {
 
 	private GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
-	private BboxService bboxService;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -84,7 +77,6 @@ public class RasterLayerRenderer implements MapRenderer {
 	protected RasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer) {
 		this.viewPort = viewPort;
 		this.rasterLayer = rasterLayer;
-		bboxService = INJECTOR.getBboxService();
 	}
 
 	// ------------------------------------------------------------------------
@@ -159,7 +151,7 @@ public class RasterLayerRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		if (currentTileBounds == null || !bboxService.contains(currentTileBounds, event.getViewPort().getBounds())) {
+		if (currentTileBounds == null || !BboxService.contains(currentTileBounds, event.getViewPort().getBounds())) {
 			fetchTiles(event.getViewPort().getBounds());
 		}
 	}
@@ -204,7 +196,7 @@ public class RasterLayerRenderer implements MapRenderer {
 	 */
 	private void fetchTiles(final Bbox bounds) {
 		// Scale the bounds to fetch tiles for:
-		currentTileBounds = bboxService.scale(bounds, mapExtentScaleAtFetch);
+		currentTileBounds = BboxService.scale(bounds, mapExtentScaleAtFetch);
 
 		// Create the command:
 		GetRasterTilesRequest request = new GetRasterTilesRequest();

@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.map.event.LayerHideEvent;
@@ -34,7 +35,6 @@ import org.geomajas.puregwt.client.map.gfx.VectorGroup;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
-import org.geomajas.puregwt.client.spatial.Matrix;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**

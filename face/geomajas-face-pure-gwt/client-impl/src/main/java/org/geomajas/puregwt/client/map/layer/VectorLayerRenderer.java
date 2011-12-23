@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
@@ -34,8 +35,6 @@ import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.layer.TilePresenter.STATUS;
-import org.geomajas.puregwt.client.spatial.BboxService;
-import org.geomajas.puregwt.client.spatial.BboxServiceImpl;
 
 /**
  * MapRenderer implementation that renders a single vector layer.
@@ -43,8 +42,6 @@ import org.geomajas.puregwt.client.spatial.BboxServiceImpl;
  * @author Pieter De Graef
  */
 public class VectorLayerRenderer implements MapRenderer {
-
-	private final BboxService bboxService;
 
 	private final VectorLayer layer;
 
@@ -65,9 +62,6 @@ public class VectorLayerRenderer implements MapRenderer {
 	public VectorLayerRenderer(VectorLayer layer, ViewPort viewPort) {
 		this.layer = layer;
 		this.viewPort = viewPort;
-
-		// TODO replace with GIN:
-		bboxService = new BboxServiceImpl();
 
 		layerBounds = layer.getLayerInfo().getMaxExtent();
 		tiles = new HashMap<String, TilePresenter>();
@@ -99,7 +93,7 @@ public class VectorLayerRenderer implements MapRenderer {
 
 	public void render(Bbox bbox) {
 		// Only fetch when inside the layer bounds:
-		if (bboxService.intersects(bbox, layerBounds)) {
+		if (BboxService.intersects(bbox, layerBounds)) {
 
 			// Find needed tile codes:
 			List<TileCode> tempCodes = calcCodesForBounds(bbox);
@@ -265,7 +259,7 @@ public class VectorLayerRenderer implements MapRenderer {
 		}
 
 		// Calculate bounds relative to extents:
-		Bbox clippedBounds = bboxService.intersection(bounds, layerBounds);
+		Bbox clippedBounds = BboxService.intersection(bounds, layerBounds);
 		if (clippedBounds == null) {
 			// TODO throw error? If this is null, then the server configuration is incorrect.
 			return codes;

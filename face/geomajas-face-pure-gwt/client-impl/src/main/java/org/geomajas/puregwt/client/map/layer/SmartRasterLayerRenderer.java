@@ -19,6 +19,7 @@ import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -26,7 +27,6 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.LayerAddedEvent;
@@ -46,9 +46,6 @@ import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.gfx.HtmlObject;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.geomajas.puregwt.client.service.BooleanCallback;
-import org.geomajas.puregwt.client.spatial.BboxService;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * <p>
@@ -60,10 +57,6 @@ import com.google.gwt.core.client.GWT;
  * @author Pieter De Graef
  */
 public class SmartRasterLayerRenderer implements MapRenderer {
-
-	protected static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
-
-	private final BboxService bboxService;
 
 	private final ViewPort viewPort;
 
@@ -103,7 +96,6 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	protected SmartRasterLayerRenderer(ViewPort viewPort, RasterLayer rasterLayer) {
 		this.viewPort = viewPort;
 		this.rasterLayer = rasterLayer;
-		bboxService = INJECTOR.getBboxService();
 	}
 
 	// ------------------------------------------------------------------------
@@ -177,7 +169,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 	}
 
 	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		if (currentTileBounds == null || !bboxService.contains(currentTileBounds, event.getViewPort().getBounds())) {
+		if (currentTileBounds == null || !BboxService.contains(currentTileBounds, event.getViewPort().getBounds())) {
 			beginOrigin = viewPort.getPosition();
 			fetchTiles(event.getViewPort().getBounds(), false);
 		}
@@ -248,7 +240,7 @@ public class SmartRasterLayerRenderer implements MapRenderer {
 		}
 
 		// Scale the bounds to fetch tiles for:
-		currentTileBounds = bboxService.scale(bounds, mapExtentScaleAtFetch);
+		currentTileBounds = BboxService.scale(bounds, mapExtentScaleAtFetch);
 
 		// Create the command:
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
