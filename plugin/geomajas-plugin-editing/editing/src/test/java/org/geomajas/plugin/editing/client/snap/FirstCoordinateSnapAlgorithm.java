@@ -2,8 +2,7 @@ package org.geomajas.plugin.editing.client.snap;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.spatial.MathService;
-import org.geomajas.plugin.editing.client.snap.SnapAlgorithm;
+import org.geomajas.geometry.service.MathService;
 
 /**
  * Snapping algorithm that snaps to the first coordinate of the list of geometries (if within allowed snapping

@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.spatial.MathService;
+import org.geomajas.geometry.service.MathService;
 import org.geomajas.plugin.editing.client.snap.SnapAlgorithm;
 
 /**
