@@ -13,8 +13,8 @@ package org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.spatial.WktException;
-import org.geomajas.gwt.client.spatial.WktService;
+import org.geomajas.geometry.service.WktException;
+import org.geomajas.geometry.service.WktService;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.plugin.jsapi.client.spatial.GeometryService;
 import org.timepedia.exporter.client.Export;
