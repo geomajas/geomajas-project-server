@@ -26,6 +26,8 @@
   Geomajas GWT based faces. This means that for all GWT based faces, there
   will be a different implementation using the same API.</para>
 
-  <remark>At first this plug-in will focus on the implementation for the GWT
-  face, later for the Pure GWT face.</remark>
+  <note>
+    <para>At first this plug-in will focus on the implementation for the GWT
+    face, later for the Pure GWT face.</para>
+  </note>
 </chapter>

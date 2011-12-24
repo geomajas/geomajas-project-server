@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -12,33 +12,31 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <book id="enduser" lang="en">
-	<title>Geomajas geomajas-plugin-javascript-api plug-in guide</title>
+  <title>Geomajas Javascript API plug-in guide</title>
 
-	<bookinfo>
-		<copyright>
-			<year>2011</year>
+  <bookinfo>
+    <copyright>
+      <year>2011</year>
 
-			<holder>Geosparc nv</holder>
-		</copyright>
+      <holder>Geosparc nv</holder>
+    </copyright>
 
-		<releaseinfo><?eval ${project.version}?></releaseinfo>
+    <releaseinfo><?eval ${project.version}?></releaseinfo>
 
-		<productname>Geomajas</productname>
+    <productname>Geomajas</productname>
 
-		<authorgroup>
-			<corpauthor>Geomajas Developers and Geosparc</corpauthor>
-		</authorgroup>
-	</bookinfo>
+    <authorgroup>
+      <corpauthor>Geomajas Developers and Geosparc</corpauthor>
+    </authorgroup>
+  </bookinfo>
 
-	<toc></toc>
+  <toc></toc>
 
-	<xi:include href="introduction.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	
-	<xi:include href="configuration.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="introduction.xml"
+              xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-	<xi:include href="howto.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="configuration.xml"
+              xmlns:xi="http://www.w3.org/2001/XInclude" />
 
+  <xi:include href="howto.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
 </book>

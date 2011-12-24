@@ -25,11 +25,15 @@
     <para>Adding a map when the page loads, can be done through the following
     code:</para>
 
-    <programlisting>var map;
+    <example>
+      <title>Initializing a map when Geomajas loads</title>
+
+      <para><programlisting>var map;
 
 function onGeomajasLoad() {
     map = Geomajas().createMap("app", "mapMain", "js-map-element");
-}</programlisting>
+}</programlisting></para>
+    </example>
 
     <para>The "onGeomajasLoad" method is called automatically after Geomajas
     has loaded. This is the perfect time to add a map to the HTML page. The
@@ -72,12 +76,16 @@ function onGeomajasLoad() {
 
     <para>The following example shows how to react to this event:</para>
 
-    <programlisting>var registration = map.getEventBus().addLayersModelChangedHandler(function(event) {
+    <example>
+      <title>Reacting to the map initialization event</title>
+
+      <programlisting>var registration = map.getEventBus().addLayersModelChangedHandler(function(event) {
     for (var i = 0; i &lt; map.getLayersModel().getLayerCount(); i++) {
         var layer = map.getLayersModel().getLayerAt(i);
         // Do something with the layer: layer.getTitle()...
     }
 });</programlisting>
+    </example>
 
     <para>Note first of all that the map has a central EventBus for events.
     This is where such event handlers can be registered. The map also has a
@@ -88,7 +96,11 @@ function onGeomajasLoad() {
     return a registration to that handler. Through this registration it is
     possible to remove the handler from the EventBus again:</para>
 
-    <programlisting>registration.removeHandler();</programlisting>
+    <example>
+      <title>Removing a handler registration</title>
+
+      <programlisting>registration.removeHandler();</programlisting>
+    </example>
   </sect1>
 
   <sect1>
@@ -98,19 +110,28 @@ function onGeomajasLoad() {
     it fires events. It is possible to catch these events to, for example,
     show some busy state within the application.</para>
 
-    <programlisting>var handlerRegistration1 = Geomajas().addDispatchStartedHandler(function(event){
+    <example>
+      <title>Reacting to client-server communication</title>
+
+      <para><programlisting>var handlerRegistration1 = Geomajas().addDispatchStartedHandler(function(event){
     // Client-server communication starts. Quickly, do something!
 });
 
 var handlerRegistration2 = Geomajas().addDispatchStoppedHandler(function(event){
     // Client-server communication stops. Quickly, do something!
-});</programlisting>
+});</programlisting></para>
+    </example>
 
     <para>Whenever you register an event handler, a registration is returned.
     If at any time, the event handler is not needed anymore, you can cleanly
     remove it again through the following statement:</para>
 
-    <programlisting>handlerRegistration1.removeHandler();</programlisting>
+    <example>
+      <title>Removing handler registrations</title>
+
+      <programlisting>handlerRegistration1.removeHandler();
+handlerRegistration2.removeHandler();</programlisting>
+    </example>
   </sect1>
 
   <sect1>
@@ -119,8 +140,12 @@ var handlerRegistration2 = Geomajas().addDispatchStoppedHandler(function(event){
     <para>It is possible to change the cursor on the map, either trough
     default cursors or an image:</para>
 
-    <programlisting>map.setCursor('default');
+    <example>
+      <title>Applying cursors</title>
+
+      <programlisting>map.setCursor('default');
 map.setCursor('images/metal-cursor.cur');</programlisting>
+    </example>
   </sect1>
 
   <sect1>
@@ -146,7 +171,10 @@ map.setCursor('images/metal-cursor.cur');</programlisting>
       a callback is executed with a featureHolder that contains (hopefully)
       the requested features.</para>
 
-      <programlisting>var layer = map.getLayersModel().getLayerAt(1); // This returns a layer (make sure it is a vector layer).
+      <example>
+        <title>Searching features by ID</title>
+
+        <programlisting>var layer = map.getLayersModel().getLayerAt(1); // make sure this is a vector layer!
 var service = map.getFeatureSearchService();
 
 service.searchById(layer, ["feature-ID-1"], function(featureHolder){
@@ -157,6 +185,7 @@ service.searchById(layer, ["feature-ID-1"], function(featureHolder){
         var feature = featureHolder.getFeatures()[0];
     }
 });</programlisting>
+      </example>
     </sect2>
 
     <sect2>
@@ -167,7 +196,10 @@ service.searchById(layer, ["feature-ID-1"], function(featureHolder){
       search features in. As in the previous example, a callback will be
       executed when the answer from the server returns.</para>
 
-      <programlisting>var layer = map.getLayersModel().getLayerAt(1); // This returns a layer (make sure it is a vector layer).
+      <example>
+        <title>Searching features by bounds</title>
+
+        <programlisting>var layer = map.getLayersModel().getLayerAt(1); // make sure this is a vector layer!
 var bounds = map.getViewPort().getBounds(); // Get the current map bounds
 var service = map.getFeatureSearchService();
 
@@ -181,6 +213,7 @@ service.searchInBounds(layer, bounds, function(featureHolder) {
         }
     }
 });</programlisting>
+      </example>
     </sect2>
   </sect1>
 
@@ -191,8 +224,12 @@ service.searchInBounds(layer, bounds, function(featureHolder) {
     some of the default controllers that the GWT faces provide. These
     controllers can then be applied onto the map:</para>
 
-    <programlisting>var mapController = Geomajas().createMapController(map, id);
+    <example>
+      <title>Using pre-defined map controllers</title>
+
+      <programlisting>var mapController = Geomajas().createMapController(map, id);
 map.setMapController(mapController);</programlisting>
+    </example>
 
     <para>The default controllers are created using a pre-defined ID. This is
     the list of supported ID's:</para>
@@ -244,7 +281,10 @@ map.setMapController(mapController);</programlisting>
     us first analyze the creation of a new custom controller that picks up on
     the location of the mouse:</para>
 
-    <programlisting>// Create the new MapController:
+    <example>
+      <title>Creating custom map controllers</title>
+
+      <programlisting>// Create the new MapController:
 var mapController = new org.geomajas.jsapi.controller.MapController();
 
 // Apply handlers for Mouse Events:
@@ -259,23 +299,27 @@ mapController.setMouseMoveHandler(function(event) {
     // worldLocation.getX(), worldLocation.getY(), ...
 });
 mapController.setMouseOverHandler(function(event) {
-    // Do something usefull...
+    // Do something useful...
 });
 mapController.setMouseOutHandler(function(event) {
-    // Do something usefull...
+    // Do something useful...
 });
 mapController.setDownHandler(function(event) {
-    // Do something usefull...
+    // Do something useful...
 });
 mapController.setUpHandler(function(event) {
-    // Do something usefull...
+    // Do something useful...
 });</programlisting>
+    </example>
 
     <para>Now that we have created our controller, we might also want to be
     notified of the controllers' activation and deactivation events. On
     deactivation we might have to clean up the controller.</para>
 
-    <programlisting>// Apply activation (for init) and deactivation (for cleanup) handlers:
+    <example>
+      <title>Map controller activation/deactivation</title>
+
+      <programlisting>// Apply activation (for init) and deactivation (for cleanup) handlers:
 mapController.setActivationHandler(function() {
     // on controller activation: initialize something.
 });
@@ -285,13 +329,18 @@ mapController.setDeactivationHandler(function() {
 
 // Apply the MapController on the map:
 map.setMapController(mapController);</programlisting>
+    </example>
 
     <para>The above code will set the activation and deactivation handlers and
     finally apply the controller on the map. In order to revert to the
     fallback controller on the (which by default is a navigation controller),
     set a "null" controller on the map:</para>
 
-    <programlisting>map.setMapController(null);</programlisting>
+    <example>
+      <title>Switching to the fallback map controller</title>
+
+      <programlisting>map.setMapController(null);</programlisting>
+    </example>
   </sect1>
 
   <sect1>
@@ -309,11 +358,15 @@ map.setMapController(mapController);</programlisting>
       the current position, than adding up the translation deltas and finally
       applying the new position again:</para>
 
-      <programlisting>var position = map.getViewPort().getPosition();
+      <example>
+        <title>Translating the map (panning)</title>
+
+        <programlisting>var position = map.getViewPort().getPosition();
 var newX = position.getX() + distanceX;
 var newY = position.getY() + distanceY;
 var newPosition = new org.geomajas.jsapi.spatial.Coordinate(newX, newY);
 map.getViewPort().applyPosition(newPosition);</programlisting>
+      </example>
     </sect2>
 
     <sect2>
@@ -322,8 +375,12 @@ map.getViewPort().applyPosition(newPosition);</programlisting>
       <para>Zooming in or out is done by first acquiring the current scale and
       than multiplying or dividing it by some scale delta:</para>
 
-      <programlisting>var scale = map.getViewPort().getScale();
+      <example>
+        <title>Zooming in and out</title>
+
+        <programlisting>var scale = map.getViewPort().getScale();
 map.getViewPort().applyScale(scale * delta);</programlisting>
+      </example>
 
       <para>Applying a bigger scale value will zoom in, applying a smaller
       scale value will zoom out.</para>
@@ -336,8 +393,12 @@ map.getViewPort().applyScale(scale * delta);</programlisting>
       a new bounding box with the required values (position) and apply it on
       the ViewPort:</para>
 
-      <programlisting>var bbox = new org.geomajas.jsapi.spatial.Bbox(x, y, width, height);
+      <example>
+        <title>Applying a new bounding box</title>
+
+        <programlisting>var bbox = new org.geomajas.jsapi.spatial.Bbox(x, y, width, height);
 map.getViewPort().applyBounds(bbox);</programlisting>
+      </example>
     </sect2>
   </sect1>
 
@@ -356,13 +417,17 @@ map.getViewPort().applyBounds(bbox);</programlisting>
       on the back-end. If you already have the feature available in your
       JavaScript code, there is no need to search it again.</para>
 
-      <programlisting>// Get the layer wherein to search and select a feature:
+      <example>
+        <title>Selecting features</title>
+
+        <programlisting>// Get the layer wherein to search and select a feature:
 var layer = map.getLayersModel().getLayer("clientLayerCountries");
 
 // Search a feature by ID and select it once we have it:
 map.getFeatureSearchService().searchById(layer, [id], function(featureHolder) {
     layer.selectFeature(featureHolder.getFeatures()[0]);
 });</programlisting>
+      </example>
 
       <para>For more information on searching for features, see "<link
       linkend="how-to-search-features">How to search features in a
@@ -373,16 +438,24 @@ map.getFeatureSearchService().searchById(layer, [id], function(featureHolder) {
       deselect the specific feature or deselect all features within the
       layer:</para>
 
-      <programlisting>layer.deselectFeature(feature);
+      <example>
+        <title>Deselecting features</title>
+
+        <programlisting>layer.deselectFeature(feature);
 
 // or
 
 layer.clearSelectedFeatures();</programlisting>
+      </example>
 
       <para>It might also be of interest to know wheter or not a specific
       feature is selected or not. This you can ask:</para>
 
-      <programlisting>var selected = eval(layer.isFeatureSelected(id).toString()); // Boolean to boolean conversion...</programlisting>
+      <example>
+        <title>Is a feature selected?</title>
+
+        <programlisting>var selected = eval(layer.isFeatureSelected(id).toString()); // Boolean to boolean conversion...</programlisting>
+      </example>
 
       <para>Note that the feature ID is used to inquire about the feature
       selection state. Also the eval method of the toString method is used to
@@ -399,13 +472,17 @@ layer.clearSelectedFeatures();</programlisting>
       map), a feature selection or deselection event is fired. It is possible
       to register handlers to these events in order to catch them.</para>
 
-      <programlisting>var registration = map.getEventBus().addFeatureSelectionHandler(function(event) {
+      <example>
+        <title>Catching feature selection events</title>
+
+        <programlisting>var registration = map.getEventBus().addFeatureSelectionHandler(function(event) {
     var feature = event.getFeature();
     // The feature is selected. Do something with it...
 }, function(event) {
     var feature = event.getFeature();
     // The feature is deselected. Do something with it...
 });</programlisting>
+      </example>
 
       <para>The maps central EventBus stores all handlers and fires all
       events. For feature selection, you may have noticed that both the
@@ -415,7 +492,11 @@ layer.clearSelectedFeatures();</programlisting>
       always return a registration to that handler. Through this registration
       it is possible to remove the handler from the EventBus again:</para>
 
-      <programlisting>registration.removeHandler();</programlisting>
+      <example>
+        <title>Removing the event handler</title>
+
+        <programlisting>registration.removeHandler();</programlisting>
+      </example>
     </sect2>
   </sect1>
 </chapter>
