@@ -12,26 +12,54 @@
 package org.geomajas.configuration;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.validation.ValidatorInfo;
 
 /**
- * Base information which is shared between all attributes.
+ * Base information which is shared between all editable attributes.
  *
  * @author Joachim Van der Auwera
- * @since 1.6.0
+ * @since 1.10.0 split out of AttributeInfo
  */
 @Api(allMethods = true)
-public class AttributeBaseInfo extends AbstractAttributeInfo {
+public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttributeInfo
+		implements EditableAttributeInfo {
 
-	private static final long serialVersionUID = 152L;
+	private static final long serialVersionUID = 1100L;
 
-	@Override
-	public String getName() {
-		return super.getName(); // NOSONAR override needed for @Api
+	private ValidatorInfo validator = new ValidatorInfo();
+	private boolean editable;
+
+	/**
+	 * Full-option constructor.
+	 *
+	 * @param editable editable status
+	 * @param hidden hidden status
+	 * @param identifying is attribute identifying?
+	 * @param name attribute name
+	 * @param label attribute label
+	 */
+	public AbstractEditableAttributeInfo(boolean editable, boolean hidden, boolean identifying, String name,
+			String label) {
+		super(hidden, identifying, name, label);
+		setEditable(editable);
 	}
 
-	@Override
-	public void setName(String name) {
-		super.setName(name); // NOSONAR override needed for @Api
+	/**
+	 * Get validator for attribute.
+	 *
+	 * @return validator
+	 */
+	public ValidatorInfo getValidator() {
+		return validator;
+	}
+
+	/**
+	 * Set validator for attribute.
+	 *
+	 * @param validator validator
+	 */
+	public void setValidator(ValidatorInfo validator) {
+		this.validator = validator;
 	}
 
 	/**
@@ -41,11 +69,10 @@ public class AttributeBaseInfo extends AbstractAttributeInfo {
 	 * purpose use the {@link org.geomajas.security.SecurityContext}.
 	 *
 	 * @return does the layer have to capability of writing this attribute?
-	 * @deprecated use {@link AbstractEditableAttributeInfo@isEditable} or {@link GeometryAttributeInfo@isEditable}
 	 */
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public boolean isEditable() {
-		return false;
+		return editable;
 	}
 
 	/**
@@ -55,10 +82,10 @@ public class AttributeBaseInfo extends AbstractAttributeInfo {
 	 * purpose use the {@link org.geomajas.security.SecurityContext}.
 	 *
 	 * @param editable "editable" capability for attribute
-	 * @deprecated use {@link AbstractEditableAttributeInfo@setEditable} or {@link GeometryAttributeInfo@setEditable}
 	 */
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public void setEditable(boolean editable) {
-		// don't do anything, deprecated
+		this.editable = editable;
 	}
+
 }

@@ -10,34 +10,23 @@
  */
 package org.geomajas.configuration;
 
-import javax.validation.constraints.NotNull;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.validation.ValidatorInfo;
 
 /**
  * Attribute information class.
- * 
+ *
  * @author Jan De Moerloose
  * @since 1.6.0
+ * @deprecated directly use the AbstractEditableAttributeInfo class
  */
 @Api(allMethods = true)
-public class AttributeInfo extends AttributeBaseInfo {
+@Deprecated
+public class AttributeInfo extends AbstractEditableAttributeInfo {
 
 	private static final long serialVersionUID = 152L;
 
-	@NotNull
-	private String label;
-
-	private boolean identifying;
-
-	private boolean hidden;
-
 	private boolean includedInForm;
-
-	private ValidatorInfo validator = new ValidatorInfo();
-
-	private String formInputType;
 
 	/** Default constructor for GWT. */
 	public AttributeInfo() {
@@ -46,154 +35,110 @@ public class AttributeInfo extends AttributeBaseInfo {
 
 	/**
 	 * Creates a non-editable, non-identifying, non-hidden attribute.
-	 * 
-	 * @param name
-	 *            attribute name
-	 * @param label
-	 *            attribute label
+	 *
+	 * @param name attribute name
+	 * @param label attribute label
 	 */
 	public AttributeInfo(String name, String label) {
-		this(false, false, false, name, label);
+		super(false, false, false, name, label);
 	}
 
 	/**
 	 * Full-option constructor.
-	 * 
-	 * @param editable
-	 *            editable status
-	 * @param hidden
-	 *            hidden status
-	 * @param identifying
-	 *            is attribute identifying?
-	 * @param name
-	 *            attribute name
-	 * @param label
-	 *            attribute label
+	 *
+	 * @param editable editable status
+	 * @param hidden hidden status
+	 * @param identifying is attribute identifying?
+	 * @param name attribute name
+	 * @param label attribute label
 	 */
 	public AttributeInfo(boolean editable, boolean hidden, boolean identifying, String name, String label) {
-		setEditable(editable);
-		setHidden(hidden);
-		setIdentifying(identifying);
-		setName(name);
-		setLabel(label);
+		super(editable, hidden, identifying, name, label);
 	}
 
-	/**
-	 * Get label for attribute.
-	 * 
-	 * @return label
-	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * Set label for attribute.
-	 * 
-	 * @param label
-	 *            label
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	/**
-	 * Is this an identifying attribute? Is it part of the feature id?
-	 * 
-	 * @return true when attribute is part of the feature id
-	 */
-	public boolean isIdentifying() {
-		return identifying;
-	}
-
-	/**
-	 * Set whether the attribute is part of the feature id.
-	 * 
-	 * @param identifying
-	 *            true when attribute is part of the feature id
-	 */
-	public void setIdentifying(boolean identifying) {
-		this.identifying = identifying;
-	}
-
-	/**
-	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
-	 * widgets on the client.
-	 * <p/>
-	 * The default value for this setting is 'false'.
-	 * 
-	 * @return true when hidden.
-	 */
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	/**
-	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
-	 * widgets on the client.
-	 * <p/>
-	 * The default value for this setting is 'false'.
-	 * 
-	 * @param hidden
-	 *            The new hidden status.
-	 */
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
-
-	/**
-	 * Get validator for attribute.
-	 * 
-	 * @return validator
-	 */
+	@Override
 	public ValidatorInfo getValidator() {
-		return validator;
+		return super.getValidator(); // NOSONAR	override needed for @Api
 	}
 
-	/**
-	 * Set validator for attribute.
-	 * 
-	 * @param validator
-	 *            validator
-	 */
+	@Override
 	public void setValidator(ValidatorInfo validator) {
-		this.validator = validator;
+		super.setValidator(validator);
 	}
 
 	/**
-	 * Get the type of input field that should be used in client side forms when editing this attribute. This value
-	 * should only be used when diverting from the default values (which are based upon the attribute type itself).
-	 * Using this field though enables users to specify their own client-side form field types and use them through
-	 * configuration.
-	 * 
-	 * @return Returns the form input type to be used, or null when the default behavior is desired.
+	 * {@inheritDoc}
+	 * @since 1.10.0
+	 */
+	@Override
+	public boolean isEditable() {
+		return super.isEditable(); // NOSONAR override needed for @Api
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @since 1.10.0
+	 */
+	@Override
+	public void setEditable(boolean editable) {
+		super.setEditable(editable); // NOSONAR override needed for @Api
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getLabel() {
+		return super.getLabel(); // NOSONAR override needed for @Api
+	}
+
+	@Override
+	public void setLabel(String label) {
+		super.setLabel(label); // NOSONAR override needed for @Api
+	}
+
+	@Override
+	public boolean isIdentifying() {
+		return super.isIdentifying(); // NOSONAR override needed for @Api
+	}
+
+	@Override
+	public void setIdentifying(boolean identifying) {
+		super.setIdentifying(identifying); // NOSONAR override needed for @Api
+	}
+
+	@Override
+	public boolean isHidden() {
+		return super.isHidden(); // NOSONAR override needed for @Api
+	}
+
+	@Override
+	public void setHidden(boolean hidden) {
+		super.setHidden(hidden); // NOSONAR override needed for @Api
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * @since 1.9.0
 	 */
+	@Override
 	public String getFormInputType() {
-		return formInputType;
+		return super.getFormInputType(); // NOSONAR override needed for @Api
 	}
 
 	/**
-	 * Set the type of input field that should be used in client side forms when editing this attribute. This value
-	 * should only be used when diverting from the default values (which are based upon the attribute type itself).
-	 * Using this field though enables users to specify their own client-side form field types and use them through
-	 * configuration.
-	 * 
-	 * @param formInputType
-	 *            The form input type to be used. Leave this empty (null) when the default behavior is desired.
+	 * {@inheritDoc}
 	 * @since 1.9.0
 	 */
+	@Override
 	public void setFormInputType(String formInputType) {
-		this.formInputType = formInputType;
+		super.setFormInputType(formInputType); // NOSONAR override needed for @Api
 	}
 
 	/**
 	 * Do not use...
-	 * 
-	 * @param includedInForm
-	 *            new value.
-	 * @deprecated Wrongfully added, use {@link #setHidden(boolean)} instead
+	 *
+	 * @param includedInForm new value.
 	 * @since 1.9.0
+	 * @deprecated Wrongfully added, use {@link #setHidden(boolean)} instead
 	 */
 	@Deprecated
 	public void setIncludedInForm(boolean includedInForm) {
@@ -202,11 +147,10 @@ public class AttributeInfo extends AttributeBaseInfo {
 
 	/**
 	 * Do not use...
-	 * 
+	 *
 	 * @return Include in form value.
-	 * 
-	 * @deprecated Wrongfully added, use {@link #isHidden()} instead
 	 * @since 1.9.0
+	 * @deprecated Wrongfully added, use {@link #isHidden()} instead
 	 */
 	@Deprecated
 	public boolean isIncludedInForm() {
