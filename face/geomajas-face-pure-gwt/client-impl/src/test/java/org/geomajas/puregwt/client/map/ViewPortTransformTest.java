@@ -20,7 +20,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.GeomajasTestModule;
-import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.event.EventBus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

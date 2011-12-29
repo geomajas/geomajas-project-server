@@ -13,9 +13,9 @@ package org.geomajas.puregwt.client.widget;
 
 import java.util.List;
 
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;

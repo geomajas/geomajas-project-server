@@ -18,7 +18,7 @@ import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.GeomajasTestModule;
-import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Before;

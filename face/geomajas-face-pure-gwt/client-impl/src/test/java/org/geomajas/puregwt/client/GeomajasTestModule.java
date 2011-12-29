@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client;
 
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -18,8 +20,6 @@ import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
-import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.EventBusImpl;
 import org.geomajas.puregwt.client.widget.MapWidgetTestImpl;
 
 import com.google.inject.AbstractModule;
