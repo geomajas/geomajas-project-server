@@ -15,6 +15,9 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
+
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * Scale based renderer for the map. It provides the rendering through specific renderers for each required scale.
@@ -24,6 +27,17 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
  */
 @Api(allMethods = true)
 public interface MapScalesRenderer {
+
+	/**
+	 * Add a handler for {@link org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent}s. At some point
+	 * after a call to the <code>ensureScale</code> method, that particular scale level will be rendered (i.e. all tiles
+	 * have arrived). These handlers will be notified of that event.
+	 * 
+	 * @param handler
+	 *            The event handler.
+	 * @return A registration to the handler.
+	 */
+	HandlerRegistration addScaleLevelRenderedHandler(ScaleLevelRenderedHandler handler);
 
 	/**
 	 * Get the HTML container wherein all scales should be rendered.
