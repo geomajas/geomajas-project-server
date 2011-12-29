@@ -12,10 +12,10 @@
 package org.geomajas.puregwt.client.feature;
 
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.controller.FeatureSelectionController;
+import org.geomajas.puregwt.client.event.MapInitializationEvent;
+import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.controller.FeatureSelectionController;
-import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
 
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;

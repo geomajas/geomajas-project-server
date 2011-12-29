@@ -12,13 +12,13 @@
 package org.geomajas.puregwt.client.layer;
 
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.event.LayerHideEvent;
+import org.geomajas.puregwt.client.event.LayerShowEvent;
+import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
+import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
+import org.geomajas.puregwt.client.event.MapInitializationEvent;
+import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.event.LayerHideEvent;
-import org.geomajas.puregwt.client.map.event.LayerShowEvent;
-import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
-import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
-import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;

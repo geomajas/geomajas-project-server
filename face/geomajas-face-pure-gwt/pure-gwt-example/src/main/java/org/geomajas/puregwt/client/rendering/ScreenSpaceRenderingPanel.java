@@ -12,10 +12,10 @@
 package org.geomajas.puregwt.client.rendering;
 
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.event.MapInitializationEvent;
+import org.geomajas.puregwt.client.event.MapInitializationHandler;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;

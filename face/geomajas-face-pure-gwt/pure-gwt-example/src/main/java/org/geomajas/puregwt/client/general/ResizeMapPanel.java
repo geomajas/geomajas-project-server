@@ -12,9 +12,9 @@
 package org.geomajas.puregwt.client.general;
 
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.event.MapInitializationEvent;
+import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.event.MapInitializationEvent;
-import org.geomajas.puregwt.client.map.event.MapInitializationHandler;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
