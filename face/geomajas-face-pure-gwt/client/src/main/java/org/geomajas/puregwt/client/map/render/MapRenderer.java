@@ -12,12 +12,12 @@
 package org.geomajas.puregwt.client.map.render;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
-import org.geomajas.puregwt.client.map.event.LayerStyleChangedHandler;
-import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
-import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
-import org.geomajas.puregwt.client.map.event.MapResizedHandler;
-import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.LayerOrderChangedHandler;
+import org.geomajas.puregwt.client.event.LayerStyleChangedHandler;
+import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
+import org.geomajas.puregwt.client.event.MapCompositionHandler;
+import org.geomajas.puregwt.client.event.MapResizedHandler;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 
 /**
  * General definition of an object that is responsible for making sure the map is always rendered correctly. How exactly

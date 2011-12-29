@@ -15,10 +15,10 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.map.controller.MapController;
-import org.geomajas.puregwt.client.map.controller.MapListener;
-import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
+import org.geomajas.puregwt.client.controller.MapController;
+import org.geomajas.puregwt.client.controller.MapListener;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -35,7 +35,7 @@ public interface MapPresenter {
 
 	/**
 	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
-	 * on return. A special {@link org.geomajas.puregwt.client.map.event.MapInitializationEvent} will be fired once
+	 * on return. A special {@link org.geomajas.puregwt.client.event.MapInitializationEvent} will be fired once
 	 * initialization is done.<br/>
 	 * TODO complete JAVADOC
 	 */

@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 
 /**
  * Definition for an autonomous gadget which can be displayed on the map. These gadgets receive some events from the map

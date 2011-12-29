@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.map.render;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
 
 /**
  * Scale based renderer for the map. It provides the rendering through specific renderers for each required scale.

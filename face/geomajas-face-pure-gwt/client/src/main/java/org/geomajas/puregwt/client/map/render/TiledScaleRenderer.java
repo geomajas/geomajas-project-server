@@ -13,7 +13,7 @@ package org.geomajas.puregwt.client.map.render;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
 
 /**
  * Representation of a single scale level for a certain layer. Implementations should focus on getting the required

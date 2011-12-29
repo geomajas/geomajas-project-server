@@ -14,7 +14,7 @@ package org.geomajas.puregwt.client.map;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.annotation.Api;
-import org.geomajas.puregwt.client.map.event.EventBus;
+import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
