@@ -24,6 +24,12 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
+import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
+import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
+
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 
 /**
  * <p>
@@ -36,9 +42,11 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
  * 
  * @author Pieter De Graef
  */
-public class MapScalesRendererImpl implements MapScalesRenderer {
+public class LayerScalesRenderer implements MapScalesRenderer {
 
 	private static final int SCALE_CACHE_SIZE = 3; // Let's keep the last 3 scales.
+
+	private final EventBus eventBus;
 
 	private final ViewPort viewPort;
 
@@ -51,8 +59,6 @@ public class MapScalesRendererImpl implements MapScalesRenderer {
 	private final List<Double> scales;
 
 	private double visibleScale;
-
-	//private double targetScale;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -68,20 +74,25 @@ public class MapScalesRendererImpl implements MapScalesRenderer {
 	 * @param htmlContainer
 	 *            The container wherein to render all scales.
 	 */
-	public MapScalesRendererImpl(ViewPort viewPort, Layer<?> layer, HtmlContainer htmlContainer) {
+	public LayerScalesRenderer(ViewPort viewPort, Layer<?> layer, HtmlContainer htmlContainer) {
 		this.viewPort = viewPort;
 		this.layer = layer;
 		this.htmlContainer = htmlContainer;
 		scalePresenters = new HashMap<Double, TiledScaleRenderer>();
 		scales = new ArrayList<Double>(SCALE_CACHE_SIZE + 1);
+		eventBus = new SimpleEventBus();
 
 		visibleScale = viewPort.getScale();
-		//targetScale = viewPort.getScale();
 	}
 
 	// ------------------------------------------------------------------------
 	// MapScalesRenderer implementation:
 	// ------------------------------------------------------------------------
+
+	/** {@inheritDoc} */
+	public HandlerRegistration addScaleLevelRenderedHandler(ScaleLevelRenderedHandler handler) {
+		return eventBus.addHandler(ScaleLevelRenderedHandler.TYPE, handler);
+	}
 
 	/** {@inheritDoc} */
 	public HtmlContainer getHtmlContainer() {
@@ -95,7 +106,6 @@ public class MapScalesRendererImpl implements MapScalesRenderer {
 			TiledScaleRenderer presenter = getOrCreate(scale);
 			presenter.getHtmlContainer().setVisible(false);
 			presenter.render(bounds);
-			//targetScale = scale;
 
 			// Rearrange the scales:
 			if (scales.contains(scale)) {
@@ -158,22 +168,24 @@ public class MapScalesRendererImpl implements MapScalesRenderer {
 
 		TiledScaleRenderer scalePresenter = null;
 		if (layer instanceof RasterLayer) {
-			scalePresenter = new RasterLayerScalePresenter(viewPort.getCrs(), (RasterLayer) layer, scaleContainer,
+			scalePresenter = new RasterLayerScaleRenderer(viewPort.getCrs(), (RasterLayer) layer, scaleContainer, 
 					scale) {
 
 				public void onTilesReceived(HtmlContainer container, double scale) {
 				}
 
 				public void onTilesRendered(HtmlContainer container, double scale) {
+					eventBus.fireEvent(new ScaleLevelRenderedEvent(scale));
 				}
 			};
 		} else {
-			scalePresenter = new VectorLayerScalePresenter(viewPort, (VectorLayer) layer, scaleContainer, scale) {
+			scalePresenter = new VectorLayerScaleRenderer(viewPort, (VectorLayer) layer, scaleContainer, scale) {
 
 				public void onTilesReceived(HtmlContainer container, double scale) {
 				}
 
 				public void onTilesRendered(HtmlContainer container, double scale) {
+					eventBus.fireEvent(new ScaleLevelRenderedEvent(scale));
 				}
 			};
 		}

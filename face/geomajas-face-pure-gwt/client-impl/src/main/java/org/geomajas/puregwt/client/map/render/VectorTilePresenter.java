@@ -54,7 +54,7 @@ public class VectorTilePresenter {
 		void setContent(String content);
 	}
 
-	private VectorLayerScalePresenter renderer;
+	private VectorLayerScaleRenderer renderer;
 
 	private TileCode tileCode;
 
@@ -70,7 +70,7 @@ public class VectorTilePresenter {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public VectorTilePresenter(VectorLayerScalePresenter renderer, TileCode tileCode) {
+	public VectorTilePresenter(VectorLayerScaleRenderer renderer, TileCode tileCode) {
 		this.renderer = renderer;
 		this.tileCode = tileCode;
 		siblings = new ArrayList<TileCode>();

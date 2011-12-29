@@ -29,7 +29,7 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
  * 
  * @author Pieter De Graef
  */
-public abstract class VectorLayerScalePresenter implements TiledScaleRenderer {
+public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 	private final ViewPort viewPort;
 
@@ -53,7 +53,7 @@ public abstract class VectorLayerScalePresenter implements TiledScaleRenderer {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public VectorLayerScalePresenter(ViewPort viewPort, VectorLayer vectorLayer, HtmlContainer htmlContainer,
+	public VectorLayerScaleRenderer(ViewPort viewPort, VectorLayer vectorLayer, HtmlContainer htmlContainer,
 			double scale) {
 		this.viewPort = viewPort;
 		this.vectorLayer = vectorLayer;

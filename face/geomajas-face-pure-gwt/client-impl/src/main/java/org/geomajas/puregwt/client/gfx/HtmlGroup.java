@@ -99,7 +99,7 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * visibility stack, where the first element lies at the bottom and the last element on top.
 	 * 
 	 * @param child
-	 *            THe actual child to add.
+	 *            The actual child to add.
 	 * @param beforeIndex
 	 *            The position in the list where this child should end up.
 	 */

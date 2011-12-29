@@ -30,7 +30,7 @@ public class MapNavigationAnimation extends Animation {
 
 	private boolean running;
 
-	protected List<MapScalesRenderer> layerPresenters;
+	protected List<MapScalesRenderer> mapScalesRenderers;
 
 	private double currentScale;
 
@@ -74,7 +74,7 @@ public class MapNavigationAnimation extends Animation {
 	 */
 	public void start(List<MapScalesRenderer> layerPresenters, double sourceScale, double targetScale,
 			Coordinate sourcePosition, Coordinate targetPosition, int millis) {
-		this.layerPresenters = layerPresenters;
+		this.mapScalesRenderers = layerPresenters;
 
 		function.setBeginLocation(sourcePosition.getX(), sourcePosition.getY(), sourceScale);
 		function.setEndLocation(targetPosition.getX(), targetPosition.getY(), targetScale);
@@ -86,7 +86,7 @@ public class MapNavigationAnimation extends Animation {
 	public void extend(double targetScale, Coordinate targetPosition, int millis) {
 		if (running) {
 			cancel();
-			start(layerPresenters, currentScale, targetScale, new Coordinate(currentX, currentY), targetPosition,
+			start(mapScalesRenderers, currentScale, targetScale, new Coordinate(currentX, currentY), targetPosition,
 					millis);
 		}
 	}
@@ -138,6 +138,15 @@ public class MapNavigationAnimation extends Animation {
 		this.nrAnimatedLayers = nrAnimatedLayers;
 	}
 
+	/**
+	 * Get the current list of map scale renderers.
+	 * 
+	 * @return The current list of map scale renderers.
+	 */
+	public List<MapScalesRenderer> getMapScaleRenderers() {
+		return mapScalesRenderers;
+	}
+
 	// ------------------------------------------------------------------------
 	// Overridden methods:
 	// ------------------------------------------------------------------------
@@ -159,8 +168,8 @@ public class MapNavigationAnimation extends Animation {
 			currentScale = 1;
 		}
 
-		for (int i = 0; i < layerPresenters.size(); i++) {
-			MapScalesRenderer presenter = layerPresenters.get(i);
+		for (int i = 0; i < mapScalesRenderers.size(); i++) {
+			MapScalesRenderer presenter = mapScalesRenderers.get(i);
 			TiledScaleRenderer scalePresenter = presenter.getVisibleScale();
 			if (scalePresenter != null) {
 				if (i < nrAnimatedLayers) {
@@ -180,7 +189,7 @@ public class MapNavigationAnimation extends Animation {
 	 */
 	protected void onCancel() {
 		running = false;
-		for (MapScalesRenderer presenter : layerPresenters) {
+		for (MapScalesRenderer presenter : mapScalesRenderers) {
 			presenter.cancel();
 		}
 	}

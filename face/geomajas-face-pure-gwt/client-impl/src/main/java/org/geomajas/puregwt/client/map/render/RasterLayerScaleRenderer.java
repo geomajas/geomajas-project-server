@@ -42,7 +42,7 @@ import org.geomajas.puregwt.client.service.BooleanCallback;
  * 
  * @author Pieter De Graef
  */
-public abstract class RasterLayerScalePresenter implements TiledScaleRenderer {
+public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	private final GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 
@@ -72,7 +72,7 @@ public abstract class RasterLayerScalePresenter implements TiledScaleRenderer {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public RasterLayerScalePresenter(String crs, RasterLayer rasterLayer, HtmlContainer container, double scale) {
+	public RasterLayerScaleRenderer(String crs, RasterLayer rasterLayer, HtmlContainer container, double scale) {
 		this.crs = crs;
 		this.rasterLayer = rasterLayer;
 		this.container = container;
@@ -107,6 +107,7 @@ public abstract class RasterLayerScalePresenter implements TiledScaleRenderer {
 	public void render(final Bbox bounds) {
 		// First we check whether or not the requested bounds is already rendered:
 		if (currentTileBounds != null && BboxService.contains(currentTileBounds, bounds)) {
+			onTilesRendered(container, scale);
 			return; // Bounds already rendered, nothing to do here.
 		}
 
