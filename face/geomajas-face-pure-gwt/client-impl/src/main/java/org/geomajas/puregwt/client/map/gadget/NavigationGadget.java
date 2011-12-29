@@ -98,7 +98,7 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double deltaX = -bounds.getWidth() / 3;
+				double deltaX = -bounds.getWidth() / 5;
 				PanAnimation animation = new PanAnimation(viewPort);
 				animation.panTo(deltaX, 0, 300);
 				event.stopPropagation();
@@ -112,7 +112,7 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double deltaX = bounds.getWidth() / 3;
+				double deltaX = bounds.getWidth() / 5;
 				PanAnimation animation = new PanAnimation(viewPort);
 				animation.panTo(deltaX, 0, 300);
 				event.stopPropagation();
@@ -126,7 +126,7 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double deltaY = bounds.getHeight() / 3;
+				double deltaY = bounds.getHeight() / 5;
 				PanAnimation animation = new PanAnimation(viewPort);
 				animation.panTo(0, deltaY, 300);
 				event.stopPropagation();
@@ -140,7 +140,7 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				Bbox bounds = viewPort.getBounds();
-				double deltaY = -bounds.getHeight() / 3;
+				double deltaY = -bounds.getHeight() / 5;
 				PanAnimation animation = new PanAnimation(viewPort);
 				animation.panTo(0, deltaY, 300);
 				event.stopPropagation();

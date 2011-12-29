@@ -34,6 +34,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="mapWms" />
 				<ref bean="mapLegend" />
 				<ref bean="mapLayerVisibility" />
+				<ref bean="mapCountries" />
 			</list>
 		</property>
 	</bean>

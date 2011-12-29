@@ -12,7 +12,7 @@
 package org.geomajas.puregwt.client.map.gfx;
 
 import org.geomajas.gwt.client.util.Dom;
-import org.geomajas.puregwt.client.map.layer.TilePresenter.TileView;
+import org.geomajas.puregwt.client.map.render.VectorTilePresenter.TileView;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 

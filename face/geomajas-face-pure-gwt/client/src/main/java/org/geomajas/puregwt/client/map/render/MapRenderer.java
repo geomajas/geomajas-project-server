@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.puregwt.client.map;
+package org.geomajas.puregwt.client.map.render;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.map.event.LayerOrderChangedHandler;
@@ -18,8 +18,6 @@ import org.geomajas.puregwt.client.map.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.map.event.MapCompositionHandler;
 import org.geomajas.puregwt.client.map.event.MapResizedHandler;
 import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 
 /**
  * General definition of an object that is responsible for making sure the map is always rendered correctly. How exactly
@@ -42,24 +40,19 @@ public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHa
 	 */
 	void setMapExtentScaleAtFetch(double scale);
 
-	/** Clear all drawing content this renderer has created. */
-	void clear();
+	/**
+	 * Set the number of milliseconds an animated navigation sequence should last.
+	 * 
+	 * @param animationMillis
+	 *            The number of milliseconds an animated navigation sequence should last.
+	 */
+	void setAnimationMillis(int animationMillis);
 
 	/**
-	 * Set an HTML container wherein this map renderer may display the actual rendering. Implementing classes may choose
-	 * to prefer HTML based rendering above vector based rendering.
+	 * Determine the number of layers (starting at the back) that should be animated while navigating. The other layers
+	 * should be temporarily removed.
 	 * 
-	 * @param htmlContainer
-	 *            The HTML container wherein this map renderer may display the actual rendering.
+	 * @param nrAnimatedLayers
 	 */
-	void setHtmlContainer(HtmlContainer htmlContainer);
-
-	/**
-	 * Set a vector container wherein this map renderer may display the actual rendering. Implementing classes may
-	 * choose to prefer vector based rendering above HTML based rendering.
-	 * 
-	 * @param vectorContainer
-	 *            The vector container wherein this map renderer may display the actual rendering.
-	 */
-	void setVectorContainer(VectorContainer vectorContainer);
+	void setNrAnimatedLayers(int nrAnimatedLayers);
 }

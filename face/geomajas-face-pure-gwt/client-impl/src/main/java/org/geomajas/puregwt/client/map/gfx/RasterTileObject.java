@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.map.gfx;
 
-import org.geomajas.puregwt.client.map.layer.TilePresenter.TileView;
+import org.geomajas.puregwt.client.map.render.VectorTilePresenter.TileView;
 
 import com.google.gwt.user.client.DOM;
 

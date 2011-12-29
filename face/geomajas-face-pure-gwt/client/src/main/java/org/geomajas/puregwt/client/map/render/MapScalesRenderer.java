@@ -1,0 +1,80 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+package org.geomajas.puregwt.client.map.render;
+
+import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
+
+/**
+ * Scale based renderer for the map. It provides the rendering through specific renderers for each required scale.
+ * 
+ * @author Pieter De Graef
+ * @since 1.0.0
+ */
+@Api(allMethods = true)
+public interface MapScalesRenderer {
+
+	/**
+	 * Get the HTML container wherein all scales should be rendered.
+	 * 
+	 * @return The HTML container.
+	 */
+	HtmlContainer getHtmlContainer();
+
+	/**
+	 * Ensure that the requested scale becomes available and fully rendered as soon as possible.
+	 * 
+	 * @param scale
+	 *            The requested scale.
+	 * @param bounds
+	 *            Bounding box to focus on when trying to build the scale rendering.
+	 */
+	void ensureScale(double scale, Bbox bounds);
+
+	/**
+	 * Determine the visibility of a certain scale level.
+	 * 
+	 * @param scale
+	 *            The scale level to make visible. Make sure to first call <code>ensureScale</code>. Otherwise this
+	 *            scale level might not be available to display or hide.
+	 * @param visible
+	 *            Show or hide the scale level?
+	 */
+	void setScaleVisibility(double scale, boolean visible);
+
+	/**
+	 * Apply a translation onto a certain scale level.
+	 * 
+	 * @param scale
+	 *            The scale level to translate.
+	 * @param translation
+	 *            The translation vector.
+	 */
+	void applyScaleTranslation(double scale, Coordinate translation);
+
+	/**
+	 * Cancel rendering. When ensuring a certain scale level, often the rendering needs to be fetched from the server.
+	 * This cancel might stop that request. In any case, this method prevents the workings of the
+	 * <code>ensureScale</code> method.
+	 */
+	void cancel();
+
+	/**
+	 * Get the currently visible scale. This will return the scale that was lastly made visible (more than one scale
+	 * might be visible at any time).
+	 * 
+	 * @return The currently visible scale.
+	 */
+	TiledScaleRenderer getVisibleScale();
+}

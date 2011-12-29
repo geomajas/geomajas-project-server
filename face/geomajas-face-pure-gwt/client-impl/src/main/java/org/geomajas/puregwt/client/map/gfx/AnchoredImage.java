@@ -51,5 +51,4 @@ public class AnchoredImage extends Image {
 		setWidth((int) getUserWidth());
 		setHeight((int) getUserHeight());
 	}
-
 }

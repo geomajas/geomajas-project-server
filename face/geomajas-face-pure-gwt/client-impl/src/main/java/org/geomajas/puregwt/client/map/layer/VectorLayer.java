@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.puregwt.client.map.MapRenderer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.event.FeatureDeselectedEvent;
@@ -38,8 +37,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	private boolean labeled;
 
-	private VectorLayerRenderer renderer;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -47,7 +44,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public VectorLayer(ClientVectorLayerInfo layerInfo, ViewPort viewPort, EventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
 		selection = new HashMap<String, Feature>();
-		renderer = new VectorLayerRenderer(this, viewPort);
 	}
 
 	// ------------------------------------------------------------------------
@@ -56,7 +52,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	public void setFilter(String filter) {
 		this.filter = filter;
-		renderer.clear();
 		viewPort.applyBounds(viewPort.getBounds());
 	}
 
@@ -109,13 +104,5 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	public boolean isLabeled() {
 		return labeled;
-	}
-
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
-
-	public MapRenderer getRenderer() {
-		return renderer;
 	}
 }

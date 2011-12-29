@@ -58,6 +58,8 @@ import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
 import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
+import org.geomajas.puregwt.client.map.render.MapRendererImpl;
+import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -201,9 +203,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	// ------------------------------------------------------------------------
 
 	public void initialize(String applicationId, String id) {
-		mapRenderer = new DelegatingMapRenderer(layersModel, viewPort);
-		mapRenderer.setHtmlContainer(display.getMapHtmlContainer());
-		mapRenderer.setVectorContainer(display.getMapVectorContainer());
+		mapRenderer = new MapRendererImpl(layersModel, viewPort, display.getMapHtmlContainer());
 
 		eventBus.addHandler(ViewPortChangedHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerOrderChangedHandler.TYPE, mapRenderer);
@@ -266,6 +266,10 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	public void setMapRenderer(MapRenderer mapRenderer) {
 		this.mapRenderer = mapRenderer;
+	}
+	
+	public MapRenderer getMapRenderer() {
+		return mapRenderer;
 	}
 
 	public void setSize(int width, int height) {

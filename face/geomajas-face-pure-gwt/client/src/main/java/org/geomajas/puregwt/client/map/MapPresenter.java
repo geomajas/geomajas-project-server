@@ -19,6 +19,7 @@ import org.geomajas.puregwt.client.map.controller.MapController;
 import org.geomajas.puregwt.client.map.controller.MapListener;
 import org.geomajas.puregwt.client.map.event.EventBus;
 import org.geomajas.puregwt.client.map.gfx.VectorContainer;
+import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -219,4 +220,6 @@ public interface MapPresenter {
 	 *            The new cursor to apply.
 	 */
 	void setCursor(String cursor);
+	
+	MapRenderer getMapRenderer();
 }
