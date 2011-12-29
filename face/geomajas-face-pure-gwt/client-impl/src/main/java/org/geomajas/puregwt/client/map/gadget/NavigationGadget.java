@@ -14,9 +14,9 @@ package org.geomajas.puregwt.client.map.gadget;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -171,7 +171,10 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
+				try {
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
+				} catch (IllegalArgumentException e) {
+				}
 				event.stopPropagation();
 			}
 		});
@@ -194,7 +197,10 @@ public class NavigationGadget implements MapGadget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
+				try {
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
+				} catch (IllegalArgumentException e) {
+				}
 				event.stopPropagation();
 			}
 		});

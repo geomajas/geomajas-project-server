@@ -13,9 +13,9 @@ package org.geomajas.puregwt.client.map.gadget;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.UnitType;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapGadget;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
