@@ -27,6 +27,7 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
@@ -102,21 +103,19 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	/** {@inheritDoc} */
 	public void ensureScale(double scale, Bbox bounds) {
 		// Get or create the presenter, then turn it invisible and fetch the tiles.
-		if (scale > 0) {
-			TiledScaleRenderer presenter = getOrCreate(scale);
-			presenter.getHtmlContainer().setVisible(false);
-			presenter.render(bounds);
+		TiledScaleRenderer presenter = getOrCreate(scale);
+		presenter.getHtmlContainer().setVisible(false);
+		presenter.render(bounds);
 
-			// Rearrange the scales:
-			if (scales.contains(scale)) {
-				scales.remove(scale);
-			}
-			scales.add(scale);
+		// Rearrange the scales:
+		if (scales.contains(scale)) {
+			scales.remove(scale);
+		}
+		scales.add(scale);
 
-			// If we have too many scales, remove the last one to be used:
-			if (scales.size() > SCALE_CACHE_SIZE) {
-				removeScaleLevel(scales.get(0));
-			}
+		// If we have too many scales, remove the last one to be used:
+		if (scales.size() > SCALE_CACHE_SIZE) {
+			removeScaleLevel(scales.get(0));
 		}
 	}
 
@@ -124,6 +123,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	public void setScaleVisibility(double scale, boolean visible) {
 		TiledScaleRenderer scalePresenter = scalePresenters.get(scale);
 		if (scalePresenter != null) {
+			GWT.log("Setting scale visibility: " + scale + ", " + visible);
 			if (visible) {
 				visibleScale = scale;
 				scalePresenter.getHtmlContainer().zoomToLocation(1, 0, 0);
@@ -143,9 +143,8 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		}
 	}
 
-	/** {@inheritDoc} */
+	/** Does nothing. */
 	public void cancel() {
-		// removeScaleLevel(targetScale);
 	}
 
 	/** {@inheritDoc} */

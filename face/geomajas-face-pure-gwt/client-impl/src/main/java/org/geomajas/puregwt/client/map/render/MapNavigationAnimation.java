@@ -150,7 +150,7 @@ public class MapNavigationAnimation extends Animation {
 	// ------------------------------------------------------------------------
 	// Overridden methods:
 	// ------------------------------------------------------------------------
-
+	
 	/**
 	 * Method that keeps tabs on the animation progress, and automatically transforms all {@link MapScalesRenderer}s
 	 * accordingly.
@@ -199,6 +199,7 @@ public class MapNavigationAnimation extends Animation {
 	 * {@link MapScalesRenderer}s.
 	 */
 	protected void onComplete() {
+		onUpdate(1);
 		running = false;
 	}
 }
