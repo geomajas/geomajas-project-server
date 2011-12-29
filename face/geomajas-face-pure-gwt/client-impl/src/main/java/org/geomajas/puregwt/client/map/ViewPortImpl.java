@@ -20,11 +20,11 @@ import org.geomajas.geometry.Matrix;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.ZoomStrategy.ZoomOption;
-import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 
 import com.google.inject.Inject;
 

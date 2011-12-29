@@ -11,9 +11,9 @@
 
 package org.geomajas.puregwt.client;
 
+import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.FeatureSearch;
-import org.geomajas.puregwt.client.map.gfx.GfxUtil;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
