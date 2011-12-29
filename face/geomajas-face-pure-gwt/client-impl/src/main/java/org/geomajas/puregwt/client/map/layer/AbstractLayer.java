@@ -12,17 +12,17 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.event.LayerDeselectedEvent;
+import org.geomajas.puregwt.client.event.LayerHideEvent;
+import org.geomajas.puregwt.client.event.LayerSelectedEvent;
+import org.geomajas.puregwt.client.event.LayerShowEvent;
+import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
+import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
+import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
+import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.LayerDeselectedEvent;
-import org.geomajas.puregwt.client.map.event.LayerHideEvent;
-import org.geomajas.puregwt.client.map.event.LayerSelectedEvent;
-import org.geomajas.puregwt.client.map.event.LayerShowEvent;
-import org.geomajas.puregwt.client.map.event.LayerVisibilityMarkedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortChangedEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortChangedHandler;
-import org.geomajas.puregwt.client.map.event.ViewPortScaledEvent;
-import org.geomajas.puregwt.client.map.event.ViewPortTranslatedEvent;
 
 /**
  * Abstraction of the basic layer interface. Specific layer implementations should use this as a base.

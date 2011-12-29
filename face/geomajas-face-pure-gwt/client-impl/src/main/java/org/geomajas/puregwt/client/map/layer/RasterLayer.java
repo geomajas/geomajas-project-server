@@ -11,9 +11,9 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.puregwt.client.event.EventBus;
+import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.event.EventBus;
-import org.geomajas.puregwt.client.map.event.LayerStyleChangedEvent;
 
 /**
  * <p>
