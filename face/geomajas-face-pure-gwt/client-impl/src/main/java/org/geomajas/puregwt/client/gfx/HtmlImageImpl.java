@@ -11,7 +11,6 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.puregwt.client.gfx.HtmlImage;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 
 import com.google.gwt.event.dom.client.ErrorEvent;

@@ -11,9 +11,6 @@
 
 package org.geomajas.puregwt.client.controller;
 
-import org.geomajas.puregwt.client.controller.MapListener;
-import org.geomajas.puregwt.client.controller.MapListenerEvent;
-
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;

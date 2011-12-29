@@ -13,7 +13,6 @@ package org.geomajas.puregwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.dom.client.Element;
@@ -37,18 +36,11 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * What makes this class special is that it provides a few protected methods for easily acquiring information from the
  * mouse events. You can for example get the event's position, or target DOM element.
  * </p>
- * <p>
- * TODO Are the offset parameters still needed?
- * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
 public abstract class AbstractMapController implements MapController {
-
-	private int offsetX;
-
-	private int offsetY;
 
 	protected MapPresenter mapPresenter;
 
@@ -89,56 +81,6 @@ public abstract class AbstractMapController implements MapController {
 	}
 
 	public void onDeactivate(MapPresenter mapPresenter) {
-	}
-
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
-
-	/**
-	 * An offset along the X-axis expressed in pixels for event coordinates. Used when controllers are placed on
-	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
-	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
-	 * correct screen and world position.
-	 */
-	public int getOffsetX() {
-		return offsetX;
-	}
-
-	/**
-	 * An offset along the X-axis expressed in pixels for event coordinates. Used when controllers are placed on
-	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
-	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
-	 * correct screen and world position.
-	 * 
-	 * @param offsetX
-	 *            Set the actual offset value in pixels.
-	 */
-	public void setOffsetX(int offsetX) {
-		this.offsetX = offsetX;
-	}
-
-	/**
-	 * An offset along the Y-axis expressed in pixels for event coordinates. Used when controllers are placed on
-	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
-	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
-	 * correct screen and world position.
-	 */
-	public int getOffsetY() {
-		return offsetY;
-	}
-
-	/**
-	 * An offset along the Y-axis expressed in pixels for event coordinates. Used when controllers are placed on
-	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
-	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
-	 * correct screen and world position.
-	 * 
-	 * @param offsetY
-	 *            Set the actual offset value in pixels.
-	 */
-	public void setOffsetY(int offsetY) {
-		this.offsetY = offsetY;
 	}
 
 	// -------------------------------------------------------------------------

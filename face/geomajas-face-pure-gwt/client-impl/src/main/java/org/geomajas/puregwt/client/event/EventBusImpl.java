@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client.event;
 
-import org.geomajas.puregwt.client.event.EventBus;
-
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -21,7 +19,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Inject;
 
 /**
- * ....
+ * ... 
  * 
  * @author Jan De Moerloose
  */

@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.gwt.client.util.Log;
-import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 

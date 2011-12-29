@@ -14,10 +14,9 @@ package org.geomajas.puregwt.client.gfx;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.dom.client.Node;
 import org.geomajas.gwt.client.util.Dom;
-import org.geomajas.puregwt.client.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.gfx.HtmlObject;
+
+import com.google.gwt.dom.client.Node;
 
 /**
  * <p>
