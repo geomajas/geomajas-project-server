@@ -25,7 +25,7 @@ import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
-import org.geomajas.puregwt.client.map.gfx.RasterTileObject;
+import org.geomajas.puregwt.client.gfx.RasterTileObject;
 
 /**
  * Presenter for a single tile within a vector layer.

@@ -25,8 +25,8 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.HtmlImageImpl;
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.service.BooleanCallback;
 

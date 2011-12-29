@@ -20,8 +20,8 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 
 /**

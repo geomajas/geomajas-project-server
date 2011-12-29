@@ -14,11 +14,11 @@ package org.geomajas.puregwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.puregwt.client.gfx.HtmlContainer;
+import org.geomajas.puregwt.client.gfx.HtmlGroup;
+import org.geomajas.puregwt.client.gfx.VectorContainer;
+import org.geomajas.puregwt.client.gfx.VectorGroup;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
-import org.geomajas.puregwt.client.map.gfx.HtmlContainer;
-import org.geomajas.puregwt.client.map.gfx.HtmlGroup;
-import org.geomajas.puregwt.client.map.gfx.VectorContainer;
-import org.geomajas.puregwt.client.map.gfx.VectorGroup;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 
