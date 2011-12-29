@@ -168,7 +168,8 @@ public class VectorTilePresenter {
 					} else {
 						Coordinate position = getTilePosition(tile);
 						display = new RasterTileObject(tile.getFeatureContent(), tile.getScreenWidth(), tile
-								.getScreenHeight(), (int) position.getY(), (int) position.getX());
+								.getScreenHeight(), (int) Math.round(position.getY()),
+								(int) Math.round(position.getX()));
 						display.setContent(tile.getFeatureContent());
 						renderer.getHtmlContainer().add((RasterTileObject) display);
 					}
