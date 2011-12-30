@@ -45,7 +45,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
  */
 public class LayerScalesRenderer implements MapScalesRenderer {
 
-	private static final int SCALE_CACHE_SIZE = 3; // Let's keep the last 3 scales.
+	private static final int SCALE_CACHE_SIZE = 2; // Let's keep the last 3 scales.
 
 	private final EventBus eventBus;
 
@@ -80,7 +80,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		this.layer = layer;
 		this.htmlContainer = htmlContainer;
 		tiledScaleRenderers = new HashMap<Double, TiledScaleRenderer>();
-		scales = new ArrayList<Double>(SCALE_CACHE_SIZE + 1);
+		scales = new ArrayList<Double>(SCALE_CACHE_SIZE + 2);
 		eventBus = new SimpleEventBus();
 
 		visibleScale = viewPort.getScale();
@@ -119,7 +119,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		if (scales.size() > SCALE_CACHE_SIZE) {
 			if (scales.get(0) != visibleScale) {
 				removeScaleLevel(scales.get(0));
-			} else {
+			} else if (scales.get(1) != scale) {
 				removeScaleLevel(scales.get(1));
 			}
 		}

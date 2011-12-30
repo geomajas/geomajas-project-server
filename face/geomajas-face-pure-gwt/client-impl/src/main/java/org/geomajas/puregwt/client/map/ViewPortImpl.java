@@ -56,15 +56,12 @@ public final class ViewPortImpl implements ViewPort {
 
 	private Coordinate position;
 
-	private Coordinate dragOrigin;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
 	@Inject
 	private ViewPortImpl() {
-		dragOrigin = new Coordinate();
 		position = new Coordinate();
 	}
 
@@ -127,10 +124,6 @@ public final class ViewPortImpl implements ViewPort {
 	// -------------------------------------------------------------------------
 	// Methods that retrieve what is visible on the map:
 	// -------------------------------------------------------------------------
-
-	public Coordinate getPanOrigin() {
-		return new Coordinate(dragOrigin);
-	}
 
 	public Coordinate getPosition() {
 		return new Coordinate(position);

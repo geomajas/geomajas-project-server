@@ -103,16 +103,6 @@ public interface ViewPort {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get the location at which one started dragging (panning/translating) the map. This is used in calculating tile
-	 * visibility.
-	 * 
-	 * @return The location at which one started dragging (panning/translating) the map.
-	 * @deprecated Is this still needed? If not remove!
-	 */
-	@Deprecated
-	Coordinate getPanOrigin();
-
-	/**
 	 * Get the current center position expressed in world space.
 	 * 
 	 * @return The current center position expressed in world space.

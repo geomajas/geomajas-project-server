@@ -54,9 +54,13 @@ public class VectorTilePresenter {
 		void setContent(String content);
 	}
 
-	private VectorLayerScaleRenderer renderer;
+	private final VectorLayerScaleRenderer renderer;
 
-	private TileCode tileCode;
+	private final TileCode tileCode;
+
+	private final double scale;
+	
+	private final String crs;
 
 	private TileView display;
 
@@ -70,9 +74,11 @@ public class VectorTilePresenter {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public VectorTilePresenter(VectorLayerScaleRenderer renderer, TileCode tileCode) {
+	public VectorTilePresenter(VectorLayerScaleRenderer renderer, TileCode tileCode, double scale, String crs) {
 		this.renderer = renderer;
 		this.tileCode = tileCode;
+		this.scale = scale;
+		this.crs = crs;
 		siblings = new ArrayList<TileCode>();
 	}
 
@@ -181,11 +187,10 @@ public class VectorTilePresenter {
 		});
 	}
 
-	@SuppressWarnings("deprecation")
 	private GwtCommand createCommand() {
 		GetVectorTileRequest request = new GetVectorTileRequest();
 		request.setCode(tileCode);
-		request.setCrs(renderer.getViewPort().getCrs());
+		request.setCrs(crs);
 		request.setFilter(renderer.getLayer().getFilter());
 		request.setLayerId(renderer.getLayer().getServerLayerId());
 
@@ -193,9 +198,9 @@ public class VectorTilePresenter {
 		request.setPaintGeometries(true);
 		request.setPaintLabels(false);
 		// request.setPaintLabels(renderer.getLayer().isLabeled());
-		request.setPanOrigin(renderer.getViewPort().getPanOrigin());
-		request.setRenderer(Dom.isIE() ? "VML" : "SVG");
-		request.setScale(renderer.getViewPort().getScale());
+		request.setPanOrigin(new Coordinate());
+		request.setRenderer(Dom.isSvg() ? "SVG" : "VML");
+		request.setScale(scale);
 		request.setStyleInfo(renderer.getLayer().getLayerInfo().getNamedStyleInfo());
 		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
@@ -203,7 +208,6 @@ public class VectorTilePresenter {
 	}
 
 	private Coordinate getTilePosition(VectorTile tile) {
-		double scale = renderer.getViewPort().getScale();
 		org.geomajas.geometry.Bbox layerBounds = renderer.getLayer().getLayerInfo().getMaxExtent();
 
 		// Calculate tile width and height for tileLevel=tileCode.getTileLevel(); This is in world space.
