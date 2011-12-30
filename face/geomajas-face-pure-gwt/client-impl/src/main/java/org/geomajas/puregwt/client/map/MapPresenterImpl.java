@@ -54,9 +54,12 @@ import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.Feature;
-import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
+import org.geomajas.puregwt.client.map.gadget.PanningGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
+import org.geomajas.puregwt.client.map.gadget.SimpleZoomGadget;
 import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
+import org.geomajas.puregwt.client.map.gadget.ZoomStepGadget;
+import org.geomajas.puregwt.client.map.gadget.ZoomToRectangleGadget;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 import org.geomajas.puregwt.client.map.render.MapRendererImpl;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -252,7 +255,18 @@ public final class MapPresenterImpl implements MapPresenter {
 
 				addMapGadget(new ScalebarGadget(r.getMapInfo()));
 				addMapGadget(new WatermarkGadget());
-				addMapGadget(new NavigationGadget());
+				// addMapGadget(new ZoomStepGadget());
+				addMapGadget(new PanningGadget(5, 5));
+				if (r.getMapInfo().getScaleConfiguration().getZoomLevels() != null
+						&& r.getMapInfo().getScaleConfiguration().getZoomLevels().size() > 0) {
+					// Zoom steps...
+					addMapGadget(new ZoomToRectangleGadget(5, 60));
+					addMapGadget(new ZoomStepGadget(60, 20));
+				} else {
+					// Simple zooming:
+					addMapGadget(new SimpleZoomGadget(60, 20));
+					addMapGadget(new ZoomToRectangleGadget(105, 20));
+				}
 
 				// Fire initialization event:
 				eventBus.fireEvent(new MapInitializationEvent());
@@ -268,7 +282,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	public void setMapRenderer(MapRenderer mapRenderer) {
 		this.mapRenderer = mapRenderer;
 	}
-	
+
 	public MapRenderer getMapRenderer() {
 		return mapRenderer;
 	}

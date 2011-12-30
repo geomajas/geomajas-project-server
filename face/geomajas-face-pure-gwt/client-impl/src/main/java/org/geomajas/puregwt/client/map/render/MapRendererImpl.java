@@ -42,8 +42,6 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Generic map renderer implementation. Has support for animated navigation through the {@link MapNavigationAnimation}.
  * 
@@ -86,7 +84,7 @@ public class MapRendererImpl implements MapRenderer {
 		this.animation = new MapNavigationAnimation(new LinearNavigationFunction()) {
 
 			protected void onComplete() {
-				GWT.log("Animation complete - scale: " + currentScale);
+				// GWT.log("Animation complete - scale: " + currentScale);
 				super.onComplete();
 				navigationBusy = false;
 				Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -96,8 +94,8 @@ public class MapRendererImpl implements MapRenderer {
 					presenter.setScaleVisibility(currentScale, true);
 					presenter.applyScaleTranslation(currentScale, previousTranslation);
 				}
-				
-				GWT.log("Check if we can delete " + previousScale + ". (animation complete)");
+
+				// GWT.log("Check if we can delete " + previousScale + ". (animation complete)");
 				checkPreviousScaleLevel();
 			};
 		};
@@ -110,16 +108,14 @@ public class MapRendererImpl implements MapRenderer {
 	private void checkPreviousScaleLevel() {
 		// Make previous scale invisible when the animation is finished + scale has been rendered.
 		if (!navigationBusy && previousScale != currentScale && animation.getMapScaleRenderers().size() > 0) {
-			GWT.log("Check: no animation. Good!");
+			// GWT.log("Check: no animation. Good!");
 			// Ask the first MapScaleRenderer if it's renderer:
 			TiledScaleRenderer renderer = animation.getMapScaleRenderers().get(0).getScale(previousScale);
 			if (renderer != null && renderer.isRendered()) {
-				GWT.log("Current scale (" + currentScale + ") rendered. Removing scale " + previousScale);
+				// GWT.log("Current scale (" + currentScale + ") rendered. Removing scale " + previousScale);
 				for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
 					presenter.setScaleVisibility(previousScale, false);
 				}
-			} else {
-				GWT.log("Check: Scale not rendered. Bad!");
 			}
 		}
 	}
@@ -129,7 +125,6 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onLayerAdded(LayerAddedEvent event) {
-		GWT.log("onLayerAdded");
 		Layer<?> layer = event.getLayer();
 
 		HtmlGroup layerContainer = new HtmlGroup(htmlContainer.getWidth(), htmlContainer.getHeight());
@@ -141,7 +136,6 @@ public class MapRendererImpl implements MapRenderer {
 			layerRenderer.addScaleLevelRenderedHandler(new ScaleLevelRenderedHandler() {
 
 				public void onScaleLevelRendered(ScaleLevelRenderedEvent event) {
-					GWT.log("Check if we can delete " + previousScale + ". (scale rendered)");
 					checkPreviousScaleLevel();
 				}
 			});
@@ -178,7 +172,6 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onShow(LayerShowEvent event) {
-		GWT.log("onShow");
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
 			HtmlContainer layerContainer = layerRenderers.get(layer).getHtmlContainer();
@@ -187,7 +180,6 @@ public class MapRendererImpl implements MapRenderer {
 	}
 
 	public void onHide(LayerHideEvent event) {
-		GWT.log("onHide");
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
 			HtmlContainer layerContainer = layerRenderers.get(layer).getHtmlContainer();
@@ -282,7 +274,7 @@ public class MapRendererImpl implements MapRenderer {
 				return;
 			}
 			currentScale = scale;
-			GWT.log("Animation extended - from, to: " + previousScale + ", " + currentScale);
+			// GWT.log("Animation extended - from, to: " + previousScale + ", " + currentScale);
 
 			// Let every layer prepare for navigation:
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
@@ -299,7 +291,7 @@ public class MapRendererImpl implements MapRenderer {
 			// Keep track of navigation details:
 			previousScale = currentScale;
 			currentScale = scale;
-			GWT.log("Animation started - from, to: " + previousScale + ", " + currentScale);
+			// GWT.log("Animation started - from, to: " + previousScale + ", " + currentScale);
 
 			// Let every layer prepare for navigation:
 			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();
