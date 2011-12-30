@@ -55,9 +55,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	private final HtmlContainer htmlContainer;
 
-	private final Map<Double, TiledScaleRenderer> scalePresenters;
+	private final Map<Double, TiledScaleRenderer> tiledScaleRenderers; // A renderer per scale.
 
-	private final List<Double> scales;
+	private final List<Double> scales; // Keeps track of the lastly visited scales.
 
 	private double visibleScale;
 
@@ -79,7 +79,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		this.viewPort = viewPort;
 		this.layer = layer;
 		this.htmlContainer = htmlContainer;
-		scalePresenters = new HashMap<Double, TiledScaleRenderer>();
+		tiledScaleRenderers = new HashMap<Double, TiledScaleRenderer>();
 		scales = new ArrayList<Double>(SCALE_CACHE_SIZE + 1);
 		eventBus = new SimpleEventBus();
 
@@ -104,7 +104,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	public void ensureScale(double scale, Bbox bounds) {
 		// Get or create the presenter, then turn it invisible and fetch the tiles.
 		TiledScaleRenderer presenter = getOrCreate(scale);
-		presenter.getHtmlContainer().setVisible(false);
+		if (scale != visibleScale) {
+			presenter.getHtmlContainer().setVisible(false);
+		}
 		presenter.render(bounds);
 
 		// Rearrange the scales:
@@ -115,20 +117,24 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 		// If we have too many scales, remove the last one to be used:
 		if (scales.size() > SCALE_CACHE_SIZE) {
-			removeScaleLevel(scales.get(0));
+			if (scales.get(0) != visibleScale) {
+				removeScaleLevel(scales.get(0));
+			} else {
+				removeScaleLevel(scales.get(1));
+			}
 		}
 	}
 
 	/** {@inheritDoc} */
 	public void setScaleVisibility(double scale, boolean visible) {
-		TiledScaleRenderer scalePresenter = scalePresenters.get(scale);
+		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
 			GWT.log("Setting scale visibility: " + scale + ", " + visible);
 			if (visible) {
 				visibleScale = scale;
 				scalePresenter.getHtmlContainer().zoomToLocation(1, 0, 0);
 				scalePresenter.getHtmlContainer().setVisible(true);
-			} else {
+			} else if (scale != visibleScale) {
 				scalePresenter.getHtmlContainer().setVisible(false);
 			}
 		}
@@ -136,8 +142,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	/** {@inheritDoc} */
 	public void applyScaleTranslation(double scale, Coordinate translation) {
-		TiledScaleRenderer scalePresenter = scalePresenters.get(scale);
+		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
+			GWT.log("Translate scale: " + scale + ", " + translation.toString());
 			scalePresenter.getHtmlContainer().setLeft((int) Math.round(translation.getX()));
 			scalePresenter.getHtmlContainer().setTop((int) Math.round(translation.getY()));
 		}
@@ -149,7 +156,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	/** {@inheritDoc} */
 	public TiledScaleRenderer getVisibleScale() {
-		return scalePresenters.get(visibleScale);
+		return tiledScaleRenderers.get(visibleScale);
 	}
 
 	// ------------------------------------------------------------------------
@@ -157,10 +164,11 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	// ------------------------------------------------------------------------
 
 	private TiledScaleRenderer getOrCreate(double scale) {
-		if (scalePresenters.containsKey(scale)) {
-			return scalePresenters.get(scale);
+		if (tiledScaleRenderers.containsKey(scale)) {
+			return tiledScaleRenderers.get(scale);
 		}
 
+		GWT.log("Creating new scale (default invisible), " + scale);
 		final HtmlContainer scaleContainer = new HtmlGroup();
 		scaleContainer.setVisible(false);
 		htmlContainer.insert(scaleContainer, 0);
@@ -188,22 +196,26 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 				}
 			};
 		}
-		scalePresenters.put(scale, scalePresenter);
+		tiledScaleRenderers.put(scale, scalePresenter);
 		return scalePresenter;
 	}
 
 	private boolean removeScaleLevel(Double scale) {
-		// Remove the presenter:
-		TiledScaleRenderer removedPresenter = scalePresenters.get(scale);
-		if (removedPresenter == null) {
-			return false;
-		}
-		removedPresenter.cancel();
-		// TODO let the presenter have it's own destroy() method??
-		htmlContainer.remove(removedPresenter.getHtmlContainer());
-		scalePresenters.remove(scale);
+		if (scale != visibleScale) {
+			GWT.log("Remove scale: " + scale);
+			// Remove the presenter:
+			TiledScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
+			if (removedPresenter == null) {
+				return false;
+			}
+			removedPresenter.cancel();
+			// TODO let the presenter have it's own destroy() method??
+			htmlContainer.remove(removedPresenter.getHtmlContainer());
+			tiledScaleRenderers.remove(scale);
 
-		// Remove the scale:
-		return scales.remove(scale);
+			// Remove the scale:
+			return scales.remove(scale);
+		}
+		return false;
 	}
 }

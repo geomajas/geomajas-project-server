@@ -71,9 +71,9 @@ public class MapRendererImpl implements MapRenderer {
 
 	private Coordinate previousTranslation;
 
-	private boolean navigationStarted;
+	private boolean navigationBusy;
 
-	private boolean scaleRendered;
+	private boolean currentScaleRendered;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -88,17 +88,17 @@ public class MapRendererImpl implements MapRenderer {
 		this.animation = new MapNavigationAnimation(new LinearNavigationFunction()) {
 
 			protected void onComplete() {
-				GWT.log("Animation complete - scale: ");
+				GWT.log("Animation complete - scale: " + currentScale);
 				super.onComplete();
-				navigationStarted = false;
+				navigationBusy = false;
 				Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 				previousTranslation = new Coordinate(translation.getDx(), translation.getDy());
 
-				checkPreviousScaleLevel();
 				for (MapScalesRenderer presenter : mapScalesRenderers) {
 					presenter.setScaleVisibility(currentScale, true);
 					presenter.applyScaleTranslation(currentScale, previousTranslation);
 				}
+				checkPreviousScaleLevel();
 			};
 		};
 
@@ -108,7 +108,8 @@ public class MapRendererImpl implements MapRenderer {
 	}
 
 	private void checkPreviousScaleLevel() {
-		if (scaleRendered && !navigationStarted && previousScale != currentScale) {
+		if (currentScaleRendered && !navigationBusy && previousScale != currentScale) {
+			GWT.log("Current scale (" + currentScale + ") rendered. Removing scale " + previousScale);
 			for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
 				presenter.setScaleVisibility(previousScale, false);
 			}
@@ -120,25 +121,26 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onLayerAdded(LayerAddedEvent event) {
+		GWT.log("onLayerAdded");
 		Layer<?> layer = event.getLayer();
 
 		HtmlGroup layerContainer = new HtmlGroup(htmlContainer.getWidth(), htmlContainer.getHeight());
 		layerContainer.setVisible(layer.getLayerInfo().isVisible());
 		htmlContainer.add(layerContainer);
 
-		MapScalesRenderer layerPresenter = new LayerScalesRenderer(viewPort, layer, layerContainer);
+		MapScalesRenderer layerRenderer = new LayerScalesRenderer(viewPort, layer, layerContainer);
 		if (layerRenderers.size() == 0) {
-			layerPresenter.addScaleLevelRenderedHandler(new ScaleLevelRenderedHandler() {
+			layerRenderer.addScaleLevelRenderedHandler(new ScaleLevelRenderedHandler() {
 
 				public void onScaleLevelRendered(ScaleLevelRenderedEvent event) {
 					if (event.getScale() == currentScale) {
-						scaleRendered = true;
+						currentScaleRendered = true;
 					}
 					checkPreviousScaleLevel();
 				}
 			});
 		}
-		layerRenderers.put(layer, layerPresenter);
+		layerRenderers.put(layer, layerRenderer);
 	}
 
 	public void onLayerRemoved(LayerRemovedEvent event) {
@@ -170,6 +172,7 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	public void onShow(LayerShowEvent event) {
+		GWT.log("onShow");
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
 			HtmlContainer layerContainer = layerRenderers.get(layer).getHtmlContainer();
@@ -178,6 +181,7 @@ public class MapRendererImpl implements MapRenderer {
 	}
 
 	public void onHide(LayerHideEvent event) {
+		GWT.log("onHide");
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
 			HtmlContainer layerContainer = layerRenderers.get(layer).getHtmlContainer();
@@ -262,15 +266,15 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 
 	private void navigateTo(Bbox bounds, double scale, int millis) {
-		navigationStarted = true;
+		navigationBusy = true;
+		currentScaleRendered = false;
 		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		Coordinate transCoord = new Coordinate(translation.getDx(), translation.getDy());
-		scaleRendered = false;
 
 		// Install a navigation animation:
 		if (animation.isRunning()) {
-			GWT.log("Animation extended - scale: " + scale);
 			currentScale = scale;
+			GWT.log("Animation extended - from, to: " + previousScale + ", " + currentScale);
 
 			// Let every layer prepare for navigation:
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
@@ -284,10 +288,10 @@ public class MapRendererImpl implements MapRenderer {
 			// Extend the current animation:
 			animation.extend(currentScale / previousScale, transCoord, millis);
 		} else {
-			GWT.log("Animation started - scale: " + scale);
 			// Keep track of navigation details:
 			previousScale = currentScale;
 			currentScale = scale;
+			GWT.log("Animation started - from, to: " + previousScale + ", " + currentScale);
 
 			// Let every layer prepare for navigation:
 			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();

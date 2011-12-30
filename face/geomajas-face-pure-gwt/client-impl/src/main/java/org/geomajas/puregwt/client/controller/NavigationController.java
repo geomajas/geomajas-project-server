@@ -140,23 +140,24 @@ public class NavigationController extends AbstractMapController {
 
 	public void onMouseWheel(MouseWheelEvent event) {
 		ViewPort viewPort = mapPresenter.getViewPort();
+		int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
 		if (event.isNorth()) {
-			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1), viewPort.transform(
-						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
-			} else {
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
+			if (index > 0) {
+				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1), viewPort.transform(
+							new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
+				} else {
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
+				}
 			}
 		} else {
-			if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1), viewPort.transform(
-						new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
-			} else {
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
+			if (index < viewPort.getZoomStrategy().getZoomStepCount() - 1) {
+				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1), viewPort.transform(
+							new Coordinate(event.getX(), event.getY()), RenderSpace.SCREEN, RenderSpace.WORLD));
+				} else {
+					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
+				}
 			}
 		}
 	}
