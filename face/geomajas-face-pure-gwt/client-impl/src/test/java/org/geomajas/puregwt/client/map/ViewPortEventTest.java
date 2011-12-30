@@ -19,7 +19,6 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.puregwt.client.GeomajasTestModule;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.ViewPortChangedEvent;
 import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
@@ -33,8 +32,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -63,7 +64,7 @@ public class ViewPortEventTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = INJECTOR.getInstance(EventBus.class);
+		eventBus = new SimpleEventBus();
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);

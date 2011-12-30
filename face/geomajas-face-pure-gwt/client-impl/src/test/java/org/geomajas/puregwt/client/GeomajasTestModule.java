@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.event.EventBus;
-import org.geomajas.puregwt.client.event.EventBusImpl;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -37,7 +35,6 @@ public class GeomajasTestModule extends AbstractModule {
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
 		bind(LayersModel.class).to(LayersModelImpl.class);
 		bind(ViewPort.class).to(ViewPortImpl.class);
-		bind(EventBus.class).to(EventBusImpl.class);
 
 		bind(MapWidget.class).to(MapWidgetTestImpl.class);
 	}

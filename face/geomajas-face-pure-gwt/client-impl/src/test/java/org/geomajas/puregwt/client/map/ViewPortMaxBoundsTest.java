@@ -18,7 +18,6 @@ import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.puregwt.client.GeomajasTestModule;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Test;
@@ -30,6 +29,8 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -53,7 +54,7 @@ public class ViewPortMaxBoundsTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = INJECTOR.getInstance(EventBus.class);
+		eventBus = new SimpleEventBus();
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(1000, 1000);

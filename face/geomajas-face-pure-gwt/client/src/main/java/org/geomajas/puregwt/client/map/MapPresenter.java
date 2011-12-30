@@ -17,10 +17,10 @@ import java.util.Set;
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapListener;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Widget;
 
 /**

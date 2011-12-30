@@ -33,7 +33,6 @@ import org.geomajas.puregwt.client.controller.ListenerController;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapListener;
 import org.geomajas.puregwt.client.controller.NavigationController;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectionHandler;
@@ -58,8 +57,8 @@ import org.geomajas.puregwt.client.map.feature.Feature;
 import org.geomajas.puregwt.client.map.gadget.NavigationGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.WatermarkGadget;
-import org.geomajas.puregwt.client.map.render.MapRendererImpl;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
+import org.geomajas.puregwt.client.map.render.MapRendererImpl;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -69,7 +68,9 @@ import com.google.gwt.event.dom.client.HasMouseOutHandlers;
 import com.google.gwt.event.dom.client.HasMouseOverHandlers;
 import com.google.gwt.event.dom.client.HasMouseUpHandlers;
 import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
@@ -182,7 +183,6 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private Map<MapGadget, VectorContainer> gadgets;
 
-	@Inject
 	private EventBus eventBus;
 
 	@Inject
@@ -193,6 +193,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	@Inject
 	private MapPresenterImpl() {
+		eventBus = new SimpleEventBus();
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, VectorContainer>();

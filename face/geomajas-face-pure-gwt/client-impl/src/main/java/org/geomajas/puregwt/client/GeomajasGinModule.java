@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.event.EventBus;
-import org.geomajas.puregwt.client.event.EventBusImpl;
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.LayersModel;
 import org.geomajas.puregwt.client.map.LayersModelImpl;
@@ -39,7 +37,6 @@ public class GeomajasGinModule extends AbstractGinModule {
 		bind(MapPresenter.class).to(MapPresenterImpl.class);
 		bind(LayersModel.class).to(LayersModelImpl.class);
 		bind(ViewPort.class).to(ViewPortImpl.class);
-		bind(EventBus.class).to(EventBusImpl.class);
 		bind(MapWidget.class).to(MapWidgetImpl.class);
 
 		// Other:

@@ -18,7 +18,6 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.event.LayerOrderChangedEvent;
@@ -29,6 +28,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
 
 /**

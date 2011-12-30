@@ -17,7 +17,6 @@ import java.util.List;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.puregwt.client.GeomajasTestModule;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.event.LayerOrderChangedEvent;
@@ -37,7 +36,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -80,8 +81,8 @@ public class LayersModelEventTest {
 
 	@Before
 	public void checkLayerOrder() {
-		eventBus = INJECTOR.getInstance(EventBus.class);
 		viewPort = INJECTOR.getInstance(ViewPort.class);
+		eventBus = new SimpleEventBus();
 
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		for (int i = 1; i < 4; i++) {

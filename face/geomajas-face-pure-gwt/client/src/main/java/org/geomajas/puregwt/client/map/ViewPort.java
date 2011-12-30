@@ -18,7 +18,8 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.event.EventBus;
+
+import com.google.gwt.event.shared.EventBus;
 
 /**
  * <p>

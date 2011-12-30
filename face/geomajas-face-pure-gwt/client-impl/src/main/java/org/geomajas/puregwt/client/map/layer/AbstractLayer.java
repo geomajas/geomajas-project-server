@@ -12,7 +12,6 @@
 package org.geomajas.puregwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerSelectedEvent;
@@ -23,6 +22,8 @@ import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
 import org.geomajas.puregwt.client.event.ViewPortScaledEvent;
 import org.geomajas.puregwt.client.event.ViewPortTranslatedEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
+
+import com.google.gwt.event.shared.EventBus;
 
 /**
  * Abstraction of the basic layer interface. Specific layer implementations should use this as a base.

@@ -20,7 +20,6 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.GeomajasTestModule;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -65,8 +66,7 @@ public class ViewPortTransformTest {
 
 	@PostConstruct
 	public void initialize() {
-		// factory = INJECTOR.getInstance(GeometryFactory.class);
-		eventBus = INJECTOR.getInstance(EventBus.class);
+		eventBus = new SimpleEventBus();
 		viewPort = INJECTOR.getInstance(ViewPort.class);
 		viewPort.initialize(mapInfo, eventBus);
 		viewPort.setMapSize(MAP_WIDTH, MAP_HEIGHT);

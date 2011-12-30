@@ -16,13 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.puregwt.client.event.EventBus;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerLabelHideEvent;
 import org.geomajas.puregwt.client.event.LayerLabelShowEvent;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.feature.Feature;
+
+import com.google.gwt.event.shared.EventBus;
 
 /**
  * Vector layer representation.
