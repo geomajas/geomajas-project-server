@@ -121,6 +121,13 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	public VectorTilePresenter getTile(TileCode tileCode) {
 		return tiles.get(tileCode.toString());
 	}
+	
+	/**
+	 * Always returns true...
+	 */
+	public boolean isRendered() {
+		return true;
+	}
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:
@@ -145,10 +152,6 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	public void setMapExtentScaleAtFetch(double mapExtentScaleAtFetch) {
 		this.mapExtentScaleAtFetch = mapExtentScaleAtFetch;
 	}
-//
-//	public ViewPort getViewPort() {
-//		return viewPort;
-//	}
 
 	public VectorLayer getLayer() {
 		return vectorLayer;
@@ -170,7 +173,6 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 		// Calculate tile width and height for tileLevel=currentTileLevel
 		double div = Math.pow(2, currentTileLevel); // tile level must be correct!
-		//double scale = viewPort.getScale();
 		double tileWidth = Math.ceil((scale * layerBounds.getWidth()) / div) / scale;
 		double tileHeight = Math.ceil((scale * layerBounds.getHeight()) / div) / scale;
 

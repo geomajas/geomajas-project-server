@@ -91,4 +91,13 @@ public interface MapScalesRenderer {
 	 * @return The currently visible scale.
 	 */
 	TiledScaleRenderer getVisibleScale();
+
+	/**
+	 * Get the renderer for a specific scale level.
+	 * 
+	 * @param scale
+	 *            The scale to get a renderer for.
+	 * @return Returns the renderer, or null.
+	 */
+	TiledScaleRenderer getScale(double scale);
 }

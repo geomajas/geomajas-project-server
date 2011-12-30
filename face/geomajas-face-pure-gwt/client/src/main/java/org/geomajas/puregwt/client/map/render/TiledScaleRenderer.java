@@ -53,6 +53,13 @@ public interface TiledScaleRenderer {
 	void cancel();
 
 	/**
+	 * Are all tiles in this scale rendered or not?
+	 * 
+	 * @return true or false.
+	 */
+	boolean isRendered();
+
+	/**
 	 * Method called when the request(s) for tiles comes back from the server. We now know which tiles to render or
 	 * where to get the images. The tiles themselves are not rendered yet.
 	 * 

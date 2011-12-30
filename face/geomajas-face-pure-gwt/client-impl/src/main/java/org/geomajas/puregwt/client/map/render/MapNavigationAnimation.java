@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.geometry.Coordinate;
 
 import com.google.gwt.animation.client.Animation;
-import com.google.gwt.core.client.GWT;
 
 /**
  * Extension of the GWT animation definition for navigation around the map. It has support for both zooming and panning.
@@ -80,14 +79,13 @@ public class MapNavigationAnimation extends Animation {
 		function.setBeginLocation(sourcePosition.getX(), sourcePosition.getY(), sourceScale);
 		function.setEndLocation(targetPosition.getX(), targetPosition.getY(), targetScale);
 
-		//GWT.log("Animation.start (running=true)");
 		running = true;
 		run(millis);
 	}
 
 	public void extend(double targetScale, Coordinate targetPosition, int millis) {
 		if (running) {
-			//cancel();
+			// cancel();
 			start(mapScalesRenderers, currentScale, targetScale, new Coordinate(currentX, currentY), targetPosition,
 					millis);
 		}
@@ -152,7 +150,7 @@ public class MapNavigationAnimation extends Animation {
 	// ------------------------------------------------------------------------
 	// Overridden methods:
 	// ------------------------------------------------------------------------
-	
+
 	/**
 	 * Method that keeps tabs on the animation progress, and automatically transforms all {@link MapScalesRenderer}s
 	 * accordingly.
@@ -180,7 +178,6 @@ public class MapNavigationAnimation extends Animation {
 					scalePresenter.getHtmlContainer().setLeft((int) Math.round(currentX));
 					scalePresenter.getHtmlContainer().setTop((int) Math.round(currentY));
 				} else {
-					GWT.log("onUpdate. Make invisible...");
 					scalePresenter.getHtmlContainer().setVisible(false);
 				}
 			}
@@ -192,7 +189,6 @@ public class MapNavigationAnimation extends Animation {
 	 * {@link MapScalesRenderer}s.
 	 */
 	protected void onCancel() {
-		//GWT.log("Animation.onCancel (running=false)");
 		running = false;
 		for (MapScalesRenderer presenter : mapScalesRenderers) {
 			presenter.cancel();

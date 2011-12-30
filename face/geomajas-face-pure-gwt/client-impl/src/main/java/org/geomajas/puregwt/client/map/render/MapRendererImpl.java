@@ -73,8 +73,6 @@ public class MapRendererImpl implements MapRenderer {
 
 	private boolean navigationBusy;
 
-	private boolean currentScaleRendered;
-
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
@@ -98,6 +96,8 @@ public class MapRendererImpl implements MapRenderer {
 					presenter.setScaleVisibility(currentScale, true);
 					presenter.applyScaleTranslation(currentScale, previousTranslation);
 				}
+				
+				GWT.log("Check if we can delete " + previousScale + ". (animation complete)");
 				checkPreviousScaleLevel();
 			};
 		};
@@ -108,10 +108,18 @@ public class MapRendererImpl implements MapRenderer {
 	}
 
 	private void checkPreviousScaleLevel() {
-		if (currentScaleRendered && !navigationBusy && previousScale != currentScale) {
-			GWT.log("Current scale (" + currentScale + ") rendered. Removing scale " + previousScale);
-			for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
-				presenter.setScaleVisibility(previousScale, false);
+		// Make previous scale invisible when the animation is finished + scale has been rendered.
+		if (!navigationBusy && previousScale != currentScale && animation.getMapScaleRenderers().size() > 0) {
+			GWT.log("Check: no animation. Good!");
+			// Ask the first MapScaleRenderer if it's renderer:
+			TiledScaleRenderer renderer = animation.getMapScaleRenderers().get(0).getScale(previousScale);
+			if (renderer != null && renderer.isRendered()) {
+				GWT.log("Current scale (" + currentScale + ") rendered. Removing scale " + previousScale);
+				for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
+					presenter.setScaleVisibility(previousScale, false);
+				}
+			} else {
+				GWT.log("Check: Scale not rendered. Bad!");
 			}
 		}
 	}
@@ -133,9 +141,7 @@ public class MapRendererImpl implements MapRenderer {
 			layerRenderer.addScaleLevelRenderedHandler(new ScaleLevelRenderedHandler() {
 
 				public void onScaleLevelRendered(ScaleLevelRenderedEvent event) {
-					if (event.getScale() == currentScale) {
-						currentScaleRendered = true;
-					}
+					GWT.log("Check if we can delete " + previousScale + ". (scale rendered)");
 					checkPreviousScaleLevel();
 				}
 			});
@@ -267,12 +273,14 @@ public class MapRendererImpl implements MapRenderer {
 
 	private void navigateTo(Bbox bounds, double scale, int millis) {
 		navigationBusy = true;
-		currentScaleRendered = false;
 		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		Coordinate transCoord = new Coordinate(translation.getDx(), translation.getDy());
 
 		// Install a navigation animation:
 		if (animation.isRunning()) {
+			if (scale == previousScale) {
+				return;
+			}
 			currentScale = scale;
 			GWT.log("Animation extended - from, to: " + previousScale + ", " + currentScale);
 

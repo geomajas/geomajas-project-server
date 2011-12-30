@@ -67,6 +67,8 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	private int nrLoadingTiles;
 
 	private boolean renderingImages;
+	
+	private boolean rendered;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -110,6 +112,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 			onTilesRendered(container, scale);
 			return; // Bounds already rendered, nothing to do here.
 		}
+		rendered = false;
 
 		// Scale the bounds to fetch tiles for (we want a bigger area than the map bounds):
 		currentTileBounds = BboxService.scale(bounds, mapExtentScaleAtFetch);
@@ -132,6 +135,10 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 				onTilesReceived(container, scale);
 			}
 		});
+	}
+	
+	public boolean isRendered() {
+		return rendered;
 	}
 
 	// ------------------------------------------------------------------------
@@ -198,6 +205,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 		public void execute(Boolean value) {
 			nrLoadingTiles--;
 			if (nrLoadingTiles == 0) {
+				rendered = true;
 				onTilesRendered(container, scale);
 			}
 		}

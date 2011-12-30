@@ -159,6 +159,11 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		return tiledScaleRenderers.get(visibleScale);
 	}
 
+	/** {@inheritDoc} */
+	public TiledScaleRenderer getScale(double scale) {
+		return tiledScaleRenderers.get(scale);
+	}
+
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
@@ -169,14 +174,13 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		}
 
 		GWT.log("Creating new scale (default invisible), " + scale);
-		final HtmlContainer scaleContainer = new HtmlGroup();
-		scaleContainer.setVisible(false);
-		htmlContainer.insert(scaleContainer, 0);
+		final HtmlContainer container = new HtmlGroup();
+		container.setVisible(false);
+		htmlContainer.insert(container, 0);
 
 		TiledScaleRenderer scalePresenter = null;
 		if (layer instanceof RasterLayer) {
-			scalePresenter = new RasterLayerScaleRenderer(viewPort.getCrs(), (RasterLayer) layer, scaleContainer, 
-					scale) {
+			scalePresenter = new RasterLayerScaleRenderer(viewPort.getCrs(), (RasterLayer) layer, container, scale) {
 
 				public void onTilesReceived(HtmlContainer container, double scale) {
 				}
@@ -186,7 +190,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 				}
 			};
 		} else {
-			scalePresenter = new VectorLayerScaleRenderer(viewPort, (VectorLayer) layer, scaleContainer, scale) {
+			scalePresenter = new VectorLayerScaleRenderer(viewPort, (VectorLayer) layer, container, scale) {
 
 				public void onTilesReceived(HtmlContainer container, double scale) {
 				}
