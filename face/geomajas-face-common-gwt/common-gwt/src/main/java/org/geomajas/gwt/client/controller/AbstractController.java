@@ -18,6 +18,7 @@ import org.geomajas.gwt.client.handler.MapDragHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -86,6 +87,11 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	/** {@inheritDoc} */
 	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 		return eventParser.getLocation(event, renderSpace);
+	}
+
+	/** {@inheritDoc} */
+	public Element getTarget(HumanInputEvent<?> event) {
+		return eventParser.getTarget(event);
 	}
 
 	protected void setMapEventParser(MapEventParser eventParser) {

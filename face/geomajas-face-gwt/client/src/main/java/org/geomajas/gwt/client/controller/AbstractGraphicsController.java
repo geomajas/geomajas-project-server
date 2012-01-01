@@ -19,6 +19,7 @@ import org.geomajas.gwt.client.util.GwtEventUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -232,6 +233,7 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 	 */
 	private class GwtMapEventParser implements MapEventParser {
 
+		/** {@inheritDoc} */
 		public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 			switch (renderSpace) {
 				case WORLD:
@@ -250,6 +252,15 @@ public abstract class AbstractGraphicsController extends AbstractController impl
 					}
 					return new Coordinate(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
 			}
+		}
+
+		/** {@inheritDoc} */
+		public Element getTarget(HumanInputEvent<?> event) {
+			EventTarget target = event.getNativeEvent().getEventTarget();
+			if (Element.is(target)) {
+				return Element.as(target);
+			}
+			return null;
 		}
 	}
 }

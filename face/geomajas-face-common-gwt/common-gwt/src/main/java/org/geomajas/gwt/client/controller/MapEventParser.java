@@ -14,6 +14,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
@@ -35,4 +36,13 @@ public interface MapEventParser {
 	 * @return Returns the location as a coordinate in the requested render space.
 	 */
 	Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace);
+
+	/**
+	 * Get the target element from a mouse or touch event.
+	 * 
+	 * @param event
+	 *            The event
+	 * @return The HTML element that first caught the event.
+	 */
+	Element getTarget(HumanInputEvent<?> event);
 }
