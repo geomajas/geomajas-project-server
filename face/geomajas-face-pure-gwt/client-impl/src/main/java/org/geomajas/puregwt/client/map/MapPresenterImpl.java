@@ -265,7 +265,7 @@ public final class MapPresenterImpl implements MapPresenter {
 				} else {
 					// Simple zooming:
 					addMapGadget(new SimpleZoomGadget(60, 20));
-					addMapGadget(new ZoomToRectangleGadget(105, 20));
+					addMapGadget(new ZoomToRectangleGadget(125, 20));
 				}
 
 				// Fire initialization event:
@@ -481,6 +481,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			Matrix matrix = viewPort.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 			for (VectorContainer vectorContainer : display.getWorldVectorContainers()) {
 				vectorContainer.setScale(matrix.getXx(), matrix.getYy());
+				vectorContainer.setTranslation(matrix.getDx(), matrix.getDy());
 			}
 		}
 
@@ -499,7 +500,9 @@ public final class MapPresenterImpl implements MapPresenter {
 	 */
 	private class FeatureSelectionRenderer implements FeatureSelectionHandler, LayerVisibilityHandler {
 
-		private VectorContainer container;
+		private final VectorContainer container;
+
+		private final Map<Feature, Path> paths;
 
 		private FeatureStyleInfo pointStyle;
 
@@ -509,6 +512,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public FeatureSelectionRenderer() {
 			container = addWorldContainer();
+			paths = new HashMap<Feature, Path>();
 		}
 
 		public void initialize(ClientMapInfo mapInfo) {
@@ -525,6 +529,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		public void onFeatureDeselected(FeatureDeselectedEvent event) {
+			remove(event.getFeature());
 		}
 
 		public void onShow(LayerShowEvent event) {
@@ -547,6 +552,15 @@ public final class MapPresenterImpl implements MapPresenter {
 				gfxUtil.applyStyle(path, ringStyle);
 			}
 			container.add(path);
+			paths.put(f, path);
+		}
+
+		private void remove(Feature feature) {
+			Path path = paths.get(feature);
+			if (path != null) {
+				container.remove(path);
+				paths.remove(feature);
+			}
 		}
 	}
 }

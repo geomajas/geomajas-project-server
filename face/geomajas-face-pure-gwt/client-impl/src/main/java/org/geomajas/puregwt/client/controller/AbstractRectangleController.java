@@ -66,10 +66,11 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	private VectorContainer container;
 
 	// ------------------------------------------------------------------------
-	// Constructor - only here because GIN doesn't work yet...
+	// Constructor:
 	// ------------------------------------------------------------------------
 
 	public AbstractRectangleController() {
+		super(false);
 	}
 
 	// ------------------------------------------------------------------------
@@ -85,7 +86,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			dragging = true;
 			timestamp = new Date().getTime();
-			begin = getScreenPosition(event);
+			begin = getLocation(event, RenderSpace.SCREEN);
 			shift = event.isShiftKeyDown();
 			rectangle = new Rectangle((int) begin.getX(), (int) begin.getY(), 0, 0);
 			rectangle.setFillColor(fillColor);
@@ -184,7 +185,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	}
 
 	private void updateRectangle(MouseEvent<?> event) {
-		Coordinate pos = getScreenPosition(event);
+		Coordinate pos = getLocation(event, RenderSpace.SCREEN);
 		double x = begin.getX();
 		double y = begin.getY();
 		double width = pos.getX() - x;

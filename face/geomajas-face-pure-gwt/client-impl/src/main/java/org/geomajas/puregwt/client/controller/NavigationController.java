@@ -79,7 +79,7 @@ public class NavigationController extends AbstractMapController {
 	// ------------------------------------------------------------------------
 
 	public NavigationController() {
-		super();
+		super(false);
 		zoomToRectangleController = new ZoomToRectangleController();
 	}
 
@@ -98,10 +98,10 @@ public class NavigationController extends AbstractMapController {
 			zoomToRectangleController.onMouseDown(event);
 		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			dragging = true;
-			dragOrigin = getScreenPosition(event);
+			dragOrigin = getLocation(event, RenderSpace.SCREEN);
 			mapPresenter.setCursor("move");
 		}
-		lastClickPosition = getWorldPosition(event);
+		lastClickPosition = getLocation(event, RenderSpace.WORLD);
 	}
 
 	public void onMouseUp(MouseUpEvent event) {
@@ -187,7 +187,7 @@ public class NavigationController extends AbstractMapController {
 	}
 
 	protected void updateView(MouseEvent<?> event) {
-		Coordinate end = getScreenPosition(event);
+		Coordinate end = getLocation(event, RenderSpace.SCREEN);
 		Coordinate beginWorld = mapPresenter.getViewPort().transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
 

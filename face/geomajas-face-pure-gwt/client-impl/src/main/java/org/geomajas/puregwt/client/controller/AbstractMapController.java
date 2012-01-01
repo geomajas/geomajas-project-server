@@ -12,103 +12,97 @@
 package org.geomajas.puregwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.AbstractController;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.dom.client.Touch;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
+import com.google.gwt.event.dom.client.TouchEvent;
 
 /**
  * <p>
- * Abstraction of the <code>MapController</code> that implements all methods as empty methods. By using this as a
- * starting point for your own controllers, you don't have to clutter your code with empty methods that you don't use
- * anyway.
- * </p>
- * <p>
- * What makes this class special is that it provides a few protected methods for easily acquiring information from the
- * mouse events. You can for example get the event's position, or target DOM element.
+ * Extension of the generic {@link AbstractController} that's specific for the pure GWT face. It adds activation and
+ * deactivation methods, and applies a {@link MapEventParser} at construction time.
  * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-public abstract class AbstractMapController implements MapController {
+public abstract class AbstractMapController extends AbstractController implements MapController {
 
 	protected MapPresenter mapPresenter;
 
-	protected AbstractMapController() {
+	// -------------------------------------------------------------------------
+	// Constructors:
+	// -------------------------------------------------------------------------
+
+	protected AbstractMapController(boolean dragging) {
+		super(dragging);
+		setMapEventParser(new PureGwtEventParser());
+	}
+
+	protected AbstractMapController(MapEventParser eventParser, boolean dragging) {
+		super(eventParser, dragging);
 	}
 
 	// -------------------------------------------------------------------------
-	// Empty implementations of all the event handler functions:
+	// MapController implementation:
 	// -------------------------------------------------------------------------
 
-	public void onMouseDown(MouseDownEvent event) {
-	}
-
-	public void onMouseUp(MouseUpEvent event) {
-	}
-
-	public void onMouseMove(MouseMoveEvent event) {
-	}
-
-	public void onMouseOut(MouseOutEvent event) {
-	}
-
-	public void onMouseOver(MouseOverEvent event) {
-	}
-
-	public void onMouseWheel(MouseWheelEvent event) {
-	}
-
-	public void onDoubleClick(DoubleClickEvent event) {
-	}
-
-	// -------------------------------------------------------------------------
-	// GraphicsController implementation:
-	// -------------------------------------------------------------------------
-
+	/** {@inheritDoc} */
 	public void onActivate(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 
+	/** {@inheritDoc} */
 	public void onDeactivate(MapPresenter mapPresenter) {
 	}
 
 	// -------------------------------------------------------------------------
-	// Helper functions on mouse events:
+	// Private classes:
 	// -------------------------------------------------------------------------
 
-	protected Coordinate getScreenPosition(MouseEvent<?> event) {
-		return new Coordinate(event.getX(), event.getY());
-	}
+	/**
+	 * Default implementation of a {@link MapEventParser} for the Pure GWT face.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class PureGwtEventParser implements MapEventParser {
 
-	protected Coordinate getWorldPosition(MouseEvent<?> event) {
-		Coordinate coordinate = new Coordinate(event.getX(), event.getY());
-		return mapPresenter.getViewPort().transform(coordinate, RenderSpace.SCREEN, RenderSpace.WORLD);
-	}
-
-	protected Element getTarget(MouseEvent<?> event) {
-		EventTarget target = event.getNativeEvent().getEventTarget();
-		if (Element.is(target)) {
-			return Element.as(target);
+		/** {@inheritDoc} */
+		public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
+			switch (renderSpace) {
+				case WORLD:
+					Coordinate screen = getLocation(event, RenderSpace.SCREEN);
+					return mapPresenter.getViewPort().transform(screen, RenderSpace.SCREEN, RenderSpace.WORLD);
+				case SCREEN:
+				default:
+					if (event instanceof MouseEvent<?>) {
+						Element element = mapPresenter.asWidget().getElement();
+						double offsetX = ((MouseEvent<?>) event).getRelativeX(element);
+						double offsetY = ((MouseEvent<?>) event).getRelativeY(element);
+						return new Coordinate(offsetX, offsetY);
+					} else if (event instanceof TouchEvent<?>) {
+						Touch touch = ((TouchEvent<?>) event).getTouches().get(0);
+						return new Coordinate(touch.getClientX(), touch.getClientY());
+					}
+					return new Coordinate(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
+			}
 		}
-		return null;
-	}
 
-	protected String getTargetId(MouseEvent<?> event) {
-		Element element = getTarget(event);
-		if (element != null) {
-			return element.getId();
+		/** {@inheritDoc} */
+		public Element getTarget(HumanInputEvent<?> event) {
+			EventTarget target = event.getNativeEvent().getEventTarget();
+			if (Element.is(target)) {
+				return Element.as(target);
+			}
+			return null;
 		}
-		return null;
+
 	}
 }

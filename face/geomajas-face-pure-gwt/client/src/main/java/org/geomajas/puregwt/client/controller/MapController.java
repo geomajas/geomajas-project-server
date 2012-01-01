@@ -13,15 +13,8 @@ package org.geomajas.puregwt.client.controller;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
+import org.geomajas.gwt.client.controller.Controller;
 import org.geomajas.puregwt.client.map.MapPresenter;
-
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 /**
  * <p>
@@ -41,8 +34,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
  */
 @UserImplemented
 @Api(allMethods = true)
-public interface MapController extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
-		MouseOverHandler, MouseWheelHandler, DoubleClickHandler {
+public interface MapController extends Controller {
 
 	/**
 	 * Function executed when the controller instance is applied on the map. If something needs initializing, do it

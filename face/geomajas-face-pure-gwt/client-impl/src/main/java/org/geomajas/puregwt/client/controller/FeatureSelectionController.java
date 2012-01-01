@@ -25,10 +25,9 @@ import org.geomajas.puregwt.client.map.feature.FeatureSearch.SearchType;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
  * Controller for selecting and deselecting features on the map.
@@ -59,39 +58,52 @@ public class FeatureSelectionController extends NavigationController {
 
 	private final SelectionRectangleController selectionRectangleController;
 
-	private SelectionMethod selectionMethod = SelectionMethod.CLICK_AND_DRAG;
+	private SelectionMethod selectionMethod = SelectionMethod.CLICK_ONLY;
 
 	private SelectionType selectionType = SelectionType.FIRST_LAYER;
 
 	private float intersectionRatio = 0.5f;
+	
+	// ------------------------------------------------------------------------
+	// Constructor:
+	// ------------------------------------------------------------------------
 
 	public FeatureSelectionController() {
 		super();
 		selectionRectangleController = new SelectionRectangleController();
 		featureSearch = INJECTOR.getFeatureSearch();
 	}
+	
+	// ------------------------------------------------------------------------
+	// MapController implementation:
+	// ------------------------------------------------------------------------
 
 	public void onActivate(MapPresenter mapPresenter) {
+		// Activate all 3 controllers:
+		super.onActivate(mapPresenter);
 		this.mapPresenter = mapPresenter;
 		selectionRectangleController.onActivate(mapPresenter);
 	}
 
-	public void onMouseDown(MouseDownEvent event) {
-		super.onMouseDown(event);
-
+	public void onDown(HumanInputEvent<?> event) {
 		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
-			selectionRectangleController.onMouseDown(event);
+			selectionRectangleController.onDown(event);
+		} else {
+			super.onDown(event);
 		}
 	}
 
-	public void onMouseUp(MouseUpEvent event) {
+	public void onUp(HumanInputEvent<?> event) {
 		stopPanning(null);
 		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
-			selectionRectangleController.onMouseUp(event);
+			selectionRectangleController.onUp(event);
 		} else {
+			super.onUp(event);
 			// Select item at mouse pointer...
 		}
 	}
+	
+	
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging && selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
@@ -107,6 +119,10 @@ public class FeatureSelectionController extends NavigationController {
 			selectionRectangleController.onMouseOut(event);
 		}
 	}
+	
+	// ------------------------------------------------------------------------
+	// Private classes:
+	// ------------------------------------------------------------------------
 
 	/**
 	 * Internal selection by rectangle controller.
@@ -134,8 +150,10 @@ public class FeatureSelectionController extends NavigationController {
 					searchType = SearchType.SEARCH_FIRST_LAYER;
 				}
 			}
+			
+			// Search the features. Deselect if shift is pressed:
 			featureSearch.search(mapPresenter.getViewPort().getCrs(), layers, GeometryService.toPolygon(worldBounds),
-					0, QueryType.INTERSECTS, searchType, intersectionRatio, new SelectionCallback(true));
+					0, QueryType.INTERSECTS, searchType, intersectionRatio, new SelectionCallback(!shift));
 		}
 	}
 

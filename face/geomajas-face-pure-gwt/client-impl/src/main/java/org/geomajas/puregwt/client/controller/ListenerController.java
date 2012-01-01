@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.controller;
 
+import org.geomajas.gwt.client.map.RenderSpace;
+
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -44,7 +46,7 @@ public class ListenerController extends AbstractMapController {
 	 *            The actual map listener object to activate.
 	 */
 	public ListenerController(MapListener mapListener) {
-		super();
+		super(false);
 		this.mapListener = mapListener;
 	}
 
@@ -90,7 +92,8 @@ public class ListenerController extends AbstractMapController {
 	// -------------------------------------------------------------------------
 
 	private MapListenerEvent getEvent(int eventBit, MouseEvent<?> event) {
-		return new MapListenerEvent(eventBit, getScreenPosition(event), getTarget(event), mapPresenter.getViewPort(),
-				event.isAltKeyDown(), event.isControlKeyDown(), event.isShiftKeyDown(), event.getNativeButton());
+		return new MapListenerEvent(eventBit, getLocation(event, RenderSpace.SCREEN), getTarget(event),
+				mapPresenter.getViewPort(), event.isAltKeyDown(), event.isControlKeyDown(), event.isShiftKeyDown(),
+				event.getNativeButton());
 	}
 }
