@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
- * @since 1.6.0
+ * @since 1.8.0
  */
 @Api(allMethods = true)
 public class SearchByPointResponse extends CommandResponse {

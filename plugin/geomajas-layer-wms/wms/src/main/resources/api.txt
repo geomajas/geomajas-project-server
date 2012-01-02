@@ -1,5 +1,6 @@
 // geomajas-layer-wms module API, 1.8.0
 org.geomajas.layer.wms.WmsAuthentication::1.8.0
+org.geomajas.layer.wms.WmsAuthentication:WmsAuthentication():1.8.0
 org.geomajas.layer.wms.WmsAuthentication:String getPassword():1.8.0
 org.geomajas.layer.wms.WmsAuthentication:String getPasswordKey():1.8.0
 org.geomajas.layer.wms.WmsAuthentication:String getRealm():1.8.0
@@ -22,6 +23,7 @@ org.geomajas.layer.wms.WmsLayer:void setStyles(String, ):1.7.1
 org.geomajas.layer.wms.WmsLayer:void setUseProxy(boolean, ):1.8.0
 org.geomajas.layer.wms.WmsLayer:void setVersion(String, ):1.7.1
 org.geomajas.layer.wms.command.dto.SearchByPointRequest::1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointRequest:SearchByPointRequest():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:Bbox getMapBounds():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:Coordinate getLocation():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:String getCrs():1.8.0
@@ -38,8 +40,8 @@ org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setLocation(Coordin
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setPixelTolerance(int, ):1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setScale(double, ):1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:void setSearchType(int, ):1.8.0
-org.geomajas.layer.wms.command.dto.SearchByPointResponse::1.6.0
-org.geomajas.layer.wms.command.dto.SearchByPointResponse:Map<String,List<Feature>> getFeatureMap():1.6.0
-org.geomajas.layer.wms.command.dto.SearchByPointResponse:SearchByPointResponse():1.6.0
-org.geomajas.layer.wms.command.dto.SearchByPointResponse:boolean addLayer(String, List<Feature>, ):1.6.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse::1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse:Map<String,List<Feature>> getFeatureMap():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse:SearchByPointResponse():1.8.0
+org.geomajas.layer.wms.command.dto.SearchByPointResponse:boolean addLayer(String, List<Feature>, ):1.8.0
 org.geomajas.layer.wms.command.wms.SearchByPointCommand::1.8.0
