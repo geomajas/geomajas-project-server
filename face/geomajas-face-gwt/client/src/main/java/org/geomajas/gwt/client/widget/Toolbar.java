@@ -140,6 +140,11 @@ public class Toolbar extends ToolStrip {
 							((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
 						}
 					}
+					String description = tool.getDescription();
+					// Overrides tooltip parameter if description is set in ClientToolInfo.
+					if (null != description && !"".equals(description)) {
+						action.setTooltip(description);
+					}
 					if (action instanceof ToolbarWidget) {
 						super.addMember(((ToolbarWidget) action).getWidget());
 					} else if (action instanceof ToolbarCanvas) {
