@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.Paintable;
@@ -96,19 +97,37 @@ public class Feature implements Paintable, Cloneable {
 
 	// Constructors:
 
+	/** No-arguments constructor. */
 	public Feature() {
-		this(null);
+		this((org.geomajas.layer.feature.Feature) null, null);
 	}
 
+	/**
+	 * Construct feature with given id for given layer.
+	 *
+	 * @param id feature id
+	 * @param layer layer
+	 */
 	public Feature(String id, VectorLayer layer) {
 		this(layer);
 		this.id = id;
 	}
 
+	/**
+	 * Construct a feature for given layer.
+	 *
+	 * @param layer layer
+	 */
 	public Feature(VectorLayer layer) {
 		this((org.geomajas.layer.feature.Feature) null, layer);
 	}
 
+	/**
+	 * Construct a feature based from a feature DTO for given layer.
+	 *
+	 * @param dto feature dto
+	 * @param layer layer
+	 */
 	public Feature(org.geomajas.layer.feature.Feature dto, VectorLayer layer) {
 		this.layer = layer;
 		this.geometry = null;
@@ -128,7 +147,7 @@ public class Feature implements Paintable, Cloneable {
 		} else {
 			if (layer != null) {
 				// Create empty attributes:
-				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+				for (AbstractAttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
 					attributes.put(attrInfo.getName(), AttributeUtil.createEmptyAttribute(attrInfo));
 				}
 			}
@@ -149,7 +168,8 @@ public class Feature implements Paintable, Cloneable {
 
 	// Class specific functions:
 
-	public Feature clone() {
+	/** Clone the object. */
+	public Feature clone() { // NOSONAR overwriting clone but not using super.clone()
 		Feature feature = new Feature(this.layer);
 		if (null != attributes) {
 			feature.attributes = new HashMap<String, Attribute>();
@@ -173,6 +193,12 @@ public class Feature implements Paintable, Cloneable {
 		return feature;
 	}
 
+	/**
+	 * Get attribute value for given attribute name.
+	 *
+	 * @param attributeName attribute name
+	 * @return attribute value
+	 */
 	public Object getAttributeValue(String attributeName) {
 		Attribute attribute = getAttributes().get(attributeName);
 		if (attribute != null) {
@@ -180,7 +206,13 @@ public class Feature implements Paintable, Cloneable {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setBooleanAttribute(String name, Boolean value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof BooleanAttribute)) {
@@ -190,6 +222,12 @@ public class Feature implements Paintable, Cloneable {
 		((BooleanAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setCurrencyAttribute(String name, String value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof CurrencyAttribute)) {
@@ -199,6 +237,12 @@ public class Feature implements Paintable, Cloneable {
 		((CurrencyAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setDateAttribute(String name, Date value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof DateAttribute)) {
@@ -208,6 +252,12 @@ public class Feature implements Paintable, Cloneable {
 		((DateAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setDoubleAttribute(String name, Double value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof DoubleAttribute)) {
@@ -217,6 +267,12 @@ public class Feature implements Paintable, Cloneable {
 		((DoubleAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setFloatAttribute(String name, Float value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof FloatAttribute)) {
@@ -226,6 +282,12 @@ public class Feature implements Paintable, Cloneable {
 		((FloatAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setImageUrlAttribute(String name, String value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof ImageUrlAttribute)) {
@@ -235,6 +297,12 @@ public class Feature implements Paintable, Cloneable {
 		((ImageUrlAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setIntegerAttribute(String name, Integer value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof IntegerAttribute)) {
@@ -244,6 +312,12 @@ public class Feature implements Paintable, Cloneable {
 		((IntegerAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setLongAttribute(String name, Long value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof LongAttribute)) {
@@ -253,6 +327,12 @@ public class Feature implements Paintable, Cloneable {
 		((LongAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setShortAttribute(String name, Short value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof ShortAttribute)) {
@@ -262,6 +342,12 @@ public class Feature implements Paintable, Cloneable {
 		((ShortAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setStringAttribute(String name, String value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof StringAttribute)) {
@@ -271,6 +357,12 @@ public class Feature implements Paintable, Cloneable {
 		((StringAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setUrlAttribute(String name, String value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof UrlAttribute)) {
@@ -280,6 +372,12 @@ public class Feature implements Paintable, Cloneable {
 		((UrlAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void setManyToOneAttribute(String name, AssociationValue value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof ManyToOneAttribute)) {
@@ -289,6 +387,12 @@ public class Feature implements Paintable, Cloneable {
 		((ManyToOneAttribute) attribute).setValue(value);
 	}
 
+	/**
+	 * Set attribute value of given type.
+	 *
+	 * @param name attribute name
+	 * @param value attribute value
+	 */
 	public void addOneToManyValue(String name, AssociationValue value) {
 		Attribute attribute = getAttributes().get(name);
 		if (!(attribute instanceof OneToManyAttribute)) {
@@ -318,6 +422,11 @@ public class Feature implements Paintable, Cloneable {
 		return dto;
 	}
 
+	/**
+	 * Get feature label.
+	 *
+	 * @return label
+	 */
 	public String getLabel() {
 		return label;
 	}
@@ -400,10 +509,20 @@ public class Feature implements Paintable, Cloneable {
 		return geometry != null;
 	}
 
+	/**
+	 * Is this feature selected?
+	 *
+	 * @return true when feature is selected
+	 */
 	public boolean isSelected() {
 		return layer.isFeatureSelected(getId());
 	}
 
+	/**
+	 * Get the layer which contains this feature.
+	 *
+	 * @return layer which contains this feature
+	 */
 	public VectorLayer getLayer() {
 		return layer;
 	}
@@ -446,16 +565,22 @@ public class Feature implements Paintable, Cloneable {
 		this.deletable = deletable;
 	}
 
+	/**
+	 * Get the style id for this feature.
+	 *
+	 * @return style if
+	 */
 	public String getStyleId() {
 		return styleId;
 	}
 
+	/**
+	 * Set the style id for this feature.
+	 *
+	 * @param styleId style id
+	 */
 	public void setStyleId(String styleId) {
 		this.styleId = styleId;
 	}
-
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
 
 }
