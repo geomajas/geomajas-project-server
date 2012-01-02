@@ -18,11 +18,11 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
  * 
  * @author Emiel Ackermann
  */
-public class ButtonGroupTitle extends ToolbarBaseAction implements ConfigurableAction {
+public class ButtonGroup extends ToolbarBaseAction implements ConfigurableAction {
 
 	private String buttonLayout;
 
-	public ButtonGroupTitle() {
+	public ButtonGroup() {
 		super("", "", "");
 	}
 

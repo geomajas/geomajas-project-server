@@ -36,7 +36,7 @@ public final class ToolbarRegistry {
 		REGISTRY.put(ToolId.BUTTON_GROUP_TITLE, new ToolCreator() {
 			
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new ButtonGroupTitle();
+				return new ButtonGroup();
 			}
 		});
 		REGISTRY.put(ToolId.TOOL_EDIT, new ToolCreator() {
