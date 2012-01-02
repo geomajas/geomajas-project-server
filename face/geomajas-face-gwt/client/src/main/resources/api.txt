@@ -22,9 +22,13 @@ org.geomajas.gwt.client.action.ToolbarModalAction:ToolbarModalAction(String, Str
 org.geomajas.gwt.client.action.ToolbarModalAction:void onDeselect(ClickEvent, ):1.6.0
 org.geomajas.gwt.client.action.ToolbarModalAction:void onSelect(ClickEvent, ):1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent::1.6.0
+org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent:ToolbarActionDisabledEvent():1.6.0
+org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent:ToolbarActionDisabledEvent():1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent:ToolbarBaseAction getAction():1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent:Type<ToolbarActionHandler> getAssociatedType():1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent::1.6.0
+org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent:ToolbarActionEnabledEvent():1.6.0
+org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent:ToolbarActionEnabledEvent():1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent:ToolbarBaseAction getAction():1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent:Type<ToolbarActionHandler> getAssociatedType():1.6.0
 org.geomajas.gwt.client.action.event.ToolbarActionHandler:. TYPE:1.6.0
@@ -81,6 +85,7 @@ org.geomajas.gwt.client.controller.GraphicsController:void onDeactivate():1.6.0
 org.geomajas.gwt.client.controller.GraphicsController:void setOffsetX(int, ):1.8.0
 org.geomajas.gwt.client.controller.GraphicsController:void setOffsetY(int, ):1.8.0
 org.geomajas.gwt.client.controller.listener.AbstractListener::1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:AbstractListener():1.8.0
 org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseDown(ListenerEvent, ):1.8.0
 org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseMove(ListenerEvent, ):1.8.0
 org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseOut(ListenerEvent, ):1.8.0
@@ -237,6 +242,7 @@ org.geomajas.gwt.client.map.event.LayerStyleChangeEvent:Layer<?> getLayer():1.8.
 org.geomajas.gwt.client.map.event.LayerStyleChangeEvent:LayerStyleChangeEvent(Layer<?>, ):1.8.0
 org.geomajas.gwt.client.map.event.LayerStyleChangeEvent:Type<LayerStyleChangedHandler> getAssociatedType():1.8.0
 org.geomajas.gwt.client.map.event.MapModelEvent::1.6.0
+org.geomajas.gwt.client.map.event.MapModelEvent:MapModelEvent():1.6.0
 org.geomajas.gwt.client.map.event.MapModelEvent:Type<MapModelHandler> getAssociatedType():1.6.0
 org.geomajas.gwt.client.map.event.MapModelEvent:static final Type<MapModelHandler> TYPE:1.6.0
 org.geomajas.gwt.client.map.event.MapModelHandler::1.6.0

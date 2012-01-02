@@ -19,7 +19,6 @@ import java.util.Map.Entry;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AbstractAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
