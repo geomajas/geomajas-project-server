@@ -46,6 +46,8 @@ public interface EntityAttributeService {
 
 	/**
 	 * Recursively gets the attribute from the specified feature.
+	 * <p/>
+	 * Only works on real attributes, not on synthetic attributes!
 	 * 
 	 * @param feature the internal feature object
 	 * @param featureInfo the feature information object

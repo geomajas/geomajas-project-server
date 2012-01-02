@@ -14,11 +14,12 @@ package org.geomajas.internal.layer.feature;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.configuration.SyntheticAttributeInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.vector.lazy.LazyManyToOneAttribute;
 import org.geomajas.internal.layer.vector.lazy.LazyOneToManyAttribute;
@@ -29,7 +30,12 @@ import org.geomajas.layer.VectorLayerLazyFeatureConversionSupport;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.SyntheticAttributeBuilder;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.service.FeatureExpressionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,8 +47,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class AttributeService {
 
+	private final Logger log = LoggerFactory.getLogger(AttributeService.class);
+	
 	@Autowired
 	private SecurityContext securityContext;
+	
+	@Autowired
+	private FeatureExpressionService expressionService;
 
 	/**
 	 * Get the attributes for a feature, and put them in the feature object.
@@ -63,8 +74,9 @@ public class AttributeService {
 			throws LayerException {
 		String layerId = layer.getId();
 
-		Map<String, Attribute> featureAttributes = getAttributes(layer, featureBean);
+		Map<String, Attribute> featureAttributes = getRealAttributes(layer, featureBean);
 		feature.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
+		addSyntheticAttributes(feature, featureAttributes, layer);
 		if (securityContext.isFeatureVisible(layerId, feature)) {
 
 			feature.setAttributes(filterAttributes(layerId, feature, featureAttributes));
@@ -91,7 +103,7 @@ public class AttributeService {
 		return filteredAttributes;
 	}
 
-	private Map<String, Attribute> getAttributes(VectorLayer layer, Object featureBean) throws LayerException {
+	private Map<String, Attribute> getRealAttributes(VectorLayer layer, Object featureBean) throws LayerException {
 		FeatureModel featureModel = layer.getFeatureModel();
 		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
 		String geometryAttributeName = featureInfo.getGeometryType().getName();
@@ -99,35 +111,61 @@ public class AttributeService {
 				((VectorLayerLazyFeatureConversionSupport) layer).useLazyFeatureConversion();
 
 		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
-		for (AttributeInfo attribute : featureInfo.getAttributes()) {
-			String name = attribute.getName();
-			if (!name.equals(geometryAttributeName)) {
-				Attribute value;
-				if (lazy) {
-					// need to use the correct lazy type to allow instanceof to work
-					if (attribute instanceof AssociationAttributeInfo) {
-						switch (((AssociationAttributeInfo) attribute).getType()) {
-							case MANY_TO_ONE:
-								value = new LazyManyToOneAttribute(featureModel, featureBean, name);
-								break;
-							case ONE_TO_MANY:
-								value = new LazyOneToManyAttribute(featureModel, featureBean, name);
-								break;
-							default:
-								throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM,
-										"Coding error, not all AssociationType options are covered");
+		for (AbstractAttributeInfo attribute : featureInfo.getAttributes()) {
+			if (!(attribute instanceof SyntheticAttributeInfo)) {
+				String name = attribute.getName();
+				if (!name.equals(geometryAttributeName)) {
+					Attribute value;
+					if (lazy) {
+						// need to use the correct lazy type to allow instanceof to work
+						if (attribute instanceof AssociationAttributeInfo) {
+							switch (((AssociationAttributeInfo) attribute).getType()) {
+								case MANY_TO_ONE:
+									value = new LazyManyToOneAttribute(featureModel, featureBean, name);
+									break;
+								case ONE_TO_MANY:
+									value = new LazyOneToManyAttribute(featureModel, featureBean, name);
+									break;
+								default:
+									throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM,
+											"Coding error, not all AssociationType options are covered");
+							}
+						} else {
+							PrimitiveType type = ((PrimitiveAttributeInfo) attribute).getType();
+							value = new LazyPrimitiveAttribute(type, featureModel, featureBean, name);
 						}
 					} else {
-						PrimitiveType type = ((PrimitiveAttributeInfo) attribute).getType();
-						value = new LazyPrimitiveAttribute(type, featureModel, featureBean, name);
+						value = featureModel.getAttribute(featureBean, name);
 					}
-				} else {
-					value = featureModel.getAttribute(featureBean, name);
+					attributes.put(name, value);
 				}
-				attributes.put(name, value);
 			}
 		}
 		return attributes;
+	}
+
+	private void addSyntheticAttributes(InternalFeature feature, Map<String, Attribute> featureAttributes,
+			VectorLayer layer) {
+		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
+		for (AbstractAttributeInfo attribute : featureInfo.getAttributes()) {
+			if (attribute instanceof SyntheticAttributeInfo) {
+				Attribute attributeObject;
+				SyntheticAttributeInfo syntheticInfo = (SyntheticAttributeInfo) attribute;
+				SyntheticAttributeBuilder builder = syntheticInfo.getAttributeBuilder();
+				if (null != builder) {
+					attributeObject = builder.getAttribute(syntheticInfo, feature);
+				} else {
+					Object value = null;
+					try {
+						value = expressionService.evaluate(syntheticInfo.getExpression(), feature);
+					} catch (LayerException le) {
+						log.error(le.getMessage(), le);
+					}
+					attributeObject = new StringAttribute((String) value);
+				}
+				featureAttributes.put(attribute.getName(), attributeObject);
+			}
+		}
 	}
 
 }

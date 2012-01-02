@@ -103,7 +103,7 @@ public class AttributeServiceTest {
 	}
 
 	@Test
-	@DirtiesContext // ?? don't know why this is needed, it affects SecurityContextAttributeAuthorizationTest
+	@DirtiesContext // @todo ?? don't know why this is needed, it affects SecurityContextAttributeAuthorizationTest
 	public void testLazy() throws Exception {
 		InternalFeature feature = new InternalFeatureImpl();
 		Assert.assertNotNull(attributeService.getAttributes(lazyLayerBeans, feature, featureBean));

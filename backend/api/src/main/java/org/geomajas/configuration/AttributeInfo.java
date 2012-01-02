@@ -20,7 +20,8 @@ import javax.validation.constraints.NotNull;
  *
  * @author Jan De Moerloose
  * @since 1.6.0
- * @deprecated use the {@link AbstractReadOnlyAttributeInfo} or {@link AbstractEditableAttributeInfo} class
+ * @deprecated use the one of {@link AbstractAttributeInfo} or {@link AbstractReadOnlyAttributeInfo} or
+ *             {@link AbstractEditableAttributeInfo}
  */
 @Api(allMethods = true)
 @Deprecated

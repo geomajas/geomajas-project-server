@@ -30,7 +30,6 @@ import org.springframework.expression.TypedValue;
  * </ul>
  * 
  * @author Jan De Moerloose
- * 
  */
 public class InternalFeaturePropertyAccessor implements PropertyAccessor {
 
@@ -47,7 +46,7 @@ public class InternalFeaturePropertyAccessor implements PropertyAccessor {
 	 * {@inheritDoc}
 	 */
 	public boolean canRead(EvaluationContext context, Object target, String name) throws AccessException {
-		if (target == null) {
+		if (null == target) {
 			return false;
 		}
 		if (target instanceof InternalFeature) {
@@ -55,9 +54,7 @@ public class InternalFeaturePropertyAccessor implements PropertyAccessor {
 			return feature.getAttributes().containsKey(name) || ID_PROPERTY_NAME.equalsIgnoreCase(name);
 		} else if (target instanceof AssociationValue) {
 			AssociationValue associationValue = (AssociationValue) target;
-			if (associationValue != null) {
-				return associationValue.getAllAttributes().containsKey(name) || ID_PROPERTY_NAME.equalsIgnoreCase(name);
-			}
+			return associationValue.getAllAttributes().containsKey(name) || ID_PROPERTY_NAME.equalsIgnoreCase(name);
 		}
 		return false;
 	}

@@ -2465,7 +2465,7 @@ public interface Entity {
             </row>
 
             <row>
-              <entry>name + ' ( '+capital.name + ' )'</entry>
+              <entry>name + ' ( ' + capital.name + ' )'</entry>
 
               <entry>Belgium ( Brussels )</entry>
 

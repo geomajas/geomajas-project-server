@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.EditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.global.ExceptionCode;
@@ -83,7 +84,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 				throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM);
 			}
 		}
-		for (AttributeInfo attributeInfo : featureInfo.getAttributes()) {
+		for (AbstractAttributeInfo attributeInfo : featureInfo.getAttributes()) {
 			names.add(attributeInfo.getName());
 			if (attributeInfo.getName().equals(name)) {
 				if (attributeInfo instanceof AssociationAttributeInfo) {
@@ -97,7 +98,10 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 					} catch (GeomajasException e) {
 						throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM);
 					}
+				} else {
+					throw new IllegalStateException("UnHandled attribute type, " + attributeInfo.getClass().getName());
 				}
+
 			}
 		}
 		// association attribute
@@ -147,7 +151,7 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 			throw new LayerException(e, ExceptionCode.CONVERSION_PROBLEM);
 		}
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
-		for (AttributeInfo attributeInfo : childInfo.getAttributes()) {
+		for (AbstractAttributeInfo attributeInfo : childInfo.getAttributes()) {
 			attributes.put(attributeInfo.getName(),
 					getRecursiveAttribute(entity, childInfo, new String[] { attributeInfo.getName() }));
 		}
@@ -375,8 +379,9 @@ public class EntityAttributeServiceImpl implements EntityAttributeService {
 		protected void addChildOperations() throws LayerException {
 			Map<String, AssociationAttributeInfo> associationMap = new HashMap<String, AssociationAttributeInfo>();
 			Map<String, PrimitiveAttributeInfo> primitiveMap = new HashMap<String, PrimitiveAttributeInfo>();
-			for (AttributeInfo attributeInfo : featureInfo.getAttributes()) {
-				if (attributeInfo.isEditable()) {
+			for (AbstractAttributeInfo attributeInfo : featureInfo.getAttributes()) {
+				if (attributeInfo instanceof EditableAttributeInfo &&
+						((EditableAttributeInfo) attributeInfo).isEditable()) {
 					if (attributeInfo instanceof AssociationAttributeInfo) {
 						associationMap.put(attributeInfo.getName(), (AssociationAttributeInfo) attributeInfo);
 					} else if (attributeInfo instanceof PrimitiveAttributeInfo) {

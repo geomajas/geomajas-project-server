@@ -14,8 +14,8 @@ import java.beans.PropertyDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -59,8 +59,6 @@ public class BeanFeatureModel implements FeatureModel {
 
 	private boolean wkt;
 
-	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
-
 	private EntityAttributeService entityMappingService;
 	
 	private BeanEntityMapper entityMapper;
@@ -89,23 +87,20 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
-		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
-		for (AttributeInfo info : featureInfo.getAttributes()) {
+		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 			addAttribute(null, info);
 		}
 		entityMapper = new BeanEntityMapper();
 	}
 
-	private void addAttribute(String prefix, AttributeInfo info) {
+	private void addAttribute(String prefix, AbstractAttributeInfo info) {
 		String name = info.getName();
 		if (null != prefix) {
 			name = prefix + SEPARATOR + name;
 		}
-		attributeInfoMap.put(name, info);
 		if (info instanceof AssociationAttributeInfo) {
 			FeatureInfo association = ((AssociationAttributeInfo) info).getFeature();
-			attributeInfoMap.put(name + SEPARATOR + association.getIdentifier().getName(), association.getIdentifier());
-			for (AttributeInfo assInfo : association.getAttributes()) {
+			for (AbstractAttributeInfo assInfo : association.getAttributes()) {
 				addAttribute(name, assInfo);
 			}
 		}
@@ -126,7 +121,7 @@ public class BeanFeatureModel implements FeatureModel {
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		try {
 			Map<String, Attribute> attribs = new HashMap<String, Attribute>();
-			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
+			for (AbstractAttributeInfo attribute : getFeatureInfo().getAttributes()) {
 				String name = attribute.getName();
 				if (!name.equals(getGeometryAttributeName())) {
 					Attribute value = this.getAttribute(feature, name);

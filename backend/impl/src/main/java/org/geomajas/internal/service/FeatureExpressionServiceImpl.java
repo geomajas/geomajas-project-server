@@ -41,21 +41,19 @@ import org.springframework.stereotype.Component;
  * {@link #setVariables(Map)} on how to pass custom variables to the context. The argument is a list of association
  * values of the one-to-many attribute cities.
  * </ul>
- * 
- * 
+ *
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class FeatureExpressionServiceImpl implements FeatureExpressionService {
 
-	private SpelExpressionParser parser = new SpelExpressionParser();
+	private final SpelExpressionParser parser = new SpelExpressionParser();
 
-	private List<PropertyAccessor> propertyAccessors = new ArrayList<PropertyAccessor>();
+	private final List<PropertyAccessor> propertyAccessors = new ArrayList<PropertyAccessor>();
 
-	private Map<String, Object> variables = new HashMap<String, Object>();
+	private final Map<String, Object> variables = new HashMap<String, Object>();
 
-	private Map<String, Expression> expressionCache = new ConcurrentHashMap<String, Expression>();
+	private final Map<String, Expression> expressionCache = new ConcurrentHashMap<String, Expression>();
 
 	/**
 	 * Construct a new service instance.
