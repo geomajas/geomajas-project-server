@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.configuration;
 
+import org.geomajas.configuration.ServerSideOnlyInfo;
 import org.infinispan.config.Configuration;
 
 /**
@@ -19,7 +20,7 @@ import org.infinispan.config.Configuration;
  *
  * @author Joachim Van der Auwera
  */
-public interface InfinispanConfiguration {
+public interface InfinispanConfiguration extends ServerSideOnlyInfo {
 
 	/**
 	 * Indicates whether caching should be enabled.
