@@ -30,6 +30,12 @@ public class NativeInfinispanCacheInfo extends Configuration implements Infinisp
 	private boolean cacheEnabled = true;
 	private String baseConfigurationName;
 
+	/** No-arguments constructor. */
+	@Api
+	public NativeInfinispanCacheInfo() {
+		super(); // NOSONAR
+	}
+
 	/** {@inheritDoc} */
 	public boolean isCacheEnabled() {
 		return cacheEnabled;
