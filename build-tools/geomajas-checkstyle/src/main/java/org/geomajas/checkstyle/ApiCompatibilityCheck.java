@@ -46,6 +46,8 @@ public class ApiCompatibilityCheck extends Check {
 	private boolean isAnnotated;
 	private boolean isAllMethods;
 	private boolean isInterface;
+	private boolean isClass;
+	private boolean hasConstructor;
 	private String classSince;
 
 	private String basedir;
@@ -98,10 +100,18 @@ public class ApiCompatibilityCheck extends Check {
 		isAllMethods = false;
 		classSince = "?";
 		isInterface = false;
+		isClass = false;
+		hasConstructor = false;
 	}
 
 	@Override
 	public void finishTree(DetailAST rootAst) {
+		if (isClass && isAllMethods &&  !hasConstructor) {
+			// add default (no-arguments) constructor in api
+			int pos =fullyQualifiedClassName.lastIndexOf('.');
+			String signature = fullyQualifiedClassName.substring(pos + 1) + "()";
+			checkCorrectVersion(rootAst, signature, classSince);
+		}
 		super.finishTree(rootAst);
 	}
 
@@ -120,6 +130,7 @@ public class ApiCompatibilityCheck extends Check {
 					fullyQualifiedClassName = packageName + "." + shortClassName;
 					checkClassAnnotation(ast);
 					isInterface = (TokenTypes.INTERFACE_DEF == ast.getType());
+					isClass = (TokenTypes.CLASS_DEF == ast.getType()); 
 					if (isAnnotated) {
 						String since = getSince(ast);
 						api.add(fullyQualifiedClassName + "::" + since);
@@ -144,32 +155,36 @@ public class ApiCompatibilityCheck extends Check {
 			case TokenTypes.VARIABLE_DEF:    
 			case TokenTypes.ENUM_CONSTANT_DEF:
 				if (shortClassName.equals(getName(ast.getParent().getParent()))) { // exclude stuff from inner classes
+					hasConstructor |= (TokenTypes.CTOR_DEF == ast.getType());
 					String signature = getSignature(ast);
 					if (isApi(ast)) {
-						String since = getSince(ast);
-						api.add(fullyQualifiedClassName + ":" + signature + ":" + since);
-
-						// check that class/interface @since has not changed and mark as encountered
-						VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":" + signature);
-						if (null != vac) {
-							if (!since.equals(vac.getVersion())) {
-								log(ast, "wrongMethodSince", vac.getVersion(), since, fullyQualifiedClassName,
-										signature);
-							}
-							vac.setEncountered(true);
-						} else {
-							// check that version is different from class version (indicates added without @since)
-							vac = checkApi.get(fullyQualifiedClassName + ":");
-							if (null != vac && since.equals(vac.getVersion())) {
-								log(ast, "missingMethodSince", fullyQualifiedClassName, signature);
-							}
-						}
+						checkCorrectVersion(ast, signature, getSince(ast));
 					}
 				}
 				break;
 			default:
 				log(ast, "oops, unexpected node");
 				break;
+		}
+	}
+
+	private void checkCorrectVersion(DetailAST ast, String signature, String since) {
+		api.add(fullyQualifiedClassName + ":" + signature + ":" + since);
+
+		// check that class/interface @since has not changed and mark as encountered
+		VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":" + signature);
+		if (null != vac) {
+			if (!since.equals(vac.getVersion())) {
+				log(ast, "wrongMethodSince", vac.getVersion(), since, fullyQualifiedClassName,
+						signature);
+			}
+			vac.setEncountered(true);
+		} else {
+			// check that version is different from class version (indicates added without @since)
+			vac = checkApi.get(fullyQualifiedClassName + ":");
+			if (null != vac && since.equals(vac.getVersion())) {
+				log(ast, "missingMethodSince", fullyQualifiedClassName, signature);
+			}
 		}
 	}
 
