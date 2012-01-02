@@ -107,6 +107,7 @@ public class ClientToolInfo implements Serializable {
 	 * Get the description of the tool.
 	 * 
 	 * @return the description
+	 * @since 1.10.0
 	 */
 	public String getDescription() {
 		return description;
@@ -116,6 +117,7 @@ public class ClientToolInfo implements Serializable {
 	 * Set the description of the tool.
 	 * 
 	 * @param description the description to set
+	 * @since 1.10.0
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -125,6 +127,7 @@ public class ClientToolInfo implements Serializable {
 	 * Get the title of the tool.
 	 * 
 	 * @return the title
+	 * @since 1.10.0
 	 */
 	public String getTitle() {
 		return title;
@@ -134,6 +137,7 @@ public class ClientToolInfo implements Serializable {
 	 * Set the title of the tool.
 	 * 
 	 * @param title the title to set
+	 * @since 1.10.0
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -143,6 +147,7 @@ public class ClientToolInfo implements Serializable {
 	 * Get the url of the icon. 
 	 * 
 	 * @return the icon
+	 * @since 1.10.0
 	 */
 	public String getIcon() {
 		return icon;
@@ -152,6 +157,7 @@ public class ClientToolInfo implements Serializable {
 	 * Set the url of the icon.
 	 * 
 	 * @param icon the icon to set
+	 * @since 1.10.0
 	 */
 	public void setIcon(String icon) {
 		this.icon = icon;
