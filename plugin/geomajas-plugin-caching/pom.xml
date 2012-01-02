@@ -145,6 +145,6 @@
 	</profiles>
 
 	<properties>
-		<caching-backend-version>1.9.0</caching-backend-version>
+		<caching-backend-version>1.10.0-SNAPSHOT</caching-backend-version>
 	</properties>
 </project>
