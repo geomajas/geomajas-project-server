@@ -14,11 +14,9 @@ package org.geomajas.puregwt.client.controller;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -50,8 +48,6 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * @author Pieter De Graef
  */
 public class NavigationController extends AbstractMapController {
-
-	protected static final GeomajasGinjector INJECTOR = GWT.create(GeomajasGinjector.class);
 
 	/** Zooming types on mouse wheel scroll. */
 	public static enum ScrollZoomType {

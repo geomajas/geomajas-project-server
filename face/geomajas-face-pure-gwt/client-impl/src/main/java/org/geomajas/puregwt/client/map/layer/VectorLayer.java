@@ -30,7 +30,8 @@ import com.google.gwt.event.shared.EventBus;
  * 
  * @author Pieter De Graef
  */
-public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements LabelsSupported, FeaturesSupported {
+public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements LabelsSupported,
+		FeaturesSupported<ClientVectorLayerInfo> {
 
 	private Map<String, Feature> selection;
 

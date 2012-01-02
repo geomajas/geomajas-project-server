@@ -19,7 +19,6 @@ import org.geomajas.puregwt.client.map.MapPresenterImpl;
 import org.geomajas.puregwt.client.map.MapPresenterImpl.MapWidget;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.ViewPortImpl;
-import org.geomajas.puregwt.client.map.feature.FeatureSearch;
 import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -40,7 +39,6 @@ public class GeomajasGinModule extends AbstractGinModule {
 		bind(MapWidget.class).to(MapWidgetImpl.class);
 
 		// Other:
-		bind(FeatureSearch.class);
 		bind(GfxUtil.class);
 	}
 }

@@ -13,7 +13,6 @@ package org.geomajas.puregwt.client;
 
 import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.map.feature.FeatureSearch;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
@@ -27,8 +26,6 @@ import com.google.gwt.inject.client.Ginjector;
 public interface GeomajasGinjector extends Ginjector {
 
 	MapPresenter getMapPresenter();
-
-	FeatureSearch getFeatureSearch();
 
 	GfxUtil getGfxUtil();
 }

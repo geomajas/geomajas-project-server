@@ -27,7 +27,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  */
 public class FeatureImpl implements Feature {
 
-	private final Layer<?> layer;
+	private final FeaturesSupported<?> layer;
 
 	private String id;
 
@@ -46,7 +46,7 @@ public class FeatureImpl implements Feature {
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("rawtypes")
-	FeatureImpl(org.geomajas.layer.feature.Feature feature, Layer<?> layer) {
+	FeatureImpl(org.geomajas.layer.feature.Feature feature, FeaturesSupported<?> layer) {
 		this.layer = layer;
 		id = feature.getId();
 		attributes = new HashMap<String, Attribute<?>>();
@@ -88,8 +88,7 @@ public class FeatureImpl implements Feature {
 	}
 
 	public boolean isSelected() {
-		FeaturesSupported fs = (FeaturesSupported) layer;
-		return fs.isFeatureSelected(id);
+		return layer.isFeatureSelected(id);
 	}
 
 	public Layer<?> getLayer() {

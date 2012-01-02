@@ -54,6 +54,8 @@ import org.geomajas.puregwt.client.gfx.GfxUtil;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.feature.Feature;
+import org.geomajas.puregwt.client.map.feature.FeatureService;
+import org.geomajas.puregwt.client.map.feature.FeatureServiceImpl;
 import org.geomajas.puregwt.client.map.gadget.PanningGadget;
 import org.geomajas.puregwt.client.map.gadget.ScalebarGadget;
 import org.geomajas.puregwt.client.map.gadget.SimpleZoomGadget;
@@ -193,6 +195,8 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	@Inject
 	private GfxUtil gfxUtil;
+	
+	private FeatureService featureService;
 
 	@Inject
 	private MapPresenterImpl() {
@@ -200,6 +204,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		handlers = new ArrayList<HandlerRegistration>();
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, VectorContainer>();
+		featureService = new FeatureServiceImpl(this);
 	}
 
 	// ------------------------------------------------------------------------
@@ -322,6 +327,10 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	public ViewPort getViewPort() {
 		return viewPort;
+	}
+
+	public FeatureService getFeatureService() {
+		return featureService;
 	}
 
 	public EventBus getEventBus() {

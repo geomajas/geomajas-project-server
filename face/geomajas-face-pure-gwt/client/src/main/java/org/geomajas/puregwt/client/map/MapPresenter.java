@@ -18,6 +18,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapListener;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
+import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.event.shared.EventBus;
@@ -127,6 +128,13 @@ public interface MapPresenter {
 	ViewPort getViewPort();
 
 	/**
+	 * Get a service for feature searching/manipulation, specific for this map.
+	 * 
+	 * @return The feature service.
+	 */
+	FeatureService getFeatureService();
+
+	/**
 	 * Get the full set of currently active map gadgets.
 	 * 
 	 * @return The full set of currently active map gadgets.
@@ -155,7 +163,9 @@ public interface MapPresenter {
 	/**
 	 * An optional fall-back {@link MapController} to return to, when no controller is explicitly set (controller=null).
 	 * If no current controller is active when this setter is called, it is applied immediately. The default fall-back
-	 * controller when a map is initialized, is a controller that allows you to navigate.
+	 * controller when a map is initialized, is a controller that allows you to navigate.<br>
+	 * TODO remove this? We could keep this an internal matter. Just set a navigation controller when no other
+	 * controller is set.
 	 * 
 	 * @param fallbackController
 	 *            The new fall-back controller to use.
@@ -220,6 +230,11 @@ public interface MapPresenter {
 	 *            The new cursor to apply.
 	 */
 	void setCursor(String cursor);
-	
+
+	/**
+	 * Get the renderer for the map. This object will always make sure the map is correctly rendered.
+	 * 
+	 * @return The renderer for the map.
+	 */
 	MapRenderer getMapRenderer();
 }
