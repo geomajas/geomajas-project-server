@@ -50,17 +50,20 @@ org.geomajas.gwt.client.command.GwtCommandDispatcher:void setShowError(boolean, 
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUseLazyLoading(boolean, ):0.0.0
 org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUserToken(String, ):0.0.0
 org.geomajas.gwt.client.command.event.DispatchStartedEvent::0.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent:DispatchStartedEvent():0.0.0
 org.geomajas.gwt.client.command.event.DispatchStartedEvent:final Type<DispatchStartedHandler> getAssociatedType():0.0.0
 org.geomajas.gwt.client.command.event.DispatchStartedEvent:static Type<DispatchStartedHandler> getType():0.0.0
 org.geomajas.gwt.client.command.event.DispatchStartedHandler::0.0.0
 org.geomajas.gwt.client.command.event.DispatchStartedHandler:void onDispatchStarted(DispatchStartedEvent, ):0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedEvent::0.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent:DispatchStoppedEvent():0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedEvent:final Type<DispatchStoppedHandler> getAssociatedType():0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchStoppedHandler> getType():0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler::0.0.0
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):0.0.0
 org.geomajas.gwt.client.command.event.HasDispatchHandlers::0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl::0.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:GeomajasServiceImpl():0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):0.0.0
