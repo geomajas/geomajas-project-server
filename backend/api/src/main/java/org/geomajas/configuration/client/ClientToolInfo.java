@@ -34,6 +34,12 @@ public class ClientToolInfo implements Serializable {
 	private String id;
 	
 	private String toolId;
+	
+	private String description;
+	
+	private String title;
+	
+	private String icon;
 
 	private List<Parameter> parameters = new ArrayList<Parameter>();
 
@@ -66,7 +72,7 @@ public class ClientToolInfo implements Serializable {
 	}
 
 	/**
-	 * Set the id unique for the tool.
+	 * Set the unique id for the tool.
 	 * 
 	 * @param value
 	 *            unique tool id
@@ -95,6 +101,60 @@ public class ClientToolInfo implements Serializable {
 	 */
 	public String getToolId() {
 		return toolId == null ? id : toolId;
+	}
+
+	/**
+	 * Get the description of the tool.
+	 * 
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Set the description of the tool.
+	 * 
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * Get the title of the tool.
+	 * 
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * Set the title of the tool.
+	 * 
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * Get the url of the icon. 
+	 * 
+	 * @return the icon
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * Set the url of the icon.
+	 * 
+	 * @param icon the icon to set
+	 */
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 }
