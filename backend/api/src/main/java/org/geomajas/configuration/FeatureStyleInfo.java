@@ -62,11 +62,10 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	private LayerType layerType;
 	
 	/**
-	 * No args constructor for GWT.
-	 * @since 1.10.0
+	 * No args constructor for configuration and GWT.
 	 */
 	public FeatureStyleInfo() {
-		
+		// NOSONAR nothing to do
 	}
 	
 	/**

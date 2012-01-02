@@ -1,8 +1,10 @@
 // geomajas-command module API, 1.9.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
 org.geomajas.command.dto.CopyrightRequest::1.9.0
+org.geomajas.command.dto.CopyrightRequest:CopyrightRequest():1.9.0
 org.geomajas.command.dto.CopyrightRequest:static final String COMMAND:1.9.0
 org.geomajas.command.dto.CopyrightResponse::1.7.1
+org.geomajas.command.dto.CopyrightResponse:CopyrightResponse():1.7.1
 org.geomajas.command.dto.CopyrightResponse:List<CopyrightInfo> getCopyrights():1.7.1
 org.geomajas.command.dto.CopyrightResponse:void setCopyrights(List<CopyrightInfo>, ):1.7.1
 org.geomajas.command.dto.GetMapConfigurationRequest::1.6.0
@@ -133,6 +135,7 @@ org.geomajas.command.dto.SearchFeatureResponse:String getLayerId():1.6.0
 org.geomajas.command.dto.SearchFeatureResponse:void setFeatures(Feature[], ):1.6.0
 org.geomajas.command.dto.SearchFeatureResponse:void setLayerId(String, ):1.6.0
 org.geomajas.command.dto.TransformGeometryRequest::1.9.0
+org.geomajas.command.dto.TransformGeometryRequest:TransformGeometryRequest():1.9.0
 org.geomajas.command.dto.TransformGeometryRequest:Bbox getBounds():1.9.0
 org.geomajas.command.dto.TransformGeometryRequest:Geometry getGeometry():1.9.0
 org.geomajas.command.dto.TransformGeometryRequest:List<Geometry> getGeometryCollection():1.9.0
@@ -145,6 +148,7 @@ org.geomajas.command.dto.TransformGeometryRequest:void setGeometryCollection(Lis
 org.geomajas.command.dto.TransformGeometryRequest:void setSourceCrs(String, ):1.9.0
 org.geomajas.command.dto.TransformGeometryRequest:void setTargetCrs(String, ):1.9.0
 org.geomajas.command.dto.TransformGeometryResponse::1.9.0
+org.geomajas.command.dto.TransformGeometryResponse:TransformGeometryResponse():1.9.0
 org.geomajas.command.dto.TransformGeometryResponse:Bbox getBounds():1.9.0
 org.geomajas.command.dto.TransformGeometryResponse:Geometry getGeometry():1.9.0
 org.geomajas.command.dto.TransformGeometryResponse:List<Geometry> getGeometryCollection():1.9.0

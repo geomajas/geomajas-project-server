@@ -37,9 +37,9 @@ public class SymbolInfo implements Serializable, CacheableObject {
 	
 	/**
 	 * No args constructor for GWT.
-	 * @since 1.10.0
 	 */
 	public SymbolInfo() {
+		// NOSONAR nothing to do
 	}
 	
 	/**
