@@ -13,18 +13,29 @@ package org.geomajas.configuration;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.validation.ValidatorInfo;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Attribute information class.
  *
  * @author Jan De Moerloose
  * @since 1.6.0
- * @deprecated directly use the AbstractEditableAttributeInfo class
+ * @deprecated use the {@link AbstractReadOnlyAttributeInfo} or {@link AbstractEditableAttributeInfo} class
  */
 @Api(allMethods = true)
 @Deprecated
-public class AttributeInfo extends AbstractEditableAttributeInfo {
+public class AttributeInfo extends AttributeBaseInfo {
 
 	private static final long serialVersionUID = 152L;
+
+	@NotNull
+	private String label;
+
+	private boolean identifying;
+
+	private boolean hidden;
+
+	private String formInputType;
 
 	private boolean includedInForm;
 
@@ -40,7 +51,7 @@ public class AttributeInfo extends AbstractEditableAttributeInfo {
 	 * @param label attribute label
 	 */
 	public AttributeInfo(String name, String label) {
-		super(false, false, false, name, label);
+		this(false, false, false, name, label);
 	}
 
 	/**
@@ -53,17 +64,33 @@ public class AttributeInfo extends AbstractEditableAttributeInfo {
 	 * @param label attribute label
 	 */
 	public AttributeInfo(boolean editable, boolean hidden, boolean identifying, String name, String label) {
-		super(editable, hidden, identifying, name, label);
+		setEditable(editable);
+		setHidden(hidden);
+		setIdentifying(identifying);
+		setName(name);
+		setLabel(label);
 	}
 
-	@Override
+	/**
+	 * Get validator. Returns null as this is a read-only attribute
+	 *
+	 * @return validator
+	 * @deprecated use {@link AbstractEditableAttributeInfo#getValidator()}
+	 */
+	@Deprecated
 	public ValidatorInfo getValidator() {
-		return super.getValidator(); // NOSONAR	override needed for @Api
+		return null;
 	}
 
-	@Override
+	/**
+	 * Set validator. Noop as this is a read-only attribute
+	 *
+	 * @param validator validator
+	 * @deprecated use {@link AbstractEditableAttributeInfo#setValidator(ValidatorInfo)}
+	 */
+	@Deprecated
 	public void setValidator(ValidatorInfo validator) {
-		super.setValidator(validator);
+		// NOSONAR nothing to do, needed for @Api
 	}
 
 	/**
@@ -84,53 +111,90 @@ public class AttributeInfo extends AbstractEditableAttributeInfo {
 		super.setEditable(editable); // NOSONAR override needed for @Api
 	}
 
-	/** {@inheritDoc} */
-	@Override
+	/**
+	 * Get label for attribute.
+	 *
+	 * @return label
+	 */
 	public String getLabel() {
-		return super.getLabel(); // NOSONAR override needed for @Api
+		return label;
 	}
 
-	@Override
+	/**
+	 * Set label for attribute.
+	 *
+	 * @param label label
+	 */
 	public void setLabel(String label) {
-		super.setLabel(label); // NOSONAR override needed for @Api
+		this.label = label;
 	}
 
-	@Override
+	/**
+	 * Is this an identifying attribute? Is it part of the feature id?
+	 *
+	 * @return true when attribute is part of the feature id
+	 */
 	public boolean isIdentifying() {
-		return super.isIdentifying(); // NOSONAR override needed for @Api
+		return identifying;
 	}
 
-	@Override
+	/**
+	 * Set whether the attribute is part of the feature id.
+	 *
+	 * @param identifying true when attribute is part of the feature id
+	 */
 	public void setIdentifying(boolean identifying) {
-		super.setIdentifying(identifying); // NOSONAR override needed for @Api
+		this.identifying = identifying;
 	}
 
-	@Override
+	/**
+	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
+	 * widgets on the client.
+	 * <p/>
+	 * The default value for this setting is 'false'.
+	 *
+	 * @return true when hidden.
+	 */
 	public boolean isHidden() {
-		return super.isHidden(); // NOSONAR override needed for @Api
+		return hidden;
 	}
 
-	@Override
+	/**
+	 * This value determines whether or not this attribute definition should be hidden in editing forms and other
+	 * widgets on the client.
+	 * <p/>
+	 * The default value for this setting is 'false'.
+	 *
+	 * @param hidden new hidden status.
+	 */
 	public void setHidden(boolean hidden) {
-		super.setHidden(hidden); // NOSONAR override needed for @Api
+		this.hidden = hidden;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Get the type of input field that should be used in client side forms when editing this attribute. This value
+	 * should only be used when diverting from the default values (which are based upon the attribute type itself).
+	 * Using this field though enables users to specify their own client-side form field types and use them through
+	 * configuration.
+	 *
+	 * @return Returns the form input type to be used, or null when the default behavior is desired.
 	 * @since 1.9.0
 	 */
-	@Override
 	public String getFormInputType() {
-		return super.getFormInputType(); // NOSONAR override needed for @Api
+		return formInputType;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Set the type of input field that should be used in client side forms when editing this attribute. This value
+	 * should only be used when diverting from the default values (which are based upon the attribute type itself).
+	 * Using this field though enables users to specify their own client-side form field types and use them through
+	 * configuration.
+	 *
+	 * @param formInputType form input type to be used. Leave null when the default behavior is desired.
 	 * @since 1.9.0
 	 */
-	@Override
 	public void setFormInputType(String formInputType) {
-		super.setFormInputType(formInputType); // NOSONAR override needed for @Api
+		this.formInputType = formInputType;
 	}
 
 	/**

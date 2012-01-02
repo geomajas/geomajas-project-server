@@ -21,14 +21,12 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class PrimitiveAttributeInfo extends AttributeInfo implements Serializable {
+public class PrimitiveAttributeInfo extends AbstractEditableAttributeInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 	private PrimitiveType type;
 
-	/**
-	 * Default constructor for GWT.
-	 */
+	/** No-arguments constructor. */
 	public PrimitiveAttributeInfo() {
 		this(null, null, null);
 	}
@@ -41,7 +39,8 @@ public class PrimitiveAttributeInfo extends AttributeInfo implements Serializabl
 	 * @param type the primitive type
 	 */
 	public PrimitiveAttributeInfo(String name, String label, PrimitiveType type) {
-		super(name, label);
+		setName(name);
+		setLabel(label);
 		this.type = type;
 	}
 

@@ -23,7 +23,7 @@ import org.geomajas.annotation.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class AssociationAttributeInfo extends AttributeInfo implements Serializable {
+public class AssociationAttributeInfo extends AbstractEditableAttributeInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 

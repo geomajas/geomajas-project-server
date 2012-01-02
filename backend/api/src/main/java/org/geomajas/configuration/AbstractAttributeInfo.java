@@ -27,6 +27,11 @@ public abstract class AbstractAttributeInfo implements Serializable {
 	private static final long serialVersionUID = 1100L;
 	private String name;
 
+	/** No-arguments constructor needed for GWT.*/
+	public AbstractAttributeInfo() {
+		// NOSONAR do nothing
+	}
+
 	/**
 	 * Get name of the attribute.
 	 * <p/>

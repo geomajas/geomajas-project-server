@@ -29,19 +29,9 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	private ValidatorInfo validator = new ValidatorInfo();
 	private boolean editable;
 
-	/**
-	 * Full-option constructor.
-	 *
-	 * @param editable editable status
-	 * @param hidden hidden status
-	 * @param identifying is attribute identifying?
-	 * @param name attribute name
-	 * @param label attribute label
-	 */
-	public AbstractEditableAttributeInfo(boolean editable, boolean hidden, boolean identifying, String name,
-			String label) {
-		super(hidden, identifying, name, label);
-		setEditable(editable);
+	/** No-arguments constructor needed for GWT. */
+	public AbstractEditableAttributeInfo() {
+		// NOSONAR do nothing
 	}
 
 	/**
@@ -49,6 +39,7 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	 *
 	 * @return validator
 	 */
+	@SuppressWarnings("deprecation")
 	public ValidatorInfo getValidator() {
 		return validator;
 	}
@@ -58,6 +49,7 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 	 *
 	 * @param validator validator
 	 */
+	@SuppressWarnings("deprecation")
 	public void setValidator(ValidatorInfo validator) {
 		this.validator = validator;
 	}
