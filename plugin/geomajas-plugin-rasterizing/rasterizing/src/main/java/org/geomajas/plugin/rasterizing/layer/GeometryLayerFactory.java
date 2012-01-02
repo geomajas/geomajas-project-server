@@ -49,7 +49,7 @@ public class GeometryLayerFactory implements LayerFactory {
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientGeometryLayerInfo)) {
-			throw new IllegalStateException(
+			throw new IllegalArgumentException(
 					"GeometryLayerFactory.createLayer() should only be called using ClientGeometryLayerInfo");
 		}
 		ClientGeometryLayerInfo layerInfo = (ClientGeometryLayerInfo) clientLayerInfo;

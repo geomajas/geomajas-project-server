@@ -18,7 +18,9 @@ import org.geomajas.annotation.Api;
  *
  * @author Joachim Van der Auwera
  * @since 1.6.0
+ * @deprecated use {@link AbstractAttributeInfo} instead
  */
+@Deprecated
 @Api(allMethods = true)
 public class AttributeBaseInfo extends AbstractAttributeInfo {
 

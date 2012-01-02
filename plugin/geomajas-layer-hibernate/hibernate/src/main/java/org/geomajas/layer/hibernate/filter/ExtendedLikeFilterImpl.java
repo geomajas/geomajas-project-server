@@ -276,7 +276,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 
 	public void setExpression(org.opengis.filter.expression.Expression e) {
 		if (!(e instanceof Expression)) {
-			throw new IllegalStateException("Expression " + e + " should be an Expression.");
+			throw new IllegalArgumentException("Expression " + e + " should be an Expression.");
 		}
 		Expression exprAttribute = (Expression) e;
 		if ((exprAttribute.getType() != ExpressionType.ATTRIBUTE_STRING) || permissiveConstruction) {

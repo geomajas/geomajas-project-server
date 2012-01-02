@@ -336,7 +336,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	 */
 	private String getPropertyName(Expression expression) {
 		if (!(expression instanceof PropertyName)) {
-			throw new IllegalStateException("Expression " + expression + " is not a PropertyName.");
+			throw new IllegalArgumentException("Expression " + expression + " is not a PropertyName.");
 		}
 		String name = ((PropertyName) expression).getPropertyName();
 		if ("@id".equals(name)) {
@@ -353,7 +353,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	 */
 	private Object getLiteralValue(Expression expression) {
 		if (!(expression instanceof Literal)) {
-			throw new IllegalStateException("Expression " + expression + " is not a Literal.");
+			throw new IllegalArgumentException("Expression " + expression + " is not a Literal.");
 		}
 		return ((Literal) expression).getValue();
 	}

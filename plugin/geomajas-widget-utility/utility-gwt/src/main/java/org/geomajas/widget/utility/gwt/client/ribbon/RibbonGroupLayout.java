@@ -87,7 +87,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	/** {@inheritDoc} */
 	public void addColumn(RibbonColumn ribbonColumn) {
 		if (ribbonColumn == null) {
-			throw new IllegalStateException("Cannot add RibbonColumn with null value.");
+			throw new IllegalArgumentException("Cannot add RibbonColumn with null value.");
 		}
 		ribbonColumn.setButtonBaseStyle(buttonBaseStyle);
 		columns.add(ribbonColumn);
@@ -97,7 +97,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	/** {@inheritDoc} */
 	public void addColumn(RibbonColumn ribbonColumn, int index) {
 		if (ribbonColumn == null) {
-			throw new IllegalStateException("Cannot add RibbonColumn with null value.");
+			throw new IllegalArgumentException("Cannot add RibbonColumn with null value.");
 		}
 		ribbonColumn.setButtonBaseStyle(buttonBaseStyle);
 		columns.add(ribbonColumn);
@@ -107,7 +107,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 	/** {@inheritDoc} */
 	public void removeColumn(RibbonColumn ribbonColumn) {
 		if (ribbonColumn == null) {
-			throw new IllegalStateException("Cannot remove RibbonColumn with null value.");
+			throw new IllegalArgumentException("Cannot remove RibbonColumn with null value.");
 		}
 		columns.remove(ribbonColumn);
 		memberLayout.removeMember((Canvas) ribbonColumn.asWidget());

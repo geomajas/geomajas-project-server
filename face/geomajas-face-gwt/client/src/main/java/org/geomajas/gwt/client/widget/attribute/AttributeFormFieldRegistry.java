@@ -67,8 +67,7 @@ import org.geomajas.gwt.client.util.Log;
 /**
  * <p>
  * Factory that creates {@link FormItem}s and {@link DataSourceField}s from attribute meta-data. It is also possible to
- * register custom form field definitions. This way, {@link AttributeInfo} objects can fill in the "formInputType"
- * field, and use such a custom form item in a form.
+ * register custom form field definitions using {@link AbstractAttributeInfo#formInputType} field.
  * </p>
  * <p>
  * When defining custom implementations of the {@link FeatureFormFactory}, you are strongly encouraged to use this class
@@ -322,7 +321,7 @@ public final class AttributeFormFieldRegistry {
 	public static void registerCustomFormItem(String key, DataSourceFieldFactory fieldType, FormItemFactory editorType,
 			List<Validator> validators) {
 		if (key == null || fieldType == null || editorType == null) {
-			throw new IllegalStateException("Cannot provide null values when registering new form items.");
+			throw new IllegalArgumentException("Cannot provide null values when registering new form items.");
 		}
 
 		DATA_SOURCE_FIELDS.put(key, fieldType);
@@ -457,9 +456,11 @@ public final class AttributeFormFieldRegistry {
 	// -------------------------------------------------------------------------
 
 	private static boolean isRequired(ValidatorInfo info) {
-		for (ConstraintInfo constraint : info.getConstraints()) {
-			if (constraint instanceof NotNullConstraintInfo) {
-				return true;
+		if (null != info) {
+			for (ConstraintInfo constraint : info.getConstraints()) {
+				if (constraint instanceof NotNullConstraintInfo) {
+					return true;
+				}
 			}
 		}
 		return false;

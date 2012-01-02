@@ -133,7 +133,7 @@ public final class LayersModelImpl implements LayersModel {
 	 */
 	public Layer<?> getLayer(String id) {
 		if (id == null) {
-			throw new IllegalStateException("Null ID passed to the getLayer method.");
+			throw new IllegalArgumentException("Null ID passed to the getLayer method.");
 		}
 		for (Layer<?> layer : layers) {
 			if (id.equals(layer.getId())) {
@@ -202,7 +202,7 @@ public final class LayersModelImpl implements LayersModel {
 	 */
 	public int getLayerPosition(Layer<?> layer) {
 		if (layer == null) {
-			throw new IllegalStateException("Null value passed to the getLayerPosition method.");
+			throw new IllegalArgumentException("Null value passed to the getLayerPosition method.");
 		}
 		for (int i = 0; i < layers.size(); i++) {
 			if (layer.getId().equals(layers.get(i).getId())) {

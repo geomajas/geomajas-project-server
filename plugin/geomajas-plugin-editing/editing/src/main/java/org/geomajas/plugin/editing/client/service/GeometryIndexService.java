@@ -47,7 +47,7 @@ public class GeometryIndexService {
 		if (values.length > 0) {
 			index = new GeometryIndex(type, values[values.length - 1], null);
 		} else {
-			throw new IllegalStateException("Cannot create a GeometryIndex since no values where given.");
+			throw new IllegalArgumentException("Cannot create a GeometryIndex since no values where given.");
 		}
 		if (values.length > 1) {
 			for (int i = values.length - 2; i >= 0; i--) {
@@ -348,7 +348,7 @@ public class GeometryIndexService {
 	public List<GeometryIndex> getAdjacentVertices(Geometry geometry, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (geometry == null || index == null) {
-			throw new IllegalStateException("No null values allowed!");
+			throw new IllegalArgumentException("No null values allowed!");
 		}
 		GeometryIndexCombo combo = recursiveSearch(geometry, index);
 
@@ -384,7 +384,7 @@ public class GeometryIndexService {
 	public List<GeometryIndex> getAdjacentEdges(Geometry geometry, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (geometry == null || index == null) {
-			throw new IllegalStateException("No null values allowed!");
+			throw new IllegalArgumentException("No null values allowed!");
 		}
 		GeometryIndexCombo combo = recursiveSearch(geometry, index);
 		int[] indices = new int[] {};

@@ -37,7 +37,7 @@ public class CacheCategory {
 	 */
 	public CacheCategory(String name) {
 		if (null == name) {
-			throw new IllegalStateException("Null CacheCategory is not allowed");
+			throw new IllegalArgumentException("Null CacheCategory is not allowed");
 		}
 		this.name = name;
 	}

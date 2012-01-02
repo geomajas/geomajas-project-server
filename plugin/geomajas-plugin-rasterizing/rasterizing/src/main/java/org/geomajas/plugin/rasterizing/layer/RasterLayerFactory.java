@@ -48,7 +48,7 @@ public class RasterLayerFactory implements LayerFactory {
 
 	public Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException {
 		if (!(clientLayerInfo instanceof ClientRasterLayerInfo)) {
-			throw new IllegalStateException(
+			throw new IllegalArgumentException(
 					"RasterLayerFactory.createLayer() should only be called using ClientRasterLayerInfo");
 		}
 		ClientRasterLayerInfo rasterInfo = (ClientRasterLayerInfo) clientLayerInfo;

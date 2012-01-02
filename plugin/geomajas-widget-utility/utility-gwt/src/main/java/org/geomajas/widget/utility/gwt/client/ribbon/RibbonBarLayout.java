@@ -98,7 +98,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	/** {@inheritDoc} */
 	public void addGroup(RibbonGroup ribbonGroup) {
 		if (null == ribbonGroup) {
-			throw new IllegalStateException("Cannot add RibbonGroup with null value.");
+			throw new IllegalArgumentException("Cannot add RibbonGroup with null value.");
 		}
 		groups.add(ribbonGroup);
 		ribbonGroup.setShowTitle(showGroupTitles);
@@ -109,7 +109,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	/** {@inheritDoc} */
 	public void addGroup(RibbonGroup ribbonGroup, int index) {
 		if (null == ribbonGroup) {
-			throw new IllegalStateException("Cannot add RibbonGroup with null value.");
+			throw new IllegalArgumentException("Cannot add RibbonGroup with null value.");
 		}
 		groups.add(index, ribbonGroup);
 		ribbonGroup.setShowTitle(showGroupTitles);
@@ -120,7 +120,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 	/** {@inheritDoc} */
 	public void removeGroup(RibbonGroup ribbonGroup) {
 		if (null == ribbonGroup) {
-			throw new IllegalStateException("Cannot remove RibbonGroup with null value.");
+			throw new IllegalArgumentException("Cannot remove RibbonGroup with null value.");
 		}
 		groups.remove(ribbonGroup);
 		removeMember((Canvas) ribbonGroup.asWidget());
@@ -167,7 +167,7 @@ public class RibbonBarLayout extends HLayout implements RibbonBar {
 
 	private void buildGui(RibbonBarInfo barInfo, MapWidget mapWidget) {
 		if (null == barInfo) {
-			throw new IllegalStateException("RibbonBarLayout cannot be built without RibbonBarInfo configuration.");
+			throw new IllegalArgumentException("RibbonBarLayout cannot be built without RibbonBarInfo configuration.");
 		}
 		for (RibbonGroupInfo groupInfo : barInfo.getGroups()) {
 			RibbonGroupLayout group = new RibbonGroupLayout(groupInfo.getTitle());

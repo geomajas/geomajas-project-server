@@ -13,8 +13,8 @@ package org.geomajas.gwt.client.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationAttribute;
@@ -55,7 +55,7 @@ public final class AttributeUtil {
 	public static AssociationValue createEmptyAssociationValue(AssociationAttributeInfo attributeInfo) {
 		AssociationValue value = new AssociationValue();
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
-		for (AttributeInfo attrInfo : attributeInfo.getFeature().getAttributes()) {
+		for (AbstractAttributeInfo attrInfo : attributeInfo.getFeature().getAttributes()) {
 			attributes.put(attrInfo.getName(), createEmptyAttribute(attrInfo));
 		}
 		value.setAllAttributes(attributes);
@@ -69,7 +69,7 @@ public final class AttributeUtil {
 	 * @param attrInfo attribute info
 	 * @return an empty attribute.
 	 */
-	public static Attribute<?> createEmptyAttribute(AttributeInfo attrInfo) {
+	public static Attribute<?> createEmptyAttribute(AbstractAttributeInfo attrInfo) {
 		if (attrInfo instanceof PrimitiveAttributeInfo) {
 			return createEmptyPrimitiveAttribute((PrimitiveAttributeInfo) attrInfo);
 		} else if (attrInfo instanceof AssociationAttributeInfo) {
