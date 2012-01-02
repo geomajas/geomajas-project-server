@@ -13,7 +13,7 @@ package org.geomajas.plugin.caching.configuration;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.LayerExtraInfo;
-import org.geomajas.configuration.ServerSideOnly;
+import org.geomajas.configuration.ServerSideOnlyInfo;
 import org.geomajas.plugin.caching.service.CacheCategory;
 
 import java.util.Map;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class CacheInfo implements LayerExtraInfo, ServerSideOnly {
+public class CacheInfo implements LayerExtraInfo, ServerSideOnlyInfo {
 
 	private static final long serialVersionUID = 100L;
 
