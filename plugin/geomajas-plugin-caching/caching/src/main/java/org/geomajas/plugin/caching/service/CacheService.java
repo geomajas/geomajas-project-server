@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * A cache which is managed using the {@link org.geomajas.plugin.caching.service.CacheManagerService}.

@@ -12,7 +12,7 @@
 package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 
 import java.util.ArrayList;
 import java.util.List;

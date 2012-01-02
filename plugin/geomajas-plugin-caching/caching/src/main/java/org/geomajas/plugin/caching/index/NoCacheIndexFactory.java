@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.index;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.layer.Layer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheIndexFactory;

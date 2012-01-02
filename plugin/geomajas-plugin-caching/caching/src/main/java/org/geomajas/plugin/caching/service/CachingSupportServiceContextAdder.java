@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Implementation of this interface can add additional context when building cache context for

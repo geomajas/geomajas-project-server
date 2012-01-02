@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.infinispan.config.Configuration;
 
 /**

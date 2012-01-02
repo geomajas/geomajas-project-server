@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.FutureApi;
+import org.geomajas.annotation.FutureApi;
 import org.geomajas.layer.Layer;
 
 /**

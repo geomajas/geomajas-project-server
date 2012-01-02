@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.configuration;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.infinispan.config.CacheLoaderManagerConfig;
 import org.infinispan.config.Configuration;
 import org.infinispan.loaders.jdbm.JdbmCacheStoreConfig;

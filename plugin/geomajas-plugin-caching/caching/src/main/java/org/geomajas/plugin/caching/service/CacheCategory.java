@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Immutable objects which represent cache categories. These a just strings which are made type safe.

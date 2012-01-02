@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.step;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.caching.service.CacheContext;
 
 import java.io.Serializable;

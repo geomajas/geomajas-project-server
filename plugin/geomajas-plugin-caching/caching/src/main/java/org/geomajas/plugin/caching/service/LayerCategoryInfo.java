@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Definition of layer and cacheCategory for use in application context searches.
