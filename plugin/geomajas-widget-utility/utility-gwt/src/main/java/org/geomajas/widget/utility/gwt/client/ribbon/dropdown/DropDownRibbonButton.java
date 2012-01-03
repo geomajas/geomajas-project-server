@@ -31,10 +31,6 @@ public class DropDownRibbonButton extends RibbonButton {
 	public DropDownRibbonButton(DropDownButtonAction action) {
 		super(new ToolbarButtonAction(action));
 		dropDownPanel = new DropDownPanel(this);
-		dropDownPanel.setOverflow(Overflow.VISIBLE);
-		dropDownPanel.setAutoHeight();
-		dropDownPanel.setAutoWidth();
-		dropDownPanel.setPosition(Positioning.RELATIVE);
 		dropDownPanel.hide();
 		action.setDropDownPanel(dropDownPanel);
 	}
@@ -45,18 +41,7 @@ public class DropDownRibbonButton extends RibbonButton {
 		setTitleAlignment(titleAlignment);
 	}
 	
-	/**
-<<<<<<< .mine
-	 * Add configuration key/value pair. The "style" value will trigger 
-	 * the conversion of the actions into buttons on the {@link DropDownPanel}.
-=======
-	 * Add configuration key/value pair. The "style" value will trigger the conversion of the actions into buttons on
-	 * the {@link DropDownPanel}.
->>>>>>> .r9525
-	 * 
-	 * @param key parameter key
-	 * @param value parameter value
-	 */
+	@Override
 	public void configure(String key, String value) {
 		if ("title".equals(key)) {
 			setTitle(value);
@@ -64,6 +49,8 @@ public class DropDownRibbonButton extends RibbonButton {
 			setIcon(value);
 		} else if ("toolTip".equals(key)) {
 			setTooltip(value);
+		} else if ("panelWidth".equals(key)) {
+			dropDownPanel.setWidth(Integer.parseInt(value));
 		} 
 	}
 
@@ -79,49 +66,27 @@ public class DropDownRibbonButton extends RibbonButton {
 	// RibbonColumn implementation:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Returns the vertical layout that holds the drop-down button.
-	 * 
-	 * @return The vertical layout that holds the drop-down button.
-	 */
+	@Override
 	public Widget asWidget() {
 		return this;
 	}
 
-	/**
-	 * Determine whether or not to display all titles on all buttons.
-	 * 
-	 * @param showTitles
-	 *            The new value. Applying this new value will immediately trigger the GUI to redraw.
-	 */
+	@Override
 	public void setShowTitles(boolean showTitles) {
 		super.setShowTitles(showTitles);
 	}
 
-	/**
-	 * See whether or not the titles on the buttons are currently visible.
-	 * 
-	 * @return Return whether or not the titles on the buttons are currently visible.
-	 */
+	@Override
 	public boolean isShowTitles() {
 		return super.isShowTitles();
 	}
 
-	/**
-	 * Is the ribbonColumn enabled?
-	 * 
-	 * @return true if column is enabled
-	 */
+	@Override
 	public boolean isEnabled() {
 		return !isDisabled();
 	}
 
-	/**
-	 * Set the enabled state of the RibbonColumn.
-	 * 
-	 * @param enabled
-	 *            The enabled state
-	 */
+	@Override
 	public void setEnabled(boolean enabled) {
 		setDisabled(!enabled);
 	}

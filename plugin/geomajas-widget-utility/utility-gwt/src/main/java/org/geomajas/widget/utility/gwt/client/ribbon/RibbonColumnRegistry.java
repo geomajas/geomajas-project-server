@@ -21,7 +21,7 @@ import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
-import org.geomajas.gwt.client.action.toolbar.ButtonGroupTitle;
+import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -105,17 +105,18 @@ public final class RibbonColumnRegistry {
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				final DropDownRibbonButton dropDown = new DropDownRibbonButton(new DropDownButtonAction());
 				DropDownPanel panel = dropDown.getPanel();
-				ButtonGroupTitle title = null;
-				List<ButtonAction> actions = null;
+				ButtonGroup title = null;
+				List<ButtonAction> actions = new ArrayList<ButtonAction>();
 				for (ClientToolInfo tool : tools) {
 					ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
 					if (toolbarAction != null) {
-						if (toolbarAction instanceof ButtonGroupTitle) {
-							// First wrap current button group title and actions into a group.
-							if (null != actions) {
+						if (toolbarAction instanceof ButtonGroup) {
+							// First wrap currently found actions into a group (title can be null).
+							if (actions.size() > 0) {
 								panel.addGroup(title, actions);
 							}
-							title = new ButtonGroupTitle();
+							title = (ButtonGroup) toolbarAction;
+							title.setTitle(tool.getTitle());
 							for (Parameter parameter : tool.getParameters()) {
 								title.configure(parameter.getName(), parameter.getValue());
 							}
@@ -127,10 +128,16 @@ public final class RibbonColumnRegistry {
 									action.configure(parameter.getName(), parameter.getValue());
 								}
 							}
+							String description = tool.getDescription();
+							// Overrides tooltip parameter if description is set in ClientToolInfo.
+							if (null != description && !"".equals(description)) {
+								action.setTooltip(description);
+							}
 							actions.add(action);
 						}
 					}
 				}
+				// Always add the last actions as group to the panel (if title is null)
 				panel.addGroup(title, actions);
 				return dropDown;
 			}
@@ -205,6 +212,11 @@ public final class RibbonColumnRegistry {
 			if (action != null) {
 				for (Parameter parameter : tool.getParameters()) {
 					action.configure(parameter.getName(), parameter.getValue());
+				}
+				String description = tool.getDescription();
+				// Overrides tooltip parameter if description is set in ClientToolInfo.
+				if (null != description && !"".equals(description)) {
+					action.setTooltip(description);
 				}
 				return action;
 			}

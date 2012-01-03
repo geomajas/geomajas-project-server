@@ -131,7 +131,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 
 		updateGui();
 	}
-
+	
 	// ------------------------------------------------------------------------
 	// RibbonColumn implementation:
 	// ------------------------------------------------------------------------
@@ -296,6 +296,16 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 */
 	protected String getIconUrl() {
 		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
+		return applyDisabled(icon);
+	}
+
+	/**
+	 * Applies the disabled state to the icon's url if necessary.
+	 * 
+	 * @param icon
+	 * @return disabled icon's url
+	 */
+	protected String applyDisabled(String icon) {
 		if (isDisabled() && showDisabledIcon) {
 			int dot = icon.lastIndexOf(".");
 			if (dot > -1) {

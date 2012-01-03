@@ -11,9 +11,15 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon;
 
-import org.geomajas.gwt.client.util.HtmlBuilder;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
-import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
+import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
+
+import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.layout.HStack;
+import com.smartgwt.client.widgets.layout.VStack;
 
 /**
  * Extension of the RibbonButton class that displays a single button with a description.
@@ -22,17 +28,20 @@ import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
  */
 public class RibbonButtonDescribed extends RibbonButton {
 
-	private String description;
-
+	private Label titleLabel;
+	private Canvas description;
+	private HStack outer;
+	private Integer panelWidth;
+	private VStack inner;
+	private final Integer iconSize;
+	
 	public RibbonButtonDescribed(ButtonAction buttonAction) {
 		this(buttonAction, 24);
 	}
 
 	public RibbonButtonDescribed(ButtonAction buttonAction, Integer iconSize) {
 		super(buttonAction, iconSize, null);
-		if (buttonAction instanceof ToolbarButtonAction) {
-			description = ((ToolbarButtonAction) buttonAction).getDescription();
-		}
+		this.iconSize = iconSize;
 	}
 
 	@Override
@@ -44,15 +53,54 @@ public class RibbonButtonDescribed extends RibbonButton {
 		} else {
 			title = title.trim();
 		}
-		String iconCell = "<td rowspan='2' style='text-align:center;'>" +
-				"<img src='" + getIconUrl() + "' width='" + getIconSize() + "' height='" + getIconSize() + "/></td>";
-		String titleCell = "";
-		if (isShowTitles()) {
-			titleCell = HtmlBuilder.tdStyle("text-align:center; margin-top: 10px;" + getTitleTextStyle(), title);
-		}
-		String descriptionCell = HtmlBuilder.tdStyle("text-align:center;", description);
-		setContents(HtmlBuilder.tableStyleHtmlContent("", 
-					HtmlBuilder.trHtmlContent(iconCell, titleCell),
-					HtmlBuilder.trHtmlContent(descriptionCell)));
+		
+		int iconSize = getIconSize();
+		String iconBaseUrl = buttonAction.getIcon();
+		Img icon = new Img(applyDisabled(iconBaseUrl), iconSize, iconSize);
+		
+		titleLabel = new Label(title);
+		titleLabel.setOverflow(Overflow.VISIBLE);
+		titleLabel.setAutoHeight();
+		titleLabel.setWidth100();
+		
+		description = new Canvas();
+		description.setContents(buttonAction.getTooltip());
+		description.setOverflow(Overflow.VISIBLE);
+		description.setAutoHeight();
+		description.setWidth100();
+		
+		inner = new VStack();
+		inner.setWidth("*");
+		inner.setOverflow(Overflow.VISIBLE);
+		inner.setAutoHeight();
+		inner.addMember(titleLabel);
+		inner.addMember(description);
+		
+		outer = new HStack(GuwLayout.describedButtonInnerMargin);
+		outer.setOverflow(Overflow.VISIBLE);
+		outer.setWidth100();
+		outer.setAutoHeight();
+		outer.addMember(icon);
+		outer.addMember(inner);
+		
+		addChild(outer);
+	}
+	
+	@Override
+	public void setButtonBaseStyle(String buttonBaseStyle) {
+		setBaseStyle(buttonBaseStyle);
+		titleLabel.setStyleName(buttonBaseStyle + "Title");
+		description.setStyleName(buttonBaseStyle + "Description");
+	}
+
+	public Integer getPanelWidth() {
+		return panelWidth;
+	}
+
+	public void setPanelWidth(Integer panelWidth) {
+		this.panelWidth = panelWidth;
+		description.setMaxWidth(panelWidth - iconSize - GuwLayout.describedButtonInnerMargin);
+		inner.setWidth(panelWidth - iconSize - GuwLayout.describedButtonInnerMargin);
+
 	}
 }

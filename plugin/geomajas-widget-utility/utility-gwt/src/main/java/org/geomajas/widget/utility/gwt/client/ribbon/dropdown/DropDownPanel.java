@@ -14,7 +14,7 @@ package org.geomajas.widget.utility.gwt.client.ribbon.dropdown;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.gwt.client.action.toolbar.ButtonGroupTitle;
+import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
@@ -26,6 +26,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.smartgwt.client.types.AnimationEffect;
+import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VStack;
@@ -39,53 +41,70 @@ import com.smartgwt.client.widgets.layout.VStack;
  */
 public class DropDownPanel extends VStack {
 	
-	/**
-	 * Same as a RibbonButton in a ToolbarActionList; icon (16px) on the left and title on the right.
-	 */
-	public static final String ICON_AND_TITLE = "iconAndTitle";
-	/**
-	 * Icon (24px) on the left and the title and description on the right, the title on top of the description.
-	 */
-	public static final String ICON_TITLE_AND_DESCRIPTION = "iconTitleAndDescription";
-
 	private final DropDownRibbonButton button;
 	private HandlerRegistration registration;
 	
 	private List<VStack> groups = new ArrayList<VStack>();
 	private List<Label> groupTitles = new ArrayList<Label>();
+	private List<VStack> bodies = new ArrayList<VStack>();
 	private List<RibbonButton> buttons = new ArrayList<RibbonButton>();
 
 	public DropDownPanel(final DropDownRibbonButton button) {
 		super();
 		this.button = button;
+		setPosition(Positioning.ABSOLUTE);
+		setOverflow(Overflow.VISIBLE);
+		setAutoHeight();
 	}
 	
-	public void addGroup(ButtonGroupTitle title, List<ButtonAction> actions) {
+	public void addGroup(ButtonGroup title, List<ButtonAction> actions) {
 		VStack group = new VStack();
+		group.setOverflow(Overflow.VISIBLE);
+		group.setAutoHeight();
+		group.setWidth100();
 		
-		Label groupTitle = new Label(title.getTitle());
-		groupTitle.setHeight(25);
-		group.addMember(groupTitle);
-		for (ButtonAction action : actions) {
-			RibbonButton button = getButton(action, title.getButtonLayout());
-			group.addMember(button);
+		String buttonLayout = GuwLayout.DropDown.ICON_AND_TITLE;
+		if (null != title) {
+			Label groupTitle = new Label(title.getTitle());
+			groupTitle.setOverflow(Overflow.VISIBLE);
+			groupTitle.setAutoHeight();
+			groupTitle.setWidth100();
+			group.addMember(groupTitle);
+			groupTitles.add(groupTitle);
+			buttonLayout = null == title.getButtonLayout() ? GuwLayout.DropDown.ICON_AND_TITLE : title.getButtonLayout();
 		}
+		VStack body = new VStack();
+		body.setOverflow(Overflow.VISIBLE);
+		body.setAutoHeight();
+		body.setWidth100();
+		for (ButtonAction action : actions) {
+			RibbonButton button = getButton(action, buttonLayout);
+			body.addMember(button);
+			buttons.add(button);
+		}
+		group.addMember(body);
+		bodies.add(body);
+		
 		addMember(group);
+		groups.add(group);
 	}
 
 	/**
 	 * Converts the given action into a {@link RibbonButton}.
 	 * 
-	 * @param actions
+	 * @param action ButtonAction
 	 * @param buttonLayout determines the layout of the button.
+	 * @return button RibbonButton
 	 */
 	private RibbonButton getButton(ButtonAction action, String buttonLayout) {
 		RibbonButton button = null;
-		if (buttonLayout.equals(ICON_AND_TITLE)) {
+		if (buttonLayout.equals(GuwLayout.DropDown.ICON_AND_TITLE)) {
 			button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
-		} else if (buttonLayout.equals(ICON_TITLE_AND_DESCRIPTION)) {
+		} else if (buttonLayout.equals(GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION)) {
 			button = new RibbonButtonDescribed(action, 32);
 		}
+		button.setOverflow(Overflow.VISIBLE);
+		button.setAutoHeight();
 		button.setWidth100();
 		button.setMargin(2);
 		button.addClickHandler(new ClickHandler() {
@@ -103,25 +122,39 @@ public class DropDownPanel extends VStack {
 	public void setStyleName(String styleName) {
 		super.setStyleName(styleName);
 		for (VStack group : groups) {
-			group.setStyleName(getStyleName() + "Group");
+			group.setStyleName(styleName + "Group");
 		}
 		for (Label groupTitle : groupTitles) {
-			groupTitle.setStyleName(getStyleName() + "GroupTitle");
+			groupTitle.setStyleName(styleName + "GroupTitle");
+		}
+		for (VStack body : bodies) {
+			body.setStyleName(styleName + "GroupBody");
 		}
 		for (RibbonButton button : buttons) {
-			if (button instanceof RibbonButtonDescribed) {
-				button.setStyleName(getStyleName() + "DescribedButton"); 
-			}
-			button.setStyleName(getStyleName() + "Button");
+			button.setButtonBaseStyle(styleName + "Button");
 		}
 	}
 
 	@Override
 	public void animateShow(final AnimationEffect effect) {
-		this.moveTo(button.getPageLeft() - GuwLayout.ribbonGroupInternalMargin + 2, 
-				button.getPageTop() + button.getInnerContentHeight() - 4);
+		this.moveTo(button.getPageLeft(), 
+				button.getPageTop() + button.getInnerContentHeight());
 		button.setSelected(true);
-		registration = Event.addNativePreviewHandler(new NativePreviewHandler() {
+		registration = previewMouseUpHandler();
+		setWidth(getWidth());
+		super.animateShow(effect);
+	}
+
+	/**
+	 * Through a {@link NativePreviewHandler} and its {@link NativePreviewEvent} 
+	 * all mouse events can be caught before they are processed. 
+	 * If the event is of type {@link Event#ONMOUSEUP} and the click was outside 
+	 * the button or this drop-down panel, the panel is closed.
+	 * @return
+	 */
+	
+	private HandlerRegistration previewMouseUpHandler() {
+		return Event.addNativePreviewHandler(new NativePreviewHandler() {
 			public void onPreviewNativeEvent(NativePreviewEvent preview) {
 				int typeInt = preview.getTypeInt();
 				if (typeInt == Event.ONMOUSEUP) {
@@ -153,7 +186,6 @@ public class DropDownPanel extends VStack {
 				}
 			}
 		});
-		super.animateShow(effect);
 	}
 	
 	/**
@@ -167,5 +199,18 @@ public class DropDownPanel extends VStack {
 			registration.removeHandler();
 		}
 		super.hide();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.smartgwt.client.widgets.Canvas#setWidth(int)
+	 */
+	@Override
+	public void setWidth(int width) {
+		super.setWidth(width);
+		for (RibbonButton button : buttons) {
+			if (button instanceof RibbonButtonDescribed) {
+				((RibbonButtonDescribed) button).setPanelWidth(width);
+			}
+		}
 	}
 }
