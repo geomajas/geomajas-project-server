@@ -41,10 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Command to retrieve features using a FeatureSearch Criterion.
  * <p>
  * Criteria are combined to one filter (per layer).
- * <p>
- * Please note that AND does not (automatically) work over layers, eg. there are
- * separate filters, one for every layer (geographic filters work on multiple
- * layers however, so no need to define those multiple times).
  * 
  * @author Kristof Heirwegh
  */

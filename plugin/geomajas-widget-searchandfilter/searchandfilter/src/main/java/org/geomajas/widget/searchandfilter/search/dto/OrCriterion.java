@@ -27,6 +27,7 @@ public class OrCriterion implements Criterion {
 
 	// ----------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public List<Criterion> getCriteria() {
 		if (criteria == null) {
 			criteria = new ArrayList<Criterion>();
@@ -54,7 +55,7 @@ public class OrCriterion implements Criterion {
 
 	/** {@inheritDoc} */
 	public void serverLayerIdVisitor(Set<String> layerIds) {
-		for (Criterion critter : criteria) {
+		for (Criterion critter : getCriteria()) {
 			critter.serverLayerIdVisitor(layerIds);
 		}
 	}

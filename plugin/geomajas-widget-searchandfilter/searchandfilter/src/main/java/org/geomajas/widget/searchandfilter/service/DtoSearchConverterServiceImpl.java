@@ -8,11 +8,16 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.searchandfilter.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.geometry.Crs;
@@ -63,6 +68,7 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 
 	@Autowired
 	private VectorLayerService vectorLayerService;
+
 	/**
 	 * 
 	 * @param criterion
@@ -82,7 +88,9 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 				return dtoGeometryCriterionToFilters((GeometryCriterion) criterion, mapCrs);
 
 			} else if (criterion instanceof AndCriterion) {
-				return dtoAndCriterionToFilters((AndCriterion) criterion, mapCrs);
+				AndCriterion critter = (AndCriterion) criterion;
+				prune(critter);
+				return dtoAndCriterionToFilters(critter, mapCrs);
 
 			} else if (criterion instanceof OrCriterion) {
 				return dtoOrCriterionToFilters((OrCriterion) criterion, mapCrs);
@@ -94,6 +102,8 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 			return new LinkedHashMap<VectorLayer, Filter>();
 		}
 	}
+
+	// -------------------------------------------------
 
 	private Map<VectorLayer, Filter> dtoAttributeCriterionToFilters(AttributeCriterion criterion)
 			throws GeomajasException {
@@ -195,6 +205,134 @@ public class DtoSearchConverterServiceImpl implements DtoSearchConverterService 
 					keep.put(entry.getKey(), entry.getValue());
 				}
 			}
+		}
+	}
+
+	/**
+	 * Prune impossible combinations. 
+	 * (eg. If And criteria filter different layers, they will return nothing, so they are pruned).
+	 */
+	void prune(AndCriterion criterion) {
+		Set<String> usedLayers = new HashSet<String>();
+		Set<String> badLayers = new HashSet<String>();
+		criterion.serverLayerIdVisitor(usedLayers);
+		findUnmatchedLayers(criterion, usedLayers, badLayers);
+		if (usedLayers.isEmpty()) {
+			criterion.getCriteria().clear();
+		} else if (!badLayers.isEmpty()) {
+			removeUnmatchedLayers(criterion, badLayers);
+		}
+	}
+
+	private void findUnmatchedLayers(AndCriterion criterion, Set<String> usedLayers, Set<String> badLayers) {
+		for (Criterion critter : criterion.getCriteria()) {
+			if (critter instanceof AttributeCriterion) {
+				findUnmatchedLayers((AttributeCriterion) critter, usedLayers, badLayers);
+
+			} else if (critter instanceof GeometryCriterion) {
+				findUnmatchedLayers((GeometryCriterion) critter, usedLayers, badLayers);
+
+			} else if (critter instanceof AndCriterion) {
+				findUnmatchedLayers((AndCriterion) critter, usedLayers, badLayers);
+
+			} else if (critter instanceof OrCriterion) {
+				findUnmatchedLayers((OrCriterion) critter, usedLayers, badLayers);
+
+			} else {
+				throw new IllegalStateException("Unknown CriteriaType: " + critter.getClass().getSimpleName());
+			}
+
+			if (usedLayers.size() == 0) { // no point in continuing.
+				return;
+			}
+		}
+	}
+
+	private void findUnmatchedLayers(OrCriterion criterion, Set<String> usedLayers, Set<String> badLayers) {
+		// aggregate
+		Set<String> goodLayers = new HashSet<String>();
+		for (Criterion critter : criterion.getCriteria()) {
+			if (critter instanceof AttributeCriterion) {
+				goodLayers.add(((AttributeCriterion) critter).getServerLayerId());
+
+			} else if (critter instanceof GeometryCriterion) {
+				goodLayers.addAll(((GeometryCriterion) critter).getServerLayerIds());
+
+			} else if (critter instanceof AndCriterion) {
+				AndCriterion ac = (AndCriterion) critter;
+				Set<String> usedLayersInt = new HashSet<String>();
+				Set<String> badLayersInt = new HashSet<String>();
+				ac.serverLayerIdVisitor(usedLayersInt);
+				findUnmatchedLayers(ac, usedLayersInt, badLayersInt);
+				goodLayers.addAll(usedLayersInt);
+
+			} else if (critter instanceof OrCriterion) {
+				OrCriterion oc = (OrCriterion) critter;
+				Set<String> usedLayersInt = new HashSet<String>();
+				Set<String> badLayersInt = new HashSet<String>();
+				oc.serverLayerIdVisitor(usedLayersInt);
+				findUnmatchedLayers(oc, usedLayersInt, badLayersInt);
+				goodLayers.addAll(usedLayersInt);
+
+			} else {
+				throw new IllegalStateException("Unknown CriteriaType: " + critter.getClass().getSimpleName());
+			}
+		}
+
+		List<String> baduns = new ArrayList<String>();
+		for (String layer : usedLayers) {
+			if (!goodLayers.contains(layer)) {
+				baduns.add(layer);
+			}
+		}
+		usedLayers.removeAll(baduns);
+		badLayers.addAll(baduns);
+	}
+
+	private void findUnmatchedLayers(AttributeCriterion criterion, Set<String> usedLayers, Set<String> badLayers) {
+		for (String lid : usedLayers) {
+			if (!criterion.getServerLayerId().equals(lid)) {
+				badLayers.add(lid);
+			}
+		}
+		usedLayers.removeAll(badLayers);
+	}
+
+	private void findUnmatchedLayers(GeometryCriterion criterion, Set<String> usedLayers, Set<String> badLayers) {
+		List<String> layers = criterion.getServerLayerIds();
+		for (String lid : usedLayers) {
+			if (!layers.contains(lid)) {
+				badLayers.add(lid);
+			}
+		}
+		usedLayers.removeAll(badLayers);
+	}
+
+	private void removeUnmatchedLayers(Criterion criterion, Set<String> badLayers) {
+		List<Criterion> toRemove = new ArrayList<Criterion>();
+		for (Criterion critter : criterion.getCriteria()) {
+			if (critter instanceof AttributeCriterion) {
+				AttributeCriterion ac = (AttributeCriterion) critter;
+				if (badLayers.contains(ac.getServerLayerId())) {
+					toRemove.add(ac);
+				}
+
+			} else if (critter instanceof GeometryCriterion) {
+				GeometryCriterion gc = (GeometryCriterion) critter;
+				gc.getServerLayerIds().removeAll(badLayers);
+				if (gc.getServerLayerIds().isEmpty()) {
+					toRemove.add(gc);
+				}
+
+			} else {
+				removeUnmatchedLayers(critter, badLayers);
+				if (critter.getCriteria().isEmpty()) {
+					toRemove.add(critter);
+				}
+			}
+		}
+		if (!toRemove.isEmpty()) {
+			criterion.getCriteria().removeAll(toRemove);
 		}
 	}
 }

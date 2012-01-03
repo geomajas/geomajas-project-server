@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  *
  * @author Kristof Heirwegh
  */
-@Service("FileDownloadService")
+@Service
 public class FileDownloadServiceImpl implements FileDownloadService {
 
 	private final Logger log = LoggerFactory.getLogger(FileDownloadServiceImpl.class);

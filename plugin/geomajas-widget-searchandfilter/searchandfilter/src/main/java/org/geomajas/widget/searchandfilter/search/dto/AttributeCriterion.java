@@ -10,6 +10,8 @@
  */
 package org.geomajas.widget.searchandfilter.search.dto;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -91,6 +93,11 @@ public class AttributeCriterion implements Criterion {
 		layerIds.add(serverLayerId);
 	}
 	
+	/** {@inheritDoc} */
+	public List<Criterion> getCriteria() {
+		return new ArrayList<Criterion>();
+	}
+
 	public String toString() {
 		return "(" + attributeName + " " + operator + " " + value + ")";
 	}

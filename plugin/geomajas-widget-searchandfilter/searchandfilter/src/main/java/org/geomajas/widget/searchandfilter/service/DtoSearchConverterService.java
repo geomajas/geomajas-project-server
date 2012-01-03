@@ -12,6 +12,7 @@ package org.geomajas.widget.searchandfilter.service;
 
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Crs;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -22,7 +23,9 @@ import org.opengis.filter.Filter;
  * Converts Dto Criterion to map of filters.
  * 
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public interface DtoSearchConverterService {
 
 	Map<VectorLayer, Filter> dtoCriterionToFilters(Criterion criterion, Crs mapCrs) throws GeomajasException;

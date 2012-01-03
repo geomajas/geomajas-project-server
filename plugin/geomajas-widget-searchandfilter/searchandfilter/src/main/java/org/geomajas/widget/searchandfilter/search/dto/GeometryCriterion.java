@@ -106,6 +106,11 @@ public class GeometryCriterion implements Criterion {
 		layerIds.addAll(serverLayerIds);
 	}
 
+	/** {@inheritDoc} */
+	public List<Criterion> getCriteria() {
+		return new ArrayList<Criterion>();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

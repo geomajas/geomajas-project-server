@@ -11,13 +11,18 @@
 package org.geomajas.widget.searchandfilter.search.dto;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
+
+import org.geomajas.annotation.Api;
 
 /**
  * Contains all necessary data to execute a search for features.
  *
  * @author Kristof Heirwegh
+ * @since 1.0.0
  */
+@Api
 public interface Criterion extends Serializable {
 
 	/**
@@ -34,5 +39,14 @@ public interface Criterion extends Serializable {
 	 * @param layerIds set of layer ids to add to
 	 */
 	void serverLayerIdVisitor(Set<String> layerIds);
+	
+	/**
+	 * Retrieve all the criteria within this criterion (not recursive).
+	 * <p>This will return an empty list for everything except AndCriterion and OrCriterion.
+	 * <p>This is a convenience method so you do not need to check/cast every criterion (see Composite Pattern)
+	 *  
+	 * @return list of criteria 
+	 */
+	List<Criterion> getCriteria();
 
 }
