@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.jsapi.example.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -40,6 +41,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.split.GeometrySplitService;
 import org.geomajas.plugin.editing.dto.GeometrySplitRequest;
 import org.geomajas.plugin.editing.dto.GeometrySplitResponse;
+import org.geomajas.plugin.editing.jsapi.example.dto.GetCentroidRequest;
+import org.geomajas.plugin.editing.jsapi.example.dto.GetCentroidResponse;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -68,7 +71,7 @@ public class ShowSplitAreas {
 
 	private int labelHeight = 18;
 
-	private String labelTxt = "Area";
+	private String labelTxt = "Area:";
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -110,7 +113,7 @@ public class ShowSplitAreas {
 				new GeometryEditShapeChangedHandler() {
 
 					public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
-						fetch();
+						fetchGeometries();
 					}
 				}));
 		registrations.add(mapWidget.getMapModel().getMapView().addMapViewChangedHandler(new MapViewChangedHandler() {
@@ -194,16 +197,18 @@ public class ShowSplitAreas {
 		centroids.clear();
 	}
 
-	private void showAreas(List<Geometry> geometries) {
+	private void showAreas(Map<Geometry, Coordinate> geometries) {
 		cleanup();
-		for (int i = 0; i < geometries.size(); i++) {
-			org.geomajas.gwt.client.spatial.geometry.Geometry geometry = GeometryConverter.toGwt(geometries.get(i));
-			Coordinate centroid = geometry.getCentroid();
-			Coordinate position = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToView(centroid);
+		int i = 0;
+		for (org.geomajas.geometry.Geometry geom : geometries.keySet()) {
+			org.geomajas.gwt.client.spatial.geometry.Geometry geometry = GeometryConverter.toGwt(geom);
+			Coordinate centroid = geometries.get(geom);
 			centroids.add(centroid);
 
+			Coordinate position = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToView(centroid);
 			int x = (int) (position.getX() - labelWidth / 2);
 			int y = (int) (position.getY() - labelHeight / 2);
+
 			Rectangle rectangle = new Rectangle("area-geom-" + i + "-bg");
 			rectangle.setBounds(new Bbox(x, y, labelWidth, labelHeight));
 			rectangle.setStyle(new ShapeStyle("#FFFFFF", 0.9f, "#000000", 0.9f, 1));
@@ -213,15 +218,17 @@ public class ShowSplitAreas {
 			Text text = new Text("area-geom-" + i + "-txt");
 			text.setPosition(new Coordinate(x + 4, y + 2));
 			text.setStyle(new FontStyle("#000000", 12, "Arial", "normal", "normal"));
-			String txt = labelTxt + ": " + DistanceFormat.asMapArea(mapWidget, geometry.getArea());
+			String txt = labelTxt + " " + DistanceFormat.asMapArea(mapWidget, geometry.getArea());
 			txt = txt.replaceAll("&sup2;", "²");
 			text.setContent(txt);
 			mapWidget.render(text, RenderGroup.SCREEN, RenderStatus.ALL);
 			labelTxts.add(text);
+
+			i++;
 		}
 	}
 
-	private void fetch() {
+	private void fetchGeometries() {
 		Geometry geometry = service.getGeometry();
 		Geometry splitLine = service.getGeometryEditService().getGeometry();
 		if (splitLine.getCoordinates() != null && splitLine.getCoordinates().length > 1) {
@@ -234,9 +241,23 @@ public class ShowSplitAreas {
 			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GeometrySplitResponse>() {
 
 				public void execute(GeometrySplitResponse response) {
-					showAreas(response.getGeometries());
+					//showAreas(response.getGeometries());
+					fetchCentroids(response.getGeometries());
 				}
 			});
 		}
+	}
+
+	private void fetchCentroids(List<org.geomajas.geometry.Geometry> geometries) {
+		GetCentroidRequest request = new GetCentroidRequest();
+		request.setGeometries(geometries);
+		GwtCommand command = new GwtCommand(GetCentroidRequest.COMMAND);
+		command.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetCentroidResponse>() {
+
+			public void execute(GetCentroidResponse response) {
+				showAreas(response.getCentroids());
+			}
+		});
 	}
 }

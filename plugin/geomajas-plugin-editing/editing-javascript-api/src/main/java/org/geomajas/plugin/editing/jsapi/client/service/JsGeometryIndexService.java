@@ -49,7 +49,7 @@ public class JsGeometryIndexService implements ExportOverlay<GeometryIndexServic
 	 * @return The new index.
 	 */
 	@ExportInstanceMethod
-	public static GeometryIndex create(GeometryIndexService instance, String type, int... values) {
+	public static GeometryIndex create(GeometryIndexService instance, String type, int[] values) {
 		if ("geometry".equalsIgnoreCase(type)) {
 			return instance.create(GeometryIndexType.TYPE_GEOMETRY, values);
 		} else if ("vertex".equalsIgnoreCase(type)) {
@@ -75,7 +75,7 @@ public class JsGeometryIndexService implements ExportOverlay<GeometryIndexServic
 	 */
 	@ExportInstanceMethod
 	public static GeometryIndex addChildren(GeometryIndexService instance, GeometryIndex index, String type,
-			int... values) {
+			int[] values) {
 		if ("geometry".equalsIgnoreCase(type)) {
 			return instance.addChildren(index, GeometryIndexType.TYPE_GEOMETRY, values);
 		} else if ("vertex".equalsIgnoreCase(type)) {
@@ -83,36 +83,6 @@ public class JsGeometryIndexService implements ExportOverlay<GeometryIndexServic
 		} else if ("edge".equalsIgnoreCase(type)) {
 			return instance.addChildren(index, GeometryIndexType.TYPE_EDGE, values);
 		}
-		return null;
-	}
-
-	/**
-	 * Create a new index given a type and a list of values. This index will be built recursively and will have a depth
-	 * equal to the number of values given.
-	 * 
-	 * @param type
-	 *            The type of index applied on the deepest child index. Note that all parent index nodes will be of the
-	 *            type <code>GeometryIndexType.TYPE_GEOMETRY</code>. Only the deepest child will use this given type.
-	 * @param values
-	 *            A list of integer values that determine the indices on each level in the index.
-	 * @return The recursive geometry index resulting from the given parameters.
-	 */
-	public GeometryIndex create(GeometryIndexType type, int... values) {
-		return null;
-	}
-
-	/**
-	 * Given a certain geometry index, add more levels to it.
-	 * 
-	 * @param index
-	 *            The index to start out from.
-	 * @param type
-	 *            Add more levels to it, where the deepest level should be of this type.
-	 * @param values
-	 *            A list of integer values that determine the indices on each level in the index.
-	 * @return The recursive geometry index resulting from adding the given parameters to the given parent index.
-	 */
-	public GeometryIndex addChildren(GeometryIndex index, GeometryIndexType type, int... values) {
 		return null;
 	}
 

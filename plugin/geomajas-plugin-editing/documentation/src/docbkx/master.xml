@@ -36,10 +36,16 @@
 	<xi:include href="introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="configuration.xml"
+	<xi:include href="java-configuration.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="howto.xml"
+	<xi:include href="javascript-configuration.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="java-howto.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="javascript-howto.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 </book>

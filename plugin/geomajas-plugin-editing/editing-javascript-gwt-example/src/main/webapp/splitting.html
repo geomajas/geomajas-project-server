@@ -26,9 +26,11 @@
 
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapSnapping", "js-map-element");
-				editor = new org.geomajas.plugin.editing.GeometryEditor(map);
-				service = new org.geomajas.plugin.editing.split.GeometrySplitService(editor.getService());
-				
+				editor = new org.geomajas.plugin.editing.GeometryEditor();
+				editor.setMap(map);
+				service = new org.geomajas.plugin.editing.split.GeometrySplitService();
+				service.setEditService(editor.getService());
+
 				// React to feature selection events, to start the splitting process:
 				map.getEventBus().addFeatureSelectionHandler(function(event) {
 					map.setMapController(null); // Back to the fallback controller
@@ -39,7 +41,7 @@
 					// Feature deselected. We're not interested.
 				});
 			}
-			
+
 			function startSplittingProcess() {
 				// Install a selection controller on the map:
 				var mapController = Geomajas().createMapController(map, "SingleSelectionMode");
@@ -47,7 +49,7 @@
 				
 				// From the moment a feature is selected, the splitting process automatically begins...
 			}
-			
+
 			function executeSplit() {
 				service.stop(function(geometryHolder) {
 					clearLog();

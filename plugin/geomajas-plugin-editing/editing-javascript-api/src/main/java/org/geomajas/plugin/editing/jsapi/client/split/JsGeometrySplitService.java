@@ -42,9 +42,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api(allMethods = true)
 public class JsGeometrySplitService implements Exportable {
 
-	private final GeometrySplitService delegate;
+	private GeometrySplitService delegate;
 
-	private final JsGeometryEditService editService;
+	private JsGeometryEditService editService;
 
 	public JsGeometrySplitService() {
 		this.delegate = new GeometrySplitService();
@@ -52,6 +52,10 @@ public class JsGeometrySplitService implements Exportable {
 	}
 
 	public JsGeometrySplitService(JsGeometryEditService editService) {
+		setEditService(editService);
+	}
+
+	void setEditService(JsGeometryEditService editService) {
 		this.editService = editService;
 		this.delegate = new GeometrySplitService(editService.getDelegate());
 	}

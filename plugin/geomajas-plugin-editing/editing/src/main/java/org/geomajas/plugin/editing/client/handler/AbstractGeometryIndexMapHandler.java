@@ -18,6 +18,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.shared.EventHandler;
 
@@ -37,9 +38,15 @@ public abstract class AbstractGeometryIndexMapHandler implements MapEventParser,
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
-	
+
+	/** {@inheritDoc} */
 	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 		return eventParser.getLocation(event, renderSpace);
+	}
+
+	/** {@inheritDoc} */
+	public Element getTarget(HumanInputEvent<?> event) {
+		return eventParser.getTarget(event);
 	}
 
 	public void setEventParser(MapEventParser eventParser) {

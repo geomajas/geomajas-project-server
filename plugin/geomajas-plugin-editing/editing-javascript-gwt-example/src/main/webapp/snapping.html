@@ -1,5 +1,5 @@
 <html>
-<!--
+	<!--
 		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
 		  ~
 		  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
@@ -8,7 +8,7 @@
 		  ~ General Public License. All contributions in this program are covered
 		  ~ by the Geomajas Contributors License Agreement. For full licensing
 		  ~ details, see LICENSE.txt in the project root.
-		  -->
+	-->
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
@@ -26,7 +26,8 @@
 
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapSnapping", "js-map-element");
-				editor = new org.geomajas.plugin.editing.GeometryEditor(map);
+				editor = new org.geomajas.plugin.editing.GeometryEditor();
+				editor.setMap(map);
 				service = editor.getService();
 
 				map.getEventBus().addLayersModelChangedHandler(function(event) {
@@ -65,7 +66,7 @@
 			function drawPoint() {
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Point", 0, 0);
 				service.start(geometry);
-				var index = service.getIndexService().create("vertex", 0);
+				var index = service.getIndexService().create("vertex", [0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}
@@ -73,7 +74,7 @@
 			function drawLineString() {
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("LineString", 0, 0);
 				service.start(geometry);
-				var index = service.getIndexService().create("vertex", 0);
+				var index = service.getIndexService().create("vertex", [0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}
@@ -82,7 +83,7 @@
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Polygon", 0, 0);
 				service.start(geometry);
 				service.addEmptyChild();
-				var index = service.getIndexService().create("vertex", 0, 0);
+				var index = service.getIndexService().create("vertex", [0, 0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}

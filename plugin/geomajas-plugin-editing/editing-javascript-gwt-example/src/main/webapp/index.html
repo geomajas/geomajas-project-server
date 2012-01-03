@@ -26,7 +26,8 @@
 
 			function onGeomajasLoad() {
 				map = Geomajas().createMap("app", "mapMain", "js-map-element");
-				editor = new org.geomajas.plugin.editing.GeometryEditor(map);
+				editor = new org.geomajas.plugin.editing.GeometryEditor();
+				editor.setMap(map);
 				service = editor.getService();
 			}
 
@@ -59,7 +60,7 @@
 			function drawPoint() {
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Point", 0, 0);
 				service.start(geometry);
-				var index = service.getIndexService().create("vertex", 0);
+				var index = service.getIndexService().create("vertex", [0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}
@@ -67,7 +68,7 @@
 			function drawLineString() {
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("LineString", 0, 0);
 				service.start(geometry);
-				var index = service.getIndexService().create("vertex", 0);
+				var index = service.getIndexService().create("vertex", [0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}
@@ -76,7 +77,7 @@
 				var geometry = new org.geomajas.jsapi.spatial.Geometry("Polygon", 0, 0);
 				service.start(geometry);
 				service.addEmptyChild();
-				var index = service.getIndexService().create("vertex", 0, 0);
+				var index = service.getIndexService().create("vertex", [0, 0]);
 				service.setInsertIndex(index);
 				service.setEditingState("inserting");
 			}

@@ -69,6 +69,7 @@
 		<url-pattern>/d/*</url-pattern>
 	</servlet-mapping>
 
+
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
@@ -76,26 +77,6 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/complexApp/geomajasService</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>GeomajasServiceServlet2</servlet-name>
-		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>GeomajasServiceServlet2</servlet-name>
-		<url-pattern>/emptyApp/geomajasService</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>GeomajasServiceServlet3</servlet-name>
-		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>GeomajasServiceServlet3</servlet-name>
 		<url-pattern>/showcase/geomajasService</url-pattern>
 	</servlet-mapping>
 

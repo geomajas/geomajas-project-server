@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
@@ -65,6 +66,10 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 
 	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
 		return eventParser.getLocation(event, renderSpace);
+	}
+
+	public Element getTarget(HumanInputEvent<?> event) {
+		return eventParser.getTarget(event);
 	}
 
 	// ------------------------------------------------------------------------

@@ -81,7 +81,7 @@
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
 		
-		<!-- @extract-start EditingDependency, Editing plugin dependencies -->
+		<!-- @extract-start EditingDependency, Maven dependency for GWT face -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-editing-gwt</artifactId>

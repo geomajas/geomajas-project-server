@@ -108,10 +108,6 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
-		</dependency>
  		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmap</artifactId>
@@ -123,7 +119,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- Google dependencies -->
@@ -248,7 +243,7 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<style>DETAILED</style>
+					<!--style>DETAILED</style-->
 				</configuration>
 				<executions>
 					<execution>
@@ -285,6 +280,7 @@
 						<phase>clean</phase>
 						<configuration>
 							<tasks>
+								<delete dir="src/main/gwt-unitCache" />
 								<delete dir="src/main/webapp/WEB-INF/lib" />
 								<delete dir="src/main/webapp/WEB-INF/deploy" />
 								<delete dir="src/main/webapp/showcase" />

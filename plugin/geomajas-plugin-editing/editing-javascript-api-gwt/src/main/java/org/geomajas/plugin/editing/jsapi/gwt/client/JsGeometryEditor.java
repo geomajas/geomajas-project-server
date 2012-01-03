@@ -21,10 +21,8 @@ import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
 import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
-import org.timepedia.exporter.client.ExportConstructor;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
-import org.timepedia.exporter.client.NoExport;
 
 /**
  * Central geometry editor for the JavaScript API on top of the GWT face.
@@ -47,17 +45,11 @@ public class JsGeometryEditor implements Exportable {
 	public JsGeometryEditor() {
 	}
 
-	@NoExport
-	public JsGeometryEditor(Map map) {
+	public void setMap(Map map) {
 		this.map = (MapImpl) map;
 		mapWidget = this.map.getMapWidget();
 		delegate = new GeometryEditor(mapWidget);
 		editingService = new JsGeometryEditService(delegate.getService());
-	}
-
-	@ExportConstructor
-	public static JsGeometryEditor createEditor(Map map) {
-		return new JsGeometryEditor(map);
 	}
 
 	/**

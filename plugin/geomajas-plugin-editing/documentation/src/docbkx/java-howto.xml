@@ -11,8 +11,16 @@
   -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-<chapter id="chapter-configuration">
-  <title>Configuration</title>
+<chapter id="chapter-java-howto">
+  <title>Java How-to</title>
 
+  <para>...</para>
 
+  <section>
+    <title>How to create a new geometry</title>
+
+    <para>This section describes how to let the user draw a new geometry of
+    some pre-defined type. The idea is that the user can click on the map to
+    insert vertices into the geometry. Since the editing process </para>
+  </section>
 </chapter>
