@@ -71,7 +71,8 @@ public class DropDownPanel extends VStack {
 			groupTitle.setWidth100();
 			group.addMember(groupTitle);
 			groupTitles.add(groupTitle);
-			buttonLayout = null == title.getButtonLayout() ? GuwLayout.DropDown.ICON_AND_TITLE : title.getButtonLayout();
+			buttonLayout = null == title.getButtonLayout() ? 
+					GuwLayout.DropDown.ICON_AND_TITLE : title.getButtonLayout();
 		}
 		VStack body = new VStack();
 		body.setOverflow(Overflow.VISIBLE);

@@ -16,8 +16,6 @@ import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.Positioning;
 
 /**
  * RibbonColumn implementation that displays a button, which opens a drop-down panel with more buttons.

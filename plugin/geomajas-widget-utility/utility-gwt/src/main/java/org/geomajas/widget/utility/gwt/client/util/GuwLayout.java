@@ -11,7 +11,6 @@
 package org.geomajas.widget.utility.gwt.client.util;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButtonDescribed;
 
 
 /**
@@ -27,7 +26,7 @@ import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButtonDescribed;
 public final class GuwLayout {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
-	/** Member margin in the {@link RibbonButtonDescribed}. */
+	/** Member margin in the {@link org.geomajas.widget.utility.gwt.client.ribbon.RibbonButtonDescribed}. */
 	public static int describedButtonInnerMargin = 2;
 	/** Default icon size for the big buttons in a ribbon. */
 	public static int ribbonColumnButtonIconSize = 24;
@@ -40,18 +39,24 @@ public final class GuwLayout {
 	public static int ribbonGroupInternalMargin = 10;
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
-	
+	/**
+	 * Drop-down specific constants.
+	 * 
+	 * @author Emiel Ackermann
+	 */
 	public interface DropDown {
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: OFF
 		/**
-		 * Button layout, which is the same as a RibbonButton in a ToolbarActionList; icon (16px) on the left and title on the right.
+		 * Button layout, which is the same as a RibbonButton 
+		 * in a ToolbarActionList; icon (16px) on the left and title on the right.
 		 */
-		public static final String ICON_AND_TITLE = "iconAndTitle";
+		String ICON_AND_TITLE = "iconAndTitle";
 		/**
-		 * Button layout consisting of an icon (24px) on the left and the title and description on the right, the title on top of the description.
+		 * Button layout consisting of an icon (24px) on the 
+		 * left and the title and description on the right, the title on top of the description.
 		 */
-		public static final String ICON_TITLE_AND_DESCRIPTION = "iconTitleAndDescription";
+		String ICON_TITLE_AND_DESCRIPTION = "iconTitleAndDescription";
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: ON
 	}
