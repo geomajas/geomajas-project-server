@@ -11,17 +11,20 @@
 
 package org.geomajas.puregwt.client.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.geometry.service.MathService;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.feature.Feature;
-import org.geomajas.puregwt.client.map.feature.FeatureCallback;
-import org.geomajas.puregwt.client.map.feature.FeatureSearch;
-import org.geomajas.puregwt.client.map.feature.FeatureSearch.QueryType;
-import org.geomajas.puregwt.client.map.feature.FeatureSearch.SearchType;
+import org.geomajas.puregwt.client.map.feature.FeatureMapFunction;
+import org.geomajas.puregwt.client.map.feature.FeatureService.QueryType;
+import org.geomajas.puregwt.client.map.feature.FeatureService.SearchLayerType;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
@@ -45,25 +48,16 @@ public class FeatureSelectionController extends NavigationController {
 		CLICK_ONLY, CLICK_AND_DRAG
 	}
 
-	/**
-	 * When trying to select features, which layers should be searched?
-	 * 
-	 * @author Pieter De Graef
-	 */
-	public enum SelectionType {
-		SELECTED_LAYER, FIRST_LAYER, ALL_LAYERS
-	}
-
-	private final FeatureSearch featureSearch;
-
 	private final SelectionRectangleController selectionRectangleController;
 
 	private SelectionMethod selectionMethod = SelectionMethod.CLICK_ONLY;
 
-	private SelectionType selectionType = SelectionType.FIRST_LAYER;
+	private SearchLayerType searchLayerType = SearchLayerType.TOP_LAYER_ONLY;
 
 	private float intersectionRatio = 0.5f;
-	
+
+	private int pixelTolerance = 5;
+
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
@@ -71,9 +65,8 @@ public class FeatureSelectionController extends NavigationController {
 	public FeatureSelectionController() {
 		super();
 		selectionRectangleController = new SelectionRectangleController();
-		featureSearch = INJECTOR.getFeatureSearch();
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// MapController implementation:
 	// ------------------------------------------------------------------------
@@ -95,15 +88,16 @@ public class FeatureSelectionController extends NavigationController {
 
 	public void onUp(HumanInputEvent<?> event) {
 		stopPanning(null);
-		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
-			selectionRectangleController.onUp(event);
-		} else {
-			super.onUp(event);
-			// Select item at mouse pointer...
+
+		switch (selectionMethod) {
+			case CLICK_AND_DRAG:
+				selectionRectangleController.onUp(event);
+				break;
+			default:
+				super.onUp(event);
+				searchAtLocation(getLocation(event, RenderSpace.WORLD), true);
 		}
 	}
-	
-	
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging && selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
@@ -119,7 +113,27 @@ public class FeatureSelectionController extends NavigationController {
 			selectionRectangleController.onMouseOut(event);
 		}
 	}
-	
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private void searchAtLocation(Coordinate location, boolean select) {
+		Geometry point = new Geometry(Geometry.POINT, 0, -1);
+		point.setCoordinates(new Coordinate[] { location });
+
+		mapPresenter.getFeatureService().search(point, pixelsToUnits(pixelTolerance), QueryType.INTERSECTS,
+				searchLayerType, intersectionRatio, new SelectionCallback(select));
+	}
+
+	private double pixelsToUnits(int pixels) {
+		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
+				RenderSpace.WORLD);
+		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixels, 0), RenderSpace.SCREEN,
+				RenderSpace.WORLD);
+		return MathService.distance(c1, c2);
+	}
+
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
@@ -132,28 +146,8 @@ public class FeatureSelectionController extends NavigationController {
 	private class SelectionRectangleController extends AbstractRectangleController {
 
 		protected void execute(Bbox worldBounds) {
-			List<Layer<?>> layers = new ArrayList<Layer<?>>();
-			SearchType searchType = SearchType.SEARCH_ALL_LAYERS;
-			if (selectionType.equals(SelectionType.SELECTED_LAYER)) {
-				if (mapPresenter.getLayersModel().getSelectedLayer() == null) {
-					return;
-				}
-				layers.add(mapPresenter.getLayersModel().getSelectedLayer());
-			} else {
-				for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-					Layer<?> layer = mapPresenter.getLayersModel().getLayer(i);
-					if (layer instanceof FeaturesSupported) {
-						layers.add(layer);
-					}
-				}
-				if (selectionType.equals(SelectionType.FIRST_LAYER)) {
-					searchType = SearchType.SEARCH_FIRST_LAYER;
-				}
-			}
-			
-			// Search the features. Deselect if shift is pressed:
-			featureSearch.search(mapPresenter.getViewPort().getCrs(), layers, GeometryService.toPolygon(worldBounds),
-					0, QueryType.INTERSECTS, searchType, intersectionRatio, new SelectionCallback(!shift));
+			mapPresenter.getFeatureService().search(GeometryService.toPolygon(worldBounds), 0, QueryType.INTERSECTS,
+					searchLayerType, intersectionRatio, new SelectionCallback(!shift));
 		}
 	}
 
@@ -162,22 +156,28 @@ public class FeatureSelectionController extends NavigationController {
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class SelectionCallback implements FeatureCallback {
+	private class SelectionCallback implements FeatureMapFunction {
 
-		private boolean select;
+		private boolean isShift;
 
-		public SelectionCallback(boolean select) {
-			this.select = select;
+		public SelectionCallback(boolean isShift) {
+			this.isShift = isShift;
+		}
+
+		public void execute(Map<Layer<?>, List<Feature>> featureMap) {
+			// TODO Auto-generated method stub
+
 		}
 
 		public void execute(List<Feature> features) {
 			if (features != null && features.size() > 0) {
 				for (Feature feature : features) {
 					FeaturesSupported fs = (FeaturesSupported) feature.getLayer();
-					if (select) {
+					fs.clearSelectedFeatures();
+					if (isShift) {
 						fs.selectFeature(feature);
 					} else {
-						fs.deselectFeature(feature);
+						fs.selectFeature(feature);
 					}
 				}
 			}
