@@ -31,7 +31,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-plugin-editing-gwt-version}</version>
+				<version>${geomajas-plugin-editing-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -143,12 +143,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-plugin-editing-gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-plugin-editing-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -190,7 +190,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.4</version>
 				<executions>
 					<execution>
 						<id>remove-build-files</id>
@@ -254,11 +253,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<properties>
-		<gwt-version>2.4.0</gwt-version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwt.compiler.skip>false</gwt.compiler.skip>
-	</properties>
 
 </project>
