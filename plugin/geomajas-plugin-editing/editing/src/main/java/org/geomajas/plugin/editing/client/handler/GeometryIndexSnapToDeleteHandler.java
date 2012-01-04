@@ -25,6 +25,8 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -43,7 +45,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  * @author Pieter De Graef
  */
 public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHandler implements MouseOverHandler,
-		MouseOutHandler, MapDragHandler, MapUpHandler {
+		MouseOutHandler, MapDragHandler, MapUpHandler, MouseMoveHandler {
 
 	public void onMouseOver(MouseOverEvent event) {
 		checkHover(event);
@@ -51,6 +53,12 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 
 	public void onMouseOut(MouseOutEvent event) {
 		service.getIndexStateService().markForDeletionEnd(Collections.singletonList(index));
+	}
+
+	public void onMouseMove(MouseMoveEvent event) {
+		if (service.getIndexStateService().isMarkedForDeletion(index)) {
+			event.stopPropagation();
+		}
 	}
 
 	public void onDrag(HumanInputEvent<?> event) {
@@ -66,6 +74,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 				service.getIndexStateService().deselectAll();
 				service.remove(toDelete);
 			} catch (GeometryOperationFailedException e) {
+				throw new IllegalStateException(e);
 			}
 		}
 	}
@@ -97,11 +106,10 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 							return; // 4 vertices is the minimum for a LinearRing.
 						}
 					} else {
-						// What kind of geometry are we editing here??? Better not delete anything....
-						return;
+						throw new IllegalStateException("Illegal type of geometry found.");
 					}
 				} catch (GeometryIndexNotFoundException e) {
-					return;
+					throw new IllegalStateException(e);
 				}
 
 				// Mark for deletion:
@@ -117,7 +125,9 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 								Collections.singletonList(Collections.singletonList(location)));
 						event.stopPropagation();
 					} catch (GeometryIndexNotFoundException e) {
+						throw new IllegalStateException(e);
 					} catch (GeometryOperationFailedException e) {
+						throw new IllegalStateException(e);
 					}
 				}
 			}

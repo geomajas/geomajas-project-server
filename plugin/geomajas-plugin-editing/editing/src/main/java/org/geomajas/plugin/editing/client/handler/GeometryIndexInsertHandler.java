@@ -71,6 +71,7 @@ public class GeometryIndexInsertHandler extends AbstractGeometryIndexMapHandler 
 				dragHandler.setIndex(insertedIndex);
 				dragHandler.onDown(event);
 			} catch (GeometryOperationFailedException e) {
+				throw new IllegalStateException(e);
 			}
 		}
 	}

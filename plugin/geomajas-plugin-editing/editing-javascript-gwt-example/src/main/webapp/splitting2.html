@@ -1,5 +1,5 @@
 <html>
-<!--
+	<!--
 		  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
 		  ~
 		  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
@@ -8,7 +8,7 @@
 		  ~ General Public License. All contributions in this program are covered
 		  ~ by the Geomajas Contributors License Agreement. For full licensing
 		  ~ details, see LICENSE.txt in the project root.
-		  -->
+	-->
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
@@ -29,8 +29,7 @@
 				map = Geomajas().createMap("app", "mapSnapping", "js-map-element");
 				editor = new org.geomajas.plugin.editing.GeometryEditor();
 				editor.setMap(map);
-				service = new org.geomajas.plugin.editing.split.GeometrySplitService();
-				service.setEditService(editor.getService());
+				service = editor.getSplitService();
 
 				// React to feature selection events, to start the splitting process:
 				map.getEventBus().addFeatureSelectionHandler(function(event) {

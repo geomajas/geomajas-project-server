@@ -18,7 +18,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
- * ...
+ * Prepares dragging on mouse down or on touch start.
  * 
  * @author Pieter De Graef
  */
@@ -34,6 +34,7 @@ public class GeometryIndexDragSelectionHandler extends AbstractGeometryIndexMapH
 			try {
 				service.startOperationSequence();
 			} catch (GeometryOperationFailedException e) {
+				throw new IllegalStateException(e);
 			}
 		}
 	}

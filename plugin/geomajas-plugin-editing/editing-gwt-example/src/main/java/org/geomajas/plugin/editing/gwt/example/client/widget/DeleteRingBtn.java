@@ -88,8 +88,8 @@ public class DeleteRingBtn extends ToolStripButton implements GeometryEditStartH
 					// Trigger a redraw to apply the change in the registry:
 					renderer.redraw();
 
-					menuBar.getEventBus().fireEvent(
-							new GeometryEditSuspendEvent(GeometryEditSuspendReason.REMOVE_RING));
+					menuBar.getEventBus()
+							.fireEvent(new GeometryEditSuspendEvent(GeometryEditSuspendReason.REMOVE_RING));
 				} else {
 					resumeNormalBehavior();
 				}
@@ -122,6 +122,12 @@ public class DeleteRingBtn extends ToolStripButton implements GeometryEditStartH
 				GeometryIndex childIndex = service.getIndexService().addChildren(geomIndex,
 						GeometryIndexType.TYPE_GEOMETRY, i);
 				disableVerticesAndEdges(childIndex, geometry.getGeometries()[i]);
+			}
+			// Also disable background for polygons:
+			if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
+				GeometryIndex shellIndex = service.getIndexService().addChildren(geomIndex,
+						GeometryIndexType.TYPE_GEOMETRY, 0);
+				service.getIndexStateService().disable(Collections.singletonList(shellIndex));
 			}
 		}
 		if (geometry.getCoordinates() != null) {

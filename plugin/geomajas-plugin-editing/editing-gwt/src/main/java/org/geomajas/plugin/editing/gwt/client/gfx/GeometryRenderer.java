@@ -102,15 +102,15 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private final Map<String, Composite> groups = new HashMap<String, Composite>();
 
-	private StyleService styleService = new DefaultStyleService();
-
-	private String baseName = "editing";
-
 	private final String insertMoveEdgeId1 = "insert-move-edge1";
 
 	private final String insertMoveEdgeId2 = "insert-move-edge2";
 
 	private final String insertSnapPoint = "insert-snap-point";
+
+	private StyleService styleService = new DefaultStyleService();
+
+	private String baseName = "editing";
 
 	private HandlerRegistration mapViewRegistration;
 
@@ -171,13 +171,13 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryIndexSelected(GeometryIndexSelectedEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
 	public void onGeometryIndexDeselected(GeometryIndexDeselectedEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
@@ -187,13 +187,13 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryIndexDisabled(GeometryIndexDisabledEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
 	public void onGeometryIndexEnabled(GeometryIndexEnabledEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
@@ -203,13 +203,13 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryIndexHighlightBegin(GeometryIndexHighlightBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
 	public void onGeometryIndexHighlightEnd(GeometryIndexHighlightEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
@@ -219,13 +219,13 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryIndexMarkForDeletionBegin(GeometryIndexMarkForDeletionBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
 	public void onGeometryIndexMarkForDeletionEnd(GeometryIndexMarkForDeletionEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
@@ -235,13 +235,13 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryIndexSnappingEnd(GeometryIndexSnappingEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
 	public void onGeometryIndexSnappingBegin(GeometryIndexSnappingBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
@@ -292,13 +292,19 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 		// Next, redraw the list:
 		for (GeometryIndex index : toRedraw) {
-			redraw(event.getGeometry(), index);
+			update(event.getGeometry(), index);
 		}
 	}
 
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
-		// Slow, but it works:
 		redraw();
+		// int newNrVertices = GeometryService.getNumPoints(editingService.getGeometry());
+		// if (nrVertices != newNrVertices) {
+		// draw(editingService.getGeometry(), true);
+		// } else {
+		// draw(editingService.getGeometry(), true);
+		// }
+		// nrVertices = newNrVertices;
 	}
 
 	// ------------------------------------------------------------------------
@@ -312,9 +318,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				break;
 			case IDLE:
 			default:
-				groups.clear();
-				mapWidget.getVectorContext().deleteGroup(editingService.getGeometry());
-				draw(editingService.getGeometry());
+				redraw();
 				mapWidget.setCursor(Cursor.DEFAULT);
 
 				// Remove the temporary insert move line:
@@ -359,7 +363,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
 
 				// Line 1
-				// Coordinate temp1 = vertices[vertices.length - 2];
 				Coordinate temp1 = event.getOrigin();
 				Coordinate temp2 = event.getCurrentPosition();
 				Coordinate c1 = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp1);
@@ -391,7 +394,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			String identifier = baseName + "."
 					+ editingService.getIndexService().format(editingService.getInsertIndex());
 			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.'))
-					+ ".vertices-selection");
+			// + ".vertices-selection");
+					+ ".vertices");
 
 			if (event.hasSnapped()) {
 				Coordinate temp = event.getTo();
@@ -411,24 +415,24 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	// Geometry rendering methods:
 	// ------------------------------------------------------------------------
 
-	private void redraw(Geometry geometry, GeometryIndex index) {
+	private void update(Geometry geometry, GeometryIndex index) {
 		try {
 			switch (editingService.getIndexService().getType(index)) {
 				case TYPE_VERTEX:
-					redrawVertex(geometry, index);
+					updateVertex(geometry, index);
 					break;
 				case TYPE_EDGE:
-					redrawEdge(geometry, index);
+					updateEdge(geometry, index);
 					break;
 				case TYPE_GEOMETRY:
 				default:
-					redrawGeometry(geometry, index);
+					updateGeometry(geometry, index);
 			}
 		} catch (GeometryIndexNotFoundException e) {
 		}
 	}
 
-	private void redrawGeometry(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void updateGeometry(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 		boolean marked = editingService.getIndexStateService().isMarkedForDeletion(index);
@@ -450,29 +454,33 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			Polygon polygon = mapWidget.getMapModel().getGeometryFactory()
 					.createPolygon((LinearRing) transformed, null);
 			mapWidget.getVectorContext().drawPolygon(parentGroup, identifier + ".background", polygon, style);
-			GraphicsController controller = createGeometryController(index);
-			if (controller != null) {
-				mapWidget.getVectorContext().setController(parentGroup, identifier + ".background", controller);
-			}
+			// GraphicsController controller = createGeometryController(index);
+			// if (controller != null) {
+			// mapWidget.getVectorContext().setController(parentGroup, identifier + ".background", controller);
+			// }
 		}
 	}
 
-	private void redrawVertex(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void updateVertex(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+		// GWT.log("Update vertex: " + index.toString());
+
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 
 		// Find current and previous parent groups:
-		Composite parentGroup, deleteFromGroup;
-		if (editingService.getIndexStateService().isSelected(index)) {
-			parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices-selection");
-			deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
-		} else {
-			deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices-selection");
-			parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
-		}
+		Composite parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
+		// Composite parentGroup;
+		// if (editingService.getIndexStateService().isSelected(index)) {
+		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices-selection");
+		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
+		// } else {
+		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) +
+		// // ".vertices-selection");
+		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
+		// }
 
 		// Delete the old vertex:
-		mapWidget.getVectorContext().deleteElement(deleteFromGroup, identifier);
+		// mapWidget.getVectorContext().deleteElement(deleteFromGroup, identifier);
 
 		// Draw the new one:
 		Coordinate temp = editingService.getIndexService().getVertex(geometry, index);
@@ -480,32 +488,43 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
 				VERTEX_SIZE, VERTEX_SIZE);
 		mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
-		mapWidget.getVectorContext().setController(parentGroup, identifier, createVertexController(index));
+		// mapWidget.getVectorContext().setController(parentGroup, identifier, createVertexController(index));
+		
+		if (editingService.getIndexStateService().isSelected(index)) {
+			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
+		}
 	}
 
-	private void redrawEdge(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void updateEdge(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
+		// GWT.log("Update edge: " + index.toString());
+
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
 
 		// Find current and previous parent groups:
-		Object parentGroup, deleteFromGroup;
-		if (editingService.getIndexStateService().isSelected(index)) {
-			parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
-			deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
-		} else {
-			deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
-			parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
-		}
+		Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
+		// Object parentGroup;
+		// if (editingService.getIndexStateService().isSelected(index)) {
+		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
+		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
+		// } else {
+		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
+		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
+		// }
 
 		// Delete the old edge:
-		mapWidget.getVectorContext().deleteElement(deleteFromGroup, identifier);
+		// mapWidget.getVectorContext().deleteElement(deleteFromGroup, identifier);
 
 		// Draw the new one:
 		Coordinate[] c = editingService.getIndexService().getEdge(geometry, index);
 		LineString temp = mapWidget.getMapModel().getGeometryFactory().createLineString(c);
 		LineString edge = (LineString) mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
 		mapWidget.getVectorContext().drawLine(parentGroup, identifier, edge, findEdgeStyle(index));
-		mapWidget.getVectorContext().setController(parentGroup, identifier, createEdgeController(index));
+		// mapWidget.getVectorContext().setController(parentGroup, identifier, createEdgeController(index));
+		
+		if (editingService.getIndexStateService().isSelected(index)) {
+			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
+		}
 	}
 
 	private void draw(Geometry geometry) {
@@ -531,18 +550,16 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		}
 
 		Composite bgGroup = getOrCreateGroup(parentGroup, groupName + ".background");
-		getOrCreateGroup(parentGroup, groupName + ".geometries-selection");
+		// getOrCreateGroup(parentGroup, groupName + ".geometries-selection");
 		Composite geometryGroup = getOrCreateGroup(parentGroup, groupName + ".geometries");
-
-		// Check if we need to draw the background (nice, but slows down):
-		if (styleService.getBackgroundStyle() != null && styleService.getBackgroundStyle().getFillOpacity() > 0) {
-			graphics.drawPolygon(bgGroup, "background", polygon, styleService.getBackgroundStyle());
-		}
 
 		// Draw the exterior ring:
 		GeometryIndex shellIndex = editingService.getIndexService().addChildren(parentIndex,
 				GeometryIndexType.TYPE_GEOMETRY, 0);
 		if (!polygon.isEmpty()) {
+			if (styleService.getBackgroundStyle() != null && styleService.getBackgroundStyle().getFillOpacity() > 0) {
+				graphics.drawPolygon(bgGroup, "background", polygon, findGeometryStyle(shellIndex));
+			}
 			draw(geometryGroup, shellIndex, polygon.getExteriorRing(), graphics);
 		}
 
@@ -559,9 +576,9 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (parentIndex != null) {
 			groupName += "." + editingService.getIndexService().format(parentIndex);
 		}
-		getOrCreateGroup(parentGroup, groupName + ".edges-selection");
+		// getOrCreateGroup(parentGroup, groupName + ".edges-selection");
 		Composite edgeGroup = getOrCreateGroup(parentGroup, groupName + ".edges");
-		getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
+		// getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
 		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
 
 		Coordinate[] coordinates = linearRing.getCoordinates();
@@ -610,9 +627,9 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (parentIndex != null) {
 			groupName += "." + editingService.getIndexService().format(parentIndex);
 		}
-		getOrCreateGroup(parentGroup, groupName + ".edges-selection");
+		// getOrCreateGroup(parentGroup, groupName + ".edges-selection");
 		Composite edgeGroup = getOrCreateGroup(parentGroup, groupName + ".edges");
-		getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
+		// getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
 		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
 
 		Coordinate[] coordinates = lineString.getCoordinates();
@@ -716,6 +733,15 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			return styleService.getEdgeHoverStyle();
 		}
 		return styleService.getEdgeStyle();
+	}
+
+	private ShapeStyle findGeometryStyle(GeometryIndex index) {
+		if (!editingService.getIndexStateService().isEnabled(index)) {
+			return styleService.getBackgroundDisabledStyle();
+		} else if (editingService.getIndexStateService().isMarkedForDeletion(index)) {
+			return styleService.getBackgroundMarkedForDeletionStyle();
+		}
+		return styleService.getBackgroundStyle();
 	}
 
 	private GraphicsController createVertexController(GeometryIndex index) {

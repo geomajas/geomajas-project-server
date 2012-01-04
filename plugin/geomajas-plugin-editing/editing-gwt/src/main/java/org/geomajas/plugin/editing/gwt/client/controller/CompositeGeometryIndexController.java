@@ -26,6 +26,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -128,6 +129,10 @@ public class CompositeGeometryIndexController extends AbstractGraphicsController
 	// ------------------------------------------------------------------------
 	// Handler implementation methods:
 	// ------------------------------------------------------------------------
+
+	public void onMouseDown(MouseDownEvent event) {
+		super.onMouseDown(event);
+	}
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getIndexStateService().isEnabled(index)) {

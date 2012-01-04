@@ -16,13 +16,14 @@ import java.util.Collections;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDownHandler;
-import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -42,7 +43,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  * @author Pieter De Graef
  */
 public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler,
-		MouseOverHandler, MouseOutHandler {
+		MouseOverHandler, MouseOutHandler, MouseMoveHandler {
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
@@ -57,18 +58,24 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 		}
 	}
 
+	public void onMouseMove(MouseMoveEvent event) {
+		// Stop the propagation (if correct vertex), so the insert controller doesn't alter the TentativeMove location:
+		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
+			event.stopPropagation();
+		}
+	}
+
 	public void onMouseOver(MouseOverEvent event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 
 			// Now snap the vertex to this location:
 			if (service.getIndexService().getType(index) == GeometryIndexType.TYPE_VERTEX) {
 				try {
+					service.getIndexStateService().highlightBegin(Collections.singletonList(index));
 					Coordinate location = getSnapLocation();
-					service.move(Collections.singletonList(index),
-							Collections.singletonList(Collections.singletonList(location)));
 					service.setTentativeMoveLocation(location);
 				} catch (GeometryIndexNotFoundException e) {
-				} catch (GeometryOperationFailedException e) {
+					throw new IllegalStateException(e);
 				}
 			}
 		}
@@ -88,6 +95,7 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 				return 0 == service.getIndexService().getValue(index);
 			}
 		} catch (GeometryIndexNotFoundException e) {
+			throw new IllegalStateException(e);
 		}
 		return false;
 	}

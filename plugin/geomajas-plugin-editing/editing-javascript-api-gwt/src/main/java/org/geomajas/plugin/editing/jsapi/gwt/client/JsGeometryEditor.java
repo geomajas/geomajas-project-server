@@ -17,7 +17,9 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.gwt.client.snap.SnapRuleUtil;
+import org.geomajas.plugin.editing.jsapi.client.merge.JsGeometryMergeService;
 import org.geomajas.plugin.editing.jsapi.client.service.JsGeometryEditService;
+import org.geomajas.plugin.editing.jsapi.client.split.JsGeometrySplitService;
 import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
@@ -41,6 +43,10 @@ public class JsGeometryEditor implements Exportable {
 
 	private JsGeometryEditService editingService;
 
+	private JsGeometrySplitService splitService;
+
+	private JsGeometryMergeService mergeService;
+
 	// Needed for GWT exporter...
 	public JsGeometryEditor() {
 	}
@@ -50,6 +56,8 @@ public class JsGeometryEditor implements Exportable {
 		mapWidget = this.map.getMapWidget();
 		delegate = new GeometryEditor(mapWidget);
 		editingService = new JsGeometryEditService(delegate.getService());
+		splitService = new JsGeometrySplitService(delegate.getService());
+		mergeService = new JsGeometryMergeService();
 	}
 
 	/**
@@ -74,6 +82,14 @@ public class JsGeometryEditor implements Exportable {
 
 	public JsGeometryEditService getService() {
 		return editingService;
+	}
+
+	public JsGeometrySplitService getSplitService() {
+		return splitService;
+	}
+
+	public JsGeometryMergeService getMergeService() {
+		return mergeService;
 	}
 
 	public boolean isZoomOnStart() {

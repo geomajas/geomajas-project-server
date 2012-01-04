@@ -54,7 +54,7 @@ public class DefaultStyleService implements StyleService {
 
 	private ShapeStyle backgroundMarkedForDeletionStyle = new ShapeStyle("#FF0000", 0.35f, "#CC0000", 0, 0);
 
-	private ShapeStyle backgroundDisabledStyle = new ShapeStyle("#CCCCCC", 0.35f, "#CCCCCC", 0, 0);
+	private ShapeStyle backgroundDisabledStyle = new ShapeStyle("#999999", 0.35f, "#999999", 0, 0);
 
 	private ShapeStyle snappedVertexStyle = new ShapeStyle("#888888", 1, "#CC0000", 1, 1);
 

@@ -14,6 +14,7 @@ package org.geomajas.plugin.editing.jsapi.client.split;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.GeometryArrayFunction;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.split.GeometrySplitService;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent;
@@ -51,14 +52,16 @@ public class JsGeometrySplitService implements Exportable {
 		editService = new JsGeometryEditService(delegate.getGeometryEditService());
 	}
 
-	public JsGeometrySplitService(JsGeometryEditService editService) {
-		setEditService(editService);
+	@NoExport
+	public JsGeometrySplitService(GeometryEditService editService) {
+		this.editService = new JsGeometryEditService(editService);
+		this.delegate = new GeometrySplitService(editService);
 	}
-
-	void setEditService(JsGeometryEditService editService) {
-		this.editService = editService;
-		this.delegate = new GeometrySplitService(editService.getDelegate());
-	}
+//
+//	public void setGeometryEditService(JsGeometryEditService editService) {
+//		this.editService = editService;
+//		this.delegate = new GeometrySplitService(editService.getDelegate());
+//	}
 
 	// ------------------------------------------------------------------------
 	// Public methods for adding handlers:

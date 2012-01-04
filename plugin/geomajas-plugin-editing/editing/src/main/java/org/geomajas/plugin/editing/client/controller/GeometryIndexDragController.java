@@ -13,7 +13,9 @@ package org.geomajas.plugin.editing.client.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.AbstractController;
@@ -29,7 +31,6 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException
 import org.geomajas.plugin.editing.client.snap.SnapService;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
-import com.google.gwt.user.client.Window;
 
 /**
  * <p>
@@ -50,17 +51,20 @@ public class GeometryIndexDragController extends AbstractController {
 
 	private final SnapService snappingService;
 
+	private final Map<GeometryIndex, Coordinate> origins;
+
 	private GeometryIndex lastSelection;
 
-	private Coordinate previous;
-
 	private boolean snappingEnabled;
+
+	private Coordinate origin;
 
 	public GeometryIndexDragController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
 		super(mapEventParser, service.getEditingState() == GeometryEditState.DRAGGING);
 		this.snappingService = snappingService;
 		this.service = service;
+		origins = new HashMap<GeometryIndex, Coordinate>();
 
 		service.getIndexStateService().addGeometryIndexSelectedHandler(new GeometryIndexSelectedHandler() {
 
@@ -73,7 +77,17 @@ public class GeometryIndexDragController extends AbstractController {
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
-		previous = getLocation(event, RenderSpace.WORLD);
+		origin = getOrigin(event);
+		origins.clear();
+		try {
+			for (GeometryIndex selected : service.getIndexStateService().getSelection()) {
+				Coordinate vertex;
+				vertex = service.getIndexService().getVertex(service.getGeometry(), selected);
+				origins.put(selected, vertex);
+			}
+		} catch (GeometryIndexNotFoundException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	public void onDrag(HumanInputEvent<?> event) {
@@ -97,8 +111,8 @@ public class GeometryIndexDragController extends AbstractController {
 		}
 
 		// Calculate the delta relative to the drag origin:
-		double deltaX = worldPos.getX() - previous.getX();
-		double deltaY = worldPos.getY() - previous.getY();
+		double deltaX = worldPos.getX() - origin.getX();
+		double deltaY = worldPos.getY() - origin.getY();
 
 		// Go over all selected indices and find their new positions:
 		List<List<Coordinate>> coordinateList = new ArrayList<List<Coordinate>>();
@@ -106,14 +120,9 @@ public class GeometryIndexDragController extends AbstractController {
 			switch (service.getIndexService().getType(selected)) {
 				case TYPE_VERTEX:
 					// Get the original position for the selected vertex:
-					try {
-						Coordinate vertex = service.getIndexService().getVertex(service.getGeometry(), selected);
-						vertex = new Coordinate(vertex.getX() + deltaX, vertex.getY() + deltaY);
-						coordinateList.add(Collections.singletonList(vertex));
-					} catch (GeometryIndexNotFoundException e) {
-						Window.alert("Error while dragging: " + e.getMessage());
-						break;
-					}
+					Coordinate selOr = origins.get(selected);
+					Coordinate currentLocation = new Coordinate(selOr.getX() + deltaX, selOr.getY() + deltaY);
+					coordinateList.add(Collections.singletonList(currentLocation));
 					break;
 				case TYPE_EDGE:
 				default:
@@ -125,13 +134,11 @@ public class GeometryIndexDragController extends AbstractController {
 		try {
 			service.move(service.getIndexStateService().getSelection(), coordinateList);
 		} catch (GeometryOperationFailedException e) {
-			Window.alert("Error while dragging: " + e.getMessage());
+			throw new IllegalStateException(e);
 		}
-		previous = worldPos;
 	}
 
 	public void onUp(HumanInputEvent<?> event) {
-		previous = null;
 		service.stopOperationSequence();
 		service.setEditingState(GeometryEditState.IDLE);
 		service.getIndexStateService().snappingEndAll();
@@ -143,5 +150,22 @@ public class GeometryIndexDragController extends AbstractController {
 
 	public void setSnappingEnabled(boolean snappingEnabled) {
 		this.snappingEnabled = snappingEnabled;
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private Coordinate getOrigin(HumanInputEvent<?> event) {
+		// Get the original location for the lastly selected index:
+		if (lastSelection != null) {
+			try {
+				return service.getIndexService().getVertex(service.getGeometry(), lastSelection);
+			} catch (GeometryIndexNotFoundException e) {
+			}
+		}
+
+		// Backup plan: mouse location.
+		return getLocation(event, RenderSpace.SCREEN);
 	}
 }
