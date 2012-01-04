@@ -37,6 +37,8 @@ public class CopyrightInfo implements Serializable {
 
 	private String licenseUrl;
 
+	private String sourceUrl;
+
 	/**
 	 * Get the key which is used to determine the copyright info. This is typically the library name.
 	 *
@@ -109,6 +111,28 @@ public class CopyrightInfo implements Serializable {
 		this.licenseUrl = license;
 	}
 
+	/**
+	 * Get the URL where the source code can be found (browsed or downloaded). This can be very useful to comply with
+	 * licenses which require information about the source code to be public (for example AGPLv3).
+	 *
+	 * @return source code location
+	 * @since 1.10.0
+	 */
+	public String getSourceUrl() {
+		return sourceUrl;
+	}
+
+	/**
+	 * Set the URL where the source code can be found (browsed or downloaded). This can be very useful to comply with
+	 * licenses which require information about the source code to be public (for example AGPLv3).
+	 *
+	 * @param sourceUrl source code location
+	 * @since 1.10.0
+	 */
+	public void setSourceUrl(String sourceUrl) {
+		this.sourceUrl = sourceUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "CopyrightInfo{" +
@@ -116,6 +140,7 @@ public class CopyrightInfo implements Serializable {
 				", copyright='" + copyright + '\'' +
 				", licenseName='" + licenseName + '\'' +
 				", licenseUrl='" + licenseUrl + '\'' +
+				", sourceUrl='" + sourceUrl + '\'' +
 				'}';
 	}
 }

@@ -55,9 +55,13 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 		for (PluginInfo plugin : declaredPlugins.values()) {
 			for (CopyrightInfo copyright : plugin.getCopyrightInfo()) {
 				String key = copyright.getKey();
+				String msg = copyright.getKey() + ": " + copyright.getCopyright() + " : licensed as " +
+						copyright.getLicenseName() + ", see " + copyright.getLicenseUrl();
+				if (null != copyright.getSourceUrl()) {
+					msg += " source " + copyright.getSourceUrl();
+				}
 				if (!copyrightMap.containsKey(key)) {
-					log.info(copyright.getKey() + ": " + copyright.getCopyright() + " : licensed as " +
-							copyright.getLicenseName() + ", see " + copyright.getLicenseUrl());
+					log.info(msg);
 					copyrightMap.put(key, copyright);
 				}
 			}
