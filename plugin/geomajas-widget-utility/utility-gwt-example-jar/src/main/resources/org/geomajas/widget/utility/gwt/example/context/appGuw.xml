@@ -25,9 +25,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<list>
 				<ref bean="mapGuwOsm" />
 				<ref bean="mapGuwCountries" />
+				<ref bean="mapGuwMsOsm" />
 				<ref bean="mapGuwWms" />
 				<ref bean="mapGuwWmsCountries" />
-				<!--<ref bean="mapGuwMsOsm" />-->
 			</list>
 		</property>
 		<property name="widgetInfo">

@@ -14,8 +14,11 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/appGuw.xml"/>
-	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/map*.xml"/>
-	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/layer*.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/mapGuwCountries.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/mapGuwMsOsm.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/mapGuwOsm.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/mapGuwWms.xml"/>
+	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/mapGuwWmsCountries.xml"/>
 	<import resource="classpath:org/geomajas/widget/utility/gwt/example/context/ribbon.xml"/>
 
 </beans>

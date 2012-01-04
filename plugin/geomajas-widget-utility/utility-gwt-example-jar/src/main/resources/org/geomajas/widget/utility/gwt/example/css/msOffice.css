@@ -8,33 +8,24 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
- 
-.tabSetContainer {
-    background-color: #FFFFFF;
-    border: 0px solid #FFFFFF;
-    color: #FFFFFF;
-    font-family: Arial,Verdana,sans-serif;
-    font-size: 11px;
-}
 
 .msRibbon {
 }
 
 .msRibbonGroup {
-	border-right: 1px solid #B3B8BE;
 	height: 100%;
-	background: #E5E9EE;
-    border-right: 1px solid #B3B8BE;
-    background-image: -moz-linear-gradient(top, #FFFFFF, #E5E9EE);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#E5E9EE));
+	background: #F0F2F5;
+	background-image: -moz-linear-gradient(top, #FFFFFF, #F0F2F5);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0F2F5));
     /* For Internet Explorer 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#E5E9EE);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#F0F2F5, GradientType=1);
 	/* For Internet Explorer 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#E5E9EE)";
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#F0F2F5, GradientType=1)";
+    border-right: 1px solid #B3B8BE;
 }
 
 .msRibbonGroupBody,
-.msRibbonDropDownPanel {
+.msRibbonDropDownPanelGroupBody {
 	background: #FFFFFF;
 	padding: 3px 5px;
 }
@@ -46,28 +37,45 @@
     -webkit-border-radius: 0px 3px 3px 3px;
 }
 
-.msRibbonDropDownPanel {
-	border: 1px solid #B3B8BE;
-	border-radius: 0px 3px 3px 3px;
-	-moz-border-radius: 0px 3px 3px 3px;
-    -webkit-border-radius: 0px 3px 3px 3px;
-}
-
 .msRibbonDropDownPanelGroup {
-	
+	background: #F0F2F5;
 }
 
-.msRibbonGroupTitle, .msRibbonDropDownPanelGroupTitle {
+.msRibbonGroupTitle,
+.msRibbonTabTitle,
+.msRibbonTabTitleOver,
+.msRibbonTabTitleSelected,
+.msRibbonTabTitleSelectedOver,
+.msRibbonDropDownPanelGroupTitle,
+.msRibbonDropDownPanelButtonTitle,
+.msRibbonDropDownPanelButtonDescription {
+	word-wrap: break-word; 
 	font-family: Arial,Verdana,sans-serif;
 	font-size: 11px;
 	font-weight: normal;
 	color: #666D7C;
 	padding: 1px 5px;
+}
+
+.msRibbonGroupTitle,
+.msRibbonDropDownPanelButtonTitle,
+.msRibbonDropDownPanelGroupTitle {
 	white-space: nowrap;
+	word-wrap: normal; 
 }
 
 .msRibbonDropDownPanelGroupTitle {
 	font-weight: bold;
+}
+
+.msRibbonDropDownPanelButtonTitle {
+	color: #3B3B3B;
+}
+
+
+.msRibbonDropDownPanelButtonDescription {
+	font-size: 10px;
+	line-height: 10px;
 }
 
 .msRibbonButton,
@@ -81,7 +89,19 @@
 .msRibbonButtonSelectedDown,
 .msRibbonButtonSelectedFocusedDown,
 .msRibbonButtonSelectedOver,
-.msRibbonButtonSelectedFocusedOver {
+.msRibbonButtonSelectedFocusedOver,
+.msRibbonDropDownPanelButton,
+.msRibbonDropDownPanelButtonOver,
+.msRibbonDropDownPanelButtonFocused,
+.msRibbonDropDownPanelButtonFocusedOver,
+.msRibbonDropDownPanelButtonDown,
+.msRibbonDropDownPanelButtonFocusedDown,
+.msRibbonDropDownPanelButtonSelected,
+.msRibbonDropDownPanelButtonSelectedFocused,
+.msRibbonDropDownPanelButtonSelectedDown,
+.msRibbonDropDownPanelButtonSelectedFocusedDown,
+.msRibbonDropDownPanelButtonSelectedOver,
+.msRibbonDropDownPanelButtonSelectedFocusedOver {
 	padding: 2px 1px;
 	font-family: Arial,Verdana,Bitstream Vera Sans,sans-serif;
 	font-size: 11px;
@@ -94,19 +114,29 @@
 .msRibbonButtonOver,
 .msRibbonButtonFocusedOver,
 .msRibbonButtonSelectedOver,
-.msRibbonButtonSelectedFocusedOver {
+.msRibbonButtonSelectedFocusedOver,
+.msRibbonDropDownPanelButtonOver,
+.msRibbonDropDownPanelButtonFocusedOver,
+.msRibbonDropDownPanelButtonSelectedOver,
+.msRibbonDropDownPanelButtonSelectedFocusedOver {
 	background: #FCEDB2;
 }
 
 .msRibbonButtonOver,
-.msRibbonButtonFocusedOver {
+.msRibbonButtonFocusedOver,
+.msRibbonDropDownPanelButtonOver,
+.msRibbonDropDownPanelButtonFocusedOver {
 	border: 1px solid #F1CC54;
 }
 
 .msRibbonButtonSelected,
 .msRibbonButtonSelectedFocused,
 .msRibbonButtonSelectedFocusedOver,
-.msRibbonButtonSelectedOver {
+.msRibbonButtonSelectedOver,
+.msRibbonDropDownPanelButtonSelected,
+.msRibbonDropDownPanelButtonSelectedFocused,
+.msRibbonDropDownPanelButtonSelectedFocusedOver,
+.msRibbonDropDownPanelButtonSelectedOver {
 	border: 1px solid #C28434;
 	background: #FCE388;
 }	
@@ -114,13 +144,19 @@
 .msRibbonButtonDown,
 .msRibbonButtonFocusedDown,
 .msRibbonButtonSelectedDown,
-.msRibbonButtonSelectedFocusedDown {
+.msRibbonButtonSelectedFocusedDown,
+.msRibbonDropDownPanelButtonDown,
+.msRibbonDropDownPanelButtonFocusedDown,
+.msRibbonDropDownPanelButtonSelectedDown,
+.msRibbonDropDownPanelButtonSelectedFocusedDown {
 	border: 1px solid #C28434;
     background: #F8D172;
 }
 
 .msRibbonButtonDisabled,
-.msRibbonButtonSelectedDisabled {
+.msRibbonButtonSelectedDisabled,
+.msRibbonDropDownPanelButtonDisabled,
+.msRibbonDropDownPanelButtonSelectedDisabled {
 	font-weight: normal;
 	color: #AAAAAA;
 }

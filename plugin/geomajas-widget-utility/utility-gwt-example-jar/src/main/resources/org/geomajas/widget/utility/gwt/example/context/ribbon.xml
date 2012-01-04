@@ -20,7 +20,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-
 	<bean id="guwRibbon1" class="org.geomajas.widget.utility.configuration.RibbonInfo">
 		<property name="tabs">
 			<list>
@@ -49,6 +48,132 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											<property name="tools">
 												<list>
 													<ref bean="ZoomOut" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarDropDownButton" />
+											<property name="parameters">
+												<list>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="title" />
+														<property name="value" value="Zoom" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="icon" />
+														<property name="value" value="[ISOMORPHIC]/images/magnifying-glass.png" />
+													</bean>
+												</list>
+											</property>
+											<property name="tools">
+												<list>
+													<bean class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ButtonGroup" />
+														<property name="title" value="Basic zoom" />
+														<property name="parameters">
+														<list>
+															<bean class="org.geomajas.configuration.Parameter">
+																<property name="name" value="buttonLayout" />
+																<property name="value">
+																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_AND_TITLE"/>
+																</property>
+															</bean>
+														</list>
+														</property>
+													</bean>
+													<ref bean="ZoomIn" />
+													<ref bean="ZoomOut" />
+													<ref bean="ZoomPrevious" />
+													<ref bean="ZoomNext" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarDropDownButton" />
+											<property name="parameters">
+												<list>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="title" />
+														<property name="value" value="Zoom described" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="icon" />
+														<property name="value" value="[ISOMORPHIC]/images/magnifying-glass.png" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="panelWidth" />
+														<property name="value" value="170" />
+													</bean>
+												</list>
+											</property>
+											<property name="tools">
+												<list>
+													<bean class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ButtonGroup" />
+														<property name="title" value="Default description" />
+														<property name="parameters">
+														<list>
+															<bean class="org.geomajas.configuration.Parameter">
+																<property name="name" value="buttonLayout" />
+																<property name="value">
+																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
+																</property>
+															</bean>
+														</list>
+														</property>
+													</bean>
+													<ref bean="ZoomIn" />
+													<ref bean="ZoomOut" />
+													<ref bean="ZoomPrevious" />
+													<ref bean="ZoomNext" />
+													<bean class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ButtonGroup" />
+														<property name="title" value="Custom description" />
+														<property name="parameters">
+														<list>
+															<bean class="org.geomajas.configuration.Parameter">
+																<property name="name" value="buttonLayout" />
+																<property name="value">
+																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
+																</property>
+															</bean>
+														</list>
+														</property>
+													</bean>
+													<bean name="DescribedZoomIn" class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ZoomIn" />
+														<property name="description" value="Click to zoom in on the map" />
+														<property name="parameters">
+															<list>
+																<bean class="org.geomajas.configuration.Parameter">
+																	<property name="name" value="delta" />
+																	<property name="value" value="2" />
+																</bean>
+															</list>
+														</property>
+													</bean>
+													<bean name="DescribedZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ZoomOut" />
+														<property name="description" value="Click to zoom out on the map" />
+														<property name="parameters">
+															<list>
+																<bean class="org.geomajas.configuration.Parameter">
+																	<property name="name" value="delta" />
+																	<property name="value" value=".5" />
+																</bean>
+															</list>
+														</property>
+													</bean>
+													<bean name="DescribedZoomPrevious" class="org.geomajas.configuration.client.ClientToolInfo" >
+														<property name="toolId" value="ZoomPrevious" />
+														<property name="description" value="Click to zoom to the previous level" />
+													</bean>
+													<bean name="DescribedZoomNext" class="org.geomajas.configuration.client.ClientToolInfo" >
+														<property name="toolId" value="ZoomNext" />
+														<property name="description" value="Click to zoom to the next level" />
+													</bean>
 												</list>
 											</property>
 										</bean>
@@ -415,21 +540,62 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 														<property name="name" value="icon" />
 														<property name="value" value="[ISOMORPHIC]/images/magnifying-glass.png" />
 													</bean>
+												</list>
+											</property>
+											<property name="tools">
+												<list>
+													<bean class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ButtonGroup" />
+														<property name="title" value="Basic zoom" />
+														<property name="parameters">
+														<list>
+															<bean class="org.geomajas.configuration.Parameter">
+																<property name="name" value="buttonLayout" />
+																<property name="value">
+																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_AND_TITLE"/>
+																</property>
+															</bean>
+														</list>
+														</property>
+													</bean>
+													<ref bean="ZoomIn" />
+													<ref bean="ZoomOut" />
+													<ref bean="ZoomPrevious" />
+													<ref bean="ZoomNext" />
+												</list>
+											</property>
+										</bean>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarDropDownButton" />
+											<property name="parameters">
+												<list>
 													<bean class="org.geomajas.configuration.Parameter">
-														<property name="name" value="style" />
-														<property name="value" value="iconTitleAndDescription" />
+														<property name="name" value="title" />
+														<property name="value" value="Zoom described" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="icon" />
+														<property name="value" value="[ISOMORPHIC]/images/magnifying-glass.png" />
+													</bean>
+													<bean class="org.geomajas.configuration.Parameter">
+														<property name="name" value="panelWidth" />
+														<property name="value" value="170" />
 													</bean>
 												</list>
 											</property>
 											<property name="tools">
 												<list>
 													<bean class="org.geomajas.configuration.client.ClientToolInfo">
-														<property name="id" value="DropdownPanelGroupTitle" />
+														<property name="toolId" value="ButtonGroup" />
+														<property name="title" value="Default description" />
 														<property name="parameters">
 														<list>
 															<bean class="org.geomajas.configuration.Parameter">
-																<property name="name" value="title" />
-																<property name="value" value="Navigation" />
+																<property name="name" value="buttonLayout" />
+																<property name="value">
+																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
+																</property>
 															</bean>
 														</list>
 														</property>
@@ -439,20 +605,51 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 													<ref bean="ZoomPrevious" />
 													<ref bean="ZoomNext" />
 													<bean class="org.geomajas.configuration.client.ClientToolInfo">
-														<property name="id" value="DropdownPanelGroupTitle" />
+														<property name="toolId" value="ButtonGroup" />
+														<property name="title" value="Custom description" />
 														<property name="parameters">
 														<list>
 															<bean class="org.geomajas.configuration.Parameter">
-																<property name="name" value="title" />
-																<property name="value" value="Navigation" />
+																<property name="name" value="buttonLayout" />
+																<property name="value">
+																	<util:constant static-field="org.geomajas.widget.utility.gwt.client.util.GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION"/>
+																</property>
 															</bean>
 														</list>
 														</property>
 													</bean>
-													<ref bean="ZoomIn" />
-													<ref bean="ZoomOut" />
-													<ref bean="ZoomPrevious" />
-													<ref bean="ZoomNext" />
+													<bean name="DescribedZoomIn" class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ZoomIn" />
+														<property name="description" value="Click to zoom in on the map" />
+														<property name="parameters">
+															<list>
+																<bean class="org.geomajas.configuration.Parameter">
+																	<property name="name" value="delta" />
+																	<property name="value" value="2" />
+																</bean>
+															</list>
+														</property>
+													</bean>
+													<bean name="DescribedZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="ZoomOut" />
+														<property name="description" value="Click to zoom out on the map" />
+														<property name="parameters">
+															<list>
+																<bean class="org.geomajas.configuration.Parameter">
+																	<property name="name" value="delta" />
+																	<property name="value" value=".5" />
+																</bean>
+															</list>
+														</property>
+													</bean>
+													<bean name="DescribedZoomPrevious" class="org.geomajas.configuration.client.ClientToolInfo" >
+														<property name="toolId" value="ZoomPrevious" />
+														<property name="description" value="Click to zoom to the previous level" />
+													</bean>
+													<bean name="DescribedZoomNext" class="org.geomajas.configuration.client.ClientToolInfo" >
+														<property name="toolId" value="ZoomNext" />
+														<property name="description" value="Click to zoom to the next level" />
+													</bean>
 												</list>
 											</property>
 										</bean>
@@ -563,5 +760,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-	
+
 </beans>
