@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
@@ -298,13 +299,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
 		redraw();
-		// int newNrVertices = GeometryService.getNumPoints(editingService.getGeometry());
-		// if (nrVertices != newNrVertices) {
-		// draw(editingService.getGeometry(), true);
-		// } else {
-		// draw(editingService.getGeometry(), true);
-		// }
-		// nrVertices = newNrVertices;
 	}
 
 	// ------------------------------------------------------------------------
@@ -318,8 +312,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				break;
 			case IDLE:
 			default:
-				redraw();
 				mapWidget.setCursor(Cursor.DEFAULT);
+				redraw();
 
 				// Remove the temporary insert move line:
 				if (editingService.getInsertIndex() != null) {
@@ -382,6 +376,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				}
 			}
 		} catch (GeometryIndexNotFoundException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -393,9 +388,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (editingService.getEditingState() == GeometryEditState.INSERTING) {
 			String identifier = baseName + "."
 					+ editingService.getIndexService().format(editingService.getInsertIndex());
-			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.'))
-			// + ".vertices-selection");
-					+ ".vertices");
+			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
 
 			if (event.hasSnapped()) {
 				Coordinate temp = event.getTo();
@@ -432,6 +425,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		}
 	}
 
+	// TODO make use of the findGeometryStyle method.
 	private void updateGeometry(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
@@ -454,77 +448,38 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			Polygon polygon = mapWidget.getMapModel().getGeometryFactory()
 					.createPolygon((LinearRing) transformed, null);
 			mapWidget.getVectorContext().drawPolygon(parentGroup, identifier + ".background", polygon, style);
-			// GraphicsController controller = createGeometryController(index);
-			// if (controller != null) {
-			// mapWidget.getVectorContext().setController(parentGroup, identifier + ".background", controller);
-			// }
 		}
 	}
 
 	private void updateVertex(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
-		// GWT.log("Update vertex: " + index.toString());
-
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
-
-		// Find current and previous parent groups:
 		Composite parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
-		// Composite parentGroup;
-		// if (editingService.getIndexStateService().isSelected(index)) {
-		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices-selection");
-		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
-		// } else {
-		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) +
-		// // ".vertices-selection");
-		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
-		// }
 
-		// Delete the old vertex:
-		// mapWidget.getVectorContext().deleteElement(deleteFromGroup, identifier);
-
-		// Draw the new one:
 		Coordinate temp = editingService.getIndexService().getVertex(geometry, index);
 		Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
 		Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
 				VERTEX_SIZE, VERTEX_SIZE);
-		mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
-		// mapWidget.getVectorContext().setController(parentGroup, identifier, createVertexController(index));
-		
-		if (editingService.getIndexStateService().isSelected(index)) {
+
+		// Draw:
+		if (Dom.isIE() && editingService.getEditingState() == GeometryEditState.IDLE) {
 			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
+			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
+			mapWidget.getVectorContext().setController(parentGroup, identifier, createVertexController(index));
+		} else {
+			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
 		}
 	}
 
 	private void updateEdge(Geometry geometry, GeometryIndex index) throws GeometryIndexNotFoundException {
-		// GWT.log("Update edge: " + index.toString());
-
 		// Some initialization:
 		String identifier = baseName + "." + editingService.getIndexService().format(index);
-
-		// Find current and previous parent groups:
 		Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
-		// Object parentGroup;
-		// if (editingService.getIndexStateService().isSelected(index)) {
-		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
-		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
-		// } else {
-		// // deleteFromGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges-selection");
-		// parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".edges");
-		// }
 
-		// Delete the old edge:
-		// mapWidget.getVectorContext().deleteElement(deleteFromGroup, identifier);
-
-		// Draw the new one:
 		Coordinate[] c = editingService.getIndexService().getEdge(geometry, index);
 		LineString temp = mapWidget.getMapModel().getGeometryFactory().createLineString(c);
 		LineString edge = (LineString) mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
 		mapWidget.getVectorContext().drawLine(parentGroup, identifier, edge, findEdgeStyle(index));
-		// mapWidget.getVectorContext().setController(parentGroup, identifier, createEdgeController(index));
-		
-		if (editingService.getIndexStateService().isSelected(index)) {
-			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
-		}
 	}
 
 	private void draw(Geometry geometry) {
@@ -550,7 +505,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		}
 
 		Composite bgGroup = getOrCreateGroup(parentGroup, groupName + ".background");
-		// getOrCreateGroup(parentGroup, groupName + ".geometries-selection");
 		Composite geometryGroup = getOrCreateGroup(parentGroup, groupName + ".geometries");
 
 		// Draw the exterior ring:
@@ -576,9 +530,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (parentIndex != null) {
 			groupName += "." + editingService.getIndexService().format(parentIndex);
 		}
-		// getOrCreateGroup(parentGroup, groupName + ".edges-selection");
 		Composite edgeGroup = getOrCreateGroup(parentGroup, groupName + ".edges");
-		// getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
 		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
 
 		Coordinate[] coordinates = linearRing.getCoordinates();
@@ -627,9 +579,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (parentIndex != null) {
 			groupName += "." + editingService.getIndexService().format(parentIndex);
 		}
-		// getOrCreateGroup(parentGroup, groupName + ".edges-selection");
 		Composite edgeGroup = getOrCreateGroup(parentGroup, groupName + ".edges");
-		// getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
 		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
 
 		Coordinate[] coordinates = lineString.getCoordinates();
@@ -760,7 +710,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			controller.addMapHandler(handler);
 		}
 
-		// TODO revisit this edge marker:
 		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapWidget, editingService, controller);
 		controller.addMouseOutHandler(edgeMarkerHandler);
 		controller.addMouseMoveHandler(edgeMarkerHandler);

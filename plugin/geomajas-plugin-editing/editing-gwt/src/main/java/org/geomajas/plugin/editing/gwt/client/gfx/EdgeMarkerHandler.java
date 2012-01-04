@@ -30,19 +30,26 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 
 /**
  * ...
  * 
  * @author Pieter De Graef
  */
-public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, MapDownHandler {
+public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler,
+		MouseMoveHandler, MapDownHandler {
 
 	private static final int MARKER_SIZE = 6;
 
 	private Composite edgeMarkerGroup = new Composite("edge-marker");
 
-	private ShapeStyle style = new ShapeStyle("#444444", 0f, "#444444", 1f, 1); // TODO place in style service...
+	private ShapeStyle style = new ShapeStyle("#444444", 0f, "#444444", 1f, 1); // TODO
+																				// place
+																				// in
+																				// style
+																				// service...
 
 	private MapWidget mapWidget;
 
@@ -54,7 +61,8 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	protected EdgeMarkerHandler(MapWidget mapWidget, GeometryEditService service, MapEventParser eventParser) {
+	protected EdgeMarkerHandler(MapWidget mapWidget,
+			GeometryEditService service, MapEventParser eventParser) {
 		this.mapWidget = mapWidget;
 		this.service = service;
 		this.eventParser = eventParser;
@@ -64,7 +72,8 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	// MapEventParser implementation:
 	// ------------------------------------------------------------------------
 
-	public Coordinate getLocation(HumanInputEvent<?> event, RenderSpace renderSpace) {
+	public Coordinate getLocation(HumanInputEvent<?> event,
+			RenderSpace renderSpace) {
 		return eventParser.getLocation(event, renderSpace);
 	}
 
@@ -77,39 +86,63 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseMoveHandler, Map
 	// ------------------------------------------------------------------------
 
 	public void onDown(HumanInputEvent<?> event) {
-		mapWidget.getVectorContext().deleteGroup(edgeMarkerGroup);
+		cleanup();
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
-		onDown(event);
+		cleanup();
+	}
+
+	public void onMouseOver(MouseOverEvent event) {
+		cleanup();
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
-		drawEdgeHighlightMarker(eventParser.getLocation(event, RenderSpace.SCREEN));
+		drawEdgeHighlightMarker(eventParser.getLocation(event,
+				RenderSpace.SCREEN));
 	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	private void cleanup() {
+		mapWidget.getVectorContext().deleteGroup(edgeMarkerGroup);
+	}
+
 	private void drawEdgeHighlightMarker(Coordinate location) {
 		if (service.getEditingState() == GeometryEditState.IDLE) {
-			Coordinate tl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() + MARKER_SIZE);
-			Coordinate tr = new Coordinate(location.getX() + MARKER_SIZE, location.getY() + MARKER_SIZE);
-			Coordinate bl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() - MARKER_SIZE);
-			Coordinate br = new Coordinate(location.getX() + MARKER_SIZE, location.getY() - MARKER_SIZE);
+			cleanup();
+			Coordinate tl = new Coordinate(location.getX() - MARKER_SIZE,
+					location.getY() + MARKER_SIZE);
+			Coordinate tr = new Coordinate(location.getX() + MARKER_SIZE,
+					location.getY() + MARKER_SIZE);
+			Coordinate bl = new Coordinate(location.getX() - MARKER_SIZE,
+					location.getY() - MARKER_SIZE);
+			Coordinate br = new Coordinate(location.getX() + MARKER_SIZE,
+					location.getY() - MARKER_SIZE);
 
-			GeometryFactory factory = mapWidget.getMapModel().getGeometryFactory();
-			LineString top = factory.createLineString(new Coordinate[] { tl, tr });
-			LineString right = factory.createLineString(new Coordinate[] { tr, br });
-			LineString bottom = factory.createLineString(new Coordinate[] { bl, br });
-			LineString left = factory.createLineString(new Coordinate[] { bl, tl });
+			GeometryFactory factory = mapWidget.getMapModel()
+					.getGeometryFactory();
+			LineString top = factory
+					.createLineString(new Coordinate[] { tl, tr });
+			LineString right = factory.createLineString(new Coordinate[] { tr,
+					br });
+			LineString bottom = factory.createLineString(new Coordinate[] { bl,
+					br });
+			LineString left = factory.createLineString(new Coordinate[] { bl,
+					tl });
 
-			mapWidget.getVectorContext().drawGroup(mapWidget.getGroup(RenderGroup.SCREEN), edgeMarkerGroup);
-			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "top", top, style);
-			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "right", right, style);
-			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "bottom", bottom, style);
-			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "left", left, style);
+			mapWidget.getVectorContext().drawGroup(
+					mapWidget.getGroup(RenderGroup.SCREEN), edgeMarkerGroup);
+			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "top", top,
+					style);
+			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "right",
+					right, style);
+			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "bottom",
+					bottom, style);
+			mapWidget.getVectorContext().drawLine(edgeMarkerGroup, "left",
+					left, style);
 		}
 	}
 }
