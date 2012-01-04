@@ -26,7 +26,6 @@ import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.Log;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
