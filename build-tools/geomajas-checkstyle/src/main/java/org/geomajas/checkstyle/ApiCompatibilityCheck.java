@@ -27,9 +27,11 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Checkstyle check which verifies Geomajas' API compatibility rules.
@@ -53,6 +55,13 @@ public class ApiCompatibilityCheck extends Check {
 	private String basedir;
 	private String checkInputFile = "src/main/resources/api.txt";
 	private String checkOutputFile = "target/api.txt";
+	
+	private static final Set<String> neverApiSignatures;
+
+	static {
+		neverApiSignatures = new HashSet<String>();
+		neverApiSignatures.add("String toString()");
+	}
 
 	public void setBasedir(String basedir) {
 		this.basedir = basedir;
@@ -157,7 +166,7 @@ public class ApiCompatibilityCheck extends Check {
 				if (shortClassName.equals(getName(ast.getParent().getParent()))) { // exclude stuff from inner classes
 					hasConstructor |= (TokenTypes.CTOR_DEF == ast.getType());
 					String signature = getSignature(ast);
-					if (isApi(ast)) {
+					if (isApi(ast) && !neverApiSignatures.contains(signature)) {
 						checkCorrectVersion(ast, signature, getSince(ast));
 					}
 				}
