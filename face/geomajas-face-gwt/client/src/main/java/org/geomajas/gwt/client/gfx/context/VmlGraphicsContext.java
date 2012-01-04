@@ -721,6 +721,16 @@ public class VmlGraphicsContext implements GraphicsContext {
 		helper.moveElement(name, sourceParent, targetParent);
 	}
 
+	/** {@inheritDoc} */
+	public void bringToFront(Object object, String name) {
+		helper.bringToFront(object, name);
+	}
+
+	/** {@inheritDoc} */
+	public void moveToBack(Object object, String name) {
+		helper.moveToBack(object, name);
+	}
+
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

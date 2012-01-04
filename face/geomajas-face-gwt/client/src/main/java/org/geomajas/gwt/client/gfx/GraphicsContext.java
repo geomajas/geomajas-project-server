@@ -318,12 +318,14 @@ public interface GraphicsContext {
 	 * Hide the element with the specified name in the specified group. If the element does not exist, nothing will
 	 * happen.
 	 * 
-	 * @param object The group object.
-	 * @param name The element name.
+	 * @param object
+	 *            The group object.
+	 * @param name
+	 *            The element name.
 	 * @since 1.10.0
 	 */
 	void hide(Object object, String name);
-	
+
 	/**
 	 * Set the controller on an element of this <code>GraphicsContext</code> so it can react to events.
 	 * 
@@ -417,8 +419,10 @@ public interface GraphicsContext {
 	 * Show the element with the specified name in the specified group. If the element does not exist, nothing will
 	 * happen.
 	 * 
-	 * @param object The group object.
-	 * @param name The element name.
+	 * @param object
+	 *            The group object.
+	 * @param name
+	 *            The element name.
 	 * @since 1.10.0
 	 */
 	void unhide(Object object, String name);
@@ -435,4 +439,26 @@ public interface GraphicsContext {
 	 * @since 1.8.0
 	 */
 	void moveElement(String name, Object sourceParent, Object targetParent);
+
+	/**
+	 * Within a certain group, bring an element to the front. This will make sure it's visible (within that group).
+	 * 
+	 * @param object
+	 *            The group wherein to search for the element.
+	 * @param name
+	 *            The name of the element to bring to the front.
+	 * @since 1.10.0
+	 */
+	void bringToFront(Object object, String name);
+
+	/**
+	 * Within a certain group, move an element to the back. All siblings will be rendered after this one.
+	 * 
+	 * @param object
+	 *            The group wherein to search for the element.
+	 * @param name
+	 *            The name of the element to move to the back.
+	 * @since 1.10.0
+	 */
+	void moveToBack(Object object, String name);
 }

@@ -317,6 +317,54 @@ public class DomHelper {
 		}
 	}
 
+	/**
+	 * Within a certain group, bring an element to the front. This will make sure it's visible (within that group).
+	 * 
+	 * @param object
+	 *            The group wherein to search for the element.
+	 * @param name
+	 *            The name of the element to bring to the front.
+	 * @since 1.10.0
+	 */
+	public void bringToFront(Object parent, String name) {
+		Element parentElement = getGroup(parent);
+		if (parentElement == null) {
+			throw new IllegalArgumentException("bringToFront failed: could not find parent group.");
+		}
+
+		Element element = getElement(parent, name);
+		if (element == null) {
+			throw new IllegalArgumentException("bringToFront failed: could not find element within group.");
+		}
+
+		parentElement.removeChild(element);
+		parentElement.appendChild(element);
+	}
+
+	/**
+	 * Within a certain group, move an element to the back. All siblings will be rendered after this one.
+	 * 
+	 * @param object
+	 *            The group wherein to search for the element.
+	 * @param name
+	 *            The name of the element to move to the back.
+	 * @since 1.10.0
+	 */
+	public void moveToBack(Object parent, String name) {
+		Element parentElement = getGroup(parent);
+		if (parentElement == null) {
+			throw new IllegalArgumentException("moveToBack failed: could not find parent group.");
+		}
+
+		Element element = getElement(parent, name);
+		if (element == null) {
+			throw new IllegalArgumentException("moveToBack failed: could not find element within group.");
+		}
+
+		parentElement.removeChild(element);
+		parentElement.insertFirst(element);
+	}
+
 	private Element createSvgGroup(Object parent, Object object, Matrix transformation, Style style) {
 		Element group = null;
 		// check existence

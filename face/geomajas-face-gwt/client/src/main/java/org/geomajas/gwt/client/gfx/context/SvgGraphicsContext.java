@@ -516,7 +516,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id group id
+	 * @param id
+	 *            group id
 	 * @return the group object
 	 */
 	public Object getGroupById(String id) {
@@ -550,7 +551,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id element id
+	 * @param id
+	 *            element id
 	 * @return the name of the element
 	 */
 	public String getNameById(String id) {
@@ -771,5 +773,15 @@ public class SvgGraphicsContext implements GraphicsContext {
 	 */
 	public void moveElement(String name, Object sourceParent, Object targetParent) {
 		helper.moveElement(name, sourceParent, targetParent);
+	}
+
+	/** {@inheritDoc} */
+	public void bringToFront(Object object, String name) {
+		helper.bringToFront(object, name);
+	}
+
+	/** {@inheritDoc} */
+	public void moveToBack(Object object, String name) {
+		helper.moveToBack(object, name);
 	}
 }
