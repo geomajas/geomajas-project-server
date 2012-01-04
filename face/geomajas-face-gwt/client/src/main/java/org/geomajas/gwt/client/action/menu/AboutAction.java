@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt.client.action.menu;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.dto.CopyrightRequest;
@@ -21,6 +22,7 @@ import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.i18n.GlobalMessages;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 
 import com.smartgwt.client.widgets.HTMLFlow;
@@ -39,8 +41,10 @@ import java.util.Collection;
  */
 public class AboutAction extends MenuAction {
 
+	private static final GlobalMessages MESSAGES = GWT.create(GlobalMessages.class);
+	
 	public AboutAction() {
-		super(I18nProvider.getGlobal().aboutMenuTitle(), WidgetLayout.iconTips);
+		super(MESSAGES.aboutMenuTitle(), WidgetLayout.iconTips);
 	}
 
 	public void onClick(MenuItemClickEvent event) {
@@ -49,8 +53,10 @@ public class AboutAction extends MenuAction {
 		Img logo = new Img(WidgetLayout.aboutGeomajasLogo);
 		layout.addMember(logo);
 		HTMLFlow flow = new HTMLFlow("<h2>Geomajas " + Geomajas.getVersion() + "</h2>" + "<p>"
-				+ I18nProvider.getGlobal().aboutCopyRight() + "</p>" + "<p>" + I18nProvider.getGlobal().aboutVisit()
-				+ ": <a href='http://www.geomajas.org/'>http://www.geomajas.org/</a></p>");
+				+ MESSAGES.aboutCopyRight() + "</p>" + "<p>" + MESSAGES.aboutVisit()
+				+ ": <a href='http://www.geomajas.org/'>http://www.geomajas.org/</a><br />"
+				+ MESSAGES.sourceUrl() + ": <a href='http://ci.geomajas.org/svn/'>http://ci.geomajas.org/svn/</a> "
+				+ "&amp; <a href='https://svn.geomajas.org/majas/'>https://svn.geomajas.org/majas/</a> </p>");
 		layout.addMember(flow);
 
 		final HTMLFlow copyrightWidget = new HTMLFlow("Copyright info");
@@ -63,20 +69,31 @@ public class AboutAction extends MenuAction {
 				if (response instanceof CopyrightResponse) {
 					Collection<CopyrightInfo> copyrights = ((CopyrightResponse) response).getCopyrights();
 					StringBuilder sb = new StringBuilder("<h2>");
-					sb.append(I18nProvider.getGlobal().copyrightListTitle());
+					sb.append(MESSAGES.copyrightListTitle());
 					sb.append("</h2><ul>");
 					for (CopyrightInfo copyright : copyrights) {
 						sb.append("<li>");
 						sb.append(copyright.getKey());
 						sb.append(" : ");
-						sb.append(I18nProvider.getGlobal().licensedAs());
+						sb.append(MESSAGES.licensedAs());
 						sb.append(" ");
 						sb.append(copyright.getCopyright());
 						sb.append(" : <a target=\"_blank\" href=\"");
 						sb.append(copyright.getLicenseUrl());
 						sb.append("\">");
 						sb.append(copyright.getLicenseName());
-						sb.append("</a></li>");
+						sb.append("</a>");
+						if (null != copyright.getSourceUrl()) {
+							sb.append(" ");
+							sb.append(MESSAGES.sourceUrl());
+							sb.append(" : ");
+							sb.append(" <a target=\"_blank\" href=\"");
+							sb.append(copyright.getSourceUrl());
+							sb.append("\">");
+							sb.append(copyright.getSourceUrl());
+							sb.append("</a>");
+						}
+						sb.append("</li>");
 					}
 					sb.append("</ul>");
 					copyrightWidget.setContents(sb.toString());
@@ -88,7 +105,7 @@ public class AboutAction extends MenuAction {
 
 		Window window = new Window();
 		window.setHeaderIcon(WidgetLayout.iconGeomajas);
-		window.setTitle(I18nProvider.getGlobal().aboutMenuTitle());
+		window.setTitle(MESSAGES.aboutMenuTitle());
 		window.setWidth(WidgetLayout.aboutGeomajasWidth);
 		window.setHeight(WidgetLayout.aboutGeomajasHeight);
 		window.setAutoCenter(true);

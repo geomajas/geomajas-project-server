@@ -33,8 +33,10 @@ public interface GlobalMessages extends Messages {
 
 	// ActivityMonitor messages:
 
+	/** @return waiting for an activity to finish */
 	String activityBusyText();
 
+	/** @return not waiting for an activity to finish */
 	String activityNotBusyText();
 
 	// Loading screen:
@@ -47,13 +49,19 @@ public interface GlobalMessages extends Messages {
 
 	// MapWidget, aboutAction:
 
+	/** @return about menu title */
 	String aboutMenuTitle();
 
+	/** @return copyright title in about dialog */
 	String aboutCopyRight();
 
 	String aboutVisit();
 
+	/** @return license name/URL label */
 	String licensedAs();
+
+	/** @return source code URL label */
+	String sourceUrl();
 
 	String copyrightListTitle();
 
@@ -65,10 +73,10 @@ public interface GlobalMessages extends Messages {
 
 	// ExceptionWindow
 
-	/** View details. */
+	/** @return view details */
 	String exceptionDetailsView();
 
-	/** Hide details. */
+	/** @return hide details */
 	String exceptionDetailsHide();
 
 }
