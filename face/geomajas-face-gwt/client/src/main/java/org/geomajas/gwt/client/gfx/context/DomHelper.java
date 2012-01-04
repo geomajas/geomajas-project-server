@@ -361,8 +361,9 @@ public class DomHelper {
 			throw new IllegalArgumentException("moveToBack failed: could not find element within group.");
 		}
 
-		parentElement.removeChild(element);
-		parentElement.insertFirst(element);
+		if (parentElement.getFirstChildElement() != element) {
+			parentElement.insertFirst(element);
+		}
 	}
 
 	private Element createSvgGroup(Object parent, Object object, Matrix transformation, Style style) {
