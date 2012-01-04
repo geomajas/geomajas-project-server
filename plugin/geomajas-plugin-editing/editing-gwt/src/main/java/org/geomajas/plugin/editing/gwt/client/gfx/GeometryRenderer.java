@@ -107,8 +107,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private final String insertMoveEdgeId2 = "insert-move-edge2";
 
-	private final String insertSnapPoint = "insert-snap-point";
-
 	private StyleService styleService = new DefaultStyleService();
 
 	private String baseName = "editing";
@@ -390,16 +388,15 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 					+ editingService.getIndexService().format(editingService.getInsertIndex());
 			Object parentGroup = groups.get(identifier.substring(0, identifier.lastIndexOf('.')) + ".vertices");
 
+			Coordinate temp = event.getTo();
+			Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
+			Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
+					VERTEX_SIZE, VERTEX_SIZE);
 			if (event.hasSnapped()) {
-				Coordinate temp = event.getTo();
-				Coordinate coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(temp);
-				Bbox rectangle = new Bbox(coordinate.getX() - HALF_VERTEX_SIZE, coordinate.getY() - HALF_VERTEX_SIZE,
-						VERTEX_SIZE, VERTEX_SIZE);
-
-				mapWidget.getVectorContext().drawRectangle(parentGroup, insertSnapPoint, rectangle,
+				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle,
 						styleService.getVertexSnappedStyle());
 			} else {
-				mapWidget.getVectorContext().deleteElement(parentGroup, insertSnapPoint);
+				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, new ShapeStyle());
 			}
 		}
 	}
@@ -462,12 +459,14 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				VERTEX_SIZE, VERTEX_SIZE);
 
 		// Draw:
-		if (Dom.isIE() && editingService.getEditingState() == GeometryEditState.IDLE) {
-			mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
-			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
-			mapWidget.getVectorContext().setController(parentGroup, identifier, createVertexController(index));
+		if (Dom.isIE() && editingService.getEditingState() == GeometryEditState.DRAGGING
+				&& editingService.getIndexStateService().isSelected(index)) {
+			// Cheap trick so switch order:
+			mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, findVertexStyle(index));
+			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, new ShapeStyle());
 		} else {
 			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
+			mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, new ShapeStyle());
 		}
 	}
 
@@ -560,7 +559,9 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				graphics.setController(edgeGroup, identifier, createEdgeController(edgeIndex));
 			}
 
-			// Draw individual vertices:
+			// Draw individual vertices, but first an invisible rectangle. Can be used later!:
+			Bbox firstRectangle = new Bbox(0, 0, VERTEX_SIZE, VERTEX_SIZE);
+			graphics.drawRectangle(vertexGroup, "first", firstRectangle, new ShapeStyle());
 			for (int i = 0; i < coordinates.length - 1; i++) {
 				GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
 						GeometryIndexType.TYPE_VERTEX, i);
@@ -596,7 +597,9 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				graphics.setController(edgeGroup, identifier, createEdgeController(edgeIndex));
 			}
 
-			// Draw individual vertices:
+			// Draw individual vertices, but first an invisible rectangle. Can be used later!:
+			Bbox firstRectangle = new Bbox(0, 0, VERTEX_SIZE, VERTEX_SIZE);
+			graphics.drawRectangle(vertexGroup, "first", firstRectangle, new ShapeStyle());
 			for (int i = 0; i < coordinates.length; i++) {
 				GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
 						GeometryIndexType.TYPE_VERTEX, i);
