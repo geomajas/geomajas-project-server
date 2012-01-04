@@ -19,9 +19,9 @@ import org.opengis.filter.Filter;
 
 /**
  * <p>
- * Default implementation of the StyleFilter interface. Transforms a <code>LayerStyleDefinition</code> into a
- * <code>StyleFilter</code>, by parsing the formula into a <code>Filter</code> object. Only feature that accept this
- * filter should recieve the style contained in the style definition.
+ * Default implementation of the StyleFilter interface. Transforms a {@link FeatureStyleInfo} into a
+ * {@link StyleFilter}, by parsing the formula into a {@link Filter} object. Only feature that accept this
+ * filter should receive the style contained in the style definition.
  * </p>
  *
  * @author Pieter De Graef
@@ -29,7 +29,7 @@ import org.opengis.filter.Filter;
 public class StyleFilterImpl implements StyleFilter {
 
 	/**
-	 * The opengis filter object, parsed from the <code>LayerStyleDefinition</code>'s formula.
+	 * The OpenGis filter object, parsed from the {@link FeatureStyleInfo}'s formula.
 	 */
 	private Filter filter;
 
@@ -43,7 +43,7 @@ public class StyleFilterImpl implements StyleFilter {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * The default constructor. Creates an invisible style, with the default ID. Try to avoid this.
+	 * No-arguments constructor. Creates an invisible style, with the default ID. Try to avoid this.
 	 */
 	public StyleFilterImpl() {
 		this.filter = Filter.INCLUDE;
@@ -59,11 +59,9 @@ public class StyleFilterImpl implements StyleFilter {
 	}
 
 	/**
-	 * The recommended constructor. Takes a style definition object and tries to parse the formula to an opengis filter
-	 * object.
+	 * Takes a style definition object and tries to parse the formula to an OpenGis filter object.
 	 *
-	 * @param definition
-	 *            The style definition.
+	 * @param definition The style definition.
 	 */
 	public StyleFilterImpl(FeatureStyleInfo definition) {
 		try {
