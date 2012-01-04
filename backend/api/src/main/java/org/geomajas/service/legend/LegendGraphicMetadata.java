@@ -20,10 +20,19 @@ import org.geomajas.sld.UserStyleInfo;
  * 
  * @author Jan De Moerloose
  * @since 1.10.0
- * 
  */
 @Api(allMethods = true)
 public interface LegendGraphicMetadata {
+
+	/**
+	 * Default width of the legend graphic.
+	 */
+	int DEFAULT_WIDTH = 18;
+
+	/**
+	 * Default height of the legend graphic.
+	 */
+	int DEFAULT_HEIGHT = 18;
 
 	/**
 	 * Get layer id, optional.

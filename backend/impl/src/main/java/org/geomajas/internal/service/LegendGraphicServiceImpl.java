@@ -71,6 +71,11 @@ import com.vividsolutions.jts.io.WKTReader;
 @Component
 public class LegendGraphicServiceImpl implements LegendGraphicService {
 
+	/**
+	 * Default path of raster layer icon image.
+	 */
+	private static final String DEFAULT_RASTER_IMAGE_PATH = "org/geomajas/internal/image/layer-raster.png";
+
 	@Autowired
 	private StyleConverterService styleConverterService;
 
@@ -84,9 +89,9 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 
 	private StyledShapePainter shapePainter = new StyledShapePainter();
 
-	private int defaultWidth = DEFAULT_ICON_SIZE;
+	private int defaultWidth = LegendGraphicMetadata.DEFAULT_WIDTH;
 
-	private int defaultHeight = DEFAULT_ICON_SIZE;
+	private int defaultHeight = LegendGraphicMetadata.DEFAULT_HEIGHT;
 	
 	private String rasterImagePath = DEFAULT_RASTER_IMAGE_PATH;
 

@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.legend;
 
+import org.geomajas.service.legend.LegendGraphicMetadata;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -25,13 +27,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import org.geomajas.service.LegendGraphicService;
-
 /**
  * Builder class for legend.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class LegendBuilder {
 
@@ -39,16 +38,17 @@ public class LegendBuilder {
 
 	private static final int ICON_PADDING = 2;
 
-	private static final long serialVersionUID = 100;
-
 	private static final int MAX_SIZE = 10000;
 
-	private JPanel legendPanel;
+	private final JPanel legendPanel;
 
-	private TitledBorder border;
+	private final TitledBorder border;
 
 	private Dimension dimension;
 
+	/**
+	 * No -arguments constructor.
+	 */
 	public LegendBuilder() {
 		legendPanel = new JPanel();
 		legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
@@ -73,8 +73,8 @@ public class LegendBuilder {
 	public void addLayer(String title, Font font, RenderedImage image) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		RenderedImageIcon icon = new RenderedImageIcon(image, LegendGraphicService.DEFAULT_ICON_SIZE,
-				LegendGraphicService.DEFAULT_ICON_SIZE);
+		RenderedImageIcon icon = new RenderedImageIcon(image,
+				LegendGraphicMetadata.DEFAULT_WIDTH, LegendGraphicMetadata.DEFAULT_HEIGHT);
 		JLabel label = new JLabel(icon);
 		label.setBorder(new EmptyBorder(ICON_PADDING, ICON_PADDING, ICON_PADDING, ICON_PADDING));
 		panel.add(label);

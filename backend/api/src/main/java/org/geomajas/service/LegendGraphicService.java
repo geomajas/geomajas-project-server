@@ -22,20 +22,9 @@ import org.geomajas.service.legend.LegendGraphicMetadata;
  * 
  * @author Jan De Moerloose
  * @since 1.10.0
- * 
  */
 @Api(allMethods = true)
 public interface LegendGraphicService {
-	
-	/**
-	 * Default size of icon (square).
-	 */
-	int DEFAULT_ICON_SIZE = 18;
-
-	/**
-	 * Default path of raster layer icon image.
-	 */
-	String DEFAULT_RASTER_IMAGE_PATH = "org/geomajas/internal/image/layer-raster.png";
 
 	/**
 	 * Get the graphical symbol based on the specified legend metadata.

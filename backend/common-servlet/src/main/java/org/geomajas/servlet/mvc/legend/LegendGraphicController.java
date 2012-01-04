@@ -19,6 +19,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.LegendGraphicService;
+import org.geomajas.service.legend.DefaultLegendGraphicMetadata;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class LegendGraphicController {
 			throws GeomajasException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(LEGENDGRAPHIC_VIEW_NAME);
-		LegendGraphicMetadataImpl legendMetadata = new LegendGraphicMetadataImpl();
+		DefaultLegendGraphicMetadata legendMetadata = new DefaultLegendGraphicMetadata();
 		legendMetadata.setLayerId(layerId);
 		if (width != null) {
 			legendMetadata.setWidth(width);

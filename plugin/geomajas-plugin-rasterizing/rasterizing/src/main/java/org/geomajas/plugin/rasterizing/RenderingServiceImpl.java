@@ -32,7 +32,7 @@ import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
 import org.geomajas.plugin.rasterizing.legend.LegendBuilder;
 import org.geomajas.service.LegendGraphicService;
 import org.geomajas.service.TextService;
-import org.geomajas.servlet.mvc.legend.LegendGraphicMetadataImpl;
+import org.geomajas.service.legend.DefaultLegendGraphicMetadata;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.TextSymbolizerInfo;
@@ -133,7 +133,7 @@ public class RenderingServiceImpl implements RenderingService {
 	}
 
 	private RenderedImage getImage(String layerId, RuleInfo rule) throws GeomajasException {
-		LegendGraphicMetadataImpl legendMetadata = new LegendGraphicMetadataImpl();
+		DefaultLegendGraphicMetadata legendMetadata = new DefaultLegendGraphicMetadata();
 		legendMetadata.setLayerId(layerId);
 		legendMetadata.setRuleInfo(rule);
 		return legendGraphicService.getLegendGraphic(legendMetadata);
