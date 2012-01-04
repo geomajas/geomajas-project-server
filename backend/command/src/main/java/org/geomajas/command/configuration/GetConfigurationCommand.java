@@ -16,6 +16,7 @@ import java.util.List;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
+import org.geomajas.configuration.ServerSideOnlyInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
@@ -55,8 +56,10 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 		}
 		ClientApplicationInfo client = new ClientApplicationInfo();
 		client.setId(original.getId());
-		client.setUserData(original.getUserData());
-		client.setWidgetInfo(original.getWidgetInfo());
+		if (!(original.getUserData() instanceof ServerSideOnlyInfo)) {
+			client.setUserData(original.getUserData());
+		}
+		client.setWidgetInfo(mapConfigurationCommand.securityClone(original.getWidgetInfo()));
 		client.setScreenDpi(original.getScreenDpi());
 		List<ClientMapInfo> maps = new ArrayList<ClientMapInfo>();
 		client.setMaps(maps);

@@ -20,7 +20,6 @@ import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.service.ConfigurationService;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +34,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
+		"/org/geomajas/command/ServerSideOnlyConfiguration.xml"})
 public class GetMapConfigurationCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
@@ -85,6 +85,31 @@ public class GetMapConfigurationCommandTest {
 		Assert.assertNotNull(mapInfo.getWidgetInfo("layerTree"));
 		Assert.assertEquals("layer1, layer2",
 				((ClientApplicationInfo.DummyClientWidgetInfo) mapInfo.getWidgetInfo("layerTree")).getDummy());
+	}
+
+	@Test
+	public void testServerSideOnlyInfo() throws Exception {
+		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
+		request.setApplicationId("appServerSideOnly");
+		request.setMapId("mapServerSideOnly");
+		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
+				GetMapConfigurationRequest.COMMAND, request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
+		Assert.assertFalse(response.isError());
+		ClientMapInfo mapInfo = response.getMapInfo();
+		Assert.assertNotNull(mapInfo);
+
+		// user data
+		ClientUserDataInfo info = mapInfo.getUserData();
+		Assert.assertNull(info);
+
+		// widget data
+		Assert.assertNotNull(mapInfo.getWidgetInfo());
+		Assert.assertNull(mapInfo.getWidgetInfo("appDummy")); // not present
+		Assert.assertNotNull(mapInfo.getWidgetInfo("layerTree")); // present
+		Assert.assertNull(mapInfo.getWidgetInfo("mapDummy")); // filtered because ServerSideOnlyInfo
 	}
 
 }

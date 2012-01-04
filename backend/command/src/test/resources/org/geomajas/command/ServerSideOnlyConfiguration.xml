@@ -1,0 +1,105 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+		>
+
+	<bean name="appServerSideOnly" class="org.geomajas.configuration.client.ClientApplicationInfo" >
+		<property name="maps">
+			<list>
+				<bean name="mapServerSideOnly" class="org.geomajas.configuration.client.ClientMapInfo">
+					<property name="backgroundColor" value="#E0E0E0" />
+					<property name="crs" value="EPSG:900913"/>
+					<property name="maximumScale" value="100000"/>
+					<property name="initialBounds">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="-3500000"/>
+							<property name="y" value="-4500000"/>
+							<property name="width" value="10000000"/>
+							<property name="height" value="10000000"/>
+						</bean>
+					</property>
+					<property name="layers">
+						<list>
+							<ref bean="clientLayerServerSideOnly"/>
+						</list>
+					</property>
+					<property name="userData">
+						<bean class="org.geomajas.command.configuration.DummyServerSideOnlyInfo">
+							<property name="dummy" value="bla" />
+						</bean>
+					</property>
+					<property name="widgetInfo">
+						<map>
+							<entry key="layerTree">
+								<bean class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+									<property name="dummy" value="layer1, layer2" />
+								</bean>
+							</entry>
+							<entry key="mapDummy">
+								<bean class="org.geomajas.command.configuration.DummyServerSideOnlyInfo">
+									<property name="dummy" value="mbla" />
+								</bean>
+							</entry>
+						</map>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="widgetInfo">
+			<map>
+				<entry key="mapSelect">
+					<bean class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+						<property name="dummy" value="map1, map2" />
+					</bean>
+				</entry>
+				<entry key="appDummy">
+					<bean class="org.geomajas.command.configuration.DummyServerSideOnlyInfo">
+						<property name="dummy" value="abla" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+		<property name="userData">
+			<bean class="org.geomajas.command.configuration.DummyServerSideOnlyInfo">
+				<property name="dummy" value="aubla" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerServerSideOnly">
+		<property name="serverLayerId" value="countries" />
+		<property name="label" value="Countries"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countriesStyleInfo" />
+		<property name="widgetInfo">
+			<map>
+				<entry key="customLayerInfoWidget">
+					<bean class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+						<property name="dummy" value="org.geomajas.widget.IpsumWidget" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+
+	</bean>
+
+</beans>
+

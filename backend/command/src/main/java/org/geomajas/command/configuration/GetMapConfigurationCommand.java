@@ -11,7 +11,9 @@
 package org.geomajas.command.configuration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.annotation.Api;
@@ -20,6 +22,7 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
+import org.geomajas.configuration.ServerSideOnlyInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
@@ -28,6 +31,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.security.SecurityContext;
@@ -110,11 +114,36 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		client.setScaleBarEnabled(original.isScaleBarEnabled());
 		client.setToolbar(securityClone(original.getToolbar()));
 		client.setUnitLength(original.getUnitLength());
-		client.setUserData(original.getUserData());
-		client.setWidgetInfo(original.getWidgetInfo());
+		if (!(original.getUserData() instanceof ServerSideOnlyInfo)) {
+			client.setUserData(original.getUserData());
+		}
+		client.setWidgetInfo(securityClone(original.getWidgetInfo()));
 		return client;
 	}
 
+	/**
+	 * Clone a widget info map considering what may be copied to the client.
+	 * 
+	 * @param widgetInfo widget info map
+	 * @return cloned copy including only records which are not {@link ServerSideOnlyInfo}
+	 */
+	public Map<String, ClientWidgetInfo> securityClone(Map<String, ClientWidgetInfo> widgetInfo) {
+		Map<String, ClientWidgetInfo> res = new HashMap<String, ClientWidgetInfo>();
+		for (Map.Entry<String, ClientWidgetInfo> entry : widgetInfo.entrySet()) {
+			ClientWidgetInfo value = entry.getValue();
+			if (!(value instanceof ServerSideOnlyInfo)) {
+				res.put(entry.getKey(), value);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Clone layer information considering what may be copied to the client.
+	 *
+	 * @param original layer info
+	 * @return cloned copy including only allowed information
+	 */
 	public ClientLayerInfo securityClone(ClientLayerInfo original) {
 		// the data is explicitly copied as this assures the security is considered when copying.
 		if (null == original) {
@@ -124,6 +153,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		String layerId = original.getServerLayerId();
 		if (securityContext.isLayerVisible(layerId)) {
 			client = (ClientLayerInfo) SerializationUtils.clone(original);
+			client.setWidgetInfo(securityClone(original.getWidgetInfo()));
 			if (client instanceof ClientVectorLayerInfo) {
 				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) client;
 				// set statuses
