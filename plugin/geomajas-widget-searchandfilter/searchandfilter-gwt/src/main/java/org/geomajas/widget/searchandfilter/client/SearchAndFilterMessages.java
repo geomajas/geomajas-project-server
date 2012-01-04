@@ -28,6 +28,7 @@ public interface SearchAndFilterMessages extends Messages {
 	String multiFeatureListGridButtonFocusSelectionTooltip();
 	String multiFeatureListGridButtonShowDetailTooltip();
 	String multiFeatureListGridButtonExportToCSVTooltip();
+	String multiFeatureListGridMaxSizeExceededMessage();
 
 	String exportToCsvWindowTitle();
 	String exportToCsvContentReady();

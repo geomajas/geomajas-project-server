@@ -22,7 +22,6 @@ import java.util.Set;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapModel;
@@ -48,6 +47,13 @@ import com.google.gwt.core.client.GWT;
  */
 public final class SearchCommService {
 
+	// CHECKSTYLE VISIBILITY MODIFIER: OFF
+	
+	/** Search result size limitation. */
+	public static int searchResultSize = FeatureSearchRequest.MAX_UNLIMITED;
+
+	// CHECKSTYLE VISIBILITY MODIFIER: ON
+	
 	/**
 	 * Utility class, hide constructor.
 	 */
@@ -185,8 +191,7 @@ public final class SearchCommService {
 	}
 
 	/**
-	 * We return the request object used for this search, this can then be
-	 * reused for the csv-export.
+	 * Execute a search by criterion command.
 	 * 
 	 * @param criterion
 	 * @param mapWidget
@@ -202,10 +207,11 @@ public final class SearchCommService {
 		request.setCriterion(criterion);
 		request.setLayerFilters(getLayerFiltersForCriterion(criterion, mapWidget.getMapModel()));
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+		request.setMax(searchResultSize);
 
 		GwtCommand commandRequest = new GwtCommand(FeatureSearchRequest.COMMAND);
 		commandRequest.setCommandRequest(request);
-		Deferred def = GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback() {
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new AbstractCommandCallback() {
 			public void execute(CommandResponse commandResponse) {
 				if (commandResponse instanceof FeatureSearchResponse) {
 					FeatureSearchResponse response = (FeatureSearchResponse) commandResponse;
@@ -290,6 +296,11 @@ public final class SearchCommService {
 		return null;
 	}
 
+	/**
+	 * Get a list of all visible layers on the given mapmodel.
+	 * @param mapModel
+	 * @return a list of all visible layers.
+	 */
 	public static List<String> getVisibleServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
 		for (VectorLayer layer : mapModel.getVectorLayers()) {

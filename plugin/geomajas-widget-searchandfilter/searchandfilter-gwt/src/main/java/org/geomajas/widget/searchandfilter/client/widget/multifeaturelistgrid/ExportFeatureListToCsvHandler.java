@@ -27,6 +27,7 @@ import org.geomajas.layer.feature.SearchCriterion;
  * the CSV.
  *
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class ExportFeatureListToCsvHandler extends ExportSearchToCsvHandler {
 

@@ -57,11 +57,11 @@ public final class CriterionUtil {
 		Map<String, String> filters = criterionToFilters(criterion, mapWidget.getMapModel());
 		if (filters != null && !filters.isEmpty()) {
 			List<VectorLayer> vls = mapWidget.getMapModel().getVectorLayers();
-			for (String serverLayerId : filters.keySet()) {
+			for (Entry<String, String> entry : filters.entrySet()) {
 				for (VectorLayer vl : vls) {
-					if (serverLayerId.equals(vl.getServerLayerId())) {
-						vl.setFilter(filters.get(serverLayerId));
-						GWT.log("Setting layerfilter: " + serverLayerId + " - " + filters.get(serverLayerId));
+					if (entry.getKey().equals(vl.getServerLayerId())) {
+						vl.setFilter(entry.getValue());
+						GWT.log("Setting layerfilter: " + entry.getKey() + " - " + entry.getValue());
 					}
 				}
 			}

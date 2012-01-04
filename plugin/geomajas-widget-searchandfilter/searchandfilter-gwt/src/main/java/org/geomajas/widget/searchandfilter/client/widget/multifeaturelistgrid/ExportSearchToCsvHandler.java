@@ -45,11 +45,13 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * SearchFeatureRequest, SearchByLocationRequest and Criterion.
  * 
  * @author Kristof Heirwegh
+ * @author Oliver May
  */
 public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 
 	protected VectorLayer layer;
 	protected MapModel model;
+	//TODO: change to FeatureSearchRequest once deprecated methods are removed.
 	protected CommandRequest request;
 
 	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
@@ -59,7 +61,9 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 	 * @param layer layer
 	 * @param searchRequest
 	 *            the search to use to retrieve features.
+	 * @deprecated Use {@link #ExportSearchToCsvHandler(MapModel, VectorLayer, Criterion)}
 	 */
+	@Deprecated
 	public ExportSearchToCsvHandler(MapModel model, VectorLayer layer, CommandRequest searchRequest) {
 		this(model, layer);
 		setRequest(searchRequest);
@@ -80,6 +84,12 @@ public class ExportSearchToCsvHandler implements ExportToCsvHandler {
 		}
 		this.layer = layer;
 		this.model = model;
+	}
+	
+	public void setCriterion(Criterion criterion) {
+		if (request instanceof FeatureSearchRequest) {
+			((FeatureSearchRequest) request).setCriterion(criterion);
+		}
 	}
 
 	public void execute(VectorLayer vlayer) {

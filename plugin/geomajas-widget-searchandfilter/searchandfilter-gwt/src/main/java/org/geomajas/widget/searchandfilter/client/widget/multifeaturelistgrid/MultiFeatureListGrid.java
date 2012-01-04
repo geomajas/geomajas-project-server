@@ -11,51 +11,31 @@
 package org.geomajas.widget.searchandfilter.client.widget.multifeaturelistgrid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.command.CommandRequest;
-import org.geomajas.configuration.SortType;
-import org.geomajas.global.GeomajasConstant;
-import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.widget.factory.FeatureDetailWidgetFactory;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
-import org.geomajas.widget.searchandfilter.client.util.Callback;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchHandler;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.types.Overflow;
-
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.DoubleClickEvent;
-import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
-import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
 import com.smartgwt.client.widgets.tab.events.TabCloseClickEvent;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 
@@ -65,6 +45,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
  * @author Kristof Heirwegh
  * @author Joachim Van der Auwera
  * @author An Buyle
+ * @author Oliver May
  * 
  * @since 1.0.0
  */
@@ -83,7 +64,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	
 	private boolean sortFeatures; 
 	
-	private SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
+	private final SearchAndFilterMessages messages = GWT.create(SearchAndFilterMessages.class);
 
 	private List<ExtraButton> extraButtons = new ArrayList<ExtraButton>();
 
@@ -162,8 +143,18 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		removeTab(layer);
 	}
 
+	/**
+	 * Add features for a specific layer in the widget.
+	 * 
+	 * @param layer
+	 * @param features
+	 * @deprecated Use {@link #addFeatures(Map)}
+	 */
+	@Deprecated
 	public void addFeatures(VectorLayer layer, List<Feature> features) {
-		addFeatures(layer, features, null, showDetailsOnSingleResult);
+		Map<VectorLayer, List<Feature>> featureMap = new HashMap<VectorLayer, List<Feature>>();
+		featureMap.put(layer, features);
+		addFeatures(featureMap, null);
 	}
 
 	/**
@@ -173,11 +164,26 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 * @param features features to ass
 	 * @param csvExportData
 	 *            will be used by CSV Export to retrieve features.
+	 * @deprecated Use {@link #addFeatures(Map, Criterion)}           
 	 */
+	@Deprecated
 	public void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData) {
-		addFeatures(layer, features, csvExportData, showDetailsOnSingleResult);
-	}
+		Map<VectorLayer, List<Feature>> featureMap = new HashMap<VectorLayer, List<Feature>>();
+		featureMap.put(layer, features);
 
+		if (csvExportData instanceof Criterion) {
+			addFeatures(featureMap, (Criterion) csvExportData);
+		} else {
+			addFeatures(featureMap, null);
+		}
+		
+	}
+	
+	/**
+	 * Add features in the widget for several layers.
+	 *
+	 * @param featureMap map of features per layer
+	 */
 	public void addFeatures(Map<VectorLayer, List<Feature>> result) {
 		addFeatures(result, null);
 	}
@@ -186,43 +192,32 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 	 * Add features in the widget for several layers.
 	 *
 	 * @param featureMap map of features per layer
-	 * @param csvExportData
-	 *            will be used by CSV Export to retrieve features.
+	 * @param criterion the original request for this search
 	 */
-	public void addFeatures(Map<VectorLayer, List<Feature>> featureMap, Object csvExportData) {
-		for (Entry<VectorLayer, List<Feature>> entry : featureMap.entrySet()) {
-			addFeatures(entry.getKey(), entry.getValue(), csvExportData, false);
-		}
+	public void addFeatures(Map<VectorLayer, List<Feature>> featureMap, Criterion criterion) {
 		if (showDetailsOnSingleResult && featureMap.size() == 1) {
 			// sorting is never needed if only 1 entry
 			List<Feature> features = featureMap.values().iterator().next();
 			if (features.size() == 1) {
-				showFeatureDetailWindow(features.get(0));
+				showFeatureDetailWindow(map, features.get(0));
 			}
 		}
+
+		//Add feature tabs in map order
+		for (VectorLayer layer : map.getMapModel().getVectorLayers()) {
+			if (featureMap.containsKey(layer)) {
+				addFeatures(layer, featureMap.get(layer), criterion);
+			}
+		}
+		tabset.selectTab(0);
 	}
 
-	private void addFeatures(VectorLayer layer, List<Feature> features, Object csvExportData, boolean showSingleResult)
-	{
-		FeatureListGridTab t;
-		if (csvExportData instanceof Criterion) {
-			t = getTab(layer, (Criterion) csvExportData);
-		} else if (csvExportData instanceof CommandRequest) {
-			t = getTab(layer, (CommandRequest) csvExportData);
-		} else {
-			if (csvExportData != null) {
-				SC.logWarn("Unsupported csvExportData class: " + csvExportData.getClass().getName());
-			}
-			t = getTab(layer);
-		}
-
-		t.empty();
-		t.setSortFeatures(sortFeatures);
-		t.addFeatures(features);
-		tabset.selectTab(t);
-		if (showSingleResult && features.size() == 1) {
-			showFeatureDetailWindow(features.get(0));
-		}
+	private void addFeatures(VectorLayer layer, List<Feature> features, Criterion criterion) {
+		FeatureListGridTab tab = getOrCreateTab(layer);
+		tab.empty();
+		tab.setSortFeatures(sortFeatures);
+		tab.setCriterion(criterion);
+		tab.addFeatures(features);
 	}
 
 	/**
@@ -272,44 +267,22 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		}
 	}
 
-	private FeatureListGridTab getTab(VectorLayer layer) {
-		return getTab(layer, new ExportFeatureListToCsvHandler(map.getMapModel(), layer));
-	}
-
-	private FeatureListGridTab getTab(VectorLayer layer, CommandRequest searchRequest) {
-		return getTab(layer, new ExportSearchToCsvHandler(map.getMapModel(), layer, searchRequest));
-	}
-
-	private FeatureListGridTab getTab(VectorLayer layer, Criterion criterion) {
-		return getTab(layer, new ExportSearchToCsvHandler(map.getMapModel(), layer, criterion));
-	}
-
-	private FeatureListGridTab getTab(VectorLayer layer, ExportToCsvHandler handler) {
+	private FeatureListGridTab getOrCreateTab(VectorLayer layer) {
 		String layerId = layer.getId();
 		String id = tabset.getID() + "_" + layerId;
 		FeatureListGridTab t = (FeatureListGridTab) tabset.getTab(id);
 		if (t == null) {
-			t = new FeatureListGridTab(map, layer, handler);
+			t = new FeatureListGridTab(map, layer);
 			t.setID(id);
-			tabset.addTab(t);
+			tabset.addTab(t, 0);
 			for (ExtraButton button : extraButtons) {
 				if (layerId.equals(button.getLayerId())) {
 					t.addButton(button.getButton(), button.getPosition());
 				}
 			}
-		} else {
-			// Do not forget to update
-			t.setExportToCsvHandler(handler);
 		}
 		setEmpty();
 		return t;
-	}
-
-	private void showFeatureDetailWindow(final Feature feature) {
-		Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, false);
-		window.setPageTop(map.getAbsoluteTop() + 10);
-		window.setPageLeft(map.getAbsoluteLeft() + 10);
-		window.draw();
 	}
 
 	/**
@@ -326,267 +299,6 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			return tab.getSelection();
 		}
 		return null;
-	}
-
-	/**
-	 * Wraps a FeatureListGrid in a Tab and adds some actions.
-	 * 
-	 * @author Kristof Heirwegh
-	 */
-	private class FeatureListGridTab extends Tab implements SelectionChangedHandler {
-
-		private static final String BTN_SHOW_DETAIL = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/info.gif";
-		private static final String BTN_EXPORT = "[ISOMORPHIC]/geomajas/widget/multifeaturelistgrid/table_save.png";
-
-		private FeatureListGrid featureListGrid;
-		private ToolStrip toolStrip;
-		private ToolStripButton focusButton;
-		private ToolStripButton showButton;
-		private ToolStripButton exportButton;
-		private List<ToolStripButton> extraButtons = new ArrayList<ToolStripButton>();
-
-		private ExportToCsvHandler handler;
-		private com.smartgwt.client.types.SortDirection sortDirGWT;
-		private boolean sortFeatures;
-		private String sortFieldName;
-
-		public void setExportToCsvHandler(ExportToCsvHandler handler) {
-			this.handler = handler;
-		}
-
-		public FeatureListGridTab(final MapWidget mapWidget, final VectorLayer layer, final ExportToCsvHandler handler)
-		{
-			super(layer.getLabel());
-			this.handler = handler;
-			toolStrip = new ToolStrip();
-			toolStrip.setWidth100();
-			toolStrip.setHeight(24);
-			focusButton = new ToolStripButton(messages.multiFeatureListGridButtonFocusSelection());
-			showButton = new ToolStripButton(messages.multiFeatureListGridButtonShowDetail());
-			exportButton = new ToolStripButton(messages.multiFeatureListGridButtonExportToCSV());
-			focusButton.setIcon(WidgetLayout.iconZoomSelection);
-			showButton.setIcon(BTN_SHOW_DETAIL);
-			exportButton.setIcon(BTN_EXPORT);
-			focusButton.setTooltip(messages.multiFeatureListGridButtonFocusSelectionTooltip());
-			showButton.setTooltip(messages.multiFeatureListGridButtonShowDetailTooltip());
-			exportButton.setTooltip(messages.multiFeatureListGridButtonExportToCSVTooltip());
-			focusButton.setDisabled(true);
-			showButton.setDisabled(true);
-			showButton.setShowDisabledIcon(false);
-			focusButton.setShowDisabledIcon(false);
-			exportButton.setShowDisabledIcon(false);
-			if (handler == null) {
-				exportButton.setVisible(false);
-			}
-			focusButton.addClickHandler(new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					zoomToBounds();
-				}
-			});
-			showButton.addClickHandler(new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					showFeatureDetail();
-				}
-			});
-			exportButton.addClickHandler(new ClickHandler() {
-
-				public void onClick(ClickEvent event) {
-					if (handler != null) {
-						exportButton.setDisabled(true);
-						exportButton.setIcon(WidgetLayout.iconAjaxLoading);
-						handler.execute(layer, new Callback() {
-
-							public void execute() {
-								exportButton.setDisabled(false);
-								exportButton.setIcon(BTN_EXPORT);
-							}
-						});
-					}
-				}
-			});
-			toolStrip.addButton(focusButton);
-			toolStrip.addButton(showButton);
-			toolStrip.addButton(exportButton);
-			featureListGrid = new FeatureListGrid(mapWidget.getMapModel(), new DoubleClickHandler() {
-
-				public void onDoubleClick(DoubleClickEvent event) {
-					showFeatureDetail();
-				}
-			});
-			featureListGrid.setLayer(layer);
-			featureListGrid.addSelectionChangedHandler(this);
-			featureListGrid.setAutoFitFieldWidths(true);
-			featureListGrid.setAutoFitWidthApproach(AutoFitWidthApproach.BOTH);
-			featureListGrid.setOverflow(Overflow.AUTO);
-			featureListGrid.setWidth100();
-			featureListGrid.setHeight100();
-			
-			String sortFieldName = layer.getLayerInfo().getFeatureInfo().getSortAttributeName(); 
-						
-			SortType sortType = layer.getLayerInfo().getFeatureInfo().getSortType();
-			
-			com.smartgwt.client.types.SortDirection sortDirGWT = null; 
-
-			if (SortType.DESC.equals(sortType)) {
-				sortDirGWT = com.smartgwt.client.types.SortDirection.DESCENDING;
-			} else { /* also ascending if sortType == null */
-				sortDirGWT = com.smartgwt.client.types.SortDirection.ASCENDING;					
-			}
-			this.sortDirGWT = sortDirGWT;
-			if (null != sortFieldName) { /* if null and if sortFeatures==true, then sort on first column */
-				featureListGrid.setSortField(sortFieldName);
-				this.sortFieldName = sortFieldName;
-			}
-			featureListGrid.setSortDirection(sortDirGWT);
-				
-			VLayout pane = new VLayout();
-			pane.setWidth100();
-			pane.setHeight100();
-			pane.setOverflow(Overflow.HIDDEN);
-			pane.addMember(toolStrip);
-			pane.addMember(featureListGrid);
-			setPane(pane);
-			setCanClose(true);
-		}
-
-		public boolean getSortFeatures() {
-			return sortFeatures;
-		}
-
-
-
-		public void setSortFeatures(boolean sortFeatures) {
-			this.sortFeatures = sortFeatures;
-		}
-
-
-
-
-
-		/**
-		 * Add a button in the tool strip at the requested position.
-		 *
-		 * @param button button to add
-		 * @param position position
-		 */
-		public void addButton(ToolStripButton button, int position) {
-			toolStrip.addButton(button, position);
-			extraButtons.add(button);
-			button.setDisabled(true);
-		}
-
-		public void addFeatures(List<Feature> features) {
-			for (Feature feature : features) {
-				featureListGrid.addFeature(feature);
-			}
-			if (sortFeatures) {
-				featureListGrid.sort(sortFieldName, sortDirGWT);
-			}
-			
-			if (handler instanceof ExportFeatureListToCsvHandler) {
-				((ExportFeatureListToCsvHandler) handler).setFeatures(features);
-			}
-		}
-
-		public void empty() {
-			featureListGrid.empty();
-		}
-
-		// ----------------------------------------------------------
-		// -- Events --
-		// ----------------------------------------------------------
-
-		public void onSelectionChanged(SelectionEvent event) {
-			int count = event.getSelection().length;
-			if (count == 0) {
-				focusButton.setDisabled(true);
-				showButton.setDisabled(true);
-			} else if (count == 1) {
-				focusButton.setDisabled(false);
-				showButton.setDisabled(false);
-			} else {
-				focusButton.setDisabled(false);
-				showButton.setDisabled(true);
-			}
-			for (ToolStripButton button : extraButtons) {
-				button.setDisabled(count == 0);
-			}
-		}
-
-		/**
-		 * Get the selected records for the tab.
-		 *
-		 * @return selected records
-		 */
-		public ListGridRecord[] getSelection() {
-			return featureListGrid.getSelection();
-		}
-
-		// ----------------------------------------------------------
-		// -- Actions --
-		// ----------------------------------------------------------
-
-		private void zoomToBounds() {
-			ListGridRecord[] selection = getSelection();
-			int count = selection.length;
-			if (count > 0) {
-				LazyLoadCallback llc = new ZoomToBoundsFeatureLazyLoadCallback(count);
-				for (ListGridRecord lgr : selection) {
-					featureListGrid.getLayer().getFeatureStore().getFeature(
-							lgr.getAttribute(FeatureListGrid.FIELD_NAME_FEATURE_ID),
-							GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, llc);
-				}
-			}
-		}
-
-		/**
-		 * Stateful callback that zooms to bounds when all features have been retrieved.
-		 * 
-		 * @author Kristof Heirwegh
-		 */
-		private class ZoomToBoundsFeatureLazyLoadCallback implements LazyLoadCallback {
-
-			private int featureCount;
-			private Bbox bounds;
-
-			public ZoomToBoundsFeatureLazyLoadCallback(int featureCount) {
-				this.featureCount = featureCount;
-			}
-
-			public void execute(List<Feature> response) {
-				if (response != null && response.size() > 0) {
-					if (bounds == null) {
-						bounds = (Bbox) response.get(0).getGeometry().getBounds().clone();
-					} else {
-						bounds = bounds.union(response.get(0).getGeometry().getBounds());
-					}
-				}
-				featureCount--;
-				if (featureCount == 0) {
-					if (bounds != null) {
-						map.getMapModel().getMapView().applyBounds(bounds, ZoomOption.LEVEL_FIT);
-					}
-				}
-			}
-		}
-
-		private void showFeatureDetail() {
-			ListGridRecord selected = featureListGrid.getSelectedRecord();
-			if (selected != null) {
-				String featureId = selected.getAttribute(FeatureListGrid.FIELD_NAME_FEATURE_ID);
-				if (featureId != null && featureListGrid.getLayer() != null) {
-					featureListGrid.getLayer().getFeatureStore()
-							.getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
-
-								public void execute(List<Feature> response) {
-									showFeatureDetailWindow(response.get(0));
-								}
-							});
-				}
-			}
-		}
 	}
 
 	/**
@@ -617,4 +329,14 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 			return position;
 		}
 	}
+	
+	//FIXME: move to a service?
+	public static void showFeatureDetailWindow(final MapWidget mapWidget, final Feature feature) {
+		Window window = FeatureDetailWidgetFactory.createFeatureDetailWindow(feature, false);
+		window.setPageTop(mapWidget.getAbsoluteTop() + 10);
+		window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);
+		window.draw();
+	}
+
+	
 }
