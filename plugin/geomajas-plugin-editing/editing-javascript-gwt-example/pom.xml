@@ -42,11 +42,6 @@
 		</license>
 	</licenses>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwt-version>2.4.0</gwt-version>
-	</properties>
-
 	<developers>
 		<developer>
 			<id>pieterdg</id>
@@ -62,7 +57,7 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${gwt-version}</version>
+				<version>${geomajas-plugin-editing-gwt-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -126,13 +121,13 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<scope>provided</scope>
-			<version>${gwt-version}</version>
+			<version>${geomajas-plugin-editing-gwt-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<scope>runtime</scope>
-			<version>${gwt-version}</version>
+			<version>${geomajas-plugin-editing-gwt-version}</version>
 		</dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
@@ -203,7 +198,7 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-servlet</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-plugin-editing-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -227,23 +222,25 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-plugin-editing-gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${geomajas-plugin-editing-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
-					<inplace>true</inplace>
-					<modules>
-						<module>org.geomajas.plugin.editing.jsapi.example.Showcase</module>
-					</modules>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
+					<!--<logLevel>DEBUG</logLevel>-->
+					<!--<draftCompile>true</draftCompile>-->
+					<!--<optimizationLevel>0</optimizationLevel>-->
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<!--style>DETAILED</style-->
+					<module>org.geomajas.plugin.editing.jsapi.example.Showcase</module>
+					<runTarget>index.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
 				<executions>
 					<execution>
@@ -266,14 +263,12 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
 			</plugin>
 
 			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.4</version>
 				<executions>
 					<execution>
 						<id>remove-build-files</id>

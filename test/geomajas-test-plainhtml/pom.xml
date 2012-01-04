@@ -322,7 +322,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.5</version>
 						<configuration>
 							<target>
 								<xslt in=".settings/org.eclipse.wst.common.component" out=".settings/org.eclipse.wst.common.tmp"
