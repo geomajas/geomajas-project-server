@@ -218,6 +218,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		tab.setSortFeatures(sortFeatures);
 		tab.setCriterion(criterion);
 		tab.addFeatures(features);
+		tabset.addTab(tab, 0);
 	}
 
 	/**
@@ -274,7 +275,6 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		if (t == null) {
 			t = new FeatureListGridTab(map, layer);
 			t.setID(id);
-			tabset.addTab(t, 0);
 			for (ExtraButton button : extraButtons) {
 				if (layerId.equals(button.getLayerId())) {
 					t.addButton(button.getButton(), button.getPosition());
