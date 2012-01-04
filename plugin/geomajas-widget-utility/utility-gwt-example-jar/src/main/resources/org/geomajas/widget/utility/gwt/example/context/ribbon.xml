@@ -546,7 +546,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 												<list>
 													<bean class="org.geomajas.configuration.client.ClientToolInfo">
 														<property name="toolId" value="ButtonGroup" />
-														<property name="title" value="Basic zoom" />
+														<property name="title" value="Basic description" />
 														<property name="parameters">
 														<list>
 															<bean class="org.geomajas.configuration.Parameter">

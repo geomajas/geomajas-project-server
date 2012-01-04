@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
+ 
 .msRibbon {
 }
 
@@ -21,6 +21,9 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#F0F2F5, GradientType=1);
 	/* For Internet Explorer 8 */
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#F0F2F5, GradientType=1)";
+}
+
+.msRibbonGroup {
     border-right: 1px solid #B3B8BE;
 }
 

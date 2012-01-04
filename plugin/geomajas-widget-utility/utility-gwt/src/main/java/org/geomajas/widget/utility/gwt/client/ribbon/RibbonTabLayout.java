@@ -57,15 +57,15 @@ public class RibbonTabLayout extends VLayout {
 							if (null != ribbonBarMembersMargin) {
 								ribbon.setMembersMargin(ribbonBarMembersMargin);
 							}
-							ribbon.setStyleName(getStyleName()); // in case the styleName has been set already.
+							// replace smartgwt's default 'normal' with our default 'ribbon'.
+							String styleName = getStyleName().equals("normal") ? "ribbon" : "normal";
+							ribbon.setStyleName(styleName);
 							ribbon.setBorder("0px");
 							Tab tab = new Tab(tabInfo.getTitle());
-							tab.setTitleStyle(getStyleName() + "TabTitle"); // not working
+							tab.setTitleStyle(styleName + "TabTitle");
 							tab.setPane(ribbon);
 							tabs.addTab(tab);
-							tabs.setStyleName(getStyleName() + "TabSet"); // tabs and panes
-//							tabs.setStylePrimaryName(getStyleName() + "TabSet"); // DO NOT USE
-							tabs.setPaneContainerClassName(getStyleName() + "TabContainer"); // not working
+							tabs.setStyleName(getStyleName() + "TabSet");
 						}
 					}
 				});
