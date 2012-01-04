@@ -26,6 +26,7 @@ import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.Log;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -35,6 +36,10 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HasHandlers;
@@ -485,8 +490,8 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller,
-				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller, Event.TOUCHEVENTS | Event.MOUSEEVENTS | Event.ONDBLCLICK
+				| Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -531,10 +536,10 @@ public class DomHelper {
 	 */
 	protected void doSetController(Element element, GraphicsController controller, int eventMask) {
 		if (element != null) {
-			int offsetX = element.getAbsoluteLeft() - rootElement.getParentElement().getAbsoluteLeft();
-			int offsetY = element.getAbsoluteTop() - rootElement.getParentElement().getAbsoluteTop();
-			controller.setOffsetX(offsetX);
-			controller.setOffsetY(offsetY);
+			// int offsetX = element.getAbsoluteLeft() - rootElement.getParentElement().getAbsoluteLeft();
+			// int offsetY = element.getAbsoluteTop() - rootElement.getParentElement().getAbsoluteTop();
+			// controller.setOffsetX(offsetX);
+			// controller.setOffsetY(offsetY);
 			Dom.setEventListener(element, new EventListenerHelper(element, controller, eventMask));
 			Dom.sinkEvents(element, eventMask);
 		}
@@ -613,6 +618,18 @@ public class DomHelper {
 			if ((Event.ONDBLCLICK & eventMask) > 0) {
 				hm.addHandler(DoubleClickEvent.getType(), gc);
 			}
+			if ((Event.ONTOUCHSTART & eventMask) > 0) {
+				hm.addHandler(TouchStartEvent.getType(), gc);
+			}
+			if ((Event.ONTOUCHEND & eventMask) > 0) {
+				hm.addHandler(TouchEndEvent.getType(), gc);
+			}
+			if ((Event.ONTOUCHMOVE & eventMask) > 0) {
+				hm.addHandler(TouchMoveEvent.getType(), gc);
+			}
+			if ((Event.ONTOUCHCANCEL & eventMask) > 0) {
+				hm.addHandler(TouchCancelEvent.getType(), gc);
+			}
 		}
 
 		@SuppressWarnings("deprecation")
@@ -653,7 +670,8 @@ public class DomHelper {
 	/**
 	 * Returns the group that corresponds with this group object.
 	 * 
-	 * @param object group object
+	 * @param object
+	 *            group object
 	 * @return the group or null if it does not exist
 	 */
 	public Element getGroup(Object object) {
@@ -694,8 +712,10 @@ public class DomHelper {
 	 *            the name space (HTML, SVG or VML,...)
 	 * @param parent
 	 *            the parent group
-	 * @param group group
-	 * @param type type
+	 * @param group
+	 *            group
+	 * @param type
+	 *            type
 	 * @return the newly created group element or null if creation failed
 	 */
 	protected Element createGroup(String namespace, Object parent, Object group, String type) {
@@ -835,7 +855,8 @@ public class DomHelper {
 	/**
 	 * Delete this group from the graphics DOM structure.
 	 * 
-	 * @param object The group's object.
+	 * @param object
+	 *            The group's object.
 	 */
 	public void deleteGroup(Object object) {
 		Element element = getGroup(object);
@@ -870,8 +891,10 @@ public class DomHelper {
 	/**
 	 * Apply the style.
 	 * 
-	 * @param element DOM element
-	 * @param style style
+	 * @param element
+	 *            DOM element
+	 * @param style
+	 *            style
 	 */
 	public void applyStyle(Element element, Style style) {
 		if (element != null && style != null) {
