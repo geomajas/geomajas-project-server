@@ -14,14 +14,12 @@ import java.io.Serializable;
 import org.geomajas.annotation.Api;
 
 /**
- * Enumeration class for the available options to limit (e.g. the mapview's) bounds when applying 
- * 		the maxBounds limitation. 
+ * Available options to limit (e.g. the map view) bounds when applying the maxBounds limitation.
  *
  * @author An Buyle
- * 
  * @since 1.10.0
  */
-@Api
+@Api(allMethods = true)
 public enum BoundsLimitOption implements Serializable {
 
 	/**
