@@ -42,7 +42,6 @@ org.geomajas.command.dto.GetVectorTileRequest:String getCacheId():1.8.0
 org.geomajas.command.dto.GetVectorTileRequest:String getCrs():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:String getFilter():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:String getRenderer():1.6.0
-org.geomajas.command.dto.GetVectorTileRequest:String toString():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:TileCode getCode():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:boolean equals(Object, ):1.8.0
 org.geomajas.command.dto.GetVectorTileRequest:boolean isPaintGeometries():1.6.0
@@ -63,7 +62,6 @@ org.geomajas.command.dto.GetVectorTileRequest:void setScale(double, ):1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:void setStyleInfo(NamedStyleInfo, ):1.6.0
 org.geomajas.command.dto.GetVectorTileResponse::1.6.0
 org.geomajas.command.dto.GetVectorTileResponse:GetVectorTileResponse():1.6.0
-org.geomajas.command.dto.GetVectorTileResponse:String toString():1.8.0
 org.geomajas.command.dto.GetVectorTileResponse:VectorTile getTile():1.6.0
 org.geomajas.command.dto.GetVectorTileResponse:void setTile(VectorTile, ):1.6.0
 org.geomajas.command.dto.PersistTransactionRequest::1.6.0
@@ -83,7 +81,6 @@ org.geomajas.command.dto.SearchByLocationRequest:SearchByLocationRequest():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:String getCrs():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:String getFilter():1.8.0
 org.geomajas.command.dto.SearchByLocationRequest:String getFilter(String, ):1.9.0
-org.geomajas.command.dto.SearchByLocationRequest:String toString():1.8.0
 org.geomajas.command.dto.SearchByLocationRequest:double getBuffer():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:float getRatio():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:int getFeatureIncludes():1.6.0
@@ -116,7 +113,6 @@ org.geomajas.command.dto.SearchFeatureRequest:SearchFeatureRequest():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:String getBooleanOperator():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:String getCrs():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:String getFilter():1.6.0
-org.geomajas.command.dto.SearchFeatureRequest:String toString():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:int getFeatureIncludes():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:int getMax():1.6.0
 org.geomajas.command.dto.SearchFeatureRequest:static final String COMMAND:1.9.0

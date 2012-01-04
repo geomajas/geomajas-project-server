@@ -25,7 +25,6 @@ org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setMaxE
 org.geomajas.plugin.caching.service.CacheCategory::1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:CacheCategory(String, ):1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:String getName():1.0.0
-org.geomajas.plugin.caching.service.CacheCategory:String toString():1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:boolean equals(Object, ):1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:int hashCode():1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:static final CacheCategory BOUNDS:1.0.0

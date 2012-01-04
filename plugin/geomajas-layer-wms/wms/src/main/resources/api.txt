@@ -27,7 +27,6 @@ org.geomajas.layer.wms.command.dto.SearchByPointRequest:SearchByPointRequest():1
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:Bbox getMapBounds():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:Coordinate getLocation():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:String getCrs():1.8.0
-org.geomajas.layer.wms.command.dto.SearchByPointRequest:String toString():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:double getScale():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:int getPixelTolerance():1.8.0
 org.geomajas.layer.wms.command.dto.SearchByPointRequest:int getSearchType():1.8.0

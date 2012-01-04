@@ -61,7 +61,6 @@ org.geomajas.configuration.AttributeInfo:void setValidator(ValidatorInfo, ):1.6.
 org.geomajas.configuration.CircleInfo::1.6.0
 org.geomajas.configuration.CircleInfo:CircleInfo():1.6.0
 org.geomajas.configuration.CircleInfo:String getCacheId():1.8.0
-org.geomajas.configuration.CircleInfo:String toString():1.8.0
 org.geomajas.configuration.CircleInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.CircleInfo:float getR():1.6.0
 org.geomajas.configuration.CircleInfo:int hashCode():1.8.0
@@ -91,7 +90,6 @@ org.geomajas.configuration.FeatureStyleInfo:String getFormula():1.6.0
 org.geomajas.configuration.FeatureStyleInfo:String getName():1.6.0
 org.geomajas.configuration.FeatureStyleInfo:String getStrokeColor():1.6.0
 org.geomajas.configuration.FeatureStyleInfo:String getStyleId():1.6.0
-org.geomajas.configuration.FeatureStyleInfo:String toString():1.8.0
 org.geomajas.configuration.FeatureStyleInfo:SymbolInfo getSymbol():1.6.0
 org.geomajas.configuration.FeatureStyleInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.FeatureStyleInfo:float getFillOpacity():1.6.0
@@ -119,7 +117,6 @@ org.geomajas.configuration.FontStyleInfo:String getColor():1.6.0
 org.geomajas.configuration.FontStyleInfo:String getFamily():1.6.0
 org.geomajas.configuration.FontStyleInfo:String getStyle():1.6.0
 org.geomajas.configuration.FontStyleInfo:String getWeight():1.6.0
-org.geomajas.configuration.FontStyleInfo:String toString():1.8.0
 org.geomajas.configuration.FontStyleInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.FontStyleInfo:float getOpacity():1.6.0
 org.geomajas.configuration.FontStyleInfo:int getSize():1.6.0
@@ -138,7 +135,6 @@ org.geomajas.configuration.ImageInfo:ImageInfo():1.6.0
 org.geomajas.configuration.ImageInfo:String getCacheId():1.8.0
 org.geomajas.configuration.ImageInfo:String getHref():1.6.0
 org.geomajas.configuration.ImageInfo:String getSelectionHref():1.6.0
-org.geomajas.configuration.ImageInfo:String toString():1.8.0
 org.geomajas.configuration.ImageInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.ImageInfo:int getHeight():1.6.0
 org.geomajas.configuration.ImageInfo:int getWidth():1.6.0
@@ -153,7 +149,6 @@ org.geomajas.configuration.LabelStyleInfo:FeatureStyleInfo getBackgroundStyle():
 org.geomajas.configuration.LabelStyleInfo:FontStyleInfo getFontStyle():1.6.0
 org.geomajas.configuration.LabelStyleInfo:String getCacheId():1.8.0
 org.geomajas.configuration.LabelStyleInfo:String getLabelAttributeName():1.6.0
-org.geomajas.configuration.LabelStyleInfo:String toString():1.8.0
 org.geomajas.configuration.LabelStyleInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.LabelStyleInfo:int hashCode():1.8.0
 org.geomajas.configuration.LabelStyleInfo:void setBackgroundStyle(FeatureStyleInfo, ):1.6.0
@@ -176,7 +171,6 @@ org.geomajas.configuration.NamedStyleInfo:LabelStyleInfo getLabelStyle():1.6.0
 org.geomajas.configuration.NamedStyleInfo:List<FeatureStyleInfo> getFeatureStyles():1.6.0
 org.geomajas.configuration.NamedStyleInfo:String getCacheId():1.8.0
 org.geomajas.configuration.NamedStyleInfo:String getName():1.6.0
-org.geomajas.configuration.NamedStyleInfo:String toString():1.8.0
 org.geomajas.configuration.NamedStyleInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.NamedStyleInfo:int hashCode():1.8.0
 org.geomajas.configuration.NamedStyleInfo:void setFeatureStyles(List<FeatureStyleInfo>, ):1.6.0
@@ -209,7 +203,6 @@ org.geomajas.configuration.RasterLayerInfo:void setZoomLevels(List<ScaleInfo>, )
 org.geomajas.configuration.RectInfo::1.6.0
 org.geomajas.configuration.RectInfo:RectInfo():1.6.0
 org.geomajas.configuration.RectInfo:String getCacheId():1.8.0
-org.geomajas.configuration.RectInfo:String toString():1.8.0
 org.geomajas.configuration.RectInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.RectInfo:float getH():1.6.0
 org.geomajas.configuration.RectInfo:float getW():1.6.0
@@ -230,7 +223,6 @@ org.geomajas.configuration.SymbolInfo:CircleInfo getCircle():1.6.0
 org.geomajas.configuration.SymbolInfo:ImageInfo getImage():1.6.0
 org.geomajas.configuration.SymbolInfo:RectInfo getRect():1.6.0
 org.geomajas.configuration.SymbolInfo:String getCacheId():1.8.0
-org.geomajas.configuration.SymbolInfo:String toString():1.8.0
 org.geomajas.configuration.SymbolInfo:boolean equals(Object, ):1.8.0
 org.geomajas.configuration.SymbolInfo:int hashCode():1.8.0
 org.geomajas.configuration.SymbolInfo:void setCircle(CircleInfo, ):1.6.0
@@ -706,7 +698,6 @@ org.geomajas.layer.feature.Feature:String getCrs():1.6.0
 org.geomajas.layer.feature.Feature:String getId():1.6.0
 org.geomajas.layer.feature.Feature:String getLabel():1.6.0
 org.geomajas.layer.feature.Feature:String getStyleId():1.6.0
-org.geomajas.layer.feature.Feature:String toString():1.6.0
 org.geomajas.layer.feature.Feature:boolean isClipped():1.6.0
 org.geomajas.layer.feature.Feature:boolean isDeletable():1.6.0
 org.geomajas.layer.feature.Feature:boolean isUpdatable():1.6.0
@@ -771,7 +762,6 @@ org.geomajas.layer.feature.SearchCriterion:SearchCriterion(String, String, Strin
 org.geomajas.layer.feature.SearchCriterion:String getAttributeName():1.6.0
 org.geomajas.layer.feature.SearchCriterion:String getOperator():1.6.0
 org.geomajas.layer.feature.SearchCriterion:String getValue():1.6.0
-org.geomajas.layer.feature.SearchCriterion:String toString():1.6.0
 org.geomajas.layer.feature.SearchCriterion:void setAttributeName(String, ):1.6.0
 org.geomajas.layer.feature.SearchCriterion:void setOperator(String, ):1.6.0
 org.geomajas.layer.feature.SearchCriterion:void setValue(String, ):1.6.0
@@ -802,7 +792,6 @@ org.geomajas.layer.feature.attribute.AssociationValue:Map<String,PrimitiveAttrib
 org.geomajas.layer.feature.attribute.AssociationValue:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.AssociationValue:Object getAttributeValue(String, ):1.9.0
 org.geomajas.layer.feature.attribute.AssociationValue:PrimitiveAttribute<?> getId():1.6.0
-org.geomajas.layer.feature.attribute.AssociationValue:String toString():1.9.0
 org.geomajas.layer.feature.attribute.AssociationValue:boolean isPrimitiveOnly():1.9.0
 org.geomajas.layer.feature.attribute.AssociationValue:void setAllAttributes(Map<String,Attribute<?>>, ):1.9.0
 org.geomajas.layer.feature.attribute.AssociationValue:void setAttributes(Map<String,PrimitiveAttribute<?>>, ):1.6.0
@@ -858,7 +847,6 @@ org.geomajas.layer.feature.attribute.ManyToOneAttribute:AssociationValue getValu
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:ManyToOneAttribute():1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:ManyToOneAttribute(AssociationValue, ):1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:Object clone():1.7.0
-org.geomajas.layer.feature.attribute.ManyToOneAttribute:String toString():1.9.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:boolean isEmpty():1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:void setBooleanAttribute(String, Boolean, ):1.9.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:void setCurrencyAttribute(String, String, ):1.9.0
@@ -878,13 +866,11 @@ org.geomajas.layer.feature.attribute.OneToManyAttribute:List<AssociationValue> g
 org.geomajas.layer.feature.attribute.OneToManyAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:OneToManyAttribute():1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:OneToManyAttribute(List<AssociationValue>, ):1.6.0
-org.geomajas.layer.feature.attribute.OneToManyAttribute:String toString():1.9.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:boolean isEmpty():1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:void setValue(List<AssociationValue>, ):1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute::1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:PrimitiveType getType():1.6.0
-org.geomajas.layer.feature.attribute.PrimitiveAttribute:String toString():1.9.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:VALUE_TYPE getValue():1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:boolean isEditable():1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:boolean isEmpty():1.6.0
@@ -955,7 +941,6 @@ org.geomajas.layer.tile.RasterTile:RasterTile():1.6.0
 org.geomajas.layer.tile.RasterTile:RasterTile(Bbox, String, ):1.6.0
 org.geomajas.layer.tile.RasterTile:String getId():1.6.0
 org.geomajas.layer.tile.RasterTile:String getUrl():1.6.0
-org.geomajas.layer.tile.RasterTile:String toString():1.6.0
 org.geomajas.layer.tile.RasterTile:TileCode getCode():1.6.0
 org.geomajas.layer.tile.RasterTile:void setBounds(Bbox, ):1.6.0
 org.geomajas.layer.tile.RasterTile:void setCode(TileCode, ):1.6.0
@@ -963,7 +948,6 @@ org.geomajas.layer.tile.RasterTile:void setId(String, ):1.6.0
 org.geomajas.layer.tile.RasterTile:void setUrl(String, ):1.6.0
 org.geomajas.layer.tile.TileCode::1.6.0
 org.geomajas.layer.tile.TileCode:String getCacheId():1.8.0
-org.geomajas.layer.tile.TileCode:String toString():1.6.0
 org.geomajas.layer.tile.TileCode:TileCode clone():1.6.0
 org.geomajas.layer.tile.TileCode:TileCode():1.6.0
 org.geomajas.layer.tile.TileCode:TileCode(int, int, int, ):1.6.0
@@ -1005,7 +989,6 @@ org.geomajas.layer.tile.VectorTile:List<Feature> getFeatures():1.6.0
 org.geomajas.layer.tile.VectorTile:List<TileCode> getCodes():1.6.0
 org.geomajas.layer.tile.VectorTile:String getFeatureContent():1.6.0
 org.geomajas.layer.tile.VectorTile:String getLabelContent():1.6.0
-org.geomajas.layer.tile.VectorTile:String toString():1.8.0
 org.geomajas.layer.tile.VectorTile:TileCode getCode():1.6.0
 org.geomajas.layer.tile.VectorTile:VectorTile():1.6.0
 org.geomajas.layer.tile.VectorTile:VectorTileContentType getContentType():1.6.0

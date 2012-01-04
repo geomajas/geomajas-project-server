@@ -2,7 +2,6 @@
 org.geomajas.geometry.Bbox::1.0.0
 org.geomajas.geometry.Bbox:Bbox():1.0.0
 org.geomajas.geometry.Bbox:Bbox(double, double, double, double, ):1.0.0
-org.geomajas.geometry.Bbox:String toString():1.0.0
 org.geomajas.geometry.Bbox:double getHeight():1.0.0
 org.geomajas.geometry.Bbox:double getMaxX():1.0.0
 org.geomajas.geometry.Bbox:double getMaxY():1.0.0
@@ -21,7 +20,6 @@ org.geomajas.geometry.Coordinate:Coordinate():1.0.0
 org.geomajas.geometry.Coordinate:Coordinate(Coordinate, ):1.0.0
 org.geomajas.geometry.Coordinate:Coordinate(double, double, ):1.0.0
 org.geomajas.geometry.Coordinate:Object clone():1.0.0
-org.geomajas.geometry.Coordinate:String toString():1.0.0
 org.geomajas.geometry.Coordinate:boolean equals(Object, ):1.0.0
 org.geomajas.geometry.Coordinate:boolean equalsDelta(Coordinate, double, ):1.0.0
 org.geomajas.geometry.Coordinate:double distance(Coordinate, ):1.0.0

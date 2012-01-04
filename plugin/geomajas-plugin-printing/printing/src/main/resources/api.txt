@@ -181,7 +181,6 @@ org.geomajas.plugin.printing.component.impl.PrintComponentImpl:PrintComponentImp
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:Rectangle getBounds():2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:String getId():2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:String getTag():2.0.0
-org.geomajas.plugin.printing.component.impl.PrintComponentImpl:String toString():2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:void accept(PrintComponentVisitor, ):2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:void addComponent(PrintComponent<?>, ):2.0.0
 org.geomajas.plugin.printing.component.impl.PrintComponentImpl:void addComponent(int, PrintComponent<?>, ):2.0.0
