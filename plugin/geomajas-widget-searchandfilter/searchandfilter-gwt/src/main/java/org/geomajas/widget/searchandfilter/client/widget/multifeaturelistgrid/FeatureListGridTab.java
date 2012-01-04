@@ -178,8 +178,8 @@ class FeatureListGridTab extends Tab implements SelectionChangedHandler {
 		//Display alert when feature list is not complete.
 		this.addTabSelectedHandler(new TabSelectedHandler() {
 			public void onTabSelected(TabSelectedEvent event) {
-				if (numFeatures == SearchCommService.searchResultSize) {
-					Notify.info("tralalal");
+				if (numFeatures == SearchCommService.searchResultSize && numFeatures > 0) {
+					Notify.info(messages.multiFeatureListGridMaxSizeExceededMessage());
 				}
 			}
 		});
