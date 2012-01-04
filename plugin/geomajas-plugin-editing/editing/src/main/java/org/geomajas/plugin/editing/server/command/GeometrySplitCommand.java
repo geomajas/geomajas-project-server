@@ -28,8 +28,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
- * Command that splits up a given geometry using a splitting line.<br/>
- * TODO find a better way to split geometries....
+ * Command that splits up a given geometry using a splitting line. This command tries to return Polygons in the result.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -59,14 +58,12 @@ public class GeometrySplitCommand implements Command<GeometrySplitRequest, Geome
 		// Convert geometries to JTS model:
 		Geometry geometry = converter.toInternal(request.getGeometry());
 		Geometry splittingLine = converter.toInternal(request.getSplitLine());
-
-		// Calculate the splitting algorithm:
 		Geometry buffered = splittingLine.buffer(DELTA);
-		Geometry diff = geometry.difference(buffered);
 
-		// Try to return the same type of geometry as was originally given:
+		// Try to return polygons:
 		List<org.geomajas.geometry.Geometry> geometries = new ArrayList<org.geomajas.geometry.Geometry>();
 		if (org.geomajas.geometry.Geometry.POLYGON.equals(request.getGeometry().getGeometryType())) {
+			Geometry diff = geometry.difference(buffered);
 			if (diff instanceof Polygon) {
 				geometries.add(converter.toDto(diff));
 			} else if (diff instanceof MultiPolygon) {
@@ -75,11 +72,16 @@ public class GeometrySplitCommand implements Command<GeometrySplitRequest, Geome
 				}
 			}
 		} else if (org.geomajas.geometry.Geometry.MULTI_POLYGON.equals(request.getGeometry().getGeometryType())) {
-			if (diff instanceof Polygon) {
-				MultiPolygon mp = diff.getFactory().createMultiPolygon(new Polygon[] { (Polygon) diff });
-				geometries.add(converter.toDto(mp));
-			} else if (diff instanceof MultiPolygon) {
-				geometries.add(converter.toDto(diff));
+			for (int i = 0; i < geometry.getNumGeometries(); i++) {
+				Polygon polygon = (Polygon) geometry.getGeometryN(i);
+				Geometry diff = polygon.difference(buffered);
+				if (diff instanceof Polygon) {
+					geometries.add(converter.toDto(diff));
+				} else if (diff instanceof MultiPolygon) {
+					for (int j = 0; j < diff.getNumGeometries(); j++) {
+						geometries.add(converter.toDto(diff.getGeometryN(j)));
+					}
+				}
 			}
 		}
 
