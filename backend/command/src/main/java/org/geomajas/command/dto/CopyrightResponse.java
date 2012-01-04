@@ -36,4 +36,11 @@ public class CopyrightResponse extends CommandResponse {
 	public void setCopyrights(List<CopyrightInfo> copyrights) {
 		this.copyrights = copyrights;
 	}
+
+	@Override
+	public String toString() {
+		return "CopyrightResponse{" +
+				"copyrights=" + copyrights +
+				'}';
+	}
 }

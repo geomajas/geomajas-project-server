@@ -214,4 +214,15 @@ public class ClientApplicationInfo implements Serializable {
 			this.dummy = dummy;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "ClientApplicationInfo{" +
+				"id='" + id + '\'' +
+				", maps=" + maps +
+				", userData=" + userData +
+				", screenDpi=" + screenDpi +
+				", widgetInfo=" + widgetInfo +
+				'}';
+	}
 }

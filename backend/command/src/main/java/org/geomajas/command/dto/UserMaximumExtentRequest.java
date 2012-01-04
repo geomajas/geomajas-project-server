@@ -61,4 +61,12 @@ public class UserMaximumExtentRequest extends LayerIdsCommandRequest {
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
+
+	@Override
+	public String toString() {
+		return "UserMaximumExtentRequest{" +
+				"excludeRasterLayers=" + excludeRasterLayers +
+				", crs='" + crs + '\'' +
+				'}';
+	}
 }

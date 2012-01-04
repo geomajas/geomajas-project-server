@@ -44,4 +44,11 @@ public class GetConfigurationResponse extends CommandResponse {
 	public void setApplication(ClientApplicationInfo application) {
 		this.application = application;
 	}
+
+	@Override
+	public String toString() {
+		return "GetConfigurationResponse{" +
+				"application=" + application +
+				'}';
+	}
 }

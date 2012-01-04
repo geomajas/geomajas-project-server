@@ -13,6 +13,8 @@ package org.geomajas.command.dto;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Geometry;
 
+import java.util.Arrays;
+
 /**
  * Result object for {@link org.geomajas.command.geometry.SplitPolygonCommand}.
  * 
@@ -33,5 +35,12 @@ public class SplitPolygonResponse extends CommandResponse {
 
 	public void setGeometries(Geometry[] geometries) {
 		this.geometries = geometries;
+	}
+
+	@Override
+	public String toString() {
+		return "SplitPolygonResponse{" +
+				"geometries=" + (geometries == null ? null : Arrays.asList(geometries)) +
+				'}';
 	}
 }

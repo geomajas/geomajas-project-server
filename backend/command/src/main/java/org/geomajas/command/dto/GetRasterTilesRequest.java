@@ -86,4 +86,12 @@ public class GetRasterTilesRequest extends LayerIdCommandRequest {
 		this.scale = scale;
 	}
 
+	@Override
+	public String toString() {
+		return "GetRasterTilesRequest{" +
+				"crs='" + crs + '\'' +
+				", bbox=" + bbox +
+				", scale=" + scale +
+				'}';
+	}
 }

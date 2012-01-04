@@ -68,4 +68,12 @@ public class SplitPolygonRequest implements CommandRequest {
 	public void setSplitter(Geometry splitter) {
 		this.splitter = splitter;
 	}
+
+	@Override
+	public String toString() {
+		return "SplitPolygonRequest{" +
+				"geometry=" + geometry +
+				", splitter=" + splitter +
+				'}';
+	}
 }

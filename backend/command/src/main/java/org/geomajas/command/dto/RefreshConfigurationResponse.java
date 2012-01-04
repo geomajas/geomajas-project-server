@@ -12,6 +12,8 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
 
+import java.util.Arrays;
+
 /**
  * Response object for {@link org.geomajas.command.configuration.RefreshConfigurationCommand}.
  * 
@@ -42,4 +44,10 @@ public class RefreshConfigurationResponse extends CommandResponse {
 		this.applicationNames = applicationNames;
 	}
 
+	@Override
+	public String toString() {
+		return "RefreshConfigurationResponse{" +
+				"applicationNames=" + (applicationNames == null ? null : Arrays.asList(applicationNames)) +
+				'}';
+	}
 }

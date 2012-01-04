@@ -29,4 +29,5 @@ public class CopyrightRequest extends EmptyCommandRequest {
 	 */
 	public static final String COMMAND = "command.general.Copyright";
 
+
 }

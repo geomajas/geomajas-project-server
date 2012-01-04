@@ -37,4 +37,11 @@ public class GetConfigurationRequest implements CommandRequest {
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
+
+	@Override
+	public String toString() {
+		return "GetConfigurationRequest{" +
+				"applicationId='" + applicationId + '\'' +
+				'}';
+	}
 }

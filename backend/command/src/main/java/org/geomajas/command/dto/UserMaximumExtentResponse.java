@@ -36,4 +36,11 @@ public class UserMaximumExtentResponse extends CommandResponse {
 	public void setBounds(Bbox bounds) {
 		this.bounds = bounds;
 	}
+
+	@Override
+	public String toString() {
+		return "UserMaximumExtentResponse{" +
+				"bounds=" + bounds +
+				'}';
+	}
 }

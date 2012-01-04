@@ -12,6 +12,8 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
 
+import java.util.Arrays;
+
 /**
  * Request object for {@link org.geomajas.command.configuration.RefreshConfigurationCommand}.
  * 
@@ -48,5 +50,12 @@ public class RefreshConfigurationRequest implements CommandRequest {
 	 */
 	public void setConfigLocations(String[] configLocations) {
 		this.configLocations = configLocations;
+	}
+
+	@Override
+	public String toString() {
+		return "RefreshConfigurationRequest{" +
+				"configLocations=" + (configLocations == null ? null : Arrays.asList(configLocations)) +
+				'}';
 	}
 }

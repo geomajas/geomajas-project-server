@@ -50,4 +50,11 @@ public class SearchByLocationResponse extends CommandResponse {
 	public void setFeatureMap(Map<String, List<Feature>> featureMap) {
 		this.featureMap = featureMap;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchByLocationResponse{" +
+				"featureMap=" + featureMap +
+				'}';
+	}
 }

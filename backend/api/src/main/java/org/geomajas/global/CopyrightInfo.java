@@ -108,4 +108,14 @@ public class CopyrightInfo implements Serializable {
 	public void setLicenseUrl(String license) {
 		this.licenseUrl = license;
 	}
+
+	@Override
+	public String toString() {
+		return "CopyrightInfo{" +
+				"key='" + key + '\'' +
+				", copyright='" + copyright + '\'' +
+				", licenseName='" + licenseName + '\'' +
+				", licenseUrl='" + licenseUrl + '\'' +
+				'}';
+	}
 }

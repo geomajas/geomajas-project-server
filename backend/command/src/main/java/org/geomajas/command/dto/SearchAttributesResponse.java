@@ -40,4 +40,11 @@ public class SearchAttributesResponse extends CommandResponse {
 	public void setAttributes(List<Attribute<?>> attributes) {
 		this.attributes = attributes;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchAttributesResponse{" +
+				"attributes=" + attributes +
+				'}';
+	}
 }

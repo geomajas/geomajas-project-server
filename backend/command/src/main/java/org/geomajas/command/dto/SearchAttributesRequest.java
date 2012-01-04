@@ -65,4 +65,12 @@ public class SearchAttributesRequest extends LayerIdCommandRequest {
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchAttributesRequest{" +
+				"attributePath='" + attributePath + '\'' +
+				", filter='" + filter + '\'' +
+				'}';
+	}
 }

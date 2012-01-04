@@ -87,11 +87,7 @@ public class LayerFilterSpecification  implements Serializable {
 		return filter;
 	}
 
-	/**
-	 * Convert object to readable string.
-	 *
-	 * @return readable object representation
-	 */
+	@Override
 	public String toString() {
 		return "{serverLayerId='" + this.serverLayerId + "'; filter='" +  filter + "'}";
 	}

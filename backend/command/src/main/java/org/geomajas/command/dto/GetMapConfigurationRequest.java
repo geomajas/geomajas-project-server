@@ -59,5 +59,12 @@ public class GetMapConfigurationRequest implements CommandRequest {
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "GetMapConfigurationRequest{" +
+				"applicationId='" + applicationId + '\'' +
+				", mapId='" + mapId + '\'' +
+				'}';
+	}
 }

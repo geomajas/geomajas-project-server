@@ -134,4 +134,14 @@ public class TransformGeometryRequest implements CommandRequest {
 		this.targetCrs = targetCrs;
 	}
 
+	@Override
+	public String toString() {
+		return "TransformGeometryRequest{" +
+				"geometry=" + geometry +
+				", geometryCollection=" + geometryCollection +
+				", bounds=" + bounds +
+				", sourceCrs='" + sourceCrs + '\'' +
+				", targetCrs='" + targetCrs + '\'' +
+				'}';
+	}
 }

@@ -13,6 +13,8 @@ package org.geomajas.command.dto;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
 
+import java.util.Arrays;
+
 /**
  * Request object for {@link org.geomajas.command.geometry.MergePolygonCommand}.
  *
@@ -47,5 +49,13 @@ public class MergePolygonRequest implements CommandRequest {
 
 	public void setAllowMultiPolygon(boolean allowMultiPolygon) {
 		this.allowMultiPolygon = allowMultiPolygon;
+	}
+
+	@Override
+	public String toString() {
+		return "MergePolygonRequest{" +
+				"polygons=" + (polygons == null ? null : Arrays.asList(polygons)) +
+				", allowMultiPolygon=" + allowMultiPolygon +
+				'}';
 	}
 }

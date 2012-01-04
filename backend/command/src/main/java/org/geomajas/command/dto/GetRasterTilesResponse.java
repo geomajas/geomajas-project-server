@@ -70,5 +70,12 @@ public class GetRasterTilesResponse extends CommandResponse {
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "GetRasterTilesResponse{" +
+				"rasterData=" + rasterData +
+				", nodeId='" + nodeId + '\'' +
+				'}';
+	}
 }

@@ -14,6 +14,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.layer.feature.Feature;
 
+import java.util.Arrays;
+
 /**
  * Response object for {@link org.geomajas.command.feature.SearchFeatureCommand}.
  *
@@ -56,5 +58,13 @@ public class SearchFeatureResponse extends CommandResponse {
 
 	public void setFeatures(Feature[] features) {
 		this.features = features;
+	}
+
+	@Override
+	public String toString() {
+		return "SearchFeatureResponse{" +
+				"layerId='" + layerId + '\'' +
+				", features=" + (features == null ? null : Arrays.asList(features)) +
+				'}';
 	}
 }

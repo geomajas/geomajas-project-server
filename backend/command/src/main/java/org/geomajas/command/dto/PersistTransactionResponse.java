@@ -39,4 +39,11 @@ public class PersistTransactionResponse extends CommandResponse {
 	public void setFeatureTransaction(FeatureTransaction featureTransaction) {
 		this.featureTransaction = featureTransaction;
 	}
+
+	@Override
+	public String toString() {
+		return "PersistTransactionResponse{" +
+				"featureTransaction=" + featureTransaction +
+				'}';
+	}
 }

@@ -43,4 +43,11 @@ public class GetMapConfigurationResponse extends CommandResponse {
 	public void setMapInfo(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
 	}
+
+	@Override
+	public String toString() {
+		return "GetMapConfigurationResponse{" +
+				"mapInfo=" + mapInfo +
+				'}';
+	}
 }

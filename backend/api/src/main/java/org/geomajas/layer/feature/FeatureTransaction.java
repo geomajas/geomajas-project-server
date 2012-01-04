@@ -11,9 +11,10 @@
 
 package org.geomajas.layer.feature;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.
@@ -101,5 +102,14 @@ public class FeatureTransaction implements Serializable {
 	 */
 	public void setNewFeatures(Feature[] newFeatures) {
 		this.newFeatures = newFeatures;
+	}
+
+	@Override
+	public String toString() {
+		return "FeatureTransaction{" +
+				"layerId='" + layerId + '\'' +
+				", oldFeatures=" + (oldFeatures == null ? null : Arrays.asList(oldFeatures)) +
+				", newFeatures=" + (newFeatures == null ? null : Arrays.asList(newFeatures)) +
+				'}';
 	}
 }

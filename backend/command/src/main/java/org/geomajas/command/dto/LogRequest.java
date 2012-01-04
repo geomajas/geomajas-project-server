@@ -52,4 +52,11 @@ public class LogRequest implements CommandRequest {
 		this.level = level;
 	}
 
+	@Override
+	public String toString() {
+		return "LogRequest{" +
+				"statement='" + statement + '\'' +
+				", level=" + level +
+				'}';
+	}
 }

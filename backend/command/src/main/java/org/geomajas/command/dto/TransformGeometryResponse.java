@@ -89,4 +89,12 @@ public class TransformGeometryResponse extends CommandResponse {
 		this.bounds = bounds;
 	}
 
+	@Override
+	public String toString() {
+		return "TransformGeometryResponse{" +
+				"geometry=" + geometry +
+				", geometryCollection=" + geometryCollection +
+				", bounds=" + bounds +
+				'}';
+	}
 }

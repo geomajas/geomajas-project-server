@@ -65,4 +65,12 @@ public class PersistTransactionRequest implements CommandRequest {
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
+
+	@Override
+	public String toString() {
+		return "PersistTransactionRequest{" +
+				"featureTransaction=" + featureTransaction +
+				", crs='" + crs + '\'' +
+				'}';
+	}
 }

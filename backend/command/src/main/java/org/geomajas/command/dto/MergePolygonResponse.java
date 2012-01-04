@@ -31,4 +31,11 @@ public class MergePolygonResponse extends CommandResponse {
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
+
+	@Override
+	public String toString() {
+		return "MergePolygonResponse{" +
+				"geometry=" + geometry +
+				'}';
+	}
 }
