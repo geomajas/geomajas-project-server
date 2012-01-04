@@ -100,19 +100,7 @@ public class LinearRing extends LineString {
 	 * Since a LinearRing is closed, it has an area.
 	 */
 	public double getArea() {
-		if (isEmpty()) {
-			return 0;
-		}
-		double area = 0;
-		Coordinate[] coordinates = getCoordinates();
-		for (int i = 1; i < coordinates.length; i++) {
-			double x1 = coordinates[i - 1].getX();
-			double y1 = coordinates[i - 1].getY();
-			double x2 = coordinates[i].getX();
-			double y2 = coordinates[i].getY();
-			area += x1 * y2 - x2 * y1;
-		}
-		return Math.abs(area / 2);
+		return Math.abs(getSignedArea());
 	}
 
 	/**
@@ -124,7 +112,7 @@ public class LinearRing extends LineString {
 		if (isEmpty()) {
 			return null;
 		}
-		double area = getArea();
+		double area = getSignedArea();
 		double x = 0;
 		double y = 0;
 		Coordinate[] coordinates = getCoordinates();
@@ -139,5 +127,21 @@ public class LinearRing extends LineString {
 		x = x / (6 * area);
 		y = y / (6 * area);
 		return new Coordinate(x, y);
+	}
+
+	private double getSignedArea() {
+		if (isEmpty()) {
+			return 0;
+		}
+		double area = 0;
+		Coordinate[] coordinates = getCoordinates();
+		for (int i = 1; i < coordinates.length; i++) {
+			double x1 = coordinates[i - 1].getX();
+			double y1 = coordinates[i - 1].getY();
+			double x2 = coordinates[i].getX();
+			double y2 = coordinates[i].getY();
+			area += x1 * y2 - x2 * y1;
+		}
+		return area / 2;
 	}
 }
