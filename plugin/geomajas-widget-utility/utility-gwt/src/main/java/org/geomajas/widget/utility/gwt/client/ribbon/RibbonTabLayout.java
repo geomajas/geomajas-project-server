@@ -58,7 +58,7 @@ public class RibbonTabLayout extends VLayout {
 								ribbon.setMembersMargin(ribbonBarMembersMargin);
 							}
 							// replace smartgwt's default 'normal' with our default 'ribbon'.
-							String styleName = getStyleName().equals("normal") ? "ribbon" : "normal";
+							String styleName = "normal".equals(getStyleName()) ? "ribbon" : "normal";
 							ribbon.setStyleName(styleName);
 							ribbon.setBorder("0px");
 							Tab tab = new Tab(tabInfo.getTitle());
