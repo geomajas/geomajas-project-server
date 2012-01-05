@@ -22,11 +22,9 @@
 	<packaging>pom</packaging>
 	<name>Geomajas API project</name>
 	<description>
-		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
-		for the display, analysis and management of geographic information. It is a building block that allows
-		developers to add maps and other geographic data capabilities to their web applications.
-		
-		Geomajas generic API project
+		The Geomajas API project allows fine grained annotation of classes and individual public methods and fields to
+		indicate that they are part of the API.
+		Tools are provided to enable testing that the API does not change between versions.
 	</description>
 
 	<scm>
@@ -53,53 +51,5 @@
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-api-annotation</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.1</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>log4j-over-slf4j</artifactId>
-				<version>${slf4j-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>0.9.21</version>
-			</dependency>
-
-			<dependency>
-				<groupId>net.sourceforge.findbugs</groupId>
-				<artifactId>annotations</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-	<properties>
-		<slf4j-version>1.6.0</slf4j-version>
-	</properties>
 
 </project>
