@@ -2,6 +2,7 @@
 org.geomajas.plugin.geocoder.api.CombineResultService::1.0.0
 org.geomajas.plugin.geocoder.api.CombineResultService:Envelope combine(List<GetLocationResult>, ):1.0.0
 org.geomajas.plugin.geocoder.api.GeocoderInfo::1.0.0
+org.geomajas.plugin.geocoder.api.GeocoderInfo:GeocoderInfo():1.0.0
 org.geomajas.plugin.geocoder.api.GeocoderInfo:CombineResultService getCombineResultService():1.0.0
 org.geomajas.plugin.geocoder.api.GeocoderInfo:List<GeocoderService> getGeocoderServices():1.0.0
 org.geomajas.plugin.geocoder.api.GeocoderInfo:SplitGeocoderStringService getSplitGeocoderStringService():1.0.0
@@ -19,6 +20,7 @@ org.geomajas.plugin.geocoder.api.GeocoderService:CoordinateReferenceSystem getCr
 org.geomajas.plugin.geocoder.api.GeocoderService:GetLocationResult[] getLocation(List<String>, int, Locale, ):1.0.0
 org.geomajas.plugin.geocoder.api.GeocoderService:String getName():1.0.0
 org.geomajas.plugin.geocoder.api.GetLocationResult::1.0.0
+org.geomajas.plugin.geocoder.api.GetLocationResult:GetLocationResult():1.0.0
 org.geomajas.plugin.geocoder.api.GetLocationResult:ClientUserDataInfo getUserData():1.0.0
 org.geomajas.plugin.geocoder.api.GetLocationResult:Coordinate getCoordinate():1.0.0
 org.geomajas.plugin.geocoder.api.GetLocationResult:Envelope getEnvelope():1.0.0
@@ -33,11 +35,13 @@ org.geomajas.plugin.geocoder.api.SplitGeocoderStringService::1.0.0
 org.geomajas.plugin.geocoder.api.SplitGeocoderStringService:List<String> split(String, ):1.0.0
 org.geomajas.plugin.geocoder.api.SplitGeocoderStringService:String combine(List<String>, ):1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo::1.0.0
+org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo:StaticRegexGeocoderInfo():1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo:List<StaticRegexGeocoderLocationInfo> getLocations():1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo:String getCrs():1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo:void setCrs(String, ):1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo:void setLocations(List<StaticRegexGeocoderLocationInfo>, ):1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo::1.0.0
+org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:StaticRegexGeocoderLocationInfo():1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:Bbox getBbox():1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:ClientUserDataInfo getUserData():1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:List<String> getCanonical():1.0.0
@@ -51,6 +55,7 @@ org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:void setUserDat
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:void setX(double, ):1.0.0
 org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo:void setY(double, ):1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative::1.0.0
+org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:GetLocationForStringAlternative():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:Bbox getBbox():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:ClientUserDataInfo getUserData():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:Coordinate getCenter():1.0.0
@@ -62,6 +67,7 @@ org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:void se
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:void setGeocoderName(String, ):1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative:void setUserData(ClientUserDataInfo, ):1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest::1.0.0
+org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:GetLocationForStringRequest():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:String getCrs():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:String getLocale():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:String getLocation():1.0.0
@@ -75,6 +81,7 @@ org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:void setLoc
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:void setMaxAlternatives(int, ):1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest:void setServicePattern(String, ):1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse::1.0.0
+org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse:GetLocationForStringResponse():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse:Bbox getBbox():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse:ClientUserDataInfo getUserData():1.0.0
 org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse:Coordinate getCenter():1.0.0
