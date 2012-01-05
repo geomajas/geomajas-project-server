@@ -11,14 +11,15 @@
 
 package org.geomajas.widget.utility.gwt.example.client;
 
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonTabLayout;
 import org.geomajas.widget.utility.gwt.example.client.i18n.WidgetUtilityMessages;
+
+import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * Sample showing the ribbon.

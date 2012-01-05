@@ -57,8 +57,8 @@ public class RibbonTabLayout extends VLayout {
 							if (null != ribbonBarMembersMargin) {
 								ribbon.setMembersMargin(ribbonBarMembersMargin);
 							}
-							// replace smartgwt's default 'normal' with our default 'ribbon'.
-							String styleName = "normal".equals(getStyleName()) ? "ribbon" : "normal";
+							// if no custom style is set, replace smartgwt's default 'normal' with our default 'ribbon'.
+							String styleName = !"normal".equals(getStyleName()) ? getStyleName() : "ribbon";
 							ribbon.setStyleName(styleName);
 							ribbon.setBorder("0px");
 							Tab tab = new Tab(tabInfo.getTitle());
@@ -83,8 +83,14 @@ public class RibbonTabLayout extends VLayout {
 		}
 	}
 	/**
-	 * If set, it overrides the {@link org.geomajas.widget.utility.gwt.client.util.GuwLayout#ribbonBarInternalMargin}
-	 * set in {@link RibbonBarLayout#RibbonBarLayout()}.
+	 * <p>Use this method if you want to adjust the margin between groups in the bars, 
+	 * <b>only present</b> in the tabs of this RibbonTabLayout.</p>
+	 * <p>Give a different value to 
+	 * {@link org.geomajas.widget.utility.gwt.client.util.GuwLayout#ribbonBarInternalMargin}, 
+	 * if you want to alter the internal margin of <b>all</b> bars within your application.</p>  
+	 * <p>If set, the value is used to override the 
+	 * {@link org.geomajas.widget.utility.gwt.client.util.GuwLayout#ribbonBarInternalMargin}
+	 * set in {@link RibbonBarLayout#RibbonBarLayout()}.</p>
 	 */
 	public void setRibbonBarMembersMargin(Integer ribbonBarMembersMargin) {
 		this.ribbonBarMembersMargin = ribbonBarMembersMargin;

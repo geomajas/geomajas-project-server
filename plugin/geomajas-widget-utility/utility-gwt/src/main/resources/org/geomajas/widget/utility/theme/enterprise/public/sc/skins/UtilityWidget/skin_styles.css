@@ -7,6 +7,10 @@
     background: #F8F8F8;
     background-image: -moz-linear-gradient(top, #F8F8F8, #E8E8E8);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E8E8E8));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#F8F8F8, endColorstr=#E8E8E8, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#F8F8F8, endColorstr=#E8E8E8, GradientType=1)";
     border: 1px solid #A7ABB4;
 }
 
@@ -14,6 +18,10 @@
     background: #E0E0E0;
     background-image: -moz-linear-gradient(top, #A8A8A8, #E6E6E6);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#A8A8A8), to(#E6E6E6));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#A8A8A8, endColorstr=#E6E6E6, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#A8A8A8, endColorstr=#E6E6E6, GradientType=1)";
 	border: 1px solid #A7ABB4;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -26,6 +34,10 @@
     background: #F0F0F0;
     background-image: -moz-linear-gradient(top, #E4E4E4, #F6F6F6);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#E8E8E8), to(#F6F6F6));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8E8E8, endColorstr=#F6F6F6, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E8E8E8, endColorstr=#F6F6F6, GradientType=1)";
 }
 
 .ribbonDropDownPanel {
@@ -36,7 +48,13 @@
 }
 
 .ribbonDropDownPanelGroup {
-	background: #E6E6E6;
+	background: #E0E0E0;
+    background-image: -moz-linear-gradient(top, #E6E6E6, #A8A8A8);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#E6E6E6), to(#A8A8A8));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6E6E6, endColorstr=#A8A8A8, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6E6E6, endColorstr=#A8A8A8, GradientType=1)";
 }
 
 .ribbonGroupTitle,
@@ -44,6 +62,8 @@
 .ribbonTabTitleOver,
 .ribbonTabTitleSelected,
 .ribbonTabTitleSelectedOver,
+.ribbonButtonTitle,
+.ribbonButtonDescription,
 .ribbonDropDownPanelGroupTitle,
 .ribbonDropDownPanelButtonTitle,
 .ribbonDropDownPanelButtonDescription {
@@ -56,6 +76,7 @@
 }
 
 .ribbonGroupTitle,
+.ribbonButtonTitle,
 .ribbonDropDownPanelButtonTitle,
 .ribbonDropDownPanelGroupTitle {
 	white-space: nowrap;
@@ -66,11 +87,13 @@
 	font-weight: bold;
 }
 
+.ribbonButtonTitle,
 .ribbonDropDownPanelButtonTitle {
 	color: #3B3B3B;
 }
 
 
+.ribbonButtonDescription,
 .ribbonDropDownPanelButtonDescription {
 	font-size: 10px;
 	line-height: 10px;
@@ -148,6 +171,10 @@
     background: #E0E0E0;
     background-image: -moz-linear-gradient(top, #E6E6E6, #D6D6D6);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#E6E6E6), to(#D6D6D6));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6E6E6, endColorstr=#D6D6D6, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6E6E6, endColorstr=#D6D6D6, GradientType=1)";
 	border-left: 1px solid #999999;
 	border-right: 1px solid #888888;
 	border-top: 1px solid #999999;
@@ -167,6 +194,10 @@
 	background: #BEDDFF;
     background-image: -moz-linear-gradient(top, #C5E3FF, #B3D2F1);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#C5E3FF), to(#B3D2F1));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#C5E3FF, endColorstr=#B3D2F1, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#C5E3FF, endColorstr=#B3D2F1, GradientType=1)";
 	border-left: 1px solid #A0C0ED;
 	border-right: 1px solid #A0C0ED;
 	border-top: 1px solid #87B6EC;
@@ -186,4 +217,8 @@
 	background: #BEDDFF;
     background-image: -moz-linear-gradient(top, #C5E3FF, #B3D2F1);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#C5E3FF), to(#B3D2F1));
+    /* For Internet Explorer 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#C5E3FF, endColorstr=#B3D2F1, GradientType=1);
+	/* For Internet Explorer 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#C5E3FF, endColorstr=#B3D2F1, GradientType=1)";
 }

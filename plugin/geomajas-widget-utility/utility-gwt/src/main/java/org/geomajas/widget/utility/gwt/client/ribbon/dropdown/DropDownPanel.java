@@ -102,7 +102,7 @@ public class DropDownPanel extends VStack {
 		if (buttonLayout.equals(GuwLayout.DropDown.ICON_AND_TITLE)) {
 			button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
 		} else if (buttonLayout.equals(GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION)) {
-			button = new RibbonButtonDescribed(action, 32);
+			button = new RibbonButtonDescribed(action);
 		}
 		button.setOverflow(Overflow.VISIBLE);
 		button.setAutoHeight();
@@ -200,18 +200,5 @@ public class DropDownPanel extends VStack {
 			registration.removeHandler();
 		}
 		super.hide();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.smartgwt.client.widgets.Canvas#setWidth(int)
-	 */
-	@Override
-	public void setWidth(int width) {
-		super.setWidth(width);
-		for (RibbonButton button : buttons) {
-			if (button instanceof RibbonButtonDescribed) {
-				((RibbonButtonDescribed) button).setPanelWidth(width);
-			}
-		}
 	}
 }

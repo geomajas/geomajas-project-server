@@ -93,6 +93,8 @@
 .msRibbonButtonSelectedFocusedDown,
 .msRibbonButtonSelectedOver,
 .msRibbonButtonSelectedFocusedOver,
+.msRibbonButtonDisabled,
+.msRibbonButtonSelectedDisabled,
 .msRibbonDropDownPanelButton,
 .msRibbonDropDownPanelButtonOver,
 .msRibbonDropDownPanelButtonFocused,
@@ -103,8 +105,8 @@
 .msRibbonDropDownPanelButtonSelectedFocused,
 .msRibbonDropDownPanelButtonSelectedDown,
 .msRibbonDropDownPanelButtonSelectedFocusedDown,
-.msRibbonDropDownPanelButtonSelectedOver,
-.msRibbonDropDownPanelButtonSelectedFocusedOver {
+.msRibbonDropDownPanelButtonDisabled,
+.msRibbonDropDownPanelButtonSelectedDisabled {
 	padding: 2px 1px;
 	font-family: Arial,Verdana,Bitstream Vera Sans,sans-serif;
 	font-size: 11px;

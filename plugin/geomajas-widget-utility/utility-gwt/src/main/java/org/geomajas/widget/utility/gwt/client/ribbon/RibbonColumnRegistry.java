@@ -71,13 +71,27 @@ public final class RibbonColumnRegistry {
 		REGISTRY.put("ToolbarActionButton", new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
+				ClientToolInfo tool = tools.get(0);
+				RibbonButton button = null;
 				if (tools != null && tools.size() > 0) {
-					ButtonAction action = getAction(tools.get(0), mapWidget);
+					ButtonAction action = getAction(tool, mapWidget);
 					if (action != null) {
-						return new RibbonButton(action, GuwLayout.ribbonColumnButtonIconSize, TitleAlignment.BOTTOM);
+						String buttonLayout = null;
+						for (Parameter parameter : tool.getParameters()) {
+							if ("buttonLayout".equals(parameter.getName())) {
+								buttonLayout = parameter.getValue();
+								break;
+							}
+						}
+						if (GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+							button = new RibbonButtonDescribed(action);
+						} else { // null || GuwLayout.DropDown.ICON_AND_TITLE 
+							button = new RibbonButton(action, 
+									GuwLayout.ribbonColumnButtonIconSize, TitleAlignment.BOTTOM);
+						}
 					}
 				}
-				return null;
+				return button;
 			}
 		});
 
@@ -105,40 +119,40 @@ public final class RibbonColumnRegistry {
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
 				final DropDownRibbonButton dropDown = new DropDownRibbonButton(new DropDownButtonAction());
 				DropDownPanel panel = dropDown.getPanel();
-				ButtonGroup title = null;
+				ButtonGroup group = null;
 				List<ButtonAction> actions = new ArrayList<ButtonAction>();
 				for (ClientToolInfo tool : tools) {
 					ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
 					if (toolbarAction != null) {
 						if (toolbarAction instanceof ButtonGroup) {
-							// First wrap currently found actions into a group (title can be null).
+							// First wrap currently found actions into a group (previous group can be null).
 							if (actions.size() > 0) {
-								panel.addGroup(title, actions);
+								panel.addGroup(group, actions);
 							}
-							title = (ButtonGroup) toolbarAction;
-							title.setTitle(tool.getTitle());
+							group = (ButtonGroup) toolbarAction;
+							group.setTitle(tool.getTitle());
 							for (Parameter parameter : tool.getParameters()) {
-								title.configure(parameter.getName(), parameter.getValue());
+								group.configure(parameter.getName(), parameter.getValue());
 							}
 							actions = new ArrayList<ButtonAction>();
 						} else {
 							ButtonAction action = getAction(tool, mapWidget);
-							if (action != null) {
-								for (Parameter parameter : tool.getParameters()) {
-									action.configure(parameter.getName(), parameter.getValue());
-								}
-							}
-							String description = tool.getDescription();
-							// Overrides tooltip parameter if description is set in ClientToolInfo.
-							if (null != description && !"".equals(description)) {
-								action.setTooltip(description);
-							}
+//							if (action != null) {
+//								for (Parameter parameter : tool.getParameters()) {
+//									action.configure(parameter.getName(), parameter.getValue());
+//								}
+//							}
+//							String description = tool.getDescription();
+//							// Overrides tooltip parameter if description is set in ClientToolInfo.
+//							if (null != description && !"".equals(description)) {
+//								action.setTooltip(description);
+//							}
 							actions.add(action);
 						}
 					}
 				}
-				// Always add the last actions as group to the panel (if title is null)
-				panel.addGroup(title, actions);
+				// Always add the last actions as a group to the panel (also if group is null)
+				panel.addGroup(group, actions);
 				return dropDown;
 			}
 		});

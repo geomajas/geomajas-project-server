@@ -14,6 +14,7 @@ package org.geomajas.widget.utility.gwt.client.ribbon;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
@@ -30,10 +31,6 @@ public class RibbonButtonDescribed extends RibbonButton {
 
 	private Label titleLabel;
 	private Canvas description;
-	private HStack outer;
-	private Integer panelWidth;
-	private VStack inner;
-	private final Integer iconSize;
 	
 	public RibbonButtonDescribed(ButtonAction buttonAction) {
 		this(buttonAction, 24);
@@ -41,22 +38,17 @@ public class RibbonButtonDescribed extends RibbonButton {
 
 	public RibbonButtonDescribed(ButtonAction buttonAction, Integer iconSize) {
 		super(buttonAction, iconSize, null);
-		this.iconSize = iconSize;
-	}
-
-	@Override
-	protected void updateGui() {
-		ButtonAction buttonAction = getButtonAction();
+		
+		String iconBaseUrl = buttonAction.getIcon();
+		Img icon = new Img(applyDisabled(iconBaseUrl), iconSize, iconSize);
+		icon.setLayoutAlign(Alignment.CENTER);
+		
 		String title = buttonAction.getTitle() == null ? buttonAction.getTooltip() : buttonAction.getTitle();
 		if (title == null) {
 			title = "??";
 		} else {
 			title = title.trim();
 		}
-		
-		int iconSize = getIconSize();
-		String iconBaseUrl = buttonAction.getIcon();
-		Img icon = new Img(applyDisabled(iconBaseUrl), iconSize, iconSize);
 		
 		titleLabel = new Label(title);
 		titleLabel.setOverflow(Overflow.VISIBLE);
@@ -69,14 +61,14 @@ public class RibbonButtonDescribed extends RibbonButton {
 		description.setAutoHeight();
 		description.setWidth100();
 		
-		inner = new VStack();
+		VStack inner = new VStack();
 		inner.setWidth("*");
 		inner.setOverflow(Overflow.VISIBLE);
 		inner.setAutoHeight();
 		inner.addMember(titleLabel);
 		inner.addMember(description);
 		
-		outer = new HStack(GuwLayout.describedButtonInnerMargin);
+		HStack outer = new HStack(GuwLayout.describedButtonInnerMargin);
 		outer.setOverflow(Overflow.VISIBLE);
 		outer.setWidth100();
 		outer.setAutoHeight();
@@ -85,7 +77,7 @@ public class RibbonButtonDescribed extends RibbonButton {
 		
 		addChild(outer);
 	}
-	
+
 	@Override
 	public void setButtonBaseStyle(String buttonBaseStyle) {
 		setBaseStyle(buttonBaseStyle);
@@ -93,14 +85,8 @@ public class RibbonButtonDescribed extends RibbonButton {
 		description.setStyleName(buttonBaseStyle + "Description");
 	}
 
-	public Integer getPanelWidth() {
-		return panelWidth;
-	}
-
-	public void setPanelWidth(Integer panelWidth) {
-		this.panelWidth = panelWidth;
-		description.setMaxWidth(panelWidth - iconSize - GuwLayout.describedButtonInnerMargin);
-		inner.setWidth(panelWidth - iconSize - GuwLayout.describedButtonInnerMargin);
-
+	@Override
+	protected void updateGui() {
+		// do nothing.
 	}
 }
