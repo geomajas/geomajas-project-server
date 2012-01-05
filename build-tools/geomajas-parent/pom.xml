@@ -252,7 +252,7 @@
 
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.4.3</version>
 				</plugin>
 
 				<!--Configuration to store Eclipse m2e settings only.Has no influence on the Maven build itself.-->

@@ -46,10 +46,6 @@
 			<classifier>sources</classifier>
 			<artifactId>geomajas-command</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-common-servlet</artifactId>
-		</dependency>
 
 		<!-- GWT dependencies -->
 		<dependency>
@@ -68,6 +64,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -104,7 +104,7 @@
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-impl</artifactId>
-									<version>1.7.1</version>
+									<version>1.9.0-SNAPSHOT</version>
 									<classifier>sources</classifier>
 									<outputDirectory>${project.build.directory}/extract/impl</outputDirectory>
 								</artifactItem>

@@ -41,11 +41,6 @@
 			<artifactId>geomajas-impl</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.geotools</groupId>
@@ -78,6 +73,12 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
+			<version>1.10.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 

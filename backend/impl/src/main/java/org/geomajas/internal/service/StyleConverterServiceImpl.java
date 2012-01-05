@@ -38,7 +38,6 @@ import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.service.sld.ResourceAwareSLDParser;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerType;
 import org.geomajas.service.FilterService;
@@ -118,7 +117,9 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Rule;
+import org.geotools.styling.SLDParser;
 import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
@@ -288,17 +289,11 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			marshallingContext.setOutput(sw);
 			marshallingContext.marshalDocument(sld);
 
-			ResourceAwareSLDParser parser = new ResourceAwareSLDParser(styleFactory, resourceService);
+			SLDParser parser = new SLDParser(styleFactory);
+			parser.setOnLineResourceLocator(new ResourceServiceBasedLocator());
 			parser.setInput(new StringReader(sw.toString()));
 
 			Style[] styles = parser.readXML();
-
-			// SLDConfiguration configuration = sldFactory.createConfiguration();
-			// Parser parser = new Parser(configuration);
-			// StyledLayerDescriptor styledLayerDescriptor = (StyledLayerDescriptor) parser.parse(new StringReader(sw
-			// .toString()));
-			// NamedLayer namedLayer = (NamedLayer) styledLayerDescriptor.getStyledLayers()[0];
-			// Style[] styles = namedLayer.getStyles();
 			if (styles.length != 0) {
 				return styles[0];
 			} else {
@@ -705,14 +700,22 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				case BOOLEAN:
 					propertyValue = propertyValue.toUpperCase();
 					break;
+				// string types must be quoted
 				case DATE:
 				case IMGURL:
 				case STRING:
 				case URL:
+				case CURRENCY:
 					propertyValue = "'" + propertyValue + "'";
 					break;
+				// numerical types unquoted
+				case DOUBLE:
+				case FLOAT:
+				case INTEGER:
+				case LONG:
+				case SHORT:
 				default:
-					throw new IllegalStateException("Don't know how to handle primitive type " + type);
+					break;
 			}
 			if (binary instanceof PropertyIsEqualToInfo) {
 				return propertyName + " = " + propertyValue;
@@ -937,5 +940,27 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		// @todo is it ok that this uses the default GeoTools filter factory instead of the one use in FilterService ?
 		styleBuilder = new StyleBuilder(styleFactory);
 	}
+	
+	/**
+	 * A custom {@link ResourceLocator} that uses the {@link ResourceService} for URL location.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class ResourceServiceBasedLocator implements ResourceLocator {
+
+		public URL locateResource(String uri) {
+			URL url = null;
+			try {
+				Resource resource = resourceService.find(uri);
+				url = resource.getURL();
+			} catch (Exception e) {
+				log.warn(MISSING_RESOURCE, uri);
+			}
+			return url;
+		}
+
+	}
+
 
 }
