@@ -25,6 +25,10 @@
 		The Geomajas API project allows fine grained annotation of classes and individual public methods and fields to
 		indicate that they are part of the API.
 		Tools are provided to enable testing that the API does not change between versions.
+
+		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
+		for the display, analysis and management of geographic information. It is a building block that allows
+		developers to add maps and other geographic data capabilities to their web applications.
 	</description>
 
 	<scm>
@@ -42,6 +46,16 @@
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
+		</repository>
+
+		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<repository>
+			<id>Geomajas-latest</id>
+			<name>Geomajas snapshot repository</name>
+			<url>http://apps.geomajas.org/nexus/content/groups/latest</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
