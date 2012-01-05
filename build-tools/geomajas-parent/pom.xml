@@ -267,9 +267,22 @@
 									<pluginExecutionFilter>
 										<groupId>org.codehaus.mojo</groupId>
 										<artifactId>gwt-maven-plugin</artifactId>
-										<versionRange>[2.4.0,)</versionRange>
+										<versionRange>[2.3.0,)</versionRange>
 										<goals>
 											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jibx</groupId>
+										<artifactId>maven-jibx-plugin</artifactId>
+										<versionRange>[1.2.3,)</versionRange>
+										<goals>
+											<goal>bind</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
