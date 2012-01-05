@@ -17,11 +17,13 @@
 	<packaging>pom</packaging>
 	<name>Geomajas standalone projects</name>
 	<description>
+		Geomajas standalone projects are libraries which can be used independently as they don't have a dependency on
+		the Geomajas back-end. This includes our API annotations, a geometry DTO project (with manipulation services),
+		SLD project...
+
 		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
 		for the display, analysis and management of geographic information. It is a building block that allows
 		developers to add maps and other geographic data capabilities to their web applications.
-		
-		Geomajas standalone projects include SLD, annotation API, ...
 	</description>
 
 	<scm>
