@@ -13,7 +13,6 @@ package org.geomajas.plugin.geocoder.client;
 
 import java.util.List;
 
-import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -24,9 +23,7 @@ import org.geomajas.plugin.geocoder.client.event.SelectLocationHandler;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
-import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
-import org.geomajas.puregwt.client.spatial.Bbox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
@@ -40,8 +37,6 @@ import com.google.gwt.user.client.Window;
  * @author Pieter De Graef
  */
 public class GeocoderPresenter implements SelectLocationHandler, SelectAlternativeHandler {
-
-	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
 
 	private MapPresenter mapPresenter;
 
@@ -68,10 +63,18 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		setSelectLocationHandler(this);
 	}
 
+	/**
+	 * Clear the current location.
+	 */
 	public void clearLocation() {
 		geocoderTextBox.setValue("");
 	}
 
+	/**
+	 * Go to the location which matches the given string.
+	 *
+	 * @param location location
+	 */
 	public void goToLocation(final String location) {
 		GwtCommand command = new GwtCommand(GetLocationForStringRequest.COMMAND);
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
@@ -79,27 +82,31 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		request.setLocation(location);
 		request.setServicePattern(servicePattern);
 		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback() {
-
-			public void execute(CommandResponse response) {
+		GwtCommandDispatcher.getInstance().execute(command,
+				new AbstractCommandCallback<GetLocationForStringResponse>() {
+			public void execute(GetLocationForStringResponse response) {
 				goToLocation(response, location);
 			}
 		});
 	}
 
-	public void goToLocation(final CommandResponse commandResponse, final String location) {
-		if (commandResponse instanceof GetLocationForStringResponse) {
-			GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
-			if (response.isLocationFound()) {
-				handlerManager.fireEvent(new SelectLocationEvent(mapPresenter, response));
+
+	/**
+	 * Go to the location which matches the given string.
+	 *
+	 * @param response get location command response
+	 * @param location location to go to
+	 */
+	public void goToLocation(final GetLocationForStringResponse response, final String location) {
+		if (response.isLocationFound()) {
+			handlerManager.fireEvent(new SelectLocationEvent(mapPresenter, response));
+		} else {
+			List<GetLocationForStringAlternative> alternatives = response.getAlternatives();
+			if (null != alternatives && alternatives.size() > 0) {
+				handlerManager.fireEvent(new SelectAlternativeEvent(mapPresenter, alternatives));
 			} else {
-				List<GetLocationForStringAlternative> alternatives = response.getAlternatives();
-				if (null != alternatives && alternatives.size() > 0) {
-					handlerManager.fireEvent(new SelectAlternativeEvent(mapPresenter, alternatives));
-				} else {
-					// TODO This should throw an event...
-					Window.alert(messages.locationNotFound(location));
-				}
+				// TODO This should throw an event...
+				Window.alert(messages.locationNotFound(location));
 			}
 		}
 	}
@@ -154,13 +161,14 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		return handlerManager.addHandler(SelectLocationHandler.TYPE, handler);
 	}
 
+	/** {@inheritDoc} */
 	public void onSelectAlternative(SelectAlternativeEvent event) {
 		// TODO implement me...
 	}
 
+	/** {@inheritDoc} */
 	public void onSelectLocation(SelectLocationEvent event) {
-		Bbox bounds = geomajasInjector.getGeometryConverter().toGwt(event.getBbox());
-		mapPresenter.getViewPort().applyBounds(bounds);
+		mapPresenter.getViewPort().applyBounds(event.getBbox());
 		geocoderTextBox.setValue(event.getCanonicalLocation());
 	}
 
