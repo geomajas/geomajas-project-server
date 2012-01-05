@@ -11,18 +11,14 @@
 
 package org.geomajas.widget.utility.common.client.event;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * Implemented by classes that that trigger {@link EnabledEvent} and {@link DisabledEvent} events.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
  * 
  */
-@Api(allMethods = true)
 public interface HasEnabledHandlers {
 
 	/**

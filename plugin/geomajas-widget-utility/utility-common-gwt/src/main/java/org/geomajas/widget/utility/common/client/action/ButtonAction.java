@@ -11,8 +11,6 @@
 
 package org.geomajas.widget.utility.common.client.action;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
@@ -26,9 +24,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
  * </p>
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public interface ButtonAction extends ClickHandler {
 
 	/**

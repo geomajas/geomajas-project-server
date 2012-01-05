@@ -11,8 +11,6 @@
 
 package org.geomajas.widget.utility.common.client.event;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -21,9 +19,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * </p>
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public class DisabledEvent extends GwtEvent<EnabledHandler> {
 
 	public DisabledEvent(Object source) {

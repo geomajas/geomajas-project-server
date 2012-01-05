@@ -29,9 +29,13 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 
 /**
  * Implementation of the RibbonColumn interface that displays a single button. Instances of this class are initialized
- * using a {@link ButtonAction} that determines the icon, title, tool-tip and click action.
+ * using a {@link ButtonAction} that determines the icon, title, tool-tip and click action. If the {@link ButtonAction}
+ * implements {@link RibbonColumnAware}, it will be passed a reference to this class. If the {@link ButtonAction}
+ * implements {@link HasEnabledHandlers}, the enabled/disabled state of this class will follow the enabled/disabled
+ * state of the action.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 
