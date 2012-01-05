@@ -65,59 +65,9 @@
 		</developer>
 	</developers>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>explode-resources</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-gwt-simple</artifactId>
-									<version>1.7.1</version>
-									<classifier>sources</classifier>
-									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-gwt-example</artifactId>
-									<version>1.7.1</version>
-									<classifier>sources</classifier>
-									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-dojo-simple</artifactId>
-									<version>1.7.1</version>
-									<classifier>sources</classifier>
-									<outputDirectory>${project.build.directory}/extract/dojo-simple</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-impl</artifactId>
-									<version>1.9.0-SNAPSHOT</version>
-									<classifier>sources</classifier>
-									<outputDirectory>${project.build.directory}/extract/impl</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-	
+	<!-- no source listings, point to own directory-->
 	<properties>
-		<listing.sourceDirectory>${project.build.directory}/extract</listing.sourceDirectory>
+		<listing.sourceDirectory>${basedir}</listing.sourceDirectory>
 	</properties>
 
 </project>
