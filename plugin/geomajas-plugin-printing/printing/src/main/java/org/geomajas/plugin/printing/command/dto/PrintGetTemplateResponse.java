@@ -11,7 +11,7 @@
 package org.geomajas.plugin.printing.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Response object for PrintGetTemplateCommand.

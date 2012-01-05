@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * DTO object for PrintComponent.

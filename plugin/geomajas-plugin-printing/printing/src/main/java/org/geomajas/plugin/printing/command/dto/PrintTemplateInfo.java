@@ -13,7 +13,7 @@ package org.geomajas.plugin.printing.command.dto;
 
 import java.io.Serializable;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 
 

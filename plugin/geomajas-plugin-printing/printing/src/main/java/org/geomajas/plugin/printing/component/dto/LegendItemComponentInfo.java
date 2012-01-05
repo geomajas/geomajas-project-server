@@ -12,7 +12,7 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * DTO object for LegendItemComponent.

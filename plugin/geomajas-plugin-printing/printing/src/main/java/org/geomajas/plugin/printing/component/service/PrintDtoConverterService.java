@@ -14,7 +14,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;

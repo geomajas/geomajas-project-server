@@ -13,7 +13,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.layer.LayerType;
 
 /**

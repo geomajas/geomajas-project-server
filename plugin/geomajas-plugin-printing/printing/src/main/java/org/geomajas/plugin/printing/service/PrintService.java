@@ -12,7 +12,7 @@ package org.geomajas.plugin.printing.service;
 
 import java.util.List;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.document.Document;

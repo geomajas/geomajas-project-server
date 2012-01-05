@@ -29,7 +29,7 @@ import javax.media.jai.TileCache;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
 import org.geomajas.plugin.printing.component.impl.ImageComponentImpl;

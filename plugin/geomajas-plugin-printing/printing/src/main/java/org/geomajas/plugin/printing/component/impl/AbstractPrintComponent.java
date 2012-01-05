@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.printing.component.impl;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 

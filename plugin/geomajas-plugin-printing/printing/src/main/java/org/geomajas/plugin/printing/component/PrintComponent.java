@@ -13,8 +13,8 @@ package org.geomajas.plugin.printing.component;
 import java.util.Collection;
 import java.util.List;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.ExpectAlternatives;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.ExpectAlternatives;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 
 import com.lowagie.text.Rectangle;
