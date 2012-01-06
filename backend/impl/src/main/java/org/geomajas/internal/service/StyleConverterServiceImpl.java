@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -689,7 +689,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			String propertyName = binary.getExpressionList().get(0).getValue();
 			String propertyValue = binary.getExpressionList().get(1).getValue();
 			PrimitiveType type = PrimitiveType.STRING;
-			for (AttributeInfo attributeInfo : featureInfo.getAttributes()) {
+			for (AbstractAttributeInfo attributeInfo : featureInfo.getAttributes()) {
 				if (attributeInfo.getName().equals(propertyName)) {
 					if (attributeInfo instanceof PrimitiveAttributeInfo) {
 						type = ((PrimitiveAttributeInfo) attributeInfo).getType();
