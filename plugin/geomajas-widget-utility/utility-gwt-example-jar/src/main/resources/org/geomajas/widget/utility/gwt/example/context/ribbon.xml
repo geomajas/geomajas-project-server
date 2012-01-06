@@ -578,7 +578,34 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<list>
 							<bean
 								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
-								<property name="title" value="Group Nr 1" />
+								<property name="title" value="Navigation" />
+								<property name="columns">
+									<list>
+										<bean
+											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
+											<property name="type" value="ToolbarActionButton" />
+											<property name="tools">
+												<list>
+													<bean name="ScaleSelectTool" class="org.geomajas.configuration.client.ClientToolInfo">
+														<property name="toolId" value="Geocoder" />
+														<property name="parameters">
+															<list>
+																<bean class="org.geomajas.configuration.Parameter">
+																	<property name="name" value="verticalAlignment" />
+																	<property name="value" value="center"/>
+																</bean>
+															</list>
+														</property>
+													</bean>
+												</list>
+											</property>
+										</bean>
+									</list>
+								</property>
+							</bean>
+							<bean
+								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
+								<property name="title" value="Zoom" />
 								<property name="columns">
 									<list>
 										<bean
@@ -606,7 +633,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 												<list>
 													<bean class="org.geomajas.configuration.Parameter">
 														<property name="name" value="title" />
-														<property name="value" value="Zoom" />
+														<property name="value" value="Zoom options" />
 													</bean>
 													<bean class="org.geomajas.configuration.Parameter">
 														<property name="name" value="icon" />
@@ -650,7 +677,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 												<list>
 													<bean class="org.geomajas.configuration.client.ClientToolInfo">
 														<property name="toolId" value="ButtonGroup" />
-														<property name="title" value="Default description" />
 														<property name="parameters">
 														<list>
 															<bean class="org.geomajas.configuration.Parameter">
@@ -692,34 +718,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 											<property name="tools">
 												<list>
 													<ref bean="FeatureInfoMode" />
-												</list>
-											</property>
-										</bean>
-									</list>
-								</property>
-							</bean>
-							<bean
-								class="org.geomajas.widget.utility.configuration.RibbonGroupInfo">
-								<property name="title" value="Group Nr 2" />
-								<property name="columns">
-									<list>
-										<bean
-											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-											<property name="type" value="ToolbarActionButton" />
-											<property name="tools">
-												<list>
-													<ref bean="ZoomIn" />
-												</list>
-											</property>
-										</bean>
-										<bean
-											class="org.geomajas.widget.utility.configuration.RibbonColumnInfo">
-											<property name="type" value="ToolbarActionList" />
-											<property name="tools">
-												<list>
-													<ref bean="ZoomIn" />
-													<ref bean="ZoomOut" />
-													<ref bean="ZoomIn" />
 												</list>
 											</property>
 										</bean>
