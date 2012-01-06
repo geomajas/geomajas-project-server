@@ -56,8 +56,8 @@ public class DropDownRibbonButton extends RibbonButton {
 	// Class specific methods:
 	// ------------------------------------------------------------------------
 	public void setButtonBaseStyle(String baseStyle) {
-		this.setBaseStyle(baseStyle.replace("Button", "DropDownPanelButton"));
-		dropDownPanel.setStyleName(this.getStyleName().replace("Button", ""));
+		this.setBaseStyle(baseStyle);
+		dropDownPanel.setStyleName(this.getStyleName().replace("Button", "DropDownPanel"));
 	}
 
 	// ------------------------------------------------------------------------
