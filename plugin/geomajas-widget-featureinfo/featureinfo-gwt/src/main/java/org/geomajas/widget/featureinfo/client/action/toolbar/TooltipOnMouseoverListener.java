@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.layer.feature.Feature;
 import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 import org.geomajas.widget.featureinfo.client.util.FitSetting;
 
@@ -170,7 +171,7 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	}
 
 	private void setTooltipData(Coordinate coordUsedForRetrieval,
-			Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
+			Map<String, List<Feature>> featureMap) {
 		if (coordUsedForRetrieval.equals(worldPosition) && tooltip != null) {
 			StringBuilderImpl sb = new StringBuilderImpl.ImplStringAppend();
 			sb.append(CSS);
@@ -179,18 +180,20 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
 				if (featureMap.containsKey(layer.getId())) {
-					List<org.geomajas.layer.feature.Feature> features = featureMap.get(layer.getId());
+					List<Feature> features = featureMap.get(layer.getId());
 					if (features.size() > 0) {
 						if (count < maxLabelCount) {
 							writeLayerStart(sb, layer.getLabel());
 							if (widest < layer.getLabel().length()) {
 								widest = layer.getLabel().length();
 							}
-							for (org.geomajas.layer.feature.Feature feature : features) {
+							for (Feature feature : features) {
 								if (count < maxLabelCount) {
-									writeFeature(sb, getLabel(feature, (VectorLayer) layer));
-									if (widest < feature.getLabel().length()) {
-										widest = feature.getLabel().length();
+									String label = getLabel(feature, (VectorLayer) layer);
+									int size = getLabelSize(label);
+									writeFeature(sb, label);
+									if (widest < size) {
+										widest = size;
 									}
 								}
 								count++;
@@ -214,10 +217,14 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 			} else if (count == 0) {
 				return;
 			}
-			
+
 			Canvas content = new Canvas();
 			content.setContents(sb.toString());
-			content.setWidth(widest * 6 + 10);
+			int width = (int) (widest * 4.8) + 40;
+			if (width < 150) {
+				width = 150;
+			}
+			content.setWidth(width);
 			content.setAutoHeight();
 			content.setMargin(5);
 			createTooltip(left, top, content);
@@ -231,8 +238,29 @@ public class TooltipOnMouseoverListener extends AbstractListener {
 	 * @param f
 	 * @return
 	 */
-	protected String getLabel(org.geomajas.layer.feature.Feature f, VectorLayer layer) {
+	protected String getLabel(Feature f, VectorLayer layer) {
 		return f.getLabel();
+	}
+	
+	protected int getLabelSize(String lab) {
+		if (lab == null) {
+			return 0;
+		} else if (lab.length() < 20) {
+			return lab.length(); // don't bother
+		} else {
+			String[] subLab = lab.split("<br ?\\/>");
+			if (subLab.length > 1) {
+				int max = 0;
+				for (String sub : subLab) {
+					if (sub.length() > max) {
+						max = sub.length();
+					}
+				}
+				return max;
+			} else {
+				return lab.length();
+			}
+		}
 	}
 	
 	private void getData() {
