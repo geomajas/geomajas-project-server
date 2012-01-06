@@ -31,11 +31,12 @@ public class SearchByPointResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 180L;
 
-	private Map<String, List<Feature>> featureMap = new HashMap<String, List<Feature>>(); // NOSONAR GWT will not serialize when final
+	private Map<String, List<Feature>> featureMap; // NOSONAR GWT will not serialize when final
 
 	/** No arguments constructor. */
 	public SearchByPointResponse() {
 		super();
+		featureMap = new HashMap<String, List<Feature>>();
 	}
 
 	/**
