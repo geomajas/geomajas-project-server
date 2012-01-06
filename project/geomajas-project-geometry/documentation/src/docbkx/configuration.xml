@@ -24,7 +24,7 @@
 &lt;/dependency&gt;</programlisting>
 
   <note>
-    <para>For those not using Maven, this project is dependent on the Geomajas
+    <para>For those not using Maven, this project depends on the Geomajas
     annotation project.</para>
   </note>
 </chapter>
