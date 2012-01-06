@@ -132,9 +132,12 @@ public final class GeometryService {
 		double maxX = bounds.getMaxX();
 		double maxY = bounds.getMaxY();
 
-		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
-		polygon.setCoordinates(new Coordinate[] { new Coordinate(minX, minY), new Coordinate(maxX, minY),
+		Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
+		Geometry linearRing = new Geometry(Geometry.LINEAR_RING, 0, -1);
+
+		linearRing.setCoordinates(new Coordinate[] { new Coordinate(minX, minY), new Coordinate(maxX, minY),
 				new Coordinate(maxX, maxY), new Coordinate(minX, maxY), new Coordinate(minX, minY) });
+		polygon.setGeometries(new Geometry[] { linearRing });
 		return polygon;
 	}
 
@@ -291,24 +294,7 @@ public final class GeometryService {
 	 * @return The total area within this geometry.
 	 */
 	public static double getArea(Geometry geometry) {
-		double area = 0;
-		if (geometry.getGeometries() != null) {
-			for (Geometry child : geometry.getGeometries()) {
-				area += getArea(child);
-			}
-		}
-		if (geometry.getCoordinates() != null && Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {
-			double temp = 0;
-			for (int i = 1; i < geometry.getCoordinates().length; i++) {
-				double x1 = geometry.getCoordinates()[i - 1].getX();
-				double y1 = geometry.getCoordinates()[i - 1].getY();
-				double x2 = geometry.getCoordinates()[i].getX();
-				double y2 = geometry.getCoordinates()[i].getY();
-				temp += x1 * y2 - x2 * y1;
-			}
-			area += Math.abs(temp / 2);
-		}
-		return area;
+		return Math.abs(getSignedArea(geometry));
 	}
 
 	/**
@@ -420,6 +406,27 @@ public final class GeometryService {
 			}
 		}
 	}
+	
+	private static double getSignedArea(Geometry geometry) {
+		double area = 0;
+		if (geometry.getGeometries() != null) {
+			for (Geometry child : geometry.getGeometries()) {
+				area += getArea(child);
+			}
+		}
+		if (geometry.getCoordinates() != null && Geometry.LINEAR_RING.equals(geometry.getGeometryType())) {
+			double temp = 0;
+			for (int i = 1; i < geometry.getCoordinates().length; i++) {
+				double x1 = geometry.getCoordinates()[i - 1].getX();
+				double y1 = geometry.getCoordinates()[i - 1].getY();
+				double x2 = geometry.getCoordinates()[i].getX();
+				double y2 = geometry.getCoordinates()[i].getY();
+				temp += x1 * y2 - x2 * y1;
+			}
+			area += (temp / 2);
+		}
+		return area;
+	}
 
 	private static Coordinate getCentroidPoint(Geometry geometry) {
 		if (geometry.getCoordinates() != null) {
@@ -450,7 +457,7 @@ public final class GeometryService {
 		if (geometry.getCoordinates() == null) {
 			return null;
 		}
-		double area = getArea(geometry);
+		double area = getSignedArea(geometry);
 		double x = 0;
 		double y = 0;
 		for (int i = 1; i < geometry.getCoordinates().length; i++) {

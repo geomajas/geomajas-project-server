@@ -187,7 +187,9 @@ public class Geometry implements Serializable {
 	 * Returns whether the geometry is empty.
 	 * 
 	 * @return true if empty, false otherwise
+	 * @deprecated Use GeometryService.isEmpty instead.
 	 */
+	@Deprecated
 	public boolean isEmpty() {
 		return getCoordinates() == null && getGeometries() == null;
 	}

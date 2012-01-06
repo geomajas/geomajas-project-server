@@ -1,9 +1,19 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
 package org.geomajas.geometry.service;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -24,10 +34,6 @@ public class MathServiceTest {
 	private final Coordinate c4 = new Coordinate(-20, 10);
 
 	private final Coordinate c5 = new Coordinate(20, 10);
-
-	@Before
-	public void setup() {
-	}
 
 	@Test
 	public void testDistanceTwoPoint() {
@@ -67,10 +73,44 @@ public class MathServiceTest {
 	}
 
 	@Test
-	public void testIntersection() {
+	public void testLineIntersection() {
+		// Intersection is between the coordinates:
+		Coordinate intersection = MathService.lineIntersection(c2, c3, c4, c5);
+		Assert.assertEquals(5.0, intersection.getX(), DELTA);
+		Assert.assertEquals(10.0, intersection.getY(), DELTA);
+
+		// Intersection is on the line extending from the coordinates:
+		intersection = MathService.lineIntersection(c2, c3, new Coordinate(-10, 20), new Coordinate(5, 10));
+		Assert.assertEquals(5.0, intersection.getX(), DELTA);
+		Assert.assertEquals(10.0, intersection.getY(), DELTA);
+
+		intersection = MathService.lineIntersection(c2, c3, new Coordinate(0, 20), new Coordinate(-20, -20));
+		Assert.assertTrue(intersection.getX() == Double.NEGATIVE_INFINITY
+				|| intersection.getX() == Double.POSITIVE_INFINITY);
+		Assert.assertTrue(intersection.getY() == Double.NEGATIVE_INFINITY
+				|| intersection.getY() == Double.POSITIVE_INFINITY);
+
+		System.out.println(intersection);
+
+		Assert.assertNull(MathService.lineSegmentIntersection(c1, c2, c3, c4));
+		try {
+			MathService.lineSegmentIntersection(c1, null, c3, c4);
+			Assert.fail();
+		} catch (NullPointerException npe) {
+			// Test passed.
+		}
+	}
+
+	@Test
+	public void testLineSegmentIntersection() {
+		// Test the normal case:
 		Coordinate intersection = MathService.lineSegmentIntersection(c2, c3, c4, c5);
 		Assert.assertEquals(5.0, intersection.getX(), DELTA);
 		Assert.assertEquals(10.0, intersection.getY(), DELTA);
+
+		// Lines have equal distance:
+		intersection = MathService.lineSegmentIntersection(c2, c3, new Coordinate(0, 20), new Coordinate(-20, -20));
+		Assert.assertNull(intersection);
 
 		Assert.assertNull(MathService.lineSegmentIntersection(c1, c2, c3, c4));
 		try {

@@ -113,6 +113,9 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * @return true
 	 */
 	public boolean equalsDelta(Coordinate coordinate, double delta) {
+		if (coordinate == null) {
+			return false;
+		}
 		return (Math.abs(this.x - coordinate.x) < delta && Math.abs(this.y - coordinate.y) < delta);
 	}
 
@@ -127,7 +130,8 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * Note: This method assumes that ordinate values are valid numbers. NaN values are not handled correctly.
 	 * 
 	 * @param other
-	 *            the <code>Coordinate</code> with which this <code>Coordinate</code> is being compared
+	 *            the <code>Coordinate</code> with which this <code>Coordinate</code> is being compared. Can not be
+	 *            null.
 	 * @return -1, zero, or 1 as this <code>Coordinate</code> is less than, equal to, or greater than the specified
 	 *         <code>Coordinate</code>
 	 */

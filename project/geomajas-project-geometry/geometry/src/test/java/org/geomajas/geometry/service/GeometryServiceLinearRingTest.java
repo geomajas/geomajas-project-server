@@ -20,6 +20,8 @@ import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * <p>
@@ -33,7 +35,7 @@ public class GeometryServiceLinearRingTest {
 
 	private static final int SRID = 4326;
 
-	private static final double DELTA = 1E-10;
+	private static final double DELTA = 1E-4;
 
 	private com.vividsolutions.jts.geom.GeometryFactory jtsFactory;
 
@@ -121,5 +123,23 @@ public class GeometryServiceLinearRingTest {
 	@Test
 	public void getLength() {
 		Assert.assertEquals(jts.getLength(), GeometryService.getLength(gwt), DELTA);
+	}
+
+	@Test
+	public void centroidTest() throws WktException, ParseException {
+		String wkt = "POLYGON ((948732.820500011 6078756.569848541, 1068024.3649477751 6028202.01937218, "
+				+ "1072333.0579502126 5998997.156511122, 1055305.3793291312 5958871.450440632, 1105675.0935204166 "
+				+ "5929144.458480931, 1162476.2079476311 5924715.38833866, 1153645.9759600186 5858183.406784581, "
+				+ "1104605.1110124618 5830956.472744024, 1066165.5338210524 5840392.513424949, 946203.9886702409 "
+				+ "6074778.917027304, 948732.820500011 6078756.569848541))";
+		Geometry geometry = WktService.toGeometry(wkt);
+		Coordinate c = GeometryService.getCentroid(geometry);
+
+		WKTReader r = new WKTReader(jtsFactory);
+		com.vividsolutions.jts.geom.Geometry geometry2 = r.read(wkt);
+		com.vividsolutions.jts.geom.Point c2 = geometry2.getCentroid();
+
+		Assert.assertEquals(c2.getY(), c.getY(), DELTA);
+		Assert.assertEquals(c2.getX(), c.getX(), DELTA);
 	}
 }

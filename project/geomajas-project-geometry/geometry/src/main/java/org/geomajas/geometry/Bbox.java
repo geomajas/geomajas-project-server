@@ -170,7 +170,7 @@ public class Bbox implements Serializable {
 
 	/**
 	 * Set the highest X boundary for the bounding box.<br/>
-	 * Attention, order is important, setMaxY() must always be called after setY().
+	 * Attention, order is important, setMaxX() must always be called after setX().
 	 * 
 	 * @param x
 	 *            highest X value
@@ -202,7 +202,7 @@ public class Bbox implements Serializable {
 	/**
 	 * Convert to readable string.
 	 * 
-	 * @return readable string for bbox
+	 * @return readable string for Bounding box.
 	 */
 	public String toString() {
 		return "Bbox[" + x + " " + y + " " + width + " " + height + "]";
