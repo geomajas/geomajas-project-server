@@ -9,7 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
  
+.tabSetContainer,
 .msRibbon {
+	border-top: 1px solid #C0C3C7;
+	border-bottom: 1px solid #C0C3C7;
 }
 
 .msRibbonGroup {
@@ -95,6 +98,18 @@
 .msRibbonButtonSelectedFocusedOver,
 .msRibbonButtonDisabled,
 .msRibbonButtonSelectedDisabled,
+.msRibbonDropDownButton,
+.msRibbonDropDownButtonOver,
+.msRibbonDropDownButtonFocused,
+.msRibbonDropDownButtonFocusedOver,
+.msRibbonDropDownButtonDown,
+.msRibbonDropDownButtonFocusedDown,
+.msRibbonDropDownButtonSelected,
+.msRibbonDropDownButtonSelectedFocused,
+.msRibbonDropDownButtonSelectedDown,
+.msRibbonDropDownButtonSelectedFocusedDown,
+.msRibbonDropDownButtonSelectedOver,
+.msRibbonDropDownButtonSelectedFocusedOver
 .msRibbonDropDownPanelButton,
 .msRibbonDropDownPanelButtonOver,
 .msRibbonDropDownPanelButtonFocused,
@@ -120,6 +135,10 @@
 .msRibbonButtonFocusedOver,
 .msRibbonButtonSelectedOver,
 .msRibbonButtonSelectedFocusedOver,
+.msRibbonDropDownButtonOver,
+.msRibbonDropDownButtonFocusedOver,
+.msRibbonDropDownButtonSelectedOver,
+.msRibbonDropDownButtonSelectedFocusedOver,
 .msRibbonDropDownPanelButtonOver,
 .msRibbonDropDownPanelButtonFocusedOver,
 .msRibbonDropDownPanelButtonSelectedOver,
@@ -129,6 +148,8 @@
 
 .msRibbonButtonOver,
 .msRibbonButtonFocusedOver,
+.msRibbonDropDownButtonOver,
+.msRibbonDropDownButtonFocusedOver,
 .msRibbonDropDownPanelButtonOver,
 .msRibbonDropDownPanelButtonFocusedOver {
 	border: 1px solid #F1CC54;
@@ -138,6 +159,10 @@
 .msRibbonButtonSelectedFocused,
 .msRibbonButtonSelectedFocusedOver,
 .msRibbonButtonSelectedOver,
+.msRibbonDropDownButtonSelected,
+.msRibbonDropDownButtonSelectedFocused,
+.msRibbonDropDownButtonSelectedFocusedOver,
+.msRibbonDropDownButtonSelectedOver
 .msRibbonDropDownPanelButtonSelected,
 .msRibbonDropDownPanelButtonSelectedFocused,
 .msRibbonDropDownPanelButtonSelectedFocusedOver,
@@ -150,6 +175,10 @@
 .msRibbonButtonFocusedDown,
 .msRibbonButtonSelectedDown,
 .msRibbonButtonSelectedFocusedDown,
+.msRibbonDropDownButtonDown,
+.msRibbonDropDownButtonFocusedDown,
+.msRibbonDropDownButtonSelectedDown,
+.msRibbonDropDownButtonSelectedFocusedDown,
 .msRibbonDropDownPanelButtonDown,
 .msRibbonDropDownPanelButtonFocusedDown,
 .msRibbonDropDownPanelButtonSelectedDown,
@@ -160,8 +189,11 @@
 
 .msRibbonButtonDisabled,
 .msRibbonButtonSelectedDisabled,
+.msRibbonDropDownButtonDisabled,
+.msRibbonDropDownButtonSelectedDisabled,
 .msRibbonDropDownPanelButtonDisabled,
 .msRibbonDropDownPanelButtonSelectedDisabled {
 	font-weight: normal;
 	color: #AAAAAA;
 }
+
