@@ -163,6 +163,7 @@ public class PanAndZoomSliderSample extends SamplePanel {
 						SLIDER_UNIT_WIDTH, SLIDER_UNIT_HEIGHT);
 				/*
 				 * Part of the background on which the zoomslider handler can move.
+				 * One zoom level is represented by one image.
 				 */
 				Image backgroundPart = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
 						+ "Bg", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
