@@ -24,9 +24,15 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
- * A custom map add-on group, which is always on top of other add-ons to make sure the
+ * A customizable zoom slider map add-on, which is always on top of other add-ons to make sure the
  * onDrag event of {@link ZoomSliderController} is not interrupted. 
- * You need to provide this class with 2 {@link SingleMapAddon}s (zoom in, zoom out) and 1 {@link SliderArea}.
+ * Using setters, you need to provide this class with;
+ * <ul>
+ * <li>{@link #setZoomIn(SingleMapAddon)}; This addon will be placed at the top of the slider.</li>
+ * <li>{@link #setBackgroundPart(Image)}; image that represents one zoom level/scale in the background.</li>
+ * <li>{@link #setSliderUnit(Image)}; image that represents the slider's unit or handle.</li>
+ * <li>{@link #setZoomOut(SingleMapAddon)}; This addon will be placed at the bottom of the slider.</li>
+ * </ul>  
  * 
  * @author Emiel Ackermann
  * @since 1.10.0
@@ -43,16 +49,19 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 	
 	private MapWidget mapWidget;
 	
-	// List of current usable scales. 
-	// These will be determined depending on map size and maximum bounds. 
 	private List<Double> currentScaleList = new ArrayList<Double>();
 	private SingleMapAddon zoomIn;
 	private SliderArea sliderArea;
 	private SingleMapAddon zoomOut;
 
 	/**
-	 * A custom map add-on group, which is always on top of other add-ons. You need to provide this class with
-	 * 2 {@link SingleMapAddon}s (zoom in, zoom out) and 1 {@link SliderArea}.
+	 * A customizable zoom slider map add-on. Using setters, you need to provide this class with;
+	 * <ul>
+	 * <li>{@link #setZoomIn(SingleMapAddon)}; This addon will be placed at the top of the slider.</li>
+	 * <li>{@link #setBackgroundPart(Image)}; image that represents one zoom level/scale in the background.</li>
+	 * <li>{@link #setSliderUnit(Image)}; image that represents the slider's unit or handle.</li>
+	 * <li>{@link #setZoomOut(SingleMapAddon)}; This addon will be placed at the bottom of the slider.</li>
+	 * </ul>
 	 * 
 	 * @param id id
 	 * @param mapWidget map widget
@@ -62,10 +71,20 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		this.mapWidget = mapWidget;
 	}
 	
+	/**
+	 * Get the MapWidget object.
+	 * 
+	 * @return the MapWidget object.
+	 */
 	public MapWidget getMapWidget() {
 		return mapWidget;
 	}
 
+	/**
+	 * Get the SliderArea object.
+	 * 
+	 * @return the SliderArea object.
+	 */
 	public SliderArea getSliderArea() {
 		return sliderArea;
 	}
@@ -128,6 +147,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		zoomOut.getIcon().getBounds().setY(sliderArea.getVerticalMargin() + sliderAreaHeight);
 	}
 
+	/** {@inheritDoc} */
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		/** When the map size changes, update the usable scales and the background of the zoom slider. */
 		if (event.isMapResized()) {
@@ -146,11 +166,16 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 			}
 		}
 	}
-
+	/**
+	 * Get list of current scales. This list will be determined depending on map size and maximum bounds.
+	 * 
+	 * @return list of current scales
+	 */
 	public List<Double> getCurrentScaleList() {
 		return currentScaleList;
 	}
-
+	
+	/** {@inheritDoc} */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds,
 			boolean recursive) {
 		mapWidget.getVectorContext().drawGroup(null, this);
@@ -161,41 +186,76 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 		sliderArea.accept(visitor, this, bounds, recursive);
 	}
 	
+	@Override
 	public void setMapSize(int mapWidth, int mapHeight) {
 		super.setMapSize(mapWidth, mapHeight);
 		zoomIn.setMapSize(mapWidth, mapHeight);
 		zoomOut.setMapSize(mapWidth, mapHeight);
 	}
-
+	/**
+	 * Get the image object that is used for creating the background of the slider. 
+	 * For each scale this image is used once.
+	 * 
+	 * @return part of the background that represents one scale.
+	 */
 	public Image getBackgroundPart() {
 		return backgroundPart;
 	}
-
+	/**
+	 * Set the image object that is used for creating the background of the slider. 
+	 * For each scale this image is used once.
+	 * 
+	 * @param part of the background that represents one scale.
+	 */
 	public void setBackgroundPart(Image backgroundPart) {
 		this.backgroundPart = backgroundPart;
 		
 	}
-
+	/**
+	 * Get the slider unit image object.
+	 * 
+	 * @return the slider unit image object
+	 */
 	public Image getSliderUnit() {
 		return sliderUnit;
 	}
-
+	/**
+	 * Set the slider unit image object.
+	 * 
+	 * @param the slider unit image object
+	 */
 	public void setSliderUnit(Image sliderUnit) {
 		this.sliderUnit = sliderUnit;
 	}
-
+	/**
+	 * Get the SingleMapAddon that zooms in.
+	 * 
+	 * @return zoomOut SingleMapAddon that zooms in
+	 */
 	public SingleMapAddon getZoomIn() {
 		return zoomIn;
 	}
-
+	/**
+	 * Set the SingleMapAddon that zooms in.
+	 * 
+	 * @param zoomOut SingleMapAddon that zooms in
+	 */
 	public void setZoomIn(SingleMapAddon zoomIn) {
 		this.zoomIn = zoomIn;
 	}
-
+	/**
+	 * Get the SingleMapAddon that zooms out.
+	 * 
+	 * @return zoomOut SingleMapAddon that zooms out
+	 */
 	public SingleMapAddon getZoomOut() {
 		return zoomOut;
 	}
-
+	/**
+	 * Set the SingleMapAddon that zooms out.
+	 * 
+	 * @param zoomOut SingleMapAddon that zooms out
+	 */
 	public void setZoomOut(SingleMapAddon zoomOut) {
 		this.zoomOut = zoomOut;
 	}

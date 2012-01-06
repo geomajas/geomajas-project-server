@@ -86,9 +86,15 @@ public class ZoomSliderController extends AbstractGraphicsController {
 		event.preventDefault();
 	}
 	
+	/**
+	 * Checks if the given y is within the slider area's range. 
+	 * If not the initial y is corrected to either the top y or bottom y.
+	 * @param y initial y 
+	 * @return validated y
+	 */
 	private double validateY(double y) {
 		SliderArea sliderArea = zoomSlider.getSliderArea();
-		y -= 2 * (zoomSlider.getVerticalMargin() + sliderArea.getVerticalMargin()) + 5;
+		y -= zoomSlider.getVerticalMargin() + sliderArea.getVerticalMargin() + 5;
 		double startY = 0;
 		double endY = sliderArea.getHeight() - zoomSlider.getSliderUnit().getBounds().getHeight();
 		if (y > endY) {
