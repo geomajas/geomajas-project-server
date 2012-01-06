@@ -44,19 +44,26 @@ public final class GuwLayout {
 	 * 
 	 * @author Emiel Ackermann
 	 */
-	public interface DropDown {
+	public static final class DropDown {
+		
+		private DropDown() { }
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: OFF
 		/**
 		 * Button layout, which is the same as a RibbonButton 
 		 * in a ToolbarActionList; icon (16px) on the left and title on the right.
 		 */
-		String ICON_AND_TITLE = "iconAndTitle";
+		public static final String ICON_AND_TITLE = "iconAndTitle";
+		/** Default icon size for the icon without description. */
+		public static int ribbonBarDropDownButtonIconSize = 16;
+
 		/**
 		 * Button layout consisting of an icon (24px) on the 
 		 * left and the title and description on the right, the title on top of the description.
 		 */
-		String ICON_TITLE_AND_DESCRIPTION = "iconTitleAndDescription";
+		public static final String ICON_TITLE_AND_DESCRIPTION = "iconTitleAndDescription";
+		/** Default icon size for the icon with description. */
+		public static int ribbonBarDropDownButtonDescriptionIconSize = 24;
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: ON
 	}
