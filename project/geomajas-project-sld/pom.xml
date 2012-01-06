@@ -111,33 +111,33 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
-				<version>${spring-version}</version>
+				<version>${sld-spring-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>
-				<version>${spring-version}</version>
+				<version>${sld-spring-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
-				<version>${spring-version}</version>
+				<version>${sld-spring-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
-				<version>${spring-version}</version>
+				<version>${sld-spring-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>${spring-version}</version>
+				<version>${sld-spring-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geotools.xsd</groupId>
 				<artifactId>gt-xsd-sld</artifactId>
-				<version>${geotools-version}</version>
+				<version>${sld-geotools-version}</version>
 			</dependency>
 			
 			<dependency>
@@ -194,12 +194,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.1</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
@@ -220,12 +214,12 @@
 			<dependency>
 				<groupId>org.jibx</groupId>
 				<artifactId>jibx-run</artifactId>
-				<version>${jibx-version}</version>
+				<version>${sld-jibx-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jibx</groupId>
 				<artifactId>jibx-extras</artifactId>
-				<version>${jibx-version}</version>
+				<version>${sld-jibx-version}</version>
 			</dependency>
 
 			<dependency>
@@ -237,32 +231,6 @@
 				<groupId>trove</groupId>
 				<artifactId>trove</artifactId>
 				<version>1.0.2</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>log4j-over-slf4j</artifactId>
-				<version>${slf4j-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>0.9.21</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>99.0-does-not-exist</version>
 			</dependency>
 
 			<dependency>
@@ -280,30 +248,57 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${gwt-version}</version>
+				<version>${sld-gwt-version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${gwt-version}</version>
+				<version>${sld-gwt-version}</version>
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${gwt-version}</version>
+				<version>${sld-gwt-version}</version>
 				<scope>test</scope>
 			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
 
+	<profiles>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
+
 	<properties>
-		<spring-version>3.0.5.RELEASE</spring-version>
-		<slf4j-version>1.6.0</slf4j-version>
-		<jibx-version>1.2.3</jibx-version>
-		<gwt-version>2.4.0</gwt-version>
-		<geotools-version>2.7.4-GBE-260</geotools-version>
+		<sld-spring-version>3.0.5.RELEASE</sld-spring-version>
+		<sld-jibx-version>1.2.3</sld-jibx-version>
+		<sld-gwt-version>2.4.0</sld-gwt-version>
+		<sld-geotools-version>2.7.4-GBE-260</sld-geotools-version>
 	</properties>
 </project>
