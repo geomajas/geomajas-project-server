@@ -50,6 +50,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</map>
 		</property>
 	</bean>
+	
+	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
+	    <property name="loopAllServices" value="false"/>
+	    <property name="pointDisplayWidth" value="2000" />
+	    <property name="pointDisplayHeight" value="1000" />
+	    <property name="geocoderServices">
+	        <list>
+	            <bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+	        </list>
+	    </property>
+	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerOsm">
 		<property name="serverLayerId" value="layerOsm" />

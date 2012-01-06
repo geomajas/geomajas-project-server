@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
+import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.widgets.layout.VStack;
@@ -55,6 +56,11 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	public ActionListRibbonColumn(List<ButtonAction> actionList, int iconSize) {
 		buttons = new ArrayList<RibbonButton>(actionList.size());
 		for (ButtonAction action : actionList) {
+			if (action instanceof ToolbarButtonCanvas) {
+				new IllegalArgumentException("ButtonAction " + 
+						((ToolbarButtonCanvas) action).getToolbarAction().getClass() + 
+						" has a predefined widget, which is not allowed in a list of actions");
+			}
 			RibbonButton button = new RibbonButton(action, iconSize, TitleAlignment.RIGHT);
 			button.setHeight(20);
 			addMember(button);

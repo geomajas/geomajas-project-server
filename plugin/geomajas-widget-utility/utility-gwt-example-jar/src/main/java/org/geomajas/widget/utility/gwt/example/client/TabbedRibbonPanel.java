@@ -76,8 +76,8 @@ public class TabbedRibbonPanel extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] {"classpath:org/geomajas/widget/utility/gwt/example/ribbon.xml",
-				"classpath:org/geomajas/widget/utility/gwt/example/appGuw.xml"};
+		return new String[] {"classpath:org/geomajas/widget/utility/gwt/example/context/ribbon.xml",
+				"classpath:org/geomajas/widget/utility/gwt/example/context/appGuw.xml"};
 	}
 
 	public String ensureUserLoggedIn() {

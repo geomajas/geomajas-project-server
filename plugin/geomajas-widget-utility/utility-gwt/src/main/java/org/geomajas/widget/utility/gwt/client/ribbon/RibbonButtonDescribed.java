@@ -15,6 +15,7 @@ import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
@@ -38,6 +39,8 @@ public class RibbonButtonDescribed extends RibbonButton {
 
 	public RibbonButtonDescribed(ButtonAction buttonAction, Integer iconSize) {
 		super(buttonAction, iconSize, null);
+		setCanHover(false);
+		setCursor(Cursor.HAND);
 		
 		String iconBaseUrl = buttonAction.getIcon();
 		Img icon = new Img(applyDisabled(iconBaseUrl), iconSize, iconSize);

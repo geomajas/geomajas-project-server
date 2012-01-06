@@ -20,6 +20,7 @@ import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.ToolbarCanvas;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
@@ -30,6 +31,7 @@ import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.gwt.client.action.DropDownButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
+import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarRadioAction;
 import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownPanel;
 import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownRibbonButton;
@@ -71,27 +73,31 @@ public final class RibbonColumnRegistry {
 		REGISTRY.put("ToolbarActionButton", new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
-				ClientToolInfo tool = tools.get(0);
-				RibbonButton button = null;
+				RibbonColumn column = null;
 				if (tools != null && tools.size() > 0) {
+					ClientToolInfo tool = tools.get(0);
 					ButtonAction action = getAction(tool, mapWidget);
 					if (action != null) {
-						String buttonLayout = null;
-						for (Parameter parameter : tool.getParameters()) {
-							if ("buttonLayout".equals(parameter.getName())) {
-								buttonLayout = parameter.getValue();
-								break;
+						if (action instanceof ToolbarButtonCanvas) {
+							column = new RibbonColumnCanvas((ToolbarButtonCanvas) action);
+						} else {
+							String buttonLayout = null;
+							for (Parameter parameter : tool.getParameters()) {
+								if ("buttonLayout".equals(parameter.getName())) {
+									buttonLayout = parameter.getValue();
+									break;
+								}
 							}
-						}
-						if (GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
-							button = new RibbonButtonDescribed(action);
-						} else { // null || GuwLayout.DropDown.ICON_AND_TITLE 
-							button = new RibbonButton(action, 
-									GuwLayout.ribbonColumnButtonIconSize, TitleAlignment.BOTTOM);
+							if (GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+								column = new RibbonButtonDescribed(action);
+							} else { // null || GuwLayout.DropDown.ICON_AND_TITLE 
+								column = new RibbonButton(action, 
+										GuwLayout.ribbonColumnButtonIconSize, TitleAlignment.BOTTOM);
+							}
 						}
 					}
 				}
-				return button;
+				return column;
 			}
 		});
 
@@ -137,16 +143,6 @@ public final class RibbonColumnRegistry {
 							actions = new ArrayList<ButtonAction>();
 						} else {
 							ButtonAction action = getAction(tool, mapWidget);
-//							if (action != null) {
-//								for (Parameter parameter : tool.getParameters()) {
-//									action.configure(parameter.getName(), parameter.getValue());
-//								}
-//							}
-//							String description = tool.getDescription();
-//							// Overrides tooltip parameter if description is set in ClientToolInfo.
-//							if (null != description && !"".equals(description)) {
-//								action.setTooltip(description);
-//							}
 							actions.add(action);
 						}
 					}
@@ -222,13 +218,23 @@ public final class RibbonColumnRegistry {
 				action = new ToolbarButtonAction(toolbarAction);
 			} else if (toolbarAction instanceof ToolbarModalAction) {
 				action = new ToolbarRadioAction((ToolbarModalAction) toolbarAction, "map-controller-group");
+			} else if (toolbarAction instanceof ToolbarCanvas) {
+				action = new ToolbarButtonCanvas(toolbarAction);
 			}
 			if (action != null) {
 				for (Parameter parameter : tool.getParameters()) {
 					action.configure(parameter.getName(), parameter.getValue());
 				}
+				String iconUrl = tool.getIcon();
+				if (null != iconUrl && !"".equals(iconUrl)) {
+					action.setIcon(iconUrl);
+				}
+				String title = tool.getTitle();
+				if (null != title && !"".equals(title)) {
+					action.setTitle(title);
+				}
+				// if description is set in ClientToolInfo, it overrides the tooltip parameter.
 				String description = tool.getDescription();
-				// Overrides tooltip parameter if description is set in ClientToolInfo.
 				if (null != description && !"".equals(description)) {
 					action.setTooltip(description);
 				}

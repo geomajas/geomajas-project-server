@@ -50,6 +50,10 @@
 			<version>${geomajas-widget-utility-gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
+		</dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
 		<dependency>

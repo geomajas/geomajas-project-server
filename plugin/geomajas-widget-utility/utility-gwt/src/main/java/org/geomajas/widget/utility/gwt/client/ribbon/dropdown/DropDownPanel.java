@@ -139,10 +139,9 @@ public class DropDownPanel extends VStack {
 	@Override
 	public void animateShow(final AnimationEffect effect) {
 		this.moveTo(button.getPageLeft(), 
-				button.getPageTop() + button.getInnerContentHeight());
+				button.getPageBottom() - 2);
 		button.setSelected(true);
 		registration = previewMouseUpHandler();
-		setWidth(getWidth());
 		super.animateShow(effect);
 	}
 
@@ -165,9 +164,9 @@ public class DropDownPanel extends VStack {
 					int clientY = event.getClientY();
 					// Was the button clicked?
 					int left = button.getPageLeft();
-					int right = left + button.getInnerContentWidth();
+					int right = button.getPageRight();
 					int top = button.getPageTop();
-					int bottom = top + button.getInnerContentHeight();
+					int bottom = button.getPageBottom();
 					boolean clickIsOutside = true;
 					if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
 						clickIsOutside = false;
