@@ -20,14 +20,12 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
-
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 
 import com.smartgwt.client.types.KeyNames;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
@@ -53,7 +51,7 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
  * @since 1.6.0
  */
 @Api
-public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandler, MapViewChangedHandler {
+public class ScaleSelect extends DynamicForm implements KeyPressHandler, ChangedHandler, MapViewChangedHandler {
 
 	private MapView mapView;
 	private MapWidget mapWidget;
@@ -313,15 +311,15 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	}
 
 	private void init() {
-		DynamicForm form = new DynamicForm();
+//		DynamicForm form = new DynamicForm();
 		scaleItem = new ComboBoxItem();
 		scaleItem.setTitle(I18nProvider.getToolbar().scaleSelectTitle());
 		scaleItem.setValidators(new ScaleValidator());
 		scaleItem.setValidateOnChange(true);
 		scaleItem.addKeyPressHandler(this);
 		scaleItem.addChangedHandler(this);
-		form.setFields(scaleItem);
-		addChild(form);
+		setFields(scaleItem);
+//		addChild(form);
 
 
 		updateResolutions();	// Does nothing if mapWidget provided in constructor, hasn't been fully initialized yet.
