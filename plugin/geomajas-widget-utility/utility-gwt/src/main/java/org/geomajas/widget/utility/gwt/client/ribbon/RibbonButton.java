@@ -116,7 +116,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 			addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					buttonAction.onClick(null);
+					buttonAction.onClick(event);
 				}
 			});
 		}
