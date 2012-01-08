@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.gfx;
 import org.geomajas.annotation.Api;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -31,10 +32,19 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 1.0.0
  */
 @Api
-public interface HtmlObject {
+public interface HtmlObject extends IsWidget {
 
+	/**
+	 * Get the element that represents this object in the DOM tree.
+	 * 
+	 * @return The element that represents this object in the DOM tree.
+	 */
 	Element getElement();
 
+	/**
+	 * Get the parent widget for this HtmlObject.
+	 * @return
+	 */
 	Widget getParent();
 
 	void setParent(Widget parent);
