@@ -9,12 +9,51 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>.....</para>
+  <para>The Pure GWT face is an AJAX client for the Geomajas Server, based
+  upon the Google Web Toolkit. The goal of this client is to be as light as
+  possible, so it can easily run on mobile devices.</para>
 
+  <para>Contrary to the GWT face, this face provides only one widget: the map.
+  It does not come with a widget library either. It focuses entirely on
+  providing a clean GIS API. In a sense this face is somewhat similar to the
+  Google Maps API, except that it still relies on the Geomajas server.</para>
+
+  <sect1>
+    <title>Thin client</title>
+
+    <para>Since the Geomajas Server is perfectly capable of safeguarding your
+    domain model or executing complex tasks, this client can focus more on the
+    map presentation than business logic. This already makes the Pure GWT face
+    a real thin client. Take also the use of the Google Web Toolkit (GWT) into
+    account and this client becomes even thinner.</para>
+
+    <para>The Google Web Toolkit is a Java to JavaScript compiler, that
+    compiles only the code that you're actually using. So instead of having to
+    download entire JavaScript libraries of which you're only using a small
+    portion, a GWT application contains only code that is actually used.
+    Secondly, GWT provides a lot of tools for further optimizing the way your
+    applications are constructed. It provides automatic obfuscation, resource
+    bundling (combining resources so that less requests are needed to loads
+    them all), etc.</para>
+
+    <para>As a result of all this optimization, the memory consumption within
+    the browser is also kept at a minimum, while performance is kept at
+    maximum.</para>
+  </sect1>
+
+  <sect1>
+    <title>Mobile vs desktop</title>
+
+    <para>Although aimed towards mobile devices, the Pure GWT face is
+    perfectly suitable for both desktop and mobile environments. As mentioned
+    above, the initial footprint is as small as possible (easily a factor 10
+    smaller than other frameworks). On top of this, the Pure GWT face is also
+    designed to keep client-server bandwidth to a minimum, by providing
+    caching mechanisms, lazy loading, etc.</para>
+  </sect1>
 </chapter>
