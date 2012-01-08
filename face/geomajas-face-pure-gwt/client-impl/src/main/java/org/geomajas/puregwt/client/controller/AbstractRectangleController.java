@@ -11,8 +11,6 @@
 
 package org.geomajas.puregwt.client.controller;
 
-import java.util.Date;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -20,12 +18,8 @@ import org.geomajas.puregwt.client.gfx.VectorContainer;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
  * <p>
@@ -55,10 +49,6 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	protected int strokeWidth = 2;
 
-	protected boolean dragging;
-
-	protected long timestamp;
-
 	protected Coordinate begin;
 
 	protected boolean shift;
@@ -82,10 +72,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		getContainer();
 	}
 
-	public void onMouseDown(MouseDownEvent event) {
-		if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
-			dragging = true;
-			timestamp = new Date().getTime();
+	public void onDown(HumanInputEvent<?> event) {
+		if (!isRightMouseButton(event)) {
 			begin = getLocation(event, RenderSpace.SCREEN);
 			shift = event.isShiftKeyDown();
 			rectangle = new Rectangle((int) begin.getX(), (int) begin.getY(), 0, 0);
@@ -98,7 +86,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
-	public void onMouseUp(MouseUpEvent event) {
+	public void onUp(HumanInputEvent<?> event) {
 		// Assure dragging or clicking started inside this widget
 		if (dragging) {
 			shift |= event.isShiftKeyDown(); // shift is used when depressed either at beginning or end
@@ -111,10 +99,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
-	public void onMouseMove(MouseMoveEvent event) {
-		if (dragging) {
-			updateRectangle(event);
-		}
+	public void onDrag(HumanInputEvent<?> event) {
+		updateRectangle(event);
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
@@ -184,7 +170,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 		}
 	}
 
-	private void updateRectangle(MouseEvent<?> event) {
+	private void updateRectangle(HumanInputEvent<?> event) {
 		Coordinate pos = getLocation(event, RenderSpace.SCREEN);
 		double x = begin.getX();
 		double y = begin.getY();

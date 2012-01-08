@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
-import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 /**
  * Call-back interface for implementing methods on lists of features per layer.
@@ -34,5 +34,5 @@ public interface FeatureMapFunction {
 	 * @param featureMap
 	 *            Map of features per layer.
 	 */
-	void execute(Map<Layer<?>, List<Feature>> featureMap);
+	void execute(Map<FeaturesSupported<?>, List<Feature>> featureMap);
 }

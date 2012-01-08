@@ -52,7 +52,7 @@ public class FeatureSelectionPanel extends ContentPanel {
 		layout.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("pure-gwt-app", "mapLayerVisibility");
+		mapPresenter.initialize("pure-gwt-app", "mapCountries");
 		return layout;
 	}
 

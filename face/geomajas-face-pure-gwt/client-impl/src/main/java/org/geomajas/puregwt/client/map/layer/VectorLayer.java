@@ -74,17 +74,19 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	}
 
 	public boolean deselectFeature(Feature feature) {
-		if (selection.containsValue(feature)) {
-			selection.remove(feature);
+		if (selection.containsKey(feature.getId())) {
+			selection.remove(feature.getId());
 			eventBus.fireEvent(new FeatureDeselectedEvent(feature));
+			return true;
 		}
 		return false;
 	}
 
 	public void clearSelectedFeatures() {
 		for (Feature feature : selection.values()) {
-			deselectFeature(feature);
+			eventBus.fireEvent(new FeatureDeselectedEvent(feature));
 		}
+		selection.clear();
 	}
 
 	public Collection<String> getSelectedFeatureIds() {

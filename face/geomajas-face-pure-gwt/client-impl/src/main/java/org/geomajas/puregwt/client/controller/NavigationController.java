@@ -17,13 +17,11 @@ import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.map.MapPresenter;
 import org.geomajas.puregwt.client.map.ViewPort;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 
 /**
@@ -87,12 +85,19 @@ public class NavigationController extends AbstractMapController {
 		super.onActivate(mapPresenter);
 		zoomToRectangleController.onActivate(mapPresenter);
 	}
-
+	
 	public void onMouseDown(MouseDownEvent event) {
+		super.onMouseDown(event);		
+		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
+			// Trigger the dragging on the zoomToRectangleController:
+			zoomToRectangleController.onMouseDown(event);
+		}
+	}
+
+	public void onDown(HumanInputEvent<?> event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
 			zooming = true;
-			zoomToRectangleController.onMouseDown(event);
-		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
+		} else if (!isRightMouseButton(event)) {
 			dragging = true;
 			dragOrigin = getLocation(event, RenderSpace.SCREEN);
 			mapPresenter.setCursor("move");
@@ -100,9 +105,9 @@ public class NavigationController extends AbstractMapController {
 		lastClickPosition = getLocation(event, RenderSpace.WORLD);
 	}
 
-	public void onMouseUp(MouseUpEvent event) {
+	public void onUp(HumanInputEvent<?> event) {
 		if (zooming) {
-			zoomToRectangleController.onMouseUp(event);
+			zoomToRectangleController.onUp(event);
 			zooming = false;
 		} else if (dragging) {
 			stopPanning(event);
@@ -113,8 +118,13 @@ public class NavigationController extends AbstractMapController {
 		if (zooming) {
 			zoomToRectangleController.onMouseMove(event);
 		} else if (dragging) {
-			updateView(event);
+			// updateView(event);
+			super.onMouseMove(event);
 		}
+	}
+
+	public void onDrag(HumanInputEvent<?> event) {
+		updateView(event);
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
@@ -174,7 +184,7 @@ public class NavigationController extends AbstractMapController {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	protected void stopPanning(MouseUpEvent event) {
+	protected void stopPanning(HumanInputEvent<?> event) {
 		dragging = false;
 		mapPresenter.setCursor("default");
 		if (null != event) {
@@ -182,7 +192,7 @@ public class NavigationController extends AbstractMapController {
 		}
 	}
 
-	protected void updateView(MouseEvent<?> event) {
+	protected void updateView(HumanInputEvent<?> event) {
 		Coordinate end = getLocation(event, RenderSpace.SCREEN);
 		Coordinate beginWorld = mapPresenter.getViewPort().transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);

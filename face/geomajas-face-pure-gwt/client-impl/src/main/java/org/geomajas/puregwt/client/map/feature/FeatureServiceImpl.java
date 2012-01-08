@@ -77,9 +77,9 @@ public class FeatureServiceImpl implements FeatureService {
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
 					features.add(new FeatureImpl(feature, layer));
 				}
-				Map<Layer<?>, List<Feature>> featureMap = new HashMap<Layer<?>, List<Feature>>();
-				featureMap.put(layer, features);
-				callback.execute(featureMap);
+				Map<FeaturesSupported<?>, List<Feature>> mapping = new HashMap<FeaturesSupported<?>, List<Feature>>();
+				mapping.put(layer, features);
+				callback.execute(mapping);
 			}
 		});
 	}
@@ -109,9 +109,9 @@ public class FeatureServiceImpl implements FeatureService {
 					for (org.geomajas.layer.feature.Feature feature : dtos) {
 						features.add(new FeatureImpl(feature, layer));
 					}
-					Map<Layer<?>, List<Feature>> featureMap = new HashMap<Layer<?>, List<Feature>>();
-					featureMap.put(layer, features);
-					callback.execute(featureMap);
+					Map<FeaturesSupported<?>, List<Feature>> map = new HashMap<FeaturesSupported<?>, List<Feature>>();
+					map.put(layer, features);
+					callback.execute(map);
 				}
 			}
 		});
@@ -157,7 +157,7 @@ public class FeatureServiceImpl implements FeatureService {
 		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
 			public void execute(SearchByLocationResponse response) {
-				Map<Layer<?>, List<Feature>> featureMap = new HashMap<Layer<?>, List<Feature>>();
+				Map<FeaturesSupported<?>, List<Feature>> mapping = new HashMap<FeaturesSupported<?>, List<Feature>>();
 				for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : response.getFeatureMap()
 						.entrySet()) {
 					FeaturesSupported<?> layer = searchLayer(entry.getKey());
@@ -165,9 +165,9 @@ public class FeatureServiceImpl implements FeatureService {
 					for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
 						features.add(new FeatureImpl(feature, layer));
 					}
-					featureMap.put(layer, features);
+					mapping.put(layer, features);
 				}
-				callback.execute(featureMap);
+				callback.execute(mapping);
 			}
 		});
 	}

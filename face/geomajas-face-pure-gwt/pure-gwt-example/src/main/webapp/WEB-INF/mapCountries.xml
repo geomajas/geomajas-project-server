@@ -72,9 +72,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						<value>0.4186452654937383</value>
 						<value>0.8372905309874766</value>
 						<value>1.6745810619749533</value>
-						<value>3.3491621239499065</value>
+<!-- 						<value>3.3491621239499065</value>
 						<value>6.698324247899813</value>
-					</list>
+ -->					</list>
 				</property>
 			</bean>
 		</property>
