@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapListener;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
@@ -237,4 +238,11 @@ public interface MapPresenter {
 	 * @return The renderer for the map.
 	 */
 	MapRenderer getMapRenderer();
+
+	/**
+	 * Get an event parser specific for this map. This object can derive locations from mouse or touch events etc.
+	 * 
+	 * @return The event parser specific for this map.
+	 */
+	MapEventParser getMapEventParser();
 }

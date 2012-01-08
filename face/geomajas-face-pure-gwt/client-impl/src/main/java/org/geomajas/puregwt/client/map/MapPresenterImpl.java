@@ -28,9 +28,11 @@ import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.controller.ListenerController;
 import org.geomajas.puregwt.client.controller.MapController;
+import org.geomajas.puregwt.client.controller.MapEventParserImpl;
 import org.geomajas.puregwt.client.controller.MapListener;
 import org.geomajas.puregwt.client.controller.NavigationController;
 import org.geomajas.puregwt.client.event.FeatureDeselectedEvent;
@@ -168,13 +170,17 @@ public final class MapPresenterImpl implements MapPresenter {
 		boolean removeMapGadgetContainer(VectorContainer mapGadgetContainer);
 	}
 
+	private final EventBus eventBus;
+
+	private final MapEventParser mapEventParser;
+
 	private List<HandlerRegistration> handlers;
+
+	private Map<MapListener, List<HandlerRegistration>> listeners;
 
 	private MapController mapController;
 
 	private MapController fallbackController;
-
-	private Map<MapListener, List<HandlerRegistration>> listeners;
 
 	@Inject
 	private LayersModel layersModel;
@@ -188,14 +194,12 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private Map<MapGadget, VectorContainer> gadgets;
 
-	private EventBus eventBus;
-
 	@Inject
 	private MapWidget display;
 
 	@Inject
 	private GfxUtil gfxUtil;
-	
+
 	private FeatureService featureService;
 
 	@Inject
@@ -205,12 +209,14 @@ public final class MapPresenterImpl implements MapPresenter {
 		listeners = new HashMap<MapListener, List<HandlerRegistration>>();
 		gadgets = new HashMap<MapGadget, VectorContainer>();
 		featureService = new FeatureServiceImpl(this);
+		mapEventParser = new MapEventParserImpl(this);
 	}
 
 	// ------------------------------------------------------------------------
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void initialize(String applicationId, String id) {
 		mapRenderer = new MapRendererImpl(layersModel, viewPort, display.getMapHtmlContainer());
 
@@ -280,18 +286,22 @@ public final class MapPresenterImpl implements MapPresenter {
 		setSize(640, 480);
 	}
 
+	/** {@inheritDoc} */
 	public Widget asWidget() {
 		return display.asWidget();
 	}
 
+	/** {@inheritDoc} */
 	public void setMapRenderer(MapRenderer mapRenderer) {
 		this.mapRenderer = mapRenderer;
 	}
 
+	/** {@inheritDoc} */
 	public MapRenderer getMapRenderer() {
 		return mapRenderer;
 	}
 
+	/** {@inheritDoc} */
 	public void setSize(int width, int height) {
 		display.asWidget().setSize(width + "px", height + "px");
 		if (viewPort != null) {
@@ -300,6 +310,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		eventBus.fireEvent(new MapResizedEvent(width, height));
 	}
 
+	/** {@inheritDoc} */
 	public VectorContainer addWorldContainer() {
 		VectorContainer container = display.getNewWorldContainer();
 		// set transform parameters once, after that all is handled by WorldContainerRenderer
@@ -309,34 +320,42 @@ public final class MapPresenterImpl implements MapPresenter {
 		return container;
 	}
 
+	/** {@inheritDoc} */
 	public VectorContainer addScreenContainer() {
 		return display.getNewScreenContainer();
 	}
 
+	/** {@inheritDoc} */
 	public boolean removeVectorContainer(VectorContainer container) {
 		return display.removeVectorContainer(container);
 	}
 
+	/** {@inheritDoc} */
 	public boolean bringToFront(VectorContainer container) {
 		return display.bringToFront(container);
 	}
 
+	/** {@inheritDoc} */
 	public LayersModel getLayersModel() {
 		return layersModel;
 	}
 
+	/** {@inheritDoc} */
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
 
+	/** {@inheritDoc} */
 	public FeatureService getFeatureService() {
 		return featureService;
 	}
 
+	/** {@inheritDoc} */
 	public EventBus getEventBus() {
 		return eventBus;
 	}
 
+	/** {@inheritDoc} */
 	public void setMapController(MapController mapController) {
 		for (HandlerRegistration registration : handlers) {
 			registration.removeHandler();
@@ -362,10 +381,12 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public MapController getMapController() {
 		return mapController;
 	}
 
+	/** {@inheritDoc} */
 	public void setFallbackController(MapController fallbackController) {
 		boolean fallbackActive = (mapController == this.fallbackController);
 		this.fallbackController = fallbackController;
@@ -374,6 +395,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean addMapListener(MapListener mapListener) {
 		if (mapListener != null && !listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
@@ -391,6 +413,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public boolean removeMapListener(MapListener mapListener) {
 		if (mapListener != null && listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = listeners.get(mapListener);
@@ -404,14 +427,17 @@ public final class MapPresenterImpl implements MapPresenter {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public Collection<MapListener> getMapListeners() {
 		return listeners.keySet();
 	}
 
+	/** {@inheritDoc} */
 	public Set<MapGadget> getMapGadgets() {
 		return gadgets.keySet();
 	}
 
+	/** {@inheritDoc} */
 	public void addMapGadget(MapGadget mapGadget) {
 		VectorContainer container = addScreenContainer();
 		gadgets.put(mapGadget, container);
@@ -420,6 +446,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean removeMapGadget(MapGadget mapGadget) {
 		if (gadgets.containsKey(mapGadget)) {
 			mapGadget.onDestroy();
@@ -430,8 +457,14 @@ public final class MapPresenterImpl implements MapPresenter {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public void setCursor(String cursor) {
 		DOM.setStyleAttribute(display.asWidget().getElement(), "cursor", cursor);
+	}
+
+	/** {@inheritDoc} */
+	public MapEventParser getMapEventParser() {
+		return mapEventParser;
 	}
 
 	// ------------------------------------------------------------------------
@@ -511,7 +544,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		private final VectorContainer container;
 
-		private final Map<Feature, Path> paths;
+		private final Map<String, Path> paths;
 
 		private FeatureStyleInfo pointStyle;
 
@@ -521,7 +554,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		public FeatureSelectionRenderer() {
 			container = addWorldContainer();
-			paths = new HashMap<Feature, Path>();
+			paths = new HashMap<String, Path>();
 		}
 
 		public void initialize(ClientMapInfo mapInfo) {
@@ -561,14 +594,14 @@ public final class MapPresenterImpl implements MapPresenter {
 				gfxUtil.applyStyle(path, ringStyle);
 			}
 			container.add(path);
-			paths.put(f, path);
+			paths.put(f.getId(), path);
 		}
 
 		private void remove(Feature feature) {
-			Path path = paths.get(feature);
+			Path path = paths.get(feature.getId());
 			if (path != null) {
 				container.remove(path);
-				paths.remove(feature);
+				paths.remove(feature.getId());
 			}
 		}
 	}
