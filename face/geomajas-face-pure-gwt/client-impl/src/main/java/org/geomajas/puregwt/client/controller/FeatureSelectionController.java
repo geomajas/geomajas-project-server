@@ -26,7 +26,6 @@ import org.geomajas.puregwt.client.map.feature.FeatureMapFunction;
 import org.geomajas.puregwt.client.map.feature.FeatureService.QueryType;
 import org.geomajas.puregwt.client.map.feature.FeatureService.SearchLayerType;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
-import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -49,6 +48,8 @@ public class FeatureSelectionController extends NavigationController {
 	}
 
 	private final SelectionRectangleController selectionRectangleController;
+	
+	// Selection options:
 
 	private SelectionMethod selectionMethod = SelectionMethod.CLICK_ONLY;
 
@@ -57,6 +58,12 @@ public class FeatureSelectionController extends NavigationController {
 	private float intersectionRatio = 0.5f;
 
 	private int pixelTolerance = 5;
+
+	// Keeping track of panning versus clicking:
+	
+	private double clickDelta = 2;
+
+	private Coordinate onDownLocation;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -82,7 +89,10 @@ public class FeatureSelectionController extends NavigationController {
 		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
 			selectionRectangleController.onDown(event);
 		} else {
-			super.onDown(event);
+			onDownLocation = getLocation(event, RenderSpace.SCREEN);
+			if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
+				super.onDown(event);
+			}
 		}
 	}
 
@@ -94,15 +104,19 @@ public class FeatureSelectionController extends NavigationController {
 				selectionRectangleController.onUp(event);
 				break;
 			default:
-				super.onUp(event);
-				searchAtLocation(getLocation(event, RenderSpace.WORLD), true);
+				if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
+					super.onUp(event);
+				}
+				if (isDownPosition(event)) {
+					searchAtLocation(getLocation(event, RenderSpace.WORLD), event.isShiftKeyDown());
+				}
 		}
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging && selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
 			selectionRectangleController.onMouseMove(event);
-		} else {
+		} else if (!isDownPosition(event)) {
 			super.onMouseMove(event);
 		}
 	}
@@ -118,12 +132,22 @@ public class FeatureSelectionController extends NavigationController {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	private boolean isDownPosition(HumanInputEvent<?> event) {
+		if (onDownLocation != null) {
+			Coordinate location = getLocation(event, RenderSpace.SCREEN);
+			if (MathService.distance(onDownLocation, location) < clickDelta) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void searchAtLocation(Coordinate location, boolean select) {
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { location });
 
 		mapPresenter.getFeatureService().search(point, pixelsToUnits(pixelTolerance), QueryType.INTERSECTS,
-				searchLayerType, intersectionRatio, new SelectionCallback(select));
+				searchLayerType, -1, new SelectionCallback(select));
 	}
 
 	private double pixelsToUnits(int pixels) {
@@ -164,20 +188,32 @@ public class FeatureSelectionController extends NavigationController {
 			this.isShift = isShift;
 		}
 
-		public void execute(Map<Layer<?>, List<Feature>> featureMap) {
-			// TODO Auto-generated method stub
+		public void execute(Map<FeaturesSupported<?>, List<Feature>> featureMap) {
+			for (FeaturesSupported<?> layer : featureMap.keySet()) {
+				List<Feature> features = featureMap.get(layer);
+				if (features != null) {
+					switch (selectionMethod) {
+						case CLICK_ONLY:
+							// We assume only one feature should be selected:
+							if (isShift) {
+								// Add to selection, unless already selected:
+								if (layer.isFeatureSelected(features.get(0).getId())) {
+									layer.deselectFeature(features.get(0));
+								} else {
+									layer.selectFeature(features.get(0));
+								}
+							} else {
+								// No shift: if selected deselect, otherwise make sure it's the only selection:
+								if (layer.isFeatureSelected(features.get(0).getId())) {
+									layer.clearSelectedFeatures();
+								} else {
+									layer.clearSelectedFeatures();
+									layer.selectFeature(features.get(0));
+								}
+							}
+							break;
+						default:
 
-		}
-
-		public void execute(List<Feature> features) {
-			if (features != null && features.size() > 0) {
-				for (Feature feature : features) {
-					FeaturesSupported fs = (FeaturesSupported) feature.getLayer();
-					fs.clearSelectedFeatures();
-					if (isShift) {
-						fs.selectFeature(feature);
-					} else {
-						fs.selectFeature(feature);
 					}
 				}
 			}
