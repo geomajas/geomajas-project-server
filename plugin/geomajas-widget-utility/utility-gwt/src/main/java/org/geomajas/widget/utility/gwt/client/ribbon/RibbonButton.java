@@ -116,7 +116,11 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 			addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					buttonAction.onClick(event);
+					if (event.getSource() instanceof com.google.gwt.event.dom.client.ClickEvent) {
+						buttonAction.onClick((com.google.gwt.event.dom.client.ClickEvent) event.getSource());
+					} else {
+						buttonAction.onClick(null);
+					}
 				}
 			});
 		}
