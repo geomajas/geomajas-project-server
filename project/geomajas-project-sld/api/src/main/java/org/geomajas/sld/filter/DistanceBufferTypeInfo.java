@@ -36,7 +36,7 @@ import org.geomajas.sld.geometry.AbstractGeometryInfo;
  * </pre>
  * 
  * @author Jan De Moerloose
- * @since 1.10.0
+ * @since 1.0.0
  */
 
 @Api(allMethods = true)
