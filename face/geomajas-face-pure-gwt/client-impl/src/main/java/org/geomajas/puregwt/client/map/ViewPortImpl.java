@@ -187,7 +187,7 @@ public final class ViewPortImpl implements ViewPort {
 
 			// Now apply on this view port:
 			scale = limitedScale;
-			position = BboxService.getCenterPoint(newBbox);
+			position = checkPosition(BboxService.getCenterPoint(newBbox), scale);
 			if (eventBus != null) {
 				if (dX == 0 && dY == 0) {
 					eventBus.fireEvent(new ViewPortScaledEvent(this));
