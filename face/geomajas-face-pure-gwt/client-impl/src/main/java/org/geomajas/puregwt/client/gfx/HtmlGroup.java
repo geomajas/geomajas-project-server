@@ -191,7 +191,7 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 	 * @param y
 	 *            The y origin to where we want this container to zoom.
 	 */
-	public void zoomToLocation(double scale, int x, int y) {
+	public void applyScale(double scale, int x, int y) {
 		Dom.setStyleAttribute(getElement(), "MozTransform", "scale(" + scale + ")");
 		Dom.setStyleAttribute(getElement(), "MozTransformOrigin", x + "px " + y + "px");
 		Dom.setStyleAttribute(getElement(), "WebkitTransform", "scale(" + scale + ")");

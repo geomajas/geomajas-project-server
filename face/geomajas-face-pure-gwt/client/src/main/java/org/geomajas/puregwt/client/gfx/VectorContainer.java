@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.Api;
+import org.geomajas.annotation.FutureApi;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
@@ -21,11 +21,27 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@FutureApi(allMethods = true)
 public interface VectorContainer extends VectorObjectContainer {
-	
+
+	/**
+	 * Apply a translation onto the container. This will also translate everything in it.
+	 * 
+	 * @param deltaX
+	 *            The translation factor along the X-axis.
+	 * @param deltaY
+	 *            The translation factor along the X-axis.
+	 */
 	void setTranslation(double deltaX, double deltaY);
-	
+
+	/**
+	 * Apply a scaling factor onto the container. This scaling factor will apply on all children.
+	 * 
+	 * @param scaleX
+	 *            The scaling factor along the X-axis.
+	 * @param scaleY
+	 *            The scaling factor along the X-axis.
+	 */
 	void setScale(double scaleX, double scaleY);
 
 	/**

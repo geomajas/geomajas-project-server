@@ -10,7 +10,7 @@
  */
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.Api;
+import org.geomajas.annotation.FutureApi;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -27,11 +27,15 @@ import com.google.gwt.user.client.ui.Widget;
  * class can represent individual HTML tags such as images, but also groups (DIV). In this case of a group (see
  * HtmlContainer) it is possible to attach multiple other HtmlObjects to create a tree structure.
  * </p>
+ * <p>
+ * Note that this interface extends the {@link IsWidget} interface, so DOM manipulation is always possible through the
+ * {@link Widget} or {@link Element} objects.
+ * </p>
  * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@FutureApi
 public interface HtmlObject extends IsWidget {
 
 	/**
@@ -43,33 +47,106 @@ public interface HtmlObject extends IsWidget {
 
 	/**
 	 * Get the parent widget for this HtmlObject.
-	 * @return
+	 * 
+	 * @return The parent widget.
 	 */
 	Widget getParent();
 
+	/**
+	 * Set the parent for this object.
+	 * 
+	 * @param parent
+	 *            The parent widget.
+	 */
 	void setParent(Widget parent);
 
+	/**
+	 * Sets the object's width pixels. This width does not include decorations such as border, margin, and padding.
+	 * 
+	 * @return The current width for this object.
+	 */
 	int getWidth();
 
+	/**
+	 * Set a new width (in pixels) onto this object.
+	 * 
+	 * @param width
+	 *            The new value.
+	 */
 	void setWidth(int width);
 
+	/**
+	 * Sets the object's height in pixels. This width does not include decorations such as border, margin, and padding.
+	 * 
+	 * @return The current height for this object.
+	 */
 	int getHeight();
 
+	/**
+	 * Set a new height (in pixels) onto this object.
+	 * 
+	 * @param height
+	 *            The new value.
+	 */
 	void setHeight(int height);
 
+	/**
+	 * Get the number of pixels this object is shifted to the right relative to the parent widget.
+	 * 
+	 * @return The CSS style value "left".
+	 */
 	int getLeft();
 
+	/**
+	 * Set the number of pixels this object is shifted to the right relative to the parent widget.
+	 * 
+	 * @param left
+	 *            The CSS style value "left".
+	 */
 	void setLeft(int left);
 
+	/**
+	 * Get the number of pixels this object is shifted to the bottom relative to the parent widget.
+	 * 
+	 * @return The CSS style value "top".
+	 */
 	int getTop();
 
+	/**
+	 * Set the number of pixels this object is shifted to the bottom relative to the parent widget.
+	 * 
+	 * @param left
+	 *            The CSS style value "top".
+	 */
 	void setTop(int top);
 
+	/**
+	 * Get the current opacity on this object.
+	 * 
+	 * @return The current opacity value.
+	 */
 	double getOpacity();
 
+	/**
+	 * Set the opacity value onto this object.
+	 * 
+	 * @param opacity
+	 *            The new value.
+	 */
 	void setOpacity(double opacity);
 
+	/**
+	 * Determine whether or not this object should be visible.
+	 * 
+	 * @param visible
+	 *            The visible parameter.
+	 */
 	void setVisible(boolean visible);
 
+	/**
+	 * Is this object currently visible or not?
+	 * 
+	 * @return
+	 */
 	boolean isVisible();
 }

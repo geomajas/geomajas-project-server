@@ -131,7 +131,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 			// GWT.log("Setting scale visibility: " + scale + ", " + visible);
 			if (visible) {
 				visibleScale = scale;
-				scalePresenter.getHtmlContainer().zoomToLocation(1, 0, 0);
+				scalePresenter.getHtmlContainer().applyScale(1, 0, 0);
 				scalePresenter.getHtmlContainer().setVisible(true);
 			} else if (scale != visibleScale) {
 				scalePresenter.getHtmlContainer().setVisible(false);

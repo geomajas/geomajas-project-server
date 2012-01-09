@@ -11,7 +11,7 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.annotation.Api;
+import org.geomajas.annotation.FutureApi;
 
 /**
  * <p>
@@ -33,14 +33,12 @@ import org.geomajas.annotation.Api;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@FutureApi
 public interface HtmlContainer extends HtmlObject {
 
 	/**
 	 * Zoom this container in or out to a given transformation origin. This transformation is taken literally, it does
-	 * not stack onto a current transformation should there be one.<br/>
-	 * TODO why not try a transform(matrix) kind of method? How would IE handle it???
-	 * TODO why not 'applyScale(double scale);' ?
+	 * not stack onto a current transformation should there be one.
 	 * 
 	 * @param scale
 	 *            The zooming factor.
@@ -49,7 +47,7 @@ public interface HtmlContainer extends HtmlObject {
 	 * @param y
 	 *            The Y ordinate of the origin to where we want this container to zoom.
 	 */
-	void zoomToLocation(double scale, int x, int y);
+	void applyScale(double scale, int x, int y);
 
 	/**
 	 * Add a new child HtmlObject to the list. Note that using this method children are added to the back of the list,
