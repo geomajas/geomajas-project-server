@@ -13,12 +13,16 @@ package org.geomajas.internal.configuration;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LayerInfo;
@@ -165,12 +169,16 @@ public class ConfigurationDtoPostProcessor {
 			}
 			
 			// check for invalid attribute names
-			for (AttributeInfo attributeInfo : info.getFeatureInfo().getAttributes()) {
+			for (AbstractAttributeInfo attributeInfo : info.getFeatureInfo().getAttributes()) {
 				if (attributeInfo.getName().contains(".") || attributeInfo.getName().contains("/")) {
 					throw new LayerException(ExceptionCode.INVALID_ATTRIBUTE_NAME, attributeInfo.getName(),
 							layer.getId());
 				}
 			}
+
+			// check for duplicate attribute names
+			checkDuplicateAttributes(layer.getId(), "", info.getFeatureInfo().getAttributes());
+			
 			// convert sld to old styles
 			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
 				// check sld location
@@ -252,7 +260,23 @@ public class ConfigurationDtoPostProcessor {
 			}
 		}
 	}
-	
+
+	private void checkDuplicateAttributes(String layerId, String path, List<AttributeInfo> attributes)
+			throws LayerException {
+		Set<String> names = new HashSet<String>();
+		for (AbstractAttributeInfo attribute : attributes) {
+			String name = attribute.getName();
+			if (names.contains(name)) {
+				throw new LayerException(ExceptionCode.DUPLICATE_ATTRIBUTE_NAME, name, layerId, path);
+			}
+			names.add(name);
+			if (attribute instanceof AssociationAttributeInfo) {
+				checkDuplicateAttributes(layerId, path + "/" + name,
+						((AssociationAttributeInfo) attribute).getFeature().getAttributes());
+			}
+		}
+	}
+
 	private FeatureStyleInfo createPointStyle(FeatureStyleInfo style, String geometryName) {
 		FeatureStyleInfo copy = new FeatureStyleInfo(style);
 		copy.setLayerType(LayerType.POINT);

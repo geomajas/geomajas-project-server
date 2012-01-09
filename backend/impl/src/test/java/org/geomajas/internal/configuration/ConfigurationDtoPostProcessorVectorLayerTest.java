@@ -23,6 +23,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
  * Verify that the check on layer tree nodes, layer needs to be part of the map.
  *
@@ -31,7 +33,7 @@ import java.util.List;
 public class ConfigurationDtoPostProcessorVectorLayerTest {
 
 	@Test
-	public void testAttributeNameCheck() {
+	public void testAttributeInvalidNameCheck() {
 		try {
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
 			context.setId("test");
@@ -45,11 +47,65 @@ public class ConfigurationDtoPostProcessorVectorLayerTest {
 			context.refresh();
 			Assert.fail("Context initialization should have failed.");
 		} catch (BeanCreationException bce) {
-			Assert.assertTrue(bce.getCause().getCause().getMessage().contains(
-					"manyToOne.stringAttr"));
+			assertThat(bce.getCause().getCause().getMessage()).startsWith(
+					"Invalid attribute name manyToOne.stringAttr in layer beans.");
 		}
 	}
-	
+
+	@Test
+	public void testDuplicateAttribute() {
+		try {
+			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+			context.setId("test");
+			context.setDisplayName("test");
+			context.setConfigLocation(
+					"/org/geomajas/spring/geomajasContext.xml " +
+					"/org/geomajas/internal/configuration/layerBeansDuplicateAttribute.xml " +
+					"");
+			context.refresh();
+			Assert.fail("Context initialization should have failed.");
+		} catch (BeanCreationException bce) {
+			assertThat(bce.getCause().getCause().getMessage()).startsWith(
+					"Duplicate attribute name stringAttr in layer beans, path .");
+		}
+	}
+
+	@Test
+	public void testDuplicateAttributeInOneToMany() {
+		try {
+			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+			context.setId("test");
+			context.setDisplayName("test");
+			context.setConfigLocation(
+					"/org/geomajas/spring/geomajasContext.xml " +
+					"/org/geomajas/internal/configuration/layerBeansDuplicateAttrOneToMany.xml " +
+					"");
+			context.refresh();
+			Assert.fail("Context initialization should have failed.");
+		} catch (BeanCreationException bce) {
+			assertThat(bce.getCause().getCause().getMessage()).startsWith(
+					"Duplicate attribute name stringAttr in layer beans, path /oneToManyAttr.");
+		}
+	}
+
+	@Test
+	public void testDuplicateAttributeInManyToOne() {
+		try {
+			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+			context.setId("test");
+			context.setDisplayName("test");
+			context.setConfigLocation(
+					"/org/geomajas/spring/geomajasContext.xml " +
+					"/org/geomajas/internal/configuration/layerBeansDuplicateAttrManyToOne.xml " +
+					"");
+			context.refresh();
+			Assert.fail("Context initialization should have failed.");
+		} catch (BeanCreationException bce) {
+			assertThat(bce.getCause().getCause().getMessage()).startsWith(
+					"Duplicate attribute name stringAttr in layer beans, path /manyToOneAttr.");
+		}
+	}
+
 	@Test
 	public void testDefaultStyle() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();

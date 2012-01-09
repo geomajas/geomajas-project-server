@@ -305,18 +305,22 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int EXPRESSION_EVALUATION_FAILED = 86;
-
 	/**
 	 * Layer ${0} does not allow features with an empty geometry.
 	 *
 	 * @since 1.10.0
 	 */
 	int LAYER_EMPTY_GEOMETRY_NOT_ALLOWED = 87;
-
 	/**
-	 * Layer ${0} is not correctly configured: ${1}
+	 * Layer ${0} is not correctly configured: ${1}.
 	 *
 	 * @since 1.10.0
 	 */
 	int LAYER_CONFIGURATION_PROBLEM = 88;
+	/**
+	 * Duplicate attribute name ${0} in layer ${1}, path ${2}.
+	 *
+	 * @since 1.10.0
+	 */
+	int DUPLICATE_ATTRIBUTE_NAME = 89;
 }
