@@ -40,7 +40,7 @@ import org.geomajas.sld.expression.PropertyNameInfo;
 @Api(allMethods = true)
 public class PropertyIsNullTypeInfo extends ComparisonOpsTypeInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private int choiceSelect = -1;
 

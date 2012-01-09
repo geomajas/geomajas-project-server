@@ -37,7 +37,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class ExtendedLinkInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private String type;
 
@@ -114,7 +114,7 @@ public class ExtendedLinkInfo implements Serializable {
 	 */
 	public static class RoleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String role;
 
@@ -194,7 +194,7 @@ public class ExtendedLinkInfo implements Serializable {
 	 */
 	public static class TitleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String title;
 

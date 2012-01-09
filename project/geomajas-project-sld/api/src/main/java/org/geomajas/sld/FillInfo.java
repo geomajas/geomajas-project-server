@@ -47,7 +47,7 @@ public class FillInfo implements Serializable {
 
 	private static final String FILL = "fill";
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private GraphicFillInfo graphicFill;
 

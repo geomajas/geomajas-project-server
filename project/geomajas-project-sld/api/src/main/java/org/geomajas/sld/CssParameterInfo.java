@@ -42,7 +42,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class CssParameterInfo extends ParameterValueTypeInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	public CssParameterInfo() {
 	}

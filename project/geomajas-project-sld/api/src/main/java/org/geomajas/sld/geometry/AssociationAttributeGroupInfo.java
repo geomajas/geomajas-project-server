@@ -44,7 +44,7 @@ import org.geomajas.sld.xlink.SimpleLinkInfo;
 @Api(allMethods = true)
 public class AssociationAttributeGroupInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private SimpleLinkInfo simpleLink;
 
@@ -103,7 +103,7 @@ public class AssociationAttributeGroupInfo implements Serializable {
 	 */
 	public static class RemoteSchemaInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String remoteSchema;
 

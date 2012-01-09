@@ -44,7 +44,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class GeometryCollectionTypeInfo extends AbstractGeometryInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private List<GeometryMemberInfo> geometryMemberList = new ArrayList<GeometryMemberInfo>();
 

@@ -153,12 +153,12 @@
 				usage="optional" />
 		</structure>
 	</mapping>
-	<mapping abstract="true" type-name="ogc:BBOXType" class="org.geomajas.sld.filter.BBOXTypeInfo">
+	<mapping abstract="true" type-name="ogc:BBOXType" class="org.geomajas.sld.filter.BboxTypeInfo">
 		<structure map-as="ogc:SpatialOpsType" />
 		<structure type="org.geomajas.sld.expression.PropertyNameInfo" get-method="getPropertyName" set-method="setPropertyName" />
 		<structure type="org.geomajas.sld.geometry.BoxTypeInfo" get-method="getBox" set-method="setBox" />
 	</mapping>
-	<mapping extends="org.geomajas.sld.filter.SpatialOpsTypeInfo" class="org.geomajas.sld.filter.BBOXTypeInfo"
+	<mapping extends="org.geomajas.sld.filter.SpatialOpsTypeInfo" class="org.geomajas.sld.filter.BboxTypeInfo"
 		name="BBOX">
 		<structure map-as="ogc:BBOXType" />
 	</mapping>

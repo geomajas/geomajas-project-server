@@ -37,7 +37,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class ServiceInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private ServiceInfoInner service;
 
@@ -75,7 +75,7 @@ public class ServiceInfo implements Serializable {
 	public static enum ServiceInfoInner implements Serializable {
 		WFS, WCS;
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 	}
 
 	@java.lang.Override

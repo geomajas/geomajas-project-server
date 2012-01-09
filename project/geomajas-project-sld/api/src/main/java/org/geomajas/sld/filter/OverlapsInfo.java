@@ -30,7 +30,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class OverlapsInfo extends BinarySpatialOpTypeInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	@java.lang.Override
 	public java.lang.String toString() {

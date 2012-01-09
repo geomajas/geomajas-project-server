@@ -52,7 +52,7 @@ public class StrokeInfo implements Serializable {
 
 	private static final String STROKE_WIDTH = "stroke-width";
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private ChoiceInfo choice;
 
@@ -111,7 +111,7 @@ public class StrokeInfo implements Serializable {
 	 */
 	public static class ChoiceInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private int choiceSelect = -1;
 

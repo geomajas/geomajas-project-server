@@ -48,7 +48,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class StyledLayerDescriptorInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private String name;
 
@@ -164,7 +164,7 @@ public class StyledLayerDescriptorInfo implements Serializable {
 	 */
 	public static class ChoiceInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private int choiceListSelect = -1;
 

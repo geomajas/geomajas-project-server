@@ -65,7 +65,7 @@ import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.expression.ExpressionInfo;
 import org.geomajas.sld.expression.LiteralTypeInfo;
 import org.geomajas.sld.filter.AndInfo;
-import org.geomajas.sld.filter.BBOXTypeInfo;
+import org.geomajas.sld.filter.BboxTypeInfo;
 import org.geomajas.sld.filter.BeyondInfo;
 import org.geomajas.sld.filter.BinaryComparisonOpTypeInfo;
 import org.geomajas.sld.filter.BinaryLogicOpTypeInfo;
@@ -516,8 +516,8 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	}
 
 	private String toSpatial(SpatialOpsTypeInfo spatialOps) {
-		if (spatialOps instanceof BBOXTypeInfo) {
-			BBOXTypeInfo bbox = (BBOXTypeInfo) spatialOps;
+		if (spatialOps instanceof BboxTypeInfo) {
+			BboxTypeInfo bbox = (BboxTypeInfo) spatialOps;
 			String propertyName = bbox.getPropertyName().getValue();
 			String coordinates = null;
 			if (bbox.getBox().ifCoordinates()) {

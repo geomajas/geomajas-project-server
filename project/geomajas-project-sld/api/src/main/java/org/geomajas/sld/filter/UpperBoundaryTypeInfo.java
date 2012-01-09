@@ -34,7 +34,7 @@ import org.geomajas.sld.expression.ExpressionInfo;
 @Api(allMethods = true)
 public class UpperBoundaryTypeInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private ExpressionInfo expression;
 

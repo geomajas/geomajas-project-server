@@ -50,7 +50,7 @@ public class FontInfo implements Serializable {
 
 	private static final String FONT_STYLE = "font-style";
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private List<CssParameterInfo> cssParameterList = new ArrayList<CssParameterInfo>();
 

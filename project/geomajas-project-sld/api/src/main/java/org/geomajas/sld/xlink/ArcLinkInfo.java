@@ -46,7 +46,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class ArcLinkInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private String type;
 
@@ -205,7 +205,7 @@ public class ArcLinkInfo implements Serializable {
 	 */
 	public static class ArcroleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String arcrole;
 
@@ -285,7 +285,7 @@ public class ArcLinkInfo implements Serializable {
 	 */
 	public static class TitleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String title;
 
@@ -365,7 +365,7 @@ public class ArcLinkInfo implements Serializable {
 	 */
 	public static class FromInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String from;
 
@@ -445,7 +445,7 @@ public class ArcLinkInfo implements Serializable {
 	 */
 	public static class ToInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String to;
 

@@ -43,7 +43,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class OverlapBehaviorInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private OverlapBehaviorInfoInner overlapBehavior;
 
@@ -74,7 +74,7 @@ public class OverlapBehaviorInfo implements Serializable {
 	public static enum OverlapBehaviorInfoInner implements Serializable {
 		LATEST_ON_TOP("LATEST_ON_TOP"), EARLIEST_ON_TOP("EARLIEST_ON_TOP"), AVERAGE("AVERAGE"), RANDOM("RANDOM");
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private final String value;
 

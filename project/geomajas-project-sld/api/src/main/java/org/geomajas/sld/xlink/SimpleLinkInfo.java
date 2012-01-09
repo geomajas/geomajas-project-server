@@ -45,7 +45,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class SimpleLinkInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private String type;
 
@@ -202,7 +202,7 @@ public class SimpleLinkInfo implements Serializable {
 	 */
 	public static class HrefInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String href;
 
@@ -280,7 +280,7 @@ public class SimpleLinkInfo implements Serializable {
 	 */
 	public static class RoleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String role;
 
@@ -358,7 +358,7 @@ public class SimpleLinkInfo implements Serializable {
 	 */
 	public static class ArcroleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String arcrole;
 
@@ -436,7 +436,7 @@ public class SimpleLinkInfo implements Serializable {
 	 */
 	public static class TitleInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private String title;
 

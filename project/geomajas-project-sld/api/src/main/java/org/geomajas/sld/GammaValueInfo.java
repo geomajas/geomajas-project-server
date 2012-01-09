@@ -29,7 +29,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class GammaValueInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private Double gammaValue;
 

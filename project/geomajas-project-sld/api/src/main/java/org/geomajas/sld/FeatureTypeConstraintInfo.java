@@ -45,7 +45,7 @@ import org.geomajas.sld.filter.FilterTypeInfo;
 @Api(allMethods = true)
 public class FeatureTypeConstraintInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private FeatureTypeNameInfo featureTypeName;
 

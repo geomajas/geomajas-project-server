@@ -57,7 +57,7 @@ public enum ActuateInfo implements Serializable {
 	 */
 	NONE("none");
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private final String value;
 

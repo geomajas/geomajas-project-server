@@ -48,7 +48,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class GraphicInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private List<ChoiceInfo> choiceList = new ArrayList<ChoiceInfo>();
 
@@ -144,7 +144,7 @@ public class GraphicInfo implements Serializable {
 	 */
 	public static class ChoiceInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private int choiceListSelect = -1;
 

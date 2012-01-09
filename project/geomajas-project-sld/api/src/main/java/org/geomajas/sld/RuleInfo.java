@@ -51,7 +51,7 @@ import org.geomajas.sld.filter.FilterTypeInfo;
 @Api(allMethods = true)
 public class RuleInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private String name;
 
@@ -228,7 +228,7 @@ public class RuleInfo implements Serializable {
 	 */
 	public static class ChoiceInfo implements Serializable {
 
-		private static final long serialVersionUID = 1100;
+		private static final long serialVersionUID = 100;
 
 		private int choiceSelect = -1;
 

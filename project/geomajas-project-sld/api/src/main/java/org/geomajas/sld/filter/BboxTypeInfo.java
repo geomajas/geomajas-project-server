@@ -39,9 +39,9 @@ import org.geomajas.sld.geometry.BoxTypeInfo;
  */
 
 @Api(allMethods = true)
-public class BBOXTypeInfo extends SpatialOpsTypeInfo implements Serializable {
+public class BboxTypeInfo extends SpatialOpsTypeInfo implements Serializable {
 
-	private static final long serialVersionUID = 1100;
+	private static final long serialVersionUID = 100;
 
 	private PropertyNameInfo propertyName;
 
@@ -86,7 +86,7 @@ public class BBOXTypeInfo extends SpatialOpsTypeInfo implements Serializable {
 	@java.lang.Override
 	@java.lang.SuppressWarnings("all")
 	public java.lang.String toString() {
-		return "BBOXTypeInfo(propertyName=" + this.getPropertyName() + ", box=" + this.getBox() + ")";
+		return "BboxTypeInfo(propertyName=" + this.getPropertyName() + ", box=" + this.getBox() + ")";
 	}
 
 	@java.lang.Override
@@ -95,10 +95,10 @@ public class BBOXTypeInfo extends SpatialOpsTypeInfo implements Serializable {
 		if (o == this) {
 			return true;
 		}
-		if (!(o instanceof BBOXTypeInfo)) {
+		if (!(o instanceof BboxTypeInfo)) {
 			return false;
 		}
-		final BBOXTypeInfo other = (BBOXTypeInfo) o;
+		final BboxTypeInfo other = (BboxTypeInfo) o;
 		if (!other.canEqual((java.lang.Object) this)) {
 			return false;
 		}
@@ -117,7 +117,7 @@ public class BBOXTypeInfo extends SpatialOpsTypeInfo implements Serializable {
 
 	@java.lang.SuppressWarnings("all")
 	public boolean canEqual(final java.lang.Object other) {
-		return other instanceof BBOXTypeInfo;
+		return other instanceof BboxTypeInfo;
 	}
 
 	@java.lang.Override
