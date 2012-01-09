@@ -219,6 +219,7 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		tab.setCriterion(criterion);
 		tab.addFeatures(features);
 		tabset.addTab(tab, 0);
+		setEmpty();
 	}
 
 	/**
@@ -281,7 +282,6 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 				}
 			}
 		}
-		setEmpty();
 		return t;
 	}
 
@@ -337,6 +337,5 @@ public class MultiFeatureListGrid extends Canvas implements SearchHandler {
 		window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);
 		window.draw();
 	}
-
 	
 }
