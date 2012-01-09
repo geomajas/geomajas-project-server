@@ -18,7 +18,6 @@ import java.util.Map.Entry;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
-import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
  * Default implementation of the Feature interface. Represents the individual objects of vector layers.
@@ -29,17 +28,17 @@ public class FeatureImpl implements Feature {
 
 	private final FeaturesSupported<?> layer;
 
-	private String id;
+	private final String id;
 
-	private Map<String, Attribute<?>> attributes;
+	private final Map<String, Attribute<?>> attributes;
 
-	private Geometry geometry;
+	private final Geometry geometry;
 
-	private String label;
+	private final String label;
 
-	private boolean updatable;
+	private final boolean updatable;
 
-	private boolean deletable;
+	private final boolean deletable;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -63,10 +62,12 @@ public class FeatureImpl implements Feature {
 	// Feature implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return id;
 	}
 
+	/** {@inheritDoc} */
 	public Object getAttributeValue(String attributeName) {
 		Attribute<?> attribute = attributes.get(attributeName);
 		if (attribute != null) {
@@ -75,30 +76,37 @@ public class FeatureImpl implements Feature {
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	public String getLabel() {
 		return label;
 	}
 
+	/** {@inheritDoc} */
 	public Map<String, Attribute<?>> getAttributes() {
 		return attributes;
 	}
 
+	/** {@inheritDoc} */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isSelected() {
 		return layer.isFeatureSelected(id);
 	}
 
-	public Layer<?> getLayer() {
+	/** {@inheritDoc} */
+	public FeaturesSupported<?> getLayer() {
 		return layer;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isUpdatable() {
 		return updatable;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isDeletable() {
 		return deletable;
 	}

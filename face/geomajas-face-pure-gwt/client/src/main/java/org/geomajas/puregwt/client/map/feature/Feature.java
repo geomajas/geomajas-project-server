@@ -16,17 +16,17 @@ import java.util.Map;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Attribute;
-import org.geomajas.puregwt.client.map.layer.Layer;
+import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 /**
- * General interface for a GWT client side feature.<br/>
- * TODO what about lazy loading here? Add it later on?
+ * Client side feature definition. It defines the features of
+ * {@link org.geomajas.puregwt.client.map.layer.FeaturesSupported} layers.
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface Feature {
 
 	/**
@@ -79,7 +79,7 @@ public interface Feature {
 	 * 
 	 * @return Returns the layer. This value can never be null.
 	 */
-	Layer<?> getLayer();
+	FeaturesSupported<?> getLayer();
 
 	/**
 	 * Is the logged in user allowed to edit this feature?
