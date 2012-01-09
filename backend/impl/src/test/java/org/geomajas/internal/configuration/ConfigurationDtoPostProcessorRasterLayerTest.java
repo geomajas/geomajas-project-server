@@ -30,7 +30,7 @@ import static org.fest.assertions.Assertions.assertThat;
  *
  * @author Joachim Van der Auwera
  */
-public class ConfigurationDtoPostProcessorRasterLayerInfoTest {
+public class ConfigurationDtoPostProcessorRasterLayerTest {
 
 	@Test
 	public void testNullTileWidth() throws Exception {
