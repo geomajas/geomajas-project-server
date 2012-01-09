@@ -23,8 +23,8 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
@@ -229,13 +229,11 @@ public class VectorLayerFactory implements LayerFactory {
 	private void disableOutOfScale(MapContext mapContext, Style indexedStyle) {
 		double scaleDenominator = RendererUtilities.calculateOGCScale(mapContext.getAreaOfInterest(), (int) mapContext
 				.getViewport().getScreenArea().getWidth(), null);
-		int ruleIndex = 0;
 		for (FeatureTypeStyle fts : indexedStyle.featureTypeStyles()) {
 			for (Rule rule : fts.rules()) {
 				if (!isWithInScale(rule, scaleDenominator)) {
 					rule.setFilter(Filter.EXCLUDE);
 				}
-				ruleIndex++;
 			}
 		}
 	}
@@ -283,10 +281,10 @@ public class VectorLayerFactory implements LayerFactory {
 	}
 
 	/**
-	 * Should be the same as org.geotools.renderer.lite.StreamingRenderer !
+	 * Should be the same as {@link org.geotools.renderer.lite.StreamingRenderer} !
 	 * 
-	 * @param r
-	 * @param scaleDenominator
+	 * @param r rule
+	 * @param scaleDenominator scale denominator
 	 * @return true if within scale
 	 */
 	private boolean isWithInScale(Rule r, double scaleDenominator) {
@@ -307,7 +305,7 @@ public class VectorLayerFactory implements LayerFactory {
 			// 3 more attributes : normal style rule index, selected style rule index, geometry index
 			Object[] values = new Object[featureInfo.getAttributes().size() + 3];
 			int i = 0;
-			for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
+			for (AbstractAttributeInfo attrInfo : featureInfo.getAttributes()) {
 				String name = attrInfo.getName();
 				if (styleAttributeNames.contains(name)) {
 					values[i++] = internalFeature.getAttributes().get(name).getValue();
@@ -341,7 +339,7 @@ public class VectorLayerFactory implements LayerFactory {
 		VectorLayerInfo info = layer.getLayerInfo();
 		builder.setName(info.getFeatureInfo().getDataSourceName());
 		builder.setCRS(mapCrs);
-		for (AttributeInfo attrInfo : info.getFeatureInfo().getAttributes()) {
+		for (AbstractAttributeInfo attrInfo : info.getFeatureInfo().getAttributes()) {
 			if (attrInfo instanceof PrimitiveAttributeInfo) {
 				PrimitiveAttributeInfo prim = (PrimitiveAttributeInfo) attrInfo;
 				switch (prim.getType()) {

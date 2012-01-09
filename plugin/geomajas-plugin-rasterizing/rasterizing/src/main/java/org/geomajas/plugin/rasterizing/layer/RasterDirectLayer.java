@@ -99,6 +99,7 @@ public class RasterDirectLayer extends DirectLayer {
 	private final String style;
 
 	public RasterDirectLayer(List<RasterTile> tiles, int tileWidth, int tileHeight, String style) {
+		super();
 		this.tiles = tiles;
 		if (tileWidth < 1) {
 			tileWidth = 1;

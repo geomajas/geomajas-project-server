@@ -59,6 +59,7 @@ public class GeometryDirectLayer extends DirectLayer {
 	private final Logger log = LoggerFactory.getLogger(GeometryDirectLayer.class);
 
 	public GeometryDirectLayer(Style style, Class<? extends Geometry> binding) {
+		super();
 		this.style = style;
 		this.binding = binding;
 	}
