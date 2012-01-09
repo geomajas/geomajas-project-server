@@ -11,6 +11,7 @@
 
 package org.geomajas.puregwt.client.controller;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -34,8 +35,8 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * map. On mouse up, the map will than zoom to that rectangle.</li>
  * <li></li>
  * </ul>
- * For zooming using the mouse wheel there are 2 options, defined by the ScrollZoomType enum. These options are the
- * following:
+ * For zooming using the mouse wheel there are 2 options, defined by the {@link ScrollZoomType} enum. These options are
+ * the following:
  * <ul>
  * <li><b>ScrollZoomType.ZOOM_CENTER</b>: Zoom in/out so that the current center of the map remains.</li>
  * <li><b>ScrollZoomType.ZOOM_POSITION</b>: Zoom in/out so that the mouse world position remains the same. Can be great
@@ -44,7 +45,9 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * </ul>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class NavigationController extends AbstractMapController {
 
 	/** Zooming types on mouse wheel scroll. */
@@ -85,9 +88,9 @@ public class NavigationController extends AbstractMapController {
 		super.onActivate(mapPresenter);
 		zoomToRectangleController.onActivate(mapPresenter);
 	}
-	
+
 	public void onMouseDown(MouseDownEvent event) {
-		super.onMouseDown(event);		
+		super.onMouseDown(event);
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
 			// Trigger the dragging on the zoomToRectangleController:
 			zoomToRectangleController.onMouseDown(event);

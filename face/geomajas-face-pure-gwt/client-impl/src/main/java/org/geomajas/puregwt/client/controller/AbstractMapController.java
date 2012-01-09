@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.controller;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.map.MapPresenter;
@@ -24,6 +26,8 @@ import org.geomajas.puregwt.client.map.MapPresenter;
  * @author Pieter De Graef
  * @since 1.0.0
  */
+@UserImplemented
+@Api(allMethods = true)
 public abstract class AbstractMapController extends AbstractController implements MapController {
 
 	protected MapPresenter mapPresenter;

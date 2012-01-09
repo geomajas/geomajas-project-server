@@ -11,6 +11,8 @@
 
 package org.geomajas.puregwt.client.controller;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -34,7 +36,10 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
  * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@UserImplemented
+@Api(allMethods = true)
 public abstract class AbstractRectangleController extends AbstractMapController {
 
 	protected Rectangle rectangle;
@@ -53,7 +58,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	protected boolean shift;
 
-	private VectorContainer container;
+	protected VectorContainer container;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -113,7 +118,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	 * @param worldBounds
 	 *            bounds in world coordinates
 	 */
-	protected abstract void execute(Bbox worldBounds);
+	public abstract void execute(Bbox worldBounds);
 
 	// ------------------------------------------------------------------------
 	// Getters and setters for the style of the rectangle:

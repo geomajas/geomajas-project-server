@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -28,14 +29,33 @@ import org.geomajas.puregwt.client.map.feature.FeatureService.SearchLayerType;
 import org.geomajas.puregwt.client.map.layer.FeaturesSupported;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 
 /**
- * Controller for selecting and deselecting features on the map.
+ * <p>
+ * Controller for selecting and deselecting features on the map. This controller extends the
+ * {@link NavigationController} and will therefore allow some forms of navigation, depending on the chosen
+ * {@link SelectionMethod}.
+ * </p>
+ * <p>
+ * Zooming through the mouse wheel or by double clicking as supported through the {@link NavigationController}. Other
+ * forms of navigation are dependent upon the {@link SelectionMethod}. The following modes are supported:
+ * <ul>
+ * <li><b>CLICK_ONLY</b>: Click will select or deselect features. Dragging will pan the map. By pressing the SHIFT
+ * button additional features can be selected.</li>
+ * <li><b>CLICK_AND_DRAG</b>: This mode will allow the user to also draw a rectangle on the map (by dragging). When the
+ * user lets go of the mouse, all features with a ratio of 50% (can be changed) within the rectangle will be selected,
+ * all other deselected. If the SHIFT button is pressed, the features within the rectangle will be selected upon the
+ * current selection.</li>
+ * </ul>
+ * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class FeatureSelectionController extends NavigationController {
 
 	/**
@@ -44,11 +64,20 @@ public class FeatureSelectionController extends NavigationController {
 	 * @author Pieter De Graef
 	 */
 	public enum SelectionMethod {
-		CLICK_ONLY, CLICK_AND_DRAG
+		/**
+		 * The user can select features only by clicking on the map. Selection by dragging a rectangle is not supported.
+		 * Instead when dragging, the map will pan.
+		 */
+		CLICK_ONLY,
+
+		/**
+		 * Support both clicking an selection by dragging a rectangle. Dragging will no longer pan the map.
+		 */
+		CLICK_AND_DRAG
 	}
 
 	private final SelectionRectangleController selectionRectangleController;
-	
+
 	// Selection options:
 
 	private SelectionMethod selectionMethod = SelectionMethod.CLICK_ONLY;
@@ -60,7 +89,7 @@ public class FeatureSelectionController extends NavigationController {
 	private int pixelTolerance = 5;
 
 	// Keeping track of panning versus clicking:
-	
+
 	private double clickDelta = 2;
 
 	private Coordinate onDownLocation;
@@ -85,39 +114,70 @@ public class FeatureSelectionController extends NavigationController {
 		selectionRectangleController.onActivate(mapPresenter);
 	}
 
+	public void onMouseDown(MouseDownEvent event) {
+		switch (selectionMethod) {
+			case CLICK_AND_DRAG:
+				onDownLocation = getLocation(event, RenderSpace.SCREEN);
+				selectionRectangleController.onMouseDown(event);
+				break;
+			default:
+				super.onMouseDown(event);
+		}
+	}
+
 	public void onDown(HumanInputEvent<?> event) {
-		if (selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
-			selectionRectangleController.onDown(event);
-		} else {
-			onDownLocation = getLocation(event, RenderSpace.SCREEN);
-			if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
-				super.onDown(event);
-			}
+		switch (selectionMethod) {
+			case CLICK_AND_DRAG:
+				selectionRectangleController.onDown(event);
+				break;
+			default:
+				onDownLocation = getLocation(event, RenderSpace.SCREEN);
+				if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
+					super.onDown(event);
+				}
+		}
+	}
+
+	public void onMouseMove(MouseMoveEvent event) {
+		switch (selectionMethod) {
+			case CLICK_AND_DRAG:
+				selectionRectangleController.onMouseMove(event);
+				break;
+			default:
+				if (!isDownPosition(event)) {
+					super.onMouseMove(event);
+				}
+		}
+	}
+
+	public void onDrag(HumanInputEvent<?> event) {
+		switch (selectionMethod) {
+			case CLICK_AND_DRAG:
+				selectionRectangleController.onDrag(event);
+				break;
+			default:
+				super.onDrag(event);
 		}
 	}
 
 	public void onUp(HumanInputEvent<?> event) {
-		stopPanning(null);
-
 		switch (selectionMethod) {
 			case CLICK_AND_DRAG:
-				selectionRectangleController.onUp(event);
+				if (isDownPosition(event)) {
+					searchAtLocation(getLocation(event, RenderSpace.WORLD), event.isShiftKeyDown());
+					selectionRectangleController.cleanup();
+				} else {
+					selectionRectangleController.onUp(event);
+				}
 				break;
 			default:
+				stopPanning(null);
 				if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
 					super.onUp(event);
 				}
 				if (isDownPosition(event)) {
 					searchAtLocation(getLocation(event, RenderSpace.WORLD), event.isShiftKeyDown());
 				}
-		}
-	}
-
-	public void onMouseMove(MouseMoveEvent event) {
-		if (dragging && selectionMethod == SelectionMethod.CLICK_AND_DRAG) {
-			selectionRectangleController.onMouseMove(event);
-		} else if (!isDownPosition(event)) {
-			super.onMouseMove(event);
 		}
 	}
 
@@ -129,9 +189,39 @@ public class FeatureSelectionController extends NavigationController {
 	}
 
 	// ------------------------------------------------------------------------
+	// Getters and setters:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the current selection method. This determines how the user can select features on the map.
+	 * 
+	 * @return The current selection method.
+	 */
+	public SelectionMethod getSelectionMethod() {
+		return selectionMethod;
+	}
+
+	/**
+	 * Change the way selection should occur.
+	 * 
+	 * @param selectionMethod
+	 *            The new selection method to apply.
+	 */
+	public void setSelectionMethod(SelectionMethod selectionMethod) {
+		this.selectionMethod = selectionMethod;
+	}
+
+	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Is the event at the same location as the "down" event?
+	 * 
+	 * @param event
+	 *            The event to check.
+	 * @return true or false.
+	 */
 	private boolean isDownPosition(HumanInputEvent<?> event) {
 		if (onDownLocation != null) {
 			Coordinate location = getLocation(event, RenderSpace.SCREEN);
@@ -142,14 +232,29 @@ public class FeatureSelectionController extends NavigationController {
 		return false;
 	}
 
-	private void searchAtLocation(Coordinate location, boolean select) {
+	/**
+	 * Search for features at a certain location.
+	 * 
+	 * @param location
+	 *            The location to check.
+	 * @param isShift
+	 *            Is the shift button pressed down?
+	 */
+	private void searchAtLocation(Coordinate location, boolean isShift) {
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { location });
 
 		mapPresenter.getFeatureService().search(point, pixelsToUnits(pixelTolerance), QueryType.INTERSECTS,
-				searchLayerType, -1, new SelectionCallback(select));
+				searchLayerType, -1, new SelectionCallback(isShift, false));
 	}
 
+	/**
+	 * Transform a pixel-length into a real-life distance expressed in map CRS. This depends on the current map scale.
+	 * 
+	 * @param pixels
+	 *            The number of pixels to calculate the distance for.
+	 * @return The distance the given number of pixels entails.
+	 */
 	private double pixelsToUnits(int pixels) {
 		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
 				RenderSpace.WORLD);
@@ -169,9 +274,18 @@ public class FeatureSelectionController extends NavigationController {
 	 */
 	private class SelectionRectangleController extends AbstractRectangleController {
 
-		protected void execute(Bbox worldBounds) {
+		public void execute(Bbox worldBounds) {
 			mapPresenter.getFeatureService().search(GeometryService.toPolygon(worldBounds), 0, QueryType.INTERSECTS,
-					searchLayerType, intersectionRatio, new SelectionCallback(!shift));
+					searchLayerType, intersectionRatio, new SelectionCallback(shift, true));
+		}
+
+		public void cleanup() {
+			if (dragging) {
+				dragging = false;
+				if (container != null) {
+					container.remove(rectangle);
+				}
+			}
 		}
 	}
 
@@ -182,38 +296,50 @@ public class FeatureSelectionController extends NavigationController {
 	 */
 	private class SelectionCallback implements FeatureMapFunction {
 
-		private boolean isShift;
+		private final boolean isShift;
 
-		public SelectionCallback(boolean isShift) {
+		private final boolean bulk;
+
+		public SelectionCallback(boolean isShift, boolean bulk) {
 			this.isShift = isShift;
+			this.bulk = bulk;
 		}
 
 		public void execute(Map<FeaturesSupported<?>, List<Feature>> featureMap) {
-			for (FeaturesSupported<?> layer : featureMap.keySet()) {
-				List<Feature> features = featureMap.get(layer);
-				if (features != null) {
-					switch (selectionMethod) {
-						case CLICK_ONLY:
-							// We assume only one feature should be selected:
-							if (isShift) {
-								// Add to selection, unless already selected:
-								if (layer.isFeatureSelected(features.get(0).getId())) {
-									layer.deselectFeature(features.get(0));
-								} else {
-									layer.selectFeature(features.get(0));
-								}
-							} else {
-								// No shift: if selected deselect, otherwise make sure it's the only selection:
-								if (layer.isFeatureSelected(features.get(0).getId())) {
-									layer.clearSelectedFeatures();
-								} else {
-									layer.clearSelectedFeatures();
-									layer.selectFeature(features.get(0));
-								}
+			if (bulk) {
+				for (FeaturesSupported<?> layer : featureMap.keySet()) {
+					List<Feature> features = featureMap.get(layer);
+					if (features != null) {
+						if (!isShift) {
+							layer.clearSelectedFeatures();
+						}
+						for (Feature feature : features) {
+							if (!layer.isFeatureSelected(feature.getId())) {
+								layer.selectFeature(feature);
 							}
-							break;
-						default:
-
+						}
+					}
+				}
+			} else {
+				for (FeaturesSupported<?> layer : featureMap.keySet()) {
+					List<Feature> features = featureMap.get(layer);
+					if (features != null) {
+						if (isShift) {
+							// Add to selection, unless already selected:
+							if (layer.isFeatureSelected(features.get(0).getId())) {
+								layer.deselectFeature(features.get(0));
+							} else {
+								layer.selectFeature(features.get(0));
+							}
+						} else {
+							// No shift: if selected deselect, otherwise make sure it's the only selection:
+							if (layer.isFeatureSelected(features.get(0).getId())) {
+								layer.clearSelectedFeatures();
+							} else {
+								layer.clearSelectedFeatures();
+								layer.selectFeature(features.get(0));
+							}
+						}
 					}
 				}
 			}

@@ -26,7 +26,7 @@ public class ZoomToRectangleController extends AbstractRectangleController {
 	 * @param worldBounds
 	 *            The result of the user's dragging on the map, expressed in world space.
 	 */
-	protected void execute(Bbox worldBounds) {
+	public void execute(Bbox worldBounds) {
 		mapPresenter.getViewPort().applyBounds(worldBounds);
 	}
 }
