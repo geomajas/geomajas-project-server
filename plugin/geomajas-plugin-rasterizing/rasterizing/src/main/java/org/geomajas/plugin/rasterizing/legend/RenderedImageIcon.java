@@ -39,6 +39,9 @@ public class RenderedImageIcon implements Icon {
 	}
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
+		if (!(g instanceof Graphics2D)) {
+			throw new IllegalStateException("paintIcon() only works on Graphics2D.");
+		}
 		Graphics2D g2d = (Graphics2D) g;
 		AffineTransform scale = AffineTransform.getScaleInstance((double) (width) / renderedImage.getWidth(),
 				(double) (height) / renderedImage.getHeight());
