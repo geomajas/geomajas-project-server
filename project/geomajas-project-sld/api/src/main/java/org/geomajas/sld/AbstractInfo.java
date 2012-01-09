@@ -37,7 +37,7 @@ public class AbstractInfo implements Serializable {
 	/**
 	 * Get the 'Abstract' element value.
 	 * 
-	 * @return value
+	 * @return abstract value
 	 */
 	public String getAbstract() {
 		return aAbstract;
@@ -46,7 +46,7 @@ public class AbstractInfo implements Serializable {
 	/**
 	 * Set the 'Abstract' element value.
 	 * 
-	 * @param _abstract
+	 * @param aAbstract abstract element
 	 */
 	public void setAbstract(String aAbstract) {
 		this.aAbstract = aAbstract;
