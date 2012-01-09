@@ -21,7 +21,7 @@
 	<artifactId>geomajas-project-sld-impl</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas SLD server implementation</name>
+	<name>Geomajas SLD implementation</name>
 	<description>Geomajas SLD server implementation</description>
 
 	<dependencies>

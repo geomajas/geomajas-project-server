@@ -16,7 +16,7 @@
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas SLD client library</name>
+	<name>Geomajas SLD GWT client library</name>
 	<description>Geomajas SLD client library (GWT)</description>
 
 	<dependencies>
