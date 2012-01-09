@@ -145,6 +145,14 @@ public class ConfigurationDtoPostProcessor {
 			// add the resolution for deprecated api support
 			info.getResolutions().add(1. / scale.getPixelPerUnit());
 		}
+		if (0 == info.getTileWidth()) {
+			throw new LayerException(ExceptionCode.LAYER_CONFIGURATION_PROBLEM, layer.getId(),
+					"tileWidth should not be zero.");
+		}
+		if (0 == info.getTileHeight()) {
+			throw new LayerException(ExceptionCode.LAYER_CONFIGURATION_PROBLEM, layer.getId(),
+					"tileHeight should not be zero.");
+		}
 	}
 
 	private void postProcess(VectorLayer layer) throws LayerException {

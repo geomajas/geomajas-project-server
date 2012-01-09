@@ -312,4 +312,11 @@ public interface ExceptionCode {
 	 * @since 1.10.0
 	 */
 	int LAYER_EMPTY_GEOMETRY_NOT_ALLOWED = 87;
+
+	/**
+	 * Layer ${0} is not correctly configured: ${1}
+	 *
+	 * @since 1.10.0
+	 */
+	int LAYER_CONFIGURATION_PROBLEM = 88;
 }
