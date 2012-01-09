@@ -438,6 +438,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 				GraphicInfo graphic = fill.getGraphicFill().getGraphic();
 				for (GraphicInfo.ChoiceInfo choice : graphic.getChoiceList()) {
 					if (choice.ifExternalGraphic()) {
+						log.debug("Can not display an external graphic fill style for non-rasterized layers.");
 						// can't handle this
 					} else if (choice.ifMark()) {
 						MarkInfo mark = choice.getMark();
@@ -519,19 +520,26 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		if (spatialOps instanceof BboxTypeInfo) {
 			BboxTypeInfo bbox = (BboxTypeInfo) spatialOps;
 			String propertyName = bbox.getPropertyName().getValue();
-			String coordinates = null;
+			StringBuilder sb = new StringBuilder();
+			sb.append("BBOX (");
+			sb.append(propertyName);
 			if (bbox.getBox().ifCoordinates()) {
 				String cs = bbox.getBox().getCoordinates().getCs();
 				String ts = bbox.getBox().getCoordinates().getTs();
 				String ds = bbox.getBox().getCoordinates().getDecimal();
-				coordinates = bbox.getBox().getCoordinates().getString().trim().replace(ds, "ds").replace(ts, "ts")
-						.replace(cs, "cs").replace("ds", ".").replace("ts", ",").replace("cs", ",");
+				sb.append(",");
+				sb.append(bbox.getBox().getCoordinates().getString().trim().replace(ds, "ds").replace(ts, "ts")
+						.replace(cs, "cs").replace("ds", ".").replace("ts", ",").replace("cs", ","));
 			} else {
 				for (CoordTypeInfo coord : bbox.getBox().getCoordList()) {
-					coordinates += coord.getX() + "," + coord.getY() + (coordinates == null ? "," : "");
+					sb.append(",");
+					sb.append(coord.getX());
+					sb.append(",");
+					sb.append(coord.getY());
 				}
 			}
-			return "BBOX (" + propertyName + "," + coordinates + ")";
+			sb.append(")");
+			return sb.toString();
 		} else if (spatialOps instanceof BinarySpatialOpTypeInfo) {
 			BinarySpatialOpTypeInfo binary = (BinarySpatialOpTypeInfo) spatialOps;
 			String propertyName = binary.getPropertyName().getValue();
