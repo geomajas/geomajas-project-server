@@ -29,6 +29,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
@@ -443,7 +444,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		com.vividsolutions.jts.geom.Geometry jts;
 
 		String geometryType = geometry.getGeometryType();
-		if (geometry.isEmpty()) {
+		if (GeometryService.isEmpty(geometry)) {
 			jts = createEmpty(factory, geometryType);
 		} else if (Geometry.POINT.equals(geometryType)) {
 			jts = factory.createPoint(convertCoordinates(geometry)[0]);
