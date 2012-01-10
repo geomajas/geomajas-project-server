@@ -10,11 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing.command.dto;
 
-import java.util.Map;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.configuration.client.ClientWidgetInfo;
 import org.geomajas.sld.RuleInfo;
 
@@ -34,8 +31,6 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	private RuleInfo selectionRule;
 
 	private String[] selectedFeatureIds;
-
-	private Map<String, ClientUserDataInfo> userData;
 
 	private String filter;
 
@@ -65,25 +60,6 @@ public class VectorLayerRasterizingInfo implements ClientWidgetInfo, Rasterizing
 	 */
 	public void setStyle(NamedStyleInfo style) {
 		this.style = style;
-	}
-
-	/**
-	 * Returns the map of custom user data for this layer.
-	 * 
-	 * @return the map of custom user data
-	 */
-	public Map<String, ClientUserDataInfo> getUserData() {
-		return userData;
-	}
-
-	/**
-	 * Sets the map of custom user data for this layer.
-	 * 
-	 * @param userData
-	 *            map of custom user data
-	 */
-	public void setUserData(Map<String, ClientUserDataInfo> userData) {
-		this.userData = userData;
 	}
 
 	/**
