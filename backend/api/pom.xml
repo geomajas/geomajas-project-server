@@ -38,11 +38,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-geometry</artifactId>
+			<artifactId>geomajas-geometry-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-geometry</artifactId>
+			<artifactId>geomajas-geometry-core</artifactId>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
