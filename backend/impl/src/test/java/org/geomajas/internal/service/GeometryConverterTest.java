@@ -11,10 +11,12 @@
 
 package org.geomajas.internal.service;
 
+import static org.fest.assertions.Assertions.assertThat;
 import junit.framework.Assert;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
 import org.junit.Test;
@@ -33,8 +35,6 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 /**
  * <p>
  * Test class that test conversions between JTS and DTO geometries. It specifically tests certain methods in the
@@ -44,8 +44,7 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/spring/moreContext.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/spring/moreContext.xml" })
 public class GeometryConverterTest {
 
 	private static final int SRID = 31300;
@@ -120,26 +119,26 @@ public class GeometryConverterTest {
 	public void jtsEmptyToDto() throws GeomajasException {
 		Geometry p = converter.toDto(createJtsEmpty(Point.class));
 		Assert.assertEquals(Geometry.POINT, p.getGeometryType());
-		Assert.assertTrue(p.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(p));
 		Geometry ls = converter.toDto(createJtsEmpty(LineString.class));
 		Assert.assertEquals(Geometry.LINE_STRING, ls.getGeometryType());
-		Assert.assertTrue(ls.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(ls));
 		Geometry lr = converter.toDto(createJtsEmpty(LinearRing.class));
 		Assert.assertEquals(Geometry.LINEAR_RING, lr.getGeometryType());
-		Assert.assertTrue(lr.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(lr));
 		Geometry po = converter.toDto(createJtsEmpty(Polygon.class));
 		Assert.assertEquals(Geometry.POLYGON, po.getGeometryType());
-		Assert.assertTrue(po.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(po));
 		assertThat(po.getGeometries()).isNull();
 		Geometry mp = converter.toDto(createJtsEmpty(MultiPoint.class));
 		Assert.assertEquals(Geometry.MULTI_POINT, mp.getGeometryType());
-		Assert.assertTrue(mp.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(mp));
 		Geometry mpo = converter.toDto(createJtsEmpty(MultiPolygon.class));
 		Assert.assertEquals(Geometry.MULTI_POLYGON, mpo.getGeometryType());
-		Assert.assertTrue(mpo.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(mpo));
 		Geometry mls = converter.toDto(createJtsEmpty(MultiLineString.class));
 		Assert.assertEquals(Geometry.MULTI_LINE_STRING, mls.getGeometryType());
-		Assert.assertTrue(mls.isEmpty());
+		Assert.assertTrue(GeometryService.isEmpty(mls));
 	}
 
 	@Test
@@ -334,21 +333,21 @@ public class GeometryConverterTest {
 	// Private methods for creating JTS geometries:
 	// -------------------------------------------------------------------------
 
-	private com.vividsolutions.jts.geom.Geometry createJtsEmpty(Class clazz) {
-		if(Point.class.equals(clazz)){
-			return factory.createPoint((com.vividsolutions.jts.geom.Coordinate)null);
-		} else if(LineString.class.equals(clazz)){
-			return factory.createLineString((com.vividsolutions.jts.geom.Coordinate[])null);
-		} else if(LinearRing.class.equals(clazz)){
-			return factory.createLinearRing((com.vividsolutions.jts.geom.Coordinate[])null);
-		} else if(Polygon.class.equals(clazz)){
+	private com.vividsolutions.jts.geom.Geometry createJtsEmpty(Class<?> clazz) {
+		if (Point.class.equals(clazz)) {
+			return factory.createPoint((com.vividsolutions.jts.geom.Coordinate) null);
+		} else if (LineString.class.equals(clazz)) {
+			return factory.createLineString((com.vividsolutions.jts.geom.Coordinate[]) null);
+		} else if (LinearRing.class.equals(clazz)) {
+			return factory.createLinearRing((com.vividsolutions.jts.geom.Coordinate[]) null);
+		} else if (Polygon.class.equals(clazz)) {
 			return factory.createPolygon(null, null);
-		} else if(MultiPoint.class.equals(clazz)){
-			return factory.createMultiPoint((Point[])null);
-		} else if(MultiLineString.class.equals(clazz)){
-			return factory.createMultiLineString((LineString[])null);
-		} else if(MultiPolygon.class.equals(clazz)){
-			return factory.createMultiPolygon((Polygon[])null);
+		} else if (MultiPoint.class.equals(clazz)) {
+			return factory.createMultiPoint((Point[]) null);
+		} else if (MultiLineString.class.equals(clazz)) {
+			return factory.createMultiLineString((LineString[]) null);
+		} else if (MultiPolygon.class.equals(clazz)) {
+			return factory.createMultiPolygon((Polygon[]) null);
 		} else {
 			return null;
 		}
@@ -400,7 +399,7 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 	// Private methods for creating DTO geometries:
 	// -------------------------------------------------------------------------
-	
+
 	private Geometry createDtoEmpty(String geometryType) {
 		Geometry geometry = new Geometry(geometryType, SRID, -1);
 		return geometry;
