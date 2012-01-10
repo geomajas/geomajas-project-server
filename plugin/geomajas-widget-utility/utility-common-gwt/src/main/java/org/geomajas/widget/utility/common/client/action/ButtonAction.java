@@ -81,4 +81,19 @@ public interface ButtonAction extends ClickHandler {
 	 *            The new tooltip.
 	 */
 	void setTooltip(String tooltip);
+	
+	/**
+	 * Get the button layout which determines the gui in a RibbonColumn.
+	 * 
+	 * @return The button layout which determines the gui.
+	 */
+	String getButtonLayout();
+
+	/**
+	 * Set the button layout which determines the gui in a RibbonColumn.
+	 * 
+	 * @param buttonLayout
+	 *           The button layout which determines the gui.
+	 */
+	void setButtonLayout(String buttonLayout);
 }

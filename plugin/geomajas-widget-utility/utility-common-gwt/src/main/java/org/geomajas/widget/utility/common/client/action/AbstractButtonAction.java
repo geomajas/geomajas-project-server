@@ -25,6 +25,7 @@ public abstract class AbstractButtonAction implements ButtonAction, RibbonColumn
 	private String title;
 	private String tooltip;
 	private String icon;
+	private String buttonLayout;
 	private RibbonColumn ribbonColumn;
 
 	/**
@@ -77,6 +78,14 @@ public abstract class AbstractButtonAction implements ButtonAction, RibbonColumn
 
 	public void setTooltip(String tooltip) {
 		this.tooltip = tooltip;
+	}
+
+	public String getButtonLayout() {
+		return buttonLayout;
+	}
+
+	public void setButtonLayout(String buttonLayout) {
+		this.buttonLayout = buttonLayout;
 	}
 
 	public void setRibbonColumn(RibbonColumn column) {
