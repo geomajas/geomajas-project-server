@@ -28,7 +28,7 @@ import org.geomajas.annotation.Api;
  */
 
 @Api(allMethods = true)
-public class PolygonMemberInfo extends GeometryAssociationTypeInfo implements Serializable {
+public class PolygonMemberInfo extends GeometryMemberInfo implements Serializable {
 
 	private static final long serialVersionUID = 100;
 

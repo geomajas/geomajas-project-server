@@ -28,7 +28,7 @@ import org.geomajas.annotation.Api;
  */
 
 @Api(allMethods = true)
-public class PointMemberInfo extends GeometryAssociationTypeInfo implements Serializable {
+public class PointMemberInfo extends GeometryMemberInfo implements Serializable {
 
 	private static final long serialVersionUID = 100;
 

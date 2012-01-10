@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<gml:LineString srsName="http://www.opengis.net/gml/srs/epsg.xml#4326"
+	xmlns:gml="http://www.opengis.net/gml">
+	<gml:coord>
+		<gml:X>0</gml:X>
+		<gml:Y>50</gml:Y>
+	</gml:coord>
+	<gml:coord>
+		<gml:X>70</gml:X>
+		<gml:Y>60</gml:Y>
+	</gml:coord>
+	<gml:coord>
+		<gml:X>100</gml:X>
+		<gml:Y>50</gml:Y>
+	</gml:coord>
+</gml:LineString>

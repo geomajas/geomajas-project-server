@@ -29,7 +29,7 @@ import org.geomajas.annotation.Api;
  */
 
 @Api(allMethods = true)
-public class LineStringMemberInfo extends GeometryAssociationTypeInfo implements Serializable {
+public class LineStringMemberInfo extends GeometryMemberInfo implements Serializable {
 
 	private static final long serialVersionUID = 100;
 
