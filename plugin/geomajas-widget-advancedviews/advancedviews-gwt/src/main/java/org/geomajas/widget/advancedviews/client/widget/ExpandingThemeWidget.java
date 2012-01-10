@@ -149,18 +149,12 @@ public class ExpandingThemeWidget extends AbstractThemeWidget {
 				panel.removeMember((MenuItem) item.getButton());
 			}
 		}
-		if (panel.contains(disabledBtn)) {
-			panel.removeMember(disabledBtn);
-		}
 
 		// -- add required buttons
 		for (ViewConfigItem item : viewConfigItems) {
 			if (!item.equals(activeViewConfig)) {
 				panel.addMember((MenuItem) item.getButton());
 			}
-		}
-		if (activeViewConfig != null) {
-			panel.addMember(disabledBtn);
 		}
 
 		int left = (themeInfo.isShowDescription() ? this.getAbsoluteLeft() - 5 : this.getAbsoluteLeft());
