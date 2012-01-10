@@ -23,9 +23,12 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Prepare the style filters for the {@link org.geomajas.layer.VectorLayerService} getFeatures.
@@ -36,6 +39,9 @@ public class GetFeaturesStyleStep implements PipelineStep<GetFeaturesContainer> 
 
 	public static final String STYLE_FILTERS_KEY = "styleFilters";
 	private String id;
+	
+	@Autowired
+	private FilterService filterService;
 
 	public String getId() {
 		return id;
@@ -76,14 +82,22 @@ public class GetFeaturesStyleStep implements PipelineStep<GetFeaturesContainer> 
 	 * @param styleDefinitions
 	 *            list of style definitions
 	 * @return list of style filters
+	 * @throws GeomajasException 
 	 */
-	private List<StyleFilter> initStyleFilters(List<FeatureStyleInfo> styleDefinitions) {
+	private List<StyleFilter> initStyleFilters(List<FeatureStyleInfo> styleDefinitions) throws GeomajasException {
 		List<StyleFilter> styleFilters = new ArrayList<StyleFilter>();
 		if (styleDefinitions == null || styleDefinitions.size() == 0) {
 			styleFilters.add(new StyleFilterImpl()); // use default.
 		} else {
 			for (FeatureStyleInfo styleDef : styleDefinitions) {
-				styleFilters.add(new StyleFilterImpl(styleDef));
+				StyleFilterImpl styleFilterImpl = null;
+				String formula = styleDef.getFormula();
+				if (null != formula && formula.length() > 0) {
+					styleFilterImpl = new StyleFilterImpl(filterService.parseFilter(formula), styleDef);
+				} else {
+					styleFilterImpl = new StyleFilterImpl(Filter.INCLUDE, styleDef);
+				}
+				styleFilters.add(styleFilterImpl);
 			}
 		}
 		return styleFilters;

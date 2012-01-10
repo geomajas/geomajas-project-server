@@ -13,8 +13,6 @@ package org.geomajas.internal.rendering;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.rendering.StyleFilter;
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.ecql.ECQL;
 import org.opengis.filter.Filter;
 
 /**
@@ -62,19 +60,11 @@ public class StyleFilterImpl implements StyleFilter {
 	 * Takes a style definition object and tries to parse the formula to an OpenGis filter object.
 	 *
 	 * @param definition The style definition.
+	 * @param filter The style filter.
 	 */
-	public StyleFilterImpl(FeatureStyleInfo definition) {
-		try {
-			String formula = definition.getFormula();
-			if (null != formula && formula.length() > 0) {
-				this.filter = ECQL.toFilter(definition.getFormula());
-			} else {
-				this.filter = Filter.INCLUDE;
-			}
-		} catch (CQLException e) {
-			this.filter = Filter.INCLUDE;
-		}
+	public StyleFilterImpl(Filter filter, FeatureStyleInfo definition) {
 		this.definition = definition;
+		this.filter = filter;
 	}
 
 	// -------------------------------------------------------------------------
@@ -93,5 +83,6 @@ public class StyleFilterImpl implements StyleFilter {
 	 */
 	public Filter getFilter() {
 		return filter;
-	}
+	}	
+	
 }
