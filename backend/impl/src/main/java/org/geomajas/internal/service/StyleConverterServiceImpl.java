@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
@@ -98,6 +97,7 @@ import org.geomajas.sld.filter.UnaryLogicOpTypeInfo;
 import org.geomajas.sld.filter.WithinInfo;
 import org.geomajas.sld.geometry.AbstractGeometryCollectionInfo;
 import org.geomajas.sld.geometry.AbstractGeometryInfo;
+import org.geomajas.sld.geometry.BoxTypeInfo;
 import org.geomajas.sld.geometry.CoordTypeInfo;
 import org.geomajas.sld.geometry.CoordinatesTypeInfo;
 import org.geomajas.sld.geometry.GeometryMemberInfo;
@@ -145,6 +145,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
@@ -520,69 +521,78 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 		if (spatialOps instanceof BboxTypeInfo) {
 			BboxTypeInfo bbox = (BboxTypeInfo) spatialOps;
 			String propertyName = bbox.getPropertyName().getValue();
-			StringBuilder sb = new StringBuilder();
-			sb.append("BBOX (");
-			sb.append(propertyName);
-			if (bbox.getBox().ifCoordinates()) {
-				String cs = bbox.getBox().getCoordinates().getCs();
-				String ts = bbox.getBox().getCoordinates().getTs();
-				String ds = bbox.getBox().getCoordinates().getDecimal();
-				sb.append(",");
-				sb.append(bbox.getBox().getCoordinates().getString().trim().replace(ds, "ds").replace(ts, "ts")
-						.replace(cs, "cs").replace("ds", ".").replace("ts", ",").replace("cs", ","));
-			} else {
-				for (CoordTypeInfo coord : bbox.getBox().getCoordList()) {
-					sb.append(",");
-					sb.append(coord.getX());
-					sb.append(",");
-					sb.append(coord.getY());
-				}
-			}
-			sb.append(")");
-			return sb.toString();
+			Envelope envelope = toEnvelope(bbox.getBox());
+			return "BBOX (" + propertyName + "," + envelope.getMinX()  + "," + envelope.getMinY()
+					+ envelope.getMaxX()  + "," + envelope.getMaxY() + ")";
 		} else if (spatialOps instanceof BinarySpatialOpTypeInfo) {
 			BinarySpatialOpTypeInfo binary = (BinarySpatialOpTypeInfo) spatialOps;
 			String propertyName = binary.getPropertyName().getValue();
+			WKTWriter writer = new WKTWriter();
+			GeometryFactory factory = new GeometryFactory();
+			Geometry geometry = null;
 			if (binary.ifGeometry()) {
-				WKTWriter writer = new WKTWriter();
-				GeometryFactory factory = new GeometryFactory();
 				AbstractGeometryInfo geom = binary.getGeometry();
-				Geometry geometry = toGeometry(factory, geom);
-				String wkt = writer.write(geometry);
-				if (binary instanceof ContainsInfo) {
-					return "CONTAINS(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof CrossesInfo) {
-					return "CROSSES(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof DisjointInfo) {
-					return "DISJOINT(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof EqualsInfo) {
-					return "EQUALS(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof IntersectsInfo) {
-					return "INTERSECTS(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof OverlapsInfo) {
-					return "OVERLAPS(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof TouchesInfo) {
-					return "TOUCHES(" + propertyName + "," + wkt + ")";
-				} else if (binary instanceof WithinInfo) {
-					return "WITHIN(" + propertyName + "," + wkt + ")";
-				}
-			} else if (spatialOps instanceof DistanceBufferTypeInfo) {
-				DistanceBufferTypeInfo distanceBuffer = (DistanceBufferTypeInfo) spatialOps;
-				AbstractGeometryInfo geom = distanceBuffer.getGeometry();
-				GeometryFactory factory = new GeometryFactory();
-				Geometry geometry = toGeometry(factory, geom);
-				WKTWriter writer = new WKTWriter();
-				String wkt = writer.write(geometry);
-				String units = distanceBuffer.getDistance().getUnits();
-				String distance = distanceBuffer.getDistance().getValue();
-				if (distanceBuffer instanceof DWithinInfo) {
-					return "DWITHIN(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
-				} else if (distanceBuffer instanceof BeyondInfo) {
-					return "BEYOND(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
-				}
+				geometry = toGeometry(factory, geom);
+			} else if (binary.ifBox()) {
+				BoxTypeInfo boxTypeInfo = binary.getBox();
+				Envelope envelope = toEnvelope(boxTypeInfo);
+				geometry = factory.toGeometry(envelope);
+			}
+			String wkt = writer.write(geometry);
+			if (binary instanceof ContainsInfo) {
+				return "CONTAINS(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof CrossesInfo) {
+				return "CROSSES(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof DisjointInfo) {
+				return "DISJOINT(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof EqualsInfo) {
+				return "EQUALS(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof IntersectsInfo) {
+				return "INTERSECTS(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof OverlapsInfo) {
+				return "OVERLAPS(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof TouchesInfo) {
+				return "TOUCHES(" + propertyName + "," + wkt + ")";
+			} else if (binary instanceof WithinInfo) {
+				return "WITHIN(" + propertyName + "," + wkt + ")";
+			}
+		} else if (spatialOps instanceof DistanceBufferTypeInfo) {
+			DistanceBufferTypeInfo distanceBuffer = (DistanceBufferTypeInfo) spatialOps;
+			String propertyName = distanceBuffer.getPropertyName().getValue();
+			AbstractGeometryInfo geom = distanceBuffer.getGeometry();
+			GeometryFactory factory = new GeometryFactory();
+			Geometry geometry = toGeometry(factory, geom);
+			WKTWriter writer = new WKTWriter();
+			String wkt = writer.write(geometry);
+			String units = distanceBuffer.getDistance().getUnits();
+			String distance = distanceBuffer.getDistance().getValue();
+			if (distanceBuffer instanceof DWithinInfo) {
+				return "DWITHIN(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
+			} else if (distanceBuffer instanceof BeyondInfo) {
+				return "BEYOND(" + propertyName + "," + wkt + "," + distance + "," + units + ")";
 			}
 		}
 		return null;
+	}
+	
+	private Envelope toEnvelope(BoxTypeInfo box) {
+		if (box.ifCoordinates()) {
+			Coordinate[] coords = getCoordinates(box.getCoordinates());
+			if (coords.length == 2) {
+				return new Envelope(coords[0].x, coords[1].x, coords[0].y, coords[1].y);
+			} else {
+				throw new IllegalArgumentException("Number of coordinates != 2 in box : " + box);
+			}
+		} else {
+			if (box.getCoordList().size() == 2) {
+				CoordTypeInfo coordMin = box.getCoordList().get(0);
+				CoordTypeInfo coordMax = box.getCoordList().get(1);
+				return new Envelope(coordMin.getX().doubleValue(), coordMax.getX().doubleValue(), coordMin.getY()
+						.doubleValue(), coordMax.getY().doubleValue());
+			} else {
+				throw new IllegalArgumentException("Number of coordinates != 2 in box : " + box);
+			}
+		}
 	}
 
 	private Geometry toGeometry(GeometryFactory factory, AbstractGeometryInfo geom) {
@@ -611,7 +621,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			} else if (geom instanceof MultiGeometryInfo) {
 				Geometry[] geometries = new Geometry[members.size()];
 				for (int i = 0; i < members.size(); i++) {
-					geometries[i] = toSimpleGeometry(factory, members.get(i).getGeometry());
+					geometries[i] = toGeometry(factory, members.get(i).getGeometry());
 				}
 				geometry = factory.createGeometryCollection(geometries);
 			}
@@ -641,12 +651,16 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 			PolygonTypeInfo polygon = (PolygonTypeInfo) geom;
 			OuterBoundaryIsInfo outer = polygon.getOuterBoundaryIs();
 			LinearRing shell = toLinearRing(factory, outer.getLinearRing());
-			LinearRing[] holes = new LinearRing[polygon.getInnerBoundaryIList().size()];
-			int i = 0;
-			for (InnerBoundaryIsInfo inner : polygon.getInnerBoundaryIList()) {
-				holes[i++] = toLinearRing(factory, inner.getLinearRing());
+			if (polygon.getInnerBoundaryIList() == null) {
+				geometry = factory.createPolygon(shell, null);
+			} else {
+				LinearRing[] holes = new LinearRing[polygon.getInnerBoundaryIList().size()];
+				int i = 0;
+				for (InnerBoundaryIsInfo inner : polygon.getInnerBoundaryIList()) {
+					holes[i++] = toLinearRing(factory, inner.getLinearRing());
+				}
+				geometry = factory.createPolygon(shell, holes);
 			}
-			geometry = factory.createPolygon(shell, holes);
 		}
 		return geometry;
 	}
@@ -671,12 +685,15 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 	}
 
 	private Coordinate[] getCoordinates(CoordinatesTypeInfo coords) {
-		String[] coordinates = coords.getString().split(
-				Pattern.quote(coords.getCs()) + "|" + Pattern.quote(coords.getTs()));
+		String cs = coords.getCs() == null ? "," : coords.getCs();
+		String ts = coords.getTs() == null ? "," : coords.getTs();
+		String ds = coords.getDecimal() == null ? "." : coords.getDecimal();
+		String[] coordinates = coords.getString().trim().replace(ds, ".").replace(ts, ",")
+				.replace(cs, ",").split("[\\s,]+");
 		Coordinate[] result = new Coordinate[coordinates.length / 2];
 		for (int i = 0; i < coordinates.length; i += 2) {
-			double x = Double.parseDouble(coordinates[i].replace(coords.getDecimal(), "."));
-			double y = Double.parseDouble(coordinates[i + 1].replace(coords.getDecimal(), "."));
+			double x = Double.parseDouble(coordinates[i].replace(ds, "."));
+			double y = Double.parseDouble(coordinates[i + 1].replace(ds, "."));
 			result[i / 2] = new Coordinate(x, y);
 		}
 		return result;
