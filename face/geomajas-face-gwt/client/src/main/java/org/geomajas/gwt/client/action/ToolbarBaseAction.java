@@ -35,6 +35,8 @@ public abstract class ToolbarBaseAction {
 
 	private String title; // Text that appears in the button under (or to the right of) the icon.
 
+	private String buttonLayout; // Determines to gui of the RibbonButton.
+
 	/** Is the button for this action disabled or not? */
 	private boolean disabled;
 
@@ -144,6 +146,27 @@ public abstract class ToolbarBaseAction {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	/**
+	 * Get the button layout which determines the gui in a RibbonColumn.
+	 * 
+	 * @return The button layout which determines the gui.
+	 * @since 1.10.0
+	 */
+	public String getButtonLayout() {
+		return buttonLayout;
+	}
+	
+	/**
+	 * Set the button layout which determines the gui in a RibbonColumn.
+	 * 
+	 * @param buttonLayout
+	 *           The button layout which determines the gui.
+	 * @since 1.10.0
+	 */
+	public void setButtonLayout(String buttonLayout) {
+		this.buttonLayout = buttonLayout;
 	}
 }
 // @extract-end

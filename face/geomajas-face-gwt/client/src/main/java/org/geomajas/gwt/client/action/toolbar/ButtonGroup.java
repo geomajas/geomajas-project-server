@@ -38,7 +38,7 @@ public class ButtonGroup extends ToolbarBaseAction implements ConfigurableAction
 		return buttonLayout;
 	}
 
-	private void setButtonLayout(String buttonLayout) {
+	public void setButtonLayout(String buttonLayout) {
 		this.buttonLayout = buttonLayout;
 	}
 }

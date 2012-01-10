@@ -39,6 +39,12 @@ public final class ToolbarRegistry {
 				return new ButtonGroup();
 			}
 		});
+		REGISTRY.put(ToolId.DROP_DOWN_BUTTON, new ToolCreator() {
+			
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new DropDownButtonAction();
+			}
+		});
 		REGISTRY.put(ToolId.TOOL_EDIT, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
