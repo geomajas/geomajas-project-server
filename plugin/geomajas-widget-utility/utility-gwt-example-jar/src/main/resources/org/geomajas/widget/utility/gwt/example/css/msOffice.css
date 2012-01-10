@@ -9,10 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
  
-.tabSetContainer,
 .msRibbon {
-	border-top: 1px solid #C0C3C7;
-	border-bottom: 1px solid #C0C3C7;
 }
 
 .msRibbonGroup {
@@ -31,19 +28,19 @@
 }
 
 .msRibbonGroupBody,
-.msRibbonDropDownPanelGroupBody {
+.msRibbonPanelGroupBody {
 	background: #FFFFFF;
 	padding: 3px 5px;
 }
 
-.msRibbonDropDownPanel {
+.msRibbonPanel {
 	border: 1px solid #B3B8BE;
 	border-radius: 0px 3px 3px 3px;
 	-moz-border-radius: 0px 3px 3px 3px;
     -webkit-border-radius: 0px 3px 3px 3px;
 }
 
-.msRibbonDropDownPanelGroup {
+.msRibbonPanelGroup {
 	background: #F0F2F5;
 }
 
@@ -52,9 +49,24 @@
 .msRibbonTabTitleOver,
 .msRibbonTabTitleSelected,
 .msRibbonTabTitleSelectedOver,
-.msRibbonDropDownPanelGroupTitle,
-.msRibbonDropDownPanelButtonTitle,
-.msRibbonDropDownPanelButtonDescription {
+
+.msRibbonButtonSmallTitle,
+.msRibbonButtonSmallTitleDisabled,
+.msRibbonButtonLargeTitle,
+.msRibbonButtonLargeTitleDisabled,
+.msRibbonButtonDescription,
+
+.msRibbonDropDownButtonSmallTitle,
+.msRibbonDropDownButtonSmallTitleDisabled,
+.msRibbonDropDownButtonLargeTitle,
+.msRibbonDropDownButtonLargeTitleDisabled,
+
+.msRibbonPanelGroupTitle,
+.msRibbonPanelButtonSmallTitle, 
+.msRibbonPanelButtonSmallTitleDisabled, 
+.msRibbonPanelButtonLargeTitle,
+.msRibbonPanelButtonLargeTitleDisabled,
+.msRibbonPanelButtonDescription {
 	word-wrap: break-word; 
 	font-family: Arial,Verdana,sans-serif;
 	font-size: 11px;
@@ -64,25 +76,81 @@
 }
 
 .msRibbonGroupTitle,
-.msRibbonDropDownPanelButtonTitle,
-.msRibbonDropDownPanelGroupTitle {
+.msRibbonPanelGroupTitle,
+
+.msRibbonButtonSmallTitle,
+.msRibbonButtonSmallTitleDisabled,
+
+.msRibbonDropDownButtonSmallTitle,
+.msRibbonDropDownButtonSmallTitleDisabled,
+
+.msRibbonPanelButtonSmallTitle, 
+.msRibbonPanelButtonSmallTitleDisabled {
 	white-space: nowrap;
 	word-wrap: normal; 
 }
 
-.msRibbonDropDownPanelGroupTitle {
+.msRibbonPanelGroupTitle {
 	font-weight: bold;
 }
 
-.msRibbonDropDownPanelButtonTitle {
+.msRibbonButtonLargeTitle,
+.msRibbonButtonLargeTitleDisabled,
+
+.msRibbonDropDownButtonLargeTitle,
+.msRibbonDropDownButtonLargeTitleDisabled {
+	text-align: center;
+}
+
+.msRibbonButtonLargeTitle,
+.msRibbonButtonLargeTitleDisabled {
+	margin-top: 7px;
+}
+
+.msRibbonButtonSmallTitle,
+.msRibbonButtonLargeTitle,
+
+.msRibbonDropDownButtonSmallTitle,
+.msRibbonDropDownButtonLargeTitle,
+
+.msRibbonPanelButtonSmallTitle, 
+.msRibbonPanelButtonLargeTitle {
 	color: #3B3B3B;
 }
 
+.msRibbonButtonSmallTitleDisabled,
+.msRibbonButtonLargeTitleDisabled,
 
-.msRibbonDropDownPanelButtonDescription {
+.msRibbonDropDownButtonSmallTitleDisabled,
+.msRibbonDropDownButtonLargeTitleDisabled,
+
+.msRibbonPanelButtonSmallTitleDisabled, 
+.msRibbonPanelButtonLargeTitleDisabled {
+	color: #777777;
+}
+
+.msRibbonButtonDescription,
+.msRibbonButtonDescriptionDisabled,
+.msRibbonDropDownButtonDescription,
+.msRibbonDropDownButtonDescriptionDisabled,
+.msRibbonPanelButtonDescription,
+.msRibbonPanelButtonDescriptionDisabled {
 	font-size: 10px;
 	line-height: 10px;
 }
+
+.msRibbonButtonDescriptionDisabled,
+.msRibbonDropDownButtonDescriptionDisabled,
+.msRibbonPanelButtonDescriptionDisabled {
+	color: #999999;
+}
+
+/*
+ * Button styles by default the same for; 
+ * - 'normal' buttons, 
+ * - drop-down buttons (the ones in the ribbon),
+ * - and the buttons in a drop-down panel
+ */
 
 .msRibbonButton,
 .msRibbonButtonOver,
@@ -98,6 +166,7 @@
 .msRibbonButtonSelectedFocusedOver,
 .msRibbonButtonDisabled,
 .msRibbonButtonSelectedDisabled,
+
 .msRibbonDropDownButton,
 .msRibbonDropDownButtonOver,
 .msRibbonDropDownButtonFocused,
@@ -109,19 +178,22 @@
 .msRibbonDropDownButtonSelectedDown,
 .msRibbonDropDownButtonSelectedFocusedDown,
 .msRibbonDropDownButtonSelectedOver,
-.msRibbonDropDownButtonSelectedFocusedOver
-.msRibbonDropDownPanelButton,
-.msRibbonDropDownPanelButtonOver,
-.msRibbonDropDownPanelButtonFocused,
-.msRibbonDropDownPanelButtonFocusedOver,
-.msRibbonDropDownPanelButtonDown,
-.msRibbonDropDownPanelButtonFocusedDown,
-.msRibbonDropDownPanelButtonSelected,
-.msRibbonDropDownPanelButtonSelectedFocused,
-.msRibbonDropDownPanelButtonSelectedDown,
-.msRibbonDropDownPanelButtonSelectedFocusedDown,
-.msRibbonDropDownPanelButtonDisabled,
-.msRibbonDropDownPanelButtonSelectedDisabled {
+.msRibbonDropDownButtonSelectedFocusedOver,
+.msRibbonDropDownButtonDisabled,
+.msRibbonDropDownButtonSelectedDisabled,
+
+.msRibbonPanelButton,
+.msRibbonPanelButtonOver,
+.msRibbonPanelButtonFocused,
+.msRibbonPanelButtonFocusedOver,
+.msRibbonPanelButtonDown,
+.msRibbonPanelButtonFocusedDown,
+.msRibbonPanelButtonSelected,
+.msRibbonPanelButtonSelectedFocused,
+.msRibbonPanelButtonSelectedDown,
+.msRibbonPanelButtonSelectedFocusedDown,
+.msRibbonPanelButtonDisabled,
+.msRibbonPanelButtonSelectedDisabled {
 	padding: 2px 1px;
 	font-family: Arial,Verdana,Bitstream Vera Sans,sans-serif;
 	font-size: 11px;
@@ -135,23 +207,27 @@
 .msRibbonButtonFocusedOver,
 .msRibbonButtonSelectedOver,
 .msRibbonButtonSelectedFocusedOver,
+
 .msRibbonDropDownButtonOver,
 .msRibbonDropDownButtonFocusedOver,
 .msRibbonDropDownButtonSelectedOver,
 .msRibbonDropDownButtonSelectedFocusedOver,
-.msRibbonDropDownPanelButtonOver,
-.msRibbonDropDownPanelButtonFocusedOver,
-.msRibbonDropDownPanelButtonSelectedOver,
-.msRibbonDropDownPanelButtonSelectedFocusedOver {
+
+.msRibbonPanelButtonOver,
+.msRibbonPanelButtonFocusedOver,
+.msRibbonPanelButtonSelectedOver,
+.msRibbonPanelButtonSelectedFocusedOver {
 	background: #FCEDB2;
 }
 
 .msRibbonButtonOver,
 .msRibbonButtonFocusedOver,
+
 .msRibbonDropDownButtonOver,
 .msRibbonDropDownButtonFocusedOver,
-.msRibbonDropDownPanelButtonOver,
-.msRibbonDropDownPanelButtonFocusedOver {
+
+.msRibbonPanelButtonOver,
+.msRibbonPanelButtonFocusedOver {
 	border: 1px solid #F1CC54;
 }
 
@@ -159,14 +235,16 @@
 .msRibbonButtonSelectedFocused,
 .msRibbonButtonSelectedFocusedOver,
 .msRibbonButtonSelectedOver,
+
 .msRibbonDropDownButtonSelected,
 .msRibbonDropDownButtonSelectedFocused,
 .msRibbonDropDownButtonSelectedFocusedOver,
-.msRibbonDropDownButtonSelectedOver
-.msRibbonDropDownPanelButtonSelected,
-.msRibbonDropDownPanelButtonSelectedFocused,
-.msRibbonDropDownPanelButtonSelectedFocusedOver,
-.msRibbonDropDownPanelButtonSelectedOver {
+.msRibbonDropDownButtonSelectedOver,
+
+.msRibbonPanelButtonSelected,
+.msRibbonPanelButtonSelectedFocused,
+.msRibbonPanelButtonSelectedFocusedOver,
+.msRibbonPanelButtonSelectedOver {
 	border: 1px solid #C28434;
 	background: #FCE388;
 }	
@@ -179,10 +257,10 @@
 .msRibbonDropDownButtonFocusedDown,
 .msRibbonDropDownButtonSelectedDown,
 .msRibbonDropDownButtonSelectedFocusedDown,
-.msRibbonDropDownPanelButtonDown,
-.msRibbonDropDownPanelButtonFocusedDown,
-.msRibbonDropDownPanelButtonSelectedDown,
-.msRibbonDropDownPanelButtonSelectedFocusedDown {
+.msRibbonPanelButtonDown,
+.msRibbonPanelButtonFocusedDown,
+.msRibbonPanelButtonSelectedDown,
+.msRibbonPanelButtonSelectedFocusedDown {
 	border: 1px solid #C28434;
     background: #F8D172;
 }
@@ -191,8 +269,8 @@
 .msRibbonButtonSelectedDisabled,
 .msRibbonDropDownButtonDisabled,
 .msRibbonDropDownButtonSelectedDisabled,
-.msRibbonDropDownPanelButtonDisabled,
-.msRibbonDropDownPanelButtonSelectedDisabled {
+.msRibbonPanelButtonDisabled,
+.msRibbonPanelButtonSelectedDisabled {
 	font-weight: normal;
 	color: #AAAAAA;
 }
