@@ -41,7 +41,30 @@ public class ClientToolInfo implements Serializable {
 	
 	private String icon;
 
+	private List<ClientToolInfo> tools = new ArrayList<ClientToolInfo>();
+	
 	private List<Parameter> parameters = new ArrayList<Parameter>();
+
+	/**
+	 * Get the list of tools this tool should list (in a drop-down panel for instance).
+	 * 
+	 * @return list of {@link ClientToolInfo}
+	 * @since 1.10.0
+	 */
+	public List<ClientToolInfo> getTools() {
+		return tools;
+	}
+
+	/**
+	 * Set the list of tools this tool should list (in a drop-down panel for instance).
+	 * 
+	 * @param tools
+	 * 			list of {@link ClientToolInfo}
+	 * @since 1.10.0
+	 */
+	public void setTools(List<ClientToolInfo> tools) {
+		this.tools = tools;
+	}
 
 	/**
 	 * Get the list of parameters for this tool.
