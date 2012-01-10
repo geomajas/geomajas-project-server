@@ -1138,6 +1138,18 @@ mapWidget.removeListener(myListener);</programlisting>
           methods for the events you are interested in.</para>
         </note></para>
     </section>
+
+    <section>
+      <title>Changing the cursor on the map</title>
+
+      <para>The MapWidget in the GWT face provides the possibility to apply
+      different cursors when hovering the map. In previous versions this was
+      done through the <code>setCursor</code> method, which only supported
+      default cursors. Since version 1.10 of the GWT face however, the
+      <code>MapWidget</code> also provides the <code>setCursorString</code>
+      method, which support custom images to be used as cursors on top of the
+      default cursors.</para>
+    </section>
   </section>
 
   <section id="i18n">
