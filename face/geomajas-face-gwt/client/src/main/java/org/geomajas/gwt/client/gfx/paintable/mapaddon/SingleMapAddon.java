@@ -97,7 +97,7 @@ public class SingleMapAddon extends MapAddon {
 
 	/**
 	 * Creates a single map addon out of an icon, background image and a controller.<br /><br />
-	 * The width and height of the <b>background</b> image are casted to an Integer and used.
+	 * The width and height of the <b>background</b> image are cast to an Integer and used.
 	 * 
 	 * @param id
 	 * @param icon
@@ -114,7 +114,7 @@ public class SingleMapAddon extends MapAddon {
 	}
 	/**
 	 * Creates a single map addon out of an icon and a controller.<br /><br />
-	 * The width and height of the <b>icon</b> image are casted to an Integer and used.
+	 * The width and height of the <b>icon</b> image are cast to an Integer and used.
 	 * 
 	 * @param id
 	 * @param icon can not be null
@@ -154,8 +154,8 @@ public class SingleMapAddon extends MapAddon {
 		this.height = height;
 	}
 	
-	public void accept(PainterVisitor visitor, Object group, Bbox bounds,
-			boolean recursive) {
+	/** {@inheritDoc} */
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		this.group = group;
 		GraphicsContext vectorContext = mapWidget.getVectorContext();
 		if (null != background) {
@@ -170,21 +170,46 @@ public class SingleMapAddon extends MapAddon {
 			vectorContext.setCursor(group, getId(), Cursor.POINTER.getValue());
 		}
 	}
+	/**
+	 * Get the {@link Image} that is the background of this addon.
+	 * @return background
+	 */
 	public Image getBackground() {
 		return background;
 	}
+	/**
+	 * Set the {@link Image} that is the background of this addon.
+	 * @param background
+	 */
 	public void setBackground(Image background) {
 		this.background = background;
 	}
+	/**
+	 * Get the {@link Image} that is the icon of this addon.
+	 * @return icon
+	 */
 	public Image getIcon() {
 		return icon;
 	}
+	/**
+	 * Set the {@link Image} that is the icon of this addon.
+	 * @param icon
+	 */
 	public void setIcon(Image icon) {
 		this.icon = icon;
 	}
+	/**
+	 * Get the {@link GraphicsController}.
+	 * @return controller
+	 */
 	public GraphicsController getController() {
 		return controller;
 	}
+	
+	/**
+	 * Set the {@link GraphicsController}.
+	 * @param controller
+	 */
 	public void setController(GraphicsController controller) {
 		this.controller = controller;
 	}
@@ -194,7 +219,7 @@ public class SingleMapAddon extends MapAddon {
 	 * 
 	 * @param bounds
 	 * @param group 
-	 * @return
+	 * @return cloned bounds with the margins applied to it's x and y
 	 */
 	public Bbox applyMargins(Bbox bounds) {
 		Bbox applied = (Bbox) bounds.clone();
@@ -211,6 +236,11 @@ public class SingleMapAddon extends MapAddon {
 		return applied;
 	}	
 	
+	/**
+	 * Get the positioned bounds of this addon. Get the enabled state of this addon.
+	 * 
+	 * @return positioned bounds
+	 */
 	public Bbox getAddonBounds() {
 		return applyMargins(new Bbox(0, 0, getWidth(), getHeight()));
 	}
@@ -222,17 +252,27 @@ public class SingleMapAddon extends MapAddon {
 	@Override
 	public void onRemove() {
 	}
-	
+	/**
+	 * Get the enabled state of this addon.
+	 * 
+	 * @return enabled
+	 * 			The enabled state of this addon.
+	 */
 	public boolean isEnabled() {
 		return enabled;
 	}
 	
+	/**
+	 * Set the enabled state of this addon.
+	 * 
+	 * @param enabled
+	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
 	/**
-	 * Draws the icon {@link Image} of this MapAddon. 
+	 * Draw the icon {@link Image} of this MapAddon.
 	 * @param bounds 
 	 */
 	public void drawImage(Bbox bounds) {
@@ -288,11 +328,21 @@ public class SingleMapAddon extends MapAddon {
 			drawImage(applyMargins(icon.getBounds()));
 		}
 	}
-
+	
+	/**
+	 * Get the group of this addon.
+	 * 
+	 * @return group
+	 */
 	public Object getGroup() {
 		return group;
 	}
 	
+	/**
+	 * Get the mapWidget.
+	 * 
+	 * @return mapWidget
+	 */
 	public MapWidget getMapWidget() {
 		return mapWidget;
 	}

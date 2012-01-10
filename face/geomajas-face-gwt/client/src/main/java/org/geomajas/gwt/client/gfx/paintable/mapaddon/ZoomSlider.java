@@ -58,7 +58,7 @@ public class ZoomSlider extends MapAddon implements MapViewChangedHandler {
 	 * A customizable zoom slider map add-on. Using setters, you need to provide this class with;
 	 * <ul>
 	 * <li>{@link #setZoomIn(SingleMapAddon)}; This addon will be placed at the top of the slider.</li>
-	 * <li>{@link #setBackgroundPart(Image)}; image that represents one zoom level/scale in the background.</li>
+	 * <li>{@link #setBackgroundPart(Image)}; image that represents <b>one</b> zoom level/scale in the background.</li>
 	 * <li>{@link #setSliderUnit(Image)}; image that represents the slider's unit or handle.</li>
 	 * <li>{@link #setZoomOut(SingleMapAddon)}; This addon will be placed at the bottom of the slider.</li>
 	 * </ul>
