@@ -12,7 +12,8 @@
 package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.annotation.FutureApi;
-import org.geomajas.puregwt.client.service.BooleanCallback;
+
+import com.google.gwt.core.client.Callback;
 
 /**
  * <p>
@@ -20,9 +21,9 @@ import org.geomajas.puregwt.client.service.BooleanCallback;
  * HtmlObject, an extra 'src' field is provided. This string value should point to the actual image.
  * </p>
  * <p>
- * Instances of this class can be initiated with a {@link BooleanCallback} that is notified when the image is done
- * loading. The image is done loading when it has either loaded successfully or when 5 attempts have failed. In any
- * case, the callback's execute method will be invoked, thereby indicating success or failure.
+ * Instances of this class can be initiated with a {@link Callback} that is notified when the image is done loading. The
+ * image is done loading when it has either loaded successfully or when 5 attempts have failed. In any case, the
+ * callback's execute method will be invoked, thereby indicating success or failure.
  * </p>
  * 
  * @author Pieter De Graef
@@ -40,7 +41,7 @@ public interface HtmlImage extends HtmlObject {
 	 *            The call-back to be executed when loading has finished. The boolean value indicates whether or not it
 	 *            was successful while loading.
 	 */
-	void onLoadingDone(BooleanCallback onLoadingDone);
+	void onLoadingDone(Callback<String, String> onLoadingDone);
 
 	/**
 	 * Get the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.

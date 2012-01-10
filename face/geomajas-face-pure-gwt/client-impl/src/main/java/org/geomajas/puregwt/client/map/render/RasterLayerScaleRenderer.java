@@ -28,7 +28,8 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.gfx.HtmlImageImpl;
 import org.geomajas.puregwt.client.map.layer.RasterLayer;
-import org.geomajas.puregwt.client.service.BooleanCallback;
+
+import com.google.gwt.core.client.Callback;
 
 /**
  * <p>
@@ -67,7 +68,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	private int nrLoadingTiles;
 
 	private boolean renderingImages;
-	
+
 	private boolean rendered;
 
 	// ------------------------------------------------------------------------
@@ -99,7 +100,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 			deferred = null;
 		}
 	}
-	
+
 	/** {@inheritDoc} */
 	public double getScale() {
 		return scale;
@@ -136,7 +137,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 			}
 		});
 	}
-	
+
 	public boolean isRendered() {
 		return rendered;
 	}
@@ -196,13 +197,20 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	}
 
 	/**
-	 * ...
+	 * Counts the number of images that are still inbound. If all images are effectively rendered, we call
+	 * {@link #RasterLayerScaleRenderer.onTilesRendered}.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class ImageCounter implements BooleanCallback {
+	private class ImageCounter implements Callback<String, String> {
 
-		public void execute(Boolean value) {
+		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
+		public void onFailure(String reason) {
+			rendered = true;
+			onTilesRendered(container, scale);
+		}
+
+		public void onSuccess(String result) {
 			nrLoadingTiles--;
 			if (nrLoadingTiles == 0) {
 				rendered = true;

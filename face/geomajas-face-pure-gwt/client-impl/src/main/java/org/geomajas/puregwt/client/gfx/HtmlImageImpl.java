@@ -11,8 +11,7 @@
 
 package org.geomajas.puregwt.client.gfx;
 
-import org.geomajas.puregwt.client.service.BooleanCallback;
-
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -26,9 +25,9 @@ import com.google.gwt.user.client.Event;
  * HtmlObject, an extra 'src' field is provided. This string value should point to the actual image.
  * </p>
  * <p>
- * Instances of this class can be initiated with a {@link BooleanCallback} that is notified when the image is done
- * loading. The image is done loading when it has either loaded successfully or when 5 attempts have failed. In any
- * case, the callback's execute method will be invoked, thereby indicating success or failure.
+ * Instances of this class can be initiated with a {@link Callback} that is notified when the image is done loading. The
+ * image is done loading when it has either loaded successfully or when 5 attempts have failed. In any case, the
+ * callback's execute method will be invoked, thereby indicating success or failure.
  * </p>
  * 
  * @author Pieter De Graef
@@ -74,7 +73,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 *            Call-back that is executed when the images has been loaded, or when loading failed. The boolean value
 	 *            will indicate success or failure.
 	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left, BooleanCallback onLoadingDone) {
+	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone) {
 		super("img", width, height, top, left);
 
 		DOM.setStyleAttribute(getElement(), "border", "none");
@@ -94,9 +93,10 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * 
 	 * @param onLoadingDone
 	 *            The call-back to be executed when loading has finished. The boolean value indicates whether or not it
-	 *            was successful while loading.
+	 *            was successful while loading. Both the success and failure type expect a String. This is used to pass
+	 *            along the image URL.
 	 */
-	public void onLoadingDone(BooleanCallback onLoadingDone) {
+	public void onLoadingDone(Callback<String, String> onLoadingDone) {
 		if (onLoadingDone != null) {
 			DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
 			ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone);
@@ -137,9 +137,9 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 		private String src;
 
-		private BooleanCallback onDoneLoading;
+		private Callback<String, String> onDoneLoading;
 
-		public ImageReloader(String src, BooleanCallback onDoneLoading) {
+		public ImageReloader(String src, Callback<String, String> onDoneLoading) {
 			this.src = src;
 			this.onDoneLoading = onDoneLoading;
 		}
@@ -147,7 +147,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 		public void onLoad(LoadEvent event) {
 			setVisible(true);
 			if (onDoneLoading != null) {
-				onDoneLoading.execute(true);
+				onDoneLoading.onSuccess(src);
 			}
 		}
 
@@ -156,7 +156,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 			if (nrAttempts > 0) {
 				DOM.setImgSrc(getElement(), src);
 			} else if (onDoneLoading != null) {
-				onDoneLoading.execute(false);
+				onDoneLoading.onFailure(src);
 			}
 
 		}

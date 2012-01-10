@@ -82,7 +82,9 @@ public final class ViewPortImpl implements ViewPort {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 				maxBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
 						.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
-				maxBounds = BboxService.union(maxBounds, layerInfo.getMaxExtent());
+				if (layerInfo.getMaxExtent() != null) {
+					maxBounds = BboxService.union(maxBounds, layerInfo.getMaxExtent());
+				}
 			}
 		}
 
