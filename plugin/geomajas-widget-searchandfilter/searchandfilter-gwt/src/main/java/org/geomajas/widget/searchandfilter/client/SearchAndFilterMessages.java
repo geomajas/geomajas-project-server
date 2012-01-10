@@ -55,7 +55,8 @@ public interface SearchAndFilterMessages extends Messages {
 	String geometricSearchWidgetSelectionSearchZoomToSelection();
 	String geometricSearchWidgetSelectionSearchAddSelection();
 	String geometricSearchWidgetSelectionSearchNothingSelected();
-
+	String geometricSearchWidgetSelectionSearchNothingSelectedTooltip();
+	
 	String geometricSearchWidgetFreeDrawingSearchTitle();
 	String geometricSearchWidgetFreeDrawingPoint();
 	String geometricSearchWidgetFreeDrawingLine();
