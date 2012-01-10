@@ -19,8 +19,12 @@ import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
+
 /**
- * ...
+ * Wrapper class for {@link ToolbarButtonCanvas}, 
+ * which contains a custom build {@link Canvas} that is fetched and 
+ * vertically positioned in the {@link RibbonColumn#asWidget()} implementation 
+ * using the configuration parameter "verticalAlignment".
  * 
  * @author Emiel Ackermann
  */
@@ -29,6 +33,9 @@ public class RibbonColumnCanvas implements RibbonColumn {
 	private final ToolbarButtonCanvas toolbarButtonCanvas;
 	private Canvas canvas;
 
+	/**
+	 * Constructor.
+	 */
 	public RibbonColumnCanvas(ToolbarButtonCanvas toolbarButtonCanvas) {
 		this.toolbarButtonCanvas = toolbarButtonCanvas;
 		canvas = ((ToolbarCanvas) toolbarButtonCanvas.getToolbarAction()).getCanvas();
@@ -63,7 +70,7 @@ public class RibbonColumnCanvas implements RibbonColumn {
 	/**
 	 * Widget creation is being handled in the canvas returned by 
 	 * {@link org.geomajas.gwt.client.action.ToolbarCanvas#getCanvas()},
-	 * so no title can be set.
+	 * so showTitles can not be set.
 	 * 
 	 * @param does nothing
 	 */
@@ -83,7 +90,7 @@ public class RibbonColumnCanvas implements RibbonColumn {
 	/**
 	 * Widget creation is being handled in the canvas returned by 
 	 * {@link org.geomajas.gwt.client.action.ToolbarCanvas#getCanvas()},
-	 * so no title can be set.
+	 * so no titleAlignment can be set.
 	 * 
 	 * @param does nothing
 	 */
@@ -102,7 +109,7 @@ public class RibbonColumnCanvas implements RibbonColumn {
 	/**
 	 * Widget creation is being handled in the canvas returned by 
 	 * {@link org.geomajas.gwt.client.action.ToolbarCanvas#getCanvas()},
-	 * so no title can be set.
+	 * so no buttonBaseStyle can be set.
 	 * 
 	 * @param does nothing
 	 */

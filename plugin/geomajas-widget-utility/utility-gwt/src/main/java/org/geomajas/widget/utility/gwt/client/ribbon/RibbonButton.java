@@ -11,7 +11,6 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon;
 
-import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.action.RadioAction;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
@@ -20,12 +19,19 @@ import org.geomajas.widget.utility.common.client.event.EnabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledHandler;
 import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
+import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Cursor;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.SelectionType;
+import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.StatefulCanvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.layout.HStack;
+import com.smartgwt.client.widgets.layout.Layout;
+import com.smartgwt.client.widgets.layout.VStack;
 
 /**
  * Implementation of the RibbonColumn interface that displays a single button. Instances of this class are initialized
@@ -43,17 +49,17 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	public static final String PARAMETER_SELECTED = "selected";
 	public static final String PARAMETER_SHOWDISABLEDICON = "showDisabledIcon";
 
-	private static final String DISABLED_MARKER = "-disabled";
-
 	private boolean showTitles = true;
-
-	private boolean showDisabledIcon;
 
 	private TitleAlignment titleAlignment;
 
 	private int iconSize;
 
 	private ButtonAction buttonAction;
+	private Layout outer;
+	private Img icon;
+	private StatefulCanvas titleLabel;
+	private StatefulCanvas description;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -87,10 +93,6 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		this.iconSize = iconSize;
 		this.titleAlignment = titleAlignment;
 
-		setBaseStyle("ribbonButton");
-		setWidth(50);
-		setCursor(Cursor.HAND);
-
 		setCanHover(true);
 		setShowHover(true);
 		setHoverWrap(false);
@@ -101,6 +103,23 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 		setShowDown(true);
 		setShowDisabled(true);
 		setShowDisabledIcon(false);
+
+		String iconBaseUrl = buttonAction.getIcon();
+		icon = new Img(iconBaseUrl, iconSize, iconSize);
+		icon.setLayoutAlign(Alignment.CENTER);
+		
+		titleLabel = new StatefulCanvas();
+		titleLabel.setContents(prepareTitle());
+		titleLabel.setOverflow(Overflow.VISIBLE);
+		
+		description = new StatefulCanvas();
+		description.setContents(buttonAction.getTooltip());
+		description.setOverflow(Overflow.VISIBLE);
+		description.setAutoHeight();
+		description.setWidth100();
+		
+		setBaseStyle("ribbonButton");
+		setCursor(Cursor.HAND);
 
 		if (buttonAction instanceof RadioAction) {
 			final RadioAction radioAction = (RadioAction) buttonAction;
@@ -132,8 +151,12 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 				setEnabled(h.isEnabled());
 			}
 		}
-
+	}
+	
+	@Override
+	protected void onDraw() {
 		updateGui();
+		addChild(outer);
 	}
 	
 	// ------------------------------------------------------------------------
@@ -142,22 +165,28 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 
 	@Override
 	public void setTitle(String title) {
-		super.setTitle(title);
 		buttonAction.setTitle(title);
-		updateGui();
+		titleLabel.setContents(prepareTitle());
 	}
 
 	@Override
-	public void setIcon(String icon) {
-		super.setIcon(icon);
-		buttonAction.setIcon(icon);
-		updateGui();
+	public void setIcon(String iconUrl) {
+		buttonAction.setIcon(iconUrl);
+		icon.setSrc(iconUrl);
 	}
 
 	@Override
 	public void setDisabled(boolean disabled) {
 		super.setDisabled(disabled);
-		updateGui();
+		if (null != icon) {
+			icon.setDisabled(disabled);
+		}
+		if (null != titleLabel) {
+			titleLabel.setDisabled(disabled);
+		}
+		if (null != description) {
+			description.setDisabled(disabled);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -168,7 +197,6 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	/** {@inheritDoc} */
 	public void setShowTitles(boolean showTitles) {
 		this.showTitles = showTitles;
-		updateGui();
 	}
 
 	/** {@inheritDoc} */
@@ -179,12 +207,20 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	/** {@inheritDoc} */
 	public void setTitleAlignment(TitleAlignment titleAlignment) {
 		this.titleAlignment = titleAlignment;
-		updateGui();
 	}
 
 	/** {@inheritDoc} */
 	public TitleAlignment getTitleAlignment() {
 		return titleAlignment;
+	}
+	
+	/**
+	 * Get the {@link Layout} that is directly added to this button as a child (in {@link RibbonButton#onDraw()}).
+	 * 
+	 * @return a {@link VStack} or {@link HStack} depending on the layout settings.
+	 */
+	public Layout getOuter() {
+		return outer;
 	}
 
 	/** {@inheritDoc} */
@@ -213,8 +249,7 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 				ra.setRadioGroup(value);
 			}
 		} else if (PARAMETER_SHOWDISABLEDICON.equalsIgnoreCase(key)) {
-			showDisabledIcon = Boolean.parseBoolean(value);
-			updateGui();
+			icon.setShowDisabled(Boolean.parseBoolean(value));
 		} else {
 			buttonAction.configure(key, value);
 		}
@@ -232,7 +267,8 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	@Override
 	public void setIconSize(int iconSize) {
 		this.iconSize = iconSize;
-		updateGui();
+		icon.setHeight(iconSize);
+		icon.setWidth(iconSize);
 	}
 
 	/**
@@ -252,71 +288,80 @@ public class RibbonButton extends StatefulCanvas implements RibbonColumn {
 	 * Update the GUI to reflect the settings.
 	 */
 	protected void updateGui() {
+		String buttonLayout = buttonAction.getButtonLayout();
+		if (GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
+			buildGuiWithDescription();
+		} else { // GuwLayout.DropDown.ICON_AND_TITLE || null || ...
+			setWidth(50);
+			if (titleAlignment.equals(TitleAlignment.BOTTOM)) {
+				setHeight100();
+				
+				outer = new VStack();
+				outer.setOverflow(Overflow.VISIBLE);
+				outer.setWidth100();
+				outer.setAutoHeight();
+				outer.addMember(icon);
+				if (showTitles) {
+					titleLabel.setBaseStyle(getBaseStyle() + "LargeTitle");
+					titleLabel.setAutoHeight();
+					titleLabel.setWidth100();
+					outer.addMember(titleLabel);
+				}
+				outer.setAlign(Alignment.CENTER);
+			} else {
+				setAutoHeight();
+				
+				outer = new HStack(GuwLayout.ribbonButtonInnerMargin);
+				outer.setOverflow(Overflow.VISIBLE);
+				outer.setWidth100();
+				outer.setAutoHeight();
+				outer.addMember(icon);
+				if (showTitles) {
+					titleLabel.setBaseStyle(getBaseStyle() + "SmallTitle");
+					titleLabel.setAutoHeight();
+					titleLabel.setAutoWidth();
+					outer.addMember(titleLabel);
+				}
+			} 
+		}
+	}
+	
+	private void buildGuiWithDescription() {
+		setCanHover(false);
+		
+		description.setBaseStyle(getBaseStyle() + "Description");
+		description.setAutoHeight();
+		description.setWidth100();
+		
+		VStack inner = new VStack();
+		inner.setWidth("*");
+		inner.setOverflow(Overflow.VISIBLE);
+		inner.setAutoHeight();
+		if (showTitles) {
+			titleLabel.setBaseStyle(getBaseStyle() + "SmallTitle");
+			titleLabel.setAutoHeight();
+			titleLabel.setWidth100();
+			inner.addMember(titleLabel);
+		}
+		inner.addMember(description);
+		
+		outer = new HStack(GuwLayout.ribbonButtonInnerMargin);
+		outer.setOverflow(Overflow.VISIBLE);
+		outer.setWidth100();
+		outer.setAutoHeight();
+		outer.setLayoutAlign(Alignment.CENTER);
+		outer.addMember(icon);
+		outer.addMember(inner);
+	}
+
+	private String prepareTitle() {
 		String title = buttonAction.getTitle() == null ? buttonAction.getTooltip() : buttonAction.getTitle();
 		if (title == null) {
 			title = "??";
 		} else {
 			title = title.trim();
 		}
-
-		if (titleAlignment.equals(TitleAlignment.BOTTOM)) {
-			String titleContent = "";
-			if (showTitles) {
-				titleContent = "<div style='text-align:center; margin-top: 10px; " + getTitleTextStyle() + "'>" + title
-						+ "</div>";
-			}
-			setContents("<div style='text-align:center;'><img src='" + getIconUrl() + "' width='" + iconSize
-					+ "' height='" + iconSize + "' /></div>" + titleContent);
-		} else {
-			setWidth100();
-			String titleContent = "";
-			if (showTitles) {
-				titleContent = "<td style='text-align:left; padding-left: 8px; font-size: 11px; white-space:nowrap; "
-						+ getTitleTextStyle() + "'>" + title + "</td>";
-			}
-			setContents("<table style='border-spacing: 0px;' cellpadding='0px'><tr><td style='text-align:center;'>"
-					+ "<img src='" + getIconUrl() + "' width='" + iconSize + "' height='" + iconSize + "' />" + "</td>"
-					+ titleContent + "</tr></table>");
-		}
-	}
-
-	/**
-	 * Get the style for the title text.
-	 *
-	 * @return title text style
-	 */
-	protected String getTitleTextStyle() {
-		if (isDisabled()) {
-			return "color: #777777;";
-		} else {
-			return "";
-		}
-	}
-
-	/**
-	 * Get the URL for the icon.
-	 *
-	 * @return icon URL
-	 */
-	protected String getIconUrl() {
-		String icon = buttonAction.getIcon().replaceFirst("\\[ISOMORPHIC\\]", Geomajas.getIsomorphicDir());
-		return applyDisabled(icon);
-	}
-
-	/**
-	 * Applies the disabled state to the icon's url if necessary.
-	 * 
-	 * @param icon
-	 * @return disabled icon's url
-	 */
-	protected String applyDisabled(String icon) {
-		if (isDisabled() && showDisabledIcon) {
-			int dot = icon.lastIndexOf(".");
-			if (dot > -1) {
-				icon = icon.substring(0, dot) + DISABLED_MARKER + icon.substring(dot, icon.length());
-			}
-		}
-		return icon;
+		return title;
 	}
 
 	/**

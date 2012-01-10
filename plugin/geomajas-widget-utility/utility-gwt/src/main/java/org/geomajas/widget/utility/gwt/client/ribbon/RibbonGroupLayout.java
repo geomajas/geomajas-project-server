@@ -61,7 +61,7 @@ public class RibbonGroupLayout extends VLayout implements RibbonGroup {
 		memberLayout = new HLayout(GuwLayout.ribbonGroupInternalMargin);
 		memberLayout.setStyleName("ribbonGroupBody");
 		memberLayout.setAutoWidth();
-		setHeight100();
+		memberLayout.setHeight100();
 
 		titleLabel = new HTMLFlow(title);
 		titleLabel.setHeight("16px");

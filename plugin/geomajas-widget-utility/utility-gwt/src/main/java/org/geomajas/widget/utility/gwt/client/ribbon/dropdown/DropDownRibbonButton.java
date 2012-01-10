@@ -11,14 +11,29 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon.dropdown;
 
-import org.geomajas.widget.utility.gwt.client.action.DropDownButtonAction;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.configuration.Parameter;
+import org.geomajas.configuration.client.ClientToolInfo;
+import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
+import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
+import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
+import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry;
 
-import com.google.gwt.user.client.ui.Widget;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.layout.Layout;
 
 /**
- * RibbonColumn implementation that displays a button, which opens a drop-down panel with more buttons.
+ * RibbonColumn implementation that displays a button, which opens a drop-down panel with more buttons. 
+ * Panel can contain {@link org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnCanvas}ses as well,
+ * so everything that extends {@link com.smartgwt.client.widgets.Canvas} can be included. 
  * 
  * @author Emiel Ackermann
  */
@@ -26,23 +41,57 @@ public class DropDownRibbonButton extends RibbonButton {
 	
 	private DropDownPanel dropDownPanel;
 		
-	public DropDownRibbonButton(DropDownButtonAction action) {
+	public DropDownRibbonButton(final DropDownButtonAction action, List<ClientToolInfo> tools, MapWidget mapWidget) {
 		super(new ToolbarButtonAction(action));
-		dropDownPanel = new DropDownPanel(this);
-		dropDownPanel.hide();
-		action.setDropDownPanel(dropDownPanel);
+		createPanel(action, tools, mapWidget);
 	}
 	
-	public DropDownRibbonButton(final DropDownButtonAction action, int iconSize, TitleAlignment titleAlignment) {
-		this(action);
-		setIconSize(iconSize);
-		setTitleAlignment(titleAlignment);
+	public DropDownRibbonButton(final DropDownButtonAction action, int iconSize,
+			TitleAlignment titleAlignment, List<ClientToolInfo> tools, MapWidget mapWidget) {
+		super(new ToolbarButtonAction(action), iconSize, titleAlignment);
+		createPanel(action, tools, mapWidget);
+	}
+	
+	private void createPanel(final DropDownButtonAction action, List<ClientToolInfo> tools, MapWidget mapWidget) {
+		dropDownPanel = new DropDownPanel(this);
+		dropDownPanel.hide();
+		setTitle(action.getTitle());
+		setTooltip(action.getTooltip());
+		setIcon(action.getIcon());
+		action.setDropDownPanel(dropDownPanel);
+		
+		ButtonGroup group = null;
+		List<ButtonAction> actions = new ArrayList<ButtonAction>();
+		for (ClientToolInfo tool : tools) {
+			ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
+			if (toolbarAction != null) {
+				if (toolbarAction instanceof ButtonGroup) {
+					// First wrap currently found actions into a group (previous group can be null).
+					if (actions.size() > 0) {
+						dropDownPanel.addGroup(group, actions);
+					}
+					group = (ButtonGroup) toolbarAction;
+					group.setTitle(tool.getTitle());
+					for (Parameter parameter : tool.getParameters()) {
+						group.configure(parameter.getName(), parameter.getValue());
+					}
+					actions = new ArrayList<ButtonAction>();
+				} else {
+					ButtonAction innerAction = RibbonColumnRegistry.getAction(tool, mapWidget);
+					actions.add(innerAction);
+				}
+			}
+		}
+		// Always add the last actions as a group to the panel (also if group is null)
+		dropDownPanel.addGroup(group, actions);
 	}
 	
 	@Override
 	public void configure(String key, String value) {
 		if ("title".equals(key)) {
 			setTitle(value);
+		} else if ("titleAlignment".equals(key)) {
+			setTitleAlignment(TitleAlignment.valueOf(value.toUpperCase()));
 		} else if ("icon".equals(key)) {
 			setIcon(value);
 		} else if ("toolTip".equals(key)) {
@@ -51,44 +100,31 @@ public class DropDownRibbonButton extends RibbonButton {
 			dropDownPanel.setWidth(Integer.parseInt(value));
 		} 
 	}
-
+	
+	@Override
+	protected void onDraw() {
+		updateGui();
+		Layout outer = getOuter();
+		Img arrow = new Img("[ISOMORPHIC]/images/arrow_down.png", 9, 9);
+		arrow.setLayoutAlign(Alignment.CENTER);
+		outer.addMember(arrow);
+		addChild(outer);
+	}
+	
 	// ------------------------------------------------------------------------
 	// Class specific methods:
 	// ------------------------------------------------------------------------
+	@Override
 	public void setButtonBaseStyle(String baseStyle) {
 		this.setBaseStyle(baseStyle.replace("Button", "DropDownButton"));
-		dropDownPanel.setStyleName(this.getStyleName().replace("Button", "Panel"));
+		dropDownPanel.setStyleName(baseStyle.replace("Button", "Panel"));
 	}
 
-	// ------------------------------------------------------------------------
-	// RibbonColumn implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public Widget asWidget() {
-		return this;
-	}
-
-	@Override
-	public void setShowTitles(boolean showTitles) {
-		super.setShowTitles(showTitles);
-	}
-
-	@Override
-	public boolean isShowTitles() {
-		return super.isShowTitles();
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return !isDisabled();
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		setDisabled(!enabled);
-	}
-
+	/**
+	 * Get the {@link DropDownPanel} of this button.
+	 * @return dropDownPanel
+	 * 				The {@link DropDownPanel} of this button.
+	 */
 	public DropDownPanel getPanel() {
 		return dropDownPanel;
 	}

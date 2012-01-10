@@ -14,11 +14,16 @@ package org.geomajas.widget.utility.gwt.client.ribbon.dropdown;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
+import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
+import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
+import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
-import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButtonDescribed;
+import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnCanvas;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -29,11 +34,12 @@ import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.StatefulCanvas;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VStack;
 
 /**
- * This class aligns itself with its button in the animateShow override. 
+ * Ribbon-only class that aligns itself with its button in the animateShow override. 
  * Furthermore a {@link NativePreviewHandler} is added to {@link Event} in the override as well, 
  * that will close this panel when clicked outside this panel and button.
  * 
@@ -41,17 +47,20 @@ import com.smartgwt.client.widgets.layout.VStack;
  */
 public class DropDownPanel extends VStack {
 	
-	private final DropDownRibbonButton button;
+	private final StatefulCanvas button;
 	private HandlerRegistration registration;
 	
 	private List<VStack> groups = new ArrayList<VStack>();
 	private List<Label> groupTitles = new ArrayList<Label>();
 	private List<VStack> bodies = new ArrayList<VStack>();
-	private List<RibbonButton> buttons = new ArrayList<RibbonButton>();
+	private List<RibbonColumn> buttons = new ArrayList<RibbonColumn>();
 
 	public DropDownPanel(final DropDownRibbonButton button) {
 		super();
 		this.button = button;
+		ButtonAction buttonAction = button.getButtonAction();
+		ToolbarBaseAction toolbarAction = ((ToolbarButtonAction) buttonAction).getToolbarAction();
+		setWidth(((DropDownButtonAction) toolbarAction).getPanelWidth());
 		setPosition(Positioning.ABSOLUTE);
 		setOverflow(Overflow.VISIBLE);
 		setAutoHeight();
@@ -79,8 +88,8 @@ public class DropDownPanel extends VStack {
 		body.setAutoHeight();
 		body.setWidth100();
 		for (ButtonAction action : actions) {
-			RibbonButton button = getButton(action, buttonLayout);
-			body.addMember(button);
+			RibbonColumn button = getButton(action, buttonLayout);
+			body.addMember(button.asWidget());
 			buttons.add(button);
 		}
 		group.addMember(body);
@@ -91,32 +100,38 @@ public class DropDownPanel extends VStack {
 	}
 
 	/**
-	 * Converts the given action into a {@link RibbonButton}.
+	 * Converts the given action into a {@link RibbonColumn}.
 	 * 
 	 * @param action ButtonAction
-	 * @param buttonLayout determines the layout of the button.
-	 * @return button RibbonButton
+	 * @param buttonLayout the layout of the group. Is used if the action does not contain one itself.
+	 * @return columun
+	 * 				RibbonColumn containing the button.
 	 */
-	private RibbonButton getButton(ButtonAction action, String buttonLayout) {
-		RibbonButton button = null;
-		if (buttonLayout.equals(GuwLayout.DropDown.ICON_AND_TITLE)) {
-			button = new RibbonButton(action, GuwLayout.DropDown.ribbonBarDropDownButtonIconSize, TitleAlignment.RIGHT);
-		} else if (buttonLayout.equals(GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION)) {
-			button = new RibbonButtonDescribed(action, GuwLayout.DropDown.ribbonBarDropDownButtonDescriptionIconSize);
-		}
-		button.setOverflow(Overflow.VISIBLE);
-		button.setAutoHeight();
-		button.setWidth100();
-		button.setMargin(2);
-		button.addClickHandler(new ClickHandler() {
-
-			public void onClick(
-					com.smartgwt.client.widgets.events.ClickEvent event) {
-				hide();
+	private RibbonColumn getButton(ButtonAction action, String buttonLayout) {
+		RibbonColumn column = null;
+		if (action instanceof ToolbarButtonCanvas) { 
+			column = new RibbonColumnCanvas((ToolbarButtonCanvas) action);
+		} else {
+			// if no layout was given, use the one given by the group
+			if (null == action.getButtonLayout()) {
+				action.setButtonLayout(buttonLayout);
 			}
-			
-		});
-		return button;
+			RibbonButton button = new RibbonButton(action, 16, TitleAlignment.RIGHT);
+			button.setOverflow(Overflow.VISIBLE);
+			button.setAutoHeight();
+			button.setWidth100();
+			button.setMargin(2);
+			button.addClickHandler(new ClickHandler() {
+				
+				public void onClick(
+						com.smartgwt.client.widgets.events.ClickEvent event) {
+					hide();
+				}
+				
+			});
+			column = button;
+		}
+		return column;
 	}
 	
 	@Override
@@ -131,8 +146,10 @@ public class DropDownPanel extends VStack {
 		for (VStack body : bodies) {
 			body.setStyleName(styleName + "GroupBody");
 		}
-		for (RibbonButton button : buttons) {
-			button.setButtonBaseStyle(styleName + "Button");
+		for (RibbonColumn button : buttons) {
+			if (button instanceof RibbonButton) {
+				((RibbonColumn) button).setButtonBaseStyle(styleName + "Button");
+			}
 		}
 	}
 
@@ -147,7 +164,7 @@ public class DropDownPanel extends VStack {
 
 	/**
 	 * Through a {@link NativePreviewHandler} and its {@link NativePreviewEvent} 
-	 * all mouse events can be caught before they are processed. 
+	 * all mouse events are caught here before they are processed. 
 	 * If the event is of type {@link Event#ONMOUSEUP} and the click was outside 
 	 * the button or this drop-down panel, the panel is closed.
 	 * @return
@@ -167,20 +184,20 @@ public class DropDownPanel extends VStack {
 					int right = button.getPageRight();
 					int top = button.getPageTop();
 					int bottom = button.getPageBottom();
-					boolean clickIsOutside = true;
+					boolean mouseIsOutside = true;
 					if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
-						clickIsOutside = false;
+						mouseIsOutside = false;
 					}
-					if (clickIsOutside) {
+					if (mouseIsOutside) {
 						// Was this panel clicked?
 						right = getPageRight();
 						top = getPageTop();
 						bottom = getPageBottom();
 						if (clientX > left && clientX < right && clientY > top && clientY < bottom) {
-							clickIsOutside = false;
+							mouseIsOutside = false;
 						}
 					}
-					if (clickIsOutside) {
+					if (mouseIsOutside) {
 						hide();
 					}
 				}

@@ -35,7 +35,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 
 	protected ToolbarBaseAction toolbarAction;
-	private String description;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -75,19 +74,13 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 		} else if ("tooltip".equalsIgnoreCase(key)) {
 			setTooltip(value);
 		} else if ("description".equalsIgnoreCase(key)) {
-			setDescription(value);
+			setTooltip(value);
+		} else if ("buttonLayout".equalsIgnoreCase(key)) {
+			setButtonLayout(value);
 		} else if (toolbarAction instanceof ConfigurableAction) {
 			ConfigurableAction ca = (ConfigurableAction) toolbarAction;
 			ca.configure(key, value);
 		}
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	private void setDescription(String description) {
-		this.description = description;
 	}
 
 	/** {@inheritDoc} */
@@ -125,6 +118,16 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 	}
 
 	/** {@inheritDoc} */
+	public String getButtonLayout() {
+		return toolbarAction.getButtonLayout();
+	}
+	/** {@inheritDoc} */
+	public void setButtonLayout(String buttonLayout) {
+		toolbarAction.setButtonLayout(buttonLayout);
+	}
+
+	
+	/** {@inheritDoc} */
 	public boolean isEnabled() {
 		return !toolbarAction.isDisabled();
 	}
@@ -158,5 +161,4 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 		}
 
 	}
-
 }

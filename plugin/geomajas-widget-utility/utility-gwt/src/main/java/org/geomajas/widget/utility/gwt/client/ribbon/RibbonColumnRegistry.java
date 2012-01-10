@@ -22,18 +22,15 @@ import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.ToolbarCanvas;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
-import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
+import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
-import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
-import org.geomajas.widget.utility.gwt.client.action.DropDownButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarRadioAction;
-import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownPanel;
 import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownRibbonButton;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 /**
@@ -80,20 +77,11 @@ public final class RibbonColumnRegistry {
 					if (action != null) {
 						if (action instanceof ToolbarButtonCanvas) {
 							column = new RibbonColumnCanvas((ToolbarButtonCanvas) action);
+						} else if (action instanceof DropDownButtonAction) {
+							column = new DropDownRibbonButton(
+									(DropDownButtonAction) action, tool.getTools(), mapWidget);
 						} else {
-							String buttonLayout = null;
-							for (Parameter parameter : tool.getParameters()) {
-								if ("buttonLayout".equals(parameter.getName())) {
-									buttonLayout = parameter.getValue();
-									break;
-								}
-							}
-							if (GuwLayout.DropDown.ICON_TITLE_AND_DESCRIPTION.equals(buttonLayout)) {
-								column = new RibbonButtonDescribed(action);
-							} else { // null || GuwLayout.DropDown.ICON_AND_TITLE 
-								column = new RibbonButton(action, 
-										GuwLayout.ribbonColumnButtonIconSize, TitleAlignment.BOTTOM);
-							}
+							column = new RibbonButton(action);
 						}
 					}
 				}
@@ -113,7 +101,7 @@ public final class RibbonColumnRegistry {
 						}
 					}
 					if (actions.size() > 0) {
-						return new ActionListRibbonColumn(actions, GuwLayout.ribbonColumnListIconSize);
+						return new ActionListRibbonColumn(actions, GuwLayout.ribbonColumnListIconSize, mapWidget);
 					}
 				}
 				return null;
@@ -123,33 +111,7 @@ public final class RibbonColumnRegistry {
 		REGISTRY.put("ToolbarDropDownButton", new RibbonColumnCreator() {
 
 			public RibbonColumn create(List<ClientToolInfo> tools, MapWidget mapWidget) {
-				final DropDownRibbonButton dropDown = new DropDownRibbonButton(new DropDownButtonAction());
-				DropDownPanel panel = dropDown.getPanel();
-				ButtonGroup group = null;
-				List<ButtonAction> actions = new ArrayList<ButtonAction>();
-				for (ClientToolInfo tool : tools) {
-					ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
-					if (toolbarAction != null) {
-						if (toolbarAction instanceof ButtonGroup) {
-							// First wrap currently found actions into a group (previous group can be null).
-							if (actions.size() > 0) {
-								panel.addGroup(group, actions);
-							}
-							group = (ButtonGroup) toolbarAction;
-							group.setTitle(tool.getTitle());
-							for (Parameter parameter : tool.getParameters()) {
-								group.configure(parameter.getName(), parameter.getValue());
-							}
-							actions = new ArrayList<ButtonAction>();
-						} else {
-							ButtonAction action = getAction(tool, mapWidget);
-							actions.add(action);
-						}
-					}
-				}
-				// Always add the last actions as a group to the panel (also if group is null)
-				panel.addGroup(group, actions);
-				return dropDown;
+				return new DropDownRibbonButton(new DropDownButtonAction(), tools, mapWidget);
 			}
 		});
 	}
@@ -205,16 +167,15 @@ public final class RibbonColumnRegistry {
 		}
 	}
 
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private static ButtonAction getAction(ClientToolInfo tool, MapWidget mapWidget) {
+	public static ButtonAction getAction(ClientToolInfo tool, MapWidget mapWidget) {
 		ToolbarBaseAction toolbarAction = ToolbarRegistry.getToolbarAction(tool.getToolId(), mapWidget);
 
 		if (toolbarAction != null) {
 			ButtonAction action = null;
-			if (toolbarAction instanceof ToolbarAction) {
+			if (toolbarAction instanceof DropDownButtonAction) {
+				((DropDownButtonAction) toolbarAction).setTools(tool.getTools());
+				action = new ToolbarButtonAction(toolbarAction);
+			} else if (toolbarAction instanceof ToolbarAction) {
 				action = new ToolbarButtonAction(toolbarAction);
 			} else if (toolbarAction instanceof ToolbarModalAction) {
 				action = new ToolbarRadioAction((ToolbarModalAction) toolbarAction, "map-controller-group");

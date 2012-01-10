@@ -14,9 +14,14 @@ package org.geomajas.widget.utility.gwt.client.ribbon;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.gwt.client.action.ToolbarBaseAction;
+import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
+import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
+import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;
+import org.geomajas.widget.utility.gwt.client.ribbon.dropdown.DropDownRibbonButton;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.widgets.layout.VStack;
@@ -41,8 +46,8 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	 * @param actionList
 	 *            The list of {@link ButtonAction}s to translate into a vertical list of {@link RibbonButton}s.
 	 */
-	public ActionListRibbonColumn(List<ButtonAction> actionList) {
-		this(actionList, 16);
+	public ActionListRibbonColumn(List<ButtonAction> actionList, MapWidget mapWidget) {
+		this(actionList, 16, mapWidget);
 	}
 
 	/**
@@ -52,8 +57,9 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	 *            The list of {@link ButtonAction}s to translate into a vertical list of {@link RibbonButton}s.
 	 * @param iconSize
 	 *            The width and height of the icons used in the vertical list. Expressed in pixels.
+	 * @param mapWidget 
 	 */
-	public ActionListRibbonColumn(List<ButtonAction> actionList, int iconSize) {
+	public ActionListRibbonColumn(List<ButtonAction> actionList, int iconSize, MapWidget mapWidget) {
 		buttons = new ArrayList<RibbonButton>(actionList.size());
 		for (ButtonAction action : actionList) {
 			if (action instanceof ToolbarButtonCanvas) {
@@ -61,8 +67,15 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 						((ToolbarButtonCanvas) action).getToolbarAction().getClass() + 
 						" has a predefined widget, which is not allowed in a list of actions");
 			}
-			RibbonButton button = new RibbonButton(action, iconSize, TitleAlignment.RIGHT);
-			button.setHeight(20);
+			RibbonButton button = null;
+			ToolbarBaseAction toolbarAction = ((ToolbarButtonAction) action).getToolbarAction();
+			if (toolbarAction instanceof DropDownButtonAction) {
+				DropDownButtonAction ddAction = (DropDownButtonAction) toolbarAction;
+				button = new DropDownRibbonButton(ddAction, iconSize,
+						TitleAlignment.RIGHT, ddAction.getTools(), mapWidget);
+			} else {
+				button = new RibbonButton(action, iconSize, TitleAlignment.RIGHT);
+			}
 			addMember(button);
 			buttons.add(button);
 		}
@@ -75,7 +88,7 @@ public class ActionListRibbonColumn extends VStack implements RibbonColumn {
 	/** {@inheritDoc} */
 	public void setButtonBaseStyle(String buttonBaseStyle) {
 		for (RibbonButton button : buttons) {
-			button.setBaseStyle(buttonBaseStyle);
+			button.setButtonBaseStyle(buttonBaseStyle);
 		}
 	}
 

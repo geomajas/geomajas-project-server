@@ -178,5 +178,24 @@ public class ToolbarButtonCanvas implements ButtonAction, HasEnabledHandlers {
 	 */
 	public void setTooltip(String tooltip) {
 	}
+	/**
+	 * Widget creation is being handled in the canvas returned by 
+	 * {@link org.geomajas.gwt.client.action.ToolbarCanvas#getCanvas()},
+	 * so null is returned.
+	 * 
+	 * @return null
+	 */
+	public String getButtonLayout() {
+		return null;
+	}
+	/**
+	 * Widget creation is being handled in the canvas returned by 
+	 * {@link org.geomajas.gwt.client.action.ToolbarCanvas#getCanvas()},
+	 * so no button layout can be set.
+	 * 
+	 * @param does nothing
+	 */
+	public void setButtonLayout(String buttonLayout) {
+	}
 
 }

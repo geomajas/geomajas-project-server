@@ -26,8 +26,8 @@ import org.geomajas.annotation.Api;
 public final class GuwLayout {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
-	/** Member margin in the {@link org.geomajas.widget.utility.gwt.client.ribbon.RibbonButtonDescribed}. */
-	public static int describedButtonInnerMargin = 2;
+	/** Member margin in the {@link org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton}. */
+	public static int ribbonButtonInnerMargin = 2;
 	/** Default icon size for the big buttons in a ribbon. */
 	public static int ribbonColumnButtonIconSize = 24;
 	/** Default icon size for the small vertical action lists in a ribbon. */
