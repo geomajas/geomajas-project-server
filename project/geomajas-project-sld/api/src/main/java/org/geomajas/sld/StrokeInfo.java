@@ -245,14 +245,14 @@ public class StrokeInfo implements Serializable {
 		}
 	}
 
-	public void setStrokeWidth(int i) {
+	public void setStrokeWidth(float f) {
 		for (CssParameterInfo param : getCssParameterList()) {
 			if (param.getName().equals(STROKE_WIDTH)) {
-				param.setValue(Integer.toString(i));
+				param.setValue(Float.toString(f));
 				return;
 			}
 		}
-		getCssParameterList().add(new CssParameterInfo(STROKE_WIDTH, Integer.toString(i)));
+		getCssParameterList().add(new CssParameterInfo(STROKE_WIDTH, Float.toString(f)));
 	}
 
 	public void setStrokeColor(String strokeColor) {
