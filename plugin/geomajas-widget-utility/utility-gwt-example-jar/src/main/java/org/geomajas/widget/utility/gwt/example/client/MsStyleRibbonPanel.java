@@ -48,8 +48,7 @@ public class MsStyleRibbonPanel extends SamplePanel {
 		VLayout layout = new VLayout(5);
 		layout.setPadding(5);
 		MapWidget mapWidget = new MapWidget("mapGuwMsOsm", "appGuw");
-		final RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "appGuw", "guwRibbon4");
-		ribbon.setRibbonBarMembersMargin(0);
+		final RibbonTabLayout ribbon = new RibbonTabLayout(mapWidget, "appGuw", "guwRibbon4", 0);
 		ribbon.setStyleName("msRibbon");
 		ribbon.setSize("100%", "120px");
 
