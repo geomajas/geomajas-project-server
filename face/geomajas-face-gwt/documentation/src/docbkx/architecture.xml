@@ -361,9 +361,9 @@
       <para>The <code>Geometry</code> implementations themselves do not have
       any setters methods. Instead the editing of geometries is done through a
       series of operations, all implementing the <code>
-      <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
-      </code> interface. This interface consists of only one method, accepting
-      a geometry, and returning the result as a new geometry.</para>
+          <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+        </code> interface. This interface consists of only one method,
+      accepting a geometry, and returning the result as a new geometry.</para>
 
       <para>Geometries have no public constructors, so the creation of new
       geometries is done using a factory,
@@ -902,11 +902,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       requires your to specify an icon and a tool tip on creation.</para>
 
       <para><code>ToolbarAction</code> classes need to be registered in the
-      <code> <code>ToolbarRegistry</code> </code> class. This allows you to
-      get an instance of the widget to put in the tool bar. The tools which
-      are part of the GWT face are statically defined in the class. Other
-      tools can be added (or overwritten) at runtime before the map is
-      initialised.</para>
+      <code>
+          <code>ToolbarRegistry</code>
+        </code> class. This allows you to get an instance of the widget to put
+      in the tool bar. The tools which are part of the GWT face are statically
+      defined in the class. Other tools can be added (or overwritten) at
+      runtime before the map is initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable (XML
       configuration), it should implement the <code>ConfigurableAction</code>
@@ -932,11 +933,12 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       buttons.</para>
 
       <para><code>ToolbarModalAction</code> classes need to be registered in
-      the <code> <code>ToolbarRegistry</code> </code> class. This allows you
-      to get an instance of the widget to put in the tool bar. The tools which
-      are always part of the GWT face are statically defined in the class.
-      Other tools can be added (or overwritten) at runtime before the map is
-      initialised.</para>
+      the <code>
+          <code>ToolbarRegistry</code>
+        </code> class. This allows you to get an instance of the widget to put
+      in the tool bar. The tools which are always part of the GWT face are
+      statically defined in the class. Other tools can be added (or
+      overwritten) at runtime before the map is initialised.</para>
 
       <para>When a <code>ToolbarAction</code> is configurable, it should
       implement the <code>ConfigurableAction</code> interface. This contains a
@@ -1055,14 +1057,16 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
           <itemizedlist>
             <listitem>
-              <para><emphasis> <code>AbstractRectangleController</code>
-              </emphasis>: abstract controller that handles drawing a
+              <para><emphasis>
+                  <code>AbstractRectangleController</code>
+                </emphasis>: abstract controller that handles drawing a
               rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis> <code>AbstractSnappingController</code>
-              </emphasis>: abstract controller that allows snapping to be
+              <para><emphasis>
+                  <code>AbstractSnappingController</code>
+                </emphasis>: abstract controller that allows snapping to be
               enabled and disabled. When enabled, the returned points when
               asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
@@ -1073,7 +1077,9 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to disable the active controller, set a "null" value as
         controller:</para>
 
-        <para><programlisting>mapWidget.setController(null);</programlisting></para>
+        <para>
+          <programlisting>mapWidget.setController(null);</programlisting>
+        </para>
       </section>
 
       <section id="activeAndFallback">
@@ -1095,6 +1101,138 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to completely disable the use of a fallback controller,
         set "null" as the new fallback controller.</para>
       </section>
+    </section>
+
+    <section>
+      <title>Addons on the map</title>
+
+      <para>A way to let a user set controllers on the map is by providing
+      addons for him/her on the map. Default addons are provided to pan and
+      zoom in and out:</para>
+
+      <para>Code-wise an addon is basically an (SmartGWT) widget composed out
+      of background image, a foreground image (or icon) and a
+      <code>GraphicsController.</code><figure>
+          <title>Default map addons</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/defaultAddons.png" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Beside these default addons you can create your own addons by
+      combining a background image, with an icon and a
+      <code>GraphicsController</code> or a <code>ToolbarAction</code>. </para>
+
+      <para>Before you can add your own addons however, your first need to
+      disable the creation of the default addons by setting the property
+      "panButtonsEnabled" of your <code>ClientMapInfo</code> bean to false.
+      </para>
+
+      <para><programlisting>&lt;bean name="mapNoNav" class="org.geomajas.configuration.client.ClientMapInfo"&gt; 
+  &lt;property name="panButtonsEnabled" value="false" /&gt; 
+&lt;/bean&gt;</programlisting><note>
+          <para>The name of the <code>ClientMapInfo</code> bean is the id used
+          in the constructor of the <code>MapWidget</code>.</para>
+        </note></para>
+
+      <para>Now you can create an addon by constructing a
+      <code>SingleMapAddon</code>. Depending on your desires you can construct
+      a <code>SingleMapAddon</code> in different ways:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>With just a icon or with a background image as well.</para>
+        </listitem>
+
+        <listitem>
+          <para>With a <code>GraphicsController</code> or a
+          <code>ToolbarAction.</code></para>
+        </listitem>
+
+        <listitem>
+          <para>With a explicit size or automatically based on the size of the
+          given image(s).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The creation of a zoom-in <code>SingleMapAddon</code> can be
+      achieved like this:</para>
+
+      <programlisting>Image background = ImageUtil.createSquareImage("background", Geomajas.getIsomorphicDir() + "geomajas/mapaddon/panbg.png", 
+0, 0, 36);
+
+int internalMargin = 6;
+Image icon = ImageUtil.createSquareImage("zoomInIcon", Geomajas.getIsomorphicDir() + "geomajas/osgeo/zoom-in.png", 
+internalMargin, internalMargin, 24);
+
+SingleMapAddon zoomIn = new SingleMapAddon("zoomIn", icon, background, mapWidget, new ZoomInAndOutController(mapWidget, 2));
+zoomIn.setHorizontalMargin(25);
+zoomIn.setVerticalMargin(25);
+mapWidget.registerMapAddon(zoomIn);</programlisting>
+
+      <para>A more complex zoom slider is created like this:</para>
+
+      <programlisting>/*
+ * Slider handler icon
+ */
+Image sliderUnit = ImageUtil.createRectangleImage(ZoomSlider.SLIDER_UNIT + "icon", 
+Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderUnit.png", 0, 0, SLIDER_UNIT_WIDTH, SLIDER_UNIT_HEIGHT);
+/*
+ * Part of the background on which the zoomslider handler can move.
+ * One zoom level is represented by one image.
+ */
+Image backgroundPart = ImageUtil.createRectangleImage(ZoomSlider.SLIDER + "Bg", 
+Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER + "sliderbg.png", 0, 0, SLIDER_WIDTH, SLIDER_PART_HEIGHT);
+/*
+ * Zoom in; the top of ZoomSlider
+ */
+Image in = ImageUtil.createSquareImage(ZOOM_IN + ICON,
+Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomPlus.png",
+0, 0, SLIDER_WIDTH);
+Image sliderTop = ImageUtil.createSquareImage(
+ZoomSlider.SLIDER + "Top", Geomajas.getIsomorphicDir()
++ EXAMPLE_IMAGE_FOLDER + "sliderbgtop.png", 0, 0,
+SLIDER_WIDTH);
+SingleMapAddon zoomIn = new SingleMapAddon(ZOOM_IN, in, sliderTop,
+mapWidget, new ZoomInAndOutController(mapWidget, 1.01));
+
+/*
+ * Zoom out; the bottom of ZoomSlider
+ */
+Image out = ImageUtil.createRectangleImage(ZOOM_OUT + ICON,
+Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomMinus.png", 
+0, 0, SLIDER_WIDTH, SLIDER_WIDTH);
+Image sliderBottom = ImageUtil.createRectangleImage(ZoomSlider.SLIDER
++ "Bottom", Geomajas.getIsomorphicDir() + EXAMPLE_IMAGE_FOLDER
++ "sliderbgbottom.png", 0, 0, SLIDER_WIDTH, SLIDER_WIDTH);
+SingleMapAddon zoomOut = new SingleMapAddon(ZOOM_OUT, out,
+sliderBottom, mapWidget, new ZoomInAndOutController(mapWidget,
+0.99));
+
+/*
+ * Zoom slider itself
+ */
+ZoomSlider slider = new ZoomSlider(ZoomSlider.SLIDER, mapWidget);
+slider.setZoomIn(zoomIn);
+slider.setBackgroundPart(backgroundPart);
+slider.setSliderUnit(sliderUnit);
+slider.setZoomOut(zoomOut);
+slider.setHorizontalMargin(HORIZONTAL_MIDDLE - SLIDER_WIDTH / 2);
+slider.setVerticalMargin(pan.getVerticalMargin() + PAN_DIA + 2 * MARGIN);
+mapWidget.registerMapAddon(slider);
+/* And finally add the slider as a MapViewChangedHandler to let it's handle be adjusted, 
+ * in case the zoomlevel is changed outside the slider.
+ */
+mapWidget.getMapModel().getMapView().addMapViewChangedHandler(slider);</programlisting>
+
+      <note>
+        <para>For the full snippet in the Geomajas showcase, open the
+        <abbrev>Map and rendering</abbrev> section, click the <abbrev>Zoom
+        slider</abbrev> example and view the attached sources.</para>
+      </note>
     </section>
 
     <section>
