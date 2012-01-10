@@ -50,4 +50,3 @@ org.geomajas.geometry.Geometry:void setGeometries(Geometry[], ):GBE-1.6.0
 org.geomajas.geometry.Geometry:void setGeometryType(String, ):GBE-1.6.0
 org.geomajas.geometry.Geometry:void setPrecision(int, ):GBE-1.6.0
 org.geomajas.geometry.Geometry:void setSrid(int, ):GBE-1.6.0
-org.geomajas.geometry.Geometry:boolean isEmpty():1.0.0

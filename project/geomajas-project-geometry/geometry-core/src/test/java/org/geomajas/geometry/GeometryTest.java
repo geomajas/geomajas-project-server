@@ -85,18 +85,4 @@ public class GeometryTest {
 		geometry.setGeometries(new Geometry[] { other });
 		Assert.assertEquals(other, geometry.getGeometries()[0]);
 	}
-
-	@Test
-	@SuppressWarnings("deprecation")
-	public void testIsEmpty() {
-		Geometry geometry = new Geometry(Geometry.MULTI_POINT, 0, 0);
-		Assert.assertTrue(geometry.isEmpty());
-		
-		geometry.setCoordinates(new Coordinate[0]);
-		Assert.assertFalse(geometry.isEmpty());
-
-		geometry = new Geometry(Geometry.MULTI_LINE_STRING, 0, 0);
-		geometry.setGeometries(new Geometry[0]);
-		Assert.assertFalse(geometry.isEmpty());
-	}
 }
