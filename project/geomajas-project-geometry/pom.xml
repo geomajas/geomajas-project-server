@@ -40,7 +40,8 @@
 	</scm>
 
 	<modules>
-		<module>geometry</module>
+		<module>geometry-core</module>
+		<module>documentation</module>
 	</modules>
 
 	<dependencyManagement>
@@ -52,12 +53,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-geometry</artifactId>
+				<artifactId>geomajas-geometry-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-geometry</artifactId>
+				<artifactId>geomajas-geometry-core</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
