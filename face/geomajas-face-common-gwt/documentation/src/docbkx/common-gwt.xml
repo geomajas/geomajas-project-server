@@ -41,13 +41,12 @@
   &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
   &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
   &lt;url-pattern&gt;/<emphasis>&lt;GWT module name&gt;</emphasis>/*&lt;/url-pattern&gt; &lt;!-- add this line --&gt;
-&lt;/servlet-mapping&gt;
-</programlisting>This is all that is necessary to enable the communication and
-    should work for all GWT faces. This will also establish a fallback
-    resource controller that ensures that static resources can be successfully
-    retrieved through the dispatcher servlet. This is necessary because the
-    above mapping will catch any request that has the module name as the first
-    part in its path.</para>
+&lt;/servlet-mapping&gt;</programlisting>This is all that is necessary to
+    enable the communication and should work for all GWT faces. This will also
+    establish a fallback resource controller that ensures that static
+    resources can be successfully retrieved through the dispatcher servlet.
+    This is necessary because the above mapping will catch any request that
+    has the module name as the first part in its path.</para>
   </section>
 
   <section id="common-dispatcher">

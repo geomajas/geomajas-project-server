@@ -69,5 +69,3 @@ org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):0.0.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):0.0.0
 org.geomajas.gwt.client.util.EqualsUtil::0.0.0
 org.geomajas.gwt.client.util.EqualsUtil:static boolean isEqual(Object, Object, ):0.0.0
-org.geomajas.gwt.client.util.WindowUtil::0.0.0
-org.geomajas.gwt.client.util.WindowUtil:static void setLocation(String, ):0.0.0

@@ -11,13 +11,11 @@
 
 package org.geomajas.gwt.client.command;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.smartgwt.client.core.Function;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
@@ -35,10 +33,16 @@ import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.util.EqualsUtil;
 import org.geomajas.gwt.client.util.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.smartgwt.client.core.Function;
 
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
@@ -52,8 +56,8 @@ import java.util.Map;
  * @since 0.0.0
  */
 @Api(allMethods = true)
-public final class GwtCommandDispatcher
-		implements HasDispatchHandlers, CommandExceptionCallback, CommunicationExceptionCallback {
+public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandExceptionCallback,
+		CommunicationExceptionCallback {
 
 	private static final String SECURITY_EXCEPTION_CLASS_NAME = "org.geomajas.security.GeomajasSecurityException";
 
@@ -62,6 +66,8 @@ public final class GwtCommandDispatcher
 	private final GeomajasServiceAsync service;
 
 	private final HandlerManager manager = new HandlerManager(this);
+
+	private final List<Deferred> deferreds;
 
 	private int nrOfDispatchedCommands;
 
@@ -78,7 +84,7 @@ public final class GwtCommandDispatcher
 	private int lazyFeatureIncludesSelect;
 
 	private int lazyFeatureIncludesAll;
-	
+
 	private boolean showError;
 
 	private TokenRequestHandler tokenRequestHandler;
@@ -95,10 +101,23 @@ public final class GwtCommandDispatcher
 		if ("default".equals(locale)) {
 			locale = null;
 		}
+		deferreds = new ArrayList<Deferred>();
 		service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
 		setServiceEndPointUrl(GWT.getModuleBaseURL() + "geomajasService");
 		setUseLazyLoading(true);
 		setShowError(true);
+
+		Window.addWindowClosingHandler(new ClosingHandler() {
+
+			public void onWindowClosing(ClosingEvent event) {
+				GwtCommandDispatcher.getInstance().setShowError(false);
+
+				// Cancel all outstanding requests:
+				for (Deferred deferred : deferreds) {
+					deferred.cancel();
+				}
+			}
+		});
 	}
 
 	// -------------------------------------------------------------------------
@@ -129,7 +148,7 @@ public final class GwtCommandDispatcher
 	 *            The command to be executed. This command is a wrapper around the actual request object.
 	 * @param callback
 	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns. The
-	 *            callbacks may implement CommunicationExceptionCallback or CommandExceptionCallback to allow error 
+	 *            callbacks may implement CommunicationExceptionCallback or CommandExceptionCallback to allow error
 	 *            handling.
 	 * @return deferred object which can be used to add extra callbacks
 	 */
@@ -143,13 +162,19 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * The execution function. Executes a server side command.
-	 *
-	 * @param command The command to be executed. This command is a wrapper around the actual request object.
-	 * @param deferred list of callbacks for the command
+	 * 
+	 * @param command
+	 *            The command to be executed. This command is a wrapper around the actual request object.
+	 * @param deferred
+	 *            list of callbacks for the command
 	 * @return original deferred object as passed as parameter
 	 * @since 1.0.0
 	 */
 	public Deferred execute(final GwtCommand command, final Deferred deferred) {
+		if (!deferreds.contains(deferred)) {
+			deferreds.add(deferred);
+		}
+
 		command.setLocale(locale);
 		command.setUserToken(userToken);
 
@@ -184,6 +209,7 @@ public final class GwtCommandDispatcher
 					}
 				} finally {
 					decrementDispatched();
+					deferreds.remove(deferred);
 				}
 			}
 
@@ -193,9 +219,9 @@ public final class GwtCommandDispatcher
 						// first check for authentication problems, these are handled separately
 						boolean authenticationFailed = false;
 						for (ExceptionDto exception : response.getExceptions()) {
-							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName()) &&
-									(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode() ||
-											null == userToken);
+							authenticationFailed |= SECURITY_EXCEPTION_CLASS_NAME.equals(exception.getClassName())
+									&& (ExceptionCode.CREDENTIALS_MISSING_OR_INVALID == exception.getExceptionCode() 
+									|| null == userToken);
 						}
 						if (authenticationFailed && null != tokenRequestHandler) {
 							handleLogin(command, deferred);
@@ -225,6 +251,7 @@ public final class GwtCommandDispatcher
 					Log.logError("Command failed on success callback", t);
 				} finally {
 					decrementDispatched();
+					deferreds.remove(deferred);
 				}
 			}
 		});
@@ -233,9 +260,11 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Add a command and it's callbacks to the list of commands to retry after login.
-	 *
-	 * @param command command to retry
-	 * @param deferred callbacks for the command
+	 * 
+	 * @param command
+	 *            command to retry
+	 * @param deferred
+	 *            callbacks for the command
 	 */
 	private void afterLogin(GwtCommand command, Deferred deferred) {
 		String token = notNull(command.getUserToken());
@@ -249,19 +278,23 @@ public final class GwtCommandDispatcher
 	 * Method which forces retry of a command after login.
 	 * <p/>
 	 * This method assumes the single threaded nature of JavaScript execution for correctness.
-	 *
-	 * @param command command which needs to be retried
-	 * @param deferred callbacks for the command
+	 * 
+	 * @param command
+	 *            command which needs to be retried
+	 * @param deferred
+	 *            callbacks for the command
 	 */
 	private void handleLogin(GwtCommand command, Deferred deferred) {
 		final String oldToken = notNull(command.getUserToken());
 		if (!afterLoginCommands.containsKey(oldToken)) {
 			afterLoginCommands.put(oldToken, new ArrayList<RetryCommand>());
 			tokenRequestHandler.login(new TokenChangedHandler() {
+
 				/**
 				 * Login handling. @todo since declaration should be removed, needed because of bug in api checks
-				 *
-				 * @param event new token details
+				 * 
+				 * @param event
+				 *            new token details
 				 * @since 1.0.0
 				 */
 				public void onTokenChanged(TokenChangedEvent event) {
@@ -277,8 +310,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Assure that a string is not null, convert to empty string if it is.
-	 *
-	 * @param string string to convert
+	 * 
+	 * @param string
+	 *            string to convert
 	 * @return converted string
 	 */
 	private String notNull(String string) {
@@ -290,8 +324,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Default behaviour for handling a communication exception. Shows a warning window to the user.
-	 *
-	 * @param error error to report
+	 * 
+	 * @param error
+	 *            error to report
 	 * @since 0.0.0
 	 */
 	public void onCommunicationException(Throwable error) {
@@ -302,8 +337,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Default behaviour for handling a command execution exception. Shows an exception report to the user.
-	 *
-	 * @param response command response with error
+	 * 
+	 * @param response
+	 *            command response with error
 	 * @since 0.0.0
 	 */
 	public void onCommandException(CommandResponse response) {
@@ -320,14 +356,15 @@ public final class GwtCommandDispatcher
 	public boolean isBusy() {
 		return nrOfDispatchedCommands != 0;
 	}
-	
+
 	/**
 	 * Set the service end point URL to a different value. If pointing to a different context, make sure the
 	 * GeomajasController of that context supports this.
 	 * 
 	 * @see org.geomajas.gwt.server.mvc.GeomajasController
 	 * 
-	 * @param url the new URL
+	 * @param url
+	 *            the new URL
 	 * @since 1.0.0
 	 */
 	public void setServiceEndPointUrl(String url) {
@@ -347,9 +384,11 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Set the user token, so it can be sent in very command.
-	 *
-	 * @param userToken user token
-	 * @param userDetail user details
+	 * 
+	 * @param userToken
+	 *            user token
+	 * @param userDetail
+	 *            user details
 	 * @since 1.0.0
 	 */
 	public void setUserToken(String userToken, UserDetail userDetail) {
@@ -367,7 +406,7 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Get currently active user authentication token.
-	 *
+	 * 
 	 * @return authentication token
 	 * @since 1.0.0
 	 */
@@ -380,7 +419,7 @@ public final class GwtCommandDispatcher
 	 * Get details for the current user.
 	 * <p/>
 	 * Object is always not-null, but the entries mey be.
-	 *
+	 * 
 	 * @return user details object
 	 * @since 1.0.0
 	 */
@@ -391,8 +430,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Add handler which is notified when the user token changes.
-	 *
-	 * @param handler token changed handler
+	 * 
+	 * @param handler
+	 *            token changed handler
 	 * @return handler registration
 	 * @since 1.0.0
 	 */
@@ -402,8 +442,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Set the login handler which should be used to request aan authentication token.
-	 *
-	 * @param tokenRequestHandler login handler
+	 * 
+	 * @param tokenRequestHandler
+	 *            login handler
 	 * @since 1.0.0
 	 */
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
@@ -412,8 +453,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Set default command exception callback.
-	 *
-	 * @param commandExceptionCallback command exception callback
+	 * 
+	 * @param commandExceptionCallback
+	 *            command exception callback
 	 * @since 1.0.0
 	 */
 	public void setCommandExceptionCallback(CommandExceptionCallback commandExceptionCallback) {
@@ -422,8 +464,9 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Set default communication exception callback.
-	 *
-	 * @param communicationExceptionCallback communication exception callback
+	 * 
+	 * @param communicationExceptionCallback
+	 *            communication exception callback
 	 * @since 1.0.0
 	 */
 	public void setCommunicationExceptionCallback(CommunicationExceptionCallback communicationExceptionCallback) {
@@ -520,7 +563,7 @@ public final class GwtCommandDispatcher
 		setUseLazyLoading(false);
 		this.lazyFeatureIncludesAll = lazyFeatureIncludesAll;
 	}
-	
+
 	/**
 	 * Should the dispatcher show error messages ?
 	 * 
@@ -534,7 +577,8 @@ public final class GwtCommandDispatcher
 	/**
 	 * Sets whether the dispatcher should show error messages.
 	 * 
-	 * @param showError true if showing error messages, false otherwise
+	 * @param showError
+	 *            true if showing error messages, false otherwise
 	 * @since 0.0.0
 	 */
 	public void setShowError(boolean showError) {
@@ -545,7 +589,6 @@ public final class GwtCommandDispatcher
 	// Protected methods:
 	// -------------------------------------------------------------------------
 
-	
 	protected void incrementDispatched() {
 		boolean started = nrOfDispatchedCommands == 0;
 		nrOfDispatchedCommands++;
@@ -563,18 +606,22 @@ public final class GwtCommandDispatcher
 
 	/**
 	 * Representation of a command which needs to be retried later.
-	 *
+	 * 
 	 * @author Joachim Van der Auwera
 	 */
 	private static class RetryCommand {
+
 		private final GwtCommand command;
+
 		private final Deferred deferred;
 
 		/**
 		 * Create data to allow retying the command later.
-		 *
-		 * @param command command
-		 * @param deferred callbacks
+		 * 
+		 * @param command
+		 *            command
+		 * @param deferred
+		 *            callbacks
 		 */
 		public RetryCommand(GwtCommand command, Deferred deferred) {
 			this.command = command;
@@ -583,7 +630,7 @@ public final class GwtCommandDispatcher
 
 		/**
 		 * Get the GwtCommand which needs to be retried.
-		 *
+		 * 
 		 * @return command
 		 */
 		public GwtCommand getCommand() {
@@ -592,7 +639,7 @@ public final class GwtCommandDispatcher
 
 		/**
 		 * Get the callbacks for handling the retied command.
-		 *
+		 * 
 		 * @return callbacks
 		 */
 		public Deferred getDeferred() {
