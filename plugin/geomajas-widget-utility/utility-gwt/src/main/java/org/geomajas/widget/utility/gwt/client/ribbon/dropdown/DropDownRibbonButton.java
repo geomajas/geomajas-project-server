@@ -25,6 +25,7 @@ import org.geomajas.widget.utility.common.client.action.ButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonColumnRegistry;
+import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Img;
@@ -104,11 +105,13 @@ public class DropDownRibbonButton extends RibbonButton {
 	@Override
 	protected void onDraw() {
 		updateGui();
-		Layout outer = getOuter();
-		Img arrow = new Img("[ISOMORPHIC]/images/arrow_down.png", 9, 9);
-		arrow.setLayoutAlign(Alignment.CENTER);
-		outer.addMember(arrow);
-		addChild(outer);
+		if (GuwLayout.DropDown.showDropDownImage) {
+			Layout outer = getOuter();
+			Img arrow = new Img("[ISOMORPHIC]/images/arrow_down.png", 9, 9);
+			arrow.setLayoutAlign(Alignment.CENTER);
+			outer.addMember(arrow);
+			addChild(outer);
+		}
 	}
 	
 	// ------------------------------------------------------------------------
