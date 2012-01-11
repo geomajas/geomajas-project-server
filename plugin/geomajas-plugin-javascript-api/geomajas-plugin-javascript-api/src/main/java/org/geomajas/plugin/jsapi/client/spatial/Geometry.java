@@ -138,12 +138,4 @@ public class Geometry implements ExportOverlay<org.geomajas.geometry.Geometry>, 
 	public void setGeometries(org.geomajas.geometry.Geometry[] geometries) {
 	}
 
-	/**
-	 * Returns whether the geometry is empty.
-	 * 
-	 * @return true if empty, false otherwise
-	 */
-	public boolean isEmpty() {
-		return false;
-	}
 }

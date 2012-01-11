@@ -49,4 +49,14 @@ public interface GeometryService extends Exportable {
 	 * @return The resulting geometry, or null in case something went wrong.
 	 */
 	org.geomajas.geometry.Geometry toGeometry(String wkt);
+	
+	/**
+	 * This geometry is empty if there are no geometries/coordinates stored inside.
+	 * 
+	 * @param geometry
+	 *            The geometry to check.
+	 * @return true or false.
+	 */
+	boolean isEmpty(org.geomajas.geometry.Geometry geometry);
+
 }

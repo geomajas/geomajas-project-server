@@ -74,4 +74,16 @@ public class GeometryServiceImpl implements GeometryService, Exportable {
 			return null;
 		}
 	}
+	
+	/**
+	 * This geometry is empty if there are no geometries/coordinates stored inside.
+	 * 
+	 * @param geometry
+	 *            The geometry to check.
+	 * @return true or false.
+	 */
+	public boolean isEmpty(Geometry geometry) {
+		return (geometry.getCoordinates() == null || geometry.getCoordinates().length == 0)
+				&& (geometry.getGeometries() == null || geometry.getGeometries().length == 0);
+	}
 }
