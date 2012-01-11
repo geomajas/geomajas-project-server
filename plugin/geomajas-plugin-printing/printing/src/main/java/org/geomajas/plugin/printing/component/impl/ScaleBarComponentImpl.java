@@ -101,8 +101,8 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 
 	private static final String[] UNIT_PREFIXES = new String[] { "n", "m", "", "k", "M" };
 
-	private static final float FEETINMETER = 3.2808399f;
-	private static final float FEETINMILE = 5280f;
+	private static final float FEET_PER_METER = 3.2808399f;
+	private static final float FEET_PER_MILE = 5280f;
 
 	public ScaleBarComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.LEFT);
@@ -141,8 +141,8 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 		UnitType dispUnits = map.getDisplayUnitType();
 		float pxPUnit = getMap().getPpUnit();
+		String englishUnit = "ft";
 		boolean isEnglishUnits = false;
-		boolean isEnglishYards = false;
 		boolean isEnglishMiles = false;
 		// Calculate the labels
 		if (map != null) {
@@ -154,20 +154,21 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 				if (dispUnits.equals(UnitType.ENGLISH) || dispUnits.equals(UnitType.ENGLISH_FOOT)) {
 					isEnglishUnits = true;
 					if (!unit.toUpperCase().contains("F")) {
-						pxPUnit = pxPUnit / FEETINMETER;
+						pxPUnit = pxPUnit / FEET_PER_METER;
 					}
 
 					// check for yards conversion
 					if (dispUnits.equals(UnitType.ENGLISH)) {
-						if ((width / pxPUnit) >= 3 && (width / pxPUnit) < FEETINMILE) {
+						if ((width / pxPUnit) >= 3 && (width / pxPUnit) < FEET_PER_MILE) {
 							pxPUnit = pxPUnit * 3f;
-							isEnglishYards = true;
+							englishUnit = "yd";
 						}
 					}
 
 					// check for miles conversion
-					if ((width / pxPUnit) > FEETINMILE) {
-						pxPUnit = pxPUnit * FEETINMILE;
+					if ((width / pxPUnit) > FEET_PER_MILE) {
+						pxPUnit = pxPUnit * FEET_PER_MILE;
+						englishUnit = "mi";
 						isEnglishMiles = true;
 					}
 
@@ -218,15 +219,9 @@ public class ScaleBarComponentImpl extends AbstractPrintComponent<ScaleBarCompon
 			if (!isEnglishUnits && !isEnglishMiles) {
 				label = "" + (int) (i * ticWidthInUnits / Math.pow(10, 3 * ticLog));
 				units = ((ticLog >= -2 && ticLog <= 2) ? UNIT_PREFIXES[ticLog + 2] : "*10^" + (ticLog * 3)) + unit;
-			} else if (isEnglishMiles) {
-				label = "" + i * ticWidthInUnits;
-				units = "mi";
-			} else if (isEnglishYards) {
-				label = "" + i * ticWidthInUnits;
-				units = "yd";
 			} else {
 				label = "" + i * ticWidthInUnits;
-				units = "ft";
+				units = englishUnit;
 			}
 
 			if (i == ticCount) {
