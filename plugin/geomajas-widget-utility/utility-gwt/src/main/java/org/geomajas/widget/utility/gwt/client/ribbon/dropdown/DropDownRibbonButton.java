@@ -105,13 +105,13 @@ public class DropDownRibbonButton extends RibbonButton {
 	@Override
 	protected void onDraw() {
 		updateGui();
+		Layout outer = getOuter();
 		if (GuwLayout.DropDown.showDropDownImage) {
-			Layout outer = getOuter();
 			Img arrow = new Img("[ISOMORPHIC]/images/arrow_down.png", 9, 9);
 			arrow.setLayoutAlign(Alignment.CENTER);
 			outer.addMember(arrow);
-			addChild(outer);
 		}
+		addChild(outer);
 	}
 	
 	// ------------------------------------------------------------------------
