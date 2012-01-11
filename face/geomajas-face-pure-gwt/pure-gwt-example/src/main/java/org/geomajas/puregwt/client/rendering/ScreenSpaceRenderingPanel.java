@@ -11,7 +11,10 @@
 
 package org.geomajas.puregwt.client.rendering;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
 import org.geomajas.puregwt.client.ContentPanel;
+import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.event.MapInitializationEvent;
 import org.geomajas.puregwt.client.event.MapInitializationHandler;
 import org.geomajas.puregwt.client.gfx.VectorContainer;
@@ -21,6 +24,7 @@ import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -36,6 +40,8 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Pieter De Graef
  */
 public class ScreenSpaceRenderingPanel extends ContentPanel {
+
+	private final GeomajasGinjector geomajasInjector = GWT.create(GeomajasGinjector.class);
 
 	private MapPresenter mapPresenter;
 
@@ -104,20 +110,36 @@ public class ScreenSpaceRenderingPanel extends ContentPanel {
 		pathBtn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Path path = new Path(120, 160);
+				Geometry geometry = new Geometry(Geometry.POLYGON, 0, 0);
+				Geometry shell = new Geometry(Geometry.LINEAR_RING, 0, 0);
+				shell.setCoordinates(new Coordinate[] { new Coordinate(120, 160), new Coordinate(220, 160),
+						new Coordinate(220, 260), new Coordinate(120, 260), new Coordinate(120, 160) });
+				Geometry hole = new Geometry(Geometry.LINEAR_RING, 0, 0);
+				hole.setCoordinates(new Coordinate[] { new Coordinate(140, 180), new Coordinate(190, 180),
+						new Coordinate(190, 230), new Coordinate(140, 230), new Coordinate(140, 180) });
+				geometry.setGeometries(new Geometry[] { shell, hole });
+
+				Path path = geomajasInjector.getGfxUtil().toPath(geometry);
 				path.setFillColor("#0066AA");
 				path.setFillOpacity(0.4);
 				path.setStrokeColor("#004499");
-				path.lineRelativelyTo(100, 0);
-				path.lineRelativelyTo(0, 100);
-				path.lineRelativelyTo(-100, 0);
-				path.lineRelativelyTo(0, -100);
-				path.moveTo(140, 180);
-				path.lineRelativelyTo(50, 0);
-				path.lineRelativelyTo(0, 50);
-				path.lineRelativelyTo(-50, 0);
-				path.lineRelativelyTo(0, -50);
-				path.getElement().getStyle().setProperty("fillRule", "even-odd");
+
+				// Alternative way:
+				// Path path = new Path(120, 160);
+				// path.setFillColor("#0066AA");
+				// path.setFillOpacity(0.4);
+				// path.setStrokeColor("#004499");
+				// path.lineRelativelyTo(100, 0);
+				// path.lineRelativelyTo(0, 100);
+				// path.lineRelativelyTo(-100, 0);
+				// path.lineRelativelyTo(0, -100);
+				// path.moveTo(140, 180);
+				// path.lineRelativelyTo(50, 0);
+				// path.lineRelativelyTo(0, 50);
+				// path.lineRelativelyTo(-50, 0);
+				// path.lineRelativelyTo(0, -50);
+				// path.getElement().getStyle().setProperty("fillRule", "evenOdd");
+
 				container.add(path);
 			}
 		});
