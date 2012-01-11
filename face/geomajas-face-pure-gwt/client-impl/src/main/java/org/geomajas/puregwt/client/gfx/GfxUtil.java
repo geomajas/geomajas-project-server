@@ -103,6 +103,7 @@ public final class GfxUtil {
 				path.lineTo((int) coordinate.getX(), (int) coordinate.getY());
 			}
 			path.close();
+			path.getElement().getStyle().setProperty("fillRule", "evenOdd");
 			return path;
 		}
 		return null;
@@ -111,6 +112,7 @@ public final class GfxUtil {
 	private Path toPathPolygon(Geometry polygon) {
 		if (polygon.getGeometries() != null && polygon.getGeometries().length > 0) {
 			Path path = toPathLinearRing(polygon.getGeometries()[0]);
+			path.getElement().getStyle().setProperty("fillRule", "evenOdd");
 			for (int i = 1; i < polygon.getGeometries().length; i++) {
 				Geometry ring = polygon.getGeometries()[i];
 				path.moveTo((int) ring.getCoordinates()[0].getX(), (int) ring.getCoordinates()[0].getY());
