@@ -747,7 +747,7 @@ public class MapView {
 					}
 					if (yCenter < minCoordinate.getY()) {
 						yCenter = minCoordinate.getY();
-					} else if (yCenter > maxCoordinate.getX()) {
+					} else if (yCenter > maxCoordinate.getY()) {
 						yCenter = maxCoordinate.getY();
 					}
 				}

@@ -5,7 +5,7 @@
  * It is a building block that allows developers to add maps
  * and other geographic data capabilities to their web applications.
  *
- * Copyright 2008-2009 Geosparc, http://www.geosparc.com, Belgium
+ * Copyright 2008-2012 Geosparc, http://www.geosparc.com, Belgium
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -119,13 +119,84 @@ public class MapViewTest {
 	}
 
 	@Test
-	public void testSetMaxViewBounds() {
-		// @todo this should test the actual bounds being set in both cases, verifying that correct bounds are respected
+	public void testSetMaxViewBoundsCompletelyWithinMaxBounds() {
+		// test the bounds are limited correctly if setViewBoundsLimitOption of mapView is COMPLETELY_WITHIN_MAX_BOUNDS
 
+		mapView.setViewBoundsLimitOption(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS);
+		Assert.assertEquals(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS, mapView.getViewBoundsLimitOption());
+		
+		mapView.setSize(200, 100);
+		mapView.setMaxBounds(new Bbox(0, 0, 1000, 400));
+		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
+		mapView.setCenterPosition(new Coordinate(500, 200));
+		
+		CaptureHandler handler = new CaptureHandler();
+		mapView.addMapViewChangedHandler(handler);
+		// pan to non-allowed center position for BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS
+		mapView.setCenterPosition(new Coordinate(1000, 400));
+		// should pan as far as possible
+		handler.expect(new Bbox(800, 300, 200, 100), 1.0, true);
+
+		// translate outside max bounds
+		mapView.translate(100, 100);
+		// no movement
+		handler.expect(new Bbox(800, 300, 200, 100), 1.0, true);
+
+		handler.validate();
+
+		
+	}
+	
+	@Test
+	public void testSetMaxViewBoundsCenterWithinMaxBounds() {
+		// test that the bounds are limited correctly if setViewBoundsLimitOption of mapView is
+		// BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS  
+		Coordinate center;
+		
 		mapView.setViewBoundsLimitOption(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS);
 		Assert.assertEquals(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS, mapView.getViewBoundsLimitOption());
+		
+		mapView.setSize(200, 100);
+		mapView.setMaxBounds(new Bbox(0, 0, 1000, 400));
+		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
+		mapView.setCenterPosition(new Coordinate(500, 200));
+
+		CaptureHandler handler = new CaptureHandler();
+		mapView.addMapViewChangedHandler(handler);
+		// pan to allowed center position for BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS
+		center = new Coordinate(999, 399);
+		Assert.assertTrue(mapView.getMaxBounds().contains(center));
+		mapView.setCenterPosition(center);
+		
+		Assert.assertTrue(mapView.getMaxBounds().contains(center));
+		// should pan to requested center (since possible)
+		handler.expect(new Bbox(899, 349, 200, 100), 1.0, true);
+		
+		// pan to max allowed center position for BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS
+		
+		center = new Coordinate(1000, 400);
+		Assert.assertTrue(mapView.getMaxBounds().contains(center));
+		
+		mapView.setCenterPosition(center);
+		// should pan to requested center (since possible)
+		handler.expect(new Bbox(900, 350, 200, 100), 1.0, true);
+
+		
+		// pan to center position outside of maxBounds
+		center = new Coordinate(1001, 401);
+		Assert.assertFalse(mapView.getMaxBounds().contains(center));
+		
+		mapView.setCenterPosition(center);
+
+
+		// no movement
+		handler.expect(new Bbox(900, 350, 200, 100), 1.0, true);
+		
+		handler.validate();
 	}
 
+
+	
 	/**
 	 * Tests the lower and upper boundaries of the resolution list (GWT-36).
 	 */
@@ -207,6 +278,11 @@ public class MapViewTest {
 		
 	}
 
+	/**
+	 * Capture all MapViewChangedEvent events in a list, and offers functionality
+	 * to compare the captured events to the expected events. 
+	 *
+	 */
 	private class CaptureHandler implements MapViewChangedHandler {
 
 		private List<MapViewChangedEvent> actualEvents = new LinkedList<MapViewChangedEvent>();
