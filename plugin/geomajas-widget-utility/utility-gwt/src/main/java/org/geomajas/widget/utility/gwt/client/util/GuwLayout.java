@@ -66,7 +66,7 @@ public final class GuwLayout {
 		public static int ribbonBarDropDownButtonDescriptionIconSize = 24;
 		
 		/** Wether to show the drop down image on the buttons. */
-		public static boolean showDropDownImage = false;
+		public static boolean showDropDownImage;
 		
 		// CHECKSTYLE VISIBILITY MODIFIER: ON
 	}
