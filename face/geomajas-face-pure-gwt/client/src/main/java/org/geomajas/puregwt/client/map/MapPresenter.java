@@ -23,6 +23,7 @@ import org.geomajas.puregwt.client.map.feature.FeatureService;
 import org.geomajas.puregwt.client.map.render.MapRenderer;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -33,18 +34,26 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface MapPresenter {
+public interface MapPresenter extends IsWidget {
 
 	/**
 	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
 	 * on return. A special {@link org.geomajas.puregwt.client.event.MapInitializationEvent} will be fired once
-	 * initialization is done.<br/>
-	 * TODO complete JAVADOC
+	 * initialization is done.
 	 */
 	void initialize(String applicationId, String id);
 
+	/**
+	 * Get the event bus for this map. All events regarding this map, it's layers and it's features will originate from
+	 * this event bus. In other words, this is where you need to register your handlers.
+	 * 
+	 * @return The event bus for this map.
+	 */
 	EventBus getEventBus();
 
+	/**
+	 * Return the widget that displays the map in the HTML page.
+	 */
 	Widget asWidget();
 
 	/**
