@@ -83,9 +83,18 @@ public class MapNavigationAnimation extends Animation {
 		run(millis);
 	}
 
+	/**
+	 * Extend the animation to a new location and scale. This is executed only if the animation is actually running.
+	 * 
+	 * @param targetScale
+	 *            The new target scale.
+	 * @param targetPosition
+	 *            The new target location.
+	 * @param millis
+	 *            The time in milliseconds starting from now (time is not added).
+	 */
 	public void extend(double targetScale, Coordinate targetPosition, int millis) {
 		if (running) {
-			// cancel();
 			start(mapScalesRenderers, currentScale, targetScale, new Coordinate(currentX, currentY), targetPosition,
 					millis);
 		}

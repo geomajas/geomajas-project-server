@@ -97,27 +97,14 @@ public class MapRendererImpl implements MapRenderer {
 
 				// GWT.log("Check if we can delete " + previousScale + ". (animation complete)");
 				checkPreviousScaleLevel();
+				
+				// In any case, we should bring the new scale level to the front...
 			};
 		};
 
 		previousScale = viewPort.getScale();
 		currentScale = viewPort.getScale();
 		previousTranslation = new Coordinate(0, 0);
-	}
-
-	private void checkPreviousScaleLevel() {
-		// Make previous scale invisible when the animation is finished + scale has been rendered.
-		if (!navigationBusy && previousScale != currentScale && animation.getMapScaleRenderers().size() > 0) {
-			// GWT.log("Check: no animation. Good!");
-			// Ask the first MapScaleRenderer if it's renderer:
-			TiledScaleRenderer renderer = animation.getMapScaleRenderers().get(0).getScale(previousScale);
-			if (renderer != null && renderer.isRendered()) {
-				// GWT.log("Current scale (" + currentScale + ") rendered. Removing scale " + previousScale);
-				for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
-					presenter.setScaleVisibility(previousScale, false);
-				}
-			}
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -146,7 +133,6 @@ public class MapRendererImpl implements MapRenderer {
 	public void onLayerRemoved(LayerRemovedEvent event) {
 		Layer<?> layer = event.getLayer();
 		if (layerRenderers.containsKey(layer)) {
-			// TODO onDestroy method??
 			layerRenderers.remove(layer);
 		}
 	}
@@ -262,6 +248,19 @@ public class MapRendererImpl implements MapRenderer {
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
+
+	private void checkPreviousScaleLevel() {
+		// Make previous scale invisible when the animation is finished + scale has been rendered.
+		if (!navigationBusy && previousScale != currentScale && animation.getMapScaleRenderers().size() > 0) {
+			// Ask the first MapScaleRenderer if it's renderer:
+			TiledScaleRenderer renderer = animation.getMapScaleRenderers().get(0).getScale(previousScale);
+			if (renderer != null && renderer.isRendered()) {
+				for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
+					presenter.setScaleVisibility(previousScale, false);
+				}
+			}
+		}
+	}
 
 	private void navigateTo(Bbox bounds, double scale, int millis) {
 		navigationBusy = true;

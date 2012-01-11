@@ -128,7 +128,6 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	public void setScaleVisibility(double scale, boolean visible) {
 		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
-			// GWT.log("Setting scale visibility: " + scale + ", " + visible);
 			if (visible) {
 				visibleScale = scale;
 				scalePresenter.getHtmlContainer().applyScale(1, 0, 0);
@@ -143,7 +142,6 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	public void applyScaleTranslation(double scale, Coordinate translation) {
 		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
 		if (scalePresenter != null) {
-			// GWT.log("Translate scale: " + scale + ", " + translation.toString());
 			scalePresenter.getHtmlContainer().setLeft((int) Math.round(translation.getX()));
 			scalePresenter.getHtmlContainer().setTop((int) Math.round(translation.getY()));
 		}
@@ -169,10 +167,11 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	private TiledScaleRenderer getOrCreate(double scale) {
 		if (tiledScaleRenderers.containsKey(scale)) {
-			return tiledScaleRenderers.get(scale);
+			TiledScaleRenderer renderer = tiledScaleRenderers.get(scale);
+			htmlContainer.bringToFront(renderer.getHtmlContainer());
+			return renderer;
 		}
 
-		// GWT.log("Creating new scale (default invisible), " + scale);
 		final HtmlContainer container = new HtmlGroup();
 		container.setVisible(false);
 		htmlContainer.insert(container, 0);
@@ -205,14 +204,12 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	private boolean removeScaleLevel(Double scale) {
 		if (scale != visibleScale) {
-			// GWT.log("Remove scale: " + scale);
 			// Remove the presenter:
 			TiledScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
 			if (removedPresenter == null) {
 				return false;
 			}
 			removedPresenter.cancel();
-			// TODO let the presenter have it's own destroy() method??
 			htmlContainer.remove(removedPresenter.getHtmlContainer());
 			tiledScaleRenderers.remove(scale);
 

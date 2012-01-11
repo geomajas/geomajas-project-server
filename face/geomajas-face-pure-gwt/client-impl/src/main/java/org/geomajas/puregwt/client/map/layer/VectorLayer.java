@@ -52,19 +52,23 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	// FeaturesSupported implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setFilter(String filter) {
 		this.filter = filter;
 		viewPort.applyBounds(viewPort.getBounds());
 	}
 
+	/** {@inheritDoc} */
 	public String getFilter() {
 		return filter;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isFeatureSelected(String featureId) {
 		return selection.containsKey(featureId);
 	}
 
+	/** {@inheritDoc} */
 	public boolean selectFeature(Feature feature) {
 		if (!selection.containsValue(feature) && feature.getLayer() == this) {
 			selection.put(feature.getId(), feature);
@@ -73,6 +77,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public boolean deselectFeature(Feature feature) {
 		if (selection.containsKey(feature.getId())) {
 			selection.remove(feature.getId());
@@ -82,6 +87,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public void clearSelectedFeatures() {
 		for (Feature feature : selection.values()) {
 			eventBus.fireEvent(new FeatureDeselectedEvent(feature));
@@ -89,6 +95,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		selection.clear();
 	}
 
+	/** {@inheritDoc} */
 	public Collection<String> getSelectedFeatureIds() {
 		return selection.keySet();
 	}
@@ -97,6 +104,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	// LabelsSupported implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public void setLabeled(boolean labeled) {
 		this.labeled = labeled;
 		if (labeled) {
@@ -106,6 +114,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isLabeled() {
 		return labeled;
 	}

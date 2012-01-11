@@ -72,22 +72,27 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	// Layer implementation:
 	// ------------------------------------------------------------------------
 
+	/** {@inheritDoc} */
 	public String getId() {
 		return layerInfo.getId();
 	}
 
+	/** {@inheritDoc} */
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
 	}
 
+	/** {@inheritDoc} */
 	public String getTitle() {
 		return layerInfo.getLabel();
 	}
 
+	/** {@inheritDoc} */
 	public T getLayerInfo() {
 		return layerInfo;
 	}
 
+	/** {@inheritDoc} */
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 		if (selected) {
@@ -97,10 +102,12 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isSelected() {
 		return selected;
 	}
 
+	/** {@inheritDoc} */
 	public void setMarkedAsVisible(boolean markedAsVisible) {
 		this.markedAsVisible = markedAsVisible;
 		eventBus.fireEvent(new LayerVisibilityMarkedEvent(this));
@@ -113,10 +120,12 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		}
 	}
 
+	/** {@inheritDoc} */
 	public boolean isMarkedAsVisible() {
 		return markedAsVisible;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isShowing() {
 		if (markedAsVisible) {
 			if (viewPort.getScale() >= layerInfo.getMinimumScale().getPixelPerUnit()
@@ -126,6 +135,10 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		}
 		return false;
 	}
+
+	// ------------------------------------------------------------------------
+	// Private classes:
+	// ------------------------------------------------------------------------
 
 	/**
 	 * Every time the scale on the map changes, this handler checks to see if the layer should become visible or not.
