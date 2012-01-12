@@ -137,64 +137,114 @@ public class MapViewTest {
 		// should pan as far as possible
 		handler.expect(new Bbox(800, 300, 200, 100), 1.0, true);
 
-		// translate outside max bounds
+		// translate viewBounds outside max bounds
 		mapView.translate(100, 100);
 		// no movement
 		handler.expect(new Bbox(800, 300, 200, 100), 1.0, true);
-
+		
 		handler.validate();
-
 		
 	}
 	
+	
+	/**
+	 * Test that the bounds are limited correctly if setViewBoundsLimitOption of mapView is
+		 BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS  
+	 */
 	@Test
 	public void testSetMaxViewBoundsCenterWithinMaxBounds() {
-		// test that the bounds are limited correctly if setViewBoundsLimitOption of mapView is
-		// BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS  
-		Coordinate center;
+		// 
+		final int halfWidthOfView = 100;
+		final int halfHeightOfView = 50;
+
+		// Avoid having to round to nearest pixel position
+		final int widthOfView 	= halfWidthOfView * 2;
+		final int heightOfView 	= halfHeightOfView * 2;  // avoid having to round to neariest pixel position
+		
+		final double xMinOfMaxBounds = 0.0;
+		final double yMinOfMaxBounds = 0.0;
+		
+		final double halfWidthOfMaxBounds = 500.0;
+		final double halfHeightOfMaxBounds = 200.0;
+		
+		// Avoid having to round to nearest pixel position
+		final double widthOfMaxBounds   = halfWidthOfMaxBounds * 2.0;
+		final double heightOfMaxBounds 	= halfHeightOfMaxBounds * 2.0;
+		
+		final double xMaxOfMaxBounds = xMinOfMaxBounds + widthOfMaxBounds;
+		final double yMaxOfMaxBounds = yMinOfMaxBounds + heightOfMaxBounds;
+		
+		Coordinate center = null;
+		Bbox expectedBBox = null;
+		CaptureHandler captureHandler = new CaptureHandler();
 		
 		mapView.setViewBoundsLimitOption(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS);
 		Assert.assertEquals(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS, mapView.getViewBoundsLimitOption());
 		
-		mapView.setSize(200, 100);
-		mapView.setMaxBounds(new Bbox(0, 0, 1000, 400));
+		mapView.setSize(widthOfView, heightOfView);
+		mapView.setMaxBounds(new Bbox(xMinOfMaxBounds, yMinOfMaxBounds, widthOfMaxBounds, heightOfMaxBounds));
+		// Scale is set to 1.0 for ease of testing 
 		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
-		mapView.setCenterPosition(new Coordinate(500, 200));
-
-		CaptureHandler handler = new CaptureHandler();
-		mapView.addMapViewChangedHandler(handler);
-		// pan to allowed center position for BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS
-		center = new Coordinate(999, 399);
-		Assert.assertTrue(mapView.getMaxBounds().contains(center));
-		mapView.setCenterPosition(center);
 		
-		Assert.assertTrue(mapView.getMaxBounds().contains(center));
-		// should pan to requested center (since possible)
-		handler.expect(new Bbox(899, 349, 200, 100), 1.0, true);
+		mapView.addMapViewChangedHandler(captureHandler);
 		
-		// pan to max allowed center position for BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS
+		center = new Coordinate(xMinOfMaxBounds + widthOfMaxBounds/2.0, 
+								yMinOfMaxBounds + yMaxOfMaxBounds/2.0);
 		
-		center = new Coordinate(1000, 400);
-		Assert.assertTrue(mapView.getMaxBounds().contains(center));
-		
-		mapView.setCenterPosition(center);
-		// should pan to requested center (since possible)
-		handler.expect(new Bbox(900, 350, 200, 100), 1.0, true);
+		expectedBBox = new Bbox(xMinOfMaxBounds + widthOfMaxBounds/2.0 - halfWidthOfView, 
+				yMinOfMaxBounds + heightOfMaxBounds/2.0 - halfHeightOfView, widthOfView, heightOfView);
 
 		
-		// pan to center position outside of maxBounds
-		center = new Coordinate(1001, 401);
-		Assert.assertFalse(mapView.getMaxBounds().contains(center));
+		testChangeCenterPoint(captureHandler, center, expectedBBox, true, true);
 		
-		mapView.setCenterPosition(center);
-
-
-		// no movement
-		handler.expect(new Bbox(900, 350, 200, 100), 1.0, true);
+		// Pan to allowed center position (x = max_x - 1 and y = max_y -1)
+		//   for BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS
+		center = new Coordinate(xMaxOfMaxBounds-1.0, yMaxOfMaxBounds-1.0);
+		expectedBBox = new Bbox(xMaxOfMaxBounds- 1.0- halfWidthOfView , 
+						yMaxOfMaxBounds -1.0 - halfHeightOfView, widthOfView, heightOfView);
 		
-		handler.validate();
+		testChangeCenterPoint(captureHandler, center, expectedBBox, true, true);
+		
+		// Pan to center position with xMax and yMax for BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS
+		center = new Coordinate(xMaxOfMaxBounds, yMaxOfMaxBounds);
+		expectedBBox =  new Bbox(xMaxOfMaxBounds - halfWidthOfView, 
+				yMaxOfMaxBounds - halfHeightOfView, widthOfView, heightOfView);
+		testChangeCenterPoint(captureHandler, center, expectedBBox, true, true);
+		
+		
+		// Pan to center position outside of maxBounds (previous center + 1.0)
+		center = new Coordinate(xMaxOfMaxBounds + 1.0, yMaxOfMaxBounds + 1.0);
+		// no movement because of maxBounds limitations, so expectedBBox remains the same
+		testChangeCenterPoint(captureHandler, center, expectedBBox, false, true);
+
+		// Pan to center position that much outside of maxBounds that 
+		// new Bbox without max bounds limitations would be located completely out of maxBounds
+		center = new Coordinate(xMaxOfMaxBounds+halfWidthOfView + 1.0, 
+					yMaxOfMaxBounds + halfHeightOfView + 1.0);
+		// No movement (so no change of bBox) because of maxBounds limitations
+		testChangeCenterPoint(captureHandler, center, expectedBBox, false, false);
+		
+		captureHandler.validate();
 	}
 
+		
+
+	/**
+	 * @param handler
+	 * @param center	new center position
+	 * @param expectedBBox
+	 * @param withinMaxBounds
+	 * @param withinBBox  if true, the new center is located within the maxBounds of the mapView
+	 */
+	private void testChangeCenterPoint(CaptureHandler captureHandler, Coordinate center, Bbox expectedBBox, 
+				boolean withinMaxBounds, boolean withinBBox) {
+		Assert.assertTrue(mapView.getMaxBounds().contains(center) == withinMaxBounds);
+		Assert.assertTrue(expectedBBox.contains(center) == withinBBox);
+		
+		mapView.setCenterPosition(center);
+		// should pan to requested center (since possible)
+		captureHandler.expect(expectedBBox, 1.0, true);
+	}
 
 	
 	/**
