@@ -93,7 +93,7 @@
 		</repository>
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
-		<!--
+		<!-- -->
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -102,7 +102,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		-->
+		<!-- -->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -194,13 +194,8 @@
 			</dependency>
 
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-			</dependency>
-			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
 				<version>1.9.0</version>
 			</dependency>
 
