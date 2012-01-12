@@ -60,7 +60,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://apps.geomajas.org/jenkins/</url>
+		<url>http://ci.geomajas.org/jenkins/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
