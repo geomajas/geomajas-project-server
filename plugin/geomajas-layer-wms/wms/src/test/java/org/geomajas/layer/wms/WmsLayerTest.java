@@ -20,6 +20,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.TestRecorder;
 import org.geotools.geometry.jts.JTS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vividsolutions.jts.geom.Envelope;
+
+import static org.junit.Assert.assertThat;
 
 /**
  * Test for {@link WmsLayer}.
@@ -62,6 +66,10 @@ public class WmsLayerTest {
 	@Autowired
 	@Qualifier("defaultBlue")
 	private WmsLayer defaultWms;
+
+	@Autowired
+	@Qualifier("cachedBlue")
+	private WmsLayer cachedWms;
 
 	@Autowired
 	private GeoService geoService;
@@ -380,6 +388,16 @@ public class WmsLayerTest {
 		} catch (GeomajasException ge) {
 			Assert.assertEquals(ExceptionCode.PARAMETER_MISSING, ge.getExceptionCode());
 		}
+	}
+	
+	@Test
+	@DirtiesContext
+	public void testNoCache() throws Exception {
+		cachedWms.clearCacheManagerService(); // provided scope makes it available at compile/test time
+		cachedWms.setUseCache(false);
+		Assert.assertFalse(cachedWms.isUseCache());
+		cachedWms.setUseCache(true);
+		Assert.assertFalse(cachedWms.isUseCache()); // enabling should fail without cache manager service
 	}
 
 	private ApplicationContext loadApplicationContext(String location) throws Exception {

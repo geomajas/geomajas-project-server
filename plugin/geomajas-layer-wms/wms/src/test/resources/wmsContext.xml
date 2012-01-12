@@ -67,6 +67,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.
 		<property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
 	</bean>
 
+	<bean name="cachedBlue" class="org.geomajas.layer.wms.WmsLayer">
+		<property name="layerInfo" ref="bluemarbleInfo"/>
+		<!-- When configuring your own applications, please do not use this WMS server -->
+		<property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
+		<property name="version" value="1.3.0"/>
+		<property name="format" value="image/jpeg"/>
+		<property name="useCache" value="true"/>
+	</bean>
+
 
 	<!-- @extract-start WmsLayerSample, WMS layer configuration -->
 	<bean name="wmsBluemarbleInfo" class="org.geomajas.configuration.RasterLayerInfo">

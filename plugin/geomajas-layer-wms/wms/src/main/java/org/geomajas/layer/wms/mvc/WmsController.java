@@ -24,7 +24,9 @@ import org.geomajas.layer.wms.WmsHttpService;
 import org.geomajas.layer.wms.WmsLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
+import org.geomajas.service.TestRecorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,13 @@ public class WmsController {
 
 	private static final int ERROR_MESSAGE_X = 10;
 
+	/** Group used for {@link TestRecorder} messages. */
+	static final String TEST_RECORDER_GROUP = "WMS";
+	/** {@link TestRecorder} message when putting image in cache. */
+	static final String TEST_RECORDER_PUT_IN_CACHE = "Get original and put in cache.";
+	/** {@link TestRecorder} message when getting image from cache. */
+	static final String TEST_RECORDER_GET_FROM_CACHE = "Get from cache.";
+
 	private final Logger log = LoggerFactory.getLogger(WmsController.class);
 
 	@Autowired
@@ -65,8 +74,14 @@ public class WmsController {
 	@Autowired
 	private WmsHttpService httpService;
 	
-	@Autowired
+	@Autowired(required = false)
 	private CacheManagerService cacheManagerService;
+
+	@Autowired
+	private SecurityContext securityContext;
+
+	@Autowired
+	private TestRecorder testRecorder;
 
 	// method provided for testing
 	protected void setHttpService(WmsHttpService httpService) {
@@ -75,7 +90,6 @@ public class WmsController {
 
 	@RequestMapping(value = "/wms/**", method = RequestMethod.GET)
 	public void getWms(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
 		// Search for the WMS layer:
 		String layerId = parseLayerId(request);
 		WmsLayer layer = getLayer(layerId);
@@ -83,19 +97,25 @@ public class WmsController {
 			throw new LayerException(ExceptionCode.LAYER_NOT_FOUND, layerId);
 		}
 		RasterLayerInfo layerInfo = layer.getLayerInfo();
+		if (!securityContext.isLayerVisible(layerId)) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		String url = layer.getBaseWmsUrl() + "?" + request.getQueryString();
 		InputStream stream = null;
-		
+
 		try {
 			response.setContentType(layer.getFormat());
 			ServletOutputStream out = response.getOutputStream();
 			
-			if (layer.isUseCache()) {
-				Object o = cacheManagerService.get(layer, CacheCategory.RASTER, url);
-				if (o != null) {
-					out.write((byte[]) o);
+			if (layer.isUseCache() && null != cacheManagerService) {
+				Object cachedObject = cacheManagerService.get(layer, CacheCategory.RASTER, url);
+				if (null != cachedObject) {
+					testRecorder.record(TEST_RECORDER_GROUP, TEST_RECORDER_GET_FROM_CACHE);
+					out.write((byte[]) cachedObject);
 				} else {
+					testRecorder.record(TEST_RECORDER_GROUP, TEST_RECORDER_PUT_IN_CACHE);
 					stream = httpService.getStream(url, layer.getAuthentication());
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 					int b;
@@ -103,10 +123,9 @@ public class WmsController {
 						os.write(b);
 						out.write(b);
 					}
-					cacheManagerService.put(layer, CacheCategory.RASTER, url, os.toByteArray(), 
+					cacheManagerService.put(layer, CacheCategory.RASTER, url, os.toByteArray(),
 							getLayerEnvelope(layer));
-				}
-				
+				}				
 			} else {
 				stream = httpService.getStream(url, layer.getAuthentication());
 				int b;

@@ -37,6 +37,7 @@ import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -125,6 +126,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	@Autowired(required = false)
 	private DispatcherUrlService dispatcherUrlService;
+
+	@Autowired(required = false)
+	private CacheManagerService cacheManagerService;
 
 	/**
 	 * Return the layers identifier.
@@ -669,7 +673,11 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 */
 	@Api
 	public void setUseCache(boolean useCache) {
-		this.useCache = useCache;
+		if (null == cacheManagerService && useCache) {
+			log.warn("The caching plugin needs to be available to cache WMS requests. Not setting useCache.");
+		} else {
+			this.useCache = useCache;
+		}
 	}
 
 	/**
@@ -828,4 +836,10 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 		}
 	}
 
+	/**
+	 * Clear cache manager service. Provided only for testing.
+	 */
+	void clearCacheManagerService() {
+		this.cacheManagerService = null;
+	}
 }
