@@ -12,6 +12,8 @@ package org.geomajas.layer.wms;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -21,13 +23,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
-import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -385,20 +387,24 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	private String formatGetFeatureInfoUrl(int width, int height, Bbox box, int x, int y) throws GeomajasException {
 		// Always use direct url
-		StringBuilder url = formatBaseUrl(baseWmsUrl, width, height, box);
-		String layers = getId();
-		if (layerInfo.getDataSourceName() != null) {
-			layers = layerInfo.getDataSourceName();
+		try {
+			StringBuilder url = formatBaseUrl(baseWmsUrl, width, height, box);
+			String layers = getId();
+			if (layerInfo.getDataSourceName() != null) {
+				layers = layerInfo.getDataSourceName();
+			}
+			url.append("&QUERY_LAYERS=");
+			url.append(URLEncoder.encode(layers, "UTF8"));
+			url.append("&request=GetFeatureInfo");
+			url.append("&X=");
+			url.append(Integer.toString(x));
+			url.append("&Y=");
+			url.append(Integer.toString(y));
+			url.append("&INFO_FORMAT=application/vnd.ogc.gml");
+			return url.toString();
+		} catch (UnsupportedEncodingException uee) {
+			throw new IllegalStateException("Cannot find UTF8 encoding?", uee);
 		}
-		url.append("&QUERY_LAYERS=");
-		url.append(layers);
-		url.append("&request=GetFeatureInfo");
-		url.append("&X=");
-		url.append(Integer.toString(x));
-		url.append("&Y=");
-		url.append(Integer.toString(y));
-		url.append("&INFO_FORMAT=application/vnd.ogc.gml");
-		return url.toString();
 	}
 
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
@@ -423,61 +429,65 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	 *             missing parameter
 	 */
 	private StringBuilder formatBaseUrl(String targetUrl, int width, int height, Bbox box) throws GeomajasException {
-		StringBuilder url = new StringBuilder(targetUrl);
-		int pos = url.lastIndexOf("?");
-		if (pos > 0) {
-			url.append("&SERVICE=WMS");
-		} else {
-			url.append("?SERVICE=WMS");
-		}
-		String layers = getId();
-		if (layerInfo.getDataSourceName() != null) {
-			layers = layerInfo.getDataSourceName();
-		}
-		url.append("&layers=");
-		url.append(layers);
-		url.append("&WIDTH=");
-		url.append(Integer.toString(width));
-		url.append("&HEIGHT=");
-		url.append(Integer.toString(height));
-		DecimalFormat decimalFormat = new DecimalFormat(); // create new as this is not thread safe
-		decimalFormat.setDecimalSeparatorAlwaysShown(false);
-		decimalFormat.setGroupingUsed(false);
-		decimalFormat.setMinimumFractionDigits(0);
-		decimalFormat.setMaximumFractionDigits(100);
-		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-		symbols.setDecimalSeparator('.');
-		decimalFormat.setDecimalFormatSymbols(symbols);
-
-		url.append("&bbox=");
-		url.append(decimalFormat.format(box.getX()));
-		url.append(",");
-		url.append(decimalFormat.format(box.getY()));
-		url.append(",");
-		url.append(decimalFormat.format(box.getMaxX()));
-		url.append(",");
-		url.append(decimalFormat.format(box.getMaxY()));
-		url.append("&format=");
-		url.append(format);
-		url.append("&version=");
-		url.append(version);
-		if ("1.3.0".equals(version)) {
-			url.append("&crs=");
-		} else {
-			url.append("&srs=");
-		}
-		url.append(layerInfo.getCrs());
-		url.append("&styles=");
-		url.append(styles);
-		if (null != parameters) {
-			for (Parameter p : parameters) {
-				url.append("&");
-				url.append(p.getName());
-				url.append("=");
-				url.append(p.getValue());
+		try {
+			StringBuilder url = new StringBuilder(targetUrl);
+			int pos = url.lastIndexOf("?");
+			if (pos > 0) {
+				url.append("&SERVICE=WMS");
+			} else {
+				url.append("?SERVICE=WMS");
 			}
+			String layers = getId();
+			if (layerInfo.getDataSourceName() != null) {
+				layers = layerInfo.getDataSourceName();
+			}
+			url.append("&layers=");
+			url.append(URLEncoder.encode(layers, "UTF8"));
+			url.append("&WIDTH=");
+			url.append(Integer.toString(width));
+			url.append("&HEIGHT=");
+			url.append(Integer.toString(height));
+			DecimalFormat decimalFormat = new DecimalFormat(); // create new as this is not thread safe
+			decimalFormat.setDecimalSeparatorAlwaysShown(false);
+			decimalFormat.setGroupingUsed(false);
+			decimalFormat.setMinimumFractionDigits(0);
+			decimalFormat.setMaximumFractionDigits(100);
+			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+			symbols.setDecimalSeparator('.');
+			decimalFormat.setDecimalFormatSymbols(symbols);
+
+			url.append("&bbox=");
+			url.append(decimalFormat.format(box.getX()));
+			url.append(",");
+			url.append(decimalFormat.format(box.getY()));
+			url.append(",");
+			url.append(decimalFormat.format(box.getMaxX()));
+			url.append(",");
+			url.append(decimalFormat.format(box.getMaxY()));
+			url.append("&format=");
+			url.append(format);
+			url.append("&version=");
+			url.append(version);
+			if ("1.3.0".equals(version)) {
+				url.append("&crs=");
+			} else {
+				url.append("&srs=");
+			}
+			url.append(URLEncoder.encode(layerInfo.getCrs(), "UTF8"));
+			url.append("&styles=");
+			url.append(styles);
+			if (null != parameters) {
+				for (Parameter p : parameters) {
+					url.append("&");
+					url.append(URLEncoder.encode(p.getName(), "UTF8"));
+					url.append("=");
+					url.append(URLEncoder.encode(p.getValue(), "UTF8"));
+				}
+			}
+			return url;
+		} catch (UnsupportedEncodingException uee) {
+			throw new IllegalStateException("Cannot find UTF8 encoding?", uee);
 		}
-		return url;
 	}
 
 	private Resolution getResolutionForScale(double scale) {

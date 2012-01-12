@@ -76,6 +76,19 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.
 		<property name="useCache" value="true"/>
 	</bean>
 
+	<bean name="escapeBlue" class="org.geomajas.layer.wms.WmsLayer">
+		<property name="layerInfo" ref="escapeBluemarbleInfo"/>
+		<!-- When configuring your own applications, please do not use this WMS server -->
+		<property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="what?" />
+					<property name="value" value="value+more!" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<!-- @extract-start WmsLayerSample, WMS layer configuration -->
 	<bean name="wmsBluemarbleInfo" class="org.geomajas.configuration.RasterLayerInfo">
@@ -151,6 +164,21 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.
 			</bean>
 		</property>
 		<property name="dataSourceName" value="geosparc:belt" />
+		<property name="tileWidth" value="512"/>
+		<property name="tileHeight" value="512"/>
+	</bean>
+
+	<bean name="escapeBluemarbleInfo" class="org.geomajas.configuration.RasterLayerInfo">
+		<property name="crs" value="EPSG:4326"/>
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180"/>
+				<property name="y" value="-90"/>
+				<property name="width" value="360"/>
+				<property name="height" value="180"/>
+			</bean>
+		</property>
+		<property name="dataSourceName" value="geomajas:bluemarble" />
 		<property name="tileWidth" value="512"/>
 		<property name="tileHeight" value="512"/>
 	</bean>
