@@ -88,7 +88,7 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
-		<!-- @todo needs to be removed for release, needed for checkstyle -->
+		<!-- @todo needs to be commented for release, needed for snapshots -->
 		<pluginRepository>
 			<id>Geomajas snapshots</id>
 			<name>Geomajas snapshot repository</name>
