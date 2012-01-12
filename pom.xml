@@ -85,8 +85,8 @@
 		<url>http://jira.geomajas.org</url>
 	</issueManagement>
 	<ciManagement>
-		<system>hudson</system>
-		<url>http://apps.geomajas.org/hudson/</url>
+		<system>Jenkins</system>
+		<url>http://ci.geomajas.org/jenkins/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>

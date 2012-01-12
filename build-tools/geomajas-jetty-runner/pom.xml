@@ -30,19 +30,6 @@
 		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-jetty-runner</url>
 	</scm>
 
-	<organization>
-		<name>Geosparc</name>
-		<url>http://www.geosparc.com</url>
-	</organization>
-	<mailingLists>
-		<mailingList>
-			<name>DEV</name>
-			<post>mailto:majas-dev@geomajas.org</post>
-			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
-			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
-			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
-		</mailingList>
-	</mailingLists>
 	<licenses>
 		<license>
 			<name>GNU Affero General Public License, Version 3</name>
@@ -50,10 +37,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.geomajas.org</url>
-	</issueManagement>
 
 	<developers>
 		<developer>
@@ -85,7 +68,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty.aggregate</groupId>
@@ -93,41 +76,6 @@
 			<version>7.2.0.v20101020</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<encoding>utf8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<includePom>true</includePom>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -59,7 +59,7 @@
 		<url>http://jira.geomajas.org</url>
 	</issueManagement>
 	<ciManagement>
-		<system>hudson</system>
+		<system>Jenkins</system>
 		<url>http://ci.geomajas.org/jenkins/</url>
 		<notifiers>
 			<notifier>
