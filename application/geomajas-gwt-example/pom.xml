@@ -241,7 +241,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -291,7 +290,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -304,40 +302,6 @@
 				</executions>
 			</plugin>
 			<!-- @extract-end -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.5-DF</version>
-				<configuration>
-					<configLocation>config/geomajas-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.geomajas</groupId>
-						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.6-SNAPSHOT</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<encoding>utf8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
@@ -557,7 +521,6 @@
 
 	<properties>
 		<gwt-version>2.4.0</gwt-version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 

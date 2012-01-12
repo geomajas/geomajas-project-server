@@ -282,13 +282,11 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.10</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.easytesting</groupId>
 				<artifactId>fest-assert</artifactId>
-				<version>1.4</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -339,27 +337,22 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>log4j-over-slf4j</artifactId>
-				<version>${slf4j-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>0.9.21</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
-				<version>99.0-does-not-exist</version>
 			</dependency>
 
 			<dependency>
@@ -381,7 +374,6 @@
 		<geotools-version>2.7.4-GBE-276</geotools-version>
 		<geotools-epsg-wkt-version>2.6.3</geotools-epsg-wkt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
-		<slf4j-version>1.6.0</slf4j-version>
 		<jibx-version>1.2.3</jibx-version>
 	</properties>
 
