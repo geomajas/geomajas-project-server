@@ -56,7 +56,7 @@ public interface GeomajasConstant {
 	/**
 	 * Dummy interface implementation to keep GWT happy.
 	 */
-	public static class GeomajasConstantImpl implements GeomajasConstant {
+	class GeomajasConstantImpl implements GeomajasConstant {
 
 		/**
 		 * Dummy method to keep checkstyle from complaining.
