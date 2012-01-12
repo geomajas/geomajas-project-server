@@ -13,6 +13,8 @@ package org.geomajas.gwt.client.gfx.style;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * Style object for shapes and geometries on the map.
@@ -20,7 +22,9 @@ import org.geomajas.configuration.FeatureStyleInfo;
  * 
  * @author Pieter De Graef
  */
-public class ShapeStyle implements Style {
+public class ShapeStyle implements Style, Serializable {
+
+	private static final long serialVersionUID = 150L;
 
 	/**
 	 * The color to be used as background color. Must be an HTML color code (red = #FF0000).
@@ -60,6 +64,12 @@ public class ShapeStyle implements Style {
 
 	/**
 	 * Initialize this style object with all it's fields.
+	 *
+	 * @param fillColor fill color
+	 * @param fillOpacity fill opacity
+	 * @param strokeColor stroke color
+	 * @param strokeOpacity stroke opacity
+	 * @param strokeWidth stroke width
 	 */
 	public ShapeStyle(String fillColor, float fillOpacity, String strokeColor, float strokeOpacity, int strokeWidth) {
 		this.fillColor = fillColor;
@@ -73,7 +83,7 @@ public class ShapeStyle implements Style {
 	 * Initialize this style object with the values of another style object.
 	 * 
 	 * @param other
-	 *            The other style object from who to copy the field values.
+	 *            The other style object from which to copy the field values.
 	 */
 	public ShapeStyle(ShapeStyle other) {
 		this.fillColor = other.fillColor;
@@ -123,7 +133,7 @@ public class ShapeStyle implements Style {
 	/**
 	 * Return a clone of this style object.
 	 */
-	public Style clone() {
+	public Style clone() { // NOSONAR super.clone() not supported by GWT
 		return new ShapeStyle(this);
 	}
 

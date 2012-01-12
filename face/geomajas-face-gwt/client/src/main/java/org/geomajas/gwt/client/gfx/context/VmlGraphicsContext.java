@@ -184,6 +184,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 	 *            group object
 	 * @param tagName
 	 *            the tag name
+	 * @return HTML element which was drawn
 	 */
 	public Element drawGroup(Object parent, Object object, String tagName) {
 		if (isAttached()) {
@@ -469,7 +470,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id
+	 * @param id group id
 	 * @return the group object
 	 */
 	public Object getGroupById(String id) {
@@ -503,7 +504,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id
+	 * @param id element id
 	 * @return the name of the element
 	 */
 	public String getNameById(String id) {
