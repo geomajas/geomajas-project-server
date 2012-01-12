@@ -112,7 +112,8 @@ public interface Geometry extends Serializable {
 	int getGeometryType();
 
 	/**
-	 * Return the layer type of the geometry.
+	 * Return the layer/geometry type of the geometry. This is the actual type of the geometry itself expressed
+	 * as a {@link LayerType} object.
 	 *
 	 * @return the layer type (vector).
 	 */

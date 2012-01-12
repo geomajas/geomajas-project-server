@@ -56,6 +56,16 @@ public enum LayerType implements Serializable {
 	}
 
 	/**
+	 * Get numerical code for the layer/geometry type.
+	 *
+	 * @return numerical code for the layer/geometry type.
+	 * @since 1.10.0
+	 */
+	public int getCode() {
+		return code;
+	}
+
+	/**
 	 * Convert to string.
 	 *
 	 * @return string representation of layer type
