@@ -126,14 +126,6 @@
 				<version>2.3.0</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.easytesting</groupId>
-				<artifactId>fest-assert</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
