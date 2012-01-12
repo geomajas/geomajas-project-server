@@ -39,6 +39,7 @@ public class GeomajasException extends Exception {
 	 * Create new GeomajasException.
 	 */
 	public GeomajasException() {
+		super();
 	}
 
 	/**

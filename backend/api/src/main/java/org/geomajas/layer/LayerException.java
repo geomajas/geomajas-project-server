@@ -29,6 +29,7 @@ public class LayerException extends GeomajasException {
 	 * Create LayerException.
 	 */
 	public LayerException() {
+		super();
 	}
 
 	/**

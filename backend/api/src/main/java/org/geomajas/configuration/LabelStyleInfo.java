@@ -190,8 +190,8 @@ public class LabelStyleInfo implements Serializable {
 	}
 	
 	@PostConstruct
-	private void postConstruct() {
-		if (labelValueExpression == null && labelAttributeName == null) {
+	protected void postConstruct() {
+		if (null == labelValueExpression  && null == labelAttributeName) {
 			labelAttributeName = ATTRIBUTE_NAME_ID;
 		}
 	}

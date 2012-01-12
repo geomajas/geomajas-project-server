@@ -39,6 +39,7 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 * Create attribute without value (needed for GWT).
 	 */
 	public ManyToOneAttribute() {
+		super();
 	}
 
 	/**

@@ -27,7 +27,7 @@ public abstract class AbstractReadOnlyAttributeInfo extends AttributeInfo {
 
 	/** No-arguments constructor needed for GWT. */
 	public AbstractReadOnlyAttributeInfo() {
-		// NOSONAR do nothing
+		super();
 	}
 
 }

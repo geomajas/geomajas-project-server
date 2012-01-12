@@ -31,7 +31,7 @@ public abstract class AbstractEditableAttributeInfo extends AbstractReadOnlyAttr
 
 	/** No-arguments constructor needed for GWT. */
 	public AbstractEditableAttributeInfo() {
-		// NOSONAR do nothing
+		super();
 	}
 
 	/**

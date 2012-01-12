@@ -45,6 +45,7 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	 * Create raster layer.
 	 */
 	public RasterLayerInfo() {
+		super();
 		setLayerType(LayerType.RASTER);
 	}
 

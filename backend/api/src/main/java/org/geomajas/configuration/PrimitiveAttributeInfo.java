@@ -39,6 +39,7 @@ public class PrimitiveAttributeInfo extends AbstractEditableAttributeInfo implem
 	 * @param type the primitive type
 	 */
 	public PrimitiveAttributeInfo(String name, String label, PrimitiveType type) {
+		super();
 		setName(name);
 		setLabel(label);
 		this.type = type;

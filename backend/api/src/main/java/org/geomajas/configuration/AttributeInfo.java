@@ -65,6 +65,7 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * @param label attribute label
 	 */
 	public AttributeInfo(boolean editable, boolean hidden, boolean identifying, String name, String label) {
+		super();
 		setEditable(editable);
 		setHidden(hidden);
 		setIdentifying(identifying);

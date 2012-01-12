@@ -41,6 +41,7 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 	 * Create attribute without value (needed for GWT).
 	 */
 	public OneToManyAttribute() {
+		super();
 	}
 
 	/**
