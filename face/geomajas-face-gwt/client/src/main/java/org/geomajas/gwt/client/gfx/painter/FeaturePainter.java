@@ -45,13 +45,8 @@ public class FeaturePainter implements Painter {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
+	/** No-arguments constructor for GWT. */
 	public FeaturePainter() {
-	}
-
-	public FeaturePainter(ShapeStyle pointSelectStyle, ShapeStyle lineSelectStyle, ShapeStyle polygonSelectStyle) {
-		this.pointSelectStyle = pointSelectStyle;
-		this.lineSelectStyle = lineSelectStyle;
-		this.polygonSelectStyle = polygonSelectStyle;
 	}
 
 	// -------------------------------------------------------------------------
@@ -173,23 +168,43 @@ public class FeaturePainter implements Painter {
 	// Private methods:
 
 	private ShapeStyle createStyleForFeature(Feature feature) {
-		FeatureStyleInfo styleInfo = null;
-		if (feature != null && feature.getStyleId() != null) {
-			for (FeatureStyleInfo style : feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
-				if (feature.getStyleId().equals(style.getStyleId())) {
-					styleInfo = style;
-					break;
+		ShapeStyle style = null;
+		if (null != feature) {
+			FeatureStyleInfo styleInfo = null;
+			if (feature.getStyleId() != null) {
+				String check = feature.getStyleId();
+				if (null != check) {
+					for (FeatureStyleInfo fsi :
+							feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+						if (check.equals(fsi.getStyleId())) {
+							styleInfo = fsi;
+							break;
+						}
+					}
 				}
 			}
-		}
-		ShapeStyle style = new ShapeStyle(styleInfo);
-
-		if (feature.getGeometry() instanceof LineString || feature.getGeometry() instanceof MultiLineString) {
-			style.merge(lineSelectStyle);
-		} else if (feature.getGeometry() instanceof Polygon || feature.getGeometry() instanceof MultiPolygon) {
-			style.merge(polygonSelectStyle);
-		} else if (feature.getGeometry() instanceof Point || feature.getGeometry() instanceof MultiPoint) {
-			style.merge(pointSelectStyle);
+			style = new ShapeStyle(styleInfo);
+	
+			Geometry geometry = feature.getGeometry();
+			if (null != geometry) {
+				switch (geometry.getLayerType()) {
+					case LINESTRING:
+					case MULTILINESTRING:
+						style.merge(lineSelectStyle);
+						break;
+					case POLYGON:
+					case MULTIPOLYGON:
+						style.merge(polygonSelectStyle);
+						break;
+					case POINT:
+					case MULTIPOINT:
+						style.merge(pointSelectStyle);
+						break;
+					default:
+						throw new IllegalStateException("Cannot draw feature with Geometry type " +
+								geometry.getLayerType());
+				}
+			}
 		}
 		return style;
 	}

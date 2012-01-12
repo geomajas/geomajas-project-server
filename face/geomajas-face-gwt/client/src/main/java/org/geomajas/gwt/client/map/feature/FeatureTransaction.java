@@ -20,7 +20,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * ???
+ * Feature transaction representation.
  *
  * @author Pieter De Graef
  */
@@ -33,8 +33,6 @@ public class FeatureTransaction implements Paintable {
 	private Feature[] newFeatures;
 
 	private VectorLayer layer;
-
-	private boolean geometryChanged;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -90,8 +88,8 @@ public class FeatureTransaction implements Paintable {
 	public void execute(FeatureOperation op) {
 		if (newFeatures != null && newFeatures.length > 0) {
 			operationQueue.add(op);
-			for (int i = 0; i < newFeatures.length; i++) {
-				op.execute(newFeatures[i]);
+			for (Feature newFeature : newFeatures) {
+				op.execute(newFeature);
 			}
 		}
 	}
@@ -99,8 +97,8 @@ public class FeatureTransaction implements Paintable {
 	public void undoLastOperation() {
 		if (operationQueue.size() > 0 && newFeatures != null && newFeatures.length > 0) {
 			FeatureOperation op = operationQueue.pop();
-			for (int i = 0; i < newFeatures.length; i++) {
-				op.undo(newFeatures[i]);
+			for (Feature newFeature : newFeatures) {
+				op.undo(newFeature);
 			}
 		}
 	}
@@ -127,7 +125,7 @@ public class FeatureTransaction implements Paintable {
 	/**
 	 * Transform this object into a DTO feature transaction.
 	 *
-	 * @return
+	 * @return feature transaction DTO
 	 */
 	public org.geomajas.layer.feature.FeatureTransaction toDto() {
 		org.geomajas.layer.feature.FeatureTransaction dto = new org.geomajas.layer.feature.FeatureTransaction();
@@ -153,42 +151,74 @@ public class FeatureTransaction implements Paintable {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Get the old/original features.
+	 *
+	 * @return array of features
+	 */
 	public Feature[] getOldFeatures() {
 		return oldFeatures;
 	}
 
+	/**
+	 * Set the old/original features.
+	 *
+	 * @param oldFeatures array of features
+	 */
 	public void setOldFeatures(Feature[] oldFeatures) {
 		this.oldFeatures = oldFeatures;
 	}
 
+	/**
+	 * Get the new/updated features.
+	 *
+	 * @return array of features
+	 */
 	public Feature[] getNewFeatures() {
 		return newFeatures;
 	}
 
+	/**
+	 * Set the new/updated features.
+	 *
+	 * @param newFeatures array of new features
+	 */
 	public void setNewFeatures(Feature[] newFeatures) {
 		this.newFeatures = newFeatures;
 	}
 
+	/**
+	 * Set the layer for the features.
+	 *
+	 * @return layer
+	 */
 	public VectorLayer getLayer() {
 		return layer;
 	}
 
+	/**
+	 * Set the layer for the features.
+	 *
+	 * @param layer layer
+	 */
 	public void setLayer(VectorLayer layer) {
 		this.layer = layer;
 	}
 
-	public boolean isGeometryChanged() {
-		return geometryChanged;
-	}
-
-	public void setGeometryChanged(boolean geometryChanged) {
-		this.geometryChanged = geometryChanged;
-	}
-
+	/**
+	 * Get the operation queue.
+	 *
+	 * @return stack of feature operations
+	 */
 	public Stack<FeatureOperation> getOperationQueue() {
 		return operationQueue;
 	}
 
+	/**
+	 * Set the operation queue.
+	 *
+	 * @param operationQueue stack of operations
+	 */
 	public void setOperationQueue(Stack<FeatureOperation> operationQueue) {
 		this.operationQueue = operationQueue;
 	}

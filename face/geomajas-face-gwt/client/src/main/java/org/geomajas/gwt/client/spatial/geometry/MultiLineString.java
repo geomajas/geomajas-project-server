@@ -30,10 +30,23 @@ public class MultiLineString extends AbstractGeometry {
 	// Constructor (package visibility)
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Constructor using srid and precision.
+	 *
+	 * @param srid srid
+	 * @param precision precision
+	 */
 	MultiLineString(int srid, int precision) {
 		super(srid, precision);
 	}
 
+	/**
+	 * Constructor using srid, precision and the linestrings to combine.
+	 *
+	 * @param srid srid
+	 * @param precision precision
+	 * @param lineStrings linestrings to combine
+	 */
 	MultiLineString(int srid, int precision, LineString[] lineStrings) {
 		super(srid, precision);
 		this.lineStrings = lineStrings;
@@ -43,13 +56,12 @@ public class MultiLineString extends AbstractGeometry {
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
+	@Override
 	public Object clone() {
 		return getGeometryFactory().createMultiLineString(lineStrings);
 	}
 
+	@Override
 	public Geometry getGeometryN(int n) {
 		if (!isEmpty()) {
 			if (n >= 0 && n < lineStrings.length) {
@@ -59,9 +71,7 @@ public class MultiLineString extends AbstractGeometry {
 		return this;
 	}
 
-	/**
-	 * Return the number of LineStrings.
-	 */
+	@Override
 	public int getNumGeometries() {
 		if (isEmpty()) {
 			return 0;
@@ -69,9 +79,7 @@ public class MultiLineString extends AbstractGeometry {
 		return lineStrings.length;
 	}
 
-	/**
-	 * Get the sum of points of all LineStrings in this MultiLineString.
-	 */
+	@Override
 	public int getNumPoints() {
 		if (isEmpty()) {
 			return 0;
@@ -91,9 +99,7 @@ public class MultiLineString extends AbstractGeometry {
 		this.lineStrings = lineStrings;
 	}
 
-	/**
-	 * Return the added length of all the LineStrings.
-	 */
+	/** {@inheritDoc} */
 	public double getLength() {
 		double len = 0;
 		if (!isEmpty()) {
@@ -104,11 +110,7 @@ public class MultiLineString extends AbstractGeometry {
 		return len;
 	}
 
-	/**
-	 * The centroid is also known as the "center of gravity" or the "center of mass".
-	 *
-	 * @return Return the center point.
-	 */
+	/** {@inheritDoc} */
 	public Coordinate getCentroid() {
 		if (isEmpty()) {
 			return null;
@@ -149,13 +151,12 @@ public class MultiLineString extends AbstractGeometry {
 		return distance;
 	}
 
+	/** {@inheritDoc} */
 	public boolean isEmpty() {
 		return (lineStrings == null || lineStrings.length == 0);
 	}
 
-	/**
-	 * Check the validity of all the LineStrings.
-	 */
+	@Override
 	public boolean isValid() {
 		if (isEmpty()) {
 			return true;
@@ -168,6 +169,7 @@ public class MultiLineString extends AbstractGeometry {
 		return true;
 	}
 
+	@Override
 	public boolean isSimple() {
 		if (isEmpty()) {
 			return true;
@@ -183,9 +185,7 @@ public class MultiLineString extends AbstractGeometry {
 		return true;
 	}
 
-	/**
-	 * Return the closest bounding box around the geometry.
-	 */
+	/** {@inheritDoc} */
 	public Bbox getBounds() {
 		Bbox bounds = null;
 		if (!isEmpty()) {
@@ -200,10 +200,7 @@ public class MultiLineString extends AbstractGeometry {
 		return bounds;
 	}
 
-	/**
-	 * Return the first coordinate of the first LineString in the array, unless the geometry is empty, in which case
-	 * null is returned.
-	 */
+	/** {@inheritDoc} */
 	public Coordinate getCoordinate() {
 		if (isEmpty()) {
 			return null;
@@ -228,6 +225,7 @@ public class MultiLineString extends AbstractGeometry {
 		return coordinates;
 	}
 
+	/** {@inheritDoc} */
 	public LayerType getLayerType() {
 		return LayerType.MULTILINESTRING;
 	}
@@ -248,6 +246,7 @@ public class MultiLineString extends AbstractGeometry {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	public String toWkt() {
 		if (isEmpty()) {
 			return "MULTILINESTRING EMPTY";

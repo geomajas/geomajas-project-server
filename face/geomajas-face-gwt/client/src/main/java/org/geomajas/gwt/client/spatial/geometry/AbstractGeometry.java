@@ -39,6 +39,7 @@ public abstract class AbstractGeometry implements Geometry {
 
 	/**
 	 * Package visible constructor, used by the GeometryFactory.
+	 *
 	 * @param srid srid
 	 * @param precision precision
 	 */
@@ -122,7 +123,7 @@ public abstract class AbstractGeometry implements Geometry {
 	 * </ul>
 	 */
 	public int getGeometryType() {
-		return 0;
+		return getLayerType().getCode();
 	}
 
 	/**
