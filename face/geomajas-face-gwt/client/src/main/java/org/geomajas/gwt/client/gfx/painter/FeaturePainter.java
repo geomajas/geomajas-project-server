@@ -23,9 +23,7 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
-import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
-import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 
 /**
@@ -83,41 +81,53 @@ public class FeaturePainter implements Painter {
 			context.getVectorContext().drawGroup(selectionGroup, feature);
 			String name = feature.getLayer().getId() + "-" + feature.getId();
 
-			if (geometry instanceof LineString) {
-				context.getVectorContext().drawLine(feature, name, (LineString) geometry, style);
-			} else if (geometry instanceof MultiLineString) {
-				MultiLineString m = (MultiLineString) geometry;
-				for (int i = 0; i < m.getNumGeometries(); i++) {
-					context.getVectorContext().drawLine(feature, name + "." + i, (LineString) m.getGeometryN(i), style);
-				}
-			} else if (geometry instanceof Polygon) {
-				context.getVectorContext().drawPolygon(feature, name, (Polygon) geometry, style);
-			} else if (geometry instanceof MultiPolygon) {
-				MultiPolygon m = (MultiPolygon) geometry;
-				for (int i = 0; i < m.getNumGeometries(); i++) {
-					context.getVectorContext().drawPolygon(feature, name + "." + i, (Polygon) m.getGeometryN(i), style);
-				}
-			} else if (geometry instanceof Point) {
-				if (hasImageSymbol(feature)) {
-					context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), null,
-							feature.getStyleId() + "-selection");
-				} else {
-					context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), style,
-							feature.getStyleId());
-				}
-			} else if (geometry instanceof MultiPoint) {
-				Coordinate[] coordinates = geometry.getCoordinates();
-				if (hasImageSymbol(feature)) {
-					for (int i = 0; i < coordinates.length; i++) {
-						context.getVectorContext().drawSymbol(feature, name + "." + i, coordinates[i], null,
-								feature.getStyleId() + "-selection");
+			switch (geometry.getLayerType()) {
+				case LINESTRING:
+					context.getVectorContext().drawLine(feature, name, (LineString) geometry, style);
+					break;
+				case MULTILINESTRING:
+					MultiLineString mls = (MultiLineString) geometry;
+					for (int i = 0; i < mls.getNumGeometries(); i++) {
+						context.getVectorContext().drawLine(feature, name + "." + i,
+								(LineString) mls.getGeometryN(i), style);
 					}
-				} else {
-					for (int i = 0; i < coordinates.length; i++) {
-						context.getVectorContext().drawSymbol(feature, name + "." + i, coordinates[i], style,
+					break;
+				case POLYGON:
+					context.getVectorContext().drawPolygon(feature, name, (Polygon) geometry, style);
+					break;
+				case MULTIPOLYGON:
+					MultiPolygon mp = (MultiPolygon) geometry;
+					for (int i = 0; i < mp.getNumGeometries(); i++) {
+						context.getVectorContext().drawPolygon(feature, name + "." + i,
+								(Polygon) mp.getGeometryN(i), style);
+					}
+					break;
+				case POINT:
+					if (hasImageSymbol(feature)) {
+						context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), null,
+								feature.getStyleId() + "-selection");
+					} else {
+						context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), style,
 								feature.getStyleId());
 					}
-				}
+					break;
+				case MULTIPOINT:
+					Coordinate[] coordinates = geometry.getCoordinates();
+					if (hasImageSymbol(feature)) {
+						for (int i = 0; i < coordinates.length; i++) {
+							context.getVectorContext().drawSymbol(feature, name + "." + i, coordinates[i], null,
+									feature.getStyleId() + "-selection");
+						}
+					} else {
+						for (int i = 0; i < coordinates.length; i++) {
+							context.getVectorContext().drawSymbol(feature, name + "." + i, coordinates[i], style,
+									feature.getStyleId());
+						}
+					}
+					break;
+				default:
+					throw new IllegalStateException("Cannot draw feature with Geometry type " +
+							geometry.getLayerType());
 			}
 		}
 	}
@@ -201,7 +211,7 @@ public class FeaturePainter implements Painter {
 						style.merge(pointSelectStyle);
 						break;
 					default:
-						throw new IllegalStateException("Cannot draw feature with Geometry type " +
+						throw new IllegalStateException("Cannot create style for feature with Geometry type " +
 								geometry.getLayerType());
 				}
 			}

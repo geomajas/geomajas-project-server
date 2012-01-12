@@ -68,8 +68,8 @@ public class VectorLayerPainter implements Painter {
 		context.getRasterContext().drawGroup(layer, layer.getLabelGroup());
 
 		// Draw symbol types, as these can change any time:
-		if (layer.getLayerInfo().getLayerType().equals(LayerType.POINT)
-				|| layer.getLayerInfo().getLayerType().equals(LayerType.MULTIPOINT)) {
+		LayerType layerType = layer.getLayerInfo().getLayerType();
+		if (LayerType.POINT == layerType || LayerType.MULTIPOINT == layerType || LayerType.GEOMETRY == layerType) {
 			for (FeatureStyleInfo style : layer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
 				context.getVectorContext().drawSymbolDefinition(null, style.getStyleId(), style.getSymbol(),
 						new ShapeStyle(style), null);
