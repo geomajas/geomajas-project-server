@@ -34,7 +34,6 @@ import org.geomajas.gwt.client.widget.attribute.DefaultFeatureFormFactory;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
@@ -72,7 +71,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * @since 1.6.0
  */
 @Api
-public class FeatureAttributeWindow extends Window {
+public class FeatureAttributeWindow extends KeepInScreenWindow {
 
 	/**
 	 * The ToolStrip that contains the different buttons (save, reset, ...).
@@ -143,8 +142,6 @@ public class FeatureAttributeWindow extends Window {
 		setWidth("*");
 		setHeight("*");
 		setKeepInParentRect(true);
-		setMaxWidth(com.google.gwt.user.client.Window.getClientWidth() - WidgetLayout.windowOffset * 2);
-		setMaxHeight(com.google.gwt.user.client.Window.getClientHeight() - WidgetLayout.windowOffset * 2);
 		if (null != WidgetLayout.featureAttributeWindowWidth) {
 			setWidth(WidgetLayout.featureAttributeWindowWidth);
 			setAutoSize(false);
@@ -161,15 +158,6 @@ public class FeatureAttributeWindow extends Window {
 			mapModel.addFeatureTransactionHandler(new ApplyFeatureTransactionToWindow());
 			setFeature(feature);
 		}
-	}
-
-	@Override
-	public void onDraw() {
-		// try to force to be inside the screen
-		if (WidgetLayout.featureAttributeWindowKeepInScreen) {
-			WidgetLayout.keepWindowInScreen(this);
-		}
-		super.onDraw();
 	}
 
 	// -------------------------------------------------------------------------
@@ -311,7 +299,7 @@ public class FeatureAttributeWindow extends Window {
 
 		toolStrip = new ToolStrip();
 		toolStrip.setWidth100();
-		toolStrip.setPadding(2);
+		toolStrip.setPadding(WidgetLayout.marginSmall);
 
 		toolStrip.addMember(new ZoomButton());
 		editButton = new EditButton();
@@ -322,7 +310,7 @@ public class FeatureAttributeWindow extends Window {
 			toolStrip.addMember(editButton);
 		}
 
-		savePanel = new HLayout(10);
+		savePanel = new HLayout(WidgetLayout.marginSmall);
 		saveButton = new SaveButton();
 		IButton resetButton = new ResetButton();
 		IButton cancelButton = new CancelButton();
@@ -331,7 +319,7 @@ public class FeatureAttributeWindow extends Window {
 		savePanel.addMember(cancelButton);
 		savePanel.setVisible(false);
 		savePanel.setAlign(Alignment.CENTER);
-		savePanel.setPadding(10);
+		savePanel.setPadding(WidgetLayout.marginSmall);
 
 		VLayout layout = new VLayout();
 		layout.addMember(toolStrip);

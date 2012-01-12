@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.smartgwt.client.types.Overflow;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
@@ -22,6 +23,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.AttributeListGrid;
+import org.geomajas.gwt.client.widget.KeepInScreenWindow;
 import org.geomajas.gwt.client.widget.attribute.DefaultOneToManyItem.OneToManyLink;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.AssociationValue;
@@ -81,7 +83,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 
 	private FeatureInfo featureInfo;
 
-	private OneToManyLink item;
+	private final OneToManyLink item;
 
 	/**
 	 * Return the actual form item.
@@ -124,16 +126,16 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 	/** {@inheritDoc} */
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		featureInfo = attributeInfo.getFeature();
-		window = new Window();
+		window = new KeepInScreenWindow();
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		layout.setMembersMargin(10);
-		layout.setMargin(10);
+		layout.setMembersMargin(WidgetLayout.marginLarge);
+		layout.setMargin(WidgetLayout.marginLarge);
 		detailForm = new DefaultFeatureForm(featureInfo, attributeProvider);
 		masterGrid = new AttributeListGrid(featureInfo);
 		masterGrid.setData(new ListGridRecord[] {});
-		masterGrid.setHeight(300);
+		masterGrid.setHeight(200);
 		layout.addMember(masterGrid);
 		detailForm.getWidget().setLayoutAlign(Alignment.CENTER);
 		detailForm.getWidget().setSize("90%", "30%");
@@ -192,21 +194,22 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 			}
 		});
 		HLayout buttonLayout = new HLayout();
-		buttonLayout.setMembersMargin(10);
+		buttonLayout.setMembersMargin(WidgetLayout.marginLarge);
 		buttonLayout.addMember(applyButton);
 		buttonLayout.addMember(newButton);
 		buttonLayout.addMember(deleteButton);
 		buttonLayout.setAlign(Alignment.CENTER);
 		layout.addMember(buttonLayout);
 
-		window.setMembersMargin(10);
-		window.addItem(layout);
-		window.setWidth(500);
-		window.setHeight(400);
+		window.setMembersMargin(WidgetLayout.marginLarge);
 		window.setAutoSize(true);
+		window.setWidth("550");
+		window.setHeight("*");
 		window.setCanDragReposition(true);
 		window.setCanDragResize(true);
 		window.setTitle(getItem().getTitle());
+		window.setOverflow(Overflow.AUTO);
+		window.addItem(layout);
 		masterGrid.addRecordClickHandler(new RecordClickHandler() {
 
 			public void onRecordClick(RecordClickEvent event) {
@@ -231,12 +234,11 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 	/** Show the window. */
 	protected void openEditor() {
 		window.centerInPage();
+		/*
 		if (!window.isDrawn()) {
 			window.draw();
 		}
-		if (WidgetLayout.featureAttributeWindowKeepInScreen) {
-			WidgetLayout.keepWindowInScreen(window);
-		}
+		*/
 		window.show();
 	}
 
@@ -298,8 +300,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 			case URL:
 				return new UrlAttribute();
 			default:
-				return new StringAttribute();
-
+				throw new IllegalStateException("No support for creating attributes of type " + primInfo.getType());
 		}
 	}
 

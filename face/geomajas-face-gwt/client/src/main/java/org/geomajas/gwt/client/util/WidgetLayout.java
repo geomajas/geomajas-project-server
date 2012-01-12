@@ -355,7 +355,8 @@ public final class WidgetLayout {
 		window.setKeepInParentRect(true);
 		if (null != window.getHeightAsString()) {
 			int screenHeight = com.google.gwt.user.client.Window.getClientHeight();
-			int windowHeight = window.getHeight();
+			int windowHeight = window.getViewportHeight();
+			window.setMaxHeight(screenHeight - WidgetLayout.windowOffset * 2);
 			if (windowHeight + window.getAbsoluteTop() > screenHeight) {
 				int top = screenHeight - windowHeight;
 				if (top >= 0) {
@@ -368,7 +369,8 @@ public final class WidgetLayout {
 		}
 		if (null != window.getWidthAsString()) {
 			int screenWidth = com.google.gwt.user.client.Window.getClientWidth();
-			int windowWidth = window.getWidth();
+			int windowWidth = window.getViewportWidth();
+			window.setMaxWidth(screenWidth - WidgetLayout.windowOffset * 2);
 			if (windowWidth + window.getAbsoluteLeft() > screenWidth) {
 				int left = screenWidth - windowWidth;
 				if (left >= 0) {
