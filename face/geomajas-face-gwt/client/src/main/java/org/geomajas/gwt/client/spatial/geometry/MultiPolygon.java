@@ -46,7 +46,7 @@ public class MultiPolygon extends AbstractGeometry {
 	/**
 	 * Create a copy of this geometry and return it.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createMultiPolygon(polygons);
 	}
 

@@ -48,9 +48,7 @@ public class IntegerAttribute extends PrimitiveAttribute<Integer> {
 	 * @since 1.7.0
 	 * @return A copy of this integer attribute.
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
-			justification = "needed for GWT")
-	public Object clone() {
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		IntegerAttribute clone = new IntegerAttribute();
 		if (getValue() != null) {
 			clone.setValue(Integer.valueOf(getValue()));

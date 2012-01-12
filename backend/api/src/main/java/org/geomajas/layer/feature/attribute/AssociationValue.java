@@ -89,7 +89,7 @@ public class AssociationValue implements Serializable {
 	 * @since 1.7.0
 	 * @return A new AssociationValue with the same contents.
 	 */
-	public Object clone() { // NOSONAR
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		PrimitiveAttribute<?> idClone = null;
 		if (id != null) {
 			idClone = (PrimitiveAttribute<?>) id.clone();

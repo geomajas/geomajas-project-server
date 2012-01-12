@@ -113,10 +113,8 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * @return true
 	 */
 	public boolean equalsDelta(Coordinate coordinate, double delta) {
-		if (coordinate == null) {
-			return false;
-		}
-		return (Math.abs(this.x - coordinate.x) < delta && Math.abs(this.y - coordinate.y) < delta);
+		return null != coordinate &&
+				(Math.abs(this.x - coordinate.x) < delta && Math.abs(this.y - coordinate.y) < delta);
 	}
 
 	/**
@@ -165,7 +163,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * 
 	 * @return cloned coordinate
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return new Coordinate(x, y);
 	}
 

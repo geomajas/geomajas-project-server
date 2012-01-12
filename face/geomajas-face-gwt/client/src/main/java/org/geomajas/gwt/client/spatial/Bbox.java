@@ -108,12 +108,14 @@ public class Bbox {
 	/**
 	 * Create a clone of the object.
 	 */
-	public Object clone() {
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return new Bbox(x, y, width, height);
 	}
 
 	/**
 	 * Return the origin (x, y) as a Coordinate.
+	 *
+	 * @return origin
 	 */
 	public Coordinate getOrigin() {
 		return new Coordinate(x, y);
@@ -121,6 +123,8 @@ public class Bbox {
 
 	/**
 	 * Get the center of the bounding box as a Coordinate.
+	 *
+	 * @return center point
 	 */
 	public Coordinate getCenterPoint() {
 		double centerX = (width == 0 ? x : x + width / 2);
@@ -130,6 +134,8 @@ public class Bbox {
 
 	/**
 	 * Get the end-point of the bounding box as a Coordinate.
+	 *
+	 * @return endpoint or max coordinate
 	 */
 	public Coordinate getEndPoint() {
 		return new Coordinate(x + width, y + height);
@@ -366,6 +372,8 @@ public class Bbox {
 	/**
 	 * Returns whether or not this bounding box is empty. A bounding box is considered empty when either the width or
 	 * the height is equal to zero.
+	 *
+	 * @return true when bbox is empty
 	 */
 	public boolean isEmpty() {
 		return width == 0 || height == 0;

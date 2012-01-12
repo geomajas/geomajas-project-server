@@ -52,21 +52,17 @@ public abstract class AbstractGeometry implements Geometry {
 	// Partial Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
-			justification = "needed for GWT")
-	public Object clone() {
+	@Override
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return null;
 	}
 
-	/**
-	 * Return the spatial reference ID.
-	 *
-	 * @return Returns the srid as an integer.
-	 */
+	/** {@inheritDoc} */
 	public int getSrid() {
 		return srid;
 	}
 
+	/** {@inheritDoc} */
 	public int getPrecision() {
 		return precision;
 	}

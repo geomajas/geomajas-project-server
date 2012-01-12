@@ -124,9 +124,7 @@ public class LineString extends AbstractGeometry {
 	/**
 	 * Create a copy of this geometry and return it.
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "CN_IDIOM_NO_SUPER_CALL",
-			justification = "needed for GWT")
-	public Object clone() {
+	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createLineString(coordinates);
 	}
 
