@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.advancedviews.configuration.client;
 
 import org.geomajas.configuration.client.ClientWidgetInfo;
@@ -40,6 +41,32 @@ public class ExtraLayerInfo implements ClientWidgetInfo {
 	 * Used by LayerInfo widget (RasterLayer only).
 	 */
 	private String legendImageUrl;
+
+	/**
+	 * The source, or owner of the data in this layer.
+	 */
+	private String source;
+
+	/**
+	 * The date of the source, (eg. when was the layer last updated / refreshed / uploaded).
+	 */
+	private String date;
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 
 	public String getSmallLayerIconUrl() {
 		return smallLayerIconUrl;

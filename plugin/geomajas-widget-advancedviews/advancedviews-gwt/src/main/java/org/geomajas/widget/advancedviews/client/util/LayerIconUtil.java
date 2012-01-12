@@ -51,7 +51,7 @@ public final class LayerIconUtil {
 	public static String getSmallLayerIconUrl(Layer<?> layer) {
 		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
-		if (eli != null) {
+		if (eli != null && eli.getSmallLayerIconUrl() != null && !"".equals(eli.getSmallLayerIconUrl())) {
 			return eli.getSmallLayerIconUrl();
 		} else {
 			return null;
@@ -61,7 +61,7 @@ public final class LayerIconUtil {
 	public static Img getLargeLayerIcon(Layer<?> layer) {
 		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
-		if (eli != null) {
+		if (eli != null && eli.getLargeLayerIconUrl() != null && !"".equals(eli.getLargeLayerIconUrl())) {
 			return new Img(eli.getLargeLayerIconUrl());
 		} else {
 			if (layer instanceof RasterLayer) {
@@ -90,7 +90,7 @@ public final class LayerIconUtil {
 	public static Img getLegendImage(Layer<?> layer) {
 		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
 				layer);
-		if (eli != null) {
+		if (eli != null && eli.getLegendImageUrl() != null && !"".equals(eli.getLegendImageUrl())) {
 			return new Img(eli.getLegendImageUrl());
 		} else {
 			return null;

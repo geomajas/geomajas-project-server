@@ -16,16 +16,23 @@ import java.util.List;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
-import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.util.UrlBuilder;
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.widget.advancedviews.client.AdvancedViewsMessages;
 import org.geomajas.widget.advancedviews.client.util.LayerIconUtil;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.NumberFormat;
+import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ImageStyle;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
@@ -33,8 +40,6 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.layout.SectionStack;
-import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -48,8 +53,8 @@ public class LayerInfo extends Window {
 	private AdvancedViewsMessages messages = GWT.create(AdvancedViewsMessages.class);
 
 	private static final String NUMERIC_TYPES = "short integer long float double currency";
-	private static final int MAX_LEGEND_WIDTH = 440;
-	private static final int MAX_LEGEND_HEIGHT = 400;
+	private static final int WINDOW_HEIGHT = 400;
+	private static final int WINDOW_WIDTH = 450;
 
 	private static final String ATTRI = "att";
 	private static final String LABEL = "lab";
@@ -62,28 +67,26 @@ public class LayerInfo extends Window {
 
 	public LayerInfo(Layer<?> layer) {
 		super();
-		setTitle(messages.layerInfoWindowTitle() + " - " + layer.getLabel());
+		setTitle(messages.layerInfoWindowLegendTitle() + " - " + layer.getLabel());
 		setAutoCenter(true);
 		setAutoSize(true);
 		setKeepInParentRect(true);
 
 		VLayout layout = new VLayout();
-		layout.setWidth(450);
-		layout.setAutoHeight();
+		layout.setWidth(WINDOW_WIDTH);
+		layout.setHeight(WINDOW_HEIGHT);
 		layout.setPadding(5);
 		layout.setMembersMargin(5);
-
-		Img icon = LayerIconUtil.getLargeLayerIcon(layer);
-		icon.setImageType(ImageStyle.NORMAL);
-		layout.addMember(icon);
-		layout.addMember(createLayerInfo(layer));
+		layout.setOverflow(Overflow.AUTO);
 
 		if (layer instanceof VectorLayer) {
+			layout.addMember(createVectorLegend((VectorLayer) layer));
 			layout.addMember(createFeatureInfo((VectorLayer) layer));
 		} else {
 			Canvas c = createLegendInfo((RasterLayer) layer);
 			if (c != null) {
 				layout.addMember(c);
+				layout.setPadding(1);
 			}
 		}
 
@@ -92,54 +95,15 @@ public class LayerInfo extends Window {
 		addItem(layout);
 	}
 
-	private Canvas createLayerInfo(Layer<?> layer) {
-		String layerType, layerMax, layerMin;
-		if (layer instanceof VectorLayer) {
-			VectorLayer vl = (VectorLayer) layer;
-			layerType = messages.layerInfoLayerInfoFldLayerTypeVector();
-			layerType += " (" + vl.getLayerInfo().getLayerType().name() + ")";
-			layerMax = buildScale(vl.getLayerInfo().getMaximumScale());
-			layerMin = buildScale(vl.getLayerInfo().getMinimumScale());
-
-		} else {
-			RasterLayer rl = (RasterLayer) layer;
-			layerType = messages.layerInfoLayerInfoFldLayerTypeRaster();
-			layerMax = buildScale(rl.getLayerInfo().getMaximumScale());
-			layerMin = buildScale(rl.getLayerInfo().getMinimumScale());
-		}
-
-		// ----------------------------------------------------------
-
-		ListGridRecord[] records = new ListGridRecord[5];
-		for (int i = 0; i < 5; i++) {
-			records[i] = new ListGridRecord();
-		}
-		records[0].setAttribute(LABEL, messages.layerInfoLayerInfoFldLayer());
-		records[0].setAttribute(VALUE, layer.getLabel());
-		records[1].setAttribute(LABEL, messages.layerInfoLayerInfoFldLayerType());
-		records[1].setAttribute(VALUE, layerType);
-		records[2].setAttribute(LABEL, messages.layerInfoLayerInfoFldMaxViewScale());
-		records[2].setAttribute(VALUE, layerMax);
-		records[3].setAttribute(LABEL, messages.layerInfoLayerInfoFldMinViewScale());
-		records[3].setAttribute(VALUE, layerMin);
-		records[4].setAttribute(LABEL, messages.layerInfoLayerInfoFldVisible());
-		records[4].setAttribute(VALUE, (layer.isShowing() ? messages.layerInfoLayerInfoFldVisibleStatusVisible()
-				: messages.layerInfoLayerInfoFldVisibleStatusHidden()));
-
-		// ----------------------------------------------------------
-
-		ListGrid info = new ListGrid();
-		info.setShowAllRecords(true);
-		info.setCanResizeFields(true);
-		info.setWidth100();
-		info.setHeight(135);
-
-		ListGridField labelField = new ListGridField(LABEL, messages.layerInfoLayerInfo());
-		ListGridField valueField = new ListGridField(VALUE, messages.layerInfoLayerInfoValue());
-		info.setFields(labelField, valueField);
-		info.setData(records);
-
-		return info;
+	private Canvas createVectorLegend(VectorLayer layer) {
+		VLayout legend = new VLayout();
+		legend.setWidth100();
+		legend.setIsGroup(true);
+		legend.setPadding(5);
+		legend.setGroupTitle(messages.layerInfoLayerInfoLegend());
+		legend.addMember(new VectorLegendListGrid(layer));
+		legend.setHeight100();
+		return legend;
 	}
 
 	private Canvas createFeatureInfo(VectorLayer layer) {
@@ -164,6 +128,9 @@ public class LayerInfo extends Window {
 		// ----------------------------------------------------------
 
 		VLayout c = new VLayout();
+		c.setIsGroup(true);
+		c.setGroupTitle(messages.layerInfoLayerInfoFldInfo());
+		c.setPadding(5);
 		ListGrid info = new ListGrid();
 		info.setShowAllRecords(true);
 		info.setCanResizeFields(true);
@@ -182,18 +149,13 @@ public class LayerInfo extends Window {
 		info.setFields(fld1, fld2, fld3, fld4, fld5, fld6, fld7);
 
 		info.setData(records.toArray(new ListGridRecord[records.size()]));
-		c.addChild(info);
+		c.addMember(info);
 
 		return c;
 	}
 
 	private boolean isNumeric(String type) {
 		return (NUMERIC_TYPES.indexOf(type) > -1);
-	}
-
-	private String buildScale(ScaleInfo si) {
-		return ((int) si.getNumerator()) + " : " + ((int) si.getDenominator()) + " ("
-				+ NumberFormat.getFormat("#,##0.#########").format(si.getPixelPerUnit()) + ")";
 	}
 
 	private String getType(AttributeInfo attInfo) {
@@ -211,21 +173,85 @@ public class LayerInfo extends Window {
 	private Canvas createLegendInfo(RasterLayer layer) {
 		Img legend = LayerIconUtil.getLegendImage(layer);
 		if (legend != null) {
-			SectionStack sectionStack = new SectionStack();
-			sectionStack.setWidth(MAX_LEGEND_WIDTH);
-			sectionStack.setHeight(MAX_LEGEND_HEIGHT);
-			SectionStackSection section = new SectionStackSection(messages.layerInfoLayerInfoLegend());
-			section.setCanCollapse(false);
-			section.setExpanded(true);
-
-			legend.setOverflow(Overflow.AUTO);
+			// legend.setOverflow(Overflow.AUTO);
 			legend.setImageType(ImageStyle.NORMAL);
-
-			section.setItems(legend);
-			sectionStack.setSections(section);
-			return sectionStack;
+			legend.setAutoFit(true);
+//			legend.setWidth100();
+//			legend.setHeight100();
+			return legend;
 		} else {
 			return null;
+		}
+	}
+	
+	// -------------------------------------------------
+	
+	/**
+	 * ListGrid to show Legend elements.
+	 */
+	private class VectorLegendListGrid extends ListGrid {
+
+		private static final String KEY_FLD = "keyField";
+		private static final String VALUE_FLD = "valueField";
+
+		private static final String LEGEND_ICONS_PATH = "legendgraphic";
+		private static final String LEGEND_ICONS_TYPE = ".png";
+		private static final int ICONSIZE = 18;
+
+		public VectorLegendListGrid(VectorLayer layer) {
+			setWidth100();
+			setHeight(10);
+			setCanEdit(false);
+			setShowSelectedStyle(false);
+			setShowRollOver(false);
+			setShowHeader(false);
+			setShowAllRecords(true);
+			setBodyOverflow(Overflow.VISIBLE);
+			setOverflow(Overflow.VISIBLE);
+			setLeaveScrollbarGap(false);
+			setWrapCells(true);
+			setFixedRecordHeights(false);
+			setImageSize(ICONSIZE);
+
+			String name = layer.getLayerInfo().getNamedStyleInfo().getName();
+			UrlBuilder url = new UrlBuilder(Geomajas.getDispatcherUrl());
+			url.addPath(LEGEND_ICONS_PATH);
+			url.addPath(layer.getServerLayerId());
+			url.addPath(name);
+
+			// -- FIELDS
+			ListGridField keyField = new ListGridField(KEY_FLD, "Veldnaam", 45);
+			keyField.setAlign(Alignment.CENTER);
+			keyField.setType(ListGridFieldType.IMAGE);
+			keyField.setImageURLPrefix(url.toString() + "/");
+			keyField.setImageURLSuffix(LEGEND_ICONS_TYPE);
+			
+			ListGridField valueField = new ListGridField(VALUE_FLD, "Waarde");
+			valueField.setWidth("*");
+			setFields(keyField, valueField);
+
+			// -- VALUES
+			final RecordList recordList = new RecordList();
+			ClientVectorLayerInfo layerInfo = layer.getLayerInfo();
+			UserStyleInfo userStyle = layerInfo.getNamedStyleInfo().getUserStyle();
+			FeatureTypeStyleInfo info = userStyle.getFeatureTypeStyleList().get(0);
+			for (int i = 0; i < info.getRuleList().size(); i++) {
+				RuleInfo rule = info.getRuleList().get(i);
+				String title = (rule.getTitle() != null ? rule.getTitle() : rule.getName());
+				if (title == null) {
+					title = layerInfo.getNamedStyleInfo().getName();
+				}
+				recordList.add(createRecord(title, i));
+			}
+
+			setData(recordList);
+		}
+		
+		private ListGridRecord createRecord(String title, int index) {
+			ListGridRecord r = new ListGridRecord();
+			r.setAttribute(KEY_FLD, "" + index);
+			r.setAttribute(VALUE_FLD, title);
+			return r;
 		}
 	}
 }
