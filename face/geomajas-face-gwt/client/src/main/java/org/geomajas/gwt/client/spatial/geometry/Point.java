@@ -50,9 +50,7 @@ public class Point extends AbstractGeometry {
 		this.coordinate = coordinate;
 	}
 
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
+	/** {@inheritDoc} */
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createPoint(coordinate);
 	}

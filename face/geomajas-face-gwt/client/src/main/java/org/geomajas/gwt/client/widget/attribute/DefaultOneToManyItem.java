@@ -16,10 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.AttributeListGrid;
 import org.geomajas.gwt.client.widget.attribute.DefaultOneToManyItem.OneToManyLink;
 import org.geomajas.layer.feature.Attribute;
@@ -61,7 +62,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * collection.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 
@@ -92,10 +92,12 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		return item;
 	}
 
+	/** No-arguments constructor. */
 	public DefaultOneToManyItem() {
 		item = new OneToManyLink();
 	}
 
+	/** {@inheritDoc} */
 	public void toItem(OneToManyAttribute attribute) {
 		// deep clone to allow separation of object and form state
 		for (AssociationValue value : attribute.getValue()) {
@@ -103,6 +105,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		}
 	}
 
+	/** {@inheritDoc} */
 	public void fromItem(OneToManyAttribute attribute) {
 		List<AssociationValue> values = new ArrayList<AssociationValue>();
 		// deep clone to allow separation of object and form state
@@ -112,11 +115,13 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		attribute.setValue(values);
 	}
 
+	/** {@inheritDoc} */
 	public void clearValue() {
 		detailForm.clear();
 		masterGrid.clearValues();
 	}
 
+	/** {@inheritDoc} */
 	public void init(AssociationAttributeInfo attributeInfo, AttributeProvider attributeProvider) {
 		featureInfo = attributeInfo.getFeature();
 		window = new Window();
@@ -140,6 +145,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		applyButton.setTooltip(I18nProvider.getAttribute().btnApplyTooltip());
 		applyButton.addClickHandler(new ClickHandler() {
 
+			/** {@inheritDoc} */
 			public void onClick(ClickEvent event) {
 				if (detailForm.validate() && selectedValue != null) {
 					for (Map.Entry<String, Attribute<?>> entry : selectedValue.getAllAttributes().entrySet()) {
@@ -158,10 +164,11 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		newButton.setTooltip(I18nProvider.getAttribute().btnNewTooltip());
 		newButton.addClickHandler(new ClickHandler() {
 
+			/** {@inheritDoc} */
 			public void onClick(ClickEvent event) {
 				selectedValue = createInstance();
 				detailForm.clear();
-				for (AttributeInfo info : featureInfo.getAttributes()) {
+				for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 					detailForm.toForm(info.getName(), selectedValue.getAllAttributes().get(info.getName()));
 				}
 				updateButtonState(false);
@@ -172,6 +179,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 		deleteButton.setTooltip(I18nProvider.getAttribute().btnDeleteTooltip());
 		deleteButton.addClickHandler(new ClickHandler() {
 
+			/** {@inheritDoc} */
 			public void onClick(ClickEvent event) {
 				if (selectedValue != null) {
 					if (masterGrid.deleteValue(selectedValue)) {
@@ -204,7 +212,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 			public void onRecordClick(RecordClickEvent event) {
 				selectedValue = masterGrid.getSelectedValue();
 				detailForm.clear();
-				for (AttributeInfo info : featureInfo.getAttributes()) {
+				for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 					detailForm.toForm(info.getName(), selectedValue.getAllAttributes().get(info.getName()));
 				}
 				updateButtonState(false);
@@ -220,17 +228,26 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 
 	}
 
+	/** Show the window. */
 	protected void openEditor() {
 		window.centerInPage();
 		if (!window.isDrawn()) {
 			window.draw();
 		}
+		if (WidgetLayout.featureAttributeWindowKeepInScreen) {
+			WidgetLayout.keepWindowInScreen(window);
+		}
 		window.show();
 	}
 
+	/**
+	 * Create association attribute for value.
+	 *
+	 * @return attribute
+	 */
 	protected AssociationValue createInstance() {
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
-		for (AttributeInfo attrInfo : featureInfo.getAttributes()) {
+		for (AbstractAttributeInfo attrInfo : featureInfo.getAttributes()) {
 			if (attrInfo instanceof PrimitiveAttributeInfo) {
 				attributes.put(attrInfo.getName(), createPrimitiveAttribute((PrimitiveAttributeInfo) attrInfo));
 			} else if (attrInfo instanceof AssociationAttributeInfo) {
@@ -244,7 +261,9 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 						oneToMany.setValue(new ArrayList<AssociationValue>());
 						attributes.put(assocInfo.getName(), oneToMany);
 						break;
-
+					default:
+						throw new IllegalStateException("Don't know how to handle association type " +
+								assocInfo.getType());
 				}
 			}
 		}
@@ -288,7 +307,6 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 	 * {@link LinkItem} that opens the editable grid of one-to-many attributes.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class OneToManyLink extends LinkItem {
 
@@ -298,6 +316,7 @@ public class DefaultOneToManyItem implements OneToManyItem<OneToManyLink> {
 			setTooltip(I18nProvider.getAttribute().one2ManyMoreTooltip());
 			addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
 
+				/** {@inheritDoc} */
 				public void onClick(com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
 					openEditor();
 				}

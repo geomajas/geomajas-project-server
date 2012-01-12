@@ -56,7 +56,7 @@ public class MultiLineString extends AbstractGeometry {
 	// Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	@Override
+	/** {@inheritDoc} */
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createMultiLineString(lineStrings);
 	}

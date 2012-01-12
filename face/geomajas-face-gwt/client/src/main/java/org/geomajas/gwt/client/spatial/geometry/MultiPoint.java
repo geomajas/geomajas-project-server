@@ -105,9 +105,7 @@ public class MultiPoint extends AbstractGeometry {
 		return points.length;
 	}
 
-	/**
-	 * Create a copy of this geometry and return it.
-	 */
+	/** {@inheritDoc} */
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return getGeometryFactory().createMultiPoint(points);
 	}

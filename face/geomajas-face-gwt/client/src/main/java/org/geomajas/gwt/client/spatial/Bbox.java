@@ -107,6 +107,8 @@ public class Bbox {
 
 	/**
 	 * Create a clone of the object.
+	 *
+	 * @return cloned object
 	 */
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return new Bbox(x, y, width, height);

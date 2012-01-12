@@ -52,7 +52,7 @@ public abstract class AbstractGeometry implements Geometry {
 	// Partial Geometry implementation:
 	// -------------------------------------------------------------------------
 
-	@Override
+	/** {@inheritDoc} */
 	public Object clone() { // NOSONAR super.clone() not supported by GWT
 		return null;
 	}
