@@ -180,7 +180,7 @@ public class GeomajasException extends Exception {
 					isIncluded = true;
 				}
 				if (!isIncluded) {
-					message = message + " (" + rs + ")";
+					message = message + " (" + rs + ")"; // NOSONAR replace/contains makes StringBuilder use difficult
 				}
 			}
 		}
