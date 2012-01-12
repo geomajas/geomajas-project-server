@@ -188,7 +188,8 @@ public class LabelStyleInfo implements Serializable {
 		result = PRIME * result + (backgroundStyle != null ? backgroundStyle.hashCode() : 0);
 		return result;
 	}
-	
+
+	/** Finish configuration. */
 	@PostConstruct
 	protected void postConstruct() {
 		if (null == labelValueExpression  && null == labelAttributeName) {
