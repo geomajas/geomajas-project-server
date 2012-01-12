@@ -100,8 +100,8 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * @since 1.10.0
 	 */
 	@Override
-	public boolean isEditable() {
-		return super.isEditable(); // NOSONAR override needed for @Api
+	public boolean isEditable() { // NOSONAR override needed for @Api
+		return super.isEditable();
 	}
 
 	/**
@@ -109,8 +109,8 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * @since 1.10.0
 	 */
 	@Override
-	public void setEditable(boolean editable) {
-		super.setEditable(editable); // NOSONAR override needed for @Api
+	public void setEditable(boolean editable) { // NOSONAR override needed for @Api
+		super.setEditable(editable);
 	}
 
 	/**

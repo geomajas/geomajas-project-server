@@ -27,13 +27,13 @@ public class AttributeBaseInfo extends AbstractAttributeInfo {
 	private static final long serialVersionUID = 152L;
 
 	@Override
-	public String getName() {
-		return super.getName(); // NOSONAR override needed for @Api
+	public String getName() { // NOSONAR override needed for @Api
+		return super.getName();
 	}
 
 	@Override
-	public void setName(String name) {
-		super.setName(name); // NOSONAR override needed for @Api
+	public void setName(String name) { // NOSONAR override needed for @Api
+		super.setName(name);
 	}
 
 	/**
