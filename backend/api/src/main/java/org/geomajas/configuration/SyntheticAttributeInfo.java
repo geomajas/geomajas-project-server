@@ -27,6 +27,8 @@ import org.geomajas.layer.feature.SyntheticAttributeBuilder;
 @Api(allMethods = true)
 public class SyntheticAttributeInfo extends AbstractReadOnlyAttributeInfo {
 
+	private static final long serialVersionUID = 1100L;
+
 	private String expression;
 	private transient SyntheticAttributeBuilder<?> attributeBuilder; // do not serialize to client
 
