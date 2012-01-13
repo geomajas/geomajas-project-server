@@ -18,10 +18,12 @@ import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
 import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledHandler;
 import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
+import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -32,7 +34,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Pieter De Graef
  * @author Emiel Ackermann
  */
-public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
+public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, RibbonColumnAware {
 
 	protected ToolbarBaseAction toolbarAction;
 
@@ -160,5 +162,21 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers {
 			handler.onDisabled(new DisabledEvent(ToolbarButtonAction.this));
 		}
 
+	}
+
+	/** {@inheritDoc} */
+	public void setRibbonColumn(RibbonColumn column) {
+		if (toolbarAction instanceof RibbonColumnAware) {
+			((RibbonColumnAware) toolbarAction).setRibbonColumn(column);
+		}
+	}
+
+	/** {@inheritDoc} */
+	public RibbonColumn getRibbonColumn() {
+		if (toolbarAction instanceof RibbonColumnAware) {
+			return ((RibbonColumnAware) toolbarAction).getRibbonColumn();
+		} else {
+			return null;
+		}
 	}
 }
