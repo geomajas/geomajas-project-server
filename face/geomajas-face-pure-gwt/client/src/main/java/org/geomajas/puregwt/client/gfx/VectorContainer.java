@@ -12,7 +12,10 @@
 package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.annotation.FutureApi;
+import org.vaadin.gwtgraphics.client.Transformable;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
+
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * Base container definition for vector object types. This interface is used for rendering vector layers, screen space
@@ -22,27 +25,7 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  * @since 1.0.0
  */
 @FutureApi(allMethods = true)
-public interface VectorContainer extends VectorObjectContainer {
-
-	/**
-	 * Apply a translation onto the container. This will also translate everything in it.
-	 * 
-	 * @param deltaX
-	 *            The translation factor along the X-axis.
-	 * @param deltaY
-	 *            The translation factor along the X-axis.
-	 */
-	void setTranslation(double deltaX, double deltaY);
-
-	/**
-	 * Apply a scaling factor onto the container. This scaling factor will apply on all children.
-	 * 
-	 * @param scaleX
-	 *            The scaling factor along the X-axis.
-	 * @param scaleY
-	 *            The scaling factor along the X-axis.
-	 */
-	void setScale(double scaleX, double scaleY);
+public interface VectorContainer extends VectorObjectContainer, Transformable, IsWidget {
 
 	/**
 	 * Determine container visibility.
