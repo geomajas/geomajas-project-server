@@ -18,6 +18,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -38,6 +39,9 @@ public class ContentPanelView extends Composite {
 	private static final ContentWidgetViewUiBinder UI_BINDER = GWT.create(ContentWidgetViewUiBinder.class);
 
 	@UiField
+	protected VerticalPanel layout;
+
+	@UiField
 	protected Element titleElement;
 
 	@UiField
@@ -49,9 +53,13 @@ public class ContentPanelView extends Composite {
 	public ContentPanelView() {
 		initWidget(UI_BINDER.createAndBindUi(this));
 		setSize("100%", "100%");
+		getElement().getStyle().setPadding(10, Unit.PX);
+		layout.setCellHeight(contentWidget, "100%");
 
-		contentWidget.getElement().getStyle().setMarginLeft(10, Unit.PX);
-		contentWidget.getElement().getStyle().setMarginRight(10, Unit.PX);
+		contentWidget.setSize("100%", "100%");
+		contentWidget.getElement().setId("contentWidgetWur");
+		contentWidget.getElement().getFirstChildElement().getStyle().setWidth(100, Unit.PCT);
+		contentWidget.getElement().getFirstChildElement().getStyle().setHeight(100, Unit.PCT);
 	}
 
 	public void setDescription(String html) {

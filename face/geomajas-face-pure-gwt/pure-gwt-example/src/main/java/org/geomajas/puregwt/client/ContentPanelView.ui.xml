@@ -7,29 +7,32 @@
 			color: #225414;
 			font-size: 18px;
 			font-weight: bold;
-			margin: 10px;
+			margin-bottom: 10px;
 		}
-		
+
 		.description {
 			color: #000000;
 			border-bottom: 1px solid #225414;
-			margin: 10px;
-			padding: 0px 10px 10px 0px;
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+		}
+
+		.big {
+			width: 100%;
+			height: 100%;
+			valign:top;
 		}
 	</ui:style>
 
+	<g:VerticalPanel styleName='{style.big}' ui:field='layout'>
 
-	<g:DockLayoutPanel unit='PX'>
-		<g:north size='80'>
-			<g:HTML>
-				<div class='{style.name}' ui:field='titleElement'>Name</div>
-				<div class='{style.description}' ui:field='descriptionElement'>Description</div>
-			</g:HTML>
-	    </g:north>
+		<g:HTML>
+			<div class='{style.name}' ui:field='titleElement'>Name</div>
+			<div class='{style.description}' ui:field='descriptionElement'>Description</div>
+		</g:HTML>
 
-	    <g:center>
-	        <g:SimplePanel ui:field='contentWidget' />
-	    </g:center>
-	</g:DockLayoutPanel>
+		<g:ScrollPanel ui:field='contentWidget' />
+
+	</g:VerticalPanel>
 
 </ui:UiBinder> 

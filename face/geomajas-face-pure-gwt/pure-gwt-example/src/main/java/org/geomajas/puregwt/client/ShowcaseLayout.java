@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client;
 import org.geomajas.puregwt.client.general.IntroductionContentPanel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTree;
@@ -67,8 +68,14 @@ public class ShowcaseLayout extends Composite {
 		if (this.content != null) {
 			contentPanel.remove(this.content);
 		}
+		content.setSize("100%", "100%");
 		contentPanel.add(content);
+
+		// Necessary for IE:
+		contentPanel.getElement().getFirstChildElement().getStyle().setWidth(100, Unit.PCT);
+		contentPanel.getElement().getFirstChildElement().getStyle().setHeight(100, Unit.PCT);
+
 		this.content = content;
-		content.ensureWidget();
+		content.setVisible(true);
 	}
 }

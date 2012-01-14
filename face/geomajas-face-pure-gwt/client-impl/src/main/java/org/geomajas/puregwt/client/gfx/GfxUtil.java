@@ -122,6 +122,14 @@ public final class GfxUtil {
 				}
 				path.close();
 			}
+
+			// IE even-odd problem. This fix only works if no more changes are made to the Path object:
+			// TODO fix this in the GwtGraphics library
+			String pathStr = path.getElement().getAttribute("path");
+			if (pathStr.indexOf("x e") > 0) {
+				pathStr = pathStr.replaceAll("x e", "x") + " e";
+				path.getElement().setAttribute("path", pathStr);
+			}
 			return path;
 		}
 		return null;

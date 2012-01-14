@@ -39,7 +39,7 @@ public abstract class ContentPanel extends LazyPanel {
 		view.setContentWidget(getContentWidget());
 		return view;
 	}
-	
+
 	public GeomajasGinjector getInjector() {
 		return geomajasInjector;
 	}
