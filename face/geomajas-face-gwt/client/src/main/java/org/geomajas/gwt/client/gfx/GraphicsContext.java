@@ -441,7 +441,8 @@ public interface GraphicsContext {
 	void moveElement(String name, Object sourceParent, Object targetParent);
 
 	/**
-	 * Within a certain group, bring an element to the front. This will make sure it's visible (within that group).
+	 * Within a certain group, bring an element to the front. This will make sure it's visible (within that group).<br>
+	 * One warning though. If you have controllers set onto the element, IE might lose some events.
 	 * 
 	 * @param object
 	 *            The group wherein to search for the element.
@@ -452,7 +453,8 @@ public interface GraphicsContext {
 	void bringToFront(Object object, String name);
 
 	/**
-	 * Within a certain group, move an element to the back. All siblings will be rendered after this one.
+	 * Within a certain group, move an element to the back. All siblings will be rendered after this one.<br>
+	 * One warning though. If you have controllers set onto the element, IE might lose some events.
 	 * 
 	 * @param object
 	 *            The group wherein to search for the element.
