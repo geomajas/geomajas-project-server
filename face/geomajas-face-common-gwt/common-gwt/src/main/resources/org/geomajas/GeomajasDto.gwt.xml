@@ -12,6 +12,8 @@
 <module>
 	<!-- Geomajas DTO source code, base path must be org/geomajas to access all packages !!! -->
 
+	<super-source path="emul" />
+
 	<source path="command">
 		<include name="CommandRequest.java"/>
 		<include name="CommandResponse.java"/>
