@@ -19,9 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.AbstractEditableAttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
-import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.validation.ConstraintInfo;
@@ -67,7 +68,7 @@ import org.geomajas.gwt.client.util.Log;
 /**
  * <p>
  * Factory that creates {@link FormItem}s and {@link DataSourceField}s from attribute meta-data. It is also possible to
- * register custom form field definitions using {@link AbstractAttributeInfo#formInputType} field.
+ * register custom form field definitions using {@link AbstractReadOnlyAttributeInfo#formInputType} field.
  * </p>
  * <p>
  * When defining custom implementations of the {@link FeatureFormFactory}, you are strongly encouraged to use this class
@@ -338,7 +339,7 @@ public final class AttributeFormFieldRegistry {
 	 * @param info The actual attribute info to create a data source field for.
 	 * @return The new data source field instance associated with the type of attribute.
 	 */
-	public static DataSourceField createDataSourceField(AttributeInfo info) {
+	public static DataSourceField createDataSourceField(AbstractReadOnlyAttributeInfo info) {
 		DataSourceField field = null;
 		List<Validator> validators = new ArrayList<Validator>();
 		if (info.getFormInputType() != null) {
@@ -364,13 +365,17 @@ public final class AttributeFormFieldRegistry {
 				String name = ((AssociationAttributeInfo) info).getType().name();
 				field = DATA_SOURCE_FIELDS.get(name).create();
 				validators.addAll(FIELD_VALIDATORS.get(name));
+			} else {
+				throw new IllegalStateException("Don't know how to handle field " + info.getName() + ", " +
+						"maybe you need to define the formInputType.");
 			}
 		}
 		if (field != null) {
 			field.setName(info.getName());
 			field.setTitle(info.getLabel());
 			field.setCanEdit(info.isEditable());
-			field.setRequired(isRequired(info.getValidator()));
+			field.setRequired(info instanceof AbstractEditableAttributeInfo &&
+					isRequired(((AbstractEditableAttributeInfo) info).getValidator()));
 			if (info instanceof PrimitiveAttributeInfo) {
 				validators.addAll(convertConstraints((PrimitiveAttributeInfo) info));
 			}
@@ -391,7 +396,7 @@ public final class AttributeFormFieldRegistry {
 	 * @param layer The layer to create a form item for (needed to fetch association values)
 	 * @return The new form item instance associated with the type of attribute.
 	 */
-	public static FormItem createFormItem(AttributeInfo info, VectorLayer layer) {
+	public static FormItem createFormItem(AbstractReadOnlyAttributeInfo info, VectorLayer layer) {
 		return createFormItem(info, new DefaultAttributeProvider(layer, info.getName()));
 	}
 
@@ -404,7 +409,7 @@ public final class AttributeFormFieldRegistry {
 	 * @param attributeProvider The attribute value provider for association attributes
 	 * @return The new form item instance associated with the type of attribute.
 	 */
-	public static FormItem createFormItem(AttributeInfo info, AttributeProvider attributeProvider) {
+	public static FormItem createFormItem(AbstractReadOnlyAttributeInfo info, AttributeProvider attributeProvider) {
 		FormItem formItem = null;
 		if (info.getFormInputType() != null) {
 			FormItemFactory factory = FORM_ITEMS.get(info.getFormInputType());
@@ -421,6 +426,9 @@ public final class AttributeFormFieldRegistry {
 			} else if (info instanceof AssociationAttributeInfo) {
 				String name = ((AssociationAttributeInfo) info).getType().name();
 				formItem = FORM_ITEMS.get(name).create();
+			} else {
+				throw new IllegalStateException("Don't know how to create form for field " + info.getName() + ", " +
+						"maybe you need to define the formInputType.");
 			}
 		}
 		if (formItem != null) {

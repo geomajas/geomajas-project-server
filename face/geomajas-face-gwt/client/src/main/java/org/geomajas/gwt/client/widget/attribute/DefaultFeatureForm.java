@@ -19,8 +19,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.EditableAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.annotation.FutureApi;
@@ -64,10 +66,11 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  * Default implementation of a {@link FeatureForm} based on a {@link DynamicForm}. The form is initialized by providing
  * a vector layer or the feature information of an association attribute. The implementation uses the
  * {@link AttributeFormFieldRegistry} to create the individual form items and fields. The
- * {@link #createField(AttributeInfo)} and {@link #createItem(AttributeInfo)} methods can be overridden to create custom
- * item and field implementations if necessary. The {@link #prepareForm(FormItemList, DataSource)} method can be
- * overridden to perform any additional actions on the form or form item list before the form is created. Attributes can
- * be excluded from the form by overriding the {@link #isIncluded(AttributeInfo)} method.
+ * {@link #createField(AbstractReadOnlyAttributeInfo)} and {@link #createItem(AbstractReadOnlyAttributeInfo)} methods
+ * can be overridden to create custom item and field implementations if necessary. The {@link #prepareForm(FormItemList,
+ * DataSource)} method can be overridden to perform any additional actions on the form or form item list before the 
+ * form is created. Attributes can be excluded from the form by overriding the {@link #isIncluded
+ * (AbstractReadOnlyAttributeInfo)} method.
  * </p>
  * <p>
  * This attribute form definition is used internally in the
@@ -96,7 +99,8 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 
 	public static final String STYLE_FEATURE_FORM = "featureForm";
 
-	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+	private Map<String, AbstractReadOnlyAttributeInfo> attributeInfoMap =
+			new HashMap<String, AbstractReadOnlyAttributeInfo>();
 
 	private DynamicForm formWidget;
 
@@ -137,8 +141,11 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	public DefaultFeatureForm(FeatureInfo featureInfo, AttributeProvider attributeProvider) {
 		this.featureInfo = featureInfo;
 		this.attributeProvider = attributeProvider;
-		for (AttributeInfo info : featureInfo.getAttributes()) {
-			attributeInfoMap.put(info.getName(), info);
+		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
+			if (info instanceof AbstractReadOnlyAttributeInfo) {
+				AbstractReadOnlyAttributeInfo roInfo = (AbstractReadOnlyAttributeInfo) info;
+				attributeInfoMap.put(roInfo.getName(), roInfo);
+			}
 		}
 		formWidget = new DynamicForm() {
 
@@ -152,10 +159,13 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 		formWidget.setStyleName(STYLE_FEATURE_FORM);
 		DataSource source = new DataSource();
 		FormItemList formItems = new FormItemList();
-		for (AttributeInfo info : featureInfo.getAttributes()) {
-			if (isIncluded(info)) {
-				formItems.add(createItem(info));
-				source.addField(createField(info));
+		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
+			if (info instanceof AbstractReadOnlyAttributeInfo) {
+				AbstractReadOnlyAttributeInfo roInfo = (AbstractReadOnlyAttributeInfo) info;
+				if (isIncluded(roInfo)) {
+					formItems.add(createItem(roInfo));
+					source.addField(createField(roInfo));
+				}
 			}
 		}
 		prepareForm(formItems, source);
@@ -169,7 +179,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * @param info the attribute information.
 	 * @return the form item
 	 */
-	protected FormItem createItem(AttributeInfo info) {
+	protected FormItem createItem(AbstractReadOnlyAttributeInfo info) {
 		return AttributeFormFieldRegistry.createFormItem(info, attributeProvider.createProvider(info.getName()));
 	}
 
@@ -179,7 +189,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * @param info the attribute information.
 	 * @return the data source field
 	 */
-	protected DataSourceField createField(AttributeInfo info) {
+	protected DataSourceField createField(AbstractReadOnlyAttributeInfo info) {
 		return AttributeFormFieldRegistry.createDataSourceField(info);
 	}
 
@@ -189,7 +199,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	 * @param info the attribute information
 	 * @return true if included, false otherwise
 	 */
-	protected boolean isIncluded(AttributeInfo info) {
+	protected boolean isIncluded(AbstractReadOnlyAttributeInfo info) {
 		return !info.isHidden();
 	}
 
@@ -218,10 +228,10 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 
 		// Don't set disabled on the form, but on the individual items. This way it's easier to overwrite when creating
 		// custom form items.
-		for (AttributeInfo info : featureInfo.getAttributes()) {
+		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 			FormItem formItem = formWidget.getItem(info.getName());
 			if (formItem != null) {
-				if (info.isEditable()) {
+				if (info instanceof EditableAttributeInfo && ((EditableAttributeInfo) info).isEditable()) {
 					formItem.setDisabled(disabled);
 				} else {
 					formItem.setDisabled(true);
@@ -287,72 +297,47 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 
 	/** {@inheritDoc} */
 	public void toForm(String name, Attribute<?> attribute) {
-		AttributeInfo info = attributeInfoMap.get(name);
+		AbstractReadOnlyAttributeInfo info = attributeInfoMap.get(name);
 		if (info == null || !isIncluded(info)) {
 			return;
 		}
 		FormItem item = formWidget.getField(info.getName());
-		if (item != null) {
-			if (info instanceof PrimitiveAttributeInfo) {
-				PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
-				if (attribute == null) {
-					item.setDisabled(true);
-				} else {
-					switch (primitive.getType()) {
-						case BOOLEAN:
-							setValue(info.getName(), (BooleanAttribute) primitive); // NOSONAR valid cast
-							break;
-						case SHORT:
-							setValue(info.getName(), (ShortAttribute) primitive); // NOSONAR valid cast
-							break;
-						case INTEGER:
-							setValue(info.getName(), (IntegerAttribute) primitive); // NOSONAR valid cast
-							break;
-						case LONG:
-							setValue(info.getName(), (LongAttribute) primitive); // NOSONAR valid cast
-							break;
-						case FLOAT:
-							setValue(info.getName(), (FloatAttribute) primitive); // NOSONAR valid cast
-							break;
-						case DOUBLE:
-							setValue(info.getName(), (DoubleAttribute) primitive); // NOSONAR valid cast
-							break;
-						case CURRENCY:
-							setValue(info.getName(), (CurrencyAttribute) primitive); // NOSONAR valid cast
-							break;
-						case STRING:
-							setValue(info.getName(), (StringAttribute) primitive); // NOSONAR valid cast
-							break;
-						case URL:
-							setValue(info.getName(), (UrlAttribute) primitive); // NOSONAR valid cast
-							break;
-						case IMGURL:
-							setValue(info.getName(), (ImageUrlAttribute) primitive); // NOSONAR valid cast
-							break;
-						case DATE:
-							setValue(info.getName(), (DateAttribute) primitive); // NOSONAR valid cast
-							break;
-						default:
-							throw new IllegalStateException("Unhandled primitive attribute type " +
-									primitive.getType());
-					}
-				}
-			} else if (info instanceof AssociationAttributeInfo) {
+		if (attribute == null) {
+			item.setDisabled(true);
+		} else {
+			if (attribute instanceof StringAttribute) {
+				setValue(info.getName(), (StringAttribute) attribute);
+			} else if (attribute instanceof ShortAttribute) {
+				setValue(info.getName(), (ShortAttribute) attribute);
+			} else if (attribute instanceof IntegerAttribute) {
+				setValue(info.getName(), (IntegerAttribute) attribute);
+			} else if (attribute instanceof LongAttribute) {
+				setValue(info.getName(), (LongAttribute) attribute);
+			} else if (attribute instanceof FloatAttribute) {
+				setValue(info.getName(), (FloatAttribute) attribute);
+			} else if (attribute instanceof DoubleAttribute) {
+				setValue(info.getName(), (DoubleAttribute) attribute);
+			} else if (attribute instanceof CurrencyAttribute) {
+				setValue(info.getName(), (CurrencyAttribute) attribute);
+			} else if (attribute instanceof BooleanAttribute) {
+				setValue(info.getName(), (BooleanAttribute) attribute);
+			} else if (attribute instanceof UrlAttribute) {
+				setValue(info.getName(), (UrlAttribute) attribute);
+			} else if (attribute instanceof ImageUrlAttribute) {
+				setValue(info.getName(), (ImageUrlAttribute) attribute);
+			} else if (attribute instanceof DateAttribute) {
+				setValue(info.getName(), (DateAttribute) attribute);
+
+			} else if (attribute instanceof ManyToOneAttribute) {
 				Object associationItem = item.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
-				AssociationAttributeInfo associationInfo = (AssociationAttributeInfo) info;
-				if (associationItem != null) {
-					switch (associationInfo.getType()) {
-						case MANY_TO_ONE:
-							((ManyToOneItem<?>) associationItem).toItem((ManyToOneAttribute) attribute);  // NOSONAR
-							break;
-						case ONE_TO_MANY:
-							((OneToManyItem<?>) associationItem).toItem((OneToManyAttribute) attribute); // NOSONAR
-							break;
-						default:
-							throw new IllegalStateException("Unhandled association attribute type " +
-									associationInfo.getType());
-					}
-				}
+				((ManyToOneItem<?>) associationItem).toItem((ManyToOneAttribute) attribute);
+			} else if (attribute instanceof OneToManyAttribute) {
+				Object associationItem = item.getAttributeAsObject(AssociationItem.ASSOCIATION_ITEM_ATTRIBUTE_KEY);
+				((OneToManyItem<?>) associationItem).toItem((OneToManyAttribute) attribute);
+
+			} else {
+				throw new IllegalStateException("Unhandled attribute for " + name +
+						" with value " + attribute);
 			}
 			item.fireEvent(new ChangedEvent(item.getJsObj()));
 		}
@@ -360,8 +345,8 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 
 	/** {@inheritDoc} */
 	public void fromForm(String name, Attribute<?> attribute) {
-		AttributeInfo info = attributeInfoMap.get(name);
-		if (attribute == null || info == null || !isIncluded(info)) {
+		AbstractReadOnlyAttributeInfo info = attributeInfoMap.get(name);
+		if (null == attribute || null == info || !isIncluded(info) || !(info instanceof EditableAttributeInfo)) {
 			return;
 		}
 		if (info instanceof PrimitiveAttributeInfo) {
@@ -426,7 +411,7 @@ public class DefaultFeatureForm implements FeatureForm<DynamicForm> {
 	public void clear() {
 		formWidget.clearValues();
 		// the above does not call clearValue() on every item ?!! so do it explicitly
-		for (AttributeInfo info : featureInfo.getAttributes()) {
+		for (AbstractAttributeInfo info : featureInfo.getAttributes()) {
 			FormItem formItem = formWidget.getItem(info.getName());
 			if (formItem != null) {
 				if (info instanceof AssociationAttributeInfo) {

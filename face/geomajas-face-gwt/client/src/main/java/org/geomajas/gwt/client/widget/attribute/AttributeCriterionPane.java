@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -63,7 +64,7 @@ public class AttributeCriterionPane extends Canvas {
 
 	private VectorLayer layer;
 
-	private AttributeInfo selectedAttribute;
+	private AbstractReadOnlyAttributeInfo selectedAttribute;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -165,8 +166,9 @@ public class AttributeCriterionPane extends Canvas {
 	 * 
 	 * @param attributeInfo
 	 *            The attribute definition for which to return possible operators.
+	 * @return operators
 	 */
-	public static String[] getOperatorsForAttributeType(AttributeInfo attributeInfo) {
+	public static String[] getOperatorsForAttributeType(AbstractReadOnlyAttributeInfo attributeInfo) {
 		if (attributeInfo != null && attributeInfo instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttributeInfo primitive = (PrimitiveAttributeInfo) attributeInfo;
 			switch (primitive.getType()) {
@@ -203,6 +205,7 @@ public class AttributeCriterionPane extends Canvas {
 	 * 
 	 * @param label
 	 *            The operator label.
+	 * @return operator code
 	 */
 	public static String getOperatorCodeFromLabel(String label) {
 		if (label != null) {
@@ -240,8 +243,10 @@ public class AttributeCriterionPane extends Canvas {
 		attributeSelect.setWidth(140);
 		attributeSelect.setShowTitle(false);
 		List<String> labels = new ArrayList<String>();
-		for (AttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-			labels.add(attribute.getLabel());
+		for (AbstractAttributeInfo attribute : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+			if (attribute instanceof AbstractReadOnlyAttributeInfo) {
+				labels.add(((AbstractReadOnlyAttributeInfo) attribute).getLabel());
+			}
 		}
 		attributeSelect.setValueMap(labels.toArray(new String[labels.size()]));
 		attributeSelect.setHint(I18nProvider.getSearch().gridChooseAttribute());
@@ -280,7 +285,7 @@ public class AttributeCriterionPane extends Canvas {
 					operatorSelect.setValue(operators[0]);
 
 					// Adjust value form item and enable:
-					valueItem.setAttributeInfo(selectedAttribute.getName(), selectedAttribute);
+					valueItem.setAttributeInfo(selectedAttribute);
 					valueItem.setDisabled(false);
 					valueItem.setWidth(form.getWidth() - 290);
 				}
@@ -296,12 +301,13 @@ public class AttributeCriterionPane extends Canvas {
 		addChild(form);
 	}
 
-	private AttributeInfo getSelectedAttribute() {
+	private AbstractReadOnlyAttributeInfo getSelectedAttribute() {
 		Object value = attributeSelect.getValue();
 		if (value != null) {
-			for (AttributeInfo attributeInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-				if (attributeInfo.getLabel().equals((String) value)) {
-					return attributeInfo;
+			for (AbstractAttributeInfo attributeInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+				if (attributeInfo instanceof AbstractReadOnlyAttributeInfo && value.equals(
+						((AbstractReadOnlyAttributeInfo) attributeInfo).getLabel())) {
+					return (AbstractReadOnlyAttributeInfo) attributeInfo;
 				}
 			}
 		}
@@ -356,10 +362,9 @@ public class AttributeCriterionPane extends Canvas {
 		 * <code>FormItem</code> for the new type of attribute. In order to accomplish this, a
 		 * {@link AttributeFormFieldRegistry} is used.
 		 * 
-		 * @param attributeName The new attribute name, possibly recursive.
-		 * @param attributeInfo The new attribute definition for whom to display the correct <code>FormItem</code>.
+		 * @param attributeInfo The new attribute definition for which to display the correct <code>FormItem</code>.
 		 */
-		public void setAttributeInfo(String attributeName, AttributeInfo attributeInfo) {
+		public void setAttributeInfo(AbstractReadOnlyAttributeInfo attributeInfo) {
 			formItem = AttributeFormFieldRegistry.createFormItem(attributeInfo, new DefaultAttributeProvider(layer
 					.getLayerInfo().getServerLayerId()));
 			if (formItem != null) {
@@ -371,7 +376,11 @@ public class AttributeCriterionPane extends Canvas {
 			}
 		}
 
-		/** Set a new width on this instance. Delegates to the internal form. */
+		/**
+		 * Set a new width on this instance. Delegates to the internal form.
+		 *
+		 * @param  width width
+		 */
 		public void setWidth(int width) {
 			form.setWidth(width);
 			if (formItem != null) {
@@ -379,7 +388,11 @@ public class AttributeCriterionPane extends Canvas {
 			}
 		}
 
-		/** Get the current value form the internal <code>FormItem</code>. */
+		/**
+		 * Get the current value form the internal <code>FormItem</code>.
+		 *
+		 * @return value
+		 */
 		public Object getValue() {
 			if (formItem != null) {
 				return formItem.getValue();
@@ -387,7 +400,11 @@ public class AttributeCriterionPane extends Canvas {
 			return null;
 		}
 
-		/** Return the form for the inner FormItem. On the returned form, validation will work. */
+		/**
+		 * Return the form for the inner FormItem. On the returned form, validation will work.
+		 *
+		 * @return form
+		 */
 		public DynamicForm getForm() {
 			return form;
 		}
