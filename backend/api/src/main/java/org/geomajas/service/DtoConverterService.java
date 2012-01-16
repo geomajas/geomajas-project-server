@@ -75,6 +75,7 @@ public interface DtoConverterService {
 	 *            The attribute definition from the configuration.
 	 * @return Returns a DTO attribute.
 	 * @throws GeomajasException conversion failed
+	 * @since 1.10.0
 	 */
 	Attribute<?> toDto(Object object, AbstractAttributeInfo info) throws GeomajasException;
 
