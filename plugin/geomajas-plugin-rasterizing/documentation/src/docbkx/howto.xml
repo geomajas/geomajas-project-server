@@ -9,11 +9,11 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-  <para></para>
+  <para>This chapter shows some common use cases that apply to the rasterizing
+  plugin.</para>
 </chapter>

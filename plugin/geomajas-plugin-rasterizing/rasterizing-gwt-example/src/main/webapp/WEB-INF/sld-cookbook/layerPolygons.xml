@@ -95,9 +95,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         </property>
     </bean>
     
+	<!-- @extract-start NamedStyleInfo, SLD style configuration -->
 	<bean class="org.geomajas.configuration.NamedStyleInfo" name="polygonAttributeBasedStyleInfo">
 		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/polygon_attributebasedpolygon.sld"/>
  	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.configuration.NamedStyleInfo" name="polygonGraphicFillStyleInfo">
 		<property name="sldLocation" value="WEB-INF/sld-cookbook/sld/polygon_graphicfill.sld"/>

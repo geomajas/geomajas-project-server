@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- @extract-start SimpleLine, SLD style sample -->
 <StyledLayerDescriptor version="1.0.0" 
     xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
     xmlns="http://www.opengis.net/sld" 
@@ -22,3 +23,4 @@
     </UserStyle>
   </NamedLayer>
 </StyledLayerDescriptor>
+<!-- @extract-end -->

@@ -150,12 +150,12 @@
 
     <para>Note that you can configure when the initial rasterizing takes
     place. This can either be done when requesting the vector tile or when
-    requesting the tile image. There is a trade of, handling the rasterizing
-    at vector tile requests is most increases throughput for the back-end, but
-    seems slower for the client.</para>
+    requesting the tile image. There is a trade-off, handling the rasterizing
+    at vector tile requests optimizes throughput for the back-end, but seems
+    slower for the client.</para>
   </section>
 
-  <section>
+  <section id="image-rendering-services">
     <title>The image and rendering services</title>
 
     <para>The rasterizing process has an application-level service, called
@@ -208,15 +208,357 @@
     argument, but expects a <code>ClientMapInfo</code> DTO object
     instead:</para>
 
-    <programlisting>public interface ImageService {
-
-    void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
-
-    void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
-
-}</programlisting>
+    <xi:include href="listing/ImageService.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The <code>ClientMapInfo</code> DTO object has been extended a bit to
-    include all the rasterizing information needed.</para>
+    include all the rasterizing information needed (see next chapter).</para>
+  </section>
+
+  <section>
+    <title>Rasterizing info classes</title>
+
+    <para>The <code>ClientMapInfo</code> DTO object has been extended to pass
+    plugin-specific information to the rasterizing plugin backend. This was
+    done by using the generic <code>ClientWidgetInfo</code> mechanism for
+    adding per-map and per-layer information. Three extensions have been
+    defined:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><code>MapRasterizingInfo</code>: this is a
+        <code>ClientWidgetInfo</code> extension that is applied at the map
+        level and contains such extra information as scale and bounds, extra
+        layers to be visualized, background transparency and legend
+        information (in case a legend has to be rendered)</para>
+      </listitem>
+
+      <listitem>
+        <para><code>RasterLayerRasterizingInfo</code>: this is a
+        <code>ClientWidgetInfo</code> extension that is applied at the level
+        of a raster layer and contains client-side dynamic information like
+        visibility and css styling (opacity)</para>
+      </listitem>
+
+      <listitem>
+        <para><code>VectorLayerRasterizingInfo</code>: this is a
+        <code>ClientWidgetInfo</code> extension that is applied at the level
+        of a vector layer and contains client-side dynamic information at the
+        layer level like visibility, selection and style</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The appropriate ClientWidgetInfo object should be set on the map and
+    each of its layers using <code>getWidgetInfo().put(key,info)</code> before
+    calling the <code>ImageService.</code>The following subsections will
+    explain each of the extension DTO objects.</para>
+
+    <section>
+      <title>MapRasterizingInfo</title>
+
+      <para>The <code>MapRasterizingInfo</code> DTO object contains the
+      metadata information that is needed to rasterize the map. The following
+      attributes are provided:</para>
+
+      <table>
+        <title>MapRasterizingInfo attributes</title>
+
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>bounds</entry>
+
+              <entry>Bounds of the map region that should be
+              visualized</entry>
+            </row>
+
+            <row>
+              <entry>scale</entry>
+
+              <entry>Scale (in pixels per map unit). In combination with the
+              bounds this determines the dimensions of the raster
+              image</entry>
+            </row>
+
+            <row>
+              <entry>transparent</entry>
+
+              <entry>Determines whether the resulting image should be
+              transparent. If false, non of the layers can use transparency
+              !</entry>
+            </row>
+
+            <row>
+              <entry>extraLayers</entry>
+
+              <entry>A list of ClientLayerInfo DTO objects that should be
+              added on top of the configured layers of the map. This opens up
+              the possibility to render additonal layers on top of the map
+              that were not part of the original map configuration. It also
+              allows to add extra objects on top of the map, such as
+              calculated buffers or feature geometries (see <link
+              linkend="client-geometry-section">ClientGeometryLayerInfo</link>).</entry>
+            </row>
+
+            <row>
+              <entry>legendRasterizingInfo</entry>
+
+              <entry>A DTO object that contains specific information for
+              rendering the legend (in case the <code>renderLegend()</code>
+              method is used. It determines the width, height and font
+              properties of the legend.</entry>
+            </row>
+
+            <row>
+              <entry>ClientGeometryLayerInfo</entry>
+
+              <entry>A subclass of the ClientLayerInfo object. This is used to
+              add a geometry to the map that does not have a server side
+              equivalent.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section>
+      <title>RasterLayerRasterizingInfo</title>
+
+      <para>The <code>RasterLayerRasterizingInfo</code> DTO object contains
+      metadata information that is needed to rasterize a raster layer. It
+      contains the following attributes:</para>
+
+      <table>
+        <title>RasterLayerRasterizingInfo</title>
+
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>showing</entry>
+
+              <entry>True if the layer should be rasterized. This property is
+              necessary because, as the RasterLayerRasterizingInfo is added to
+              the original layer configuration of the map, skipping of certain
+              layers should be possible by allowing showing = false (leaving
+              the original configuration untouched).</entry>
+            </row>
+
+            <row>
+              <entry>cssStyle</entry>
+
+              <entry>The CSS style property to be set on the raster layer
+              images. This is primarily used to set the opacity.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section>
+      <title>VectorLayerRasterizingInfo</title>
+
+      <para>The <code>VectorLayerRasterizingInfo</code> DTO object contains
+      metadata information that is needed to rasterize a vector layer. It
+      contains the following attributes:</para>
+
+      <table>
+        <title>VectorLayerRasterizingInfo</title>
+
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>showing</entry>
+
+              <entry>True if the layer should be rasterized. This property is
+              necessary because, as the VectorLayerRasterizingInfo is added to
+              the original layer configuration of the map, skipping of certain
+              layers should be possible by allowing showing = false (leaving
+              the original configuration untouched).</entry>
+            </row>
+
+            <row>
+              <entry>style</entry>
+
+              <entry>The style to be applied for rasterizing the layer. This
+              may be different from the configured style of the layer.</entry>
+            </row>
+
+            <row>
+              <entry>selectionRule</entry>
+
+              <entry>The style rule to be applied to the selected features.
+              Selected features will be shown in a specific selectiion style
+              defined by this rule.</entry>
+            </row>
+
+            <row>
+              <entry>selectedFeatureIds</entry>
+
+              <entry>The feature identifiers of the selected features.</entry>
+            </row>
+
+            <row>
+              <entry>filter</entry>
+
+              <entry>An extra filter to limit the features that will be
+              rasterized.</entry>
+            </row>
+
+            <row>
+              <entry>paintLabels</entry>
+
+              <entry>Wether labels should be painted.</entry>
+            </row>
+
+            <row>
+              <entry>paintGeometries</entry>
+
+              <entry>Wether geometries should be painted.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section id="client-geometry-section">
+      <title>ClientGeometryLayerInfo</title>
+
+      <para>The <code>ClientGeometryLayerInfo</code> DTO object contains
+      metadata information that is needed to rasterize geometries that are not
+      part of the map configuration and have no server-side layer equivalent.
+      This type of layer can be added as an extra layer to the
+      MapRasterizingInfo DTO to add such objects to the map like user-drawn
+      geometries, calculated buffers, bounds, etcetera. It contains the
+      following attributes:</para>
+
+      <table>
+        <title>ClientGeometryLayerInfo</title>
+
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>showing</entry>
+
+              <entry>True if the layer should be rasterized.</entry>
+            </row>
+
+            <row>
+              <entry>style</entry>
+
+              <entry>The style to be applied for rasterizing the
+              geometries.</entry>
+            </row>
+
+            <row>
+              <entry>layerType</entry>
+
+              <entry>The type of the geometries. Should be one of the vector
+              layer types</entry>
+            </row>
+
+            <row>
+              <entry>geometries</entry>
+
+              <entry>The list of geometries to be rendered. All geometries are
+              assumed to be defined in the CRS of the map.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+
+  <section>
+    <title>RenderingService and LayerFactoryService</title>
+
+    <para>As indicated in the <link linkend="image-rendering-services">image
+    and rendering services </link>section, the actual rendering of the
+    map/legend is based on the Geotools map context and renderer concepts. The
+    RenderingService interface has the following methods:</para>
+
+    <xi:include href="listing/RenderingService.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>Both methods take a Geotools <code>MapContext</code> object as
+    parameter. The <code>MapContext</code> object contains a list of Geotools
+    <code>Layer</code> objects, The Geomajas layer DTO objects are internally
+    converted to Geotools layers by using an abstract factory pattern. The
+    abstract factory has a method to check whether it can perform the layer
+    creation (based on the passed <code>ClientLayerInfo</code> object) and an
+    actual factory method:</para>
+
+    <xi:include href="listing/LayerFactory.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The <code>LayerFactory</code> also defines a number of user data
+    keys that allow Geotools <code>Layer</code> implementations to access
+    Geomajas DTO objects internally, should that be necessary. </para>
+
+    <para>The following concrete LayerFactory implementations are
+    available:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><code>VectorLayerFactory</code>: accepts a
+        <code>ClientVectorLayerInfo</code> DTO and creates a Geotools
+        <code>FeatureLayer</code></para>
+      </listitem>
+
+      <listitem>
+        <para><code>RasterLayerFactory</code>: accepts a
+        <code>ClientRasterLayerInfo</code> DTO and creates a
+        <code>RasterDirectLayer</code>, which is our own implementation of a
+        Geotools <code>DirectLayer</code> for rendering raster layers</para>
+      </listitem>
+
+      <listitem>
+        <para><code>GeometryLayerFactory</code>:accepts a
+        <code>GeometryLayerInfo</code> DTO and creates a
+        <code>GeometryDirectLayer</code>, which is our own implementation of a
+        Geotools <code>DirectLayer</code> for rendering geometries</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Concrete layer factories are instantiated as singleton components in
+    the application context. A separate <code>LayerFactoryService</code> takes
+    care of iterating over the configured layer factories and is the entry
+    point for creating the layers for the map context in the
+    <code>AddLayersStep</code> of the rasterizing pipeline. The current system
+    can be extended by creating an additional <code>ClientLayerInfo</code>
+    class and a complimentary <code>LayerFactory</code>. The custom
+    <code>LayerFactory</code> should create a Geotools <code>Layer</code>
+    implementation based on <code>DirectLayer</code>.</para>
   </section>
 </chapter>

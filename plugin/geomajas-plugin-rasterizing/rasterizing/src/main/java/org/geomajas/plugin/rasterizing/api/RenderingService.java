@@ -25,24 +25,23 @@ import org.geotools.map.MapContext;
  * 
  */
 @Api(allMethods = true)
+// @extract-start RenderingService, Rendering service interface definition
 public interface RenderingService {
 
 	/**
 	 * Renders the legend for the specified map context.
 	 * 
-	 * @param context
-	 *            map context
+	 * @param context map context
 	 * @return the image
 	 */
 	RenderedImage paintLegend(MapContext context);
-	
+
 	/**
 	 * Renders the map context to the specified Java 2D graphics.
 	 * 
-	 * @param context
-	 *            map context
-	 * @param graphic
-	 *            graphics object
+	 * @param context map context
+	 * @param graphic graphics object
 	 */
 	void paintMap(MapContext context, Graphics2D graphics);
 }
+// @extract-end

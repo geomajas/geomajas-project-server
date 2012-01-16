@@ -128,64 +128,161 @@
   </section>
 
   <section>
-    <title>Rasterizing service configuration</title>
+    <title>Rasterizing style configuration - SLD (Styled Layer
+    Descriptor)</title>
 
-    <para>The rasterizing service defaults to a GeoTools implementation. You
-    can configure the following parameters of this service:<itemizedlist>
-        <listitem>
-          <para>transparent: boolean to indicate that the generated image
-          should be transparent (defaults to true)</para>
-        </listitem>
+    <para>The rendering service is based on the Geotools Rendere and makes use
+    of the SLD standard for style configuration. This means that styles are
+    completely defined through SLD. The Geomajas style configuration has been
+    extended to support SLD 1.0.0, and more specifically the schema defined in
+    GeoTools (which is also used by Udig and GeoServer). The support of SLD
+    opens up many possibilities for styling that were previously not
+    available. A selection of SLD styles that can be used as a source of
+    inspiration - in addition to the <ulink
+    url="http://www.opengeospatial.org/standards/sld">standard</ulink> itself,
+    of course, which is the ultimate reference - can be found in the <ulink
+    url="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/index.html">SLD
+    cookbook</ulink> of GeoServer. The rasterizing showcase demonstrates most
+    cookbook examples.</para>
 
-        <listitem>
-          <para>renderingHints: this parameter defines an optional map of
-          rendering hints (of class RenderingHints) that are used by the Java
-          Graphics2D class. Each hint consists of a key-value pair.</para>
-        </listitem>
+    <para>An example of how to configure the SLD file for a layer style in
+    Geomajas is shown below:</para>
 
-        <listitem>
-          <para>labelBorderDistanceX: distance between label border and text
-          (x-direction).</para>
-        </listitem>
+    <xi:include href="listing/NamedStyleInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <listitem>
-          <para>labelBorderDistanceY: distance between label border and text
-          (y-direction).</para>
-        </listitem>
+    <para>It is sufficient to let the <code>sldLocation</code> property point
+    to the (relative) location of the SLD file.</para>
 
-        <listitem>
-          <para>style2DFactoryService: service that behaves as a factory for
-          turning configuration styles into GeoTools styles. This service can
-          be replaced by a custom service, e.g. to convert extensions of
-          current style configuration objects.</para>
-        </listitem>
-      </itemizedlist></para>
+    <para>An example of an SLD style is shown below:</para>
 
-    <para>A custom rasterizing service configuration might look like
-    this:</para>
+    <xi:include href="listing/SimpleLine.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para><programlisting>&lt;bean name="plugin.rasterizing.RasterizingService"
-  class="org.geomajas.plugin.rasterizing.GeotoolsRasterizingService"&gt;
-  &lt;property name="transparent" value="false" /&gt;
-  &lt;property name="renderingHints" ref="renderingHints" /&gt;
-  &lt;property name="labelBorderDistanceX" value="4" /&gt;
-  &lt;property name="labelBorderDistanceY" value="3" /&gt;
- &lt;/bean&gt;
+    <para>The following limitations hold for the SLD file: .</para>
 
- &lt;util:map id="renderingHints" map-class="org.geotools.factory.Hints"&gt;
-  &lt;entry&gt;
-   &lt;key&gt;
-    &lt;util:constant static-field="java.awt.RenderingHints.KEY_ANTIALIASING" /&gt;
-   &lt;/key&gt;
-   &lt;ref bean="valueAntiAliasOff" /&gt;
-  &lt;/entry&gt;
- &lt;/util:map&gt;
+    <itemizedlist>
+      <listitem>
+        <para>the configuration should contain a <code>NamedLayer</code> that
+        holds a <code>UserStyle</code></para>
+      </listitem>
 
- &lt;util:constant id="valueAntiAliasOff"
-  static-field="java.awt.RenderingHints.VALUE_ANTIALIAS_OFF" /&gt;</programlisting>Note
-    that we have to go through some hoops to configure the rendering hints in
-    XML. Of course, you can always provide your own service implementation by
-    implementing the RasterizingService interface and replacing the bean class
-    in the above configuration.</para>
+      <listitem>
+        <para>the user style should contain a single <code>FeatureStyle</code>
+        with at least one rule.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Commands</title>
+
+    <para>Apart from the usage within the map - which is based on the generic
+    <code>GetVectorTileCommand</code> - the <code>RasterizeMapCommand</code>
+    can be used to separately fetch an image URL to a rasterized map and/or
+    legend:</para>
+
+    <table>
+      <title>RasterizeMapCommand</title>
+
+      <tgroup cols="2">
+        <tbody>
+          <row>
+            <entry>Id</entry>
+
+            <entry>command.rasterizing.RasterizeMap</entry>
+          </row>
+
+          <row>
+            <entry>request object class</entry>
+
+            <entry>org.geomajas.plugin.rasterizing.command.dto.RasterizeMapRequest</entry>
+          </row>
+
+          <row>
+            <entry>request parameters</entry>
+
+            <entry><itemizedlist>
+                <listitem>
+                  <para>clientMapInfo: the map info with the rasterizing
+                  extensions</para>
+                </listitem>
+              </itemizedlist></entry>
+          </row>
+
+          <row>
+            <entry>Description</entry>
+
+            <entry>Command that creates an image of the map and the legend,
+            adds it to the cache and returns an URL for both images</entry>
+          </row>
+
+          <row>
+            <entry>response object class</entry>
+
+            <entry>org.geomajas.plugin.rasterizing.command.dto.RasterizeMapResponse</entry>
+          </row>
+
+          <row>
+            <entry>response parameters</entry>
+
+            <entry><itemizedlist>
+                <listitem>
+                  <para>mapKey: cache key for the map image</para>
+                </listitem>
+
+                <listitem>
+                  <para>legendKey: cache key for the legend image</para>
+                </listitem>
+
+                <listitem>
+                  <para>mapUrl: URL of the map image</para>
+                </listitem>
+
+                <listitem>
+                  <para>legendUrl: URL of the legend image</para>
+                </listitem>
+              </itemizedlist></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>To call the command, an extended <code>ClientMapInfo</code> object
+    should be created client-side and passed as a parameter to the request. To
+    facilitate this, an <code>ImageUrlService</code> is provided that perfoms
+    this preparation stage in the common use case where the user wants to
+    generate an image of the current screen. The following methods are
+    provided by this service:</para>
+
+    <xi:include href="listing/ImageUrlService.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The basic method to call is the <code>createImageUrl(MapWidget map,
+    ImageUrlCallback imageCallBack)</code> method, which fetches the current
+    map and legend image. The result is received asynchronously by passing a
+    special callback interface <code>ImageUrlCallback</code>. The map
+    preparation part can be called separately through the
+    <code>makeRasterizable()</code> method, which is useful in the case where
+    the user wants to make some additional changes to the rasterizing
+    extension data. When using this method, the preparation stage can be
+    consequently skipped by calling the <code>createImageUrl(MapWidget map,
+    ImageUrlCallback imageCallBack, boolean makeRasterizable)</code>method
+    with <code>makeRasterizable = false</code>.</para>
+
+    <para>For the common use case of making a print of the current map or
+    legend, 2 toolbar actions have been registered:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><code>GetMapImageAction</code>: this action exports an image of
+        the current map screen in a separate browser window</para>
+      </listitem>
+
+      <listitem>
+        <para><code>GetLegendImageAction</code>: this action exports an image
+        of the current legend in a separate browser window</para>
+      </listitem>
+    </itemizedlist>
   </section>
 </chapter>

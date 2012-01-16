@@ -24,30 +24,26 @@ import org.geomajas.global.GeomajasException;
  * 
  */
 @Api(allMethods = true)
+// @extract-start ImageService, Image service interface definition
 public interface ImageService {
 
 	/**
 	 * Writes a map to the specified output stream.
 	 * 
-	 * @param stream
-	 *            output stream
-	 * @param clientMapInfo
-	 *            metadata of the map
-	 * @throws GeomajasException
-	 *             thrown when the stream could not be written
+	 * @param stream output stream
+	 * @param clientMapInfo metadata of the map
+	 * @throws GeomajasException thrown when the stream could not be written
 	 */
 	void writeMap(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
 
 	/**
 	 * Writes a legend to the specified output stream.
 	 * 
-	 * @param stream
-	 *            output stream
-	 * @param clientMapInfo
-	 *            metadata of the map
-	 * @throws GeomajasException
-	 *             thrown when the stream could not be written
+	 * @param stream output stream
+	 * @param clientMapInfo metadata of the map
+	 * @throws GeomajasException thrown when the stream could not be written
 	 */
 	void writeLegend(OutputStream stream, ClientMapInfo clientMapInfo) throws GeomajasException;
 
 }
+// @extract-end

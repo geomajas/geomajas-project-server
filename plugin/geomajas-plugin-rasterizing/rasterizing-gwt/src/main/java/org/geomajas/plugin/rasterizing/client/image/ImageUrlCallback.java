@@ -10,12 +10,15 @@
  */
 package org.geomajas.plugin.rasterizing.client.image;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Callback invoked after image generation on the server.
  * 
  * @author Jan De Moerloose
  * 
  */
+@Api(allMethods = true)
 public interface ImageUrlCallback {
 
 	/**

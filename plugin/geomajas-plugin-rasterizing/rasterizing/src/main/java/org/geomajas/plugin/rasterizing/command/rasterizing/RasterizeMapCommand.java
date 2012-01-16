@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
+ * Command that creates an image of the map and the legend, adds it to the cache and returns an URL for both images.
  * 
  * @author Jan De Moerloose
  * @since 1.0.0

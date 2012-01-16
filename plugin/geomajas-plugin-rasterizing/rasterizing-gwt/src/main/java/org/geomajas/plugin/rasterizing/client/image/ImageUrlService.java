@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.client.image;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
@@ -18,6 +19,8 @@ import org.geomajas.gwt.client.widget.MapWidget;
  * @author Jan De Moerloose
  * 
  */
+@Api(allMethods = true)
+// @extract-start ImageUrlService, Image URL service definition
 public interface ImageUrlService {
 
 	/**
@@ -38,9 +41,10 @@ public interface ImageUrlService {
 	void createImageUrl(MapWidget map, ImageUrlCallback imageCallBack);
 
 	/**
-	 * Prepare the specified map for serverside rasterization.
+	 * Prepare the specified map for server-side rasterization.
 	 * 
 	 * @param map the map
 	 */
 	void makeRasterizable(MapWidget map);
 }
+// @extract-end

@@ -29,6 +29,7 @@ import org.geotools.map.MapContext;
 @Api(allMethods = true)
 @UserImplemented
 @ExpectAlternatives
+// @extract-start LayerFactory, Layer factory interface definition
 public interface LayerFactory {
 
 	/**
@@ -47,17 +48,15 @@ public interface LayerFactory {
 	String USERDATA_KEY_STYLE_RULES = "geomajas.rasterizing.style.rules"; // List<RuleInfo>
 
 	/**
-	 * user data to record if layer is showing (up to caller to decide what to do with this info).
+	 * user data for the map (up to caller to decide what to do with this info).
 	 */
 	String USERDATA_RASTERIZING_INFO = "geomajas.rasterizing.info"; // MapRasterizingInfo
 
 	/**
 	 * Returns true if this factory is capable of creating layer instances for the specified metadata.
 	 * 
-	 * @param mapContext
-	 *            the map context
-	 * @param clientLayerInfo
-	 *            the client layer metadata
+	 * @param mapContext the map context
+	 * @param clientLayerInfo the client layer metadata
 	 * @return true if we can create layer instances
 	 */
 	boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo);
@@ -65,13 +64,11 @@ public interface LayerFactory {
 	/**
 	 * Creates a layer for the specified metadata.
 	 * 
-	 * @param mapContext
-	 *            the map context
-	 * @param clientLayerInfo
-	 *            the client layer metadata
+	 * @param mapContext the map context
+	 * @param clientLayerInfo the client layer metadata
 	 * @return layer ready for rendering
-	 * @throws GeomajasException
-	 *             something went wrong
+	 * @throws GeomajasException something went wrong
 	 */
 	Layer createLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) throws GeomajasException;
 }
+// @extract-end
