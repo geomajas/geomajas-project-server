@@ -28,6 +28,7 @@ import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.SyntheticAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -303,14 +304,16 @@ public class VectorLayerFactory implements LayerFactory {
 		FeatureInfo featureInfo = layer.getLayerInfo().getFeatureInfo();
 		for (InternalFeature internalFeature : features) {
 			// 3 more attributes : normal style rule index, selected style rule index, geometry index
-			Object[] values = new Object[featureInfo.getAttributes().size() + 3];
+			Object[] values = new Object[type.getAttributeCount()];
 			int i = 0;
 			for (AbstractAttributeInfo attrInfo : featureInfo.getAttributes()) {
-				String name = attrInfo.getName();
-				if (styleAttributeNames.contains(name)) {
-					values[i++] = internalFeature.getAttributes().get(name).getValue();
-				} else {
-					values[i++] = null;
+				if (!(attrInfo instanceof SyntheticAttributeInfo)) {
+					String name = attrInfo.getName();
+					if (styleAttributeNames.contains(name)) {
+						values[i++] = internalFeature.getAttributes().get(name).getValue();
+					} else {
+						values[i++] = null;
+					}
 				}
 			}
 			// normal style rule index attribute (TODO deprecate the whole idea of coupling single rule to feature)
@@ -387,6 +390,8 @@ public class VectorLayerFactory implements LayerFactory {
 					default:
 						throw new IllegalStateException("Unknown association attribute type " + ass.getType());
 				}
+			} else if (!(attrInfo instanceof SyntheticAttributeInfo)) {
+				throw new IllegalStateException("Unhandled attribute info for attribute " + attrInfo.getName());
 			}
 		}
 		// add the extra rule index attributes
