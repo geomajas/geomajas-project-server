@@ -97,7 +97,8 @@ public class AttributeCustomTypeSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerBeansCustomType.xml", "WEB-INF/mapBeansCustomType.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/layerBeansCustomType.xml",
+				"classpath:org/geomajas/gwt/example/context/mapBeansCustomType.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

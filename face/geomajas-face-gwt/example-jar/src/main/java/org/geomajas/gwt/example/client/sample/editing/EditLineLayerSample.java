@@ -12,10 +12,9 @@
 package org.geomajas.gwt.example.client.sample.editing;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
@@ -55,17 +54,17 @@ public class EditLineLayerSample extends SamplePanel {
 
 		// Map with ID editLineLayerMap is defined in the XML configuration.
 		final MapWidget map = new MapWidget("mapEditLine", "gwtExample");
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerEditableRoadtrl020"));
 			}
 		});
 
 		// Create a toolbar for this map:
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
@@ -87,8 +86,8 @@ public class EditLineLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapEditLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
-				"WEB-INF/layerRoadsTrl020.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapEditLineLayer.xml",
+				"classpath:org/geomajas/gwt/example/base/layerRoadsTrl020.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

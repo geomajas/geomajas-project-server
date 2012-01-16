@@ -16,8 +16,6 @@ import org.geomajas.gwt.client.widget.attribute.DataSourceFieldFactory;
 import org.geomajas.gwt.client.widget.attribute.FormItemFactory;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -92,9 +90,9 @@ public class AttributeCustomFormSample extends SamplePanel {
 		layout.addMember(map);
 		map.init();
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansLayerCustomForm");
 				FeatureAttributeEditor editor = new FeatureAttributeEditor(layer, false, myFactory);
 				layout.addMember(editor);
@@ -109,7 +107,8 @@ public class AttributeCustomFormSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerBeansCustomForm.xml", "WEB-INF/mapBeansCustomForm.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/layerBeansCustomForm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapBeansCustomForm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

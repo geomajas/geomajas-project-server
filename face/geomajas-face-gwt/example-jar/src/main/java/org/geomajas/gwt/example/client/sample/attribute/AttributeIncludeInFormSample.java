@@ -14,8 +14,6 @@ package org.geomajas.gwt.example.client.sample.attribute;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -56,9 +54,9 @@ public class AttributeIncludeInFormSample extends SamplePanel {
 		layout.addMember(map);
 		map.init();
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansLayerIncludeInForm");
 				FeatureAttributeEditor editor = new FeatureAttributeEditor(layer, false);
 				editor.setWidth(400);
@@ -74,7 +72,8 @@ public class AttributeIncludeInFormSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerBeansIncludeInForm.xml", "WEB-INF/mapBeansIncludeInForm.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/layerBeansIncludeInForm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapBeansIncludeInForm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

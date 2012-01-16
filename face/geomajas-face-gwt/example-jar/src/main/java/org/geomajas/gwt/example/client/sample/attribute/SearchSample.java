@@ -91,8 +91,9 @@ public class SearchSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
-				"WEB-INF/layerWmsBluemarble.xml", };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapFeatureListGrid.xml",
+				"classpath:org/geomajas/gwt/example/base/layerCountries110m.xml",
+				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml", };
 	}
 
 	public String ensureUserLoggedIn() {

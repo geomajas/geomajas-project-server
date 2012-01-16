@@ -114,7 +114,8 @@ public class EditableGridSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapEditableGrid.xml", "WEB-INF/layerBeansEditableGrid.xml"};
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapEditableGrid.xml",
+				"classpath:org/geomajas/gwt/example/context/layerBeansEditableGrid.xml"};
 	}
 
 	public String ensureUserLoggedIn() {

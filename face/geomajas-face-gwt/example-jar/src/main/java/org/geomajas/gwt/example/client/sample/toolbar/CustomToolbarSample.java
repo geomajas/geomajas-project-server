@@ -12,11 +12,10 @@
 package org.geomajas.gwt.example.client.sample.toolbar;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.action.toolbar.ZoomToRectangleModalAction;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
@@ -55,7 +54,7 @@ public class CustomToolbarSample extends SamplePanel {
 		final MapWidget map = new MapWidget("mapOsm", "gwtExample");
 
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 
 		// add a button in GWT code
 		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
@@ -66,9 +65,9 @@ public class CustomToolbarSample extends SamplePanel {
 		// wait for the map to be loaded and select the 1st layer
 		// the map only has one layer so selecting the 1st one is correct
 		// We need to select a layer cause the FeatureInfo works on selected layers only
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
 			}
 		});
@@ -82,7 +81,7 @@ public class CustomToolbarSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/mapOsm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapOsm.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 

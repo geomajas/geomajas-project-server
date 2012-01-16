@@ -12,14 +12,14 @@
 package org.geomajas.gwt.example.client.sample.controller;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
@@ -93,9 +93,9 @@ public class ControllerOnElementSample extends SamplePanel {
 		};
 
 		// After map initialization we draw an image on the map:
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				GraphicsContext graphics = map.getVectorContext();
 				graphics.drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle, style);
 				map.getVectorContext().setController(map.getGroup(RenderGroup.SCREEN), "rectangle", customController);
@@ -112,7 +112,7 @@ public class ControllerOnElementSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/mapOsm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapOsm.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 

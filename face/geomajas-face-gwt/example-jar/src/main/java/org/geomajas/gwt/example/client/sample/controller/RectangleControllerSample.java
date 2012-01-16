@@ -120,7 +120,8 @@ public class RectangleControllerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerWmsBluemarble.xml", "WEB-INF/mapWms.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml",
+				"classpath:org/geomajas/gwt/example/context/mapWms.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

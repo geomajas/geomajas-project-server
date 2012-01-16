@@ -82,9 +82,9 @@ public class EditAttributeSample extends SamplePanel {
 		hLayout.addMember(enabledBtn);
 		layout.addMember(hLayout);
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansAssociationLayer");
 				editor = new FeatureAttributeEditor(layer, false);
 				editor.setWidth(400);
@@ -100,7 +100,8 @@ public class EditAttributeSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/mapBeans.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/layerBeans.xml",
+				"classpath:org/geomajas/gwt/example/context/mapBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

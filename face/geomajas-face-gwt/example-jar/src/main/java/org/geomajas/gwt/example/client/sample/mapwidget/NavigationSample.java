@@ -151,7 +151,7 @@ public class NavigationSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/mapOsm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapOsm.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 

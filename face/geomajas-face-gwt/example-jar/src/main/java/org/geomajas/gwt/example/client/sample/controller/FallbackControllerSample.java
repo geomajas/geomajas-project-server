@@ -12,6 +12,7 @@
 package org.geomajas.gwt.example.client.sample.controller;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.controller.MeasureDistanceController;
@@ -56,7 +57,7 @@ public class FallbackControllerSample extends SamplePanel {
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
 		final MapWidget map = new MapWidget("mapToolbarSecurity", "gwtExample");
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 
 		// Set a different fall-back controller:
 		map.setFallbackController(new MeasureDistanceController(map));
@@ -80,7 +81,8 @@ public class FallbackControllerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapToolbarSecurity.xml", "WEB-INF/layerWmsBluemarble.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapToolbarSecurity.xml",
+				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

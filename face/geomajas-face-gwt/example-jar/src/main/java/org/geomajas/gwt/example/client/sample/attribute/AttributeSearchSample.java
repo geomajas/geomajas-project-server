@@ -97,7 +97,8 @@ public class AttributeSearchSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/mapBeans.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/layerBeans.xml",
+				"classpath:org/geomajas/gwt/example/context/mapBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

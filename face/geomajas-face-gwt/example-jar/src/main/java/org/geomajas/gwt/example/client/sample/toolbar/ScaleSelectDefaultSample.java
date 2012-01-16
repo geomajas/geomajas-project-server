@@ -15,8 +15,6 @@ import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.ScaleSelect;
 import org.geomajas.gwt.client.widget.Toolbar;
@@ -64,9 +62,9 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 		layout.addMember(map);
 
 		// wait for the map to be loaded cause we need a correct map.getPixelPerUnit
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelPerUnit());
 				toolbar.addMember(scaleSelect);
 			}
@@ -81,7 +79,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] {
-				"classpath:org/geomajas/gwt/example/mapOsm.xml",
+				"classpath:org/geomajas/gwt/example/context/mapOsm.xml",
 				"classpath:org/geomajas/gwt/example/base/layerOsm.xml" };
 	}
 

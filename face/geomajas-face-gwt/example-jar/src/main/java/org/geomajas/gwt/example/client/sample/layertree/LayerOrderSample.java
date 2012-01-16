@@ -104,9 +104,11 @@ public class LayerOrderSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
-				"WEB-INF/layerRivers50m.xml", "WEB-INF/layerPopulatedPlaces110m.xml", 
-				"WEB-INF/layerWmsBluemarble.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapLegend.xml",
+				"classpath:org/geomajas/gwt/example/base/layerLakes110m.xml",
+				"classpath:org/geomajas/gwt/example/base/layerRivers50m.xml",
+				"classpath:org/geomajas/gwt/example/base/layerPopulatedPlaces110m.xml",
+				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

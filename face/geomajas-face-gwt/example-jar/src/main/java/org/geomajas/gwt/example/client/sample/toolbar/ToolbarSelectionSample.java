@@ -12,10 +12,9 @@
 package org.geomajas.gwt.example.client.sample.toolbar;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
@@ -56,7 +55,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 		final MapWidget map = new MapWidget("mapSelection", "gwtExample");
 
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setButtonSize(WidgetLayout.toolbarLargeButtonSize);
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
@@ -64,9 +63,9 @@ public class ToolbarSelectionSample extends SamplePanel {
 		// wait for the map to be loaded and select the 1st layer
 		// the map only has one layer so selecting the 1st one is correct
 		// We need to select a layer cause the SelectionMode works on selected layers only
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				map.getMapModel().selectLayer(map.getMapModel().getLayer("clientLayerCountries110mGT"));
 			}
 		});
@@ -79,9 +78,9 @@ public class ToolbarSelectionSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapSelection.xml",
-				"WEB-INF/layerCountries110m.xml",
-				"WEB-INF/layerWmsBluemarble.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapSelection.xml",
+				"classpath:org/geomajas/gwt/example/base/layerCountries110m.xml",
+				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

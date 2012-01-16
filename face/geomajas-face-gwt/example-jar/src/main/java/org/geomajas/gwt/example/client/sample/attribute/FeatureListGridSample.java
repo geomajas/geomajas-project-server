@@ -14,6 +14,8 @@ package org.geomajas.gwt.example.client.sample.attribute;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.global.GeomajasConstant;
@@ -21,8 +23,6 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
@@ -76,9 +76,9 @@ public class FeatureListGridSample extends SamplePanel {
 
 		// Add a trigger to fill the grid when the map has finished loading:
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void onMapModelChanged(MapModelChangedEvent event) {
 				final VectorLayer layer = map.getMapModel().getVectorLayer("clientLayerCountries110mGrid");
 				grid.setLayer(layer);
 				SearchFeatureRequest searchFeatureRequest = new SearchFeatureRequest();
@@ -111,8 +111,9 @@ public class FeatureListGridSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
-				"WEB-INF/layerWmsBluemarble.xml", };
+		return new String[] { "classpath:org/geomajas/gwt/example/context/mapFeatureListGrid.xml",
+				"classpath:org/geomajas/gwt/example/base/layerCountries110m.xml",
+				"classpath:org/geomajas/gwt/example/base/layerWmsBluemarble.xml", };
 	}
 
 	public String ensureUserLoggedIn() {
