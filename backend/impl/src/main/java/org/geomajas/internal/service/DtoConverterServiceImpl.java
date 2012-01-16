@@ -22,6 +22,7 @@ import java.util.Map;
 
 import com.vividsolutions.jts.geom.GeometryCollection;
 import org.apache.commons.beanutils.ConvertUtilsBean;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
@@ -107,16 +108,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 	}
 
-	/**
-	 * Converts a server-side attribute object into a DTO attribute.
-	 * 
-	 * @param object
-	 *            The attribute value.
-	 * @param info
-	 *            The attribute definition from the configuration.
-	 * @return Returns a DTO attribute.
-	 */
+	/** {@inheritDoc} */
 	public Attribute<?> toDto(Object object, AttributeInfo info) throws GeomajasException {
+		return toDto(object, (AbstractAttributeInfo) info);
+	}
+
+	/** {@inheritDoc} */
+	public Attribute<?> toDto(Object object, AbstractAttributeInfo info) throws GeomajasException {
 		if (info instanceof PrimitiveAttributeInfo) {
 			if (object instanceof Object[]) {
 				return toArrayDto((Object[]) object, (PrimitiveAttributeInfo) info);

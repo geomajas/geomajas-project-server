@@ -23,7 +23,7 @@ import java.util.Random;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -71,6 +71,8 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 	private BeanFeatureModel featureModel;
 
 	private VectorLayerInfo layerInfo;
+
+	private final Random random = new Random();
 
 	@Autowired
 	private FilterService filterService;
@@ -273,7 +275,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 								nextId = idInt + 1;
 							}
 						} catch (NumberFormatException e) {
-							nextId = new Random().nextInt();
+							nextId = random.nextInt();
 						}
 					}
 				}
@@ -283,8 +285,8 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport, Ve
 
 	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
 		log.debug("creating iterator for attribute {} and filter: {}", attributeName, filter);
-		AttributeInfo attributeInfo = null;
-		for (AttributeInfo info : getFeatureInfo().getAttributes()) {
+		AbstractAttributeInfo attributeInfo = null;
+		for (AbstractAttributeInfo info : getFeatureInfo().getAttributes()) {
 			if (info.getName().equals(attributeName)) {
 				attributeInfo = info;
 				break;

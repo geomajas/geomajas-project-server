@@ -12,6 +12,7 @@
 package org.geomajas.service;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.AbstractAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
@@ -60,8 +61,22 @@ public interface DtoConverterService {
 	 *            The attribute definition from the configuration.
 	 * @return Returns a DTO attribute.
 	 * @throws GeomajasException conversion failed
+	 * @deprecated use {@link #toDto(Object, org.geomajas.configuration.AbstractAttributeInfo)}
 	 */
+	@Deprecated
 	Attribute<?> toDto(Object object, AttributeInfo info) throws GeomajasException;
+
+	/**
+	 * Converts a server-side attribute object into a DTO attribute.
+	 * 
+	 * @param object
+	 *            The attribute value.
+	 * @param info
+	 *            The attribute definition from the configuration.
+	 * @return Returns a DTO attribute.
+	 * @throws GeomajasException conversion failed
+	 */
+	Attribute<?> toDto(Object object, AbstractAttributeInfo info) throws GeomajasException;
 
 	// -------------------------------------------------------------------------
 	// Feature conversion:
