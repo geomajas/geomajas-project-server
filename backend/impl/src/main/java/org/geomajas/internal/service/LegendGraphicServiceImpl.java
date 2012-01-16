@@ -218,9 +218,8 @@ public class LegendGraphicServiceImpl implements LegendGraphicService {
 			NumberRange<Double> scaleRange = NumberRange.create(0, Double.MAX_VALUE);
 
 			for (Symbolizer symbolizer : symbolizers) {
-				if (symbolizer instanceof RasterSymbolizer || symbolizer instanceof TextSymbolizer) {
-					// ignore for now
-				} else {
+				// only handle non raster/text symbolizers here
+				if (!(symbolizer instanceof RasterSymbolizer) && !(symbolizer instanceof TextSymbolizer)) {
 					Style2D style2d = styleFactory.createStyle(sampleFeature, symbolizer, scaleRange);
 					LiteShape2 shape = getSampleShape(symbolizer, width, height);
 					if (style2d != null && shape != null) {

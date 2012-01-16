@@ -394,7 +394,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		String geometryType = getGeometryType(geometry);
 		Geometry dto = new Geometry(geometryType, srid, precision);
-		if (geometry.isEmpty()) {
+		if (geometry.isEmpty()) { // NOSONAR short-circuit do-nothing conversion
 			// nothing to do
 		} else if (geometry instanceof Point) {
 			dto.setCoordinates(convertCoordinates(geometry));
