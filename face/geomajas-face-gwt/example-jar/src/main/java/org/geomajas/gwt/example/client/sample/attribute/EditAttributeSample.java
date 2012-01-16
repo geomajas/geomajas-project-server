@@ -14,8 +14,6 @@ package org.geomajas.gwt.example.client.sample.attribute;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeEditor;
 import org.geomajas.gwt.client.widget.MapWidget;
