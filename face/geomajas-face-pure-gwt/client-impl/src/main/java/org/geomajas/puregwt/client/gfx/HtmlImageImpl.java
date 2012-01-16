@@ -70,16 +70,38 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param left
 	 *            How many pixels should this image be placed from the left (relative to the parent origin).
 	 * @param onLoadingDone
-	 *            Call-back that is executed when the images has been loaded, or when loading failed. The boolean value
-	 *            will indicate success or failure.
+	 *            Call-back to be executed when the image finished loading, or when an error occurs while loading.
 	 */
 	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone) {
+		this(src, width, height, top, left, onLoadingDone, 0);
+	}
+
+	/**
+	 * Create an HtmlImage widget that represents an HTML IMG element.
+	 * 
+	 * @param src
+	 *            Pointer to the actual image.
+	 * @param width
+	 *            The width for this image, expressed in pixels.
+	 * @param height
+	 *            The height for this image, expressed in pixels.
+	 * @param top
+	 *            How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left
+	 *            How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param onLoadingDone
+	 *            Call-back to be executed when the image finished loading, or when an error occurs while loading.
+	 * @param nrRetries
+	 *            Total number of retries should loading fail. Default is 0.
+	 */
+	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone,
+			int nrRetries) {
 		super("img", width, height, top, left);
 
 		DOM.setStyleAttribute(getElement(), "border", "none");
 		DOM.setElementProperty(getElement(), "src", src);
 
-		onLoadingDone(onLoadingDone);
+		onLoadingDone(onLoadingDone, nrRetries);
 	}
 
 	// ------------------------------------------------------------------------
@@ -95,11 +117,13 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 *            The call-back to be executed when loading has finished. The boolean value indicates whether or not it
 	 *            was successful while loading. Both the success and failure type expect a String. This is used to pass
 	 *            along the image URL.
+	 * @param nrRetries
+	 *            Total number of retries should loading fail. Default is 0.
 	 */
-	public void onLoadingDone(Callback<String, String> onLoadingDone) {
+	public void onLoadingDone(Callback<String, String> onLoadingDone, int nrRetries) {
 		if (onLoadingDone != null) {
 			DOM.sinkEvents(getElement(), Event.ONLOAD | Event.ONERROR);
-			ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone);
+			ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone, nrRetries);
 			addHandler(reloader, LoadEvent.getType());
 			addHandler(reloader, ErrorEvent.getType());
 		}
@@ -126,8 +150,8 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 	/**
 	 * DOM event handler that attempts up to 5 times to reload the requested image. When the image is loaded (or the 5
-	 * attempts have failed), it notifies the given <code>BooleanCallback</code>, calling the execute method with true
-	 * or false indicating whether or not the image was really loaded.
+	 * attempts have failed), it notifies the given {@link Callback}, calling the execute method with true or false
+	 * indicating whether or not the image was really loaded.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -139,9 +163,10 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 		private Callback<String, String> onDoneLoading;
 
-		public ImageReloader(String src, Callback<String, String> onDoneLoading) {
+		public ImageReloader(String src, Callback<String, String> onDoneLoading, int nrRetries) {
 			this.src = src;
 			this.onDoneLoading = onDoneLoading;
+			this.nrAttempts = nrRetries + 1;
 		}
 
 		public void onLoad(LoadEvent event) {
@@ -158,7 +183,6 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 			} else if (onDoneLoading != null) {
 				onDoneLoading.onFailure(src);
 			}
-
 		}
 	}
 }

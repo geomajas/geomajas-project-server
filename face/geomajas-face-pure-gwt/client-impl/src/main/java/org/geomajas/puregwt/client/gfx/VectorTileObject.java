@@ -37,7 +37,7 @@ public class VectorTileObject extends VectorObject implements TileView {
 	 */
 	public void setContent(String content) {
 		if (Dom.isIE()) {
-			throw new RuntimeException("VectorTileGroup - rendering VML tiles: Not implemented.");
+			throw new IllegalArgumentException("VectorTileGroup - rendering VML tiles: Not implemented.");
 		} else {
 			setInnerSvg(getElement(), content);
 		}
@@ -174,5 +174,4 @@ public class VectorTileObject extends VectorObject implements TileView {
 			throw new UnsupportedOperationException("can't transform VectorTileObject");
 		}
 	}
-
 }

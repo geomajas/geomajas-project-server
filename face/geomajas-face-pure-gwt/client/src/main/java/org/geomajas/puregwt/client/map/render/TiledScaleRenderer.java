@@ -60,17 +60,6 @@ public interface TiledScaleRenderer {
 	boolean isRendered();
 
 	/**
-	 * Method called when the request(s) for tiles comes back from the server. We now know which tiles to render or
-	 * where to get the images. The tiles themselves are not rendered yet.
-	 * 
-	 * @param container
-	 *            The container wherein to render the tiles.
-	 * @param scale
-	 *            The scale of this presenter.
-	 */
-	void onTilesReceived(HtmlContainer container, double scale);
-
-	/**
 	 * Method called when all tiles are fully rendered. At this point the required bounding box as displayed.
 	 * 
 	 * @param container

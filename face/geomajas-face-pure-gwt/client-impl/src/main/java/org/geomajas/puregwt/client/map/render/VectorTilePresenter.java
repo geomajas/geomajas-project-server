@@ -27,6 +27,8 @@ import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.puregwt.client.gfx.RasterTileObject;
 
+import com.google.gwt.core.client.Callback;
+
 /**
  * Presenter for a single tile within a vector layer.
  * 
@@ -59,8 +61,10 @@ public class VectorTilePresenter {
 	private final TileCode tileCode;
 
 	private final double scale;
-	
+
 	private final String crs;
+
+	private final Callback<String, String> onRendered;
 
 	private TileView display;
 
@@ -74,11 +78,13 @@ public class VectorTilePresenter {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public VectorTilePresenter(VectorLayerScaleRenderer renderer, TileCode tileCode, double scale, String crs) {
+	public VectorTilePresenter(VectorLayerScaleRenderer renderer, TileCode tileCode, double scale, String crs,
+			Callback<String, String> onRendered) {
 		this.renderer = renderer;
 		this.tileCode = tileCode;
 		this.scale = scale;
 		this.crs = crs;
+		this.onRendered = onRendered;
 		siblings = new ArrayList<TileCode>();
 	}
 
@@ -175,7 +181,7 @@ public class VectorTilePresenter {
 						Coordinate position = getTilePosition(tile);
 						display = new RasterTileObject(tile.getFeatureContent(), tile.getScreenWidth(), tile
 								.getScreenHeight(), (int) Math.round(position.getY()),
-								(int) Math.round(position.getX()));
+								(int) Math.round(position.getX()), onRendered);
 						display.setContent(tile.getFeatureContent());
 						renderer.getHtmlContainer().add((RasterTileObject) display);
 					}

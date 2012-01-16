@@ -42,6 +42,9 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
+
 /**
  * Generic map renderer implementation. Has support for animated navigation through the {@link MapNavigationAnimation}.
  * 
@@ -58,6 +61,12 @@ public class MapRendererImpl implements MapRenderer {
 	private final HtmlContainer htmlContainer;
 
 	private final MapNavigationAnimation animation;
+
+	// Keeping track of the fetch delay:
+
+	private final FetchTimer fetchTimer;
+
+	private int fetchDelay = 100;
 
 	// Keeping track of the navigation animation:
 
@@ -84,27 +93,15 @@ public class MapRendererImpl implements MapRenderer {
 		this.animation = new MapNavigationAnimation(new LinearNavigationFunction()) {
 
 			protected void onComplete() {
-				// GWT.log("Animation complete - scale: " + currentScale);
 				super.onComplete();
-				navigationBusy = false;
-				Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-				previousTranslation = new Coordinate(translation.getDx(), translation.getDy());
-
-				for (MapScalesRenderer presenter : mapScalesRenderers) {
-					presenter.setScaleVisibility(currentScale, true);
-					presenter.applyScaleTranslation(currentScale, previousTranslation);
-				}
-
-				// GWT.log("Check if we can delete " + previousScale + ". (animation complete)");
-				checkPreviousScaleLevel();
-				
-				// In any case, we should bring the new scale level to the front...
+				onNavigationComplete();
 			};
 		};
 
 		previousScale = viewPort.getScale();
 		currentScale = viewPort.getScale();
 		previousTranslation = new Coordinate(0, 0);
+		fetchTimer = new FetchTimer();
 	}
 
 	// ------------------------------------------------------------------------
@@ -123,7 +120,7 @@ public class MapRendererImpl implements MapRenderer {
 			layerRenderer.addScaleLevelRenderedHandler(new ScaleLevelRenderedHandler() {
 
 				public void onScaleLevelRendered(ScaleLevelRenderedEvent event) {
-					checkPreviousScaleLevel();
+					onScaleRendered(event.getScale());
 				}
 			});
 		}
@@ -249,13 +246,35 @@ public class MapRendererImpl implements MapRenderer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private void checkPreviousScaleLevel() {
-		// Make previous scale invisible when the animation is finished + scale has been rendered.
-		if (!navigationBusy && previousScale != currentScale && animation.getMapScaleRenderers().size() > 0) {
-			// Ask the first MapScaleRenderer if it's renderer:
-			TiledScaleRenderer renderer = animation.getMapScaleRenderers().get(0).getScale(previousScale);
-			if (renderer != null && renderer.isRendered()) {
-				for (MapScalesRenderer presenter : animation.getMapScaleRenderers()) {
+	protected void onNavigationComplete() {
+		navigationBusy = false;
+
+		// Keep track of the
+		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+		previousTranslation = new Coordinate(translation.getDx(), translation.getDy());
+
+		// Bring the current scale to the font and make it visible (for all layers):
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			Layer<?> layer = layersModel.getLayer(i);
+			MapScalesRenderer presenter = layerRenderers.get(layer);
+			if (presenter != null) {
+				presenter.bringScaleToFront(currentScale);
+				presenter.setScaleVisibility(currentScale, true);
+				presenter.applyScaleTranslation(currentScale, previousTranslation);
+			}
+		}
+
+		onScaleRendered(currentScale);
+	}
+
+	// Make the previous scale invisible. Can only be done if the animation has completed.
+	protected void onScaleRendered(double scale) {
+		if (scale == currentScale && scale != previousScale && !navigationBusy) {
+			// Make the previous scale invisible:
+			for (int i = 0; i < layersModel.getLayerCount(); i++) {
+				Layer<?> layer = layersModel.getLayer(i);
+				MapScalesRenderer presenter = layerRenderers.get(layer);
+				if (presenter != null) {
 					presenter.setScaleVisibility(previousScale, false);
 				}
 			}
@@ -263,7 +282,10 @@ public class MapRendererImpl implements MapRenderer {
 	}
 
 	private void navigateTo(Bbox bounds, double scale, int millis) {
+		GWT.log("Navigation starts to scale: " + scale + ", from scale: " + currentScale);
 		navigationBusy = true;
+
+		// Calculate the map translation for the requested scale:
 		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
 		Coordinate transCoord = new Coordinate(translation.getDx(), translation.getDy());
 
@@ -273,16 +295,9 @@ public class MapRendererImpl implements MapRenderer {
 				return;
 			}
 			currentScale = scale;
-			// GWT.log("Animation extended - from, to: " + previousScale + ", " + currentScale);
 
-			// Let every layer prepare for navigation:
-			for (int i = 0; i < layersModel.getLayerCount(); i++) {
-				Layer<?> layer = layersModel.getLayer(i);
-				MapScalesRenderer presenter = layerRenderers.get(layer);
-				if (presenter != null) {
-					presenter.ensureScale(currentScale, bounds);
-				}
-			}
+			// Ensure the scale level after a certain delay:
+			ensureScale(scale, bounds);
 
 			// Extend the current animation:
 			animation.extend(currentScale / previousScale, transCoord, millis);
@@ -290,21 +305,67 @@ public class MapRendererImpl implements MapRenderer {
 			// Keep track of navigation details:
 			previousScale = currentScale;
 			currentScale = scale;
-			// GWT.log("Animation started - from, to: " + previousScale + ", " + currentScale);
 
-			// Let every layer prepare for navigation:
+			// Ensure the scale level after a certain delay:
+			ensureScale(scale, bounds);
+
+			// Create an ordered list of presenters for the animation.
 			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer<?> layer = layersModel.getLayer(i);
 				MapScalesRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
-					presenter.ensureScale(currentScale, bounds);
-					presenters.add(presenter); // Create an ordered list of presenters for the animation.
+					presenters.add(presenter);
 				}
 			}
 
 			// Start a new animation:
 			animation.start(presenters, 1, currentScale / previousScale, previousTranslation, transCoord, millis);
+		}
+	}
+
+	private void ensureScale(double scale, Bbox bounds) {
+		fetchTimer.cancel();
+		fetchTimer.setTargetLocation(scale, bounds);
+		int delay = fetchDelay;
+		if (fetchDelay > animationMillis) {
+			delay = animationMillis / 2;
+		}
+		fetchTimer.schedule(delay);
+	}
+
+	/**
+	 * Timer that keeps track of fetch delays to fetch requested scales.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class FetchTimer extends Timer {
+
+		private double scale;
+
+		private Bbox bounds;
+
+		public void schedule(int delayMillis) {
+			super.schedule(delayMillis);
+		}
+
+		public void run() {
+			// Ensure the scale at the requested location:
+			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();
+			for (int i = 0; i < layersModel.getLayerCount(); i++) {
+				Layer<?> layer = layersModel.getLayer(i);
+				MapScalesRenderer presenter = layerRenderers.get(layer);
+				if (presenter != null) {
+					presenter.ensureScale(scale, bounds);
+					presenter.setScaleVisibility(scale, false);
+					presenters.add(presenter); // Create an ordered list of presenters for the animation.
+				}
+			}
+		}
+
+		public void setTargetLocation(double scale, Bbox bounds) {
+			this.scale = scale;
+			this.bounds = bounds;
 		}
 	}
 }

@@ -101,6 +101,8 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	/** {@inheritDoc} */
 	public void ensureScale(double scale, Bbox bounds) {
+		cancel(); // TODO should we do this??
+
 		// Get or create the presenter, then turn it invisible and fetch the tiles.
 		TiledScaleRenderer presenter = getOrCreate(scale);
 		if (scale != visibleScale) {
@@ -121,6 +123,15 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 			} else if (scales.get(1) != scale) {
 				removeScaleLevel(scales.get(1));
 			}
+		}
+	}
+
+	/** {@inheritDoc} */
+	public void bringScaleToFront(double scale) {
+		TiledScaleRenderer scalePresenter = tiledScaleRenderers.get(scale);
+		if (scalePresenter != null) {
+			TiledScaleRenderer renderer = tiledScaleRenderers.get(scale);
+			htmlContainer.bringToFront(renderer.getHtmlContainer());
 		}
 	}
 
@@ -149,6 +160,9 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	/** Does nothing. */
 	public void cancel() {
+		for (TiledScaleRenderer scaleRenderer : tiledScaleRenderers.values()) {
+			scaleRenderer.cancel();
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -167,21 +181,16 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 
 	private TiledScaleRenderer getOrCreate(double scale) {
 		if (tiledScaleRenderers.containsKey(scale)) {
-			TiledScaleRenderer renderer = tiledScaleRenderers.get(scale);
-			htmlContainer.bringToFront(renderer.getHtmlContainer());
-			return renderer;
+			return tiledScaleRenderers.get(scale);
 		}
 
 		final HtmlContainer container = new HtmlGroup();
-		container.setVisible(false);
+		container.getElement().setId("scale-" + scale);
 		htmlContainer.insert(container, 0);
 
 		TiledScaleRenderer scalePresenter = null;
 		if (layer instanceof RasterLayer) {
 			scalePresenter = new RasterLayerScaleRenderer(viewPort.getCrs(), (RasterLayer) layer, container, scale) {
-
-				public void onTilesReceived(HtmlContainer container, double scale) {
-				}
 
 				public void onTilesRendered(HtmlContainer container, double scale) {
 					eventBus.fireEvent(new ScaleLevelRenderedEvent(scale));
@@ -189,9 +198,6 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 			};
 		} else {
 			scalePresenter = new VectorLayerScaleRenderer(viewPort, (VectorLayer) layer, container, scale) {
-
-				public void onTilesReceived(HtmlContainer container, double scale) {
-				}
 
 				public void onTilesRendered(HtmlContainer container, double scale) {
 					eventBus.fireEvent(new ScaleLevelRenderedEvent(scale));

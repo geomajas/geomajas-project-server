@@ -24,6 +24,8 @@ import org.geomajas.puregwt.client.gfx.HtmlContainer;
 import org.geomajas.puregwt.client.map.ViewPort;
 import org.geomajas.puregwt.client.map.layer.VectorLayer;
 
+import com.google.gwt.core.client.Callback;
+
 /**
  * Tiled scale presenter for a vector layer. It displays a single tile level for a single ector layer.
  * 
@@ -47,7 +49,8 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 	private Deferred deferred;
 
-	private boolean renderingImages;
+	// private boolean renderingImages;
+	private int nrLoadingTiles;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -69,9 +72,6 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public abstract void onTilesReceived(HtmlContainer container, double scale);
-
-	/** {@inheritDoc} */
 	public abstract void onTilesRendered(HtmlContainer container, double scale);
 
 	/** {@inheritDoc} */
@@ -81,10 +81,13 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 
 	/** {@inheritDoc} */
 	public void cancel() {
+		// Perhaps we where busy fetching the correct tiles?
 		if (deferred != null) {
 			deferred.cancel();
 			deferred = null;
 		}
+
+		// Perhaps we where busy rendering the tiles?
 	}
 
 	/** {@inheritDoc} */
@@ -112,7 +115,9 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	public VectorTilePresenter addTile(TileCode tileCode) {
 		VectorTilePresenter tilePresenter = tiles.get(tileCode.toString());
 		if (tilePresenter == null) {
-			tilePresenter = new VectorTilePresenter(this, tileCode.clone(), scale, viewPort.getCrs());
+			tilePresenter = new VectorTilePresenter(this, tileCode.clone(), scale, viewPort.getCrs(),
+					new TileLoadCallback());
+			nrLoadingTiles++;
 			tiles.put(tileCode.toString(), tilePresenter);
 		}
 		return tilePresenter;
@@ -121,12 +126,12 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	public VectorTilePresenter getTile(TileCode tileCode) {
 		return tiles.get(tileCode.toString());
 	}
-	
+
 	/**
 	 * Always returns true...
 	 */
 	public boolean isRendered() {
-		return true;
+		return nrLoadingTiles == 0;
 	}
 
 	// ------------------------------------------------------------------------
@@ -138,7 +143,7 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 	}
 
 	public boolean isRenderingImages() {
-		return renderingImages;
+		return nrLoadingTiles > 0;
 	}
 
 	public HtmlContainer getHtmlContainer() {
@@ -222,5 +227,32 @@ public abstract class VectorLayerScaleRenderer implements TiledScaleRenderer {
 			tileLevel = 0;
 		}
 		return tileLevel;
+	}
+
+	// ------------------------------------------------------------------------
+	// Private classes:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Callback that keeps track of the number of tiles still underway.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	private class TileLoadCallback implements Callback<String, String> {
+
+		public void onFailure(String reason) {
+			onLoadingDone();
+		}
+
+		public void onSuccess(String result) {
+			onLoadingDone();
+		}
+
+		private void onLoadingDone() {
+			nrLoadingTiles--;
+			if (nrLoadingTiles == 0) {
+				onTilesRendered(htmlContainer, scale);
+			}
+		}
 	}
 }

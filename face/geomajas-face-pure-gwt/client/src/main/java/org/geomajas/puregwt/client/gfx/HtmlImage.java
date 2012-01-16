@@ -40,8 +40,10 @@ public interface HtmlImage extends HtmlObject {
 	 * @param onLoadingDone
 	 *            The call-back to be executed when loading has finished. The boolean value indicates whether or not it
 	 *            was successful while loading.
+	 * @param nrRetries
+	 *            Total number of retries should loading fail. Default is 0.
 	 */
-	void onLoadingDone(Callback<String, String> onLoadingDone);
+	void onLoadingDone(Callback<String, String> onLoadingDone, int nrRetries);
 
 	/**
 	 * Get the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.

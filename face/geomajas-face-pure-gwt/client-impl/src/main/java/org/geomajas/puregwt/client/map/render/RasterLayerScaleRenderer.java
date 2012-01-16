@@ -69,8 +69,6 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 	private boolean renderingImages;
 
-	private boolean rendered;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -88,9 +86,6 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	/** {@inheritDoc} */
-	public abstract void onTilesReceived(HtmlContainer container, double scale);
-
-	/** {@inheritDoc} */
 	public abstract void onTilesRendered(HtmlContainer container, double scale);
 
 	/** {@inheritDoc} */
@@ -99,6 +94,7 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 			deferred.cancel();
 			deferred = null;
 		}
+		currentTileBounds = null;
 	}
 
 	/** {@inheritDoc} */
@@ -113,7 +109,6 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 			onTilesRendered(container, scale);
 			return; // Bounds already rendered, nothing to do here.
 		}
-		rendered = false;
 
 		// Scale the bounds to fetch tiles for (we want a bigger area than the map bounds):
 		currentTileBounds = BboxService.scale(bounds, mapExtentScaleAtFetch);
@@ -133,13 +128,12 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 			public void execute(GetRasterTilesResponse response) {
 				addTiles(response.getRasterData());
-				onTilesReceived(container, scale);
 			}
 		});
 	}
 
 	public boolean isRendered() {
-		return rendered;
+		return nrLoadingTiles > 0;
 	}
 
 	// ------------------------------------------------------------------------
@@ -206,14 +200,12 @@ public abstract class RasterLayerScaleRenderer implements TiledScaleRenderer {
 
 		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
 		public void onFailure(String reason) {
-			rendered = true;
 			onTilesRendered(container, scale);
 		}
 
 		public void onSuccess(String result) {
 			nrLoadingTiles--;
 			if (nrLoadingTiles == 0) {
-				rendered = true;
 				onTilesRendered(container, scale);
 			}
 		}

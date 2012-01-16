@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.gfx;
 
 import org.geomajas.puregwt.client.map.render.VectorTilePresenter.TileView;
 
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -24,10 +25,33 @@ import com.google.gwt.user.client.DOM;
  */
 public class RasterTileObject extends HtmlImageImpl implements TileView {
 
-	public RasterTileObject(String src, int width, int height, int top, int left) {
-		super(src, width, height, top, left);
+	/**
+	 * Create an RasterTileObject widget that represents an tile in a layer by means of an HTML IMG tag.
+	 * 
+	 * @param src
+	 *            Pointer to the actual image.
+	 * @param width
+	 *            The width for this image, expressed in pixels.
+	 * @param height
+	 *            The height for this image, expressed in pixels.
+	 * @param top
+	 *            How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left
+	 *            How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param onLoadingDone
+	 *            Call-back to be executed when the image finished loading, or when an error occurs while loading.
+	 */
+	public RasterTileObject(String src, int width, int height, int top, int left, 
+			Callback<String, String> onLoadingDone) {
+		super(src, width, height, top, left, onLoadingDone);
 	}
 
+	/**
+	 * Sets the SRC property of the underlying IMG tag.
+	 * 
+	 * @param content
+	 *            The URL to the actual image representing the tile.
+	 */
 	public void setContent(String content) {
 		DOM.setElementProperty(getElement(), "src", content);
 	}

@@ -30,8 +30,8 @@ public interface MapScalesRenderer {
 
 	/**
 	 * Add a handler for {@link org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent}s. At some point
-	 * after a call to the <code>ensureScale</code> method, that particular scale level will be rendered (i.e. all tiles
-	 * have arrived). These handlers will be notified of that event.
+	 * after a call to the {@link #ensureScale(double, Bbox)} method, that particular scale level will be rendered (i.e.
+	 * all tiles have arrived). These handlers will be notified of that event.
 	 * 
 	 * @param handler
 	 *            The event handler.
@@ -57,11 +57,20 @@ public interface MapScalesRenderer {
 	void ensureScale(double scale, Bbox bounds);
 
 	/**
+	 * Bring the requested scale to the front. The scale level may still be invisible though, so make sure to also set
+	 * the visibility.
+	 * 
+	 * @param scale
+	 *            The requested scale.
+	 */
+	void bringScaleToFront(double scale);
+
+	/**
 	 * Determine the visibility of a certain scale level.
 	 * 
 	 * @param scale
-	 *            The scale level to make visible. Make sure to first call <code>ensureScale</code>. Otherwise this
-	 *            scale level might not be available to display or hide.
+	 *            The scale level to make visible. Make sure to first call {@link #ensureScale(double, Bbox)}. Otherwise
+	 *            this scale level might not be available to display or hide.
 	 * @param visible
 	 *            Show or hide the scale level?
 	 */
@@ -80,7 +89,7 @@ public interface MapScalesRenderer {
 	/**
 	 * Cancel rendering. When ensuring a certain scale level, often the rendering needs to be fetched from the server.
 	 * This cancel might stop that request. In any case, this method prevents the workings of the
-	 * <code>ensureScale</code> method.
+	 * {@link #ensureScale(double, Bbox)} method.
 	 */
 	void cancel();
 
