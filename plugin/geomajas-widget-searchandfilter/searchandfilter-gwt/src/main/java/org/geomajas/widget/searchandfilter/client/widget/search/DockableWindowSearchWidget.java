@@ -12,6 +12,7 @@ package org.geomajas.widget.searchandfilter.client.widget.search;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.widget.featureinfo.client.widget.DockableWindow;
+import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 import org.geomajas.widget.searchandfilter.search.dto.Criterion;
 
 import com.smartgwt.client.widgets.events.CloseClickHandler;
@@ -38,11 +39,11 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 
 	/**
 	 * @param widgetId
-	 *            needed to find the widget in the SearchWidgetRegistry.
+	 *        needed to find the widget in the SearchWidgetRegistry.
 	 * @param name
-	 *            name of the widget to show in window title and on buttons.
+	 *        name of the widget to show in window title and on buttons.
 	 * @param searchPanel
-	 *            your specific implementation of a search
+	 *        your specific implementation of a search
 	 */
 	public DockableWindowSearchWidget(String widgetId, String name, final AbstractSearchPanel searchPanel) {
 		if (widgetId == null || searchPanel == null) {
@@ -53,7 +54,6 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		this.widgetId = widgetId;
 		this.name = name;
 		this.setTitle(name);
-		this.setAutoCenter(true);
 		this.setKeepInParentRect(true);
 
 		addCloseClickHandler(new CloseClickHandler() {
@@ -74,6 +74,8 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		});
 		this.addItem(panelSearchWidget);
 		this.setAutoSize(true);
+
+		positionWindow();
 	}
 
 	// ----------------------------------------------------------
@@ -113,16 +115,16 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 
 	/** {@inheritDoc} */
 	public void showForSearch() {
-		panelSearchWidget.showForSearch();
 		show();
 		bringToFront();
+		panelSearchWidget.showForSearch();
 	}
 
 	/** {@inheritDoc} */
 	public void showForSave(final SaveRequestHandler handler) {
-		panelSearchWidget.showForSave(handler);
 		show();
 		bringToFront();
+		panelSearchWidget.showForSave(handler);
 	}
 
 	/** {@inheritDoc} */
@@ -180,6 +182,16 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		onSearch();
 	}
 
+	/**
+	 * LayoutTypes for Searchwindow.
+	 */
+	public static enum SearchWindowPositionType {
+		CENTERED, 
+		ABSOLUTE, 
+		/** See SmartGwt's snapto functions for properties. */
+		SNAPTO;
+	}
+
 	// ----------------------------------------------------------
 	// -- buttonActions --
 	// ----------------------------------------------------------
@@ -188,10 +200,30 @@ public class DockableWindowSearchWidget extends DockableWindow implements Search
 		panelSearchWidget.onSearch();
 	}
 
+	// -------------------------------------------------
+
 	private void setVectorLayerOnWhichSearchIsHappeningVisible() {
-		if (searchPanel.getFeatureSearchVectorLayer() != null 
+		if (searchPanel.getFeatureSearchVectorLayer() != null
 				&& !searchPanel.getFeatureSearchVectorLayer().isVisible()) {
 			searchPanel.getFeatureSearchVectorLayer().setVisible(true);
+		}
+	}
+
+	private void positionWindow() {
+		if (GsfLayout.searchWindowPositionType != null) {
+			switch (GsfLayout.searchWindowPositionType) {
+				case CENTERED:
+					this.setAutoCenter(true);
+					break;
+				case ABSOLUTE:
+					this.moveTo(GsfLayout.searchWindowPosLeft, GsfLayout.searchWindowPosTop);
+					break;
+				case SNAPTO:
+					this.setParentElement(GsfLayout.searchWindowParentElement);
+					this.setSnapTo(GsfLayout.searchWindowPosSnapTo);
+					this.setSnapOffsetLeft(GsfLayout.searchWindowPosLeft);
+					this.setSnapOffsetTop(GsfLayout.searchWindowPosTop);
+			}
 		}
 	}
 }

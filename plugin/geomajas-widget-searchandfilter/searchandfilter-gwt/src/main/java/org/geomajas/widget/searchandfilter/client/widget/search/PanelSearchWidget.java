@@ -241,6 +241,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		}
 		show();
 		bringToFront();
+		searchBtn.select();
+		searchBtn.focus();
 	}
 
 	/** {@inheritDoc} */
@@ -252,6 +254,8 @@ public class PanelSearchWidget extends VLayout implements SearchWidget {
 		searchBtn.setVisible(false);
 		show();
 		bringToFront();
+		saveBtn.select();
+		saveBtn.focus();
 	}
 
 	/** {@inheritDoc} */

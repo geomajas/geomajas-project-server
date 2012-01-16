@@ -12,6 +12,9 @@
 package org.geomajas.widget.searchandfilter.client.util;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.widget.searchandfilter.client.widget.search.DockableWindowSearchWidget.SearchWindowPositionType;
+
+import com.smartgwt.client.widgets.Canvas;
 
 /**
  * Class which helps to provide consistent sizes and names for layout purposes, see
@@ -32,10 +35,22 @@ public final class GsfLayout {
 	/** Combined search panel height. */
 	public static String geometricSearchPanelTabHeight = "250";
 
+	/** SearchWindow Layout options. Can also be null, which means no positioning. */
+	public static SearchWindowPositionType searchWindowPositionType = SearchWindowPositionType.CENTERED;
+	/** SearchWindow Layout options - depends on type. */
+	public static int searchWindowPosTop;
+	/** SearchWindow Layout options - depends on type. */
+	public static int searchWindowPosLeft;
+	/** SearchWindow Layout options - depends on type.
+	 * <p>Possible values: BR, BL, TR, TL, R, L, B, T, C where B=Bottom, T=Top, L=Left, R=right and C=center. */
+	public static String searchWindowPosSnapTo;
+	/** Only needed for SNAPTO. */
+	public static Canvas searchWindowParentElement;
+	
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
 	private GsfLayout() {
 		// do not allow instantiation.
 	}
-
+	
 }
