@@ -16,6 +16,7 @@ import org.geomajas.annotation.Api;
  * Callback invoked after image generation on the server.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 @Api(allMethods = true)

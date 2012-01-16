@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
  * Service to generated map and legend images.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
 @Api(allMethods = true)
