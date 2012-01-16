@@ -104,7 +104,7 @@ public class LayerActions extends Window {
 		infoLayout.setPadding(5);
 		infoLayout.setAutoHeight();
 		infoLayout.setIsGroup(true);
-		infoLayout.setGroupTitle(messages.layerInfoLayerActions());
+		infoLayout.setGroupTitle(messages.layerInfoLayerInfo());
 
 		IButton legendInfo = new IButton(vectorLayer != null ? messages.layerActionsShowLegendAndFields()
 				: messages.layerActionsShowLegend());
@@ -362,8 +362,10 @@ public class LayerActions extends Window {
 		}
 
 		private String buildScale(ScaleInfo si) {
-			return ((int) si.getNumerator()) + " : " + ((int) si.getDenominator()) + " ("
-					+ NumberFormat.getFormat("#,##0.###").format(si.getPixelPerUnit()) + ")";
+			// double PIXELPERUNIT = 3779.527559055;
+			// long denominator = Math.round(PIXELPERUNIT * (1D / si.getPixelPerUnit()));
+			return ((int) si.getNumerator()) + " : "
+					+ NumberFormat.getFormat("#,##0").format(Math.round(si.getDenominator()));
 		}
 	}
 }

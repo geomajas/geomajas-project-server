@@ -62,6 +62,7 @@ public interface AdvancedViewsMessages extends Messages {
 	String layerInfoLayerInfoAttYes();
 	String layerInfoLayerInfoAttNo();
 	String layerInfoLayerInfoLegend();
+	String layerInfoLayerInfoLegendNoLegend();
 
 	String expandingThemeWidgetNoThemeSelected();
 	String expandingThemeWidgetTooltip();

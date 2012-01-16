@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.widget.advancedviews.client.widget;
 
 import java.util.ArrayList;
@@ -31,11 +32,10 @@ import org.geomajas.widget.advancedviews.client.util.LayerIconUtil;
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -117,8 +117,8 @@ public class LayerInfo extends Window {
 			r.setAttribute(TYPE, type);
 			r.setAttribute(EDITA,
 					(attInfo.isEditable() ? messages.layerInfoLayerInfoAttYes() : messages.layerInfoLayerInfoAttNo()));
-			r.setAttribute(IDENT, (attInfo.isIdentifying() ? messages.layerInfoLayerInfoAttYes() : 
-				messages.layerInfoLayerInfoAttNo()));
+			r.setAttribute(IDENT, (attInfo.isIdentifying() ? messages.layerInfoLayerInfoAttYes() :
+					messages.layerInfoLayerInfoAttNo()));
 			r.setAttribute(HIDDE,
 					(attInfo.isHidden() ? messages.layerInfoLayerInfoAttYes() : messages.layerInfoLayerInfoAttNo()));
 			r.setAttribute(NUMER,
@@ -171,21 +171,25 @@ public class LayerInfo extends Window {
 	}
 
 	private Canvas createLegendInfo(RasterLayer layer) {
-		Img legend = LayerIconUtil.getLegendImage(layer);
-		if (legend != null) {
-			// legend.setOverflow(Overflow.AUTO);
-			legend.setImageType(ImageStyle.NORMAL);
-			legend.setAutoFit(true);
-//			legend.setWidth100();
-//			legend.setHeight100();
-			return legend;
+		final HTMLPane legendPane = new HTMLPane();
+		String url = LayerIconUtil.getLegendUrl(layer);
+		if (url != null) {
+			legendPane.setContents("<img src=\"" + url + "\" border=\"0\">");
+			legendPane.setOverflow(Overflow.AUTO);
+//			legendPane.addDomHandler(new LoadHandler() {
+//				public void onLoad(LoadEvent event) {
+//					legendPane.markForRedraw();
+//				}
+//			}, LoadEvent.getType());
 		} else {
-			return null;
+			legendPane.setContents("<br /><div style=\"text-align: center\">"
+					+ messages.layerInfoLayerInfoLegendNoLegend() +	"</div>");
 		}
+		return legendPane;
 	}
-	
+
 	// -------------------------------------------------
-	
+
 	/**
 	 * ListGrid to show Legend elements.
 	 */
@@ -225,7 +229,7 @@ public class LayerInfo extends Window {
 			keyField.setType(ListGridFieldType.IMAGE);
 			keyField.setImageURLPrefix(url.toString() + "/");
 			keyField.setImageURLSuffix(LEGEND_ICONS_TYPE);
-			
+
 			ListGridField valueField = new ListGridField(VALUE_FLD, "Waarde");
 			valueField.setWidth("*");
 			setFields(keyField, valueField);
@@ -246,7 +250,7 @@ public class LayerInfo extends Window {
 
 			setData(recordList);
 		}
-		
+
 		private ListGridRecord createRecord(String title, int index) {
 			ListGridRecord r = new ListGridRecord();
 			r.setAttribute(KEY_FLD, "" + index);

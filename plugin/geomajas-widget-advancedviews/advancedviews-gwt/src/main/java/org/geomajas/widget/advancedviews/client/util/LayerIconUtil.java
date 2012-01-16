@@ -97,6 +97,16 @@ public final class LayerIconUtil {
 		}
 	}
 
+	public static String getLegendUrl(Layer<?> layer) {
+		ExtraLayerInfo eli = WidgetInfoUtil.getClientWidgetInfo(ExtraLayerInfo.IDENTIFIER, ExtraLayerInfo.class,
+				layer);
+		if (eli != null && eli.getLegendImageUrl() != null && !"".equals(eli.getLegendImageUrl())) {
+			return "images/" + eli.getLegendImageUrl();
+		} else {
+			return null;
+		}
+	}
+
 	public static Img getLabelOverlayImg() {
 		return new Img(LAYER_LABEL_OVERLAY_URL);
 	}
