@@ -53,11 +53,10 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- Got to write some decend test cases so that this dependency can be removed... -->
+		<!-- @todo Got to write some decent test cases so that this dependency can be removed... -->
 		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
-			<version>1.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
