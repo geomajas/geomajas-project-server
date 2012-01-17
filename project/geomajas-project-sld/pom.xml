@@ -98,30 +98,22 @@
 				<artifactId>geomajas-project-sld-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-sld-api</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-gwt</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-sld-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-editor</artifactId>
+				<artifactId>geomajas-project-sld-impl</artifactId>
 				<version>${project.version}</version>
+				<classifier>sources</classifier>
 			</dependency>
 
 			<dependency>
@@ -131,22 +123,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring-aop</artifactId>
-				<version>${sld-spring-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-tx</artifactId>
-				<version>${sld-spring-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
-				<version>${sld-spring-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-webmvc</artifactId>
 				<version>${sld-spring-version}</version>
 			</dependency>
 
@@ -155,69 +132,11 @@
 				<artifactId>gt-xsd-sld</artifactId>
 				<version>${sld-geotools-version}</version>
 			</dependency>
-			
-			<dependency>
-				<groupId>net.sf.gwt-widget</groupId>
-				<artifactId>gwt-sl</artifactId>
-				<version>1.1</version>
-			</dependency>
-         
-			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>2.2</version>
-			</dependency>
 
 			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>jsr250-api</artifactId>
 				<version>1.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.validation</groupId>
-				<artifactId>validation-api</artifactId>
-				<version>1.0.0.GA</version>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.persistence</groupId>
-				<artifactId>persistence-api</artifactId>
-				<version>1.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>4.0.2.GA</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.activation</groupId>
-						<artifactId>activation</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-activation_1.1_spec</artifactId>
-				<version>1.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.vividsolutions</groupId>
-				<artifactId>jts</artifactId>
-				<version>1.11</version>
-			</dependency>
-
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.8.3</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>2.5</version>
 			</dependency>
 
 			<dependency>
@@ -229,48 +148,6 @@
 				<groupId>org.jibx</groupId>
 				<artifactId>jibx-extras</artifactId>
 				<version>${sld-jibx-version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.jboss</groupId>
-				<artifactId>jboss-serialization</artifactId>
-				<version>1.0.4.FINAL</version>
-			</dependency>
-			<dependency>
-				<groupId>trove</groupId>
-				<artifactId>trove</artifactId>
-				<version>1.0.2</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.metaparadigm</groupId>
-				<artifactId>json-rpc</artifactId>
-				<version>1.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>net.sourceforge.findbugs</groupId>
-				<artifactId>annotations</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-user</artifactId>
-				<version>${sld-gwt-version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-servlet</artifactId>
-				<version>${sld-gwt-version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.google.gwt</groupId>
-				<artifactId>gwt-dev</artifactId>
-				<version>${sld-gwt-version}</version>
-				<scope>test</scope>
 			</dependency>
 
 		</dependencies>
