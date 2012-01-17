@@ -14,6 +14,7 @@ package org.geomajas.plugin.editing.gwt.example.client;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.gwt.example.client.merge.MergeShowcaseTab;
+import org.geomajas.plugin.editing.gwt.example.client.multigeom.MultiGeometryTab;
 import org.geomajas.plugin.editing.gwt.example.client.split.SplitShowcaseTab;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -74,6 +75,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		tab.setPane(mapLayout);
 		tabSet.addTab(tab);
 
+		tabSet.addTab(new MultiGeometryTab());
 		tabSet.addTab(new MergeShowcaseTab());
 		tabSet.addTab(new SplitShowcaseTab());
 

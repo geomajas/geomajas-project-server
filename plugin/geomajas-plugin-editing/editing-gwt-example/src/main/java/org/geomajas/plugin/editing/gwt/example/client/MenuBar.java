@@ -225,7 +225,7 @@ public class MenuBar extends ToolStrip {
 		donutItem.addClickHandler(new ClickHandler() {
 
 			public void onClick(MenuItemClickEvent event) {
-				Geometry polgon = new Geometry(Geometry.POLYGON, 0, 0);
+				Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 
 				Coordinate origin = map.getMapModel().getMapView().getBounds().getOrigin();
 				Coordinate center = map.getMapModel().getMapView().getBounds().getCenterPoint();
@@ -248,8 +248,8 @@ public class MenuBar extends ToolStrip {
 				Geometry hole = new Geometry(Geometry.LINEAR_RING, 0, 0);
 				hole.setCoordinates(new Coordinate[] { c11, c12, c13, c14, c15 });
 
-				polgon.setGeometries(new Geometry[] { shell, hole });
-				editor.getService().start(polgon);
+				polygon.setGeometries(new Geometry[] { shell, hole });
+				editor.getService().start(polygon);
 			}
 		});
 

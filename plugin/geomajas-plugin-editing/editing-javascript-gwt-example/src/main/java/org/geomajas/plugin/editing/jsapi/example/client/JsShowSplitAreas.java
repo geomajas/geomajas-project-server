@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.editing.jsapi.example.client;
 
-import org.geomajas.plugin.editing.jsapi.client.split.JsGeometrySplitService;
 import org.geomajas.plugin.editing.jsapi.gwt.client.JsGeometryEditor;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -26,7 +25,7 @@ import org.timepedia.exporter.client.Exportable;
 @ExportPackage("org.geomajas.jsapi.alv")
 public class JsShowSplitAreas implements Exportable {
 
-	private final ShowSplitAreas delegate;
+	private ShowSplitAreas delegate;
 
 	// ------------------------------------------------------------------------
 	// Public methods:
@@ -34,16 +33,15 @@ public class JsShowSplitAreas implements Exportable {
 
 	/** Do not use. */
 	public JsShowSplitAreas() {
-		delegate = null;
-	}
-
-	public JsShowSplitAreas(JsGeometryEditor editor, JsGeometrySplitService splitService) {
-		delegate = new ShowSplitAreas(editor.getMap().getMapWidget(), splitService.getDelegate());
 	}
 
 	// ------------------------------------------------------------------------
 	// Public methods:
 	// ------------------------------------------------------------------------
+
+	public void setEditor(JsGeometryEditor editor) {
+		delegate = new ShowSplitAreas(editor.getMap().getMapWidget(), editor.getSplitService().getDelegate());
+	}
 
 	public void activate() {
 		delegate.activate();

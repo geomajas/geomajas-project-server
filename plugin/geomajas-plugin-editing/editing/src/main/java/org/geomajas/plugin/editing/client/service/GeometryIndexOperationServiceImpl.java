@@ -212,7 +212,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	/** {@inheritDoc} */
 	public void insert(List<GeometryIndex> indices, List<List<Coordinate>> coordinates)
 			throws GeometryOperationFailedException {
-		if (indices == null || coordinates == null || indices.size() == 0 || coordinates.size() == 0) {
+		if (indices == null || indices.size() == 0) {
 			throw new GeometryOperationFailedException("Illegal arguments passed; nothing to insert.");
 		}
 
@@ -227,11 +227,27 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		for (int i = 0; i < indices.size(); i++) {
 			switch (indexService.getType(indices.get(i))) {
 				case TYPE_GEOMETRY:
-					throw new GeometryOperationFailedException("Cannot insert new geometries (yet).");
+					if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
+						Geometry child;
+						if (indices.get(i).hasChild()) {
+							child = new Geometry(Geometry.LINEAR_RING, 0, 0);
+						} else {
+							child = new Geometry(Geometry.POLYGON, 0, 0);
+						}
+						GeometryIndexOperation op = new InsertGeometryOperation(indexService, child);
+						op.execute(geometry, indices.get(i));
+						seq.addOperation(op);
+					} else {
+						throw new GeometryOperationFailedException("Cannot insert new geometries (yet).");
+					}
+					break;
 				default:
-					GeometryIndexOperation op = new InsertVertexOperation(indexService, coordinates.get(i).get(0));
-					op.execute(geometry, indices.get(i));
-					seq.addOperation(op);
+					if (coordinates == null || coordinates.size() < indices.size()) {
+						throw new GeometryOperationFailedException("No coordinates passed to insert.");
+					}
+					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0));
+					op2.execute(geometry, indices.get(i));
+					seq.addOperation(op2);
 			}
 		}
 		if (!isOperationSequenceActive()) {

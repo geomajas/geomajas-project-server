@@ -72,8 +72,16 @@ public class GeometryIndexService {
 		if (index == null) {
 			return create(type, values);
 		}
+		if (getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
+			throw new IllegalArgumentException("Can only add children to an index of type geometry.");
+		}
 		GeometryIndex clone = new GeometryIndex(index);
-		clone.setChild(create(type, values));
+
+		GeometryIndex deepestChild = clone;
+		while (deepestChild.hasChild()) {
+			deepestChild = deepestChild.getChild();
+		}
+		deepestChild.setChild(create(type, values));
 		return clone;
 	}
 

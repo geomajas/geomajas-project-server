@@ -36,6 +36,8 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 	 * 
 	 * @param service
 	 *            geometry index service.
+	 * @param child
+	 *            The child geometry to insert.
 	 */
 	public InsertGeometryOperation(GeometryIndexService service, Geometry child) {
 		this.service = service;

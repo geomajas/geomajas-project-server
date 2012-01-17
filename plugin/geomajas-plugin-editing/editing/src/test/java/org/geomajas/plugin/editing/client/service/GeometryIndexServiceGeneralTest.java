@@ -120,8 +120,18 @@ public class GeometryIndexServiceGeneralTest {
 		Assert.assertTrue(index.getChild().hasChild());
 		Assert.assertFalse(index.getChild().getChild().hasChild());
 
-		index = service.addChildren(index, GeometryIndexType.TYPE_EDGE, 4); // Can't add edges to edges...
-		Assert.assertNull(index.getChild().getChild());
+		index = service.create(GeometryIndexType.TYPE_GEOMETRY, 1, 2);
+		index = service.addChildren(index, GeometryIndexType.TYPE_EDGE, 3);
+		Assert.assertTrue(index.hasChild());
+		Assert.assertTrue(index.getChild().hasChild());
+		Assert.assertFalse(index.getChild().getChild().hasChild());
+
+		try {
+			service.addChildren(index, GeometryIndexType.TYPE_EDGE, 4); // Can't add edges to edges...
+			Assert.fail();
+		} catch (IllegalArgumentException e) {
+			// As expected...
+		}
 	}
 
 	@Test

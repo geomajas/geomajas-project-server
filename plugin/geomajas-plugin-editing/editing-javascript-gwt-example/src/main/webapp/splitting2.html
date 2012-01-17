@@ -42,7 +42,8 @@
 				});
 
 				// By default the area calculator is activated:
-				showSplitAreas = new org.geomajas.jsapi.alv.ShowSplitAreas(editor, service);
+				showSplitAreas = new org.geomajas.jsapi.alv.ShowSplitAreas();
+				showSplitAreas.setEditor(editor);
 				showSplitAreas.activate();
 				showSplitAreas.setLabelWidth(110);
 				showSplitAreas.setLabelTxt("Area = ");

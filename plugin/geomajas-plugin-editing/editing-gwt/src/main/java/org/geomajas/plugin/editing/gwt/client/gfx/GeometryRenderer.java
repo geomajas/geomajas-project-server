@@ -28,6 +28,9 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
+import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
+import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
+import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.Dom;
@@ -283,8 +286,17 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 							.worldToPan(GeometryConverter.toGwt(event.getGeometry()));
 					mapWidget.getVectorContext().drawPolygon(groups.get(baseName + ".background"), "background",
 							(Polygon) transformed, styleService.getBackgroundStyle());
-				} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)) {
-					// ....
+				} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)
+						&& event.getGeometry().getGeometries() != null) {
+					for (int i = 0; i < event.getGeometry().getGeometries().length; i++) {
+						Geometry polygon = event.getGeometry().getGeometries()[i];
+
+						org.geomajas.gwt.client.spatial.geometry.Geometry transformed = mapWidget.getMapModel()
+								.getMapView().getWorldViewTransformer().worldToPan(GeometryConverter.toGwt(polygon));
+						mapWidget.getVectorContext().drawPolygon(
+								groups.get(baseName + ".geometry" + i + ".background"), "background",
+								(Polygon) transformed, styleService.getBackgroundStyle());
+					}
 				}
 			}
 		}
@@ -488,12 +500,66 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		GraphicsContext graphics = mapWidget.getVectorContext();
 		graphics.drawGroup(mapWidget.getGroup(RenderGroup.VECTOR), geometry);
 
-		if (transformed instanceof Polygon) {
+		if (transformed instanceof MultiPolygon) {
+			draw(geometry, null, (MultiPolygon) transformed, graphics);
+		} else if (transformed instanceof MultiPoint) {
+			draw(geometry, null, (MultiPoint) transformed, graphics);
+		} else if (transformed instanceof MultiLineString) {
+			draw(geometry, null, (MultiLineString) transformed, graphics);
+		} else if (transformed instanceof Polygon) {
 			draw(geometry, null, (Polygon) transformed, graphics);
 		} else if (transformed instanceof LineString) {
 			draw(geometry, null, (LineString) transformed, graphics);
 		} else if (transformed instanceof Point) {
 			draw(geometry, null, (Point) transformed, graphics);
+		}
+	}
+
+	private void draw(Object parentGroup, GeometryIndex parentIndex, MultiPoint mp, GraphicsContext graphics) {
+		String groupName = baseName;
+		if (parentIndex != null) {
+			groupName += "." + editingService.getIndexService().format(parentIndex);
+		}
+
+		Composite geometryGroup = getOrCreateGroup(parentGroup, groupName + ".geometries");
+
+		// Draw all polygons:
+		for (int i = 0; i < mp.getNumGeometries(); i++) {
+			GeometryIndex pointIndex = editingService.getIndexService().addChildren(parentIndex,
+					GeometryIndexType.TYPE_GEOMETRY, i);
+			draw(geometryGroup, pointIndex, (Point) mp.getGeometryN(i), graphics);
+		}
+	}
+
+	private void draw(Object parentGroup, GeometryIndex parentIndex, MultiLineString mls, GraphicsContext graphics) {
+		String groupName = baseName;
+		if (parentIndex != null) {
+			groupName += "." + editingService.getIndexService().format(parentIndex);
+		}
+
+		Composite geometryGroup = getOrCreateGroup(parentGroup, groupName + ".geometries");
+
+		// Draw all polygons:
+		for (int i = 0; i < mls.getNumGeometries(); i++) {
+			GeometryIndex pointIndex = editingService.getIndexService().addChildren(parentIndex,
+					GeometryIndexType.TYPE_GEOMETRY, i);
+			draw(geometryGroup, pointIndex, (LineString) mls.getGeometryN(i), graphics);
+		}
+	}
+
+	private void draw(Object parentGroup, GeometryIndex parentIndex, MultiPolygon mp, GraphicsContext graphics) {
+		String groupName = baseName;
+		if (parentIndex != null) {
+			groupName += "." + editingService.getIndexService().format(parentIndex);
+		}
+
+		Composite geometryGroup = getOrCreateGroup(parentGroup, groupName + ".geometries");
+
+		// Draw all polygons:
+		for (int i = 0; i < mp.getNumGeometries(); i++) {
+			GeometryIndex polygonIndex = editingService.getIndexService().addChildren(parentIndex,
+					GeometryIndexType.TYPE_GEOMETRY, i);
+			draw(geometryGroup, polygonIndex, (Polygon) mp.getGeometryN(i), graphics);
 		}
 	}
 
@@ -618,11 +684,10 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (parentIndex != null) {
 			groupName += "." + editingService.getIndexService().format(parentIndex);
 		}
-		getOrCreateGroup(parentGroup, groupName + ".edges-selection");
-		getOrCreateGroup(parentGroup, groupName + ".edges");
-		getOrCreateGroup(parentGroup, groupName + ".vertices-selection");
 		Composite vertexGroup = getOrCreateGroup(parentGroup, groupName + ".vertices");
 
+		Bbox firstRectangle = new Bbox(0, 0, VERTEX_SIZE, VERTEX_SIZE);
+		graphics.drawRectangle(vertexGroup, "first", firstRectangle, new ShapeStyle());
 		if (!point.isEmpty()) {
 			GeometryIndex vertexIndex = editingService.getIndexService().addChildren(parentIndex,
 					GeometryIndexType.TYPE_VERTEX, 0);

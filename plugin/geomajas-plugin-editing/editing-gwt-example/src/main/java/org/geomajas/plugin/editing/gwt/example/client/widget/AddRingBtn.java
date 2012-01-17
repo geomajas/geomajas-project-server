@@ -11,6 +11,11 @@
 
 package org.geomajas.plugin.editing.gwt.example.client.widget;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
@@ -56,16 +61,32 @@ public class AddRingBtn extends ToolStripButton implements GeometryEditStartHand
 		addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				try {
-					GeometryIndex ringIndex = service.addEmptyChild();
+				if (Geometry.POLYGON.equals(service.getGeometry().getGeometryType())) {
+					try {
+						GeometryIndex ringIndex = service.addEmptyChild();
 
-					// Free drawing means inserting mode. First create a new empty child, than point the insert index to
-					// the child's first vertex:
-					service.setInsertIndex(service.getIndexService().addChildren(ringIndex,
-							GeometryIndexType.TYPE_VERTEX, 0));
-					service.setEditingState(GeometryEditState.INSERTING);
-				} catch (GeometryOperationFailedException e) {
-					Window.alert("Error during editing: " + e.getMessage());
+						// Free drawing means inserting mode. First create a new empty child, than point the insert
+						// index to the child's first vertex:
+						service.setInsertIndex(service.getIndexService().addChildren(ringIndex,
+								GeometryIndexType.TYPE_VERTEX, 0));
+						service.setEditingState(GeometryEditState.INSERTING);
+					} catch (GeometryOperationFailedException e) {
+						Window.alert("Error during editing: " + e.getMessage());
+					}
+				} else if (Geometry.MULTI_POLYGON.equals(service.getGeometry().getGeometryType())) {
+					try {
+						// First insert an empty ring into polygon1:
+						GeometryIndex index = service.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY, 0, 0);
+						service.insert(Collections.singletonList(index), new ArrayList<List<Coordinate>>());
+
+						// Free drawing means inserting mode. First create a new empty child, than point the insert
+						// index to the child's first vertex:
+						service.setInsertIndex(service.getIndexService().addChildren(index,
+								GeometryIndexType.TYPE_VERTEX, 0));
+						service.setEditingState(GeometryEditState.INSERTING);
+					} catch (GeometryOperationFailedException e) {
+						Window.alert("Error during editing: " + e.getMessage());
+					}
 				}
 			}
 		});
