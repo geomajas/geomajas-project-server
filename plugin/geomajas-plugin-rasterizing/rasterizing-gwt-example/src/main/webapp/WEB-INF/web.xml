@@ -20,23 +20,12 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			<!-- framework context -->
+			<!-- generic Geomajas context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
 
-			<!-- application context -->
-		<!--
-			WEB-INF/applicationContext.xml
-			WEB-INF/mapMain.xml
-			WEB-INF/mapOverview.xml
-			WEB-INF/clientLayerOsm.xml
-			WEB-INF/clientLayerCountries.xml
-			WEB-INF/layerOsm.xml
-			WEB-INF/layerCountries.xml
- 		-->
-   
-			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
+			<!-- security -->
+			WEB-INF/security.xml
 
-			WEB-INF/sld-cookbook/*.xml
 		</param-value>
 	</context-param>
 
@@ -76,7 +65,7 @@
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/d/*</url-pattern>
-		<url-pattern>/Rasterizing/*</url-pattern>
+		<url-pattern>/RasterizingExample/*</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

@@ -94,6 +94,18 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-gwt-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-wms-all</artifactId>
 				<version>1.8.0</version>
 				<type>pom</type>
@@ -111,6 +123,7 @@
 	<modules>
 		<module>rasterizing</module>
 		<module>rasterizing-gwt</module>
+		<module>rasterizing-gwt-example-jar</module>
 		<module>rasterizing-gwt-example</module>
 	</modules>
 
