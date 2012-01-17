@@ -146,4 +146,40 @@ public class BboxTest {
 	public void contains() {
 		Assert.assertTrue(normal.intersects(empty));
 	}
+	
+	/**
+	 * Test contains method of Bbox for a point (coordinate) parameter.
+	 */
+	@Test
+	public void testContainsPoint() {
+		testContainsPointWithParams(-5.0, -5.0, 20.0, 10.0,  1E-9);
+	}
+
+	private void testContainsPointWithParams(double minX, double minY,
+				double width, double height, double minimal) {
+
+		Bbox bbox = new Bbox(minX, minY, width, height);
+
+		Assert.assertTrue(bbox.contains(new Coordinate(0.0, 0.0)));
+		Assert.assertTrue(bbox.contains(new Coordinate(minX + minimal, 	minY + minimal)));
+		Assert.assertTrue(bbox.contains(new Coordinate(minX, 			minY)));
+		Assert.assertTrue(bbox.contains(new Coordinate(minX + width - minimal,
+							minY + minimal)));
+		Assert.assertTrue(bbox.contains(new Coordinate(minX + width, minY)));
+
+		Assert.assertTrue(bbox.contains(new Coordinate(minX + minimal, 	minY + height - minimal)));
+		Assert.assertTrue(bbox.contains(new Coordinate(minX, 			minY + height)));
+
+		Assert.assertTrue(bbox.contains(new Coordinate(minX + width - minimal,
+								minY + height - minimal)));
+		Assert.assertTrue(bbox.contains(new Coordinate(minX + width,
+								minY + height)));
+
+		Assert.assertFalse(bbox.contains(new Coordinate(minX - 10.0, minY - 10.0)));
+		Assert.assertFalse(bbox.contains(new Coordinate(minX + width + 10.0, minY + height + 10.0)));
+		Assert.assertFalse(bbox.contains(new Coordinate(minX - minimal, 1.0)));
+		Assert.assertFalse(bbox.contains(new Coordinate(0.0, minY - minimal)));
+		Assert.assertFalse(bbox.contains(new Coordinate(minX + minimal, minY + height + minimal)));
+		Assert.assertFalse(bbox.contains(new Coordinate(minX + width - minimal, minY - minimal)));
+	}
 }
