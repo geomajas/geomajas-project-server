@@ -76,6 +76,31 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<ref bean="clientLayerOsm" />
 			</list>
 		</property>
+		<property name="toolbar">
+			<bean name="mainMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="mapOsmScaleSelect" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="mapOsmScaleSelect" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="toolId" value="ScaleSelect" />
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="precision" />
+					<property name="value" value="1000" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="significantDigits" />
+					<property name="value" value="3" />
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerOsm">
