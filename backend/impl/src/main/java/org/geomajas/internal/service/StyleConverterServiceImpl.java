@@ -238,7 +238,12 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 						TextSymbolizerInfo textInfo = (TextSymbolizerInfo) symbolizerTypeInfo;
 						labelStyleInfo.setFontStyle(convertFont(textInfo.getFont()));
 						for (ExpressionInfo expr : textInfo.getLabel().getExpressionList()) {
-							labelStyleInfo.setLabelAttributeName(expr.getValue());
+							if (LiteralTypeInfo.class.equals(expr.getClass())) {
+								String literalValue = expr.getValue();
+								labelStyleInfo.setLabelValueExpression("'" + literalValue + "'");
+							} else { // Assume expr is of class PropertyNameInfo
+								labelStyleInfo.setLabelAttributeName(expr.getValue());
+							}
 						}
 						convertFontFill(labelStyleInfo.getFontStyle(), textInfo.getFill());
 						FeatureStyleInfo background = new FeatureStyleInfo();

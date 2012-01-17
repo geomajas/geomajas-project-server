@@ -74,6 +74,39 @@ public class StyleConverterServiceTest {
 		Assert.assertNotNull(info);
 		Assert.assertEquals("Some title", info.getName());
 	}
+	
+	@Test
+	public void testStyleWithAttributeLabel() throws JiBXException, LayerException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(
+				getClass().getResourceAsStream("/org/geomajas/testdata/sld/line_labelfollowingline.sld"),
+						null);
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
+		NamedStyleInfo info = styleConverterService.convert(sld.getChoiceList().get(0).getNamedLayer().getChoiceList()
+				.get(0).getUserStyle(), featureInfo);
+		Assert.assertNotNull(info);
+		
+		Assert.assertEquals("name", info.getLabelStyle().getLabelAttributeName());
+
+	}
+
+	
+	@Test
+	public void testStyleWithLiteralLabel() throws JiBXException, LayerException {
+		IBindingFactory bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+		IUnmarshallingContext uctx = bfact.createUnmarshallingContext();
+		Object object = uctx.unmarshalDocument(
+				getClass().getResourceAsStream("/org/geomajas/testdata/sld/line_literallabelfollowingline.sld"),
+						null);
+		StyledLayerDescriptorInfo sld = (StyledLayerDescriptorInfo) object;
+		NamedStyleInfo info = styleConverterService.convert(sld.getChoiceList().get(0).getNamedLayer().getChoiceList()
+				.get(0).getUserStyle(), featureInfo);
+		Assert.assertNotNull(info);
+		
+		Assert.assertEquals("'\u2192'", info.getLabelStyle().getLabelValueExpression());
+
+	}
 
 	@Test
 	public void testMixedGeometryStyle() throws LayerException {
