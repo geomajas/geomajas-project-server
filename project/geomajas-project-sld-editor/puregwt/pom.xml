@@ -19,7 +19,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-puregwt</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas SLD editor (pure GWT)</name>
 	<description>Geomajas SLD editor (pure GWT)</description>
@@ -27,32 +26,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-impl</artifactId>
+			<artifactId>geomajas-project-sld-editor-common-gwt</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-api</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-common-gwt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-	  	
-		
-		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		
@@ -124,12 +109,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${sld-gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${sld-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -203,7 +188,7 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt-version}</version>
+					<version>${sld-gwt-version}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -212,9 +197,5 @@
 			</properties>
 		</profile>
 	</profiles>
-
-	<properties>
-		<gwt-version>2.4.0</gwt-version>
-	</properties>
 
 </project>

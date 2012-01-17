@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.ExternalGraphicInfo;
 import org.geomajas.sld.FeatureTypeStyleInfo;
@@ -2375,7 +2374,7 @@ public class SldWidget {
 	private class SaveButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public SaveButton() {
-			setIcon(WidgetLayout.iconSave);
+			// @todo FIX setIcon(WidgetLayout.iconSave);
 			setShowDisabledIcon(false);
 			setTitle(MESSAGES.saveButtonTitle());
 			setTooltip(MESSAGES.saveButtonTooltip());
@@ -2403,10 +2402,10 @@ public class SldWidget {
 	private class CancelButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public CancelButton() {
-			setIcon(WidgetLayout.iconCancel);
+			setIcon("[ISOMORPHIC]/geomajas/icons/silk/cancel.png");
 			setShowDisabledIcon(false);
 			setTitle(MESSAGES.cancelButtonTitle());
-			setTooltip("Annuleer de veranderingen.");
+			setTooltip("Cancel changes.");
 			
 			setDisabled(false);
 
@@ -2452,7 +2451,7 @@ public class SldWidget {
 
 	/** Definition of the Cancel button. */
 	private class CloseButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
-		public static final String ICON_CLOSE = "[ISOMORPHIC]/" + "geomajas/icons/silk/door_out.png";
+		public static final String ICON_CLOSE = "[ISOMORPHIC]/geomajas/icons/silk/door_out.png";
 		
 		public CloseButton() {
 			if (null != ICON_CLOSE) {

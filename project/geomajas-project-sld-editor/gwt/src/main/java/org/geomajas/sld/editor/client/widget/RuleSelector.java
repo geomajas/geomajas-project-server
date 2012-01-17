@@ -13,7 +13,6 @@ package org.geomajas.sld.editor.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.editor.client.GeometryTypes;
@@ -817,7 +816,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 	private class AddButton extends IButton {
 
 		public AddButton() {
-			setIcon(WidgetLayout.iconAdd);
+			// @todo FIX setIcon(WidgetLayout.iconAdd);
 			setShowDisabledIcon(true);
 			setPrompt("Voeg nieuwe stijl toe"); // TODO i18n
 			// TODO: validate form first
@@ -838,7 +837,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 	private class RemoveButton extends IButton {
 
 		public RemoveButton() {
-			setIcon(WidgetLayout.iconRemove);
+			// @todo FIX setIcon(WidgetLayout.iconRemove);
 			setShowDisabledIcon(true);
 			setPrompt("Verwijder geselecteerde stijl"); // TODO i18n
 			setWidth(24);

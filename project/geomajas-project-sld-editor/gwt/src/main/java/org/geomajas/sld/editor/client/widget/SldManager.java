@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.NamedLayerInfo;
 import org.geomajas.sld.RuleInfo;
@@ -59,9 +58,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * adding/removing an SLD rule.
  * 
  * @author An Buyle
- * 
  */
-
 public class SldManager {
 
 	public static final String SLD_NAME_ATTRIBUTE_NAME = "SLDName";
@@ -294,7 +291,7 @@ public class SldManager {
 		toolStrip.setHeight(30); /* fixed size for buttons strip for dialogue to add an SLD */
 
 		final IButton createButton = new IButton();
-		createButton.setIcon(WidgetLayout.iconCreate);
+		// @todo FIX createButton.setIcon(WidgetLayout.iconCreate);
 		// createButton.setShowDisabledIcon(false);
 		createButton.setPrompt(sldEditorMessages.createButtonTooltip());
 		
@@ -303,7 +300,7 @@ public class SldManager {
 		createButton.setShowDisabledIcon(false);
 
 		final IButton cancelButton = new IButton();
-		cancelButton.setIcon(WidgetLayout.iconCancel);
+		// @todo FIX cancelButton.setIcon(WidgetLayout.iconCancel);
 		cancelButton.setShowDisabledIcon(false);
 		cancelButton.setTitle(sldEditorMessages.cancelButtonTitle());
 		cancelButton.setTooltip(sldEditorMessages.createSldCancelButtonTitle());
@@ -458,7 +455,7 @@ public class SldManager {
 	private class AddButton extends IButton {
 
 		public AddButton() {
-			setIcon(WidgetLayout.iconAdd);
+			// @todo FIX setIcon(WidgetLayout.iconAdd);
 			setShowDisabledIcon(false);
 			setPrompt(sldEditorMessages.addSldButtonTooltip());
 			// TODO: validate form first
@@ -479,7 +476,7 @@ public class SldManager {
 	private class RemoveButton extends IButton {
 
 		public RemoveButton() {
-			setIcon(WidgetLayout.iconRemove);
+			// @todo FIX setIcon(WidgetLayout.iconRemove);
 			setShowDisabledIcon(true);
 			setPrompt(sldEditorMessages.removeSldButtonTooltip());
 			setWidth(24);

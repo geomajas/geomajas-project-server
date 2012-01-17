@@ -77,32 +77,25 @@
 			
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-api</artifactId>
-				<version>${project.version}</version>
+				<artifactId>geomajas-project-sld-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-api</artifactId>
-				<version>${project.version}</version>
-				<classifier>sources</classifier>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-gwt</artifactId>
+				<artifactId>geomajas-project-sld-editor-common-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-impl</artifactId>
+				<artifactId>geomajas-project-sld-editor-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-sld-editor</artifactId>
+				<artifactId>geomajas-project-sld-editor-puregwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -143,7 +136,18 @@
 				<artifactId>gwt-sl</artifactId>
 				<version>1.1</version>
 			</dependency>
-         
+
+			<dependency>
+				<groupId>com.smartgwt</groupId>
+				<artifactId>smartgwt</artifactId>
+				<version>2.5</version>
+			</dependency>
+			<dependency>
+				<groupId>com.smartgwt</groupId>
+				<artifactId>smartgwt-skins</artifactId>
+				<version>2.4</version>
+			</dependency>
+
 			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
@@ -240,19 +244,16 @@
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
 				<version>${sld-gwt-version}</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
 				<version>${sld-gwt-version}</version>
-				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
 				<version>${sld-gwt-version}</version>
-				<scope>test</scope>
 			</dependency>
 
 		</dependencies>

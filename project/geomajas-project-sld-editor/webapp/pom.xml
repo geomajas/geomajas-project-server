@@ -10,7 +10,7 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas.project</groupId>
 		<artifactId>geomajas-project-sld-editor-all</artifactId>
@@ -19,7 +19,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-webapp</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas SLD editor</name>
 	<description>Geomajas SLD editor (GWT)</description>
@@ -27,64 +26,28 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-impl</artifactId>
+			<artifactId>geomajas-project-sld-editor-gwt</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-gwt</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-project-sld-common-gwt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-        	<groupId>org.geomajas</groupId>
-        	<artifactId>geomajas-gwt-client</artifactId>
-        	<version>1.10.0-SNAPSHOT</version>
-      	</dependency>
-      	
-      	<dependency>
-        	<groupId>org.geomajas</groupId>
-        	<artifactId>geomajas-gwt-client</artifactId>
-        	<version>1.10.0-SNAPSHOT</version>
-        	<classifier>sources</classifier>
-      	</dependency>
-
-		<dependency>
-			<groupId>org.geomajas.widget</groupId>
-			<artifactId>geomajas-widget-utility-gwt</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
- 	
- 		<dependency>
-	      <groupId>org.geomajas.widget</groupId>
-	      <artifactId>geomajas-widget-utility-gwt</artifactId>
-	      <version>1.0.0-SNAPSHOT</version>
-	      <scope>compile</scope>
-    	</dependency>
 
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
-      <dependency>
-        <groupId>com.smartgwt</groupId>
-        <artifactId>smartgwt</artifactId>
-        <version>2.5</version>
-      </dependency>
+		<dependency>
+			<groupId>com.smartgwt</groupId>
+			<artifactId>smartgwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.smartgwt</groupId>
+			<artifactId>smartgwt-skins</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -123,7 +86,9 @@
 						<contextPath>/</contextPath>
 						<baseResource implementation="org.mortbay.resource.ResourceCollection">
 							<!-- need both the webapp dir and location where GWT puts stuff -->
-							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+							<resourcesAsCSV>
+								${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}
+							</resourcesAsCSV>
 						</baseResource>
 					</webAppConfig>
 					<reload>manual</reload>
@@ -139,12 +104,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${sld-gwt-version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${sld-gwt-version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -218,7 +183,7 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt-version}</version>
+					<version>${sld-gwt-version}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -227,9 +192,5 @@
 			</properties>
 		</profile>
 	</profiles>
-
-	<properties>
-		<gwt-version>2.4.0</gwt-version>
-	</properties>
 
 </project>

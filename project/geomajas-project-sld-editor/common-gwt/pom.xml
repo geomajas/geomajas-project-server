@@ -15,7 +15,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-project-sld-editor-common-gwt</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas SLD common GWT</name>
 	<description>Geomajas SLD client library (common GWT)</description>
@@ -25,7 +24,6 @@
 			<groupId>org.geomajas.project</groupId>
 			<artifactId>geomajas-project-sld-api</artifactId>
 		</dependency>
-			
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
 			<artifactId>geomajas-project-sld-api</artifactId>
@@ -42,7 +40,6 @@
 			<groupId>org.jibx</groupId>
 			<artifactId>jibx-run</artifactId>
 		</dependency>
-		
 
 		<dependency>
 			<groupId>net.sf.gwt-widget</groupId>
