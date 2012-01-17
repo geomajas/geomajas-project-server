@@ -471,14 +471,22 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				VERTEX_SIZE, VERTEX_SIZE);
 
 		// Draw:
-		if (Dom.isIE() && editingService.getEditingState() == GeometryEditState.DRAGGING
-				&& editingService.getIndexStateService().isSelected(index)) {
-			// Cheap trick so switch order:
-			mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, findVertexStyle(index));
-			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, new ShapeStyle());
+		if (Dom.isIE()) {
+			if (editingService.getEditingState() == GeometryEditState.DRAGGING
+					&& editingService.getIndexStateService().isSelected(index)) {
+				// Cheap trick so switch order (since bringToFront cannot be used in IE...):
+				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, findVertexStyle(index));
+				mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, new ShapeStyle());
+			} else {
+				mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
+				mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, new ShapeStyle());
+			}
 		} else {
+			if (editingService.getEditingState() == GeometryEditState.DRAGGING
+					&& editingService.getIndexStateService().isSelected(index)) {
+				mapWidget.getVectorContext().moveToBack(parentGroup, identifier);
+			}
 			mapWidget.getVectorContext().drawRectangle(parentGroup, identifier, rectangle, findVertexStyle(index));
-			mapWidget.getVectorContext().drawRectangle(parentGroup, "first", rectangle, new ShapeStyle());
 		}
 	}
 
