@@ -122,6 +122,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
 				<version>0.9.7.TX</version>

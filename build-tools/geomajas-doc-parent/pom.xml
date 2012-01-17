@@ -33,31 +33,6 @@
 		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-doc-parent</url>
 	</scm>
 
-	<organization>
-		<name>Geosparc</name>
-		<url>http://www.geosparc.com</url>
-	</organization>
-	<mailingLists>
-		<mailingList>
-			<name>DEV</name>
-			<post>mailto:majas-dev@geomajas.org</post>
-			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
-			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
-			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
-		</mailingList>
-	</mailingLists>
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.geomajas.org</url>
-	</issueManagement>
-
 	<developers>
 		<developer>
 			<id>jandm</id>
@@ -248,9 +223,9 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.maven.ide.eclipse</groupId>
+						<groupId>org.eclpise.m2e</groupId>
 						<artifactId>lifecycle-mapping</artifactId>
-						<version>0.10.0</version>
+						<version>1.0.0</version>
 						<configuration>
 							<mappingId>customizable</mappingId>
 						</configuration>

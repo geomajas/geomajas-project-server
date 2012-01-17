@@ -28,7 +28,6 @@
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-			<version>2.9.1</version>
 		</dependency>
 
 		<!-- Geomajas dependencies -->
@@ -96,22 +95,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.6.1</version>
-				<configuration>
-					<show>public</show>
-					<nohelp>true</nohelp>
-					<header>Geomajas ${project.version}</header>
-					<footer>Geomajas ${project.version}</footer>
-					<links>
-						<link>http://www.smartclient.com/smartgwt/javadoc/</link>
-						<link>http://www.vividsolutions.com/jts/javadoc/</link>
-						<link>http://javadoc.geotools.fr/2.5/</link>
-					</links>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>

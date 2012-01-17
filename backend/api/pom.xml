@@ -100,7 +100,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.5-DF</version>
 				<configuration>
 					<configLocation>config/geomajas-api-checkstyle.xml</configLocation>
 				</configuration>
@@ -112,18 +111,10 @@
 						</goals>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.geomajas</groupId>
-						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.6-SNAPSHOT</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.6.1</version>
 				<configuration>
 					<show>public</show>
 					<nohelp>true</nohelp>

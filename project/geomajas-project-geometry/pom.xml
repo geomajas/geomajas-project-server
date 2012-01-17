@@ -61,6 +61,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<geomajas-geometry-version>${project.version}</geomajas-geometry-version>
+							<license>Apache v2</license>
+							<more-info>http://www.geomajas.org/ and http://www.geosparc.com/</more-info>
+						</manifestEntries>
+						<compress>true</compress>
+						<index>true</index>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
