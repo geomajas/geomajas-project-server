@@ -175,6 +175,11 @@
 			<artifactId>geomajas-plugin-geocoder-gwt-example-jar</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-rasterizing-gwt-example-jar</artifactId>
+		</dependency>
+
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
