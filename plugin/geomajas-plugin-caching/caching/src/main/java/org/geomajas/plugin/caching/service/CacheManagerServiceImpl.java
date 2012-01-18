@@ -81,7 +81,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 			}
 			caches.remove(getLayerId(layer));
 		}
-		// clea meta-layer
+		// clear meta-layer
 		List<IndexedCache> layerCaches = getCaches(null);
 		for (IndexedCache cache : layerCaches) {
 			cache.clear();
