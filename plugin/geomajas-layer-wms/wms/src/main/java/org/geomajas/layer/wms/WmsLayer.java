@@ -40,6 +40,7 @@ import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -131,6 +132,9 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 
 	@Autowired(required = false)
 	private CacheManagerService cacheManagerService;
+	
+	@Autowired
+	private SecurityContext securityContext;
 
 	/**
 	 * Return the layers identifier.
@@ -410,6 +414,11 @@ public class WmsLayer implements RasterLayer, LayerFeatureInfoSupport {
 	private String formatUrl(int width, int height, Bbox box) throws GeomajasException {
 		StringBuilder url = formatBaseUrl(getWmsTargetUrl(), width, height, box);
 		url.append("&request=GetMap");
+		String token = securityContext.getToken();
+		if (null != token) {
+			url.append("&userToken=");
+			url.append(token);
+		}
 		return url.toString();
 	}
 
