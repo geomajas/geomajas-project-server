@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
+package org.geomajas.plugin.jsapi.gwt.client.exporter.map.layer;
 
 import org.geomajas.gwt.client.map.layer.AbstractLayer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;

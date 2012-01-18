@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature;
+package org.geomajas.plugin.jsapi.gwt.client.exporter.map.feature;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ import org.geomajas.plugin.jsapi.client.map.feature.FeatureArrayCallback;
 import org.geomajas.plugin.jsapi.client.map.feature.FeatureArrayCallback.FeatureArrayHolder;
 import org.geomajas.plugin.jsapi.client.map.feature.FeatureSearchService;
 import org.geomajas.plugin.jsapi.client.map.layer.FeaturesSupported;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;

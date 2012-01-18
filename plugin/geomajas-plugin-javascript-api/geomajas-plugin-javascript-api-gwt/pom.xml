@@ -16,10 +16,10 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-javascript-api-smartgwt</artifactId>
+	<artifactId>geomajas-plugin-javascript-api-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>geomajas-plugin-javascript-api (smartGWT face)</name>
-	<description>geomajas-plugin-javascript-api (smartGWT face)</description>
+	<name>geomajas-plugin-javascript-api (GWT face)</name>
+	<description>geomajas-plugin-javascript-api (GWT face)</description>
 
 	<dependencies>
 		<dependency>
@@ -29,7 +29,6 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-javascript-api</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

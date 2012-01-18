@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial;
+package org.geomajas.plugin.jsapi.gwt.client.exporter.spatial;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;

@@ -15,5 +15,5 @@
   	<inherits name="org.geomajas.plugin.jsapi.JavascriptApi" />
 
   	<set-property name="export" value="yes"/>
-    <entry-point class="org.geomajas.plugin.jsapi.smartgwt.client.JsApiEntryPoint"/>
+    <entry-point class="org.geomajas.plugin.jsapi.gwt.client.JsApiEntryPoint"/>
 </module>

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.jsapi.smartgwt.client;
+package org.geomajas.plugin.jsapi.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 

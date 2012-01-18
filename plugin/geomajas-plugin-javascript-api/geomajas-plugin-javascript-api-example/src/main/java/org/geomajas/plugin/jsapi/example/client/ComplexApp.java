@@ -15,8 +15,8 @@ import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.GeomajasServiceImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.GeomajasServiceImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;

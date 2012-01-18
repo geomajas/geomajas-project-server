@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.jsapi.smartgwt.client.exporter;
+package org.geomajas.plugin.jsapi.gwt.client.exporter;
 
 import java.util.HashMap;
 
@@ -33,9 +33,9 @@ import org.geomajas.plugin.jsapi.client.map.Map;
 import org.geomajas.plugin.jsapi.client.map.controller.MapController;
 import org.geomajas.plugin.jsapi.client.spatial.BboxService;
 import org.geomajas.plugin.jsapi.client.spatial.GeometryService;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.MapImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial.BboxServiceImpl;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.spatial.GeometryServiceImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.map.MapImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.spatial.BboxServiceImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.spatial.GeometryServiceImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;

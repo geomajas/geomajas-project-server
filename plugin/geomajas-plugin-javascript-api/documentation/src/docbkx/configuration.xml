@@ -136,13 +136,13 @@ function onGeomajasLoad() {
 
       <programlisting language="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-javascript-api-smartgwt&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-plugin-javascript-api-gwt&lt;/artifactId&gt;
     &lt;version&gt;1.0.0&lt;/version&gt;
 &lt;/dependency&gt;
 
 &lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-javascript-api-smartgwt&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-plugin-javascript-api-gwt&lt;/artifactId&gt;
     &lt;version&gt;1.0.0&lt;/version&gt;
     &lt;classifier&gt;sources&lt;/classifier&gt;
 &lt;/dependency&gt;</programlisting>
@@ -160,7 +160,7 @@ function onGeomajasLoad() {
     <example>
       <title>Adding the GWT module</title>
 
-      <para><programlisting>&lt;inherits name="org.geomajas.plugin.jsapi.smartgwt.JavascriptApi"/&gt;</programlisting></para>
+      <para><programlisting>&lt;inherits name="org.geomajas.plugin.jsapi.gwt.JavascriptApi"/&gt;</programlisting></para>
     </example>
 
     <para>That's it! When building your GWT application, it will automatically

@@ -8,8 +8,8 @@
   ~ General Public License. All contributions in this program are covered
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
-  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!-- @todo remove the parent when the plug-in is not part of the Geomajas project, or remove this comment -->
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -47,15 +47,14 @@
 
 	<modules>
 		<module>geomajas-plugin-javascript-api</module>
-		<module>geomajas-plugin-javascript-api-smartgwt</module>
-	    <module>documentation</module>
+		<module>geomajas-plugin-javascript-api-gwt</module>
 	    <module>geomajas-plugin-javascript-api-example</module>
 	</modules>
 
 	<properties>
 		<geomajas-plugin-javascript-api-backend-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-backend-version>
-		<geomajas-plugin-javascript-api-gwt-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-gwt-version>
-		<gwt-version>2.4.0</gwt-version>
+		<geomajas-plugin-javascript-api-gwt-face-version>1.10.0-SNAPSHOT</geomajas-plugin-javascript-api-gwt-face-version>
+		<geomajas-plugin-javascript-api-gwt-version>2.4.0</geomajas-plugin-javascript-api-gwt-version>
 		<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>
 	</properties>	
 
@@ -64,17 +63,17 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${gwt-version}</version>
+				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${gwt-version}</version>
+				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${gwt-version}</version>
+				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
@@ -91,7 +90,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-plugin-javascript-api-gwt-version}</version>
+				<version>${geomajas-plugin-javascript-api-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -102,7 +101,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-javascript-api-smartgwt</artifactId>
+				<artifactId>geomajas-plugin-javascript-api-gwt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

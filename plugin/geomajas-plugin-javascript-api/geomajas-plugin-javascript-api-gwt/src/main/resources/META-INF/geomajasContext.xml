@@ -23,7 +23,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="geomajas-plugin-javascript-api-smartgwt" />
+				<property name="name" value="geomajas-plugin-javascript-api-gwt" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>

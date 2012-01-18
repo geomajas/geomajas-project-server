@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map;
+package org.geomajas.plugin.jsapi.gwt.client.exporter.map;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;

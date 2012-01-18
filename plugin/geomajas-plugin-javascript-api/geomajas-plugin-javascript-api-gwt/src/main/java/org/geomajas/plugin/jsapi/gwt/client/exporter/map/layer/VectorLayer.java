@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.layer;
+package org.geomajas.plugin.jsapi.gwt.client.exporter.map.layer;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.plugin.jsapi.client.map.feature.Feature;
 import org.geomajas.plugin.jsapi.client.map.layer.FeaturesSupported;
 import org.geomajas.plugin.jsapi.client.map.layer.LabelsSupported;
-import org.geomajas.plugin.jsapi.smartgwt.client.exporter.map.feature.FeatureImpl;
+import org.geomajas.plugin.jsapi.gwt.client.exporter.map.feature.FeatureImpl;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
