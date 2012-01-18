@@ -14,6 +14,7 @@ package org.geomajas.command.configuration;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.configuration.client.BoundsLimitOption;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
@@ -35,7 +36,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
-		"/org/geomajas/command/ServerSideOnlyConfiguration.xml"})
+		"/org/geomajas/testdata/viewBoundsOptionContext.xml",
+		"/org/geomajas/command/ServerSideOnlyConfiguration.xml" })
 public class GetMapConfigurationCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
@@ -85,8 +87,33 @@ public class GetMapConfigurationCommandTest {
 		Assert.assertNotNull(mapInfo.getWidgetInfo("layerTree"));
 		Assert.assertEquals("layer1, layer2",
 				((ClientApplicationInfo.DummyClientWidgetInfo) mapInfo.getWidgetInfo("layerTree")).getDummy());
+		// Default value of ViewBounds LimitOption
+		BoundsLimitOption boundsLimitOption = mapInfo.getViewBoundsLimitOption();
+		Assert.assertNotNull(info);
+		Assert.assertEquals(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS, boundsLimitOption);
+				
 	}
+	
+	@Test
+	public void testViewBoundsLimitOption() throws Exception {
+		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
+		request.setApplicationId("vectorsMapWithViewBoundsOption");
+		request.setMapId("viewBoundsLimitTestMap");
+		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
+				GetMapConfigurationRequest.COMMAND, request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
+		Assert.assertFalse(response.isError());
+		ClientMapInfo mapInfo = response.getMapInfo();
+		Assert.assertNotNull(mapInfo);
 
+		// ViewBounds LimitOption
+		BoundsLimitOption boundsLimitOption = mapInfo.getViewBoundsLimitOption();
+		Assert.assertNotNull(boundsLimitOption);
+		Assert.assertEquals(BoundsLimitOption.CENTER_WITHIN_MAX_BOUNDS, boundsLimitOption);
+	}
+	
 	@Test
 	public void testServerSideOnlyInfo() throws Exception {
 		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
@@ -110,6 +137,11 @@ public class GetMapConfigurationCommandTest {
 		Assert.assertNull(mapInfo.getWidgetInfo("appDummy")); // not present
 		Assert.assertNotNull(mapInfo.getWidgetInfo("layerTree")); // present
 		Assert.assertNull(mapInfo.getWidgetInfo("mapDummy")); // filtered because ServerSideOnlyInfo
+		
+		// ViewBounds LimitOption
+		Assert.assertEquals(BoundsLimitOption.COMPLETELY_WITHIN_MAX_BOUNDS, 
+				mapInfo.getViewBoundsLimitOption());
+		
 	}
 
 }
