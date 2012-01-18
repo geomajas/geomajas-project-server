@@ -25,14 +25,11 @@ import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.gwt.example.base.SamplePanel;
 import org.geomajas.gwt.example.base.SamplePanelFactory;
-import org.geomajas.plugin.rasterizing.client.action.toolbar.GetLegendImageAction;
-import org.geomajas.plugin.rasterizing.client.action.toolbar.GetMapImageAction;
 import org.geomajas.plugin.rasterizing.gwt.example.client.i18n.RasterizingMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
