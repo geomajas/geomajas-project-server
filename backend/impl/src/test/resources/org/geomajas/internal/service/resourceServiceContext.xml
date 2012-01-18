@@ -26,5 +26,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.service.resource.ResourceInfo" id="extraPath">
+		<property name="rootPath" value="classpath:org/geomajas/"/>
+	</bean>
+
 </beans>
 

@@ -13,9 +13,12 @@ package org.geomajas.internal.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.ResourceService;
+import org.geomajas.service.resource.ResourceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -35,6 +38,9 @@ public class ResourceServiceImpl implements ResourceService {
 	private ApplicationContext applicationContext;
 
 	private List<String> rootPaths = new ArrayList<String>();
+	
+	@Autowired
+	private List<ResourceInfo> resourcesInfos;
 
 	/** {@inheritDoc} */
 	public Resource find(String location) throws GeomajasException {
@@ -75,6 +81,15 @@ public class ResourceServiceImpl implements ResourceService {
 	/** {@inheritDoc} */
 	public void setRootPaths(List<String> rootPaths) {
 		this.rootPaths = rootPaths;
+	}
+	
+	@PostConstruct
+	protected void postConstruct() {
+		if (resourcesInfos != null) {
+			for (ResourceInfo resourcesInfo : resourcesInfos) {
+				rootPaths.add(resourcesInfo.getRootPath());
+			}
+		}
 	}
 
 }

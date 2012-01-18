@@ -55,4 +55,13 @@ public class ResourceServiceTest {
 		Assert.assertTrue(res instanceof ClassPathResource);
 	}
 
+	@Test
+	public void testResourceInfo() throws GeomajasException {
+		// check if ResourceInfo is registered
+		Assert.assertEquals(2, resourceService.getRootPaths().size());
+		// find from extra path (see ResourceInfo definition in resourceServiceContext.xml)
+		Resource res = resourceService.find("internal/service/someResource.txt");
+		Assert.assertTrue(res instanceof ClassPathResource);
+	}
+
 }
