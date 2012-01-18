@@ -62,11 +62,13 @@ public class MapRendererImpl implements MapRenderer {
 
 	private final MapNavigationAnimation animation;
 
+	private boolean first = true; // No animation the first time the map is rendered.
+
 	// Keeping track of the fetch delay:
 
 	private final FetchTimer fetchTimer;
 
-	private int fetchDelay = 100;
+	private int fetchDelay = 100; // Delay for fetching scale levels. Results in less requests.
 
 	// Keeping track of the navigation animation:
 
@@ -203,7 +205,11 @@ public class MapRendererImpl implements MapRenderer {
 
 	public void onViewPortChanged(ViewPortChangedEvent event) {
 		if (viewPort.getScale() > 0) {
-			navigateTo(viewPort.getBounds(), viewPort.getScale(), animationMillis);
+			if (first) {
+				navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
+			} else {
+				navigateTo(viewPort.getBounds(), viewPort.getScale(), animationMillis);
+			}
 		}
 	}
 
@@ -284,6 +290,7 @@ public class MapRendererImpl implements MapRenderer {
 	private void navigateTo(Bbox bounds, double scale, int millis) {
 		GWT.log("Navigation starts to scale: " + scale + ", from scale: " + currentScale);
 		navigationBusy = true;
+		int delay = fetchDelay >= millis ? 0 : fetchDelay;
 
 		// Calculate the map translation for the requested scale:
 		Matrix translation = viewPort.getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -297,7 +304,7 @@ public class MapRendererImpl implements MapRenderer {
 			currentScale = scale;
 
 			// Ensure the scale level after a certain delay:
-			ensureScale(scale, bounds);
+			ensureScale(scale, bounds, delay);
 
 			// Extend the current animation:
 			animation.extend(currentScale / previousScale, transCoord, millis);
@@ -307,7 +314,7 @@ public class MapRendererImpl implements MapRenderer {
 			currentScale = scale;
 
 			// Ensure the scale level after a certain delay:
-			ensureScale(scale, bounds);
+			ensureScale(scale, bounds, delay);
 
 			// Create an ordered list of presenters for the animation.
 			List<MapScalesRenderer> presenters = new ArrayList<MapScalesRenderer>();
@@ -324,13 +331,9 @@ public class MapRendererImpl implements MapRenderer {
 		}
 	}
 
-	private void ensureScale(double scale, Bbox bounds) {
+	private void ensureScale(double scale, Bbox bounds, int delay) {
 		fetchTimer.cancel();
 		fetchTimer.setTargetLocation(scale, bounds);
-		int delay = fetchDelay;
-		if (fetchDelay > animationMillis) {
-			delay = animationMillis / 2;
-		}
 		fetchTimer.schedule(delay);
 	}
 
@@ -346,7 +349,11 @@ public class MapRendererImpl implements MapRenderer {
 		private Bbox bounds;
 
 		public void schedule(int delayMillis) {
-			super.schedule(delayMillis);
+			if (delayMillis == 0) {
+				run();
+			} else {
+				super.schedule(delayMillis);
+			}
 		}
 
 		public void run() {
@@ -357,7 +364,13 @@ public class MapRendererImpl implements MapRenderer {
 				MapScalesRenderer presenter = layerRenderers.get(layer);
 				if (presenter != null) {
 					presenter.ensureScale(scale, bounds);
-					presenter.setScaleVisibility(scale, false);
+					if (first) {
+						// First time: don't make it invisible. We're not using the animation either.
+						presenter.setScaleVisibility(scale, true);
+						first = false;
+					} else {
+						presenter.setScaleVisibility(scale, false);
+					}
 					presenters.add(presenter); // Create an ordered list of presenters for the animation.
 				}
 			}
