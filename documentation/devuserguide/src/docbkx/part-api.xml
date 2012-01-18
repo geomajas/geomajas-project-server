@@ -2358,6 +2358,13 @@ public interface Entity {
     &lt;/list&gt;
   &lt;/property&gt;
 &lt;/bean&gt;</programlisting>
+
+      <para>Additional root paths can also be configured anywhere in the
+      application context by defining a <code>ResouceInfo</code> bean:</para>
+
+      <programlisting>&lt;bean class="org.geomajas.service.resource.ResourceInfo" id="anotherResource"&gt;
+    &lt;property name="rootPath" value="classpath:org/geomajas/"/&gt;
+&lt;/bean&gt;</programlisting>
     </section>
 
     <section>
@@ -2410,14 +2417,14 @@ public interface Entity {
 
       <para>This service evaluates feature expressions for internal feature
       objects. Expressions are textual and expressed in a language that
-      depends on the specific implementation of this service. </para>
+      depends on the specific implementation of this service.</para>
 
       <para>The default implementation uses the <ulink
       url="http://static.springsource.org/spring/docs/3.0.5.RELEASE/reference/expressions.html">Spring
       Expression Language (SpEL)</ulink>, but other implementations may be
       based on eg. Freemarker/Velocity templates or even a custom language. As
       a minimal requirement, the language should be able to evaluate simple
-      references to primitive attribute values. </para>
+      references to primitive attribute values.</para>
 
       <para>The service provides the following methods:</para>
 
@@ -2502,7 +2509,61 @@ public interface Entity {
       <para><warning>
           <para>Custom variables that are added to the service should be made
           thread-safe (use thread scope if in doubt) !</para>
-        </warning> </para>
+        </warning></para>
+    </section>
+
+    <section>
+      <title>DispatcherUrlService</title>
+
+      <para>This service gives access to the dispatcher URL, which is the base
+      URL that maps to DispatcherServlet of the Geomajas application. This
+      allows building absolute URLs to services linked in as dispatched
+      controllers (Spring MVC controllers). The absolute URLs should be usable
+      in web clients that access the Geomajas application and may therefore
+      depend on the client or even the individual web request. This is
+      especially relevant for proxied applications, for which the absolute URL
+      is not directly available to the web application but can usually be
+      derived from specific headers of the web request (or configured if that
+      is not the case).</para>
+
+      <para>The service provides the following methods:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para> <code>String getDispatcherUrl()</code>: returns the external
+          base URL of the DispatcherServlet (for use by the web client)</para>
+        </listitem>
+
+        <listitem>
+          <para><code>String getLocalDispatcherUrl()</code>: returns the local
+          base URL of the DispatcherServlet (for use by the web
+          application)</para>
+        </listitem>
+
+        <listitem>
+          <para><code>String localize(String externalUrl)</code>: converts an
+          external URL that points to the DispatcherServlet to a local URL
+          (implemented as simple string replacement of base URL in most
+          cases)</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>There are 2 implementations available of this service:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>org.geomajas.service.impl.StaticUrlDispatcherService</code>:
+          allows static configuration of both local and external base
+          URL</para>
+        </listitem>
+
+        <listitem>
+          <para><code>org.geomajas.servlet.AutomaticDispatcherUrlService</code>:
+          allows dynamic calculation of both local and external base URL
+          (based on the servlet request). The local base URL can also be
+          configured statically.</para>
+        </listitem>
+      </itemizedlist>
     </section>
   </chapter>
 </part>
