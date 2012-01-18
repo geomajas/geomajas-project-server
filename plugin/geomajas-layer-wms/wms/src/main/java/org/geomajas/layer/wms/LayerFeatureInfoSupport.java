@@ -11,8 +11,8 @@
 package org.geomajas.layer.wms;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import org.geomajas.global.FutureApi;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Feature;
 
