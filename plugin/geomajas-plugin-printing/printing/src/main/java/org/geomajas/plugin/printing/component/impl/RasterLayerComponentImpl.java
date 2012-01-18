@@ -56,6 +56,7 @@ import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geomajas.service.DispatcherUrlService;
 import org.geomajas.service.GeoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,6 +126,10 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 	@Autowired
 	@XStreamOmitField
 	private GeoService geoService;
+	
+	@Autowired
+	@XStreamOmitField
+	private DispatcherUrlService dispatcherUrlService;
 
 	private float opacity = 1.0f;
 
@@ -475,18 +480,22 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 		private ImageResult result;
 
 		private int retries;
+		
+		private String url;
 
 		public RasterImageDownloadCallable(int retries, RasterTile rasterImage) {
 			this.result = new ImageResult(rasterImage);
 			this.retries = retries;
+			String externalUrl = rasterImage.getUrl();
+			url = dispatcherUrlService.localize(externalUrl);
 		}
 
 		public ImageResult call() throws Exception {
-			log.debug("Fetching image: {}", result.getRasterImage().getUrl());
+			log.debug("Fetching image: {}", url);
 			int triesLeft = retries;
 			while (true) {
 				try {
-					GetMethod get = new GetMethod(result.getRasterImage().getUrl());
+					GetMethod get = new GetMethod(url);
 					httpClient.executeMethod(get);
 					InputStream inputStream = get.getResponseBodyAsStream();
 					ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024);
@@ -505,7 +514,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 					if (triesLeft == 0) {
 						throw new ImageException(result.getRasterImage(), e);
 					} else {
-						log.debug("Fetching image: retrying ", result.getRasterImage().getUrl());
+						log.debug("Fetching image: retrying ", url);
 					}
 				}
 			}

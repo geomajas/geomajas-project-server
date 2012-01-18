@@ -39,9 +39,9 @@ public class FontConverter extends AbstractSingleValueConverter {
 		int styleIndex = Font.PLAIN;
 		if (count > 2) {
 			String style = st.nextToken();
-			if (style.equalsIgnoreCase("bold")) {
+			if ("bold".equalsIgnoreCase(style)) {
 				styleIndex = Font.BOLD;
-			} else if (style.equalsIgnoreCase("italic")) {
+			} else if ("italic".equalsIgnoreCase("style")) {
 				styleIndex = Font.ITALIC;
 			}
 		}
