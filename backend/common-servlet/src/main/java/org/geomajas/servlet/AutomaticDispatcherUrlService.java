@@ -80,10 +80,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		return getBasePathForHostNamePort(request, serverName, request.getServerPort());
 	}
 
-	/**
-	 * @since 1.10.0
-	 */
-	@Api
+	/** {@inheritDoc} */
 	public String getLocalDispatcherUrl() {
 		if (localDispatcherUrl == null) {
 			RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -105,10 +102,7 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		this.localDispatcherUrl = localDispatcherUrl;
 	}
 
-	/**
-	 * @since 1.10.0
-	 */
-	@Api
+	/** {@inheritDoc} */
 	public String localize(String externalUrl) {
 		String localBase = getLocalDispatcherUrl();
 		String dispatcherBase = getDispatcherUrl();
