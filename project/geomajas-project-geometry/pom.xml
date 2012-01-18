@@ -41,6 +41,7 @@
 
 	<modules>
 		<module>core</module>
+		<module>conversion-jts</module>
 		<module>documentation</module>
 	</modules>
 
@@ -104,6 +105,17 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-geometry-core</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-geometry-conversion-jts</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-geometry-conversion-jts</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
