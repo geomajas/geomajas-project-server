@@ -10,7 +10,7 @@
  */
 package org.geomajas.example.gwt.client.samples.attribute;
 
-import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.attribute.DefaultFeatureForm;
 
@@ -34,7 +34,7 @@ public class AttributeCustomForm extends DefaultFeatureForm {
 	}
 
 	@Override
-	protected FormItem createItem(AttributeInfo info) {
+	protected FormItem createItem(AbstractReadOnlyAttributeInfo info) {
 		FormItem formItem = super.createItem(info);
 		formItem.setWidth("*");
 		if ("dateAttr".equals(info.getName())) {
