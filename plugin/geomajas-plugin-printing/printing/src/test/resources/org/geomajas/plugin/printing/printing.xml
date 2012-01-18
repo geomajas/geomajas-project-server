@@ -64,5 +64,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean id="printTemplateDao" class="org.geomajas.plugin.printing.configuration.HibernatePrintTemplateDao" />
 
 	<context:component-scan base-package="org.geomajas.extension.printing.component" />
+	
+	<bean class="org.geomajas.service.impl.StaticDispatcherUrlService" name="service.DispatcherUrlService">
+		<property name="dispatcherUrl" value="http://localhost:8080/d/"/>
+	</bean>
+	
 
 </beans>
