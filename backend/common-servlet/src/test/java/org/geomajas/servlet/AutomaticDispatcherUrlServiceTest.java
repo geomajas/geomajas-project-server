@@ -23,6 +23,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author Joachim Van der Auwera
  */
 public class AutomaticDispatcherUrlServiceTest {
+	private static final String X_FORWARD_HOST_HEADER = "X-Forwarded-Host";
+	private static final String X_GWT_MODULE_HEADER = "X-GWT-Module-Base";
 
 	@Test
 	public void testBuildUrl() throws Exception {
@@ -45,6 +47,88 @@ public class AutomaticDispatcherUrlServiceTest {
 		mockRequest.setServerPort(8443);
 		mockRequest.setContextPath(null);
 		Assert.assertEquals("https://secure.geomajas.org:8443/d/", adus.getDispatcherUrl());
+
+		// clean up
+		RequestContextHolder.setRequestAttributes(null);
+	}
+	
+	@Test
+	public void testReverseProxyWithModuleBase() {
+		AutomaticDispatcherUrlService adus = new AutomaticDispatcherUrlService();
+
+		// set mock request in context holder
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setScheme("http");
+		mockRequest.setServerName("myhost");
+		mockRequest.setServerPort(80);
+		mockRequest.setContextPath("/test");
+		mockRequest.addHeader(X_FORWARD_HOST_HEADER, "geomajas.org");
+		mockRequest.addHeader(X_GWT_MODULE_HEADER, "http://geomajas.org/app/Module");
+		ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+		RequestContextHolder.setRequestAttributes(attributes);
+		Assert.assertEquals("http://geomajas.org/app/d/", adus.getDispatcherUrl());
+
+		// clean up
+		RequestContextHolder.setRequestAttributes(null);
+	}
+	
+	@Test
+	public void testReverseProxyWithoutModuleBase() {
+		AutomaticDispatcherUrlService adus = new AutomaticDispatcherUrlService();
+
+		// set mock request in context holder
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setScheme("http");
+		mockRequest.setServerName("myhost");
+		mockRequest.setServerPort(80);
+		mockRequest.setContextPath("/test");
+		mockRequest.addHeader(X_FORWARD_HOST_HEADER, "geomajas.org");
+		ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+		RequestContextHolder.setRequestAttributes(attributes);
+		Assert.assertEquals("http://geomajas.org/test/d/", adus.getDispatcherUrl());
+
+		// clean up
+		RequestContextHolder.setRequestAttributes(null);
+	}
+	
+	@Test
+	public void testLocalizeAutomatic() {
+		AutomaticDispatcherUrlService adus = new AutomaticDispatcherUrlService();
+
+		// set mock request in context holder
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setScheme("http");
+		mockRequest.setServerName("myhost");
+		mockRequest.setServerPort(80);
+		mockRequest.setLocalName("localhost");
+		mockRequest.setLocalPort(8080);
+		mockRequest.setContextPath("/test");
+		mockRequest.addHeader(X_FORWARD_HOST_HEADER, "geomajas.org");
+		ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+		RequestContextHolder.setRequestAttributes(attributes);
+		Assert.assertEquals("http://localhost:8080/test/d/something", adus.localize("http://geomajas.org/test/d/something"));
+
+		// clean up
+		RequestContextHolder.setRequestAttributes(null);
+	}
+	
+	@Test
+	public void testLocalizeConfigured() {
+		AutomaticDispatcherUrlService adus = new AutomaticDispatcherUrlService();
+		adus.setLocalDispatcherUrl("http://my:8080/local/dispatcher/");
+
+		// set mock request in context holder
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setScheme("http");
+		mockRequest.setServerName("myhost");
+		mockRequest.setServerPort(80);
+		mockRequest.setLocalName("localhost");
+		mockRequest.setLocalPort(8080);
+		mockRequest.setContextPath("/test");
+		mockRequest.addHeader(X_FORWARD_HOST_HEADER, "geomajas.org");
+		ServletRequestAttributes attributes = new ServletRequestAttributes(mockRequest);
+		RequestContextHolder.setRequestAttributes(attributes);
+		Assert.assertEquals("http://my:8080/local/dispatcher/something", adus.localize("http://geomajas.org/test/d/something"));
 
 		// clean up
 		RequestContextHolder.setRequestAttributes(null);

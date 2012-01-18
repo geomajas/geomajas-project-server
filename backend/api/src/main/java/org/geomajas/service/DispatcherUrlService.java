@@ -18,15 +18,38 @@ import org.geomajas.annotation.Api;
  * services linked in as dispatched controllers.
  *
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  * @since 1.8.0
  */
 @Api(allMethods = true)
 public interface DispatcherUrlService {
 
 	/**
-	 * Get the base URL for the dispatched serviced.
-	 *
-	 * @return base URL
+	 * Get the base URL for the dispatcher service.
+	 * 
+	 * @return base URL. This URL is guaranteed to end with a slash (/).
 	 */
 	String getDispatcherUrl();
+
+	/**
+	 * Get the local base URL for the dispatcher service. A local URL can be resolved from the web application host, as
+	 * opposed to the web client. This is useful for processing resources such as images on the server side, e.g. for
+	 * printing or reporting.
+	 * 
+	 * @return local base URL or null. If not null, this URL is guaranteed to end with a slash (/), e.g.
+	 *         'http://localhost:8080/myApp/d/'
+	 * @since 1.10.0
+	 */
+	String getLocalDispatcherUrl();
+
+	/**
+	 * Convert an external URL to a locally accessible URL. Just a utility method that replaces
+	 * {@link #getDispatcherUrl()} by {@link #getLocalDispatcherUrl()} although implementations may perform more
+	 * sophisticated localization.
+	 * 
+	 * @param externalUrl external URL that maps to the dispatcher service
+	 * @return URL that provides local access to the same resource
+	 * @since 1.10.0
+	 */
+	String localize(String externalUrl);
 }
