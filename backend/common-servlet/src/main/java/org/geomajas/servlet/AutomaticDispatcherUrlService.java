@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-@Api(allMethods = true)
+@Api
 public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 
 	private static final String X_FORWARD_HOST_HEADER = "X-Forwarded-Host";
@@ -80,7 +80,10 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 		return getBasePathForHostNamePort(request, serverName, request.getServerPort());
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * @since 1.10.0
+	 */
+	@Api
 	public String getLocalDispatcherUrl() {
 		if (localDispatcherUrl == null) {
 			RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -95,12 +98,17 @@ public class AutomaticDispatcherUrlService implements DispatcherUrlService {
 	 * Set the local base URL for the dispatcher service.
 	 * 
 	 * @param localDispatcherUrl the local base URL
+	 * @since 1.10.0
 	 */
+	@Api
 	public void setLocalDispatcherUrl(String localDispatcherUrl) {
 		this.localDispatcherUrl = localDispatcherUrl;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * @since 1.10.0
+	 */
+	@Api
 	public String localize(String externalUrl) {
 		String localBase = getLocalDispatcherUrl();
 		String dispatcherBase = getDispatcherUrl();
