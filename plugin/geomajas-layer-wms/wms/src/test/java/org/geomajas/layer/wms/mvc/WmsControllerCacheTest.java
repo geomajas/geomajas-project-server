@@ -11,39 +11,40 @@
 
 package org.geomajas.layer.wms.mvc;
 
-import junit.framework.Assert;
-import org.geomajas.layer.wms.WmsAuthentication;
-import org.geomajas.layer.wms.WmsHttpService;
+import org.geomajas.layer.wms.WmsLayer;
+import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geomajas.testdata.rule.SecurityRule;
+import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 /**
- * Test for {@link WmsController}.
+ * Test for {@link org.geomajas.layer.wms.mvc.WmsController}.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/wmsContext.xml", 
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/wmsContext.xml",
 		"/org/geomajas/spring/testRecorder.xml", "/org/geomajas/testdata/allowAll.xml"})
-public class WmsControllerTest {
-
-	private static final String TEST_VALUE = "A test value";
+@Transactional
+public class WmsControllerCacheTest {
 
 	private static final String IMAGE_CLASS_PATH = "reference";
 
@@ -53,42 +54,31 @@ public class WmsControllerTest {
 	private WmsController wmsController;
 	
 	@Autowired
+	private TestRecorder testRecorder;
+
+	@Autowired
 	@Rule
 	public SecurityRule securityRule;
 
-	@Test
-	@DirtiesContext // changing the controller
-	public void testDoSomething() throws Exception {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		wmsController.setHttpService(new MockHttpService());
+	@Autowired
+	private CacheManagerService cacheManagerService;
 
-		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put("SERVICE", "WMS");
-		parameters.put("layers", "bluemarble");
-		parameters.put("WIDTH", "512");
-		parameters.put("HEIGHT", "512");
-		parameters.put("bbox", "-52.01245495052001,-28.207099921352835,11.947593278789554,35.75294830795673");
-		parameters.put("format", "image/jpeg");
-		parameters.put("version", "1.1.1");
-		parameters.put("srs", "EPSG:4326");
-		parameters.put("styles", "");
-		parameters.put("request", "GetMap");
-		request.setParameters(parameters);
-		request.setRequestURI("d/wms/proxyBlue/");
-		request.setQueryString("SERVICE=WMS&layers=bluemarble&" +
-				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
-				"35.75294830795673&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap");
-		request.setMethod("GET");
-		wmsController.getWms(request, response);
-		Assert.assertEquals(TEST_VALUE, new String(response.getContentAsByteArray(), "UTF-8"));
+	@Autowired
+	@Qualifier("cachedBlue")
+	private WmsLayer cachedWms;
+
+	@After
+	public void clearCache() throws Exception {
+		// clear side effects to assure the next test run works
+		cacheManagerService.drop(cachedWms);
+		Thread.sleep(5000);
 	}
 
 	@Test
-	public void testReadImage() throws Exception {
+	@Ignore // test fails as the passivated state is not removed, see CACHE-33
+	public void testReadCachedImage() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
-
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("SERVICE", "WMS");
 		parameters.put("layers", "bluemarble");
@@ -101,24 +91,23 @@ public class WmsControllerTest {
 		parameters.put("styles", "");
 		parameters.put("request", "GetMap");
 		request.setParameters(parameters);
-		request.setRequestURI("d/wms/proxyBlue/");
+		request.setRequestURI("d/wms/cachedBlue/");
 		request.setQueryString("SERVICE=WMS&layers=bluemarble&" +
 				"WIDTH=512&HEIGHT=512&bbox=-52.01245495052001,-28.207099921352835,11.947593278789554," +
 				"35.75294830795673&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=&request=GetMap");
 		request.setMethod("GET");
+
+		testRecorder.clear();
 		wmsController.getWms(request, response);
 		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
-	}
+		assertThat(testRecorder.matches(WmsController.TEST_RECORDER_GROUP,
+				WmsController.TEST_RECORDER_PUT_IN_CACHE)).isEmpty();
 
-	private class MockHttpService implements WmsHttpService {
-
-		public String addCredentialsToUrl(String url, WmsAuthentication authentication) {
-			return url;
-		}
-
-		public InputStream getStream(String url, WmsAuthentication authentication) throws IOException {
-			return new ByteArrayInputStream(TEST_VALUE.getBytes("UTF-8"));
-		}
+		testRecorder.clear();
+		wmsController.getWms(request, response);
+		new ImageAssert(response).assertEqualImage("wms.jpg", false, DELTA);
+		assertThat(testRecorder.matches(WmsController.TEST_RECORDER_GROUP,
+				WmsController.TEST_RECORDER_GET_FROM_CACHE)).isEmpty();
 	}
 
 	class ImageAssert extends TestPathBinaryStreamAssert {
