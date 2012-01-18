@@ -20,7 +20,6 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.service.ResourceService;
 import org.geomajas.service.resource.ResourceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
