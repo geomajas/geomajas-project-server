@@ -3,3 +3,5 @@ http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/index.html
 
 For more information go to:
 http://geoserver.org
+
+These files are available under the GNU General Public License (GPL) v2.
