@@ -238,7 +238,7 @@ public class StyleConverterServiceImpl implements StyleConverterService {
 						TextSymbolizerInfo textInfo = (TextSymbolizerInfo) symbolizerTypeInfo;
 						labelStyleInfo.setFontStyle(convertFont(textInfo.getFont()));
 						for (ExpressionInfo expr : textInfo.getLabel().getExpressionList()) {
-							if (LiteralTypeInfo.class.equals(expr.getClass())) {
+							if (expr instanceof LiteralTypeInfo ) {
 								String literalValue = expr.getValue();
 								labelStyleInfo.setLabelValueExpression("'" + literalValue + "'");
 							} else { // Assume expr is of class PropertyNameInfo
