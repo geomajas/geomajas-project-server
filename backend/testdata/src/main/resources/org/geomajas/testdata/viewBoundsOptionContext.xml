@@ -1,0 +1,104 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+		>
+
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false"/>
+		<property name="securityServices">
+			<list>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.testdata.rule.SecurityRule" />
+
+	<bean name="vectorsMapWithViewBoundsOption" class="org.geomajas.configuration.client.ClientApplicationInfo" >
+		<property name="maps">
+			<list>
+				<bean name="viewBoundsLimitTestMap" class="org.geomajas.configuration.client.ClientMapInfo">
+					<property name="id" value="viewBoundsLimitTestMap"/>
+					<property name="crs" value="EPSG:900913"/>
+					<property name="layers">
+						<list>
+							<ref bean="countriesLayer"/>
+						</list>
+					</property>
+					<property name="initialBounds">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="-20"/>
+							<property name="y" value="-50"/>
+							<property name="width" value="35"/>
+							<property name="height" value="26"/>
+						</bean>
+					</property>		
+					<property name="maxBounds">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="-20"/>
+							<property name="y" value="-50"/>
+							<property name="width" value="35"/>
+							<property name="height" value="26"/>
+						</bean>
+					</property>
+					<property name="viewBoundsLimitOption">
+						<value type="org.geomajas.configuration.client.BoundsLimitOption">CENTER_WITHIN_MAX_BOUNDS</value>
+					</property>
+								
+					<property name="userData">
+						<bean class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientUserDataInfo">
+							<property name="dummy" value="some data" />
+						</bean>
+					</property>
+					<property name="widgetInfo">
+						<map>
+							<entry key="layerTree">
+								<bean class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+									<property name="dummy" value="layer1, layer2" />
+								</bean>
+							</entry>
+						</map>
+					</property>
+				</bean>
+			</list>
+		</property>
+	
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
+		<property name="serverLayerId" value="countries" />
+		<property name="label" value="Countries"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countriesStyleInfo" />
+		<property name="widgetInfo">
+			<map>
+				<entry key="customLayerInfoWidget">
+					<bean class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+						<property name="dummy" value="org.geomajas.widget.IpsumWidget" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+		
+	</bean>
+
+</beans>
+
