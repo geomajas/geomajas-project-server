@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.plugin.rasterizing.gwt.example.client;
 
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -28,7 +38,12 @@ import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-
+/**
+ * {@link SamplePanel} for rasterizing example.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class RasterizingPanel extends SamplePanel {
 
 	public static final String TITLE = "Rasterizing";
@@ -44,7 +59,7 @@ public class RasterizingPanel extends SamplePanel {
 
 	/**
 	 * Get view panel.
-	 *
+	 * 
 	 * @return The viewPanel Canvas
 	 */
 	public Canvas getViewPanel() {
@@ -92,7 +107,7 @@ public class RasterizingPanel extends SamplePanel {
 				}
 			}
 		});
-		
+
 		map.getMapModel().addLayerSelectionHandler(new LayerSelectionHandler() {
 
 			public void onSelectLayer(LayerSelectedEvent event) {
@@ -172,7 +187,7 @@ public class RasterizingPanel extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[]{"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/appRasterizing.xml",
+		return new String[] { "classpath:org/geomajas/plugin/rasterizing/gwt/example/context/appRasterizing.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/mapRasterizingMain.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/mapRasterizingOverview.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/clientLayersRasterizing.xml",
@@ -180,7 +195,7 @@ public class RasterizingPanel extends SamplePanel {
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPoints.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerLines.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPolygons.xml",
-				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/resources.xml"};
+				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/resources.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
