@@ -20,10 +20,16 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface RasterizingMessages extends Messages {
 
-	String getMapImage();
+	String getMapImageTitle();
 	
-	String getLegendImage();
+	String getLegendImageTitle();
 
-	String getLegendImageAll();
+	String getLegendImageAllTitle();
+
+	String getMapImageDescription();
+	
+	String getLegendImageDescription();
+
+	String getLegendImageAllDescription();
 
 }

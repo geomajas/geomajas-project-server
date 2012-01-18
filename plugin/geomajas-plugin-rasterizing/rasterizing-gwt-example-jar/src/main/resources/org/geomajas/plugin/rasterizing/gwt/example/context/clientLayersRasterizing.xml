@@ -21,8 +21,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 <!--  osm -->
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerOsm">
-		<property name="serverLayerId" value="layerOsm" />
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerRasterizingOsm">
+		<property name="serverLayerId" value="layerOsmRasterizing" />
 		<property name="label" value="OpenStreetMap (raster)" />
 		<property name="visible" value="true" />
 		<property name="style" value="1" />
@@ -30,317 +30,317 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 <!--  point -->
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsAttribute">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsAttribute">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Attribute" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointAttributeStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingAttributeStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsAsGraphic">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsAsGraphic">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Graphic" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointAsGraphicStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingAsGraphicStyleInfo" />
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsWithDefaultLabel">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsWithDefaultLabel">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Default Label" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointWithDefaultLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingWithDefaultLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsWithRotatedLabel">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsWithRotatedLabel">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Rotated Label" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointWithRotatedLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingWithRotatedLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsWithStyledLabel">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsWithStyledLabel">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Styled Label" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointWithStyledLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingWithStyledLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsRotatedSquare">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsRotatedSquare">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Rotated Square" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointRotatedSquareStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingRotatedSquareStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsSimple">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsSimple">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Simple" />
 		<property name="visible" value="true" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointSimpleStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingSimpleStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsSimpleWithStroke">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsSimpleWithStroke">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Simple with stroke" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointSimpleWithStrokeStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingSimpleWithStrokeStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsTransparentTriangle">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsTransparentTriangle">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Transparent triangle" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointTransparentTriangleStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingTransparentTriangleStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPointsZoom">
-		<property name="serverLayerId" value="layerPoints" />
+		id="clientLayerRasterizingPointsZoom">
+		<property name="serverLayerId" value="layerPointsRasterizing" />
 		<property name="label" value="Zoom" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="pointZoomStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPointsRasterizingZoomStyleInfo" />
 	</bean>
 
 <!--  line -->
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesAttributeBased">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesAttributeBased">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="Attribute" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineAttributeBasedStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingAttributeBasedStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesDashDot">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesDashDot">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="DashDot" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineDashDotStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingDashDotStyleInfo" />
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesDashedLine">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesDashedLine">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="Dashed" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineDashedLineStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingDashedLineStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesDashSpace">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesDashSpace">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="DashSpace" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineDashSpaceStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingDashSpaceStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesLabelFollowingLine">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesLabelFollowingLine">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="FollowingLine" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineLabelFollowingLineStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingLabelFollowingLineStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesWithBorder">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesWithBorder">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="WithBorder" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineWithBorderStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingWithBorderStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesWithDefaultLabel">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesWithDefaultLabel">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="DefaultLabel" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineWithDefaultLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingWithDefaultLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesOptimizedLabel">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesOptimizedLabel">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="OptimizedLabel" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineOptimizedLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingOptimizedLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesOptimizedStyledLabel">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesOptimizedStyledLabel">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="OptimizedStyledLabel" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineOptimizedStyledLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingOptimizedStyledLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesRailRoad">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesRailRoad">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="RailRoad" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineRailRoadStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingRailRoadStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesSimpleLine">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesSimpleLine">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="Simple" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineSimpleLineStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingSimpleLineStyleInfo" />
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerLinesZoomBasedLine">
-		<property name="serverLayerId" value="layerLines" />
+		id="clientLayerRasterizingLinesZoomBasedLine">
+		<property name="serverLayerId" value="layerLinesRasterizing" />
 		<property name="label" value="ZoomBased" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="lineZoomBasedLineStyleInfo" />
+		<property name="namedStyleInfo" ref="layerLinesRasterizingZoomBasedLineStyleInfo" />
 	</bean>
 
 <!--  polygon -->
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsAttributeBased">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsAttributeBased">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Attribute" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonAttributeBasedStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingAttributeBasedStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsGraphicFill">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsGraphicFill">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Graphic" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonGraphicFillStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingGraphicFillStyleInfo" />
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsHatchingFill">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsHatchingFill">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Hatching" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonHatchingFillStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingHatchingFillStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsLabelHalo">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsLabelHalo">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Halo" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonLabelHaloStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingLabelHaloStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsWithDefaultLabel">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsWithDefaultLabel">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="DefaultLabel" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonWithDefaultLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingWithDefaultLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsWithStyledLabel">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsWithStyledLabel">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Styled Label" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonWithStyledLabelStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingWithStyledLabelStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsSimplePolygon">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsSimplePolygon">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Simple" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonSimplePolygonStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingSimplePolygonStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsSimplePolygonWithStroke">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsSimplePolygonWithStroke">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Simple with stroke" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonSimplePolygonWithStrokeStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingSimplePolygonWithStrokeStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo"
-		id="clientLayerPolygonsZoomBasedPolygon">
-		<property name="serverLayerId" value="layerPolygons" />
+		id="clientLayerRasterizingPolygonsZoomBasedPolygon">
+		<property name="serverLayerId" value="layerPolygonsRasterizing" />
 		<property name="label" value="Zoom" />
 		<property name="visible" value="false" />
 		<property name="maximumScale" value="1000000" />
 		<property name="minimumScale" value="1:50000000000" />
-		<property name="namedStyleInfo" ref="polygonZoomBasedPolygonStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPolygonsRasterizingZoomBasedPolygonStyleInfo" />
 	</bean>
 
 </beans>

@@ -25,9 +25,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/mapRasterizingMain.xml"/>
 	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/mapRasterizingOverview.xml"/>
 	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/clientLayersRasterizing.xml"/>
-	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerLines.xml"/>
-	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerOsm.xml"/>
-	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPoints.xml"/>
-	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPolygons.xml"/>
+	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerLinesRasterizing.xml"/>
+	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerOsmRasterizing.xml"/>
+	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPointsRasterizing.xml"/>
+	<import resource="classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPolygonsRasterizing.xml"/>
 
 </beans>

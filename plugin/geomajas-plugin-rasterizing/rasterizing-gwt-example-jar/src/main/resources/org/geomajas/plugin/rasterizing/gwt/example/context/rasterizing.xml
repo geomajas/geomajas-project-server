@@ -20,37 +20,37 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		>
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
-		<property name="layerId" value="layerLines" />
+		<property name="layerId" value="layerLinesRasterizing" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" />
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
-		<property name="layerId" value="layerPoints" />
+		<property name="layerId" value="layerPointsRasterizing" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" />
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
-		<property name="layerId" value="layerPolygons" />
+		<property name="layerId" value="layerPolygonsRasterizing" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_BUILD_URL" />
 	</bean>
 	
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>
-		<property name="layerId" value="layerLines" />
+		<property name="layerId" value="layerLinesRasterizing" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_WITH_CACHING" />
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>
-		<property name="layerId" value="layerPoints" />
+		<property name="layerId" value="layerPointsRasterizing" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_WITH_CACHING" />
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>
-		<property name="layerId" value="layerPolygons" />
+		<property name="layerId" value="layerPolygonsRasterizing" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_WITH_CACHING" />
 	</bean>
 

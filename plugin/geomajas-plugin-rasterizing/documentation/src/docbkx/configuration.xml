@@ -64,6 +64,25 @@
     &lt;artifactId&gt;geomajas-plugin-rasterizing&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
     </informalexample>
+
+    <para>If you want to make use of the toolbar actions for exporting map and
+    legend images, you must add the GWT face dependency as well:</para>
+
+    <informalexample>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt; 
+    &lt;artifactId&gt;geomajas-plugin-rasterizing-gwt&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </informalexample>
+
+    <para>In this case you should also add the module inheritance to your GWT
+    module descriptor:</para>
+
+    <informalexample>
+      <programlisting>&lt;module&gt;
+    &lt;inherits name="org.geomajas.plugin.rasterizing.Rasterizing"/&gt;
+&lt;/module&gt;</programlisting>
+    </informalexample>
   </section>
 
   <section>
@@ -269,6 +288,10 @@
     consequently skipped by calling the <code>createImageUrl(MapWidget map,
     ImageUrlCallback imageCallBack, boolean makeRasterizable)</code>method
     with <code>makeRasterizable = false</code>.</para>
+  </section>
+
+  <section>
+    <title>Actions and toolbar configuration</title>
 
     <para>For the common use case of making a print of the current map or
     legend, 2 toolbar actions have been registered:</para>
@@ -284,5 +307,16 @@
         of the current legend in a separate browser window</para>
       </listitem>
     </itemizedlist>
+
+    <para>The following configuration snippet shows how to configure these
+    actions in the toolbar:</para>
+
+    <xi:include href="listing/ToolConfiguration.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para><code>GetLegendImageAction</code> has a single configuration
+    parameter <code>showAllLayers</code>. If set to true, the generated legend
+    image contains all layers of the layer tree. Otherwise, only the visible
+    layers are displayed.</para>
   </section>
 </chapter>

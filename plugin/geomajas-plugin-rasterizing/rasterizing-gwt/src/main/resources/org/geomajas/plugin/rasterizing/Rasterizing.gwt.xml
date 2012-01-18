@@ -28,4 +28,6 @@
 	</source>
 
 	<source path="command/dto" />
+	
+	<entry-point class='org.geomajas.plugin.rasterizing.client.RasterizingEntryPoint'/>
 </module>

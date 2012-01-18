@@ -79,39 +79,39 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="clientLayerPointsAttribute" />
-				<ref bean="clientLayerPointsAsGraphic" />
-				<ref bean="clientLayerPointsWithDefaultLabel" />
-				<ref bean="clientLayerPointsWithRotatedLabel" />
-				<ref bean="clientLayerPointsWithStyledLabel" />
-				<ref bean="clientLayerPointsRotatedSquare" />
-				<ref bean="clientLayerPointsSimple" />
-				<ref bean="clientLayerPointsSimpleWithStroke" />
-				<ref bean="clientLayerPointsTransparentTriangle" />
-				<ref bean="clientLayerPointsZoom" />
+				<ref bean="clientLayerRasterizingPointsAttribute" />
+				<ref bean="clientLayerRasterizingPointsAsGraphic" />
+				<ref bean="clientLayerRasterizingPointsWithDefaultLabel" />
+				<ref bean="clientLayerRasterizingPointsWithRotatedLabel" />
+				<ref bean="clientLayerRasterizingPointsWithStyledLabel" />
+				<ref bean="clientLayerRasterizingPointsRotatedSquare" />
+				<ref bean="clientLayerRasterizingPointsSimple" />
+				<ref bean="clientLayerRasterizingPointsSimpleWithStroke" />
+				<ref bean="clientLayerRasterizingPointsTransparentTriangle" />
+				<ref bean="clientLayerRasterizingPointsZoom" />
 
-				<ref bean="clientLayerLinesAttributeBased" />
-				<ref bean="clientLayerLinesDashDot" />
-				<ref bean="clientLayerLinesDashedLine" />
-				<ref bean="clientLayerLinesDashSpace" />
-				<ref bean="clientLayerLinesLabelFollowingLine" />
-				<ref bean="clientLayerLinesWithBorder" />
-				<ref bean="clientLayerLinesWithDefaultLabel" />
-				<ref bean="clientLayerLinesOptimizedLabel" />
-				<ref bean="clientLayerLinesOptimizedStyledLabel" />
-				<ref bean="clientLayerLinesRailRoad" />
-				<ref bean="clientLayerLinesSimpleLine" />
-				<ref bean="clientLayerLinesZoomBasedLine" />
+				<ref bean="clientLayerRasterizingLinesAttributeBased" />
+				<ref bean="clientLayerRasterizingLinesDashDot" />
+				<ref bean="clientLayerRasterizingLinesDashedLine" />
+				<ref bean="clientLayerRasterizingLinesDashSpace" />
+				<ref bean="clientLayerRasterizingLinesLabelFollowingLine" />
+				<ref bean="clientLayerRasterizingLinesWithBorder" />
+				<ref bean="clientLayerRasterizingLinesWithDefaultLabel" />
+				<ref bean="clientLayerRasterizingLinesOptimizedLabel" />
+				<ref bean="clientLayerRasterizingLinesOptimizedStyledLabel" />
+				<ref bean="clientLayerRasterizingLinesRailRoad" />
+				<ref bean="clientLayerRasterizingLinesSimpleLine" />
+				<ref bean="clientLayerRasterizingLinesZoomBasedLine" />
 
-				<ref bean="clientLayerPolygonsAttributeBased" />
-				<ref bean="clientLayerPolygonsGraphicFill" />
-				<ref bean="clientLayerPolygonsHatchingFill" />
-				<ref bean="clientLayerPolygonsLabelHalo" />
-				<ref bean="clientLayerPolygonsWithDefaultLabel" />
-				<ref bean="clientLayerPolygonsWithStyledLabel" />
-				<ref bean="clientLayerPolygonsSimplePolygon" />
-				<ref bean="clientLayerPolygonsSimplePolygonWithStroke" />
-				<ref bean="clientLayerPolygonsZoomBasedPolygon" />
+				<ref bean="clientLayerRasterizingPolygonsAttributeBased" />
+				<ref bean="clientLayerRasterizingPolygonsGraphicFill" />
+				<ref bean="clientLayerRasterizingPolygonsHatchingFill" />
+				<ref bean="clientLayerRasterizingPolygonsLabelHalo" />
+				<ref bean="clientLayerRasterizingPolygonsWithDefaultLabel" />
+				<ref bean="clientLayerRasterizingPolygonsWithStyledLabel" />
+				<ref bean="clientLayerRasterizingPolygonsSimplePolygon" />
+				<ref bean="clientLayerRasterizingPolygonsSimplePolygonWithStroke" />
+				<ref bean="clientLayerRasterizingPolygonsZoomBasedPolygon" />
 			</list>
 		</property>
 		<property name="toolbar">
@@ -128,6 +128,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<ref bean="MeasureDistanceMode" />
 						<ref bean="SelectionMode" />
 						<ref bean="FeatureInfoMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="GetMapImage" />
+						<ref bean="GetLegendImage" />
+						<ref bean="GetLegendImageAll" />
 					</list>
 				</property>
 			</bean>
@@ -151,16 +155,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<property name="label" value="Points" />
 									<property name="layers">
 										<list>
-											<ref bean="clientLayerPointsAttribute" />
-											<ref bean="clientLayerPointsAsGraphic" />
-											<ref bean="clientLayerPointsWithDefaultLabel" />
-											<ref bean="clientLayerPointsWithRotatedLabel" />
-											<ref bean="clientLayerPointsWithStyledLabel" />
-											<ref bean="clientLayerPointsRotatedSquare" />
-											<ref bean="clientLayerPointsSimple" />
-											<ref bean="clientLayerPointsSimpleWithStroke" />
-											<ref bean="clientLayerPointsTransparentTriangle" />
-											<ref bean="clientLayerPointsZoom" />
+											<ref bean="clientLayerRasterizingPointsAttribute" />
+											<ref bean="clientLayerRasterizingPointsAsGraphic" />
+											<ref bean="clientLayerRasterizingPointsWithDefaultLabel" />
+											<ref bean="clientLayerRasterizingPointsWithRotatedLabel" />
+											<ref bean="clientLayerRasterizingPointsWithStyledLabel" />
+											<ref bean="clientLayerRasterizingPointsRotatedSquare" />
+											<ref bean="clientLayerRasterizingPointsSimple" />
+											<ref bean="clientLayerRasterizingPointsSimpleWithStroke" />
+											<ref bean="clientLayerRasterizingPointsTransparentTriangle" />
+											<ref bean="clientLayerRasterizingPointsZoom" />
 										</list>
 									</property>
 									<property name="expanded" value="false" />
@@ -170,18 +174,18 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<property name="label" value="Lines" />
 									<property name="layers">
 										<list>
-											<ref bean="clientLayerLinesAttributeBased" />
-											<ref bean="clientLayerLinesDashDot" />
-											<ref bean="clientLayerLinesDashedLine" />
-											<ref bean="clientLayerLinesDashSpace" />
-											<ref bean="clientLayerLinesLabelFollowingLine" />
-											<ref bean="clientLayerLinesWithBorder" />
-											<ref bean="clientLayerLinesWithDefaultLabel" />
-											<ref bean="clientLayerLinesOptimizedLabel" />
-											<ref bean="clientLayerLinesOptimizedStyledLabel" />
-											<ref bean="clientLayerLinesRailRoad" />
-											<ref bean="clientLayerLinesSimpleLine" />
-											<ref bean="clientLayerLinesZoomBasedLine" />
+											<ref bean="clientLayerRasterizingLinesAttributeBased" />
+											<ref bean="clientLayerRasterizingLinesDashDot" />
+											<ref bean="clientLayerRasterizingLinesDashedLine" />
+											<ref bean="clientLayerRasterizingLinesDashSpace" />
+											<ref bean="clientLayerRasterizingLinesLabelFollowingLine" />
+											<ref bean="clientLayerRasterizingLinesWithBorder" />
+											<ref bean="clientLayerRasterizingLinesWithDefaultLabel" />
+											<ref bean="clientLayerRasterizingLinesOptimizedLabel" />
+											<ref bean="clientLayerRasterizingLinesOptimizedStyledLabel" />
+											<ref bean="clientLayerRasterizingLinesRailRoad" />
+											<ref bean="clientLayerRasterizingLinesSimpleLine" />
+											<ref bean="clientLayerRasterizingLinesZoomBasedLine" />
 										</list>
 									</property>
 									<property name="expanded" value="false" />
@@ -191,15 +195,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<property name="label" value="Polygons" />
 									<property name="layers">
 										<list>
-											<ref bean="clientLayerPolygonsAttributeBased" />
-											<ref bean="clientLayerPolygonsGraphicFill" />
-											<ref bean="clientLayerPolygonsHatchingFill" />
-											<ref bean="clientLayerPolygonsLabelHalo" />
-											<ref bean="clientLayerPolygonsWithDefaultLabel" />
-											<ref bean="clientLayerPolygonsWithStyledLabel" />
-											<ref bean="clientLayerPolygonsSimplePolygon" />
-											<ref bean="clientLayerPolygonsSimplePolygonWithStroke" />
-											<ref bean="clientLayerPolygonsZoomBasedPolygon" />
+											<ref bean="clientLayerRasterizingPolygonsAttributeBased" />
+											<ref bean="clientLayerRasterizingPolygonsGraphicFill" />
+											<ref bean="clientLayerRasterizingPolygonsHatchingFill" />
+											<ref bean="clientLayerRasterizingPolygonsLabelHalo" />
+											<ref bean="clientLayerRasterizingPolygonsWithDefaultLabel" />
+											<ref bean="clientLayerRasterizingPolygonsWithStyledLabel" />
+											<ref bean="clientLayerRasterizingPolygonsSimplePolygon" />
+											<ref bean="clientLayerRasterizingPolygonsSimplePolygonWithStroke" />
+											<ref bean="clientLayerRasterizingPolygonsZoomBasedPolygon" />
 										</list>
 									</property>
 									<property name="expanded" value="false" />
@@ -294,6 +298,30 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="ShowDefaultPrint" class="org.geomajas.configuration.client.ClientToolInfo" />
 
 	<bean name="PrintMode" class="org.geomajas.configuration.client.ClientToolInfo" />
+
+	<!-- @extract-start ToolConfiguration, Configuration of rasterizing actions -->
+	
+	<bean name="GetMapImage" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="toolId" value="GetMapImage"/>
+	</bean>
+	
+	<bean name="GetLegendImage" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="toolId" value="GetLegendImage"/>
+	</bean>
+	
+	<bean name="GetLegendImageAll" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="toolId" value="GetLegendImage"/>
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="showAllLayers" />
+					<property name="value" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- @extract-end -->
 
 	<!-- LayerTree tools -->
 

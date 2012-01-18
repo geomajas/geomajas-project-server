@@ -43,7 +43,7 @@ public class LoadsProperlyTestInt {
 
 		driver.get("http://localhost:9080/");
 
-		// the login window should appear
+		// checks for sc startup 
 		wait.until(new ExpectedCondition<Boolean>() {
 			public Boolean apply(WebDriver d) {
 				return null != d.findElement(By.id("isc_M"));

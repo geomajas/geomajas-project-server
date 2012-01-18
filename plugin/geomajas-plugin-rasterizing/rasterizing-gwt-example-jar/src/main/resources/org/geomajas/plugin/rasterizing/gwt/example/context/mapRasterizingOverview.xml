@@ -54,7 +54,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="clientLayerOsm" />
+				<ref bean="clientLayerRasterizingOsm" />
 			</list>
 		</property>
 	</bean>

@@ -87,20 +87,6 @@ public class RasterizingPanel extends SamplePanel {
 		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
 
 			public void onMapModelChanged(MapModelChangedEvent event) {
-				Label title = new Label("Geomajas GWT: hello world");
-				title.setStyleName("appTitle");
-				title.setWidth(260);
-				toolbar.addFill();
-				toolbar.addMember(title);
-				GetMapImageAction getMapImage = new GetMapImageAction(map);
-				toolbar.addSeparator();
-				toolbar.addActionButton(getMapImage);
-				GetLegendImageAction getLegendImageAll = new GetLegendImageAction(map, true);
-				toolbar.addSeparator();
-				toolbar.addActionButton(getLegendImageAll);
-				GetLegendImageAction getLegendImage = new GetLegendImageAction(map, false);
-				toolbar.addSeparator();
-				toolbar.addActionButton(getLegendImage);
 				// switch all labels on
 				for (Layer layer : map.getMapModel().getLayers()) {
 					layer.setLabeled(true);

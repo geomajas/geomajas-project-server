@@ -37,11 +37,10 @@ public class GetMapImageAction extends ToolbarAction {
 	/**
 	 * Construct a new action for the specified map.
 	 * 
-	 * @param mapWidget
-	 *            the map
+	 * @param mapWidget the map
 	 */
 	public GetMapImageAction(MapWidget mapWidget) {
-		super(WidgetLayout.iconExportImage, MESSAGES.getMapImage());
+		super(WidgetLayout.iconExportImage, MESSAGES.getMapImageTitle(), MESSAGES.getMapImageDescription());
 		this.mapWidget = mapWidget;
 	}
 

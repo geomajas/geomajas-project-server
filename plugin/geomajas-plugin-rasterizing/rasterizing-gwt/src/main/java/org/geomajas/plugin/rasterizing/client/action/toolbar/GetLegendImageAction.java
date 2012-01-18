@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.rasterizing.client.action.toolbar;
 
+import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
@@ -30,7 +31,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * 
  * @author Jan De Moerloose
  */
-public class GetLegendImageAction extends ToolbarAction {
+public class GetLegendImageAction extends ToolbarAction implements ConfigurableAction {
 
 	private MapWidget mapWidget;
 
@@ -45,17 +46,20 @@ public class GetLegendImageAction extends ToolbarAction {
 	 * 
 	 * @param mapWidget the map
 	 */
+	public GetLegendImageAction(MapWidget mapWidget) {
+		this(mapWidget , false);
+	}
+
+	/**
+	 * Construct a new action for the specified map.
+	 * 
+	 * @param mapWidget the map
+	 * @param showAllLayers if true, all layers are shown in the legend. If false, only the visible layers are shown.
+	 */
 	public GetLegendImageAction(MapWidget mapWidget, boolean showAllLayers) {
 		super(null, null);
-		if (showAllLayers) {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/legend-export-all.png");
-			setTooltip(MESSAGES.getLegendImageAll());
-		} else {
-			setIcon("[ISOMORPHIC]/geomajas/osgeo/legend-export.png");
-			setTooltip(MESSAGES.getLegendImage());
-		}
 		this.mapWidget = mapWidget;
-		this.showAllLayers = showAllLayers;
+		setShowAllLayers(showAllLayers);
 	}
 
 	public void onClick(ClickEvent clickEvent) {
@@ -82,5 +86,26 @@ public class GetLegendImageAction extends ToolbarAction {
 		if (showAllLayers) {
 			imageUrlService.makeRasterizable(mapWidget);
 		}
+	}
+	
+	public void setShowAllLayers(boolean showAllLayers) {
+		this.showAllLayers = showAllLayers;
+		if (showAllLayers) {
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/legend-export-all.png");
+			setTitle(MESSAGES.getLegendImageAllTitle());
+			setTooltip(MESSAGES.getLegendImageAllDescription());
+		} else {
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/legend-export.png");
+			setTitle(MESSAGES.getLegendImageTitle());
+			setTooltip(MESSAGES.getLegendImageDescription());
+		}
+	}
+
+	/** {@inheritDoc} */
+	public void configure(String key, String value) {
+		if ("showAllLayers".equals(key)) {
+			setShowAllLayers(Boolean.parseBoolean(value));
+		}
+
 	}
 }
