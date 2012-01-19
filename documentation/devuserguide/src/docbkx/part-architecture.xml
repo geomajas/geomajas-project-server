@@ -1541,10 +1541,50 @@ private SecurityContext securityContext;</programlisting>
             </row>
 
             <row>
+              <entry>geomajas-plugin-caching</entry>
+
+              <entry>Caching plug-in which allows improved speed by
+              calculating data only once.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-editing</entry>
+
+              <entry>Powerful editing of geometries.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-geocoder</entry>
+
+              <entry>Geocoder support, using various geocoding
+              services.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-javascript-api</entry>
+
+              <entry>Standard JavaScript API for communicating with a Geomajas
+              map in the browser.</entry>
+            </row>
+
+            <row>
               <entry>geomajas-plugin-printing</entry>
 
               <entry>Adds printing capabilities beyond printing in the
               browser, by delivering the map as PDF.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-rasterizing</entry>
+
+              <entry>Rasterize vector layers on the server.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-reporting</entry>
+
+              <entry>Build reports (using JasperReports) for features,
+              possibly including a map.</entry>
             </row>
 
             <row>
@@ -1556,10 +1596,31 @@ private SecurityContext securityContext;</programlisting>
             </row>
 
             <row>
-              <entry>geomajas-plugin-caching</entry>
+              <entry>geomajas-widget-advancedviews</entry>
 
-              <entry>Caching plug-in which allows improved speed by
-              calculating data only once.</entry>
+              <entry>Support for advanced views and theming the map in the GWT
+              face.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-widget-featureinfo</entry>
+
+              <entry>Extra widgets for displaying feature information in the
+              GWT face.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-widget-searchandfilter</entry>
+
+              <entry>Advanced search and filter widgets for the GWT
+              face.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-widget-utility</entry>
+
+              <entry>Extra widgets for the GWT face. Includes Ribbon (advanced
+              toolbar), Wizard,...</entry>
             </row>
           </tbody>
         </tgroup>
@@ -1583,10 +1644,10 @@ private SecurityContext securityContext;</programlisting>
 
           <tbody>
             <row>
-              <entry>geomajas-test-integration</entry>
+              <entry>geomajas-test-plainhtml</entry>
 
-              <entry>Integrations tests, currently mostly testing the security
-              handling.</entry>
+              <entry>Test/showcase for integrating a Geomajas map in a plain
+              HTML page.</entry>
             </row>
           </tbody>
         </tgroup>
