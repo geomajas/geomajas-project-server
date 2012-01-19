@@ -37,10 +37,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="Geomajas" />
-					<property name="copyright" value="Copyright © 2008-2011 Geosparc nv" />
+					<property name="copyright" value="Copyright © 2008-2012 Geosparc nv" />
 					<property name="licenseName" value="GNU Affero General Public License, Version 3" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html" />
 					<property name="sourceUrl" value="http://ci.geomajas.org/svn/repos/Geomajas/list/" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Geomajas al" />
+					<property name="copyright" value="Copyright © 2008-2012 Geosparc nv" />
+					<property name="licenseName" value="Apache License, Version 2.0" />
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="JTS" />
@@ -188,6 +194,30 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="copyright" value="" />
 					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="JiBX" />
+					<property name="copyright" value="Copyright (c) 2003-2010, Dennis M. Sosnoski." />
+					<property name="licenseName" value="BSD" />
+					<property name="licenseUrl" value="http://jibx.sourceforge.net/jibx-license.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="XPP3" />
+					<property name="copyright" value="Copyright (c) 2002 Extreme! Lab, Indiana University. All rights reserved." />
+					<property name="licenseName" value="Indiana University Extreme! Lab Software License" />
+					<property name="licenseUrl" value="http://www.extreme.indiana.edu/xgws/xsoap/PullParser/LICENSE.txt" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Joda-Time" />
+					<property name="copyright" value="" />
+					<property name="licenseName" value="Apache License, Version 2.0" />
+					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html" />
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="dom4j" />
+					<property name="copyright" value="Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved." />
+					<property name="licenseName" value="BSD style" />
+					<property name="licenseUrl" value="http://dom4j.sourceforge.net/dom4j-1.6.1/license.html" />
 				</bean>
 			</list>
 		</property>
