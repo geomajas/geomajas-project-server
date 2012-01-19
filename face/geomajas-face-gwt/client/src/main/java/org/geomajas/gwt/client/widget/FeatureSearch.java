@@ -25,8 +25,8 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectionHandler;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
+import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -481,18 +481,14 @@ public class FeatureSearch extends Canvas {
 					}
 				}
 			});
-			mapModel.addMapModelHandler(new MapModelHandler() {
+			mapModel.addMapModelChangedHandler(new MapModelChangedHandler() {
 
-				public void onMapModelChange(MapModelEvent event) {
-					List<String> layers = new ArrayList<String>();
-					for (Layer<?> vLayer : mapModel.getLayers()) {
-						if (vLayer instanceof VectorLayer) {
-							layers.add(vLayer.getLabel());
-						}
-					}
-					layerSelect.setValueMap(layers.toArray(new String[layers.size()]));
+				public void onMapModelChanged(MapModelChangedEvent event) {
+					fillLayerSelect();
 				}
 			});
+			// needed if map is already loaded !
+			fillLayerSelect();
 		} else {
 			mapModel.addLayerSelectionHandler(new LayerSelectionHandler() {
 
@@ -603,5 +599,15 @@ public class FeatureSearch extends Canvas {
 
 	private void updateLabelTitle(String title) {
 		layerSelect.setValue("<b>" + title + "</b>");
+	}
+
+	private void fillLayerSelect() {
+		List<String> layers = new ArrayList<String>();
+		for (Layer<?> vLayer : mapModel.getLayers()) {
+			if (vLayer instanceof VectorLayer) {
+				layers.add(vLayer.getLabel());
+			}
+		}
+		layerSelect.setValueMap(layers.toArray(new String[layers.size()]));
 	}
 }
