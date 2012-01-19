@@ -12,10 +12,10 @@
 package org.geomajas.widget.utility.gwt.example.client;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.widget.utility.common.client.action.AbstractButtonAction;
+import org.geomajas.widget.utility.client.action.AbstractButtonAction;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Show the use of an AbstractButtonAction, as well as configuration parameter (enabled).

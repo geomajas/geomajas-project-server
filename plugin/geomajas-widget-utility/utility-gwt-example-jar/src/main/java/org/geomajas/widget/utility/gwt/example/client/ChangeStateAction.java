@@ -12,10 +12,10 @@
 package org.geomajas.widget.utility.gwt.example.client;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.widget.utility.common.client.action.AbstractButtonAction;
+import org.geomajas.widget.utility.client.action.AbstractButtonAction;
 import org.geomajas.widget.utility.gwt.client.ribbon.RibbonButton;
 
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Change the enabled/disabled state of a button.
