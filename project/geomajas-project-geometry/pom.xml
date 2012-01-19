@@ -41,7 +41,7 @@
 
 	<modules>
 		<module>core</module>
-		<module>conversion-jts</module>
+		<module>jts</module>
 		<module>documentation</module>
 	</modules>
 
@@ -50,7 +50,7 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-api-annotation</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 
 			<dependency>

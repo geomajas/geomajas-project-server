@@ -23,8 +23,8 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Geomajas SLD Documentation</name>
-	<description>Geomajas SLD Documentation</description>
+	<name>Geomajas SLD editor documentation</name>
+	<description>Geomajas SLD editor documentation</description>
 
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>

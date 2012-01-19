@@ -22,8 +22,8 @@
 	<artifactId>geomajas-project-geometry-jts</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Geomajas Geometry Project: Conversion from and to JTS</name>
-	<description>Geomajas Geometry Core: Conversion from and to JTS.</description>
+	<name>Geomajas Geometry JTS conversion</name>
+	<description>Geomajas Geometry JTS conversion</description>
 
 	<dependencies>
 		<dependency>

@@ -21,7 +21,7 @@
 	<artifactId>geomajas-project-geometry-core</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Geomajas Geometry Project: Core</name>
+	<name>Geomajas Geometry core</name>
 	<description>Geomajas Geometry Core: Defines a DTO geometry model that is GWT compatible.</description>
 
 	<dependencies>

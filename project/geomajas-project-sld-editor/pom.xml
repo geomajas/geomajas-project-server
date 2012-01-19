@@ -73,8 +73,10 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-api-annotation</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<artifactId>geomajas-project-api-all</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			
 			<dependency>

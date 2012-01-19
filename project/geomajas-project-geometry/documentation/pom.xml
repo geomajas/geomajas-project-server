@@ -23,8 +23,8 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Geomajas Geometry Project: Documentation</name>
-	<description>Geomajas Geometry Project: Documentation</description>
+	<name>Geomajas Geometry documentation</name>
+	<description>Geomajas Geometry documentation</description>
 
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
