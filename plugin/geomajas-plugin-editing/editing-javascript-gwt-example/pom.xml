@@ -26,22 +26,6 @@
 	</description>
 	<url>http://www.geomajas.org/</url>
 
-	<!-- @todo required for sample applications which are included in the Geomajas project, fix or delete
-	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/application/geomajas-dojo-example</url>
-	</scm>
-	-->
-
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
 	<developers>
 		<developer>
 			<id>pieterdg</id>
@@ -151,44 +135,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<encoding>utf8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<!-- adhere to Geomajas checkstyle configuration -->
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.5-DF</version>
-				<configuration>
-					<configLocation>config/geomajas-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.geomajas</groupId>
-						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.6-SNAPSHOT</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			-->
-
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
