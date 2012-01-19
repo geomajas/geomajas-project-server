@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.widget.utility.common.client.action;
+package org.geomajas.widget.utility.client.action;
 
 
 /**

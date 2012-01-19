@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.widget.utility.common.client.action;
+package org.geomajas.widget.utility.client.action;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 

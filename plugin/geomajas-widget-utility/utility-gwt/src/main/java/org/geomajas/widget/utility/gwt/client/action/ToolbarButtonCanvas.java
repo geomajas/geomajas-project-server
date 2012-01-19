@@ -16,15 +16,15 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
-import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledHandler;
 import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Button action implementation that contains a {@link ToolbarBaseAction}, 

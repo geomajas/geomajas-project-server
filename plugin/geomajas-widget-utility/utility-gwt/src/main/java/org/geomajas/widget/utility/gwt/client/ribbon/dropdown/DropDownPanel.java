@@ -17,7 +17,7 @@ import java.util.List;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ButtonGroup;
 import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
-import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn.TitleAlignment;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;

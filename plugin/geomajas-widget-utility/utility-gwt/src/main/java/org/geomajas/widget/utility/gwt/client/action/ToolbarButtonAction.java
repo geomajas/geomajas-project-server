@@ -17,7 +17,7 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
-import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
@@ -25,8 +25,8 @@ import org.geomajas.widget.utility.common.client.event.EnabledHandler;
 import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Button action implementation that delegates to a {@link ToolbarBaseAction} instance.
@@ -63,7 +63,7 @@ public class ToolbarButtonAction implements ButtonAction, HasEnabledHandlers, Ri
 	 */
 	public void onClick(ClickEvent event) {
 		if (toolbarAction instanceof ToolbarAction) {
-			((ToolbarAction) toolbarAction).onClick(null);
+			((ToolbarAction) toolbarAction).onClick(event);
 		}
 	}
 

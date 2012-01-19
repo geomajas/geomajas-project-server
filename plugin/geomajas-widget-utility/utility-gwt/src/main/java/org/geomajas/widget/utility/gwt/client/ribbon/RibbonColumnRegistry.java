@@ -26,7 +26,7 @@ import org.geomajas.gwt.client.action.toolbar.DropDownButtonAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.utility.common.client.action.ButtonAction;
+import org.geomajas.widget.utility.client.action.ButtonAction;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonAction;
 import org.geomajas.widget.utility.gwt.client.action.ToolbarButtonCanvas;

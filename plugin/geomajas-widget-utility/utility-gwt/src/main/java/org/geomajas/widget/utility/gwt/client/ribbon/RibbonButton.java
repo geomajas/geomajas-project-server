@@ -11,8 +11,8 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon;
 
-import org.geomajas.widget.utility.common.client.action.ButtonAction;
-import org.geomajas.widget.utility.common.client.action.RadioAction;
+import org.geomajas.widget.utility.client.action.ButtonAction;
+import org.geomajas.widget.utility.client.action.RadioAction;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;

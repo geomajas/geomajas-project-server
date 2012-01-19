@@ -12,7 +12,7 @@
 package org.geomajas.widget.utility.gwt.client.action;
 
 import org.geomajas.gwt.client.action.ToolbarModalAction;
-import org.geomajas.widget.utility.common.client.action.RadioAction;
+import org.geomajas.widget.utility.client.action.RadioAction;
 
 /**
  * Radio action implementation that delegates to a {@link ToolbarModalAction} instance.

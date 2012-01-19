@@ -17,7 +17,9 @@ import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
  * 
  * @author Kristof Heirwegh
  * 
+ * @deprecated Use ButtonAction.
  */
+@Deprecated
 public interface RibbonColumnAware {
 
 	/**
