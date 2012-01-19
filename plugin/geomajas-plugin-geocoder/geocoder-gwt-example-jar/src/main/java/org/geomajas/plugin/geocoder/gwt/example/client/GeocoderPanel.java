@@ -19,8 +19,10 @@ import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -86,6 +88,13 @@ public class GeocoderPanel extends SamplePanel {
 		geocoderSourceForm.setFields(geocoderSource);
 		toolbar.addMember(geocoderSourceForm);
 
+		// add second geocoder widget without title at the right
+		LayoutSpacer spacer = new LayoutSpacer();
+		toolbar.addMember(spacer);
+		GeocoderWidget geocoderWidgetNoTitle = new GeocoderWidget(map, "noTitle", "No Title");
+		geocoderWidgetNoTitle.setShowTitle(false);
+		toolbar.addMember(geocoderWidgetNoTitle);
+		
 		layout.addMember(toolbar);
 		layout.addMember(map);
 		return layout;

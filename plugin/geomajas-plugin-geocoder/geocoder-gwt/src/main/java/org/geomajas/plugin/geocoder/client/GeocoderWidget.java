@@ -52,25 +52,11 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
-		this(map, name, title, true);
-	}
-	/**
-	 * Create geocoder widget which allows searching a location from a string.
-	 *
-	 * @param map map to apply search results
-	 * @param name widget name
-	 * @param title label which is displayed left of the widget
-	 * @param showTitle determines whether the label should be displayed or not
-	 * @since 1.2.0
-	 */
-	@Api
-	public GeocoderWidget(MapWidget map, String name, String title, boolean showTitle) {
 		super();
 		presenter = new GeocoderPresenter(map, this);
 		this.map = map;
 
 		textItem = new TextItem(name, title);
-		textItem.setShowTitle(showTitle);
 
 		textItem.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent keyPressEvent) {
@@ -100,6 +86,17 @@ public class GeocoderWidget extends DynamicForm {
 		});
 
 		this.setFields(textItem);
+	}
+
+	/**
+	 * Set whether the title should be shown for the widget.
+	 *
+	 * @param showTitle show title?
+	 * @since 1.2.0
+	 */
+	@Api
+	public void setShowTitle(boolean showTitle) {
+		textItem.setShowTitle(showTitle);
 	}
 
 	/**
