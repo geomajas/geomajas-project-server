@@ -88,7 +88,7 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
-		<!-- @todo needs to be commented for release, needed for snapshots -->
+		<!-- @todo needs to be commented for release, needed for snapshots
 		<pluginRepository>
 			<id>Geomajas snapshots</id>
 			<name>Geomajas snapshot repository</name>
@@ -97,6 +97,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</pluginRepository>
+		-->
 	</pluginRepositories>
 
 	<developers>
@@ -208,7 +209,7 @@
 					<dependency>
 						<groupId>org.geomajas</groupId>
 						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.6-SNAPSHOT</version>
+						<version>1.0.6</version>
 					</dependency>
 				</dependencies>
 			</plugin>
