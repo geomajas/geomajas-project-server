@@ -223,9 +223,11 @@
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<manifestEntries>
-							<geomajas-version>${project.version}</geomajas-version>
-							<license>AGPLv3</license>
-							<more-info>http://www.geomajas.org/ and http://www.geosparc.com/</more-info>
+							<Short-description>${project.name}</Short-description>
+							<Description>${project.description}</Description>
+							<Version>${project.version}</Version>
+							<License>AGPLv3</License>
+							<More-info>http://www.geomajas.org/ and http://www.geosparc.com/</More-info>
 						</manifestEntries>
 						<compress>true</compress>
 						<index>true</index>
@@ -256,25 +258,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<geomajas-version>${project.version}</geomajas-version>
-							<license>AGPLv3</license>
-							<more-info>http://www.geomajas.org/ and http://www.geosparc.com/</more-info>
-						</manifestEntries>
-						<compress>true</compress>
-						<index>true</index>
-					</archive>
-				</configuration>
 			</plugin>
 
 			<plugin>
