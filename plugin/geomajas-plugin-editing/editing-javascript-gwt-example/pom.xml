@@ -97,7 +97,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-javascript-api-smartgwt</artifactId>
+			<artifactId>geomajas-plugin-javascript-api-gwt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

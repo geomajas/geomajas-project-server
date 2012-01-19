@@ -60,7 +60,7 @@
 		<!-- Geomajas JS API for GWT face -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-javascript-api-smartgwt</artifactId>
+			<artifactId>geomajas-plugin-javascript-api-gwt</artifactId>
 		</dependency>
 
 		<!-- Geomajas generic JS API for editing plugin -->
