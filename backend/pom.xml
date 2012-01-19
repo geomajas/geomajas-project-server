@@ -298,17 +298,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.jibx</groupId>
-				<artifactId>jibx-run</artifactId>
-				<version>${jibx-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jibx</groupId>
-				<artifactId>jibx-extras</artifactId>
-				<version>${jibx-version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>org.jboss</groupId>
 				<artifactId>jboss-serialization</artifactId>
 				<version>1.0.4.FINAL</version>
@@ -338,7 +327,6 @@
 		<geotools-version>2.7.4-GBE-276</geotools-version>
 		<geotools-epsg-wkt-version>2.6.3</geotools-epsg-wkt-version>
 		<spring-version>3.0.5.RELEASE</spring-version>
-		<jibx-version>1.2.3</jibx-version>
 	</properties>
 
 </project>
