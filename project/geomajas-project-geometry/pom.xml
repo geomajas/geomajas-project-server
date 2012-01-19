@@ -14,7 +14,7 @@
 
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
+		<artifactId>geomajas-al-parent</artifactId>
 		<version>1.0.6-SNAPSHOT</version>
 	</parent>
 
@@ -44,44 +44,6 @@
 		<module>conversion-jts</module>
 		<module>documentation</module>
 	</modules>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<configLocation>config/geomajas-apache-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<geomajas-geometry-version>${project.version}</geomajas-geometry-version>
-							<license>Apache v2</license>
-							<more-info>http://www.geomajas.org/ and http://www.geosparc.com/</more-info>
-						</manifestEntries>
-						<compress>true</compress>
-						<index>true</index>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 	<dependencyManagement>
 		<dependencies>

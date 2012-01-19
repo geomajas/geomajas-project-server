@@ -45,20 +45,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<!-- JavaDoc configuration -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<show>public</show>
-					<nohelp>true</nohelp>
-					<header>Geomajas Geometry Project ${project.version}</header>
-					<footer>Geomajas Geometry Project ${project.version}</footer>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>

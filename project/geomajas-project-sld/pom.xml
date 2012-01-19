@@ -41,43 +41,6 @@
 	</modules>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<configuration>
-					<configLocation>config/geomajas-apache-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<geomajas-sld-version>${project.version}</geomajas-sld-version>
-							<license>Apache v2</license>
-							<more-info>http://www.geomajas.org/ and http://www.geosparc.com/</more-info>
-						</manifestEntries>
-						<compress>true</compress>
-						<index>true</index>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
