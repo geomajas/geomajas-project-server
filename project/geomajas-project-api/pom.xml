@@ -32,9 +32,9 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/project/sld</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/sld</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/sld</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-api</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-api</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/geomajas-project-api</url>
 	</scm>
 
 	<modules>
