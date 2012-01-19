@@ -61,23 +61,23 @@
 
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-geometry-core</artifactId>
+				<artifactId>geomajas-project-geometry-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-geometry-core</artifactId>
+				<artifactId>geomajas-project-geometry-core</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-geometry-conversion-jts</artifactId>
+				<artifactId>geomajas-project-geometry-jts</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-geometry-conversion-jts</artifactId>
+				<artifactId>geomajas-project-geometry-jts</artifactId>
 				<version>${project.version}</version>
 				<classifier>sources</classifier>
 			</dependency>

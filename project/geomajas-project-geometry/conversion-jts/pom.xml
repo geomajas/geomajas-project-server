@@ -19,7 +19,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-geometry-conversion-jts</artifactId>
+	<artifactId>geomajas-project-geometry-jts</artifactId>
 	<packaging>jar</packaging>
 
 	<name>Geomajas Geometry Project: Conversion from and to JTS</name>
@@ -33,7 +33,7 @@
 
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
-			<artifactId>geomajas-geometry-core</artifactId>
+			<artifactId>geomajas-project-geometry-core</artifactId>
 		</dependency>
 
 		<!-- Test dependencies -->
