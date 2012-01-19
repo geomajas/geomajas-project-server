@@ -124,6 +124,6 @@
 	</profiles>
 
 	<properties>
-		<${rootArtifactId}-backend-version>1.9.0</${rootArtifactId}-backend-version>
+		<${rootArtifactId}-backend-version>1.10.0</${rootArtifactId}-backend-version>
 	</properties>	
 </project>

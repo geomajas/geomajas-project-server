@@ -147,7 +147,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-reports-backend-version>1.10.0-SNAPSHOT</geomajas-widget-reports-backend-version>
+		<geomajas-widget-reports-backend-version>1.10.0</geomajas-widget-reports-backend-version>
 		<geomajas-widget-reports-gwt-face-version>1.10.0-SNAPSHOT</geomajas-widget-reports-gwt-face-version>
 		<geomajas-widget-reports-gwt-version>2.4.0</geomajas-widget-reports-gwt-version>
 	</properties>

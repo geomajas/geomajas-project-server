@@ -196,7 +196,7 @@
 	</profiles>
 
 	<properties>
-		<gwt-pure-face-backend-version>1.10.0-SNAPSHOT</gwt-pure-face-backend-version>
+		<gwt-pure-face-backend-version>1.10.0</gwt-pure-face-backend-version>
 		<gwt-pure-face-common-gwt-version>1.0.0-SNAPSHOT</gwt-pure-face-common-gwt-version>
 		<gwt-pure-face-gwt-version>2.4.0</gwt-pure-face-gwt-version>
 	</properties>

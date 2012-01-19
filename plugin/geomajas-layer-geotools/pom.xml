@@ -149,7 +149,7 @@
 	</profiles>
 
 	<properties>
-		<geotools-layer-backend-version>1.9.0</geotools-layer-backend-version>
+		<geotools-layer-backend-version>1.10.0</geotools-layer-backend-version>
 		<geotools-version>2.7.4-GBE-260</geotools-version>
 		<geotools-extras-version>2.7.4</geotools-extras-version>
 	</properties>
