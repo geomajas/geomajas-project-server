@@ -1143,6 +1143,11 @@ private SecurityContext securityContext;</programlisting>
           </listitem>
 
           <listitem>
+            <para><emphasis>project</emphasis>: these are projects which can
+            be used independently of the Geomajas back-end.</para>
+          </listitem>
+
+          <listitem>
             <para><emphasis>test</emphasis>: modules which are used for
             (integration) testing of Geomajas.</para>
           </listitem>
@@ -1166,35 +1171,21 @@ private SecurityContext securityContext;</programlisting>
 
           <tbody>
             <row>
-              <entry>geomajas-dojo-example</entry>
-
-              <entry>Example application using the dojo face. Is more advanced
-              than the dojo-simple demo. Can be useful as template project
-              when starting a new dojo based Geomajas application which uses
-              project specific JavaScript code.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-dojo-simple</entry>
-
-              <entry>Simple example project using the dojo face. Can be a
-              useful template project when starting a new dojo based Geomajas
-              application.</entry>
-            </row>
-
-            <row>
               <entry>geomajas-gwt-example</entry>
 
               <entry>Example application using the GWT face which serves both
-              as showcase and test application.</entry>
+              as showcase and test application. This is currently an oldish
+              application, replaced by the geomajas-gwt-showcase
+              module.</entry>
             </row>
 
             <row>
-              <entry>geomajas-gwt-simple</entry>
+              <entry>geomajas-gwt-showcase</entry>
 
-              <entry>Simple example project using the GWT face. Very similar
-              to the GWT archetype which can be used to start a new GWT based
-              Geomajas project.</entry>
+              <entry>Example application using the GWT face which serves as
+              showcase for various aspects of the framework. This aggregates
+              the example/test modules which are included in the GWT face and
+              the various plug-ins.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -1319,14 +1310,44 @@ private SecurityContext securityContext;</programlisting>
             <row>
               <entry>geomajas-parent</entry>
 
-              <entry>parent project which includes some Geomajas specific
-              settings like copyright, java version, checkstyle etc.</entry>
+              <entry>Parent pom which includes some Geomajas specific settings
+              like copyright, java version, checkstyle etc.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-al-parent</entry>
+
+              <entry>Parent pom which should be used for Apache licensed
+              modules (extends the normal geomajas-parent).</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-doc-parent</entry>
+
+              <entry>Parent pom which should be used for documentation
+              modules. This has all the details to enable building the
+              documentation in HTML and PDF format from the docbook
+              sources.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-gwt-archetype</entry>
+
+              <entry>Archetype to build a skeleton application which uses the
+              GWT face.</entry>
             </row>
 
             <row>
               <entry>geomajas-plugin-archetype</entry>
 
-              <entry>Archetype for starting a new plugin.</entry>
+              <entry>Archetype to build a skeleton for a new plugin.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-jetty-runner</entry>
+
+              <entry>Jetty runner which can be used in Eclipse IDE to easy
+              running Geomajas applications.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -1384,6 +1405,55 @@ private SecurityContext securityContext;</programlisting>
 
               <entry>Transformation module for conversion of the docbook files
               to usable output.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas project modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>geomajas-project-api</entry>
+
+              <entry>Project to make the API annotations reusable.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-project-geometry</entry>
+
+              <entry>Project which contains a set of geometry DTOs and
+              services with minimal dependencies. There are services to
+              manipulate the geometries and to convert to JTS
+              geometries.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-project-sld</entry>
+
+              <entry>Project which contains a set of DTOs for handling SLD.
+              There are also services to convert between the DTO and
+              XML.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-project-sld-editor</entry>
+
+              <entry>An SLD editor which used the SLD DTOs.</entry>
             </row>
           </tbody>
         </tgroup>
