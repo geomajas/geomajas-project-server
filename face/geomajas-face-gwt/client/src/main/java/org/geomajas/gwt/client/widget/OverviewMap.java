@@ -29,9 +29,8 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
 /**
  * MapWidget that listens to another MapWidget and shows an overview of it.
@@ -111,9 +110,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		getMapModel().addMapModelChangedHandler(meh);
 		targetMap.getMapModel().addMapModelChangedHandler(meh);
 		// handle max extent on resize
-		addResizedHandler(new ResizedHandler() {
-
-			public void onResized(ResizedEvent event) {
+		getGraphics().addGraphicsReadyHandler(new GraphicsReadyHandler() {
+			
+			public void onReady(GraphicsReadyEvent event) {
 				if (getMapModel().isInitialized()) {
 					updateMaxExtent();
 				}
@@ -331,7 +330,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * Apply a maximum extent. This will extend the map extend to be used by the percentage to increase.
 	 */
 	private void updateMaxExtent() {
-		if (targetMap.getMapModel().isInitialized()) {
+		if (targetMap.getMapModel().isInitialized() && getGraphics().isReady()) {
 			Bbox targetMaxBounds = getOverviewMaxBounds();
 
 			MapView mapView = getMapModel().getMapView();
@@ -443,17 +442,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 */
 	private class MaxExtentHandler implements MapModelChangedHandler {
 
-		private boolean targetMapDone;
-
-		private boolean overviewMapDone;
-
 		public void onMapModelChanged(MapModelChangedEvent event) {
-			if (event.getSource() == getMapModel()) {
-				overviewMapDone = true;
-			} else if (event.getSource() == targetMap.getMapModel()) {
-				targetMapDone = true;
-			}
-			if (targetMapDone && overviewMapDone) {
+			if (getMapModel().isInitialized() && targetMap.getMapModel().isInitialized()) {
 				updateMaxExtent();
 			}
 		}

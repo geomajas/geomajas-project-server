@@ -387,17 +387,19 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void renderAll() {
-		long now = System.currentTimeMillis();
-		int width = getWidth();
-		int height = getHeight();
-		if (now > previousRedraw + REDRAW_GRACE
-				|| !getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA)
-				|| previousRenderAllWidth != width || previousRenderAllHeight != height) {
-			previousRenderAllWidth = width;
-			previousRenderAllHeight = height;
-			previousRedraw = now;
-			previousRedrawBbox = (Bbox) getMapModel().getMapView().getBounds().clone();
-			render(mapModel, null, RenderStatus.ALL);
+		if (graphics.isReady()) {
+			long now = System.currentTimeMillis();
+			int width = getWidth();
+			int height = getHeight();
+			if (now > previousRedraw + REDRAW_GRACE
+					|| !getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA)
+					|| previousRenderAllWidth != width || previousRenderAllHeight != height) {
+				previousRenderAllWidth = width;
+				previousRenderAllHeight = height;
+				previousRedraw = now;
+				previousRedrawBbox = (Bbox) getMapModel().getMapView().getBounds().clone();
+				render(mapModel, null, RenderStatus.ALL);
+			}
 		}
 	}
 
@@ -1157,7 +1159,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		}
 	}
-
+	
+	/**
+	 * Get the graphics widget of this map.
+	 * @return the graphics widget
+	 */
+	protected GraphicsWidget getGraphics() {
+		return graphics;
+	}
+	
 	private void setAddons() {
 		if (getMapModel().isInitialized()) {
 			ClientMapInfo info = getMapModel().getMapInfo();
