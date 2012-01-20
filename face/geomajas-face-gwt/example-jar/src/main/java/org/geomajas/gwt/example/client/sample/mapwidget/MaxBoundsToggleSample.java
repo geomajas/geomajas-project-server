@@ -82,6 +82,8 @@ public class MaxBoundsToggleSample extends SamplePanel {
 				if (isBelgiumBoundsEnabled) { // switch to whole world bounds
 					isBelgiumBoundsEnabled = false;
 					map.getMapModel().getMapView().setMaxBounds(maxBounds);
+					// apply the bounds to indicate to the user that something has changed
+					map.getMapModel().getMapView().applyBounds(maxBounds, ZoomOption.LEVEL_FIT);
 					butToggleMaxBounds.setTitle(MESSAGES.toggleMaxBoundsBelgium());
 				} else { // switch to Belgium bounds
 					if (maxBounds == null) {
