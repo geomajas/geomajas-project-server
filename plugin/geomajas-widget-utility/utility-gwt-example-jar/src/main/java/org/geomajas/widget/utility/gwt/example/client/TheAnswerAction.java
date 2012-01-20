@@ -12,7 +12,7 @@
 package org.geomajas.widget.utility.gwt.example.client;
 
 import org.geomajas.gwt.client.util.WidgetLayout;
-import org.geomajas.widget.utility.client.action.AbstractButtonAction;
+import org.geomajas.widget.utility.gwt.client.action.AbstractButtonAction;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;

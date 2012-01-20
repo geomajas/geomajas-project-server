@@ -8,9 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.widget.utility.client.action;
+package org.geomajas.widget.utility.gwt.client.action;
 
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickEvent;
+
 
 /**
  * A basic implementation of a RadioAction.

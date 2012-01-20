@@ -11,14 +11,14 @@
 
 package org.geomajas.widget.utility.gwt.client.ribbon;
 
-import org.geomajas.widget.utility.client.action.ButtonAction;
-import org.geomajas.widget.utility.client.action.RadioAction;
 import org.geomajas.widget.utility.common.client.action.RibbonColumnAware;
 import org.geomajas.widget.utility.common.client.event.DisabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledEvent;
 import org.geomajas.widget.utility.common.client.event.EnabledHandler;
 import org.geomajas.widget.utility.common.client.event.HasEnabledHandlers;
 import org.geomajas.widget.utility.common.client.ribbon.RibbonColumn;
+import org.geomajas.widget.utility.gwt.client.action.ButtonAction;
+import org.geomajas.widget.utility.gwt.client.action.RadioAction;
 import org.geomajas.widget.utility.gwt.client.util.GuwLayout;
 
 import com.smartgwt.client.types.Alignment;
