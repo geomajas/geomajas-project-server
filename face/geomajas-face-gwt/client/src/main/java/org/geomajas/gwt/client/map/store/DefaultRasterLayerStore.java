@@ -149,7 +149,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 			}
 		}
 		// This realigns the grid of tiles based on their code
-		if (newTiles && isTransformed()) {
+		if (newTiles) {
 			for (RasterTile tile : tiles.values()) {
 				if (!tile.getCode().equals(referenceTile.getCode())) {
 					Bbox aligned = new Bbox(referenceTile.getBounds());
@@ -162,12 +162,6 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 			}
 		}
 		deferred = null;
-	}
-
-	private boolean isTransformed() {
-		String layerCrs = getLayer().getLayerInfo().getCrs();
-		String mapCrs = getLayer().getMapModel().getCrs();
-		return !layerCrs.equals(mapCrs);
 	}
 
 	/**
