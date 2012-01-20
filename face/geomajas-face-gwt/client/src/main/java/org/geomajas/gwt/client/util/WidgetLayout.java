@@ -159,7 +159,7 @@ public final class WidgetLayout {
 	/** Redo icon. */
 	public static String iconRedo = "[ISOMORPHIC]/geomajas/osgeo/redo.png";
 	/** Hide layer icon. */
-	public static String iconRefresh = "[ISOMORPHIC]/geomajas/widget/layertree/refresh-hide.png";
+	public static String iconRefresh = "[ISOMORPHIC]/geomajas/widget/layertree/refresh.png";
 	/** Disabled layer icon. */
 	public static String iconRefreshDisabled = "[ISOMORPHIC]/geomajas/widget/layertree/refresh-disabled.png";
 	/** Rasterize icon. */
