@@ -22,13 +22,13 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class EditingManual extends TabSet {
 
-	private static final String CREATE_FEATURE_PAGE = "[ISOMORPHIC]/geomajas/example/pages/edit/create_feature.html";
+	private static final String CREATE_FEATURE_PAGE = "d/page/edit/create_feature.html";
 
-	private static final String EDIT_FEATURE_PAGE = "[ISOMORPHIC]/geomajas/example/pages/edit/edit_feature.html";
+	private static final String EDIT_FEATURE_PAGE = "d/page/edit/edit_feature.html";
 
-	private static final String DELETE_FEATURE_PAGE = "[ISOMORPHIC]/geomajas/example/pages/edit/delete_feature.html";
+	private static final String DELETE_FEATURE_PAGE = "d/page/edit/delete_feature.html";
 
-	private static final String DONUT_PAGE = "[ISOMORPHIC]/geomajas/example/pages/edit/donut_polygon.html";
+	private static final String DONUT_PAGE = "d/page/edit/donut_polygon.html";
 
 	public EditingManual() {
 		Tab tab1 = new Tab();
