@@ -33,6 +33,8 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 	private MapWidget mapWidget;
 
 	private boolean maxBoundsDisplayed;
+	
+	private int pixelTolerance = 5;
 
 	/**
 	 * Constructor.
@@ -49,6 +51,7 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 	public void onSelect(ClickEvent event) {
 		ParentEditController controller = new ParentEditController(mapWidget);
 		controller.setMaxBoundsDisplayed(maxBoundsDisplayed);
+		controller.setPixelTolerance(pixelTolerance);
 		mapWidget.setController(controller);
 	}
 
@@ -61,6 +64,9 @@ public class EditingModalAction extends ToolbarModalAction implements Configurab
 	public void configure(String key, String value) {
 		if ("maxBoundsDisplayed".equals(key)) {
 			maxBoundsDisplayed = Boolean.parseBoolean(value);
+		}
+		if ("pixelTolerance".equals(key)) {
+			pixelTolerance = Integer.parseInt(value);
 		}
 	}
 }
