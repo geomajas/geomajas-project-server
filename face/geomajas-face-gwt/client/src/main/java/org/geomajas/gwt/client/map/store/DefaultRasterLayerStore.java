@@ -155,13 +155,29 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 					Bbox aligned = new Bbox(referenceTile.getBounds());
 					aligned.setX(referenceTile.getBounds().getX()
 							+ (tile.getCode().getX() - referenceTile.getCode().getX()) * aligned.getWidth());
-					aligned.setY(referenceTile.getBounds().getY()
-							+ (tile.getCode().getY() - referenceTile.getCode().getY()) * aligned.getHeight());
+					if (tile.getCode().getY() != referenceTile.getCode().getY()) {
+						aligned.setY(referenceTile.getBounds().getY() + getOrientedJDiff(referenceTile, tile)
+								* aligned.getHeight());
+					}
 					tile.setBounds(aligned);
 				}
 			}
 		}
 		deferred = null;
+	}
+
+	/**
+	 * Returns the difference in j index, taking orientation of y-axis into account. Some layers (WMS 1.8.0) have
+	 * different j-index orientation than screen coordinates (lower-left = (0,0) vs upper-left = (0,0)).
+	 * 
+	 * @param tile1 tile
+	 * @param tile2 tile
+	 * @return +/-(j2-j1)
+	 */
+	private int getOrientedJDiff(RasterTile tile1, RasterTile tile2) {
+		double dy = tile2.getBounds().getY() - tile1.getBounds().getY();
+		int dj = tile2.getCode().getY() - tile1.getCode().getY();
+		return (dj * dy) > 0 ? dj : -dj;
 	}
 
 	/**
