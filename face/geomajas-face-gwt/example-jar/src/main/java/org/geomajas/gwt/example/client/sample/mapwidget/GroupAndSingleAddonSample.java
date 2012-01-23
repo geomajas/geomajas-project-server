@@ -101,9 +101,9 @@ public class GroupAndSingleAddonSample extends SamplePanel {
 		// Set a panning controller on the map:
 		mapWidget.setController(new PanController(mapWidget));
 		mapLayout.addMember(mapWidget);
-		mapWidget.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
-					
-			public void onMapModelChanged(MapModelChangedEvent event) {
+		mapWidget.getMapModel().runWhenInitialized(new Runnable() {
+
+			public void run() {
 				/*
 				 * Images of pan controller with internal margins
 				 */

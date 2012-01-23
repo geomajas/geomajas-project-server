@@ -11,13 +11,8 @@
 
 package org.geomajas.gwt.example.client.sample.attribute;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
-import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
-import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -27,10 +22,13 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
 /**
  * <p>
@@ -76,9 +74,9 @@ public class FeatureListGridSample extends SamplePanel {
 
 		// Add a trigger to fill the grid when the map has finished loading:
 
-		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChanged(MapModelChangedEvent event) {
+			public void run() {
 				final VectorLayer layer = map.getMapModel().getVectorLayer("clientLayerCountries110mGrid");
 				grid.setLayer(layer);
 				SearchFeatureRequest searchFeatureRequest = new SearchFeatureRequest();

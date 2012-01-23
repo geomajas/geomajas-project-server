@@ -79,9 +79,9 @@ public class AttributeCustomTypeSample extends SamplePanel {
 		layout.addMember(map);
 		map.init();
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("beansLayerCustomType");
 				FeatureAttributeEditor editor = new FeatureAttributeEditor(layer, false);
 				editor.setWidth(400);

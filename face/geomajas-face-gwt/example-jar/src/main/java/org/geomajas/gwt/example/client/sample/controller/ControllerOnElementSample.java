@@ -11,11 +11,6 @@
 
 package org.geomajas.gwt.example.client.sample.controller;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
-import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
-import org.geomajas.gwt.example.base.SamplePanel;
-import org.geomajas.gwt.example.base.SamplePanelFactory;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
@@ -23,14 +18,17 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.example.base.SamplePanel;
+import org.geomajas.gwt.example.base.SamplePanelFactory;
+import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.gwt.example.client.sample.i18n.SampleMessages;
 
 /**
  * <p>
@@ -93,9 +91,9 @@ public class ControllerOnElementSample extends SamplePanel {
 		};
 
 		// After map initialization we draw an image on the map:
-		map.getMapModel().addMapModelChangedHandler(new MapModelChangedHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChanged(MapModelChangedEvent event) {
+			public void run() {
 				GraphicsContext graphics = map.getVectorContext();
 				graphics.drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle, style);
 				map.getVectorContext().setController(map.getGroup(RenderGroup.SCREEN), "rectangle", customController);
