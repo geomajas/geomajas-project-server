@@ -175,9 +175,10 @@ public class RasterizingPanel extends SamplePanel {
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/mapRasterizingOverview.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/clientLayersRasterizing.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerOsm.xml",
-				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPoints.xml",
-				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerLines.xml",
-				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPolygons.xml",
+				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPointsRasterizing.xml",
+				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerLinesRasterizing.xml",
+				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/layerPolygonsRasterizing.xml",
+				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/rasterizing.xml",
 				"classpath:org/geomajas/plugin/rasterizing/gwt/example/context/resources.xml" };
 	}
 
