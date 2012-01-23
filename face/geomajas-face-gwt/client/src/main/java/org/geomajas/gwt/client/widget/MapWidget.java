@@ -386,12 +386,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * @since 1.10.0
 	 */
 	@Api
-	public void renderAll() {
+	public void renderAll(boolean force) {
 		if (graphics.isReady()) {
 			long now = System.currentTimeMillis();
 			int width = getWidth();
 			int height = getHeight();
-			if (now > previousRedraw + REDRAW_GRACE
+			if (force || now > previousRedraw + REDRAW_GRACE
 					|| !getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA)
 					|| previousRenderAllWidth != width || previousRenderAllHeight != height) {
 				previousRenderAllWidth = width;
@@ -1034,7 +1034,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				render(mapModel, null, RenderStatus.UPDATE);
 			} else {
 				if (readyToDraw) {
-					renderAll();
+					renderAll(false);
 				}
 			}
 		}
@@ -1064,14 +1064,19 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            event
 	 */
 	public void onMapModelChanged(MapModelChangedEvent event) {
+		// delete old layers first (if refresh or reorder), could we do this more subtly ?
+		for (Layer<?> layer : previousLayers) {
+			render(layer, null, RenderStatus.DELETE);
+		}
+		
 		previousLayers.clear(); // just to be safe
 		previousLayers.addAll(mapModel.getLayers());
 
 		readyToDraw = true;
 		refreshCallback(event.getMapModel().getMapInfo());
-
+		
 		// render all
-		renderAll();
+		renderAll(true);
 	}
 
 	// -------------------------------------------------------------------------
