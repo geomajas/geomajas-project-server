@@ -27,8 +27,6 @@ import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddonGroup;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.SingleMapAddon;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
-import org.geomajas.gwt.client.map.event.MapModelChangedEvent;
-import org.geomajas.gwt.client.map.event.MapModelChangedHandler;
 import org.geomajas.gwt.client.util.ImageUtil;
 import org.geomajas.gwt.client.util.MapAddonConstants;
 import org.geomajas.gwt.client.widget.MapWidget;
