@@ -128,7 +128,7 @@ public final class Log {
 	 * @param throwable exception to include in message
 	 */
 	public static void logServer(int logLevel, String message, Throwable throwable) {
-		String logMessage  = message;
+		String logMessage = message;
 		if (null == logMessage) {
 			logMessage = "";
 		}
@@ -137,7 +137,7 @@ public final class Log {
 		}
 		LogRequest logRequest = new LogRequest();
 		logRequest.setLevel(logLevel);
-		logRequest.setStatement(message);
+		logRequest.setStatement(logMessage);
 		GwtCommand command = new GwtCommand(LogRequest.COMMAND);
 		command.setCommandRequest(logRequest);
 		Deferred deferred = new Deferred();
