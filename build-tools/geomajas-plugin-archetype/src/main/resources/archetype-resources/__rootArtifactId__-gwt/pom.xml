@@ -28,7 +28,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${symbol_dollar}{${rootArtifactId}-backend-version}</version>
+				<version>${symbol_dollar}{${rootArtifactId}-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

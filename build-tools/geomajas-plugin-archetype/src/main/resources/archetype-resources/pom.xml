@@ -125,5 +125,6 @@
 
 	<properties>
 		<${rootArtifactId}-backend-version>1.10.0</${rootArtifactId}-backend-version>
-	</properties>	
+		<${rootArtifactId}-gwt-face-version>1.10.0</${rootArtifactId}-gwt-face-version>
+	</properties>
 </project>
