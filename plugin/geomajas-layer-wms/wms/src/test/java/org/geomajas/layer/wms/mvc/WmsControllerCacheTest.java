@@ -17,7 +17,6 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.testdata.TestPathBinaryStreamAssert;
 import org.geomajas.testdata.rule.SecurityRule;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -43,7 +41,6 @@ import static org.fest.assertions.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/wmsContext.xml",
 		"/org/geomajas/spring/testRecorder.xml", "/org/geomajas/testdata/allowAll.xml"})
-@Transactional
 public class WmsControllerCacheTest {
 
 	private static final String IMAGE_CLASS_PATH = "reference";
@@ -75,7 +72,7 @@ public class WmsControllerCacheTest {
 	}
 
 	@Test
-	@Ignore // test fails as the passivated state is not removed, see CACHE-33
+	//@Ignore // test fails as the passivated state is not removed, see CACHE-33
 	public void testReadCachedImage() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
