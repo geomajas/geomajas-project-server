@@ -54,6 +54,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="twmacinta-fast-md5"/>
+					<property name="copyright" value=""/>
+					<property name="licenseName" value="GNU Lesser General Public License, version 2.1" />
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl-2.1.html" />
+				</bean>
 			</list>
 		</property>
 	</bean>
