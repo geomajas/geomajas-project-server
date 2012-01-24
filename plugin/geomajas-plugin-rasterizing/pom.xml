@@ -158,7 +158,7 @@
 	<properties>
 		<rasterizing-backend-version>1.10.0</rasterizing-backend-version>
 		<rasterizing-gwt-face-version>1.10.0</rasterizing-gwt-face-version>
-		<rasterizing-caching-version>1.0.0</rasterizing-caching-version>
+		<rasterizing-caching-version>2.0.0-SNAPSHOT</rasterizing-caching-version>
 		<rasterizing-gwt-version>2.4.0</rasterizing-gwt-version>
 	</properties>
 </project>

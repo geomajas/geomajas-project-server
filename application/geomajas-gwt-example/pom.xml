@@ -183,7 +183,7 @@
 		<!-- @extract-end -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId> 
-			<artifactId>geomajas-plugin-caching</artifactId>
+			<artifactId>geomajas-plugin-caching-infinispan</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>

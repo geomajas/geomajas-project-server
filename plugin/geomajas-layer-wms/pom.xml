@@ -152,6 +152,6 @@
 
 	<properties>
 		<wms-layer-backend-version>1.10.0</wms-layer-backend-version>
-		<wms-layer-caching-version>1.0.0</wms-layer-caching-version>
+		<wms-layer-caching-version>2.0.0-SNAPSHOT</wms-layer-caching-version>
 	</properties>
 </project>
