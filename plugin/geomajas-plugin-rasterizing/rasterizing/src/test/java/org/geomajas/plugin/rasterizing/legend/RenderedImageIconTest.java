@@ -22,7 +22,7 @@ public class RenderedImageIconTest {
 		icon.paintIcon(null, copy.getGraphics(), 0, 0);
 		copy.getGraphics().dispose();
 
-		ImageIO.write(copy, "png", new FileOutputStream("my.png"));
+		//ImageIO.write(copy, "png", new FileOutputStream("my.png"));
 		
 		Raster r1 = img.getData();
 		Raster r2 = copy.getData();
