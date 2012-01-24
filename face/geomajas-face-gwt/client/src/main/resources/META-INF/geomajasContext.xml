@@ -44,12 +44,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="GWT"/>
-					<property name="copyright" value=""/>
-					<property name="licenseName" value="Apache License, Version 2.0"/>
-					<property name="licenseUrl" value="http://www.apache.org/licenses/LICENSE-2.0.html"/>
-				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="SmartGWT"/>
 					<property name="copyright" value="Copyright ©2008 and beyond Isomorphic Software"/>
 					<property name="licenseName" value="GNU Lesser General Public License, version 3.0"/>
