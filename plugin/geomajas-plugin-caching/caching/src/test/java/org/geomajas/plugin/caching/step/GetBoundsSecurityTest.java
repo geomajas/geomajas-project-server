@@ -41,7 +41,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/caching/DefaultCachedPipelines.xml", "/org/geomajas/spring/testRecorder.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
-		"/VectorLayerSecurityArea.xml"})
+		"/cacheServiceContext.xml", "/VectorLayerSecurityArea.xml"})
 public class GetBoundsSecurityTest {
 
 	private static final String LAYER_ID = "beans";

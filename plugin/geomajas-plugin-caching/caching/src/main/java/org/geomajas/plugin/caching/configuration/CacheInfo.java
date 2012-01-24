@@ -37,7 +37,7 @@ public class CacheInfo implements LayerExtraInfo, ServerSideOnlyInfo {
 	 */
 	public static final String KEY = CacheInfo.class.getName();
 
-	private Map<CacheCategory, InfinispanConfiguration> configuration;
+	private Map<CacheCategory, CacheConfiguration> configuration;
 	private String id;
 
 	/**
@@ -66,8 +66,9 @@ public class CacheInfo implements LayerExtraInfo, ServerSideOnlyInfo {
 	 * will be used (extending the default configuration!).
 	 *
 	 * @param configuration cache configuration
+	 * @since 2.0.0
 	 */
-	public void setConfiguration(Map<CacheCategory, InfinispanConfiguration> configuration) {
+	public void setConfiguration(Map<CacheCategory, CacheConfiguration> configuration) {
 		this.configuration = configuration;
 	}
 
@@ -79,8 +80,9 @@ public class CacheInfo implements LayerExtraInfo, ServerSideOnlyInfo {
 	 * will be used (extending the default configuration!).
 	 *
 	 * @return cache configuration
+	 * @since 2.0.0
 	 */
-	public Map<CacheCategory, InfinispanConfiguration> getConfiguration() {
+	public Map<CacheCategory, CacheConfiguration> getConfiguration() {
 		return configuration;
 	}
 }

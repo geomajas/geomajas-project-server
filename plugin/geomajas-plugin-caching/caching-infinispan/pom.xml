@@ -18,19 +18,15 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-caching</artifactId>
+	<artifactId>geomajas-plugin-caching-infinispan</artifactId>
 	<packaging>jar</packaging>
-	<name>Caching</name>
-	<description>Caching to allow data to be calculated only once and cached for later use.</description>
+	<name>Caching using Infinispan</name>
+	<description>Infinispan cache service.</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-command</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-caching</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -50,6 +46,15 @@
 		<dependency>
 			<groupId>com.twmacinta</groupId>
 			<artifactId>fast-md5</artifactId>
+		</dependency>
+
+		<dependency>          
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-cachestore-jdbm</artifactId>
 		</dependency>
 
 		<dependency>

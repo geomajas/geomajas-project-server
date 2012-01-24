@@ -43,7 +43,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
-		"/pipelineContext.xml", "/dummySecurity.xml", "/org/geomajas/testdata/layerBeans.xml",
+		"/cacheServiceContext.xml", "/dummySecurity.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/org/geomajas/spring/testRecorder.xml"})
 public class GetFeaturesInvalidateUpdateTest {
 

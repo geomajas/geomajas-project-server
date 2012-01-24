@@ -54,17 +54,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="Infinispan"/>
-					<property name="licenseName" value="GNU Lesser General Public License"/>
-					<property name="licenseUrl" value="http://www.gnu.org/copyleft/lesser.html"/>
-				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="JDBM"/>
-					<property name="copyright" value="Copyright 2000 (C) Cees de Groot. All Rights Reserved."/>
-					<property name="licenseName" value="BSD"/>
-					<property name="licenseUrl" value="http://jdbm.sourceforge.net/"/>
-				</bean>
 			</list>
 		</property>
 	</bean>
@@ -137,89 +126,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="id" value="GetTileCache" />
 				</bean>
 			</list>
-		</property>
-	</bean>
-
-
-	<!-- default cache implementations -->
-	<!-- @extract-start DefaultInfinispanConfiguration, Default Infinispan configuration -->
-	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
-		<property name="cacheFactory">
-			<bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory">
-				<property name="defaultConfiguration" ref="defaultInfinispanCacheConfig" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean name="defaultInfinispanCacheConfig" class="org.geomajas.plugin.caching.configuration.CacheInfo">
-		<property name="configuration">
-			<map>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="512" />
-						</bean>
-				</entry>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.FEATURE" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="512" />
-						</bean>
-				</entry>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.TILE" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="2048" />
-						</bean>
-				</entry>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.RASTER" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="64" />
-							<property name="evictionStrategy">
-								<util:constant static-field="org.infinispan.eviction.EvictionStrategy.LRU" />
-							</property>
-							<property name="expiration" value="10080" /> <!-- 60*24*7, keep entries a week -->
-							<property name="level2CacheLocation" value="${geomajasCacheLocation}/raster" />
-						</bean>
-				</entry>
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.REBUILD" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
-							<property name="maxEntries" value="2048" />
-							<property name="evictionStrategy">
-								<util:constant static-field="org.infinispan.eviction.EvictionStrategy.LRU" />
-							</property>
-							<property name="expiration" value="2880" /> <!-- 60*24*2, keep entries two days -->
-							<property name="level2CacheLocation" value="${geomajasCacheLocation}/rebuild" />
-						</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
-	<!-- @extract-end -->
-
-
-	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
-		<!-- @todo temporary as we don't have a working spatial cache yet -->
-		<property name="cacheIndexFactory">
-			<bean class="org.geomajas.plugin.caching.index.NoCacheIndexFactory" />
-		</property>
-	</bean>
-
-	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
-		<!-- no index on bounds (there is no Geometry/Envelope anyway) -->
-		<property name="category"><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/></property>
-		<property name="cacheIndexFactory">
-			<bean class="org.geomajas.plugin.caching.index.NoCacheIndexFactory" />
-		</property>
-	</bean>
-
-	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
-		<!-- no invalidation on REBUILD cache (otherwise invalidated data cannot be rebuilt) -->
-		<property name="category"><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.REBUILD"/></property>
-		<property name="cacheIndexFactory">
-			<bean class="org.geomajas.plugin.caching.index.NoInvalidateIndexFactory" />
 		</property>
 	</bean>
 

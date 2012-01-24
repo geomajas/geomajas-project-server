@@ -58,6 +58,7 @@
 
 	<modules>
 		<module>caching</module>
+		<module>caching-infinispan</module>
   </modules>
 
 	<dependencyManagement>
@@ -74,6 +75,11 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-caching</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching-infinispan</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.configuration;
+package org.geomajas.plugin.caching.infinispan.configuration;
 
 import org.geomajas.annotation.Api;
 import org.infinispan.configuration.cache.Configuration;

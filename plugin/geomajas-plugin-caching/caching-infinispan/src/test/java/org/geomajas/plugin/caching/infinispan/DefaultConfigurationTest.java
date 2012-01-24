@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.cache;
+package org.geomajas.plugin.caching.infinispan;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayer;

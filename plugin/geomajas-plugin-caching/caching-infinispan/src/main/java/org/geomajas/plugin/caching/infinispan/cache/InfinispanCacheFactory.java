@@ -9,12 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.cache;
+package org.geomajas.plugin.caching.infinispan.cache;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.layer.Layer;
+import org.geomajas.plugin.caching.cache.NoCacheCacheFactory;
+import org.geomajas.plugin.caching.configuration.CacheConfiguration;
 import org.geomajas.plugin.caching.configuration.CacheInfo;
-import org.geomajas.plugin.caching.configuration.InfinispanConfiguration;
+import org.geomajas.plugin.caching.infinispan.configuration.InfinispanConfiguration;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheFactory;
 import org.geomajas.plugin.caching.service.CacheService;
@@ -146,24 +148,27 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 	private Map<CacheCategory, CacheService> createCaches(CacheInfo cacheInfo) {
 		Map<CacheCategory, CacheService> ciCaches = new HashMap<CacheCategory, CacheService>();
-		for (Map.Entry<CacheCategory, InfinispanConfiguration> entry : cacheInfo.getConfiguration().entrySet()) {
-			CacheService cacheService;
-			CacheCategory category = entry.getKey();
-			InfinispanConfiguration config = entry.getValue();
-			if (config.isCacheEnabled()) {
-				String configurationName = config.getConfigurationName();
-				if (null == configurationName) {
-					Configuration dcc = manager.getDefaultCacheConfiguration();
-					Configuration infinispan = config.getInfinispanConfiguration(new ConfigurationBuilder().read(dcc));
-					configurationName = "$" + category.getName() + "$" + cacheInfo.getId();
-					manager.defineConfiguration(configurationName, infinispan);
+		for (Map.Entry<CacheCategory, CacheConfiguration> entry : cacheInfo.getConfiguration().entrySet()) {
+			if (entry.getValue() instanceof InfinispanConfiguration) {
+				CacheService cacheService;
+				CacheCategory category = entry.getKey();
+				InfinispanConfiguration config = (InfinispanConfiguration) entry.getValue();
+				if (config.isCacheEnabled()) {
+					String configurationName = config.getConfigurationName();
+					if (null == configurationName) {
+						Configuration dcc = manager.getDefaultCacheConfiguration();
+						Configuration infinispan = config.getInfinispanConfiguration(
+								new ConfigurationBuilder().read(dcc));
+						configurationName = "$" + category.getName() + "$" + cacheInfo.getId();
+						manager.defineConfiguration(configurationName, infinispan);
+					}
+					recorder.record("infinispan", "configuration name " + configurationName);
+					cacheService = new InfinispanCacheService(manager.<String, Object>getCache(configurationName));
+				} else {
+					cacheService = noCacheFactory.create(null, category);
 				}
-				recorder.record("infinispan", "configuration name " + configurationName);
-				cacheService = new InfinispanCacheService(manager.<String, Object>getCache(configurationName));
-			} else {
-				cacheService = noCacheFactory.create(null, category);
+				ciCaches.put(category, cacheService);
 			}
-			ciCaches.put(category, cacheService);
 		}
 		return ciCaches;
 	}

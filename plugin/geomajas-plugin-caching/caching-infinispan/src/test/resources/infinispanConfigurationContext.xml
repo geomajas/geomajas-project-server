@@ -20,7 +20,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- @extract-start CacheFactorySample, Configure Infinispan cache factory -->
 	<bean class="org.geomajas.plugin.caching.service.CacheServiceInfo">
 		<property name="cacheFactory">
-			<bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory">
+			<bean class="org.geomajas.plugin.caching.infinispan.cache.InfinispanCacheFactory">
 				<property name="configurationFile" value="infinispanConfiguration.xml" />
 				<property name="defaultConfiguration" ref="defaultInfinispanCacheConfig" />
 			</bean>
@@ -34,7 +34,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<!-- @extract-start CacheSimpleSample, Simplified Infinispan configuration -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
+						<bean class="org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo">
 							<property name="maxEntries" value="512" />
 							<property name="evictionStrategy"><util:constant static-field="org.infinispan.eviction.EvictionStrategy.LRU"/></property>
 							<property name="evictionWakeUpInterval" value="5000" />
@@ -54,7 +54,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<!-- @extract-start CacheNamedSample, Choose Infinispan configuration by name -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
+						<bean class="org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo">
 							<property name="configurationName" value="test" />
 						</bean>
 				</entry>
@@ -62,7 +62,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<!-- @extract-start CacheOffSample, Switch off caching -->
 				<entry>
 					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.FEATURE" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo">
+						<bean class="org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo">
 							<property name="cacheEnabled" value="false" />
 						</bean>
 				</entry>

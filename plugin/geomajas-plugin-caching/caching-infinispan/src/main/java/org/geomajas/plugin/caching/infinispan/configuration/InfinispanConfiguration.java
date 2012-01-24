@@ -9,19 +9,20 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.configuration;
+package org.geomajas.plugin.caching.infinispan.configuration;
 
 import org.geomajas.configuration.ServerSideOnlyInfo;
+import org.geomajas.plugin.caching.configuration.CacheConfiguration;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 
 /**
  * Interface for marking configurations which can be used by
- * {@link org.geomajas.plugin.caching.cache.InfinispanCacheFactory}.
+ * {@link org.geomajas.plugin.caching.infinispan.cache.InfinispanCacheFactory}.
  *
  * @author Joachim Van der Auwera
  */
-public interface InfinispanConfiguration extends ServerSideOnlyInfo {
+public interface InfinispanConfiguration extends CacheConfiguration, ServerSideOnlyInfo {
 
 	/**
 	 * Indicates whether caching should be enabled.

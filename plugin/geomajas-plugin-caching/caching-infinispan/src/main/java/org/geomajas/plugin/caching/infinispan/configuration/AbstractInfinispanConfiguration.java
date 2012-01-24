@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.caching.configuration;
+package org.geomajas.plugin.caching.infinispan.configuration;
 
 /**
  * Abstract base class for {@link InfinispanConfiguration}.

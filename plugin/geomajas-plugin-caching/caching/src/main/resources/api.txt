@@ -1,24 +1,11 @@
 // geomajas caching plug-in 1.0.0
-org.geomajas.plugin.caching.cache.InfinispanCacheFactory::1.0.0
-org.geomajas.plugin.caching.cache.InfinispanCacheFactory:void setConfigurationFile(String, ):1.0.0
 org.geomajas.plugin.caching.cache.NoCacheCacheFactory::1.0.0
 org.geomajas.plugin.caching.cache.NoCacheCacheService::1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo::1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:CacheInfo():1.0.0
-org.geomajas.plugin.caching.configuration.CacheInfo:Map<CacheCategory,InfinispanConfiguration> getConfiguration():1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:String getId():1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:static final String KEY:1.0.0
-org.geomajas.plugin.caching.configuration.CacheInfo:void setConfiguration(Map<CacheCategory,InfinispanConfiguration>, ):1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:void setId(String, ):1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo::1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:SimpleInfinispanCacheInfo():1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:SimpleInfinispanCacheInfo():1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionStrategy(EvictionStrategy, ):1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionWakeUpInterval(long, ):1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setExpiration(int, ):1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setIsolationLevel(IsolationLevel, ):1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setLevel2CacheLocation(String, ):1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setMaxEntries(int, ):1.0.0
 org.geomajas.plugin.caching.service.CacheCategory::1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:CacheCategory(String, ):1.0.0
 org.geomajas.plugin.caching.service.CacheCategory:String getName():1.0.0

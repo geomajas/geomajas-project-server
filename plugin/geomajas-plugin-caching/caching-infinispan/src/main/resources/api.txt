@@ -1,0 +1,1 @@
+// geomajas caching plug-in, caching-infinispan module 1.0.0

@@ -43,7 +43,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/caching/DefaultCachedPipelines.xml", "/org/geomajas/spring/testRecorder.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
-		"/VectorLayerSecurityArea.xml"})
+		"/cacheServiceContext.xml", "/VectorLayerSecurityArea.xml"})
 public class GetFeaturesSecurityTest {
 
 	private static final String LAYER_ID = "beans";
