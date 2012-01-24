@@ -9,8 +9,10 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			xmlns="http://docs.jboss.org/infinispan/schemas/infinispan-config-4.0.xsd">
+<infinispan
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="urn:infinispan:config:5.1 http://www.infinispan.org/schemas/infinispan-config-5.1.xsd"
+		xmlns="urn:infinispan:config:5.1">
 	<default>
 		<expiration maxIdle="10000" />
 	</default>

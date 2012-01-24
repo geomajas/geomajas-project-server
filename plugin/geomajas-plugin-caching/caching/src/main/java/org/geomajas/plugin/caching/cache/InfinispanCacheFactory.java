@@ -20,7 +20,8 @@ import org.geomajas.plugin.caching.service.CacheFactory;
 import org.geomajas.plugin.caching.service.CacheService;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.TestRecorder;
-import org.infinispan.config.Configuration;
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
@@ -152,9 +153,8 @@ public class InfinispanCacheFactory implements CacheFactory {
 			if (config.isCacheEnabled()) {
 				String configurationName = config.getConfigurationName();
 				if (null == configurationName) {
-					Configuration infinispan;
-					infinispan = manager.getDefaultConfiguration().clone();
-					infinispan.applyOverrides(config.getInfinispanConfiguration());
+					Configuration dcc = manager.getDefaultCacheConfiguration();
+					Configuration infinispan = config.getInfinispanConfiguration(new ConfigurationBuilder().read(dcc));
 					configurationName = "$" + category.getName() + "$" + cacheInfo.getId();
 					manager.defineConfiguration(configurationName, infinispan);
 				}

@@ -10,13 +10,10 @@ org.geomajas.plugin.caching.configuration.CacheInfo:String getId():1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:static final String KEY:1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:void setConfiguration(Map<CacheCategory,InfinispanConfiguration>, ):1.0.0
 org.geomajas.plugin.caching.configuration.CacheInfo:void setId(String, ):1.0.0
-org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo::1.0.0
-org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo:NativeInfinispanCacheInfo():1.0.0
 org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo::1.0.0
 org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:SimpleInfinispanCacheInfo():1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:Configuration getInfinispanConfiguration():1.0.0
 org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:SimpleInfinispanCacheInfo():1.0.0
-org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionStrategy(., ):1.0.0
+org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionStrategy(EvictionStrategy, ):1.0.0
 org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setEvictionWakeUpInterval(long, ):1.0.0
 org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setExpiration(int, ):1.0.0
 org.geomajas.plugin.caching.configuration.SimpleInfinispanCacheInfo:void setIsolationLevel(IsolationLevel, ):1.0.0

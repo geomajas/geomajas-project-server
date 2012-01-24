@@ -67,15 +67,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						</bean>
 				</entry>
 				<!-- @extract-end -->
-				<!-- @extract-start CacheNativeSample, Native Infinispan cache configuration -->
-				<entry>
-					<key><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.RASTER" /></key>
-						<bean class="org.geomajas.plugin.caching.configuration.NativeInfinispanCacheInfo">
-							<property name="cacheEnabled" value="true" />
-							<property name="evictionMaxEntries" value="1000" />
-						</bean>
-				</entry>
-				<!-- @extract-end -->
 			</map>
 		</property>
 	</bean>

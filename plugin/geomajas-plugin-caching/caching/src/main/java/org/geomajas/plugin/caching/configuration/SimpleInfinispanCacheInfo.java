@@ -12,9 +12,11 @@
 package org.geomajas.plugin.caching.configuration;
 
 import org.geomajas.annotation.Api;
-import org.infinispan.config.CacheLoaderManagerConfig;
-import org.infinispan.config.Configuration;
-import org.infinispan.loaders.jdbm.JdbmCacheStoreConfig;
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
+import org.infinispan.configuration.cache.ConfigurationChildBuilder;
+import org.infinispan.eviction.EvictionStrategy;
+import org.infinispan.loaders.jdbm.JdbmCacheStore;
 import org.infinispan.util.concurrent.IsolationLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,30 +35,68 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	private final Logger log = LoggerFactory.getLogger(SimpleInfinispanCacheInfo.class);
 
 	private static final long MILLISECONDS_PER_MINUTE = 60000L;
+	
+	private static final long EVICTION_NOT_SET = -2; 
+	private static final int EXPIRATION_NOT_SET = -2;
 
-	private final Configuration configuration = new Configuration();
+	private long evictionWakeUpInterval = EVICTION_NOT_SET;
+	private EvictionStrategy evictionStrategy;
+	private IsolationLevel isolationLevel;
+	private String location;
+	private int maxEntries;
+	private int expiration = EXPIRATION_NOT_SET;
 
 	/**
 	 * Create a {@link SimpleInfinispanCacheInfo}.
 	 */
 	public SimpleInfinispanCacheInfo() {
 		super();
-		configuration.setUseLockStriping(false);
 	}
 
-	/** {@inheritDoc} */
-	public Configuration getInfinispanConfiguration() {
-		return configuration;
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since 2.0.0
+	 */
+	public Configuration getInfinispanConfiguration(ConfigurationBuilder baseBuilder) {
+		ConfigurationChildBuilder builder = baseBuilder;
+		if (null == builder) {
+			builder = new ConfigurationBuilder();
+		}
+		builder = builder.locking().useLockStriping(false);
+		if (EVICTION_NOT_SET != evictionWakeUpInterval) {
+			builder = builder.expiration().wakeUpInterval(evictionWakeUpInterval);
+		}
+		if (null != evictionStrategy) {
+			builder = builder.eviction().strategy(evictionStrategy);
+		}
+		if (null != isolationLevel) {
+			builder = builder.locking().isolationLevel(isolationLevel);
+		}
+		if (null != location) {
+			builder = builder.loaders()
+					.passivation(true)
+					.addCacheLoader()
+					.cacheLoader(new JdbmCacheStore())
+					.addProperty("location", location);
+		}
+		if (maxEntries > 0) {
+			builder = builder.eviction().maxEntries(maxEntries);
+		}
+		if (EXPIRATION_NOT_SET != expiration) {
+			builder = builder.expiration().maxIdle(expiration < 0 ? -1L : expiration * MILLISECONDS_PER_MINUTE);
+		}
+		return builder.build();
 	}
 
 	/**
 	 * Interval between subsequent eviction runs, in milliseconds. If you wish to disable the periodic eviction
-	 * process altogether, set wakeupInterval to -1.
+	 * process altogether, set wakeUpInterval to -1.
 	 *
 	 * @param evictionWakeUpInterval eviction wake-up interval in ms
 	 */
 	public void setEvictionWakeUpInterval(long evictionWakeUpInterval) {
-		configuration.setEvictionWakeUpInterval(evictionWakeUpInterval);
+		this.evictionWakeUpInterval = evictionWakeUpInterval;
 	}
 
 	/**
@@ -67,8 +107,8 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 *
 	 * @param evictionStrategy eviction strategy
 	 */
-	public void setEvictionStrategy(org.infinispan.eviction.EvictionStrategy evictionStrategy) {
-		configuration.setEvictionStrategy(evictionStrategy);
+	public void setEvictionStrategy(EvictionStrategy evictionStrategy) {
+		this.evictionStrategy = evictionStrategy;
 	}
 
 	/**
@@ -77,7 +117,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 * @param isolationLevel tx isolation level
 	 */
 	public void setIsolationLevel(IsolationLevel isolationLevel) {
-		configuration.setIsolationLevel(isolationLevel);
+		this.isolationLevel = isolationLevel;
 	}
 
 	/**
@@ -108,14 +148,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 					}
 				}
 			}
-
-			// create/set cache loader configuration
-			CacheLoaderManagerConfig loaderManagerConfig = new CacheLoaderManagerConfig();
-			loaderManagerConfig.setPassivation(true);
-			JdbmCacheStoreConfig loaderConfig = new JdbmCacheStoreConfig();
-			loaderConfig.setLocation(location);
-			loaderManagerConfig.addCacheLoaderConfig(loaderConfig);
-			configuration.setCacheLoaderManagerConfig(loaderManagerConfig);
+			this.location = location;
 		}
 	}
 
@@ -149,7 +182,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 * @param minutes maximum number of minutes that cached item may be idle before being expired. -1 to disable.
 	 */
 	public void setExpiration(int minutes) {
-		configuration.setExpirationMaxIdle(minutes < 0 ? -1L : minutes * MILLISECONDS_PER_MINUTE);
+		expiration = minutes;
 	}
 
 	/**
@@ -162,7 +195,7 @@ public class SimpleInfinispanCacheInfo extends AbstractInfinispanConfiguration {
 	 * @param maxEntries maximum entries for the in-memory cache
 	 */
 	public void setMaxEntries(int maxEntries) {
-		configuration.setEvictionMaxEntries(maxEntries);
+		this.maxEntries = maxEntries;
 	}
 
 }

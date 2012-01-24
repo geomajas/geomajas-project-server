@@ -12,7 +12,8 @@
 package org.geomajas.plugin.caching.configuration;
 
 import org.geomajas.configuration.ServerSideOnlyInfo;
-import org.infinispan.config.Configuration;
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
 
 /**
  * Interface for marking configurations which can be used by
@@ -31,7 +32,7 @@ public interface InfinispanConfiguration extends ServerSideOnlyInfo {
 
 	/**
 	 * Get the name of the infinispan configuration which should be used. This is the name from the XML configuration
-	 * file. When this is null, then {@link #getInfinispanConfiguration()} should be not null.
+	 * file.
 	 *
 	 * @return base configuration name or null
 	 */
@@ -43,7 +44,8 @@ public interface InfinispanConfiguration extends ServerSideOnlyInfo {
 	 * When {#link getConfigurationName} is null, this is used. It extends the default configuration which is created
 	 * using the XML configuration file if any.
 	 *
+	 * @param configurationBuilder base configuration builder (or null)
 	 * @return configuration object
 	 */
-	Configuration getInfinispanConfiguration();
+	Configuration getInfinispanConfiguration(ConfigurationBuilder configurationBuilder);
 }

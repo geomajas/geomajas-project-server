@@ -349,13 +349,6 @@
       <xi:include href="listing/CacheOffSample.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>Yet another option is to build the native Infinispan configuration
-      object from the spring configuration. Alternatively, you can pass a
-      configuration object which contains the relevant settings.</para>
-
-      <xi:include href="listing/CacheNativeSample.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
-
       <para>You can also determine at layer level to use a specific set of
       caches for each category.</para>
 
