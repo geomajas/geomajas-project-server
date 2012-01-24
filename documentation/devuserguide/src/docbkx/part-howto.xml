@@ -319,9 +319,6 @@ version: 1.0.0-SNAPSHOT
 package: org.geomajas.gwt
 artifactIdPrefix: geomajas-face-
  Y: : 
-[INFO] Parent element not overwritten in /home/joachim/temp/common-gwt/common-gwt/pom.xml
-[INFO] Parent element not overwritten in /home/joachim/temp/common-gwt/common-gwt-gwt/pom.xml
-[INFO] Parent element not overwritten in /home/joachim/temp/common-gwt/documentation/pom.xml
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
