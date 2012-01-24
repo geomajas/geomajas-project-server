@@ -88,7 +88,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-hibernate-all</artifactId>
-				<version>1.8.1</version>
+				<version>1.9.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
