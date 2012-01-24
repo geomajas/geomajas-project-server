@@ -10,7 +10,7 @@
  */
 package org.geomajas.layer.wms;
 
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 import java.io.Serializable;
 

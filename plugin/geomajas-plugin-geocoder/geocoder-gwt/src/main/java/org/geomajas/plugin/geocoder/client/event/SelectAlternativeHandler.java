@@ -13,8 +13,8 @@ package org.geomajas.plugin.geocoder.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 
 /**
  * Handler for {@link org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent}.

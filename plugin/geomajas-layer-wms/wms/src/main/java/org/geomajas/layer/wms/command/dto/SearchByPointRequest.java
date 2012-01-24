@@ -13,7 +13,7 @@ package org.geomajas.layer.wms.command.dto;
 import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 
 /**
  * Request for {@link org.geomajas.layer.wms.command.wms.SearchByPointCommand} that allows searching features

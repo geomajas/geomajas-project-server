@@ -21,7 +21,7 @@ import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.global.Api;
+import org.geomajas.annotation.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
