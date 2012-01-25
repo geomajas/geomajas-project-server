@@ -110,7 +110,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-printing-all</artifactId>
-				<version>2.1.0</version>
+				<version>2.2.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -130,7 +130,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder-all</artifactId>
-				<version>1.1.0</version>
+				<version>1.2.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -138,6 +138,13 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-caching-all</artifactId>
 				<version>2.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
+				<version>1.0.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
