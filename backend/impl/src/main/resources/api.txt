@@ -1,4 +1,10 @@
-// geomajas-impl module API, 1.9.0
+// geomajas-impl module API, 1.10.0
+org.geomajas.internal.security.DefaultSecurityContext::1.10.0
+org.geomajas.internal.security.DefaultSecurityContext:DefaultSecurityContext():1.10.0
+org.geomajas.internal.security.DefaultSecurityContext:void restoreSecurityContext(SavedAuthorization, ):1.10.0
+org.geomajas.internal.security.DefaultSecurityContext:void setAuthentications(String, List<Authentication>, ):1.10.0
+org.geomajas.internal.security.DefaultSecurityManager::1.10.0
+org.geomajas.internal.security.DefaultSecurityManager:boolean setSecurityContext(String, List<Authentication>, ):1.10.0
 org.geomajas.layer.bean.BeanLayer::1.9.0
 org.geomajas.layer.bean.BeanLayer:void setId(String, ):1.9.0
 org.geomajas.layer.bean.BeanLayer:void setUseLazyFeatureConversion(boolean, ):1.9.0
@@ -6,4 +12,7 @@ org.geomajas.security.allowall.AllowAllSecurityService::1.6.0
 org.geomajas.service.impl.StaticDispatcherUrlService::1.8.0
 org.geomajas.service.impl.StaticDispatcherUrlService:StaticDispatcherUrlService():1.8.0
 org.geomajas.service.impl.StaticDispatcherUrlService:String getDispatcherUrl():1.8.0
+org.geomajas.service.impl.StaticDispatcherUrlService:String getLocalDispatcherUrl():1.10.0
+org.geomajas.service.impl.StaticDispatcherUrlService:String localize(String, ):1.10.0
 org.geomajas.service.impl.StaticDispatcherUrlService:void setDispatcherUrl(String, ):1.8.0
+org.geomajas.service.impl.StaticDispatcherUrlService:void setLocalDispatcherUrl(String, ):1.10.0
