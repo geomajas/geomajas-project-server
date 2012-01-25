@@ -35,7 +35,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="version" value="${geomajas-widget-utility-gwt-face-version}" />
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="geomajas-widget-utility-gwt" />
+					<property name="name" value="geomajas-widget-utility-common-gwt" />
 					<property name="version" value="${project.version}" />
 				</bean>
 			</list>
