@@ -1,14 +1,29 @@
-// geomajas-plugin-staticsecurity module API, 1.7.0
+// geomajas-plugin-staticsecurity module API, 1.9.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginRequest::1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:LoginRequest():1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:String getLogin():1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:String getPassword():1.6.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:static final String COMMAND:1.8.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:void setLogin(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:void setPassword(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse::1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:LoginResponse():1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getToken():1.6.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getUserDivision():1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getUserId():1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getUserLocale():1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getUserName():1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getUserOrganization():1.9.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setToken(String, ):1.6.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setUserDivision(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setUserId(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setUserLocale(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setUserName(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setUserOrganization(String, ):1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest::1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest:LogoutRequest():1.9.0
+org.geomajas.plugin.staticsecurity.command.dto.LogoutRequest:static final String COMMAND:1.9.0
+org.geomajas.plugin.staticsecurity.command.staticsecurity.GetUsersCommand::1.9.0
 org.geomajas.plugin.staticsecurity.command.staticsecurity.LoginCommand::1.7.1
 org.geomajas.plugin.staticsecurity.configuration.AreaAuthorizationInfo::1.6.0
 org.geomajas.plugin.staticsecurity.configuration.AreaAuthorizationInfo:AreaAuthorizationInfo():1.6.0
@@ -23,8 +38,8 @@ org.geomajas.plugin.staticsecurity.configuration.AttributeAuthorizationInfo:void
 org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo::1.6.0
 org.geomajas.plugin.staticsecurity.configuration.AuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:FeatureAuthorizationInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:FeatureAuthorizationInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:Map<String,LayerFeatureAuthorizationInfo> getLayers():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo:void setLayers(Map<String,LayerFeatureAuthorizationInfo>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAreaAuthorizationInfo::1.6.0
@@ -56,6 +71,7 @@ org.geomajas.plugin.staticsecurity.configuration.LayerAttributeAuthorizationInfo
 org.geomajas.plugin.staticsecurity.configuration.LayerAttributeAuthorizationInfo:void setWritableExcludes(List<String>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAttributeAuthorizationInfo:void setWritableIncludes(List<String>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization::1.6.0
+org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:LayerAuthorization(LayerAuthorizationInfo, ):1.9.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:String getId():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:boolean isCommandAuthorized(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:boolean isLayerCreateAuthorized(String, ):1.6.0
@@ -64,8 +80,8 @@ org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:boolean isLa
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:boolean isLayerVisible(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorization:boolean isToolAuthorized(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo:LayerAuthorizationInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo:LayerAuthorizationInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo:List<String> getCommandsExclude():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo:List<String> getCommandsInclude():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo:List<String> getCreateAuthorizedLayersExclude():1.6.0
@@ -107,16 +123,23 @@ org.geomajas.plugin.staticsecurity.configuration.LayerFeatureAuthorizationInfo:v
 org.geomajas.plugin.staticsecurity.configuration.LayerFeatureAuthorizationInfo:void setVisibleExcludes(List<String>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFeatureAuthorizationInfo:void setVisibleIncludes(List<String>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:LayerFilterAuthorizationInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:LayerFilterAuthorizationInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:Map<String,String> getFilters():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.LayerFilterAuthorizationInfo:void setFilters(Map<String,String>, ):1.6.0
+org.geomajas.plugin.staticsecurity.configuration.RoleInfo::1.9.0
+org.geomajas.plugin.staticsecurity.configuration.RoleInfo:List<AuthorizationInfo> getAuthorizations():1.9.0
+org.geomajas.plugin.staticsecurity.configuration.RoleInfo:RoleInfo():1.9.0
+org.geomajas.plugin.staticsecurity.configuration.RoleInfo:void setAuthorizations(List<AuthorizationInfo>, ):1.9.0
 org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:SecurityServiceInfo():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:List<AuthenticationService> getAuthenticationServices():1.9.0
 org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:List<UserInfo> getUsers():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:SecurityServiceInfo():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:int getTokenLifetime():1.9.0
+org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:void setAuthenticationServices(List<AuthenticationService>, ):1.9.0
+org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:void setTokenLifetime(int, ):1.9.0
 org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo:void setUsers(List<UserInfo>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo::1.6.0
-org.geomajas.plugin.staticsecurity.configuration.UserInfo:UserInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:List<AuthorizationInfo> getAuthorizations():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:Locale getUserLocale():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:String getPassword():1.6.0
@@ -124,6 +147,7 @@ org.geomajas.plugin.staticsecurity.configuration.UserInfo:String getUserDivision
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:String getUserId():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:String getUserName():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:String getUserOrganization():1.6.0
+org.geomajas.plugin.staticsecurity.configuration.UserInfo:UserInfo():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setAuthorizations(List<AuthorizationInfo>, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setPassword(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setUserDivision(String, ):1.6.0
@@ -132,3 +156,6 @@ org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setUserLocale(Loc
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setUserLocale(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setUserName(String, ):1.6.0
 org.geomajas.plugin.staticsecurity.configuration.UserInfo:void setUserOrganization(String, ):1.6.0
+org.geomajas.plugin.staticsecurity.security.AuthenticationService::1.9.0
+org.geomajas.plugin.staticsecurity.security.AuthenticationService:String convertPassword(String, String, ):1.9.0
+org.geomajas.plugin.staticsecurity.security.AuthenticationService:UserInfo isAuthenticated(String, String, ):1.9.0

@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * so (if needed) adjust them before you instantiate a {@link GeocoderWidget}
  *
  * @author Emiel Ackermann
- * @since 1.10.0
+ * @since 1.2.0
  */
 @Api(allMethods = true)
 public final class GeocoderLayout {

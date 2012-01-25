@@ -1,8 +1,9 @@
-// geomajas-plugin-printing plugin-core, 2.1.0
+// geomajas-plugin-printing plugin-core, 2.2.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest::2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:PrintGetTemplateRequest():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:PrintTemplateInfo getTemplate():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:String getPageSize():2.0.0
+org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:static final String COMMAND:2.2.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:void setPageSize(String, ):2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest:void setTemplate(PrintTemplateInfo, ):2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse::2.0.0
@@ -11,9 +12,9 @@ org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse:PrintGetTempla
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse:String getDocumentId():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse:void setDocumentId(String, ):2.0.0
 org.geomajas.plugin.printing.command.dto.PrintTemplateInfo::2.0.0
-org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:PrintTemplateInfo():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:Long getId():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:PageComponentInfo getPage():2.0.0
+org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:PrintTemplateInfo():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:String getName():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:boolean isTemplate():2.0.0
 org.geomajas.plugin.printing.command.dto.PrintTemplateInfo:void setId(Long, ):2.0.0
@@ -53,8 +54,8 @@ org.geomajas.plugin.printing.component.dto.ImageComponentInfo:ImageComponentInfo
 org.geomajas.plugin.printing.component.dto.ImageComponentInfo:String getImagePath():2.0.0
 org.geomajas.plugin.printing.component.dto.ImageComponentInfo:void setImagePath(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LabelComponentInfo::2.0.0
-org.geomajas.plugin.printing.component.dto.LabelComponentInfo:LabelComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.LabelComponentInfo:FontStyleInfo getFont():2.0.0
+org.geomajas.plugin.printing.component.dto.LabelComponentInfo:LabelComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.LabelComponentInfo:String getBackgroundColor():2.0.0
 org.geomajas.plugin.printing.component.dto.LabelComponentInfo:String getBorderColor():2.0.0
 org.geomajas.plugin.printing.component.dto.LabelComponentInfo:String getFontColor():2.0.0
@@ -108,9 +109,9 @@ org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setFont(Font
 org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setMapId(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LegendComponentInfo:void setTitle(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo::2.0.0
-org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:LegendIconComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:FeatureStyleInfo getStyleInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:LayerType getLayerType():2.0.0
+org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:LegendIconComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:String getLabel():2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:void setLabel(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo:void setLayerType(LayerType, ):2.0.0
@@ -132,10 +133,10 @@ org.geomajas.plugin.printing.component.dto.MapComponentInfo:void setRasterResolu
 org.geomajas.plugin.printing.component.dto.PageComponentInfo::2.0.0
 org.geomajas.plugin.printing.component.dto.PageComponentInfo:PageComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo::2.0.0
-org.geomajas.plugin.printing.component.dto.PrintComponentInfo:PrintComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo:Bbox getBounds():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo:LayoutConstraintInfo getLayoutConstraint():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo:List<PrintComponentInfo> getChildren():2.0.0
+org.geomajas.plugin.printing.component.dto.PrintComponentInfo:PrintComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo:String getId():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo:String getPrototypeName():2.0.0
 org.geomajas.plugin.printing.component.dto.PrintComponentInfo:String getTag():2.0.0
@@ -150,7 +151,6 @@ org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo:RasterLayerC
 org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo:String getStyle():2.0.0
 org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo:void setStyle(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo::2.0.0
-org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:ScaleBarComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:FontStyleInfo getFont():2.0.0
 org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:ScaleBarComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:String getUnit():2.0.0
@@ -159,10 +159,10 @@ org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:void setFont(Fo
 org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:void setTicNumber(int, ):2.0.0
 org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo:void setUnit(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo::2.0.0
-org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:VectorLayerComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:NamedStyleInfo getStyleInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:String getFilter():2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:String[] getSelectedFeatureIds():2.0.0
+org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:VectorLayerComponentInfo():2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:boolean isLabelsVisible():2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:void setFilter(String, ):2.0.0
 org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo:void setLabelsVisible(boolean, ):2.0.0

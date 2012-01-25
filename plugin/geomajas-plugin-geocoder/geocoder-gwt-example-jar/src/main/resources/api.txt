@@ -1,0 +1,1 @@
+// Geomajas geocoder gwt-example-jar API, version 1.2.0

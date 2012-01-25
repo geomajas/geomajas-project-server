@@ -1,1 +1,12 @@
-// geomajas caching plug-in, caching-infinispan module 1.0.0
+// geomajas caching plug-in, caching-infinispan module 2.0.0
+org.geomajas.plugin.caching.infinispan.cache.InfinispanCacheFactory::1.0.0
+org.geomajas.plugin.caching.infinispan.cache.InfinispanCacheFactory:void setConfigurationFile(String, ):1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo::1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:Configuration getInfinispanConfiguration(ConfigurationBuilder, ):2.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:SimpleInfinispanCacheInfo():1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:void setEvictionStrategy(EvictionStrategy, ):1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:void setEvictionWakeUpInterval(long, ):1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:void setExpiration(int, ):1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:void setIsolationLevel(IsolationLevel, ):1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:void setLevel2CacheLocation(String, ):1.0.0
+org.geomajas.plugin.caching.infinispan.configuration.SimpleInfinispanCacheInfo:void setMaxEntries(int, ):1.0.0

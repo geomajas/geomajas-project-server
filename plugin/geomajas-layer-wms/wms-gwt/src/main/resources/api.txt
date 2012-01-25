@@ -1,0 +1,1 @@
+// geomajas-layer-wms-gwt module API, version 1.10.0

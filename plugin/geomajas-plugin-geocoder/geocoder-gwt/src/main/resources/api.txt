@@ -1,12 +1,18 @@
-// geomajas-plugin-geocoder module API, 2.0.0
+// geomajas-plugin-geocoder module API, 1.2.0
 org.geomajas.plugin.geocoder.client.GeocoderAlternativesGrid::1.0.0
 org.geomajas.plugin.geocoder.client.GeocoderAlternativesGrid:GeocoderAlternativesGrid(GeocoderWidget, List<GetLocationForStringAlternative>, ):1.0.0
 org.geomajas.plugin.geocoder.client.GeocoderAlternativesGrid:void update(List<GetLocationForStringAlternative>, ):1.0.0
+org.geomajas.plugin.geocoder.client.GeocoderLayout::1.2.0
+org.geomajas.plugin.geocoder.client.GeocoderLayout:static boolean showClearIcon:1.2.0
+org.geomajas.plugin.geocoder.client.GeocoderToolId::1.2.0
+org.geomajas.plugin.geocoder.client.GeocoderToolId:String TOOL_GEOCODER:1.2.0
 org.geomajas.plugin.geocoder.client.GeocoderWidget::1.0.0
 org.geomajas.plugin.geocoder.client.GeocoderWidget:GeocoderWidget(MapWidget, String, String, ):1.0.0
 org.geomajas.plugin.geocoder.client.GeocoderWidget:MapWidget getMap():1.0.0
 org.geomajas.plugin.geocoder.client.GeocoderWidget:String getServicePattern():1.0.0
 org.geomajas.plugin.geocoder.client.GeocoderWidget:void setServicePattern(String, ):1.0.0
+org.geomajas.plugin.geocoder.client.GeocoderWidget:void setShowTitle(boolean, ):1.2.0
+org.geomajas.plugin.geocoder.client.GeocoderWidget:void setValue(String, ):1.1.0
 org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent::1.0.0
 org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent:List<GetLocationForStringAlternative> getAlternatives():1.0.0
 org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent:MapWidget getMapWidget():1.0.0
