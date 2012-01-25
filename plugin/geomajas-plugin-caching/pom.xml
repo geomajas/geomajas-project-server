@@ -104,17 +104,17 @@
 				<groupId>org.infinispan</groupId>
 				<artifactId>infinispan-core</artifactId>
 				<version>5.1.0.FINAL</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.rhq.helpers</groupId>
-						<artifactId>rhq-pluginAnnotations</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
  			<dependency>
 				<groupId>org.infinispan</groupId>
 				 <artifactId>infinispan-cachestore-jdbm</artifactId>
 				<version>5.1.0.FINAL</version>
+			</dependency>
+			<dependency>
+				<groupId>org.rhq.helpers</groupId>
+				<artifactId>rhq-pluginAnnotations</artifactId>
+				<version>3.0.4</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
