@@ -35,6 +35,7 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 	 * Number of pixels that describes the tolerance allowed when searching nearby features.
 	 */
 	private int pixelTolerance = 10; /* default value */
+	private String [] layersToExclude = new String [0];
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
 
@@ -48,6 +49,9 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 		setTooltip(messages.nearbyFeaturesModalActionTooltip());
 		this.mapWidget = mapWidget;
 		listener = new MultiLayerFeatureInfoListener(mapWidget, pixelTolerance);
+		if (null != layersToExclude) {
+			listener.setLayersToExclude(layersToExclude);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -56,8 +60,17 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 	public void configure(String key, String value) {
 		if ("pixelTolerance".equals(key)) {
 			setPixelTolerance(Integer.parseInt(value));
+		} else if ("layersToExclude".equals(key)) {
+			String[] layersToExcl = new String [0];
+			if (null != value) {
+				layersToExcl = value.split(",");
+	
+				for (int i = 0; i < layersToExcl.length ; i++) {
+					layersToExcl[i] = layersToExcl[i].trim();
+				}
+			}
+			setLayersToExclude(layersToExcl);
 		}
-		
 	}
 
 	/* (non-Javadoc)
@@ -91,5 +104,10 @@ public class MultiLayerFeatureInfoListenerModalAction extends ToolbarModalAction
 	 */
 	public int getPixelTolerance() {
 		return pixelTolerance;
+	}
+	
+	public void setLayersToExclude(String [] layerIds) {
+		this.layersToExclude = layerIds;
+		listener.setLayersToExclude(layerIds);
 	}
 }

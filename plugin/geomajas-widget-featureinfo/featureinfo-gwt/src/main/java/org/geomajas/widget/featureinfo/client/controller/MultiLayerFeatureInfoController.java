@@ -41,4 +41,8 @@ public class MultiLayerFeatureInfoController extends ListenerController {
 	public void setPixelTolerance(int pixelTolerance) {
 		((MultiLayerFeatureInfoListener) getListener()).setPixelTolerance(pixelTolerance);
 	}
+	
+	public void setLayersToExclude(String[] layerIds) {
+		((MultiLayerFeatureInfoListener) getListener()).setLayersToExclude(layerIds);
+	}
 }

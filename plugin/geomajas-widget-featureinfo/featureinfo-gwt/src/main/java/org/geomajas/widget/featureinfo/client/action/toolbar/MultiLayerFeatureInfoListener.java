@@ -11,6 +11,7 @@
 
 package org.geomajas.widget.featureinfo.client.action.toolbar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,8 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 	 * Number of pixels that describes the tolerance allowed when trying to select features.
 	 */
 	private int pixelTolerance = FitSetting.featureInfoPixelTolerance;
+	
+	private List<String> layersToExclude = (List<String>) new ArrayList<String>();
 
 	public MultiLayerFeatureInfoListener(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
@@ -85,6 +88,13 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
+	}
+
+	public void setLayersToExclude(String[] layerIds) {
+		this.layersToExclude.clear();
+		for (String layerId : layerIds) {
+			this.layersToExclude.add(layerId);
+		}
 	}
 
 	public void onMouseDown(ListenerEvent event) {
@@ -117,7 +127,7 @@ public class MultiLayerFeatureInfoListener extends AbstractListener {
 			request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 			
 			for (Layer<?> layer : mapWidget.getMapModel().getLayers()) {
-				if (layer.isShowing() && layer instanceof VectorLayer) {
+				if (layer.isShowing() && layer instanceof VectorLayer  && !layersToExclude.contains(layer.getId())) {
 					request.addLayerWithFilter(layer.getId(), layer.getServerLayerId(),
 							((VectorLayer) layer).getFilter());
 				}
