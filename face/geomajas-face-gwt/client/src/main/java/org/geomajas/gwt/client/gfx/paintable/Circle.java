@@ -25,9 +25,6 @@ import org.geomajas.gwt.client.spatial.Bbox;
  */
 public class Circle extends AbstractWorldPaintable {
 
-	/** Radius of the circle. */
-	private float radius;
-
 	private ShapeStyle style;
 
 	// -------------------------------------------------------------------------
@@ -64,19 +61,40 @@ public class Circle extends AbstractWorldPaintable {
 	// -------------------------------------------------------------------------
 
 	public Coordinate getPosition() {
-		return (Coordinate) getLocation();
+		return ((Bbox) getLocation()).getCenterPoint();
 	}
 
 	public void setPosition(Coordinate position) {
-		setOriginalLocation(position);
+		if (getOriginalLocation() != null) {
+			Bbox oldBounds = (Bbox) getOriginalLocation();
+			Bbox newBounds = (Bbox) oldBounds.clone();
+			newBounds.setCenterPoint(position);
+			setOriginalLocation(newBounds);
+		} else {
+			setOriginalLocation(new Bbox(position.getX(), position.getY(), 0, 0));
+		}
 	}
 
 	public float getRadius() {
-		return radius;
+		if (getLocation() != null) {
+			Bbox oldBounds = (Bbox) getLocation();
+			return (float) (0.5f * oldBounds.getWidth());
+		} else {
+			return 0;
+		}
 	}
 
 	public void setRadius(float radius) {
-		this.radius = radius;
+		if (getOriginalLocation() != null) {
+			Bbox oldBounds = (Bbox) getOriginalLocation();
+			Bbox newBounds = (Bbox) oldBounds.clone();
+			newBounds.setWidth(2 * radius);
+			newBounds.setHeight(2 * radius);
+			newBounds.setCenterPoint(oldBounds.getCenterPoint());
+			setOriginalLocation(newBounds);
+		} else {
+			setOriginalLocation(new Bbox(0, 0, 2 * radius, 2 * radius));
+		}
 	}
 
 	public ShapeStyle getStyle() {
