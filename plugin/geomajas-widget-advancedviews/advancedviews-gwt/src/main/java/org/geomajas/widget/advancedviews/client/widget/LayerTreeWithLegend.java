@@ -117,18 +117,18 @@ public class LayerTreeWithLegend extends LayerTreeBase {
 			node.setAttribute(EXPANDED_ATTR, treeNode.isExpanded());
 			tree.add(node, nodeRoot);
 
+			// treeNodes
+			List<ClientLayerTreeNodeInfo> children = treeNode.getTreeNodes();
+			for (ClientLayerTreeNodeInfo newNode : children) {
+				processNode(newNode, node, refresh);
+			}
+
 			// (final leafs)
 			for (ClientLayerInfo info : treeNode.getLayers()) {
 				Layer<?> layer = mapModel.getLayer(info.getId());
 				LayerTreeLegendNode ltln = new LayerTreeLegendNode(this.tree, layer);
 				tree.add(ltln, node);
 				ltln.init();
-			}
-
-			// treeNodes
-			List<ClientLayerTreeNodeInfo> childs = treeNode.getTreeNodes();
-			for (ClientLayerTreeNodeInfo newNode : childs) {
-				processNode(newNode, node, refresh);
 			}
 		}
 	}
