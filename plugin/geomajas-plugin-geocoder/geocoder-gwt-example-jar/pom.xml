@@ -22,7 +22,6 @@
 	<packaging>jar</packaging>
 	<name>Geocoder GWT example code</name>
 	<description>Geocoder GWT example application code</description>
-	<url>http://www.geomajas.org/</url>
 
 	<dependencyManagement>
 		<dependencies>
