@@ -99,6 +99,11 @@
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-gwt-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -112,18 +117,19 @@
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
-			-->
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
 				<version>${gwt-exporter-version}</version>
 			</dependency>
+			-->
 		</dependencies>
 	</dependencyManagement>
 	
 	<modules>
 		<module>editing</module>
 		<module>editing-gwt</module>
+		<module>editing-gwt-example-jar</module>
 		<module>editing-gwt-example</module>
 		<!--
 		<module>editing-javascript-api</module>
