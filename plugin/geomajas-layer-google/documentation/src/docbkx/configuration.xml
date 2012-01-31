@@ -55,11 +55,6 @@
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
 &lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
-    &lt;classifier&gt;sources&lt;/classifier&gt;
-&lt;/dependency&gt;
 </programlisting>
     </example>
 
@@ -74,12 +69,7 @@
     &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
     &lt;version&gt;<?eval ${project.version}?>&lt;/version
 &lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
-    &lt;classifier&gt;sources&lt;/classifier&gt;
-    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
-&lt;/dependency&gt;</programlisting>
+</programlisting>
     </example>
   </section>
 
