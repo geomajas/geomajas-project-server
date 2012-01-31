@@ -45,9 +45,10 @@
 
 	<properties>
 		<geomajas-plugin-editing-backend-version>1.10.0</geomajas-plugin-editing-backend-version>
+		<geomajas-plugin-editing-common-gwt-face-version>1.0.0</geomajas-plugin-editing-common-gwt-face-version>
 		<geomajas-plugin-editing-gwt-face-version>1.10.0</geomajas-plugin-editing-gwt-face-version>
 		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
-		<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>
+		<!--<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>-->
 	</properties>	
 
 	<dependencyManagement>
@@ -55,7 +56,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-common-gwt-all</artifactId>
-				<version>1.0.0</version>
+				<version>${geomajas-plugin-editing-common-gwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -73,6 +74,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-javascript-api-all</artifactId>
@@ -80,6 +82,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			-->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-editing</artifactId>
@@ -96,12 +99,20 @@
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
+			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-editing-javascript-api</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-javascript-api-gwt</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			-->
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
@@ -114,10 +125,11 @@
 		<module>editing</module>
 		<module>editing-gwt</module>
 		<module>editing-gwt-example</module>
+		<!--
 		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
 		<module>editing-javascript-gwt-example</module>
-		<module>documentation</module>
+		-->
 	</modules>
 
 	<profiles>
