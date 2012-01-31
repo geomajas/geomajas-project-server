@@ -11,9 +11,11 @@
 
 <module rename-to="GwtShowcase">
 	<inherits name="org.geomajas.gwt.example.GwtFaceExample"/>
+	<inherits name="org.geomajas.plugin.staticsecurity.StaticSecurity"/>
 	<inherits name="org.geomajas.plugin.geocoder.gwt.example.GeocoderExample"/>
 	<inherits name="org.geomajas.plugin.rasterizing.gwt.example.RasterizingExample"/>
-	<inherits name="org.geomajas.plugin.staticsecurity.StaticSecurity"/>
+	<inherits name="org.geomajas.plugin.editing.gwt.example.EditingExample"/>
+	<inherits name="org.geomajas.widget.utility.gwt.example.WidgetUtilityExample"/>
 
 	<extend-property name="locale" values="nl"/>
 

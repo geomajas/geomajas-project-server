@@ -111,6 +111,20 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-all</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-widget-utility-all</artifactId>
 				<version>1.0.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -174,10 +188,17 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-geocoder-gwt-example-jar</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing-gwt-example-jar</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-editing-gwt-example-jar</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-utility-gwt-example-jar</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->
