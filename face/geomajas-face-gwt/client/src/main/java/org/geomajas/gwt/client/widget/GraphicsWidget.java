@@ -33,6 +33,8 @@ import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 import org.geomajas.gwt.client.widget.event.HasGraphicsReadyHandlers;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -47,12 +49,9 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.WidgetCanvas;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -136,8 +135,8 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 	/** Focus widget with the real graphics, needed for native GWT events */
 	private EventWidget eventWidget;
 
-	private Timer resizeTimer;
 	private int previousWidth, previousHeight;
+
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -174,15 +173,9 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		// not fire mouse up)
 		eventWidget.addMouseDownHandler(rmh);
 		eventWidget.addMouseUpHandler(rmh);
-		// raster at the back
-		// WARNING ! adding the child here was causing several problems:
-		// - GWT-153: embedding in plain html or other frameworks
-		// - GWT-145: autoscroll is no longer working (even after fixing height)
-		// base.addChild(this); // moved to GwtResizedHandler
-		// parent.addChild(base);
+		// add a resize handler to connect the event widget and set the sizes
 		GwtResizedHandler h = new GwtResizedHandler();
-		super.addResizedHandler(h);
-		addDrawHandler(h);
+		addResizedHandler(h);
 	}
 
 	// -------------------------------------------------------------------------
@@ -375,59 +368,63 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 		}
 	}
 
-	private void markForResize() {
-		// schedule redraw in 0.1 sec, child is removed/re-added then if size changed
-		if (resizeTimer == null) {
-			resizeTimer = new Timer() {
+	private void resizeIfReady() {
+		// check whether the new size has been established
+		if (hasStableSize()) {
+			// attach now
+			if (!hasMember(eventWidget)) {
+				addMember(eventWidget);
+			}
+			// set the stable sizes on widget and context
+			eventWidget.setWidth(getWidth());
+			eventWidget.setHeight(getHeight());
+			vectorContext.setSize(getWidth(), getHeight());				
+			fireEvent(new GraphicsReadyEvent());
+		} else {
+			// schedule a new call to ourselves to make sure we are called after the event loop with stable size !
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-				@Override
-				public void run() {
-					resize();
+				public void execute() {
+					resizeIfReady();
 				}
-
-			};
+			});
 		}
-		resizeTimer.schedule(100);
 	}
 
-	private void resize() {
-		if (null != resizeTimer) {
-			resizeTimer.cancel();
-		}
-		int width = getWidth();
-		int height = getHeight();
-		if (previousWidth != width || previousHeight != height) {
-			previousWidth = width;
-			previousHeight = height;
-
-			// remove and re-add child to avoid resize problems?
-			if (contains(eventWidget)) {
-				removeChild(eventWidget);
-				eventWidget.setVisible(false);
+	/**
+	 * Is the size stable (browser resize causes many resize events) ?
+	 * @return true if the size has been established (2 times same size in succession)
+	 */
+	private boolean hasStableSize() {
+		try {
+			Integer.parseInt(getWidthAsString());
+			int width = getWidth();
+			int height = getHeight();
+			// compare with previous size and return true if same
+			if (previousWidth != width || previousHeight != height) {
+				// force small size (workaround for smartgwt problem where size can otherwise not shrink below the
+				// previous size)
+				vectorContext.setSize(EventWidget.INITIAL_SIZE, EventWidget.INITIAL_SIZE);
+				eventWidget.setInitialSize();
+				previousWidth = width;
+				previousHeight = height;
+				return false;
+			} else {
+				return true;
 			}
-			eventWidget.setSize(Integer.toString(width), Integer.toString(height)); // Set size of the event widget:
-			addChild(eventWidget);
-			eventWidget.setVisible(true);
-
-			// set the size and notify graphics users so they can redraw
-			vectorContext.setSize(width, height);
-
-			fireEvent(new GraphicsReadyEvent());
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 
 	/** Fixes resize problem by manually re-adding this component */
-	private class GwtResizedHandler implements ResizedHandler, DrawHandler {
+	private class GwtResizedHandler implements ResizedHandler {
 
 		public void onResized(ResizedEvent event) {
-			// resize later
-			markForResize();
+			// try resize
+			resizeIfReady();
 		}
 
-		public void onDraw(DrawEvent event) {
-			// called on first draw
-			resize();
-		}
 	}
 
 	/** sets the right mouse coordinate and target */
@@ -459,22 +456,26 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 
 		private FocusWidget widget;
 
-		private EventWidget(FocusWidget widget) {
+		public static final int INITIAL_SIZE = 10;
+
+		
+		public EventWidget(FocusWidget widget) {
 			super(widget);
 			this.widget = widget;
-			setWidth100();
-			setHeight100();
+			// this makes sure the auto-resizing works, see Overflow.VISIBLE javadoc
+			setWidth(INITIAL_SIZE);
+			setHeight(INITIAL_SIZE);
+		}
+
+		public void setInitialSize() {
+			setWidth(INITIAL_SIZE);
+			setHeight(INITIAL_SIZE);
 		}
 
 		public EventWidget(String id) {
 			this(new StyledFocusWidget(Document.get().createDivElement()));
 		}
-
-		public void setSize(String width, String height) {
-			super.setSize(width, height);
-			widget.setSize(width + "px", height + "px");
-		}
-
+		
 		public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
 			return widget.addMouseDownHandler(handler);
 		}

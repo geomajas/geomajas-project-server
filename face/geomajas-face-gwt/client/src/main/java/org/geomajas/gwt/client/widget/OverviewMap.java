@@ -40,7 +40,7 @@ import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
  * @since 1.6.0
  */
 @Api
-public class OverviewMap extends MapWidget implements MapViewChangedHandler {
+public class OverviewMap extends MapWidget {
 
 	private static final String TARGET_RETICLE_IMAGE = "geomajas/widget/target.gif";
 
@@ -346,7 +346,6 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 			// Then apply the map extent:
 			mapView.applyBounds(targetMaxBounds, MapView.ZoomOption.LEVEL_FIT);
-			super.onMapViewChanged(null);
 
 			// Immediately draw or remove the max extent rectangle:
 			setDrawTargetMaxExtent(drawTargetMaxExtent);

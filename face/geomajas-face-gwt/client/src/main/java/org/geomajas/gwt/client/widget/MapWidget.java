@@ -13,7 +13,6 @@ package org.geomajas.gwt.client.widget;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -83,18 +82,19 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
 import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.menu.Menu;
 
 /**
@@ -116,8 +116,10 @@ import com.smartgwt.client.widgets.menu.Menu;
  * @since 1.6.0
  */
 @Api
-public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelClearHandler, MapModelChangedHandler {
+public class MapWidget extends VLayout {
 
+	
+	
 	// Private fields regarding internal workings:
 
 	private MapModel mapModel;
@@ -162,24 +164,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private Map<String, MapAddon> addons = new LinkedHashMap<String, MapAddon>();
 
 	private FeaturePainter featurePainter;
-
-	private List<Layer<?>> previousLayers = new ArrayList<Layer<?>>(); // to be able to delete them on refresh
-
-	private long previousRedraw; // previous redraw timestamp to avoid double redraw
-
-	private Bbox previousRedrawBbox; // previous redraw bbox to avoid double redraw
-
-	private static final long REDRAW_GRACE = 2500; // 2.5s min between redraw of same bbox
-
-	private static final double DELTA = 1e-10; // delta for comparing bboxes
-
-	private int previousRenderAllWidth;
-
-	private int previousRenderAllHeight;
-
-	private boolean viewPortKnown; // can't draw before the view port is known
-
-	private boolean readyToDraw;
+	
+	private MapModelRenderer mapModelRenderer;
+	
+	private MapViewRenderer mapViewRenderer;
 
 	private String cursor = Cursor.DEFAULT.getValue();
 
@@ -281,9 +269,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setID(mapId);
 		this.applicationId = applicationId;
 		mapModel = new MapModel(mapId, applicationId);
-		mapModel.addMapModelChangedHandler(this);
-		mapModel.addMapModelClearHandler(this);
-		mapModel.getMapView().addMapViewChangedHandler(this);
+		mapModelRenderer = new MapModelRenderer();
+		mapModel.runWhenInitialized(mapModelRenderer);
+		mapModel.addMapModelChangedHandler(mapModelRenderer);
+		mapModel.addMapModelClearHandler(mapModelRenderer);
+		mapViewRenderer = new MapViewRenderer();
+		mapModel.getMapView().addMapViewChangedHandler(mapViewRenderer);
 		graphics = new GraphicsWidget(getID() + "Graphics");
 		painterVisitor = new PainterVisitor(graphics);
 		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
@@ -313,7 +304,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setWidth100();
 		setHeight100();
 		setDynamicContents(true);
-		graphics.addGraphicsReadyHandler(new RenderMapOnResizeHandler());
+		graphics.addGraphicsReadyHandler(new MapResizedRenderer());
 		// adding the graphics here causes problems when embedding in HTML !
 		// addChild(graphics);
 		setZoomOnScrollEnabled(true);
@@ -386,21 +377,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * @since 1.10.0
 	 */
 	@Api
-	public void renderAll(boolean force) {
-		if (graphics.isReady()) {
-			long now = System.currentTimeMillis();
-			int width = getWidth();
-			int height = getHeight();
-			if (force || now > previousRedraw + REDRAW_GRACE
-					|| !getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA)
-					|| previousRenderAllWidth != width || previousRenderAllHeight != height) {
-				previousRenderAllWidth = width;
-				previousRenderAllHeight = height;
-				previousRedraw = now;
-				previousRedrawBbox = (Bbox) getMapModel().getMapView().getBounds().clone();
-				render(mapModel, null, RenderStatus.ALL);
+	public void renderAll() {
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+			public void execute() {
+				if (graphics.isReady()) {
+					render(mapModel, null, RenderStatus.ALL);
+				}
 			}
-		}
+		});
 	}
 
 	/**
@@ -416,7 +401,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
-		if (!graphics.isReady() || !viewPortKnown || !readyToDraw) {
+		if (!graphics.isReady() || !mapViewRenderer.isViewPortKnown() || !mapModelRenderer.isReadyToDraw()) {
 			return;
 		}
 		PaintableGroup group = null;
@@ -1019,66 +1004,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// MapViewChangedHandler implementation:
 	// -------------------------------------------------------------------------
 
-	/** If the map view changes, redraw the map model and the scale bar. */
-	public void onMapViewChanged(MapViewChangedEvent event) {
-		viewPortKnown = true;
-		if (graphics.isReady()) {
-			if (scaleBarEnabled) {
-				ScaleBar scalebar = (ScaleBar) addons.get("scalebar");
-				if (scalebar != null) {
-					scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
-					render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
-				}
-			}
-			if (event != null && event.isPanDragging()) {
-				render(mapModel, null, RenderStatus.UPDATE);
-			} else {
-				if (readyToDraw) {
-					renderAll(false);
-				}
-			}
-		}
-	}
-
-	// -------------------------------------------------------------------------
-	// MapModelHandler implementation:
-	// -------------------------------------------------------------------------
-
-	public void onMapModelClear(MapModelClearEvent event) {
-		// remove previous layers
-		for (Layer<?> layer : previousLayers) {
-			if (layer instanceof VectorLayer) {
-				render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
-			} else if (layer instanceof RasterLayer) {
-				render(layer, RenderGroup.RASTER, RenderStatus.DELETE);
-			}
-		}
-		previousLayers.clear();
-		readyToDraw = false;
-	}
-
-	/**
-	 * When the initialization of the map's model is done: render it.
-	 * 
-	 * @param event
-	 *            event
-	 */
-	public void onMapModelChanged(MapModelChangedEvent event) {
-		// delete old layers first (if refresh or reorder), could we do this more subtly ?
-		for (Layer<?> layer : previousLayers) {
-			render(layer, null, RenderStatus.DELETE);
-		}
-		
-		previousLayers.clear(); // just to be safe
-		previousLayers.addAll(mapModel.getLayers());
-
-		readyToDraw = true;
-		refreshCallback(event.getMapModel().getMapInfo());
-		
-		// render all
-		renderAll(true);
-	}
-
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
@@ -1102,7 +1027,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mapModel.getMapView().setSize(width, height); // causes renderAll if size changed
 
 		// must be called before anything else !
-		addChild(graphics);
+		addMember(graphics);
 
 		init();
 
@@ -1186,13 +1111,27 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Handles map view and scale bar on resize.
+	 * Handles map view and scale bar on resize (through graphics ready for stable size !).
 	 */
-	private class RenderMapOnResizeHandler implements GraphicsReadyHandler {
+	private class MapResizedRenderer implements GraphicsReadyHandler {
 
 		private int previousWidth, previousHeight;
 
 		public void onReady(GraphicsReadyEvent event) {
+			if (mapModelRenderer.isReadyToDraw() && mapViewRenderer.isViewPortKnown()) {
+				handleResize();
+			} else {
+				// map model not ready yet, try deferred
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+					public void execute() {
+						onReady(null);
+					}
+				});
+			}
+		}
+
+		private void handleResize() {
 			try {
 				mapModel.accept(painterVisitor, null, mapModel.getMapView().getBounds(), false); // render base groups
 
@@ -1201,29 +1140,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				if (previousWidth != width || previousHeight != height) {
 					previousWidth = width;
 					previousHeight = height;
-					
-					Map<String, WorldPaintable> paintables = null;
-					if (Dom.isIE()) {
-						// Redraw all vector stuff (we have coordsize changes in each shape !!!!)
-						// Vector layers in IE loose their style (because the removeChild, addChild)
-						for (Layer<?> layer : mapModel.getLayers()) {
-							if (layer instanceof VectorLayer) {
-								render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
-							}
-						}
-						// World paintables have to be re-registered !
-						paintables = new HashMap<String, WorldPaintable>(getWorldPaintables());
-						for (String id : paintables.keySet()) {
-							unregisterWorldPaintable(paintables.get(id));
-						}
-					}
+
 					mapModel.getMapView().setSize(width, height);
-					if (Dom.isIE() && paintables != null) {
-						// Re-register world paintables
-						for (String id : paintables.keySet()) {
-							registerWorldPaintable(paintables.get(id));
-						}
-					}
 					setAddons();
 					for (String addonId : addons.keySet()) {
 						MapAddon addon = addons.get(addonId);
@@ -1236,6 +1154,135 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		}
 	}
+
+	/**
+	 * Handles re-rendering on map view changes. Has grace period to avoid too many requests while scrolling.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class MapViewRenderer implements MapViewChangedHandler {
+
+		private long previousRedraw; // previous redraw timestamp to avoid double redraw
+
+		private Bbox previousRedrawBbox; // previous redraw bbox to avoid double redraw
+
+		private static final long REDRAW_GRACE = 2500; // 2.5s min between redraw of same bbox
+
+		private static final double DELTA = 1e-10; // delta for comparing bboxes
+
+		private int previousRenderAllWidth;
+
+		private int previousRenderAllHeight;
+
+		private boolean viewPortKnown; // can't draw before the view port is known
+
+		public void onMapViewChanged(MapViewChangedEvent event) {
+			viewPortKnown = true;
+			if (graphics.isReady() && mapModelRenderer.isReadyToDraw()) {
+				if (scaleBarEnabled) {
+					ScaleBar scalebar = (ScaleBar) addons.get("scalebar");
+					if (scalebar != null) {
+						scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
+						render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
+					}
+				}
+				if (event != null && event.isPanDragging()) {
+					render(mapModel, null, RenderStatus.UPDATE);
+				} else {
+					if (mapModelRenderer.isReadyToDraw()) {
+						long now = System.currentTimeMillis();
+						int width = getWidth();
+						int height = getHeight();
+						if (now > previousRedraw + REDRAW_GRACE
+								|| !getMapModel().getMapView().getBounds().equals(previousRedrawBbox, DELTA)
+								|| previousRenderAllWidth != width || previousRenderAllHeight != height) {
+							previousRenderAllWidth = width;
+							previousRenderAllHeight = height;
+							previousRedraw = now;
+							previousRedrawBbox = (Bbox) getMapModel().getMapView().getBounds().clone();
+							render(mapModel, null, RenderStatus.ALL);
+						}
+					}
+				}
+			}
+		}
+
+		public boolean isViewPortKnown() {
+			return viewPortKnown;
+		}
+
+	}
+
+	/**
+	 * Handles re-rendering on map model changes and at construction time (if map is already loaded).
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class MapModelRenderer implements Runnable, MapModelChangedHandler, MapModelClearHandler {
+
+		private List<Layer<?>> previousLayers = new ArrayList<Layer<?>>(); // to be able to delete them on refresh
+
+		private boolean readyToDraw;
+
+		public void onMapModelChanged(MapModelChangedEvent event) {
+			run();
+		}
+
+		public void run() {
+			if (graphics.isReady() && mapViewRenderer.isViewPortKnown()) {
+				handleModel();
+			} else {
+				// map view not ready yet (can happen at construction time), call ourselves at the end of the event loop
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+					public void execute() {
+						run();
+					}
+				});
+			}
+		}
+
+		private void handleModel() {
+			readyToDraw = true;
+			render(mapModel, null, RenderStatus.UPDATE);
+
+			// delete old layers first (if refresh or reorder), could we do this more subtly ?
+			for (Layer<?> layer : previousLayers) {
+				render(layer, null, RenderStatus.DELETE);
+			}
+			
+			previousLayers.clear(); // just to be safe
+			previousLayers.addAll(mapModel.getLayers());
+			refreshCallback(mapModel.getMapInfo());
+			
+			// render all
+			render(mapModel, null, RenderStatus.ALL);
+		}
+
+		public void onMapModelClear(MapModelClearEvent event) {
+			// remove previous layers
+			for (Layer<?> layer : previousLayers) {
+				if (layer instanceof VectorLayer) {
+					render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
+				} else if (layer instanceof RasterLayer) {
+					render(layer, RenderGroup.RASTER, RenderStatus.DELETE);
+				}
+			}
+			previousLayers.clear();
+			readyToDraw = false;
+		}
+
+		
+		public boolean isReadyToDraw() {
+			return readyToDraw;
+		}
+		
+		
+
+	}
+
 
 	/**
 	 * Controller that allows for zooming when scrolling the mouse wheel.
