@@ -125,6 +125,13 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>

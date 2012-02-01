@@ -19,6 +19,7 @@
         <param-value>
 			classpath:org/geomajas/spring/geomajasContext.xml
  			classpath:org/geomajas/plugin/printing/gwt/example/context/*.xml
+  			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
 		</param-value>
     </context-param>
 

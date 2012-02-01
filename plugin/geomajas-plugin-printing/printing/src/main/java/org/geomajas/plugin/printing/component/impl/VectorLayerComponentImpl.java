@@ -45,6 +45,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
@@ -282,12 +283,14 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		if (f.getGeometry() instanceof MultiPoint || f.getGeometry() instanceof Point) {
 			symbol = style.getSymbol();
 		}
+		// clone geometry
+		Geometry geometry = (Geometry) f.getGeometry().clone();
 		// transform to user space
-		f.getGeometry().apply(new MapToUserFilter());
+		geometry.apply(new MapToUserFilter());
 		// notify geometry change !!!
-		f.getGeometry().geometryChanged();
+		geometry.geometryChanged();
 		// now draw
-		context.drawGeometry(f.getGeometry(), symbol, fillColor, strokeColor, lineWidth, dashArray, getSize());
+		context.drawGeometry(geometry, symbol, fillColor, strokeColor, lineWidth, dashArray, getSize());
 	}
 
 	private FeatureStyleInfo mergeStyle(FeatureStyleInfo base, FeatureStyleInfo extension) {
