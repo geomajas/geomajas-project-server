@@ -372,12 +372,14 @@ public class MapWidget extends VLayout {
 	}
 
 	/**
-	 * Render the entire map.
+	 * Render the map completely.
 	 * 
-	 * @since 1.10.0
+	 * @param force force rendering now
+	 * @deprecated instead of calling this method directly, rendering should be triggered by events.
 	 */
 	@Api
-	public void renderAll() {
+	@Deprecated
+	public void renderAll(boolean force) {
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
 			public void execute() {
