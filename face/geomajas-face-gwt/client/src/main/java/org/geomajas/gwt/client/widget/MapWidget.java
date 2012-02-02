@@ -375,6 +375,7 @@ public class MapWidget extends VLayout {
 	 * Render the map completely.
 	 * 
 	 * @param force force rendering now
+	 * @since 1.10.0
 	 * @deprecated instead of calling this method directly, rendering should be triggered by events.
 	 */
 	@Api
