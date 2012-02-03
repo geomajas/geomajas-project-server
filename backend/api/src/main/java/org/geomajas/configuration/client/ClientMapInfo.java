@@ -617,4 +617,33 @@ public class ClientMapInfo implements ClientWidgetInfo {
 		return preferredPixelsPerTile;
 	}
 
+	@Override
+	public String toString() {
+		return "ClientMapInfo{" +
+				"id='" + id + '\'' +
+				", backgroundColor='" + backgroundColor + '\'' +
+				", lineSelectStyle=" + lineSelectStyle +
+				", pointSelectStyle=" + pointSelectStyle +
+				", polygonSelectStyle=" + polygonSelectStyle +
+				", crs='" + crs + '\'' +
+				", precision=" + precision +
+				", scaleBarEnabled=" + scaleBarEnabled +
+				", panButtonsEnabled=" + panButtonsEnabled +
+				", displayUnitType=" + displayUnitType +
+				", scaleConfiguration=" + scaleConfiguration +
+				", resolutionsRelative=" + resolutionsRelative +
+				", resolutions=" + resolutions +
+				", initialBounds=" + initialBounds +
+				", layers=" + layers +
+				", layerTree=" + layerTree +
+				", unitLength=" + unitLength +
+				", pixelLength=" + pixelLength +
+				", toolbar=" + toolbar +
+				", maxBounds=" + maxBounds +
+				", viewBoundsLimitOption=" + viewBoundsLimitOption +
+				", widgetInfo=" + widgetInfo +
+				", userData=" + userData +
+				", preferredPixelsPerTile=" + preferredPixelsPerTile +
+				'}';
+	}
 }
