@@ -90,6 +90,27 @@ include "org.geomajas.documentation" "docbook-devuserguide" "1.10.0-SNAPSHOT" \
     "org.geomajas" "geomajas-api" "1.9.0"
 
 
+# projects
+
+include "org.geomajas.documentation" "geomajas-project-api-documentation" "1.1.0-SNAPSHOT" \
+    "API annotations project" \
+    "Set of annotations to allow detailed marking of the supported API." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-api-annotation" "1.0.0"
+
+include "org.geomajas.documentation" "geomajas-project-geometry-documentation" "1.1.0-SNAPSHOT" \
+    "Geometry DTO project" \
+    "Set of GWT compatible Geometry DTOs and services to manipulate them." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-geometry-core" "1.0.0"
+
+include "org.geomajas.documentation" "geomajas-project-sld-documentation" "1.1.0-SNAPSHOT" \
+    "SLD DTO project" \
+    "Set of GWT compatible SLD DTOs and services to read/write them." \
+    "incubating" "master.pdf" \
+    "org.geomajas.project" "geomajas-project-sld-api" "1.0.0"
+
+
 # faces
 
 include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.10.0-SNAPSHOT" \
@@ -222,7 +243,11 @@ include "org.geomajas.plugin" "geomajas-plugin-javascript-api-documentation" "1.
     "incubating" "master.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-javascript-api" "1.0.0"
 
-#    "org.geomajas.plugin" "geomajas-widget-utility-smartgwt" "1.0.0-SNAPSHOT"
+include "org.geomajas.plugin" "geomajas-plugin-editing-documentation" "1.0.0-SNAPSHOT" \
+    "Editing plug-in" \
+    "Geomajas extension for more powerful editing." \
+    "incubating" "master.pdf" \
+    "org.geomajas.plugin" "geomajas-plugin-editing" "1.0.0"
 
 
 # contributors guide
