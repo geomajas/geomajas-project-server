@@ -228,6 +228,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="org.geomajas.internal.configuration.GeotoolsInitializer"/>
 
 	<!-- @extract-start CrsInfo, Custom CRS addition -->
 	<bean class="org.geomajas.global.CrsInfo">
