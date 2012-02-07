@@ -114,7 +114,9 @@ public class TokenRequestWindow extends Window implements BooleanCallback {
 			GwtCommandDispatcher dispatcher = GwtCommandDispatcher.getInstance();
 			TokenChangedEvent tokenChangedEvent =
 					new TokenChangedEvent(dispatcher.getUserToken(), dispatcher.getUserDetail());
-			finishLoginHandler.onTokenChanged(tokenChangedEvent);
+			if (finishLoginHandler != null) {
+				finishLoginHandler.onTokenChanged(tokenChangedEvent);
+			}
 			destroy();
 		} else {
 			String msg;

@@ -16,6 +16,7 @@ import org.geomajas.command.SuccessCommandResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.command.UserDetail;
 import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
 import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
 import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
@@ -229,7 +230,13 @@ public final class Authentication {
 					} else {
 						userToken = loginResponse.getToken();
 						Authentication.this.userId = userId;
-						GwtCommandDispatcher.getInstance().setUserToken(userToken);
+						UserDetail userDetail = new UserDetail();
+						userDetail.setUserId(loginResponse.getUserId());
+						userDetail.setUserName(loginResponse.getUserName());
+						userDetail.setUserOrganization(loginResponse.getUserOrganization());
+						userDetail.setUserDivision(loginResponse.getUserDivision());
+						userDetail.setUserLocale(loginResponse.getUserLocale());
+						GwtCommandDispatcher.getInstance().setUserToken(userToken, userDetail);
 						if (callback != null) {
 							callback.execute(true);
 						}
