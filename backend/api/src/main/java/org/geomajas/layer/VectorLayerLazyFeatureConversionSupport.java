@@ -27,7 +27,7 @@ public interface VectorLayerLazyFeatureConversionSupport {
 	/**
 	 * Indicate whether lazy feature conversion should be used.
 	 * <p/>
-	 *     This can be important for features where just getting an attribute can be an expensive operation.
+	 * This can be important for features where just getting an attribute can be an expensive operation.
 	 *
 	 * @return true when features should be converted lazily
 	 */
