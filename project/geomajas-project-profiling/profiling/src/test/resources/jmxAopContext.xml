@@ -3,14 +3,15 @@
   ~
   ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
   ~
-  ~ The program is available in open source according to the Apache
-  ~ License, Version 2.0. All contributions in this program are covered
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
@@ -18,15 +19,35 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<context:annotation-config />
 
 
-	<!-- base definition of our service bean -->
-	<bean name="baseService" class="org.geomajas.project.profiling.jmx.ExampleService"/>
-	<bean name="service" class="org.geomajas.project.profiling.jmx.ExampleProfiledService"/>
+	<!-- definition of our service bean -->
+	<bean name="service" class="org.geomajas.project.profiling.jmx.ExampleService"/>
+
+
+	<!-- apply profiling to our service bean using AOP -->
+
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames" value="service*"/>
+		<property name="interceptorNames">
+			<list>
+				<value>myMethodProfilingInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="myMethodProfilingInterceptor" class="org.geomajas.project.profiling.aop.MethodProfilingInterceptor">
+		<property name="group" value="test" />
+		<property name="profilingContainer" ref="profilingTest" />
+	</bean>
+
+
+	<!-- JMX profiling bean definition -->
 
 	<bean name="profilingTest" class="org.geomajas.project.profiling.service.ProfilingContainer">
 		<property name="ringSize" value="128" />
 	</bean>
 
 
+	<!-- MBean server definition -->
 
 	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
 		<property name="locateExistingServerIfPossible" value="true"/>
