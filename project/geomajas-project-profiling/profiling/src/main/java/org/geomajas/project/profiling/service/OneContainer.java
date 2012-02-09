@@ -13,12 +13,16 @@ package org.geomajas.project.profiling.service;
 
 import org.geomajas.project.profiling.jmx.ProfilingData;
 
+import java.io.Serializable;
+
 /**
  * Set of profiling data.
  *
  * @author Joachim Van der Auwera
  */
-public class OneContainer implements ProfilingData {
+public class OneContainer implements ProfilingData, Serializable {
+
+	private static final long serialVersionUID = 100;
 
 	private final long invocationCount;
 	private final long totalRunTime;
@@ -47,5 +51,13 @@ public class OneContainer implements ProfilingData {
 	/** {@inheritDoc} */
 	public double getAverageRunTime() {
 		return ((double) totalRunTime) / invocationCount;
+	}
+
+	@Override
+	public String toString() {
+		return "OneContainer{" +
+				"invocationCount=" + invocationCount +
+				", totalRunTime=" + totalRunTime +
+				'}';
 	}
 }

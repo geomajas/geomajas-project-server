@@ -20,6 +20,8 @@ import org.geomajas.project.profiling.jmx.GroupData;
  */
 public class GroupContainer extends OneContainer implements GroupData {
 
+	private static final long serialVersionUID = 100;
+	
 	private final String group;
 
 	/**
@@ -37,5 +39,12 @@ public class GroupContainer extends OneContainer implements GroupData {
 	/** {@inheritDoc} */
 	public String getGroup() {
 		return group;
+	}
+
+	@Override
+	public String toString() {
+		return "GroupContainer{" +
+				"group='" + group + "\', " + super.toString() +
+				'}';
 	}
 }

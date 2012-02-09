@@ -15,4 +15,24 @@
   <title>How-to</title>
 
   <para></para>
+
+  <section>
+    <title>How to use JConsole to connect to the MBeans</title>
+
+    <para>If you have configured your system to surface the profiling beans as
+    MBeans, you can use JConsole to connect to your application.</para>
+
+    <para>To assure that you do not get RMI marshalling exceptions on the
+    profile bean invocations, you may need to add the profiling jar in the
+    classpath when running JConsole.</para>
+
+    <para>This can be done by invoking JConsole using a command like
+    this</para>
+
+    <informalexample>
+      <programlisting>jconsole -J-Djava.class.path=$JAVA_HOME/lib/jconsole.jar:\
+$JAVA_HOME/lib/tools.jar:\
+/home/joachim/apps/java/geomajas/project/geomajas-project-profiling/profiling/target/geomajas-project-profiling-1.0.0-SNAPSHOT.jar</programlisting>
+    </informalexample>
+  </section>
 </chapter>
