@@ -30,14 +30,15 @@
 		<module>geomajas-layer-hibernate</module>
 		<module>geomajas-layer-openstreetmap</module>
 		<module>geomajas-layer-wms</module>
-		<module>geomajas-plugin-editing</module>
-		<module>geomajas-plugin-printing</module>
-		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-plugin-caching</module>
+		<module>geomajas-plugin-editing</module>
 		<module>geomajas-plugin-geocoder</module>
+		<module>geomajas-plugin-javascript-api</module>
+		<module>geomajas-plugin-printing</module>
+		<module>geomajas-plugin-profiling</module>
 		<module>geomajas-plugin-rasterizing</module>
 		<module>geomajas-plugin-reporting</module>
-		<module>geomajas-plugin-javascript-api</module>
+		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-widget-advancedviews</module>
 		<module>geomajas-widget-featureinfo</module>
 		<module>geomajas-widget-reports</module>
