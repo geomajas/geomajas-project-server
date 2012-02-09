@@ -22,6 +22,8 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
+import org.vaadin.gwtgraphics.client.shape.path.LineTo;
+import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
 import com.google.gwt.core.client.GWT;
 
@@ -68,8 +70,23 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		}
 	}
 
+	/** {@inheritDoc} */
+	public void update(Shape shape, GeometryEditService editService, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		switch (editService.getIndexService().getType(index)) {
+			case TYPE_VERTEX:
+				updateVertex(shape, editService, index);
+				break;
+			case TYPE_EDGE:
+				updateEdge(shape, editService, index);
+				break;
+			default:
+				updateGeometry(shape, editService, index);
+		}
+	}
+
 	// ------------------------------------------------------------------------
-	// Private methods:
+	// Private methods for creating shapes:
 	// ------------------------------------------------------------------------
 
 	private Shape createVertex(GeometryEditService editService, GeometryIndex index)
@@ -103,5 +120,55 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
 		}
 		return INJECTOR.getGfxUtil().toPath(g);
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods for updating shapes:
+	// ------------------------------------------------------------------------
+
+	private void updateVertex(Shape shape, GeometryEditService editService, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		if (shape instanceof Rectangle) {
+			Rectangle rectangle = (Rectangle) shape;
+			Geometry geometry = editService.getGeometry();
+			Coordinate v = editService.getIndexService().getVertex(geometry, index);
+			if (!targetSpace.equals(RenderSpace.WORLD)) {
+				v = mapPresenter.getViewPort().transform(v, RenderSpace.WORLD, targetSpace);
+			}
+			rectangle.setUserX(v.getX() - VERTEX_HALF_SIZE);
+			rectangle.setUserY(v.getY() - VERTEX_HALF_SIZE);
+		}
+	}
+
+	private void updateEdge(Shape shape, GeometryEditService editService, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		if (shape instanceof Path) {
+			Path path = (Path) shape;
+			Geometry geometry = editService.getGeometry();
+			Coordinate[] edge = editService.getIndexService().getEdge(geometry, index);
+			if (!targetSpace.equals(RenderSpace.WORLD)) {
+				edge[0] = mapPresenter.getViewPort().transform(edge[0], RenderSpace.WORLD, targetSpace);
+				edge[1] = mapPresenter.getViewPort().transform(edge[1], RenderSpace.WORLD, targetSpace);
+			}
+			path.setStep(0, new MoveTo(false, edge[0].getX(), edge[0].getY()));
+			path.setStep(1, new LineTo(false, edge[1].getX(), edge[1].getY()));
+		}
+	}
+
+	private void updateGeometry(Shape shape, GeometryEditService editService, GeometryIndex index)
+			throws GeometryIndexNotFoundException {
+		if (shape instanceof Path) {
+			Path path = (Path) shape;
+			Geometry geometry = editService.getGeometry();
+			Geometry g = editService.getIndexService().getGeometry(geometry, index);
+			if (!targetSpace.equals(RenderSpace.WORLD)) {
+				g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
+			}
+
+			// TODO find a better way. Now, the internal state of the path will be flawed.
+			Path second = INJECTOR.getGfxUtil().toPath(g);
+			String pathString = second.getElement().getAttribute("path");
+			path.getElement().setAttribute("path", pathString);
+		}
 	}
 }

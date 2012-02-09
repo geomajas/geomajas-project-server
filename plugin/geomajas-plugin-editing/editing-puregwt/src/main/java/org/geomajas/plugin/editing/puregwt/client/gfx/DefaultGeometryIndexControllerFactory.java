@@ -26,7 +26,9 @@ import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.puregwt.client.controller.CompositeGeometryIndexController;
+import org.geomajas.plugin.editing.puregwt.client.controller.EdgeMarkerHandler;
 import org.geomajas.puregwt.client.controller.MapController;
+import org.geomajas.puregwt.client.map.MapPresenter;
 
 /**
  * Default implementation of the {@link GeometryIndexControllerFactory}. Provides the default editing behavior.
@@ -38,6 +40,8 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	private final List<VertexHandlerFactory> vertexFactories = new ArrayList<VertexHandlerFactory>();
 
 	private final List<EdgeHandlerFactory> edgeFactories = new ArrayList<EdgeHandlerFactory>();
+
+	private final MapPresenter mapPresenter;
 
 	/**
 	 * Private factory definition for create a handler for vertices.
@@ -63,7 +67,9 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public DefaultGeometryIndexControllerFactory() {
+	public DefaultGeometryIndexControllerFactory(MapPresenter mapPresenter) {
+		this.mapPresenter = mapPresenter;
+
 		// Create all the default vertex handler factories:
 		vertexFactories.add(new VertexHandlerFactory() {
 
@@ -154,10 +160,10 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 			controller.addMapHandler(factory.create());
 		}
 
-		// EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapWidget, editingService, controller);
-		// controller.addMouseOutHandler(edgeMarkerHandler);
-		// controller.addMouseMoveHandler(edgeMarkerHandler);
-		// controller.addMapDownHandler(edgeMarkerHandler);
+		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapPresenter, editService, controller);
+		controller.addMouseOutHandler(edgeMarkerHandler);
+		controller.addMouseMoveHandler(edgeMarkerHandler);
+		controller.addMapDownHandler(edgeMarkerHandler);
 		return controller;
 	}
 }

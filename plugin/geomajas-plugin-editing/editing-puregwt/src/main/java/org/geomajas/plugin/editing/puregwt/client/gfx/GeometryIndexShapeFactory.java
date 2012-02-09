@@ -37,4 +37,20 @@ public interface GeometryIndexShapeFactory {
 	 *             hasn't started.
 	 */
 	Shape create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException;
+
+	/**
+	 * Update the location of the given shape.
+	 * 
+	 * @param shape
+	 *            The shape to be updated.
+	 * @param editService
+	 *            The editing service.
+	 * @param index
+	 *            The index that contains the new location for the shape.
+	 * @throws GeometryIndexNotFoundException
+	 *             Thrown in case the index can't be found within the geometry being edited, or if the editing service
+	 *             hasn't started.
+	 */
+	void update(Shape shape, GeometryEditService editService, GeometryIndex index)
+			throws GeometryIndexNotFoundException;
 }
