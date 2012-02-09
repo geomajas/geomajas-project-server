@@ -2,7 +2,7 @@
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
-  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
   ~
   ~ The program is available in open source according to the GNU Affero
   ~ General Public License. All contributions in this program are covered
@@ -28,17 +28,6 @@
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/project/geomajas-project-profiling</developerConnection>
 		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/project/geomajas-project-profiling</url>
 	</scm>
-
-	<developers>
-		<developer>
-			<id>joachimvda</id>
-			<name>Joachim Van der Auwera</name>
-			<email>joachim@geosparc.com</email>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-	</developers>
 
 	<repositories>
 		<repository>
@@ -83,6 +72,12 @@
 				<groupId>com.googlecode.disruptor</groupId>
 				<artifactId>disruptor</artifactId>
 				<version>2.7.1</version> <!-- 2.8.0 not yet available on central -->
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-profiling</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

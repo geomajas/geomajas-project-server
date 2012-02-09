@@ -39,7 +39,7 @@ public class BindAopTest {
 
 	@Test
 	public void testAopJmx() throws Exception {
-		ObjectName mbean = new ObjectName("bean:name=profilingTest");
+		ObjectName mbean = new ObjectName("bean:name=profilingAopTest");
 		
 		mBeanServer.invoke(mbean, "clear", new Object[]{}, new String[]{});
 		
@@ -51,7 +51,7 @@ public class BindAopTest {
 		Assert.assertEquals(3, ((OneContainer) mBeanServer.getAttribute(mbean, "Total")).getInvocationCount());
 		System.out.println("" + mBeanServer.getAttribute(mbean, "GroupData"));
 		
-		Thread.sleep(1000000000); // use this to test whether you can connect using JConsole
+		//Thread.sleep(1000000000); // use this to test whether you can connect using JConsole
 	}
 	
 }

@@ -56,7 +56,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
 		<property name="beans">
 			<map>
-				<entry key="bean:name=profilingTest" value-ref="profilingTest"/>
+				<entry key="bean:name=profilingAopTest" value-ref="profilingTest"/>
 			</map>
 		</property>
 		<property name="assembler">

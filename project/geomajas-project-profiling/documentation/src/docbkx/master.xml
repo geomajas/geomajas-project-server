@@ -4,7 +4,7 @@
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
-  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
   ~
   ~ The program is available in open source according to the GNU Affero
   ~ General Public License. All contributions in this program are covered
@@ -12,7 +12,7 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <book id="enduser" lang="en">
-	<title>Geomajas profiling plug-in guide</title>
+	<title>Geomajas profiling project guide</title>
 
 	<bookinfo>
 		<copyright>
