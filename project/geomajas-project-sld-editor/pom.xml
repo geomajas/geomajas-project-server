@@ -221,6 +221,13 @@
 				<version>${sld-jibx-version}</version>
 			</dependency>
 
+          	<!-- TODO: needed?  -->
+          	<dependency>
+      			<groupId>com.google.appengine</groupId>
+      			<artifactId>appengine-api-1.0-sdk</artifactId>
+      			<version>1.6.1</version>
+    		</dependency>
+          
            <!--  GWTP  -->
            <dependency>
                 <groupId>com.gwtplatform</groupId>
