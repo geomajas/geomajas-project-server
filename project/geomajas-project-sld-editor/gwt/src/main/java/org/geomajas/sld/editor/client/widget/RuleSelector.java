@@ -814,9 +814,10 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 
 	/** Definition of the Add button. */
 	private class AddButton extends IButton {
-
+		public static final String ICON = "[ISOMORPHIC]/" + "geomajas/icons/silk/add.png";
+		
 		public AddButton() {
-			// @todo FIX setIcon(WidgetLayout.iconAdd);
+			setIcon(ICON);
 			setShowDisabledIcon(true);
 			setPrompt("Voeg nieuwe stijl toe"); // TODO i18n
 			// TODO: validate form first
@@ -835,9 +836,10 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 
 	/** Definition of the Remove button. */
 	private class RemoveButton extends IButton {
-
+		public static final String ICON = "[ISOMORPHIC]/" + "geomajas/icons/silk/cancel.png";
+		
 		public RemoveButton() {
-			// @todo FIX setIcon(WidgetLayout.iconRemove);
+			setIcon(ICON);
 			setShowDisabledIcon(true);
 			setPrompt("Verwijder geselecteerde stijl"); // TODO i18n
 			setWidth(24);

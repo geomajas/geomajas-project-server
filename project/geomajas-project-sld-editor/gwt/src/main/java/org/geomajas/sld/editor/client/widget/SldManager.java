@@ -453,9 +453,11 @@ public class SldManager {
 
 	/** Definition of the Add button. */
 	private class AddButton extends IButton {
+		public static final String ICON = "[ISOMORPHIC]/" + "geomajas/icons/silk/add.png";
 
 		public AddButton() {
-			// @todo FIX setIcon(WidgetLayout.iconAdd);
+			// @todo FIX OK ? setIcon(WidgetLayout.iconAdd);
+			setIcon(ICON);
 			setShowDisabledIcon(false);
 			setPrompt(sldEditorMessages.addSldButtonTooltip());
 			// TODO: validate form first
@@ -474,9 +476,10 @@ public class SldManager {
 
 	/** Definition of the Add button. */
 	private class RemoveButton extends IButton {
-
+		public static final String ICON = "[ISOMORPHIC]/" + "geomajas/icons/silk/cancel.png";
 		public RemoveButton() {
-			// @todo FIX setIcon(WidgetLayout.iconRemove);
+			// @todo FIX OK? setIcon(WidgetLayout.iconRemove);
+			setIcon(ICON);
 			setShowDisabledIcon(true);
 			setPrompt(sldEditorMessages.removeSldButtonTooltip());
 			setWidth(24);
