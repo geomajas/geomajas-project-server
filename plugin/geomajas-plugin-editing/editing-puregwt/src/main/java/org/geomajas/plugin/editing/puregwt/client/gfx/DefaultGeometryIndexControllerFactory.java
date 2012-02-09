@@ -130,6 +130,9 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	/** {@inheritDoc} */
 	public MapController create(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
+		if (index == null) {
+			return null;
+		}
 		switch (editService.getIndexService().getType(index)) {
 			case TYPE_VERTEX:
 				return createVertexController(editService, index);

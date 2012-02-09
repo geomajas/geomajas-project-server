@@ -60,6 +60,9 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 
 	/** {@inheritDoc} */
 	public Shape create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException {
+		if (index == null) {
+			return createGeometry(editService, index);
+		}
 		switch (editService.getIndexService().getType(index)) {
 			case TYPE_VERTEX:
 				return createVertex(editService, index);
@@ -73,15 +76,19 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	/** {@inheritDoc} */
 	public void update(Shape shape, GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
-		switch (editService.getIndexService().getType(index)) {
-			case TYPE_VERTEX:
-				updateVertex(shape, editService, index);
-				break;
-			case TYPE_EDGE:
-				updateEdge(shape, editService, index);
-				break;
-			default:
-				updateGeometry(shape, editService, index);
+		if (index != null) {
+			switch (editService.getIndexService().getType(index)) {
+				case TYPE_VERTEX:
+					updateVertex(shape, editService, index);
+					break;
+				case TYPE_EDGE:
+					updateEdge(shape, editService, index);
+					break;
+				default:
+					updateGeometry(shape, editService, index);
+			}
+		} else {
+			updateGeometry(shape, editService, index);
 		}
 	}
 
@@ -115,11 +122,18 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	private Shape createGeometry(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		Geometry geometry = editService.getGeometry();
-		Geometry g = editService.getIndexService().getGeometry(geometry, index);
+		if (index != null) {
+			geometry = editService.getIndexService().getGeometry(geometry, index);
+		}
+		Geometry g = geometry;
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
 			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
 		}
-		return INJECTOR.getGfxUtil().toPath(g);
+		try {
+			return INJECTOR.getGfxUtil().toPath(g);
+		} catch (NullPointerException npe) {
+			return null;
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -160,13 +174,19 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		if (shape instanceof Path) {
 			Path path = (Path) shape;
 			Geometry geometry = editService.getGeometry();
-			Geometry g = editService.getIndexService().getGeometry(geometry, index);
+			if (index != null) {
+				geometry = editService.getIndexService().getGeometry(geometry, index);
+			}
+			Geometry g = geometry;
 			if (!targetSpace.equals(RenderSpace.WORLD)) {
 				g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
 			}
 
 			// TODO find a better way. Now, the internal state of the path will be flawed.
 			Path second = INJECTOR.getGfxUtil().toPath(g);
+			for (int i = 0; i < path.getStepCount(); i++) {
+				path.setStep(i, second.getStep(i));
+			}
 			String pathString = second.getElement().getAttribute("path");
 			path.getElement().setAttribute("path", pathString);
 		}

@@ -11,10 +11,11 @@
 
 package org.geomajas.plugin.editing.puregwt.example.client.button;
 
-import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,21 +23,28 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 
 /**
- * Button that cancels the editing process.
+ * Button that executes an "UNDO" during the editing process.
  * 
  * @author Pieter De Graef
  */
-public class CancelButton extends Button implements GeometryEditStartHandler, GeometryEditStopHandler {
+public class UndoButton extends Button implements GeometryEditStopHandler, GeometryEditShapeChangedHandler {
 
-	public CancelButton(final GeometryEditService editService) {
-		super("Cancel");
+	private final GeometryEditService editService;
+
+	public UndoButton(final GeometryEditService editService) {
+		super("Undo");
+		this.editService = editService;
 		this.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				editService.stop();
+				try {
+					editService.undo();
+					onGeometryShapeChanged(null);
+				} catch (GeometryOperationFailedException e) {
+				}
 			}
 		});
-		editService.addGeometryEditStartHandler(this);
+		editService.addGeometryEditShapeChangedHandler(this);
 		editService.addGeometryEditStopHandler(this);
 		this.setEnabled(false);
 	}
@@ -45,7 +53,11 @@ public class CancelButton extends Button implements GeometryEditStartHandler, Ge
 		this.setEnabled(false);
 	}
 
-	public void onGeometryEditStart(GeometryEditStartEvent event) {
-		this.setEnabled(true);
+	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
+		if (editService.canUndo()) {
+			setEnabled(true);
+		} else {
+			setEnabled(false);
+		}
 	}
 }

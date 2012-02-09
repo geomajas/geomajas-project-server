@@ -48,6 +48,7 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
@@ -96,6 +97,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	private VectorContainer container;
 
 	private Path tentativeMoveLine;
+
+	private Shape nullShape;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -263,8 +266,23 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	// GeometryEditChangeStateHandler implementation:
 	// ------------------------------------------------------------------------
 
+	/** Change the cursor while dragging. */
 	public void onChangeEditingState(GeometryEditChangeStateEvent event) {
-		// Later dude...
+		switch (event.getEditingState()) {
+			case DRAGGING:
+				mapPresenter.setCursor("move");
+				break;
+			case IDLE:
+			default:
+				mapPresenter.setCursor("default");
+				redraw();
+
+				// Check if there is a tentative move line (left over) and remove if so.
+				if (tentativeMoveLine != null) {
+					container.remove(tentativeMoveLine);
+					tentativeMoveLine = null;
+				}
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -286,24 +304,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 	 * everything.
 	 */
 	public void onGeometryEditMove(GeometryEditMoveEvent event) {
-		// Check if we need to draw the background (nice, but slows down):
-		if (styleProvider.getBackgroundStyle() != null && styleProvider.getBackgroundStyle().getFillOpacity() > 0) {
-			try {
-				if (event.getGeometry().getGeometryType().equals(Geometry.POLYGON)) {
-					GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY, 0);
-					drawIndex(index);
-				} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)
-						&& event.getGeometry().getGeometries() != null) {
-					for (int i = 0; i < event.getGeometry().getGeometries().length; i++) {
-						GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY, i);
-						drawIndex(index);
-					}
-				}
-			} catch (GeometryIndexNotFoundException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
 		// Find the elements that need updating:
 		Map<GeometryIndex, Boolean> indicesToUpdate = new HashMap<GeometryIndex, Boolean>();
 		for (GeometryIndex index : event.getIndices()) {
@@ -321,7 +321,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 									}
 								}
 							}
-							
+
 							// Bring neighboring vertices to the front. This helps the delete operation.
 							neighbors = editService.getIndexService().getAdjacentVertices(event.getGeometry(), index);
 							if (neighbors != null) {
@@ -350,6 +350,19 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			}
 		}
 
+		// Check if we need to draw the background (nice, but slows down):
+		if (styleProvider.getBackgroundStyle() != null && styleProvider.getBackgroundStyle().getFillOpacity() > 0) {
+			if (event.getGeometry().getGeometryType().equals(Geometry.POLYGON)) {
+				update(null, false);
+			} else if (event.getGeometry().getGeometryType().equals(Geometry.MULTI_POLYGON)
+					&& event.getGeometry().getGeometries() != null) {
+				for (int i = 0; i < event.getGeometry().getGeometries().length; i++) {
+					GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY, i);
+					indicesToUpdate.put(index, false);
+				}
+			}
+		}
+
 		// Next, redraw the list:
 		for (GeometryIndex index : indicesToUpdate.keySet()) {
 			update(index, indicesToUpdate.get(index));
@@ -367,7 +380,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			String geometryType = editService.getIndexService().getGeometryType(editService.getGeometry(),
 					editService.getInsertIndex());
 
-			if (vertices != null && Geometry.LINE_STRING.equals(geometryType)) {
+			if (vertices != null
+					&& (Geometry.LINE_STRING.equals(geometryType) || Geometry.LINEAR_RING.equals(geometryType))) {
 				Coordinate temp1 = event.getOrigin();
 				Coordinate temp2 = event.getCurrentPosition();
 				Coordinate c1 = mapPresenter.getViewPort().transform(temp1, RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -382,7 +396,7 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 					tentativeMoveLine.setStep(1, new LineTo(false, c2.getX(), c2.getY()));
 				}
 			} else if (vertices != null && Geometry.LINEAR_RING.equals(geometryType)) {
-				// Later dude...
+				// Draw the second line (as an option...)
 			}
 		} catch (GeometryIndexNotFoundException e) {
 			throw new IllegalStateException(e);
@@ -407,29 +421,27 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private void update(GeometryIndex index, boolean bringToFront) {
 		try {
-			switch (editService.getIndexService().getType(index)) {
-				case TYPE_VERTEX:
-				case TYPE_EDGE:
-					Shape shape = shapes.get(index);
-					if (shape != null) {
-						// We don't consider position at this point. Just style:
-						FeatureStyleInfo style = styleFactory.create(editService, index);
-						INJECTOR.getGfxUtil().applyStyle(shape, style);
+			Shape shape = null;
+			if (index == null) {
+				shape = nullShape;
+			} else {
+				shape = shapes.get(index);
+			}
+			if (shape != null) {
+				// We don't consider position at this point. Just style:
+				FeatureStyleInfo style = styleFactory.create(editService, index);
+				INJECTOR.getGfxUtil().applyStyle(shape, style);
 
-						// Now update the location:
-						shapeFactory.update(shape, editService, index);
-						
-						// Bring to the front if requested:
-						if (bringToFront) {
-							container.bringToFront(shape);
-						}
-					}
-					break;
-				case TYPE_GEOMETRY:
-				default:
-					// updateGeometry(geometry, index);
+				// Now update the location:
+				shapeFactory.update(shape, editService, index);
+
+				// Bring to the front if requested:
+				if (bringToFront) {
+					container.bringToFront(shape);
+				}
 			}
 		} catch (GeometryIndexNotFoundException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 
@@ -443,14 +455,65 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		} else if (Geometry.LINE_STRING.equals(editService.getGeometry().getGeometryType())
 				|| Geometry.LINEAR_RING.equals(editService.getGeometry().getGeometryType())) {
 			drawLineString(null);
+		} else if (Geometry.POLYGON.equals(editService.getGeometry().getGeometryType())) {
+			drawPolygon(null);
+		}
+	}
+
+	private void drawPolygon(GeometryIndex parentIndex) throws GeometryIndexNotFoundException {
+		Geometry geometry = editService.getGeometry();
+		if (parentIndex != null) {
+			geometry = editService.getIndexService().getGeometry(editService.getGeometry(), parentIndex);
+		}
+		if (geometry.getGeometries() != null) {
+			// First of all we check if the background needs to be drawn:
+			if (styleProvider.getBackgroundStyle() != null && styleProvider.getBackgroundStyle().getFillOpacity() > 0) {
+				drawIndex(parentIndex);
+			}
+
+			// Than, we draw all LinearRings one by one:
+			for (int i = 0; i < geometry.getGeometries().length; i++) {
+				GeometryIndex index = editService.getIndexService().addChildren(parentIndex,
+						GeometryIndexType.TYPE_GEOMETRY, i);
+				drawLinearRing(index);
+			}
+		}
+	}
+
+	private void drawLinearRing(GeometryIndex parentIndex) throws GeometryIndexNotFoundException {
+		Geometry geometry = editService.getGeometry();
+		if (parentIndex != null) {
+			geometry = editService.getIndexService().getGeometry(editService.getGeometry(), parentIndex);
+		}
+		if (geometry.getCoordinates() != null) {
+			// Draw all edges:
+			int max = geometry.getCoordinates().length - 1;
+			if (editService.getEditingState().equals(GeometryEditState.INSERTING)) {
+				max--;
+			}
+			for (int i = 0; i < max; i++) {
+				GeometryIndex index = editService.getIndexService().addChildren(parentIndex,
+						GeometryIndexType.TYPE_EDGE, i);
+				drawIndex(index);
+			}
+
+			// Then draw all vertices:
+			for (int i = 0; i < geometry.getCoordinates().length - 1; i++) {
+				GeometryIndex index = editService.getIndexService().addChildren(parentIndex,
+						GeometryIndexType.TYPE_VERTEX, i);
+				drawIndex(index);
+			}
 		}
 	}
 
 	private void drawLineString(GeometryIndex parentIndex) throws GeometryIndexNotFoundException {
 		Geometry geometry = editService.getGeometry();
+		if (parentIndex != null) {
+			geometry = editService.getIndexService().getGeometry(editService.getGeometry(), parentIndex);
+		}
 		if (geometry.getCoordinates() != null) {
 			// Draw all edges:
-			for (int i = 0; i < geometry.getCoordinates().length - 1; i++) { // Line is not closed!
+			for (int i = 0; i < geometry.getCoordinates().length - 1; i++) {
 				GeometryIndex index = editService.getIndexService().addChildren(parentIndex,
 						GeometryIndexType.TYPE_EDGE, i);
 				drawIndex(index);
@@ -472,14 +535,26 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	private void drawIndex(GeometryIndex index) throws GeometryIndexNotFoundException {
 		Shape shape = shapeFactory.create(editService, index);
-		FeatureStyleInfo style = styleFactory.create(editService, index);
-		MapController controller = controllerFactory.create(editService, index);
-		controller.onActivate(mapPresenter);
+		if (shape == null) {
+			return;
+		}
 
+		// Apply style:
+		FeatureStyleInfo style = styleFactory.create(editService, index);
 		INJECTOR.getGfxUtil().applyStyle(shape, style);
-		INJECTOR.getGfxUtil().applyController(shape, controller);
+
+		// Apply controller:
+		MapController controller = controllerFactory.create(editService, index);
+		if (controller != null) {
+			controller.onActivate(mapPresenter);
+			INJECTOR.getGfxUtil().applyController(shape, controller);
+		}
 
 		container.add(shape);
-		shapes.put(index, shape);
+		if (index == null) {
+			nullShape = shape;
+		} else {
+			shapes.put(index, shape);
+		}
 	}
 }

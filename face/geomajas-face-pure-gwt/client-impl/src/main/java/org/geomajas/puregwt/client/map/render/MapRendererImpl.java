@@ -42,7 +42,6 @@ import org.geomajas.puregwt.client.map.layer.VectorLayer;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedEvent;
 import org.geomajas.puregwt.client.map.render.event.ScaleLevelRenderedHandler;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
 
 /**
@@ -288,7 +287,6 @@ public class MapRendererImpl implements MapRenderer {
 	}
 
 	private void navigateTo(Bbox bounds, double scale, int millis) {
-		GWT.log("Navigation starts to scale: " + scale + ", from scale: " + currentScale);
 		navigationBusy = true;
 		int delay = fetchDelay >= millis ? 0 : fetchDelay;
 

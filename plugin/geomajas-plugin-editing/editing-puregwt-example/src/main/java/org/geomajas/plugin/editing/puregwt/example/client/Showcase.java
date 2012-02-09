@@ -12,11 +12,14 @@
 package org.geomajas.plugin.editing.puregwt.example.client;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.puregwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.puregwt.example.client.button.CancelButton;
+import org.geomajas.plugin.editing.puregwt.example.client.button.RedoButton;
+import org.geomajas.plugin.editing.puregwt.example.client.button.UndoButton;
 import org.geomajas.puregwt.client.GeomajasGinjector;
 import org.geomajas.puregwt.client.map.MapPresenter;
 
@@ -33,6 +36,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -99,7 +103,11 @@ public class Showcase implements EntryPoint {
 		// Add buttons to the button panel:
 		buttonPanel.add(getBtnFreePoint());
 		buttonPanel.add(getBtnFreeLine());
+		buttonPanel.add(getBtnFreePolygon());
+		buttonPanel.add(new Label());
 		buttonPanel.add(new CancelButton(editor.getEditService()));
+		buttonPanel.add(new UndoButton(editor.getEditService()));
+		buttonPanel.add(new RedoButton(editor.getEditService()));
 
 		// Initialize the map:
 		mapPresenter.initialize("showcase", "mapOsm");
@@ -128,13 +136,33 @@ public class Showcase implements EntryPoint {
 		btn.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Geometry point = new Geometry(Geometry.LINE_STRING, 0, -1);
+				Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 				GeometryIndex index = editor.getEditService().getIndexService()
 						.create(GeometryIndexType.TYPE_VERTEX, 0);
 
-				editor.getEditService().start(point);
+				editor.getEditService().start(line);
 				editor.getEditService().setEditingState(GeometryEditState.INSERTING);
 				editor.getEditService().setInsertIndex(index);
+			}
+		});
+		return btn;
+	}
+
+	private Widget getBtnFreePolygon() {
+		Button btn = new Button("Draw Polygon");
+		btn.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
+				editor.getEditService().start(polygon);
+				try {
+					GeometryIndex index = editor.getEditService().addEmptyChild();
+					index = editor.getEditService().getIndexService()
+							.addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
+					editor.getEditService().setEditingState(GeometryEditState.INSERTING);
+					editor.getEditService().setInsertIndex(index);
+				} catch (GeometryOperationFailedException e) {
+				}
 			}
 		});
 		return btn;

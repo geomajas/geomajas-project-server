@@ -26,6 +26,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseWheelEvent;
 
 /**
  * ...
@@ -134,6 +135,10 @@ public class EditGeometryBaseController extends AbstractMapController {
 		} else if (service.getEditingState() == GeometryEditState.INSERTING) {
 			insertController.onDoubleClick(event);
 		}
+	}
+	
+	public void onMouseWheel(MouseWheelEvent event) {
+		idleController.onMouseWheel(event);
 	}
 
 	// ------------------------------------------------------------------------

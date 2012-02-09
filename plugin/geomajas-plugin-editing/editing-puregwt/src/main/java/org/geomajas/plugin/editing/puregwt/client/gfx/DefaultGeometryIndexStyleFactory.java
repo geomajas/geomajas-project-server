@@ -47,6 +47,9 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	/** {@inheritDoc} */
 	public FeatureStyleInfo create(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
+		if (index == null) {
+			return findGeometryStyle(editService, index);
+		}
 		switch (editService.getIndexService().getType(index)) {
 			case TYPE_VERTEX:
 				return findVertexStyle(editService, index);
@@ -111,10 +114,12 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	}
 
 	private FeatureStyleInfo findGeometryStyle(GeometryEditService editService, GeometryIndex index) {
-		if (!editService.getIndexStateService().isEnabled(index)) {
-			return styleProvider.getBackgroundDisabledStyle();
-		} else if (editService.getIndexStateService().isMarkedForDeletion(index)) {
-			return styleProvider.getBackgroundMarkedForDeletionStyle();
+		if (index != null) {
+			if (!editService.getIndexStateService().isEnabled(index)) {
+				return styleProvider.getBackgroundDisabledStyle();
+			} else if (editService.getIndexStateService().isMarkedForDeletion(index)) {
+				return styleProvider.getBackgroundMarkedForDeletionStyle();
+			}
 		}
 		return styleProvider.getBackgroundStyle();
 	}
