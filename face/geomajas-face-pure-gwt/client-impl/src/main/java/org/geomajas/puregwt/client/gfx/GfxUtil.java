@@ -11,12 +11,21 @@
 
 package org.geomajas.puregwt.client.gfx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.puregwt.client.controller.MapController;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Path;
 
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.inject.Inject;
 
 /**
@@ -30,6 +39,15 @@ public final class GfxUtil {
 	private GfxUtil() {
 	}
 
+	/**
+	 * Apply the main elements of the given style onto the shape.
+	 * 
+	 * @param shape
+	 *            The shape in need of styling.
+	 * @param style
+	 *            The style to apply. Only the following elements are applied: fill color, fill opacity, stroke color,
+	 *            stroke opacity and stroke width.
+	 */
 	public void applyStyle(Shape shape, FeatureStyleInfo style) {
 		if (style.getFillColor() != null) {
 			shape.setFillColor(style.getFillColor());
@@ -48,6 +66,38 @@ public final class GfxUtil {
 		}
 	}
 
+	/**
+	 * Apply the given controller onto the given shape.
+	 * 
+	 * @param shape
+	 *            The shape in need of a controller.
+	 * @param mapController
+	 *            The controller to apply onto the shape.
+	 * @return The list of registrations that allows for removing the controller again.
+	 */
+	public List<HandlerRegistration> applyController(Shape shape, MapController mapController) {
+		List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
+		registrations.add(shape.addMouseDownHandler(mapController));
+		registrations.add(shape.addMouseUpHandler(mapController));
+		registrations.add(shape.addMouseMoveHandler(mapController));
+		registrations.add(shape.addMouseOutHandler(mapController));
+		registrations.add(shape.addMouseOverHandler(mapController));
+		registrations.add(shape.addMouseWheelHandler(mapController));
+		registrations.add(shape.addDoubleClickHandler(mapController));
+		registrations.add(shape.addDomHandler(mapController, TouchStartEvent.getType()));
+		registrations.add(shape.addDomHandler(mapController, TouchEndEvent.getType()));
+		registrations.add(shape.addDomHandler(mapController, TouchMoveEvent.getType()));
+		registrations.add(shape.addDomHandler(mapController, TouchCancelEvent.getType()));
+		return registrations;
+	}
+
+	/**
+	 * Transform the given geometry into a path object that can be drawn on the map.
+	 * 
+	 * @param geometry
+	 *            The geometry to transform.
+	 * @return The quivalent path object.
+	 */
 	public Path toPath(Geometry geometry) {
 		if (geometry != null) {
 			if (Geometry.POINT.equals(geometry.getGeometryType())) {
