@@ -1,0 +1,40 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
+package org.geomajas.plugin.editing.puregwt.client.gfx;
+
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
+import org.vaadin.gwtgraphics.client.Shape;
+
+/**
+ * Factory definition that creates {@link Shape}s from geometry indices. Depending on the kind of index (vertex, edge,
+ * geometry), different types of shape will be created.
+ * 
+ * @author Pieter De Graef
+ */
+public interface GeometryIndexShapeFactory {
+
+	/**
+	 * Create a suitable shape that may represent the given geometry index on the map.
+	 * 
+	 * @param editService
+	 *            The editing service.
+	 * @param index
+	 *            The index for which to create a shape.
+	 * @return The shape for the index.
+	 * @throws GeometryIndexNotFoundException
+	 *             Thrown in case the index can't be found within the geometry being edited, or if the editing service
+	 *             hasn't started.
+	 */
+	Shape create(GeometryEditService editService, GeometryIndex index) throws GeometryIndexNotFoundException;
+}

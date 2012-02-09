@@ -47,6 +47,7 @@
 		<geomajas-plugin-editing-backend-version>1.10.0</geomajas-plugin-editing-backend-version>
 		<geomajas-plugin-editing-common-gwt-face-version>1.0.0</geomajas-plugin-editing-common-gwt-face-version>
 		<geomajas-plugin-editing-gwt-face-version>1.10.0</geomajas-plugin-editing-gwt-face-version>
+		<geomajas-plugin-editing-puregwt-face-version>1.0.0-SNAPSHOT</geomajas-plugin-editing-puregwt-face-version>
 		<geomajas-plugin-editing-gwt-version>2.4.0</geomajas-plugin-editing-gwt-version>
 		<!--<gwt-exporter-version>2.3.1-SNAPSHOT</gwt-exporter-version>-->
 	</properties>	
@@ -64,6 +65,13 @@
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
 				<version>${geomajas-plugin-editing-gwt-face-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-pure-gwt</artifactId>
+				<version>${geomajas-plugin-editing-puregwt-face-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -104,6 +112,17 @@
 				<artifactId>geomajas-plugin-editing-gwt-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-puregwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-puregwt</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
 			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -131,6 +150,8 @@
 		<module>editing-gwt</module>
 		<module>editing-gwt-example-jar</module>
 		<module>editing-gwt-example</module>
+		<module>editing-puregwt</module>
+		<module>editing-puregwt-example</module>
 		<!--
 		<module>editing-javascript-api</module>
 		<module>editing-javascript-api-gwt</module>
