@@ -11,11 +11,11 @@
 
 package org.geomajas.sld.client.gin;
 
+import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.presenter.MainPagePresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
 
-import com.google.gwt.inject.client.AsyncProvider;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.inject.Provider;
@@ -34,11 +34,13 @@ public interface ClientGinjectorBase extends Ginjector {
 
 	Provider<MainPagePresenter> getMainPagePresenter();
 
-	AsyncProvider<StyledLayerDescriptorListPresenter> getStyledLayerDescriptorListPresenter();
+	Provider<StyledLayerDescriptorListPresenter> getStyledLayerDescriptorListPresenter();
 
-	AsyncProvider<StyledLayerDescriptorPresenter> getStyledLayerDescriptorPresenter();
+	Provider<StyledLayerDescriptorPresenter> getStyledLayerDescriptorPresenter();
 
 	EventBus getEventBus();
 
 	PlaceManager getPlaceManager();
+
+	SldManager getSldManager();
 }

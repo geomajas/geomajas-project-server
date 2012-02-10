@@ -11,17 +11,20 @@
 
 package org.geomajas.sld.client.presenter;
 
-import com.google.web.bindery.event.shared.EventBus;
+import org.geomajas.sld.client.NameTokens;
+import org.geomajas.sld.client.model.SldManager;
+
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
-
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.LockInteractionEvent;
-import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
@@ -39,7 +42,8 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MyView, MainP
 	 * {@link MainPagePresenter}'s proxy.
 	 */
 	@ProxyStandard
-	public interface MyProxy extends Proxy<MainPagePresenter> {
+	@NameToken(NameTokens.HOME_PAGE)
+	public interface MyProxy extends ProxyPlace<MainPagePresenter> {
 	}
 
 	/**
@@ -48,6 +52,8 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MyView, MainP
 	public interface MyView extends View {
 
 		void showLoading(boolean visibile);
+
+		boolean hasSideBarContent();
 	}
 
 	/**
@@ -68,14 +74,33 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MyView, MainP
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_TOP_CONTENT = new Type<RevealContentHandler<?>>();
 
+	private SldManager manager;
+
+	/**
+	 * Creates a {@link MainPagePresenter} with the specified injected fields.
+	 * 
+	 * @param eventBus the bus
+	 * @param view the view
+	 * @param proxy the proxy
+	 * @param manager the manager
+	 */
 	@Inject
-	public MainPagePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
+	public MainPagePresenter(EventBus eventBus, MyView view, MyProxy proxy, SldManager manager) {
 		super(eventBus, view, proxy);
+		this.manager = manager;
 	}
 
 	@Override
 	protected void revealInParent() {
 		RevealRootContentEvent.fire(this, this);
+	}
+
+	protected void onReveal() {
+		super.onReveal();
+		if (!getView().hasSideBarContent()) {
+			RevealSideContentEvent.fire(this);
+		}
+		manager.fetchAll();
 	}
 
 	/**

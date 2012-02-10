@@ -37,7 +37,7 @@ import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.WellKnownNameInfo;
-import org.geomajas.sld.client.SldGwtServiceAsync;
+import org.geomajas.sld.client.model.SldGwtServiceAsync;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;

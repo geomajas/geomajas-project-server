@@ -1,29 +1,21 @@
-/**
- * Copyright 2011 ArcBees Inc.
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
  */
 
 package org.geomajas.sld.editor.client.view;
-
 
 import org.geomajas.sld.client.presenter.ChangeHandler;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter.MyModel;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 //import com.google.gwt.event.shared.HandlerRegistration;
-
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -42,6 +34,8 @@ import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 /**
+ * SmartGwt implementation of {@link StyledLayerDescriptorPresenter.MyView}.
+ * 
  * @author An Buyle
  */
 public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDescriptorPresenter.MyView {
@@ -51,7 +45,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	private static final String NO_SLD_MESSAGE = "<i>Geen SLD ingeladen!</i>";
 
 	private VLayout layoutContainer;
-	
+
 	private DynamicForm topLevelAttributesForm;
 
 	private final Label errorMessage;
@@ -61,7 +55,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	private TextItem styleTitleItem;
 
 	private TextItem geomTypeItem;
-	
+
 	private MyModel originalModel;
 
 	@Inject
@@ -75,8 +69,8 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		nameOfLayerItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				//TODO
-				//setSldHasChangedTrue();
+				// TODO
+				// setSldHasChangedTrue();
 				if (!nameOfLayerItem.validate()) {
 					return;
 				}
@@ -86,7 +80,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 				} else {
 					nameOfLayer = event.getValue().toString();
 				}
-				//TODO: currentSld.getChoiceList().get(0).getNamedLayer().setName(nameOfLayer);
+				// TODO: currentSld.getChoiceList().get(0).getNamedLayer().setName(nameOfLayer);
 			}
 		});
 
@@ -108,8 +102,8 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 				if (!styleTitleItem.validate()) {
 					return;
 				}
-				//TODO
-				//setSldHasChangedTrue();
+				// TODO
+				// setSldHasChangedTrue();
 				String styleTitle = null;
 				if (null == event.getValue()) {
 					styleTitle = "";
@@ -117,21 +111,21 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 					styleTitle = event.getValue().toString();
 				}
 
-				//TODO: StyledLayerDescriptorInfo.ChoiceInfo info = currentSld.getChoiceList().iterator().next(); 
+				// TODO: StyledLayerDescriptorInfo.ChoiceInfo info = currentSld.getChoiceList().iterator().next();
 				// retrieve the first choice
-											
-//				List<ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
-//				ChoiceInfo choiceInfo = choiceList.iterator().next(); // retrieve the first constraint
-//
-//				if (choiceInfo.ifNamedStyle()) {
-//					// Only the name is specialized
-//					if (null == choiceInfo.getNamedStyle()) {
-//						choiceInfo.setNamedStyle(new NamedStyleInfo());
-//					}
-//					choiceInfo.getNamedStyle().setName(styleTitle);
-//				} else if (choiceInfo.ifUserStyle()) {
-//					choiceInfo.getUserStyle().setTitle(styleTitle);
-//				}
+
+				// List<ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
+				// ChoiceInfo choiceInfo = choiceList.iterator().next(); // retrieve the first constraint
+				//
+				// if (choiceInfo.ifNamedStyle()) {
+				// // Only the name is specialized
+				// if (null == choiceInfo.getNamedStyle()) {
+				// choiceInfo.setNamedStyle(new NamedStyleInfo());
+				// }
+				// choiceInfo.getNamedStyle().setName(styleTitle);
+				// } else if (choiceInfo.ifUserStyle()) {
+				// choiceInfo.getUserStyle().setTitle(styleTitle);
+				// }
 
 			}
 		});
@@ -148,9 +142,8 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		errorMessage = new Label(NO_SLD_MESSAGE);
 
 		errorMessage.setAlign(Alignment.CENTER);
-		
 
-		layoutContainer = new VLayout(5); 
+		layoutContainer = new VLayout(5);
 		layoutContainer.setShowResizeBar(true); // Resize bar to make the height of the Container bigger/smaller
 		layoutContainer.setMinHeight(200);
 
@@ -158,7 +151,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 		layoutContainer.addMember(topLevelAttributesForm);
 		layoutContainer.addMember(errorMessage);
-		//errorMessage.hide();
+		// errorMessage.hide();
 
 	}
 
@@ -167,26 +160,26 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		return layoutContainer;
 	}
 
-//  @Override
-//  public String getName() {
-//    return nameField.getText();
-//  }
-//
-//  @Override
-//  public Button getSendButton() {
-//    return sendButton;
-//  }
+	// @Override
+	// public String getName() {
+	// return nameField.getText();
+	// }
+	//
+	// @Override
+	// public Button getSendButton() {
+	// return sendButton;
+	// }
 
-//  @Override
-//  public void resetAndFocus() {
-//    // Focus the cursor on the name field when the app loads
-//     nameOfLayerItem.setFocus(true);
-////    nameField.selectAll();
-//  }
+	// @Override
+	// public void resetAndFocus() {
+	// // Focus the cursor on the name field when the app loads
+	// nameOfLayerItem.setFocus(true);
+	// // nameField.selectAll();
+	// }
 
-//  @Override
+	// @Override
 	public void setError(String errorText) {
-		errorMessage.setContents(null == errorText ? "": errorText);
+		errorMessage.setContents(null == errorText ? "" : errorText);
 		if (null == errorText || errorText.isEmpty()) {
 			errorMessage.hide();
 		} else {
@@ -195,10 +188,10 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		errorMessage.markForRedraw();
 	}
 
-//@Override
+	// @Override
 	public void copyToView(MyModel model) {
 		originalModel = model;
-		
+
 		nameOfLayerItem.setValue(model.getNameOfLayer());
 		styleTitleItem.setValue(model.getStyleTitle());
 		geomTypeItem.setValue(model.getGeomType());
@@ -206,14 +199,14 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 	}
 
-//@Override
+	// @Override
 	public void copyToModel(MyModel model) {
 		// TODO: validate?
 		model.setNameOfLayer(nameOfLayerItem.getValue().toString());
 		model.setStyleTitle(styleTitleItem.getValue().toString());
 	}
 
-//@Override
+	// @Override
 	public com.google.web.bindery.event.shared.HandlerRegistration addChangeHandler(ChangeHandler changeHandler) {
 		// TODO Auto-generated method stub
 		return null;
@@ -224,10 +217,10 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		errorMessage.setContents(NO_SLD_MESSAGE);
 		errorMessage.markForRedraw();
 	}
-	
+
 	public void focus() {
-//		topLevelAttributesForm.clearValues();
-//		restoreFromOriginalModel();
+		// topLevelAttributesForm.clearValues();
+		// restoreFromOriginalModel();
 		// Set focus on nameOfLayerItem
 		nameOfLayerItem.focusInItem();
 
@@ -235,9 +228,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 	private void restoreFromOriginalModel() {
 		copyToView(originalModel);
-		
+
 	}
-
-
 
 }

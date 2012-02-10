@@ -11,19 +11,14 @@
 
 package org.geomajas.sld.client.presenter;
 
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-//import com.google.gwt.user.client.ui.Button;
-import com.google.inject.Inject;
-
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-
-import org.geomajas.sld.client.NameTokens;
 
 /**
  * @author An Buyle
@@ -36,9 +31,8 @@ public class StyledLayerDescriptorPresenter
 	/**
 	 * {@link StyledLayerDescriptorPresenter}'s proxy.
 	 */
-	@ProxyCodeSplit
-	@NameToken(NameTokens.HOME_PAGE)
-	public interface MyProxy extends ProxyPlace<StyledLayerDescriptorPresenter> {
+	@ProxyStandard
+	public interface MyProxy extends Proxy<StyledLayerDescriptorPresenter> {
 	}
 
 	/**
@@ -101,7 +95,6 @@ public class StyledLayerDescriptorPresenter
 	}
 
 	public void setModel(MyModel model) {
-		// TODO: validation
 		this.myModel = model;
 	}
 

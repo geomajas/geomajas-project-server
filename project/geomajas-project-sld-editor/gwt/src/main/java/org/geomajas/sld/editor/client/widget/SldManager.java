@@ -21,7 +21,7 @@ import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
 import org.geomajas.sld.UserStyleInfo;
-import org.geomajas.sld.client.SldGwtServiceAsync;
+import org.geomajas.sld.client.model.SldGwtServiceAsync;
 import org.geomajas.sld.editor.client.GeometryTypes;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;

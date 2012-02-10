@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.sld.StyledLayerDescriptorInfo;
-import org.geomajas.sld.client.SldGwtService;
+import org.geomajas.sld.client.model.SldGwtService;
 import org.geomajas.sld.service.SldException;
 import org.geomajas.sld.service.SldService;
 import org.springframework.beans.factory.annotation.Autowired;

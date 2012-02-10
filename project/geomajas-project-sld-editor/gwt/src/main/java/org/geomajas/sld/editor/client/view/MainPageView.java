@@ -40,11 +40,6 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public MainPageView() {
 
 		sideContentPanel = new VLayout();
-		Label sideLabel = new Label();
-		sideLabel.setContents("Side");
-		sideLabel.setAlign(Alignment.CENTER);
-		sideLabel.setOverflow(Overflow.HIDDEN);
-		sideContentPanel.addMember(sideLabel);
 		sideContentPanel.setWidth("30%");
 		sideContentPanel.setHeight100();
 		sideContentPanel.setShowResizeBar(true);
@@ -131,5 +126,9 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	public void showLoading(boolean visibile) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public boolean hasSideBarContent() {
+		return sideContentPanel.getMembers().length > 0;
 	}
 }
