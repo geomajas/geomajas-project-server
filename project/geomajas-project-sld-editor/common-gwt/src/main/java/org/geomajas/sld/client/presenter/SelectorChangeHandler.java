@@ -21,7 +21,8 @@ package org.geomajas.sld.client.presenter;
  *
  */
 
-public interface ChangeHandler {
+public interface SelectorChangeHandler {
+	static final Integer NO_RULE_SELECTED = -1;
 	
-	void onChange(Object changedData);
+	void onChange(Integer indexRuleInFocus);
 }

@@ -119,8 +119,9 @@ public class StyledLayerDescriptorPresenter
 		super.onBind();
 		registerHandler(getView().addChangeHandler(new ChangeHandler() {
 
-			public void execute() {
+			public void onChange(Object changedData) {
 				informParentOfChange();
+				
 			}
 		}));
 
