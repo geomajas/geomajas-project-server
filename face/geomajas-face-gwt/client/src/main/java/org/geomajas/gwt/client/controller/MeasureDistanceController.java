@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.action.menu.ToggleSnappingAction;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
@@ -49,15 +50,15 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
  */
 public class MeasureDistanceController extends AbstractSnappingController {
 
+	private static final ShapeStyle lineStyle1 = new ShapeStyle("#FFFFFF", 0, "#FF9900", 1, 2);
+
+	private static final ShapeStyle lineStyle2 = new ShapeStyle("#FFFFFF", 0, "#FF5500", 1, 2);
+
 	private GfxGeometry distanceLine;
 
 	private GfxGeometry lineSegment;
 
 	private DistanceLabel label;
-
-	private ShapeStyle lineStyle1 = new ShapeStyle("#FFFFFF", 0, "#FF9900", 1, 2);
-
-	private ShapeStyle lineStyle2 = new ShapeStyle("#FFFFFF", 0, "#FF5500", 1, 2);
 
 	private GeometryFactory factory;
 
@@ -85,7 +86,10 @@ public class MeasureDistanceController extends AbstractSnappingController {
 	public void onActivate() {
 		menu = new Menu();
 		menu.addItem(new CancelMeasuringAction(this));
-		menu.addItem(new ToggleSnappingAction((VectorLayer) mapWidget.getMapModel().getSelectedLayer(), this));
+		Layer selectedLayer = mapWidget.getMapModel().getSelectedLayer();
+		if (selectedLayer instanceof VectorLayer) {
+			menu.addItem(new ToggleSnappingAction((VectorLayer) selectedLayer, this));
+		}
 		mapWidget.setContextMenu(menu);
 	}
 
@@ -154,7 +158,11 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		return distanceLine.getGeometry() != null;
 	}
 
-	/** The factory can only be used after the MapModel has initialized, that is why this getter exists... */
+	/**
+	 * The factory can only be used after the MapModel has initialized, that is why this getter exists...
+	 *
+	 * @return geometry factory
+	 */
 	private GeometryFactory getFactory() {
 		if (factory == null) {
 			factory = mapWidget.getMapModel().getGeometryFactory();
