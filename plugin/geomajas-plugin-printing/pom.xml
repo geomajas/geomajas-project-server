@@ -132,10 +132,11 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<!-- from next version on, this should depend on "all" -->
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-wms</artifactId>
-				<version>1.8.0</version>
+				<artifactId>geomajas-layer-wms-all</artifactId>
+				<version>1.9.0</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<dependency>
