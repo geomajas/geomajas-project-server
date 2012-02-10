@@ -153,6 +153,11 @@
 				<version>${geomajas-slf4j-version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${geomajas-slf4j-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
 				<version>99.0-does-not-exist</version>
