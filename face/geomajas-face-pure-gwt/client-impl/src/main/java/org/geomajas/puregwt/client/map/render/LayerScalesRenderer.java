@@ -158,7 +158,7 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 		}
 	}
 
-	/** Does nothing. */
+	/** Delegates the cancel to each scale level. */
 	public void cancel() {
 		for (TiledScaleRenderer scaleRenderer : tiledScaleRenderers.values()) {
 			scaleRenderer.cancel();
@@ -173,6 +173,18 @@ public class LayerScalesRenderer implements MapScalesRenderer {
 	/** {@inheritDoc} */
 	public TiledScaleRenderer getScale(double scale) {
 		return tiledScaleRenderers.get(scale);
+	}
+
+	/** {@inheritDoc} */
+	public void clear() {
+		while (tiledScaleRenderers.size() > 0) {
+			Double scale = tiledScaleRenderers.keySet().iterator().next();
+			TiledScaleRenderer removedPresenter = tiledScaleRenderers.get(scale);
+			removedPresenter.cancel();
+			htmlContainer.remove(removedPresenter.getHtmlContainer());
+			tiledScaleRenderers.remove(scale);
+		}
+		scales.clear();
 	}
 
 	// ------------------------------------------------------------------------

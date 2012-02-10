@@ -98,4 +98,7 @@ public interface Layer<T extends ClientLayerInfo> {
 	 * @return true or false.
 	 */
 	boolean isShowing();
+
+	/** Refresh this layer on the map. This method will completely erase the current contents and redraw. */
+	void refresh();
 }

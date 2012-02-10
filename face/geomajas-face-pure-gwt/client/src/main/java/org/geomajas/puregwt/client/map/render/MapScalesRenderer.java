@@ -109,4 +109,7 @@ public interface MapScalesRenderer {
 	 * @return Returns the renderer, or null.
 	 */
 	TiledScaleRenderer getScale(double scale);
+
+	/** Clear all contents within this object. */
+	void clear();
 }

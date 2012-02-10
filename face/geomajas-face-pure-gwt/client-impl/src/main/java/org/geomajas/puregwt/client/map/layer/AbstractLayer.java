@@ -14,6 +14,7 @@ package org.geomajas.puregwt.client.map.layer;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.puregwt.client.event.LayerDeselectedEvent;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
+import org.geomajas.puregwt.client.event.LayerRefreshedEvent;
 import org.geomajas.puregwt.client.event.LayerSelectedEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerVisibilityMarkedEvent;
@@ -134,6 +135,11 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 			}
 		}
 		return false;
+	}
+
+	/** {@inheritDoc} */
+	public void refresh() {
+		eventBus.fireEvent(new LayerRefreshedEvent(this));
 	}
 
 	// ------------------------------------------------------------------------

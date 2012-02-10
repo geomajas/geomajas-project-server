@@ -23,6 +23,7 @@ import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.puregwt.client.event.LayerAddedEvent;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerOrderChangedEvent;
+import org.geomajas.puregwt.client.event.LayerRefreshedEvent;
 import org.geomajas.puregwt.client.event.LayerRemovedEvent;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerStyleChangedEvent;
@@ -182,11 +183,25 @@ public class MapRendererImpl implements MapRenderer {
 		Layer<?> layer = event.getLayer();
 		if (layer instanceof RasterLayer) {
 			for (int i = 0; i < htmlContainer.getChildCount(); i++) {
+				// TODO is this right???
 				HtmlObject htmlObject = htmlContainer.getChild(i);
 				htmlObject.setOpacity(((RasterLayer) layer).getOpacity());
 			}
 		} else if (layer instanceof VectorLayer) {
 			// TODO implement me...
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// LayerRefreshedHandler implementation:
+	// ------------------------------------------------------------------------
+
+	public void onLayerRefreshed(LayerRefreshedEvent event) {
+		Layer<?> layer = event.getLayer();
+		MapScalesRenderer renderer = layerRenderers.get(layer);
+		if (renderer != null) {
+			renderer.clear();
+			navigateTo(viewPort.getBounds(), viewPort.getScale(), 0);
 		}
 	}
 

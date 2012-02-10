@@ -13,6 +13,7 @@ package org.geomajas.puregwt.client.map.render;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.puregwt.client.event.LayerOrderChangedHandler;
+import org.geomajas.puregwt.client.event.LayerRefreshedHandler;
 import org.geomajas.puregwt.client.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
 import org.geomajas.puregwt.client.event.MapCompositionHandler;
@@ -29,7 +30,7 @@ import org.geomajas.puregwt.client.event.ViewPortChangedHandler;
  */
 @Api(allMethods = true)
 public interface MapRenderer extends ViewPortChangedHandler, LayerOrderChangedHandler, LayerVisibilityHandler,
-		LayerStyleChangedHandler, MapResizedHandler, MapCompositionHandler {
+		LayerStyleChangedHandler, LayerRefreshedHandler, MapResizedHandler, MapCompositionHandler {
 
 	/**
 	 * Determine whether or not to use a bigger bounds when rendering the map. By using a bigger scale, more tiles will

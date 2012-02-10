@@ -40,6 +40,7 @@ import org.geomajas.puregwt.client.event.FeatureSelectedEvent;
 import org.geomajas.puregwt.client.event.FeatureSelectionHandler;
 import org.geomajas.puregwt.client.event.LayerHideEvent;
 import org.geomajas.puregwt.client.event.LayerOrderChangedHandler;
+import org.geomajas.puregwt.client.event.LayerRefreshedHandler;
 import org.geomajas.puregwt.client.event.LayerShowEvent;
 import org.geomajas.puregwt.client.event.LayerStyleChangedHandler;
 import org.geomajas.puregwt.client.event.LayerVisibilityHandler;
@@ -225,6 +226,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		eventBus.addHandler(MapCompositionHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerVisibilityHandler.TYPE, mapRenderer);
 		eventBus.addHandler(LayerStyleChangedHandler.TYPE, mapRenderer);
+		eventBus.addHandler(LayerRefreshedHandler.TYPE, mapRenderer);
 
 		final FeatureSelectionRenderer selectionRenderer = new FeatureSelectionRenderer();
 		eventBus.addHandler(LayerVisibilityHandler.TYPE, selectionRenderer);
