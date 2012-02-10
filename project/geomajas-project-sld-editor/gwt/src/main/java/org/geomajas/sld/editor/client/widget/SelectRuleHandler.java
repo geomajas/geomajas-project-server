@@ -12,13 +12,13 @@
 package org.geomajas.sld.editor.client.widget;
 
 /**
- * Provides call-back to be called when the current style rule needs to be unloaded and
- * optionally a new rule to be loaded (e.g. in rule detail window).
- *
+ * Provides call-back to be called when the current style rule needs to be unloaded and optionally a new rule to be
+ * loaded (e.g. in rule detail window).
+ * 
  * @author An Buyle
- *
+ * 
  */
 public interface SelectRuleHandler {
-	
-	void  execute(boolean ruleSelected, Object ruleInfo);
+
+	void execute(boolean ruleSelected, Object ruleInfo);
 }

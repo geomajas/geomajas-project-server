@@ -20,10 +20,10 @@ package org.geomajas.sld.editor.client.widget;
 public interface CloseSldHandler {
 
 	/**
-	 * @param sldName  Will always be non-null, name of SLD that was closed. 
-	 * 					
-	 * @param closeTriggeredByCloseButton  If true, the closing was triggered by the user 
-	 * 			clicking on the <i>'close SLDB'</i> button 
+	 * @param sldName Will always be non-null, name of SLD that was closed.
+	 * 
+	 * @param closeTriggeredByCloseButton If true, the closing was triggered by the user clicking on the <i>'close
+	 *        SLDB'</i> button
 	 */
 	void execute(String sldName, boolean closeTriggeredByCloseButton);
 }

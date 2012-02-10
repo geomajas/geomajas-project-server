@@ -8,13 +8,23 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.presenter;
+package org.geomajas.sld.editor.client.view;
+
+import com.google.gwt.user.client.ui.Widget;
+import com.gwtplatform.mvp.client.ViewImpl;
+import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 
 /**
+ * List view of SLD's.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
-public class MyEvent {
+public class StyledLayerDescriptorListView extends ViewImpl implements StyledLayerDescriptorListPresenter.MyView {
+
+	public Widget asWidget() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -51,8 +51,8 @@ public class ChoiceFilterInfo {
 
 	/**
 	 * Set the 'Filter' element value.
-	 *
-	 * @param filter  new filter
+	 * 
+	 * @param filter new filter
 	 */
 	public void setFilter(FilterTypeInfo filter) {
 		choiceSelect = FILTER_CHOICE;

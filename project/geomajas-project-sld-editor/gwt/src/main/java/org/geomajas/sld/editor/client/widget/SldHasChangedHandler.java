@@ -13,9 +13,9 @@ package org.geomajas.sld.editor.client.widget;
 
 /**
  * Provides call-back to be called when SLD rule filter has been changed.
- *
+ * 
  * @author An Buyle
- *
+ * 
  */
 public interface SldHasChangedHandler {
 

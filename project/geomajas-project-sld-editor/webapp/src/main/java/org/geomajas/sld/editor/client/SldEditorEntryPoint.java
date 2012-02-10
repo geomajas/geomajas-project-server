@@ -15,6 +15,7 @@ import java.util.List;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.SldGwtService;
 import org.geomajas.sld.client.SldGwtServiceAsync;
+import org.geomajas.sld.editor.client.gin.ClientGinjector;
 import org.geomajas.sld.editor.client.widget.CloseSldHandler;
 import org.geomajas.sld.editor.client.widget.RefreshSldHandler;
 import org.geomajas.sld.editor.client.widget.RefuseSldLoadingHandler;
@@ -27,6 +28,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.gwtplatform.mvp.client.DelayedBindRegistry;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
@@ -44,6 +46,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class SldEditorEntryPoint implements EntryPoint {
 
+	private final ClientGinjector ginjector = GWT.create(ClientGinjector.class);
+
 	private SldWidget sldWidget;
 
 	private Canvas canvasForSld;
@@ -55,6 +59,13 @@ public class SldEditorEntryPoint implements EntryPoint {
 	private String selectedSLDName;
 
 	public void onModuleLoad() {
+		// This is required for Gwt-Platform proxy's generator.
+		DelayedBindRegistry.bind(ginjector);
+
+		ginjector.getPlaceManager().revealCurrentPlace();
+	}
+
+	public void onModuleLoadOld() {
 		// Add it to the root panel.
 		RootPanel.get().add(getViewPanel());
 	}
@@ -64,48 +75,46 @@ public class SldEditorEntryPoint implements EntryPoint {
 		Cookies.setCookie("skin_name", "Enterprise");
 
 		HLayout mainLayout = new HLayout();
-		
+
 		mainLayout.setWidth("95%"); // when setting to 100% the panels resize annoyingly ('dancing pannels')
-									// when the mouse pointer is moved   
+									// when the mouse pointer is moved
 		mainLayout.setHeight("95%");
-		//mainLayout.setMaxHeight(1000);
+		// mainLayout.setMaxHeight(1000);
 		// mainLayout.setMinWidth(300);
 		// mainLayout.setMinHeight(400);
 
 		VLayout vLayoutLeft = new VLayout();
 		vLayoutLeft.setWidth("30%");
-		
-		//vLayoutLeft.setMembersMargin(5);
+
+		// vLayoutLeft.setMembersMargin(5);
 		vLayoutLeft.setMargin(5);
 		// Possibility for the user to make vLayoutLeft more/less wide and consequently vlayoutRight
 		// less/more wide
-		vLayoutLeft.setShowResizeBar(true); 
+		vLayoutLeft.setShowResizeBar(true);
 		vLayoutLeft.setMinWidth(100); /* min 100px wide */
 		vLayoutLeft.setOverflow(Overflow.AUTO);
 
-
 		mainLayout.addMember(vLayoutLeft);
 		vLayoutLeft.setHeight100();
-		
+
 		service = GWT.create(SldGwtService.class);
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sld");
 
-		/** Setup SLD manager widget (left panel) **/ 
+		/** Setup SLD manager widget (left panel) **/
 		sldManager = new SldManager(service);
 		vLayoutLeft.addMember(sldManager.getCanvas());
 		sldManager.getCanvas().setWidth100();
 		sldManager.getCanvas().setHeight100();
-		
+
 		/** Add ChangedHandler for SLD Manager widget **/
 		sldManager.addSelectionChangedHandler(new SelectionChangedHandler() {
 
 			public void onSelectionChanged(SelectionEvent event) {
 				GWT.log("SldgEditorEntryPoint: onSelectionChanged of sldManager for SLD "
-						+ (null == event.getSelectedRecord()
-							? "null" : event.getSelectedRecord().getAttribute(
-									SldManager.SLD_NAME_ATTRIBUTE_NAME)));
-				
+						+ (null == event.getSelectedRecord() ? "null" : event.getSelectedRecord().getAttribute(
+								SldManager.SLD_NAME_ATTRIBUTE_NAME)));
+
 				if (sldManager.getUserFlagDuringSelect()) {
 					GWT.log("SldgEditorEntryPoint: onSelectionChanged :  getUserFlagDuringSelect() == true,~"
 							+ " so do nothing");
@@ -116,7 +125,7 @@ public class SldEditorEntryPoint implements EntryPoint {
 				if (record == null) {
 					sldWidget.clear(true);
 					canvasForSld.disable();
-					//vLayoutRight.markForRedraw();
+					// vLayoutRight.markForRedraw();
 				} else {
 
 					selectedSLDName = record.getAttribute(SldManager.SLD_NAME_ATTRIBUTE_NAME);
@@ -130,10 +139,10 @@ public class SldEditorEntryPoint implements EntryPoint {
 								canvasForSld.enable();
 							}
 						}
+
 						public void onFailure(Throwable caught) {
 							GWT.log("could not access SLD", caught);
-							SC.warn("De SLD " + selectedSLDName
-									+ " kan niet gevonden worden. Interne fout: "
+							SC.warn("De SLD " + selectedSLDName + " kan niet gevonden worden. Interne fout: "
 									+ caught.getMessage());
 						}
 					}); /* call service */
@@ -143,23 +152,23 @@ public class SldEditorEntryPoint implements EntryPoint {
 		});
 
 		/** Setup the right panel (which will show the currently loaded SLD in detail) **/
-		
+
 		sldWidget = new SldWidget(service);
-		
-//		sldWidget.addOpenSldHandler(new OpenSldHandler() {
-//			
-//			public void execute(String sldName) {
-//				sldManager.selectSld(sldName, true/* do not load the SLD again in onSelectionChanged */);
-//			}
-//		});
-		
+
+		// sldWidget.addOpenSldHandler(new OpenSldHandler() {
+		//
+		// public void execute(String sldName) {
+		// sldManager.selectSld(sldName, true/* do not load the SLD again in onSelectionChanged */);
+		// }
+		// });
+
 		sldWidget.setCloseFunctionality(true, new CloseSldHandler() {
-			
+
 			public void execute(String sldName, boolean closeTriggeredByCloseButton) {
 				GWT.log("SldgEditorEntryPoint: execute CloseSldHandler of sldWidget for SLD "
-						+ (null == sldName ? "null" : sldName)
-						+ "; closeTriggeredByCloseButton=" + closeTriggeredByCloseButton);
-				
+						+ (null == sldName ? "null" : sldName) + "; closeTriggeredByCloseButton="
+						+ closeTriggeredByCloseButton);
+
 				if (closeTriggeredByCloseButton) {
 					sldManager.selectSld(null, true/* do not load the "null" SLD */);
 				}
@@ -175,8 +184,8 @@ public class SldEditorEntryPoint implements EntryPoint {
 
 				if (null != currentSldName) {
 					sldManager.selectSld(currentSldName, true);
-									// 2nd arg = true: no need to load SLD currentSldName, 
-									// since already loaded by sldWidget
+					// 2nd arg = true: no need to load SLD currentSldName,
+					// since already loaded by sldWidget
 				} else {
 					// Do nothing
 				}
@@ -184,43 +193,42 @@ public class SldEditorEntryPoint implements EntryPoint {
 			}
 
 		});
-		
+
 		sldWidget.addRefreshHandler(new RefreshSldHandler() {
 
 			public void execute(String sldName) {
 				GWT.log(getClass().getName() + ": execute addRefreshHandler of sldWidget for SLD "
 						+ (null == sldName ? "null" : sldName));
 
-				service.findByName(sldName,
-						new AsyncCallback<StyledLayerDescriptorInfo>() {
+				service.findByName(sldName, new AsyncCallback<StyledLayerDescriptorInfo>() {
 
-							public void onSuccess(StyledLayerDescriptorInfo sld) {
-								sldWidget.getCanvasForSLD(sld);
-							}
+					public void onSuccess(StyledLayerDescriptorInfo sld) {
+						sldWidget.getCanvasForSLD(sld);
+					}
 
-							public void onFailure(Throwable caught) {
-								SC.warn("De SLD " + selectedSLDName
-										+ " kan niet gevonden worden. Interne fout: "
-										+ caught.getMessage());
-								GWT.log("could not access SLD " + selectedSLDName, caught);
-							}
-						});
+					public void onFailure(Throwable caught) {
+						SC.warn("De SLD " + selectedSLDName + " kan niet gevonden worden. Interne fout: "
+								+ caught.getMessage());
+						GWT.log("could not access SLD " + selectedSLDName, caught);
+					}
+				});
 			}
 		});
 
 		VLayout vLayoutRight = new VLayout();
 		vLayoutRight.setWidth("70%");
 		vLayoutRight.setHeight100();
-		//vLayoutRight.setMembersMargin(5);
+		// vLayoutRight.setMembersMargin(5);
 		vLayoutRight.setMargin(5);
-		//No ResizeBar needed here
+		// No ResizeBar needed here
 		vLayoutRight.setMinWidth(150);
 
 		canvasForSld = sldWidget.getCanvas();
 		if (null == canvasForSld) {
 			SC.warn("The SLD editor widget could not be created successfully");
 			GWT.log("The SLD editor widget could not be created successfully");
-			return mainLayout;  /** ABORT !!! **/
+			return mainLayout;
+			/** ABORT !!! **/
 		}
 		canvasForSld.disable();
 
@@ -243,7 +251,6 @@ public class SldEditorEntryPoint implements EntryPoint {
 				GWT.log("could not access SLDs", caught);
 			}
 		});
-
 
 		return mainLayout;
 	}

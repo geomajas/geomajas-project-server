@@ -62,13 +62,15 @@ public class FilterEditor {
 	private static final String DEFAULT_WILD_CARD_SINGLE_CHAR = "?";
 
 	private static final String DEFAULT_ESCAPE = "\\";
-	
+
 	private static final String PROPERTY_IS_LIKE_TYPE_INFO = "PropertyIsLikeTypeInfo";
+
 	private static final String PROPERTY_IS_NOT_LIKE_TYPE_INFO = "PropertyIsNotLikeTypeInfo";
-					//TODO: also for other operators
+
+	// TODO: also for other operators
 
 	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
-		
+
 	private DynamicForm filterForm;
 
 	private boolean isFilterFormFirstSetup = true;
@@ -249,8 +251,8 @@ public class FilterEditor {
 						if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
 							filterAttributeName.setValue(expressionInfo.getValue());
 						} else {
-							SC.warn(
-								"Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
+							SC.warn("Het filter voor deze regel wordt niet ondersteund en " +
+									"kan dus niet getoond worden.");
 							filterForm.hide();
 							isSupportedFilter = false;
 							return isSupportedFilter; /* ABORT */
@@ -323,8 +325,7 @@ public class FilterEditor {
 
 			if ("PropertyIsNullTypeInfo".equals(operator) || "PropertyIsNotNullTypeInfo".equals(operator)) {
 				filterAttributeValue.setDisabled(true); /* unary operator ! */
-			} else if (PROPERTY_IS_LIKE_TYPE_INFO.equals(operator)
-					|| PROPERTY_IS_NOT_LIKE_TYPE_INFO.equals(operator)) {
+			} else if (PROPERTY_IS_LIKE_TYPE_INFO.equals(operator) || PROPERTY_IS_NOT_LIKE_TYPE_INFO.equals(operator)) {
 				setLikeFilterSpec(DEFAULT_WILD_CARD, DEFAULT_WILD_CARD_SINGLE_CHAR, DEFAULT_ESCAPE);
 				filterForm.showItem("likeFilterSpec");
 				filterAttributeValue.setDisabled(false);
@@ -381,7 +382,7 @@ public class FilterEditor {
 
 		operatorMap.put(PROPERTY_IS_LIKE_TYPE_INFO, "voldaat aan patroon (string)"); // PropertyIsLike
 		operatorMap.put(PROPERTY_IS_NOT_LIKE_TYPE_INFO, "voldaat niet aan patroon (string)"); // extension for
-																							// NOT(PropertyIsLike())
+																								// NOT(PropertyIsLike())
 
 		operatorMap.put("PropertyIsNullTypeInfo", "is null"); // PropertyIsNull
 		operatorMap.put("PropertyIsNotNullTypeInfo", "is niet null"); // extension for NOT(PropertyIsNull())
@@ -800,9 +801,8 @@ public class FilterEditor {
 		currentPatternMatchingSingleChar = singleChar;
 		currentPatternMatchingEscape = escape;
 
-		likeFilterSpec.setValue(sldEditorMessages.likeFilterSpecTemplate(
-					wildCard, singleChar, escape));
-				
+		likeFilterSpec.setValue(sldEditorMessages.likeFilterSpecTemplate(wildCard, singleChar, escape));
+
 	}
 
 	private void processBinaryComparisonOp(BinaryComparisonOpTypeInfo op) {

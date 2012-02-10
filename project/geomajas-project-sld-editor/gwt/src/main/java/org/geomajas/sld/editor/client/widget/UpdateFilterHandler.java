@@ -14,9 +14,9 @@ import org.geomajas.sld.filter.FilterTypeInfo;
 
 /**
  * Provides call-back to inform the receiver that the filter of the current style rule has changed.
- *
+ * 
  * @author An Buyle
- *
+ * 
  */
 public interface UpdateFilterHandler {
 

@@ -12,15 +12,15 @@
 package org.geomajas.sld.editor.client.widget;
 
 /**
- * Provides call-back to inform the receiver that the style rule header fields (title and/or name) for the
- * current rule have changed.
- *
+ * Provides call-back to inform the receiver that the style rule header fields (title and/or name) for the current rule
+ * have changed.
+ * 
  * @author An Buyle
- *
+ * 
  */
 public interface UpdateRuleHeaderHandler {
-	
-	void  execute(String ruleTitle, String ruleName);
+
+	void execute(String ruleTitle, String ruleName);
 
 	void updateTitle(String ruleTitle);
 }

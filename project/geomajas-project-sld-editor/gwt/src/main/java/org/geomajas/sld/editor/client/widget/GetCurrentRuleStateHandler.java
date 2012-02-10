@@ -13,10 +13,11 @@ package org.geomajas.sld.editor.client.widget;
 
 /**
  * Provides call-back to get the state of the current rule (e.g. loaded in the rule detail window).
- *
+ * 
  * @author An Buyle
- *
+ * 
  */
 public interface GetCurrentRuleStateHandler {
+
 	Object execute();
 }

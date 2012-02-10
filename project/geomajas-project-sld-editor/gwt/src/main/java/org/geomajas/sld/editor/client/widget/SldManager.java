@@ -54,8 +54,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * Widget that provides GUI controls for SLD management: showing a list of available SLD's, 
- * adding/removing an SLD rule.
+ * Widget that provides GUI controls for SLD management: showing a list of available SLD's, adding/removing an SLD rule.
  * 
  * @author An Buyle
  */
@@ -64,7 +63,7 @@ public class SldManager {
 	public static final String SLD_NAME_ATTRIBUTE_NAME = "SLDName";
 
 	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
-	
+
 	private SldGwtServiceAsync service;
 
 	private VLayout vLayout;
@@ -92,22 +91,20 @@ public class SldManager {
 		vLayout = new VLayout(10);
 		vLayout.setLayoutTopMargin(10);
 		vLayout.setLayoutBottomMargin(5);
-		
+
 		listGrid = new ListGrid();
-		
-		
+
 		listGrid.setMinHeight(100);
 		listGrid.setOverflow(Overflow.AUTO);
 		listGrid.setLeaveScrollbarGap(true);
-		
 
 		this.service = sldService;
 		listGrid.setShowAllRecords(true);
 		listGrid.setSelectionType(SelectionStyle.SINGLE);
 		listGrid.setPrompt(sldEditorMessages.listingOfSldsTooltip());
-		
+
 		ListGridField nameField = new ListGridField("SLDName", sldEditorMessages.listingOfSldsTitle());
-		
+
 		nameField.setAlign(Alignment.LEFT);
 		listGrid.setFields(nameField);
 		listGrid.setSelectionType(SelectionStyle.SINGLE);
@@ -116,11 +113,11 @@ public class SldManager {
 
 			public void onSelectionChanged(SelectionEvent event) {
 				ListGridRecord record = event.getSelectedRecord();
-				
+
 				if (null != externalSelectionChangedHandler) {
 					externalSelectionChangedHandler.onSelectionChanged(event);
 				}
-				
+
 				enableRemoveButton(record != null);
 
 			}
@@ -128,13 +125,11 @@ public class SldManager {
 
 		vLayout.addMember(listGrid);
 		listGrid.setHeight("*");
-		
-		
+
 		toolStrip = new HLayout(10/* membersMargin */);
-		toolStrip.setPadding(10); 
+		toolStrip.setPadding(10);
 		toolStrip.setHeight(40); /* fixed size for tool strip for SLD manager */
-		
-		
+
 		addButton = new AddButton();
 
 		addButton.addClickHandler(new ClickHandler() {
@@ -190,17 +185,17 @@ public class SldManager {
 
 	/**
 	 * Select a certain SLD in the list (if present).
-	 *  
+	 * 
 	 * @param sldName
 	 * @param userFlagDuringSelect
 	 */
 	public void selectSld(String sldName, boolean userFlagDuringSelect) {
-		if (null != sldName) { 
+		if (null != sldName) {
 			recordsSorted = listGrid.getDataAsRecordList();
-	
+
 			Record record = recordsSorted.find(SLD_NAME_ATTRIBUTE_NAME, sldName);
-			this.userFlagDuringSelect = userFlagDuringSelect;  // This flag can be polled during the 
-													// subsequent execution of selectionChangedHandler.
+			this.userFlagDuringSelect = userFlagDuringSelect; // This flag can be polled during the
+			// subsequent execution of selectionChangedHandler.
 			listGrid.selectSingleRecord(record);
 			this.userFlagDuringSelect = false;
 		} else {
@@ -209,28 +204,23 @@ public class SldManager {
 	}
 
 	/**
-	 *  Do not select any SLD in the list.  
+	 * Do not select any SLD in the list.
 	 */
 	public void deselectAllSlds(boolean userFlagDuringSelect) {
-		this.userFlagDuringSelect = userFlagDuringSelect;  // This flag can be polled during the 
-													// subsequent execution of selectionChangedHandler.
+		this.userFlagDuringSelect = userFlagDuringSelect; // This flag can be polled during the
+		// subsequent execution of selectionChangedHandler.
 		listGrid.deselectAllRecords();
-		this.userFlagDuringSelect =  false;
+		this.userFlagDuringSelect = false;
 	}
 
-	
 	/**
 	 * @return true if inside select()/deselectAll() of list grid record and <code>userFlagDuringSelect</code> argument
-	 * 			of triggering <code>selectSld</code> or <code>deselectAll</code> was set to value true, 
-	 * 			else false.   
+	 *         of triggering <code>selectSld</code> or <code>deselectAll</code> was set to value true, else false.
 	 */
 	public boolean getUserFlagDuringSelect() {
 		return userFlagDuringSelect;
 	}
 
-
-	
-	
 	private void enableRemoveButton(boolean enable) {
 		if (enable) {
 			removeButton.enable();
@@ -253,11 +243,11 @@ public class SldManager {
 		winModal.setShowModalMask(true); // darken all other elements on the screen when a modal dialog is showing.
 		winModal.setShowCloseButton(false);
 		winModal.centerInPage();
-	
+
 		final DynamicForm addSldForm = new DynamicForm();
 
 		final TextItem nameOfSldItem = new TextItem("NameOfSld", sldEditorMessages.nameSld());
-		
+
 		nameOfSldItem.setWidth(200);
 		nameOfSldItem.addChangedHandler(new ChangedHandler() {
 
@@ -270,7 +260,7 @@ public class SldManager {
 
 		nameOfSldItem.setRequired(true);
 		nameOfSldItem.setRequiredMessage(sldEditorMessages.nameSldCanNotBeEmpty());
-		
+
 		final SelectItem typeOfGeomItem = new SelectItem();
 		typeOfGeomItem.setTitle(sldEditorMessages.geometryTitle());
 
@@ -294,7 +284,7 @@ public class SldManager {
 		// @todo FIX createButton.setIcon(WidgetLayout.iconCreate);
 		// createButton.setShowDisabledIcon(false);
 		createButton.setPrompt(sldEditorMessages.createButtonTooltip());
-		
+
 		// TODO: validate form first
 		createButton.setTitle(sldEditorMessages.createButtonTitle());
 		createButton.setShowDisabledIcon(false);
@@ -304,7 +294,7 @@ public class SldManager {
 		cancelButton.setShowDisabledIcon(false);
 		cancelButton.setTitle(sldEditorMessages.cancelButtonTitle());
 		cancelButton.setTooltip(sldEditorMessages.createSldCancelButtonTitle());
-		
+
 		createButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -418,8 +408,7 @@ public class SldManager {
 
 		NamedLayerInfo namedLayerInfo = new NamedLayerInfo();
 
-		List<org.geomajas.sld.NamedLayerInfo.ChoiceInfo> namedlayerChoicelist = 
-			new ArrayList<org.geomajas.sld.NamedLayerInfo.ChoiceInfo>();
+		List<NamedLayerInfo.ChoiceInfo> namedlayerChoicelist = new ArrayList<NamedLayerInfo.ChoiceInfo>();
 
 		namedLayerInfo.setChoiceList(namedlayerChoicelist);
 

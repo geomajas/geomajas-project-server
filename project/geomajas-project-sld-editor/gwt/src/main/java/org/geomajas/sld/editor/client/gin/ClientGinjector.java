@@ -8,20 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.sld.editor.client.gin;
 
-package org.geomajas.sld.editor.client.widget;
+import org.geomajas.sld.client.gin.ClientGinjectorBase;
+
+import com.google.gwt.inject.client.GinModules;
 
 /**
- * Provides call-back to signal the end of the loading of an SLD.
+ * Adds the {@link ClientModule} module to the base Ginjector {@link ClientGinjectorBase}.
  * 
- * @author An Buyle
- * 
+ * @author Jan De Moerloose
  */
-public interface OpenSldHandler {
-
-	/**
-	 * @param sldName Will always be non-null, name of SLD that was loaded.
-	 * 
-	 */
-	void execute(String sldName);
+@GinModules({ ClientModule.class })
+public interface ClientGinjector extends ClientGinjectorBase {
 }

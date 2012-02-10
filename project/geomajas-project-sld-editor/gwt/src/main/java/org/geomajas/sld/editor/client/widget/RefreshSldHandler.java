@@ -21,8 +21,8 @@ package org.geomajas.sld.editor.client.widget;
 public interface RefreshSldHandler {
 
 	/**
-	 * @param sldName  will always be non-null, name of SLD that the user wants to reload in order to lose all changes
-	 * 					since the last save operation
+	 * @param sldName will always be non-null, name of SLD that the user wants to reload in order to lose all changes
+	 *        since the last save operation
 	 */
 	void execute(String sldName);
 }

@@ -12,9 +12,9 @@ package org.geomajas.sld.editor.client.widget;
 
 /**
  * Contains SLD rule filter info in case the filter has not been fully specified.
- *
+ * 
  * @author An Buyle
- *
+ * 
  */
 public class IncompleteFilterInfo {
 

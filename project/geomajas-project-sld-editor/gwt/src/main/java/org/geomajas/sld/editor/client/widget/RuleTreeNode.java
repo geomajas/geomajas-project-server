@@ -15,9 +15,9 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 
 /**
  * A node inside the RuleTree.
- *
+ * 
  * @author An Buyle
- *
+ * 
  */
 public class RuleTreeNode extends TreeNode {
 
