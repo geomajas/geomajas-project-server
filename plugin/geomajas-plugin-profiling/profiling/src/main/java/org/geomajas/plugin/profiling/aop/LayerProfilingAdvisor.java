@@ -54,7 +54,7 @@ public class LayerProfilingAdvisor extends StaticMethodMatcherPointcutAdvisor {
 
 		/**{@inheritDoc} */
 		public boolean matches(Class<?> clazz) {
-			return clazz.isAssignableFrom(Layer.class) || clazz.isAssignableFrom(FeatureModel.class);
+			return Layer.class.isAssignableFrom(clazz) || FeatureModel.class.isAssignableFrom(clazz);
 		}
 	}
 }

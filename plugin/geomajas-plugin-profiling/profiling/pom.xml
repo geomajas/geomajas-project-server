@@ -37,6 +37,21 @@
 			<artifactId>geomajas-project-profiling</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
 		</dependency>
