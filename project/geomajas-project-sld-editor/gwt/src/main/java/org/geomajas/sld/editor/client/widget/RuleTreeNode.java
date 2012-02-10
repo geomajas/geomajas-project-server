@@ -59,7 +59,7 @@ public class RuleTreeNode extends TreeNode {
 		setRuleName(name);
 	}
 
-	RuleTreeNode[] getChildren() {
+	public RuleTreeNode[] getChildren() {
 		return this.children;
 	}
 
