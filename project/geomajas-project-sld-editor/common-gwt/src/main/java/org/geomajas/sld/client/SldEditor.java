@@ -18,7 +18,7 @@ import com.google.gwt.core.client.GWT;
 import com.gwtplatform.mvp.client.DelayedBindRegistry;
 
 /**
- * @author Christian Goudreau
+ * @author Jan De Moerloose
  */
 public class SldEditor implements EntryPoint {
 

@@ -20,7 +20,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.TokenFormatter;
 
 /**
- * @author Christian Goudreau
+ * @author Jan De Moerloose
  */
 public class SldEditorPlaceManager extends PlaceManagerImpl {
 

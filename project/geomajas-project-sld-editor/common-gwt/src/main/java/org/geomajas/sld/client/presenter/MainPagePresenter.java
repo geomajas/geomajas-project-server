@@ -31,7 +31,7 @@ import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
  * The goal of this sample is to show how to use nested presenters. These can be useful to decouple multiple presenters
  * that need to be displayed on the screen simultaneously.
  * 
- * @author Christian Goudreau
+ * @author Jan De Moerloose
  */
 public class MainPagePresenter extends Presenter<MainPagePresenter.MyView, MainPagePresenter.MyProxy> {
 
