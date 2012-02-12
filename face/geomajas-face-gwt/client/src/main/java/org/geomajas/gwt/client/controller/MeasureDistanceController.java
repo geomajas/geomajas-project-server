@@ -50,9 +50,9 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
  */
 public class MeasureDistanceController extends AbstractSnappingController {
 
-	private static final ShapeStyle lineStyle1 = new ShapeStyle("#FFFFFF", 0, "#FF9900", 1, 2);
+	private static final ShapeStyle LINE_STYLE_1 = new ShapeStyle("#FFFFFF", 0, "#FF9900", 1, 2);
 
-	private static final ShapeStyle lineStyle2 = new ShapeStyle("#FFFFFF", 0, "#FF5500", 1, 2);
+	private static final ShapeStyle LINE_STYLE_2 = new ShapeStyle("#FFFFFF", 0, "#FF5500", 1, 2);
 
 	private GfxGeometry distanceLine;
 
@@ -73,9 +73,9 @@ public class MeasureDistanceController extends AbstractSnappingController {
 	public MeasureDistanceController(MapWidget mapWidget) {
 		super(mapWidget);
 		distanceLine = new GfxGeometry("measureDistanceLine");
-		distanceLine.setStyle(lineStyle1);
+		distanceLine.setStyle(LINE_STYLE_1);
 		lineSegment = new GfxGeometry("measureDistanceLineSegment");
-		lineSegment.setStyle(lineStyle2);
+		lineSegment.setStyle(LINE_STYLE_2);
 	}
 
 	// -------------------------------------------------------------------------
