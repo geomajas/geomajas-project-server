@@ -26,7 +26,7 @@ import org.geomajas.sld.client.presenter.ChangeHandler;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter.MyModel;
 import org.geomajas.sld.client.presenter.SelectorChangeHandler;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.client.widget.GetCurrentRuleStateHandler;
@@ -125,7 +125,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	
 	private MyModel originalModel;
-	private GeometryTypes currentGeomType = GeometryTypes.UNSPECIFIED;
+	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
 
 	@Inject
 	public RuleSelectorView() {
@@ -361,7 +361,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 //@Override
 	public void copyToView(MyModel model) {
 		originalModel = model;
-		this.currentGeomType = GeometryTypes.UNSPECIFIED;
+		this.currentGeomType = GeometryType.UNSPECIFIED;
 
 		if (null != ruleGeneralForm) {
 			ruleGeneralForm.clearValues();
@@ -701,7 +701,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 
 		RuleModel defaultRuleModel = new RuleModel().createDefaultRuleModel(
-				currentGeomType.equals(GeometryTypes.UNSPECIFIED) ? getModel().getGeomType() : currentGeomType);
+				currentGeomType.equals(GeometryType.UNSPECIFIED) ? getModel().getGeomType() : currentGeomType);
 		
 		// TODO: avoid updating RuleData here
 		// TODO!!: Inform listener of creation of a new rule

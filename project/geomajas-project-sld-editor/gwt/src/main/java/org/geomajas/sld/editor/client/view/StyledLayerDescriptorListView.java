@@ -107,7 +107,12 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 			public void onSelectionChanged(SelectionEvent event) {
 				ListGridRecord record = event.getSelectedRecord();
 				enableRemoveButton(record != null);
-				SldListSelectEvent.fire(StyledLayerDescriptorListView.this, record.getAttribute("SLDName"));
+				if (null == record) {
+					//Deselect
+					SldListSelectEvent.fire(StyledLayerDescriptorListView.this, (String)null);
+				} else {
+					SldListSelectEvent.fire(StyledLayerDescriptorListView.this, record.getAttribute("SLDName"));
+				}
 			}
 		});
 

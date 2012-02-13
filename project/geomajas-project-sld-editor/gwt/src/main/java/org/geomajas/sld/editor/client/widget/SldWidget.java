@@ -41,7 +41,7 @@ import org.geomajas.sld.client.model.SldGwtServiceAsync;
 
 import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
@@ -906,17 +906,17 @@ public class SldWidget {
 		return ruleData;
 	}
 
-	private GeometryTypes GetGeomType(RuleInfo ruleInfo) {
+	private GeometryType GetGeomType(RuleInfo ruleInfo) {
 		Object symbolizerInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer specification
 
 		if (symbolizerInfo instanceof PointSymbolizerInfo) {
-			return GeometryTypes.POINT;
+			return GeometryType.POINT;
 		} else if (symbolizerInfo instanceof LineSymbolizerInfo) {
-			return GeometryTypes.LINE;
+			return GeometryType.LINE;
 		} else if (symbolizerInfo instanceof PolygonSymbolizerInfo) {
-			return GeometryTypes.POLYGON;
+			return GeometryType.POLYGON;
 		} else {
-			return GeometryTypes.UNSPECIFIED;
+			return GeometryType.UNSPECIFIED;
 		}
 	}
 

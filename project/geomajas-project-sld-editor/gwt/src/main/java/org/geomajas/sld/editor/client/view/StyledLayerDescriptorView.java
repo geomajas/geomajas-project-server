@@ -15,10 +15,13 @@ import org.geomajas.sld.client.presenter.ChangeHandler;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter.MyModel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
 //import com.google.gwt.event.shared.HandlerRegistration;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import com.gwtplatform.mvp.client.ViewImpl;
 
@@ -32,7 +35,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
+import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 /**
@@ -60,9 +68,11 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 	private MyModel originalModel;
 
-	@Inject
-	public StyledLayerDescriptorView() {
+	private EventBus eventBus;
 
+	@Inject
+	public StyledLayerDescriptorView(final EventBus eventBus, final ViewUtil viewUtil) {
+		this.eventBus = eventBus;
 		topLevelAttributesForm = new DynamicForm();
 		topLevelAttributesForm.setNumCols(4);
 
@@ -160,23 +170,16 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	public Widget asWidget() {
 		return layoutContainer;
 	}
+	
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
+	}
 
-	// @Override
-	// public String getName() {
-	// return nameField.getText();
-	// }
-	//
-	// @Override
-	// public Button getSendButton() {
-	// return sendButton;
-	// }
+	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
+		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
+	}
 
-	// @Override
-	// public void resetAndFocus() {
-	// // Focus the cursor on the name field when the app loads
-	// nameOfLayerItem.setFocus(true);
-	// // nameField.selectAll();
-	// }
+
 
 	// @Override
 	public void setError(String errorText) {
@@ -195,7 +198,8 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 		nameOfLayerItem.setValue(model.getNameOfLayer());
 		styleTitleItem.setValue(model.getStyleTitle());
-		geomTypeItem.setValue(model.getGeomType());
+		geomTypeItem.setValue(model.getGeomType().value());
+		setError(null);
 		topLevelAttributesForm.markForRedraw();
 
 	}
