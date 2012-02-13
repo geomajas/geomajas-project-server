@@ -162,12 +162,38 @@ public class SldManagerImpl implements SldManager {
 	}
 
 	public void select(String name) {
+		final StyledLayerDescriptorInfo selectedSld = findByName(name);
+		if (selectedSld != null) {
+			service.findByName(currentSld.getName(), new AsyncCallback<StyledLayerDescriptorInfo>() {
+
+				public void onSuccess(StyledLayerDescriptorInfo result) {
+					currentSld = result;
+					int i = currentList.indexOf(selectedSld);
+					if(i >= 0) {
+						currentList.set(i, currentSld);
+					} else {
+						currentList.add(currentSld);
+					}
+				}
+
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+
+				}
+
+			});
+			SldSelectedEvent.fire(this);
+		}
+
+	}
+
+	private StyledLayerDescriptorInfo findByName(String name) {
 		for (StyledLayerDescriptorInfo sld : currentList) {
 			if (sld.getName().equalsIgnoreCase(name)) {
-				currentSld = sld;
-				SldSelectedEvent.fire(this);
+				return sld;
 			}
 		}
+		return null;
 	}
 
 	public void removeCurrent() {
