@@ -10,25 +10,32 @@
  */
 package org.geomajas.sld.client.model.event;
 
+import org.geomajas.sld.StyledLayerDescriptorInfo;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-
 public class SldSelectedEvent extends GwtEvent<SldSelectedEvent.SldSelectedHandler> {
 
-	public SldSelectedEvent() {
-		// Possibly for serialization.
+	private StyledLayerDescriptorInfo sld;
+
+	public SldSelectedEvent(StyledLayerDescriptorInfo sld) {
+		this.sld = sld;
 	}
 
-	public static void fire(HasHandlers source) {
-		SldSelectedEvent eventInstance = new SldSelectedEvent();
+	public static void fire(HasHandlers source, StyledLayerDescriptorInfo sld) {
+		SldSelectedEvent eventInstance = new SldSelectedEvent(sld);
 		source.fireEvent(eventInstance);
 	}
 
 	public static void fire(HasHandlers source, SldSelectedEvent eventInstance) {
 		source.fireEvent(eventInstance);
+	}
+	
+	public StyledLayerDescriptorInfo getSld() {
+		return sld;
 	}
 
 	/**

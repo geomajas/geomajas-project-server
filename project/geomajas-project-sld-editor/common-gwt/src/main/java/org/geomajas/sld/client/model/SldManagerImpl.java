@@ -182,9 +182,14 @@ public class SldManagerImpl implements SldManager {
 				}
 
 			});
-			SldSelectedEvent.fire(this);
+			SldSelectedEvent.fire(this, currentSld);
 		}
 
+	}
+
+	
+	public StyledLayerDescriptorInfo getCurrentSld() {
+		return currentSld;
 	}
 
 	private StyledLayerDescriptorInfo findByName(String name) {
