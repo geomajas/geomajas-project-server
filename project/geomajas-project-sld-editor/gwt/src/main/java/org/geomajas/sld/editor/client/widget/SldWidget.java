@@ -38,6 +38,10 @@ import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.WellKnownNameInfo;
 import org.geomajas.sld.client.model.SldGwtServiceAsync;
+
+import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
+import org.geomajas.sld.editor.client.GeometryTypes;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.filter.FilterTypeInfo;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
@@ -710,7 +714,7 @@ public class SldWidget {
 
 		ruleSelector.addGetCurrentRuleStateHandler(new GetCurrentRuleStateHandler() {
 
-			public Object execute() {
+			public RuleData execute() {
 				return getCurrentRuleState();
 			}
 
@@ -865,8 +869,8 @@ public class SldWidget {
 
 	}
 
-	private Object getCurrentRuleState() {
-		Object ruleData = null;
+	private RuleData getCurrentRuleState() {
+		RuleData ruleData = new RuleData();
 		if (null != currentRule) {
 			if (isSupportedFilter) {
 				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
@@ -879,22 +883,41 @@ public class SldWidget {
 					incompleteRuleInfo.setIncompleteFilterInfo(incompleteFilterInfo);
 					incompleteRuleInfo.setRuleInfo(currentRule);
 
-					ruleData = incompleteRuleInfo;
-					// currentLeaf.setRuleData(incompleteRuleInfo);
+					ruleData.setTypeOfRule(TypeOfRule.INCOMPLETE_RULE);
+					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+					ruleData.setRuleBody(incompleteRuleInfo);
+					
 					enableSave(false);
 				} else {
 					setFilter(choiceFilterInfo.getFilter());
 					enableSave(ruleSelector.checkIfAllRulesComplete());
-					// currentLeaf.setRuleData(currentRule);
-					ruleData = currentRule;
+
+					ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+					ruleData.setRuleBody(currentRule);
 				}
 			} else {
 				enableSave(ruleSelector.checkIfAllRulesComplete());
-				ruleData = currentRule;
-				// currentLeaf.setRuleData(currentRule);
+				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+				ruleData.setRuleBody(currentRule);
 			}
 		}
 		return ruleData;
+	}
+
+	private GeometryTypes GetGeomType(RuleInfo ruleInfo) {
+		Object symbolizerInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer specification
+
+		if (symbolizerInfo instanceof PointSymbolizerInfo) {
+			return GeometryTypes.POINT;
+		} else if (symbolizerInfo instanceof LineSymbolizerInfo) {
+			return GeometryTypes.LINE;
+		} else if (symbolizerInfo instanceof PolygonSymbolizerInfo) {
+			return GeometryTypes.POLYGON;
+		} else {
+			return GeometryTypes.UNSPECIFIED;
+		}
 	}
 
 	private void setNoRuleSelected() {
@@ -962,7 +985,7 @@ public class SldWidget {
 		GWT.log("Entering setRule for rule of class " + object.getClass().getName());
 		clearForCurrentRule();
 
-		if (object.getClass().equals(IncompleteRuleInfo.class)) {
+		if (object instanceof IncompleteRuleInfo) {
 
 			enableSave(false); /* should already have been false */
 			IncompleteRuleInfo incompleteRuleInfo = (IncompleteRuleInfo) object;
@@ -976,7 +999,7 @@ public class SldWidget {
 			}
 			// this.currentGeomType = SldUtils.getGeometryType(incompleteRuleInfo.getRule());
 			rule = incompleteRuleInfo.getRule();
-		} else if (object.getClass().equals(RuleInfo.class)) {
+		} else if (object instanceof RuleInfo) {
 
 			rule = (RuleInfo) object;
 			currentRule = (RuleInfo) object;

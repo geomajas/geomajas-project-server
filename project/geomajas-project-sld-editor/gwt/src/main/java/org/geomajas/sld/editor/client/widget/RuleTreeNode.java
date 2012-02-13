@@ -68,12 +68,12 @@ public class RuleTreeNode extends TreeNode {
 		super.setChildren(children);
 	}
 
-	//	TODO remove this method:
-	void setRuleData(Object ruleData) {
+	//	TODO remove this method?
+	public void setRuleData(Object ruleData) {
 		setAttribute(RULE_DATE_FIELDNAME, ruleData);
 
 	}
-//	TODO remove this method:
+//	TODO remove this method ?
 	public Object getRuleData() {
 		return getAttributeAsObject(RULE_DATE_FIELDNAME);
 

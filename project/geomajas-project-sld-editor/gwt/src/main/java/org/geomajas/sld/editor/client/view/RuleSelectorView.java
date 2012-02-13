@@ -19,6 +19,9 @@ import java.util.Map;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleGroup;
+import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.presenter.ChangeHandler;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter.MyModel;
@@ -113,7 +116,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	//private TextItem ruleNameItem;
 
-	private List<RuleInfo> ruleList;
+	private List<RuleModel> ruleList;
 	
 	//TODO: needed to keep track of rule in tree grid that has the focus ?
 	//private Integer indexRuleInFocus = ChangeHandler.NO_RULE_SELECTED;
@@ -175,13 +178,14 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 						//TODO: update ??  E.g. let rule detail window call a listener 
 						// itself to save its current state when it has to update its view 
 						// to another rule
-						//currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
+						currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 					}
 
 					currentLeaf = (RuleTreeNode) event.getLeaf();
 
 					// Update Rule detail form item to show the first rule + inform listeners
-					selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName());
+					selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName(),
+							currentLeaf.getRuleData());
 
 				}
 			});
@@ -195,7 +199,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 						// itself to save its current state when it has to update its view 
 						// to another rule
 
-						// currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
+						currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 					}
 
 					setNoRuleSelected();
@@ -364,27 +368,29 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			ruleGeneralForm.disable();
 		}
 
-		List<FeatureTypeStyleInfo> styleList = model.getStyleList();
+		List<RuleGroup> styleList = model.getRuleGroupList();
 		if (styleList.size() > 1) {
 			SC.warn("Meer dan 1 groep van regels (&lt;FeatureTypeStyle&gt;) in deze SLD." 
 					+ "  Enkel de eerste wordt getoond.");
 			// Can be supported later via groups of rules in ruleSelector
 		}
 
-		FeatureTypeStyleInfo featureTypeStyle = styleList.iterator().next(); // retrieve the first <FeatureTypeStyle>
+		RuleGroup featureTypeStyle = styleList.iterator().next(); // retrieve the first <FeatureTypeStyle>
 																				// element
 
-		if (featureTypeStyle.getRuleList().size() < 1) {
+		if (featureTypeStyle.getRuleModelList().size() < 1) {
 			SC.warn("Fout: Geen rules in deze SLD.");
 			return; // ABORT
 		}
 
-		ruleList = featureTypeStyle.getRuleList();
+		ruleList = featureTypeStyle.getRuleModelList();
 
+		// Setup the tree where each leaf node corresponds with 1 rule
+		
 		List<RuleTreeNode> children = new ArrayList<RuleTreeNode>();
 		Integer i = INDEX_FIRST_RULE;
 		
-		for (RuleInfo rule : ruleList) {
+		for (RuleModel rule : ruleList) {
 			
 			String title;
 
@@ -397,7 +403,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			}
 			String name = rule.getName();
 
-			children.add(new RuleTreeNode(i.toString(), title, name, false, rule));
+			children.add(new RuleTreeNode(i.toString(), title, name, false, rule.getRuleData()));
 			i++;
 		}
 		RuleTreeNode[] arrayOfRules = new RuleTreeNode[i - INDEX_FIRST_RULE];
@@ -422,7 +428,8 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 		//Update Rule detail form item to show the first rule 
 		// + inform listeners (needed ?) 
-		selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName());
+		selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName(), 
+				currentLeaf.getRuleData());
 	}
 
 //@Override
@@ -636,7 +643,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 									//Update Rule detail form item to show the first rule 
 									// + inform listeners  
 									selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(),
-											currentLeaf.getRuleName());
+											currentLeaf.getRuleName(), currentLeaf.getRuleData());
 								} else {
 									setNoRuleSelected();
 								}
@@ -656,7 +663,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			// itself to save its current state when it has to update its view 
 			// to another rule
 
-			//currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
+			currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 		}
 
 		RuleTreeNode newLeaf = new RuleTreeNode(getNewIdForRuleInTree(), "nieuwe stijl"/* title */,
@@ -693,22 +700,25 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		}
 
 
-		RuleInfo defaultRule = SldUtils.createDefaultRule(currentGeomType.equals(GeometryTypes.UNSPECIFIED) ?
-				getModel().getGeomType() : currentGeomType);
-
+		RuleModel defaultRuleModel = new RuleModel().createDefaultRuleModel(
+				currentGeomType.equals(GeometryTypes.UNSPECIFIED) ? getModel().getGeomType() : currentGeomType);
+		
 		// TODO: avoid updating RuleData here
 		// TODO!!: Inform listener of creation of a new rule
-		// newLeaf.setRuleData(defaultRule);
+		newLeaf.setRuleData(defaultRuleModel.getRuleData());
+		newLeaf.setTitle(defaultRuleModel.getTitle());
+		newLeaf.setRuleName(defaultRuleModel.getName());
 		
 		
-		ruleList.add(defaultRule); /* add new rule add the end of the list */
+		ruleList.add(defaultRuleModel); /* add new rule add the end of the list */
 
 		currentLeaf = newLeaf;
 
 		sldHasChanged();
 		//Update Rule detail form item to show the first rule 
 		// + inform listeners  
-		selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName());
+		selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName(),
+						currentLeaf.getRuleData());
 
 	}
 
@@ -847,7 +857,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	
 	
 	//--------------------------------------------------------------------------------------
-	private void selectRule(String ruleID, String ruleTitle, String ruleName) {
+	private void selectRule(String ruleID, String ruleTitle, String ruleName, Object ruleData) {
 
 		updateButtons();
 
@@ -859,7 +869,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			ruleGeneralForm.show();
 		}
 
-	// TODO: move code below to more app. place
+	// TODO: move code below to a more appropriate place
 //		if (ruleData.getClass().equals(RuleInfo.class)) {
 //			this.currentGeomType = SldUtils.getGeometryType((RuleInfo) ruleData);
 //		}
@@ -869,7 +879,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 //		}
 		
 		for (SelectorChangeHandler  listener : myHandlerManager.getListeners() ) {
-			listener.onChange(new Integer(ruleID));
+			listener.onChange(new Integer(ruleID), (RuleData)ruleData);
 		}
 		
 		
@@ -887,7 +897,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 		// indexRuleInFocus = ChangeHandler.NO_RULE_SELECTED;
 		for (SelectorChangeHandler  listener : myHandlerManager.getListeners() ) {
-			listener.onChange(SelectorChangeHandler.NO_RULE_SELECTED);
+			listener.onChange(SelectorChangeHandler.NO_RULE_SELECTED, null);
 		}
 		
 //		if (null != selectRuleHandler) {
@@ -986,7 +996,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			return;
 		}
 		sldHasChanged();
-		RuleInfo ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE - 1);
+		RuleModel ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE - 1);
 		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE - 1, ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE));
 		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE, ruleToSwap);
 	}
@@ -999,7 +1009,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		}
 		sldHasChanged();
 
-		RuleInfo ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE + 1);
+		RuleModel ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE + 1);
 		ruleList.set(new Integer(ruleId), ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE));
 		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE, ruleToSwap);
 	}
