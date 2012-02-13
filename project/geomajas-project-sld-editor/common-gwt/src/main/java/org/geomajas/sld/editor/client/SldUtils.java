@@ -30,14 +30,15 @@ import com.google.gwt.core.client.GWT;
  *
  */
 public final class SldUtils {
-
+	public final static String DEFAULT_STYLE_NAME = "Standaard stijl"; // TODO i18n
+	
 	private SldUtils() {
 	}
 
 	public static RuleInfo createDefaultRule(GeometryTypes geomType) {
 		RuleInfo defaultRule = new RuleInfo();
 
-		defaultRule.setTitle("Standaard stijl");
+		defaultRule.setTitle(DEFAULT_STYLE_NAME);
 
 		List<SymbolizerTypeInfo> symbolizerList = new ArrayList<SymbolizerTypeInfo>();
 		SymbolizerTypeInfo symbolizer = null;
