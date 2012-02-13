@@ -25,15 +25,16 @@
 	<url>http://www.geomajas.org/build-tools</url>
 
 	<modules>
+		<module>geomajas-al-parent</module>
 		<module>geomajas-checkstyle</module>
 		<module>geomajas-dep</module>
+		<module>geomajas-dist</module>
+		<module>geomajas-doc-parent</module>
 		<module>geomajas-gwt-archetype</module>
 		<module>geomajas-jetty-runner</module>
 		<module>geomajas-maven-dojo</module>
 		<module>geomajas-maven-plugin</module>
 		<module>geomajas-parent</module>
-		<module>geomajas-al-parent</module>
-		<module>geomajas-doc-parent</module>
 		<module>geomajas-plugin-archetype</module>
 	</modules>
 
