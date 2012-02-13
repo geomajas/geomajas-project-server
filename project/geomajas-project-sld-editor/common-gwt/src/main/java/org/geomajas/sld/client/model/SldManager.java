@@ -15,6 +15,7 @@ import java.util.List;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.model.event.SldAddedEvent.HasSldAddedHandlers;
 import org.geomajas.sld.client.model.event.SldLoadedEvent.HasSldLoadedHandlers;
+import org.geomajas.sld.client.model.event.SldSelectedEvent.HasSldSelectedHandlers;
 import org.geomajas.sld.editor.client.GeometryType;
 
 /**
@@ -23,7 +24,7 @@ import org.geomajas.sld.editor.client.GeometryType;
  * @author Jan De Moerloose
  * 
  */
-public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers {
+public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, HasSldSelectedHandlers {
 
 	/**
 	 * Fetch all the SLD's from the server (asynchronously). Instead of passing a callback here, clients should use the
@@ -52,4 +53,17 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers {
 	 * @param sld the sld to add
 	 */
 	void add(StyledLayerDescriptorInfo sld);
+	
+	/**
+	 * Remove the currently selected SLD from the server list.
+	 * 
+	 */
+	void removeCurrent();
+
+	/**
+	 * Select an SLD from the list.
+	 * 
+	 * @param name name of the SLD
+	 */
+	void select(String name);
 }

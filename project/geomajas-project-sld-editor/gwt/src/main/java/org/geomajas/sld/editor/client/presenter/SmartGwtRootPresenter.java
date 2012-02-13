@@ -18,7 +18,9 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.RootPresenter;
+import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
 import com.smartgwt.client.widgets.BaseWidget;
 
 /**
@@ -75,6 +77,13 @@ public class SmartGwtRootPresenter extends RootPresenter {
 	@Inject
 	public SmartGwtRootPresenter(EventBus eventBus, SmartGwtRootView view) {
 		super(eventBus, view);
+	}
+
+	@Override
+	public void onRevealRootPopupContent(final RevealRootPopupContentEvent revealContentEvent) {
+		addToPopupSlot(revealContentEvent.getContent());
+		// always show pop-up !
+		revealContentEvent.getContent().getView().show();
 	}
 
 }

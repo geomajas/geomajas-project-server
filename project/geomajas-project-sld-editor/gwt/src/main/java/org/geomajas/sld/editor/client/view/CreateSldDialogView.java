@@ -150,7 +150,7 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 		cancelButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
-				winModal.hide();
+				hide();
 			}
 
 		});
@@ -190,6 +190,7 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 			
 			public void onCloseClick(CloseClientEvent event) {
 				popupViewCloseHandler.onClose();
+				winModal.removeFromParent();
 			}
 		});
 	}
@@ -215,6 +216,18 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 		winModal.setTop(top);
 	}
 
+
+
+	@Override
+	public void addToSlot(Object slot, Widget content) {
+		super.addToSlot(slot, content);
+	}
+
+
+	@Override
+	public void setInSlot(Object slot, Widget content) {
+		super.setInSlot(slot, content);
+	}
 
 
 	@Override

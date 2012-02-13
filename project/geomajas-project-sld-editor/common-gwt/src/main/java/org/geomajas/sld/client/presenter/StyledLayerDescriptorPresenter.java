@@ -11,7 +11,9 @@
 
 package org.geomajas.sld.client.presenter;
 
-import org.geomajas.sld.client.model.SldListChangedEvent;
+import org.geomajas.sld.client.model.event.SldSelectedEvent;
+import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
+import org.geomajas.sld.client.presenter.event.SldListSelectEvent;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -27,7 +29,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
  * @author An Buyle
  */
 public class StyledLayerDescriptorPresenter
-	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> {
+	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements SldSelectedHandler {
 
 	private MyModel myModel;
 
@@ -184,6 +186,11 @@ public class StyledLayerDescriptorPresenter
 		// placeManager.revealPlace(new PlaceRequest(ResponsePresenter.nameToken).with(
 		// ResponsePresenter.textToServerParam, textToServer));
 
+	}
+
+	public void onSldSelected(SldSelectedEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

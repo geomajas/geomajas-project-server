@@ -26,6 +26,10 @@ import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.SldListPopup
 import org.geomajas.sld.client.presenter.event.SldListRemoveEvent;
 import org.geomajas.sld.client.presenter.event.SldListRemoveEvent.HasSldListRemoveHandlers;
 import org.geomajas.sld.client.presenter.event.SldListRemoveEvent.SldListRemoveHandler;
+import org.geomajas.sld.client.presenter.event.SldListSelectEvent;
+import org.geomajas.sld.client.presenter.event.SldListSelectEvent.HasSldListSelectHandlers;
+import org.geomajas.sld.client.presenter.event.SldListSelectEvent.SldListSelectHandler;
+import org.geomajas.sld.client.view.ViewUtil;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -38,7 +42,6 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
 
-
 /**
  * Presenter for the current list of SLD's.
  * 
@@ -48,6 +51,7 @@ import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
 public class StyledLayerDescriptorListPresenter
 	extends Presenter<StyledLayerDescriptorListPresenter.MyView, StyledLayerDescriptorListPresenter.MyProxy> implements
 		SldLoadedHandler, SldAddedHandler, InitLayoutHandler {
+
 	/**
 	 * {@linkStyledLayerDescriptorListPresenter}'s proxy.
 	 */
@@ -59,7 +63,8 @@ public class StyledLayerDescriptorListPresenter
 	/**
 	 * {@link StyledLayerDescriptorListPresenter}'s view.
 	 */
-	public interface MyView extends View, HasSldListPopupNewHandlers, HasSldListRemoveHandlers {
+	public interface MyView extends View, HasSldListPopupNewHandlers, HasSldListRemoveHandlers,
+			HasSldListSelectHandlers {
 
 		void setData(List<String> sldList);
 
@@ -69,28 +74,36 @@ public class StyledLayerDescriptorListPresenter
 
 	private SldManager manager;
 
+	private ViewUtil viewUtil;
+
 	@Inject
 	public StyledLayerDescriptorListPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
-			final SldManager manager, final CreateSldDialogPresenterWidget createDialog) {
+			final ViewUtil viewUtil, final SldManager manager, final CreateSldDialogPresenterWidget createDialog) {
 		super(eventBus, view, proxy);
 		this.manager = manager;
 		this.createDialog = createDialog;
+		this.viewUtil = viewUtil;
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
 		registerHandler(getView().addSldListRemoveHandler(new SldListRemoveHandler() {
-			
+
 			public void onSldListRemove(SldListRemoveEvent event) {
-				// TODO Auto-generated method stub
-				
+				manager.removeCurrent();
 			}
 		}));
 		registerHandler(getView().addSldListPopupNewHandler(new SldListPopupNewHandler() {
-			
+
 			public void onPopupNewList(SldListPopupNewEvent event) {
 				showCreateDialog();
+			}
+		}));
+		registerHandler(getView().addSldListSelectHandler(new SldListSelectHandler() {
+
+			public void onSldListSelect(SldListSelectEvent event) {
+				manager.select(event.getName());
 			}
 		}));
 		addRegisteredHandler(SldLoadedEvent.getType(), this);
@@ -102,7 +115,7 @@ public class StyledLayerDescriptorListPresenter
 		RevealContentEvent.fire(this, MainPagePresenter.TYPE_SIDE_CONTENT, this);
 	}
 
-	// Handler, called when SldListChangedEvent event is received 
+	// Handler, called when SldListChangedEvent event is received
 	public void onSldListChanged(SldListChangedEvent event) {
 	}
 
@@ -127,6 +140,5 @@ public class StyledLayerDescriptorListPresenter
 	public void onSldLoaded(SldLoadedEvent event) {
 		getView().setData(manager.getCurrentNames());
 	}
-
 
 }

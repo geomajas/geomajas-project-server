@@ -25,6 +25,9 @@ import org.geomajas.sld.client.model.event.SldAddedEvent;
 import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
 import org.geomajas.sld.client.model.event.SldLoadedEvent;
 import org.geomajas.sld.client.model.event.SldLoadedEvent.SldLoadedHandler;
+import org.geomajas.sld.client.model.event.SldRemovedEvent;
+import org.geomajas.sld.client.model.event.SldSelectedEvent;
+import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 
@@ -51,6 +54,8 @@ public class SldManagerImpl implements SldManager {
 	private final EventBus eventBus;
 
 	private final Logger logger = Logger.getLogger(SldManagerImpl.class.getName());
+
+	private StyledLayerDescriptorInfo currentSld;
 
 	@Inject
 	public SldManagerImpl(EventBus eventBus) {
@@ -90,7 +95,7 @@ public class SldManagerImpl implements SldManager {
 		}
 		return names;
 	}
-	
+
 	public void add(StyledLayerDescriptorInfo sld) {
 		service.create(sld, new AsyncCallback<StyledLayerDescriptorInfo>() {
 
@@ -100,16 +105,16 @@ public class SldManagerImpl implements SldManager {
 				if (null != sld) {
 					currentList.add(sld);
 					logger.info("SldManager: new SLD was successfully created. Execute selectSld()");
-					//selectSld(sld.getName(), false);
+					// selectSld(sld.getName(), false);
 				}
 				SldAddedEvent.fire(SldManagerImpl.this);
 			}
 
 			public void onFailure(Throwable caught) {
-//				SC.warn("De SLD met standaard inhoud kon niet gecre&euml;erd worden. (Interne fout: "
-//						+ caught.getMessage() + ")");
-//
-//				winModal.destroy();
+				// SC.warn("De SLD met standaard inhoud kon niet gecre&euml;erd worden. (Interne fout: "
+				// + caught.getMessage() + ")");
+				//
+				// winModal.destroy();
 
 			}
 		});
@@ -150,6 +155,44 @@ public class SldManagerImpl implements SldManager {
 
 	public HandlerRegistration addSldAddedHandler(SldAddedHandler handler) {
 		return eventBus.addHandler(SldAddedEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldSelectedHandler(SldSelectedHandler handler) {
+		return eventBus.addHandler(SldSelectedEvent.getType(), handler);
+	}
+
+	public void select(String name) {
+		for (StyledLayerDescriptorInfo sld : currentList) {
+			if (sld.getName().equalsIgnoreCase(name)) {
+				currentSld = sld;
+				SldSelectedEvent.fire(this);
+			}
+		}
+	}
+
+	public void removeCurrent() {
+		if (currentSld != null) {
+			service.remove(currentSld.getName(), new AsyncCallback<Boolean>() {
+
+				/** call-back for handling saveOrUpdate() success return **/
+
+				public void onSuccess(Boolean sld) {
+					if (sld) {
+						currentList.remove(currentSld);
+						logger.info("SldManager: new SLD was successfully created. Execute selectSld()");
+					}
+					SldRemovedEvent.fire(SldManagerImpl.this);
+				}
+
+				public void onFailure(Throwable caught) {
+					// SC.warn("De SLD met standaard inhoud kon niet gecre&euml;erd worden. (Interne fout: "
+					// + caught.getMessage() + ")");
+					//
+					// winModal.destroy();
+
+				}
+			});
+		}
 	}
 
 }
