@@ -20,8 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
 import org.geomajas.sld.client.presenter.CreateSldDialogPresenterWidget.MyView;
-import org.geomajas.sld.client.presenter.event.CreateSldPopupCreateEvent;
-import org.geomajas.sld.client.presenter.event.CreateSldPopupCreateEvent.CreateSldPopupCreateHandler;
+import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent;
+import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
@@ -132,7 +132,7 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 
 			public void onClick(ClickEvent event) {
 				if (addSldForm.validate()) {
-					CreateSldPopupCreateEvent.fire(CreateSldDialogView.this);
+					CreateSldDialogCreateEvent.fire(CreateSldDialogView.this);
 				}
 			}
 
@@ -160,8 +160,8 @@ public class CreateSldDialogView extends PopupViewImpl implements MyView {
 	}
 
 
-	public HandlerRegistration addCreateSldPopupCreateHandler(CreateSldPopupCreateHandler handler) {
-		return eventBus.addHandler(CreateSldPopupCreateEvent.getType(), handler);
+	public HandlerRegistration addCreateSldDialogCreateHandler(CreateSldDialogCreateHandler handler) {
+		return eventBus.addHandler(CreateSldDialogCreateEvent.getType(), handler);
 	}
 
 

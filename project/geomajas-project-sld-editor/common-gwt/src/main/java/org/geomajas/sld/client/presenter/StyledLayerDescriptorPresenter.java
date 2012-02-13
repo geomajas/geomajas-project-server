@@ -13,6 +13,7 @@ package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
+import org.geomajas.sld.client.presenter.event.InitLayoutEvent;
 import org.geomajas.sld.client.presenter.event.SldListSelectEvent;
 
 import com.google.inject.Inject;

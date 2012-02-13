@@ -1,17 +1,12 @@
-/**
- * Copyright 2011 ArcBees Inc.
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
  */
 
 package org.geomajas.sld.client.presenter;
@@ -20,9 +15,9 @@ import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.event.SldAddedEvent;
 import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
-import org.geomajas.sld.client.presenter.event.CreateSldPopupCreateEvent;
-import org.geomajas.sld.client.presenter.event.CreateSldPopupCreateEvent.CreateSldPopupCreateHandler;
-import org.geomajas.sld.client.presenter.event.CreateSldPopupCreateEvent.HasCreateSldPopupCreateHandlers;
+import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent;
+import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
+import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent.HasCreateSldDialogCreateHandlers;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 
@@ -43,7 +38,7 @@ public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDia
 	/**
 	 * @author Jan De Moerloose
 	 */
-	public interface MyView extends PopupView, HasCreateSldPopupCreateHandlers {
+	public interface MyView extends PopupView, HasCreateSldDialogCreateHandlers {
 
 		GeometryType getGeometryType();
 		
@@ -66,9 +61,9 @@ public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDia
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().addCreateSldPopupCreateHandler(new CreateSldPopupCreateHandler() {
+		registerHandler(getView().addCreateSldDialogCreateHandler(new CreateSldDialogCreateHandler() {
 
-			public void onCreateSldPopupCreate(CreateSldPopupCreateEvent event) {
+			public void onCreateSldPopupCreate(CreateSldDialogCreateEvent event) {
 				StyledLayerDescriptorInfo newInfo = manager.create(getView().getGeometryType());
 				manager.add(newInfo);
 			}

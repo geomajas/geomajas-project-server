@@ -15,19 +15,18 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+public class CreateSldDialogCreateEvent extends GwtEvent<CreateSldDialogCreateEvent.CreateSldDialogCreateHandler> {
 
-public class SldListRemoveEvent  extends GwtEvent<SldListRemoveEvent.SldListRemoveHandler> {
-
-	public SldListRemoveEvent() {
+	public CreateSldDialogCreateEvent() {
 		// Possibly for serialization.
 	}
 
 	public static void fire(HasHandlers source) {
-		SldListRemoveEvent eventInstance = new SldListRemoveEvent();
+		CreateSldDialogCreateEvent eventInstance = new CreateSldDialogCreateEvent();
 		source.fireEvent(eventInstance);
 	}
 
-	public static void fire(HasHandlers source, SldListRemoveEvent eventInstance) {
+	public static void fire(HasHandlers source, CreateSldDialogCreateEvent eventInstance) {
 		source.fireEvent(eventInstance);
 	}
 
@@ -37,9 +36,9 @@ public class SldListRemoveEvent  extends GwtEvent<SldListRemoveEvent.SldListRemo
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface HasSldListRemoveHandlers extends HasHandlers {
+	public interface HasCreateSldDialogCreateHandlers extends HasHandlers {
 
-		HandlerRegistration addSldListRemoveHandler(SldListRemoveHandler handler);
+		HandlerRegistration addCreateSldDialogCreateHandler(CreateSldDialogCreateHandler handler);
 	}
 
 	/**
@@ -48,30 +47,30 @@ public class SldListRemoveEvent  extends GwtEvent<SldListRemoveEvent.SldListRemo
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface SldListRemoveHandler extends EventHandler {
+	public interface CreateSldDialogCreateHandler extends EventHandler {
 
 		/**
 		 * Notifies side content child presenter to reveal itself.
 		 * 
 		 * @param event the event
 		 */
-		void onSldListRemove(SldListRemoveEvent event);
+		void onCreateSldPopupCreate(CreateSldDialogCreateEvent event);
 	}
 
-	private static final Type<SldListRemoveHandler> TYPE = new Type<SldListRemoveHandler>();
+	private static final Type<CreateSldDialogCreateHandler> TYPE = new Type<CreateSldDialogCreateHandler>();
 
-	public static Type<SldListRemoveHandler> getType() {
+	public static Type<CreateSldDialogCreateHandler> getType() {
 		return TYPE;
 	}
 
 	@Override
-	public Type<SldListRemoveHandler> getAssociatedType() {
+	public Type<CreateSldDialogCreateHandler> getAssociatedType() {
 		return TYPE;
 	}
 
 	@Override
-	protected void dispatch(SldListRemoveHandler handler) {
-		handler.onSldListRemove(this);
+	protected void dispatch(CreateSldDialogCreateHandler handler) {
+		handler.onCreateSldPopupCreate(this);
 	}
 
 	@Override
@@ -86,6 +85,6 @@ public class SldListRemoveEvent  extends GwtEvent<SldListRemoveEvent.SldListRemo
 
 	@Override
 	public String toString() {
-		return "SldListRemoveEvent[" + "]";
+		return "CreateSldDialogCreateEvent[" + "]";
 	}
 }
