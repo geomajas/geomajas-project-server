@@ -31,6 +31,8 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 /**
@@ -144,7 +146,6 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		errorMessage.setAlign(Alignment.CENTER);
 
 		layoutContainer = new VLayout(5);
-		layoutContainer.setShowResizeBar(true); // Resize bar to make the height of the Container bigger/smaller
 		layoutContainer.setMinHeight(200);
 
 		layoutContainer.setLayoutBottomMargin(5);

@@ -13,8 +13,8 @@ package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
-import org.geomajas.sld.client.presenter.event.InitLayoutEvent;
-import org.geomajas.sld.client.presenter.event.SldListSelectEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -30,7 +30,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
  * @author An Buyle
  */
 public class StyledLayerDescriptorPresenter
-	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements SldSelectedHandler {
+	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements SldSelectedHandler, InitSldLayoutHandler {
 
 	private MyModel myModel;
 
@@ -128,11 +128,11 @@ public class StyledLayerDescriptorPresenter
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainPagePresenter.TYPE_MAIN_CONTENT, this);
+		RevealContentEvent.fire(this, StyledLayerDescriptorLayoutPresenter.TYPE_GENERAL_CONTENT, this);
 	}
 
 	@ProxyEvent
-	public void onInitLayout(InitLayoutEvent event) {
+	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
 	}
 	

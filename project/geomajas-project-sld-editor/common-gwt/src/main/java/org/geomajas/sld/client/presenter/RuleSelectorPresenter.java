@@ -16,28 +16,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-//import com.google.gwt.user.client.ui.Button;
-import com.google.inject.Inject;
-
-import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.NameToken;
-import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
-import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.Proxy;
-import com.gwtplatform.mvp.client.proxy.ProxyPlace;
-import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
-
-
-import org.geomajas.sld.RuleInfo;
-import org.geomajas.sld.client.NameTokens;
 import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.editor.client.GeometryTypes;
-import org.geomajas.sld.editor.client.SldUtils;
+
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 
 /**
@@ -46,7 +40,7 @@ import org.geomajas.sld.editor.client.SldUtils;
 
 
 public class RuleSelectorPresenter extends
-			Presenter<RuleSelectorPresenter.MyView, RuleSelectorPresenter.MyProxy> {
+			Presenter<RuleSelectorPresenter.MyView, RuleSelectorPresenter.MyProxy> implements InitSldLayoutHandler {
 		
 		private GeometryTypes defaultGeomType = GeometryTypes.POINT;	
 		private MyModel myModel;
@@ -203,7 +197,7 @@ public class RuleSelectorPresenter extends
 		@Override
 		protected void revealInParent() {
 			//TODO: check if MainPagePresenter.TYPE_MAIN_CONTENT is OK
-			RevealContentEvent.fire(this, MainPagePresenter.TYPE_SIDE_CONTENT,
+			RevealContentEvent.fire(this, StyledLayerDescriptorLayoutPresenter.TYPE_RULES_CONTENT,
 					this);
 		}
 		
@@ -251,6 +245,12 @@ public class RuleSelectorPresenter extends
 	//		    placeManager.revealPlace(new PlaceRequest(ResponsePresenter.nameToken).with(
 	//		        ResponsePresenter.textToServerParam, textToServer));
 	
+		}
+
+		@ProxyEvent
+		public void onInitSldLayout(InitSldLayoutEvent event) {
+			forceReveal();
+			
 		}
 
 	}

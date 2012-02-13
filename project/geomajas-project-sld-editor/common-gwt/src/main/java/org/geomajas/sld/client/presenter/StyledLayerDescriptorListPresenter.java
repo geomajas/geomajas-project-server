@@ -19,9 +19,9 @@ import org.geomajas.sld.client.model.event.SldAddedEvent;
 import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
 import org.geomajas.sld.client.model.event.SldLoadedEvent;
 import org.geomajas.sld.client.model.event.SldLoadedEvent.SldLoadedHandler;
-import org.geomajas.sld.client.presenter.event.InitLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitMainLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitMainLayoutEvent.InitMainLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent;
-import org.geomajas.sld.client.presenter.event.InitLayoutEvent.InitLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.HasSldListPopupNewHandlers;
 import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
 import org.geomajas.sld.client.presenter.event.SldListRemoveEvent;
@@ -51,7 +51,7 @@ import com.gwtplatform.mvp.client.proxy.RevealRootPopupContentEvent;
  */
 public class StyledLayerDescriptorListPresenter
 	extends Presenter<StyledLayerDescriptorListPresenter.MyView, StyledLayerDescriptorListPresenter.MyProxy> implements
-		SldLoadedHandler, SldAddedHandler, InitLayoutHandler {
+		SldLoadedHandler, SldAddedHandler, InitMainLayoutHandler {
 
 	/**
 	 * {@linkStyledLayerDescriptorListPresenter}'s proxy.
@@ -113,7 +113,7 @@ public class StyledLayerDescriptorListPresenter
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, MainPagePresenter.TYPE_SIDE_CONTENT, this);
+		RevealContentEvent.fire(this, MainLayoutPresenter.TYPE_SIDE_CONTENT, this);
 	}
 
 	// Handler, called when SldListChangedEvent event is received
@@ -125,7 +125,7 @@ public class StyledLayerDescriptorListPresenter
 	}
 
 	@ProxyEvent
-	public void onInitLayout(InitLayoutEvent event) {
+	public void onInitMainLayout(InitMainLayoutEvent event) {
 		forceReveal();
 	}
 

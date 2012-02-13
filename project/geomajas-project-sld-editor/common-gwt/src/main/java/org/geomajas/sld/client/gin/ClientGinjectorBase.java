@@ -12,7 +12,8 @@
 package org.geomajas.sld.client.gin;
 
 import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.presenter.MainPagePresenter;
+import org.geomajas.sld.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
 
@@ -32,11 +33,13 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 @GinModules({ ClientModule.class })
 public interface ClientGinjectorBase extends Ginjector {
 
-	Provider<MainPagePresenter> getMainPagePresenter();
+	Provider<MainLayoutPresenter> getMainLayoutPresenter();
 
 	Provider<StyledLayerDescriptorListPresenter> getStyledLayerDescriptorListPresenter();
 
 	Provider<StyledLayerDescriptorPresenter> getStyledLayerDescriptorPresenter();
+
+	Provider<StyledLayerDescriptorLayoutPresenter> getStyledLayerDescriptorLayoutPresenter();
 
 	EventBus getEventBus();
 

@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.client.presenter.MainPagePresenter;
+import org.geomajas.sld.client.presenter.MainLayoutPresenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -27,7 +27,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Jan De Moerloose
  * 
  */
-public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
+public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyView {
 
 	private VLayout mainContentPanel;
 
@@ -37,7 +37,7 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 
 	private VLayout widget;
 
-	public MainPageView() {
+	public MainLayoutView() {
 
 		sideContentPanel = new VLayout();
 		sideContentPanel.setWidth("30%");
@@ -85,11 +85,11 @@ public class MainPageView extends ViewImpl implements MainPagePresenter.MyView {
 	// this view.
 	@Override
 	public void setInSlot(Object slot, Widget content) {
-		if (slot == MainPagePresenter.TYPE_MAIN_CONTENT) {
+		if (slot == MainLayoutPresenter.TYPE_MAIN_CONTENT) {
 			setMainContent(content);
-		} else if (slot == MainPagePresenter.TYPE_SIDE_CONTENT) {
+		} else if (slot == MainLayoutPresenter.TYPE_SIDE_CONTENT) {
 			setSideContent(content);
-		} else if (slot == MainPagePresenter.TYPE_TOP_CONTENT) {
+		} else if (slot == MainLayoutPresenter.TYPE_TOP_CONTENT) {
 			setTopContent(content);
 		} else {
 			super.setInSlot(slot, content);
