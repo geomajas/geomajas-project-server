@@ -51,7 +51,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
  * The view implementation for
  * {@link com.gwtplatform.CreateSldDialogPresenterWidget.tab.client.presenter.GlobalDialogPresenterWidget}.
  * 
- * @author Philippe Beaudoin
+ * @author Jan De Moerloose
  */
 public class CreateSldDialogView extends PopupViewImpl implements MyView {
 	

@@ -30,7 +30,7 @@ import com.gwtplatform.mvp.client.PresenterWidget;
  * The {@link PresenterWidget} of a dialog box that is meant to be displayed no matter which presenter is visible.
  * Compare to {@link LocalDialogPresenterWidget}.
  * 
- * @author Philippe Beaudoin
+ * @author Jan De Moerloose
  */
 public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDialogPresenterWidget.MyView> implements
 		SldAddedHandler {
