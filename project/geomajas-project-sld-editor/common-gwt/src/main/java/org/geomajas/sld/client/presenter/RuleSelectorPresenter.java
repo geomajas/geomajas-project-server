@@ -16,12 +16,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geomajas.sld.FeatureTypeStyleInfo;
+import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
+import org.geomajas.sld.client.model.event.RulesLoadedEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.client.view.ViewUtil;
+import org.geomajas.sld.editor.client.GeometryType;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -41,10 +46,29 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class RuleSelectorPresenter extends
 			Presenter<RuleSelectorPresenter.MyView, RuleSelectorPresenter.MyProxy> implements InitSldLayoutHandler {
+	
+
+	//private SldManager manager;
+	private ViewUtil viewUtil;	
+	
+			@Inject
+		public RuleSelectorPresenter(final EventBus eventBus, final MyView view,
+				final MyProxy proxy) {
+			super(eventBus, view, proxy);
+		}
 		
-		private GeometryTypes defaultGeomType = GeometryTypes.POINT;	
+			@Inject
+			public RuleSelectorPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+					final ViewUtil viewUtil) {
+				super(eventBus, view, proxy);
+				//this.manager = manager;
+				this.viewUtil = viewUtil;
+			}
+		
+		
+		private GeometryType defaultGeomType = GeometryType.POINT;	
 		private MyModel myModel;
-		private Logger logger = Logger.getLogger("SldEditor");
+		private Logger logger = Logger.getLogger("RuleSelectorPresenter");
 		
 		
 		/**
@@ -89,21 +113,21 @@ public class RuleSelectorPresenter extends
 			// will not be read/updated here except that the order of the rules can change and rules
 			// can be removed/inserted.
 			
-			private GeometryTypes geomType = GeometryTypes.POINT; // Default
+			private GeometryType geomType = GeometryType.POINT; // Default
 			
 			// TODO: Needed???
 			//Integer indexRuleInFocus;
 			
 			
-			public MyModel(GeometryTypes geomType) {
+			public MyModel(GeometryType geomType) {
 				this.geomType  = geomType;
 			}
 			
-			public GeometryTypes getGeomType() {
+			public GeometryType getGeomType() {
 				return geomType;
 			}
 			
-			public void setGeomType(GeometryTypes geomType) {
+			public void setGeomType(GeometryType geomType) {
 				this.geomType  = geomType;
 			}
 			public List<RuleGroup> getRuleGroupList() {
@@ -115,11 +139,66 @@ public class RuleSelectorPresenter extends
 				this.ruleGroupList = ruleGroupList;
 			}
 
+			private void initFromSld(List<FeatureTypeStyleInfo> featureTypeStyleList) {
+				if (null != ruleGroupList) {
+					ruleGroupList.clear(); 
+				}
+				if (null == featureTypeStyleList
+						|| featureTypeStyleList.size() == 0) {
+					//TODO: create list with 1 entry: default style
+				}
+				if (featureTypeStyleList.size() > 1) {
+					//TODO Warning
+					// SC.warn("Meer dan 1 groep van regels (&lt;FeatureTypeStyle&gt;) in deze SLD." 
+					//		+ "  Enkel de eerste wordt getoond.");
+					//  // Can be supported later via groups of rules in ruleSelector
+					return; // ABORT!!
+				}
+
+				FeatureTypeStyleInfo featureTypeStyle = featureTypeStyleList.iterator().next(); // retrieve the first <FeatureTypeStyle>
+																						// element
+
+				if (featureTypeStyle.getRuleList().size() < 1) {
 			
+				
+				if (null == ruleGroupList) {
+					ruleGroupList = new ArrayList<RuleGroup>(); 
+				}
+				// We support only 1 rule group for the moment 
+				RuleGroup ruleGroup = new RuleGroup();
+				
+				
+				String styleTitle = featureTypeStyle.getTitle();
+				if (null == styleTitle) {
+					styleTitle = "groep 1";
+				}
+				
+				ruleGroup.setTitle(styleTitle);
+				//TODO
+				ruleGroup.setName("TODO");
+				
+				ruleGroup.setRuleModelList(new ArrayList<RuleModel>());
+				for (RuleInfo rule : featureTypeStyle.getRuleList()) {
+					RuleModel ruleModel = new RuleModel();
+					ruleModel.setName(rule.getName());
+					ruleModel.setTitle(rule.getTitle());
+					
+					RuleData ruleData = new RuleData();
+					ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+					ruleData.setRuleBody(rule); // TODO: OK???
+					
+					ruleModel.setRuleData(ruleData);
+					ruleGroup.getRuleModelList().add(ruleModel);
+				}
+				ruleGroupList.add(ruleGroup);
+			}
+		}
+		
 		}
 		
 		public void setModel(MyModel model) {
 			// TODO: validation
+			
 			List<RuleGroup> ruleGroupList = model.getRuleGroupList();
 			if (null == ruleGroupList) {
 				//TODO: error
@@ -155,9 +234,15 @@ public class RuleSelectorPresenter extends
 				modelHasChanged();
 			}
 			
+			ruleGroupList.add(ruleGroup);
 			
-
-			this.myModel = model;
+			if (null == this.myModel) {
+				this.myModel = new MyModel(defaultGeomType);
+			}
+			
+			this.myModel.setRuleGroupList(ruleGroupList);
+		
+			
 		}
 
 		private MyModel getModel() {
@@ -169,16 +254,9 @@ public class RuleSelectorPresenter extends
 			// TODO: inform parent presenter
 		}
 
-		@Inject
-		public RuleSelectorPresenter(final EventBus eventBus, final MyView view,
-				final MyProxy proxy) {
-			super(eventBus, view, proxy);
-		}
-		
-
 
 		
-		@Override
+		//@Override
 		protected void onBind() {
 			super.onBind();
 			registerHandler(getView().addChangeHandler(
@@ -199,8 +277,7 @@ public class RuleSelectorPresenter extends
 			//TODO: check if MainPagePresenter.TYPE_MAIN_CONTENT is OK
 			RevealContentEvent.fire(this, StyledLayerDescriptorLayoutPresenter.TYPE_RULES_CONTENT,
 					this);
-		}
-		
+		}		
 		
 		@Override
 		protected void onReset() {
@@ -214,12 +291,52 @@ public class RuleSelectorPresenter extends
 			getView().focus();
 		}
 		
+		
+		@ProxyEvent
+		public void onInitSldLayout(InitSldLayoutEvent event) {
+			forceReveal();
+			
+		}
+		
 		private void informParentOfChange() {
 			// TODO: inform parent presenter
 			//TODO: code below is for testing only, it doesn't inform the parent !!!
 			logger.log(Level.INFO, "SLD model data has changed. TODO: inform parent presenter");
 		}
 		
+		
+		
+		/**
+		 * Handler, called when change of the feature type style list (rules) 
+		 * is received.  (This happens when a another SLD has been loaded)
+		 * 
+		 * @param event
+		 */
+		//TODO
+		public void onRulesLoaded(RulesLoadedEvent event) {
+			// First save current rules model
+			//TODO
+			//Then load model with rule data for the newly loaded SLD 
+			List<FeatureTypeStyleInfo> featureTypeStyleList = event.getFeatureTypeStyleList();
+
+			if (null == featureTypeStyleList
+					|| featureTypeStyleList.size() == 0) {
+				////TODO: Warn dialogue
+				return; // ABORT!
+			}
+			
+			//TODO: Geometry Type can only be determined from the rule data (deeper level)
+
+			// Retrieve the top-level info from SLD and update myModel accordingly
+
+			
+			myModel = new MyModel(GeometryType.UNSPECIFIED);
+			myModel.initFromSld(featureTypeStyleList);
+			
+			
+
+		
+		}		
 		/**
 		 * 
 		 */
@@ -247,10 +364,6 @@ public class RuleSelectorPresenter extends
 	
 		}
 
-		@ProxyEvent
-		public void onInitSldLayout(InitSldLayoutEvent event) {
-			forceReveal();
-			
-		}
-
 	}
+
+	

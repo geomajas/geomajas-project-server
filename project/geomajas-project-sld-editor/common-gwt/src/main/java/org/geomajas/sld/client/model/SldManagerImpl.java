@@ -164,7 +164,7 @@ public class SldManagerImpl implements SldManager {
 	public void select(String name) {
 		final StyledLayerDescriptorInfo selectedSld = findByName(name);
 		if (selectedSld != null) {
-			service.findByName(currentSld.getName(), new AsyncCallback<StyledLayerDescriptorInfo>() {
+			service.findByName(selectedSld.getName(), new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 				public void onSuccess(StyledLayerDescriptorInfo result) {
 					currentSld = result;
@@ -174,6 +174,7 @@ public class SldManagerImpl implements SldManager {
 					} else {
 						currentList.add(currentSld);
 					}
+					SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
 				}
 
 				public void onFailure(Throwable caught) {
@@ -182,7 +183,7 @@ public class SldManagerImpl implements SldManager {
 				}
 
 			});
-			SldSelectedEvent.fire(this, currentSld);
+			
 		}
 
 	}

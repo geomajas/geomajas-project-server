@@ -11,7 +11,7 @@
 
 package org.geomajas.sld.client.model;
 
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
@@ -80,7 +80,7 @@ public class RuleModel {
 		this.ruleData = ruleData;
 	}
 
-	public RuleModel createDefaultRuleModel(GeometryTypes geometryType) {
+	public RuleModel createDefaultRuleModel(GeometryType geometryType) {
 		RuleModel defaultRuleModel = new RuleModel();
 
 		defaultRuleModel.setTitle(sldEditorMessages.ruleTitleUnspecified());

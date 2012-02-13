@@ -12,7 +12,7 @@
 package org.geomajas.sld.client.model;
 
 import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.editor.client.GeometryType;
 
 /**
  * @author An Buyle
@@ -21,8 +21,9 @@ import org.geomajas.sld.editor.client.GeometryTypes;
 public class RuleData {
 
 	private TypeOfRule typeOfRule;
-	private GeometryTypes geometryTypeSymbol;
-	private Object ruleBody; // Filter + Symbolizer list for this "rule" if typeOfRule is COMPLETE_RULE
+	private GeometryType geometryTypeSymbol;
+	private Object ruleBody; // full Rule record (general rule info + Filter + Symbolizer list) for this "rule" 
+						// if typeOfRule is COMPLETE_RULE
 
 	public TypeOfRule getTypeOfRule() {
 		return typeOfRule;
@@ -32,11 +33,11 @@ public class RuleData {
 		this.typeOfRule = typeOfRule;
 	}
 
-	public GeometryTypes getGeometryTypeSymbol() {
+	public GeometryType getGeometryTypeSymbol() {
 		return geometryTypeSymbol;
 	}
 
-	public void setGeometryTypeSymbol(GeometryTypes geometryTypeSymbol) {
+	public void setGeometryTypeSymbol(GeometryType geometryTypeSymbol) {
 		this.geometryTypeSymbol = geometryTypeSymbol;
 	}
 
