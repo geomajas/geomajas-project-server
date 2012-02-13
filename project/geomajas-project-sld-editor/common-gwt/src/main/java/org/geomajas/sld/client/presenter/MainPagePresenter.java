@@ -98,7 +98,7 @@ public class MainPagePresenter extends Presenter<MainPagePresenter.MyView, MainP
 	protected void onReveal() {
 		super.onReveal();
 		if (!getView().hasSideBarContent()) {
-			RevealSideContentEvent.fire(this);
+			InitLayoutEvent.fire(this);
 		}
 		manager.fetchAll();
 	}

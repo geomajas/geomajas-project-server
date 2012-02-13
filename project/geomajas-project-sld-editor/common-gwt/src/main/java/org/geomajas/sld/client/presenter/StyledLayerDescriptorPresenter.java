@@ -11,11 +11,14 @@
 
 package org.geomajas.sld.client.presenter;
 
+import org.geomajas.sld.client.model.SldListChangedEvent;
+
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
@@ -125,6 +128,19 @@ public class StyledLayerDescriptorPresenter
 		RevealContentEvent.fire(this, MainPagePresenter.TYPE_MAIN_CONTENT, this);
 	}
 
+	@ProxyEvent
+	public void onInitLayout(InitLayoutEvent event) {
+		forceReveal();
+	}
+	
+	protected void onReveal() {
+		super.onReveal();
+		//TODO: copied from StyledLayerDescriptorListPresenter: 
+		// getView().setData(manager.getCurrentNames());
+		//addRegisteredHandler(SldListChangedEvent.getType(), this);
+	}
+
+	
 	@Override
 	protected void onReset() {
 		super.onReset();

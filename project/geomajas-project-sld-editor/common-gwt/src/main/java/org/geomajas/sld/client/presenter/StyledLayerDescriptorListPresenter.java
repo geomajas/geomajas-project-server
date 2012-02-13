@@ -16,7 +16,7 @@ import org.geomajas.sld.client.NameTokens;
 import org.geomajas.sld.client.model.SldListChangedEvent;
 import org.geomajas.sld.client.model.SldListChangedEvent.SldListChangedHandler;
 import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.presenter.RevealSideContentEvent.RevealSideContentHandler;
+import org.geomajas.sld.client.presenter.InitLayoutEvent.InitLayoutHandler;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -28,6 +28,7 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
+
 /**
  * Presenter for the current list of SLD's.
  * 
@@ -36,7 +37,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
  */
 public class StyledLayerDescriptorListPresenter
 	extends Presenter<StyledLayerDescriptorListPresenter.MyView, StyledLayerDescriptorListPresenter.MyProxy> implements
-		SldListChangedHandler, RevealSideContentHandler {
+		SldListChangedHandler, InitLayoutHandler {
 
 	/**
 	 * {@linkStyledLayerDescriptorListPresenter}'s proxy.
@@ -69,19 +70,22 @@ public class StyledLayerDescriptorListPresenter
 		RevealContentEvent.fire(this, MainPagePresenter.TYPE_SIDE_CONTENT, this);
 	}
 
+	// Handler, called when SldListChangedEvent event is received 
 	public void onSldListChanged(SldListChangedEvent event) {
 		getView().setData(manager.getCurrentNames());
 	}
 
 	@ProxyEvent
-	public void onRevealSideContent(RevealSideContentEvent event) {
+	public void onInitLayout(InitLayoutEvent event) {
 		forceReveal();
 	}
 
 	protected void onReveal() {
 		super.onReveal();
 		getView().setData(manager.getCurrentNames());
-		addRegisteredHandler(SldListChangedEvent.getType(), this);
+		addRegisteredHandler(SldListChangedEvent.getType(), this); /* observe SldListChangedEvent */
 	}
+
+	
 
 }

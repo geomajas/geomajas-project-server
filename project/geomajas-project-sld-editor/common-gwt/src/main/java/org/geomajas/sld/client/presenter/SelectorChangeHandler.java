@@ -12,6 +12,8 @@
 
 package org.geomajas.sld.client.presenter;
 
+import org.geomajas.sld.client.model.RuleData;
+
 
 /**
  * Provides call-back to be called when the user has interacted with the Viewer so that
@@ -24,5 +26,5 @@ package org.geomajas.sld.client.presenter;
 public interface SelectorChangeHandler {
 	static final Integer NO_RULE_SELECTED = -1;
 	
-	void onChange(Integer indexRuleInFocus);
+	void onChange(Integer indexRuleInFocus, RuleData ruleData);
 }

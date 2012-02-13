@@ -25,13 +25,17 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.annotations.ProxyStandard;
+import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 
-import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.client.NameTokens;
+import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleGroup;
+import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.editor.client.GeometryTypes;
 import org.geomajas.sld.editor.client.SldUtils;
 
@@ -52,12 +56,12 @@ public class RuleSelectorPresenter extends
 		/**
 		 * {@link RuleSelectorPresenter}'s proxy.
 		 */
-		//TODO: check if NameTokens.HOME_PAGE is OK
-		@ProxyCodeSplit
-		@NameToken(NameTokens.HOME_PAGE)
-		public interface MyProxy extends ProxyPlace<RuleSelectorPresenter> {
+		@ProxyStandard
+		public interface MyProxy extends Proxy<RuleSelectorPresenter> {
 		}
 
+
+		
 		/**
 		 * {@link RuleSelectorPresenter}'s view.
 		 */
@@ -84,8 +88,9 @@ public class RuleSelectorPresenter extends
 		public class MyModel {
 
 			
-			private List<FeatureTypeStyleInfo> styleList; 	// Note that only 1 size == 1 is supported 
+			// private List<FeatureTypeStyleInfo> styleList; 	// Note that only size == 1 is supported 
 													// for the moment!
+			private List<RuleGroup> ruleGroupList;
 			// Note actual rule data (type = RuleInfo, e.g. styleList.get(0).ruleList.get(i))
 			// will not be read/updated here except that the order of the rules can change and rules
 			// can be removed/inserted.
@@ -93,7 +98,7 @@ public class RuleSelectorPresenter extends
 			private GeometryTypes geomType = GeometryTypes.POINT; // Default
 			
 			// TODO: Needed???
-			//Integer indexRuleInFocus ;
+			//Integer indexRuleInFocus;
 			
 			
 			public MyModel(GeometryTypes geomType) {
@@ -107,13 +112,13 @@ public class RuleSelectorPresenter extends
 			public void setGeomType(GeometryTypes geomType) {
 				this.geomType  = geomType;
 			}
-			public List<FeatureTypeStyleInfo> getStyleList() {
-				return styleList;
+			public List<RuleGroup> getRuleGroupList() {
+				return ruleGroupList;
 			}
 
 			
-			public void setStyleList(List<FeatureTypeStyleInfo> styleList) {
-				this.styleList = styleList;
+			public void setRuleGroupList(List<RuleGroup> ruleGroupList) {
+				this.ruleGroupList = ruleGroupList;
 			}
 
 			
@@ -121,35 +126,37 @@ public class RuleSelectorPresenter extends
 		
 		public void setModel(MyModel model) {
 			// TODO: validation
-			List<FeatureTypeStyleInfo> styleList = 	model.getStyleList();
-			if (null == styleList) {
+			List<RuleGroup> ruleGroupList = model.getRuleGroupList();
+			if (null == ruleGroupList) {
 				//TODO: error
 				return; // ABORT
 			}
-			if (model.getStyleList().size() > 1) {
+			if (ruleGroupList.size() > 1) {
 				logger.log(Level.WARNING, 
 							"Meer dan 1 groep van regels (&lt;FeatureTypeStyle&gt;) in deze SLD." 
 						+ "  Enkel de eerste wordt getoond.");
 				// Can be supported later via groups of rules in ruleSelector
 			}
-			FeatureTypeStyleInfo featureTypeStyle = styleList.iterator().next(); // retrieve the first 
+			RuleGroup ruleGroup = ruleGroupList.iterator().next(); // retrieve the first 
 									// <FeatureTypeStyle> element
 
-			if (featureTypeStyle.getRuleList().size() < 1) {
-				// 	If featureTypeStyle.getRuleList() is NULL or empty, create default rule
+			if (ruleGroup.getRuleModelList().size() < 1) {
+				// 	If rule model List() is NULL or empty, create default rule
 				logger.log(Level.WARNING, "Een SLD zonder of met leeg stijlelement (&lt;FeatureTypeStyle&gt; element)"
 						+ " wordt ingeladen.  Een standaard stijl voor een laag met geometrie-type '"
-						+ defaultGeomType.value() + "' wordt toegevoegd.");
+						+ getModel().getGeomType().value() + "' wordt toegevoegd.");
 
-				// featureTypeStyle.setName("Nieuwe stijl"); // TODO, for the moment most rule groups don't have a name
+				// ruleGroup.setName("Nieuwe stijl"); // TODO, for the moment most rule groups don't have a name
 
-				List<RuleInfo> ruleList = new ArrayList<RuleInfo>();
-				RuleInfo defaultRule = SldUtils.createDefaultRule(defaultGeomType); 
-					// TODO: open a dialog window to ask the geomType
+				List<RuleModel> ruleList = new ArrayList<RuleModel>();
+//				RuleInfo defaultRule = SldUtils.createDefaultRule(getModel().getGeomType()); 
 
-				ruleList.add(defaultRule);
 
-				featureTypeStyle.setRuleList(ruleList);
+				RuleModel defaultRuleModel = new RuleModel().createDefaultRuleModel(getModel().getGeomType());
+				
+				ruleList.add(defaultRuleModel);
+
+				ruleGroup.setRuleModelList(ruleList);
 				
 				modelHasChanged();
 			}
@@ -173,6 +180,8 @@ public class RuleSelectorPresenter extends
 				final MyProxy proxy) {
 			super(eventBus, view, proxy);
 		}
+		
+
 
 		
 		@Override
@@ -181,7 +190,9 @@ public class RuleSelectorPresenter extends
 			registerHandler(getView().addChangeHandler(
 					new SelectorChangeHandler() {
 						
-						public void onChange(Integer indexRuleInFocus) {
+
+						public void onChange(Integer indexRuleInFocus, RuleData ruleData) {
+							// TODO 
 							informParentOfChange();
 							
 						}
@@ -192,9 +203,10 @@ public class RuleSelectorPresenter extends
 		@Override
 		protected void revealInParent() {
 			//TODO: check if MainPagePresenter.TYPE_MAIN_CONTENT is OK
-			RevealContentEvent.fire(this, MainPagePresenter.TYPE_MAIN_CONTENT,
+			RevealContentEvent.fire(this, MainPagePresenter.TYPE_SIDE_CONTENT,
 					this);
 		}
+		
 		
 		@Override
 		protected void onReset() {

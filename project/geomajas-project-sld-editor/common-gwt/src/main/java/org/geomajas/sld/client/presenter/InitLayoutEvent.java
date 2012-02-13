@@ -20,18 +20,18 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.RevealSideContentHandler> {
+public class InitLayoutEvent extends GwtEvent<InitLayoutEvent.InitLayoutHandler> {
 
-	public RevealSideContentEvent() {
+	public InitLayoutEvent() {
 		// Possibly for serialization.
 	}
 
 	public static void fire(HasHandlers source) {
-		RevealSideContentEvent eventInstance = new RevealSideContentEvent();
+		InitLayoutEvent eventInstance = new InitLayoutEvent();
 		source.fireEvent(eventInstance);
 	}
 
-	public static void fire(HasHandlers source, RevealSideContentEvent eventInstance) {
+	public static void fire(HasHandlers source, InitLayoutEvent eventInstance) {
 		source.fireEvent(eventInstance);
 	}
 
@@ -43,7 +43,7 @@ public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.Reve
 	 */
 	public interface HasRevealSideContentHandlers extends HasHandlers {
 
-		HandlerRegistration addRevealSideContentHandler(RevealSideContentHandler handler);
+		HandlerRegistration addRevealSideContentHandler(InitLayoutHandler handler);
 	}
 
 	/**
@@ -52,30 +52,30 @@ public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.Reve
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface RevealSideContentHandler extends EventHandler {
+	public interface InitLayoutHandler extends EventHandler {
 
 		/**
 		 * Notifies side content child presenter to reveal itself.
 		 * 
 		 * @param event the event
 		 */
-		void onRevealSideContent(RevealSideContentEvent event);
+		void onInitLayout(InitLayoutEvent event);
 	}
 
-	private static final Type<RevealSideContentHandler> TYPE = new Type<RevealSideContentHandler>();
+	private static final Type<InitLayoutHandler> TYPE = new Type<InitLayoutHandler>();
 
-	public static Type<RevealSideContentHandler> getType() {
+	public static Type<InitLayoutHandler> getType() {
 		return TYPE;
 	}
 
 	@Override
-	public Type<RevealSideContentHandler> getAssociatedType() {
+	public Type<InitLayoutHandler> getAssociatedType() {
 		return TYPE;
 	}
 
 	@Override
-	protected void dispatch(RevealSideContentHandler handler) {
-		handler.onRevealSideContent(this);
+	protected void dispatch(InitLayoutHandler handler) {
+		handler.onInitLayout(this);
 	}
 
 	@Override
