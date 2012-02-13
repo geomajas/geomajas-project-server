@@ -35,7 +35,7 @@ public final class SldUtils {
 	private SldUtils() {
 	}
 
-	public static RuleInfo createDefaultRule(GeometryTypes geomType) {
+	public static RuleInfo createDefaultRule(GeometryType geomType) {
 		RuleInfo defaultRule = new RuleInfo();
 
 		defaultRule.setTitle(DEFAULT_STYLE_NAME);
@@ -74,21 +74,21 @@ public final class SldUtils {
 		return defaultRule;
 	}
 
-	public static GeometryTypes getGeometryType(RuleInfo rule) {
-		GeometryTypes geomType = GeometryTypes.UNSPECIFIED;
+	public static GeometryType getGeometryType(RuleInfo rule) {
+		GeometryType geomType = GeometryType.UNSPECIFIED;
 
 		if (null == rule || null == rule.getSymbolizerList() || 0 == rule.getSymbolizerList().size()) {
 			GWT.log("getGeometryType: rule must specify a <xxxSymbolizer> element to retrieve the geometry type.");
-			return GeometryTypes.UNSPECIFIED;
+			return GeometryType.UNSPECIFIED;
 		}
 		Object symbolizerInfo = rule.getSymbolizerList().get(0); // retrieve the first symbolizer specification
 
 		if (symbolizerInfo.getClass().equals(PointSymbolizerInfo.class)) {
-			geomType = GeometryTypes.POINT;
+			geomType = GeometryType.POINT;
 		} else if (symbolizerInfo.getClass().equals(LineSymbolizerInfo.class)) {
-			geomType = GeometryTypes.LINE;
+			geomType = GeometryType.LINE;
 		} else if (symbolizerInfo.getClass().equals(PolygonSymbolizerInfo.class)) {
-			geomType = GeometryTypes.POLYGON;
+			geomType = GeometryType.POLYGON;
 		}
 		return geomType;
 

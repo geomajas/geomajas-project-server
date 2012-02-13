@@ -10,14 +10,19 @@
  */
 package org.geomajas.sld.editor.client.gin;
 
+import org.geomajas.sld.client.presenter.CreateSldDialogPresenterWidget;
 import org.geomajas.sld.client.presenter.MainPagePresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
+import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.presenter.SmartGwtRootPresenter;
+import org.geomajas.sld.editor.client.view.CreateSldDialogView;
 import org.geomajas.sld.editor.client.view.MainPageView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorListView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorView;
+import org.geomajas.sld.editor.client.view.ViewUtilImpl;
 
+import com.google.inject.Singleton;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 
 /**
@@ -28,6 +33,9 @@ public class ClientModule extends AbstractPresenterModule {
 	@Override
 	protected void configure() {
 		bind(SmartGwtRootPresenter.class).asEagerSingleton();
+		// utils
+		bind(ViewUtil.class).to(ViewUtilImpl.class).in(Singleton.class);
+		
 		// Presenters
 		bindPresenter(MainPagePresenter.class, MainPagePresenter.MyView.class, MainPageView.class,
 				MainPagePresenter.MyProxy.class);
@@ -35,5 +43,10 @@ public class ClientModule extends AbstractPresenterModule {
 				StyledLayerDescriptorListView.class, StyledLayerDescriptorListPresenter.MyProxy.class);
 		bindPresenter(StyledLayerDescriptorPresenter.class, StyledLayerDescriptorPresenter.MyView.class,
 				StyledLayerDescriptorView.class, StyledLayerDescriptorPresenter.MyProxy.class);
+	    bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class,
+	            CreateSldDialogPresenterWidget.MyView.class, CreateSldDialogView.class);
+//		bindSingletonPresenterWidget(CreateStyledLayerDescriptorPopupPresenterWidget.class, CreateStyledLayerDescriptorPopupPresenterWidget.MyView.class,
+//				CreateStyledLayerDescriptorPopupView.class);
+
 	}
 }

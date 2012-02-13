@@ -22,7 +22,7 @@ import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.client.model.SldGwtServiceAsync;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
@@ -265,11 +265,11 @@ public class SldManager {
 		typeOfGeomItem.setTitle(sldEditorMessages.geometryTitle());
 
 		final LinkedHashMap<String, String> typeOfGeomList = new LinkedHashMap<String, String>();
-		typeOfGeomList.put(GeometryTypes.POINT.value(), sldEditorMessages.pointTitle());
-		typeOfGeomList.put(GeometryTypes.LINE.value(), sldEditorMessages.lineTitle());
-		typeOfGeomList.put(GeometryTypes.POLYGON.value(), sldEditorMessages.polygonTitle());
+		typeOfGeomList.put(GeometryType.POINT.value(), sldEditorMessages.pointTitle());
+		typeOfGeomList.put(GeometryType.LINE.value(), sldEditorMessages.lineTitle());
+		typeOfGeomList.put(GeometryType.POLYGON.value(), sldEditorMessages.polygonTitle());
 		typeOfGeomItem.setValueMap(typeOfGeomList);
-		typeOfGeomItem.setDefaultValue(GeometryTypes.POINT.value());
+		typeOfGeomItem.setDefaultValue(GeometryType.POINT.value());
 		typeOfGeomItem.setRequired(true);
 
 		addSldForm.setItems(nameOfSldItem, typeOfGeomItem);
@@ -304,7 +304,7 @@ public class SldManager {
 
 					createButton.disable();
 					cancelButton.disable();
-					StyledLayerDescriptorInfo sld = createEmptySld(GeometryTypes.fromValue(typeOfGeomItem
+					StyledLayerDescriptorInfo sld = createEmptySld(GeometryType.fromValue(typeOfGeomItem
 							.getValueAsString()));
 					sld.setName(nameOfSldItem.getValueAsString());
 					service.create(sld, new AsyncCallback<StyledLayerDescriptorInfo>() {
@@ -396,7 +396,7 @@ public class SldManager {
 				});
 	}
 
-	private StyledLayerDescriptorInfo createEmptySld(GeometryTypes geomType) {
+	private StyledLayerDescriptorInfo createEmptySld(GeometryType geomType) {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("NewSLD");
 		sld.setVersion("1.0.0");

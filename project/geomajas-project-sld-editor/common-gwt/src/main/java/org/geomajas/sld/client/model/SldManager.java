@@ -12,7 +12,10 @@ package org.geomajas.sld.client.model;
 
 import java.util.List;
 
-import com.google.gwt.event.shared.HasHandlers;
+import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.client.model.event.SldAddedEvent.HasSldAddedHandlers;
+import org.geomajas.sld.client.model.event.SldLoadedEvent.HasSldLoadedHandlers;
+import org.geomajas.sld.editor.client.GeometryType;
 
 /**
  * The main model class of the SLD editor.
@@ -20,7 +23,7 @@ import com.google.gwt.event.shared.HasHandlers;
  * @author Jan De Moerloose
  * 
  */
-public interface SldManager extends HasHandlers {
+public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers {
 
 	/**
 	 * Fetch all the SLD's from the server (asynchronously). Instead of passing a callback here, clients should use the
@@ -30,7 +33,23 @@ public interface SldManager extends HasHandlers {
 
 	/**
 	 * Returns the current list of names of all SLD's.
+	 * 
 	 * @return the list of names
 	 */
 	List<String> getCurrentNames();
+
+	/**
+	 * Creates an instance of the specified type.
+	 * 
+	 * @param type the geometry type
+	 * @return the new SLD instance
+	 */
+	StyledLayerDescriptorInfo create(GeometryType type);
+
+	/**
+	 * Adds a new SLD to the server list.
+	 * 
+	 * @param sld the sld to add
+	 */
+	void add(StyledLayerDescriptorInfo sld);
 }

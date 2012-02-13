@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
@@ -101,9 +101,9 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 
 	private List<RuleInfo> ruleList;
 
-	private GeometryTypes defaultGeomType = GeometryTypes.POINT;
+	private GeometryType defaultGeomType = GeometryType.POINT;
 
-	private GeometryTypes currentGeomType = GeometryTypes.UNSPECIFIED;
+	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
 
 	public RuleSelector() {
 		super();
@@ -283,7 +283,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 	}
 
 	public void setRules(List<FeatureTypeStyleInfo> styleList) {
-		this.currentGeomType = GeometryTypes.UNSPECIFIED;
+		this.currentGeomType = GeometryType.UNSPECIFIED;
 
 		if (null != ruleGeneralForm) {
 			ruleGeneralForm.clearValues();
@@ -516,7 +516,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		}
 
 		RuleInfo defaultRule = SldUtils
-				.createDefaultRule(currentGeomType.equals(GeometryTypes.UNSPECIFIED) ? GeometryTypes.POINT
+				.createDefaultRule(currentGeomType.equals(GeometryType.UNSPECIFIED) ? GeometryType.POINT
 						: currentGeomType);
 
 		newLeaf.setRuleData(defaultRule);

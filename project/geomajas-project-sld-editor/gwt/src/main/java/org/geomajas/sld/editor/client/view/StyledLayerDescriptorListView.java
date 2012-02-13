@@ -21,12 +21,20 @@ import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
-import org.geomajas.sld.editor.client.GeometryTypes;
+import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent;
+import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
+import org.geomajas.sld.client.presenter.event.SldListRemoveEvent;
+import org.geomajas.sld.client.presenter.event.SldListRemoveEvent.SldListRemoveHandler;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
@@ -82,9 +90,12 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 	private ListGridRecord[] recordsArray;
 
 	private SelectionChangedHandler externalSelectionChangedHandler;
+	
+	private EventBus eventBus;
 
-	public StyledLayerDescriptorListView() {
-
+	@Inject
+	public StyledLayerDescriptorListView(final EventBus eventBus) {
+		this.eventBus = eventBus;
 		vLayout = new VLayout(10);
 		vLayout.setLayoutTopMargin(10);
 		vLayout.setLayoutBottomMargin(5);
@@ -131,8 +142,9 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 		addButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
+				SldListPopupNewEvent.fire(StyledLayerDescriptorListView.this);
 				// Dialog to retrieve SLD name and geometry
-				handleAddByUserCommand();
+				//handleAddByUserCommand();
 			}
 
 		});
@@ -269,11 +281,11 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 		typeOfGeomItem.setTitle(sldEditorMessages.geometryTitle());
 
 		final LinkedHashMap<String, String> typeOfGeomList = new LinkedHashMap<String, String>();
-		typeOfGeomList.put(GeometryTypes.POINT.value(), sldEditorMessages.pointTitle());
-		typeOfGeomList.put(GeometryTypes.LINE.value(), sldEditorMessages.lineTitle());
-		typeOfGeomList.put(GeometryTypes.POLYGON.value(), sldEditorMessages.polygonTitle());
+		typeOfGeomList.put(GeometryType.POINT.value(), sldEditorMessages.pointTitle());
+		typeOfGeomList.put(GeometryType.LINE.value(), sldEditorMessages.lineTitle());
+		typeOfGeomList.put(GeometryType.POLYGON.value(), sldEditorMessages.polygonTitle());
 		typeOfGeomItem.setValueMap(typeOfGeomList);
-		typeOfGeomItem.setDefaultValue(GeometryTypes.POINT.value());
+		typeOfGeomItem.setDefaultValue(GeometryType.POINT.value());
 		typeOfGeomItem.setRequired(true);
 
 		addSldForm.setItems(nameOfSldItem, typeOfGeomItem);
@@ -400,7 +412,7 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 				});
 	}
 
-	private StyledLayerDescriptorInfo createEmptySld(GeometryTypes geomType) {
+	private StyledLayerDescriptorInfo createEmptySld(GeometryType geomType) {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("NewSLD");
 		sld.setVersion("1.0.0");
@@ -479,6 +491,19 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 			setDisabled(true);
 
 		}
+	}
+
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);		
+	}
+
+	public HandlerRegistration addSldListPopupNewHandler(SldListPopupNewHandler handler) {
+		return eventBus.addHandler(SldListPopupNewEvent.getType(), handler);
+	}
+
+
+	public HandlerRegistration addSldListRemoveHandler(SldListRemoveHandler handler) {
+		return eventBus.addHandler(SldListRemoveEvent.getType(), handler);
 	}
 
 
