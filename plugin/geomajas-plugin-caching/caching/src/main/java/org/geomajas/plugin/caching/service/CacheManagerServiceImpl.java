@@ -44,7 +44,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void put(Layer layer, CacheCategory category, String key, Object object, Envelope envelope) {
 		if (log.isDebugEnabled()) {
-			log.debug("Put: {} {} {}", new String[] {layer.getId(), category.toString(), key});
+			log.debug("Put: {} {} {}", new String[] {layer != null ? layer.getId() : "null", category.toString(), key});
 		}
 		getCache(layer, category).put(key, object, envelope);
 	}
@@ -54,7 +54,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		Object o = getCache(layer, category).get(key, Object.class);
 		if (log.isDebugEnabled()) {
 			log.debug("Get {}: {} {} {}", new String[] {
-				o != null ? "Hit" : "Miss", layer.getId(), category.toString(), key});
+				o != null ? "Hit" : "Miss", layer != null ? layer.getId() : "null", category.toString(), key});
 		}
 		return o;
 	}
@@ -64,7 +64,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		TYPE o = getCache(layer, category).get(key, type); 
 		if (log.isDebugEnabled()) {
 			log.debug("Get {}: {} {} {}", new String[] {
-					o != null ? "Hit" : "Miss", layer.getId(), category.toString(), key});
+					o != null ? "Hit" : "Miss", layer != null ? layer.getId() : "null", category.toString(), key});
 		}
 		return o;
 	}
@@ -72,7 +72,8 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void remove(Layer layer, CacheCategory category, String key) {
 		if (log.isDebugEnabled()) {
-			log.debug("Remove: {} {} {}", new String[] {layer.getId(), category.toString(), key});
+			log.debug("Remove: {} {} {}", new String[] {layer != null ? layer.getId() : "null", 
+					category.toString(), key});
 		}
 		getCache(layer, category).remove(key);
 	}
@@ -80,7 +81,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void drop(Layer layer, CacheCategory category) {
 		if (log.isDebugEnabled()) {
-			log.debug("Drop: {} {}", layer.getId(), category.toString());
+			log.debug("Drop: {} {}", layer != null ? layer.getId() : "null", category.toString());
 		}
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
@@ -97,7 +98,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void drop(Layer layer) {
 		if (log.isDebugEnabled()) {
-			log.debug("Drop: {}", layer.getId());
+			log.debug("Drop: {}", layer != null ? layer.getId() : "null");
 		}
 		if (null != layer) {
 			// drop requested layer if not null
@@ -117,7 +118,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void invalidate(Layer layer, CacheCategory category, Envelope envelope) {
 		if (log.isDebugEnabled()) {
-			log.debug("Invalidate: {} {}", layer.getId(), category.toString());
+			log.debug("Invalidate: {} {}", layer != null ? layer.getId() : "null", category.toString());
 		}
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
@@ -134,7 +135,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void invalidate(Layer layer, Envelope envelope) {
 		if (log.isDebugEnabled()) {
-			log.debug("Invalidate: {}", layer.getId());
+			log.debug("Invalidate: {}", layer != null ? layer.getId() : "null");
 		}
 		for (IndexedCache cache : getCaches(layer)) {
 			cache.invalidate(envelope);
@@ -149,7 +150,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	/** {@inheritDoc} */
 	public void invalidate(Layer layer) {
 		if (log.isDebugEnabled()) {
-			log.debug("Invalidate: {}", layer.getId());
+			log.debug("Invalidate: {}", layer != null ? layer.getId() : "null");
 		}
 		for (IndexedCache cache : getCaches(layer)) {
 			cache.clear();
