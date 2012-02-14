@@ -22,7 +22,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class RuleModel {
 
-	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+	private static SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
 
 	private String name;
 
@@ -30,11 +30,6 @@ public class RuleModel {
 
 	private RuleData ruleData;
 
-	public enum TypeOfRule {
-			DEFAULT_RULE,
-			INCOMPLETE_RULE,
-			COMPLETE_RULE
-	}
 
 	/**
 	 * Get the 'Name' element value.
@@ -80,14 +75,12 @@ public class RuleModel {
 		this.ruleData = ruleData;
 	}
 
-	public RuleModel createDefaultRuleModel(GeometryType geometryType) {
+	public static RuleModel CreateDefaultRuleModel(GeometryType geometryType) {
 		RuleModel defaultRuleModel = new RuleModel();
 
 		defaultRuleModel.setTitle(sldEditorMessages.ruleTitleUnspecified());
 
-		defaultRuleModel.setRuleData(new RuleData());
-		defaultRuleModel.getRuleData().setGeometryTypeSymbol(geometryType);
-		defaultRuleModel.getRuleData().setTypeOfRule(TypeOfRule.DEFAULT_RULE);
+		defaultRuleModel.setRuleData(RuleData.createDefaultRuleData(geometryType));
 
 		return defaultRuleModel;
 	}

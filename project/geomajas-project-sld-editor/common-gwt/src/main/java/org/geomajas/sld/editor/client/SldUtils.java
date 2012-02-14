@@ -74,7 +74,7 @@ public final class SldUtils {
 		return defaultRule;
 	}
 
-	public static GeometryType getGeometryType(RuleInfo rule) {
+	public static GeometryType GetGeometryType(RuleInfo rule) {
 		GeometryType geomType = GeometryType.UNSPECIFIED;
 
 		if (null == rule || null == rule.getSymbolizerList() || 0 == rule.getSymbolizerList().size()) {

@@ -25,7 +25,8 @@ import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
+import org.geomajas.sld.editor.client.SldUtils;
+import org.geomajas.sld.client.model.event.RuleSelectedEvent.HasRuleSelectedHandlers;
 import org.geomajas.sld.client.model.event.RulesLoadedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
@@ -34,7 +35,9 @@ import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutH
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -51,6 +54,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyView, RuleSelectorPresenter.MyProxy>
 		implements InitSldLayoutHandler,SldSelectedHandler  {
+
+	private static SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+
+	private final String ruleTitleUnspecified = sldEditorMessages.ruleTitleUnspecified();
 
 	private SldManager manager;
 	private ViewUtil viewUtil;
@@ -80,7 +87,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	/**
 	 * {@link RuleSelectorPresenter}'s view.
 	 */
-	public interface MyView extends View {
+	public interface MyView extends View, HasRuleSelectedHandlers {
 
 		void copyToView(MyModel myModel);
 
@@ -154,11 +161,12 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 			}
 
 			FeatureTypeStyleInfo featureTypeStyle = featureTypeStyleList.iterator().next(); // retrieve the first
-																							// <FeatureTypeStyle>
+																							// <FeatureTypeStyle> (which contains 1 list of rules)
 			// element
 
-			if (featureTypeStyle.getRuleList().size() < 1) {
-
+			if (null == featureTypeStyle || featureTypeStyle.getRuleList().size() < 1) {
+				// TODO : if no rules yet, add a default rule
+			} 	else {
 				if (null == ruleGroupList) {
 					ruleGroupList = new ArrayList<RuleGroup>();
 				}
@@ -171,24 +179,37 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 				}
 
 				ruleGroup.setTitle(styleTitle);
-				// TODO
+				// TODO: parse featureTypeStyle name
 				ruleGroup.setName("TODO");
 
 				ruleGroup.setRuleModelList(new ArrayList<RuleModel>());
 				for (RuleInfo rule : featureTypeStyle.getRuleList()) {
 					RuleModel ruleModel = new RuleModel();
-					ruleModel.setName(rule.getName());
-					ruleModel.setTitle(rule.getTitle());
+					
+					//Determine the rule title to be used in the model, make sure it is NOT null or ""
+					String title;
 
-					RuleData ruleData = new RuleData();
-					ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
-					ruleData.setRuleBody(rule); // TODO: OK???
+					if (null != rule.getTitle() && rule.getTitle().length() > 0) {
+						title = rule.getTitle();
+					} else if (null != rule.getName() && rule.getName().length() > 0) {
+						title = rule.getName();
+					} else {
+						title = ruleTitleUnspecified;
+					}
+					ruleModel.setTitle(title);
+					
+					ruleModel.setName(rule.getName()); // The rule name can be null
+					
+
+					RuleData ruleData = new RuleData(SldUtils.GetGeometryType(rule));
+					ruleData.setTypeOfRule(RuleData.TypeOfRule.COMPLETE_RULE);
+					ruleData.setCompleteRuleBody(rule); // TODO: OK???
 
 					ruleModel.setRuleData(ruleData);
 					ruleGroup.getRuleModelList().add(ruleModel);
 				}
 				ruleGroupList.add(ruleGroup);
-			}
+			} 
 		}
 
 	}
@@ -220,7 +241,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 			List<RuleModel> ruleList = new ArrayList<RuleModel>();
 			// RuleInfo defaultRule = SldUtils.createDefaultRule(getModel().getGeomType());
 
-			RuleModel defaultRuleModel = new RuleModel().createDefaultRuleModel(getModel().getGeomType());
+			RuleModel defaultRuleModel = RuleModel.CreateDefaultRuleModel(getModel().getGeomType());
 
 			ruleList.add(defaultRuleModel);
 
@@ -300,6 +321,8 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		
 		if (null == sld) {
 			//No SLD selected
+			// TODO implement
+			return;
 		}
 
 		myModel = new MyModel(GeometryType.UNSPECIFIED);

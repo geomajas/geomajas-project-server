@@ -11,7 +11,7 @@
 
 package org.geomajas.sld.client.model;
 
-import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
+import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.editor.client.GeometryType;
 
 /**
@@ -19,11 +19,34 @@ import org.geomajas.sld.editor.client.GeometryType;
  *
  */
 public class RuleData {
+	/**
+	 * @author An Buyle
+	 *
+	 */
+	public enum TypeOfRule {
+		DEFAULT_RULE,
+		INCOMPLETE_RULE,
+		COMPLETE_RULE
+	}
+	
+	private GeometryType geometryType;
 
 	private TypeOfRule typeOfRule;
-	private GeometryType geometryTypeSymbol;
-	private Object ruleBody; // full Rule record (general rule info + Filter + Symbolizer list) for this "rule" 
-						// if typeOfRule is COMPLETE_RULE
+
+	private IncompleteRuleInfo incompleteRuleBody;
+	// Incomplete Rule record (Incomplete Filter + Symbolizer list) for this "rule" 
+	// 	if typeOfRule is INCOMPLETE_RULE
+
+	private RuleInfo completeRuleBody;
+
+	// full Rule record (general rule info + Filter + Symbolizer list) for this "rule" 
+	// if typeOfRule is COMPLETE_RULE
+
+
+
+	public RuleData(GeometryType geometryType) {
+		this.setGeometryType(geometryType);
+	}
 
 	public TypeOfRule getTypeOfRule() {
 		return typeOfRule;
@@ -31,22 +54,47 @@ public class RuleData {
 
 	public void setTypeOfRule(TypeOfRule typeOfRule) {
 		this.typeOfRule = typeOfRule;
+		if (TypeOfRule.COMPLETE_RULE == typeOfRule) {
+			//TODO: OK to override current incompleteRuleBody ?
+			incompleteRuleBody = null;
+		} else {
+			//TODO: OK to override current completeRuleBody ?
+			completeRuleBody = null;
+		}
 	}
 
-	public GeometryType getGeometryTypeSymbol() {
-		return geometryTypeSymbol;
+	public IncompleteRuleInfo getIncompleteRuleBody() {
+		return incompleteRuleBody;
 	}
 
-	public void setGeometryTypeSymbol(GeometryType geometryTypeSymbol) {
-		this.geometryTypeSymbol = geometryTypeSymbol;
+	public void setIncompleteRuleBody(IncompleteRuleInfo incompleteRuleBody) {
+		this.typeOfRule = TypeOfRule.INCOMPLETE_RULE;
+		this.incompleteRuleBody = incompleteRuleBody;
 	}
 
-	public Object getRuleBody() {
-		return ruleBody;
+	public RuleInfo getCompleteRuleBody() {
+		return completeRuleBody;
 	}
 
-	public void setRuleBody(Object ruleBody) {
-		this.ruleBody = ruleBody;
+	public void setCompleteRuleBody(RuleInfo completeRuleBody) {
+		this.typeOfRule = TypeOfRule.COMPLETE_RULE;
+		this.completeRuleBody = completeRuleBody;
+	}
+
+	public static RuleData createDefaultRuleData(GeometryType geometryType) {
+		RuleData defaultRuleData = new RuleData(geometryType);
+
+		defaultRuleData.setTypeOfRule(TypeOfRule.DEFAULT_RULE);
+		return defaultRuleData;
+
+	}
+
+	public void setGeometryType(GeometryType geometryType) {
+		this.geometryType = geometryType;
+	}
+
+	public GeometryType getGeometryType() {
+		return geometryType;
 	}
 
 }
