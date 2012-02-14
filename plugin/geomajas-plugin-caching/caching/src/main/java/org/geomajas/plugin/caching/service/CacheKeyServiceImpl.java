@@ -66,7 +66,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 				for (Map.Entry<String, Object> entry : cci.entries()) {
 					md5.Update(entry.getKey(), ENCODING);
 					md5.Update(":");
-					if (log.isDebugEnabled()) {
+					if (log.isTraceEnabled()) {
 						toHash.append(entry.getKey());
 						toHash.append(":");
 					}
@@ -74,26 +74,30 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 					if (null != value) {
 						String cid = getCacheId(value);
 						md5.Update(cid, ENCODING);
-						if (log.isDebugEnabled()) {
+						if (log.isTraceEnabled()) {
 							toHash.append(cid);
 						}
 					}
 					md5.Update("-");
-					if (log.isDebugEnabled()) {
+					if (log.isTraceEnabled()) {
 						toHash.append("-");
 					}
 				}
 			} else {
 				String cid = getCacheId(context);
 				md5.Update(cid, ENCODING);
-				if (log.isDebugEnabled()) {
+				if (log.isTraceEnabled()) {
 					toHash.append(cid);
 				}
 			}
 			String key = md5.asHex();
-			if (log.isDebugEnabled()) {
-				log.debug("key for context {} which is a hash for {}", key, forceAscii(toHash));
+			if (log.isTraceEnabled()) {
+				log.trace("key for context {} which is a hash for {}", key, forceAscii(toHash));
 			}
+			if (log.isDebugEnabled()) {
+				log.debug("key for context {}", key);
+			}
+			
 			return key;
 		} catch (UnsupportedEncodingException uee) {
 			log.error("Impossible error, UTF-8 should be supported:" + uee.getMessage(), uee);
