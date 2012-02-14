@@ -134,7 +134,6 @@ public class StyledLayerDescriptorView extends ViewImpl
 		topLevelAttributesForm.setItems(nameOfLayerItem, geomTypeItem, styleTitleItem);
 
 		errorMessage = new Label(NO_SLD_MESSAGE);
-
 		errorMessage.setAlign(Alignment.CENTER);
 
 		layoutContainer = new VLayout(5);
