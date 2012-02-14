@@ -18,19 +18,20 @@ import java.util.logging.Logger;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.NamedLayerInfo;
-import org.geomajas.sld.NamedLayerInfo.ChoiceInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
 import org.geomajas.sld.client.model.event.RulesLoadedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 
@@ -51,19 +52,15 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyView, RuleSelectorPresenter.MyProxy>
 		implements InitSldLayoutHandler,SldSelectedHandler  {
 
-	// private SldManager manager;
+	private SldManager manager;
 	private ViewUtil viewUtil;
 
-	@Inject
-	public RuleSelectorPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
-		super(eventBus, view, proxy);
-	}
-
+	
 	@Inject
 	public RuleSelectorPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
-			final ViewUtil viewUtil) {
+			final ViewUtil viewUtil, final SldManager manager) {
 		super(eventBus, view, proxy);
-		// this.manager = manager;
+		this.manager = manager;
 		this.viewUtil = viewUtil;
 	}
 
@@ -251,20 +248,20 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		// TODO: inform parent presenter
 	}
 
-	// @Override
+	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().addChangeHandler(new SelectorChangeHandler() {
+//				registerHandler(getView().addSldContentChangedHandler(new SldContentChangedHandler() {
+//			
+//			public void onSldContentChanged(SldContentChangedEvent event) {
+//				//TODO: manager.updateFeatureTypeList(event.getData())); 
+//					//TODO: optimize: only update SLD when user hits save button
+//				
+//			}
+//		}));		
 
-			public void onChange(Integer indexRuleInFocus, RuleData ruleData) {
-				// TODO
-				informParentOfChange();
-
-			}
-		}));
 		//observe change of selected SLD (after it has been loaded) 
 		addRegisteredHandler(SldSelectedEvent.getType(), this);
-
 	}
 
 	@Override
@@ -300,6 +297,10 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	public void onSldSelected(SldSelectedEvent event) {
 
 		StyledLayerDescriptorInfo sld = event.getSld();
+		
+		if (null == sld) {
+			//No SLD selected
+		}
 
 		myModel = new MyModel(GeometryType.UNSPECIFIED);
 
