@@ -13,6 +13,7 @@ package org.geomajas.sld.client.gin;
 
 import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
@@ -38,6 +39,8 @@ public interface ClientGinjectorBase extends Ginjector {
 	Provider<StyledLayerDescriptorListPresenter> getStyledLayerDescriptorListPresenter();
 
 	Provider<StyledLayerDescriptorPresenter> getStyledLayerDescriptorPresenter();
+	
+	Provider<RuleSelectorPresenter> getRuleSelectorPresenter();
 
 	Provider<StyledLayerDescriptorLayoutPresenter> getStyledLayerDescriptorLayoutPresenter();
 
