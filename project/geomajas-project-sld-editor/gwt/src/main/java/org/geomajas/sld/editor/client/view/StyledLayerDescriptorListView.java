@@ -59,7 +59,7 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 
 	public static final String SLD_NAME_ATTRIBUTE_NAME = "SLDName";
 
-	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+	private final SldEditorMessages sldEditorMessages;
 
 	private VLayout vLayout;
 
@@ -77,11 +77,12 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 
 	private ListGridRecord[] recordsArray;
 
-	private EventBus eventBus;
+	private final EventBus eventBus;
 
 	@Inject
-	public StyledLayerDescriptorListView(final EventBus eventBus, final ViewUtil viewUtil) {
+	public StyledLayerDescriptorListView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
+		this.sldEditorMessages = sldEditorMessages;
 		vLayout = new VLayout(10);
 		vLayout.setLayoutTopMargin(10);
 		vLayout.setLayoutBottomMargin(5);

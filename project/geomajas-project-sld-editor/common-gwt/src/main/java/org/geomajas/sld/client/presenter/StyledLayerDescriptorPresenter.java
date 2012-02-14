@@ -159,14 +159,6 @@ public class StyledLayerDescriptorPresenter
 	}
 	
 
-//	protected void onReveal() {
-//		super.onReveal();
-//	}
-//	
-//	protected void onHide() {
-//		super.onHide();
-//	}
-
 	/* (non-Javadoc)
 	 * Refresh any information displayed by your presenter.
 	 * 

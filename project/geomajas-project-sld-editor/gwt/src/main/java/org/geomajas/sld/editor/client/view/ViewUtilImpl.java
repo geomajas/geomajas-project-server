@@ -1,11 +1,11 @@
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.client.view.ViewUtil;
+import org.geomajas.sld.client.view.BaseViewUtil;
 
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 
-public class ViewUtilImpl implements ViewUtil {
+public class ViewUtilImpl extends BaseViewUtil {
 
 	public void showMessage(String message) {
 		SC.say(message);
@@ -26,5 +26,6 @@ public class ViewUtilImpl implements ViewUtil {
 			}
 		});
 	}
+	
 
 }

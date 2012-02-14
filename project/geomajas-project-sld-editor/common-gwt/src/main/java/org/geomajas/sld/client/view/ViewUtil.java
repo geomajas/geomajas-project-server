@@ -24,4 +24,15 @@ public interface ViewUtil {
 	void showMessage(String message);
 
 	void showYesNoMessage(String message, YesNoCallback callback);
+
+	String numericalToString(Object value, String defaultStringValue);
+
+	float numericalToFloat(Object value, float defaultValue);
+
+	int factorToPercentage(String value);
+
+	String percentageToFactor(int percentage);
+
+	String percentageToFactor(float percentage);
+
 }
