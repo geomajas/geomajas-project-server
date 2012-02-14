@@ -1,7 +1,6 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
