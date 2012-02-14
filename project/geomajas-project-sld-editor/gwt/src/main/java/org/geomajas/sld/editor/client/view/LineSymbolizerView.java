@@ -5,13 +5,20 @@ import java.util.List;
 import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.FillInfo;
 import org.geomajas.sld.LineSymbolizerInfo;
-import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
+import org.geomajas.sld.client.presenter.LineSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
 import com.smartgwt.client.widgets.form.fields.SpinnerItem;
@@ -19,8 +26,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 
-
-public class LineSymbolizerView {
+public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresenter.MyView {
 	
 	/** private members for line symbolizer **/
 	private DynamicForm lineSymbolizerForm;
@@ -38,12 +44,15 @@ public class LineSymbolizerView {
 
 	protected FillInfo prevFillInfo;
 	
+	private final EventBus eventBus;
+
 	private final ViewUtil viewUtil;
 
 	private final SldEditorMessages sldEditorMessages;
 
 	@Inject
-	public LineSymbolizerView(final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public LineSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
 		setupLineSymbolizerForm();
@@ -90,7 +99,7 @@ public class LineSymbolizerView {
 		lineStrokeColorPicker.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
@@ -113,7 +122,7 @@ public class LineSymbolizerView {
 		strokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				Integer newValue = (Integer) event.getValue();
 
@@ -146,7 +155,7 @@ public class LineSymbolizerView {
 		strokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				Integer newValue = (Integer) event.getValue();
 
@@ -171,9 +180,23 @@ public class LineSymbolizerView {
 		lineSymbolizerForm.setItems(lineStrokeColorPicker, strokeWidthItem, strokeOpacityItem);
 	}
 
-	private void setSldHasChangedTrue() {
-		// TODO Auto-generated method stub
-		
+	private void fireSldContentChanged() {
+		SldContentChangedEvent.fire(this, true, currentLineSymbolizerInfo);
+	}
+
+
+	public Widget asWidget() {
+		return lineSymbolizerForm;
+	}
+
+
+	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
+		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
+	}
+
+
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
 	}
 
 }

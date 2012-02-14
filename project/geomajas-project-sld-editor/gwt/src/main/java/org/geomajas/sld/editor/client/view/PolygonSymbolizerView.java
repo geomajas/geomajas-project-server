@@ -8,10 +8,18 @@ import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
+import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
@@ -20,7 +28,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 
-public class PolygonSymbolizerView {
+public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizerPresenter.MyView {
 
 	/** private members for polygon symbolizer **/
 	private DynamicForm polygonSymbolizerForm;
@@ -47,10 +55,13 @@ public class PolygonSymbolizerView {
 
 	private final ViewUtil viewUtil;
 
+	private final EventBus eventBus;
+
 	private final SldEditorMessages sldEditorMessages;
 
 	@Inject
-	public PolygonSymbolizerView(final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public PolygonSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
 		setupPolygonSymbolizerForm();
@@ -144,7 +155,7 @@ public class PolygonSymbolizerView {
 		polygonFillCheckBoxItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				Boolean newValue = (Boolean) event.getValue();
 
@@ -179,7 +190,7 @@ public class PolygonSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_POLYGON;
@@ -206,7 +217,7 @@ public class PolygonSymbolizerView {
 		polygonFillOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(),
 						SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
@@ -237,7 +248,7 @@ public class PolygonSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 				Boolean newValue = (Boolean) event.getValue();
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				if (newValue == null) {
 					newValue = false;
@@ -267,7 +278,7 @@ public class PolygonSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
@@ -293,7 +304,7 @@ public class PolygonSymbolizerView {
 		polygonStrokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(), (float) SldConstant.DEFAULT_STROKE_WIDTH);
 
@@ -319,7 +330,7 @@ public class PolygonSymbolizerView {
 		polygonStrokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 
@@ -349,9 +360,23 @@ public class PolygonSymbolizerView {
 
 	}
 	
-	private void setSldHasChangedTrue() {
-		// TODO Auto-generated method stub
-		
+	private void fireSldContentChanged() {
+		SldContentChangedEvent.fire(this, true, currentPolygonSymbolizerInfo);
+	}
+
+
+	public Widget asWidget() {
+		return polygonSymbolizerForm;
+	}
+
+
+	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
+		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
+	}
+
+
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
 	}
 
 

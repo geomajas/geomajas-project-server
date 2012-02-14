@@ -18,6 +18,11 @@ import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ColorPickerItem;
@@ -29,8 +34,11 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 
-public class PointSymbolizerView {
+public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPresenter.MyView {
 
 	// SpecificFormPoint form item
 	private SelectItem typeOfGraphicItem;
@@ -82,11 +90,14 @@ public class PointSymbolizerView {
 
 	private VLayout symbolPane;
 
+	private final EventBus eventBus;
+
 	private final ViewUtil viewUtil;
 
 	private final SldEditorMessages sldEditorMessages;
 
-	public PointSymbolizerView(final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public PointSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
 	}
@@ -267,7 +278,7 @@ public class PointSymbolizerView {
 						Integer.toString(SldConstant.DEFAULT_SIZE_MARKER));
 
 				if (newValue != null) {
-					setSldHasChangedTrue();
+					fireSldContentChanged();
 
 					if (null == currrentGraphicInfo.getSize()) {
 						currrentGraphicInfo.setSize(new SizeInfo());
@@ -292,7 +303,7 @@ public class PointSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 				// ((FormItem) event.getSource()).validate();
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				String newValue = viewUtil.numericalToString(event.getValue(),
 						SldConstant.DEFAULT_ROTATION_MARKER_AS_STRING);
@@ -325,7 +336,7 @@ public class PointSymbolizerView {
 		markerSymbolName.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				String selected = null;
 				ListGridRecord record = markerSymbolName.getSelectedRecord();
@@ -354,7 +365,7 @@ public class PointSymbolizerView {
 		markerFillCheckBoxItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				Boolean newValue = (Boolean) event.getValue();
 
@@ -390,7 +401,7 @@ public class PointSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
@@ -418,7 +429,7 @@ public class PointSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 				// ((DynamicForm) event.getSource()).validate();
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(),
 						SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
@@ -448,7 +459,7 @@ public class PointSymbolizerView {
 		markerBorderCheckBoxItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 				Boolean newValue = (Boolean) event.getValue();
 
 				if (newValue == null) {
@@ -479,7 +490,7 @@ public class PointSymbolizerView {
 
 			public void onChanged(ChangedEvent event) {
 
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
@@ -505,7 +516,7 @@ public class PointSymbolizerView {
 		markerStrokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_WIDTH);
 
@@ -531,7 +542,7 @@ public class PointSymbolizerView {
 		markerStrokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(),
 						SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
@@ -578,7 +589,7 @@ public class PointSymbolizerView {
 				String newValue = viewUtil.numericalToString(event.getValue(), null);
 
 				if (newValue != null) {
-					setSldHasChangedTrue();
+					fireSldContentChanged();
 
 					if (null == currrentGraphicInfo.getSize()) {
 						currrentGraphicInfo.setSize(new SizeInfo());
@@ -602,7 +613,7 @@ public class PointSymbolizerView {
 				ListGridRecord record = graphicFormatItem.getSelectedRecord();
 
 				if (record != null) {
-					setSldHasChangedTrue();
+					fireSldContentChanged();
 
 					org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList()
 							.get(0);
@@ -629,7 +640,7 @@ public class PointSymbolizerView {
 		urlItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				setSldHasChangedTrue();
+				fireSldContentChanged();
 				org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList().get(0);
 				OnlineResourceInfo onlineResourceInfo = choiceInfoGraphic.getExternalGraphic().getOnlineResource();
 				if (null == onlineResourceInfo) {
@@ -646,9 +657,23 @@ public class PointSymbolizerView {
 		externalGraphicForm.setItems(graphicFormatItem, urlItem, externalGraphicSizeItem);
 	}
 
-	private void setSldHasChangedTrue() {
-		// TODO Auto-generated method stub
+	private void fireSldContentChanged() {
+		SldContentChangedEvent.fire(this, true, currrentGraphicInfo);
+	}
 
+
+	public Widget asWidget() {
+		return symbolPane;
+	}
+
+
+	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
+		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
+	}
+
+
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
 	}
 
 }
