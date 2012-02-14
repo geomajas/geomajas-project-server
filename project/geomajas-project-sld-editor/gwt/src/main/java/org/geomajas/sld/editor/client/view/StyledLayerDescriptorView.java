@@ -11,13 +11,10 @@
 
 package org.geomajas.sld.editor.client.view;
 
+import org.geomajas.sld.client.model.SldGeneralInfo;
 import org.geomajas.sld.client.presenter.ChangeHandler;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter.MyModel;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
-//import com.google.gwt.event.shared.HandlerRegistration;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -34,13 +31,10 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
-import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
 import org.geomajas.sld.client.view.ViewUtil;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 /**
@@ -48,7 +42,8 @@ import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
  * 
  * @author An Buyle
  */
-public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDescriptorPresenter.MyView {
+public class StyledLayerDescriptorView extends ViewImpl
+				implements StyledLayerDescriptorPresenter.MyView {
 
 	private static final SldEditorMessages MESSAGES = GWT.create(SldEditorMessages.class);
 
@@ -66,7 +61,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 
 	private TextItem geomTypeItem;
 
-	private MyModel originalModel;
+	private SldGeneralInfo originalModel;
 
 	private EventBus eventBus;
 
@@ -81,18 +76,19 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		nameOfLayerItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				// TODO
-				// setSldHasChangedTrue();
 				if (!nameOfLayerItem.validate()) {
 					return;
 				}
-				String nameOfLayer = null;
-				if (null == event.getValue()) {
-					nameOfLayer = "";
-				} else {
-					nameOfLayer = event.getValue().toString();
-				}
-				// TODO: currentSld.getChoiceList().get(0).getNamedLayer().setName(nameOfLayer);
+//				String nameOfLayer = null;
+//				if (null == event.getValue()) {
+//					nameOfLayer = "";
+//				} else {
+//					nameOfLayer = event.getValue().toString();
+//				}
+
+				//Inform observer(s) of change of SLD data
+				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, getModel());
+
 			}
 		});
 
@@ -114,30 +110,16 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 				if (!styleTitleItem.validate()) {
 					return;
 				}
-				// TODO
-				// setSldHasChangedTrue();
-				String styleTitle = null;
-				if (null == event.getValue()) {
-					styleTitle = "";
-				} else {
-					styleTitle = event.getValue().toString();
-				}
 
-				// TODO: StyledLayerDescriptorInfo.ChoiceInfo info = currentSld.getChoiceList().iterator().next();
-				// retrieve the first choice
+//				String styleTitle = null;
+//				if (null == event.getValue()) {
+//					styleTitle = "";
+//				} else {
+//					styleTitle = event.getValue().toString();
+//				}
 
-				// List<ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
-				// ChoiceInfo choiceInfo = choiceList.iterator().next(); // retrieve the first constraint
-				//
-				// if (choiceInfo.ifNamedStyle()) {
-				// // Only the name is specialized
-				// if (null == choiceInfo.getNamedStyle()) {
-				// choiceInfo.setNamedStyle(new NamedStyleInfo());
-				// }
-				// choiceInfo.getNamedStyle().setName(styleTitle);
-				// } else if (choiceInfo.ifUserStyle()) {
-				// choiceInfo.getUserStyle().setTitle(styleTitle);
-				// }
+				//Inform observer(s) of change of SLD data
+				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, getModel());
 
 			}
 		});
@@ -156,13 +138,12 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 		errorMessage.setAlign(Alignment.CENTER);
 
 		layoutContainer = new VLayout(5);
-		layoutContainer.setMinHeight(200);
+		layoutContainer.setMinHeight(100); // TODO: was 200
 
 		layoutContainer.setLayoutBottomMargin(5);
 
 		layoutContainer.addMember(topLevelAttributesForm);
 		layoutContainer.addMember(errorMessage);
-		// errorMessage.hide();
 
 	}
 
@@ -170,7 +151,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	public Widget asWidget() {
 		return layoutContainer;
 	}
-	
+
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
 	}
@@ -178,8 +159,6 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
 		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
 	}
-
-
 
 	// @Override
 	public void setError(String errorText) {
@@ -193,7 +172,7 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	}
 
 	// @Override
-	public void copyToView(MyModel model) {
+	public void copyToView(SldGeneralInfo model) {
 		originalModel = model;
 
 		nameOfLayerItem.setValue(model.getNameOfLayer());
@@ -205,17 +184,20 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	}
 
 	// @Override
-	public void copyToModel(MyModel model) {
-		// TODO: validate?
-		model.setNameOfLayer(nameOfLayerItem.getValue().toString());
-		model.setStyleTitle(styleTitleItem.getValue().toString());
+	public SldGeneralInfo copyToModel(SldGeneralInfo model) {
+		//validation is minimal (not null)
+		if (null == model) {
+			model = new SldGeneralInfo(GeometryType.UNSPECIFIED);
+		}
+		model.setNameOfLayer(null == nameOfLayerItem.getValue() ? "" : nameOfLayerItem.getValue().toString());
+		model.setStyleTitle(null == styleTitleItem.getValue() ? "" : styleTitleItem.getValue().toString());
+		return model;
 	}
 
-	// @Override
-	public com.google.web.bindery.event.shared.HandlerRegistration addChangeHandler(ChangeHandler changeHandler) {
-		// TODO Auto-generated method stub
-		return null;
+	private SldGeneralInfo getModel() {
+		return copyToModel(null);
 	}
+
 
 	public void reset() {
 		topLevelAttributesForm.clearValues();
@@ -224,8 +206,6 @@ public class StyledLayerDescriptorView extends ViewImpl implements StyledLayerDe
 	}
 
 	public void focus() {
-		// topLevelAttributesForm.clearValues();
-		// restoreFromOriginalModel();
 		// Set focus on nameOfLayerItem
 		nameOfLayerItem.focusInItem();
 
