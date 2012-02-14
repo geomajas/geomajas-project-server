@@ -33,8 +33,6 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	/** private members for polygon symbolizer **/
 	private DynamicForm polygonSymbolizerForm;
 
-	private boolean isPolygonSymbolizerFormFirstSetup = true;
-
 	private PolygonSymbolizerInfo currentPolygonSymbolizerInfo;
 
 	private CheckboxItem polygonFillCheckBoxItem;
@@ -70,13 +68,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	public void modelToView(PolygonSymbolizerInfo polygonSymbolizerInfo) {
 		currentPolygonSymbolizerInfo = polygonSymbolizerInfo;
 
-		if (isPolygonSymbolizerFormFirstSetup) {
-			setupPolygonSymbolizerForm();
-			isPolygonSymbolizerFormFirstSetup = false;
-		} else {
-			polygonSymbolizerForm.hide();
-			polygonSymbolizerForm.clearValues();
-		}
+		polygonSymbolizerForm.clearValues();
 
 		if (null == currentPolygonSymbolizerInfo.getFill()) { /* no filling */
 			// OGC 02-070: If the Fill element is omitted from its parent element, then no fill will be rendered.
@@ -139,8 +131,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 			polygonSymbolizerForm.hideItem("borderOpacity");
 			polygonSymbolizerForm.hideItem("borderWidth");
 		}
-
-		polygonSymbolizerForm.show();
+		polygonSymbolizerForm.setVisible(true);
 	}
 
 	/**
@@ -148,6 +139,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	 */
 	private void setupPolygonSymbolizerForm() {
 
+		polygonSymbolizerForm = new DynamicForm();
 		polygonFillCheckBoxItem = new CheckboxItem();
 		polygonFillCheckBoxItem.setTitle(sldEditorMessages.enableFillInSymbologyTab());
 		polygonFillCheckBoxItem.setDefaultValue(true);

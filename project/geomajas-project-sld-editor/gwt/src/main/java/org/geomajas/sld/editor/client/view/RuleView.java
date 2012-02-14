@@ -4,12 +4,9 @@ import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.client.presenter.RulePresenter;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
-import org.geomajas.sld.editor.client.widget.IncompleteFilterInfo;
-import org.geomajas.sld.editor.client.widget.IncompleteRuleInfo;
-import org.geomajas.sld.filter.FilterTypeInfo;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
@@ -38,6 +35,7 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 
 	private final SldEditorMessages sldEditorMessages;
 
+	@Inject
 	public RuleView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;

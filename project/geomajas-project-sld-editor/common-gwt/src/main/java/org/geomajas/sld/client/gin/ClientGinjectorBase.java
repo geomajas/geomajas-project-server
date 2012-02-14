@@ -12,7 +12,12 @@
 package org.geomajas.sld.client.gin;
 
 import org.geomajas.sld.client.model.SldManager;
+import org.geomajas.sld.client.presenter.FilterPresenter;
+import org.geomajas.sld.client.presenter.LineSymbolizerPresenter;
 import org.geomajas.sld.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.RulePresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
@@ -38,11 +43,21 @@ public interface ClientGinjectorBase extends Ginjector {
 
 	Provider<StyledLayerDescriptorListPresenter> getStyledLayerDescriptorListPresenter();
 
+	Provider<StyledLayerDescriptorLayoutPresenter> getStyledLayerDescriptorLayoutPresenter();
+
 	Provider<StyledLayerDescriptorPresenter> getStyledLayerDescriptorPresenter();
 	
 	Provider<RuleSelectorPresenter> getRuleSelectorPresenter();
 
-	Provider<StyledLayerDescriptorLayoutPresenter> getStyledLayerDescriptorLayoutPresenter();
+	Provider<RulePresenter> getRulePresenter();
+
+	Provider<FilterPresenter> getFilterPresenter();
+
+	Provider<PointSymbolizerPresenter> getPointSymbolizerPresenter();
+
+	Provider<LineSymbolizerPresenter> getLineSymbolizerPresenter();
+
+	Provider<PolygonSymbolizerPresenter> getPolygonSymbolizerPresenter();
 
 	EventBus getEventBus();
 

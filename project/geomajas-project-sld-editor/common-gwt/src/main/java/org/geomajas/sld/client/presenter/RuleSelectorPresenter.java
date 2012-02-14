@@ -290,18 +290,6 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		RevealContentEvent.fire(this, StyledLayerDescriptorLayoutPresenter.TYPE_RULES_CONTENT, this);
 	}
 
-	@Override
-	protected void onReset() {
-		super.onReset();
-
-		if (null != getModel()) {
-			getView().copyToView(getModel());
-		} else {
-			getView().reset();
-		}
-		getView().focus();
-	}
-
 	@ProxyEvent
 	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();

@@ -11,7 +11,12 @@
 package org.geomajas.sld.editor.client.gin;
 
 import org.geomajas.sld.client.presenter.CreateSldDialogPresenterWidget;
+import org.geomajas.sld.client.presenter.FilterPresenter;
+import org.geomajas.sld.client.presenter.LineSymbolizerPresenter;
 import org.geomajas.sld.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.RulePresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
@@ -19,8 +24,13 @@ import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.presenter.SmartGwtRootPresenter;
 import org.geomajas.sld.editor.client.view.CreateSldDialogView;
+import org.geomajas.sld.editor.client.view.FilterView;
+import org.geomajas.sld.editor.client.view.LineSymbolizerView;
 import org.geomajas.sld.editor.client.view.MainLayoutView;
+import org.geomajas.sld.editor.client.view.PointSymbolizerView;
+import org.geomajas.sld.editor.client.view.PolygonSymbolizerView;
 import org.geomajas.sld.editor.client.view.RuleSelectorView;
+import org.geomajas.sld.editor.client.view.RuleView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorLayoutView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorListView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorView;
@@ -54,12 +64,22 @@ public class ClientModule extends AbstractPresenterModule {
 
 		bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class,
 				CreateSldDialogPresenterWidget.MyView.class, CreateSldDialogView.class);
+		
 		bindPresenter(StyledLayerDescriptorLayoutPresenter.class, StyledLayerDescriptorLayoutPresenter.MyView.class,
 				StyledLayerDescriptorLayoutView.class,
 				StyledLayerDescriptorLayoutPresenter.MyProxy.class);
-//		bindSingletonPresenterWidget(CreateStyledLayerDescriptorPopupPresenterWidget.class,
-//				CreateStyledLayerDescriptorPopupPresenterWidget.MyView.class,
-//				CreateStyledLayerDescriptorPopupView.class);
 
+		bindPresenter(RulePresenter.class, RulePresenter.MyView.class, RuleView.class, RulePresenter.MyProxy.class);
+
+		bindPresenter(FilterPresenter.class, FilterPresenter.MyView.class, FilterView.class, FilterPresenter.MyProxy.class);
+
+		bindPresenter(PointSymbolizerPresenter.class, PointSymbolizerPresenter.MyView.class, PointSymbolizerView.class,
+				PointSymbolizerPresenter.MyProxy.class);
+
+		bindPresenter(PolygonSymbolizerPresenter.class, PolygonSymbolizerPresenter.MyView.class, PolygonSymbolizerView.class,
+				PolygonSymbolizerPresenter.MyProxy.class);
+		
+		bindPresenter(LineSymbolizerPresenter.class, LineSymbolizerPresenter.MyView.class, LineSymbolizerView.class,
+				LineSymbolizerPresenter.MyProxy.class);
 	}
 }

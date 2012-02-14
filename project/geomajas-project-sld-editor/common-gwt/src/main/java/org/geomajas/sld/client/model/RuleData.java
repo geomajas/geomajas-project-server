@@ -12,7 +12,9 @@
 package org.geomajas.sld.client.model;
 
 import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.filter.FilterTypeInfo;
 
 /**
  * @author An Buyle
@@ -95,6 +97,38 @@ public class RuleData {
 
 	public GeometryType getGeometryType() {
 		return geometryType;
+	}
+	
+	public SymbolizerTypeInfo getSymbolizerTypeInfo() {
+		RuleInfo ruleInfo = getRuleInfo();
+		return ruleInfo.getSymbolizerList().get(0);
+	}
+
+	private RuleInfo getRuleInfo() {
+		RuleInfo ruleInfo = null;	
+		switch(getTypeOfRule()){
+			case COMPLETE_RULE:
+				ruleInfo = getCompleteRuleBody();
+				break;
+			case DEFAULT_RULE:
+				ruleInfo = getCompleteRuleBody();
+				break;
+			case INCOMPLETE_RULE:
+				ruleInfo = getIncompleteRuleBody().getRule();
+				break;
+		}
+		return ruleInfo;
+	}
+	
+	public FilterTypeInfo getFilter() {
+		RuleInfo ruleInfo = getRuleInfo();
+		if(ruleInfo.getChoice() == null) {
+			return null;
+		}else if(ruleInfo.getChoice().ifFilter()) {
+			return ruleInfo.getChoice().getFilter();
+		} else {
+			return null;
+		}
 	}
 
 }

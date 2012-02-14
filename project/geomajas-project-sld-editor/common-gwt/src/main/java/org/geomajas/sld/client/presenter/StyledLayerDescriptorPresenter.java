@@ -53,11 +53,11 @@ public class StyledLayerDescriptorPresenter
 	implements SldSelectedHandler, InitSldLayoutHandler {
 
 	private Logger logger = Logger.getLogger("StyledLayerDescriptorPresenter");
-	private static final SldEditorMessages MESSAGES = GWT.create(SldEditorMessages.class);
+
 	private SldGeneralInfo myModel;
 	private SldManager manager;
-
-	private ViewUtil viewUtil;
+	private final SldEditorMessages editorMessages;
+	private final ViewUtil viewUtil;
 
 	
 	/**
@@ -103,10 +103,11 @@ public class StyledLayerDescriptorPresenter
 	 */
 	@Inject
 	public StyledLayerDescriptorPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
-			final ViewUtil viewUtil, final SldManager manager) {
+			final ViewUtil viewUtil, final SldManager manager, final SldEditorMessages editorMessages) {
 		super(eventBus, view, proxy);
 		this.manager = manager;
 		this.viewUtil = viewUtil;
+		this.editorMessages = editorMessages;
 	}
 	
 	
@@ -196,7 +197,7 @@ public class StyledLayerDescriptorPresenter
 		NamedLayerInfo namedLayerInfo = info.getNamedLayer();
 
 		String nameValue = (null != namedLayerInfo.getName()) ? namedLayerInfo.getName()
-				: MESSAGES.nameUnspecified();
+				: editorMessages.nameUnspecified();
 
 		//
 		myModel.setNameOfLayer(nameValue);

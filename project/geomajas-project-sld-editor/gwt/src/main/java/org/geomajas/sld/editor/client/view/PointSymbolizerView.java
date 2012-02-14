@@ -14,12 +14,16 @@ import org.geomajas.sld.SizeInfo;
 import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.WellKnownNameInfo;
+import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.xlink.SimpleLinkInfo.HrefInfo;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -34,9 +38,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 
 public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPresenter.MyView {
 
@@ -96,10 +97,18 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 	private final SldEditorMessages sldEditorMessages;
 
+	@Inject
 	public PointSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
+		symbolPane = new VLayout();
+		symbolPane.setMembersMargin(5);
+		symbolPane.setMargin(5);
+		setupMarkerForm();
+		setupExternalGraphic();
+		symbolPane.addMember(markerSymbolizerForm);
+		symbolPane.addMember(externalGraphicForm);
 	}
 
 	public void modelToView(GraphicInfo graphicInfo) {
@@ -115,14 +124,9 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 	private void markerToView(GraphicInfo graphicInfo) {
 
+		externalGraphicForm.hide();
 		currrentGraphicInfo = graphicInfo;
-		if (isMarkerSymbolizerFormFirstSetup) {
-			setupMarkerForm();
-			isMarkerSymbolizerFormFirstSetup = false;
-		} else {
-			markerSymbolizerForm.hide();
-			markerSymbolizerForm.clearValues();
-		}
+		markerSymbolizerForm.clearValues();
 
 		markerSizeItem.setValue(SldConstant.DEFAULT_SIZE_MARKER); /* init with default */
 		if (null != graphicInfo.getSize()) {
@@ -228,19 +232,13 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 			markerSymbolizerForm.hideItem("borderOpacity");
 			markerSymbolizerForm.hideItem("borderWidth");
 		}
-
-		markerSymbolizerForm.show();
+		markerSymbolizerForm.setVisible(true);
 	}
 
 	private void externalGraphicToView(GraphicInfo graphicInfo) {
+		markerSymbolizerForm.hide();
 		currrentGraphicInfo = graphicInfo;
-
-		if (isExternalGraphicFormFirstSetup) {
-			setupExternalGraphic();
-		} else {
-			externalGraphicForm.hide();
-			externalGraphicForm.clearValues();
-		}
+		externalGraphicForm.clearValues();
 
 		if (null != graphicInfo.getSize()) {
 			String size = graphicInfo.getSize().getValue();
@@ -257,12 +255,11 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 			String urlValue = choiceInfoGraphic.getExternalGraphic().getOnlineResource().getHref().getHref();
 			urlItem.setValue(urlValue);
 		}
-
-		isExternalGraphicFormFirstSetup = false;
-		externalGraphicForm.show();
+		externalGraphicForm.setVisible(true);
 	}
 
 	private void setupMarkerForm() {
+		markerSymbolizerForm = new DynamicForm();
 		/** Construct and setup "marker symbol size" form field **/
 
 		markerSizeItem = new SpinnerItem();
@@ -576,6 +573,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 	}
 
 	private void setupExternalGraphic() {
+		externalGraphicForm = new DynamicForm();
 		externalGraphicSizeItem = new SpinnerItem();
 		externalGraphicSizeItem.setTitle(sldEditorMessages.sizeOfGraphicInSymbologyTab());
 		externalGraphicSizeItem.setDefaultValue(12);
@@ -655,6 +653,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		});
 
 		externalGraphicForm.setItems(graphicFormatItem, urlItem, externalGraphicSizeItem);
+		externalGraphicForm.hide();
 	}
 
 	private void fireSldContentChanged() {

@@ -11,6 +11,10 @@ public class ViewUtilImpl extends BaseViewUtil {
 		SC.say(message);
 	}
 
+	public void showWarning(String message) {
+		SC.warn(message);
+	}
+
 	public void showYesNoMessage(String message, final YesNoCallback callback) {
 		SC.ask(message, new BooleanCallback() {
 

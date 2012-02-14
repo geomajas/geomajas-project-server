@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.geomajas.sld.client.model.ChoiceFilterInfo;
+import org.geomajas.sld.client.model.IncompleteFilterInfo;
 import org.geomajas.sld.client.presenter.FilterPresenter;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
-import org.geomajas.sld.editor.client.widget.ChoiceFilterInfo;
-import org.geomajas.sld.editor.client.widget.FilterHasChangedHandler;
-import org.geomajas.sld.editor.client.widget.IncompleteFilterInfo;
 import org.geomajas.sld.expression.ExpressionInfo;
 import org.geomajas.sld.expression.LiteralTypeInfo;
 import org.geomajas.sld.expression.PropertyNameInfo;
@@ -34,6 +33,7 @@ import org.geomajas.sld.filter.UpperBoundaryTypeInfo;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -48,6 +48,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class FilterView extends ViewImpl implements FilterPresenter.MyView {
+
 	/** private members for filter form **/
 	private static final String DEFAULT_WILD_CARD = "*";
 
@@ -94,9 +95,10 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	private Label filterIsNotSupportedMessage;
 
 	private VLayout filterDetailContainer;
-	
+
 	private final EventBus eventBus;
 
+	@Inject
 	public FilterView(final EventBus eventBus) {
 		this.eventBus = eventBus;
 		filterDetailContainer = new VLayout();
@@ -107,8 +109,64 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		return filterDetailContainer;
 	}
 
-	public boolean modelToView(FilterTypeInfo filterTypeInfo) {
-		isSupportedFilter = true;
+	public boolean isValid(FilterTypeInfo filterTypeInfo) {
+		// TODO: check why between is special case ?
+		if (filterTypeInfo.ifComparisonOps()) {
+
+			ComparisonOpsTypeInfo op = filterTypeInfo.getComparisonOps();
+
+			if (op.getClass().equals(PropertyIsLikeTypeInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsEqualToInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsNotEqualToInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsGreaterThanInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsGreaterThanOrEqualToInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsLessThanInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsLessThanOrEqualToInfo.class)) {
+
+			} else if (op.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
+				ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) op).getExpression();
+				if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
+				} else {
+					return false; /* ABORT */
+				}
+			} else if (op.getClass().equals(PropertyIsNullTypeInfo.class)) {
+			} else {
+				return false;
+			}
+		} else if (currentFilterInfo.ifLogicOps()) {
+			LogicOpsTypeInfo op = filterTypeInfo.getLogicOps();
+			/** Only the NOT operator is (partially) supported **/
+			if (op.getClass().equals(UnaryLogicOpTypeInfo.class)) {
+				UnaryLogicOpTypeInfo info = (UnaryLogicOpTypeInfo) op;
+				if (info.ifComparisonOps()) {
+					ComparisonOpsTypeInfo innerOp = info.getComparisonOps();
+
+					if (innerOp.getClass().equals(PropertyIsNullTypeInfo.class)) {
+					} else if (innerOp.getClass().equals(PropertyIsLikeTypeInfo.class)) {
+					} else if (innerOp.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
+						ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) innerOp).getExpression();
+
+						if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
+						} else {
+							return false; 
+						}
+					}
+
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public void modelToView(FilterTypeInfo filterTypeInfo) {
 
 		currentFilterInfo = filterTypeInfo;
 		if (null == currentFilterInfo) {
@@ -124,7 +182,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 			filterForm.hideItem("attributeUpperBoundaryValue");
 		}
 
-		filterForm.show();
+		filterForm.setVisible(true);
 		filterForm.showItem("attributeValue");
 		filterAttributeValue.setDisabled(false);
 		filterOperatorSelect.setDisabled(false);
@@ -179,11 +237,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 				if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
 					filterAttributeName.setValue(expressionInfo.getValue());
-				} else {
-					SC.warn("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
-					filterForm.hide();
-					isSupportedFilter = false;
-					return isSupportedFilter; /* ABORT */
 				}
 
 				filterForm.hideItem("attributeValue");
@@ -205,11 +258,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 				filterOperatorSelect.setValue("PropertyIsNullTypeInfo");
 				filterAttributeName.setValue(((PropertyIsNullTypeInfo) op).getPropertyName().getValue());
 				filterAttributeValue.setDisabled(true);
-			} else {
-				SC.warn("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
-				filterForm.hide();
-				isSupportedFilter = false;
-				return isSupportedFilter; /* ABORT */
 			}
 		} else if (currentFilterInfo.ifLogicOps()) {
 			LogicOpsTypeInfo op = filterTypeInfo.getLogicOps();
@@ -243,12 +291,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 						if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
 							filterAttributeName.setValue(expressionInfo.getValue());
-						} else {
-							SC.warn("Het filter voor deze regel wordt niet ondersteund en " +
-									"kan dus niet getoond worden.");
-							filterForm.hide();
-							isSupportedFilter = false;
-							return isSupportedFilter; /* ABORT */
 						}
 						filterOperatorSelect.setValue("PropertyIsNotBetweenTypeInfo");
 						filterForm.hideItem("attributeValue");
@@ -267,19 +309,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 					}
 				}
 
-			} else {
-				SC.warn("Een filter met een logische operatie verschillend van NOT wordt niet ondersteund en "
-						+ "wordt dus niet getoond.");
-				filterForm.hide();
-				isSupportedFilter = false;
-				setFilterIsNotSupported();
-				return isSupportedFilter; /* ABORT */
 			}
 		}
 
 		attemptConvertFormToFilter(); /* should normally succeed, unless unsupported filter */
 		filterForm.markForRedraw();
-		return isSupportedFilter;
 	}
 
 	private void setFilterIsNotSupported() {
@@ -335,7 +369,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 		}
 
-		filterForm.show();
+		filterForm.setVisible(true);
 	}
 
 	private void setupFilterForm() {
@@ -822,9 +856,12 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
 	}
 
-
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
+	}
+
+	public void clear() {
+		clearValues();
 	}
 
 }

@@ -61,13 +61,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 	
 	public void modelToView(LineSymbolizerInfo lineSymbolizerInfo) {
 		currentLineSymbolizerInfo = lineSymbolizerInfo;
-		if (isLineSymbolizerFormFirstSetup) {
-			setupLineSymbolizerForm();
-			isLineSymbolizerFormFirstSetup = false;
-		} else {
-			lineSymbolizerForm.hide();
-			lineSymbolizerForm.clearValues();
-		}
+		lineSymbolizerForm.clearValues();
 
 		if (null == lineSymbolizerInfo.getStroke()) {
 			lineSymbolizerInfo.setStroke(new StrokeInfo());
@@ -92,6 +86,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 	}
 
 	private void setupLineSymbolizerForm() {
+		lineSymbolizerForm = new DynamicForm();
 		lineStrokeColorPicker = new ColorPickerItem();
 		lineStrokeColorPicker.setTitle(sldEditorMessages.strokeColorTitle());
 		lineStrokeColorPicker.setDefaultValue(SldConstant.DEFAULT_FILL_FOR_LINE);

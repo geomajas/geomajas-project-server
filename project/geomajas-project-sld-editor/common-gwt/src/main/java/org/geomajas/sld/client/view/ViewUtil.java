@@ -23,6 +23,8 @@ public interface ViewUtil {
 
 	void showMessage(String message);
 
+	void showWarning(String message);
+
 	void showYesNoMessage(String message, YesNoCallback callback);
 
 	String numericalToString(Object value, String defaultStringValue);

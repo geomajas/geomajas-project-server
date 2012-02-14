@@ -10,7 +10,6 @@
  */
 package org.geomajas.sld.client.model.event;
 
-import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.model.RuleData;
 
 import com.google.gwt.event.shared.EventHandler;
