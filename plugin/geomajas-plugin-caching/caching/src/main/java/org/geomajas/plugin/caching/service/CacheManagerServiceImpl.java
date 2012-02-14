@@ -13,6 +13,8 @@ package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.Layer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class CacheManagerServiceImpl implements CacheManagerService {
 
+	private final Logger log = LoggerFactory.getLogger(CacheManagerServiceImpl.class);
+
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -39,26 +43,35 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	/** {@inheritDoc} */
 	public void put(Layer layer, CacheCategory category, String key, Object object, Envelope envelope) {
+		log.debug("Put: {} {} {}", new String[] {layer.getId(), category.toString(), key});
 		getCache(layer, category).put(key, object, envelope);
 	}
 
 	/** {@inheritDoc} */
 	public Object get(Layer layer, CacheCategory category, String key) {
-		return getCache(layer, category).get(key, Object.class);
+		Object o = getCache(layer, category).get(key, Object.class);
+		log.debug("Get {}: {} {} {}", new String[] {
+				o != null ? "Hit" : "Miss", layer.getId(), category.toString(), key});
+		return o;
 	}
 
 	/** {@inheritDoc} */
 	public <TYPE> TYPE get(Layer layer, CacheCategory category, String key, Class<TYPE> type) {
-		return getCache(layer, category).get(key, type);
+		TYPE o = getCache(layer, category).get(key, type); 
+		log.debug("Get {}: {} {} {}", new String[] {
+				o != null ? "Hit" : "Miss", layer.getId(), category.toString(), key});
+		return o;
 	}
 
 	/** {@inheritDoc} */
 	public void remove(Layer layer, CacheCategory category, String key) {
+		log.debug("Remove: {} {} {}", new String[] {layer.getId(), category.toString(), key});
 		getCache(layer, category).remove(key);
 	}
 
 	/** {@inheritDoc} */
 	public void drop(Layer layer, CacheCategory category) {
+		log.debug("Drop: {} {}", layer.getId(), category.toString());
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
 			cache.drop();
@@ -73,6 +86,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	/** {@inheritDoc} */
 	public void drop(Layer layer) {
+		log.debug("Drop: {}", layer.getId());
 		if (null != layer) {
 			// drop requested layer if not null
 			List<IndexedCache> layerCaches = getCaches(layer);
@@ -90,6 +104,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	/** {@inheritDoc} */
 	public void invalidate(Layer layer, CacheCategory category, Envelope envelope) {
+		log.debug("Invalidate: {} {}", layer.getId(), category.toString());
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
 			cache.invalidate(envelope);
@@ -104,6 +119,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	/** {@inheritDoc} */
 	public void invalidate(Layer layer, Envelope envelope) {
+		log.debug("Invalidate: {}", layer.getId());
 		for (IndexedCache cache : getCaches(layer)) {
 			cache.invalidate(envelope);
 		}
@@ -116,6 +132,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 
 	/** {@inheritDoc} */
 	public void invalidate(Layer layer) {
+		log.debug("Invalidate: {}", layer.getId());
 		for (IndexedCache cache : getCaches(layer)) {
 			cache.clear();
 		}
