@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.NamedLayerInfo;
+import org.geomajas.sld.NamedStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
@@ -56,6 +57,8 @@ public class SldManagerImpl implements SldManager {
 	private final Logger logger = Logger.getLogger(SldManagerImpl.class.getName());
 
 	private StyledLayerDescriptorInfo currentSld;
+
+	private boolean currentSldHasChanged;
 
 	@Inject
 	public SldManagerImpl(EventBus eventBus) {
@@ -168,6 +171,8 @@ public class SldManagerImpl implements SldManager {
 
 				public void onSuccess(StyledLayerDescriptorInfo result) {
 					currentSld = result;
+					currentSldHasChanged = false;
+					
 					int i = currentList.indexOf(selectedSld);
 					if(i >= 0) {
 						currentList.set(i, currentSld);
@@ -225,6 +230,42 @@ public class SldManagerImpl implements SldManager {
 				}
 			});
 		}
+	}
+
+	public void updateGeneralSldInfo(SldGeneralInfo sldGeneralInfo) {
+		
+		setSldHasChanged();
+		// retrieve the first choice
+		StyledLayerDescriptorInfo.ChoiceInfo info = currentSld.getChoiceList().iterator().next();
+		if (!info.ifNamedLayer()) {
+			// warning that invalid SLD
+			//SC.warn("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
+			return; // ABORT
+		}
+		
+		// Update the name of the layer
+		info.getNamedLayer().setName(sldGeneralInfo.getNameOfLayer());
+		 
+		
+		List<org.geomajas.sld.NamedLayerInfo.ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
+		// retrieve the first constraint
+		org.geomajas.sld.NamedLayerInfo.ChoiceInfo choiceInfo = choiceList.iterator().next();  
+
+		if (choiceInfo.ifNamedStyle()) {
+			// Only the name is specialized
+			if (null == choiceInfo.getNamedStyle()) {
+				choiceInfo.setNamedStyle(new NamedStyleInfo());
+			}
+			choiceInfo.getNamedStyle().setName(sldGeneralInfo.getStyleTitle());
+		} else if (choiceInfo.ifUserStyle()) {
+			choiceInfo.getUserStyle().setTitle(sldGeneralInfo.getStyleTitle());
+		}
+		
+	}
+
+	private void setSldHasChanged() {
+		currentSldHasChanged = true;
+		
 	}
 
 }

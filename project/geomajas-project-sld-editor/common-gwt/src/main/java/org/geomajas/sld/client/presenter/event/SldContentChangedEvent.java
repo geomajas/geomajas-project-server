@@ -10,19 +10,42 @@
  */
 package org.geomajas.sld.client.presenter.event;
 
+import org.geomajas.sld.client.model.SldGeneralInfo;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+/**
+ * Provides call-back to be called when an attribute (or a group of attributes) of the SLD has been changed, 
+ * usually as a result of user editing of a form item in one of the SLD editor widgets. 
+ *  
+ * @author An Buyle
+ * 
+ */
 public class SldContentChangedEvent  extends GwtEvent<SldContentChangedEvent.SldContentChangedHandler> {
 
-	public SldContentChangedEvent() {
-		// Possibly for serialization.
+	private boolean isComplete;
+	private Object 	data;
+
+	public SldContentChangedEvent(boolean isComplete, Object data) {
+		this.isComplete = isComplete;
+		this.data = data;
+	}
+	public boolean isContentComplete() {
+		return this.isComplete;
 	}
 
-	public static void fire(HasHandlers source) {
-		SldContentChangedEvent eventInstance = new SldContentChangedEvent();
+	/**
+	 * @param source
+	 * @param isComplete	if true, the attribute/attributes that have changed do NOT result in an 
+	 * 						incomplete SLD (example of isComplete false is when only the attribute of a rule filter
+	 * 						has been specified and not yet the operation)
+	 * 						 
+	 */
+	public static void fire(HasHandlers source, boolean isComplete, Object data) {
+		SldContentChangedEvent eventInstance = new SldContentChangedEvent(isComplete, data);
 		source.fireEvent(eventInstance);
 	}
 
@@ -54,7 +77,7 @@ public class SldContentChangedEvent  extends GwtEvent<SldContentChangedEvent.Sld
 		 * 
 		 * @param event the event
 		 */
-		void onPopupNewList(SldContentChangedEvent event);
+		void onSldContentChanged(SldContentChangedEvent event);
 	}
 
 	private static final Type<SldContentChangedHandler> TYPE = new Type<SldContentChangedHandler>();
@@ -70,7 +93,7 @@ public class SldContentChangedEvent  extends GwtEvent<SldContentChangedEvent.Sld
 
 	@Override
 	protected void dispatch(SldContentChangedHandler handler) {
-		handler.onPopupNewList(this);
+		handler.onSldContentChanged(this);
 	}
 
 	@Override
@@ -86,5 +109,8 @@ public class SldContentChangedEvent  extends GwtEvent<SldContentChangedEvent.Sld
 	@Override
 	public String toString() {
 		return "SldContentChangedEvent[" + "]";
+	}
+	public Object getData() {
+		return data;
 	}
 }

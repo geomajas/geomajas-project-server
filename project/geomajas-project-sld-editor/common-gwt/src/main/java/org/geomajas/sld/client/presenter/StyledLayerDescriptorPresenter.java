@@ -18,14 +18,23 @@ import java.util.logging.Logger;
 import org.geomajas.sld.NamedLayerInfo;
 import org.geomajas.sld.NamedLayerInfo.ChoiceInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.client.model.SldGeneralInfo;
+import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
+import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter.MyProxy;
+import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter.MyView;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -45,8 +54,12 @@ public class StyledLayerDescriptorPresenter
 
 	private Logger logger = Logger.getLogger("StyledLayerDescriptorPresenter");
 	private static final SldEditorMessages MESSAGES = GWT.create(SldEditorMessages.class);
-	private MyModel myModel;
+	private SldGeneralInfo myModel;
+	private SldManager manager;
 
+	private ViewUtil viewUtil;
+
+	
 	/**
 	 * {@link StyledLayerDescriptorPresenter}'s proxy.
 	 */
@@ -57,91 +70,56 @@ public class StyledLayerDescriptorPresenter
 	/**
 	 * {@link StyledLayerDescriptorPresenter}'s view.
 	 */
-	public interface MyView extends View {
+	public interface MyView extends View, HasSldContentChangedHandlers  {
 
-		void copyToView(MyModel myModel);
+		void copyToView(SldGeneralInfo myModel);
 
-		void copyToModel(MyModel myModel);
+		SldGeneralInfo copyToModel(SldGeneralInfo myModel);
 
-		// TODO: void setViewChangedHandler(ViewChangedHandler);
 		void reset();
 
 		void focus();
 
 		void setError(String errorText);
 
-		HandlerRegistration addChangeHandler(ChangeHandler changeHandler);
 	}
 
-	/**
-	 * 
-	 * @author Jan De Moerloose
-	 *
-	 */
-	public class MyModel {
 
-		private String nameOfLayer;
-
-		private String styleTitle;
-
-		private final GeometryType geomType; // Cannot be updated
-
-		public MyModel(GeometryType geomType) {
-			this.geomType = geomType;
-		}
-
-		public String getNameOfLayer() {
-			return nameOfLayer;
-		}
-
-		public void setNameOfLayer(String nameOfLayer) {
-			this.nameOfLayer = nameOfLayer;
-		}
-
-		public String getStyleTitle() {
-			return styleTitle;
-		}
-
-		public void setStyleTitle(String styleTitle) {
-			this.styleTitle = styleTitle;
-		}
-
-		public GeometryType getGeomType() {
-			return geomType;
-		}
-
-	}
-
-	public void setModel(MyModel model) {
+	public void setModel(SldGeneralInfo model) {
 		this.myModel = model;
 	}
 
-	private MyModel getModel() {
+	private SldGeneralInfo getModel() {
 		return myModel;
 	}
 
 	/** Constructor.
-	 * 
+	 * 	 
 	 * @param eventBus
 	 * @param view
 	 * @param proxy
+	 * @param viewUtil
+	 * @param manager
 	 */
 	@Inject
-	public StyledLayerDescriptorPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
+	public StyledLayerDescriptorPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy,
+			final ViewUtil viewUtil, final SldManager manager) {
 		super(eventBus, view, proxy);
+		this.manager = manager;
+		this.viewUtil = viewUtil;
 	}
-
+	
+	
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().addChangeHandler(new ChangeHandler() {
-
-			public void onChange(Object changedData) {
-				informParentOfChange();
-
+		registerHandler(getView().addSldContentChangedHandler(new SldContentChangedHandler() {
+			
+			public void onSldContentChanged(SldContentChangedEvent event) {
+				manager.updateGeneralSldInfo((SldGeneralInfo)(event.getData())); //TODO: optimize: only update SLD when user hits save button
+				
 			}
-		}));
-		
+		}));		
 
 		//observe change of selected SLD (after it has been loaded) 
 		addRegisteredHandler(SldSelectedEvent.getType(), this);
@@ -192,7 +170,7 @@ public class StyledLayerDescriptorPresenter
 
 		// Retrieve the top-level info from SLD and update myModel accordingly
 
-		myModel = new MyModel(GeometryType.UNSPECIFIED);
+		myModel = new SldGeneralInfo(GeometryType.UNSPECIFIED);
 
 		if (null == sld.getChoiceList() || sld.getChoiceList().isEmpty()) {
 			//TODO: Warn dialogue
@@ -269,7 +247,7 @@ public class StyledLayerDescriptorPresenter
 	 */
 	private void informParentOfChange() {
 		// TODO: code below is for testing only!!!
-		MyModel newModel = new MyModel(getModel().getGeomType());
+		SldGeneralInfo newModel = new SldGeneralInfo(getModel().getGeomType());
 		getView().copyToModel(newModel);
 	}
 
@@ -279,7 +257,7 @@ public class StyledLayerDescriptorPresenter
 	private void updateModelToServer() {
 		// First, we validate the input.
 		getView().setError("");
-		MyModel newModel = new MyModel(getModel().getGeomType());
+		SldGeneralInfo newModel = new SldGeneralInfo(getModel().getGeomType());
 
 		getView().copyToModel(newModel);
 
