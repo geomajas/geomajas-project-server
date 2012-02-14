@@ -77,11 +77,6 @@
     </listener>
 
 	<servlet>
-		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
-	</servlet>
-
-	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -91,17 +86,15 @@
 		</init-param>
 		<load-on-startup>3</load-on-startup>
 	</servlet>
-	
 
-	<servlet-mapping>
-		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/${package}.Application/geomajasService</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>/d/*</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/d/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/${artifactId}/*</url-pattern>
+    </servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
