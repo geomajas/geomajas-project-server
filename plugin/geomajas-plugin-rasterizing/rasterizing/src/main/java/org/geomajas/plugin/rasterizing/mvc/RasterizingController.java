@@ -91,6 +91,7 @@ public class RasterizingController {
 					RasterizingContainer.class);
 			// if not in cache, try the rebuild cache and invoke the pipeline directly
 			if (rasterizeContainer == null) {
+				log.debug("Item not in cache, rebuilding: {}", key);
 				GetTileContainer tileContainer = new GetTileContainer();
 				PipelineContext context = pipelineService.createContext();
 				context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
@@ -125,6 +126,7 @@ public class RasterizingController {
 				rasterizeContainer = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class);
 			} else {
 				recorder.record(CacheCategory.RASTER, "Got item from cache");
+				log.debug("Got item from cache: {}", key);
 			}
 			// Prepare the response:
 			CacheFilter.configureNoCaching(response);
