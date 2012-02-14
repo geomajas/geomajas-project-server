@@ -16,8 +16,6 @@ package ${package}.client;
 
 import ${package}.client.gui.SearchPanel;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
@@ -71,9 +69,9 @@ public class Application implements EntryPoint {
 		toolbar.setBackgroundImage("");
 		toolbar.setBorder("0px");
 
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+		map.getMapModel().runWhenInitialized(new Runnable() {
 
-			public void onMapModelChange(MapModelEvent event) {
+			public void run() {
 				Label title = new Label("Geomajas GWT: hello world");
 				title.setStyleName("appTitle");
 				title.setWidth(260);
