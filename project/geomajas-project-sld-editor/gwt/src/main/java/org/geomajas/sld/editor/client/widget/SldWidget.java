@@ -9,7 +9,11 @@
  * details, see LICENSE.txt in the project root.
  */
 
+//TODO: Old Code, to be removed
+
 package org.geomajas.sld.editor.client.widget;
+
+//TODO: Old Code, to be removed
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -37,10 +41,13 @@ import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.WellKnownNameInfo;
+import org.geomajas.sld.client.model.ChoiceFilterInfo;
+import org.geomajas.sld.client.model.IncompleteFilterInfo;
+import org.geomajas.sld.client.model.IncompleteRuleInfo;
 import org.geomajas.sld.client.model.SldGwtServiceAsync;
 
 import org.geomajas.sld.client.model.RuleData;
-import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
+//import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.filter.FilterTypeInfo;
@@ -870,40 +877,41 @@ public class SldWidget {
 	}
 
 	private RuleData getCurrentRuleState() {
-		RuleData ruleData = new RuleData();
-		if (null != currentRule) {
-			if (isSupportedFilter) {
-				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
+//		RuleData ruleData = new RuleData();
+//		if (null != currentRule) {
+//			if (isSupportedFilter) {
+//				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
+//
+//				if (choiceFilterInfo.ifIncompleteFilter()) {
+//					IncompleteRuleInfo incompleteRuleInfo = new IncompleteRuleInfo();
+//
+//					IncompleteFilterInfo incompleteFilterInfo = choiceFilterInfo.getIncompleteFilter();
+//
+//					incompleteRuleInfo.setIncompleteFilterInfo(incompleteFilterInfo);
+//					incompleteRuleInfo.setRuleInfo(currentRule);
+//
+//TODO					ruleData.setTypeOfRule(TypeOfRule.INCOMPLETE_RULE);
+//TODO					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+//TODO					ruleData.setRuleBody(incompleteRuleInfo);
+//					
+//					enableSave(false);
+//				} else {
+//					setFilter(choiceFilterInfo.getFilter());
+//					enableSave(ruleSelector.checkIfAllRulesComplete());
 
-				if (choiceFilterInfo.ifIncompleteFilter()) {
-					IncompleteRuleInfo incompleteRuleInfo = new IncompleteRuleInfo();
-
-					IncompleteFilterInfo incompleteFilterInfo = choiceFilterInfo.getIncompleteFilter();
-
-					incompleteRuleInfo.setIncompleteFilterInfo(incompleteFilterInfo);
-					incompleteRuleInfo.setRuleInfo(currentRule);
-
-					ruleData.setTypeOfRule(TypeOfRule.INCOMPLETE_RULE);
-					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
-					ruleData.setRuleBody(incompleteRuleInfo);
-					
-					enableSave(false);
-				} else {
-					setFilter(choiceFilterInfo.getFilter());
-					enableSave(ruleSelector.checkIfAllRulesComplete());
-
-					ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
-					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
-					ruleData.setRuleBody(currentRule);
-				}
-			} else {
-				enableSave(ruleSelector.checkIfAllRulesComplete());
-				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
-				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
-				ruleData.setRuleBody(currentRule);
-			}
-		}
-		return ruleData;
+//TODO				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+//TODO				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+//TODO 				ruleData.setRuleBody(currentRule);
+//				}
+//			} else {
+//				enableSave(ruleSelector.checkIfAllRulesComplete());
+//				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+//				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+//				ruleData.setRuleBody(currentRule);
+//			}
+//		}
+//		return ruleData;
+		return null; //Old code
 	}
 
 	private GeometryType GetGeomType(RuleInfo ruleInfo) {

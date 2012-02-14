@@ -8,6 +8,8 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+//TODO: Old Code, to be removed
+
 package org.geomajas.sld.editor.client.widget;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.client.model.IncompleteRuleInfo;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
@@ -335,8 +338,9 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				title = ruleTitleUnspecified;
 			}
 			String name = rule.getName();
+			
 
-			children.add(new RuleTreeNode(i.toString(), title, name, false, rule));
+			//TODO temp code : children.add(new RuleTreeNode(i.toString(), title, name, false, rule));
 			i++;
 		}
 		RuleTreeNode[] arrayOfRules = new RuleTreeNode[i - INDEX_FIRST_RULE];
@@ -519,7 +523,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 				.createDefaultRule(currentGeomType.equals(GeometryType.UNSPECIFIED) ? GeometryType.POINT
 						: currentGeomType);
 
-		newLeaf.setRuleData(defaultRule);
+	//TODO: Old code:	newLeaf.setRuleData(defaultRule);
 
 		ruleList.add(defaultRule); /* add new rule add the end of the list */
 
@@ -677,7 +681,7 @@ public class RuleSelector extends Canvas implements LeafClickHandler, FolderClic
 		}
 
 		if (ruleData.getClass().equals(RuleInfo.class)) {
-			this.currentGeomType = SldUtils.getGeometryType((RuleInfo) ruleData);
+			//TODO: Old code:		this.currentGeomType = SldUtils.getGeometryType((RuleInfo) ruleData);
 		}
 
 		if (null != selectRuleHandler) {

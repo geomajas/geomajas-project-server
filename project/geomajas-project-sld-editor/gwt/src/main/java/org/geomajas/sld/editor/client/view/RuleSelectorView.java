@@ -22,10 +22,15 @@ import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.event.RuleSelectedEvent;
+import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.ChangeHandler;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter.MyModel;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.presenter.SelectorChangeHandler;
+import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
@@ -37,9 +42,11 @@ import org.geomajas.sld.editor.client.widget.SldHasChangedHandler;
 import org.geomajas.sld.editor.client.widget.UpdateRuleHeaderHandler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
@@ -127,9 +134,13 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	private MyModel originalModel;
 	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
 
+	private EventBus eventBus;
+
 	@Inject
-	public RuleSelectorView() {
-		myHandlerManager = new MyHandlerManager();
+	public RuleSelectorView(final EventBus eventBus, final ViewUtil viewUtil) {
+		this.eventBus = eventBus;
+		
+		//myHandlerManager = new MyHandlerManager();
 
 		errorMessage = new Label(NO_RULES_LOADED);
 		errorMessage.setAlign(Alignment.CENTER);
@@ -176,9 +187,9 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 				public void onLeafClick(LeafClickEvent event) {
 					if (null != currentLeaf) {
 						//TODO: update ??  E.g. let rule detail window call a listener 
-						// itself to save its current state when it has to update its view 
+						// to save its current state when it has to update its view 
 						// to another rule
-						currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
+						//TODO: currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 					}
 
 					currentLeaf = (RuleTreeNode) event.getLeaf();
@@ -199,7 +210,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 						// itself to save its current state when it has to update its view 
 						// to another rule
 
-						currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
+						//TODO: currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 					}
 
 					setNoRuleSelected();
@@ -392,18 +403,13 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		
 		for (RuleModel rule : ruleList) {
 			
-			String title;
-
-			if (null != rule.getTitle() && rule.getTitle().length() > 0) {
-				title = rule.getTitle();
-			} else if (null != rule.getName() && rule.getName().length() > 0) {
-				title = rule.getName();
-			} else {
-				title = ruleTitleUnspecified;
+			if (null == rule.getTitle() || rule.getTitle().length() == 0) {
+				//TODO: unexpected error
+				SC.warn("Fout: rule zonder titel in deze SLD.");
+				return; // ABORT
 			}
-			String name = rule.getName();
 
-			children.add(new RuleTreeNode(i.toString(), title, name, false, rule.getRuleData()));
+			children.add(new RuleTreeNode(i.toString(), rule.getTitle(), rule.getName(), false, rule.getRuleData()));
 			i++;
 		}
 		RuleTreeNode[] arrayOfRules = new RuleTreeNode[i - INDEX_FIRST_RULE];
@@ -413,7 +419,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 		String styleTitle = featureTypeStyle.getTitle();
 		if (null == styleTitle) {
-			styleTitle = "groep 1";
+			styleTitle = "groep 1"; // Should have been taken care of in Presenter
 		}
 //		final TreeNode root = new RuleTreeNode("root", "Root", "Root", true, null/* data */,
 //				new RuleTreeNode[] { new RuleTreeNode("group 1", styleTitle, featureTypeStyle.getName(), true, null,
@@ -663,7 +669,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			// itself to save its current state when it has to update its view 
 			// to another rule
 
-			currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
+			//TODO: currentLeaf.setRuleData(getCurrentRuleStateHandler.execute());
 		}
 
 		RuleTreeNode newLeaf = new RuleTreeNode(getNewIdForRuleInTree(), "nieuwe stijl"/* title */,
@@ -700,7 +706,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		}
 
 
-		RuleModel defaultRuleModel = new RuleModel().createDefaultRuleModel(
+		RuleModel defaultRuleModel = RuleModel.CreateDefaultRuleModel(
 				currentGeomType.equals(GeometryType.UNSPECIFIED) ? getModel().getGeomType() : currentGeomType);
 		
 		// TODO: avoid updating RuleData here
@@ -857,7 +863,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	
 	
 	//--------------------------------------------------------------------------------------
-	private void selectRule(String ruleID, String ruleTitle, String ruleName, Object ruleData) {
+	private void selectRule(String ruleID, String ruleTitle, String ruleName, RuleData ruleData) {
 
 		updateButtons();
 
@@ -878,10 +884,11 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 //			selectRuleHandler.execute(true, currentLeaf.getRuleData());
 //		}
 		
-		for (SelectorChangeHandler  listener : myHandlerManager.getListeners() ) {
-			listener.onChange(new Integer(ruleID), (RuleData)ruleData);
-		}
-		
+//		for (SelectorChangeHandler  listener : myHandlerManager.getListeners() ) {
+//			listener.onChange(new Integer(ruleID), (RuleData)ruleData);
+//		}
+		//Inform observer(s) of change of selected rule
+		RuleSelectedEvent.fire(RuleSelectorView.this, ruleData);
 		
 
 	}
@@ -1137,6 +1144,16 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			sldHasChangedHandler.execute();
 		}
 	}
+
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
+	}
+
+	
+	public HandlerRegistration addRuleSelectedHandler(RuleSelectedHandler handler) {
+		return eventBus.addHandler(RuleSelectedEvent.getType(), handler);
+	}
+	
 
 
 }

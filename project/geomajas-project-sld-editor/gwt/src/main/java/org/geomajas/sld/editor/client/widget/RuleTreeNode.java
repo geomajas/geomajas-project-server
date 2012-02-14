@@ -11,6 +11,8 @@
 
 package org.geomajas.sld.editor.client.widget;
 
+import org.geomajas.sld.client.model.RuleData;
+
 import com.smartgwt.client.widgets.tree.TreeNode;
 
 /**
@@ -40,12 +42,12 @@ public class RuleTreeNode extends TreeNode {
 	private String name;
 
 	/* a rule (=leaf node) */
-	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, Object ruleData) {
+	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, RuleData ruleData) {
 		this(ruleId, title, name, isFolder, ruleData, null);
 	}
 
 	/* a rule group */
-	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, Object ruleData,
+	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, RuleData ruleData,
 			RuleTreeNode[] children) {
 		super(ruleId/* name, must be unique amongst siblings */, children);
 		super.setID(ruleId);
@@ -69,13 +71,13 @@ public class RuleTreeNode extends TreeNode {
 	}
 
 	//	TODO remove this method?
-	public void setRuleData(Object ruleData) {
-		setAttribute(RULE_DATE_FIELDNAME, ruleData);
+	public void setRuleData(RuleData ruleData) {
+		setAttribute(RULE_DATE_FIELDNAME, (Object)ruleData);
 
 	}
 //	TODO remove this method ?
-	public Object getRuleData() {
-		return getAttributeAsObject(RULE_DATE_FIELDNAME);
+	public RuleData getRuleData() {
+		return (RuleData)getAttributeAsObject(RULE_DATE_FIELDNAME);
 
 	}
 
