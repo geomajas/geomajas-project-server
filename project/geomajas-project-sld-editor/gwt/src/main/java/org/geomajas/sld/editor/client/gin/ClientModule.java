@@ -12,6 +12,7 @@ package org.geomajas.sld.editor.client.gin;
 
 import org.geomajas.sld.client.presenter.CreateSldDialogPresenterWidget;
 import org.geomajas.sld.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
@@ -19,6 +20,7 @@ import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.presenter.SmartGwtRootPresenter;
 import org.geomajas.sld.editor.client.view.CreateSldDialogView;
 import org.geomajas.sld.editor.client.view.MainLayoutView;
+import org.geomajas.sld.editor.client.view.RuleSelectorView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorLayoutView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorListView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorView;
@@ -37,19 +39,26 @@ public class ClientModule extends AbstractPresenterModule {
 		bind(SmartGwtRootPresenter.class).asEagerSingleton();
 		// utils
 		bind(ViewUtil.class).to(ViewUtilImpl.class).in(Singleton.class);
-		
+
 		// Presenters
 		bindPresenter(MainLayoutPresenter.class, MainLayoutPresenter.MyView.class, MainLayoutView.class,
 				MainLayoutPresenter.MyProxy.class);
 		bindPresenter(StyledLayerDescriptorListPresenter.class, StyledLayerDescriptorListPresenter.MyView.class,
 				StyledLayerDescriptorListView.class, StyledLayerDescriptorListPresenter.MyProxy.class);
+
 		bindPresenter(StyledLayerDescriptorPresenter.class, StyledLayerDescriptorPresenter.MyView.class,
 				StyledLayerDescriptorView.class, StyledLayerDescriptorPresenter.MyProxy.class);
-	    bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class,
-	            CreateSldDialogPresenterWidget.MyView.class, CreateSldDialogView.class);
-		bindPresenter(StyledLayerDescriptorLayoutPresenter.class, StyledLayerDescriptorLayoutPresenter.MyView.class, StyledLayerDescriptorLayoutView.class,
+
+		bindPresenter(RuleSelectorPresenter.class, RuleSelectorPresenter.MyView.class,
+				RuleSelectorView.class, RuleSelectorPresenter.MyProxy.class);
+
+		bindSingletonPresenterWidget(CreateSldDialogPresenterWidget.class,
+				CreateSldDialogPresenterWidget.MyView.class, CreateSldDialogView.class);
+		bindPresenter(StyledLayerDescriptorLayoutPresenter.class, StyledLayerDescriptorLayoutPresenter.MyView.class,
+				StyledLayerDescriptorLayoutView.class,
 				StyledLayerDescriptorLayoutPresenter.MyProxy.class);
-//		bindSingletonPresenterWidget(CreateStyledLayerDescriptorPopupPresenterWidget.class, CreateStyledLayerDescriptorPopupPresenterWidget.MyView.class,
+//		bindSingletonPresenterWidget(CreateStyledLayerDescriptorPopupPresenterWidget.class,
+//				CreateStyledLayerDescriptorPopupPresenterWidget.MyView.class,
 //				CreateStyledLayerDescriptorPopupView.class);
 
 	}
