@@ -98,13 +98,20 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		SldModel model = event.getSld();
 
 		if (null == model) {
-			// No SLD selected
-			// TODO implement
-			return;
+			clear();
 		} else {
-			currentModel = model.getRuleGroup();
+			if(model.isRulesSupported()) {
+				currentModel = model.getRuleGroup();
+				getView().copyToView(currentModel);
+			} else {
+				clear();
+			}
 		}
-		getView().copyToView(currentModel);
+	}
+
+	private void clear() {
+		currentModel = null;
+		getView().reset();
 	}
 
 }

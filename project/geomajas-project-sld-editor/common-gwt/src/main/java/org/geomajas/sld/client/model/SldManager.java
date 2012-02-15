@@ -48,6 +48,13 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	SldModel create(GeometryType type);
 
 	/**
+	 * Get the currently selected SLD.
+	 * 
+	 * @return the new SLD instance
+	 */
+	SldModel getCurrentSld();
+
+	/**
 	 * Adds a new SLD to the server list.
 	 * 
 	 * @param sld the sld to add

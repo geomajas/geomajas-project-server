@@ -1,10 +1,10 @@
 package org.geomajas.sld.client.presenter;
 
-import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 import org.geomajas.sld.client.view.ViewUtil;
+import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.filter.FilterTypeInfo;
 
 import com.google.inject.Inject;
@@ -57,14 +57,20 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if (event.getRuleData().getFilter() != null) {
-			FilterTypeInfo filter = event.getRuleData().getFilter();
-			if (getView().isValid(filter)) {
-				getView().modelToView(filter);
-				forceReveal();
+		if(event.getRuleData().getGeometryType() != GeometryType.UNSPECIFIED) {
+			if (event.getRuleData().getFilter() != null) {
+				FilterTypeInfo filter = event.getRuleData().getFilter();
+				if (getView().isValid(filter)) {
+					getView().modelToView(filter);
+					forceReveal();
+				} else {
+					viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
+				}
 			} else {
-				viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
+				getView().clear();
 			}
+		} else {
+			getView().clear();
 		}
 	}
 

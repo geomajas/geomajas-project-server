@@ -10,6 +10,7 @@ import org.geomajas.sld.NamedStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.UserStyleInfo;
+import org.geomajas.sld.client.model.RuleData.TypeOfRule;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
@@ -26,11 +27,26 @@ public class SldModel {
 	private RuleGroup ruleGroup;
 
 	private SldEditorMessages messages;
+	
+	private boolean rulesSupported;
 
 	@Inject
 	public SldModel(@Assisted StyledLayerDescriptorInfo sld, SldEditorMessages messages) {
 		this.messages = messages;
 		setSld(sld);
+	}
+	
+	public boolean isComplete() {
+		if(!isRulesSupported()) {
+			return false;
+		}
+		// check if all filters/rules are complete !
+		for (RuleModel model : getRuleGroup().getRuleModelList()) {
+			if(model.getRuleData().getTypeOfRule() == TypeOfRule.INCOMPLETE_RULE){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void setSld(StyledLayerDescriptorInfo sld) {
@@ -77,6 +93,7 @@ public class SldModel {
 
 						ruleModel.setRuleData(ruleData);
 						ruleGroup.getRuleModelList().add(ruleModel);
+						rulesSupported = true;
 					}
 				}
 
@@ -84,7 +101,7 @@ public class SldModel {
 		}
 	}
 
-	public void updateFromGeneralInfo(SldGeneralInfo sldGeneralInfo) {
+	public void synchronize() {
 		// retrieve the first choice
 		StyledLayerDescriptorInfo.ChoiceInfo info = sld.getChoiceList().iterator().next();
 		if (!info.ifNamedLayer()) {
@@ -94,22 +111,30 @@ public class SldModel {
 		}
 
 		// Update the name of the layer
-		info.getNamedLayer().setName(sldGeneralInfo.getNameOfLayer());
+		info.getNamedLayer().setName(getGeneralInfo().getNameOfLayer());
 
 		List<ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
 		// retrieve the first constraint
 		ChoiceInfo choiceInfo = choiceList.iterator().next();
+
 
 		if (choiceInfo.ifNamedStyle()) {
 			// Only the name is specialized
 			if (null == choiceInfo.getNamedStyle()) {
 				choiceInfo.setNamedStyle(new NamedStyleInfo());
 			}
-			choiceInfo.getNamedStyle().setName(sldGeneralInfo.getStyleTitle());
+			choiceInfo.getNamedStyle().setName(getGeneralInfo().getStyleTitle());
 		} else if (choiceInfo.ifUserStyle()) {
-			choiceInfo.getUserStyle().setTitle(sldGeneralInfo.getStyleTitle());
+			choiceInfo.getUserStyle().setTitle(getGeneralInfo().getStyleTitle());
+			List<RuleInfo> rules = new ArrayList<RuleInfo>();
+			for (RuleModel model : getRuleGroup().getRuleModelList()) {
+				if(model.getRuleData().getTypeOfRule() != TypeOfRule.INCOMPLETE_RULE){
+					rules.add(model.getRuleData().getCompleteRuleBody());
+				}
+			}
+			choiceInfo.getUserStyle().getFeatureTypeStyleList().get(0).setRuleList(rules);
 		}
-
+		
 	}
 
 	public String getName() {
@@ -135,5 +160,10 @@ public class SldModel {
 	public void setRuleGroup(RuleGroup ruleGroup) {
 		this.ruleGroup = ruleGroup;
 	}
+	
+	public boolean isRulesSupported() {
+		return rulesSupported;
+	}
+	
 
 }

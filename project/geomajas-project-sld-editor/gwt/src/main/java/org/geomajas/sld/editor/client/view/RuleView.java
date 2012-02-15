@@ -94,7 +94,13 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 			super.setInSlot(slot, content);
 		}
 	}
-	
+
+	public void reset(){
+		filterPane.setMembers(new Canvas[0]);
+		symbolPane.setMembers(new Canvas[0]);
+	}
+
+
 	private void setFilterContent(Canvas content) {
 		if (content != null) {
 			content.setWidth100();
@@ -110,7 +116,7 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 			symbolPane.setMembers(content);
 		}
 	}
-
+	
 	public Widget asWidget() {
 		return ruleDetailContainer;
 	}

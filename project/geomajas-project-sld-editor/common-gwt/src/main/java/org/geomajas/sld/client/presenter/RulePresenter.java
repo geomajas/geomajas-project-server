@@ -2,6 +2,7 @@ package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.editor.client.GeometryType;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -43,7 +44,7 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	 * {@link RuleSelectorPresenter}'s view.
 	 */
 	public interface MyView extends View {
-
+		void reset();
 	}
 
 	@Override
@@ -59,6 +60,9 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
+		if(event.getRuleData().getGeometryType() == GeometryType.UNSPECIFIED) {
+			getView().reset();
+		}
 		forceReveal();
 	}
 	

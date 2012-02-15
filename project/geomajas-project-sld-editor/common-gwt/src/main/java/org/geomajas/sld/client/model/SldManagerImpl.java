@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.NamedLayerInfo;
-import org.geomajas.sld.NamedStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
@@ -93,6 +92,29 @@ public class SldManagerImpl implements SldManager {
 		});
 
 	}
+	
+	public void save() {
+		if(currentSld != null) {
+			if(currentSld.isComplete()){
+				currentSld.synchronize();
+				service.saveOrUpdate(currentSld.getSld(), new AsyncCallback<StyledLayerDescriptorInfo>() {
+					
+					public void onSuccess(StyledLayerDescriptorInfo sld) {
+						if (null != sld) {
+							currentSld.setSld(sld);
+							logger.info("SldManager: SLD was successfully saved");
+							SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
+						}
+					}
+					
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		}
+	}
 
 	public List<String> getCurrentNames() {
 		List<String> names = new ArrayList<String>();
@@ -125,7 +147,9 @@ public class SldManagerImpl implements SldManager {
 			}
 		});
 	}
-
+	
+	
+	
 	public SldModel create(GeometryType geomType) {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("NewSLD");

@@ -352,7 +352,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		errorMessage.markForRedraw();
 	}
 
-//@Override
+	//@Override
 	public void copyToView(RuleGroup ruleGroup) {
 		currentRuleGroup = ruleGroup;
 		this.currentGeomType = GeometryType.UNSPECIFIED;
@@ -419,6 +419,8 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		// TODO: check
 		makeRuleTreeEmpty();
 		//TODO: ?? treeGrid.hide();
+		// fire deselection event
+		RuleSelectedEvent.fire(this, new RuleData(GeometryType.UNSPECIFIED));
 		
 	}
 	

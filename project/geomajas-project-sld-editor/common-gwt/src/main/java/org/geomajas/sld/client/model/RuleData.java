@@ -101,8 +101,6 @@ public class RuleData {
 		RuleInfo ruleInfo = null;	
 		switch(getTypeOfRule()){
 			case COMPLETE_RULE:
-				ruleInfo = getCompleteRuleBody();
-				break;
 			case DEFAULT_RULE:
 				ruleInfo = getCompleteRuleBody();
 				break;

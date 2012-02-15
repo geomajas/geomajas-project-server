@@ -1,5 +1,6 @@
 package org.geomajas.sld.client.presenter;
 
+import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
@@ -18,10 +19,13 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, SldActionPresenter.MyProxy> implements
 		SldSelectedHandler, SldContentChangedHandler, InitSldLayoutHandler {
+	
+	private final SldManager manager;
 
 	@Inject
-	public SldActionPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
+	public SldActionPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final SldManager manager) {
 		super(eventBus, view, proxy);
+		this.manager= manager;
 	}
 
 	@ProxyStandard
@@ -62,19 +66,27 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 	}
 
 	public void onSldGeneralInfoChanged(SldContentChangedEvent event) {
-		getView().setActionsEnabled(true);
+		if(manager.getCurrentSld().isComplete()) {
+			getView().setActionsEnabled(true);
+		}
 	}
 
 	public void onFilterInfoChanged(SldContentChangedEvent event) {
-		getView().setActionsEnabled(true);
+		if(manager.getCurrentSld().isComplete()) {
+			getView().setActionsEnabled(true);
+		}
 	}
 
 	public void onSymbolizerInfoChanged(SldContentChangedEvent event) {
-		getView().setActionsEnabled(true);
+		if(manager.getCurrentSld().isComplete()) {
+			getView().setActionsEnabled(true);
+		}
 	}
 
 	public void onGraphicInfoChanged(SldContentChangedEvent event) {
-		getView().setActionsEnabled(true);
+		if(manager.getCurrentSld().isComplete()) {
+			getView().setActionsEnabled(true);
+		}
 	}
 
 }
