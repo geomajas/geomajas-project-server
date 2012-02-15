@@ -45,14 +45,14 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	 * @param type the geometry type
 	 * @return the new SLD instance
 	 */
-	StyledLayerDescriptorInfo create(GeometryType type);
+	SldModel create(GeometryType type);
 
 	/**
 	 * Adds a new SLD to the server list.
 	 * 
 	 * @param sld the sld to add
 	 */
-	void add(StyledLayerDescriptorInfo sld);
+	void add(SldModel sld);
 	
 	/**
 	 * Remove the currently selected SLD from the server list.
@@ -66,6 +66,4 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	 * @param name name of the SLD
 	 */
 	void select(String name);
-
-	void updateGeneralSldInfo(SldGeneralInfo data);
 }

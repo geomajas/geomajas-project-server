@@ -20,7 +20,6 @@ import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
-import org.geomajas.sld.client.presenter.RuleSelectorPresenter.MyModel;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
@@ -114,7 +113,8 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	private List<RuleModel> ruleList;
 	
 	
-	private MyModel originalModel;
+	private RuleGroup currentRuleGroup;
+	
 	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
 
 	private EventBus eventBus;
@@ -353,31 +353,21 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 
 //@Override
-	public void copyToView(MyModel model) {
-		originalModel = model;
+	public void copyToView(RuleGroup ruleGroup) {
+		currentRuleGroup = ruleGroup;
 		this.currentGeomType = GeometryType.UNSPECIFIED;
 
 		if (null != ruleGeneralForm) {
 			ruleGeneralForm.clearValues();
 			ruleGeneralForm.disable();
-		}
+		}																				// element
 
-		List<RuleGroup> styleList = model.getRuleGroupList();
-		if (styleList.size() > 1) {
-			SC.warn("Meer dan 1 groep van regels (&lt;FeatureTypeStyle&gt;) in deze SLD." 
-					+ "  Enkel de eerste wordt getoond.");
-			// Can be supported later via groups of rules in ruleSelector
-		}
-
-		RuleGroup featureTypeStyle = styleList.iterator().next(); // retrieve the first <FeatureTypeStyle>
-																				// element
-
-		if (featureTypeStyle.getRuleModelList().size() < 1) {
+		if (currentRuleGroup.getRuleModelList().size() < 1) {
 			SC.warn("Fout: Geen rules in deze SLD.");
 			return; // ABORT
 		}
 
-		ruleList = featureTypeStyle.getRuleModelList();
+		ruleList = currentRuleGroup.getRuleModelList();
 
 		// Setup the tree where each leaf node corresponds with 1 rule
 		
@@ -400,7 +390,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 		// TODO: support for multiple groups (corresp. with multiple FeatureTypeStyle elements)
 
-		String styleTitle = featureTypeStyle.getTitle();
+		String styleTitle = currentRuleGroup.getTitle();
 		if (null == styleTitle) {
 			styleTitle = "groep 1"; // Should have been taken care of in Presenter
 		}
@@ -420,12 +410,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		selectRule(currentLeaf.getRuleId(), currentLeaf.getTitle(), currentLeaf.getRuleName(), 
 				currentLeaf.getRuleData());
 	}
-
-//@Override
-	public void copyToModel(MyModel model) {
-		// TODO: validate?
-	}
-
 		
 	public void reset() {
 		//clear 
@@ -445,14 +429,8 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	}
 		
-		
-	private void restoreFromOriginalModel() {
-		copyToView(originalModel);
-		
-	}
-
-	private  MyModel getModel() {
-		return originalModel;
+	private  RuleGroup getModel() {
+		return currentRuleGroup;
 	}
 
 

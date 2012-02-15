@@ -36,15 +36,8 @@ public class RuleData {
 	private TypeOfRule typeOfRule;
 
 	private IncompleteRuleInfo incompleteRuleBody;
-	// Incomplete Rule record (Incomplete Filter + Symbolizer list) for this "rule" 
-	// 	if typeOfRule is INCOMPLETE_RULE
 
 	private RuleInfo completeRuleBody;
-
-	// full Rule record (general rule info + Filter + Symbolizer list) for this "rule" 
-	// if typeOfRule is COMPLETE_RULE
-
-
 
 	public RuleData(GeometryType geometryType) {
 		this.setGeometryType(geometryType);

@@ -14,6 +14,8 @@ package org.geomajas.sld.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.sld.editor.client.GeometryType;
+
 /**
  * @author An Buyle
  *
@@ -23,7 +25,8 @@ public class RuleGroup {
 	private String name;
 
 	private String title;
-
+	
+	private GeometryType geomType;
 
 	private List<RuleModel> ruleModelList = new ArrayList<RuleModel>(); // List of "rules" 
 
@@ -81,6 +84,14 @@ public class RuleGroup {
 	 */
 	public void setRuleModelList(List<RuleModel> list) {
 		ruleModelList = list;
+	}
+	
+	public GeometryType getGeomType() {
+		return geomType;
+	}
+	
+	public void setGeomType(GeometryType geomType) {
+		this.geomType = geomType;
 	}
 
 	@java.lang.Override

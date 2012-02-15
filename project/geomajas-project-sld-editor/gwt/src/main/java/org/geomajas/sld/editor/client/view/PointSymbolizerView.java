@@ -112,38 +112,38 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 	}
 
 	public void modelToView(GraphicInfo graphicInfo) {
+		currrentGraphicInfo = graphicInfo;
 		if (graphicInfo.getChoiceList().size() == 1) {
 			GraphicInfo.ChoiceInfo choice = graphicInfo.getChoiceList().get(0);
 			if (choice.ifExternalGraphic()) {
-				externalGraphicToView(graphicInfo);
+				externalGraphicToView();
 			} else {
-				markerToView(graphicInfo);
+				markerToView();
 			}
 		}
 	}
 
-	private void markerToView(GraphicInfo graphicInfo) {
+	private void markerToView() {
 
 		externalGraphicForm.hide();
-		currrentGraphicInfo = graphicInfo;
 		markerSymbolizerForm.clearValues();
 
 		markerSizeItem.setValue(SldConstant.DEFAULT_SIZE_MARKER); /* init with default */
-		if (null != graphicInfo.getSize()) {
-			String size = graphicInfo.getSize().getValue();
+		if (null != currrentGraphicInfo.getSize()) {
+			String size = currrentGraphicInfo.getSize().getValue();
 			if (null != size) {
 				markerSizeItem.setValue(Float.parseFloat(size));
 			}
 		}
 
-		if (null != graphicInfo.getRotation()) {
-			String rotation = graphicInfo.getRotation().getValue();
+		if (null != currrentGraphicInfo.getRotation()) {
+			String rotation = currrentGraphicInfo.getRotation().getValue();
 			if (null != rotation) {
 				markerRotationItem.setValue(Double.parseDouble(rotation));
 			}
 		}
 
-		org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = graphicInfo.getChoiceList().get(0);
+		org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList().get(0);
 
 		if (!choiceInfoGraphic.ifMark()) {
 			/* create a default marker with default fill, stroke and wellKnownName */
@@ -235,16 +235,15 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerSymbolizerForm.setVisible(true);
 	}
 
-	private void externalGraphicToView(GraphicInfo graphicInfo) {
+	private void externalGraphicToView() {
 		markerSymbolizerForm.hide();
-		currrentGraphicInfo = graphicInfo;
 		externalGraphicForm.clearValues();
 
-		if (null != graphicInfo.getSize()) {
-			String size = graphicInfo.getSize().getValue();
+		if (null != currrentGraphicInfo.getSize()) {
+			String size = currrentGraphicInfo.getSize().getValue();
 			externalGraphicSizeItem.setValue(size);
 		}
-		final org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = graphicInfo.getChoiceList().get(0);
+		final org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList().get(0);
 
 		if (null != choiceInfoGraphic.getExternalGraphic().getFormat()) {
 			String formatValue = choiceInfoGraphic.getExternalGraphic().getFormat().getFormat();

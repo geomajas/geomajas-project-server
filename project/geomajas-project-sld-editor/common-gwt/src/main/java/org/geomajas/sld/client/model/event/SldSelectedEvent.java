@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.client.model.event;
 
-import org.geomajas.sld.StyledLayerDescriptorInfo;
+import org.geomajas.sld.client.model.SldModel;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -19,22 +19,18 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 public class SldSelectedEvent extends GwtEvent<SldSelectedEvent.SldSelectedHandler> {
 
-	private StyledLayerDescriptorInfo sld;
+	private SldModel sld;
 
-	public SldSelectedEvent(StyledLayerDescriptorInfo sld) {
+	public SldSelectedEvent(SldModel sld) {
 		this.sld = sld;
 	}
 
-	public static void fire(HasHandlers source, StyledLayerDescriptorInfo sld) {
+	public static void fire(HasHandlers source, SldModel sld) {
 		SldSelectedEvent eventInstance = new SldSelectedEvent(sld);
 		source.fireEvent(eventInstance);
 	}
-
-	public static void fire(HasHandlers source, SldSelectedEvent eventInstance) {
-		source.fireEvent(eventInstance);
-	}
 	
-	public StyledLayerDescriptorInfo getSld() {
+	public SldModel getSld() {
 		return sld;
 	}
 

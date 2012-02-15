@@ -50,19 +50,20 @@ public class SldManagerImpl implements SldManager {
 
 	private final SldGwtServiceAsync service = GWT.create(SldGwtService.class);
 
-	private List<StyledLayerDescriptorInfo> currentList = new ArrayList<StyledLayerDescriptorInfo>();
+	private List<SldModel> currentList = new ArrayList<SldModel>();
 
 	private final EventBus eventBus;
 
 	private final Logger logger = Logger.getLogger(SldManagerImpl.class.getName());
 
-	private StyledLayerDescriptorInfo currentSld;
-
-	private boolean currentSldHasChanged;
+	private SldModel currentSld;
+	
+	private final SldModelFactory modelFactory;
 
 	@Inject
-	public SldManagerImpl(EventBus eventBus) {
+	public SldManagerImpl(EventBus eventBus, SldModelFactory modelFactory) {
 		this.eventBus = eventBus;
+		this.modelFactory = modelFactory;
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sld");
 	}
@@ -77,9 +78,11 @@ public class SldManagerImpl implements SldManager {
 
 			public void onSuccess(List<String> result) {
 				for (String name : result) {
+					// create an empty one for now
 					StyledLayerDescriptorInfo descriptorInfo = new StyledLayerDescriptorInfo();
 					descriptorInfo.setName(name);
-					currentList.add(descriptorInfo);
+					// create an empty model
+					currentList.add(modelFactory.create(descriptorInfo));
 				}
 				SldLoadedEvent.fire(SldManagerImpl.this);
 			}
@@ -93,20 +96,20 @@ public class SldManagerImpl implements SldManager {
 
 	public List<String> getCurrentNames() {
 		List<String> names = new ArrayList<String>();
-		for (StyledLayerDescriptorInfo info : currentList) {
-			names.add(info.getName());
+		for (SldModel model : currentList) {
+			names.add(model.getName());
 		}
 		return names;
 	}
 
-	public void add(StyledLayerDescriptorInfo sld) {
-		service.create(sld, new AsyncCallback<StyledLayerDescriptorInfo>() {
+	public void add(SldModel sld) {
+		service.create(sld.getSld(), new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 			/** call-back for handling saveOrUpdate() success return **/
 
 			public void onSuccess(StyledLayerDescriptorInfo sld) {
 				if (null != sld) {
-					currentList.add(sld);
+					currentList.add(modelFactory.create(sld));
 					logger.info("SldManager: new SLD was successfully created. Execute selectSld()");
 					// selectSld(sld.getName(), false);
 				}
@@ -123,7 +126,7 @@ public class SldManagerImpl implements SldManager {
 		});
 	}
 
-	public StyledLayerDescriptorInfo create(GeometryType geomType) {
+	public SldModel create(GeometryType geomType) {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("NewSLD");
 		sld.setVersion("1.0.0");
@@ -149,7 +152,7 @@ public class SldManagerImpl implements SldManager {
 		featureTypeStyleList.add(featureTypeStyle);
 
 		namedlayerChoicelist.get(0).getUserStyle().setFeatureTypeStyleList(featureTypeStyleList);
-		return sld;
+		return modelFactory.create(sld);
 	}
 
 	public HandlerRegistration addSldLoadedHandler(SldLoadedHandler handler) {
@@ -165,20 +168,13 @@ public class SldManagerImpl implements SldManager {
 	}
 
 	public void select(String name) {
-		final StyledLayerDescriptorInfo selectedSld = findByName(name);
+		final SldModel selectedSld = findByName(name);
 		if (selectedSld != null) {
 			service.findByName(selectedSld.getName(), new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 				public void onSuccess(StyledLayerDescriptorInfo result) {
-					currentSld = result;
-					currentSldHasChanged = false;
-					
-					int i = currentList.indexOf(selectedSld);
-					if(i >= 0) {
-						currentList.set(i, currentSld);
-					} else {
-						currentList.add(currentSld);
-					}
+					currentSld = selectedSld;					
+					currentSld.setSld(result);
 					SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
 				}
 
@@ -194,12 +190,12 @@ public class SldManagerImpl implements SldManager {
 	}
 
 	
-	public StyledLayerDescriptorInfo getCurrentSld() {
+	public SldModel getCurrentSld() {
 		return currentSld;
 	}
 
-	private StyledLayerDescriptorInfo findByName(String name) {
-		for (StyledLayerDescriptorInfo sld : currentList) {
+	private SldModel findByName(String name) {
+		for (SldModel sld : currentList) {
 			if (sld.getName().equalsIgnoreCase(name)) {
 				return sld;
 			}
@@ -230,42 +226,6 @@ public class SldManagerImpl implements SldManager {
 				}
 			});
 		}
-	}
-
-	public void updateGeneralSldInfo(SldGeneralInfo sldGeneralInfo) {
-		
-		setSldHasChanged();
-		// retrieve the first choice
-		StyledLayerDescriptorInfo.ChoiceInfo info = currentSld.getChoiceList().iterator().next();
-		if (!info.ifNamedLayer()) {
-			// warning that invalid SLD
-			//SC.warn("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
-			return; // ABORT
-		}
-		
-		// Update the name of the layer
-		info.getNamedLayer().setName(sldGeneralInfo.getNameOfLayer());
-		 
-		
-		List<org.geomajas.sld.NamedLayerInfo.ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
-		// retrieve the first constraint
-		org.geomajas.sld.NamedLayerInfo.ChoiceInfo choiceInfo = choiceList.iterator().next();  
-
-		if (choiceInfo.ifNamedStyle()) {
-			// Only the name is specialized
-			if (null == choiceInfo.getNamedStyle()) {
-				choiceInfo.setNamedStyle(new NamedStyleInfo());
-			}
-			choiceInfo.getNamedStyle().setName(sldGeneralInfo.getStyleTitle());
-		} else if (choiceInfo.ifUserStyle()) {
-			choiceInfo.getUserStyle().setTitle(sldGeneralInfo.getStyleTitle());
-		}
-		
-	}
-
-	private void setSldHasChanged() {
-		currentSldHasChanged = true;
-		
 	}
 
 }

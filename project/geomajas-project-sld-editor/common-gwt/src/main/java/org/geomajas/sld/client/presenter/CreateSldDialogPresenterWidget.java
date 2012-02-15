@@ -13,6 +13,7 @@ package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.model.SldManager;
+import org.geomajas.sld.client.model.SldModel;
 import org.geomajas.sld.client.model.event.SldAddedEvent;
 import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
 import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent;
@@ -64,7 +65,7 @@ public class CreateSldDialogPresenterWidget extends PresenterWidget<CreateSldDia
 		registerHandler(getView().addCreateSldDialogCreateHandler(new CreateSldDialogCreateHandler() {
 
 			public void onCreateSldPopupCreate(CreateSldDialogCreateEvent event) {
-				StyledLayerDescriptorInfo newInfo = manager.create(getView().getGeometryType());
+				SldModel newInfo = manager.create(getView().getGeometryType());
 				manager.add(newInfo);
 			}
 		}));
