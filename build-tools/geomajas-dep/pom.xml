@@ -87,11 +87,13 @@
 				<scope>import</scope>
 			</dependency>
 
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dojo-server</artifactId>
-				<version>1.5.7</version>
-			</dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+                <version>1.9.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -131,26 +133,6 @@
 
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing-all</artifactId>
-				<version>2.2.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-springsecurity</artifactId>
-				<version>1.6.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
-				<version>1.9.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder-all</artifactId>
 				<version>1.2.0</version>
 				<type>pom</type>
@@ -177,6 +159,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-plugin-printing-all</artifactId>
+                <version>2.2.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 			<!-- no stable release yet, 1.0.0-M1 version has or.geomajas.widget as groupId (which is wrong)
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -227,6 +216,18 @@
 				<artifactId>gt-shapefile</artifactId>
 				<version>${geotools-version}</version>
 			</dependency>
+
+            <!-- old dependencies, for compatibility only -->
+            <dependency>
+                <groupId>org.geomajas</groupId>
+                <artifactId>geomajas-dojo-server</artifactId>
+                <version>1.5.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-plugin-springsecurity</artifactId>
+                <version>1.6.0</version>
+            </dependency>
 
 		</dependencies>
 	</dependencyManagement>
