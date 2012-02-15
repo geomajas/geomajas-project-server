@@ -15,7 +15,6 @@ import java.util.Collections;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
@@ -34,19 +33,11 @@ import com.google.gwt.user.client.Window;
  * 
  * @author Pieter De Graef
  */
-public class GeometryIndexInsertController extends AbstractController {
-
-	private final GeometryEditService service;
-
-	private final SnapService snappingService;
-
-	private boolean snappingEnabled;
+public class GeometryIndexInsertController extends AbstractGeometryIndexController {
 
 	public GeometryIndexInsertController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
-		super(mapEventParser, service.getEditingState() == GeometryEditState.DRAGGING);
-		this.service = service;
-		this.snappingService = snappingService;
+		super(service, snappingService, mapEventParser);
 	}
 
 	public void onDown(HumanInputEvent<?> event) {
@@ -61,10 +52,7 @@ public class GeometryIndexInsertController extends AbstractController {
 			try {
 				// Insert the location at the given index:
 				GeometryIndex insertIndex = service.getInsertIndex();
-				Coordinate location = getLocation(event, RenderSpace.WORLD);
-				if (snappingEnabled) {
-					location = snappingService.snap(location);
-				}
+				Coordinate location = getSnappedLocationWithinMaxBounds(event);
 				service.insert(Collections.singletonList(insertIndex),
 						Collections.singletonList(Collections.singletonList(location)));
 				service.setTentativeMoveOrigin(location);
@@ -105,13 +93,5 @@ public class GeometryIndexInsertController extends AbstractController {
 		if (service.getEditingState() == GeometryEditState.INSERTING) {
 			service.setEditingState(GeometryEditState.IDLE);
 		}
-	}
-
-	public boolean isSnappingEnabled() {
-		return snappingEnabled;
-	}
-
-	public void setSnappingEnabled(boolean snappingEnabled) {
-		this.snappingEnabled = snappingEnabled;
 	}
 }

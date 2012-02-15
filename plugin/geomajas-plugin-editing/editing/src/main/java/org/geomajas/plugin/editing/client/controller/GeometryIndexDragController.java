@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
@@ -45,25 +44,17 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * 
  * @author Pieter De Graef
  */
-public class GeometryIndexDragController extends AbstractController {
-
-	private final GeometryEditService service;
-
-	private final SnapService snappingService;
+public class GeometryIndexDragController extends AbstractGeometryIndexController {
 
 	private final Map<GeometryIndex, Coordinate> origins;
 
 	private GeometryIndex lastSelection;
 
-	private boolean snappingEnabled;
-
 	private Coordinate origin;
 
 	public GeometryIndexDragController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
-		super(mapEventParser, service.getEditingState() == GeometryEditState.DRAGGING);
-		this.snappingService = snappingService;
-		this.service = service;
+		super(service, snappingService, mapEventParser);
 		origins = new HashMap<GeometryIndex, Coordinate>();
 
 		service.getIndexStateService().addGeometryIndexSelectedHandler(new GeometryIndexSelectedHandler() {
@@ -92,7 +83,7 @@ public class GeometryIndexDragController extends AbstractController {
 
 	public void onDrag(HumanInputEvent<?> event) {
 		// Get the position in world space:
-		Coordinate worldPos = getLocation(event, RenderSpace.WORLD);
+		Coordinate worldPos = getLocationWithinMaxBounds(event);
 
 		// In case snapping is enabled, this might influence the target position:
 		if (snappingEnabled) {
@@ -142,14 +133,6 @@ public class GeometryIndexDragController extends AbstractController {
 		service.stopOperationSequence();
 		service.setEditingState(GeometryEditState.IDLE);
 		service.getIndexStateService().snappingEndAll();
-	}
-
-	public boolean isSnappingEnabled() {
-		return snappingEnabled;
-	}
-
-	public void setSnappingEnabled(boolean snappingEnabled) {
-		this.snappingEnabled = snappingEnabled;
 	}
 
 	// ------------------------------------------------------------------------
