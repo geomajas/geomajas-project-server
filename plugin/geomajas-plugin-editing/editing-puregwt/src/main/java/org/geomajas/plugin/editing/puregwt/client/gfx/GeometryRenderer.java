@@ -63,6 +63,7 @@ import org.geomajas.puregwt.client.map.MapPresenter;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
+import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
 import com.google.gwt.core.client.GWT;
 
@@ -155,6 +156,11 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 		if (container != null) {
 			container.clear();
 			try {
+				tentativeMoveLine = new Path(-5, -5);
+				tentativeMoveLine.lineTo(-5, -5);
+				INJECTOR.getGfxUtil().applyStyle(tentativeMoveLine, styleProvider.getEdgeTentativeMoveStyle());
+				container.add(tentativeMoveLine);
+
 				draw();
 			} catch (GeometryIndexNotFoundException e) {
 				// Happens when creating new geometries...can't render points that don't exist yet.
@@ -276,12 +282,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 			default:
 				mapPresenter.setCursor("default");
 				redraw();
-
-				// Check if there is a tentative move line (left over) and remove if so.
-				if (tentativeMoveLine != null) {
-					container.remove(tentativeMoveLine);
-					tentativeMoveLine = null;
-				}
 		}
 	}
 
@@ -291,11 +291,6 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 
 	/** Redraw the geometry on the map. */
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
-		// Check if there is a tentative move line (left over) and remove if so.
-		if (tentativeMoveLine != null) {
-			container.remove(tentativeMoveLine);
-			tentativeMoveLine = null;
-		}
 		redraw();
 	}
 
@@ -387,14 +382,8 @@ public class GeometryRenderer implements GeometryEditStartHandler, GeometryEditS
 				Coordinate c1 = mapPresenter.getViewPort().transform(temp1, RenderSpace.WORLD, RenderSpace.SCREEN);
 				Coordinate c2 = mapPresenter.getViewPort().transform(temp2, RenderSpace.WORLD, RenderSpace.SCREEN);
 
-				if (tentativeMoveLine == null) {
-					tentativeMoveLine = new Path(c1.getX(), c1.getY());
-					tentativeMoveLine.lineTo(c2.getX(), c2.getY());
-					INJECTOR.getGfxUtil().applyStyle(tentativeMoveLine, styleProvider.getEdgeTentativeMoveStyle());
-					container.add(tentativeMoveLine);
-				} else {
-					tentativeMoveLine.setStep(1, new LineTo(false, c2.getX(), c2.getY()));
-				}
+				tentativeMoveLine.setStep(0, new MoveTo(false, c1.getX(), c1.getY()));
+				tentativeMoveLine.setStep(1, new LineTo(false, c2.getX(), c2.getY()));
 			} else if (vertices != null && Geometry.LINEAR_RING.equals(geometryType)) {
 				// Draw the second line (as an option...)
 			}
