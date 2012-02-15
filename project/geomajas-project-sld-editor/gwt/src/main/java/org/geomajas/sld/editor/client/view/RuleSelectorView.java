@@ -331,7 +331,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		vLayout.addMember(treeGrid);
 		vLayout.addMember(ruleGeneralForm);
 		vLayout.addMember(errorMessage);
-		//errorMessage.hide();
+		errorMessage.hide();
 
 
 	}

@@ -1,11 +1,7 @@
 package org.geomajas.sld.client.presenter;
 
-import org.geomajas.sld.PointSymbolizerInfo;
-import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.GeometryType;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;

@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
@@ -41,10 +42,7 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
 		ruleDetailContainer = new VLayout(5);
-		ruleDetailContainer.setMinHeight(200);
-		// ruleDetailContainer.setHeight("*"); // TODO: needed???
-		ruleDetailContainer.setWidth("100%");
-		ruleDetailContainer.setMinWidth(100);
+		ruleDetailContainer.setWidth100();
 		ruleDetailContainer.setLayoutTopMargin(10);
 		ruleDetailContainer.setLayoutLeftMargin(5);
 		ruleDetailContainer.setLayoutBottomMargin(5);
@@ -62,23 +60,25 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 		symbolPane = new VLayout();
 		symbolPane.setMembersMargin(5);
 		symbolPane.setMargin(5);
-
-		filterPane = new VLayout();
-
+		symbolPane.setWidth100();
+		symbolPane.setHeight100();
 		Tab tTab1 = new Tab(sldEditorMessages.symbologyTabTitle());
-
 		tTab1.setPane(symbolPane);
 
-		Tab tTab2 = new Tab(sldEditorMessages.filterTabTitle());
 		filterPane = new VLayout();
 		filterPane.setMembersMargin(5);
 		filterPane.setMargin(5);
-
+		filterPane.setHeight100();
+		filterPane.setWidth100();
+		Tab tTab2 = new Tab(sldEditorMessages.filterTabTitle());
 		tTab2.setPane(filterPane);
 
 		topTabSet.addTab(tTab1);
 		topTabSet.addTab(tTab2);
-
+		topTabSet.setWidth100();
+		topTabSet.setHeight100();
+		topTabSet.setOverflow(Overflow.VISIBLE);
+		topTabSet.setPaneContainerOverflow(Overflow.VISIBLE); 
 		ruleDetailContainer.addMember(topTabSet);
 	}
 	

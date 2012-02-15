@@ -135,9 +135,9 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 		errorMessage = new Label(NO_SLD_MESSAGE);
 		errorMessage.setAlign(Alignment.CENTER);
-
+		errorMessage.setVisible(false);
 		layoutContainer = new VLayout(5);
-		layoutContainer.setMinHeight(100); // TODO: was 200
+//		layoutContainer.setMinHeight(100); // TODO: was 200
 
 		layoutContainer.setLayoutBottomMargin(5);
 

@@ -144,6 +144,13 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		public void setRuleGroupList(List<RuleGroup> ruleGroupList) {
 			this.ruleGroupList = ruleGroupList;
 		}
+		
+		public boolean isValid(List<FeatureTypeStyleInfo> featureTypeStyleList) {
+			if (featureTypeStyleList != null && featureTypeStyleList.size() > 1) {
+				return false;
+			}
+			return true;
+		}
 
 		private void initFromSld(List<FeatureTypeStyleInfo> featureTypeStyleList) {
 			if (null != ruleGroupList) {
@@ -313,15 +320,17 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 			return;
 		}
 
-		myModel = new MyModel(GeometryType.UNSPECIFIED);
+		MyModel newModel = new MyModel(GeometryType.UNSPECIFIED);
 
 		NamedLayerInfo namedLayerInfo = sld.getChoiceList().get(0).getNamedLayer();
 
 		UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
-		myModel.initFromSld(userStyle.getFeatureTypeStyleList());
-		getView().copyToView(myModel);
-		getView().focus();
-
+		if(newModel.isValid(userStyle.getFeatureTypeStyleList())){
+			newModel.initFromSld(userStyle.getFeatureTypeStyleList());
+			getView().copyToView(newModel);
+			myModel = newModel;
+			getView().focus();
+		}
 	}
 
 	private void informParentOfChange() {

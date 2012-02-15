@@ -14,6 +14,7 @@ import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 /**
@@ -36,17 +37,21 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 
 		generalContentPanel = new VLayout();
 		generalContentPanel.setWidth100();
-		generalContentPanel.setShowResizeBar(true);
+		// minimal initial height
+		generalContentPanel.setHeight(10);
 
 		rulesContentPanel = new VLayout();
 		rulesContentPanel.setWidth100();
-		rulesContentPanel.setShowResizeBar(true);
+		// take all the remaining space
 		rulesContentPanel.setHeight("*");
+		rulesContentPanel.setResizeBarTarget("next");
+		rulesContentPanel.setShowResizeBar(true);
 
 		ruleContentPanel = new VLayout();
 		ruleContentPanel.setWidth100();
-		ruleContentPanel.setShowResizeBar(true);
-	
+		// minimal initial height
+		ruleContentPanel.setHeight(100);
+		
 		widget = new VLayout();
 		widget.setWidth100();
 		widget.setHeight100();
@@ -76,29 +81,39 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 	}
 
 	private void setGeneralContent(Widget content) {
+		Canvas canvas = (Canvas) content;
+		canvas.setHeight100();
+		canvas.setWidth100();
 		for (Canvas member : generalContentPanel.getMembers()) {
 			member.removeFromParent();
 		}
 		if (content != null) {
-			generalContentPanel.addMember(content);
+			generalContentPanel.addMember(canvas);
 		}
 	}
 
 	private void setRulesContent(Widget content) {
+		Canvas canvas = (Canvas) content;
+		canvas.setHeight100();
+		canvas.setWidth100();
 		for (Canvas member : rulesContentPanel.getMembers()) {
 			member.removeFromParent();
 		}
 		if (content != null) {
-			rulesContentPanel.addMember(content);
+			rulesContentPanel.addMember(canvas);
 		}
 	}
 
 	private void setRuleContent(Widget content) {
+		Canvas canvas = (Canvas) content;
+		canvas.setHeight100();
+		canvas.setWidth100();
 		for (Canvas member : ruleContentPanel.getMembers()) {
 			member.removeFromParent();
 		}
-		if (content != null) {
-			ruleContentPanel.addMember(content);
+		if (canvas != null) {
+			ruleContentPanel.addMember(canvas);
+			ruleContentPanel.markForRedraw();
 		}
 	}
 

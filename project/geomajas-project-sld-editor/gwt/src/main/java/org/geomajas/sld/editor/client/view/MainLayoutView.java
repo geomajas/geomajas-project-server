@@ -52,7 +52,6 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 		topContentPanel.addMember(topLabel);
 		topContentPanel.setHeight(100);
 		topContentPanel.setWidth100();
-		topContentPanel.setShowResizeBar(true);
 
 		mainContentPanel = new VLayout();
 		Label mainLabel = new Label();
