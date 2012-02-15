@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.puregwt.client.controller.MapController;
 import org.geomajas.puregwt.client.controller.MapListener;
@@ -254,4 +255,15 @@ public interface MapPresenter extends IsWidget {
 	 * @return The event parser specific for this map.
 	 */
 	MapEventParser getMapEventParser();
+
+	/**
+	 * <p>
+	 * Get the server-side configuration object associated with this map. This configuration only becomes available
+	 * after the map has been successfully initialized, as this object first needs to be fetched from the server.
+	 * </p>
+	 * <p>Never change the values within this object!</p>
+	 * 
+	 * @return The server-side configuration object associated with this map.
+	 */
+	ClientMapInfo getConfiguration();
 }

@@ -203,6 +203,8 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private FeatureService featureService;
 
+	private ClientMapInfo configuration;
+
 	@Inject
 	private MapPresenterImpl() {
 		eventBus = new SimpleEventBus();
@@ -249,6 +251,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			public void execute(GetMapConfigurationResponse response) {
 				// Initialize the MapModel and ViewPort:
 				GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
+				configuration = r.getMapInfo();
 
 				// Configure the ViewPort. This will immediately zoom to the initial bounds:
 				viewPort.setMapSize(display.asWidget().getOffsetWidth(), display.asWidget().getOffsetHeight());
@@ -301,6 +304,11 @@ public final class MapPresenterImpl implements MapPresenter {
 	/** {@inheritDoc} */
 	public MapRenderer getMapRenderer() {
 		return mapRenderer;
+	}
+
+	/** {@inheritDoc} */
+	public ClientMapInfo getConfiguration() {
+		return configuration;
 	}
 
 	/** {@inheritDoc} */
