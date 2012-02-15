@@ -29,10 +29,6 @@ public class RuleSelectedEvent extends GwtEvent<RuleSelectedEvent.RuleSelectedHa
 		RuleSelectedEvent eventInstance = new RuleSelectedEvent(ruleData);
 		source.fireEvent(eventInstance);
 	}
-
-	public static void fire(HasHandlers source, RuleSelectedEvent eventInstance) {
-		source.fireEvent(eventInstance);
-	}
 	
 	public RuleData getRuleData() {
 		return ruleData;

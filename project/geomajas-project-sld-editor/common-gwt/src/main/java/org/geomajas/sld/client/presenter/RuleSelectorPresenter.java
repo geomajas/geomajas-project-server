@@ -99,10 +99,6 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		void focus();
 
 		void setError(String errorText);
-
-		HandlerRegistration addChangeHandler(SelectorChangeHandler changeHandler);
-		// inform others that the rule that has been selected has changed (data = index
-		// of selected rule)
 	}
 
 	/**
@@ -329,7 +325,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 			newModel.initFromSld(userStyle.getFeatureTypeStyleList());
 			getView().copyToView(newModel);
 			myModel = newModel;
-			getView().focus();
+			//getView().focus();
 		}
 	}
 

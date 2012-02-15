@@ -8,6 +8,7 @@
 	<inherits name="com.gwtplatform.mvp.Mvp" />
 
 	<inherits name='com.smartgwt.SmartGwt'/>
+	<inherits name='com.smartgwt.tools.SmartGwtTools'/>
 	<inherits name="org.geomajas.GeomajasSldSmartGwt"/>  <!-- using SmartGwt -->
 	<inherits name="org.geomajas.GeomajasSldApi"/>
 	<inherits name="org.geomajas.GeomajasSldCommonGwt"/>

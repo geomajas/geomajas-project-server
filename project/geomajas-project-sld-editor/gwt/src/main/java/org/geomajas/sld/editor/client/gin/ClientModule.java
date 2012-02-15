@@ -18,6 +18,7 @@ import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
 import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
 import org.geomajas.sld.client.presenter.RulePresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
+import org.geomajas.sld.client.presenter.SldActionPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
@@ -31,6 +32,7 @@ import org.geomajas.sld.editor.client.view.PointSymbolizerView;
 import org.geomajas.sld.editor.client.view.PolygonSymbolizerView;
 import org.geomajas.sld.editor.client.view.RuleSelectorView;
 import org.geomajas.sld.editor.client.view.RuleView;
+import org.geomajas.sld.editor.client.view.SldActionView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorLayoutView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorListView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorView;
@@ -81,5 +83,8 @@ public class ClientModule extends AbstractPresenterModule {
 		
 		bindPresenter(LineSymbolizerPresenter.class, LineSymbolizerPresenter.MyView.class, LineSymbolizerView.class,
 				LineSymbolizerPresenter.MyProxy.class);
+		
+		bindPresenter(SldActionPresenter.class, SldActionPresenter.MyView.class, SldActionView.class,
+				SldActionPresenter.MyProxy.class);
 	}
 }

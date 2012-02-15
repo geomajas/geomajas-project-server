@@ -27,10 +27,13 @@ import com.smartgwt.client.widgets.form.fields.SpinnerItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizerPresenter.MyView {
 
 	/** private members for polygon symbolizer **/
+	private VLayout polygonSymbolizerPane;
+
 	private DynamicForm polygonSymbolizerForm;
 
 	private PolygonSymbolizerInfo currentPolygonSymbolizerInfo;
@@ -138,6 +141,9 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	 * Construct and setup "polygon symbolizer" form.
 	 */
 	private void setupPolygonSymbolizerForm() {
+		polygonSymbolizerPane = new VLayout();
+		polygonSymbolizerPane.setMembersMargin(5);
+		polygonSymbolizerPane.setMargin(5);
 
 		polygonSymbolizerForm = new DynamicForm();
 		polygonFillCheckBoxItem = new CheckboxItem();
@@ -349,7 +355,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		polygonSymbolizerForm.hideItem("borderColor");
 		polygonSymbolizerForm.hideItem("borderOpacity");
 		polygonSymbolizerForm.hideItem("borderWidth");
-
+		polygonSymbolizerPane.addMember(polygonSymbolizerForm);
 	}
 	
 	private void fireSldContentChanged() {
@@ -358,7 +364,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 
 	public Widget asWidget() {
-		return polygonSymbolizerForm;
+		return polygonSymbolizerPane;
 	}
 
 

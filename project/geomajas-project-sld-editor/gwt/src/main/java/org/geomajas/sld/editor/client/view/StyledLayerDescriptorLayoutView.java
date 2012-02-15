@@ -14,8 +14,8 @@ import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 /**
  * Main view with content slots for child presenters.
@@ -30,6 +30,8 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 	private VLayout rulesContentPanel;
 
 	private VLayout ruleContentPanel;
+
+	private VLayout actionContentPanel;
 
 	private VLayout widget;
 
@@ -50,7 +52,11 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 		ruleContentPanel = new VLayout();
 		ruleContentPanel.setWidth100();
 		// minimal initial height
-		ruleContentPanel.setHeight(100);
+		ruleContentPanel.setHeight(300);
+		
+		actionContentPanel = new VLayout();
+		actionContentPanel.setWidth100();
+		actionContentPanel.setHeight(10);
 		
 		widget = new VLayout();
 		widget.setWidth100();
@@ -58,6 +64,7 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 		widget.addMember(generalContentPanel);
 		widget.addMember(rulesContentPanel);
 		widget.addMember(ruleContentPanel);
+		widget.addMember(actionContentPanel);
 
 	}
 
@@ -70,50 +77,24 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_GENERAL_CONTENT) {
-			setGeneralContent(content);
+			replaceContent(generalContentPanel, content);
 		} else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_RULES_CONTENT) {
-			setRulesContent(content);
+			replaceContent(rulesContentPanel, content);
 		} else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_RULE_CONTENT) {
-			setRuleContent(content);
+			replaceContent(ruleContentPanel, content);
+		}  else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_ACTION_CONTENT) {
+			replaceContent(actionContentPanel, content);
 		} else {
 			super.setInSlot(slot, content);
 		}
 	}
 
-	private void setGeneralContent(Widget content) {
+	private void replaceContent(Layout parent, Widget content) {
 		Canvas canvas = (Canvas) content;
 		canvas.setHeight100();
 		canvas.setWidth100();
-		for (Canvas member : generalContentPanel.getMembers()) {
-			member.removeFromParent();
-		}
 		if (content != null) {
-			generalContentPanel.addMember(canvas);
-		}
-	}
-
-	private void setRulesContent(Widget content) {
-		Canvas canvas = (Canvas) content;
-		canvas.setHeight100();
-		canvas.setWidth100();
-		for (Canvas member : rulesContentPanel.getMembers()) {
-			member.removeFromParent();
-		}
-		if (content != null) {
-			rulesContentPanel.addMember(canvas);
-		}
-	}
-
-	private void setRuleContent(Widget content) {
-		Canvas canvas = (Canvas) content;
-		canvas.setHeight100();
-		canvas.setWidth100();
-		for (Canvas member : ruleContentPanel.getMembers()) {
-			member.removeFromParent();
-		}
-		if (canvas != null) {
-			ruleContentPanel.addMember(canvas);
-			ruleContentPanel.markForRedraw();
+			parent.setMembers(canvas);
 		}
 	}
 

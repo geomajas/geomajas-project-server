@@ -22,22 +22,17 @@ import org.geomajas.sld.client.model.SldGeneralInfo;
 import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter.MyProxy;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter.MyView;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedAdapter;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HasHandlers;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ProxyEvent;
@@ -49,17 +44,19 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
  * @author An Buyle
  */
 public class StyledLayerDescriptorPresenter
-	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy>  
-	implements SldSelectedHandler, InitSldLayoutHandler {
+	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements
+		SldSelectedHandler, InitSldLayoutHandler {
 
 	private Logger logger = Logger.getLogger("StyledLayerDescriptorPresenter");
 
 	private SldGeneralInfo myModel;
+
 	private SldManager manager;
+
 	private final SldEditorMessages editorMessages;
+
 	private final ViewUtil viewUtil;
 
-	
 	/**
 	 * {@link StyledLayerDescriptorPresenter}'s proxy.
 	 */
@@ -70,7 +67,7 @@ public class StyledLayerDescriptorPresenter
 	/**
 	 * {@link StyledLayerDescriptorPresenter}'s view.
 	 */
-	public interface MyView extends View, HasSldContentChangedHandlers  {
+	public interface MyView extends View, HasSldContentChangedHandlers {
 
 		void copyToView(SldGeneralInfo myModel);
 
@@ -84,7 +81,6 @@ public class StyledLayerDescriptorPresenter
 
 	}
 
-
 	public void setModel(SldGeneralInfo model) {
 		this.myModel = model;
 	}
@@ -93,8 +89,9 @@ public class StyledLayerDescriptorPresenter
 		return myModel;
 	}
 
-	/** Constructor.
-	 * 	 
+	/**
+	 * Constructor.
+	 * 
 	 * @param eventBus
 	 * @param view
 	 * @param proxy
@@ -109,22 +106,21 @@ public class StyledLayerDescriptorPresenter
 		this.viewUtil = viewUtil;
 		this.editorMessages = editorMessages;
 	}
-	
-	
+
 	@Override
 	protected void onBind() {
 		super.onBind();
-		registerHandler(getView().addSldContentChangedHandler(new SldContentChangedHandler() {
-			
-			public void onSldContentChanged(SldContentChangedEvent event) {
-				manager.updateGeneralSldInfo((SldGeneralInfo)(event.getData())); //TODO: optimize: only update SLD when user hits save button
-				
-			}
-		}));		
+		addRegisteredHandler(SldContentChangedEvent.getType(), new SldContentChangedEvent.SldContentChangedAdapter() {
 
-		//observe change of selected SLD (after it has been loaded) 
+			public void onSldGeneralInfoChanged(SldContentChangedEvent event) {
+				manager.updateGeneralSldInfo(event.getSldGeneralInfo()); // TODO: optimize: only update SLD when user
+																			// hits save button
+			}
+		});
+
+		// observe change of selected SLD (after it has been loaded)
 		addRegisteredHandler(SldSelectedEvent.getType(), this);
-		
+
 	}
 
 	@Override
@@ -136,10 +132,9 @@ public class StyledLayerDescriptorPresenter
 	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
 	}
-	
 
-	/* (non-Javadoc)
-	 * Refresh any information displayed by your presenter.
+	/*
+	 * (non-Javadoc) Refresh any information displayed by your presenter.
 	 * 
 	 * @see com.gwtplatform.mvp.client.PresenterWidget#onReset()
 	 */
@@ -152,60 +147,60 @@ public class StyledLayerDescriptorPresenter
 		} else {
 			getView().reset();
 		}
-		getView().focus();
+		// getView().focus();
 	}
 
 	/**
-	 * Handler, called when change of selected SLD  event is received.
+	 * Handler, called when change of selected SLD event is received.
 	 * 
 	 * @param event
 	 */
-	//TODO
+	// TODO
 	public void onSldSelected(SldSelectedEvent event) {
 		// First save current model
-		//TODO
-		//Then load model with data for the newly selected SLD 
+		// TODO
+		// Then load model with data for the newly selected SLD
 		StyledLayerDescriptorInfo sld = event.getSld();
 
-		//TODO: Geometry Type can only be determined from the rule data (deeper level)
+		// TODO: Geometry Type can only be determined from the rule data (deeper level)
 
 		// Retrieve the top-level info from SLD and update myModel accordingly
 
 		myModel = new SldGeneralInfo(GeometryType.UNSPECIFIED);
 
 		if (null == sld.getChoiceList() || sld.getChoiceList().isEmpty()) {
-			//TODO: Warn dialogue
+			// TODO: Warn dialogue
 			logger.log(Level.WARNING, "Empty SLD's are not supported.");
 			return; // ABORT
 		}
 
 		// make sure only 1 layer per SLD
 		if (sld.getChoiceList().size() > 1) {
-			//TODO: Warn dialogue
-			//SC.warn("Having more than 1 layer in an SLD is not supported.");
+			// TODO: Warn dialogue
+			// SC.warn("Having more than 1 layer in an SLD is not supported.");
 			return; // ABORT
 		}
 		/* retrieve the first choice */
 		StyledLayerDescriptorInfo.ChoiceInfo info = sld.getChoiceList().iterator().next();
 		if (null == info || !info.ifNamedLayer()) {
-			//TODO: Warn dialogue
+			// TODO: Warn dialogue
 			// warning that invalid SLD
-			//SC.warn("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
+			// SC.warn("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
 			return; // ABORT
 		}
 
 		NamedLayerInfo namedLayerInfo = info.getNamedLayer();
 
-		String nameValue = (null != namedLayerInfo.getName()) ? namedLayerInfo.getName()
-				: editorMessages.nameUnspecified();
+		String nameValue = (null != namedLayerInfo.getName()) ? namedLayerInfo.getName() : editorMessages
+				.nameUnspecified();
 
 		//
 		myModel.setNameOfLayer(nameValue);
 		//
 		List<ChoiceInfo> choiceList = namedLayerInfo.getChoiceList();
 		if (null == choiceList) {
-			//TODO: Warn dialogue
-			//SC.warn("Ongeldige SLD: een leeg &lt;NamedLayer&gt; element wordt niet ondersteund.");
+			// TODO: Warn dialogue
+			// SC.warn("Ongeldige SLD: een leeg &lt;NamedLayer&gt; element wordt niet ondersteund.");
 			return; // ABORT
 		}
 
@@ -215,23 +210,23 @@ public class StyledLayerDescriptorPresenter
 		if (choiceInfo.ifNamedStyle()) {
 			// Only the name is specialized
 			styleTitle = choiceInfo.getNamedStyle().getName();
-			//TODO: Warn dialogue
-			//	SC.warn("De SLD verwijst naar een externe stijl met naam '" + choiceInfo.getNamedStyle()
-			//		+ "'.  Deze kan hier niet getoond worden.");
+			// TODO: Warn dialogue
+			// SC.warn("De SLD verwijst naar een externe stijl met naam '" + choiceInfo.getNamedStyle()
+			// + "'.  Deze kan hier niet getoond worden.");
 		} else if (choiceInfo.ifUserStyle()) {
 			styleTitle = choiceInfo.getUserStyle().getTitle();
 
 			if (null == choiceInfo.getUserStyle().getFeatureTypeStyleList()
 					|| choiceInfo.getUserStyle().getFeatureTypeStyleList().size() == 0) {
 
-				//TODO: Warn dialogue
-				//TODO in higher level: If getFeatureTypeStyleList null or empty, then setup 
-				//				a FeatureTypeStyleInfo list with 1 style, the default one 
-//				List<FeatureTypeStyleInfo> featureTypeStyleList = new ArrayList<FeatureTypeStyleInfo>();
-//				featureTypeStyleList.add(new FeatureTypeStyleInfo());
-//				choiceInfo.getUserStyle().setFeatureTypeStyleList(featureTypeStyleList);
-//				// TODO: inform others that the SLD has changed!
-//				enableSave(true);
+				// TODO: Warn dialogue
+				// TODO in higher level: If getFeatureTypeStyleList null or empty, then setup
+				// a FeatureTypeStyleInfo list with 1 style, the default one
+				// List<FeatureTypeStyleInfo> featureTypeStyleList = new ArrayList<FeatureTypeStyleInfo>();
+				// featureTypeStyleList.add(new FeatureTypeStyleInfo());
+				// choiceInfo.getUserStyle().setFeatureTypeStyleList(featureTypeStyleList);
+				// // TODO: inform others that the SLD has changed!
+				// enableSave(true);
 				return; // ABORT!
 			}
 		}
@@ -239,12 +234,12 @@ public class StyledLayerDescriptorPresenter
 		myModel.setStyleTitle(styleTitle);
 
 		getView().copyToView(myModel);
-		getView().focus();
+		// getView().focus();
 
 	}
 
 	/**
-	 *  Private  
+	 * Private
 	 */
 	private void informParentOfChange() {
 		// TODO: code below is for testing only!!!

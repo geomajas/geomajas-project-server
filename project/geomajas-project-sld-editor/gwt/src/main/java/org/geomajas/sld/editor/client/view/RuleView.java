@@ -96,24 +96,18 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 	}
 	
 	private void setFilterContent(Canvas content) {
-		for (Canvas member : filterPane.getMembers()) {
-			member.removeFromParent();
-		}
 		if (content != null) {
 			content.setWidth100();
 			content.setHeight100();
-			filterPane.addMember(content);
+			filterPane.setMembers(content);
 		}
 	}
 
 	private void setSymbolContent(Canvas content) {
-		for (Canvas member : symbolPane.getMembers()) {
-			member.removeFromParent();
-		}
 		if (content != null) {
 			content.setWidth100();
 			content.setHeight100();
-			symbolPane.addMember(content);
+			symbolPane.setMembers(content);
 		}
 	}
 

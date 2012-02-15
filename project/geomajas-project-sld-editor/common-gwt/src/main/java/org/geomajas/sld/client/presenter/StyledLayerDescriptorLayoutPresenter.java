@@ -28,7 +28,6 @@ import com.gwtplatform.mvp.client.proxy.LockInteractionEvent;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.client.proxy.RevealRootContentEvent;
 
 /**
  * This is the top-level presenter of the hierarchy. Other presenters reveal themselves within this presenter.
@@ -75,6 +74,12 @@ public class StyledLayerDescriptorLayoutPresenter
 	 */
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_RULE_CONTENT = new Type<RevealContentHandler<?>>();
+
+	/**
+	 * Use this in leaf presenters, inside their {@link #revealInParent} method.
+	 */
+	@ContentSlot
+	public static final Type<RevealContentHandler<?>> TYPE_ACTION_CONTENT = new Type<RevealContentHandler<?>>();
 
 	/**
 	 * Creates a {@link StyledLayerDescriptorLayoutPresenter} with the specified injected fields.

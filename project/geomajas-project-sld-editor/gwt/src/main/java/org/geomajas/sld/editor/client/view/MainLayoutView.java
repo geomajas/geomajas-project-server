@@ -96,29 +96,20 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 	}
 
 	private void setMainContent(Widget content) {
-		for (Canvas member : mainContentPanel.getMembers()) {
-			member.removeFromParent();
-		}
 		if (content != null) {
-			mainContentPanel.addMember(content);
+			mainContentPanel.setMembers((Canvas)content);
 		}
 	}
 
 	private void setSideContent(Widget content) {
-		for (Canvas member : sideContentPanel.getMembers()) {
-			member.removeFromParent();
-		}
 		if (content != null) {
-			sideContentPanel.addMember(content);
+			sideContentPanel.setMembers((Canvas)content);
 		}
 	}
 
 	private void setTopContent(Widget content) {
-		for (Canvas member : topContentPanel.getMembers()) {
-			member.removeFromParent();
-		}
 		if (content != null) {
-			topContentPanel.addMember(content);
+			topContentPanel.setMembers((Canvas)content);
 		}
 	}
 

@@ -25,10 +25,13 @@ import com.smartgwt.client.widgets.form.fields.SpinnerItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.IntegerRangeValidator;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresenter.MyView {
 	
 	/** private members for line symbolizer **/
+	private VLayout lineSymbolizerPane;
+	
 	private DynamicForm lineSymbolizerForm;
 
 	private boolean isLineSymbolizerFormFirstSetup = true;
@@ -86,6 +89,9 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 	}
 
 	private void setupLineSymbolizerForm() {
+		lineSymbolizerPane = new VLayout();
+		lineSymbolizerPane.setMembersMargin(5);
+		lineSymbolizerPane.setMargin(5);
 		lineSymbolizerForm = new DynamicForm();
 		lineStrokeColorPicker = new ColorPickerItem();
 		lineStrokeColorPicker.setTitle(sldEditorMessages.strokeColorTitle());
@@ -171,8 +177,8 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 		strokeOpacityItem.setValidators(rangeValidator);
 		strokeOpacityItem.setValidateOnChange(true);
 		strokeOpacityItem.setTooltip(sldEditorMessages.opacityTooltipInSymbologyTab());
-		lineSymbolizerForm.hide();
 		lineSymbolizerForm.setItems(lineStrokeColorPicker, strokeWidthItem, strokeOpacityItem);
+		lineSymbolizerPane.addMember(lineSymbolizerForm);
 	}
 
 	private void fireSldContentChanged() {
@@ -181,7 +187,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 
 
 	public Widget asWidget() {
-		return lineSymbolizerForm;
+		return lineSymbolizerPane;
 	}
 
 

@@ -12,16 +12,20 @@
 package org.geomajas.sld.editor.client.view;
 
 import org.geomajas.sld.client.model.SldGeneralInfo;
-import org.geomajas.sld.client.presenter.ChangeHandler;
+import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.client.view.ViewUtil;
+import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import com.gwtplatform.mvp.client.ViewImpl;
-
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -29,13 +33,6 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
-
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 /**
  * SmartGwt implementation of {@link StyledLayerDescriptorPresenter.MyView}.
@@ -206,7 +203,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 	public void focus() {
 		// Set focus on nameOfLayerItem
-		nameOfLayerItem.focusInItem();
+		// nameOfLayerItem.focusInItem();
 
 	}
 

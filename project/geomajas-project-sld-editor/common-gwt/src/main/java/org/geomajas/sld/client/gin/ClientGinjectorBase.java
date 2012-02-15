@@ -19,6 +19,7 @@ import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
 import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
 import org.geomajas.sld.client.presenter.RulePresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
+import org.geomajas.sld.client.presenter.SldActionPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
 import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
@@ -58,6 +59,8 @@ public interface ClientGinjectorBase extends Ginjector {
 	Provider<LineSymbolizerPresenter> getLineSymbolizerPresenter();
 
 	Provider<PolygonSymbolizerPresenter> getPolygonSymbolizerPresenter();
+
+	Provider<SldActionPresenter> getSldActionPresenter();
 
 	EventBus getEventBus();
 

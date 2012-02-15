@@ -12,30 +12,19 @@
 package org.geomajas.sld.editor.client.view;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.geomajas.sld.FeatureTypeStyleInfo;
-import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.client.model.RuleData;
 import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
-import org.geomajas.sld.client.presenter.ChangeHandler;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter.MyModel;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.client.presenter.SelectorChangeHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.client.widget.GetCurrentRuleStateHandler;
-
 import org.geomajas.sld.editor.client.widget.RuleTreeNode;
 import org.geomajas.sld.editor.client.widget.SelectRuleHandler;
 import org.geomajas.sld.editor.client.widget.SldHasChangedHandler;
@@ -43,7 +32,6 @@ import org.geomajas.sld.editor.client.widget.UpdateRuleHeaderHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -125,11 +113,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	private List<RuleModel> ruleList;
 	
-	//TODO: needed to keep track of rule in tree grid that has the focus ?
-	//private Integer indexRuleInFocus = ChangeHandler.NO_RULE_SELECTED;
-	
-	private MyHandlerManager myHandlerManager;
-
 	
 	private MyModel originalModel;
 	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
@@ -443,16 +426,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		// TODO: validate?
 	}
 
-	
-	//@Override
-	public com.google.web.bindery.event.shared.HandlerRegistration addChangeHandler(
-			SelectorChangeHandler changeHandler) {
-		// support having more than 1 listener / changeHandler
-		Integer handlerKey = myHandlerManager.addHandler(changeHandler);
-		return new MyHandlerRegistration(myHandlerManager, handlerKey);
-	}
-
-	
+		
 	public void reset() {
 		//clear 
 		errorMessage.setContents(NO_RULES_LOADED);
@@ -470,64 +444,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		// TODO: Set focus on 1st rule ...
 
 	}
-
-	/**
-	 * @author BuyleA
-	 *
-	 */
-	private class MyHandlerRegistration implements HandlerRegistration {
-
-		private MyHandlerManager myHandlerManager;
-		private Integer handlerKey;
 		
-		public MyHandlerRegistration(MyHandlerManager handlerManager, Integer handlerKey) {
-			myHandlerManager = handlerManager;
-			this.handlerKey = handlerKey;
-		}
-		
-
-		/**
-		   * Deregisters the handler associated with this registration object if the
-		   * handler is still attached to the event source. If the handler is no longer
-		   * attached to the event source, this is a no-op.
-		   */
-		  public void removeHandler() {
-			  myHandlerManager.removeHandler(handlerKey);
-		  }
-	}
-	
-	
-	/**
-	 * @author BuyleA
-	 *
-	 */
-	private class MyHandlerManager {
-
-		private Map<Integer, SelectorChangeHandler> listeners = new HashMap<Integer, SelectorChangeHandler>();
-		private Integer nextAvailIdx = 0;
-
-		public Integer addHandler(SelectorChangeHandler handler) {
-			Integer key = nextAvailIdx;
-			listeners.put(nextAvailIdx, handler);
-
-			if (nextAvailIdx == Integer.MAX_VALUE) {
-				nextAvailIdx = 0;
-			} else {
-				nextAvailIdx++;
-			}
-			return key;
-		}
-
-		public void removeHandler(Integer handlerKey) {
-			listeners.remove(handlerKey);
-		}
-
-		public Collection<SelectorChangeHandler> getListeners() {
-			return listeners.values();
-			
-		}
-	}
-	
 		
 	private void restoreFromOriginalModel() {
 		copyToView(originalModel);
@@ -901,16 +818,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			ruleGeneralForm.clearValues();
 			ruleGeneralForm.disable();
 		}
-
-		// indexRuleInFocus = ChangeHandler.NO_RULE_SELECTED;
-		for (SelectorChangeHandler  listener : myHandlerManager.getListeners() ) {
-			listener.onChange(SelectorChangeHandler.NO_RULE_SELECTED, null);
-		}
-		
-//		if (null != selectRuleHandler) {
-//			selectRuleHandler.execute(false, null);
-//		}
-
+		RuleSelectedEvent.fire(this, null);
 	}
 	//--------------------------------------------------------------------------------------
 	private void setRuleTree(RuleTreeNode root) {
