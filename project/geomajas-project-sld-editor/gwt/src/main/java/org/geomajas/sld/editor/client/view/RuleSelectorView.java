@@ -14,17 +14,17 @@ package org.geomajas.sld.editor.client.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.RuleGroup;
-import org.geomajas.sld.client.model.RuleModelImpl;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.RuleModelFactory;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
-import org.geomajas.sld.editor.client.widget.GetCurrentRuleStateHandler;
 import org.geomajas.sld.editor.client.widget.RuleTreeNode;
 import org.geomajas.sld.editor.client.widget.SelectRuleHandler;
 import org.geomajas.sld.editor.client.widget.SldHasChangedHandler;
@@ -65,7 +65,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  */
 public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.MyView {
 
-	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
+	private static SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
 	
 	private static final String NO_RULES_LOADED = "<i>Geen Stijlen ingeladen!</i>";
 	private static final int 	INDEX_FIRST_RULE = 1;
@@ -77,8 +77,8 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	
 
 	private final Label errorMessage;
-	private final String ruleTitleUnspecified = sldEditorMessages.ruleTitleUnspecified();
-	private final String ruleNameUnspecified = "";
+	
+	private final String ruleNameUnspecified = sldEditorMessages.ruleTitleUnspecified();
 	
 	private TreeGrid treeGrid;
 
@@ -100,8 +100,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	private UpdateRuleHeaderHandler updateRuleHeaderHandler;
 
-	private GetCurrentRuleStateHandler getCurrentRuleStateHandler;
-
 	private SldHasChangedHandler sldHasChangedHandler;
 
 	private DynamicForm ruleGeneralForm;
@@ -119,10 +117,12 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
 
 	private EventBus eventBus;
+	private RuleModelFactory ruleModelFactory;
 
 	@Inject
-	public RuleSelectorView(final EventBus eventBus, final ViewUtil viewUtil) {
+	public RuleSelectorView(final EventBus eventBus, final ViewUtil viewUtil, final RuleModelFactory ruleModelFactory) {
 		this.eventBus = eventBus;
+		this.ruleModelFactory = ruleModelFactory;
 		
 		//myHandlerManager = new MyHandlerManager();
 
@@ -271,8 +271,13 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 					// Update SLD object, assume currentLeaf != null
 					//TODO: check if OK to remove test: if (null != currentLeaf.getRuleModel()) 
 					
-					updateRuleHeaderHandler.updateTitle(ruleTitle);
-					// TODO setSldHasChangedTrue in call-back
+					String ruleId = currentLeaf.getRuleId();
+					 //TODO: optimize if possible to avoid calling sldHasChanged for each character entered by the user
+					//TODO: Test this!!!!!
+					ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE).setTitle(ruleTitle);
+										
+					// Inform observers
+					sldHasChanged();
 					
 				}
 
@@ -320,6 +325,20 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	}
 
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
+	}
+
+	
+	public HandlerRegistration addRuleSelectedHandler(RuleSelectedHandler handler) {
+		return eventBus.addHandler(RuleSelectedEvent.getType(), handler);
+	}
+
+	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
+		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
+	}
+
+	
 	// @Override
 	public Widget asWidget() {
 		return vLayout;
@@ -421,7 +440,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		makeRuleTreeEmpty();
 		//TODO: ?? treeGrid.hide();
 		// fire deselection event
-		RuleSelectedEvent.fire(this, new RuleModel(GeometryType.UNSPECIFIED));
+		RuleSelectedEvent.fire(this, null);
 		
 	}
 	
@@ -604,12 +623,12 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		}
 
 
-		RuleModelImpl defaultRuleModel = RuleModelImpl.CreateDefaultRuleModel(
+		RuleModel defaultRuleModel = ruleModelFactory.create(null, 
 				currentGeomType.equals(GeometryType.UNSPECIFIED) ? getModel().getGeomType() : currentGeomType);
 		
 		// TODO: avoid updating RuleModel here
 		// TODO!!: Inform listener of creation of a new rule
-		newLeaf.setRuleModel(defaultRuleModel.getRuleModel());
+		newLeaf.setRuleModel(defaultRuleModel);
 		newLeaf.setTitle(defaultRuleModel.getTitle());
 		newLeaf.setRuleName(defaultRuleModel.getName());
 		
@@ -676,12 +695,12 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 						children[i] = swap;
 						children[i].setRuleId(id);
 					}
+					break;
 				}
 			}
 
 			parent.setChildren(children);
 			refresh();
-
 			treeGrid.selectSingleRecord(indexSelect);
 
 			moveRuleUp(id);
@@ -887,28 +906,32 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 	//--------------------------------------------------------------------------------------
 	private void moveRuleUp(String ruleId) {
-		/* the ruleId == index of the rule in the ruleList before it has been moved up */
+		// the ruleId == index (first rule has index INDEX_FIRST_RULE) of the rule in the ruleList before it has been moved up
 		if (new Integer(ruleId) <= INDEX_FIRST_RULE) {
 			return;
 		}
-		sldHasChanged();
-		RuleModelImpl ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE - 1);
+	
+		RuleModel ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE - 1);
 		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE - 1, ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE));
 		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE, ruleToSwap);
+		
+		sldHasChanged();
 	}
 	//--------------------------------------------------------------------------------------
 	private void moveRuleDown(String ruleId) {
-		/* the ruleId == index of the rule in the ruleList before it has been moved down */
+		// the ruleId == index (first rule has index INDEX_FIRST_RULE) of the rule in the ruleList before it has been moved down
 
 		if (new Integer(ruleId) >= ruleList.size()) {
 			return;
 		}
-		sldHasChanged();
-
+		
 		RuleModel ruleToSwap = ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE + 1);
 		ruleList.set(new Integer(ruleId), ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE));
 		ruleList.set(new Integer(ruleId) - INDEX_FIRST_RULE, ruleToSwap);
+		
+		sldHasChanged();
 	}
+	
 
 	// -------------------------------------------------------------------------
 	// Private class AddButton:
@@ -1029,19 +1052,10 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 
 	private void sldHasChanged() {
-		if (null != sldHasChangedHandler) {
-			sldHasChangedHandler.execute();
-		}
+		//Inform observer(s) of change of SLD data
+		SldContentChangedEvent.fire(this, true, currentRuleGroup);
 	}
 
-	public void fireEvent(GwtEvent<?> event) {
-		eventBus.fireEvent(event);
-	}
-
-	
-	public HandlerRegistration addRuleSelectedHandler(RuleSelectedHandler handler) {
-		return eventBus.addHandler(RuleSelectedEvent.getType(), handler);
-	}
 	
 
 
