@@ -101,6 +101,7 @@ public class RuleModelImpl implements RuleModel {
 
 			defaultRule.setSymbolizerList(symbolizerList);
 			this.symbolizerTypeInfo = symbolizer;
+			this.filterModel = null;
 			
 			this.ruleInfo = defaultRule;
 		} else {
@@ -112,7 +113,7 @@ public class RuleModelImpl implements RuleModel {
 			if(null != ruleInfo.getChoice() && ruleInfo.getChoice().ifFilter()) {
 				this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter());
 			} else {
-				this.filterModel = new FilterModelImpl();
+				this.filterModel = null; //TODO: or this.filterModel = new FilterModelImpl() ???
 			}
 			this.name = ruleInfo.getName();
 			if (null == ruleInfo.getTitle() || ruleInfo.getTitle().length() == 0) {

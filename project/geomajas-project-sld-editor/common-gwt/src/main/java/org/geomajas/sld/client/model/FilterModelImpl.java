@@ -121,6 +121,9 @@ public class FilterModelImpl implements FilterModel {
 
 	public boolean isValid() {
 		// TODO: check why between is special case ?
+		if (null == filterTypeInfo) {
+			return false; // TODO: OK?
+		}
 		if (filterTypeInfo.ifComparisonOps()) {
 
 			ComparisonOpsTypeInfo op = filterTypeInfo.getComparisonOps();
