@@ -37,8 +37,6 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 	 */
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
-		boolean isValid(FilterModel filterModel);
-
 		void modelToView(FilterModel filterModel);
 		
 		void clear();
@@ -61,7 +59,7 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 		if(event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
 			if (event.getRuleModel().getFilterModel() != null) {
 				FilterModel filter = event.getRuleModel().getFilterModel();
-				if (getView().isValid(filter)) {
+				if (filter.isValid()) {
 					getView().modelToView(filter);
 					forceReveal();
 				} else {

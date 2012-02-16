@@ -41,13 +41,7 @@ import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.WellKnownNameInfo;
-import org.geomajas.sld.client.model.ChoiceFilterInfo;
-import org.geomajas.sld.client.model.IncompleteFilterInfo;
-import org.geomajas.sld.client.model.IncompleteRuleInfo;
 import org.geomajas.sld.client.model.SldGwtServiceAsync;
-
-import org.geomajas.sld.client.model.RuleData;
-//import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.filter.FilterTypeInfo;
@@ -719,13 +713,13 @@ public class SldWidget {
 
 		});
 
-		ruleSelector.addGetCurrentRuleStateHandler(new GetCurrentRuleStateHandler() {
-
-			public RuleData execute() {
-				return getCurrentRuleState();
-			}
-
-		});
+//		ruleSelector.addGetCurrentRuleStateHandler(new GetCurrentRuleStateHandler() {
+//
+//			public RuleData execute() {
+//				return getCurrentRuleState();
+//			}
+//
+//		});
 
 		ruleSelector.addSldHasChangedHandler(new SldHasChangedHandler() {
 
@@ -829,19 +823,19 @@ public class SldWidget {
 		polygonSymbolizerForm.hide();
 		symbolPane.addMember(polygonSymbolizerForm);
 
-		filterEditor = new FilterEditor();
+//		filterEditor = new FilterEditor();
+//
+//		filterEditor.setFilterHasChangedHandler(new FilterHasChangedHandler() {
+//
+//			public void execute(boolean isComplete) {
+//				sldHasChanged = true;
+//				enableCancel(true);
+//				enableSave(isComplete);
+//
+//			}
+//		});
 
-		filterEditor.setFilterHasChangedHandler(new FilterHasChangedHandler() {
-
-			public void execute(boolean isComplete) {
-				sldHasChanged = true;
-				enableCancel(true);
-				enableSave(isComplete);
-
-			}
-		});
-
-		filterForm = filterEditor.getForm();
+//		filterForm = filterEditor.getForm();
 		filterForm.hide();
 		filterPane.addMember(filterForm);
 
@@ -876,43 +870,43 @@ public class SldWidget {
 
 	}
 
-	private RuleData getCurrentRuleState() {
-//		RuleData ruleData = new RuleData();
-//		if (null != currentRule) {
-//			if (isSupportedFilter) {
-//				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
+//	private RuleData getCurrentRuleState() {
+////		RuleData ruleData = new RuleData();
+////		if (null != currentRule) {
+////			if (isSupportedFilter) {
+////				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
+////
+////				if (choiceFilterInfo.ifIncompleteFilter()) {
+////					IncompleteRuleInfo incompleteRuleInfo = new IncompleteRuleInfo();
+////
+////					IncompleteFilterInfo incompleteFilterInfo = choiceFilterInfo.getIncompleteFilter();
+////
+////					incompleteRuleInfo.setIncompleteFilterInfo(incompleteFilterInfo);
+////					incompleteRuleInfo.setRuleInfo(currentRule);
+////
+////TODO					ruleData.setTypeOfRule(TypeOfRule.INCOMPLETE_RULE);
+////TODO					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+////TODO					ruleData.setRuleBody(incompleteRuleInfo);
+////					
+////					enableSave(false);
+////				} else {
+////					setFilter(choiceFilterInfo.getFilter());
+////					enableSave(ruleSelector.checkIfAllRulesComplete());
 //
-//				if (choiceFilterInfo.ifIncompleteFilter()) {
-//					IncompleteRuleInfo incompleteRuleInfo = new IncompleteRuleInfo();
-//
-//					IncompleteFilterInfo incompleteFilterInfo = choiceFilterInfo.getIncompleteFilter();
-//
-//					incompleteRuleInfo.setIncompleteFilterInfo(incompleteFilterInfo);
-//					incompleteRuleInfo.setRuleInfo(currentRule);
-//
-//TODO					ruleData.setTypeOfRule(TypeOfRule.INCOMPLETE_RULE);
-//TODO					ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
-//TODO					ruleData.setRuleBody(incompleteRuleInfo);
-//					
-//					enableSave(false);
-//				} else {
-//					setFilter(choiceFilterInfo.getFilter());
-//					enableSave(ruleSelector.checkIfAllRulesComplete());
-
-//TODO				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
-//TODO				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
-//TODO 				ruleData.setRuleBody(currentRule);
-//				}
-//			} else {
-//				enableSave(ruleSelector.checkIfAllRulesComplete());
-//				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
-//				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
-//				ruleData.setRuleBody(currentRule);
-//			}
-//		}
-//		return ruleData;
-		return null; //Old code
-	}
+////TODO				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+////TODO				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+////TODO 				ruleData.setRuleBody(currentRule);
+////				}
+////			} else {
+////				enableSave(ruleSelector.checkIfAllRulesComplete());
+////				ruleData.setTypeOfRule(TypeOfRule.COMPLETE_RULE);
+////				ruleData.setGeometryTypeSymbol(GetGeomType(currentRule));
+////				ruleData.setRuleBody(currentRule);
+////			}
+////		}
+////		return ruleData;
+//		return null; //Old code
+//	}
 
 	private GeometryType GetGeomType(RuleInfo ruleInfo) {
 		Object symbolizerInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer specification
@@ -965,20 +959,20 @@ public class SldWidget {
 		}
 	}
 
-	private boolean synchronizeFilter() {
-		boolean filterIsComplete = true;
-		if (null != currentRule) {
-			if (isSupportedFilter) {
-				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
-				if (choiceFilterInfo.ifIncompleteFilter()) {
-					filterIsComplete = false;
-				} else {
-					setFilter(choiceFilterInfo.getFilter());
-				}
-			}
-		}
-		return filterIsComplete;
-	}
+//	private boolean synchronizeFilter() {
+//		boolean filterIsComplete = true;
+//		if (null != currentRule) {
+//			if (isSupportedFilter) {
+//				ChoiceFilterInfo choiceFilterInfo = filterEditor.attemptConvertFormToFilter();
+//				if (choiceFilterInfo.ifIncompleteFilter()) {
+//					filterIsComplete = false;
+//				} else {
+//					setFilter(choiceFilterInfo.getFilter());
+//				}
+//			}
+//		}
+//		return filterIsComplete;
+//	}
 
 	/**
 	 * Update the rule detail form items (incl. the associated filter).
@@ -993,37 +987,38 @@ public class SldWidget {
 		GWT.log("Entering setRule for rule of class " + object.getClass().getName());
 		clearForCurrentRule();
 
-		if (object instanceof IncompleteRuleInfo) {
+//		if (object instanceof IncompleteRuleInfo) {
+//
+//			enableSave(false); /* should already have been false */
+//			IncompleteRuleInfo incompleteRuleInfo = (IncompleteRuleInfo) object;
+//			// Filter must be incomplete to justify the use of an IncompleteRuleInfo object
+//			if (null != incompleteRuleInfo.getIncompleteFilter()) {
+//				filterEditor.createOrUpdateFilterForm(incompleteRuleInfo.getIncompleteFilter());
+//			} else {
+//				// TODO: needed ?: currentFilterInfo = new FilterTypeInfo();
+//				/* create/empty filter form */
+//				filterEditor.createOrUpdateFilterForm(new IncompleteFilterInfo(null, null));
+//			}
+//			// this.currentGeomType = SldUtils.getGeometryType(incompleteRuleInfo.getRule());
+//			rule = incompleteRuleInfo.getRule();
+//		} else 
+			if (object instanceof RuleInfo) {
 
-			enableSave(false); /* should already have been false */
-			IncompleteRuleInfo incompleteRuleInfo = (IncompleteRuleInfo) object;
-			// Filter must be incomplete to justify the use of an IncompleteRuleInfo object
-			if (null != incompleteRuleInfo.getIncompleteFilter()) {
-				filterEditor.createOrUpdateFilterForm(incompleteRuleInfo.getIncompleteFilter());
-			} else {
-				// TODO: needed ?: currentFilterInfo = new FilterTypeInfo();
-				/* create/empty filter form */
-				filterEditor.createOrUpdateFilterForm(new IncompleteFilterInfo(null, null));
-			}
-			// this.currentGeomType = SldUtils.getGeometryType(incompleteRuleInfo.getRule());
-			rule = incompleteRuleInfo.getRule();
-		} else if (object instanceof RuleInfo) {
-
-			rule = (RuleInfo) object;
-			currentRule = (RuleInfo) object;
-			// this.currentGeomType = SldUtils.getGeometryType(rule);
-
-			if (null != rule.getChoice() && rule.getChoice().ifFilter()) {
-				FilterTypeInfo filter = rule.getChoice().getFilter();
-
-				this.isSupportedFilter = filterEditor.createOrUpdateFilterForm(filter);
-
-			} else {
-				// TODO: needed ?: currentFilterInfo = new FilterTypeInfo();
-				/* create/empty filter form */
-				filterEditor.createOrUpdateFilterForm(new IncompleteFilterInfo(null, null));
-			}
-			enableSave(ruleSelector.checkIfAllRulesComplete());
+//			rule = (RuleInfo) object;
+//			currentRule = (RuleInfo) object;
+//			// this.currentGeomType = SldUtils.getGeometryType(rule);
+//
+//			if (null != rule.getChoice() && rule.getChoice().ifFilter()) {
+//				FilterTypeInfo filter = rule.getChoice().getFilter();
+//
+//				this.isSupportedFilter = filterEditor.createOrUpdateFilterForm(filter);
+//
+//			} else {
+//				// TODO: needed ?: currentFilterInfo = new FilterTypeInfo();
+//				/* create/empty filter form */
+//				filterEditor.createOrUpdateFilterForm(new IncompleteFilterInfo(null, null));
+//			}
+//			enableSave(ruleSelector.checkIfAllRulesComplete());
 		} else {
 			/* TODO: ERROR -> throw exception */
 			GWT.log("setRule fatal error: illegal rule arg: " + object.toString());
@@ -2332,10 +2327,10 @@ public class SldWidget {
 			polygonSymbolizerForm.hide();
 			polygonSymbolizerForm.clearValues();
 		}
-		if (null != filterForm) {
-			filterForm.hide();
-			filterEditor.clearValues();
-		}
+//		if (null != filterForm) {
+//			filterForm.hide();
+//			filterEditor.clearValues();
+//		}
 		if (null != symbolPane) {
 			symbolPane.markForRedraw();
 		}
@@ -2360,7 +2355,7 @@ public class SldWidget {
 
 		GWT.log("saveSld(): Entering Saving of SLD " + currentSld.getName());
 
-		synchronizeFilter();
+//		synchronizeFilter();
 		service.saveOrUpdate(currentSld, new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 			/** call-back for handling saveOrUpdate() success return **/

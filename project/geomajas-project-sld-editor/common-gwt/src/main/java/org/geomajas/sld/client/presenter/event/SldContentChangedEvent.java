@@ -12,6 +12,7 @@ package org.geomajas.sld.client.presenter.event;
 
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
+import org.geomajas.sld.client.model.FilterModel;
 import org.geomajas.sld.client.model.SldGeneralInfo;
 import org.geomajas.sld.filter.FilterTypeInfo;
 
@@ -33,7 +34,7 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 
 	private SldGeneralInfo sldGeneralInfo;
 
-	private FilterTypeInfo filterTypeInfo;
+	private FilterModel filterModel;
 	
 	private SymbolizerTypeInfo symbolizerInfo;
 	
@@ -44,9 +45,9 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 		this.sldGeneralInfo = sldGeneralInfo;
 	}
 
-	public SldContentChangedEvent(boolean isComplete, FilterTypeInfo filterTypeInfo) {
+	public SldContentChangedEvent(boolean isComplete, FilterModel filterModel) {
 		this.isComplete = isComplete;
-		this.filterTypeInfo = filterTypeInfo;
+		this.filterModel = filterModel;
 	}
 
 	public SldContentChangedEvent(boolean isComplete, SymbolizerTypeInfo symbolizerInfo) {
@@ -75,8 +76,8 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 		source.fireEvent(eventInstance);
 	}
 
-	public static void fire(HasHandlers source, boolean isComplete, FilterTypeInfo filterInfo) {
-		SldContentChangedEvent eventInstance = new SldContentChangedEvent(isComplete, filterInfo);
+	public static void fire(HasHandlers source, boolean isComplete, FilterModel filterModel) {
+		SldContentChangedEvent eventInstance = new SldContentChangedEvent(isComplete, filterModel);
 		source.fireEvent(eventInstance);
 	}
 	
@@ -174,7 +175,7 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 		if (getSldGeneralInfo() != null) {
 			handler.onSldGeneralInfoChanged(this);
 		}
-		if (getFilterTypeInfo() != null) {
+		if (getFilterModel() != null) {
 			handler.onFilterInfoChanged(this);
 		}
 		if (getSymbolizerInfo() != null) {
@@ -204,8 +205,8 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 		return sldGeneralInfo;
 	}
 	
-	public FilterTypeInfo getFilterTypeInfo() {
-		return filterTypeInfo;
+	public FilterModel getFilterModel() {
+		return filterModel;
 	}
 	
 	public SymbolizerTypeInfo getSymbolizerInfo() {
