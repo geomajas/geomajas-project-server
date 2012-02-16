@@ -11,10 +11,22 @@
 
 package org.geomajas.sld.client.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.sld.GraphicInfo;
+import org.geomajas.sld.LineSymbolizerInfo;
+import org.geomajas.sld.PointSymbolizerInfo;
+import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
+import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+
+import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * @author An Buyle
@@ -35,19 +47,88 @@ public class RuleModelImpl implements RuleModel {
 	private SymbolizerTypeInfo symbolizerTypeInfo;
 
 	private GeometryType geometryType;
+	//TODO: 2 creators with @AssistedInject
+	/** Constructor for a) creating a default rule model for the specified geometry type.
+	 * 		b) for specified RuleInfo (e.g. from an SLD object)
+	 * 
+	 * @param geometryType
+	 */
+	@Inject
+	public RuleModelImpl(@Assisted RuleInfo ruleInfo, @Assisted GeometryType geometryType, SldEditorMessages messages) {
+		if (null == ruleInfo) {
+			
+			RuleInfo defaultRule = new RuleInfo();
+			
+			this.geometryType = geometryType;
+			this.typeOfRule = TypeOfRule.COMPLETE_RULE;
+			
+			
+			defaultRule.setName(messages.ruleTitleDefault());
+			this.name =  messages.ruleTitleDefault();
+			
+			defaultRule.setTitle(messages.ruleTitleDefault());
+			this.title = messages.ruleTitleDefault();
+			
+			List<SymbolizerTypeInfo> symbolizerList = new ArrayList<SymbolizerTypeInfo>();
+			SymbolizerTypeInfo symbolizer = null;
 
-	public RuleModelImpl(RuleInfo ruleInfo) {
-		this.ruleInfo = ruleInfo;
-		this.geometryType = SldUtils.GetGeometryType(ruleInfo);
-		this.typeOfRule = TypeOfRule.COMPLETE_RULE;
-		this.symbolizerTypeInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer specification
-		if(ruleInfo.getChoice().ifFilter()) {
-			this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter());
+			switch (geometryType) {
+				case POINT:
+					symbolizer = new PointSymbolizerInfo();
+
+					((PointSymbolizerInfo) symbolizer).setGraphic(new GraphicInfo());
+					List<org.geomajas.sld.GraphicInfo.ChoiceInfo> list = 
+						new ArrayList<org.geomajas.sld.GraphicInfo.ChoiceInfo>();
+
+					org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = 
+						new org.geomajas.sld.GraphicInfo.ChoiceInfo();
+					list.add(choiceInfoGraphic);
+					((PointSymbolizerInfo) symbolizer).getGraphic().setChoiceList(list);
+
+					break;
+				case LINE:
+					symbolizer = new LineSymbolizerInfo();
+					break;
+				case POLYGON:
+					symbolizer = new PolygonSymbolizerInfo();
+					break;
+
+				default:
+					GWT.log("createDefaultRule: unsupported geometrie type " + geometryType.toString()); // TODO
+			}
+
+			symbolizerList.add(symbolizer);
+
+			defaultRule.setSymbolizerList(symbolizerList);
+			this.symbolizerTypeInfo = symbolizer;
+			
+			this.ruleInfo = defaultRule;
 		} else {
-			this.filterModel = new FilterModelImpl();
+			
+			this.ruleInfo = ruleInfo;
+			this.geometryType = SldUtils.GetGeometryType(ruleInfo);
+			this.typeOfRule = TypeOfRule.COMPLETE_RULE;
+			this.symbolizerTypeInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer specification
+			if(null != ruleInfo.getChoice() && ruleInfo.getChoice().ifFilter()) {
+				this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter());
+			} else {
+				this.filterModel = new FilterModelImpl();
+			}
+			this.name = ruleInfo.getName();
+			if (null == ruleInfo.getTitle() || ruleInfo.getTitle().length() == 0) {
+				if (null != ruleInfo.getName() && ruleInfo.getName().length() > 0) {
+					ruleInfo.setTitle(ruleInfo.getName());
+				} else {
+					ruleInfo.setTitle(messages.ruleTitleUnspecified());
+				}
+			}
+		
+			this.title = ruleInfo.getTitle();
+			
 		}
-		this.name = ruleInfo.getName();
 	}
+	
+	
 
 	/*
 	 * (non-Javadoc)

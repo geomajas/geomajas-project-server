@@ -105,6 +105,7 @@ public interface SldEditorMessages extends Messages {
 	String removeSldButtonTooltip();
 
 	String ruleTitleUnspecified();
+	String ruleTitleDefault();
 
 	String pointTitle();
 	String lineTitle();

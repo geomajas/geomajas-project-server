@@ -20,6 +20,7 @@ import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -56,7 +57,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	/**
 	 * {@link RuleSelectorPresenter}'s view.
 	 */
-	public interface MyView extends View, HasRuleSelectedHandlers {
+	public interface MyView extends View, HasRuleSelectedHandlers, HasSldContentChangedHandlers {
 
 		void copyToView(RuleGroup model);
 

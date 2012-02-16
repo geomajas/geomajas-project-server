@@ -13,6 +13,7 @@ package org.geomajas.sld.client.presenter.event;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.client.model.FilterModel;
+import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.SldGeneralInfo;
 import org.geomajas.sld.filter.FilterTypeInfo;
 
@@ -40,11 +41,18 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 	
 	private GraphicInfo graphicInfo;
 
+	private RuleGroup ruleGroup;
+
 	public SldContentChangedEvent(boolean isComplete, SldGeneralInfo sldGeneralInfo) {
 		this.isComplete = isComplete;
 		this.sldGeneralInfo = sldGeneralInfo;
 	}
-
+	
+	public SldContentChangedEvent(boolean isComplete, RuleGroup ruleGroup) {
+		this.isComplete = isComplete;
+		this.ruleGroup = ruleGroup;
+	}
+	
 	public SldContentChangedEvent(boolean isComplete, FilterModel filterModel) {
 		this.isComplete = isComplete;
 		this.filterModel = filterModel;
@@ -73,6 +81,11 @@ public class SldContentChangedEvent extends GwtEvent<SldContentChangedEvent.SldC
 	 */
 	public static void fire(HasHandlers source, boolean isComplete, SldGeneralInfo sldGeneralInfo) {
 		SldContentChangedEvent eventInstance = new SldContentChangedEvent(isComplete, sldGeneralInfo);
+		source.fireEvent(eventInstance);
+	}
+	
+	public static void fire(HasHandlers source, boolean isComplete, RuleGroup ruleGroup) {
+		SldContentChangedEvent eventInstance = new SldContentChangedEvent(isComplete, ruleGroup);
 		source.fireEvent(eventInstance);
 	}
 
