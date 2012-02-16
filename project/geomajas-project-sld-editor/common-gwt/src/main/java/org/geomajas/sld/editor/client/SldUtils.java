@@ -13,12 +13,15 @@ package org.geomajas.sld.editor.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.LineSymbolizerInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
+import org.geomajas.sld.client.model.RuleGroup;
+import org.geomajas.sld.client.model.RuleModel;
 
 import com.google.gwt.core.client.GWT;
 
@@ -94,4 +97,21 @@ public final class SldUtils {
 
 	}
 
+	public static GeometryType GetGeometryType(List<FeatureTypeStyleInfo> featureTypeStyleList) {
+		
+		GeometryType geometryType = GeometryType.UNSPECIFIED;
+		
+		if (null == featureTypeStyleList || featureTypeStyleList.size() == 0) {
+			return GeometryType.UNSPECIFIED; // ABORT
+		}
+
+		FeatureTypeStyleInfo featureTypeStyle = featureTypeStyleList.iterator().next(); //retrieve the first
+				// <FeatureTypeStyle> element (which contains 1 list of rules)
+
+		if (null != featureTypeStyle && featureTypeStyle.getRuleList().size() >= 1) {
+			RuleInfo rule = featureTypeStyle.getRuleList().iterator().next(); //retrieve the first rule
+			geometryType = GetGeometryType(rule);
+		}
+		return geometryType;
+	}
 }
