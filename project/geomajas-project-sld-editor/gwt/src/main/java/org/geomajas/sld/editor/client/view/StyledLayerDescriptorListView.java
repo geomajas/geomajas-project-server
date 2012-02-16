@@ -263,7 +263,7 @@ public class StyledLayerDescriptorListView extends ViewImpl implements StyledLay
 	// Private class RemoveButton:
 	// -------------------------------------------------------------------------
 
-	/** Definition of the Add button. */
+	/** Definition of the RemoveButton button. */
 	private class RemoveButton extends IButton {
 
 		public static final String ICON = "[ISOMORPHIC]/" + "geomajas/icons/silk/cancel.png";

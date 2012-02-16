@@ -26,9 +26,6 @@ import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 import org.geomajas.sld.editor.client.widget.RuleTreeNode;
-import org.geomajas.sld.editor.client.widget.SelectRuleHandler;
-import org.geomajas.sld.editor.client.widget.SldHasChangedHandler;
-import org.geomajas.sld.editor.client.widget.UpdateRuleHeaderHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
@@ -95,12 +92,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	private DownButton downButton;
 
 	private RuleTreeNode currentLeaf;
-
-	private SelectRuleHandler selectRuleHandler;
-
-	private UpdateRuleHeaderHandler updateRuleHeaderHandler;
-
-	private SldHasChangedHandler sldHasChangedHandler;
 
 	private DynamicForm ruleGeneralForm;
 
@@ -470,22 +461,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		//RuleSelector.this.markForRedraw();
 	}
 
-// TODO: doesn't belong here, for this class the type of the rule data should be of
-//	no concern!
-	
-//	public boolean checkIfAllRulesComplete() {
-//		boolean areAllRulesComplete = true;
-//
-//		Object[] rules = getAllRulesAsArray();
-//		for (Object object : rules) {
-//			if (object.getClass().equals(IncompleteRuleInfo.class)) {
-//				areAllRulesComplete = false;
-//				break;
-//			}
-//		}
-//		return areAllRulesComplete;
-//	}
-
 
 	//--------------------------------------------------------------------------------------
 
@@ -559,9 +534,8 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 								updateButtons();
 	
 								currentLeaf = (RuleTreeNode) treeGrid.getSelectedRecord();
-								sldHasChanged();
-	
-								removeRule(node.getRuleId());
+									
+								removeRule(node.getRuleId()); //Also informs observers
 								if (null != currentLeaf && !currentLeaf.isFolder()) {
 									//Update Rule detail form item to show the first rule 
 									// + inform listeners  
@@ -899,10 +873,10 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 	//--------------------------------------------------------------------------------------
 	private void removeRule(String ruleId) {
-		/* the ruleId == index of the rule in the ruleList */
-
-		sldHasChanged();
+		// the ruleId == index (where first rule has index INDEX_FIRST_RULE) of the rule in the ruleList
+		
 		ruleList.remove(new Integer(ruleId) - INDEX_FIRST_RULE); /* remove the rule at position ruleId */
+		sldHasChanged();
 	}
 	//--------------------------------------------------------------------------------------
 	private void moveRuleUp(String ruleId) {
