@@ -101,7 +101,7 @@ public class SldManagerImpl implements SldManager {
 					
 					public void onSuccess(StyledLayerDescriptorInfo sld) {
 						if (null != sld) {
-							currentSld.setSld(sld);
+							currentSld.copyFrom(modelFactory.create(sld));
 							logger.info("SldManager: SLD was successfully saved");
 							SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
 						}
@@ -198,7 +198,7 @@ public class SldManagerImpl implements SldManager {
 
 				public void onSuccess(StyledLayerDescriptorInfo result) {
 					currentSld = selectedSld;					
-					currentSld.setSld(result);
+					currentSld.copyFrom(modelFactory.create(result));
 					SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
 				}
 

@@ -15,7 +15,9 @@ import org.geomajas.sld.client.NameTokens;
 import org.geomajas.sld.client.SldEditorPlaceManager;
 import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.SldManagerImpl;
+import org.geomajas.sld.client.model.SldModel;
 import org.geomajas.sld.client.model.SldModelFactory;
+import org.geomajas.sld.client.model.SldModelImpl;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.inject.client.AbstractGinModule;
@@ -49,7 +51,8 @@ public class ClientModule extends AbstractGinModule {
 
 		// Manager
 		bind(SldManager.class).to(SldManagerImpl.class).in(Singleton.class);
-		install(new GinFactoryModuleBuilder().build(SldModelFactory.class));
+		install(new GinFactoryModuleBuilder().implement(SldModel.class, SldModelImpl.class)
+				.build(SldModelFactory.class));
 
 		// i18n
 		bind(SldEditorMessages.class).in(Singleton.class);

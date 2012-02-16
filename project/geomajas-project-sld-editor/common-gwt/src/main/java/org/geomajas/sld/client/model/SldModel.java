@@ -1,169 +1,23 @@
 package org.geomajas.sld.client.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.sld.FeatureTypeStyleInfo;
-import org.geomajas.sld.NamedLayerInfo;
-import org.geomajas.sld.NamedLayerInfo.ChoiceInfo;
-import org.geomajas.sld.NamedStyleInfo;
-import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
-import org.geomajas.sld.UserStyleInfo;
-import org.geomajas.sld.client.model.RuleData.TypeOfRule;
-import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.editor.client.SldUtils;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+public interface SldModel {
 
-public class SldModel {
+	public abstract boolean isComplete();
 
-	private StyledLayerDescriptorInfo sld;
+	public abstract String getName();
 
-	private SldGeneralInfo generalInfo;
+	public abstract StyledLayerDescriptorInfo getSld();
 
-	private RuleGroup ruleGroup;
+	public abstract SldGeneralInfo getGeneralInfo();
 
-	private SldEditorMessages messages;
-	
-	private boolean rulesSupported;
+	public abstract RuleGroup getRuleGroup();
 
-	@Inject
-	public SldModel(@Assisted StyledLayerDescriptorInfo sld, SldEditorMessages messages) {
-		this.messages = messages;
-		setSld(sld);
-	}
-	
-	public boolean isComplete() {
-		if(!isRulesSupported()) {
-			return false;
-		}
-		// check if all filters/rules are complete !
-		for (RuleModel model : getRuleGroup().getRuleModelList()) {
-			if(model.getRuleData().getTypeOfRule() == TypeOfRule.INCOMPLETE_RULE){
-				return false;
-			}
-		}
-		return true;
-	}
+	public abstract boolean isRulesSupported();
 
-	public void setSld(StyledLayerDescriptorInfo sld) {
-		this.sld = sld;
-		SldGeneralInfo info = new SldGeneralInfo(GeometryType.UNSPECIFIED);
-		setGeneralInfo(info);
-		if (sld.getChoiceList().size() == 1) {
-			NamedLayerInfo namedLayerInfo = sld.getChoiceList().get(0).getNamedLayer();
-			if (namedLayerInfo.getChoiceList().size() == 1) {
-				UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
-				if (userStyle.getFeatureTypeStyleList().size() == 1) {
-					FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
-					ruleGroup = new RuleGroup();
-					String styleTitle = featureTypeStyle.getTitle();
-					if (null == styleTitle) {
-						ruleGroup.setTitle("groep 1");
-					} else {
-						ruleGroup.setTitle(styleTitle);
-					}
-					ruleGroup.setName(featureTypeStyle.getName());
-					ruleGroup.setRuleModelList(new ArrayList<RuleModel>());
-					ruleGroup.setGeomType(GeometryType.UNSPECIFIED);
-					for (RuleInfo rule : featureTypeStyle.getRuleList()) {
-						RuleModel ruleModel = new RuleModel();
+	public abstract void synchronize();
 
-						// Determine the rule title to be used in the model, make sure it is NOT null or ""
-						String title;
-
-						if (null != rule.getTitle() && rule.getTitle().length() > 0) {
-							title = rule.getTitle();
-						} else if (null != rule.getName() && rule.getName().length() > 0) {
-							title = rule.getName();
-						} else {
-							title = messages.ruleTitleUnspecified();
-						}
-						ruleModel.setTitle(title);
-
-						ruleModel.setName(rule.getName()); // The rule name can be null
-
-						RuleData ruleData = new RuleData(SldUtils.GetGeometryType(rule));
-						ruleGroup.setGeomType(ruleData.getGeometryType()); // copy the last one (should be equal for all)
-						ruleData.setTypeOfRule(RuleData.TypeOfRule.COMPLETE_RULE);
-						ruleData.setCompleteRuleBody(rule); // TODO: OK???
-
-						ruleModel.setRuleData(ruleData);
-						ruleGroup.getRuleModelList().add(ruleModel);
-						rulesSupported = true;
-					}
-				}
-
-			}
-		}
-	}
-
-	public void synchronize() {
-		// retrieve the first choice
-		StyledLayerDescriptorInfo.ChoiceInfo info = sld.getChoiceList().iterator().next();
-		if (!info.ifNamedLayer()) {
-			// warning that invalid SLD
-			// SC.warn("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
-			return; // ABORT
-		}
-
-		// Update the name of the layer
-		info.getNamedLayer().setName(getGeneralInfo().getNameOfLayer());
-
-		List<ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
-		// retrieve the first constraint
-		ChoiceInfo choiceInfo = choiceList.iterator().next();
-
-
-		if (choiceInfo.ifNamedStyle()) {
-			// Only the name is specialized
-			if (null == choiceInfo.getNamedStyle()) {
-				choiceInfo.setNamedStyle(new NamedStyleInfo());
-			}
-			choiceInfo.getNamedStyle().setName(getGeneralInfo().getStyleTitle());
-		} else if (choiceInfo.ifUserStyle()) {
-			choiceInfo.getUserStyle().setTitle(getGeneralInfo().getStyleTitle());
-			List<RuleInfo> rules = new ArrayList<RuleInfo>();
-			for (RuleModel model : getRuleGroup().getRuleModelList()) {
-				if(model.getRuleData().getTypeOfRule() != TypeOfRule.INCOMPLETE_RULE){
-					rules.add(model.getRuleData().getCompleteRuleBody());
-				}
-			}
-			choiceInfo.getUserStyle().getFeatureTypeStyleList().get(0).setRuleList(rules);
-		}
-		
-	}
-
-	public String getName() {
-		return sld.getName();
-	}
-
-	public StyledLayerDescriptorInfo getSld() {
-		return sld;
-	}
-
-	public SldGeneralInfo getGeneralInfo() {
-		return generalInfo;
-	}
-
-	public void setGeneralInfo(SldGeneralInfo generalInfo) {
-		this.generalInfo = generalInfo;
-	}
-
-	public RuleGroup getRuleGroup() {
-		return ruleGroup;
-	}
-
-	public void setRuleGroup(RuleGroup ruleGroup) {
-		this.ruleGroup = ruleGroup;
-	}
-	
-	public boolean isRulesSupported() {
-		return rulesSupported;
-	}
-	
+	public abstract void copyFrom(SldModel create);
 
 }
