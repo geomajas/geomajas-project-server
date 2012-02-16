@@ -15,13 +15,11 @@ import java.util.List;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.GraphicInfo;
+import org.geomajas.sld.LineSymbolizerInfo;
+import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
-import org.geomajas.sld.LineSymbolizerInfo;
-import org.geomajas.sld.PointSymbolizerInfo;
-import org.geomajas.sld.client.model.RuleGroup;
-import org.geomajas.sld.client.model.RuleModel;
 
 import com.google.gwt.core.client.GWT;
 
