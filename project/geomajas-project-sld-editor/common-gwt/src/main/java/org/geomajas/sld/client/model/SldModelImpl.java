@@ -22,9 +22,13 @@ public class SldModelImpl implements SldModel {
 
 	private StyledLayerDescriptorInfo sld;
 
-	private SldGeneralInfo generalInfo;
+	private String nameOfLayer;
 
-	private RuleGroup ruleGroup;
+	private String styleTitle;
+
+	private GeometryType geomType; // Cannot be updated
+
+	private RuleGroupImpl ruleGroup;
 
 	private SldEditorMessages messages;
 	
@@ -58,15 +62,14 @@ public class SldModelImpl implements SldModel {
 
 	private void setSld(StyledLayerDescriptorInfo sld) {
 		this.sld = sld;
-		SldGeneralInfo info = new SldGeneralInfo(GeometryType.UNSPECIFIED);
-		setGeneralInfo(info);
+		geomType = GeometryType.UNSPECIFIED;
 		if (sld.getChoiceList().size() == 1) {
 			NamedLayerInfo namedLayerInfo = sld.getChoiceList().get(0).getNamedLayer();
 			if (namedLayerInfo.getChoiceList().size() == 1) {
 				UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
 				if (userStyle.getFeatureTypeStyleList().size() == 1) {
 					FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
-					ruleGroup = new RuleGroup();
+					ruleGroup = new RuleGroupImpl();
 					String styleTitle = featureTypeStyle.getTitle();
 					if (null == styleTitle) {
 						ruleGroup.setTitle("groep 1");
@@ -118,7 +121,7 @@ public class SldModelImpl implements SldModel {
 		}
 
 		// Update the name of the layer
-		info.getNamedLayer().setName(getGeneralInfo().getNameOfLayer());
+		info.getNamedLayer().setName(getNameOfLayer());
 
 		List<ChoiceInfo> choiceList = info.getNamedLayer().getChoiceList();
 		// retrieve the first constraint
@@ -130,9 +133,9 @@ public class SldModelImpl implements SldModel {
 			if (null == choiceInfo.getNamedStyle()) {
 				choiceInfo.setNamedStyle(new NamedStyleInfo());
 			}
-			choiceInfo.getNamedStyle().setName(getGeneralInfo().getStyleTitle());
+			choiceInfo.getNamedStyle().setName(getStyleTitle());
 		} else if (choiceInfo.ifUserStyle()) {
-			choiceInfo.getUserStyle().setTitle(getGeneralInfo().getStyleTitle());
+			choiceInfo.getUserStyle().setTitle(getStyleTitle());
 			List<RuleInfo> rules = new ArrayList<RuleInfo>();
 			for (RuleModel model : getRuleGroup().getRuleModelList()) {
 				if(model.getRuleData().getTypeOfRule() != TypeOfRule.INCOMPLETE_RULE){
@@ -158,25 +161,34 @@ public class SldModelImpl implements SldModel {
 		return sld;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.geomajas.sld.client.model.SldModelIntf#getGeneralInfo()
-	 */
-	public SldGeneralInfo getGeneralInfo() {
-		return generalInfo;
+	public String getNameOfLayer() {
+		return nameOfLayer;
 	}
 
-	public void setGeneralInfo(SldGeneralInfo generalInfo) {
-		this.generalInfo = generalInfo;
+	public void setNameOfLayer(String nameOfLayer) {
+		this.nameOfLayer = nameOfLayer;
+	}
+
+	public String getStyleTitle() {
+		return styleTitle;
+	}
+
+	public void setStyleTitle(String styleTitle) {
+		this.styleTitle = styleTitle;
+	}
+	
+	public GeometryType getGeomType() {
+		return geomType;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.geomajas.sld.client.model.SldModelIntf#getRuleGroup()
 	 */
-	public RuleGroup getRuleGroup() {
+	public RuleGroupImpl getRuleGroup() {
 		return ruleGroup;
 	}
 
-	public void setRuleGroup(RuleGroup ruleGroup) {
+	public void setRuleGroup(RuleGroupImpl ruleGroup) {
 		this.ruleGroup = ruleGroup;
 	}
 	

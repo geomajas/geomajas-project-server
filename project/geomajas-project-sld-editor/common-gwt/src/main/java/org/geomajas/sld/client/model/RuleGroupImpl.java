@@ -20,7 +20,7 @@ import org.geomajas.sld.editor.client.GeometryType;
  * @author An Buyle
  *
  */
-public class RuleGroup {
+public class RuleGroupImpl {
 
 	private String name;
 

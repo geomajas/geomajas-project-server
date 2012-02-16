@@ -55,8 +55,6 @@ public class StyledLayerDescriptorPresenter
 
 		void copyToView(SldGeneralInfo myModel);
 
-		SldGeneralInfo copyToModel(SldGeneralInfo myModel);
-
 		void reset();
 
 		void focus();
@@ -114,8 +112,7 @@ public class StyledLayerDescriptorPresenter
 	 */
 	// TODO
 	public void onSldSelected(SldSelectedEvent event) {
-		SldModel sld = event.getSld();
-		model = sld.getGeneralInfo();
+		model = event.getSld();
 		getView().copyToView(model);
 	}
 

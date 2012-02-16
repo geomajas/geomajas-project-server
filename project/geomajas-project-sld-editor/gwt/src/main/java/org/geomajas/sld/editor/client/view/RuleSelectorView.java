@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.sld.client.model.RuleData;
-import org.geomajas.sld.client.model.RuleGroup;
+import org.geomajas.sld.client.model.RuleGroupImpl;
 import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
@@ -113,7 +113,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	private List<RuleModel> ruleList;
 	
 	
-	private RuleGroup currentRuleGroup;
+	private RuleGroupImpl currentRuleGroup;
 	
 	private GeometryType currentGeomType = GeometryType.UNSPECIFIED;
 
@@ -353,7 +353,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 
 	//@Override
-	public void copyToView(RuleGroup ruleGroup) {
+	public void copyToView(RuleGroupImpl ruleGroup) {
 		currentRuleGroup = ruleGroup;
 		this.currentGeomType = GeometryType.UNSPECIFIED;
 
@@ -431,7 +431,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	}
 		
-	private  RuleGroup getModel() {
+	private  RuleGroupImpl getModel() {
 		return currentRuleGroup;
 	}
 

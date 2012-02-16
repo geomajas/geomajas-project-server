@@ -58,7 +58,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 	private TextItem geomTypeItem;
 
-	private SldGeneralInfo originalModel;
+	private SldGeneralInfo model;
 
 	private EventBus eventBus;
 
@@ -76,15 +76,9 @@ public class StyledLayerDescriptorView extends ViewImpl
 				if (!nameOfLayerItem.validate()) {
 					return;
 				}
-//				String nameOfLayer = null;
-//				if (null == event.getValue()) {
-//					nameOfLayer = "";
-//				} else {
-//					nameOfLayer = event.getValue().toString();
-//				}
-
+				model.setNameOfLayer(nameOfLayerItem.getValueAsString());
 				//Inform observer(s) of change of SLD data
-				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, getModel());
+				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, model);
 
 			}
 		});
@@ -108,15 +102,10 @@ public class StyledLayerDescriptorView extends ViewImpl
 					return;
 				}
 
-//				String styleTitle = null;
-//				if (null == event.getValue()) {
-//					styleTitle = "";
-//				} else {
-//					styleTitle = event.getValue().toString();
-//				}
+				model.setNameOfLayer(styleTitleItem.getValueAsString());
 
 				//Inform observer(s) of change of SLD data
-				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, getModel());
+				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, model);
 
 			}
 		});
@@ -169,8 +158,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 	// @Override
 	public void copyToView(SldGeneralInfo model) {
-		originalModel = model;
-
+		this.model = model;
 		nameOfLayerItem.setValue(model.getNameOfLayer());
 		styleTitleItem.setValue(model.getStyleTitle());
 		geomTypeItem.setValue(model.getGeomType().value());
@@ -178,22 +166,6 @@ public class StyledLayerDescriptorView extends ViewImpl
 		topLevelAttributesForm.markForRedraw();
 
 	}
-
-	// @Override
-	public SldGeneralInfo copyToModel(SldGeneralInfo model) {
-		//validation is minimal (not null)
-		if (null == model) {
-			model = new SldGeneralInfo(GeometryType.UNSPECIFIED);
-		}
-		model.setNameOfLayer(null == nameOfLayerItem.getValue() ? "" : nameOfLayerItem.getValue().toString());
-		model.setStyleTitle(null == styleTitleItem.getValue() ? "" : styleTitleItem.getValue().toString());
-		return model;
-	}
-
-	private SldGeneralInfo getModel() {
-		return copyToModel(null);
-	}
-
 
 	public void reset() {
 		topLevelAttributesForm.clearValues();
@@ -204,11 +176,6 @@ public class StyledLayerDescriptorView extends ViewImpl
 	public void focus() {
 		// Set focus on nameOfLayerItem
 		// nameOfLayerItem.focusInItem();
-
-	}
-
-	private void restoreFromOriginalModel() {
-		copyToView(originalModel);
 
 	}
 

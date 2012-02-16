@@ -20,36 +20,15 @@ import org.geomajas.sld.editor.client.GeometryType;
  *
  */
 
-public class SldGeneralInfo {
+public interface SldGeneralInfo {
 
-	private String nameOfLayer;
+	String getNameOfLayer();
 
-	private String styleTitle;
+	void setNameOfLayer(String nameOfLayer);
 
-	private final GeometryType geomType; // Cannot be updated
+	String getStyleTitle();
 
-	public SldGeneralInfo(GeometryType geomType) {
-		this.geomType = geomType;
-	}
+	void setStyleTitle(String styleTitle);
 
-	public String getNameOfLayer() {
-		return nameOfLayer;
-	}
-
-	public void setNameOfLayer(String nameOfLayer) {
-		this.nameOfLayer = nameOfLayer;
-	}
-
-	public String getStyleTitle() {
-		return styleTitle;
-	}
-
-	public void setStyleTitle(String styleTitle) {
-		this.styleTitle = styleTitle;
-	}
-
-	public GeometryType getGeomType() {
-		return geomType;
-	}
-
+	public GeometryType getGeomType();
 }

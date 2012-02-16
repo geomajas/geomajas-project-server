@@ -2,22 +2,20 @@ package org.geomajas.sld.client.model;
 
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 
-public interface SldModel {
+public interface SldModel extends SldGeneralInfo {
 
-	public abstract boolean isComplete();
+	boolean isComplete();
 
-	public abstract String getName();
+	String getName();
 
-	public abstract StyledLayerDescriptorInfo getSld();
+	StyledLayerDescriptorInfo getSld();
 
-	public abstract SldGeneralInfo getGeneralInfo();
+	RuleGroupImpl getRuleGroup();
 
-	public abstract RuleGroup getRuleGroup();
+	boolean isRulesSupported();
 
-	public abstract boolean isRulesSupported();
+	void synchronize();
 
-	public abstract void synchronize();
-
-	public abstract void copyFrom(SldModel create);
+	void copyFrom(SldModel create);
 
 }
