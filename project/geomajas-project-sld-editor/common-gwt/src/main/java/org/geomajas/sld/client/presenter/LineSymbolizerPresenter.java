@@ -3,8 +3,7 @@ package org.geomajas.sld.client.presenter;
 import java.util.logging.Logger;
 
 import org.geomajas.sld.LineSymbolizerInfo;
-import org.geomajas.sld.PolygonSymbolizerInfo;
-import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
@@ -19,7 +18,8 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
-public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.MyView, LineSymbolizerPresenter.MyProxy>  implements RuleSelectedHandler{
+public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.MyView, LineSymbolizerPresenter.MyProxy>
+		implements RuleSelectedHandler {
 
 	private Logger logger = Logger.getLogger(LineSymbolizerPresenter.class.getName());
 
@@ -58,7 +58,7 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);		
+		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);
 	}
 
 	/*
@@ -73,9 +73,9 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		RuleData data = event.getRuleData();
-		if(data.getGeometryType().equals(GeometryType.LINE)) {
-			LineSymbolizerInfo lineSymbolizerInfo = (LineSymbolizerInfo)data.getSymbolizerTypeInfo();
+		RuleModel rule = event.getRuleModel();
+		if (rule.getGeometryType().equals(GeometryType.LINE)) {
+			LineSymbolizerInfo lineSymbolizerInfo = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo();
 			getView().modelToView(lineSymbolizerInfo);
 			forceReveal();
 		}

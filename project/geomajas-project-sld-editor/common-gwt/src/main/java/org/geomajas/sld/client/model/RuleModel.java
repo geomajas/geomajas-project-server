@@ -1,87 +1,57 @@
-/*
- * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
- *
- * Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
- *
- * The program is available in open source according to the GNU Affero
- * General Public License. All contributions in this program are covered
- * by the Geomajas Contributors License Agreement. For full licensing
- * details, see LICENSE.txt in the project root.
- */
-
 package org.geomajas.sld.client.model;
 
+import org.geomajas.sld.RuleInfo;
+import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
-import com.google.gwt.core.client.GWT;
+public interface RuleModel {
 
-/**
- * @author An Buyle
- *
- */
-public class RuleModel {
-
-	private static SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
-
-	private String name;
-
-	private String title;
-
-	private RuleData ruleData;
-
+	/**
+	 * @author An Buyle
+	 * 
+	 */
+	public enum TypeOfRule {
+		DEFAULT_RULE, INCOMPLETE_RULE, COMPLETE_RULE
+	}
 
 	/**
 	 * Get the 'Name' element value.
 	 * 
 	 * @return value
 	 */
-	public String getName() {
-		return name;
-	}
+	String getName();
 
 	/**
 	 * Set the 'Name' element value.
 	 * 
 	 * @param name
 	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+	void setName(String name);
 
 	/**
 	 * Get the 'Title' element value.
 	 * 
 	 * @return value
 	 */
-	public String getTitle() {
-		return title;
-	}
+	String getTitle();
 
 	/**
 	 * Set the 'Title' element value.
 	 * 
 	 * @param title
 	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	void setTitle(String title);
 
-	public RuleData getRuleData() {
-		return ruleData;
-	}
+	TypeOfRule getTypeOfRule();
 
-	public void setRuleData(RuleData ruleData) {
-		this.ruleData = ruleData;
-	}
+	void setTypeOfRule(TypeOfRule typeOfRule);
 
-	public static RuleModel CreateDefaultRuleModel(GeometryType geometryType) {
-		RuleModel defaultRuleModel = new RuleModel();
+	RuleInfo getRuleInfo();
 
-		defaultRuleModel.setTitle(sldEditorMessages.ruleTitleUnspecified());
+	FilterModel getFilterModel();
 
-		defaultRuleModel.setRuleData(RuleData.createDefaultRuleData(geometryType));
+	SymbolizerTypeInfo getSymbolizerTypeInfo();
 
-		return defaultRuleModel;
-	}
+	GeometryType getGeometryType();
+
 }

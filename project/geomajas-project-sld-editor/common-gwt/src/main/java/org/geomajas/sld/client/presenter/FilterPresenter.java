@@ -1,5 +1,6 @@
 package org.geomajas.sld.client.presenter;
 
+import org.geomajas.sld.client.model.FilterModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
@@ -36,9 +37,9 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 	 */
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
-		boolean isValid(FilterTypeInfo filterTypeInfo);
+		boolean isValid(FilterModel filterModel);
 
-		void modelToView(FilterTypeInfo filterTypeInfo);
+		void modelToView(FilterModel filterModel);
 		
 		void clear();
 
@@ -57,9 +58,9 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if(event.getRuleData().getGeometryType() != GeometryType.UNSPECIFIED) {
-			if (event.getRuleData().getFilter() != null) {
-				FilterTypeInfo filter = event.getRuleData().getFilter();
+		if(event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
+			if (event.getRuleModel().getFilterModel() != null) {
+				FilterModel filter = event.getRuleModel().getFilterModel();
 				if (getView().isValid(filter)) {
 					getView().modelToView(filter);
 					forceReveal();

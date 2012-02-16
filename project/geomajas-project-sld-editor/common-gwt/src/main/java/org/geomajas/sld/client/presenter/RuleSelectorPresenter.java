@@ -13,7 +13,7 @@ package org.geomajas.sld.client.presenter;
 
 import java.util.logging.Logger;
 
-import org.geomajas.sld.client.model.RuleGroupImpl;
+import org.geomajas.sld.client.model.RuleGroup;
 import org.geomajas.sld.client.model.SldModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.HasRuleSelectedHandlers;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
@@ -42,7 +42,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		super(eventBus, view, proxy);
 	}
 
-	private RuleGroupImpl currentModel;
+	private RuleGroup currentModel;
 
 	private Logger logger = Logger.getLogger("RuleSelectorPresenter");
 
@@ -58,7 +58,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	 */
 	public interface MyView extends View, HasRuleSelectedHandlers {
 
-		void copyToView(RuleGroupImpl model);
+		void copyToView(RuleGroup model);
 
 		// TODO: void setViewChangedHandler(ViewChangedHandler);
 		void reset();

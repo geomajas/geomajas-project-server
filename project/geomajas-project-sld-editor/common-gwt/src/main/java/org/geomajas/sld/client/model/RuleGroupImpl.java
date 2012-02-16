@@ -20,7 +20,7 @@ import org.geomajas.sld.editor.client.GeometryType;
  * @author An Buyle
  *
  */
-public class RuleGroupImpl {
+public class RuleGroupImpl implements RuleGroup {
 
 	private String name;
 
@@ -30,37 +30,29 @@ public class RuleGroupImpl {
 
 	private List<RuleModel> ruleModelList = new ArrayList<RuleModel>(); // List of "rules" 
 
-	/**
-	 * Get the 'Name' element value.
-	 * 
-	 * @return value
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#getName()
 	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Set the 'Name' element value.
-	 * 
-	 * @param name
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#setName(java.lang.String)
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Get the 'Title' element value.
-	 * 
-	 * @return value
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#getTitle()
 	 */
 	public String getTitle() {
 		return title;
 	}
 
-	/**
-	 * Set the 'Title' element value.
-	 * 
-	 * @param title
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#setTitle(java.lang.String)
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -68,28 +60,30 @@ public class RuleGroupImpl {
 
 
 
-	/**
-	 * Get the list of 'Rule' element items.
-	 * 
-	 * @return list
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#getRuleModelList()
 	 */
 	public List<RuleModel> getRuleModelList() {
 		return ruleModelList;
 	}
 
-	/**
-	 * Set the list of 'Rule' element items.
-	 * 
-	 * @param list
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#setRuleModelList(java.util.List)
 	 */
 	public void setRuleModelList(List<RuleModel> list) {
 		ruleModelList = list;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#getGeomType()
+	 */
 	public GeometryType getGeomType() {
 		return geomType;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.geomajas.sld.client.model.RuleGroup#setGeomType(org.geomajas.sld.editor.client.GeometryType)
+	 */
 	public void setGeomType(GeometryType geomType) {
 		this.geomType = geomType;
 	}

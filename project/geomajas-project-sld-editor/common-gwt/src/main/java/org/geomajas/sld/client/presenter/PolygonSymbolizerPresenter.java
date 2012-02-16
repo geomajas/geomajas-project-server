@@ -2,9 +2,8 @@ package org.geomajas.sld.client.presenter;
 
 import java.util.logging.Logger;
 
-import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
-import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
@@ -73,9 +72,9 @@ public class PolygonSymbolizerPresenter extends Presenter<PolygonSymbolizerPrese
 
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		RuleData data = event.getRuleData();
-		if(data.getGeometryType().equals(GeometryType.POLYGON)) {
-			PolygonSymbolizerInfo polygonSymbolizerInfo = (PolygonSymbolizerInfo)data.getSymbolizerTypeInfo();
+		RuleModel rule = event.getRuleModel();
+		if (rule.getGeometryType().equals(GeometryType.POLYGON)) {
+			PolygonSymbolizerInfo polygonSymbolizerInfo = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo();
 			getView().modelToView(polygonSymbolizerInfo);
 			forceReveal();
 		}

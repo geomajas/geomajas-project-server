@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.geomajas.sld.client.model.ChoiceFilterInfo;
-import org.geomajas.sld.client.model.IncompleteFilterInfo;
+import org.geomajas.sld.client.model.FilterModel;
 import org.geomajas.sld.client.presenter.FilterPresenter;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
@@ -80,7 +79,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	// private TextAreaItem likeFilterSpec;
 
-	private FilterTypeInfo currentFilterInfo;
+	private FilterModel filterModel;
 
 	private boolean isSupportedFilter;
 
@@ -109,66 +108,9 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		return filterDetailContainer;
 	}
 
-	public boolean isValid(FilterTypeInfo filterTypeInfo) {
-		// TODO: check why between is special case ?
-		if (filterTypeInfo.ifComparisonOps()) {
+	public void modelToView(FilterModel filterModel) {
 
-			ComparisonOpsTypeInfo op = filterTypeInfo.getComparisonOps();
-
-			if (op.getClass().equals(PropertyIsLikeTypeInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsNotEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsGreaterThanInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsGreaterThanOrEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsLessThanInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsLessThanOrEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
-				ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) op).getExpression();
-				if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-				} else {
-					return false; /* ABORT */
-				}
-			} else if (op.getClass().equals(PropertyIsNullTypeInfo.class)) {
-			} else {
-				return false;
-			}
-		} else if (currentFilterInfo.ifLogicOps()) {
-			LogicOpsTypeInfo op = filterTypeInfo.getLogicOps();
-			/** Only the NOT operator is (partially) supported **/
-			if (op.getClass().equals(UnaryLogicOpTypeInfo.class)) {
-				UnaryLogicOpTypeInfo info = (UnaryLogicOpTypeInfo) op;
-				if (info.ifComparisonOps()) {
-					ComparisonOpsTypeInfo innerOp = info.getComparisonOps();
-
-					if (innerOp.getClass().equals(PropertyIsNullTypeInfo.class)) {
-					} else if (innerOp.getClass().equals(PropertyIsLikeTypeInfo.class)) {
-					} else if (innerOp.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
-						ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) innerOp).getExpression();
-
-						if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-						} else {
-							return false; 
-						}
-					}
-
-				} else {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public void modelToView(FilterTypeInfo filterTypeInfo) {
-
-		currentFilterInfo = filterTypeInfo;
+		this.filterModel = filterModel;
 		if (null == currentFilterInfo) {
 			currentFilterInfo = new FilterTypeInfo();
 		}
@@ -322,7 +264,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	}
 
-	public void modelToView(IncompleteFilterInfo incompleteFilter) {
+	public void modelToView(FilterModel filterModel) {
 		isSupportedFilter = true;
 		currentFilterInfo = new FilterTypeInfo();
 

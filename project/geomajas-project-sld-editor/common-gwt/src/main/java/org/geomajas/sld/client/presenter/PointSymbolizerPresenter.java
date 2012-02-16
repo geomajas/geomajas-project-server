@@ -4,8 +4,7 @@ import java.util.logging.Logger;
 
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
-import org.geomajas.sld.RuleInfo;
-import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
@@ -75,9 +74,9 @@ public class PointSymbolizerPresenter
 
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		RuleData data = event.getRuleData();
-		if(data.getGeometryType().equals(GeometryType.POINT)) {
-			PointSymbolizerInfo pointSymbolizerInfo = (PointSymbolizerInfo)data.getSymbolizerTypeInfo();
+		RuleModel rule = event.getRuleModel();
+		if (rule.getGeometryType().equals(GeometryType.POINT)) {
+			PointSymbolizerInfo pointSymbolizerInfo = (PointSymbolizerInfo) rule.getSymbolizerTypeInfo();
 			getView().modelToView(pointSymbolizerInfo.getGraphic());
 			forceReveal();
 		}

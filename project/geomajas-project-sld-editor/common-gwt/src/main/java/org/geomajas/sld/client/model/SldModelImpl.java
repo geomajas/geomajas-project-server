@@ -2,8 +2,6 @@ package org.geomajas.sld.client.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.NamedLayerInfo;
@@ -12,7 +10,7 @@ import org.geomajas.sld.NamedStyleInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.UserStyleInfo;
-import org.geomajas.sld.client.model.RuleData.TypeOfRule;
+import org.geomajas.sld.client.model.RuleModel.TypeOfRule;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
@@ -22,8 +20,6 @@ import com.google.inject.assistedinject.Assisted;
 
 public class SldModelImpl implements SldModel {
 
-	private static Logger logger = Logger.getLogger("SldModelImpl");
-	
 	private StyledLayerDescriptorInfo sld;
 
 	private String nameOfLayer;
@@ -32,15 +28,18 @@ public class SldModelImpl implements SldModel {
 
 	private GeometryType geomType; // Cannot be updated
 
-	private RuleGroupImpl ruleGroup;
+	private RuleGroup ruleGroup;
 
 	private SldEditorMessages messages;
+	
+	private RuleModelFactory ruleModelFactory;
 	
 	private boolean rulesSupported;
 
 	@Inject
-	public SldModelImpl(@Assisted StyledLayerDescriptorInfo sld, SldEditorMessages messages) {
+	public SldModelImpl(@Assisted StyledLayerDescriptorInfo sld, SldEditorMessages messages, RuleModelFactory ruleModelFactory) {
 		this.messages = messages;
+		this.ruleModelFactory = ruleModelFactory;
 		setSld(sld);
 	}
 	
@@ -53,7 +52,7 @@ public class SldModelImpl implements SldModel {
 		}
 		// check if all filters/rules are complete !
 		for (RuleModel model : getRuleGroup().getRuleModelList()) {
-			if(model.getRuleData().getTypeOfRule() == TypeOfRule.INCOMPLETE_RULE){
+			if(model.getTypeOfRule() == TypeOfRule.INCOMPLETE_RULE){
 				return false;
 			}
 		}
@@ -67,114 +66,42 @@ public class SldModelImpl implements SldModel {
 	private void setSld(StyledLayerDescriptorInfo sld) {
 		this.sld = sld;
 		geomType = GeometryType.UNSPECIFIED;
-		
-		if (null == sld.getChoiceList() || sld.getChoiceList().isEmpty()) {
-			//TODO: Warn dialogue
-			logger.log(Level.WARNING, "Empty SLD's are not supported.");
-			return; // ABORT
-		}
-		
-		// make sure only 1 layer per SLD
-		if (sld.getChoiceList().size() > 1) {
-			//TODO: Warn dialogue
-			//SC.warn("Having more than 1 layer in an SLD is not supported.");
-			return; // ABORT
-		}
-		
-		StyledLayerDescriptorInfo.ChoiceInfo info = sld.getChoiceList().get(0);
-		
-		if (!info.ifNamedLayer()) {
-			//TODO: Warn dialogue that unsupported SLD
-			//SC.warn("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
-			logger.log(Level.WARNING, "Only SLD's with a &lt;NamedLayer&gt; element are supported.");
-			return; // ABORT
-		}
-		
-		NamedLayerInfo namedLayerInfo = info.getNamedLayer();
-		
+		if (sld.getChoiceList().size() == 1) {
+			NamedLayerInfo namedLayerInfo = sld.getChoiceList().get(0).getNamedLayer();
+			if (namedLayerInfo.getChoiceList().size() == 1) {
+				UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
+				if (userStyle.getFeatureTypeStyleList().size() == 1) {
+					FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
+					ruleGroup = new RuleGroupImpl();
+					String styleTitle = featureTypeStyle.getTitle();
+					if (null == styleTitle) {
+						ruleGroup.setTitle("groep 1");
+					} else {
+						ruleGroup.setTitle(styleTitle);
+					}
+					ruleGroup.setName(featureTypeStyle.getName());
+					ruleGroup.setRuleModelList(new ArrayList<RuleModel>());
+					ruleGroup.setGeomType(GeometryType.UNSPECIFIED);
+					for (RuleInfo rule : featureTypeStyle.getRuleList()) {
 
-		if (null == namedLayerInfo.getChoiceList() ||  0 == namedLayerInfo.getChoiceList().size()) {
-			//TODO: Warn dialogue
-			//SC.warn("Ongeldige SLD: een leeg &lt;NamedLayer&gt; element wordt niet ondersteund.");
-			return; // ABORT
-		}
-		if (namedLayerInfo.getChoiceList().size() > 1) {
-			//TODO: Warn dialogue
-			//SC.warn("Ongeldige SLD: Meer dan 1 &lt;NamedLayer&gt; element wordt niet ondersteund.");
-			return; // ABORT
-		}
-		
-		this.nameOfLayer = (null != namedLayerInfo.getName()) ? namedLayerInfo.getName()
-				: messages.nameUnspecified();
-		
-		if (namedLayerInfo.getChoiceList().get(0).ifNamedStyle()) {
-			// Only the name is specialized
-			this.styleTitle = namedLayerInfo.getChoiceList().get(0).getNamedStyle().getName();
-			//TODO: Warn dialogue
-			//	SC.warn("De SLD verwijst naar een externe stijl met naam '" + choiceInfo.getNamedStyle()
-			//		+ "'.  Deze kan hier niet getoond worden.");
-			return; // ABORT
-		}  else if (namedLayerInfo.getChoiceList().get(0).ifUserStyle()) {
-			
-			UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
-			this.styleTitle = userStyle.getTitle();
-			
-			if (null == userStyle.getFeatureTypeStyleList()
-					|| userStyle.getFeatureTypeStyleList().size() == 0) {
-				//TODO: Warn dialogue
-				//TODO : If getFeatureTypeStyleList null or empty, then setup 
-				//				a FeatureTypeStyleInfo list with 1 style, the default one 
-				return; // ABORT!
-			}
-			if (userStyle.getFeatureTypeStyleList().size() > 1) {
-				//TODO: Warn dialogue
-				//Note: can be supported later if multiple rule groups are supported by the rule selector
-				return; // ABORT!
-			}
-			
-			FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
-		
-			//Geometry Type can only be determined from the rule data (deeper level)
-			geomType = SldUtils.GetGeometryType(userStyle.getFeatureTypeStyleList());
-		
-			
-			ruleGroup = new RuleGroupImpl();
-			String styleTitle = featureTypeStyle.getTitle();
-			if (null == styleTitle) {
-				ruleGroup.setTitle("groep 1");
-			} else {
-				ruleGroup.setTitle(styleTitle);
-			}
-			ruleGroup.setName(featureTypeStyle.getName());
-			ruleGroup.setRuleModelList(new ArrayList<RuleModel>());
-			ruleGroup.setGeomType(GeometryType.UNSPECIFIED);
-			for (RuleInfo rule : featureTypeStyle.getRuleList()) {
-				RuleModel ruleModel = new RuleModel();
+						// Determine the rule title to be used in the model, make sure it is NOT null or ""
+						String title;
 
-				// Determine the rule title to be used in the model, make sure it is NOT null or ""
-				String title;
-
-				if (null != rule.getTitle() && rule.getTitle().length() > 0) {
-					title = rule.getTitle();
-				} else if (null != rule.getName() && rule.getName().length() > 0) {
-					title = rule.getName();
-				} else {
-					title = messages.ruleTitleUnspecified();
+						if (null != rule.getTitle() && rule.getTitle().length() > 0) {
+							title = rule.getTitle();
+						} else if (null != rule.getName() && rule.getName().length() > 0) {
+							title = rule.getName();
+						} else {
+							title = messages.ruleTitleUnspecified();
+						}
+						RuleModel ruleModel = ruleModelFactory.create(rule);
+						ruleGroup.setGeomType(ruleModel.getGeometryType()); // copy the last one (should be equal for all)
+						ruleGroup.getRuleModelList().add(ruleModel);
+						rulesSupported = true;
+					}
 				}
-				ruleModel.setTitle(title);
 
-				ruleModel.setName(rule.getName()); // The rule name can be null
-
-				RuleData ruleData = new RuleData(SldUtils.GetGeometryType(rule));
-				ruleGroup.setGeomType(ruleData.getGeometryType()); // copy the last one (should be equal for all)
-				ruleData.setTypeOfRule(RuleData.TypeOfRule.COMPLETE_RULE);
-				ruleData.setCompleteRuleBody(rule); // TODO: OK???
-
-				ruleModel.setRuleData(ruleData);
-				ruleGroup.getRuleModelList().add(ruleModel);
-				rulesSupported = true;
 			}
-
 		}
 	}
 
@@ -205,8 +132,8 @@ public class SldModelImpl implements SldModel {
 			choiceInfo.getUserStyle().setTitle(getStyleTitle());
 			List<RuleInfo> rules = new ArrayList<RuleInfo>();
 			for (RuleModel model : getRuleGroup().getRuleModelList()) {
-				if(model.getRuleData().getTypeOfRule() != TypeOfRule.INCOMPLETE_RULE){
-					rules.add(model.getRuleData().getCompleteRuleBody());
+				if(model.getTypeOfRule() != TypeOfRule.INCOMPLETE_RULE){
+					rules.add(model.getRuleInfo());
 				}
 			}
 			choiceInfo.getUserStyle().getFeatureTypeStyleList().get(0).setRuleList(rules);
@@ -251,11 +178,11 @@ public class SldModelImpl implements SldModel {
 	/* (non-Javadoc)
 	 * @see org.geomajas.sld.client.model.SldModelIntf#getRuleGroup()
 	 */
-	public RuleGroupImpl getRuleGroup() {
+	public RuleGroup getRuleGroup() {
 		return ruleGroup;
 	}
 
-	public void setRuleGroup(RuleGroupImpl ruleGroup) {
+	public void setRuleGroup(RuleGroup ruleGroup) {
 		this.ruleGroup = ruleGroup;
 	}
 	

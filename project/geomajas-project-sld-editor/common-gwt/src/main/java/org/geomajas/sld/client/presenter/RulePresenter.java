@@ -60,7 +60,7 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if(event.getRuleData().getGeometryType() == GeometryType.UNSPECIFIED) {
+		if(event.getRuleModel().getGeometryType() == GeometryType.UNSPECIFIED) {
 			getView().reset();
 		}
 		forceReveal();

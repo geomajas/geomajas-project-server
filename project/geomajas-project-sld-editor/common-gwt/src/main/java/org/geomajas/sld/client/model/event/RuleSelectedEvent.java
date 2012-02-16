@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.client.model.event;
 
-import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleModel;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -19,19 +19,19 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 public class RuleSelectedEvent extends GwtEvent<RuleSelectedEvent.RuleSelectedHandler> {
 
-	private RuleData ruleData;
+	private RuleModel ruleModel;
 
-	public RuleSelectedEvent(RuleData ruleData) {
-		this.ruleData = ruleData;
+	public RuleSelectedEvent(RuleModel ruleModel) {
+		this.ruleModel = ruleModel;
 	}
 
-	public static void fire(HasHandlers source, RuleData ruleData) {
-		RuleSelectedEvent eventInstance = new RuleSelectedEvent(ruleData);
+	public static void fire(HasHandlers source, RuleModel ruleModel) {
+		RuleSelectedEvent eventInstance = new RuleSelectedEvent(ruleModel);
 		source.fireEvent(eventInstance);
 	}
 	
-	public RuleData getRuleData() {
-		return ruleData;
+	public RuleModel getRuleModel() {
+		return ruleModel;
 	}
 
 	/**

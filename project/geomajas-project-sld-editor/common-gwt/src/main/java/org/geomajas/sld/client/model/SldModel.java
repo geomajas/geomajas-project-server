@@ -10,7 +10,7 @@ public interface SldModel extends SldGeneralInfo {
 
 	StyledLayerDescriptorInfo getSld();
 
-	RuleGroupImpl getRuleGroup();
+	RuleGroup getRuleGroup();
 
 	boolean isRulesSupported();
 

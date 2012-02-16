@@ -11,7 +11,7 @@
 
 package org.geomajas.sld.editor.client.widget;
 
-import org.geomajas.sld.client.model.RuleData;
+import org.geomajas.sld.client.model.RuleModel;
 
 import com.smartgwt.client.widgets.tree.TreeNode;
 
@@ -42,12 +42,12 @@ public class RuleTreeNode extends TreeNode {
 	private String name;
 
 	/* a rule (=leaf node) */
-	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, RuleData ruleData) {
-		this(ruleId, title, name, isFolder, ruleData, null);
+	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, RuleModel ruleModel) {
+		this(ruleId, title, name, isFolder, ruleModel, null);
 	}
 
 	/* a rule group */
-	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, RuleData ruleData,
+	public RuleTreeNode(String ruleId, String title, String name, boolean isFolder, RuleModel ruleModel,
 			RuleTreeNode[] children) {
 		super(ruleId/* name, must be unique amongst siblings */, children);
 		super.setID(ruleId);
@@ -55,7 +55,7 @@ public class RuleTreeNode extends TreeNode {
 
 		setIsFolder(isFolder);
 		setRuleId(ruleId);
-		setRuleData(ruleData);
+		setRuleModel(ruleModel);
 		setChildren(children);
 		setTitle(title);
 		setRuleName(name);
@@ -71,13 +71,13 @@ public class RuleTreeNode extends TreeNode {
 	}
 
 	//	TODO remove this method?
-	public void setRuleData(RuleData ruleData) {
-		setAttribute(RULE_DATE_FIELDNAME, (Object)ruleData);
+	public void setRuleModel(RuleModel ruleModel) {
+		setAttribute(RULE_DATE_FIELDNAME, (Object)ruleModel);
 
 	}
 //	TODO remove this method ?
-	public RuleData getRuleData() {
-		return (RuleData)getAttributeAsObject(RULE_DATE_FIELDNAME);
+	public RuleModel getRuleModel() {
+		return (RuleModel)getAttributeAsObject(RULE_DATE_FIELDNAME);
 
 	}
 
