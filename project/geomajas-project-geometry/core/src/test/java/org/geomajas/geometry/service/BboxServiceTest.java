@@ -168,6 +168,25 @@ public class BboxServiceTest {
 	}
 
 	@Test
+	public void testContainsCoordinate() {
+		// Normal cases outside:
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(-1, 5)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(5, -1)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(11, 5)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(5, 11)));
+
+		// Corner cases outside:
+		Assert.assertFalse(BboxService.contains(empty, new Coordinate(0, 0)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(0, 5)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(5, 0)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(10, 5)));
+		Assert.assertFalse(BboxService.contains(origin, new Coordinate(5, 10)));
+
+		// Inside:
+		Assert.assertTrue(BboxService.contains(origin, new Coordinate(5, 5)));
+	}
+
+	@Test
 	public void testScale() {
 		Bbox scaled = BboxService.scale(normal, 2);
 		Assert.assertEquals(BboxService.getCenterPoint(normal).getX(), BboxService.getCenterPoint(scaled).getX());

@@ -120,6 +120,33 @@ public final class BboxService {
 	}
 
 	/**
+	 * Is the given coordinate contained within the bounding box or not? If the coordinate is on the bounding box
+	 * border, it is considered outside.
+	 * 
+	 * @param bbox
+	 *            The bounding box.
+	 * @param coordinate
+	 *            The coordinate to check.
+	 * @return True if the coordinate is within the bounding box, false otherwise.
+	 * @since 1.1.0
+	 */
+	public static boolean contains(Bbox bbox, Coordinate coordinate) {
+		if (bbox.getX() >= coordinate.getX()) {
+			return false;
+		}
+		if (bbox.getY() >= coordinate.getY()) {
+			return false;
+		}
+		if (bbox.getMaxX() <= coordinate.getX()) {
+			return false;
+		}
+		if (bbox.getMaxY() <= coordinate.getY()) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Does one bounding box intersect another?
 	 * 
 	 * @param one
