@@ -53,6 +53,8 @@ public class StyledLayerDescriptorPresenter
 
 		void copyToView(SldGeneralInfo myModel);
 
+		void clear();
+		
 		void reset();
 
 		void focus();
@@ -101,9 +103,7 @@ public class StyledLayerDescriptorPresenter
 	@Override
 	protected void onReset() {
 		super.onReset();
-		model = null;
 		getView().reset();
-
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class StyledLayerDescriptorPresenter
 
 		if (null == model) {
 			//No SLD selected, so empty the View
-			getView().reset();
+			getView().clear();
 		} else {
 			getView().copyToView(model);
 			getView().focus();

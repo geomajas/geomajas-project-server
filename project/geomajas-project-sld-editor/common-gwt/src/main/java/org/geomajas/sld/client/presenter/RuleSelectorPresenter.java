@@ -61,7 +61,8 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 
 		void copyToView(RuleGroup model);
 
-		// TODO: void setViewChangedHandler(ViewChangedHandler);
+		void clear();
+
 		void reset();
 
 		void focus();
@@ -112,7 +113,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 
 	private void clear() {
 		currentModel = null;
-		getView().reset();
+		getView().clear();
 	}
 
 }
