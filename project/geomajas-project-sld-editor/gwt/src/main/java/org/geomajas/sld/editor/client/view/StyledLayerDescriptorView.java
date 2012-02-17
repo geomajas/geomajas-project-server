@@ -168,6 +168,14 @@ public class StyledLayerDescriptorView extends ViewImpl
 	}
 
 	public void reset() {
+		if (null == model) {
+			clear();
+		} else {
+			copyToView(model);
+		}
+	}
+	
+	public void clear() {
 		topLevelAttributesForm.clearValues();
 		errorMessage.setContents(NO_SLD_MESSAGE);
 		errorMessage.markForRedraw();
@@ -175,7 +183,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 	public void focus() {
 		// Set focus on nameOfLayerItem
-		// nameOfLayerItem.focusInItem();
+		nameOfLayerItem.focusInItem();
 
 	}
 

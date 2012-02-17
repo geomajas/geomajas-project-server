@@ -100,7 +100,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	//private TextItem ruleNameItem;
 
-	private List<RuleModel> ruleList;
+	private List<RuleModel> ruleList; // Current data model
 	
 	
 	private RuleGroup currentRuleGroup;
@@ -187,7 +187,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 						//TODO: currentLeaf.setRuleModel(getCurrentRuleStateHandler.execute());
 					}
-
 					setNoRuleSelected();
 					
 				}
@@ -263,7 +262,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 					//TODO: check if OK to remove test: if (null != currentLeaf.getRuleModel()) 
 					
 					String ruleId = currentLeaf.getRuleId();
-					 //TODO: optimize if possible to avoid calling sldHasChanged for each character entered by the user
+					//TODO: optimize if possible to avoid calling sldHasChanged for each character entered by the user
 					//TODO: Test this!!!!!
 					ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE).setTitle(ruleTitle);
 										
@@ -371,7 +370,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		if (null != ruleGeneralForm) {
 			ruleGeneralForm.clearValues();
 			ruleGeneralForm.disable();
-		}																				// element
+		}																				
 
 		if (currentRuleGroup.getRuleModelList().size() < 1) {
 			SC.warn("Fout: Geen rules in deze SLD.");
@@ -423,6 +422,15 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 		
 	public void reset() {
+		if (null == currentRuleGroup) {
+			clear();
+		} else {
+			copyToView(currentRuleGroup);
+		}
+	}
+	
+	public void clear() {
+		currentRuleGroup = null;
 		//clear 
 		errorMessage.setContents(NO_RULES_LOADED);
 		errorMessage.markForRedraw();
@@ -436,8 +444,6 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	}
 	
 	public void focus() {
-//		topLevelAttributesForm.clearValues();
-//		restoreFromOriginalModel();
 		// TODO: Set focus on 1st rule ...
 
 	}
@@ -792,7 +798,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			ruleGeneralForm.clearValues();
 			ruleGeneralForm.disable();
 		}
-		RuleSelectedEvent.fire(this, null);
+		RuleSelectedEvent.fire(this, null); // Inform observer(s) that "No rule is selected"
 	}
 	//--------------------------------------------------------------------------------------
 	private void setRuleTree(RuleTreeNode root) {
