@@ -4,14 +4,21 @@ import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
 import org.geomajas.sld.editor.client.GeometryType;
 
+/**
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public interface RuleModel {
 
 	/**
 	 * @author An Buyle
+	 * @author Jan De Moerloose
 	 * 
 	 */
-	public enum TypeOfRule {
-		DEFAULT_RULE, INCOMPLETE_RULE, COMPLETE_RULE
+	public enum RuleModelState {
+		INCOMPLETE, // missing some data
+		COMPLETE // all data complete (dirty flag is kept at SldModel level)
 	}
 
 	/**
@@ -41,10 +48,10 @@ public interface RuleModel {
 	 * @param title
 	 */
 	void setTitle(String title);
+	
+	void checkState();
 
-	TypeOfRule getTypeOfRule();
-
-	void setTypeOfRule(TypeOfRule typeOfRule);
+	RuleModelState getState();
 
 	RuleInfo getRuleInfo();
 

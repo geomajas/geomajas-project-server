@@ -3,6 +3,7 @@ package org.geomajas.sld.editor.client.view;
 import java.util.LinkedHashMap;
 
 import org.geomajas.sld.client.model.FilterModel;
+import org.geomajas.sld.client.model.FilterModel.FilterModelState;
 import org.geomajas.sld.client.model.FilterModel.OperatorType;
 import org.geomajas.sld.client.presenter.FilterPresenter;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
@@ -89,7 +90,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterAttributeValue.setDisabled(true);
 		filterOperatorSelect.setDisabled(true);
 		filterForm.hideItem("likeFilterSpec");
-		if (!filterModel.isValid()) {
+		if (filterModel.getState() == FilterModelState.UNSUPPORTED) {
 			setFilterIsNotSupported();
 		} else {
 			if (null != filterModel.getPropertyName()) {
@@ -206,7 +207,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 			public void onChanged(ChangedEvent event) {
 
 				filterModel.setPropertyName(filterAttributeName.getValueAsString());
-				filterHasChanged(filterModel.attemptConvertToFilter());
+				filterHasChanged();
 			}
 
 		});
@@ -225,11 +226,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 					filterModel.setOperatorType(OperatorType.fromValue(operator));
 					modelToView(filterModel);
-					filterHasChanged(filterModel.attemptConvertToFilter());
+					filterHasChanged();
 
 				} else {
 					/* The operator field value must be non-null before enabling the value fields */
-					filterHasChanged(filterModel.attemptConvertToFilter());
+					filterHasChanged();
 					filterAttributeValue.setDisabled(true);
 					filterAttributeLowerBoundaryValue.setDisabled(true);
 					filterAttributeUpperBoundaryValue.setDisabled(false);
@@ -241,7 +242,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 			public void onChanged(ChangedEvent event) {
 				filterModel.setPropertyValue(filterAttributeValue.getValueAsString());
-				filterHasChanged(filterModel.attemptConvertToFilter());
+				filterHasChanged();
 			}
 		});
 
@@ -249,7 +250,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 			public void onChanged(ChangedEvent event) {
 				filterModel.setLowerValue(filterAttributeLowerBoundaryValue.getValueAsString());
-				filterHasChanged(filterModel.attemptConvertToFilter());
+				filterHasChanged();
 			}
 		});
 
@@ -257,7 +258,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 			public void onChanged(ChangedEvent event) {
 				filterModel.setUpperValue(filterAttributeUpperBoundaryValue.getValueAsString());
-				filterHasChanged(filterModel.attemptConvertToFilter());
+				filterHasChanged();
 			}
 		});
 
@@ -272,8 +273,9 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterDetailContainer.addMember(filterForm);
 	}
 
-	private void filterHasChanged(boolean isComplete) {
-		SldContentChangedEvent.fire(this, isComplete, filterModel);
+	private void filterHasChanged() {
+		filterModel.checkState();
+		SldContentChangedEvent.fire(this);
 	}
 
 	private void setLikeFilterSpec(String wildCard, String singleChar, String escape) {

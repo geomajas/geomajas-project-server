@@ -78,7 +78,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 				}
 				model.setNameOfLayer(nameOfLayerItem.getValueAsString());
 				//Inform observer(s) of change of SLD data
-				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, model);
+				SldContentChangedEvent.fire(StyledLayerDescriptorView.this);
 
 			}
 		});
@@ -105,7 +105,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 				model.setNameOfLayer(styleTitleItem.getValueAsString());
 
 				//Inform observer(s) of change of SLD data
-				SldContentChangedEvent.fire(StyledLayerDescriptorView.this, true, model);
+				SldContentChangedEvent.fire(StyledLayerDescriptorView.this);
 
 			}
 		});

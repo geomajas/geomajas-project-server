@@ -182,7 +182,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 	}
 
 	private void fireSldContentChanged() {
-		SldContentChangedEvent.fire(this, true, currentLineSymbolizerInfo);
+		SldContentChangedEvent.fire(this);
 	}
 
 

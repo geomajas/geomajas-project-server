@@ -42,6 +42,8 @@ public class FilterModelImpl implements FilterModel {
 	private FilterTypeInfo filterTypeInfo;
 
 	private OperatorType operatorType;
+	
+	private FilterModelState state;
 
 	public FilterModelImpl() {
 	}
@@ -118,161 +120,116 @@ public class FilterModelImpl implements FilterModel {
 	public FilterTypeInfo getFilterTypeInfo() {
 		return filterTypeInfo;
 	}
-
-	public boolean isValid() {
-		// TODO: check why between is special case ?
-		if (null == filterTypeInfo) {
-			return false; // TODO: OK?
-		}
-		if (filterTypeInfo.ifComparisonOps()) {
-
-			ComparisonOpsTypeInfo op = filterTypeInfo.getComparisonOps();
-
-			if (op.getClass().equals(PropertyIsLikeTypeInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsNotEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsGreaterThanInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsGreaterThanOrEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsLessThanInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsLessThanOrEqualToInfo.class)) {
-
-			} else if (op.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
-				ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) op).getExpression();
-				if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-				} else {
-					return false; /* ABORT */
-				}
-			} else if (op.getClass().equals(PropertyIsNullTypeInfo.class)) {
-			} else {
-				return false;
-			}
-		} else if (filterTypeInfo.ifLogicOps()) {
-			LogicOpsTypeInfo op = filterTypeInfo.getLogicOps();
-			/** Only the NOT operator is (partially) supported **/
-			if (op.getClass().equals(UnaryLogicOpTypeInfo.class)) {
-				UnaryLogicOpTypeInfo info = (UnaryLogicOpTypeInfo) op;
-				if (info.ifComparisonOps()) {
-					ComparisonOpsTypeInfo innerOp = info.getComparisonOps();
-
-					if (innerOp.getClass().equals(PropertyIsNullTypeInfo.class)) {
-					} else if (innerOp.getClass().equals(PropertyIsLikeTypeInfo.class)) {
-					} else if (innerOp.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
-						ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) innerOp).getExpression();
-
-						if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-						} else {
-							return false;
-						}
-					}
-
-				} else {
-					return false;
-				}
-			}
-		}
-		return true;
+	
+	public FilterModelState getState() {
+		return state;
 	}
 
 	private void parseFilter(FilterTypeInfo filterTypeInfo) {
-		if (filterTypeInfo.ifComparisonOps()) {
+		if (null != filterTypeInfo) {
+			if (filterTypeInfo.ifComparisonOps()) {
+				ComparisonOpsTypeInfo op = filterTypeInfo.getComparisonOps();
+				if (op.getClass().equals(PropertyIsLikeTypeInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_LIKE;
+					propertyName = ((PropertyIsLikeTypeInfo) op).getPropertyName().getValue();
+					propertyValue = ((PropertyIsLikeTypeInfo) op).getLiteral().getValue();
+					patternMatchingWildCard = ((PropertyIsLikeTypeInfo) op).getWildCard();
+					patternMatchingSingleChar = ((PropertyIsLikeTypeInfo) op).getSingleChar();
+					patternMatchingEscape = ((PropertyIsLikeTypeInfo) op).getEscape();
+				} else if (op.getClass().equals(PropertyIsEqualToInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_EQUAL_TO;
+					processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
+				} else if (op.getClass().equals(PropertyIsNotEqualToInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_NOT_EQUAL_TO;
+					processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
 
-			ComparisonOpsTypeInfo op = filterTypeInfo.getComparisonOps();
+				} else if (op.getClass().equals(PropertyIsGreaterThanInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_GREATER_THAN;
+					processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
 
-			if (op.getClass().equals(PropertyIsLikeTypeInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_LIKE;
-				propertyName = ((PropertyIsLikeTypeInfo) op).getPropertyName().getValue();
-				propertyValue = ((PropertyIsLikeTypeInfo) op).getLiteral().getValue();
-				patternMatchingWildCard = ((PropertyIsLikeTypeInfo) op).getWildCard();
-				patternMatchingSingleChar = ((PropertyIsLikeTypeInfo) op).getSingleChar();
-				patternMatchingEscape = ((PropertyIsLikeTypeInfo) op).getEscape();
-			} else if (op.getClass().equals(PropertyIsEqualToInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_EQUAL_TO;
-				processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
+				} else if (op.getClass().equals(PropertyIsGreaterThanOrEqualToInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_GREATER_THAN_OR_EQUAL;
+					processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
 
-			} else if (op.getClass().equals(PropertyIsNotEqualToInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_NOT_EQUAL_TO;
-				processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
+				} else if (op.getClass().equals(PropertyIsLessThanInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_LESS_THAN;
+					processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
 
-			} else if (op.getClass().equals(PropertyIsGreaterThanInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_GREATER_THAN;
-				processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
+				} else if (op.getClass().equals(PropertyIsLessThanOrEqualToInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_LESS_THAN_OR_EQUAL;
+					processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
 
-			} else if (op.getClass().equals(PropertyIsGreaterThanOrEqualToInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_GREATER_THAN_OR_EQUAL;
-				processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
+				} else if (op.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_BETWEEN;
 
-			} else if (op.getClass().equals(PropertyIsLessThanInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_LESS_THAN;
-				processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
+					ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) op).getExpression();
 
-			} else if (op.getClass().equals(PropertyIsLessThanOrEqualToInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_LESS_THAN_OR_EQUAL;
-				processBinaryComparisonOp((BinaryComparisonOpTypeInfo) op);
-
-			} else if (op.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_BETWEEN;
-
-				ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) op).getExpression();
-
-				if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-					propertyName = expressionInfo.getValue();
-				}
-
-				ExpressionInfo lowerBoundaryExpression = ((PropertyIsBetweenTypeInfo) op).getLowerBoundary()
-						.getExpression();
-				lowerValue = lowerBoundaryExpression.getValue();
-
-				ExpressionInfo upperBoundaryExpression = ((PropertyIsBetweenTypeInfo) op).getUpperBoundary()
-						.getExpression();
-				upperValue = upperBoundaryExpression.getValue();
-
-			} else if (op.getClass().equals(PropertyIsNullTypeInfo.class)) {
-				operatorType = OperatorType.PROPERTY_IS_NULL;
-				propertyName = ((PropertyIsNullTypeInfo) op).getPropertyName().getValue();
-			}
-		} else if (filterTypeInfo.ifLogicOps()) {
-			LogicOpsTypeInfo op = filterTypeInfo.getLogicOps();
-			/** Only the NOT operator is (partially) supported **/
-			if (op.getClass().equals(UnaryLogicOpTypeInfo.class)) {
-				UnaryLogicOpTypeInfo info = (UnaryLogicOpTypeInfo) op;
-				if (info.ifComparisonOps()) {
-					ComparisonOpsTypeInfo innerOp = info.getComparisonOps();
-
-					if (innerOp.getClass().equals(PropertyIsNullTypeInfo.class)) {
-						operatorType = OperatorType.PROPERTY_IS_NOT_NULL;
-						propertyName = ((PropertyIsNullTypeInfo) innerOp).getPropertyName().getValue();
-					} else if (innerOp.getClass().equals(PropertyIsLikeTypeInfo.class)) {
-						operatorType = OperatorType.PROPERTY_IS_NOT_LIKE;
-						propertyName = ((PropertyIsLikeTypeInfo) innerOp).getPropertyName().getValue();
-						propertyValue = ((PropertyIsLikeTypeInfo) innerOp).getLiteral().getValue();
-						patternMatchingWildCard = ((PropertyIsLikeTypeInfo) innerOp).getWildCard();
-						patternMatchingSingleChar = ((PropertyIsLikeTypeInfo) innerOp).getSingleChar();
-						patternMatchingEscape = ((PropertyIsLikeTypeInfo) innerOp).getEscape();
-
-					} else if (innerOp.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
-						operatorType = OperatorType.PROPERTY_IS_NOT_BETWEEN;
-						ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) innerOp).getExpression();
-
-						if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-							propertyName = expressionInfo.getValue();
-						}
-
-						ExpressionInfo lowerBoundaryExpression = ((PropertyIsBetweenTypeInfo) innerOp)
-								.getLowerBoundary().getExpression();
-						lowerValue = lowerBoundaryExpression.getValue();
-
-						ExpressionInfo upperBoundaryExpression = ((PropertyIsBetweenTypeInfo) innerOp)
-								.getUpperBoundary().getExpression();
-						upperValue = upperBoundaryExpression.getValue();
+					if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
+						propertyName = expressionInfo.getValue();
+					} else {
+						state = FilterModelState.UNSUPPORTED;
 					}
-				}
 
+					ExpressionInfo lowerBoundaryExpression = ((PropertyIsBetweenTypeInfo) op).getLowerBoundary()
+							.getExpression();
+					lowerValue = lowerBoundaryExpression.getValue();
+
+					ExpressionInfo upperBoundaryExpression = ((PropertyIsBetweenTypeInfo) op).getUpperBoundary()
+							.getExpression();
+					upperValue = upperBoundaryExpression.getValue();
+
+				} else if (op.getClass().equals(PropertyIsNullTypeInfo.class)) {
+					operatorType = OperatorType.PROPERTY_IS_NULL;
+					propertyName = ((PropertyIsNullTypeInfo) op).getPropertyName().getValue();
+				} else {
+					state = FilterModelState.UNSUPPORTED;
+				}
+			} else if (filterTypeInfo.ifLogicOps()) {
+				LogicOpsTypeInfo op = filterTypeInfo.getLogicOps();
+				/** Only the NOT operator is (partially) supported **/
+				if (op.getClass().equals(UnaryLogicOpTypeInfo.class)) {
+					UnaryLogicOpTypeInfo info = (UnaryLogicOpTypeInfo) op;
+					if (info.ifComparisonOps()) {
+						ComparisonOpsTypeInfo innerOp = info.getComparisonOps();
+
+						if (innerOp.getClass().equals(PropertyIsNullTypeInfo.class)) {
+							operatorType = OperatorType.PROPERTY_IS_NOT_NULL;
+							propertyName = ((PropertyIsNullTypeInfo) innerOp).getPropertyName().getValue();
+						} else if (innerOp.getClass().equals(PropertyIsLikeTypeInfo.class)) {
+							operatorType = OperatorType.PROPERTY_IS_NOT_LIKE;
+							propertyName = ((PropertyIsLikeTypeInfo) innerOp).getPropertyName().getValue();
+							propertyValue = ((PropertyIsLikeTypeInfo) innerOp).getLiteral().getValue();
+							patternMatchingWildCard = ((PropertyIsLikeTypeInfo) innerOp).getWildCard();
+							patternMatchingSingleChar = ((PropertyIsLikeTypeInfo) innerOp).getSingleChar();
+							patternMatchingEscape = ((PropertyIsLikeTypeInfo) innerOp).getEscape();
+
+						} else if (innerOp.getClass().equals(PropertyIsBetweenTypeInfo.class)) {
+							operatorType = OperatorType.PROPERTY_IS_NOT_BETWEEN;
+							ExpressionInfo expressionInfo = ((PropertyIsBetweenTypeInfo) innerOp).getExpression();
+
+							if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
+								propertyName = expressionInfo.getValue();
+							} else {
+								state = FilterModelState.UNSUPPORTED;
+							}
+
+							ExpressionInfo lowerBoundaryExpression = ((PropertyIsBetweenTypeInfo) innerOp)
+									.getLowerBoundary().getExpression();
+							lowerValue = lowerBoundaryExpression.getValue();
+
+							ExpressionInfo upperBoundaryExpression = ((PropertyIsBetweenTypeInfo) innerOp)
+									.getUpperBoundary().getExpression();
+							upperValue = upperBoundaryExpression.getValue();
+						} else {
+							state = FilterModelState.UNSUPPORTED;
+						}
+					}
+
+				} else {
+					state = FilterModelState.UNSUPPORTED;
+				}
+			} else {
+				state = FilterModelState.UNSUPPORTED;
 			}
 		}
 
@@ -289,198 +246,193 @@ public class FilterModelImpl implements FilterModel {
 		}
 	}
 
-	public boolean attemptConvertToFilter() {
-
-		if (operatorType == null) {
-			return false;
+	public void checkState() {
+		if(state == FilterModelState.UNSUPPORTED) {
+			// unsupported can't change
+			return;
+		} else if(filterTypeInfo == null) {
+			state = FilterModelState.COMPLETE;
+		} else if (operatorType == null) {
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			state = FilterModelState.COMPLETE;
+			switch (operatorType) {
+				case PROPERTY_IS_BETWEEN:
+					checkBetweenFilter();
+					break;
+				case PROPERTY_IS_EQUAL_TO:
+				case PROPERTY_IS_GREATER_THAN:
+				case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
+				case PROPERTY_IS_LESS_THAN:
+				case PROPERTY_IS_LESS_THAN_OR_EQUAL:
+				case PROPERTY_IS_LIKE:
+				case PROPERTY_IS_NOT_EQUAL_TO:
+					checkBinaryComparisonFilter();
+					break;
+				case PROPERTY_IS_NOT_LIKE:
+					checkNotLikeFilter();
+					break;
+				case PROPERTY_IS_NOT_BETWEEN:
+					checkNotBetweenFilter();
+					break;
+				case PROPERTY_IS_NOT_NULL:
+					checkNotNullFilter();
+					break;
+				case PROPERTY_IS_NULL:
+					checkNullFilter();
+					break;
+			}
 		}
-
-		switch (operatorType) {
-			case PROPERTY_IS_BETWEEN:
-				attemptConvertToBetweenFilter();
-				break;
-			case PROPERTY_IS_EQUAL_TO:
-			case PROPERTY_IS_GREATER_THAN:
-			case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
-			case PROPERTY_IS_LESS_THAN:
-			case PROPERTY_IS_LESS_THAN_OR_EQUAL:
-			case PROPERTY_IS_LIKE:
-			case PROPERTY_IS_NOT_EQUAL_TO:
-				attemptConvertFormToBinaryComparisonFilter();
-				break;
-			case PROPERTY_IS_NOT_LIKE:
-				attemptConvertFormToNotLikeFilter();
-				break;
-			case PROPERTY_IS_NOT_BETWEEN:
-				attemptConvertFormToNotBetweenFilter();
-				break;
-			case PROPERTY_IS_NOT_NULL:
-				convertFormToNotNullFilter();
-				break;
-			case PROPERTY_IS_NULL:
-				convertFormToNullFilter();
-				break;
-
-		}
-		return true;
 	}
 
-	private boolean convertFormToNullFilter() {
-
-		PropertyIsNullTypeInfo propertyIsNullTypeInfo = new PropertyIsNullTypeInfo();
-		// Assume filterAttributeName form field value not null (must be selected first)
-		propertyIsNullTypeInfo.setPropertyName(new PropertyNameInfo(propertyName));
-		filterTypeInfo.clearChoiceSelect();
-		filterTypeInfo.setComparisonOps(propertyIsNullTypeInfo);
-		return true;
+	private void checkNullFilter() {
+		if (null == propertyName) {
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			PropertyIsNullTypeInfo propertyIsNullTypeInfo = new PropertyIsNullTypeInfo();
+			// Assume filterAttributeName form field value not null (must be selected first)
+			propertyIsNullTypeInfo.setPropertyName(new PropertyNameInfo(propertyName));
+			filterTypeInfo.clearChoiceSelect();
+			filterTypeInfo.setComparisonOps(propertyIsNullTypeInfo);
+		}
 	}
 
 	/**
 	 * @return true if filter object could be created/updated completely, else false
 	 */
 
-	private boolean convertFormToNotNullFilter() {
+	private void checkNotNullFilter() {
+		if (null == propertyName) {
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			UnaryLogicOpTypeInfo logicOps = new UnaryLogicOpTypeInfo(); /* create a NOT filter */
+			PropertyIsNullTypeInfo propertyIsNullTypeInfo = new PropertyIsNullTypeInfo();
 
-		UnaryLogicOpTypeInfo logicOps = new UnaryLogicOpTypeInfo(); /* create a NOT filter */
-		PropertyIsNullTypeInfo propertyIsNullTypeInfo = new PropertyIsNullTypeInfo();
+			// Assume filterAttributeName form field value not null (must be selected first)
+			propertyIsNullTypeInfo.setPropertyName(new PropertyNameInfo(propertyName));
 
-		// Assume filterAttributeName form field value not null (must be selected first)
-		propertyIsNullTypeInfo.setPropertyName(new PropertyNameInfo(propertyName));
-
-		logicOps.setComparisonOps(propertyIsNullTypeInfo);
-		filterTypeInfo.clearChoiceSelect();
-		filterTypeInfo.setLogicOps(logicOps);
-
-		return true;
+			logicOps.setComparisonOps(propertyIsNullTypeInfo);
+			filterTypeInfo.clearChoiceSelect();
+			filterTypeInfo.setLogicOps(logicOps);
+		}
 	}
 
-	private boolean attemptConvertToBetweenFilter() {
+	private void checkBetweenFilter() {
+
+		PropertyIsBetweenTypeInfo info = new PropertyIsBetweenTypeInfo();
+		if (null == propertyName || null == lowerValue || null == upperValue) {
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			info.setExpression(new PropertyNameInfo(propertyName));
+
+			LowerBoundaryTypeInfo lowerBoundary = new LowerBoundaryTypeInfo();
+			lowerBoundary.setExpression(new LiteralTypeInfo(lowerValue));
+			info.setLowerBoundary(lowerBoundary);
+			UpperBoundaryTypeInfo upperBoundary = new UpperBoundaryTypeInfo();
+			upperBoundary.setExpression(new LiteralTypeInfo(upperValue));
+			info.setUpperBoundary(upperBoundary);
+
+			filterTypeInfo.clearChoiceSelect();
+			filterTypeInfo.setComparisonOps(info);
+		}
+	}
+
+	private void checkNotBetweenFilter() {
 
 		PropertyIsBetweenTypeInfo info = new PropertyIsBetweenTypeInfo();
 
 		if (null == propertyName || null == lowerValue || null == upperValue) {
-			return false; /* ABORT */
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			info.setExpression(new PropertyNameInfo(propertyName));
+
+			LowerBoundaryTypeInfo lowerBoundary = new LowerBoundaryTypeInfo();
+			lowerBoundary.setExpression(new LiteralTypeInfo(lowerValue));
+			info.setLowerBoundary(lowerBoundary);
+			UpperBoundaryTypeInfo upperBoundary = new UpperBoundaryTypeInfo();
+			upperBoundary.setExpression(new LiteralTypeInfo(upperValue));
+			info.setUpperBoundary(upperBoundary);
+
+			UnaryLogicOpTypeInfo logicOps = new UnaryLogicOpTypeInfo(); /* create a NOT filter */
+
+			logicOps.setComparisonOps(info);
+			filterTypeInfo.clearChoiceSelect();
+			filterTypeInfo.setLogicOps(logicOps);
 		}
-		info.setExpression(new PropertyNameInfo(propertyName));
-
-		LowerBoundaryTypeInfo lowerBoundary = new LowerBoundaryTypeInfo();
-		lowerBoundary.setExpression(new LiteralTypeInfo(lowerValue));
-		info.setLowerBoundary(lowerBoundary);
-		UpperBoundaryTypeInfo upperBoundary = new UpperBoundaryTypeInfo();
-		upperBoundary.setExpression(new LiteralTypeInfo(upperValue));
-		info.setUpperBoundary(upperBoundary);
-
-		filterTypeInfo.clearChoiceSelect();
-		filterTypeInfo.setComparisonOps(info);
-		return true;
 	}
 
-	private boolean attemptConvertFormToNotBetweenFilter() {
-
-		PropertyIsBetweenTypeInfo info = new PropertyIsBetweenTypeInfo();
-
-		if (null == propertyName || null == lowerValue || null == upperValue) {
-			return false; /* ABORT */
-		}
-		info.setExpression(new PropertyNameInfo(propertyName));
-
-		LowerBoundaryTypeInfo lowerBoundary = new LowerBoundaryTypeInfo();
-		lowerBoundary.setExpression(new LiteralTypeInfo(lowerValue));
-		info.setLowerBoundary(lowerBoundary);
-		UpperBoundaryTypeInfo upperBoundary = new UpperBoundaryTypeInfo();
-		upperBoundary.setExpression(new LiteralTypeInfo(upperValue));
-		info.setUpperBoundary(upperBoundary);
-
-		UnaryLogicOpTypeInfo logicOps = new UnaryLogicOpTypeInfo(); /* create a NOT filter */
-
-		logicOps.setComparisonOps(info);
-		filterTypeInfo.clearChoiceSelect();
-		filterTypeInfo.setLogicOps(logicOps);
-
-		return true;
-	}
-
-	/**
-	 * @return true if filter object could be created/updated completely, else false
-	 */
-	private boolean attemptConvertFormToNotLikeFilter() {
+	private void checkNotLikeFilter() {
 
 		if (null == propertyName || null == propertyValue) {
-			return false; /* ABORT */
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			UnaryLogicOpTypeInfo logicOps = new UnaryLogicOpTypeInfo(); /* create a NOT filter */
+
+			PropertyIsLikeTypeInfo info = new PropertyIsLikeTypeInfo();
+
+			PropertyNameInfo propertyNameInfo = new PropertyNameInfo(propertyName);
+			info.setPropertyName(propertyNameInfo);
+
+			LiteralTypeInfo literal = new LiteralTypeInfo(propertyValue);
+			info.setLiteral(literal);
+
+			info.setWildCard(patternMatchingWildCard);
+			info.setSingleChar(patternMatchingSingleChar);
+			info.setEscape(patternMatchingEscape);
+
+			logicOps.setComparisonOps(info);
+			filterTypeInfo.clearChoiceSelect();
+			filterTypeInfo.setLogicOps(logicOps);
 		}
-
-		UnaryLogicOpTypeInfo logicOps = new UnaryLogicOpTypeInfo(); /* create a NOT filter */
-
-		PropertyIsLikeTypeInfo info = new PropertyIsLikeTypeInfo();
-
-		PropertyNameInfo propertyNameInfo = new PropertyNameInfo(propertyName);
-		info.setPropertyName(propertyNameInfo);
-
-		LiteralTypeInfo literal = new LiteralTypeInfo(propertyValue);
-		info.setLiteral(literal);
-
-		info.setWildCard(patternMatchingWildCard);
-		info.setSingleChar(patternMatchingSingleChar);
-		info.setEscape(patternMatchingEscape);
-
-		logicOps.setComparisonOps(info);
-		filterTypeInfo.clearChoiceSelect();
-		filterTypeInfo.setLogicOps(logicOps);
-
-		return true;
 	}
 
-	/**
-	 * @return true if filter object could be created/updated completely, else false
-	 */
-	private boolean attemptConvertFormToBinaryComparisonFilter() {
+	private void checkBinaryComparisonFilter() {
 
 		if (null == propertyName || null == propertyValue) {
-			return false; /* ABORT */
+			state = FilterModelState.INCOMPLETE;
+		} else {
+			switch (operatorType) {
+				case PROPERTY_IS_EQUAL_TO:
+					PropertyIsEqualToInfo equal = new PropertyIsEqualToInfo();
+					setBinaryComparisonOp(equal);
+					break;
+				case PROPERTY_IS_GREATER_THAN:
+					PropertyIsGreaterThanInfo gt = new PropertyIsGreaterThanInfo();
+					setBinaryComparisonOp(gt);
+					break;
+				case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
+					PropertyIsGreaterThanOrEqualToInfo gte = new PropertyIsGreaterThanOrEqualToInfo();
+					setBinaryComparisonOp(gte);
+					break;
+				case PROPERTY_IS_LESS_THAN:
+					PropertyIsLessThanInfo lt = new PropertyIsLessThanInfo();
+					setBinaryComparisonOp(lt);
+					break;
+				case PROPERTY_IS_LESS_THAN_OR_EQUAL:
+					PropertyIsLessThanOrEqualToInfo lte = new PropertyIsLessThanOrEqualToInfo();
+					setBinaryComparisonOp(lte);
+					break;
+				case PROPERTY_IS_LIKE:
+					PropertyIsLikeTypeInfo info = new PropertyIsLikeTypeInfo();
+
+					PropertyNameInfo propertyNameInfo = new PropertyNameInfo(propertyName);
+					info.setPropertyName(propertyNameInfo);
+
+					LiteralTypeInfo literal = new LiteralTypeInfo(propertyValue);
+					info.setLiteral(literal);
+
+					info.setWildCard(patternMatchingWildCard);
+					info.setSingleChar(patternMatchingSingleChar);
+					info.setEscape(patternMatchingEscape);
+					filterTypeInfo.clearChoiceSelect();
+					filterTypeInfo.setComparisonOps(info);
+					break;
+				case PROPERTY_IS_NOT_EQUAL_TO:
+					PropertyIsNotEqualToInfo ne = new PropertyIsNotEqualToInfo();
+					setBinaryComparisonOp(ne);
+					break;
+			}
 		}
-
-		switch (operatorType) {
-			case PROPERTY_IS_EQUAL_TO:
-				PropertyIsEqualToInfo equal = new PropertyIsEqualToInfo();
-				setBinaryComparisonOp(equal);
-				break;
-			case PROPERTY_IS_GREATER_THAN:
-				PropertyIsGreaterThanInfo gt = new PropertyIsGreaterThanInfo();
-				setBinaryComparisonOp(gt);
-				break;
-			case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
-				PropertyIsGreaterThanOrEqualToInfo gte = new PropertyIsGreaterThanOrEqualToInfo();
-				setBinaryComparisonOp(gte);
-				break;
-			case PROPERTY_IS_LESS_THAN:
-				PropertyIsLessThanInfo lt = new PropertyIsLessThanInfo();
-				setBinaryComparisonOp(lt);
-				break;
-			case PROPERTY_IS_LESS_THAN_OR_EQUAL:
-				PropertyIsLessThanOrEqualToInfo lte = new PropertyIsLessThanOrEqualToInfo();
-				setBinaryComparisonOp(lte);
-				break;
-			case PROPERTY_IS_LIKE:
-				PropertyIsLikeTypeInfo info = new PropertyIsLikeTypeInfo();
-
-				PropertyNameInfo propertyNameInfo = new PropertyNameInfo(propertyName);
-				info.setPropertyName(propertyNameInfo);
-
-				LiteralTypeInfo literal = new LiteralTypeInfo(propertyValue);
-				info.setLiteral(literal);
-
-				info.setWildCard(patternMatchingWildCard);
-				info.setSingleChar(patternMatchingSingleChar);
-				info.setEscape(patternMatchingEscape);
-				filterTypeInfo.clearChoiceSelect();
-				filterTypeInfo.setComparisonOps(info);
-				break;
-			case PROPERTY_IS_NOT_EQUAL_TO:
-				PropertyIsNotEqualToInfo ne = new PropertyIsNotEqualToInfo();
-				setBinaryComparisonOp(ne);
-				break;
-		}
-		return true;
 	}
 
 	private void setBinaryComparisonOp(BinaryComparisonOpTypeInfo op) {

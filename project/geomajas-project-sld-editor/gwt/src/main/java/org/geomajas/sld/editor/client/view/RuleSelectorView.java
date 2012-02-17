@@ -1033,7 +1033,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	private void sldHasChanged() {
 		//Inform observer(s) of change of SLD data
-		SldContentChangedEvent.fire(this, true, currentRuleGroup);
+		SldContentChangedEvent.fire(this);
 	}
 
 	

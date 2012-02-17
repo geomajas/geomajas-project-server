@@ -656,7 +656,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 	}
 
 	private void fireSldContentChanged() {
-		SldContentChangedEvent.fire(this, true, currrentGraphicInfo);
+		SldContentChangedEvent.fire(this);
 	}
 
 

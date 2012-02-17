@@ -1,14 +1,18 @@
 package org.geomajas.sld.editor.client.view;
 
 import org.geomajas.sld.client.presenter.SldActionPresenter;
+import org.geomajas.sld.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.client.presenter.event.SldSaveEvent.SldSaveHandler;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.client.view.ViewUtil.YesNoCallback;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.IButton;
@@ -59,12 +63,6 @@ public class SldActionView extends ViewImpl implements SldActionPresenter.MyView
 	public Widget asWidget() {
 		return sldActionsPanel;
 	}
-	
-	public void setActionsEnabled(boolean enabled) {
-		saveButton.setDisabled(!enabled);
-		cancelButton.setDisabled(!enabled);
-		closeSldButton.setDisabled(!enabled);
-	}
 
 	/** Definition of the Save button. */
 	private class SaveButton extends IButton implements ClickHandler {
@@ -83,6 +81,7 @@ public class SldActionView extends ViewImpl implements SldActionPresenter.MyView
 
 		public void onClick(ClickEvent event) {
 			GWT.log("SldWidget: User clicked on SLD save button");
+			SldSaveEvent.fire(SldActionView.this);
 		}
 
 	}
@@ -142,6 +141,28 @@ public class SldActionView extends ViewImpl implements SldActionPresenter.MyView
 		public void onClick(ClickEvent event) {
 		}
 	}
+
+	public void setCloseEnabled(boolean enabled) {
+		closeSldButton.setDisabled(!enabled);
+	}
+
+	public void setResetEnabled(boolean enabled) {
+		cancelButton.setDisabled(!enabled);
+	}
+
+	public void setSaveEnabled(boolean enabled) {
+		saveButton.setDisabled(!enabled);
+	}
+
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
+	}
+
+	
+	public HandlerRegistration addSldSaveHandler(SldSaveHandler handler) {
+		return eventBus.addHandler(SldSaveEvent.getType(), handler);
+	}
+
 
 
 }

@@ -19,7 +19,9 @@ import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -35,9 +37,9 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
  */
 public class StyledLayerDescriptorPresenter
 	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements
-		SldSelectedHandler, InitSldLayoutHandler {
+		SldSelectedHandler, InitSldLayoutHandler, SldContentChangedHandler {
 
-	private SldGeneralInfo model;
+	private SldModel model;
 
 	/**
 	 * {@link StyledLayerDescriptorPresenter}'s proxy.
@@ -82,6 +84,7 @@ public class StyledLayerDescriptorPresenter
 		super.onBind();
 		// observe change of selected SLD (after it has been loaded)
 		addRegisteredHandler(SldSelectedEvent.getType(), this);
+		addRegisteredHandler(SldContentChangedEvent.getType(), this);
 
 	}
 
@@ -121,6 +124,13 @@ public class StyledLayerDescriptorPresenter
 			getView().copyToView(model);
 			getView().focus();
 		}
+	}
+
+	public void onChanged(SldContentChangedEvent event) {
+		if(model != null)  {
+			model.setDirty(true);
+		}
+		
 	}
 
 }

@@ -7,6 +7,9 @@ import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.client.presenter.event.SldSaveEvent.HasSldSaveHandlers;
+import org.geomajas.sld.client.presenter.event.SldSaveEvent.SldSaveHandler;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -18,14 +21,14 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, SldActionPresenter.MyProxy> implements
-		SldSelectedHandler, SldContentChangedHandler, InitSldLayoutHandler {
-	
+		SldSelectedHandler, SldContentChangedHandler, InitSldLayoutHandler, SldSaveHandler {
+
 	private final SldManager manager;
 
 	@Inject
 	public SldActionPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final SldManager manager) {
 		super(eventBus, view, proxy);
-		this.manager= manager;
+		this.manager = manager;
 	}
 
 	@ProxyStandard
@@ -35,9 +38,13 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 	/**
 	 * {@link RuleSelectorPresenter}'s view.
 	 */
-	public interface MyView extends View {
+	public interface MyView extends View, HasSldSaveHandlers {
 
-		void setActionsEnabled(boolean b);
+		void setCloseEnabled(boolean enabled);
+
+		void setResetEnabled(boolean enabled);
+
+		void setSaveEnabled(boolean enabled);
 
 	}
 
@@ -47,6 +54,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 		addRegisteredHandler(SldSelectedEvent.getType(), this);
 		addRegisteredHandler(SldContentChangedEvent.getType(), this);
 		addRegisteredHandler(InitSldLayoutEvent.getType(), this);
+		addRegisteredHandler(SldSaveEvent.getType(), this);
 	}
 
 	@Override
@@ -56,7 +64,9 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	@ProxyEvent
 	public void onSldSelected(SldSelectedEvent event) {
-		getView().setActionsEnabled(false);
+		getView().setCloseEnabled(true);
+		getView().setResetEnabled(false);
+		getView().setSaveEnabled(false);
 	}
 
 	@ProxyEvent
@@ -65,28 +75,20 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	}
 
-	public void onSldGeneralInfoChanged(SldContentChangedEvent event) {
-		if(manager.getCurrentSld().isComplete()) {
-			getView().setActionsEnabled(true);
+	public void onChanged(SldContentChangedEvent event) {
+		if (manager.getCurrentSld() != null) {
+			getView().setCloseEnabled(true);
+			getView().setResetEnabled(manager.getCurrentSld().isDirty());
+			getView().setSaveEnabled(manager.getCurrentSld().isDirty() && manager.getCurrentSld().isComplete());
+		} else {
+			getView().setCloseEnabled(true);
+			getView().setResetEnabled(false);
+			getView().setSaveEnabled(false);
 		}
 	}
 
-	public void onFilterInfoChanged(SldContentChangedEvent event) {
-		if(manager.getCurrentSld().isComplete()) {
-			getView().setActionsEnabled(true);
-		}
-	}
-
-	public void onSymbolizerInfoChanged(SldContentChangedEvent event) {
-		if(manager.getCurrentSld().isComplete()) {
-			getView().setActionsEnabled(true);
-		}
-	}
-
-	public void onGraphicInfoChanged(SldContentChangedEvent event) {
-		if(manager.getCurrentSld().isComplete()) {
-			getView().setActionsEnabled(true);
-		}
+	public void onSldSave(SldSaveEvent event) {
+		manager.saveCurrent();
 	}
 
 }

@@ -359,7 +359,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	}
 	
 	private void fireSldContentChanged() {
-		SldContentChangedEvent.fire(this, true, currentPolygonSymbolizerInfo);
+		SldContentChangedEvent.fire(this);
 	}
 
 

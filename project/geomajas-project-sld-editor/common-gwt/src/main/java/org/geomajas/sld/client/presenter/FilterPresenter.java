@@ -1,6 +1,7 @@
 package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.FilterModel;
+import org.geomajas.sld.client.model.FilterModel.FilterModelState;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
@@ -38,7 +39,7 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
 		void modelToView(FilterModel filterModel);
-		
+
 		void clear();
 
 	}
@@ -56,13 +57,12 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 
 	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if(event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
+		if (event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
 			if (event.getRuleModel().getFilterModel() != null) {
 				FilterModel filter = event.getRuleModel().getFilterModel();
-				if (filter.isValid()) {
-					getView().modelToView(filter);
-					forceReveal();
-				} else {
+				getView().modelToView(filter);
+				forceReveal();
+				if (filter.getState() == FilterModelState.UNSUPPORTED) {
 					viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
 				}
 			} else {

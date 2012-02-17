@@ -37,6 +37,17 @@ public interface FilterModel {
 		}
 	}
 
+	/**
+	 * @author An Buyle
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public enum FilterModelState {
+		INCOMPLETE, // missing some data
+		COMPLETE, // all data complete (dirty flag is kept at SldModel level)
+		UNSUPPORTED // not a supported filter
+	}
+
 	FilterTypeInfo getFilterTypeInfo();
 
 	OperatorType getOperatorType();
@@ -71,7 +82,7 @@ public interface FilterModel {
 
 	void setPatternMatchingEscape(String patternMatchingEscape);
 
-	boolean isValid();
+	FilterModelState getState();
 	
-	boolean attemptConvertToFilter();
+	void checkState();
 }

@@ -4,18 +4,25 @@ import org.geomajas.sld.StyledLayerDescriptorInfo;
 
 public interface SldModel extends SldGeneralInfo {
 
-	boolean isComplete();
-
 	String getName();
 
 	StyledLayerDescriptorInfo getSld();
 
 	RuleGroup getRuleGroup();
 
-	boolean isRulesSupported();
+	boolean isSupported();
 
+	boolean isDirty();
+
+	void setDirty(boolean dirty);
+
+	boolean isComplete();
+	
 	void synchronize();
 
-	void copyFrom(SldModel create);
+	void refresh(SldModel create);
+
+	public abstract String getSupportedWarning();
+
 
 }

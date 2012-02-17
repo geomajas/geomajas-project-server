@@ -102,7 +102,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 		if (null == model) {
 			clear();
 		} else {
-			if(model.isRulesSupported()) {
+			if(model.isSupported()) {
 				currentModel = model.getRuleGroup();
 				getView().copyToView(currentModel);
 			} else {

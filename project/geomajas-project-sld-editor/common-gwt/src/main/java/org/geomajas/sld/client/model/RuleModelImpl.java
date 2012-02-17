@@ -20,6 +20,7 @@ import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
+import org.geomajas.sld.client.model.FilterModel.FilterModelState;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
@@ -38,7 +39,7 @@ public class RuleModelImpl implements RuleModel {
 
 	private String title;
 
-	private TypeOfRule typeOfRule;
+	private RuleModelState state;
 
 	private RuleInfo ruleInfo;
 
@@ -47,28 +48,29 @@ public class RuleModelImpl implements RuleModel {
 	private SymbolizerTypeInfo symbolizerTypeInfo;
 
 	private GeometryType geometryType;
-	//TODO: 2 creators with @AssistedInject
-	/** Constructor for a) creating a default rule model for the specified geometry type.
-	 * 		b) for specified RuleInfo (e.g. from an SLD object)
+
+	// TODO: 2 creators with @AssistedInject
+	/**
+	 * Constructor for a) creating a default rule model for the specified geometry type. b) for specified RuleInfo (e.g.
+	 * from an SLD object)
 	 * 
 	 * @param geometryType
 	 */
 	@Inject
 	public RuleModelImpl(@Assisted RuleInfo ruleInfo, @Assisted GeometryType geometryType, SldEditorMessages messages) {
 		if (null == ruleInfo) {
-			
+
 			RuleInfo defaultRule = new RuleInfo();
-			
+
 			this.geometryType = geometryType;
-			this.typeOfRule = TypeOfRule.COMPLETE_RULE;
-			
-			
+			this.state = RuleModelState.COMPLETE;
+
 			defaultRule.setName(messages.ruleTitleDefault());
-			this.name =  messages.ruleTitleDefault();
-			
+			this.name = messages.ruleTitleDefault();
+
 			defaultRule.setTitle(messages.ruleTitleDefault());
 			this.title = messages.ruleTitleDefault();
-			
+
 			List<SymbolizerTypeInfo> symbolizerList = new ArrayList<SymbolizerTypeInfo>();
 			SymbolizerTypeInfo symbolizer = null;
 
@@ -77,11 +79,9 @@ public class RuleModelImpl implements RuleModel {
 					symbolizer = new PointSymbolizerInfo();
 
 					((PointSymbolizerInfo) symbolizer).setGraphic(new GraphicInfo());
-					List<org.geomajas.sld.GraphicInfo.ChoiceInfo> list = 
-						new ArrayList<org.geomajas.sld.GraphicInfo.ChoiceInfo>();
+					List<org.geomajas.sld.GraphicInfo.ChoiceInfo> list = new ArrayList<org.geomajas.sld.GraphicInfo.ChoiceInfo>();
 
-					org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = 
-						new org.geomajas.sld.GraphicInfo.ChoiceInfo();
+					org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = new org.geomajas.sld.GraphicInfo.ChoiceInfo();
 					list.add(choiceInfoGraphic);
 					((PointSymbolizerInfo) symbolizer).getGraphic().setChoiceList(list);
 
@@ -102,18 +102,19 @@ public class RuleModelImpl implements RuleModel {
 			defaultRule.setSymbolizerList(symbolizerList);
 			this.symbolizerTypeInfo = symbolizer;
 			this.filterModel = null;
-			
+
 			this.ruleInfo = defaultRule;
 		} else {
-			
+
 			this.ruleInfo = ruleInfo;
 			this.geometryType = SldUtils.GetGeometryType(ruleInfo);
-			this.typeOfRule = TypeOfRule.COMPLETE_RULE;
-			this.symbolizerTypeInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer specification
-			if(null != ruleInfo.getChoice() && ruleInfo.getChoice().ifFilter()) {
+			this.state = RuleModelState.COMPLETE;
+			this.symbolizerTypeInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer
+																			// specification
+			if (null != ruleInfo.getChoice() && ruleInfo.getChoice().ifFilter()) {
 				this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter());
 			} else {
-				this.filterModel = null; //TODO: or this.filterModel = new FilterModelImpl() ???
+				this.filterModel = null; // TODO: or this.filterModel = new FilterModelImpl() ???
 			}
 			this.name = ruleInfo.getName();
 			if (null == ruleInfo.getTitle() || ruleInfo.getTitle().length() == 0) {
@@ -123,13 +124,11 @@ public class RuleModelImpl implements RuleModel {
 					ruleInfo.setTitle(messages.ruleTitleUnspecified());
 				}
 			}
-		
+
 			this.title = ruleInfo.getTitle();
-			
+
 		}
 	}
-	
-	
 
 	/*
 	 * (non-Javadoc)
@@ -167,12 +166,8 @@ public class RuleModelImpl implements RuleModel {
 		this.title = title;
 	}
 
-	public TypeOfRule getTypeOfRule() {
-		return typeOfRule;
-	}
-
-	public void setTypeOfRule(TypeOfRule typeOfRule) {
-		this.typeOfRule = typeOfRule;
+	public RuleModelState getState() {
+		return state;
 	}
 
 	public RuleInfo getRuleInfo() {
@@ -186,14 +181,25 @@ public class RuleModelImpl implements RuleModel {
 	public GeometryType getGeometryType() {
 		return geometryType;
 	}
-	
+
 	public SymbolizerTypeInfo getSymbolizerTypeInfo() {
 		return symbolizerTypeInfo;
 	}
-	
+
 	public void setSymbolizerTypeInfo(SymbolizerTypeInfo symbolizerTypeInfo) {
 		this.symbolizerTypeInfo = symbolizerTypeInfo;
 	}
-	
+
+	public void checkState() {
+		if(getName() == null) {
+			state = RuleModelState.INCOMPLETE;
+		} else if(getTitle() == null) {
+			state = RuleModelState.INCOMPLETE;
+		}else if(getFilterModel().getState() == FilterModelState.INCOMPLETE){
+			state = RuleModelState.INCOMPLETE;
+		} else {
+			state = RuleModelState.COMPLETE;
+		}
+	}
 
 }
