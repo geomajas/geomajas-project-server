@@ -144,6 +144,7 @@ public class SldServiceImpl implements SldService {
 		try {
 			bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
 			IMarshallingContext mctx = bfact.createMarshallingContext();
+			mctx.setIndent(4);
 			File outFile = new File(getDirectory().getFile(), sld.getName() + "-modified.sld");
 			FileWriter writer = new FileWriter(outFile);
 			mctx.setOutput(writer);
