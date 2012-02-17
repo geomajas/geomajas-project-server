@@ -12,7 +12,9 @@ package org.geomajas.sld.internal.service;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class SldServiceImpl implements SldService {
 	public void setDirectory(Resource directory) {
 		this.directory = directory;
 	}
-
+	
 	public List<StyledLayerDescriptorInfo> findAll() throws SldException {
 		return new ArrayList<StyledLayerDescriptorInfo>(allSlds.values());
 	}
@@ -69,6 +71,7 @@ public class SldServiceImpl implements SldService {
 	public StyledLayerDescriptorInfo saveOrUpdate(StyledLayerDescriptorInfo sld) throws SldException {
 		validate(sld);
 		allSlds.put(sld.getName(), sld);
+		writeChanges(sld);
 		StyledLayerDescriptorInfo newValue = allSlds.get(sld.getName());
 		return newValue;
 	}
@@ -135,5 +138,21 @@ public class SldServiceImpl implements SldService {
 			throw new SldException("Validation error", e);
 		}
 	}
+
+	private void writeChanges(StyledLayerDescriptorInfo sld) {
+		IBindingFactory bfact;
+		try {
+			bfact = BindingDirectory.getFactory(StyledLayerDescriptorInfo.class);
+			IMarshallingContext mctx = bfact.createMarshallingContext();
+			File outFile = new File(getDirectory().getFile(), sld.getName() + "-modified.sld");
+			FileWriter writer = new FileWriter(outFile);
+			mctx.setOutput(writer);
+			mctx.marshalDocument(sld);
+			log.info("SLD " + outFile.getAbsolutePath() + " written");
+		} catch (JiBXException e) {
+		} catch (IOException e) {
+		}
+	}
+
 
 }
