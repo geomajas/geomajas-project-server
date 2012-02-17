@@ -113,6 +113,20 @@ public class Geometry implements Serializable {
 	}
 
 	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Create a clone of this geometry.
+	 * 
+	 * @return A clone.
+	 * @since 1.1.0
+	 */
+	public Object clone() {
+		return cloneRecursively(this);
+	}
+
+	// -------------------------------------------------------------------------
 	// General getters and setters
 	// -------------------------------------------------------------------------
 
@@ -209,5 +223,35 @@ public class Geometry implements Serializable {
 	 */
 	public void setGeometries(Geometry[] geometries) {
 		this.geometries = geometries;
+	}
+
+	// -------------------------------------------------------------------------
+	// Private methods:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Recursive cloning of geometries.
+	 * 
+	 * @param geometry
+	 *            The geometry to clone.
+	 * @return The cloned geometry.
+	 */
+	private Geometry cloneRecursively(Geometry geometry) {
+		Geometry clone = new Geometry(geometry.geometryType, geometry.srid, geometry.precision);
+		if (geometry.getGeometries() != null) {
+			Geometry[] geometryClones = new Geometry[geometry.getGeometries().length];
+			for (int i = 0; i < geometry.getGeometries().length; i++) {
+				geometryClones[i] = cloneRecursively(geometry.getGeometries()[i]);
+			}
+			clone.setGeometries(geometryClones);
+		}
+		if (geometry.getCoordinates() != null) {
+			Coordinate[] coordinateClones = new Coordinate[geometry.getCoordinates().length];
+			for (int i = 0; i < geometry.getCoordinates().length; i++) {
+				coordinateClones[i] = (Coordinate) geometry.getCoordinates()[i].clone();
+			}
+			clone.setCoordinates(coordinateClones);
+		}
+		return clone;
 	}
 }
