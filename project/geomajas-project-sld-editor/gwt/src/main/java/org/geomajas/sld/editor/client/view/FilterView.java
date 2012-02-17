@@ -38,17 +38,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	private static final String DEFAULT_ESCAPE = "\\";
 
-	private static final String PROPERTY_IS_LIKE_TYPE_INFO = "PropertyIsLikeTypeInfo";
-
-	private static final String PROPERTY_IS_NOT_LIKE_TYPE_INFO = "PropertyIsNotLikeTypeInfo";
-
 	// TODO: also for other operators
 
 	private SldEditorMessages sldEditorMessages = GWT.create(SldEditorMessages.class);
 
 	private DynamicForm filterForm;
-
-	private boolean isFilterFormFirstSetup = true;
 
 	private TextItem filterAttributeValue;
 
@@ -63,12 +57,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	private boolean isSupportedFilter;
 
 	private StaticTextItem likeFilterSpec;
-
-	private String currentPatternMatchingWildCard;
-
-	private String currentPatternMatchingSingleChar;
-
-	private String currentPatternMatchingEscape;
 
 	private Label filterIsNotSupportedMessage;
 
@@ -101,46 +89,52 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterAttributeValue.setDisabled(true);
 		filterOperatorSelect.setDisabled(true);
 		filterForm.hideItem("likeFilterSpec");
+		if (!filterModel.isValid()) {
+			setFilterIsNotSupported();
+		} else {
+			if (null != filterModel.getPropertyName()) {
+				filterAttributeName.setValue(filterModel.getPropertyName());
+				filterOperatorSelect.setDisabled(false);
+			}
+			if (null != filterModel.getOperatorType()) {
+				filterOperatorSelect.setValue(filterModel.getOperatorType().value());
+				switch (filterModel.getOperatorType()) {
+					case PROPERTY_IS_BETWEEN:
+						filterForm.hideItem("attributeValue");
+						filterForm.showItem("attributeLowerBoundaryValue");
+						filterForm.showItem("attributeUpperBoundaryValue");
+						filterAttributeLowerBoundaryValue.setDisabled(false);
+						filterAttributeUpperBoundaryValue.setDisabled(false);
+						filterAttributeLowerBoundaryValue.setValue(filterModel.getLowerValue());
+						filterAttributeUpperBoundaryValue.setValue(filterModel.getUpperValue());
+						break;
+					case PROPERTY_IS_EQUAL_TO:
+					case PROPERTY_IS_GREATER_THAN:
+					case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
+					case PROPERTY_IS_LESS_THAN:
+					case PROPERTY_IS_LESS_THAN_OR_EQUAL:
+					case PROPERTY_IS_NOT_BETWEEN:
+					case PROPERTY_IS_NOT_EQUAL_TO:
+						filterAttributeValue.setDisabled(false);
+						filterAttributeValue.setValue(filterModel.getPropertyValue());
+						break;
+					case PROPERTY_IS_LIKE:
+					case PROPERTY_IS_NOT_LIKE:
+						setLikeFilterSpec(filterModel.getPatternMatchingWildCard(),
+								filterModel.getPatternMatchingSingleChar(), filterModel.getPatternMatchingEscape());
+						filterForm.showItem("likeFilterSpec");
+						filterAttributeValue.setDisabled(false);
+						filterAttributeValue.setValue(filterModel.getPropertyValue());
+						break;
+					case PROPERTY_IS_NOT_NULL:
+					case PROPERTY_IS_NULL:
+						filterAttributeValue.setDisabled(true); /* unary operator ! */
+						break;
 
-		if (null != filterModel.getPropertyName()) {
-			filterAttributeName.setValue(filterModel.getPropertyName());
-			filterOperatorSelect.setDisabled(false);
-		}
-		if (null != filterModel.getOperatorType()) {
-			switch (filterModel.getOperatorType()) {
-				case PROPERTY_IS_BETWEEN:
-					filterForm.hideItem("attributeValue");
-					filterForm.showItem("attributeLowerBoundaryValue");
-					filterForm.showItem("attributeUpperBoundaryValue");
-					filterAttributeLowerBoundaryValue.setDisabled(false);
-					filterAttributeUpperBoundaryValue.setDisabled(false);
-					filterAttributeLowerBoundaryValue.setValue(filterModel.getLowerValue());
-					filterAttributeUpperBoundaryValue.setValue(filterModel.getUpperValue());
-					break;
-				case PROPERTY_IS_EQUAL_TO:
-				case PROPERTY_IS_GREATER_THAN:
-				case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
-				case PROPERTY_IS_LESS_THAN:
-				case PROPERTY_IS_LESS_THAN_OR_EQUAL:
-				case PROPERTY_IS_NOT_BETWEEN:
-				case PROPERTY_IS_NOT_EQUAL_TO:
-					filterAttributeValue.setDisabled(false);
-					filterAttributeValue.setValue(filterModel.getPropertyValue());
-					break;
-				case PROPERTY_IS_LIKE:
-				case PROPERTY_IS_NOT_LIKE:
-					setLikeFilterSpec(DEFAULT_WILD_CARD, DEFAULT_WILD_CARD_SINGLE_CHAR, DEFAULT_ESCAPE);
-					filterForm.showItem("likeFilterSpec");
-					filterAttributeValue.setDisabled(false);
-					filterAttributeValue.setValue(filterModel.getPropertyValue());
-					break;
-				case PROPERTY_IS_NOT_NULL:
-				case PROPERTY_IS_NULL:
-					filterAttributeValue.setDisabled(true); /* unary operator ! */
-					break;
-
+				}
 			}
 		}
+
 	}
 
 	private void setFilterIsNotSupported() {
@@ -202,6 +196,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		likeFilterSpec = new StaticTextItem("likeFilterSpec"); // com.smartgwt.client.widgets.HTMLPane();
 
 		likeFilterSpec.setTitle("Filter notaties");
+		setLikeFilterSpec(DEFAULT_WILD_CARD, DEFAULT_WILD_CARD_SINGLE_CHAR, DEFAULT_ESCAPE);
 		// likeFilterSpec.setCellStyle("formCell"); /* TODO */
 
 		likeFilterSpec.setWidth(300);
@@ -275,7 +270,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterForm.hideItem("attributeUpperBoundaryValue");
 
 		filterDetailContainer.addMember(filterForm);
-		isFilterFormFirstSetup = false;
 	}
 
 	private void filterHasChanged(boolean isComplete) {
@@ -283,31 +277,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	private void setLikeFilterSpec(String wildCard, String singleChar, String escape) {
-		currentPatternMatchingWildCard = wildCard;
-		currentPatternMatchingSingleChar = singleChar;
-		currentPatternMatchingEscape = escape;
-
 		likeFilterSpec.setValue(sldEditorMessages.likeFilterSpecTemplate(wildCard, singleChar, escape));
 
 	}
 
-	private void processBinaryComparisonOp(BinaryComparisonOpTypeInfo op) {
-
-		for (ExpressionInfo expressionInfo : op.getExpressionList()) {
-
-			if (expressionInfo.getClass().equals(PropertyNameInfo.class)) {
-				filterAttributeName.setValue(expressionInfo.getValue());
-			} else if (expressionInfo.getClass().equals(LiteralTypeInfo.class)) {
-				filterAttributeValue.setDisabled(false);
-				filterAttributeValue.setValue(expressionInfo.getValue());
-			}
-		}
-	}
-
 	public void clearValues() {
-		currentPatternMatchingWildCard = null;
-		currentPatternMatchingSingleChar = null;
-		currentPatternMatchingEscape = null;
 		filterForm.clearValues();
 	}
 
