@@ -37,8 +37,6 @@ public class StyledLayerDescriptorPresenter
 	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements
 		SldSelectedHandler, InitSldLayoutHandler {
 
-	private Logger logger = Logger.getLogger("StyledLayerDescriptorPresenter");
-
 	private SldGeneralInfo model;
 
 	/**
@@ -103,6 +101,9 @@ public class StyledLayerDescriptorPresenter
 	@Override
 	protected void onReset() {
 		super.onReset();
+		model = null;
+		getView().reset();
+
 	}
 
 	/**
@@ -110,10 +111,16 @@ public class StyledLayerDescriptorPresenter
 	 * 
 	 * @param event
 	 */
-	// TODO
 	public void onSldSelected(SldSelectedEvent event) {
 		model = event.getSld();
-		getView().copyToView(model);
+
+		if (null == model) {
+			//No SLD selected, so empty the View
+			getView().reset();
+		} else {
+			getView().copyToView(model);
+			getView().focus();
+		}
 	}
 
 }
