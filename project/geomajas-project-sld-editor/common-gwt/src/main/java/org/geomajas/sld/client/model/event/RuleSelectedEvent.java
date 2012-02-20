@@ -20,16 +20,31 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 public class RuleSelectedEvent extends GwtEvent<RuleSelectedEvent.RuleSelectedHandler> {
 
 	private RuleModel ruleModel;
+	
+	private boolean clearAll;
 
+	public RuleSelectedEvent() {
+		this.clearAll = true;
+	}
+	
 	public RuleSelectedEvent(RuleModel ruleModel) {
 		this.ruleModel = ruleModel;
 	}
+	
+	public boolean isClearAll() {
+		return clearAll;
+	}
 
-	public static void fire(HasHandlers source, RuleModel ruleModel) {
+	public static void fireSelected(HasHandlers source, RuleModel ruleModel) {
 		RuleSelectedEvent eventInstance = new RuleSelectedEvent(ruleModel);
 		source.fireEvent(eventInstance);
 	}
 	
+	public static void fireClearAll(HasHandlers source) {
+		RuleSelectedEvent eventInstance = new RuleSelectedEvent();
+		source.fireEvent(eventInstance);
+	}
+
 	public RuleModel getRuleModel() {
 		return ruleModel;
 	}

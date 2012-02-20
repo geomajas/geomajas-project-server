@@ -16,7 +16,6 @@ import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
@@ -29,6 +28,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
@@ -56,7 +56,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 	private TextItem styleTitleItem;
 
-	private TextItem geomTypeItem;
+	private StaticTextItem geomTypeItem;
 
 	private SldGeneralInfo model;
 
@@ -87,9 +87,8 @@ public class StyledLayerDescriptorView extends ViewImpl
 		nameOfLayerItem.setRequiredMessage("De naam van de laag mag niet leeg zijn");
 		nameOfLayerItem.setValidateOnChange(true);
 
-		geomTypeItem = new TextItem("Geometry", MESSAGES.geometryTitle());
+		geomTypeItem = new StaticTextItem("Geometry", MESSAGES.geometryTitle());
 		geomTypeItem.setWidth(150);
-		geomTypeItem.disable(); // cannot be changed by the user
 
 		styleTitleItem = new TextItem("Style", MESSAGES.styleTitle());
 		styleTitleItem.setWidth(300);
@@ -121,7 +120,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 		errorMessage = new Label(NO_SLD_MESSAGE);
 		errorMessage.setAlign(Alignment.CENTER);
-		errorMessage.setVisible(false);
+		//errorMessage.hide();
 		layoutContainer = new VLayout(5);
 //		layoutContainer.setMinHeight(100); // TODO: was 200
 
@@ -147,13 +146,13 @@ public class StyledLayerDescriptorView extends ViewImpl
 
 	// @Override
 	public void setError(String errorText) {
-		errorMessage.setContents(null == errorText ? "" : errorText);
 		if (null == errorText || errorText.isEmpty()) {
 			errorMessage.hide();
 		} else {
 			errorMessage.show();
 		}
-		errorMessage.markForRedraw();
+		errorMessage.setContents(null == errorText ? "" : errorText);
+		//errorMessage.markForRedraw();
 	}
 
 	// @Override

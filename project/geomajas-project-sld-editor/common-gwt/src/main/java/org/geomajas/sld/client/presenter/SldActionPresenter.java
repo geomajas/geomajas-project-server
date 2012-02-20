@@ -1,12 +1,13 @@
 package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.SldManager;
+import org.geomajas.sld.client.model.event.SldChangedEvent;
+import org.geomajas.sld.client.model.event.SldChangedEvent.SldChangedHandler;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent.HasSldSaveHandlers;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent.SldSaveHandler;
@@ -21,7 +22,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, SldActionPresenter.MyProxy> implements
-		SldSelectedHandler, SldContentChangedHandler, InitSldLayoutHandler, SldSaveHandler {
+		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler {
 
 	private final SldManager manager;
 
@@ -52,7 +53,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(SldSelectedEvent.getType(), this);
-		addRegisteredHandler(SldContentChangedEvent.getType(), this);
+		addRegisteredHandler(SldChangedEvent.getType(), this);
 		addRegisteredHandler(InitSldLayoutEvent.getType(), this);
 		addRegisteredHandler(SldSaveEvent.getType(), this);
 	}
@@ -75,7 +76,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	}
 
-	public void onChanged(SldContentChangedEvent event) {
+	public void onChanged(SldChangedEvent event) {
 		if (manager.getCurrentSld() != null) {
 			getView().setCloseEnabled(true);
 			getView().setResetEnabled(manager.getCurrentSld().isDirty());

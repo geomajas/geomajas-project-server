@@ -8,14 +8,11 @@
 	<inherits name="com.gwtplatform.mvp.Mvp" />
 
 	<inherits name='com.smartgwt.SmartGwt'/>
-	<inherits name='com.smartgwt.tools.SmartGwtTools'/>
 	<inherits name="org.geomajas.GeomajasSldSmartGwt"/>  <!-- using SmartGwt -->
 	<inherits name="org.geomajas.GeomajasSldApi"/>
 	<inherits name="org.geomajas.GeomajasSldCommonGwt"/>
 
-	<inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/>
-	<inherits name="com.smartclient.theme.enterpriseblue.EnterpriseBlueResources"/>
-	<inherits name="com.smartclient.theme.graphite.GraphiteResources"/>
+	<inherits name="com.smartclient.theme.enterprise.Enterprise"/>
 
 	<extend-property name="locale" values="nl" />
 	

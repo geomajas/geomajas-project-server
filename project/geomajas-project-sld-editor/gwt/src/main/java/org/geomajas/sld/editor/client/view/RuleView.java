@@ -14,6 +14,7 @@ import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
@@ -87,33 +88,37 @@ public class RuleView extends ViewImpl implements RulePresenter.MyView {
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == RulePresenter.TYPE_SYMBOL_CONTENT) {
-			setSymbolContent((Canvas)content);
+			setContent(symbolPane, (Canvas)content);
 		} else if (slot == RulePresenter.TYPE_FILTER_CONTENT) {
-			setFilterContent((Canvas)content);
+			setContent(filterPane, (Canvas)content);
 		} else {
 			super.setInSlot(slot, content);
 		}
 	}
 
 	public void reset(){
-		filterPane.setMembers(new Canvas[0]);
-		symbolPane.setMembers(new Canvas[0]);
+		hideContent(filterPane);
+		hideContent(symbolPane);
 	}
 
 
-	private void setFilterContent(Canvas content) {
-		if (content != null) {
-			content.setWidth100();
-			content.setHeight100();
-			filterPane.setMembers(content);
+	private void hideContent(Layout layout) {
+		for (Canvas canvas : layout.getMembers()) {
+			canvas.hide();
 		}
 	}
 
-	private void setSymbolContent(Canvas content) {
+
+
+	private void setContent(Layout layout, Canvas content) {
 		if (content != null) {
 			content.setWidth100();
 			content.setHeight100();
-			symbolPane.setMembers(content);
+			if(layout.hasMember(content)) {
+				content.setVisible(true);
+			} else {
+				layout.addMember(content);
+			}
 		}
 	}
 	

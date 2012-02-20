@@ -2,7 +2,8 @@ package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
-import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
@@ -16,7 +17,8 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
-public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter.MyProxy>  implements RuleSelectedHandler{
+public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter.MyProxy> implements
+		RuleSelectedHandler, InitSldLayoutHandler {
 
 	/**
 	 * Use this in leaf presenters, inside their {@link #revealInParent} method.
@@ -29,7 +31,6 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	 */
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_FILTER_CONTENT = new Type<RevealContentHandler<?>>();
-
 
 	@Inject
 	public RulePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
@@ -44,6 +45,7 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	 * {@link RuleSelectorPresenter}'s view.
 	 */
 	public interface MyView extends View {
+
 		void reset();
 	}
 
@@ -57,14 +59,16 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	protected void revealInParent() {
 		RevealContentEvent.fire(this, StyledLayerDescriptorLayoutPresenter.TYPE_RULE_CONTENT, this);
 	}
-	
-	@ProxyEvent
+
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if(event.getRuleModel().getGeometryType() == GeometryType.UNSPECIFIED) {
+		if (event.isClearAll()) {
 			getView().reset();
 		}
+	}
+
+	@ProxyEvent
+	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
 	}
-	
 
 }

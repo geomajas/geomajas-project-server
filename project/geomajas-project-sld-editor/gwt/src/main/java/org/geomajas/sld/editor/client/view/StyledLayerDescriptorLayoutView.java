@@ -17,6 +17,7 @@ import com.gwtplatform.mvp.client.ViewImpl;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
+
 /**
  * Main view with content slots for child presenters.
  * 
@@ -53,11 +54,11 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 		ruleContentPanel.setWidth100();
 		// minimal initial height
 		ruleContentPanel.setHeight(300);
-		
+
 		actionContentPanel = new VLayout();
 		actionContentPanel.setWidth100();
 		actionContentPanel.setHeight(10);
-		
+
 		widget = new VLayout();
 		widget.setWidth100();
 		widget.setHeight100();
@@ -77,24 +78,27 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 	@Override
 	public void setInSlot(Object slot, Widget content) {
 		if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_GENERAL_CONTENT) {
-			replaceContent(generalContentPanel, content);
+			replaceContent(generalContentPanel, (Canvas) content);
 		} else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_RULES_CONTENT) {
-			replaceContent(rulesContentPanel, content);
+			replaceContent(rulesContentPanel, (Canvas) content);
 		} else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_RULE_CONTENT) {
-			replaceContent(ruleContentPanel, content);
-		}  else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_ACTION_CONTENT) {
-			replaceContent(actionContentPanel, content);
+			replaceContent(ruleContentPanel, (Canvas) content);
+		} else if (slot == StyledLayerDescriptorLayoutPresenter.TYPE_ACTION_CONTENT) {
+			replaceContent(actionContentPanel, (Canvas) content);
 		} else {
 			super.setInSlot(slot, content);
 		}
 	}
 
-	private void replaceContent(Layout parent, Widget content) {
-		Canvas canvas = (Canvas) content;
-		canvas.setHeight100();
-		canvas.setWidth100();
+	private void replaceContent(Layout layout, Canvas content) {
 		if (content != null) {
-			parent.setMembers(canvas);
+			content.setWidth100();
+			content.setHeight100();
+			if (layout.hasMember(content)) {
+				content.setVisible(true);
+			} else {
+				layout.addMember(content);
+			}
 		}
 	}
 

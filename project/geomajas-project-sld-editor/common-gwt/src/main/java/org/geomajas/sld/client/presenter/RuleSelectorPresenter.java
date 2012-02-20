@@ -73,8 +73,6 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	@Override
 	protected void onBind() {
 		super.onBind();
-		// observe change of selected SLD (after it has been loaded)
-		addRegisteredHandler(SldSelectedEvent.getType(), this);
 	}
 
 	@Override
@@ -85,7 +83,6 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	@ProxyEvent
 	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
-
 	}
 
 	/**
@@ -96,9 +93,7 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 	// TODO
 	@ProxyEvent
 	public void onSldSelected(SldSelectedEvent event) {
-
 		SldModel model = event.getSld();
-
 		if (null == model) {
 			clear();
 		} else {
@@ -106,6 +101,8 @@ public class RuleSelectorPresenter extends Presenter<RuleSelectorPresenter.MyVie
 				currentModel = model.getRuleGroup();
 				getView().copyToView(currentModel);
 			} else {
+				currentModel = null;
+				getView().setError(model.getSupportedWarning());
 				clear();
 			}
 		}

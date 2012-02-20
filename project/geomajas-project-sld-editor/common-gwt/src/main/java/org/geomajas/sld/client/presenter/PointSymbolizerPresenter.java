@@ -7,6 +7,10 @@ import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.client.model.event.SldChangedEvent;
+import org.geomajas.sld.client.model.event.SldChangedEvent.SldChangedHandler;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 import org.geomajas.sld.editor.client.GeometryType;
 
@@ -20,9 +24,11 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class PointSymbolizerPresenter
-	extends Presenter<PointSymbolizerPresenter.MyView, PointSymbolizerPresenter.MyProxy> implements RuleSelectedHandler {
+	extends Presenter<PointSymbolizerPresenter.MyView, PointSymbolizerPresenter.MyProxy> implements RuleSelectedHandler, InitSldLayoutHandler {
 
 	private Logger logger = Logger.getLogger(PointSymbolizerPresenter.class.getName());
+	
+	private PointSymbolizerInfo currentModel;
 
 	/**
 	 * {@link PointSymbolizerPresenter}'s proxy.
@@ -37,6 +43,12 @@ public class PointSymbolizerPresenter
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
 		void modelToView(GraphicInfo graphicInfo);
+
+		void hide();
+
+		void show();
+
+		void clear();
 	}
 
 	/**
@@ -59,7 +71,12 @@ public class PointSymbolizerPresenter
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);		
+		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);
+	}
+
+	@Override
+	protected void onReveal() {
+		super.onReveal();
 	}
 
 	/*
@@ -72,14 +89,27 @@ public class PointSymbolizerPresenter
 		super.onReset();
 	}
 
-	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		RuleModel rule = event.getRuleModel();
-		if (rule.getGeometryType().equals(GeometryType.POINT)) {
-			PointSymbolizerInfo pointSymbolizerInfo = (PointSymbolizerInfo) rule.getSymbolizerTypeInfo();
-			getView().modelToView(pointSymbolizerInfo.getGraphic());
-			forceReveal();
+		if (event.isClearAll()) {
+			getView().clear();
+			getView().hide();
+		} else {
+			RuleModel rule = event.getRuleModel();
+			if (rule.getGeometryType().equals(GeometryType.POINT)) {
+				forceReveal();
+				currentModel = (PointSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+				getView().modelToView(currentModel.getGraphic());
+				getView().show();
+			} else {
+				getView().clear();
+				getView().hide();
+			}
 		}
+	}
+
+	@ProxyEvent
+	public void onInitSldLayout(InitSldLayoutEvent event) {
+		forceReveal();
 	}
 
 }

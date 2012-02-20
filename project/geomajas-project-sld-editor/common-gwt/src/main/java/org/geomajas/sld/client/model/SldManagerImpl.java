@@ -23,11 +23,16 @@ import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
 import org.geomajas.sld.UserStyleInfo;
 import org.geomajas.sld.client.model.event.SldAddedEvent;
 import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
+import org.geomajas.sld.client.model.event.SldChangedEvent;
+import org.geomajas.sld.client.model.event.SldChangedEvent.HasSldChangedHandlers;
+import org.geomajas.sld.client.model.event.SldChangedEvent.SldChangedHandler;
 import org.geomajas.sld.client.model.event.SldLoadedEvent;
 import org.geomajas.sld.client.model.event.SldLoadedEvent.SldLoadedHandler;
 import org.geomajas.sld.client.model.event.SldRemovedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.editor.client.GeometryType;
 import org.geomajas.sld.editor.client.SldUtils;
 
@@ -45,7 +50,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * 
  */
-public class SldManagerImpl implements SldManager {
+public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 
 	private final SldGwtServiceAsync service = GWT.create(SldGwtService.class);
 
@@ -65,6 +70,7 @@ public class SldManagerImpl implements SldManager {
 		this.modelFactory = modelFactory;
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		endpoint.setServiceEntryPoint(GWT.getHostPageBaseURL() + "d/sld");
+		this.eventBus.addHandler(SldContentChangedEvent.getType(), new ContentChangedHandler());
 	}
 
 	public void fireEvent(GwtEvent<?> event) {
@@ -103,7 +109,7 @@ public class SldManagerImpl implements SldManager {
 						if (null != sld) {
 							currentSld.refresh(modelFactory.create(sld));
 							logger.info("SldManager: SLD was successfully saved");
-							SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
+							SldChangedEvent.fire(SldManagerImpl.this);
 						}
 					}
 					
@@ -250,6 +256,20 @@ public class SldManagerImpl implements SldManager {
 				}
 			});
 		}
+	}
+	
+	public HandlerRegistration addSldChangedHandler(SldChangedHandler handler) {
+		return eventBus.addHandler(SldChangedEvent.getType(), handler);
+	}
+
+	
+	public class ContentChangedHandler implements SldContentChangedHandler {
+
+		public void onChanged(SldContentChangedEvent event) {
+			getCurrentSld().setDirty(true);
+			SldChangedEvent.fire(SldManagerImpl.this);
+		}
+
 	}
 
 }

@@ -2,10 +2,13 @@ package org.geomajas.sld.client.presenter;
 
 import java.util.logging.Logger;
 
+import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 import org.geomajas.sld.editor.client.GeometryType;
 
@@ -18,9 +21,13 @@ import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
-public class PolygonSymbolizerPresenter extends Presenter<PolygonSymbolizerPresenter.MyView, PolygonSymbolizerPresenter.MyProxy>  implements RuleSelectedHandler{
+public class PolygonSymbolizerPresenter
+	extends Presenter<PolygonSymbolizerPresenter.MyView, PolygonSymbolizerPresenter.MyProxy> implements
+		RuleSelectedHandler, InitSldLayoutHandler {
 
 	private Logger logger = Logger.getLogger(PolygonSymbolizerPresenter.class.getName());
+	
+	private PolygonSymbolizerInfo currentModel;
 
 	/**
 	 * {@link PolygonSymbolizerPresenter}'s proxy.
@@ -35,6 +42,12 @@ public class PolygonSymbolizerPresenter extends Presenter<PolygonSymbolizerPrese
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
 		void modelToView(PolygonSymbolizerInfo polygonSymbolizerInfo);
+
+		void hide();
+
+		void show();
+
+		void clear();
 	}
 
 	/**
@@ -57,7 +70,12 @@ public class PolygonSymbolizerPresenter extends Presenter<PolygonSymbolizerPrese
 
 	@Override
 	protected void revealInParent() {
-		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);		
+		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);
+	}
+
+	@Override
+	protected void onReveal() {
+		super.onReveal();
 	}
 
 	/*
@@ -70,14 +88,27 @@ public class PolygonSymbolizerPresenter extends Presenter<PolygonSymbolizerPrese
 		super.onReset();
 	}
 
-	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		RuleModel rule = event.getRuleModel();
-		if (rule.getGeometryType().equals(GeometryType.POLYGON)) {
-			PolygonSymbolizerInfo polygonSymbolizerInfo = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo();
-			getView().modelToView(polygonSymbolizerInfo);
-			forceReveal();
+		if (event.isClearAll()) {
+			getView().clear();
+			getView().hide();
+		} else {
+			RuleModel rule = event.getRuleModel();
+			if (rule.getGeometryType().equals(GeometryType.POLYGON)) {
+				forceReveal();
+				currentModel = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+				getView().modelToView(currentModel);
+				getView().show();
+			} else {
+				getView().clear();
+				getView().hide();
+			}
 		}
+	}
+
+	@ProxyEvent
+	public void onInitSldLayout(InitSldLayoutEvent event) {
+		forceReveal();
 	}
 
 }

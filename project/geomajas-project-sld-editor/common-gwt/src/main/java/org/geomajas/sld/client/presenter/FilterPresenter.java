@@ -4,10 +4,11 @@ import org.geomajas.sld.client.model.FilterModel;
 import org.geomajas.sld.client.model.FilterModel.FilterModelState;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.filter.FilterTypeInfo;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,9 +20,11 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPresenter.MyProxy> implements
-		RuleSelectedHandler {
+		RuleSelectedHandler, InitSldLayoutHandler {
 
 	private final ViewUtil viewUtil;
+	
+	private FilterModel currentModel;
 
 	@Inject
 	public FilterPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final ViewUtil viewUtil) {
@@ -41,6 +44,8 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 		void modelToView(FilterModel filterModel);
 
 		void clear();
+		
+		void hide();
 
 	}
 
@@ -55,22 +60,34 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 		RevealContentEvent.fire(this, RulePresenter.TYPE_FILTER_CONTENT, this);
 	}
 
-	@ProxyEvent
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+	}
+
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if (event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
-			if (event.getRuleModel().getFilterModel() != null) {
-				FilterModel filter = event.getRuleModel().getFilterModel();
-				getView().modelToView(filter);
-				forceReveal();
-				if (filter.getState() == FilterModelState.UNSUPPORTED) {
-					viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
+		if (event.isClearAll()) {
+			getView().clear();
+		} else {
+			if (event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
+				if (event.getRuleModel().getFilterModel() != null) {
+					currentModel = event.getRuleModel().getFilterModel();
+					getView().modelToView(currentModel);
+					if (currentModel.getState() == FilterModelState.UNSUPPORTED) {
+						viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
+					}
+				} else {
+					getView().clear();
 				}
 			} else {
 				getView().clear();
 			}
-		} else {
-			getView().clear();
 		}
+	}
+
+	@ProxyEvent
+	public void onInitSldLayout(InitSldLayoutEvent event) {
+		forceReveal();
 	}
 
 }

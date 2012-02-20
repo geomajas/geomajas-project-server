@@ -5,7 +5,6 @@ import java.util.List;
 import org.geomajas.sld.CssParameterInfo;
 import org.geomajas.sld.FillInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
-import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
 import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
@@ -66,6 +65,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
 		setupPolygonSymbolizerForm();
+		hide();
 	}
 
 	public void modelToView(PolygonSymbolizerInfo polygonSymbolizerInfo) {
@@ -376,6 +376,19 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
 	}
+	public void hide() {
+		polygonSymbolizerPane.hide();
+	}
 
+	public void show() {
+		if(!polygonSymbolizerPane.isDrawn()){
+			System.out.println();
+		}
+		polygonSymbolizerPane.show();
+	}
+
+	public void clear() {
+		polygonSymbolizerForm.clearValues();
+	}
 
 }

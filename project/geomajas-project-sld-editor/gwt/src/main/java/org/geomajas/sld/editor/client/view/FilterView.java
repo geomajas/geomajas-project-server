@@ -55,8 +55,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	private TextItem filterAttributeUpperBoundaryValue;
 
-	private boolean isSupportedFilter;
-
 	private StaticTextItem likeFilterSpec;
 
 	private Label filterIsNotSupportedMessage;
@@ -73,6 +71,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterDetailContainer = new VLayout();
 		filterForm = new DynamicForm();
 		setupFilterForm();
+		hide();
 	}
 
 	public Widget asWidget() {
@@ -87,7 +86,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterForm.hideItem("attributeLowerBoundaryValue");
 		filterForm.hideItem("attributeUpperBoundaryValue");
 		filterForm.showItem("attributeValue");
-		filterAttributeValue.setDisabled(true);
+		filterAttributeValue.hide();
 		filterOperatorSelect.setDisabled(true);
 		filterForm.hideItem("likeFilterSpec");
 		if (filterModel.getState() == FilterModelState.UNSUPPORTED) {
@@ -104,8 +103,8 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 						filterForm.hideItem("attributeValue");
 						filterForm.showItem("attributeLowerBoundaryValue");
 						filterForm.showItem("attributeUpperBoundaryValue");
-						filterAttributeLowerBoundaryValue.setDisabled(false);
-						filterAttributeUpperBoundaryValue.setDisabled(false);
+						filterAttributeLowerBoundaryValue.show();
+						filterAttributeUpperBoundaryValue.show();
 						filterAttributeLowerBoundaryValue.setValue(filterModel.getLowerValue());
 						filterAttributeUpperBoundaryValue.setValue(filterModel.getUpperValue());
 						break;
@@ -116,7 +115,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 					case PROPERTY_IS_LESS_THAN_OR_EQUAL:
 					case PROPERTY_IS_NOT_BETWEEN:
 					case PROPERTY_IS_NOT_EQUAL_TO:
-						filterAttributeValue.setDisabled(false);
+						filterAttributeValue.show();
 						filterAttributeValue.setValue(filterModel.getPropertyValue());
 						break;
 					case PROPERTY_IS_LIKE:
@@ -124,12 +123,12 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 						setLikeFilterSpec(filterModel.getPatternMatchingWildCard(),
 								filterModel.getPatternMatchingSingleChar(), filterModel.getPatternMatchingEscape());
 						filterForm.showItem("likeFilterSpec");
-						filterAttributeValue.setDisabled(false);
+						filterAttributeValue.show();
 						filterAttributeValue.setValue(filterModel.getPropertyValue());
 						break;
 					case PROPERTY_IS_NOT_NULL:
 					case PROPERTY_IS_NULL:
-						filterAttributeValue.setDisabled(true); /* unary operator ! */
+						filterAttributeValue.show(); /* unary operator ! */
 						break;
 
 				}
@@ -139,9 +138,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	private void setFilterIsNotSupported() {
-
 		filterIsNotSupportedMessage.show();
-
 	}
 
 	private void setupFilterForm() {
@@ -149,7 +146,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterIsNotSupportedMessage = new Label(
 				"Filter in de SLD wordt niet ondersteund, maar blijft wel in de SLD behouden.");
 		filterDetailContainer.addMember(filterIsNotSupportedMessage);
-		filterIsNotSupportedMessage.hide();
+		filterIsNotSupportedMessage.setVisible(false);
 
 		filterAttributeName = new TextItem("attributeName", "Attribuut");
 		filterAttributeName.setWidth(300);
@@ -162,7 +159,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		LinkedHashMap<String, String> operatorMap = new LinkedHashMap<String, String>();
 		operatorMap.put(OperatorType.PROPERTY_IS_EQUAL_TO.value(), "="); // PropertyIsEqualTo
 		operatorMap.put(OperatorType.PROPERTY_IS_NOT_EQUAL_TO.value(), "<>"); // PropertyIsNotEqualTo
-		operatorMap.put(OperatorType.PROPERTY_IS_LESS_THAN.value(), "<"); // PropertyIsLessThan
+		operatorMap.put(OperatorType.PROPERTY_IS_LESS_THAN.value(), "&lt;"); // PropertyIsLessThan
 		operatorMap.put(OperatorType.PROPERTY_IS_LESS_THAN_OR_EQUAL.value(), "<="); // PropertyIsLessThanOrEqualTo
 		operatorMap.put(OperatorType.PROPERTY_IS_GREATER_THAN.value(), ">"); // PropertyIsGreaterThan
 		operatorMap.put(OperatorType.PROPERTY_IS_GREATER_THAN_OR_EQUAL.value(), ">="); // PropertyIsGreaterThanOrEqualTo
@@ -186,13 +183,13 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterAttributeValue = new TextItem("attributeValue", "Waarde");
 		filterAttributeValue.setWidth(300);
 		/* The operator field value must be non-null before enabling the value fields */
-		filterAttributeValue.setDisabled(true);
+		filterAttributeValue.setVisible(false);
 
 		filterAttributeLowerBoundaryValue = new TextItem("attributeLowerBoundaryValue", "Ondergrens");
 		filterAttributeUpperBoundaryValue = new TextItem("attributeUpperBoundaryValue", "Bovengrens");
 		/* The operator field value must be non-null before enabling the value fields */
-		filterAttributeLowerBoundaryValue.setDisabled(true);
-		filterAttributeUpperBoundaryValue.setDisabled(true);
+		filterAttributeLowerBoundaryValue.setVisible(false);
+		filterAttributeUpperBoundaryValue.setVisible(false);
 
 		likeFilterSpec = new StaticTextItem("likeFilterSpec"); // com.smartgwt.client.widgets.HTMLPane();
 
@@ -231,9 +228,9 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 				} else {
 					/* The operator field value must be non-null before enabling the value fields */
 					filterHasChanged();
-					filterAttributeValue.setDisabled(true);
-					filterAttributeLowerBoundaryValue.setDisabled(true);
-					filterAttributeUpperBoundaryValue.setDisabled(false);
+					filterAttributeValue.setVisible(false);
+					filterAttributeLowerBoundaryValue.show();
+					filterAttributeUpperBoundaryValue.show();
 				}
 			}
 		});
@@ -283,10 +280,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	}
 
-	public void clearValues() {
-		filterForm.clearValues();
-	}
-
 	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
 		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
 	}
@@ -296,7 +289,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 	}
 
 	public void clear() {
-		clearValues();
+		filterForm.clearValues();
+	}
+
+	public void hide() {
+		filterForm.hide();
 	}
 
 }

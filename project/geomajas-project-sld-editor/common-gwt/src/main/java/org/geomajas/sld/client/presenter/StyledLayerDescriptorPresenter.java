@@ -11,8 +11,6 @@
 
 package org.geomajas.sld.client.presenter;
 
-import java.util.logging.Logger;
-
 import org.geomajas.sld.client.model.SldGeneralInfo;
 import org.geomajas.sld.client.model.SldModel;
 import org.geomajas.sld.client.model.event.SldSelectedEvent;
@@ -21,7 +19,6 @@ import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -37,7 +34,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
  */
 public class StyledLayerDescriptorPresenter
 	extends Presenter<StyledLayerDescriptorPresenter.MyView, StyledLayerDescriptorPresenter.MyProxy> implements
-		SldSelectedHandler, InitSldLayoutHandler, SldContentChangedHandler {
+		SldSelectedHandler, InitSldLayoutHandler {
 
 	private SldModel model;
 
@@ -56,7 +53,7 @@ public class StyledLayerDescriptorPresenter
 		void copyToView(SldGeneralInfo myModel);
 
 		void clear();
-		
+
 		void reset();
 
 		void focus();
@@ -82,10 +79,6 @@ public class StyledLayerDescriptorPresenter
 	@Override
 	protected void onBind() {
 		super.onBind();
-		// observe change of selected SLD (after it has been loaded)
-		addRegisteredHandler(SldSelectedEvent.getType(), this);
-		addRegisteredHandler(SldContentChangedEvent.getType(), this);
-
 	}
 
 	@Override
@@ -114,23 +107,21 @@ public class StyledLayerDescriptorPresenter
 	 * 
 	 * @param event
 	 */
+	@ProxyEvent
 	public void onSldSelected(SldSelectedEvent event) {
 		model = event.getSld();
 
 		if (null == model) {
-			//No SLD selected, so empty the View
+			// No SLD selected, so empty the View
 			getView().clear();
 		} else {
-			getView().copyToView(model);
-			getView().focus();
+			if(!model.isSupported()) {
+				getView().setError(model.getSupportedWarning());
+			} else {
+				getView().copyToView(model);
+				getView().focus();
+			}
 		}
-	}
-
-	public void onChanged(SldContentChangedEvent event) {
-		if(model != null)  {
-			model.setDirty(true);
-		}
-		
 	}
 
 }

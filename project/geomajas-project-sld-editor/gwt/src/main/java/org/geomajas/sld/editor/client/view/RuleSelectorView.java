@@ -439,7 +439,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		makeRuleTreeEmpty();
 		//TODO: ?? treeGrid.hide();
 		// fire deselection event
-		RuleSelectedEvent.fire(this, null);
+		RuleSelectedEvent.fireClearAll(this);
 		
 	}
 	
@@ -463,7 +463,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	
 	public void refreshMinimal() {
 		treeGrid.markForRedraw();
-		vLayout.markForRedraw();
+		// vLayout.markForRedraw();
 		//RuleSelector.this.markForRedraw();
 	}
 
@@ -785,7 +785,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 //			listener.onChange(new Integer(ruleID), (RuleModel)ruleData);
 //		}
 		//Inform observer(s) of change of selected rule
-		RuleSelectedEvent.fire(RuleSelectorView.this, ruleData);
+		RuleSelectedEvent.fireSelected(RuleSelectorView.this, ruleData);
 		
 
 	}
@@ -798,7 +798,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 			ruleGeneralForm.clearValues();
 			ruleGeneralForm.disable();
 		}
-		RuleSelectedEvent.fire(this, null); // Inform observer(s) that "No rule is selected"
+		RuleSelectedEvent.fireClearAll(this);// Inform observer(s) that "No rule is selected"
 	}
 	//--------------------------------------------------------------------------------------
 	private void setRuleTree(RuleTreeNode root) {

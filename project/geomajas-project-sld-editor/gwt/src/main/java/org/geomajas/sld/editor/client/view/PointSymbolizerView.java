@@ -52,8 +52,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 	/** private members for point symbolizer - type=marker **/
 	private DynamicForm markerSymbolizerForm;
 
-	private boolean isMarkerSymbolizerFormFirstSetup = true;
-
 	private MarkInfo currentMark;
 
 	// markerSymbolizerForm form items
@@ -79,8 +77,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 	/** private members for point symbolizer - type=external graphic **/
 	private DynamicForm externalGraphicForm;
-
-	private boolean isExternalGraphicFormFirstSetup = true;
 
 	// externalGraphicForm form items
 	private SpinnerItem externalGraphicSizeItem;
@@ -109,6 +105,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		setupExternalGraphic();
 		symbolPane.addMember(markerSymbolizerForm);
 		symbolPane.addMember(externalGraphicForm);
+		hide();
 	}
 
 	public void modelToView(GraphicInfo graphicInfo) {
@@ -124,7 +121,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 	}
 
 	private void markerToView() {
-
 		externalGraphicForm.hide();
 		markerSymbolizerForm.clearValues();
 
@@ -371,13 +367,13 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				if (newValue) {
 					/* restore prev info */
 					currentMark.setFill(prevFillInfo);
-					markerFillColorPicker.setDisabled(false);
-					markerFillOpacityItem.setDisabled(false);
+					markerFillColorPicker.show();
+					markerFillOpacityItem.show();
 
 				} else {
 
-					markerFillColorPicker.setDisabled(true);
-					markerFillOpacityItem.setDisabled(true);
+					markerFillColorPicker.hide();
+					markerFillOpacityItem.hide();
 					if (null != currentMark.getFill()) {
 						prevFillInfo = currentMark.getFill();
 					}
@@ -672,6 +668,23 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
+	}
+	
+	public void hide() {
+		symbolPane.hide();
+	}
+
+	public void show() {
+		if(!symbolPane.isDrawn()){
+			System.out.println();
+		}
+		symbolPane.show();
+	}
+
+
+	public void clear() {
+		externalGraphicForm.clearValues();
+		markerSymbolizerForm.clearValues();
 	}
 
 }

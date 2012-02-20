@@ -6,6 +6,8 @@ import org.geomajas.sld.LineSymbolizerInfo;
 import org.geomajas.sld.client.model.RuleModel;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 import org.geomajas.sld.editor.client.GeometryType;
 
@@ -19,9 +21,11 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.MyView, LineSymbolizerPresenter.MyProxy>
-		implements RuleSelectedHandler {
+		implements RuleSelectedHandler, InitSldLayoutHandler {
 
 	private Logger logger = Logger.getLogger(LineSymbolizerPresenter.class.getName());
+	
+	private LineSymbolizerInfo currentModel;
 
 	/**
 	 * {@link LineSymbolizerPresenter}'s proxy.
@@ -36,6 +40,12 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 	public interface MyView extends View, HasSldContentChangedHandlers {
 
 		void modelToView(LineSymbolizerInfo lineSymbolizerInfo);
+
+		void hide();
+
+		void show();
+
+		void clear();
 	}
 
 	/**
@@ -61,6 +71,11 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 		RevealContentEvent.fire(this, RulePresenter.TYPE_SYMBOL_CONTENT, this);
 	}
 
+	@Override
+	protected void onReveal() {
+		super.onReveal();
+	}
+
 	/*
 	 * (non-Javadoc) Refresh any information displayed by your presenter.
 	 * 
@@ -71,14 +86,27 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 		super.onReset();
 	}
 
-	@ProxyEvent
 	public void onRuleSelected(RuleSelectedEvent event) {
-		RuleModel rule = event.getRuleModel();
-		if (rule.getGeometryType().equals(GeometryType.LINE)) {
-			LineSymbolizerInfo lineSymbolizerInfo = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo();
-			getView().modelToView(lineSymbolizerInfo);
-			forceReveal();
+		if (event.isClearAll()) {
+			getView().clear();
+			getView().hide();
+		} else {
+			RuleModel rule = event.getRuleModel();
+			if (rule.getGeometryType().equals(GeometryType.LINE)) {
+				forceReveal();
+				currentModel = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+				getView().modelToView(currentModel);
+				getView().show();
+			} else {
+				getView().clear();
+				getView().hide();
+			}
 		}
+	}
+
+	@ProxyEvent
+	public void onInitSldLayout(InitSldLayoutEvent event) {
+		forceReveal();
 	}
 
 }
