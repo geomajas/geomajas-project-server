@@ -606,7 +606,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 		}
 
 
-		RuleModel defaultRuleModel = ruleModelFactory.create(null, 
+		RuleModel defaultRuleModel = ruleModelFactory.create(currentRuleGroup, null, 
 				currentGeomType.equals(GeometryType.UNSPECIFIED) ? getModel().getGeomType() : currentGeomType);
 		
 		// TODO: avoid updating RuleModel here

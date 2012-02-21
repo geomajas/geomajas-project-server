@@ -7,6 +7,8 @@ import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.client.presenter.event.SldCloseEvent;
+import org.geomajas.sld.client.presenter.event.SldCloseEvent.SldCloseHandler;
 import org.geomajas.sld.client.presenter.event.SldRefreshEvent;
 import org.geomajas.sld.client.presenter.event.SldRefreshEvent.SldRefreshHandler;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent;
@@ -23,7 +25,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, SldActionPresenter.MyProxy> implements
-		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler, SldRefreshHandler {
+		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler, SldRefreshHandler, SldCloseHandler {
 
 	private final SldManager manager;
 
@@ -57,6 +59,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 		addRegisteredHandler(SldChangedEvent.getType(), this);
 		addRegisteredHandler(InitSldLayoutEvent.getType(), this);
 		addRegisteredHandler(SldSaveEvent.getType(), this);
+		addRegisteredHandler(SldCloseEvent.getType(), this);
 		addRegisteredHandler(SldRefreshEvent.getType(), this);
 	}
 
@@ -96,6 +99,14 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	public void onSldRefresh(SldRefreshEvent event) {
 		manager.refreshCurrent();
+	}
+
+	public void onSldClose(SldCloseEvent event) {
+		if(event.isSave()) {
+			manager.saveAndDeselectAll();
+		} else {
+			manager.deselectAll();
+		}
 	}
 
 }

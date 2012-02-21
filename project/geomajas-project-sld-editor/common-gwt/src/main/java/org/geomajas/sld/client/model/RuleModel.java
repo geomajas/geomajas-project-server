@@ -53,6 +53,8 @@ public interface RuleModel {
 
 	RuleInfo getRuleInfo();
 
+	RuleReference getReference();
+
 	FilterModel getFilterModel();
 
 	SymbolizerTypeInfo getSymbolizerTypeInfo();

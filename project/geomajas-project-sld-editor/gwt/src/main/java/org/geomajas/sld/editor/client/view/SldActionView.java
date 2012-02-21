@@ -1,6 +1,7 @@
 package org.geomajas.sld.editor.client.view;
 
 import org.geomajas.sld.client.presenter.SldActionPresenter;
+import org.geomajas.sld.client.presenter.event.SldCloseEvent;
 import org.geomajas.sld.client.presenter.event.SldRefreshEvent;
 import org.geomajas.sld.client.presenter.event.SldRefreshEvent.SldRefreshHandler;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent;
@@ -143,6 +144,19 @@ public class SldActionView extends ViewImpl implements SldActionPresenter.MyView
 		}
 
 		public void onClick(ClickEvent event) {
+			viewUtil.showYesNoMessage(sldEditorMessages.confirmSavingChangesBeforeUnloadingSld(), new YesNoCallback() {
+
+				public void onYes() {
+					SldCloseEvent.fireSave(SldActionView.this);
+				}
+
+				public void onNo() {
+					SldCloseEvent.fire(SldActionView.this);
+				}
+
+				public void onCancel() {
+				}
+			});
 		}
 	}
 

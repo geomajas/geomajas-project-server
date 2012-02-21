@@ -1,7 +1,12 @@
 package org.geomajas.sld.client.presenter;
 
+import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.SldManager;
+import org.geomajas.sld.client.model.event.RuleChangedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.client.model.event.SldChangedEvent;
+import org.geomajas.sld.client.model.event.SldChangedEvent.SldChangedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 
@@ -18,7 +23,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter.MyProxy> implements
-		RuleSelectedHandler, InitSldLayoutHandler {
+		RuleSelectedHandler, InitSldLayoutHandler, SldChangedHandler {
 
 	/**
 	 * Use this in leaf presenters, inside their {@link #revealInParent} method.
@@ -32,10 +37,15 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	@ContentSlot
 	public static final Type<RevealContentHandler<?>> TYPE_FILTER_CONTENT = new Type<RevealContentHandler<?>>();
 
+	private final SldManager manager;
+
 	@Inject
-	public RulePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
+	public RulePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final SldManager manager) {
 		super(eventBus, view, proxy);
+		this.manager = manager;
 	}
+
+	private RuleModel currentModel;
 
 	@ProxyStandard
 	public interface MyProxy extends Proxy<RulePresenter> {
@@ -53,6 +63,7 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		addRegisteredHandler(SldChangedEvent.getType(), this);
 	}
 
 	@Override
@@ -63,6 +74,9 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
 			getView().reset();
+			currentModel = null;
+		} else {
+			currentModel = event.getRuleModel();
 		}
 	}
 
@@ -71,4 +85,10 @@ public class RulePresenter extends Presenter<RulePresenter.MyView, RulePresenter
 		forceReveal();
 	}
 
+	public void onChanged(SldChangedEvent event) {
+		// resets the model after changes of the SLD (may have completely changed !)
+		currentModel = manager.getCurrentSld().getRuleGroup().findByReference(currentModel.getReference());
+		// notify all rule-specific presenters
+		RuleChangedEvent.fire(this, currentModel);
+	}
 }

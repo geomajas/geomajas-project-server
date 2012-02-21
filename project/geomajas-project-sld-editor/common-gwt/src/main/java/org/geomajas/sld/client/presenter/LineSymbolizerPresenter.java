@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import org.geomajas.sld.LineSymbolizerInfo;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.event.RuleChangedEvent;
+import org.geomajas.sld.client.model.event.RuleChangedEvent.RuleChangedHandler;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
@@ -21,7 +23,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.MyView, LineSymbolizerPresenter.MyProxy>
-		implements RuleSelectedHandler, InitSldLayoutHandler {
+		implements RuleSelectedHandler, InitSldLayoutHandler, RuleChangedHandler {
 
 	private Logger logger = Logger.getLogger(LineSymbolizerPresenter.class.getName());
 	
@@ -64,6 +66,7 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		addRegisteredHandler(RuleChangedEvent.getType(), this);
 	}
 
 	@Override
@@ -86,27 +89,45 @@ public class LineSymbolizerPresenter extends Presenter<LineSymbolizerPresenter.M
 		super.onReset();
 	}
 
-	public void onRuleSelected(RuleSelectedEvent event) {
-		if (event.isClearAll()) {
-			getView().clear();
-			getView().hide();
+	public void onChanged(RuleChangedEvent event) {
+		if(event.getRuleModel() == null) {
+			clearModelAndView();
 		} else {
-			RuleModel rule = event.getRuleModel();
-			if (rule.getGeometryType().equals(GeometryType.LINE)) {
-				forceReveal();
-				currentModel = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
-				getView().modelToView(currentModel);
-				getView().show();
-			} else {
-				getView().clear();
-				getView().hide();
-			}
+			setRule(event.getRuleModel());
 		}
 	}
+	public void onRuleSelected(RuleSelectedEvent event) {
+		if (event.isClearAll()) {
+			clearModelAndView();
+		} else {
+			setRule(event.getRuleModel());
+		}
+	}
+
+
+	public void setRule(RuleModel rule) {
+		if (rule.getGeometryType().equals(GeometryType.LINE)) {
+			forceReveal();
+			currentModel = (LineSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+			getView().modelToView(currentModel);
+			getView().show();
+		} else {
+			clearModelAndView();
+		}
+
+	}
+
+	private void clearModelAndView() {
+		currentModel = null;
+		getView().clear();
+		getView().hide();
+	}
+
 
 	@ProxyEvent
 	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
 	}
+
 
 }

@@ -11,7 +11,6 @@
 
 package org.geomajas.sld.client.presenter;
 
-import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.client.model.SldManager;
 import org.geomajas.sld.client.model.SldModel;
 import org.geomajas.sld.client.model.event.SldAddedEvent;

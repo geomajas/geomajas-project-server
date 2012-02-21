@@ -188,7 +188,6 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 			public void onChanged(ChangedEvent event) {
 
-				fireSldContentChanged();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_POLYGON;
@@ -198,7 +197,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 				}
 				currentPolygonSymbolizerInfo.getFill().setFillColor(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 
 		});
@@ -211,11 +210,10 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		polygonFillOpacityItem.setDefaultValue(SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
 		polygonFillOpacityItem.setMin(0);
 		polygonFillOpacityItem.setMax(100);
-		polygonFillOpacityItem.setStep(10.0f);
+		polygonFillOpacityItem.setStep(10);
 		polygonFillOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(),
 						SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_POLYGON);
@@ -224,7 +222,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 					currentPolygonSymbolizerInfo.setFill(new FillInfo());
 				}
 				currentPolygonSymbolizerInfo.getFill().setFillOpacity(newValue/100f);
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -246,7 +244,6 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 			public void onChanged(ChangedEvent event) {
 				Boolean newValue = (Boolean) event.getValue();
-				fireSldContentChanged();
 
 				if (newValue == null) {
 					newValue = false;
@@ -264,6 +261,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 					polygonSymbolizerForm.hideItem("borderWidth");
 					currentPolygonSymbolizerInfo.setStroke(null); /* No border */
 				}
+				fireSldContentChanged();
 			}
 		});
 
@@ -276,7 +274,6 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 			public void onChanged(ChangedEvent event) {
 
-				fireSldContentChanged();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
@@ -287,7 +284,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 				currentPolygonSymbolizerInfo.getStroke().setStrokeColor(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -298,11 +295,10 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		polygonStrokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH);
 		polygonStrokeWidthItem.setMin(0);
 		polygonStrokeWidthItem.setMax(100);
-		polygonStrokeWidthItem.setStep(1.0f);
+		polygonStrokeWidthItem.setStep(1);
 		polygonStrokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(), (float) SldConstant.DEFAULT_STROKE_WIDTH);
 
@@ -312,7 +308,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 				currentPolygonSymbolizerInfo.getStroke().setStrokeWidth(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 
 			}
 		});
@@ -328,7 +324,6 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 		polygonStrokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 
@@ -338,6 +333,7 @@ public class PolygonSymbolizerView extends ViewImpl implements PolygonSymbolizer
 
 				currentPolygonSymbolizerInfo.getStroke().setStrokeOpacity(newValue/100f);
 
+				fireSldContentChanged();
 			}
 		});
 

@@ -14,6 +14,7 @@ package org.geomajas.sld.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.xalan.xsltc.compiler.sym;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.LineSymbolizerInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
@@ -26,6 +27,7 @@ import org.geomajas.sld.editor.client.SldUtils;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.util.tools.shared.StringUtils;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -47,6 +49,7 @@ public class RuleModelImpl implements RuleModel {
 
 	private GeometryType geometryType;
 
+	private RuleGroup ruleGroup;
 	// TODO: 2 creators with @AssistedInject
 	/**
 	 * Constructor for a) creating a default rule model for the specified geometry type. b) for specified RuleInfo (e.g.
@@ -55,7 +58,8 @@ public class RuleModelImpl implements RuleModel {
 	 * @param geometryType
 	 */
 	@Inject
-	public RuleModelImpl(@Assisted RuleInfo ruleInfo, @Assisted GeometryType geometryType, SldEditorMessages messages) {
+	public RuleModelImpl(@Assisted RuleGroup ruleGroup, @Assisted RuleInfo ruleInfo, @Assisted GeometryType geometryType, SldEditorMessages messages) {
+		this.ruleGroup = ruleGroup;
 		if (null == ruleInfo) {
 
 			RuleInfo defaultRule = new RuleInfo();
@@ -165,9 +169,37 @@ public class RuleModelImpl implements RuleModel {
 	public RuleModelState getState() {
 		if (getFilterModel().getState() == FilterModelState.INCOMPLETE) {
 			return RuleModelState.INCOMPLETE;
+		} else if (!isSymbolizerComplete()) {
+			return RuleModelState.INCOMPLETE;
 		} else {
 			return RuleModelState.COMPLETE;
 		}
+	}
+
+	private boolean isSymbolizerComplete() {
+		if (symbolizerTypeInfo != null) {
+			if (symbolizerTypeInfo instanceof PointSymbolizerInfo) {
+				PointSymbolizerInfo pointSymbolizerInfo = (PointSymbolizerInfo) symbolizerTypeInfo;
+				GraphicInfo graphic = pointSymbolizerInfo.getGraphic();
+				for (GraphicInfo.ChoiceInfo choice : graphic.getChoiceList()) {
+					if (choice.ifExternalGraphic()) {
+						if (isEmptyString(choice.getExternalGraphic().getOnlineResource().getHref().getHref())) {
+							return false;
+						}
+						if (isEmptyString(choice.getExternalGraphic().getFormat().getFormat())) {
+							return false;
+						}
+					} else if (choice.ifMark()) {
+							// TODO ?
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean isEmptyString(String s) {
+		return s == null || s.isEmpty();
 	}
 
 	public RuleInfo getRuleInfo() {
@@ -192,6 +224,10 @@ public class RuleModelImpl implements RuleModel {
 
 	public void checkState() {
 		ruleInfo.setTitle(getTitle());
+	}
+
+	public RuleReference getReference() {
+		return new RuleReferenceImpl(ruleGroup.getRuleModelList().indexOf(this));
 	}
 
 }

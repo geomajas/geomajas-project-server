@@ -1,14 +1,17 @@
 package org.geomajas.sld.editor.client.view;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.geomajas.sld.CssParameterInfo;
+import org.geomajas.sld.ExternalGraphicInfo;
 import org.geomajas.sld.FillInfo;
 import org.geomajas.sld.FormatInfo;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.MarkInfo;
 import org.geomajas.sld.OnlineResourceInfo;
+import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.RotationInfo;
 import org.geomajas.sld.SizeInfo;
 import org.geomajas.sld.SldConstant;
@@ -41,13 +44,15 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPresenter.MyView {
 
+	private DynamicForm typeOfGraphicForm;
+
 	// SpecificFormPoint form item
 	private SelectItem typeOfGraphicItem;
 
 	private FillInfo prevFillInfo;
 
 	/** private member for point layer **/
-	private GraphicInfo currrentGraphicInfo;
+	private GraphicInfo currentGraphicInfo;
 
 	/** private members for point symbolizer - type=marker **/
 	private DynamicForm markerSymbolizerForm;
@@ -93,31 +98,80 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 	private final SldEditorMessages sldEditorMessages;
 
+	private enum GraphicType {
+		MARKER_TYPE, EXTERNAL_GRAPHICS_TYPE
+	}
+
 	@Inject
-	public PointSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages sldEditorMessages) {
+	public PointSymbolizerView(final EventBus eventBus, final ViewUtil viewUtil,
+			final SldEditorMessages sldEditorMessages) {
 		this.eventBus = eventBus;
 		this.viewUtil = viewUtil;
 		this.sldEditorMessages = sldEditorMessages;
 		symbolPane = new VLayout();
 		symbolPane.setMembersMargin(5);
 		symbolPane.setMargin(5);
+		setupGraphicTypeForm();
 		setupMarkerForm();
 		setupExternalGraphic();
+		symbolPane.addMember(typeOfGraphicForm);
 		symbolPane.addMember(markerSymbolizerForm);
 		symbolPane.addMember(externalGraphicForm);
 		hide();
 	}
 
 	public void modelToView(GraphicInfo graphicInfo) {
-		currrentGraphicInfo = graphicInfo;
+		currentGraphicInfo = graphicInfo;
 		if (graphicInfo.getChoiceList().size() == 1) {
 			GraphicInfo.ChoiceInfo choice = graphicInfo.getChoiceList().get(0);
 			if (choice.ifExternalGraphic()) {
+				typeOfGraphicItem.setValue(GraphicType.EXTERNAL_GRAPHICS_TYPE.name());
 				externalGraphicToView();
 			} else {
+				typeOfGraphicItem.setValue(GraphicType.MARKER_TYPE.name());
 				markerToView();
 			}
 		}
+	}
+
+	private void setupGraphicTypeForm() {
+		typeOfGraphicForm = new DynamicForm();
+		typeOfGraphicItem = new SelectItem();
+		typeOfGraphicItem.setTitle(sldEditorMessages.typeofGraphicsTitleInSymbologyTab());
+
+		final LinkedHashMap<String, String> typeOfGraphicList = new LinkedHashMap<String, String>();
+		typeOfGraphicList.put(GraphicType.MARKER_TYPE.name(), sldEditorMessages.markerSelectTitle());
+		typeOfGraphicList.put(GraphicType.EXTERNAL_GRAPHICS_TYPE.name(),
+				sldEditorMessages.externalGraphicsSelectTitle());
+		typeOfGraphicItem.setValueMap(typeOfGraphicList);
+
+		typeOfGraphicItem.addChangedHandler(new ChangedHandler() {
+
+			public void onChanged(ChangedEvent event) {
+				GraphicType type = GraphicType.valueOf(typeOfGraphicItem.getValueAsString());
+				GraphicInfo.ChoiceInfo choiceInfoGraphic = currentGraphicInfo.getChoiceList().get(0);
+				choiceInfoGraphic.clearChoiceListSelect();
+				switch (type) {
+					case EXTERNAL_GRAPHICS_TYPE:
+						choiceInfoGraphic.setExternalGraphic(new ExternalGraphicInfo());
+						choiceInfoGraphic.getExternalGraphic().setFormat(new FormatInfo());
+						choiceInfoGraphic.getExternalGraphic().setOnlineResource(new OnlineResourceInfo());
+						choiceInfoGraphic.getExternalGraphic().getOnlineResource().setHref(new HrefInfo());
+						markerSymbolizerForm.hide();
+						externalGraphicForm.show();
+						break;
+					case MARKER_TYPE:
+						choiceInfoGraphic.setMark(new MarkInfo());
+						currentMark = choiceInfoGraphic.getMark();
+						markerSymbolizerForm.show();
+						externalGraphicForm.hide();
+						break;
+				}
+				modelToView(currentGraphicInfo);
+				fireSldContentChanged();
+			}
+		});
+		typeOfGraphicForm.setItems(typeOfGraphicItem);
 	}
 
 	private void markerToView() {
@@ -125,21 +179,21 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerSymbolizerForm.clearValues();
 
 		markerSizeItem.setValue(SldConstant.DEFAULT_SIZE_MARKER); /* init with default */
-		if (null != currrentGraphicInfo.getSize()) {
-			String size = currrentGraphicInfo.getSize().getValue();
+		if (null != currentGraphicInfo.getSize()) {
+			String size = currentGraphicInfo.getSize().getValue();
 			if (null != size) {
 				markerSizeItem.setValue(Float.parseFloat(size));
 			}
 		}
 
-		if (null != currrentGraphicInfo.getRotation()) {
-			String rotation = currrentGraphicInfo.getRotation().getValue();
+		if (null != currentGraphicInfo.getRotation()) {
+			String rotation = currentGraphicInfo.getRotation().getValue();
 			if (null != rotation) {
 				markerRotationItem.setValue(Double.parseDouble(rotation));
 			}
 		}
 
-		org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList().get(0);
+		org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currentGraphicInfo.getChoiceList().get(0);
 
 		if (!choiceInfoGraphic.ifMark()) {
 			/* create a default marker with default fill, stroke and wellKnownName */
@@ -158,9 +212,9 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 			mark.getStroke().setStrokeWidth(SldConstant.DEFAULT_STROKE_WIDTH);
 
 			choiceInfoGraphic.setMark(mark);
-			if (null == currrentGraphicInfo.getSize()) {
-				currrentGraphicInfo.setSize(new SizeInfo());
-				currrentGraphicInfo.getSize().setValue(Integer.toString(SldConstant.DEFAULT_SIZE_MARKER));
+			if (null == currentGraphicInfo.getSize()) {
+				currentGraphicInfo.setSize(new SizeInfo());
+				currentGraphicInfo.getSize().setValue(Integer.toString(SldConstant.DEFAULT_SIZE_MARKER));
 			}
 		}
 		currentMark = choiceInfoGraphic.getMark();
@@ -235,11 +289,11 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerSymbolizerForm.hide();
 		externalGraphicForm.clearValues();
 
-		if (null != currrentGraphicInfo.getSize()) {
-			String size = currrentGraphicInfo.getSize().getValue();
+		if (null != currentGraphicInfo.getSize()) {
+			String size = currentGraphicInfo.getSize().getValue();
 			externalGraphicSizeItem.setValue(size);
 		}
-		final org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList().get(0);
+		final org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currentGraphicInfo.getChoiceList().get(0);
 
 		if (null != choiceInfoGraphic.getExternalGraphic().getFormat()) {
 			String formatValue = choiceInfoGraphic.getExternalGraphic().getFormat().getFormat();
@@ -272,10 +326,10 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				if (newValue != null) {
 					fireSldContentChanged();
 
-					if (null == currrentGraphicInfo.getSize()) {
-						currrentGraphicInfo.setSize(new SizeInfo());
+					if (null == currentGraphicInfo.getSize()) {
+						currentGraphicInfo.setSize(new SizeInfo());
 					}
-					currrentGraphicInfo.getSize().setValue(newValue);
+					currentGraphicInfo.getSize().setValue(newValue);
 					// Debugging: updateStyleDesc();
 				}
 			}
@@ -300,10 +354,10 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				String newValue = viewUtil.numericalToString(event.getValue(),
 						SldConstant.DEFAULT_ROTATION_MARKER_AS_STRING);
 
-				if (null == currrentGraphicInfo.getRotation()) {
-					currrentGraphicInfo.setRotation(new RotationInfo());
+				if (null == currentGraphicInfo.getRotation()) {
+					currentGraphicInfo.setRotation(new RotationInfo());
 				}
-				currrentGraphicInfo.getRotation().setValue(newValue);
+				currentGraphicInfo.getRotation().setValue(newValue);
 				// Debugging: updateStyleDesc();
 			}
 		});
@@ -357,7 +411,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerFillCheckBoxItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				Boolean newValue = (Boolean) event.getValue();
 
@@ -379,6 +432,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 					}
 					currentMark.setFill(null); /* No filling at the moment */
 				}
+				fireSldContentChanged();
 			}
 		});
 
@@ -393,7 +447,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 			public void onChanged(ChangedEvent event) {
 
-				fireSldContentChanged();
 
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
@@ -404,7 +457,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				}
 				currentMark.getFill().setFillColor(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -421,7 +474,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 			public void onChanged(ChangedEvent event) {
 				// ((DynamicForm) event.getSource()).validate();
-				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(),
 						SldConstant.DEFAULT_FILL_OPACITY_PERCENTAGE_FOR_MARKER);
@@ -431,6 +483,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				}
 				currentMark.getFill().setFillOpacity(newValue / 100f);
 				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -451,7 +504,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerBorderCheckBoxItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 				Boolean newValue = (Boolean) event.getValue();
 
 				if (newValue == null) {
@@ -470,6 +522,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 					markerSymbolizerForm.hideItem("borderWidth");
 					currentMark.setStroke(null); /* No border */
 				}
+				fireSldContentChanged();
 			}
 		});
 
@@ -482,7 +535,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 			public void onChanged(ChangedEvent event) {
 
-				fireSldContentChanged();
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
 					newValue = SldConstant.DEFAULT_FILL_FOR_LINE;
@@ -493,7 +545,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 				currentMark.getStroke().setStrokeColor(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -508,7 +560,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerStrokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(), SldConstant.DEFAULT_STROKE_WIDTH);
 
@@ -518,7 +569,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 
 				currentMark.getStroke().setStrokeWidth(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 
 			}
 		});
@@ -534,7 +585,6 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		markerStrokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				float newValue = viewUtil.numericalToFloat(event.getValue(),
 						SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
@@ -544,7 +594,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				}
 
 				currentMark.getStroke().setStrokeOpacity(newValue / 100f);
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 
 			}
 		});
@@ -582,13 +632,12 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				String newValue = viewUtil.numericalToString(event.getValue(), null);
 
 				if (newValue != null) {
-					fireSldContentChanged();
 
-					if (null == currrentGraphicInfo.getSize()) {
-						currrentGraphicInfo.setSize(new SizeInfo());
+					if (null == currentGraphicInfo.getSize()) {
+						currentGraphicInfo.setSize(new SizeInfo());
 					}
-					currrentGraphicInfo.getSize().setValue(newValue);
-					// Debugging: updateStyleDesc();
+					currentGraphicInfo.getSize().setValue(newValue);
+					fireSldContentChanged();
 				}
 			}
 		});
@@ -606,24 +655,13 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 				ListGridRecord record = graphicFormatItem.getSelectedRecord();
 
 				if (record != null) {
-					fireSldContentChanged();
-
-					org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList()
-							.get(0);
-					String selected = (String) graphicFormatItem.getValue();
-					/*
-					 * clear the old onlineResource (also in the SLD domain object)
-					 */
+					GraphicInfo.ChoiceInfo choiceInfoGraphic = currentGraphicInfo.getChoiceList().get(0);
+					String selected = graphicFormatItem.getValueAsString();
+					choiceInfoGraphic.getExternalGraphic().getFormat().setFormat(selected);
+					// clear the old onlineResource (also in the SLD domain object)
 					urlItem.setValue("");
-
-					FormatInfo format = choiceInfoGraphic.getExternalGraphic().getFormat();
-					if (null == format) {
-						format = new FormatInfo();
-						choiceInfoGraphic.getExternalGraphic().setFormat(format);
-					}
-					format.setFormat(selected);
-					choiceInfoGraphic.getExternalGraphic().setOnlineResource(null);
-					// Debugging: updateStyleDesc();
+					choiceInfoGraphic.getExternalGraphic().getOnlineResource().getHref().setHref(null);
+					fireSldContentChanged();
 				}
 			}
 		});
@@ -633,8 +671,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		urlItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
-				org.geomajas.sld.GraphicInfo.ChoiceInfo choiceInfoGraphic = currrentGraphicInfo.getChoiceList().get(0);
+				GraphicInfo.ChoiceInfo choiceInfoGraphic = currentGraphicInfo.getChoiceList().get(0);
 				OnlineResourceInfo onlineResourceInfo = choiceInfoGraphic.getExternalGraphic().getOnlineResource();
 				if (null == onlineResourceInfo) {
 					onlineResourceInfo = new OnlineResourceInfo();
@@ -643,7 +680,7 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 					choiceInfoGraphic.getExternalGraphic().setOnlineResource(onlineResourceInfo);
 				}
 				onlineResourceInfo.getHref().setHref(event.getValue().toString());
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -655,32 +692,28 @@ public class PointSymbolizerView extends ViewImpl implements PointSymbolizerPres
 		SldContentChangedEvent.fire(this);
 	}
 
-
 	public Widget asWidget() {
 		return symbolPane;
 	}
-
 
 	public HandlerRegistration addSldContentChangedHandler(SldContentChangedHandler handler) {
 		return eventBus.addHandler(SldContentChangedEvent.getType(), handler);
 	}
 
-
 	public void fireEvent(GwtEvent<?> event) {
 		eventBus.fireEvent(event);
 	}
-	
+
 	public void hide() {
 		symbolPane.hide();
 	}
 
 	public void show() {
-		if(!symbolPane.isDrawn()){
+		if (!symbolPane.isDrawn()) {
 			System.out.println();
 		}
 		symbolPane.show();
 	}
-
 
 	public void clear() {
 		externalGraphicForm.clearValues();

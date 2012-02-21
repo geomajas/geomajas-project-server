@@ -12,26 +12,32 @@ package org.geomajas.sld.client.presenter.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
-/**
- * 
- * @author Jan De Moerloose
- * 
- */
-public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.RevealSideContentHandler> {
+public class SldCloseEvent extends GwtEvent<SldCloseEvent.SldCloseHandler> {
+	
+	boolean save;
 
-	public RevealSideContentEvent() {
-		// Possibly for serialization.
+	public SldCloseEvent(boolean save) {
+		this.save = save;
+	}
+	
+	public boolean isSave() {
+		return save;
 	}
 
-	public static void fire(HasHandlers source) {
-		RevealSideContentEvent eventInstance = new RevealSideContentEvent();
+	public static void fireSave(HasHandlers source) {
+		SldCloseEvent eventInstance = new SldCloseEvent(true);
 		source.fireEvent(eventInstance);
 	}
 
-	public static void fire(HasHandlers source, RevealSideContentEvent eventInstance) {
+	public static void fire(HasHandlers source) {
+		SldCloseEvent eventInstance = new SldCloseEvent(false);
+		source.fireEvent(eventInstance);
+	}
+
+	public static void fire(HasHandlers source, SldCloseEvent eventInstance) {
 		source.fireEvent(eventInstance);
 	}
 
@@ -41,9 +47,9 @@ public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.Reve
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface HasRevealSideContentHandlers extends HasHandlers {
+	public interface HasSldCloseHandlers extends HasHandlers {
 
-		HandlerRegistration addRevealSideContentHandler(RevealSideContentHandler handler);
+		HandlerRegistration addSldCloseHandler(SldCloseHandler handler);
 	}
 
 	/**
@@ -52,30 +58,30 @@ public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.Reve
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	public interface RevealSideContentHandler extends EventHandler {
+	public interface SldCloseHandler extends EventHandler {
 
 		/**
 		 * Notifies side content child presenter to reveal itself.
 		 * 
 		 * @param event the event
 		 */
-		void onRevealSideContent(RevealSideContentEvent event);
+		void onSldClose(SldCloseEvent event);
 	}
 
-	private static final Type<RevealSideContentHandler> TYPE = new Type<RevealSideContentHandler>();
+	private static final Type<SldCloseHandler> TYPE = new Type<SldCloseHandler>();
 
-	public static Type<RevealSideContentHandler> getType() {
+	public static Type<SldCloseHandler> getType() {
 		return TYPE;
 	}
 
 	@Override
-	public Type<RevealSideContentHandler> getAssociatedType() {
+	public Type<SldCloseHandler> getAssociatedType() {
 		return TYPE;
 	}
 
 	@Override
-	protected void dispatch(RevealSideContentHandler handler) {
-		handler.onRevealSideContent(this);
+	protected void dispatch(SldCloseHandler handler) {
+		handler.onSldClose(this);
 	}
 
 	@Override
@@ -90,6 +96,6 @@ public class RevealSideContentEvent extends GwtEvent<RevealSideContentEvent.Reve
 
 	@Override
 	public String toString() {
-		return "RevealSideContentEvent[" + "]";
+		return "SldCloseEvent[" + "]";
 	}
 }

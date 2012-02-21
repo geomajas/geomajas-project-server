@@ -2,6 +2,9 @@ package org.geomajas.sld.client.presenter;
 
 import org.geomajas.sld.client.model.FilterModel;
 import org.geomajas.sld.client.model.FilterModel.FilterModelState;
+import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.event.RuleChangedEvent;
+import org.geomajas.sld.client.model.event.RuleChangedEvent.RuleChangedHandler;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
@@ -20,7 +23,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPresenter.MyProxy> implements
-		RuleSelectedHandler, InitSldLayoutHandler {
+		RuleSelectedHandler, InitSldLayoutHandler, RuleChangedHandler {
 
 	private final ViewUtil viewUtil;
 	
@@ -53,6 +56,7 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		addRegisteredHandler(RuleChangedEvent.getType(), this);
 	}
 
 	@Override
@@ -64,30 +68,50 @@ public class FilterPresenter extends Presenter<FilterPresenter.MyView, FilterPre
 	protected void onReveal() {
 		super.onReveal();
 	}
-
+	
 	public void onRuleSelected(RuleSelectedEvent event) {
-		if (event.isClearAll()) {
-			getView().clear();
+		if(event.isClearAll()){
+			clearModelAndView();
 		} else {
-			if (event.getRuleModel().getGeometryType() != GeometryType.UNSPECIFIED) {
-				if (event.getRuleModel().getFilterModel() != null) {
-					currentModel = event.getRuleModel().getFilterModel();
-					getView().modelToView(currentModel);
-					if (currentModel.getState() == FilterModelState.UNSUPPORTED) {
-						viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
-					}
-				} else {
-					getView().clear();
+			setRule(event.getRuleModel(), true);
+		}
+	}
+
+	public void onChanged(RuleChangedEvent event) {
+		if(event.getRuleModel() == null) {
+			clearModelAndView();
+		} else {
+			setRule(event.getRuleModel(), false);
+		}
+	}
+
+	public void setRule(RuleModel rule, boolean warn) {
+		if (rule.getGeometryType() != GeometryType.UNSPECIFIED) {
+			if (rule.getFilterModel() != null) {
+				currentModel = rule.getFilterModel();
+				getView().modelToView(currentModel);
+				if (currentModel.getState() == FilterModelState.UNSUPPORTED && warn) {
+					viewUtil.showWarning("Het filter voor deze regel wordt niet ondersteund en kan dus niet getoond worden.");
 				}
 			} else {
-				getView().clear();
+				clearModelAndView();
 			}
+		} else {
+			clearModelAndView();
 		}
+
 	}
 
 	@ProxyEvent
 	public void onInitSldLayout(InitSldLayoutEvent event) {
 		forceReveal();
 	}
+
+	private void clearModelAndView() {
+		currentModel = null;
+		getView().clear();
+		getView().hide();
+	}
+
 
 }

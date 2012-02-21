@@ -2,9 +2,11 @@ package org.geomajas.sld.client.presenter;
 
 import java.util.logging.Logger;
 
-import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.SldManager;
+import org.geomajas.sld.client.model.event.RuleChangedEvent;
+import org.geomajas.sld.client.model.event.RuleChangedEvent.RuleChangedHandler;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
@@ -23,11 +25,13 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class PolygonSymbolizerPresenter
 	extends Presenter<PolygonSymbolizerPresenter.MyView, PolygonSymbolizerPresenter.MyProxy> implements
-		RuleSelectedHandler, InitSldLayoutHandler {
+		RuleSelectedHandler, InitSldLayoutHandler, RuleChangedHandler {
 
 	private Logger logger = Logger.getLogger(PolygonSymbolizerPresenter.class.getName());
 	
 	private PolygonSymbolizerInfo currentModel;
+
+	private SldManager manager;
 
 	/**
 	 * {@link PolygonSymbolizerPresenter}'s proxy.
@@ -58,14 +62,16 @@ public class PolygonSymbolizerPresenter
 	 * @param proxy
 	 */
 	@Inject
-	public PolygonSymbolizerPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
+	public PolygonSymbolizerPresenter(final EventBus eventBus, final MyView view, final MyProxy proxy, final SldManager manager) {
 		super(eventBus, view, proxy);
+		this.manager = manager;
 	}
 
 	@Override
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		addRegisteredHandler(RuleChangedEvent.getType(), this);
 	}
 
 	@Override
@@ -88,22 +94,38 @@ public class PolygonSymbolizerPresenter
 		super.onReset();
 	}
 
+	public void onChanged(RuleChangedEvent event) {
+		if(event.getRuleModel() == null) {
+			clearModelAndView();
+		} else {
+			setRule(event.getRuleModel());
+		}
+	}
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
-			getView().clear();
-			getView().hide();
+			clearModelAndView();
 		} else {
-			RuleModel rule = event.getRuleModel();
-			if (rule.getGeometryType().equals(GeometryType.POLYGON)) {
-				forceReveal();
-				currentModel = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
-				getView().modelToView(currentModel);
-				getView().show();
-			} else {
-				getView().clear();
-				getView().hide();
-			}
+			setRule(event.getRuleModel());
 		}
+	}
+
+
+	public void setRule(RuleModel rule) {
+		if (rule.getGeometryType().equals(GeometryType.POLYGON)) {
+			forceReveal();
+			currentModel = (PolygonSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
+			getView().modelToView(currentModel);
+			getView().show();
+		} else {
+			clearModelAndView();
+		}
+
+	}
+
+	private void clearModelAndView() {
+		currentModel = null;
+		getView().clear();
+		getView().hide();
 	}
 
 	@ProxyEvent

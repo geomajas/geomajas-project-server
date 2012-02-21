@@ -66,5 +66,7 @@ public interface RuleGroup {
 	GeometryType getGeomType();
 
 	void setGeomType(GeometryType geomType);
+	
+	RuleModel findByReference(RuleReference reference);
 
 }

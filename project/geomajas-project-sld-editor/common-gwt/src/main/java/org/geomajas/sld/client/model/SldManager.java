@@ -85,4 +85,8 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	 * @param name name of the SLD
 	 */
 	void select(String name);
+
+	void deselectAll();
+
+	void saveAndDeselectAll();
 }

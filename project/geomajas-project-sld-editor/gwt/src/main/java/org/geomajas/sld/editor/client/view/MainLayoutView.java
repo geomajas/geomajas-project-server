@@ -71,6 +71,8 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 		widget = new VLayout();
 		widget.setWidth100();
 		widget.setHeight100();
+		widget.setMargin(5);
+		widget.setMembersMargin(5);
 		widget.addMember(topContentPanel);
 		widget.addMember(hLayout);
 

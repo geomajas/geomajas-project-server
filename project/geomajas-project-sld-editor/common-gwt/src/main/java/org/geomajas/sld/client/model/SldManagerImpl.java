@@ -272,4 +272,30 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 
 	}
 
+	public void deselectAll() {
+		currentSld = null;
+		SldSelectedEvent.fire(SldManagerImpl.this, null);
+	}
+
+	public void saveAndDeselectAll() {
+		new DeselectHandler();
+		saveCurrent();
+	}
+	
+	class DeselectHandler implements SldChangedHandler {
+		HandlerRegistration registration;
+		
+		
+		public DeselectHandler() {
+			registration = addSldChangedHandler(this);
+		}
+		
+		public void onChanged(SldChangedEvent event) {
+			deselectAll();
+			if(registration != null) {
+				registration.removeHandler();
+			}
+		}
+	}
+
 }

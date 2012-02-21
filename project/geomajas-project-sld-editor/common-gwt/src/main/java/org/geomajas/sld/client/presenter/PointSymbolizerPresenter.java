@@ -5,10 +5,10 @@ import java.util.logging.Logger;
 import org.geomajas.sld.GraphicInfo;
 import org.geomajas.sld.PointSymbolizerInfo;
 import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.client.model.event.RuleChangedEvent;
+import org.geomajas.sld.client.model.event.RuleChangedEvent.RuleChangedHandler;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent;
 import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
-import org.geomajas.sld.client.model.event.SldChangedEvent;
-import org.geomajas.sld.client.model.event.SldChangedEvent.SldChangedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
@@ -24,10 +24,11 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class PointSymbolizerPresenter
-	extends Presenter<PointSymbolizerPresenter.MyView, PointSymbolizerPresenter.MyProxy> implements RuleSelectedHandler, InitSldLayoutHandler {
+	extends Presenter<PointSymbolizerPresenter.MyView, PointSymbolizerPresenter.MyProxy> implements
+		RuleSelectedHandler, InitSldLayoutHandler, RuleChangedHandler {
 
 	private Logger logger = Logger.getLogger(PointSymbolizerPresenter.class.getName());
-	
+
 	private PointSymbolizerInfo currentModel;
 
 	/**
@@ -67,6 +68,7 @@ public class PointSymbolizerPresenter
 	protected void onBind() {
 		super.onBind();
 		addRegisteredHandler(RuleSelectedEvent.getType(), this);
+		addRegisteredHandler(RuleChangedEvent.getType(), this);
 	}
 
 	@Override
@@ -89,22 +91,38 @@ public class PointSymbolizerPresenter
 		super.onReset();
 	}
 
+	public void onChanged(RuleChangedEvent event) {
+		if (event.getRuleModel() == null) {
+			clearModelAndView();
+		} else {
+			setRule(event.getRuleModel());
+		}
+	}
+
 	public void onRuleSelected(RuleSelectedEvent event) {
 		if (event.isClearAll()) {
-			getView().clear();
-			getView().hide();
+			clearModelAndView();
 		} else {
-			RuleModel rule = event.getRuleModel();
-			if (rule.getGeometryType().equals(GeometryType.POINT)) {
-				forceReveal();
-				currentModel = (PointSymbolizerInfo) rule.getSymbolizerTypeInfo(); 
-				getView().modelToView(currentModel.getGraphic());
-				getView().show();
-			} else {
-				getView().clear();
-				getView().hide();
-			}
+			setRule(event.getRuleModel());
 		}
+	}
+
+	public void setRule(RuleModel rule) {
+		if (rule.getGeometryType().equals(GeometryType.POINT)) {
+			forceReveal();
+			currentModel = (PointSymbolizerInfo) rule.getSymbolizerTypeInfo();
+			getView().modelToView(currentModel.getGraphic());
+			getView().show();
+		} else {
+			clearModelAndView();
+		}
+
+	}
+
+	private void clearModelAndView() {
+		currentModel = null;
+		getView().clear();
+		getView().hide();
 	}
 
 	@ProxyEvent

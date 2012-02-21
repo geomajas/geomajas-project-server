@@ -62,6 +62,8 @@ public class StyledLayerDescriptorLayoutView extends ViewImpl implements StyledL
 		widget = new VLayout();
 		widget.setWidth100();
 		widget.setHeight100();
+		widget.setMembersMargin(5);
+		widget.setMargin(5);
 		widget.addMember(generalContentPanel);
 		widget.addMember(rulesContentPanel);
 		widget.addMember(ruleContentPanel);

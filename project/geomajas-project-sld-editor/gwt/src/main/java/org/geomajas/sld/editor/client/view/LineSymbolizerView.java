@@ -100,7 +100,6 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 		lineStrokeColorPicker.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				String newValue = (String) event.getValue();
 				if (null == newValue) {
@@ -109,7 +108,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 
 				currentLineSymbolizerInfo.getStroke().setStrokeColor(newValue);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 			}
 		});
 
@@ -119,11 +118,10 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 		strokeWidthItem.setDefaultValue(SldConstant.DEFAULT_STROKE_WIDTH_FOR_LINE);
 		strokeWidthItem.setMin(0);
 		strokeWidthItem.setMax(100);
-		strokeWidthItem.setStep(1.0f);
+		strokeWidthItem.setStep(1);
 		strokeWidthItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				Integer newValue = (Integer) event.getValue();
 
@@ -133,7 +131,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 
 				currentLineSymbolizerInfo.getStroke().setStrokeWidth(newValue/100f);
 
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 
 			}
 		});
@@ -152,11 +150,10 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 		strokeOpacityItem.setDefaultValue(SldConstant.DEFAULT_STROKE_OPACITY_PERCENTAGE);
 		strokeOpacityItem.setMin(0);
 		strokeOpacityItem.setMax(100);
-		strokeOpacityItem.setStep(10.0f);
+		strokeOpacityItem.setStep(10);
 		strokeOpacityItem.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-				fireSldContentChanged();
 
 				Integer newValue = (Integer) event.getValue();
 
@@ -165,7 +162,7 @@ public class LineSymbolizerView extends ViewImpl implements LineSymbolizerPresen
 				}
 
 				currentLineSymbolizerInfo.getStroke().setStrokeOpacity(newValue/100f);
-				// Debugging: updateStyleDesc();
+				fireSldContentChanged();
 
 			}
 

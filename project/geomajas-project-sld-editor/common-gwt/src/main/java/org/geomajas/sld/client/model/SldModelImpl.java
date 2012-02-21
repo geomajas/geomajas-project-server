@@ -110,7 +110,7 @@ public class SldModelImpl implements SldModel {
 					ruleGroup.setGeomType(GeometryType.UNSPECIFIED);
 
 					for (RuleInfo rule : featureTypeStyle.getRuleList()) {
-						RuleModel ruleModel = ruleModelFactory.create(rule, null);
+						RuleModel ruleModel = ruleModelFactory.create(ruleGroup, rule, null);
 						ruleGroup.setGeomType(ruleModel.getGeometryType()); // copy the last one (should be equal for
 																			// all)
 						ruleGroup.getRuleModelList().add(ruleModel);
