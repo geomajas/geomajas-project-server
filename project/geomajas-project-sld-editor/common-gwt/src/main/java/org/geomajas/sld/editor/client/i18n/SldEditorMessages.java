@@ -17,17 +17,19 @@ import com.google.gwt.i18n.client.Messages;
  * <p>
  * Localization constants for the GWT SldEditor.
  * </p>
- *
+ * 
  * @author An Buyle
  */
 public interface SldEditorMessages extends Messages {
-	//String activeLayer(String layerName);
-	
+
+	// String activeLayer(String layerName);
+
 	String externalGraphicsSelectTitle();
 
 	String markerSelectTitle();
-	
+
 	String confirmSavingChangesBeforeUnloadingSld();
+
 	String confirmSavingChangesBeforeUnloadingIncompleteSld();
 
 	String layerTitle();
@@ -39,22 +41,23 @@ public interface SldEditorMessages extends Messages {
 	String hRefTitle();
 
 	String generalFormTitle();
+
 	String ruleDetailContainerTitle();
 
 	String confirmDeleteOfStyle(String styleName);
-	
+
 	String symbologyTabTitle();
 
 	String filterTabTitle();
-	
+
 	String typeofGraphicsTitleInSymbologyTab();
 
 	String nameOfSymbolTitleInSymbologyTab();
 
 	String formatTitleInPointInSymbologyTab();
 
-
 	String enableFillInSymbologyTab();
+
 	String enableBorderInSymbologyTab();
 
 	String opacityTitleInSymbologyTab();
@@ -62,12 +65,15 @@ public interface SldEditorMessages extends Messages {
 	String opacityTooltipInSymbologyTab();
 
 	String fillColorInSymbologyTab();
+
 	String borderColor();
+
 	String borderWidthTitle();
+
 	String borderWidthTooltip();
-	
+
 	String strokeColorTitle();
-	
+
 	String sizeOfGraphicInSymbologyTab();
 
 	String rotationOfGraphicInSymbologyTab();
@@ -78,12 +84,10 @@ public interface SldEditorMessages extends Messages {
 
 	String nameUnspecified();
 
-	
 	// Filter editor messages
 	String warnMessageUnsupportedOperator(String operator);
 
-	String likeFilterSpecTemplate(String wildCard, String singleChar,
-								String escape);
+	String likeFilterSpecTemplate(String wildCard, String singleChar, String escape);
 
 	// Rule overview pane
 	String ruleOverviewGroupTitle();
@@ -91,10 +95,13 @@ public interface SldEditorMessages extends Messages {
 	String ruleTitleFieldTitle();
 
 	String closeButtonTitle();
+
 	String closeButtonTooltip();
-	
+
 	String cancelButtonTitle();
+
 	String saveButtonTitle();
+
 	String saveButtonTooltip();
 
 	String listingOfSldsTitle();
@@ -102,18 +109,23 @@ public interface SldEditorMessages extends Messages {
 	String listingOfSldsTooltip();
 
 	String addSldButtonTooltip();
+
 	String removeSldButtonTooltip();
 
 	String ruleTitleUnspecified();
+
 	String ruleTitleDefault();
 
 	String pointTitle();
+
 	String lineTitle();
+
 	String polygonTitle();
 
 	String emptyRuleList();
 
 	String createButtonTitle();
+
 	String createSldCancelButtonTitle();
 
 	String createButtonTooltip();
@@ -121,5 +133,23 @@ public interface SldEditorMessages extends Messages {
 	String nameSldCanNotBeEmpty();
 
 	String nameSld();
+
+	String unsupportedEmpty();
+
+	String unsupportedMultipleNamedLayer();
+
+	String unsupportedUserLayer();
+
+	String unsupportedEmptyNamedLayer();
+
+	String unsupportedMultipleNamedStyle();
+
+	String unsupportedNamedStyle();
+
+	String unsupportedNoFeatureTypeStyle();
+
+	String unsupportedMultipleFeatureTypeStyle();
+
+	String noSldMessage();
 
 }

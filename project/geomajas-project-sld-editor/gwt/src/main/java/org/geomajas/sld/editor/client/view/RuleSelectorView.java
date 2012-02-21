@@ -75,7 +75,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 
 	private final Label errorMessage;
 	
-	private final String ruleNameUnspecified = sldEditorMessages.ruleTitleUnspecified();
+	private final String ruleNameUnspecified = "";
 	
 	private TreeGrid treeGrid;
 
@@ -110,6 +110,9 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 	private EventBus eventBus;
 	private RuleModelFactory ruleModelFactory;
 
+	/**
+	 *
+	 */
 	@Inject
 	public RuleSelectorView(final EventBus eventBus, final ViewUtil viewUtil, final RuleModelFactory ruleModelFactory) {
 		this.eventBus = eventBus;
@@ -265,7 +268,7 @@ public class RuleSelectorView extends ViewImpl implements RuleSelectorPresenter.
 					//TODO: optimize if possible to avoid calling sldHasChanged for each character entered by the user
 					//TODO: Test this!!!!!
 					ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE).setTitle(ruleTitle);
-										
+					ruleList.get(new Integer(ruleId) - INDEX_FIRST_RULE).checkState();				
 					// Inform observers
 					sldHasChanged();
 					

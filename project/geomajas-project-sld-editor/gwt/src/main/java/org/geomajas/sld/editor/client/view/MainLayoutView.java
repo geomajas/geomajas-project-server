@@ -46,7 +46,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 
 		topContentPanel = new HLayout();
 		Label topLabel = new Label();
-		topLabel.setContents("Top");
+		topLabel.setContents("Loading...");
 		topLabel.setAlign(Alignment.CENTER);
 		topLabel.setOverflow(Overflow.HIDDEN);
 		topContentPanel.addMember(topLabel);
@@ -55,7 +55,7 @@ public class MainLayoutView extends ViewImpl implements MainLayoutPresenter.MyVi
 
 		mainContentPanel = new VLayout();
 		Label mainLabel = new Label();
-		mainLabel.setContents("Main");
+		mainLabel.setContents("Loading...");
 		mainLabel.setAlign(Alignment.CENTER);
 		mainLabel.setOverflow(Overflow.HIDDEN);
 		mainContentPanel.addMember(mainLabel);

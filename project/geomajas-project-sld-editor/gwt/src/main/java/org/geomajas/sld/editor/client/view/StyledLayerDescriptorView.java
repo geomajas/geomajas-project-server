@@ -42,10 +42,6 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class StyledLayerDescriptorView extends ViewImpl
 				implements StyledLayerDescriptorPresenter.MyView {
 
-	private static final SldEditorMessages MESSAGES = GWT.create(SldEditorMessages.class);
-
-	private static final String NO_SLD_MESSAGE = "<i>Geen SLD ingeladen!</i>";
-
 	private VLayout layoutContainer;
 
 	private DynamicForm topLevelAttributesForm;
@@ -61,14 +57,17 @@ public class StyledLayerDescriptorView extends ViewImpl
 	private SldGeneralInfo model;
 
 	private EventBus eventBus;
+	
+	private final SldEditorMessages messages;
 
 	@Inject
-	public StyledLayerDescriptorView(final EventBus eventBus, final ViewUtil viewUtil) {
+	public StyledLayerDescriptorView(final EventBus eventBus, final ViewUtil viewUtil, final SldEditorMessages messages) {
 		this.eventBus = eventBus;
+		this.messages = messages;
 		topLevelAttributesForm = new DynamicForm();
 		topLevelAttributesForm.setNumCols(4);
 
-		nameOfLayerItem = new TextItem("Layer", MESSAGES.layerTitle());
+		nameOfLayerItem = new TextItem("Layer", messages.layerTitle());
 		nameOfLayerItem.setWidth(200);
 		nameOfLayerItem.addChangedHandler(new ChangedHandler() {
 
@@ -87,10 +86,10 @@ public class StyledLayerDescriptorView extends ViewImpl
 		nameOfLayerItem.setRequiredMessage("De naam van de laag mag niet leeg zijn");
 		nameOfLayerItem.setValidateOnChange(true);
 
-		geomTypeItem = new StaticTextItem("Geometry", MESSAGES.geometryTitle());
+		geomTypeItem = new StaticTextItem("Geometry", messages.geometryTitle());
 		geomTypeItem.setWidth(150);
 
-		styleTitleItem = new TextItem("Style", MESSAGES.styleTitle());
+		styleTitleItem = new TextItem("Style", messages.styleTitle());
 		styleTitleItem.setWidth(300);
 		styleTitleItem.setColSpan(4);
 
@@ -113,12 +112,12 @@ public class StyledLayerDescriptorView extends ViewImpl
 		styleTitleItem.setRequiredMessage("De naam van de stijl mag niet leeg zijn");
 		styleTitleItem.setValidateOnChange(true);
 
-		topLevelAttributesForm.setGroupTitle(MESSAGES.generalFormTitle());
+		topLevelAttributesForm.setGroupTitle(messages.generalFormTitle());
 		topLevelAttributesForm.setIsGroup(true);
 
 		topLevelAttributesForm.setItems(nameOfLayerItem, geomTypeItem, styleTitleItem);
 
-		errorMessage = new Label(NO_SLD_MESSAGE);
+		errorMessage = new Label("<i>"+messages.noSldMessage()+"</i>");
 		errorMessage.setAlign(Alignment.CENTER);
 		//errorMessage.hide();
 		layoutContainer = new VLayout(5);
@@ -176,7 +175,7 @@ public class StyledLayerDescriptorView extends ViewImpl
 	
 	public void clear() {
 		topLevelAttributesForm.clearValues();
-		errorMessage.setContents(NO_SLD_MESSAGE);
+		errorMessage.setContents("<i>"+messages.noSldMessage()+"</i>");
 		errorMessage.markForRedraw();
 	}
 

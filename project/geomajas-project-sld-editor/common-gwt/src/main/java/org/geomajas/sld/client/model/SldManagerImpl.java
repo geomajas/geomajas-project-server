@@ -61,7 +61,7 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 	private final Logger logger = Logger.getLogger(SldManagerImpl.class.getName());
 
 	private SldModel currentSld;
-	
+
 	private final SldModelFactory modelFactory;
 
 	@Inject
@@ -98,13 +98,13 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 		});
 
 	}
-	
+
 	public void saveCurrent() {
-		if(currentSld != null) {
-			if(currentSld.isComplete()){
+		if (currentSld != null) {
+			if (currentSld.isComplete()) {
 				currentSld.synchronize();
 				service.saveOrUpdate(currentSld.getSld(), new AsyncCallback<StyledLayerDescriptorInfo>() {
-					
+
 					public void onSuccess(StyledLayerDescriptorInfo sld) {
 						if (null != sld) {
 							currentSld.refresh(modelFactory.create(sld));
@@ -112,10 +112,10 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 							SldChangedEvent.fire(SldManagerImpl.this);
 						}
 					}
-					
+
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						
+
 					}
 				});
 			}
@@ -153,9 +153,7 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 			}
 		});
 	}
-	
-	
-	
+
 	public SldModel create(GeometryType geomType) {
 		StyledLayerDescriptorInfo sld = new StyledLayerDescriptorInfo();
 		sld.setName("NewSLD");
@@ -203,7 +201,7 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 			service.findByName(selectedSld.getName(), new AsyncCallback<StyledLayerDescriptorInfo>() {
 
 				public void onSuccess(StyledLayerDescriptorInfo result) {
-					currentSld = selectedSld;					
+					currentSld = selectedSld;
 					currentSld.refresh(modelFactory.create(result));
 					SldSelectedEvent.fire(SldManagerImpl.this, currentSld);
 				}
@@ -214,12 +212,11 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 				}
 
 			});
-			
+
 		}
 
 	}
 
-	
 	public SldModel getCurrentSld() {
 		return currentSld;
 	}
@@ -257,12 +254,15 @@ public class SldManagerImpl implements SldManager, HasSldChangedHandlers {
 			});
 		}
 	}
-	
+
+	public void refreshCurrent() {
+		select(currentSld.getName());
+	}
+
 	public HandlerRegistration addSldChangedHandler(SldChangedHandler handler) {
 		return eventBus.addHandler(SldChangedEvent.getType(), handler);
 	}
 
-	
 	public class ContentChangedHandler implements SldContentChangedHandler {
 
 		public void onChanged(SldContentChangedEvent event) {

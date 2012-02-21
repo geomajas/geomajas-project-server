@@ -72,6 +72,12 @@ public interface SldManager extends HasSldLoadedHandlers, HasSldAddedHandlers, H
 	 * 
 	 */
 	void saveCurrent();
+	
+	/**
+	 * Save the currently selected SLD.
+	 * 
+	 */
+	void refreshCurrent();
 
 	/**
 	 * Select an SLD from the list.

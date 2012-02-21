@@ -9,10 +9,6 @@ import org.geomajas.sld.client.presenter.FilterPresenter;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
 import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
-import org.geomajas.sld.expression.ExpressionInfo;
-import org.geomajas.sld.expression.LiteralTypeInfo;
-import org.geomajas.sld.expression.PropertyNameInfo;
-import org.geomajas.sld.filter.BinaryComparisonOpTypeInfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
@@ -31,13 +27,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class FilterView extends ViewImpl implements FilterPresenter.MyView {
-
-	/** private members for filter form **/
-	private static final String DEFAULT_WILD_CARD = "*";
-
-	private static final String DEFAULT_WILD_CARD_SINGLE_CHAR = "?";
-
-	private static final String DEFAULT_ESCAPE = "\\";
 
 	// TODO: also for other operators
 
@@ -74,6 +63,9 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		hide();
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public Widget asWidget() {
 		return filterDetailContainer;
 	}
@@ -100,6 +92,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 				filterOperatorSelect.setValue(filterModel.getOperatorType().value());
 				switch (filterModel.getOperatorType()) {
 					case PROPERTY_IS_BETWEEN:
+					case PROPERTY_IS_NOT_BETWEEN:
 						filterForm.hideItem("attributeValue");
 						filterForm.showItem("attributeLowerBoundaryValue");
 						filterForm.showItem("attributeUpperBoundaryValue");
@@ -113,7 +106,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 					case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
 					case PROPERTY_IS_LESS_THAN:
 					case PROPERTY_IS_LESS_THAN_OR_EQUAL:
-					case PROPERTY_IS_NOT_BETWEEN:
 					case PROPERTY_IS_NOT_EQUAL_TO:
 						filterAttributeValue.show();
 						filterAttributeValue.setValue(filterModel.getPropertyValue());
@@ -194,7 +186,6 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		likeFilterSpec = new StaticTextItem("likeFilterSpec"); // com.smartgwt.client.widgets.HTMLPane();
 
 		likeFilterSpec.setTitle("Filter notaties");
-		setLikeFilterSpec(DEFAULT_WILD_CARD, DEFAULT_WILD_CARD_SINGLE_CHAR, DEFAULT_ESCAPE);
 		// likeFilterSpec.setCellStyle("formCell"); /* TODO */
 
 		likeFilterSpec.setWidth(300);
@@ -202,8 +193,11 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 		filterAttributeName.addChangedHandler(new ChangedHandler() {
 
 			public void onChanged(ChangedEvent event) {
-
-				filterModel.setPropertyName(filterAttributeName.getValueAsString());
+				String propertyName = filterAttributeName.getValueAsString();
+				filterModel.setPropertyName(propertyName);
+				if(propertyName != null && ! propertyName.isEmpty()) {
+					filterOperatorSelect.enable();
+				}
 				filterHasChanged();
 			}
 
@@ -222,16 +216,8 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 					filterForm.hideItem("attributeUpperBoundaryValue");
 
 					filterModel.setOperatorType(OperatorType.fromValue(operator));
-					modelToView(filterModel);
 					filterHasChanged();
-
-				} else {
-					/* The operator field value must be non-null before enabling the value fields */
-					filterHasChanged();
-					filterAttributeValue.setVisible(false);
-					filterAttributeLowerBoundaryValue.show();
-					filterAttributeUpperBoundaryValue.show();
-				}
+				} 
 			}
 		});
 
@@ -272,6 +258,7 @@ public class FilterView extends ViewImpl implements FilterPresenter.MyView {
 
 	private void filterHasChanged() {
 		filterModel.checkState();
+		modelToView(filterModel);
 		SldContentChangedEvent.fire(this);
 	}
 

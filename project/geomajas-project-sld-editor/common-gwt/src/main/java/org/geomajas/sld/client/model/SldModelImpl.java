@@ -62,22 +62,22 @@ public class SldModelImpl implements SldModel {
 		geomType = GeometryType.UNSPECIFIED;
 
 		if (null == sld.getChoiceList() || sld.getChoiceList().isEmpty()) {
-			setUnsupported("Empty SLD's are not supported.");
+			setUnsupported(messages.unsupportedEmpty());
 		} else if (sld.getChoiceList().size() > 1) {
-			setUnsupported("Only SLD's with a single &lt;NamedLayer&gt; element are supported.");
+			setUnsupported(messages.unsupportedMultipleNamedLayer());
 		} else {
 			StyledLayerDescriptorInfo.ChoiceInfo info = sld.getChoiceList().get(0);
 
 			if (!info.ifNamedLayer()) {
-				setUnsupported("Only SLD's with a &lt;NamedLayer&gt; element are supported.");
+				setUnsupported(messages.unsupportedUserLayer());
 			} else {
 				NamedLayerInfo namedLayerInfo = info.getNamedLayer();
 
 				if (null == namedLayerInfo.getChoiceList() || 0 == namedLayerInfo.getChoiceList().size()) {
-					setUnsupported("SLD's with an empty &lt;NamedLayer&gt; element are not supported.");
+					setUnsupported(messages.unsupportedEmptyNamedLayer());
 				}
 				if (namedLayerInfo.getChoiceList().size() > 1) {
-					setUnsupported("SLD's with more than 1 &lt;NamedLayer&gt; element are not supported.");
+					setUnsupported(messages.unsupportedMultipleNamedStyle());
 				}
 
 				this.nameOfLayer = (null != namedLayerInfo.getName()) ? namedLayerInfo.getName() : messages
@@ -86,16 +86,16 @@ public class SldModelImpl implements SldModel {
 				if (namedLayerInfo.getChoiceList().get(0).ifNamedStyle()) {
 					// Only the name is specialized
 					this.styleTitle = namedLayerInfo.getChoiceList().get(0).getNamedStyle().getName();
-					setUnsupported("SLD with named style are not supported.");
+					setUnsupported(messages.unsupportedNamedStyle());
 				} else if (namedLayerInfo.getChoiceList().get(0).ifUserStyle()) {
 					UserStyleInfo userStyle = namedLayerInfo.getChoiceList().get(0).getUserStyle();
 					this.styleTitle = userStyle.getTitle();
 
 					if (null == userStyle.getFeatureTypeStyleList() || userStyle.getFeatureTypeStyleList().size() == 0) {
-						setUnsupported("SLD without FeatureTypeStyle are not supported.");
+						setUnsupported(messages.unsupportedNoFeatureTypeStyle());
 					}
 					if (userStyle.getFeatureTypeStyleList().size() > 1) {
-						setUnsupported("SLDs with multiple FeatureTypeStyles are not supported.");
+						setUnsupported(messages.unsupportedMultipleFeatureTypeStyle());
 					}
 
 					FeatureTypeStyleInfo featureTypeStyle = userStyle.getFeatureTypeStyleList().get(0);
@@ -104,12 +104,7 @@ public class SldModelImpl implements SldModel {
 					geomType = SldUtils.GetGeometryType(userStyle.getFeatureTypeStyleList());
 
 					ruleGroup = new RuleGroupImpl();
-					String styleTitle = featureTypeStyle.getTitle();
-					if (null == styleTitle) {
-						ruleGroup.setTitle("groep 1");
-					} else {
-						ruleGroup.setTitle(styleTitle);
-					}
+					ruleGroup.setTitle(featureTypeStyle.getTitle());
 					ruleGroup.setName(featureTypeStyle.getName());
 					ruleGroup.setRuleModelList(new ArrayList<RuleModel>());
 					ruleGroup.setGeomType(GeometryType.UNSPECIFIED);

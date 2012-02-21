@@ -10,7 +10,8 @@
 	<inherits name="org.geomajas.GeomajasSldCommonGwt"/>
 	
 	<extend-property name="locale" values="nl"/>
-	
+	<extend-property name="locale" values="en"/>
+		
 	<source path="sld/client">
 		<exclude name="*Test*.java"/>
 	</source>

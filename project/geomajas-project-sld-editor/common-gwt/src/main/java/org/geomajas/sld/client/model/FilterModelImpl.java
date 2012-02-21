@@ -25,6 +25,13 @@ import org.geomajas.sld.filter.UpperBoundaryTypeInfo;
 
 public class FilterModelImpl implements FilterModel {
 
+	/** private members for filter form **/
+	private static final String DEFAULT_WILD_CARD = "*";
+
+	private static final String DEFAULT_WILD_CARD_SINGLE_CHAR = "?";
+
+	private static final String DEFAULT_ESCAPE = "\\";
+
 	private String propertyName;
 
 	private String propertyValue;
@@ -33,19 +40,20 @@ public class FilterModelImpl implements FilterModel {
 
 	private String upperValue;
 
-	private String patternMatchingWildCard;
+	private String patternMatchingWildCard = DEFAULT_WILD_CARD;
 
-	private String patternMatchingSingleChar;
+	private String patternMatchingSingleChar = DEFAULT_WILD_CARD_SINGLE_CHAR;
 
-	private String patternMatchingEscape;
+	private String patternMatchingEscape = DEFAULT_ESCAPE;
 
 	private FilterTypeInfo filterTypeInfo;
 
 	private OperatorType operatorType;
-	
+
 	private FilterModelState state;
 
 	public FilterModelImpl() {
+		this.state = FilterModelState.COMPLETE;
 	}
 
 	public FilterModelImpl(FilterTypeInfo filterTypeInfo) {
@@ -120,7 +128,7 @@ public class FilterModelImpl implements FilterModel {
 	public FilterTypeInfo getFilterTypeInfo() {
 		return filterTypeInfo;
 	}
-	
+
 	public FilterModelState getState() {
 		return state;
 	}
@@ -247,40 +255,47 @@ public class FilterModelImpl implements FilterModel {
 	}
 
 	public void checkState() {
-		if(state == FilterModelState.UNSUPPORTED) {
+		if (state == FilterModelState.UNSUPPORTED) {
 			// unsupported can't change
 			return;
-		} else if(filterTypeInfo == null) {
+		} else if ((propertyName == null || propertyName.isEmpty())
+				&& (propertyValue == null || propertyValue.isEmpty())) {
+			filterTypeInfo = null;
 			state = FilterModelState.COMPLETE;
-		} else if (operatorType == null) {
-			state = FilterModelState.INCOMPLETE;
 		} else {
-			state = FilterModelState.COMPLETE;
-			switch (operatorType) {
-				case PROPERTY_IS_BETWEEN:
-					checkBetweenFilter();
-					break;
-				case PROPERTY_IS_EQUAL_TO:
-				case PROPERTY_IS_GREATER_THAN:
-				case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
-				case PROPERTY_IS_LESS_THAN:
-				case PROPERTY_IS_LESS_THAN_OR_EQUAL:
-				case PROPERTY_IS_LIKE:
-				case PROPERTY_IS_NOT_EQUAL_TO:
-					checkBinaryComparisonFilter();
-					break;
-				case PROPERTY_IS_NOT_LIKE:
-					checkNotLikeFilter();
-					break;
-				case PROPERTY_IS_NOT_BETWEEN:
-					checkNotBetweenFilter();
-					break;
-				case PROPERTY_IS_NOT_NULL:
-					checkNotNullFilter();
-					break;
-				case PROPERTY_IS_NULL:
-					checkNullFilter();
-					break;
+			if (filterTypeInfo == null) {
+				filterTypeInfo = new FilterTypeInfo();
+			}
+			if (operatorType == null) {
+				state = FilterModelState.INCOMPLETE;
+			} else {
+				state = FilterModelState.COMPLETE;
+				switch (operatorType) {
+					case PROPERTY_IS_BETWEEN:
+						checkBetweenFilter();
+						break;
+					case PROPERTY_IS_EQUAL_TO:
+					case PROPERTY_IS_GREATER_THAN:
+					case PROPERTY_IS_GREATER_THAN_OR_EQUAL:
+					case PROPERTY_IS_LESS_THAN:
+					case PROPERTY_IS_LESS_THAN_OR_EQUAL:
+					case PROPERTY_IS_LIKE:
+					case PROPERTY_IS_NOT_EQUAL_TO:
+						checkBinaryComparisonFilter();
+						break;
+					case PROPERTY_IS_NOT_LIKE:
+						checkNotLikeFilter();
+						break;
+					case PROPERTY_IS_NOT_BETWEEN:
+						checkNotBetweenFilter();
+						break;
+					case PROPERTY_IS_NOT_NULL:
+						checkNotNullFilter();
+						break;
+					case PROPERTY_IS_NULL:
+						checkNullFilter();
+						break;
+				}
 			}
 		}
 	}

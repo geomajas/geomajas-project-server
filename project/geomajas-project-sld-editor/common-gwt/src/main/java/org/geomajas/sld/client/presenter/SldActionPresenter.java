@@ -7,7 +7,8 @@ import org.geomajas.sld.client.model.event.SldSelectedEvent;
 import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
 import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.client.presenter.event.SldRefreshEvent;
+import org.geomajas.sld.client.presenter.event.SldRefreshEvent.SldRefreshHandler;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent.HasSldSaveHandlers;
 import org.geomajas.sld.client.presenter.event.SldSaveEvent.SldSaveHandler;
@@ -22,7 +23,7 @@ import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
 public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, SldActionPresenter.MyProxy> implements
-		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler {
+		SldSelectedHandler, SldChangedHandler, InitSldLayoutHandler, SldSaveHandler, SldRefreshHandler {
 
 	private final SldManager manager;
 
@@ -56,6 +57,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 		addRegisteredHandler(SldChangedEvent.getType(), this);
 		addRegisteredHandler(InitSldLayoutEvent.getType(), this);
 		addRegisteredHandler(SldSaveEvent.getType(), this);
+		addRegisteredHandler(SldRefreshEvent.getType(), this);
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	@ProxyEvent
 	public void onSldSelected(SldSelectedEvent event) {
-		getView().setCloseEnabled(true);
+		getView().setCloseEnabled(false);
 		getView().setResetEnabled(false);
 		getView().setSaveEnabled(false);
 	}
@@ -82,7 +84,7 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 			getView().setResetEnabled(manager.getCurrentSld().isDirty());
 			getView().setSaveEnabled(manager.getCurrentSld().isDirty() && manager.getCurrentSld().isComplete());
 		} else {
-			getView().setCloseEnabled(true);
+			getView().setCloseEnabled(false);
 			getView().setResetEnabled(false);
 			getView().setSaveEnabled(false);
 		}
@@ -90,6 +92,10 @@ public class SldActionPresenter extends Presenter<SldActionPresenter.MyView, Sld
 
 	public void onSldSave(SldSaveEvent event) {
 		manager.saveCurrent();
+	}
+
+	public void onSldRefresh(SldRefreshEvent event) {
+		manager.refreshCurrent();
 	}
 
 }

@@ -39,8 +39,6 @@ public class RuleModelImpl implements RuleModel {
 
 	private String title;
 
-	private RuleModelState state;
-
 	private RuleInfo ruleInfo;
 
 	private FilterModel filterModel;
@@ -63,7 +61,6 @@ public class RuleModelImpl implements RuleModel {
 			RuleInfo defaultRule = new RuleInfo();
 
 			this.geometryType = geometryType;
-			this.state = RuleModelState.COMPLETE;
 
 			defaultRule.setName(messages.ruleTitleDefault());
 			this.name = messages.ruleTitleDefault();
@@ -108,13 +105,12 @@ public class RuleModelImpl implements RuleModel {
 
 			this.ruleInfo = ruleInfo;
 			this.geometryType = SldUtils.GetGeometryType(ruleInfo);
-			this.state = RuleModelState.COMPLETE;
 			this.symbolizerTypeInfo = ruleInfo.getSymbolizerList().get(0); // retrieve the first symbolizer
 																			// specification
 			if (null != ruleInfo.getChoice() && ruleInfo.getChoice().ifFilter()) {
 				this.filterModel = new FilterModelImpl(ruleInfo.getChoice().getFilter());
 			} else {
-				this.filterModel = null; // TODO: or this.filterModel = new FilterModelImpl() ???
+				this.filterModel = new FilterModelImpl();
 			}
 			this.name = ruleInfo.getName();
 			if (null == ruleInfo.getTitle() || ruleInfo.getTitle().length() == 0) {
@@ -167,7 +163,11 @@ public class RuleModelImpl implements RuleModel {
 	}
 
 	public RuleModelState getState() {
-		return state;
+		if (getFilterModel().getState() == FilterModelState.INCOMPLETE) {
+			return RuleModelState.INCOMPLETE;
+		} else {
+			return RuleModelState.COMPLETE;
+		}
 	}
 
 	public RuleInfo getRuleInfo() {
@@ -191,15 +191,7 @@ public class RuleModelImpl implements RuleModel {
 	}
 
 	public void checkState() {
-		if(getName() == null) {
-			state = RuleModelState.INCOMPLETE;
-		} else if(getTitle() == null) {
-			state = RuleModelState.INCOMPLETE;
-		}else if(getFilterModel().getState() == FilterModelState.INCOMPLETE){
-			state = RuleModelState.INCOMPLETE;
-		} else {
-			state = RuleModelState.COMPLETE;
-		}
+		ruleInfo.setTitle(getTitle());
 	}
 
 }

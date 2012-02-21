@@ -48,8 +48,6 @@ public interface RuleModel {
 	 * @param title
 	 */
 	void setTitle(String title);
-	
-	void checkState();
 
 	RuleModelState getState();
 
@@ -60,5 +58,7 @@ public interface RuleModel {
 	SymbolizerTypeInfo getSymbolizerTypeInfo();
 
 	GeometryType getGeometryType();
+	
+	void checkState();
 
 }
