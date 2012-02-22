@@ -9,9 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client;
+package org.geomajas.sld.editor.common.client;
 
-import org.geomajas.sld.client.gin.DefaultPlace;
+import org.geomajas.sld.editor.common.client.gin.DefaultPlace;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;

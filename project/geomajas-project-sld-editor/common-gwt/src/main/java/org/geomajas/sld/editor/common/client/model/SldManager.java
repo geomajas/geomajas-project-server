@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 import java.util.List;
 
-import org.geomajas.sld.client.model.event.SldAddedEvent.HasSldAddedHandlers;
-import org.geomajas.sld.client.model.event.SldLoadedEvent.HasSldLoadedHandlers;
-import org.geomajas.sld.client.model.event.SldSelectedEvent.HasSldSelectedHandlers;
-import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.common.client.GeometryType;
+import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent.HasSldAddedHandlers;
+import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent.HasSldLoadedHandlers;
+import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent.HasSldSelectedHandlers;
 
 /**
  * The main model class of the SLD editor.

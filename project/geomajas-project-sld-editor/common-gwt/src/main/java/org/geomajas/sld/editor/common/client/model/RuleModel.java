@@ -8,11 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.SymbolizerTypeInfo;
-import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.common.client.GeometryType;
 
 /**
  * 

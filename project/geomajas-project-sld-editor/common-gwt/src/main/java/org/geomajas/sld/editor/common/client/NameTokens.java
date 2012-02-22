@@ -9,7 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client;
+package org.geomajas.sld.editor.common.client;
+
+import com.gwtplatform.mvp.client.annotations.NameToken;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 /**
  * The central location of all name tokens for the application. All {@link ProxyPlace} classes get their tokens from

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.view;
+package org.geomajas.sld.editor.common.client.view;
 
 /**
  * View independent base class for utility functions.

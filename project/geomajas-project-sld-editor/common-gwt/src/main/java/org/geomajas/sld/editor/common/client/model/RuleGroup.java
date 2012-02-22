@@ -9,11 +9,11 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 import java.util.List;
 
-import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.common.client.GeometryType;
 
 /**
  * @author An Buyle

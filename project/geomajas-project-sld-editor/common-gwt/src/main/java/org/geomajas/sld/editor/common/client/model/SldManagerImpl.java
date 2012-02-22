@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +21,20 @@ import org.geomajas.sld.RuleInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo;
 import org.geomajas.sld.StyledLayerDescriptorInfo.ChoiceInfo;
 import org.geomajas.sld.UserStyleInfo;
-import org.geomajas.sld.client.model.event.SldAddedEvent;
-import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
-import org.geomajas.sld.client.model.event.SldChangedEvent;
-import org.geomajas.sld.client.model.event.SldChangedEvent.HasSldChangedHandlers;
-import org.geomajas.sld.client.model.event.SldChangedEvent.SldChangedHandler;
-import org.geomajas.sld.client.model.event.SldLoadedEvent;
-import org.geomajas.sld.client.model.event.SldLoadedEvent.SldLoadedHandler;
-import org.geomajas.sld.client.model.event.SldRemovedEvent;
-import org.geomajas.sld.client.model.event.SldSelectedEvent;
-import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.editor.client.SldUtils;
+import org.geomajas.sld.editor.common.client.GeometryType;
+import org.geomajas.sld.editor.common.client.SldUtils;
+import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent.SldAddedHandler;
+import org.geomajas.sld.editor.common.client.model.event.SldChangedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldChangedEvent.HasSldChangedHandlers;
+import org.geomajas.sld.editor.common.client.model.event.SldChangedEvent.SldChangedHandler;
+import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldLoadedEvent.SldLoadedHandler;
+import org.geomajas.sld.editor.common.client.model.event.SldRemovedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent.SldSelectedHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 /**
  * Reference object that allows to find back a rule in a refreshed SLD model.

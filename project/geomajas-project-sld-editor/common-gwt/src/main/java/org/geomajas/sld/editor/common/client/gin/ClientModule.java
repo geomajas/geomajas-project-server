@@ -9,19 +9,19 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.gin;
+package org.geomajas.sld.editor.common.client.gin;
 
-import org.geomajas.sld.client.NameTokens;
-import org.geomajas.sld.client.SldEditorPlaceManager;
-import org.geomajas.sld.client.model.RuleModel;
-import org.geomajas.sld.client.model.RuleModelFactory;
-import org.geomajas.sld.client.model.RuleModelImpl;
-import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.model.SldManagerImpl;
-import org.geomajas.sld.client.model.SldModel;
-import org.geomajas.sld.client.model.SldModelFactory;
-import org.geomajas.sld.client.model.SldModelImpl;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.NameTokens;
+import org.geomajas.sld.editor.common.client.SldEditorPlaceManager;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.model.RuleModel;
+import org.geomajas.sld.editor.common.client.model.RuleModelFactory;
+import org.geomajas.sld.editor.common.client.model.RuleModelImpl;
+import org.geomajas.sld.editor.common.client.model.SldManager;
+import org.geomajas.sld.editor.common.client.model.SldManagerImpl;
+import org.geomajas.sld.editor.common.client.model.SldModel;
+import org.geomajas.sld.editor.common.client.model.SldModelFactory;
+import org.geomajas.sld.editor.common.client.model.SldModelImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;

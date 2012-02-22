@@ -9,9 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client;
+package org.geomajas.sld.editor.common.client;
 
-import org.geomajas.sld.client.gin.ClientGinjectorBase;
+import org.geomajas.sld.editor.common.client.gin.ClientGinjectorBase;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

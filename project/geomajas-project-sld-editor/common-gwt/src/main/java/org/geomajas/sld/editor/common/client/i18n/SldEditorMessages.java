@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.editor.client.i18n;
+package org.geomajas.sld.editor.common.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 

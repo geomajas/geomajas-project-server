@@ -9,15 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.presenter;
+package org.geomajas.sld.editor.common.client.presenter;
 
-import org.geomajas.sld.client.model.SldGeneralInfo;
-import org.geomajas.sld.client.model.SldModel;
-import org.geomajas.sld.client.model.event.SldSelectedEvent;
-import org.geomajas.sld.client.model.event.SldSelectedEvent.SldSelectedHandler;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
+import org.geomajas.sld.editor.common.client.model.SldGeneralInfo;
+import org.geomajas.sld.editor.common.client.model.SldModel;
+import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldSelectedEvent.SldSelectedHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;

@@ -9,20 +9,20 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.gin;
+package org.geomajas.sld.editor.common.client.gin;
 
-import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.presenter.FilterPresenter;
-import org.geomajas.sld.client.presenter.LineSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.MainLayoutPresenter;
-import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.RulePresenter;
-import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
-import org.geomajas.sld.client.presenter.SldActionPresenter;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
+import org.geomajas.sld.editor.common.client.model.SldManager;
+import org.geomajas.sld.editor.common.client.presenter.FilterPresenter;
+import org.geomajas.sld.editor.common.client.presenter.LineSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.editor.common.client.presenter.PointSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.PolygonSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.RulePresenter;
+import org.geomajas.sld.editor.common.client.presenter.RuleSelectorPresenter;
+import org.geomajas.sld.editor.common.client.presenter.SldActionPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorLayoutPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorListPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorPresenter;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;

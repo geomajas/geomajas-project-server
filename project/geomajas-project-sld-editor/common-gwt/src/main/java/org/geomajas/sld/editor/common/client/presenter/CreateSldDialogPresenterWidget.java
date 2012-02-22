@@ -9,17 +9,17 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.presenter;
+package org.geomajas.sld.editor.common.client.presenter;
 
-import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.model.SldModel;
-import org.geomajas.sld.client.model.event.SldAddedEvent;
-import org.geomajas.sld.client.model.event.SldAddedEvent.SldAddedHandler;
-import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent;
-import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
-import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent.HasCreateSldDialogCreateHandlers;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.common.client.GeometryType;
+import org.geomajas.sld.editor.common.client.model.SldManager;
+import org.geomajas.sld.editor.common.client.model.SldModel;
+import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent;
+import org.geomajas.sld.editor.common.client.model.event.SldAddedEvent.SldAddedHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent.HasCreateSldDialogCreateHandlers;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;

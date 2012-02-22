@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.gin;
+package org.geomajas.sld.editor.common.client.gin;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

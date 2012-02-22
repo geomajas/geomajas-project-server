@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 /**
  * Default implementation of {@link RuleReference} that uses the list index of the rule.

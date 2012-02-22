@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.sld.client.presenter;
+package org.geomajas.sld.editor.common.client.presenter;
 
-import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.presenter.event.InitMainLayoutEvent;
-import org.geomajas.sld.client.presenter.event.InitMainLayoutEvent.InitMainLayoutHandler;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.editor.common.client.model.SldManager;
+import org.geomajas.sld.editor.common.client.presenter.event.InitMainLayoutEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.InitMainLayoutEvent.InitMainLayoutHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.InitSldLayoutEvent;
 
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;

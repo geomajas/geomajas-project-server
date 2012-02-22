@@ -8,12 +8,12 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.model;
+package org.geomajas.sld.editor.common.client.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
 import org.geomajas.sld.expression.ExpressionInfo;
 import org.geomajas.sld.expression.LiteralTypeInfo;
 import org.geomajas.sld.expression.PropertyNameInfo;

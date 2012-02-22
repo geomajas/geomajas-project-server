@@ -8,21 +8,21 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.sld.client.presenter;
+package org.geomajas.sld.editor.common.client.presenter;
 
 import java.util.logging.Logger;
 
 import org.geomajas.sld.PolygonSymbolizerInfo;
-import org.geomajas.sld.client.model.RuleModel;
-import org.geomajas.sld.client.model.SldManager;
-import org.geomajas.sld.client.model.event.RuleChangedEvent;
-import org.geomajas.sld.client.model.event.RuleChangedEvent.RuleChangedHandler;
-import org.geomajas.sld.client.model.event.RuleSelectedEvent;
-import org.geomajas.sld.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent;
-import org.geomajas.sld.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
-import org.geomajas.sld.editor.client.GeometryType;
+import org.geomajas.sld.editor.common.client.GeometryType;
+import org.geomajas.sld.editor.common.client.model.RuleModel;
+import org.geomajas.sld.editor.common.client.model.SldManager;
+import org.geomajas.sld.editor.common.client.model.event.RuleChangedEvent;
+import org.geomajas.sld.editor.common.client.model.event.RuleChangedEvent.RuleChangedHandler;
+import org.geomajas.sld.editor.common.client.model.event.RuleSelectedEvent;
+import org.geomajas.sld.editor.common.client.model.event.RuleSelectedEvent.RuleSelectedHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.InitSldLayoutEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.InitSldLayoutEvent.InitSldLayoutHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.HasSldContentChangedHandlers;
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
