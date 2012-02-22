@@ -34,6 +34,8 @@ public final class GsfLayout {
 	public static String geometricSearchPanelTabWidth = "400";
 	/** Combined search panel height. */
 	public static String geometricSearchPanelTabHeight = "250";
+	/** The width of the combined search panel. */
+	public static String combinedSearchPanelWidth = "400";
 
 	/** SearchWindow Layout options. Can also be null, which means no positioning. */
 	public static SearchWindowPositionType searchWindowPositionType = SearchWindowPositionType.CENTERED;

@@ -21,6 +21,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.util.WidgetLayout;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.searchandfilter.client.SearchAndFilterMessages;
+import org.geomajas.widget.searchandfilter.client.util.GsfLayout;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestEvent;
 import org.geomajas.widget.searchandfilter.client.widget.search.SearchWidget.SaveRequestHandler;
 import org.geomajas.widget.searchandfilter.search.dto.AndCriterion;
@@ -76,7 +77,7 @@ public class CombinedSearchPanel extends AbstractSearchPanel {
 	public CombinedSearchPanel(final MapWidget mapWidget) {
 		super(mapWidget);
 		VLayout layout = new VLayout(10);
-		layout.setWidth100();
+		layout.setWidth(GsfLayout.combinedSearchPanelWidth);
 		layout.setHeight(1);
 
 		// -- operator type --
