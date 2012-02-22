@@ -11,12 +11,12 @@
 
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.client.model.SldGeneralInfo;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.model.SldGeneralInfo;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorPresenter;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;

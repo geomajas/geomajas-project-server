@@ -11,7 +11,7 @@
 
 package org.geomajas.sld.editor.client.widget;
 
-import org.geomajas.sld.client.model.RuleModel;
+import org.geomajas.sld.editor.common.client.model.RuleModel;
 
 import com.smartgwt.client.widgets.tree.TreeNode;
 

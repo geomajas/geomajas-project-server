@@ -11,9 +11,9 @@
 package org.geomajas.sld.editor.client.view;
 
 import org.geomajas.sld.RuleInfo;
-import org.geomajas.sld.client.presenter.RulePresenter;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.presenter.RulePresenter;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;

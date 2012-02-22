@@ -12,16 +12,16 @@ package org.geomajas.sld.editor.client.view;
 
 import java.util.List;
 
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
-import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent;
-import org.geomajas.sld.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
-import org.geomajas.sld.client.presenter.event.SldListRemoveEvent;
-import org.geomajas.sld.client.presenter.event.SldListRemoveEvent.SldListRemoveHandler;
-import org.geomajas.sld.client.presenter.event.SldListSelectEvent;
-import org.geomajas.sld.client.presenter.event.SldListSelectEvent.SldListSelectHandler;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.client.view.ViewUtil.YesNoCallback;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorListPresenter;
+import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldListPopupNewEvent.SldListPopupNewHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldListRemoveEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldListRemoveEvent.SldListRemoveHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldListSelectEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldListSelectEvent.SldListSelectHandler;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
+import org.geomajas.sld.editor.common.client.view.ViewUtil.YesNoCallback;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;

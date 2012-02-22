@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.editor.client.gin;
 
-import org.geomajas.sld.client.gin.ClientGinjectorBase;
+import org.geomajas.sld.editor.common.client.gin.ClientGinjectorBase;
 
 import com.google.gwt.inject.client.GinModules;
 

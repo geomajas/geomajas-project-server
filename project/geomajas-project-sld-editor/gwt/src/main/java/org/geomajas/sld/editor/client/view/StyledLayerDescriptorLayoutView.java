@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorLayoutPresenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;

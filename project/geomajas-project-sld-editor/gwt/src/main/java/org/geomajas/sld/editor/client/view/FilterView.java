@@ -12,13 +12,13 @@ package org.geomajas.sld.editor.client.view;
 
 import java.util.LinkedHashMap;
 
-import org.geomajas.sld.client.model.FilterModel;
-import org.geomajas.sld.client.model.FilterModel.FilterModelState;
-import org.geomajas.sld.client.model.FilterModel.OperatorType;
-import org.geomajas.sld.client.presenter.FilterPresenter;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.model.FilterModel;
+import org.geomajas.sld.editor.common.client.model.FilterModel.FilterModelState;
+import org.geomajas.sld.editor.common.client.model.FilterModel.OperatorType;
+import org.geomajas.sld.editor.common.client.presenter.FilterPresenter;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;

@@ -14,11 +14,11 @@ package org.geomajas.sld.editor.client.view;
 import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
-import org.geomajas.sld.client.presenter.CreateSldDialogPresenterWidget.MyView;
-import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent;
-import org.geomajas.sld.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
-import org.geomajas.sld.editor.client.GeometryType;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.GeometryType;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.presenter.CreateSldDialogPresenterWidget.MyView;
+import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.CreateSldDialogCreateEvent.CreateSldDialogCreateHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;

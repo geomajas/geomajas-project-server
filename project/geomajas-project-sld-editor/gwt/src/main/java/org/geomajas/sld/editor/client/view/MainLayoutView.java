@@ -10,7 +10,7 @@
  */
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.editor.common.client.presenter.MainLayoutPresenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewImpl;

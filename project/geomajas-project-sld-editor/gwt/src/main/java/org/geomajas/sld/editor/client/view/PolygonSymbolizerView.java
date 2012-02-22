@@ -17,11 +17,11 @@ import org.geomajas.sld.FillInfo;
 import org.geomajas.sld.PolygonSymbolizerInfo;
 import org.geomajas.sld.SldConstant;
 import org.geomajas.sld.StrokeInfo;
-import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent;
-import org.geomajas.sld.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.presenter.PolygonSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldContentChangedEvent.SldContentChangedHandler;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;

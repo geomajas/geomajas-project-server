@@ -10,19 +10,6 @@
  */
 package org.geomajas.sld.editor.client.gin;
 
-import org.geomajas.sld.client.presenter.CreateSldDialogPresenterWidget;
-import org.geomajas.sld.client.presenter.FilterPresenter;
-import org.geomajas.sld.client.presenter.LineSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.MainLayoutPresenter;
-import org.geomajas.sld.client.presenter.PointSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.PolygonSymbolizerPresenter;
-import org.geomajas.sld.client.presenter.RulePresenter;
-import org.geomajas.sld.client.presenter.RuleSelectorPresenter;
-import org.geomajas.sld.client.presenter.SldActionPresenter;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorLayoutPresenter;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorListPresenter;
-import org.geomajas.sld.client.presenter.StyledLayerDescriptorPresenter;
-import org.geomajas.sld.client.view.ViewUtil;
 import org.geomajas.sld.editor.client.presenter.SmartGwtRootPresenter;
 import org.geomajas.sld.editor.client.view.CreateSldDialogView;
 import org.geomajas.sld.editor.client.view.FilterView;
@@ -37,6 +24,19 @@ import org.geomajas.sld.editor.client.view.StyledLayerDescriptorLayoutView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorListView;
 import org.geomajas.sld.editor.client.view.StyledLayerDescriptorView;
 import org.geomajas.sld.editor.client.view.ViewUtilImpl;
+import org.geomajas.sld.editor.common.client.presenter.CreateSldDialogPresenterWidget;
+import org.geomajas.sld.editor.common.client.presenter.FilterPresenter;
+import org.geomajas.sld.editor.common.client.presenter.LineSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.MainLayoutPresenter;
+import org.geomajas.sld.editor.common.client.presenter.PointSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.PolygonSymbolizerPresenter;
+import org.geomajas.sld.editor.common.client.presenter.RulePresenter;
+import org.geomajas.sld.editor.common.client.presenter.RuleSelectorPresenter;
+import org.geomajas.sld.editor.common.client.presenter.SldActionPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorLayoutPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorListPresenter;
+import org.geomajas.sld.editor.common.client.presenter.StyledLayerDescriptorPresenter;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
 
 import com.google.inject.Singleton;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;

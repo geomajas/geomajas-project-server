@@ -10,16 +10,16 @@
  */
 package org.geomajas.sld.editor.client.view;
 
-import org.geomajas.sld.client.presenter.SldActionPresenter;
-import org.geomajas.sld.client.presenter.event.SldCloseEvent;
-import org.geomajas.sld.client.presenter.event.SldRefreshEvent;
-import org.geomajas.sld.client.presenter.event.SldRefreshEvent.HasSldRefreshHandlers;
-import org.geomajas.sld.client.presenter.event.SldRefreshEvent.SldRefreshHandler;
-import org.geomajas.sld.client.presenter.event.SldSaveEvent;
-import org.geomajas.sld.client.presenter.event.SldSaveEvent.SldSaveHandler;
-import org.geomajas.sld.client.view.ViewUtil;
-import org.geomajas.sld.client.view.ViewUtil.YesNoCallback;
-import org.geomajas.sld.editor.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.i18n.SldEditorMessages;
+import org.geomajas.sld.editor.common.client.presenter.SldActionPresenter;
+import org.geomajas.sld.editor.common.client.presenter.event.SldCloseEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldRefreshEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldRefreshEvent.HasSldRefreshHandlers;
+import org.geomajas.sld.editor.common.client.presenter.event.SldRefreshEvent.SldRefreshHandler;
+import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent;
+import org.geomajas.sld.editor.common.client.presenter.event.SldSaveEvent.SldSaveHandler;
+import org.geomajas.sld.editor.common.client.view.ViewUtil;
+import org.geomajas.sld.editor.common.client.view.ViewUtil.YesNoCallback;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.GwtEvent;
