@@ -3,6 +3,14 @@ Copyright 2008-2012 Geosparc nv, http://www.geosparc.com/, Belgium.
 
 Copyright/license notices for dependent projects:
 
-JTS
-    licenseName: GNU Lesser General Public License
-    licenseUrl: http://www.gnu.org/licenses/lgpl.html
+GWTP
+    licenseName: Apache License, Version 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+ 
+Spring 
+    licenseName: Apache License, Version 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+
+GWT-SL
+    licenseName: Apache License, Version 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
