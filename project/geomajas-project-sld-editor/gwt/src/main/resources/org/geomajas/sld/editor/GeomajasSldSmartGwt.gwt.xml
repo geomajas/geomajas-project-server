@@ -7,18 +7,13 @@
 	
 	<inherits name="org.geomajas.GeomajasSldApi"/>
 	
-	<inherits name="org.geomajas.GeomajasSldCommonGwt"/>
+	<inherits name="org.geomajas.sld.editor.common.GeomajasSldCommonGwt"/>
 	
 	<extend-property name="locale" values="nl"/>
 	<extend-property name="locale" values="en"/>
 		
-	<source path="sld/client">
+	<source path="client">
 		<exclude name="*Test*.java"/>
 	</source>
-	
 		
-	<source path="sld/editor/client/">
-		<exclude name="*Test*.java"/>
-	</source>
-	
 </module>
